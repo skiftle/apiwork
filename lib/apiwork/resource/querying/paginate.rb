@@ -14,13 +14,16 @@ module Apiwork
             if page_number < 1
               error = ArgumentError.new('page[number] must be >= 1')
               Errors::Handler.handle(error, context: { page_number: page_number })
-              page_number = 1
             end
 
             if page_size < 1
               error = ArgumentError.new('page[size] must be >= 1')
               Errors::Handler.handle(error, context: { page_size: page_size })
-              page_size = default_page_size
+            end
+
+            if page_size > maximum_page_size
+              error = ArgumentError.new("page[size] must be <= #{maximum_page_size}")
+              Errors::Handler.handle(error, context: { page_size: page_size, maximum: maximum_page_size })
             end
 
             page_size = [page_size, maximum_page_size].min

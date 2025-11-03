@@ -22,7 +22,7 @@ module Apiwork
 
     def initialize
       @raise_on_invalid_fields = false
-      @default_sort = { created_at: :desc }
+      @default_sort = { id: :asc }
       @default_page_size = 20
       @maximum_page_size = 200
       @serialize_key_transform = :none

@@ -9,6 +9,10 @@ module Api
         render json: { ok: false, errors: error.errors }, status: :bad_request
       end
 
+      rescue_from Apiwork::FilterError do |error|
+        render json: { ok: false, errors: [error.to_h] }, status: :bad_request
+      end
+
       rescue_from ActiveRecord::RecordNotFound do |error|
         render json: { ok: false, errors: [{ code: 'not_found', detail: error.message }] }, status: :not_found
       end

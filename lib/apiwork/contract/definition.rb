@@ -304,11 +304,14 @@ module Apiwork
               end
             else
               # Simple type array (e.g., array of strings)
-              type_error = validate_type(index, item, param_options[:of], nil, item_path)
+              # Coerce the item if coercion is enabled
+              coerced_item = coerce ? Coercer.coerce(item, param_options[:of]) : item
+
+              type_error = validate_type(index, coerced_item, param_options[:of], nil, item_path)
               if type_error
                 errors << type_error
               else
-                values << item
+                values << coerced_item
               end
             end
           else

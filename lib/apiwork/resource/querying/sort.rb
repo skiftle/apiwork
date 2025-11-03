@@ -10,8 +10,14 @@ module Apiwork
         def apply_sort(scope, params)
           return scope if params.blank?
 
+          # Convert array of hashes to single hash
+          if params.is_a?(Array)
+            # Merge all hashes in order
+            params = params.reduce({}) { |acc, hash| acc.merge(hash) }
+          end
+
           unless params.is_a?(Hash)
-            error = ArgumentError.new('sort must be a Hash')
+            error = ArgumentError.new('sort must be a Hash or Array of Hashes')
             Errors::Handler.handle(error, context: { params_type: params.class })
             return scope
           end
