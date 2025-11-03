@@ -34,7 +34,7 @@ module Apiwork
       RANGE_OPERATORS = %i[between not_between].freeze
 
       # Collection operators - for checking membership
-      COLLECTION_OPERATORS = %i[in].freeze
+      COLLECTION_OPERATORS = %i[in not_in].freeze
 
       # String-specific operators
       STRING_SPECIFIC_OPERATORS = %i[

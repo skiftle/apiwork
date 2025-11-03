@@ -23,7 +23,10 @@ module Apiwork
           end
 
           orders, joins = build_order_clauses(params)
-          scope.joins(joins).order(orders)
+          scope = scope.joins(joins).order(orders)
+          # Use distinct when joining associations to avoid duplicates from has_many
+          scope = scope.distinct if joins.present?
+          scope
         end
 
         def default_sort
@@ -85,6 +88,9 @@ module Apiwork
                 Errors::Handler.handle(error, context: { association: key })
                 next
               end
+
+              # Constantize if string
+              association_resource = association_resource.constantize if association_resource.is_a?(String)
 
               nested_orders, nested_joins = association_resource.send(:build_order_clauses, value, association.klass)
               orders.concat(nested_orders)

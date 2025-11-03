@@ -13,14 +13,22 @@ module Apiwork
         def apply_filter(scope, params)
           return scope if params.blank?
 
-          case params
-          when Hash
-            conditions, joins = build_where_conditions(params)
-            scope.joins(joins).where(conditions.reduce(:and))
-          when Array
-            conditions, joins = params.map { |p| build_where_conditions(p) }.transpose
-            scope.joins(joins.reduce(&:deep_merge)).where(conditions.flatten.reduce(:or))
-          end
+          scope = case params
+                  when Hash
+                    conditions, joins = build_where_conditions(params)
+                    result = scope.joins(joins).where(conditions.reduce(:and))
+                    # Use distinct when joining associations to avoid duplicates from has_many
+                    joins.present? ? result.distinct : result
+                  when Array
+                    conditions, joins = params.map { |p| build_where_conditions(p) }.transpose
+                    # Build OR conditions: each element in conditions is an array of AND conditions
+                    # First reduce each array to AND, then combine results with OR
+                    or_conditions = conditions.map { |conds| conds.reduce(:and) }.reduce(:or)
+                    result = scope.joins(joins.reduce(&:deep_merge)).where(or_conditions)
+                    # Use distinct when joining associations to avoid duplicates from has_many
+                    joins.any?(&:present?) ? result.distinct : result
+                  end
+          scope
         end
 
         private
@@ -120,13 +128,16 @@ module Apiwork
 
         # Find filterable association
         def find_filterable_association(key)
-          association_definitions[key] if association_definitions.key?(key) && association_definitions[key][:filterable]
+          association_definitions[key] if association_definitions.key?(key) && association_definitions[key].filterable?
         end
 
         # Build association filter conditions
         def build_join_conditions(key, value, association)
           reflection = model_class.reflect_on_association(key)
-          assoc_resource = association[:resource] || Apiwork::Resource::Resolver.from_association(reflection, self)
+          assoc_resource = association.resource_class || Apiwork::Resource::Resolver.from_association(reflection, self)
+
+          # Constantize if string
+          assoc_resource = assoc_resource.constantize if assoc_resource.is_a?(String)
 
           unless assoc_resource
             error = ArgumentError.new("Cannot find resource for association #{key}")
@@ -204,6 +215,7 @@ module Apiwork
             when :starts_with then column.matches("#{compare}%")
             when :ends_with then column.matches("%#{compare}")
             when :in then column.in(compare)
+            when :not_in then column.not_in(compare)
             end
           end.reduce(:and)
         end
@@ -247,17 +259,31 @@ module Apiwork
 
                 operator == :equal ? column.eq(nil) : column.not_eq(nil)
               else
-                date = parse_date(compare)
-                case operator
-                when :equal then column.eq(date)
-                when :not_equal then column.not_eq(date)
-                when :greater_than then column.gt(date)
-                when :greater_than_or_equal_to then column.gteq(date)
-                when :less_than then column.lt(date)
-                when :less_than_or_equal_to then column.lteq(date)
-                when :between then column.between(date.beginning_of_day..date.end_of_day)
-                when :not_between then column.not_between(date.beginning_of_day..date.end_of_day)
-                when :in then column.in(Array(date))
+                # Handle between/not_between with from/to range
+                if (operator == :between || operator == :not_between) && compare.is_a?(Hash)
+                  from_date = parse_date(compare[:from] || compare['from']).beginning_of_day
+                  to_date = parse_date(compare[:to] || compare['to']).end_of_day
+
+                  if operator == :between
+                    column.gteq(from_date).and(column.lteq(to_date))
+                  else
+                    # NOT BETWEEN: outside the range (before from OR after to)
+                    Arel::Nodes::Grouping.new(
+                      column.lt(from_date).or(column.gt(to_date))
+                    )
+                  end
+                else
+                  date = parse_date(compare)
+                  case operator
+                  when :equal then column.eq(date)
+                  when :not_equal then column.not_eq(date)
+                  when :greater_than then column.gt(date)
+                  when :greater_than_or_equal_to then column.gteq(date)
+                  when :less_than then column.lt(date)
+                  when :less_than_or_equal_to then column.lteq(date)
+                  when :in then column.in(Array(date))
+                  when :not_in then column.not_in(Array(date))
+                  end
                 end
               end
             end.compact.reduce(:and)

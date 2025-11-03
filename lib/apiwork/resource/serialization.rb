@@ -46,6 +46,9 @@ module Apiwork
         resource_class = definition.resource_class || detect_association_resource(name)
         return nil unless resource_class
 
+        # Constantize if string
+        resource_class = resource_class.constantize if resource_class.is_a?(String)
+
         if definition.collection?
           associated.map { |item| resource_class.new(item, context).as_json }
         else
