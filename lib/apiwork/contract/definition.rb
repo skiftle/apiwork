@@ -135,6 +135,14 @@ module Apiwork
           # Apply default if value is nil
           value = param_options[:default] if value.nil? && param_options[:default]
 
+          # Check nullable constraint
+          # Only check if the field is actually present in the data
+          # If value is nil and nullable is explicitly false, add error
+          if data.key?(name) && value.nil? && param_options[:nullable] == false
+            errors << ValidationError.value_null(field: name, path: field_path)
+            next
+          end
+
           # Skip validation if value is nil and not required
           next if value.nil?
 

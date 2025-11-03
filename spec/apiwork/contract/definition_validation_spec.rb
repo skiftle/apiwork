@@ -412,4 +412,113 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
       end
     end
   end
+
+  describe 'nullable validation for associations' do
+    let(:definition) do
+      described_class.new(:input, contract_class).tap do |d|
+        d.param :address, type: :object, required: false, nullable: false
+      end
+    end
+
+    context 'when nullable: false' do
+      it 'rejects nil value' do
+        result = definition.validate({ address: nil })
+
+        expect(result[:errors]).not_to be_empty
+        error = result[:errors].first
+        expect(error.code).to eq(:value_null)
+        expect(error.field).to eq(:address)
+        expect(error.detail).to eq('Value cannot be null')
+      end
+
+      it 'accepts non-nil object value' do
+        result = definition.validate({ address: { street: '123 Main St' } })
+
+        expect(result[:errors]).to be_empty
+        expect(result[:params][:address]).to eq({ street: '123 Main St' })
+      end
+
+      it 'allows missing field when not required' do
+        result = definition.validate({})
+
+        expect(result[:errors]).to be_empty
+        expect(result[:params]).to eq({})
+      end
+    end
+
+    context 'when nullable: true' do
+      let(:definition) do
+        described_class.new(:input, contract_class).tap do |d|
+          d.param :address, type: :object, required: false, nullable: true
+        end
+      end
+
+      it 'accepts nil value' do
+        result = definition.validate({ address: nil })
+
+        expect(result[:errors]).to be_empty
+        expect(result[:params]).to eq({})
+      end
+
+      it 'accepts non-nil object value' do
+        result = definition.validate({ address: { street: '123 Main St' } })
+
+        expect(result[:errors]).to be_empty
+        expect(result[:params][:address]).to eq({ street: '123 Main St' })
+      end
+
+      it 'allows missing field when not required' do
+        result = definition.validate({})
+
+        expect(result[:errors]).to be_empty
+        expect(result[:params]).to eq({})
+      end
+    end
+
+    context 'when nullable is not specified (defaults to allowing nil)' do
+      let(:definition) do
+        described_class.new(:input, contract_class).tap do |d|
+          d.param :address, type: :object, required: false
+        end
+      end
+
+      it 'accepts nil value when nullable not specified' do
+        result = definition.validate({ address: nil })
+
+        expect(result[:errors]).to be_empty
+        expect(result[:params]).to eq({})
+      end
+    end
+
+    context 'with array type (has_many)' do
+      let(:definition) do
+        described_class.new(:input, contract_class).tap do |d|
+          d.param :comments, type: :array, required: false, nullable: false
+        end
+      end
+
+      it 'rejects nil value when nullable: false' do
+        result = definition.validate({ comments: nil })
+
+        expect(result[:errors]).not_to be_empty
+        error = result[:errors].first
+        expect(error.code).to eq(:value_null)
+        expect(error.field).to eq(:comments)
+      end
+
+      it 'accepts empty array' do
+        result = definition.validate({ comments: [] })
+
+        expect(result[:errors]).to be_empty
+        expect(result[:params][:comments]).to eq([])
+      end
+
+      it 'accepts non-empty array' do
+        result = definition.validate({ comments: [{ content: 'Great!' }] })
+
+        expect(result[:errors]).to be_empty
+        expect(result[:params][:comments]).to eq([{ content: 'Great!' }])
+      end
+    end
+  end
 end

@@ -116,6 +116,19 @@ module Apiwork
 
           definition.param name, **param_options
         end
+
+        # Generate from writable associations
+        resource_class.association_definitions.each do |name, assoc_def|
+          next unless assoc_def.writable_for?(context)
+
+          param_options = {
+            type: assoc_def.singular? ? :object : :array,
+            required: false, # Associations are optional by default for input
+            nullable: assoc_def.nullable?
+          }
+
+          definition.param name, **param_options
+        end
       end
 
       def self.generate_single_output(definition, resource_class)
@@ -133,9 +146,9 @@ module Apiwork
           # Add associations if present
           resource_class.association_definitions.each do |name, assoc_def|
             if assoc_def.singular?
-              param name, type: :object, required: false
+              param name, type: :object, required: false, nullable: assoc_def.nullable?
             elsif assoc_def.collection?
-              param name, type: :array, required: false
+              param name, type: :array, required: false, nullable: assoc_def.nullable?
             end
           end
         end
@@ -159,9 +172,9 @@ module Apiwork
           # Add associations if present
           resource_class.association_definitions.each do |name, assoc_def|
             if assoc_def.singular?
-              param name, type: :object, required: false
+              param name, type: :object, required: false, nullable: assoc_def.nullable?
             elsif assoc_def.collection?
-              param name, type: :array, required: false
+              param name, type: :array, required: false, nullable: assoc_def.nullable?
             end
           end
         end

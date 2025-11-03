@@ -197,9 +197,30 @@ module Apiwork
         associations = {}
 
         resource_class.association_definitions.each do |name, definition|
+          # Auto-detect resource class if not explicitly provided
+          resolved_resource_class = definition.resource_class
+          reflection = resource_class.model_class&.reflect_on_association(name)
+
+          if resolved_resource_class.nil? && resource_class.model_class
+            resolved_resource_class = Resource::Resolver.from_association(reflection, resource_class)
+          end
+
+          # Constantize if string
+          resolved_resource_class = resolved_resource_class.constantize if resolved_resource_class.is_a?(String)
+
+          # Extract resource name (e.g., "Address" from "Api::V1::AddressResource")
+          resource_name = resolved_resource_class&.name&.demodulize&.sub(/Resource$/, '')
+
+          # Determine if association is nullable
+          # For belongs_to: auto-detected from DB constraint unless explicitly set
+          # For has_one/has_many: use explicit nullable option or default to false
+          nullable = definition.nullable?
+
           associations[name] = {
-            type: definition.type || 'has_many',
-            resource_class_name: definition.resource_class&.name,
+            name: resource_name&.underscore,
+            kind: definition.type.to_s, # has_one, has_many, belongs_to
+            resource_class_name: resolved_resource_class&.name,
+            nullable: nullable,
             writable: definition.writable? || false,
             serializable: definition.serializable? || false
           }

@@ -167,9 +167,9 @@ module Apiwork
         # Add associations
         contract_class.resource_class.association_definitions.each do |name, assoc_def|
           if assoc_def.singular?
-            virtual_def.params[name] = { name: name, type: :object, required: false }
+            virtual_def.params[name] = { name: name, type: :object, required: false, nullable: assoc_def.nullable? }
           elsif assoc_def.collection?
-            virtual_def.params[name] = { name: name, type: :array, required: false }
+            virtual_def.params[name] = { name: name, type: :array, required: false, nullable: assoc_def.nullable? }
           end
         end
 

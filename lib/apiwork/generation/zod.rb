@@ -436,33 +436,67 @@ module Apiwork
       end
 
       def association_type(assoc_info)
-        target_name = assoc_info[:name]&.camelize || 'Unknown'
+        # Try to get name from multiple sources
+        target_name = if assoc_info[:name]
+                        assoc_info[:name].camelize
+                      elsif assoc_info[:resource_class_name]
+                        # Extract "Address" from "Api::V1::AddressResource"
+                        assoc_info[:resource_class_name].demodulize.sub(/Resource$/, '')
+                      else
+                        'Unknown'
+                      end
+
         schema_ref = "#{target_name}Schema"
 
-        # Smart logic: serializable: true → required (always included)
-        # serializable: false → nullable + optional (only via includes)
+        # Smart logic for serializable associations:
+        # serializable: true → always included - use nullable from DB/config
+        # serializable: false → optional (only via includes)
         serializable = assoc_info[:serializable]
+        kind = assoc_info[:kind]
+        nullable = assoc_info[:nullable]
 
-        type = case assoc_info[:kind]
+        # Build base type with nullability
+        type = case kind
                when 'has_one', 'belongs_to'
-                 assoc_info[:nullable] ? "#{schema_ref}.nullable()" : schema_ref
+                 # Add nullable if association can be null in DB
+                 nullable ? "#{schema_ref}.nullable()" : schema_ref
                when 'has_many'
                  "z.array(#{schema_ref})"
                else
                  schema_ref
                end
 
-        # Add .nullable().optional() for non-serializable associations
+        # For non-serializable associations: make them optional (field may not be present)
         unless serializable
-          type = type.include?('.nullable()') ? type : "#{type}.nullable()"
-          type += '.optional()'
+          # If nullable, keep it and add .optional()
+          # If not nullable but not serializable, make optional without nullable
+          if nullable
+            # Already has .nullable(), just add .optional()
+            type += '.optional()'
+          else
+            # Not nullable but not serializable → make optional without nullable
+            type = case kind
+                   when 'has_many'
+                     "z.array(#{schema_ref}).optional()"
+                   else
+                     "#{schema_ref}.optional()"
+                   end
+          end
         end
 
         type
       end
 
       def association_create_payload_type(assoc_info)
-        target_name = assoc_info[:name].camelize
+        # Try to get name from multiple sources
+        target_name = if assoc_info[:name]
+                        assoc_info[:name].camelize
+                      elsif assoc_info[:resource_class_name]
+                        assoc_info[:resource_class_name].demodulize.sub(/Resource$/, '')
+                      else
+                        'Unknown'
+                      end
+
         schema_ref = "#{target_name}CreatePayloadSchema"
 
         case assoc_info[:kind]
@@ -476,7 +510,15 @@ module Apiwork
       end
 
       def association_update_payload_type(assoc_info)
-        target_name = assoc_info[:name].camelize
+        # Try to get name from multiple sources
+        target_name = if assoc_info[:name]
+                        assoc_info[:name].camelize
+                      elsif assoc_info[:resource_class_name]
+                        assoc_info[:resource_class_name].demodulize.sub(/Resource$/, '')
+                      else
+                        'Unknown'
+                      end
+
         schema_ref = "#{target_name}UpdatePayloadSchema"
 
         case assoc_info[:kind]

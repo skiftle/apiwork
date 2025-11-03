@@ -16,6 +16,7 @@ module Apiwork
         @serializable = options.fetch(:serializable, false)
         @writable = normalize_writable(options.fetch(:writable, false))
         @allow_destroy = options[:allow_destroy]
+        @nullable = options[:nullable] # Explicit nullable flag, auto-detected if nil
 
         # Validate
         validate_association_exists!
@@ -41,6 +42,21 @@ module Apiwork
         @serializable
       end
 
+      def nullable?
+        # If explicitly set, use that
+        return @nullable unless @nullable.nil?
+
+        # Auto-detect for belongs_to from foreign key constraint
+        if @type == :belongs_to && @model_class
+          foreign_key = detect_foreign_key
+          column = @model_class.columns_hash[foreign_key]
+          return column.null if column
+        end
+
+        # Default: not nullable (false)
+        false
+      end
+
       def writable?
         @writable[:on].any?
       end
@@ -63,6 +79,11 @@ module Apiwork
       end
 
       private
+
+      def detect_foreign_key
+        reflection = @model_class.reflect_on_association(@name)
+        reflection&.foreign_key || "#{@name}_id"
+      end
 
       def normalize_writable(value)
         case value
