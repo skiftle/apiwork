@@ -28,7 +28,7 @@ RSpec.describe Apiwork::Resource::Querying::Operators do
     end
 
     it 'defines COLLECTION_OPERATORS' do
-      expect(described_class::COLLECTION_OPERATORS).to eq(%i[in])
+      expect(described_class::COLLECTION_OPERATORS).to eq(%i[in not_in])
     end
 
     it 'defines STRING_SPECIFIC_OPERATORS' do
@@ -43,7 +43,7 @@ RSpec.describe Apiwork::Resource::Querying::Operators do
 
   describe 'composed operators' do
     it 'defines STRING_OPERATORS as composition' do
-      expected = %i[equal not_equal in contains not_contains starts_with ends_with]
+      expected = %i[equal not_equal in not_in contains not_contains starts_with ends_with]
       expect(described_class::STRING_OPERATORS).to eq(expected)
     end
 
@@ -58,6 +58,7 @@ RSpec.describe Apiwork::Resource::Querying::Operators do
         between
         not_between
         in
+        not_in
       ]
       expect(described_class::DATE_OPERATORS).to eq(expected)
     end
@@ -73,6 +74,7 @@ RSpec.describe Apiwork::Resource::Querying::Operators do
         between
         not_between
         in
+        not_in
       ]
       expect(described_class::NUMERIC_OPERATORS).to eq(expected)
     end
@@ -83,7 +85,7 @@ RSpec.describe Apiwork::Resource::Querying::Operators do
     end
 
     it 'defines UUID_OPERATORS as composition' do
-      expected = %i[equal not_equal in]
+      expected = %i[equal not_equal in not_in]
       expect(described_class::UUID_OPERATORS).to eq(expected)
     end
   end

@@ -3,6 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe 'Sorting API', type: :request do
+  before(:each) do
+    # Clean database before each test to avoid pollution from other test suites
+    Post.delete_all
+    Comment.delete_all
+  end
+
   let!(:post_a) { Post.create!(title: 'Alpha Post', body: 'Content A', published: true, created_at: 3.days.ago) }
   let!(:post_b) { Post.create!(title: 'Beta Post', body: 'Content B', published: false, created_at: 1.day.ago) }
   let!(:post_c) { Post.create!(title: 'Charlie Post', body: 'Content C', published: true, created_at: 2.days.ago) }

@@ -3,6 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe 'Association Sorting API', type: :request do
+  before(:each) do
+    # Clean database before each test to avoid pollution from other test suites
+    Post.delete_all
+    Comment.delete_all
+  end
+
   let!(:post1) do
     Post.create!(title: 'Sort Test Alpha', body: 'First', published: true, created_at: 3.days.ago)
   end

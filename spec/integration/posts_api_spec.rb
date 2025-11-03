@@ -3,6 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe 'Posts API', type: :request do
+  before(:each) do
+    # Clean database before each test to avoid pollution from other test suites
+    Post.delete_all
+    Comment.delete_all
+  end
+
   describe 'GET /api/v1/posts' do
     it 'returns empty array when no posts exist' do
       get '/api/v1/posts'
