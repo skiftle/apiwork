@@ -1,0 +1,178 @@
+# frozen_string_literal: true
+
+module Apiwork
+  module API
+    # Stores structured metadata about API definitions for introspection and code generation
+    #
+    # Path is the source of truth - all other values are derived from it
+    #
+    # @example
+    #   metadata = Metadata.new('/api/v1')
+    #   metadata.path           # => '/api/v1'
+    #   metadata.namespaces     # => [:api, :v1]
+    #   metadata.add_resource(:accounts, singular: false, resource_class: Api::V1::AccountResource)
+    #   metadata.add_member_action(:accounts, :archive, method: :patch, options: {})
+    class Metadata
+      attr_reader :path, :namespaces, :resources, :concerns
+      attr_accessor :doc
+
+      def initialize(path)
+        # Store path as source of truth
+        @path = path
+
+        # Derive namespaces from path
+        @namespaces = path_to_namespaces(path)
+
+        @resources = {}  # Structured tree, not flat array
+        @concerns = {}
+        @doc = nil
+      end
+
+      # Derive namespace string for class names: [:api, :v1] -> 'Api::V1'
+      def namespaces_string
+        @namespaces.map(&:to_s).map(&:camelize).join('::')
+      end
+
+      # Derive namespace path for URLs: [:api, :v1] -> 'api/v1'
+      # Removes leading slash from stored path
+      def namespaces_path
+        @path.sub(%r{^/}, '')
+      end
+
+      def add_resource(name, singular:, resource_class:, parent: nil, doc: nil, **options)
+        # Add to structured tree
+        target = if parent
+                   # Find or create nested resources hash
+                   parent_resource = find_resource(parent)
+                   return unless parent_resource
+
+                   parent_resource[:resources] ||= {}
+                 else
+                   @resources
+                 end
+
+        target[name] = {
+          singular: singular,
+          resource_class: resource_class,
+          actions: determine_actions(singular, options),
+          members: {},
+          collections: {},
+          resources: {},
+          parent: parent,
+          options: options,
+          doc: doc
+        }
+      end
+
+      def add_member_action(resource_name, action, method:, options:, input_class: nil)
+        resource = find_resource(resource_name)
+        return unless resource
+
+        resource[:members][action] = {
+          method: method,
+          options: options,
+          input_class: input_class
+        }
+      end
+
+      def add_collection_action(resource_name, action, method:, options:, input_class: nil)
+        resource = find_resource(resource_name)
+        return unless resource
+
+        resource[:collections][action] = {
+          method: method,
+          options: options,
+          input_class: input_class
+        }
+      end
+
+      def add_concern(name, block)
+        @concerns[name] = block
+      end
+
+      def merge(other_metadata)
+        # Deep merge resources from multiple api blocks
+        other_metadata.resources.each do |name, other_resource|
+          if @resources[name]
+            # Resource exists, merge nested resources
+            merge_nested_resources(@resources[name], other_resource)
+          else
+            # New resource, add it
+            @resources[name] = other_resource
+          end
+        end
+
+        # Merge concerns
+        @concerns.merge!(other_metadata.concerns)
+      end
+
+      private
+
+      # Convert path to namespaces array
+      #
+      # @param path [String] The path
+      # @return [Array<Symbol>] Namespaces array
+      def path_to_namespaces(path)
+        return [:root] if path == '/'
+
+        path.split('/').reject(&:empty?).map(&:to_sym)
+      end
+
+      def find_resource(name)
+        # Search in top-level resources first
+        return @resources[name] if @resources[name]
+
+        # Search in nested resources recursively
+        @resources.each_value do |resource|
+          found = find_resource_recursive(resource, name)
+          return found if found
+        end
+
+        nil
+      end
+
+      def find_resource_recursive(resource, name)
+        return resource[:resources][name] if resource[:resources] && resource[:resources][name]
+
+        # Search deeper
+        resource[:resources]&.each_value do |nested_resource|
+          found = find_resource_recursive(nested_resource, name)
+          return found if found
+        end
+
+        nil
+      end
+
+      def merge_nested_resources(target, source)
+        # Merge members
+        target[:members].merge!(source[:members]) if source[:members]
+
+        # Merge collections
+        target[:collections].merge!(source[:collections]) if source[:collections]
+
+        # Recursively merge nested resources
+        if source[:resources]
+          target[:resources] ||= {}
+          source[:resources].each do |name, nested_resource|
+            if target[:resources][name]
+              merge_nested_resources(target[:resources][name], nested_resource)
+            else
+              target[:resources][name] = nested_resource
+            end
+          end
+        end
+      end
+
+      def determine_actions(singular, options)
+        only = options[:only]
+        if only
+          Array(only).map(&:to_sym)
+        elsif singular
+          [:show, :create, :update, :destroy]  # No :index for singular
+        else
+          [:index, :show, :create, :update, :destroy]
+        end
+      end
+    end
+  end
+end

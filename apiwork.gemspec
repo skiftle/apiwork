@@ -32,4 +32,14 @@ Gem::Specification.new do |spec|
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
+
+  # Runtime dependencies
+  spec.add_dependency "rails", ">= 7.0"
+
+  # Development dependencies
+  spec.add_development_dependency "rspec", "~> 3.0"
+  spec.add_development_dependency "rspec-rails", "~> 6.0"
+  spec.add_development_dependency "factory_bot_rails", "~> 6.0"
+  spec.add_development_dependency "shoulda-matchers", "~> 6.0"
+  spec.add_development_dependency "rubocop", "~> 1.0"
 end
