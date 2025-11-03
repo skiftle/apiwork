@@ -12,8 +12,8 @@ module Apiwork
     #   root_key.plural    # => "clients"
     #
     class RootKey
-      def initialize(type_name)
-        @type_name = type_name
+      def initialize(type)
+        @type = type
       end
 
       # Returns the singular form of the root key
@@ -21,7 +21,7 @@ module Apiwork
       #
       # @return [String] singular form (e.g., "client")
       def singular
-        @type_name.singularize
+        @type.singularize
       end
 
       # Returns the plural form of the root key
@@ -29,7 +29,7 @@ module Apiwork
       #
       # @return [String] plural form (e.g., "clients")
       def plural
-        @type_name.pluralize
+        @type.pluralize
       end
 
       # String representation defaults to singular

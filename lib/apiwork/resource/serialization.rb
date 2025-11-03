@@ -10,22 +10,18 @@ module Apiwork
           # Apply database includes if we have an ActiveRecord::Relation
           if object_or_collection.is_a?(ActiveRecord::Relation)
             if includes.present?
-              # Validate and apply specific includes from param
-              validated_includes = validate_includes(includes) if includes.is_a?(Hash)
-              object_or_collection = apply_includes(object_or_collection, validated_includes)
+              # Apply includes (already validated by Contract)
+              object_or_collection = apply_includes(object_or_collection, includes)
             elsif auto_include_associations
               # Auto-include all associations
               object_or_collection = apply_includes(object_or_collection)
             end
           end
 
-          # Serialize with validated includes
-          validated_includes ||= includes if includes.present?
-
           if object_or_collection.respond_to?(:each)
-            object_or_collection.map { |obj| new(obj, context: context, includes: validated_includes).as_json }
+            object_or_collection.map { |obj| new(obj, context: context, includes: includes).as_json }
           else
-            new(object_or_collection, context: context, includes: validated_includes).as_json
+            new(object_or_collection, context: context, includes: includes).as_json
           end
         rescue StandardError => e
           raise Apiwork::SerializationError, "Serialization error for #{model_class.name}: #{e.message}"

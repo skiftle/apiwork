@@ -593,23 +593,30 @@ module Apiwork
         end
 
         # Handle primitive types
-        type_error = validate_type(name, value, variant_type, variant_nested, path)
+        # Coerce value if coercion is enabled - but only for boolean to handle query params
+        coerced_value = value
+        if coerce && variant_type == :boolean && Coercer.can_coerce?(:boolean)
+          coerced = Coercer.coerce(value, :boolean)
+          coerced_value = coerced unless coerced.nil?
+        end
+
+        type_error = validate_type(name, coerced_value, variant_type, variant_nested, path)
         return [type_error, nil] if type_error
 
         # Validate enum if present
-        if variant_def[:enum] && !variant_def[:enum].include?(value)
+        if variant_def[:enum] && !variant_def[:enum].include?(coerced_value)
           enum_error = ValidationError.new(
             code: :invalid_value,
             field: name,
             detail: "Invalid value. Must be one of: #{variant_def[:enum].join(', ')}",
             path: path,
             expected: variant_def[:enum],
-            actual: value
+            actual: coerced_value
           )
           return [enum_error, nil]
         end
 
-        [nil, value]
+        [nil, coerced_value]
       end
     end
   end

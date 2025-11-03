@@ -89,7 +89,7 @@ module Apiwork
         definition.param :page, type: :page_params, required: false
 
         # Generate nested include parameter with strict validation
-        # Type includes ALL associations - semantic validation (serializable check) happens in IncludesValidation
+        # Type includes ALL associations - contract validates structure
         include_type = generate_resource_include_type(contract_class, resource_class)
         definition.param :include, type: include_type, required: false
       end
@@ -436,26 +436,31 @@ module Apiwork
         visited = visited.dup.add(resource_class)
 
         # Define the include type with ALL associations for strict validation
-        # Semantic validation (serializable check) happens in IncludesValidation
+        # Contract validates structure, Resource applies validated includes
         contract_class.type type_name do
           resource_class.association_definitions.each do |name, assoc_def|
-            # Skip if circular reference
             assoc_resource = Generator.resolve_association_resource(assoc_def)
             next unless assoc_resource
-            next if visited.include?(assoc_resource)
 
-            # Recursively generate include type for associated resource
-            assoc_include_type = Generator.generate_resource_include_type(
-              contract_class,
-              assoc_resource,
-              visited: visited,
-              depth: depth + 1
-            )
+            # For circular references, still allow the association but don't recurse
+            # This allows includes like { comments: { post: true } } where post→comments and comments→post
+            if visited.include?(assoc_resource)
+              # Just allow boolean variant for circular refs (can't nest further)
+              param name, type: :boolean, required: false
+            else
+              # Recursively generate include type for associated resource
+              assoc_include_type = Generator.generate_resource_include_type(
+                contract_class,
+                assoc_resource,
+                visited: visited,
+                depth: depth + 1
+              )
 
-            # Allow either boolean true or nested include hash
-            param name, type: :union, required: false do
-              variant type: :boolean
-              variant type: assoc_include_type
+              # Allow either boolean true or nested include hash
+              param name, type: :union, required: false do
+                variant type: :boolean
+                variant type: assoc_include_type
+              end
             end
           end
         end

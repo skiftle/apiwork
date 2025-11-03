@@ -7,23 +7,6 @@ RSpec.describe 'Includes API', type: :request do
     # Clean database before each test
     Post.delete_all
     Comment.delete_all
-
-    # Temporarily set comments to serializable: false for testing includes
-    Api::V1::PostResource.association_definitions[:comments].instance_variable_set(:@serializable, false)
-
-    # Clear contract cache so types regenerate with updated association settings
-    # This is only needed in tests where we modify association definitions at runtime
-    Api::V1::PostContract.instance_variable_set(:@custom_types, {}) if Api::V1::PostContract.instance_variable_defined?(:@custom_types)
-    Api::V1::PostContract.instance_variable_set(:@action_definitions, {}) if Api::V1::PostContract.instance_variable_defined?(:@action_definitions)
-  end
-
-  after(:each) do
-    # Restore comments to serializable: true
-    Api::V1::PostResource.association_definitions[:comments].instance_variable_set(:@serializable, true)
-
-    # Clear cache again
-    Api::V1::PostContract.instance_variable_set(:@custom_types, {}) if Api::V1::PostContract.instance_variable_defined?(:@custom_types)
-    Api::V1::PostContract.instance_variable_set(:@action_definitions, {}) if Api::V1::PostContract.instance_variable_defined?(:@action_definitions)
   end
 
   let!(:post1) do
@@ -80,12 +63,11 @@ RSpec.describe 'Includes API', type: :request do
       end
     end
 
-    # TODO: Add error handling at controller level to catch validation errors
-    # Currently errors from validate_includes are raised as exceptions
+    # TODO: Add contract validation tests for include parameter
+    # Contract validates structure and catches typos
     # context 'with invalid include parameter' do
     #   it 'returns validation error for non-existent association'
     #   it 'returns validation error for invalid value type'
-    #   it 'returns validation error when trying to include serializable: true'
     # end
 
     # TODO: Add show/create/update tests once includes are supported in those actions

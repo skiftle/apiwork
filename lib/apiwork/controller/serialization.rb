@@ -58,8 +58,8 @@ module Apiwork
       end
 
       def build_collection_response(collection, action_def, resource_class, meta)
-        # Serialize data via Resource
-        includes = build_includes
+        # Serialize data via Resource with validated includes from contract
+        includes = extract_includes
         json_data = action_def.serialize_data(collection, context: build_resource_context, includes: includes)
 
         # Build complete response with pagination meta
@@ -87,8 +87,8 @@ module Apiwork
       end
 
       def build_single_resource_response(resource, action_def, resource_class, meta)
-        # Serialize data via Resource
-        includes = build_includes
+        # Serialize data via Resource with validated includes from contract
+        includes = extract_includes
         json_data = action_def.serialize_data(resource, context: build_resource_context, includes: includes)
 
         # Build complete response
@@ -126,26 +126,18 @@ module Apiwork
         {}
       end
 
-      # Extract and validate includes parameter
-      def build_includes
+      # Extract includes parameter (already validated by Contract)
+      def extract_includes
         return nil unless params[:include].present?
 
-        # Get the resource class
-        action_def = find_action_definition
-        return nil unless action_def
-        resource_class = action_def.contract_class.resource_class
-        return nil unless resource_class
-
-        # Validate includes - permit params first
+        # Extract validated includes from params
         includes_hash = params[:include]
         if includes_hash.is_a?(ActionController::Parameters)
           includes_hash = includes_hash.permit!.to_h
         elsif includes_hash.respond_to?(:to_h)
           includes_hash = includes_hash.to_h
         end
-        includes_hash = includes_hash.deep_symbolize_keys if includes_hash.respond_to?(:deep_symbolize_keys)
-
-        resource_class.validate_includes(includes_hash)
+        includes_hash.deep_symbolize_keys if includes_hash.respond_to?(:deep_symbolize_keys)
       end
 
       def determine_root_key(resource_class, resource_or_collection)

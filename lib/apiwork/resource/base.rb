@@ -10,7 +10,6 @@ require_relative 'querying/sort'
 require_relative 'querying/paginate'
 require_relative 'serialization'
 require_relative 'querying/includes'
-require_relative 'querying/includes_validation'
 
 module Apiwork
   module Resource
@@ -18,7 +17,6 @@ module Apiwork
       include Serialization
       include Querying::Filter
       include Querying::Includes
-      include Querying::IncludesValidation
       include Querying::Paginate
       include Querying::Relation
       include Querying::Sort
