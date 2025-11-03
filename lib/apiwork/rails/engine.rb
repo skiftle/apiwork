@@ -11,6 +11,11 @@ module Apiwork
       # Apiwork manages its own autoloading via Zeitwerk in lib/apiwork.rb
       # Don't add lib to Rails autoload paths to avoid conflicts
 
+      initializer 'apiwork.add_autoload_paths', before: :set_autoload_paths do |app|
+        app.config.autoload_paths << app.root.join('app/resources')
+        app.config.autoload_paths << app.root.join('app/contracts')
+      end
+
       # Load rake tasks
       rake_tasks do
         load File.expand_path('../tasks/apiwork.rake', __dir__)
