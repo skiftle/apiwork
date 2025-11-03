@@ -5,7 +5,10 @@ RSpec.describe Apiwork do
     expect(Apiwork::VERSION).not_to be nil
   end
 
-  it "does something useful" do
-    expect(false).to eq(true)
+  it "can be configured" do
+    Apiwork.configure do |config|
+      config.default_page_size = 25
+    end
+    expect(Apiwork.configuration.default_page_size).to eq(25)
   end
 end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "apiwork"
+# Don't require apiwork here - it's loaded in rails_helper after Rails is set up
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
