@@ -87,6 +87,11 @@ module Apiwork
 
         # Generate nested page parameter
         definition.param :page, type: :page_params, required: false
+
+        # Generate nested include parameter
+        # Using :object type for auto-generated contracts - semantic validation happens in IncludesValidation
+        # For strict contract validation, users can explicitly define the include type in their contract
+        definition.param :include, type: :object, required: false
       end
 
       # Generate input contract with root key (like params.require(:service).permit(...))
@@ -413,6 +418,49 @@ module Apiwork
         # Support nested models: Model::Nested::User -> Api::V1::UserResource
         resource_class_name = "Api::V1::#{assoc_model_class.name.demodulize}Resource"
         resource_class_name.constantize rescue nil
+      end
+
+      # Generate resource-specific include type with recursive association support
+      # @param contract_class [Class] The contract class to define types on
+      # @param resource_class [Class] The resource class to generate includes for
+      # @param visited [Set] Set of visited resource classes (circular reference protection)
+      # @param depth [Integer] Current recursion depth (max 3)
+      def self.generate_resource_include_type(contract_class, resource_class, visited: Set.new, depth: 0)
+        type_name = :"#{resource_class.root_key.singular}_include"
+
+        # Skip if already defined or max depth reached
+        return type_name if contract_class.custom_types&.key?(type_name)
+        return type_name if depth >= 3
+
+        # Add to visited set
+        visited = visited.dup.add(resource_class)
+
+        # Define the include type with ALL associations for strict validation
+        # Semantic validation (serializable check) happens in IncludesValidation
+        contract_class.type type_name do
+          resource_class.association_definitions.each do |name, assoc_def|
+            # Skip if circular reference
+            assoc_resource = Generator.resolve_association_resource(assoc_def)
+            next unless assoc_resource
+            next if visited.include?(assoc_resource)
+
+            # Recursively generate include type for associated resource
+            assoc_include_type = Generator.generate_resource_include_type(
+              contract_class,
+              assoc_resource,
+              visited: visited,
+              depth: depth + 1
+            )
+
+            # Allow either boolean true or nested include hash
+            param name, type: :union, required: false do
+              variant type: :boolean
+              variant type: assoc_include_type
+            end
+          end
+        end
+
+        type_name
       end
 
       def self.map_type(resource_type)

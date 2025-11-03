@@ -7,13 +7,54 @@ module Apiwork
         extend ActiveSupport::Concern
 
       class_methods do
-        def apply_includes(scope)
+        def apply_includes(scope, includes_param = nil)
           return scope if association_definitions.empty?
 
-          includes_hash = @includes_hash ||= build_includes_hash
+          # If specific includes provided, build hash from them
+          # Otherwise, include all associations (auto_include_associations mode)
+          includes_hash = if includes_param
+            build_includes_hash_from_param(includes_param)
+          else
+            @includes_hash ||= build_includes_hash
+          end
+
           return scope if includes_hash.empty?
 
           scope.includes(includes_hash)
+        end
+
+        # Build includes hash from validated includes parameter
+        # Input: { comments: true } or { comments: { author: true } }
+        # Output: Rails .includes format: :comments or { comments: :author }
+        def build_includes_hash_from_param(includes_param)
+          return {} unless includes_param.is_a?(Hash)
+
+          includes_hash = {}
+          includes_param.each do |key, value|
+            key = key.to_sym
+            assoc_def = association_definitions[key]
+            next unless assoc_def
+
+            if value == true
+              # Simple include: just the association name
+              includes_hash[key] = {}
+            elsif value.is_a?(Hash)
+              # Nested include: recursively build for associated resource
+              assoc_resource = assoc_def.resource_class
+              if assoc_resource.is_a?(String)
+                assoc_resource = assoc_resource.constantize rescue nil
+              end
+
+              if assoc_resource&.respond_to?(:build_includes_hash_from_param)
+                nested_hash = assoc_resource.build_includes_hash_from_param(value)
+                includes_hash[key] = nested_hash.any? ? nested_hash : {}
+              else
+                includes_hash[key] = {}
+              end
+            end
+          end
+
+          includes_hash
         end
 
         def build_includes_hash(visited = Set.new)

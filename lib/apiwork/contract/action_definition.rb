@@ -132,8 +132,9 @@ module Apiwork
       # Serialize data via Resource (without validation - that happens later)
       # @param data [Object] ActiveRecord object/relation to serialize
       # @param context [Hash] Context for resource serialization
+      # @param includes [Hash, nil] Validated includes from query params
       # @return [Hash, Array] Serialized data (not yet validated)
-      def serialize_data(data, context: {})
+      def serialize_data(data, context: {}, includes: nil)
         return data unless contract_class.uses_resource?
 
         needs_serialization = if data.is_a?(Hash)
@@ -144,7 +145,7 @@ module Apiwork
           true # ActiveRecord object/relation
         end
 
-        needs_serialization ? contract_class.resource_class.serialize(data, context: context) : data
+        needs_serialization ? contract_class.resource_class.serialize(data, context: context, includes: includes) : data
       end
 
       private

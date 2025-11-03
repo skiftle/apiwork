@@ -16,6 +16,7 @@ module Apiwork
           scope = apply_sort(scope, sort_params) if sort_params.present?
 
           scope = apply_pagination(scope, query_params[:page]) if query_params[:page].present?
+
           scope
         rescue ArgumentError => e
           raise Apiwork::FilterError.new(
@@ -37,7 +38,8 @@ module Apiwork
           {
             filter: params[:filter] || {},
             sort: params[:sort],
-            page: params[:page] || {}
+            page: params[:page] || {},
+            include: params[:include]
           }
         end
       end

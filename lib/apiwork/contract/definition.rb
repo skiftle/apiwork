@@ -470,14 +470,18 @@ module Apiwork
           # This variant failed
           variant_errors << { type: variant_type, error: error }
 
-          # If this error is more specific (e.g., enum validation), save it
-          # Enum errors are more helpful than generic type errors
-          if error.code == :invalid_value
+          # Prioritize specific errors over generic type errors:
+          # 1. field_unknown (unknown fields in nested objects)
+          # 2. invalid_value (enum validation failures)
+          # These are more helpful than generic "wrong type" errors
+          if error.code == :field_unknown
+            most_specific_error = error
+          elsif error.code == :invalid_value && (!most_specific_error || most_specific_error.code != :field_unknown)
             most_specific_error = error
           end
         end
 
-        # If we have a specific error (like enum validation), return it
+        # If we have a specific error (like field_unknown or enum validation), return it
         return [most_specific_error, nil] if most_specific_error
 
         # All variants failed - return error listing all expected types

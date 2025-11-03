@@ -59,7 +59,8 @@ module Apiwork
 
       def build_collection_response(collection, action_def, resource_class, meta)
         # Serialize data via Resource
-        json_data = action_def.serialize_data(collection, context: build_resource_context)
+        includes = build_includes
+        json_data = action_def.serialize_data(collection, context: build_resource_context, includes: includes)
 
         # Build complete response with pagination meta
         if resource_class
@@ -87,7 +88,8 @@ module Apiwork
 
       def build_single_resource_response(resource, action_def, resource_class, meta)
         # Serialize data via Resource
-        json_data = action_def.serialize_data(resource, context: build_resource_context)
+        includes = build_includes
+        json_data = action_def.serialize_data(resource, context: build_resource_context, includes: includes)
 
         # Build complete response
         if resource_class
@@ -122,6 +124,28 @@ module Apiwork
 
       def build_resource_context
         {}
+      end
+
+      # Extract and validate includes parameter
+      def build_includes
+        return nil unless params[:include].present?
+
+        # Get the resource class
+        action_def = find_action_definition
+        return nil unless action_def
+        resource_class = action_def.contract_class.resource_class
+        return nil unless resource_class
+
+        # Validate includes - permit params first
+        includes_hash = params[:include]
+        if includes_hash.is_a?(ActionController::Parameters)
+          includes_hash = includes_hash.permit!.to_h
+        elsif includes_hash.respond_to?(:to_h)
+          includes_hash = includes_hash.to_h
+        end
+        includes_hash = includes_hash.deep_symbolize_keys if includes_hash.respond_to?(:deep_symbolize_keys)
+
+        resource_class.validate_includes(includes_hash)
       end
 
       def determine_root_key(resource_class, resource_or_collection)

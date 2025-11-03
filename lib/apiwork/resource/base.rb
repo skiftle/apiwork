@@ -10,6 +10,7 @@ require_relative 'querying/sort'
 require_relative 'querying/paginate'
 require_relative 'serialization'
 require_relative 'querying/includes'
+require_relative 'querying/includes_validation'
 
 module Apiwork
   module Resource
@@ -17,6 +18,7 @@ module Apiwork
       include Serialization
       include Querying::Filter
       include Querying::Includes
+      include Querying::IncludesValidation
       include Querying::Paginate
       include Querying::Relation
       include Querying::Sort
@@ -28,6 +30,7 @@ module Apiwork
       class_attribute :_serialize_key_transform, default: nil
       class_attribute :_deserialize_key_transform, default: nil
       class_attribute :_auto_include_associations, default: nil
+      class_attribute :_validated_includes, default: nil
 
       attr_reader :object, :context, :includes
 
