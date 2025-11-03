@@ -6,15 +6,15 @@ module Apiwork
       extend ActiveSupport::Concern
 
       class_methods do
-        def serialize(object_or_collection, context = {})
+        def serialize(object_or_collection, context: {}, includes: nil)
           if object_or_collection.is_a?(ActiveRecord::Relation) && auto_include_associations
             object_or_collection = apply_includes(object_or_collection)
           end
 
           if object_or_collection.respond_to?(:each)
-            object_or_collection.map { |obj| new(obj, context).as_json }
+            object_or_collection.map { |obj| new(obj, context: context, includes: includes).as_json }
           else
-            new(object_or_collection, context).as_json
+            new(object_or_collection, context: context, includes: includes).as_json
           end
         rescue StandardError => e
           raise Apiwork::SerializationError, "Serialization error for #{model_class.name}: #{e.message}"
@@ -31,6 +31,8 @@ module Apiwork
         end
 
         self.class.association_definitions.each do |association, definition|
+          next unless should_include_association?(association, definition)
+
           serialized_attributes[association] = serialize_association(association, definition)
         end
 
@@ -49,11 +51,46 @@ module Apiwork
         # Constantize if string
         resource_class = resource_class.constantize if resource_class.is_a?(String)
 
+        # Build nested includes for this association
+        nested_includes = build_nested_includes(name)
+
         if definition.collection?
-          associated.map { |item| resource_class.new(item, context).as_json }
+          associated.map { |item| resource_class.new(item, context: context, includes: nested_includes).as_json }
         else
-          resource_class.new(associated, context).as_json
+          resource_class.new(associated, context: context, includes: nested_includes).as_json
         end
+      end
+
+      # Smart logic: serializable: true → always include, cannot be excluded
+      # serializable: false → only include if explicitly in includes parameter
+      def should_include_association?(name, definition)
+        # serializable: true → ALWAYS include, ignore includes parameter
+        return true if definition.serializable?
+
+        # serializable: false → only include if explicitly requested
+        explicitly_included?(name)
+      end
+
+      def explicitly_included?(name)
+        return false if @includes.nil?
+
+        case @includes
+        when Symbol, String
+          @includes.to_sym == name
+        when Array
+          @includes.map(&:to_sym).include?(name)
+        when Hash
+          @includes.key?(name) || @includes.key?(name.to_s) || @includes.key?(name.to_sym)
+        else
+          false
+        end
+      end
+
+      def build_nested_includes(association_name)
+        return nil unless @includes.is_a?(Hash)
+
+        # Support both string and symbol keys
+        @includes[association_name] || @includes[association_name.to_s] || @includes[association_name.to_sym]
       end
 
       def detect_association_resource(association_name)

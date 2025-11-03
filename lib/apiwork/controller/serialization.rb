@@ -13,7 +13,7 @@ module Apiwork
 
       def serialize_resource(object_or_collection, resource_class: nil)
         resource_class ||= Resource::Resolver.from_scope(object_or_collection, namespace: self.class.name.deconstantize)
-        resource_class.serialize(object_or_collection, build_resource_context)
+        resource_class.serialize(object_or_collection, context: build_resource_context)
       end
 
       def respond_with(resource_or_collection, options = {})

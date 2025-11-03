@@ -29,11 +29,12 @@ module Apiwork
       class_attribute :_deserialize_key_transform, default: nil
       class_attribute :_auto_include_associations, default: nil
 
-      attr_reader :object, :context
+      attr_reader :object, :context, :includes
 
-      def initialize(object, context = {})
+      def initialize(object, context: {}, includes: nil)
         @object = object
         @context = context
+        @includes = includes
       end
 
       class << self

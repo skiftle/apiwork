@@ -13,6 +13,7 @@ module Apiwork
         @resource_class = options[:resource]
         @filterable = options.fetch(:filterable, false)
         @sortable = options.fetch(:sortable, false)
+        @serializable = options.fetch(:serializable, false)
         @writable = normalize_writable(options.fetch(:writable, false))
         @allow_destroy = options[:allow_destroy]
 
@@ -32,6 +33,12 @@ module Apiwork
         return @sortable.call(context) if @sortable.is_a?(Proc)
 
         @sortable
+      end
+
+      def serializable?(context = nil)
+        return @serializable.call(context) if @serializable.is_a?(Proc)
+
+        @serializable
       end
 
       def writable?

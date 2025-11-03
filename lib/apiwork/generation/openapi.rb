@@ -592,8 +592,17 @@ module Apiwork
       end
 
       def build_relationship_schema(definition)
-        {
+        # Smart logic: serializable: true → required (always included)
+        # serializable: false → nullable/optional (only via includes parameter)
+        description = if definition.serializable?
+                        'Always included in responses'
+                      else
+                        "Only included when explicitly requested via ?include=#{definition.name}"
+                      end
+
+        schema = {
           type: 'object',
+          description: description,
           properties: {
             data: {
               type: definition.type == :has_many ? 'array' : 'object',
@@ -617,6 +626,11 @@ module Apiwork
             }
           }
         }
+
+        # Add nullable: true for serializable: false (optional associations)
+        schema[:nullable] = true unless definition.serializable?
+
+        schema
       end
 
       def build_basic_attributes(_resource_name)

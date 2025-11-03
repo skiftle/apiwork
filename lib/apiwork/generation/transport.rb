@@ -120,7 +120,8 @@ module Apiwork
             name: target_name,
             nullable: association_nullable?(reflection),
             polymorphic: reflection&.polymorphic? || false,
-            writable: writable_descriptor(defn[:writable])
+            writable: writable_descriptor(defn[:writable]),
+            serializable: defn.serializable? || false
           }
         end
       end

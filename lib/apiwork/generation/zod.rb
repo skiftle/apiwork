@@ -439,14 +439,26 @@ module Apiwork
         target_name = assoc_info[:name]&.camelize || 'Unknown'
         schema_ref = "#{target_name}Schema"
 
-        case assoc_info[:kind]
-        when 'has_one', 'belongs_to'
-          assoc_info[:nullable] ? "#{schema_ref}.nullable()" : schema_ref
-        when 'has_many'
-          "z.array(#{schema_ref})"
-        else
-          schema_ref
+        # Smart logic: serializable: true → required (always included)
+        # serializable: false → nullable + optional (only via includes)
+        serializable = assoc_info[:serializable]
+
+        type = case assoc_info[:kind]
+               when 'has_one', 'belongs_to'
+                 assoc_info[:nullable] ? "#{schema_ref}.nullable()" : schema_ref
+               when 'has_many'
+                 "z.array(#{schema_ref})"
+               else
+                 schema_ref
+               end
+
+        # Add .nullable().optional() for non-serializable associations
+        unless serializable
+          type = type.include?('.nullable()') ? type : "#{type}.nullable()"
+          type += '.optional()'
         end
+
+        type
       end
 
       def association_create_payload_type(assoc_info)

@@ -144,7 +144,7 @@ module Apiwork
           true # ActiveRecord object/relation
         end
 
-        needs_serialization ? contract_class.resource_class.serialize(data, context) : data
+        needs_serialization ? contract_class.resource_class.serialize(data, context: context) : data
       end
 
       private

@@ -17,7 +17,7 @@ module Api
         end
       end
 
-      has_many :comments, resource: 'Api::V1::CommentResource', filterable: true, sortable: true
+      has_many :comments, resource: 'Api::V1::CommentResource', filterable: true, sortable: true, serializable: true
     end
   end
 end

@@ -200,7 +200,8 @@ module Apiwork
           associations[name] = {
             type: definition.type || 'has_many',
             resource_class_name: definition.resource_class&.name,
-            writable: definition.writable? || false
+            writable: definition.writable? || false,
+            serializable: definition.serializable? || false
           }
         end
 

@@ -128,12 +128,6 @@ RSpec.describe 'Association Sorting API', type: :request do
   end
 
   describe 'GET /api/v1/comments with post sorting (belongs_to)' do
-    before do
-      # Skip all tests - Comments endpoint not implemented and belongs_to association
-      # not defined in CommentResource to avoid circular serialization reference
-      skip 'Comments endpoint and belongs_to association not configured'
-    end
-
     it 'sorts comments by post title ascending' do
       get '/api/v1/comments', params: { sort: { post: { title: 'asc' } } }
 
