@@ -10,11 +10,20 @@ RSpec.describe 'Includes API', type: :request do
 
     # Temporarily set comments to serializable: false for testing includes
     Api::V1::PostResource.association_definitions[:comments].instance_variable_set(:@serializable, false)
+
+    # Clear contract cache so types regenerate with updated association settings
+    # This is only needed in tests where we modify association definitions at runtime
+    Api::V1::PostContract.instance_variable_set(:@custom_types, {}) if Api::V1::PostContract.instance_variable_defined?(:@custom_types)
+    Api::V1::PostContract.instance_variable_set(:@action_definitions, {}) if Api::V1::PostContract.instance_variable_defined?(:@action_definitions)
   end
 
   after(:each) do
     # Restore comments to serializable: true
     Api::V1::PostResource.association_definitions[:comments].instance_variable_set(:@serializable, true)
+
+    # Clear cache again
+    Api::V1::PostContract.instance_variable_set(:@custom_types, {}) if Api::V1::PostContract.instance_variable_defined?(:@custom_types)
+    Api::V1::PostContract.instance_variable_set(:@action_definitions, {}) if Api::V1::PostContract.instance_variable_defined?(:@action_definitions)
   end
 
   let!(:post1) do
@@ -87,11 +96,23 @@ RSpec.describe 'Includes API', type: :request do
     before do
       # For nested includes test, we need post association on comments to be serializable: false
       Api::V1::CommentResource.association_definitions[:post].instance_variable_set(:@serializable, false)
+
+      # Clear CommentContract cache too
+      if defined?(Api::V1::CommentContract)
+        Api::V1::CommentContract.instance_variable_set(:@custom_types, {}) if Api::V1::CommentContract.instance_variable_defined?(:@custom_types)
+        Api::V1::CommentContract.instance_variable_set(:@action_definitions, {}) if Api::V1::CommentContract.instance_variable_defined?(:@action_definitions)
+      end
     end
 
     after do
       # Restore
       Api::V1::CommentResource.association_definitions[:post].instance_variable_set(:@serializable, true)
+
+      # Clear cache
+      if defined?(Api::V1::CommentContract)
+        Api::V1::CommentContract.instance_variable_set(:@custom_types, {}) if Api::V1::CommentContract.instance_variable_defined?(:@custom_types)
+        Api::V1::CommentContract.instance_variable_set(:@action_definitions, {}) if Api::V1::CommentContract.instance_variable_defined?(:@action_definitions)
+      end
     end
 
     it 'supports nested includes' do

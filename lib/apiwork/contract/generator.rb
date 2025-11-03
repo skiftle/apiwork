@@ -88,10 +88,10 @@ module Apiwork
         # Generate nested page parameter
         definition.param :page, type: :page_params, required: false
 
-        # Generate nested include parameter
-        # Using :object type for auto-generated contracts - semantic validation happens in IncludesValidation
-        # For strict contract validation, users can explicitly define the include type in their contract
-        definition.param :include, type: :object, required: false
+        # Generate nested include parameter with strict validation
+        # Type includes ALL associations - semantic validation (serializable check) happens in IncludesValidation
+        include_type = generate_resource_include_type(contract_class, resource_class)
+        definition.param :include, type: include_type, required: false
       end
 
       # Generate input contract with root key (like params.require(:service).permit(...))
