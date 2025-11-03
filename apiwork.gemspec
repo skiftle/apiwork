@@ -21,9 +21,6 @@ Gem::Specification.new do |spec|
   spec.metadata["documentation_uri"]   = "https://apiwork.dev/docs"
   spec.metadata["rubygems_mfa_required"] = "true"
 
-  # Files to include (välj EN av varianterna nedan)
-
-  # A) Git-baserad (bra när repo är initierat)
   gemspec = File.basename(__FILE__)
   spec.files = IO.popen(%w[git ls-files -z], chdir: __dir__, err: IO::NULL) do |ls|
     ls.readlines("\x0", chomp: true).reject do |f|
@@ -31,15 +28,6 @@ Gem::Specification.new do |spec|
         f.start_with?(*%w[bin/ test/ spec/ features/ .git appveyor Gemfile])
     end
   end
-
-  # B) Dir-baserad (avkommentera dessa rader om du vill slippa git-krav)
-  # spec.files = Dir[
-  #   "lib/**/*",
-  #   "README*",
-  #   "LICENSE*",
-  #   "CHANGELOG*",
-  #   "apiwork.gemspec"
-  # ]
 
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
