@@ -10,7 +10,7 @@ module Apiwork
         @type = type # :has_one, :has_many, :belongs_to
         @klass = klass
         @model_class = klass.model_class
-        @resource_class = options[:resource]
+        @resource_class = options[:class_name]
         @filterable = options.fetch(:filterable, false)
         @sortable = options.fetch(:sortable, false)
         @serializable = options.fetch(:serializable, false)

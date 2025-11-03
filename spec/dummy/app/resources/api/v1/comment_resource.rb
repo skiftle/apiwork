@@ -13,7 +13,7 @@ module Api
         attribute :updated_at
       end
 
-      belongs_to :post, resource: 'Api::V1::PostResource', filterable: true, sortable: true
+      belongs_to :post, class_name: 'Api::V1::PostResource', filterable: true, sortable: true
 
     end
   end
