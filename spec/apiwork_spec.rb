@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 RSpec.describe Apiwork do
-  it "has a version number" do
+  it 'has a version number' do
     expect(Apiwork::VERSION).not_to be nil
   end
 
-  it "can be configured" do
+  it 'can be configured' do
     Apiwork.configure do |config|
       config.default_page_size = 25
     end

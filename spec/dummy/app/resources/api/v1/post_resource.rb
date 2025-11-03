@@ -5,13 +5,19 @@ module Api
     class PostResource < Apiwork::Resource::Base
       model Post
 
-      attribute :title, :string
-      attribute :body, :string
-      attribute :published, :boolean
-      attribute :created_at, :datetime
-      attribute :updated_at, :datetime
+      with_options filterable: true, sortable: true do
+        attribute :id
+        attribute :created_at
+        attribute :updated_at
 
-      association :comments, resource: 'Api::V1::CommentResource'
+        with_options writable: true do
+          attribute :title
+          attribute :body
+          attribute :published
+        end
+      end
+
+      has_many :comments, resource: 'Api::V1::CommentResource'
     end
   end
 end

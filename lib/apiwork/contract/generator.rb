@@ -378,7 +378,10 @@ module Apiwork
       # @return [Class, nil] The associated resource class or nil
       def self.resolve_association_resource(assoc_def)
         # If resource_class is explicitly set, use it
-        return assoc_def.resource_class if assoc_def.resource_class
+        if assoc_def.resource_class
+          return assoc_def.resource_class if assoc_def.resource_class.is_a?(Class)
+          return assoc_def.resource_class.constantize rescue nil
+        end
 
         # Get the model class from the resource (stored during initialization)
         model_class = assoc_def.instance_variable_get(:@model_class)

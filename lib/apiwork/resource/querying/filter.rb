@@ -286,17 +286,37 @@ module Apiwork
                 next
               end
 
-              number = parse_numeric(compare)
               case operator
-              when :equal then column.eq(number)
-              when :not_equal then column.not_eq(number)
-              when :greater_than then column.gt(number)
-              when :greater_than_or_equal_to then column.gteq(number)
-              when :less_than then column.lt(number)
-              when :less_than_or_equal_to then column.lteq(number)
-              when :between then column.between(number..number)
-              when :not_between then column.not_between(number..number)
-              when :in then column.in(Array(number))
+              when :equal
+                number = parse_numeric(compare)
+                column.eq(number)
+              when :not_equal
+                number = parse_numeric(compare)
+                column.not_eq(number)
+              when :greater_than
+                number = parse_numeric(compare)
+                column.gt(number)
+              when :greater_than_or_equal_to
+                number = parse_numeric(compare)
+                column.gteq(number)
+              when :less_than
+                number = parse_numeric(compare)
+                column.lt(number)
+              when :less_than_or_equal_to
+                number = parse_numeric(compare)
+                column.lteq(number)
+              when :between
+                number = parse_numeric(compare)
+                column.between(number..number)
+              when :not_between
+                number = parse_numeric(compare)
+                column.not_between(number..number)
+              when :in
+                numbers = Array(compare).map { |v| parse_numeric(v) }
+                column.in(numbers)
+              when :not_in
+                numbers = Array(compare).map { |v| parse_numeric(v) }
+                column.not_in(numbers)
               end
             end.compact.reduce(:and)
           else
@@ -309,16 +329,33 @@ module Apiwork
         def build_boolean_where_clause(key, value, target_klass)
           column = target_klass.arel_table[key]
 
-          case value
-          when true, false, 'true', 'false', 1, 0, '1', '0'
-            bool_value = [true, 'true', 1, '1'].include?(value)
+          # Handle hash with operators (e.g., { equal: true })
+          if value.is_a?(Hash)
+            operator, operand = value.first
+            bool_value = normalize_boolean(operand)
+
+            case operator.to_sym
+            when :equal
+              column.eq(bool_value)
+            when :not_equal
+              column.not_eq(bool_value)
+            else
+              error = ArgumentError.new("Unsupported boolean operator: #{operator}")
+              Apiwork::Errors::Handler.handle(error, context: { field: key, operator: })
+            end
+          # Handle direct boolean value (legacy support)
+          elsif [true, false, nil].include?(value) || ['true', 'false', '1', '0', 1, 0].include?(value)
+            bool_value = normalize_boolean(value)
             column.eq(bool_value)
-          when nil
-            column.eq(nil)
           else
             error = ArgumentError.new('Boolean value must be true, false, or nil')
             Apiwork::Errors::Handler.handle(error, context: { field: key, value: })
           end
+        end
+
+        def normalize_boolean(value)
+          return nil if value.nil?
+          [true, 'true', 1, '1'].include?(value)
         end
 
         # Parse helpers

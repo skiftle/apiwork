@@ -5,12 +5,13 @@ module Api
     class CommentResource < Apiwork::Resource::Base
       model Comment
 
-      attribute :content, :string
-      attribute :author, :string
-      attribute :created_at, :datetime
-      attribute :updated_at, :datetime
+      attribute :id
+      attribute :content
+      attribute :author
+      attribute :created_at
+      attribute :updated_at
 
-      association :post, resource: 'Api::V1::PostResource'
+      belongs_to :post, resource: 'Api::V1::PostResource'
     end
   end
 end
