@@ -2,7 +2,4 @@
 
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in apiwork.gemspec
 gemspec
-
-gem 'rake', '~> 13.0'
