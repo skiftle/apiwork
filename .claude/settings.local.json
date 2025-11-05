@@ -18,7 +18,8 @@
       "Bash(do echo \"=== $file ===\" head -20 \"$file\")",
       "Bash(for file in lib/apiwork/errors/*.rb)",
       "Bash(do echo \"=== $file ===\")",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(bundle info:*)"
     ],
     "deny": [],
     "ask": []
