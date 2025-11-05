@@ -13,7 +13,6 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 3.1'
 
   s.add_dependency 'rails', '>= 8.0'
-  s.add_dependency 'zeitwerk', '~> 2.6'
 
   s.add_development_dependency 'rake', '~> 13.0'
   s.add_development_dependency 'rspec', '~> 3.0'
