@@ -147,7 +147,11 @@ module Apiwork
 
         params = request.query_parameters
         params = Transform::Case.hash(params, key_transform)
-        params.deep_symbolize_keys
+        params = params.deep_symbolize_keys
+
+        # Normalize hash with numeric keys to array (for filter/sort/include params)
+        # Handles URL params like: filter[0][...]=...&filter[1][...]=...
+        normalize_indexed_hashes(params)
       end
 
       def parse_body_params(request)
@@ -160,6 +164,41 @@ module Apiwork
 
       def key_transform
         Apiwork.configuration.deserialize_key_transform
+      end
+
+      # Recursively normalize hashes with numeric string keys to arrays
+      # Handles URL params like: filter[0][...]=...&filter[1][...]=...
+      # Which Rails parses as: {filter: {"0"=>{...}, "1"=>{...}}}
+      # Converts to: {filter: [{...}, {...}]}
+      #
+      # NOTE: Only normalizes VALUES, never the top-level params hash itself
+      # to ensure we always return a Hash that can be merged
+      def normalize_indexed_hashes(params)
+        return params unless params.is_a?(Hash)
+
+        # Normalize values only, preserve top-level hash structure
+        params.transform_values do |value|
+          normalize_indexed_value(value)
+        end
+      end
+
+      def normalize_indexed_value(value)
+        case value
+        when Hash
+          # Check if this hash has all numeric keys (indicates indexed array from URL)
+          if value.keys.all? { |k| k.to_s.match?(/^\d+$/) }
+            # Sort by numeric key and extract values to create array
+            value.sort_by { |k, _| k.to_s.to_i }.map { |_, v| normalize_indexed_value(v) }
+          else
+            # Recursively normalize nested hashes
+            value.transform_values { |v| normalize_indexed_value(v) }
+          end
+        when Array
+          # Recursively normalize array elements
+          value.map { |v| normalize_indexed_value(v) }
+        else
+          value
+        end
       end
     end
   end

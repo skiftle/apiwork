@@ -28,7 +28,10 @@
       "Bash(RAILS_ENV=test bundle exec rails runner:*)",
       "Bash(bundle exec spring:*)",
       "Bash(RAILS_ENV=test bundle exec rspec:*)",
-      "Bash(git log:*)"
+      "Bash(git log:*)",
+      "Bash(ruby -c:*)",
+      "Bash(bundle exec rails routes:*)",
+      "Bash(bundle exec rails middleware:*)"
     ],
     "deny": [],
     "ask": []
