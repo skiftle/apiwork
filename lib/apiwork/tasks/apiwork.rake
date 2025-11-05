@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-namespace :rapidresource do
+namespace :apiwork do
   namespace :schema do
     desc 'Write schemas to files'
     task write: :environment do
@@ -15,16 +15,16 @@ namespace :rapidresource do
       unless output
         puts 'Error: OUTPUT required'
         puts ''
-        puts 'Usage: rake rapidresource:schema:write OUTPUT=path [API_PATH=/api/v1] [FORMAT=openapi] [KEY_TRANSFORM=underscore]'
+        puts 'Usage: rake apiwork:schema:write OUTPUT=path [API_PATH=/api/v1] [FORMAT=openapi] [KEY_TRANSFORM=underscore]'
         puts ''
         puts 'Examples:'
-        puts '  rake rapidresource:schema:write OUTPUT=public/schemas'
-        puts '  rake rapidresource:schema:write API_PATH=/api/v1 OUTPUT=public/schemas'
-        puts '  rake rapidresource:schema:write API_PATH=/api/v1 FORMAT=openapi OUTPUT=public/openapi.json'
-        puts '  rake rapidresource:schema:write FORMAT=transport KEY_TRANSFORM=underscore OUTPUT=public/schemas'
+        puts '  rake apiwork:schema:write OUTPUT=public/schemas'
+        puts '  rake apiwork:schema:write API_PATH=/api/v1 OUTPUT=public/schemas'
+        puts '  rake apiwork:schema:write API_PATH=/api/v1 FORMAT=openapi OUTPUT=public/openapi.json'
+        puts '  rake apiwork:schema:write FORMAT=transport KEY_TRANSFORM=underscore OUTPUT=public/schemas'
         puts ''
         puts 'Available formats:'
-        puts "  #{RapidResource::Generation::Registry.all.join(', ')}"
+        puts "  #{Apiwork::Generation::Registry.all.join(', ')}"
         puts ''
         puts 'Available key transforms:'
         puts '  camelize_lower, camelize_upper, underscore, dasherize, none'
@@ -32,7 +32,7 @@ namespace :rapidresource do
       end
 
       begin
-        RapidResource::Generation::Schema.write(
+        Apiwork::Generation::Schema.write(
           api_path: api_path,
           output: output,
           format: format,
@@ -55,16 +55,16 @@ namespace :rapidresource do
       unless output
         puts 'Error: OUTPUT required'
         puts ''
-        puts 'Usage: rake rapidresource:schema:clean OUTPUT=path'
+        puts 'Usage: rake apiwork:schema:clean OUTPUT=path'
         puts ''
         puts 'Examples:'
-        puts '  rake rapidresource:schema:clean OUTPUT=public/schemas'
-        puts '  rake rapidresource:schema:clean OUTPUT=public/openapi.json'
+        puts '  rake apiwork:schema:clean OUTPUT=public/schemas'
+        puts '  rake apiwork:schema:clean OUTPUT=public/openapi.json'
         exit 1
       end
 
       begin
-        RapidResource::Generation::Schema.clean(output: output)
+        Apiwork::Generation::Schema.clean(output: output)
       rescue ArgumentError => e
         puts "Error: #{e.message}"
         exit 1
