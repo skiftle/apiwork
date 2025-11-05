@@ -531,19 +531,10 @@ module Apiwork
         end
       end
 
-      def writable_for_action?(writable_config, action)
-        return false unless writable_config.is_a?(Hash)
-
-        writable_config[:on].include?(action)
-      end
-
       # Alias for consistency with other parts of codebase
       def transform_operator_keys(operator, strategy)
         transform_key(operator, strategy)
       end
     end
-
-    # Backward compatibility alias
-    ZodGenerator = Zod
   end
 end

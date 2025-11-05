@@ -97,11 +97,6 @@ module Apiwork
 
         private
 
-        # Check if action is a standard CRUD action
-        def standard_crud_action?(action_name)
-          %i[index show create update destroy].include?(action_name.to_sym)
-        end
-
         # Auto-generate and store a standard CRUD action (lazy loading)
         def auto_generate_and_store_action(action_name)
           action_def = ActionDefinition.new(action_name, self)

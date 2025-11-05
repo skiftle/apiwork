@@ -152,15 +152,6 @@ module Apiwork
                                                  .freeze
         end
 
-        def writable_for_action?(writable, action)
-          # Backward compatibility method - accepts both Hash and definition object
-          if writable.respond_to?(:writable_for?)
-            writable.writable_for?(action)
-          else
-            writable.is_a?(Hash) && writable[:on]&.include?(action)
-          end
-        end
-
         def required_attributes_for(action)
           @required_attributes_cache ||= {}
           @required_attributes_cache[action] ||= begin
