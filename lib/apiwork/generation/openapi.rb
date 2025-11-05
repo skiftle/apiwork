@@ -15,9 +15,9 @@ module Apiwork
         @key_transform = key_transform
         @options = options
 
-        @documentation = APIInspector.documentation(path: path)
-        @routes = APIInspector.routes(path: path)
-        @resources = APIInspector.resources(path: path)
+        @documentation = Inspector.documentation(path: path)
+        @routes = Inspector.routes(path: path)
+        @resources = Inspector.resources(path: path)
       end
 
       def needs_resources?
