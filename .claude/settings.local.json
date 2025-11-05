@@ -10,7 +10,15 @@
       "Bash(rmdir:*)",
       "Bash(ruby -e:*)",
       "Bash(bundle list:*)",
-      "Bash(bundle install:*)"
+      "Bash(bundle install:*)",
+      "Bash(awk:*)",
+      "Bash(gem build:*)",
+      "Bash(gem spec:*)",
+      "Bash(while read file)",
+      "Bash(do echo \"=== $file ===\" head -20 \"$file\")",
+      "Bash(for file in lib/apiwork/errors/*.rb)",
+      "Bash(do echo \"=== $file ===\")",
+      "Bash(done)"
     ],
     "deny": [],
     "ask": []
