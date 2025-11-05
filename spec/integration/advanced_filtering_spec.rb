@@ -39,18 +39,17 @@ RSpec.describe 'Advanced Filtering API', type: :request do
       expect(titles).to match_array(['Advanced Filter Test Ruby Basics', 'Advanced Filter Test Rails Basics'])
     end
 
-    it 'filters posts with OR logic on different fields', skip: 'Complex Arel OR logic issue - needs deeper investigation' do
+    it 'filters posts with OR logic on different fields using array indices' do
+      # Use array indices to preserve array structure in URL params
+      # filter[0][title][contains]=Ruby&filter[1][body][contains]=JavaScript
+      # Rails parses as: {"filter"=>{"0"=>{...}, "1"=>{...}}}
+      # Apiwork normalizes to: {"filter"=>[{...}, {...}]}
       get '/api/v1/posts', params: {
-        filter: [
-          { title: { contains: 'Ruby' } },
-          { body: { contains: 'JavaScript' } }
-        ]
+        filter: {
+          '0' => { title: { contains: 'Ruby' } },
+          '1' => { body: { contains: 'JavaScript' } }
+        }
       }
-
-      if response.status != 200
-        puts "Response status: #{response.status}"
-        puts "Response body: #{response.body}"
-      end
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
