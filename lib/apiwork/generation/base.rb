@@ -58,9 +58,9 @@ module Apiwork
       # Load data from Inspector
       # Override needs_* methods in subclasses to control what gets loaded
       def load_data
-        @resources = Inspector.resources(path: path) if needs_resources?
-        @routes = Inspector.routes(path: path) if needs_routes?
-        @documentation = Inspector.documentation(path: path) if needs_documentation?
+        @resources = API::Inspector.resources(path: path) if needs_resources?
+        @routes = API::Inspector.routes(path: path) if needs_routes?
+        @documentation = API::Inspector.documentation(path: path) if needs_documentation?
       end
 
       # Override in subclasses to declare data dependencies

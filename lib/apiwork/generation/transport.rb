@@ -17,8 +17,8 @@ module Apiwork
         @options = options
 
         # Load data from Inspector
-        @resources = Inspector.resources(path: path)
-        @routes = Inspector.routes(path: path)
+        @resources = API::Inspector.resources(path: path)
+        @routes = API::Inspector.routes(path: path)
       end
 
       def needs_resources?
