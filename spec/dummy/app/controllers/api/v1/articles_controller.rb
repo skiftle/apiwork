@@ -7,8 +7,7 @@ module Api
     #
     # Uses ArticleResource which only exposes id and title,
     # while PostsController uses PostResource which exposes all fields.
-    class ArticlesController < ApplicationController
-      include Apiwork::Controller::Concern
+    class ArticlesController < V1Controller
 
       def index
         articles = query(Post.all)

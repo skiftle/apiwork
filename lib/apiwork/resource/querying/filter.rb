@@ -20,13 +20,26 @@ module Apiwork
                     # Use distinct when joining associations to avoid duplicates from has_many
                     joins.present? ? result.distinct : result
                   when Array
-                    conditions, joins = params.map { |p| build_where_conditions(p) }.transpose
-                    # Build OR conditions: each element in conditions is an array of AND conditions
-                    # First reduce each array to AND, then combine results with OR
-                    or_conditions = conditions.map { |conds| conds.reduce(:and) }.reduce(:or)
-                    result = scope.joins(joins.reduce(&:deep_merge)).where(or_conditions)
+                    # Build OR query: each array element is a separate filter that should be OR'd together
+                    # Step 1: Build individual AND conditions for each filter hash
+                    individual_conditions = params.map do |filter_hash|
+                      conditions, _joins = build_where_conditions(filter_hash)
+                      # Each filter hash may have multiple conditions - combine them with AND
+                      conditions.compact.reduce(:and) if conditions.any?
+                    end.compact
+
+                    # Step 2: Combine all individual conditions with OR
+                    or_condition = individual_conditions.reduce(:or) if individual_conditions.any?
+
+                    # Step 3: Collect all joins needed
+                    all_joins = params.map { |p| build_where_conditions(p)[1] }.reduce({}) { |acc, j| acc.deep_merge(j) }
+
+                    # Step 4: Apply the OR condition and joins
+                    result = scope
+                    result = result.joins(all_joins) if all_joins.present?
+                    result = result.where(or_condition) if or_condition
                     # Use distinct when joining associations to avoid duplicates from has_many
-                    joins.any?(&:present?) ? result.distinct : result
+                    all_joins.present? ? result.distinct : result
                   end
           scope
         end
