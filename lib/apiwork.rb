@@ -72,7 +72,6 @@ loader.ignore("#{__dir__}/apiwork/contract")
 loader.ignore("#{__dir__}/apiwork/introspection")
 loader.ignore("#{__dir__}/apiwork/generation")
 loader.ignore("#{__dir__}/apiwork/rails")
-loader.ignore("#{__dir__}/apiwork/app")
 loader.setup
 
 require_relative 'apiwork/configuration'
@@ -119,8 +118,8 @@ require_relative 'apiwork/generation/schema'
 
 # Rails integration
 if defined?(Rails)
-  require_relative 'apiwork/rails/engine'
+  require_relative 'apiwork/engine'
 
   # Load controllers
-  require_relative 'apiwork/app/controllers/apiwork/schemas_controller'
+  require_relative '../app/controllers/apiwork/schemas_controller'
 end
