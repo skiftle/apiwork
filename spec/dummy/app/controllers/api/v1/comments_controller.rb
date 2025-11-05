@@ -3,10 +3,15 @@
 module Api
   module V1
     class CommentsController < V1Controller
-      before_action :set_comment, only: %i[show update destroy]
+      before_action :set_comment, only: %i[show update destroy approve]
 
       def index
-        comments = query(Comment.all)
+        # Support both nested and non-nested routes
+        comments = if params[:post_id]
+          query(Comment.where(post_id: params[:post_id]))
+        else
+          query(Comment.all)
+        end
         respond_with comments
       end
 
@@ -15,7 +20,13 @@ module Api
       end
 
       def create
-        comment = Comment.create(action_params)
+        # Merge post_id from route params if present (nested route)
+        params_with_post = if params[:post_id]
+          action_params.merge(post_id: params[:post_id])
+        else
+          action_params
+        end
+        comment = Comment.create(params_with_post)
         respond_with comment
       end
 
@@ -29,12 +40,34 @@ module Api
         respond_with comment
       end
 
+      # Member action for nested resources
+      def approve
+        # Dummy implementation - just return the comment
+        respond_with comment
+      end
+
+      # Collection action for nested resources
+      def recent
+        # Get recent comments, optionally scoped to a post
+        comments = if params[:post_id]
+          Comment.where(post_id: params[:post_id]).order(created_at: :desc).limit(5)
+        else
+          Comment.order(created_at: :desc).limit(5)
+        end
+        respond_with query(comments)
+      end
+
       private
 
       attr_reader :comment
 
       def set_comment
-        @comment = Comment.find(params[:id])
+        # Support both nested and non-nested routes
+        @comment = if params[:post_id]
+          Comment.where(post_id: params[:post_id]).find(params[:id])
+        else
+          Comment.find(params[:id])
+        end
       end
     end
   end
