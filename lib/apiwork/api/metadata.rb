@@ -39,7 +39,7 @@ module Apiwork
         @path.sub(%r{^/}, '')
       end
 
-      def add_resource(name, singular:, resource_class:, parent: nil, doc: nil, **options)
+      def add_resource(name, singular:, resource_class:, controller_class_name: nil, contract_class_name: nil, parent: nil, doc: nil, **options)
         # Add to structured tree
         target = if parent
                    # Find or create nested resources hash
@@ -54,6 +54,8 @@ module Apiwork
         target[name] = {
           singular: singular,
           resource_class: resource_class,
+          controller_class_name: controller_class_name,
+          contract_class_name: contract_class_name,
           actions: determine_actions(singular, options),
           members: {},
           collections: {},
@@ -64,23 +66,27 @@ module Apiwork
         }
       end
 
-      def add_member_action(resource_name, action, method:, options:)
+      def add_member_action(resource_name, action, method:, options:, contract_class_name: nil, resource_class_name: nil)
         resource = find_resource(resource_name)
         return unless resource
 
         resource[:members][action] = {
           method: method,
-          options: options
+          options: options,
+          contract_class_name: contract_class_name,
+          resource_class_name: resource_class_name
         }
       end
 
-      def add_collection_action(resource_name, action, method:, options:)
+      def add_collection_action(resource_name, action, method:, options:, contract_class_name: nil, resource_class_name: nil)
         resource = find_resource(resource_name)
         return unless resource
 
         resource[:collections][action] = {
           method: method,
-          options: options
+          options: options,
+          contract_class_name: contract_class_name,
+          resource_class_name: resource_class_name
         }
       end
 

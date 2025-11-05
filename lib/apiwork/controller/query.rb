@@ -5,9 +5,14 @@ module Apiwork
     module Query
       extend ActiveSupport::Concern
 
-      def query(scope)
-        namespace = self.class.name.deconstantize
-        resource_class = Apiwork::Resource::Resolver.from_scope(scope, namespace:)
+      def query(scope, resource_class_name: nil)
+        resource_class = if resource_class_name
+          resource_class_name.constantize
+        else
+          namespace = self.class.name.deconstantize
+          Apiwork::Resource::Resolver.from_scope(scope, namespace:)
+        end
+
         result = resource_class.query(scope, action_params)
 
         # Build pagination metadata if pagination params present

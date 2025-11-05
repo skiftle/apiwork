@@ -101,7 +101,9 @@ module Apiwork
       def build_route_definition(_name, metadata)
         {
           singular: metadata[:singular],
-          resource_class_name: metadata[:resource_class] || metadata[:resource_class_name],
+          resource_class_name: metadata[:resource_class],
+          controller_class_name: metadata[:controller_class_name],
+          contract_class_name: metadata[:contract_class_name],
           actions: metadata[:actions] || [],
           members: process_actions(metadata[:members] || {}),
           collections: process_actions(metadata[:collections] || {}),
@@ -113,7 +115,9 @@ module Apiwork
         actions.transform_values do |action_info|
           {
             method: action_info[:method],
-            options: action_info[:options] || {}
+            options: action_info[:options] || {},
+            contract_class_name: action_info[:contract_class_name],
+            resource_class_name: action_info[:resource_class_name]
           }
         end
       end

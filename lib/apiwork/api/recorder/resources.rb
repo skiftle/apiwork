@@ -68,14 +68,21 @@ module Apiwork
           # Determine parent from resource stack
           parent = @resource_stack.last
 
-          # Infer resource class
-          resource_class = infer_resource_class(name)
+          # Extract override options
+          resource_class_name = merged_options[:class_name]
+          controller_class_name = merged_options[:controller_class_name]
+          contract_class_name = merged_options[:contract_class_name]
+
+          # Use explicit resource class name or infer from name
+          resource_class = resource_class_name || infer_resource_class(name)
 
           # Add to metadata
           @metadata.add_resource(
             name,
             singular: singular,
             resource_class: resource_class,
+            controller_class_name: controller_class_name,
+            contract_class_name: contract_class_name,
             parent: parent,
             doc: doc,
             **merged_options
