@@ -2,7 +2,7 @@
 
 module Apiwork
   module API
-    class Routes
+    module Routing
       # Builds ActionDispatch::RouteSet from registered APIs
       class Builder
         def build

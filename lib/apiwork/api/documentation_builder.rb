@@ -2,7 +2,7 @@
 
 module Apiwork
   module API
-    class DocBuilder
+    class DocumentationBuilder
       attr_reader :documentation
 
       def initialize(level: :resource)
@@ -156,13 +156,13 @@ module Apiwork
         private
 
         def build_action_doc(&block)
-          builder = ActionDocBuilder.new
+          builder = ActionDocumentationBuilder.new
           builder.instance_eval(&block) if block
           builder.documentation
         end
       end
 
-      class ActionDocBuilder
+      class ActionDocumentationBuilder
         attr_reader :documentation
 
         def initialize

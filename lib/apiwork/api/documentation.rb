@@ -16,7 +16,7 @@ module Apiwork
       #     description "Complete API for my application"
       #   end
       def doc(&block)
-        builder = DocBuilder.new(level: :api)
+        builder = DocumentationBuilder.new(level: :api)
         builder.instance_eval(&block)
         @metadata.doc = builder.documentation
       end

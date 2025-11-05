@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-require_relative 'routes/builder'
+require_relative 'routing/builder'
 
 module Apiwork
   module API
     # Rack application for mounting Apiwork APIs
     #
     # Usage:
-    #   mount Apiwork.routes => '/'
-    class Routes
+    #   mount Apiwork.rack_app => '/'
+    class RackApp
       def call(env)
         route_set.call(env)
       end
@@ -22,7 +22,7 @@ module Apiwork
       end
 
       def build_route_set
-        Routes::Builder.new.build
+        Routing::Builder.new.build
       end
 
       def development?
