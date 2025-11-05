@@ -10,6 +10,18 @@ Apiwork::API.draw '/api/v1' do
     description 'Test API for Apiwork gem'
   end
 
-  resources :posts
+  resources :posts do
+    member do
+      patch :publish
+      patch :archive
+      get :preview
+    end
+
+    collection do
+      get :search
+      post :bulk_create
+    end
+  end
+
   resources :comments
 end

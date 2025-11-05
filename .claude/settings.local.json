@@ -21,7 +21,13 @@
       "Bash(done)",
       "Bash(bundle info:*)",
       "Bash(git checkout:*)",
-      "Bash(/tmp/action_metadata_spec_new.rb)"
+      "Bash(/tmp/action_metadata_spec_new.rb)",
+      "Bash(bundle exec rails runner:*)",
+      "Bash(bin/spring stop:*)",
+      "Bash(ruby -I lib -I spec/dummy/app -r bundler/setup -e:*)",
+      "Bash(RAILS_ENV=test bundle exec rails runner:*)",
+      "Bash(bundle exec spring:*)",
+      "Bash(RAILS_ENV=test bundle exec rspec:*)"
     ],
     "deny": [],
     "ask": []

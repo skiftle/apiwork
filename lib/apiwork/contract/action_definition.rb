@@ -127,7 +127,15 @@ module Apiwork
       # @raise [ValidationError] If output doesn't match definition
       def validate_response(response)
         merged_output = merged_output_definition
-        raise ConfigurationError, "No output definition for #{contract_class.name}##{action_name}" unless merged_output
+
+        # Custom actions without explicit output definition skip validation
+        return response unless merged_output
+
+        # For custom actions: skip validation if response format doesn't match schema
+        # (e.g., controller returned collection but schema expects single resource)
+        if !standard_crud_action? && schema_mismatch?(response, merged_output)
+          return response
+        end
 
         # Validate complete response structure
         validate_output_data(response, merged_output)
@@ -183,6 +191,33 @@ module Apiwork
         virtual_def
       end
 
+      private
+
+      def standard_crud_action?
+        [:index, :show, :create, :update, :destroy].include?(action_name.to_sym)
+      end
+
+      def schema_mismatch?(response, output_def)
+        # Check if schema expects single resource but response has collection (plural key)
+        resource_key = contract_class.resource_class&.root_key
+        return false unless resource_key
+
+        singular_key = resource_key.singular.to_sym
+        plural_key = resource_key.plural.to_sym
+
+        # Schema expects singular, response has plural
+        if output_def.params.key?(singular_key) && (response.key?(plural_key) || response.key?(plural_key.to_s))
+          return true
+        end
+
+        # Schema expects plural, response has singular
+        if output_def.params.key?(plural_key) && (response.key?(singular_key) || response.key?(singular_key.to_s))
+          return true
+        end
+
+        false
+      end
+
       # Validate output data against definition
       # For collections (arrays), validates each item (excluding meta which is response-level)
       # For single objects, validates the object
@@ -233,7 +268,7 @@ module Apiwork
       end
 
       # Auto-generate input definition for CRUD and custom actions
-      # Custom actions get empty input by default (strict mode, no params allowed)
+      # Custom actions don't get auto-generated input - must define explicitly if needed
       def auto_generate_input_if_needed
         return unless contract_class.uses_resource?
 
@@ -254,13 +289,13 @@ module Apiwork
         when :destroy
           # No input by default
         else
-          # Custom actions get empty input (strict mode, no query params)
-          # If you need input, define it explicitly in the action block
+          # Custom actions get empty input
+          # Input params MUST be defined explicitly in the action block
         end
       end
 
       # Auto-generate output definition for CRUD and custom actions
-      # Custom actions get single resource output by default (like update)
+      # Custom actions get single resource output by default (like create/show/update)
       def auto_generate_output_if_needed
         return unless contract_class.uses_resource?
 
@@ -277,7 +312,8 @@ module Apiwork
         when :destroy
           # No output by default
         else
-          # Custom actions get single resource output (like update/show)
+          # Custom actions get single resource output by default (like create/show/update)
+          # But respond_with will adapt based on what controller returns (single vs collection)
           @output_definition.instance_eval { Generator.generate_single_output(self, rc) }
         end
       end

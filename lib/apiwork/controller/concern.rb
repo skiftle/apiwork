@@ -35,6 +35,13 @@ module Apiwork
     module Concern
       extend ActiveSupport::Concern
 
+      included do
+        # Disable Rails parameter wrapping
+        # Apiwork contracts define explicit parameter structures
+        # and handle wrapping through action_params helper
+        wrap_parameters false
+      end
+
       include Validation
       include Serialization
       include Query
