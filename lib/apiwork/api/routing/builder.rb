@@ -48,11 +48,12 @@ module Apiwork
         def draw_resources_in_context(context, resources_hash)
           resources_hash.each do |name, metadata|
             builder_instance = self
+            controller_option = extract_controller_option(metadata)
 
             if metadata[:singular]
               # Singular resource
               context.instance_eval do
-                resource name, only: metadata[:actions] do
+                resource name, only: metadata[:actions], controller: controller_option do
                   # Draw member actions
                   unless metadata[:members].empty?
                     member do
@@ -78,7 +79,7 @@ module Apiwork
             else
               # Plural resources
               context.instance_eval do
-                resources name, only: metadata[:actions] do
+                resources name, only: metadata[:actions], controller: controller_option do
                   # Draw member actions
                   unless metadata[:members].empty?
                     member do
@@ -106,6 +107,16 @@ module Apiwork
         end
 
         private
+
+        def extract_controller_option(metadata)
+          return nil unless metadata[:controller_class_name]
+
+          # Convert 'Api::V1::ArticlesController' → 'articles'
+          metadata[:controller_class_name]
+            .split('::').last
+            .sub(/Controller$/, '')
+            .underscore
+        end
 
         def eager_load_apis
           # Load all API definitions from config/apis

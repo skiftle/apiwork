@@ -18,9 +18,23 @@ module Apiwork
 
       def respond_with(resource_or_collection, options = {})
         meta = options.fetch(:meta, {})
+        contract_class_name = options[:contract_class_name]
+        resource_class_name = options[:resource_class_name]
 
         # Find ActionDefinition for current action
-        action_def = find_action_definition
+        # Priority: contract_class_name > resource_class_name > default
+        action_def = if contract_class_name
+          contract = contract_class_name.constantize
+          contract.action_definition(action_name.to_sym)
+        elsif resource_class_name
+          # Build dynamic contract from resource
+          resource_class = resource_class_name.constantize
+          contract_class = Contract::Builder.build_from_resource(resource_class, action_name.to_sym)
+          contract_class.action_definition(action_name.to_sym)
+        else
+          find_action_definition
+        end
+
         raise ConfigurationError, "No contract found for #{self.class.name}##{action_name}" unless action_def
 
         # Get resource class from contract (may be nil for custom contracts)
@@ -42,7 +56,8 @@ module Apiwork
 
       # Find ActionDefinition for current action
       def find_action_definition
-        Contract::Resolver.resolve(self.class, action_name.to_sym)
+        metadata = find_action_metadata
+        Contract::Resolver.resolve(self.class, action_name.to_sym, metadata: metadata)
       end
 
       def build_response_data(resource_or_collection, action_def, resource_class, meta)

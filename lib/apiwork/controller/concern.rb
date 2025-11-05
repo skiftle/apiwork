@@ -4,6 +4,7 @@ require_relative 'validation'
 require_relative 'query'
 require_relative 'action_params'
 require_relative 'serialization'
+require_relative 'action_metadata'
 
 module Apiwork
   module Controller
@@ -38,6 +39,7 @@ module Apiwork
       include Serialization
       include Query
       include ActionParams
+      include ActionMetadata
     end
   end
 end

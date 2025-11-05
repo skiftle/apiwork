@@ -66,13 +66,19 @@ module Apiwork
                   ":on option must be either :member or :collection, got #{options[:on].inspect}"
           end
 
+          # Extract override options
+          contract_class_name = options[:contract_class_name]
+          resource_class_name = options[:class_name]
+
           if @in_member_block || options[:on] == :member
             # Member action - add to members hash
             @metadata.add_member_action(
               current_resource,
               action,
               method: method,
-              options: options
+              options: options,
+              contract_class_name: contract_class_name,
+              resource_class_name: resource_class_name
             )
           elsif @in_collection_block || options[:on] == :collection
             # Collection action - add to collections hash
@@ -80,7 +86,9 @@ module Apiwork
               current_resource,
               action,
               method: method,
-              options: options
+              options: options,
+              contract_class_name: contract_class_name,
+              resource_class_name: resource_class_name
             )
           else
             # Action declared without member/collection context - this is an error
