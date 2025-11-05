@@ -19,7 +19,8 @@
       "Bash(for file in lib/apiwork/errors/*.rb)",
       "Bash(do echo \"=== $file ===\")",
       "Bash(done)",
-      "Bash(bundle info:*)"
+      "Bash(bundle info:*)",
+      "Bash(git checkout:*)"
     ],
     "deny": [],
     "ask": []
