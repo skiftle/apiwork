@@ -9,21 +9,18 @@ module Api
       resource Api::V1::ArticleResource
 
       # Standard CRUD actions - only require title
+      # Auto-wrapping in :article happens automatically with reset_input!
       action :create do
         reset_input!
         input do
-          param :article, type: :object, required: true do
-            param :title, type: :string
-          end
+          param :title, type: :string
         end
       end
 
       action :update do
         reset_input!
         input do
-          param :article, type: :object, required: true do
-            param :title, type: :string
-          end
+          param :title, type: :string
         end
       end
 

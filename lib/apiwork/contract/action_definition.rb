@@ -54,7 +54,20 @@ module Apiwork
         auto_generate_input_if_needed if @reset_input == false && @input_definition.nil?
 
         @input_definition ||= Definition.new(:input, contract_class)
-        @input_definition.instance_eval(&block) if block
+
+        if block
+          if should_auto_wrap_input?
+            # Automatically wrap in root_key for reset writable actions
+            root_key = contract_class.resource_class.root_key.singular.to_sym
+            @input_definition.param root_key, type: :object, required: true do
+              instance_eval(&block)
+            end
+          else
+            # Normal behavior: evaluate block directly
+            @input_definition.instance_eval(&block)
+          end
+        end
+
         @input_definition
       end
 
@@ -316,6 +329,20 @@ module Apiwork
           # But respond_with will adapt based on what controller returns (single vs collection)
           @output_definition.instance_eval { Generator.generate_single_output(self, rc) }
         end
+      end
+
+      # Check if input should be automatically wrapped in root_key
+      # Only for writable actions (create/update) with reset_input! and resource
+      def should_auto_wrap_input?
+        return false unless @reset_input  # Only when reset_input! is used
+        return false unless contract_class.uses_resource?
+        return false unless writable_action?
+        true
+      end
+
+      # Check if action is a writable action (create/update)
+      def writable_action?
+        [:create, :update].include?(action_name.to_sym)
       end
     end
   end
