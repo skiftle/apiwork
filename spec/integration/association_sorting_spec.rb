@@ -178,10 +178,19 @@ RSpec.describe 'Association Sorting API', type: :request do
     end
 
     it 'handles non-sortable association gracefully' do
-      # Create a resource without sortable flag for testing
-      # This would require modifying the resource temporarily
-      # For now, skip this test
-      skip 'Requires dynamic resource modification'
+      # ArticleResource has a comments association with sortable: false
+      # (defined in spec/dummy/app/resources/api/v1/article_resource.rb)
+      # Contract validation should reject this since non-sortable fields aren't in the contract
+      get '/api/v1/articles', params: {
+        sort: { comments: 'asc' }
+      }
+
+      expect(response).to have_http_status(:bad_request)
+      json = JSON.parse(response.body)
+      expect(json['ok']).to eq(false)
+      expect(json['errors']).to be_present
+      # Contract validation returns "Invalid type" since the field isn't allowed
+      expect(json['errors'].first).to match(/Invalid type|not sortable/)
     end
   end
 end

@@ -27,7 +27,8 @@
       "Bash(ruby -I lib -I spec/dummy/app -r bundler/setup -e:*)",
       "Bash(RAILS_ENV=test bundle exec rails runner:*)",
       "Bash(bundle exec spring:*)",
-      "Bash(RAILS_ENV=test bundle exec rspec:*)"
+      "Bash(RAILS_ENV=test bundle exec rspec:*)",
+      "Bash(git log:*)"
     ],
     "deny": [],
     "ask": []

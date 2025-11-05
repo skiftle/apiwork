@@ -225,6 +225,10 @@ module Apiwork
             param :from, type: :string, required: true
             param :to, type: :string, required: true
           end
+          param :not_between, type: :object, required: false do
+            param :from, type: :string, required: true
+            param :to, type: :string, required: true
+          end
           param :in, type: :array, of: :string, required: false
           param :not_in, type: :array, of: :string, required: false
         end
@@ -238,6 +242,10 @@ module Apiwork
           param :less_than, type: :integer, required: false
           param :less_than_or_equal_to, type: :integer, required: false
           param :between, type: :object, required: false do
+            param :from, type: :integer, required: true
+            param :to, type: :integer, required: true
+          end
+          param :not_between, type: :object, required: false do
             param :from, type: :integer, required: true
             param :to, type: :integer, required: true
           end

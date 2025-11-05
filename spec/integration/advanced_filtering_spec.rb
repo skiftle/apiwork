@@ -39,13 +39,18 @@ RSpec.describe 'Advanced Filtering API', type: :request do
       expect(titles).to match_array(['Advanced Filter Test Ruby Basics', 'Advanced Filter Test Rails Basics'])
     end
 
-    it 'filters posts with OR logic on different fields', skip: 'Known issue with OR logic on different fields' do
+    it 'filters posts with OR logic on different fields', skip: 'Complex Arel OR logic issue - needs deeper investigation' do
       get '/api/v1/posts', params: {
         filter: [
           { title: { contains: 'Ruby' } },
           { body: { contains: 'JavaScript' } }
         ]
       }
+
+      if response.status != 200
+        puts "Response status: #{response.status}"
+        puts "Response body: #{response.body}"
+      end
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
@@ -172,7 +177,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
       expect(json['posts'][0]['title']).to eq('Advanced Filter Test Ruby Basics')
     end
 
-    it 'is case sensitive', skip: 'SQLite LIKE is case-insensitive by default' do
+    it 'is case sensitive', skip: 'SQLite LIKE is case-insensitive - works correctly in PostgreSQL production' do
       get '/api/v1/posts', params: {
         filter: { title: { starts_with: 'advanced filter test ruby' } }
       }
@@ -211,7 +216,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
   end
 
   describe 'not_between operator for dates' do
-    it 'filters posts outside a date range', skip: 'not_between returns 400 - needs investigation' do
+    it 'filters posts outside a date range' do
       from_date = 4.days.ago.iso8601
       to_date = 2.days.ago.iso8601
 
