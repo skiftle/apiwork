@@ -35,7 +35,7 @@ module Apiwork
               assoc_def = association_definitions[key]
               next unless assoc_def
 
-              if value == true
+              if value.is_a?(TrueClass)
                 # Simple include: just the association name
                 includes_hash[key] = {}
               elsif value.is_a?(Hash)

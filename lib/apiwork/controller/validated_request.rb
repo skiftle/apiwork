@@ -17,7 +17,7 @@ module Apiwork
       end
 
       def invalid?
-        !valid?
+        errors.any?
       end
     end
   end

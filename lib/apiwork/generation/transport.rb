@@ -1378,7 +1378,7 @@ module Apiwork
           elsif column&.default.present?
             # Has DB default
             with_defaults << attr_data
-          elsif column&.null == true && context != :full
+          elsif column&.null && context != :full
             # Nullable columns in payloads (optional) count as having defaults
             with_defaults << attr_data
           else

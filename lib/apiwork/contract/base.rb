@@ -33,7 +33,7 @@ module Apiwork
 
         # Check if this contract uses a resource
         def uses_resource?
-          !resource_class.nil?
+          resource_class.present?
         end
 
         # DSL method to define a custom type

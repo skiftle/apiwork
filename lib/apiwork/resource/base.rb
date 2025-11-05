@@ -169,7 +169,7 @@ module Apiwork
             writable_attributes = writable_attributes_for(action)
 
             required_columns = model_class.columns
-                                          .select { |column| column.null == false && column.default.nil? }
+                                          .select { |column| !column.null && column.default.nil? }
                                           .map { |column| column.name.to_sym }
 
             (required_columns & writable_attributes).freeze
@@ -182,7 +182,7 @@ module Apiwork
           attribute_definitions
             .select do |_, definition|
               value = definition.public_send("#{option}?")
-              value == true || (value.is_a?(Proc) && value)
+              value.is_a?(TrueClass) || (value.is_a?(Proc) && value)
             end
             .keys
             .freeze
