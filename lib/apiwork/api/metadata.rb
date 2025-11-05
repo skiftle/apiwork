@@ -169,12 +169,24 @@ module Apiwork
 
       def determine_actions(singular, options)
         only = options[:only]
+        except = options[:except]
+
         if only
           Array(only).map(&:to_sym)
-        elsif singular
-          [:show, :create, :update, :destroy]  # No :index for singular
         else
-          [:index, :show, :create, :update, :destroy]
+          # Determine default actions based on resource type
+          default_actions = if singular
+                              [:show, :create, :update, :destroy]  # No :index for singular
+                            else
+                              [:index, :show, :create, :update, :destroy]
+                            end
+
+          # Apply except filter if present
+          if except
+            default_actions - Array(except).map(&:to_sym)
+          else
+            default_actions
+          end
         end
       end
     end

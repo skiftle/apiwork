@@ -32,4 +32,10 @@ Apiwork::API.draw '/api/v1' do
   # Demonstrates irregular plural root keys (person/people)
   # PersonsController uses PersonResource with root :person, :people
   resources :persons
+
+  # Routing DSL override testing - restrict available actions
+  resources :restricted_posts, only: [:index, :show]
+
+  # Routing DSL override testing - exclude specific actions
+  resources :safe_comments, except: [:destroy]
 end
