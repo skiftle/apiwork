@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Posts API', type: :request do
+RSpec.describe 'Standard CRUD endpoints', type: :request do
   before(:each) do
     # Clean database before each test to avoid pollution from other test suites
     Post.delete_all
@@ -10,7 +10,7 @@ RSpec.describe 'Posts API', type: :request do
   end
 
   describe 'GET /api/v1/posts' do
-    it 'returns empty array when no posts exist' do
+    it 'wraps empty collections in response envelope' do
       get '/api/v1/posts'
 
       expect(response).to have_http_status(:ok)
@@ -19,7 +19,7 @@ RSpec.describe 'Posts API', type: :request do
       expect(json['posts']).to eq([])
     end
 
-    it 'returns all posts' do
+    it 'serializes collections through resource class' do
       post1 = Post.create!(title: 'First Post', body: 'First body', published: true)
       post2 = Post.create!(title: 'Second Post', body: 'Second body', published: false)
 
@@ -35,7 +35,7 @@ RSpec.describe 'Posts API', type: :request do
   end
 
   describe 'GET /api/v1/posts/:id' do
-    it 'returns a single post' do
+    it 'serializes single resource with all attributes' do
       post = Post.create!(title: 'Test Post', body: 'Test body', published: true)
 
       get "/api/v1/posts/#{post.id}"
@@ -49,7 +49,7 @@ RSpec.describe 'Posts API', type: :request do
       expect(json['post']['published']).to eq(true)
     end
 
-    it 'returns 404 for non-existent post' do
+    it 'returns 404 when resource not found' do
       get '/api/v1/posts/99999'
 
       expect(response).to have_http_status(:not_found)
@@ -57,11 +57,13 @@ RSpec.describe 'Posts API', type: :request do
   end
 
   describe 'POST /api/v1/posts' do
-    it 'creates a new post with valid data' do
+    it 'parses input contract and returns serialized resource' do
       post_params = {
-        title: 'New Post',
-        body: 'New body',
-        published: true
+        post: {
+          title: 'New Post',
+          body: 'New body',
+          published: true
+        }
       }
 
       expect {
@@ -76,10 +78,12 @@ RSpec.describe 'Posts API', type: :request do
       expect(json['post']['published']).to eq(true)
     end
 
-    it 'rejects post without title' do
+    it 'returns validation errors for required fields' do
       post_params = {
-        body: 'Body without title',
-        published: false
+        post: {
+          body: 'Body without title',
+          published: false
+        }
       }
 
       expect {
@@ -94,11 +98,11 @@ RSpec.describe 'Posts API', type: :request do
   end
 
   describe 'PATCH /api/v1/posts/:id' do
-    it 'updates an existing post' do
+    it 'handles partial updates through contract' do
       post_record = Post.create!(title: 'Original Title', body: 'Original body', published: false)
 
       patch "/api/v1/posts/#{post_record.id}",
-            params: { title: 'Updated Title', published: true },
+            params: { post: { title: 'Updated Title', published: true } },
             as: :json
 
       expect(response).to have_http_status(:ok)
@@ -112,15 +116,15 @@ RSpec.describe 'Posts API', type: :request do
       expect(post_record.published).to eq(true)
     end
 
-    it 'returns 404 for non-existent post' do
-      patch '/api/v1/posts/99999', params: { title: 'Updated' }, as: :json
+    it 'returns 404 when updating missing resource' do
+      patch '/api/v1/posts/99999', params: { post: { title: 'Updated' } }, as: :json
 
       expect(response).to have_http_status(:not_found)
     end
   end
 
   describe 'DELETE /api/v1/posts/:id' do
-    it 'deletes an existing post' do
+    it 'returns success envelope after deletion' do
       post_record = Post.create!(title: 'To Delete', body: 'Delete me')
 
       expect {
@@ -132,7 +136,7 @@ RSpec.describe 'Posts API', type: :request do
       expect(json['ok']).to eq(true)
     end
 
-    it 'returns 404 for non-existent post' do
+    it 'returns 404 when deleting missing resource' do
       delete '/api/v1/posts/99999'
 
       expect(response).to have_http_status(:not_found)

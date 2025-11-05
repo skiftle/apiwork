@@ -20,6 +20,24 @@ module Api
           param :published, type: :boolean, required: false
         end
       end
+
+      # Custom collection action - search posts
+      action :search do
+        input do
+          param :q, type: :string
+        end
+      end
+
+      # Custom collection action - bulk create posts
+      action :bulk_create do
+        input do
+          param :posts, type: :array do
+            param :title, type: :string
+            param :body, type: :string
+            param :published, type: :boolean
+          end
+        end
+      end
     end
   end
 end
