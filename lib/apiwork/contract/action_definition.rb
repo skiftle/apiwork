@@ -281,11 +281,6 @@ module Apiwork
           @output_definition.instance_eval { Generator.generate_single_output(self, rc) }
         end
       end
-
-      # Check if this is a standard CRUD action
-      def standard_crud_action?
-        %i[index show create update destroy].include?(action_name.to_sym)
-      end
     end
   end
 end

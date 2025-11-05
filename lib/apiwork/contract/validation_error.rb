@@ -94,15 +94,6 @@ module Apiwork
           )
         end
 
-        def circular_reference(resource_class:, path: [])
-          new(
-            code: :circular_reference,
-            detail: "Circular reference",
-            path: path,
-            resource_class: resource_class.to_s
-          )
-        end
-
         def array_too_large(size:, max_size:, path: [])
           new(
             code: :array_too_large,
@@ -110,17 +101,6 @@ module Apiwork
             path: path,
             size: size,
             max_size: max_size
-          )
-        end
-
-        def invalid_array_element(index:, field:, expected:, actual:, path: [])
-          new(
-            code: :invalid_type,
-            field: field,
-            detail: "Invalid type",
-            path: path + [index],
-            expected: expected,
-            actual: actual
           )
         end
 

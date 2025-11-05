@@ -166,32 +166,6 @@ RSpec.describe Apiwork::Contract::ValidationError do
     end
   end
 
-  describe '.circular_reference' do
-    it 'creates error with correct code' do
-      error = described_class.circular_reference(
-        resource_class: 'AccountResource'
-      )
-
-      expect(error.code).to eq(:circular_reference)
-    end
-
-    it 'includes resource class in meta' do
-      error = described_class.circular_reference(
-        resource_class: 'AccountResource'
-      )
-
-      expect(error.meta[:resource_class]).to eq('AccountResource')
-    end
-
-    it 'has short system-like detail message' do
-      error = described_class.circular_reference(
-        resource_class: 'AccountResource'
-      )
-
-      expect(error.detail).to eq('Circular reference')
-    end
-  end
-
   describe '.array_too_large' do
     it 'creates error with correct code' do
       error = described_class.array_too_large(size: 1500, max_size: 1000)
