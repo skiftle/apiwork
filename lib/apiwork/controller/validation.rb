@@ -13,7 +13,7 @@ module Apiwork
 
       class_methods do
         def skip_validate_input!(only: nil, except: nil)
-          skip_before_action :validate_input, only:, except:
+          skip_before_action :validate_input, only: only, except: except
         end
       end
 
