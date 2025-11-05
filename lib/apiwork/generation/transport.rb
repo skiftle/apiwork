@@ -19,7 +19,6 @@ module Apiwork
         # Load data from Inspector
         @resources = Inspector.resources(path: path)
         @routes = Inspector.routes(path: path)
-        @inputs = Inspector.inputs(path: path)
       end
 
       def needs_resources?
@@ -27,10 +26,6 @@ module Apiwork
       end
 
       def needs_routes?
-        true
-      end
-
-      def needs_inputs?
         true
       end
 
@@ -44,23 +39,19 @@ module Apiwork
         # 3. Generate Zod schemas for all schemas
         zod_schemas = Zod.generate_schemas_only(@resources, key_transform: @key_transform)
 
-        # 4. Generate Input Zod schemas
-        input_zod_schemas = generate_input_schemas_from_inspector(@inputs, @key_transform)
-
-        # 5. Build contract structure from routes metadata
+        # 4. Build contract structure from routes metadata
         result = build_contract_structure_from_routes(@routes, zod_schemas, @key_transform)
         contract_structure = result[:contract]
         output_schemas = result[:output_schemas]
         input_schemas = result[:input_schemas]
 
-        # 6. Generate TypeScript document
+        # 5. Generate TypeScript document
         build_typescript_document(
           contract_structure,
           zod_schemas,
           @key_transform,
           builders: @builders,
           enum_definitions: enum_definitions,
-          input_schemas: input_zod_schemas,
           endpoint_input_schemas: generate_input_schemas_for_endpoints(input_schemas),
           output_schemas: generate_output_schemas(output_schemas)
         )
@@ -407,10 +398,6 @@ module Apiwork
           path: build_path_for_member_action(resource_name, action_name, metadata)
         }
 
-        # Add Input class input if present
-        definition[:input] = input_schema_reference(action_info[:input_class]) if action_info[:input_class]
-        # Don't create empty input schemas for member actions without Input classes
-
         # Output
         if schema
           base_response = schema_ref(schema, :schema)
@@ -442,10 +429,6 @@ module Apiwork
           method: action_info[:method].to_s.upcase,
           path: build_path_for_collection_action(resource_name, action_name, metadata)
         }
-
-        # Add Input class input if present
-        definition[:input] = input_schema_reference(action_info[:input_class]) if action_info[:input_class]
-        # Don't create empty input schemas for collection actions without Input classes
 
         # Output
         if schema
@@ -899,7 +882,7 @@ module Apiwork
       # Build complete TypeScript document
       #
       def build_typescript_document(contract, schemas, key_transform, builders: false, enum_definitions: '',
-                                    input_schemas: [], endpoint_input_schemas: [], output_schemas: [])
+                                    endpoint_input_schemas: [], output_schemas: [])
         parts = []
 
         # Imports
@@ -920,13 +903,10 @@ module Apiwork
         # Schema schemas (without type declarations)
         parts << schemas.map { |s| format_schema_schemas_without_types(s) }.join("\n\n")
 
-        # Input schemas (from Input classes)
-        parts << input_schemas.join("\n\n") unless input_schemas.empty?
-
-        # Endpoint Input schemas (NEW)
+        # Endpoint Input schemas
         parts << endpoint_input_schemas.join("\n\n") unless endpoint_input_schemas.empty?
 
-        # Output schemas (NEW)
+        # Output schemas
         parts << output_schemas.join("\n\n") unless output_schemas.empty?
 
         # All type declarations together (with blank line between resources)
@@ -1093,83 +1073,6 @@ module Apiwork
         lines << "#{inner_indent}output: #{endpoint[:output]}" if endpoint[:output]
 
         "{\n#{lines.join(",\n")}\n#{indent}}"
-      end
-
-      # Generate Zod schema from Input class
-      #
-      def generate_input_schema(input_class, key_transform)
-        return nil unless input_class
-
-        # Get param definitions from Input class
-        param_definitions = input_class.param_definitions
-        return nil if param_definitions.empty?
-
-        # Generate Zod schema from param definitions
-        generate_zod_schema_from_params(param_definitions, key_transform)
-      end
-
-      # Generate Zod schema from param definitions
-      #
-      def generate_zod_schema_from_params(param_definitions, key_transform)
-        zod_fields = []
-
-        param_definitions.each do |name, definition|
-          field_name = transform_key(name.to_s, key_transform)
-          zod_type = map_param_type_to_zod(definition[:type], definition, key_transform)
-
-          # Add required/optional
-          zod_fields << if definition[:required]
-                          "#{field_name}: #{zod_type}"
-                        else
-                          "#{field_name}: #{zod_type}.optional()"
-                        end
-        end
-
-        "z.object({ #{zod_fields.join(', ')} })"
-      end
-
-      # Map param type to Zod type
-      #
-      def map_param_type_to_zod(type, definition, key_transform)
-        case type
-        when :string
-          zod = 'z.string()'
-          zod += ".enum([#{definition[:enum].map { |e| "'#{e}'" }.join(', ')}])" if definition[:enum]
-          zod
-        when :integer
-          'z.number().int()'
-        when :decimal, :float
-          'z.number()'
-        when :boolean
-          'z.boolean()'
-        when :date
-          'z.string().date()'
-        when :datetime
-          'z.string().datetime()'
-        when :uuid
-          'z.string().uuid()'
-        when :array
-          if definition[:of]
-            element_type = map_param_type_to_zod(definition[:of], {}, key_transform)
-            "z.array(#{element_type})"
-          elsif definition[:nested_class]
-            nested_schema = generate_zod_schema_from_params(definition[:nested_class].param_definitions,
-                                                            key_transform)
-            "z.array(#{nested_schema})"
-          else
-            'z.array(z.unknown())'
-          end
-        when :object
-          if definition[:nested_class]
-            generate_zod_schema_from_params(definition[:nested_class].param_definitions, key_transform)
-          else
-            'z.record(z.string(), z.unknown())'
-          end
-        when :hash, :json
-          'z.record(z.string(), z.unknown())'
-        else
-          'z.unknown()'
-        end
       end
 
       # Generate Input schema name from resource and action
@@ -1474,18 +1377,6 @@ module Apiwork
         end
       end
 
-      # Generate input schemas from Inspector inputs
-      #
-      def generate_input_schemas_from_inspector(inputs, key_transform)
-        inputs.map do |input|
-          {
-            class_name: input[:class_name],
-            name: input[:name],
-            params: input[:params]
-          }
-        end
-      end
-
       # Build contract structure from routes metadata
       #
       def build_contract_structure_from_routes(routes, zod_schemas, key_transform)
@@ -1565,14 +1456,6 @@ module Apiwork
         true
       rescue NameError
         false
-      end
-
-      # Generate Input schema reference for endpoint
-      #
-      def input_schema_reference(input_class)
-        # Api::V1::ServiceArchiveInput -> ServiceArchiveInputSchema
-        class_name = input_class.name.split('::').last
-        "#{class_name}Schema"
       end
 
       # Build endpoint definition for standard CRUD actions using Inspector routes

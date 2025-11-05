@@ -3,7 +3,7 @@
 module Apiwork
   module Generation
     class Base
-      attr_reader :path, :key_transform, :resources, :routes, :documentation, :inputs, :options
+      attr_reader :path, :key_transform, :resources, :routes, :documentation, :options
 
       class << self
         # Generate schema using class-level API
@@ -61,7 +61,6 @@ module Apiwork
         @resources = Inspector.resources(path: path) if needs_resources?
         @routes = Inspector.routes(path: path) if needs_routes?
         @documentation = Inspector.documentation(path: path) if needs_documentation?
-        @inputs = Inspector.inputs(path: path) if needs_inputs?
       end
 
       # Override in subclasses to declare data dependencies
@@ -74,10 +73,6 @@ module Apiwork
       end
 
       def needs_documentation?
-        false
-      end
-
-      def needs_inputs?
         false
       end
 

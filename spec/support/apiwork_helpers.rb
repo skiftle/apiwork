@@ -127,9 +127,6 @@ module ApiworkHelpers
     end
   end
 
-  # Backward compatibility alias
-  alias test_input_class test_contract_class
-
   # Test model instance
   def test_model_instance(attributes = {})
     double('ModelInstance',
