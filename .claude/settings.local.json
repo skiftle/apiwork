@@ -20,7 +20,8 @@
       "Bash(do echo \"=== $file ===\")",
       "Bash(done)",
       "Bash(bundle info:*)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "Bash(/tmp/action_metadata_spec_new.rb)"
     ],
     "deny": [],
     "ask": []

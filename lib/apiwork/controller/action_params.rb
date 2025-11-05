@@ -20,7 +20,13 @@ module Apiwork
             Resource::Resolver.from_controller(self.class)
           end
 
-          validated_request.params[resource.root_key.singular.to_sym] || {}
+          # Use root_key if resource exists, otherwise return flat params
+          if resource&.root_key
+            validated_request.params[resource.root_key.singular.to_sym] || {}
+          else
+            # Contract without resource - params already validated and structured by contract
+            validated_request.params
+          end
         else
           validated_request.params
         end
