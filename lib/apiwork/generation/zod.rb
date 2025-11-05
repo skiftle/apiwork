@@ -30,7 +30,7 @@ module Apiwork
         @options = options
 
         # Only load resources if path is provided
-        @resources = path ? Inspector.resources(path: path) : []
+        @resources = path ? API::Inspector.resources(path: path) : []
       end
 
       def generate
