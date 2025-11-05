@@ -21,8 +21,20 @@ Apiwork::API.draw '/api/v1' do
       get :search
       post :bulk_create
     end
+
+    # Nested resources
+    resources :comments do
+      member do
+        patch :approve
+      end
+
+      collection do
+        get :recent
+      end
+    end
   end
 
+  # Top-level comments (non-nested)
   resources :comments
 
   # Alternative resource representation for same Post model
