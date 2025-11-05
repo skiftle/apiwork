@@ -6,7 +6,7 @@ module Api
     # Demonstrates how the same model can have multiple resource representations
     class ArticleResource < Apiwork::Resource::Base
       model Post
-      self.type = 'article'
+      root :article
 
       attribute :id
       attribute :title

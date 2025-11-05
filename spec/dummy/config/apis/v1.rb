@@ -28,4 +28,8 @@ Apiwork::API.draw '/api/v1' do
   # Alternative resource representation for same Post model
   # ArticlesController uses ArticleResource which only exposes id + title
   resources :articles
+
+  # Demonstrates irregular plural root keys (person/people)
+  # PersonsController uses PersonResource with root :person, :people
+  resources :persons
 end
