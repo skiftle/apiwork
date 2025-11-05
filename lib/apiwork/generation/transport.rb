@@ -16,10 +16,10 @@ module Apiwork
         @builders = builders
         @options = options
 
-        # Load data from APIInspector
-        @resources = APIInspector.resources(path: path)
-        @routes = APIInspector.routes(path: path)
-        @inputs = APIInspector.inputs(path: path)
+        # Load data from Inspector
+        @resources = Inspector.resources(path: path)
+        @routes = Inspector.routes(path: path)
+        @inputs = Inspector.inputs(path: path)
       end
 
       def needs_resources?
@@ -1465,7 +1465,7 @@ module Apiwork
         end
       end
 
-      # Validate schemas from APIInspector
+      # Validate schemas from Inspector
       #
       def validate_api_schemas_from_inspector(resources, path)
         resources.each do |resource|
@@ -1474,7 +1474,7 @@ module Apiwork
         end
       end
 
-      # Generate input schemas from APIInspector inputs
+      # Generate input schemas from Inspector inputs
       #
       def generate_input_schemas_from_inspector(inputs, key_transform)
         inputs.map do |input|
@@ -1575,7 +1575,7 @@ module Apiwork
         "#{class_name}Schema"
       end
 
-      # Build endpoint definition for standard CRUD actions using APIInspector routes
+      # Build endpoint definition for standard CRUD actions using Inspector routes
       #
       def build_endpoint_definition_for_route_action(resource_name, action, route_metadata, zod_schemas, key_transform,
                                                      output_schemas, input_schemas, parent_path: [])

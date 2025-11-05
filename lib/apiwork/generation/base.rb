@@ -55,13 +55,13 @@ module Apiwork
         load_data
       end
 
-      # Load data from APIInspector
+      # Load data from Inspector
       # Override needs_* methods in subclasses to control what gets loaded
       def load_data
-        @resources = APIInspector.resources(path: path) if needs_resources?
-        @routes = APIInspector.routes(path: path) if needs_routes?
-        @documentation = APIInspector.documentation(path: path) if needs_documentation?
-        @inputs = APIInspector.inputs(path: path) if needs_inputs?
+        @resources = Inspector.resources(path: path) if needs_resources?
+        @routes = Inspector.routes(path: path) if needs_routes?
+        @documentation = Inspector.documentation(path: path) if needs_documentation?
+        @inputs = Inspector.inputs(path: path) if needs_inputs?
       end
 
       # Override in subclasses to declare data dependencies

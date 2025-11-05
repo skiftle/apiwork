@@ -34,8 +34,7 @@ loader = Zeitwerk::Loader.for_gem
 loader.inflector.inflect(
   'api' => 'API',
   'openapi' => 'OpenAPI',
-  'json_pointer' => 'JSONPointer',
-  'api_inspector' => 'APIInspector'
+  'json_pointer' => 'JSONPointer'
 )
 loader.ignore("#{__dir__}/apiwork/version.rb")
 loader.ignore("#{__dir__}/apiwork/engine.rb")

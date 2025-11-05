@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Apiwork
-  class APIInspector
+  class Inspector
     class << self
       # Resource introspection - returns resource definitions with attributes and associations
       # Query params and body params are derived from attribute options

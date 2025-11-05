@@ -30,7 +30,7 @@ module Apiwork
         @options = options
 
         # Only load resources if path is provided
-        @resources = path ? APIInspector.resources(path: path) : []
+        @resources = path ? Inspector.resources(path: path) : []
       end
 
       def generate
@@ -186,7 +186,7 @@ module Apiwork
         enums = {}
 
         schemas.each do |schema|
-          # Use schema attributes directly (already populated by APIInspector)
+          # Use schema attributes directly (already populated by Inspector)
           attributes = schema[:attributes] || {}
 
           attributes.each do |attribute_name, attribute_info|
