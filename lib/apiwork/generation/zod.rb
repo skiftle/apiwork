@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../introspection/inspector'
-
 module Apiwork
   module Generation
     class Zod < Base

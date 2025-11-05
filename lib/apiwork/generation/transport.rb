@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'zod'
-require_relative '../introspection/inspector'
-
 module Apiwork
   module Generation
     class Transport < Base
