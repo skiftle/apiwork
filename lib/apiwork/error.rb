@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'json_pointer'
-
 module Apiwork
   # Base error classes
   class Error < StandardError; end
