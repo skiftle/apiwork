@@ -51,43 +51,61 @@ module Apiwork
         # Process each writable association
         resource.association_definitions.each do |name, assoc_def|
           next unless assoc_def.writable_for?(action)
+          next unless transformed.key?(name)
 
-          # If the association key exists in params, transform it
-          if transformed.key?(name)
-            value = transformed.delete(name)
+          # Note: Validation of accepts_nested_attributes_for happens at resource definition time
+          # in AssociationDefinition#validate_nested_attributes! (lines 113-131)
 
-            # Get the nested resource class for recursive transformation
-            nested_resource = if assoc_def.resource_class.is_a?(String)
-              assoc_def.resource_class.constantize rescue nil
-            else
-              assoc_def.resource_class
-            end
+          # Transform the association
+          value = transformed.delete(name)
+          nested_resource = resolve_nested_resource(assoc_def)
 
-            # Recursively transform nested associations
-            if value.is_a?(Array)
-              # has_many association
-              transformed["#{name}_attributes".to_sym] = value.map do |nested_params|
-                if nested_params.is_a?(Hash) && nested_resource
-                  transform_nested_attributes(nested_params, nested_resource, action)
-                else
-                  nested_params
-                end
-              end
-            elsif value.is_a?(Hash)
-              # belongs_to or has_one association
-              transformed["#{name}_attributes".to_sym] = if nested_resource
-                transform_nested_attributes(value, nested_resource, action)
-              else
-                value
-              end
-            else
-              # Scalar value (shouldn't happen for associations, but handle gracefully)
-              transformed["#{name}_attributes".to_sym] = value
-            end
-          end
+          transformed["#{name}_attributes".to_sym] = transform_association_value(
+            value,
+            nested_resource,
+            action
+          )
         end
 
         transformed
+      end
+
+      # Resolves the nested resource class from an association definition
+      # Handles both String and Class types
+      def resolve_nested_resource(assoc_def)
+        resource_class = assoc_def.resource_class
+
+        if resource_class.is_a?(String)
+          resource_class.constantize rescue nil
+        else
+          resource_class
+        end
+      end
+
+      # Transforms an association value (Array or Hash) to _attributes format
+      # Recursively processes nested associations
+      def transform_association_value(value, nested_resource, action)
+        case value
+        when Array
+          # has_many association
+          value.map do |nested_params|
+            if nested_params.is_a?(Hash) && nested_resource
+              transform_nested_attributes(nested_params, nested_resource, action)
+            else
+              nested_params
+            end
+          end
+        when Hash
+          # belongs_to or has_one association
+          if nested_resource
+            transform_nested_attributes(value, nested_resource, action)
+          else
+            value
+          end
+        else
+          # Scalar value (shouldn't happen for associations, but handle gracefully)
+          value
+        end
       end
     end
   end
