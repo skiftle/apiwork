@@ -19,10 +19,14 @@ module Apiwork
     # Returns a Rack application for mounting in routes
     #
     # Usage:
-    #   mount Apiwork.routes => '/'
-    def routes
-      @routes ||= API::Routes.new
+    #   mount Apiwork.rack_app => '/'
+    #
+    # Alias: routes (for backward compatibility)
+    def rack_app
+      @rack_app ||= API::RackApp.new
     end
+
+    alias_method :routes, :rack_app
 
     # Register a custom generator
     #
@@ -74,7 +78,7 @@ loader.setup
 require_relative 'apiwork/configuration'
 
 require_relative 'apiwork/errors/json_pointer'
-require_relative 'apiwork/errors/errors'
+require_relative 'apiwork/errors/base'
 require_relative 'apiwork/errors/rails_converter'
 require_relative 'apiwork/errors/handler'
 

@@ -35,7 +35,7 @@ module Apiwork
         # Determine level based on context
         level = @resource_stack.empty? ? :api : :resource
 
-        builder = DocBuilder.new(level: level)
+        builder = DocumentationBuilder.new(level: level)
         builder.instance_eval(&block)
 
         if level == :api
