@@ -188,7 +188,7 @@ module Apiwork
         # Handle custom types
         if options[:custom_type]
           schema = build_transport_schema(options[:nested], key_transform)
-          schema[:optional] = !options[:required]
+          schema[:optional] = options[:required] ? false : true
           return schema
         end
 
@@ -235,7 +235,7 @@ module Apiwork
                end
 
         base[:enum] = options[:enum] if options[:enum]
-        base[:optional] = !options[:required]
+        base[:optional] = options[:required] ? false : true
 
         base
       end
@@ -249,7 +249,7 @@ module Apiwork
         {
           type: 'union',
           variants: variants,
-          optional: !required
+          optional: required ? false : true
         }
       end
 

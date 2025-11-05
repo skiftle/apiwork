@@ -26,19 +26,25 @@ module Apiwork
       end
 
       def resets_input?
-        @reset_input == true
+        @reset_input
       end
 
       def resets_output?
-        @reset_output == true
+        @reset_output
       end
 
       def merges_input?
-        contract_class.uses_resource? && !resets_input?
+        return false unless contract_class.uses_resource?
+        return false if resets_input?
+
+        true
       end
 
       def merges_output?
-        contract_class.uses_resource? && !resets_output?
+        return false unless contract_class.uses_resource?
+        return false if resets_output?
+
+        true
       end
 
       # Define input for this action
@@ -140,7 +146,7 @@ module Apiwork
         needs_serialization = if data.is_a?(Hash)
           false # Already a hash
         elsif data.is_a?(Array)
-          data.empty? || !data.first.is_a?(Hash)
+          data.empty? || data.first.class != Hash
         else
           true # ActiveRecord object/relation
         end

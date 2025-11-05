@@ -107,7 +107,9 @@ module Apiwork
       end
 
       def has_errors?(resource)
-        resource.respond_to?(:errors) && resource.errors.any?
+        return false unless resource.respond_to?(:errors)
+
+        resource.errors.any?
       end
 
       def determine_status(resource_or_collection)

@@ -107,7 +107,7 @@ module Apiwork
     end
 
     def any?
-      !empty?
+      @errors.any?
     end
 
     def <<(error)

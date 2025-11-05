@@ -102,7 +102,7 @@ module Apiwork
           values_to_check = extract_values_from_filter(value)
           invalid_values = values_to_check - enum_values
 
-          return unless invalid_values.any?
+          return if invalid_values.empty?
 
           error = ArgumentError.new(
             "Invalid #{key} value(s): #{invalid_values.join(', ')}. " \
@@ -159,11 +159,7 @@ module Apiwork
 
           # Build join conditions
           join_conditions = {}
-          join_conditions[key] = if nested_joins.any?
-                                   nested_joins
-                                 else
-                                   {}
-                                 end
+          join_conditions[key] = nested_joins.any? ? nested_joins : {}
 
           [nested_conditions, join_conditions]
         end
@@ -228,7 +224,7 @@ module Apiwork
           case value
           when String, nil
             if value.blank?
-              if allow_nil == false
+              unless allow_nil
                 error = ArgumentError.new("#{key} cannot be null")
                 Errors::Handler.handle(error, context: { field: key })
                 return column.eq(nil)
@@ -251,7 +247,7 @@ module Apiwork
               end
 
               if compare.blank?
-                if allow_nil == false
+                unless allow_nil
                   error = ArgumentError.new("#{key} cannot be null")
                   Errors::Handler.handle(error, context: { field: key })
                   next

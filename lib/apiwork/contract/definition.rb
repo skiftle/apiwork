@@ -108,7 +108,7 @@ module Apiwork
 
           # Check required (matches Rails params.require behavior)
           # Rejects: nil, empty string, empty hash, empty array
-          is_missing = value.nil? || (value.respond_to?(:empty?) && value.empty?)
+          is_missing = value.blank?
 
           if param_options[:required] && is_missing
             # For enum fields, return invalid_value error to show allowed values immediately
