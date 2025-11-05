@@ -24,4 +24,8 @@ Apiwork::API.draw '/api/v1' do
   end
 
   resources :comments
+
+  # Alternative resource representation for same Post model
+  # ArticlesController uses ArticleResource which only exposes id + title
+  resources :articles
 end
