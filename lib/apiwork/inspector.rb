@@ -24,16 +24,6 @@ module Apiwork
         collect_routes(api_class.metadata)
       end
 
-      # Input introspection - returns input class definitions for member/collection actions
-      #
-      # @param path [String] The API path (e.g., '/api/v1', 'api/v1')
-      def inputs(path:)
-        api_class = find_api(path)
-        return [] unless api_class&.metadata
-
-        collect_inputs(api_class.metadata)
-      end
-
       # Documentation introspection - returns API and resource documentation
       #
       # @param path [String] The API path (e.g., '/api/v1', 'api/v1')
@@ -95,40 +85,6 @@ module Apiwork
         routes
       end
 
-      def collect_inputs(api)
-        inputs = []
-
-        # Collect inputs from top-level resources
-        api.resources.each_value do |metadata|
-          collect_inputs_from_metadata(metadata, inputs)
-        end
-
-        inputs
-      end
-
-      def collect_inputs_from_metadata(metadata, inputs)
-        # Collect member action inputs
-        metadata[:members]&.each do |action_name, action_info|
-          next unless action_info[:input_class]
-
-          input_class = find_input_class(action_info[:input_class])
-          inputs << build_input_definition(input_class, action_name, 'member') if input_class
-        end
-
-        # Collect collection action inputs
-        metadata[:collections]&.each do |action_name, action_info|
-          next unless action_info[:input_class]
-
-          input_class = find_input_class(action_info[:input_class])
-          inputs << build_input_definition(input_class, action_name, 'collection') if input_class
-        end
-
-        # Recursively collect from nested resources
-        metadata[:resources]&.each_value do |nested_metadata|
-          collect_inputs_from_metadata(nested_metadata, inputs)
-        end
-      end
-
       def build_resource_definition(name, resource_class, _metadata)
         {
           name: name.to_s.singularize.underscore,
@@ -156,8 +112,7 @@ module Apiwork
         actions.transform_values do |action_info|
           {
             method: action_info[:method],
-            options: action_info[:options] || {},
-            input_class_name: action_info[:input_class] || action_info[:input_class_name]
+            options: action_info[:options] || {}
           }
         end
       end
@@ -166,15 +121,6 @@ module Apiwork
         routes.transform_values do |route_metadata|
           build_route_definition(nil, route_metadata)
         end
-      end
-
-      def build_input_definition(input_class, _action_name, _type)
-        {
-          name: input_class.name.demodulize.underscore.gsub(/_input$/, ''),
-          class_name: input_class.name,
-          namespaces: input_class.name.deconstantize.split('::'),
-          params: extract_input_params(input_class)
-        }
       end
 
       def extract_attributes(resource_class)
@@ -229,36 +175,7 @@ module Apiwork
         associations
       end
 
-      def extract_input_params(input_class)
-        params = {}
-
-        # Extract params from input class using the param DSL
-        if input_class.respond_to?(:param_definitions)
-          input_class.param_definitions.each do |name, options|
-            params[name] = {
-              type: options[:type] || 'string',
-              required: options[:required] || false,
-              default: options[:default]
-            }
-          end
-        end
-
-        params
-      end
-
       def find_resource_class(class_name)
-        return nil unless class_name
-
-        # If it's already a class, return it
-        return class_name if class_name.is_a?(Class)
-
-        # Otherwise, constantize the string
-        class_name.constantize
-      rescue NameError
-        nil
-      end
-
-      def find_input_class(class_name)
         return nil unless class_name
 
         # If it's already a class, return it

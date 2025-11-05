@@ -64,25 +64,23 @@ module Apiwork
         }
       end
 
-      def add_member_action(resource_name, action, method:, options:, input_class: nil)
+      def add_member_action(resource_name, action, method:, options:)
         resource = find_resource(resource_name)
         return unless resource
 
         resource[:members][action] = {
           method: method,
-          options: options,
-          input_class: input_class
+          options: options
         }
       end
 
-      def add_collection_action(resource_name, action, method:, options:, input_class: nil)
+      def add_collection_action(resource_name, action, method:, options:)
         resource = find_resource(resource_name)
         return unless resource
 
         resource[:collections][action] = {
           method: method,
-          options: options,
-          input_class: input_class
+          options: options
         }
       end
 

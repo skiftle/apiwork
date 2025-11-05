@@ -406,35 +406,4 @@ RSpec.describe 'Apiwork Routing DSL' do
   #   end
   # end
 
-  # TODO: Add tests for input class inference when inference system is fully tested
-  # describe 'input class inference' do
-  #   it 'infers Input class for member actions' do
-  #     # Assuming Posts::ArchiveInput exists
-  #     stub_const('Posts::ArchiveInput', Class.new)
-  #
-  #     recorder.instance_eval do
-  #       resources :posts do
-  #         member do
-  #           patch :archive
-  #         end
-  #       end
-  #     end
-  #
-  #     members = metadata.resources[:posts][:members]
-  #     expect(members[:archive][:input_class]).to eq(Posts::ArchiveInput)
-  #   end
-  #
-  #   it 'sets nil when Input class does not exist' do
-  #     recorder.instance_eval do
-  #       resources :posts do
-  #         member do
-  #           patch :nonexistent_action
-  #         end
-  #       end
-  #     end
-  #
-  #     members = metadata.resources[:posts][:members]
-  #     expect(members[:nonexistent_action][:input_class]).to be_nil
-  #   end
-  # end
 end

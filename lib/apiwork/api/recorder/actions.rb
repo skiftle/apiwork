@@ -66,17 +66,13 @@ module Apiwork
                   ":on option must be either :member or :collection, got #{options[:on].inspect}"
           end
 
-          # Auto-discover Input class for this action
-          input_class = infer_input_class(current_resource, action)
-
           if @in_member_block || options[:on] == :member
             # Member action - add to members hash
             @metadata.add_member_action(
               current_resource,
               action,
               method: method,
-              options: options,
-              input_class: input_class
+              options: options
             )
           elsif @in_collection_block || options[:on] == :collection
             # Collection action - add to collections hash
@@ -84,8 +80,7 @@ module Apiwork
               current_resource,
               action,
               method: method,
-              options: options,
-              input_class: input_class
+              options: options
             )
           else
             # Action declared without member/collection context - this is an error
