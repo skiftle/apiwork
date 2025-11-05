@@ -5,13 +5,12 @@ module Api
     class CommentResource < Apiwork::Resource::Base
       model Comment
 
-      with_options filterable: true, sortable: true do
-        attribute :id
-        attribute :content
-        attribute :author
-        attribute :created_at
-        attribute :updated_at
-      end
+      attribute :id, filterable: true, sortable: true
+      attribute :content, writable: true, filterable: true, sortable: true
+      attribute :author, writable: true, filterable: true, sortable: true
+      attribute :post_id, writable: true
+      attribute :created_at, filterable: true, sortable: true
+      attribute :updated_at, filterable: true, sortable: true
 
       belongs_to :post, class_name: 'Api::V1::PostResource', filterable: true, sortable: true
 
