@@ -2,29 +2,29 @@
 
 Claude, always follow these principles when working in this project.
 
-This is not just a style guide.  
-It’s a philosophy.  
-Code should _feel right_ — clean, honest, and effortless to read.  
-Simplicity is not the absence of complexity; it’s the result of care.
+This is not just a style guide.
+It's a philosophy.
+Code should _feel right_ — clean, honest, and effortless to read.
+Simplicity is not the absence of complexity; it's the result of care.
 
 ---
 
 ## 🧠 Philosophy
 
-- **Readability over cleverness.**  
-  Code should make sense immediately. If you need to explain it, it’s probably wrong.
+- **Readability over cleverness.**
+  Code should make sense immediately. If you need to explain it, it's probably wrong.
 
-- **Simplicity as a moral quality.**  
-  The goal isn’t to impress — it’s to respect whoever reads or maintains this later (including yourself).
+- **Simplicity as a moral quality.**
+  The goal isn't to impress — it's to respect whoever reads or maintains this later (including yourself).
 
-- **Classic Ruby elegance.**  
-  No unnecessary meta-programming, no “look what Ruby can do” moments.  
+- **Classic Ruby elegance.**
+  No unnecessary meta-programming, no "look what Ruby can do" moments.
   Just clean, natural, confident code.
 
-- **Rails-ness matters.**  
+- **Rails-ness matters.**
   It should _feel_ like Rails — declarative, expressive, and grounded in convention.
 
-- **Never break what already works.**  
+- **Never break what already works.**
   Refactor inside, not outside. The public API stays untouched, and the tests stay green.
 
 ---
@@ -35,181 +35,102 @@ Simplicity is not the absence of complexity; it’s the result of care.
 - Simplicity over complexity — even if it means writing more lines.
 - Explicit over implicit. Avoid magic, monkey patching, and surprises.
 - Use guard clauses instead of deep nesting.
-- Write positive conditions. Avoid `unless`, `!`, and `== false`.  
-  **Exception:** `unless` may be used when it reads naturally and clearly with a simple condition,  
-  e.g. `unless completed` ✅  
+- Write positive conditions. Avoid `unless`, `!`, and `== false`.
+  **Exception:** `unless` may be used when it reads naturally and clearly with a simple condition,
+  e.g. `unless completed` ✅
   but not with compound or negative logic (`unless !foo` or `unless a && b`) ❌
 - No unnecessary abbreviations — prefer full, expressive names:
   - `attribute` instead of `attr`
-    **Exception:** well-established terms like `param` are acceptable  
-    when they are the natural choice within their domain.
+    **Exception:** well-established terms like `param` and standard Ruby methods like `attr_reader` are acceptable.
 - Don't repeat what's already in the namespace:
   - `CaseTransformer.hash`, not `transform_keys`.
 - Prefer composition over inheritance.
-- Avoid legacy `self.included(base)` + `base.extend(ClassMethods)` patterns.  
-  Use `ActiveSupport::Concern` instead — it’s cleaner, more expressive, and automatically handles class method extensions:
-
-  ```ruby
-  # ✅ Preferred
-  module MyFeature
-    extend ActiveSupport::Concern
-
-    class_methods do
-      def greet
-        "hello"
-      end
-    end
-  end
-
-  # ❌ Legacy
-  module MyFeature
-    def self.included(base)
-      base.extend(ClassMethods)
-    end
-
-    module ClassMethods
-      def greet
-        "hello"
-      end
-    end
-  end
-  ```
-
-# 🧩 Guidelines — Naming & Block Chains
+- Use `ActiveSupport::Concern` instead of legacy `self.included(base)` + `base.extend(ClassMethods)` patterns.
 
 ---
 
-### 🧩 Naming should reflect what something **is** – not how it’s used
+## 🏗️ Class References & Lazy Loading
 
-Variable names must describe **what** something represents — not **how** it’s used or **when** it’s used.  
-The goal is to keep code self-documenting, consistent, and logically easy to follow.
-
-#### ✅ Example
+**Always use strings for class references** to enable lazy loading and avoid eager loading dependencies.
 
 ```ruby
+# ✅ Correct - uses strings
+class UserResource < Resource::Base
+  has_one :profile, class_name: 'ProfileResource'
+  has_many :posts, class_name: 'PostResource'
+end
+
+class UserContract < Contract::Base
+  resource 'UserResource'
+end
+
+# ❌ Wrong - uses class constants
+has_one :profile, class_name: ProfileResource    # No eager loading!
+resource UserResource                             # No constants!
+```
+
+**Why strings?**
+- Avoids circular dependencies
+- Enables lazy loading
+- Works with Rails autoloading
+- Safer in development with code reloading
+
+---
+
+## 🎯 Option Naming - Context Matters
+
+**Don't repeat the context in option names.** When you're already in a Resource class, omit the `resource_` prefix. When in a Contract class, omit the `contract_` prefix.
+
+```ruby
+# ✅ In Resource class - context is clear, omit prefix
+class PostResource < Resource::Base
+  has_one :author, class_name: 'UserResource'      # ✅ not resource_class_name
+  has_many :tags, class_name: 'TagResource'        # ✅ clean and clear
+end
+
+# ✅ In Contract class - context is clear, omit prefix
+class PostContract < Contract::Base
+  resource 'PostResource'                           # ✅ not resource_class_name
+end
+
+# ✅ Outside context - use full prefix for clarity
+class SomeHelper
+  def initialize(resource_class_name:)              # ✅ prefix needed here
+    @resource = resource_class_name.constantize
+  end
+end
+```
+
+**The rule:** If the target class type is the "main" concept of where you are, omit the prefix. Otherwise, include it for clarity.
+
+---
+
+## 🧩 Naming Guidelines
+
+### Names should reflect what something **is** – not how it's used
+
+Variable names must describe **what** something represents — not **how** it's used or **when** it's used.
+
+```ruby
+# ✅ Good - describes what it is
 key_transform = serialize_key_transform
 CaseTransformer.hash(meta, key_transform)
-```
 
-#### ✅ Also acceptable
-
-```ruby
+# ✅ Also good - matches method parameter name
 strategy = serialize_key_transform
 CaseTransformer.hash(meta, strategy)
-```
 
-> This is perfectly fine because the method being called — `CaseTransformer.hash` —
-> expects its argument to be called `strategy`.
-> Matching a method's parameter name is valid and preferred for consistency.
-
-**Note:** No need to check `== :none` before calling — `CaseTransformer.hash` handles `:none` internally.
-
----
-
-#### 📖 Rules
-
-- Always name things by **what they are**.
-- Use natural English order (adjective → noun):  
-  ✅ `paginated_invoices`, ❌ `invoices_paginated`.
-- Avoid names that misrepresent the value (`opts`, `tmp`, `context`) if it has a clear meaning.
-- It’s perfectly acceptable to use:
-  - `result` — when the method’s purpose is to build and return that result.
-  - `strategy` (or similar) — when that’s the **expected parameter name** or the correct concept in the method being called.
-- Keep names consistent within their local context.
-- Update all references when renaming.
-- Never change behavior.
-
-#### ✅ Example — `result` is fully acceptable
-
-```ruby
-def build_includes_hash(visited = Set.new)
+# ✅ Good - result represents the full return value
+def build_includes_hash
   result = {}
-
-  associations.each do |assoc_name, assoc_def|
-    resource_class = assoc_def[:resource] || RapidResource::ResourceResolver.from_association(association, self)
-
-    if resource_class.respond_to?(:build_includes_hash)
-      nested = resource_class.build_includes_hash(visited)
-      result[assoc_name] = nested.any? ? nested : {}
-    else
-      result[assoc_name] = {}
-    end
-  end
-
+  associations.each { |name, defn| result[name] = {} }
   result
 end
 ```
 
-> In this case, `result` is the clearest and most accurate name — it represents the full return value of the method.
+### Natural word order (adjective → noun)
 
-#### ✅ Example — `strategy` matches method context
-
-```ruby
-# Method definition elsewhere:
-# def self.transform(meta, strategy)
-#   ...
-# end
-
-strategy = serialize_key_transform
-CaseTransformer.hash(meta, strategy)
-```
-
-> When the called method's parameter is named `strategy`,
-> using `strategy` locally improves clarity by aligning with that conceptual contract.
-
----
-
-### 🚫 Avoid multi-line block chains (applies to `do ... end`)
-
-Chaining Ruby blocks (like `map`, `select`, `each`) across multiple lines using `do ... end` is **not allowed**.  
-It hurts readability and violates the RuboCop rule `Style/MultilineBlockChain`.
-
-Shorthand `{ ... }` blocks **are allowed** to span multiple lines when it’s natural and readable —  
-for example, in simple pipeline-like expressions.
-
-#### ❌ Wrong
-
-```ruby
-collection
-  .map do |item|
-    process(item)
-  end
-  .select do |item|
-    valid?(item)
-  end
-```
-
-#### ✅ Right
-
-Split the chain into clear, named steps:
-
-```ruby
-mapped = collection.map do |item|
-  process(item)
-end
-
-selected = mapped.select do |item|
-  valid?(item)
-end
-```
-
-#### ✅ Also fine (shorthand version)
-
-```ruby
-collection
-  .map { process(_1) }
-  .select { valid?(_1) }
-```
-
-> Multi-line `do ... end` chains reduce readability.  
-> `{ ... }` shorthand is allowed when the intent remains clear and concise.
-
----
-
-## 🔤 Consistent word order
-
-Use the noun first (what it is), followed by its property (how it is).  
-This helps related objects group naturally in the code.
+Use the noun first (what it is), followed by its property (how it is).
 
 | ❌ Wrong             | ✅ Right             |
 | -------------------- | -------------------- |
@@ -217,35 +138,50 @@ This helps related objects group naturally in the code.
 | `user_serialized`    | `serialized_user`    |
 | `params_query`       | `query_params`       |
 
-> 💬 Readable code feels like natural English:  
-> **“paginated invoices”**, not **“invoices paginated.”**
+### Positive predicates
+
+Name predicates positively: `allowed?`, `active?`, not `not_allowed?`.
+
+```ruby
+# ✅ Good - positive predicates
+list.include?(key)
+list.exclude?(key)
+
+# ❌ Bad - negative predicates
+!list.include?(key)
+!key.in?(list)
+```
 
 ---
 
-## ✨ Summary
+## 🚫 Avoid multi-line block chains
 
-- Name things after **what they are**.
-- Keep word order natural (adjective → noun).
-- Avoid variable names that distort meaning.
-- Prefer clarity over brevity.
+Chaining Ruby blocks using `do ... end` across multiple lines is **not allowed**.
 
-> **Good code should sound like a clear sentence when read aloud.**
+```ruby
+# ❌ Bad - chained do...end blocks
+collection
+  .map do |item|
+    process(item)
+  end
+  .select do |item|
+    valid?(item)
+  end
 
-- Name predicates positively: `allowed?`, `active?`, not `not_allowed?`.
-- Prefer `include?` / `exclude?` over `in?` — they are clearer, more Ruby-like, and positively expressed.
+# ✅ Good - split into named steps
+processed = collection.map do |item|
+  process(item)
+end
 
-  ```ruby
-  list.exclude?(key)   # ✅ not !key.in?(list)
-  list.include?(key)   # ✅ natural and idiomatic
-  ```
+validated = processed.select do |item|
+  valid?(item)
+end
 
-  Use `exclude?` instead of negating `in?` or `include?` — it reads cleaner and stays true to the principle of writing positive conditions.  
-  **Exception:** when explicitly validating that a value is a boolean (`true` or `false`),  
-  `[true, false].include?(value)` is acceptable, as it clearly expresses intent.
-
-  ```
-
-  ```
+# ✅ Also good - shorthand blocks
+collection
+  .map { process(_1) }
+  .select { valid?(_1) }
+```
 
 ---
 
@@ -272,59 +208,58 @@ This helps related objects group naturally in the code.
   value.zero?        # ✅ not value == 0
   string.empty?      # ✅ not string == ""
   ```
-  These read more naturally and reveal intent at a glance.
 
 ---
 
 ## ✅ Good vs ❌ Bad — Common Patterns
 
 ```ruby
-# ❌ Bad
+# ❌ Bad - negative condition with !
 if !user.active?
   deactivate_account
 end
 
-# ✅ Good
+# ✅ Good - positive condition with unless
 unless user.active?
   deactivate_account
 end
 
-# ❌ Bad
+# ❌ Bad - manual comparison
 if order.total > 0
   charge(order)
 end
 
-# ✅ Good
+# ✅ Good - predicate method
 if order.total.positive?
   charge(order)
 end
 
-# ❌ Bad
+# ❌ Bad - negating empty
 if !items.empty?
   process(items)
 end
 
-# ✅ Good
+# ✅ Good - using any?
 if items.any?
   process(items)
 end
 
-# ❌ Bad
+# ❌ Bad - comparing with false
 if user.admin? == false
   deny_access
 end
 
-# ✅ Good
+# ✅ Good - unless
 unless user.admin?
   deny_access
 end
 
-# ❌ Bad
+# ❌ Bad - multiple == false
 if completed == false && archived == false
   mark_as_pending
 end
 
-# ✅ Good
+# ✅ Good - guard clause with positive logic
 return if completed || archived
 mark_as_pending
 ```
