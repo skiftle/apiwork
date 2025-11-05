@@ -6,14 +6,20 @@ module Apiwork
     #
     # Provides both singular and plural forms of the root key.
     #
-    # @example
+    # @example Auto-pluralization
     #   root_key = RootKey.new("client")
     #   root_key.singular  # => "client"
     #   root_key.plural    # => "clients"
     #
+    # @example Explicit plural
+    #   root_key = RootKey.new("person", "people")
+    #   root_key.singular  # => "person"
+    #   root_key.plural    # => "people"
+    #
     class RootKey
-      def initialize(type)
-        @type = type
+      def initialize(singular, plural = nil)
+        @singular = singular
+        @plural = plural || singular&.pluralize
       end
 
       # Returns the singular form of the root key
@@ -21,7 +27,7 @@ module Apiwork
       #
       # @return [String] singular form (e.g., "client")
       def singular
-        @type.singularize
+        @singular
       end
 
       # Returns the plural form of the root key
@@ -29,7 +35,7 @@ module Apiwork
       #
       # @return [String] plural form (e.g., "clients")
       def plural
-        @type.pluralize
+        @plural
       end
 
       # String representation defaults to singular

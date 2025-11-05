@@ -29,6 +29,7 @@ module Apiwork
       class_attribute :_deserialize_key_transform, default: nil
       class_attribute :_auto_include_associations, default: nil
       class_attribute :_validated_includes, default: nil
+      class_attribute :_root, default: nil
 
       attr_reader :object, :context, :includes
 
@@ -64,6 +65,23 @@ module Apiwork
 
         def model_class=(klass)
           self._model_class = klass
+        end
+
+        # DSL method for explicit root key override
+        # Accepts singular form (auto-pluralizes) or explicit singular + plural
+        #
+        # @example Auto-pluralization
+        #   root :article  # => singular: 'article', plural: 'articles'
+        #
+        # @example Explicit plural (for irregular words)
+        #   root :person, :people  # => singular: 'person', plural: 'people'
+        #
+        def root(singular, plural = nil)
+          # Convert to strings
+          singular_str = singular.to_s
+          plural_str = plural ? plural.to_s : singular_str.pluralize
+
+          self._root = { singular: singular_str, plural: plural_str }
         end
 
         def serialize_key_transform
@@ -130,8 +148,13 @@ module Apiwork
         #   ClientResource.root_key.singular  # => "client"
         #   ClientResource.root_key.plural    # => "clients"
         def root_key
-          type_name = type || model_class&.model_name&.element
-          RootKey.new(type_name)
+          # Priority: explicit root DSL > type attribute > model name
+          if _root
+            RootKey.new(_root[:singular], _root[:plural])
+          else
+            type_name = type || model_class&.model_name&.element
+            RootKey.new(type_name)
+          end
         end
 
         def filterable_attributes
