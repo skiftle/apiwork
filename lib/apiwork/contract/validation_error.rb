@@ -126,7 +126,12 @@ module Apiwork
 
         def coercion_failed(field:, type:, value:, path: [])
           # Truncate value to reasonable length for error messages
-          truncated_value = value.to_s.length > 100 ? "#{value.to_s[0...100]}..." : value.to_s
+          value_string = value.to_s
+          truncated_value = if value_string.length > 100
+                              "#{value_string[0...100]}..."
+                            else
+                              value_string
+                            end
 
           new(
             code: :coercion_failed,

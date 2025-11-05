@@ -51,7 +51,7 @@ module Apiwork
       # Auto-generates from resource if this is a standard CRUD action (unless reset!)
       def input(&block)
         # Auto-generate first if needed (before custom block)
-        auto_generate_input_if_needed unless @reset_input || @input_definition
+        auto_generate_input_if_needed if @reset_input == false && @input_definition.nil?
 
         @input_definition ||= Definition.new(:input, contract_class)
         @input_definition.instance_eval(&block) if block
@@ -62,7 +62,7 @@ module Apiwork
       # Auto-generates from resource if this is a standard CRUD action (unless reset!)
       def output(&block)
         # Auto-generate first if needed (before custom block)
-        auto_generate_output_if_needed unless @reset_output || @output_definition
+        auto_generate_output_if_needed if @reset_output == false && @output_definition.nil?
 
         @output_definition ||= Definition.new(:output, contract_class)
         @output_definition.instance_eval(&block) if block
@@ -72,14 +72,14 @@ module Apiwork
       # Get input definition (auto-generates if needed)
       def input_definition
         # Auto-generate if needed and not reset
-        auto_generate_input_if_needed unless @reset_input || @input_definition
+        auto_generate_input_if_needed if @reset_input == false && @input_definition.nil?
         @input_definition
       end
 
       # Get output definition (auto-generates if needed)
       def output_definition
         # Auto-generate if needed and not reset
-        auto_generate_output_if_needed unless @reset_output || @output_definition
+        auto_generate_output_if_needed if @reset_output == false && @output_definition.nil?
         @output_definition
       end
 
