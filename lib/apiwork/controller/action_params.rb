@@ -8,14 +8,11 @@ module Apiwork
       def action_params(options = {})
         case action_name.to_sym
         when :create, :update
-          # Priority: contract_class_name > schema_class_name > default
           schema = if options[:contract_class_name]
             # Get schema from contract
             contract = options[:contract_class_name].constantize
             action_def = contract.action_definition(action_name.to_sym)
             action_def.contract_class.schema_class
-          elsif options[:schema_class_name] || options[:resource_class_name] # Support legacy
-            (options[:schema_class_name] || options[:resource_class_name]).constantize
           else
             Schema::Resolver.from_controller(self.class)
           end

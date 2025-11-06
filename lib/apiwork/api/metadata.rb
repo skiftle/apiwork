@@ -66,27 +66,25 @@ module Apiwork
         }
       end
 
-      def add_member_action(resource_name, action, method:, options:, contract_class_name: nil, resource_class_name: nil)
+      def add_member_action(resource_name, action, method:, options:, contract_class_name: nil)
         resource = find_resource(resource_name)
         return unless resource
 
         resource[:members][action] = {
           method: method,
           options: options,
-          contract_class_name: contract_class_name,
-          resource_class_name: resource_class_name
+          contract_class_name: contract_class_name
         }
       end
 
-      def add_collection_action(resource_name, action, method:, options:, contract_class_name: nil, resource_class_name: nil)
+      def add_collection_action(resource_name, action, method:, options:, contract_class_name: nil)
         resource = find_resource(resource_name)
         return unless resource
 
         resource[:collections][action] = {
           method: method,
           options: options,
-          contract_class_name: contract_class_name,
-          resource_class_name: resource_class_name
+          contract_class_name: contract_class_name
         }
       end
 

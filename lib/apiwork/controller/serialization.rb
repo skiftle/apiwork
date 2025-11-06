@@ -16,24 +16,14 @@ module Apiwork
         schema_class.serialize(object_or_collection, context: build_schema_context)
       end
 
-      # Legacy method name (deprecated)
-      alias_method :serialize_resource, :serialize_schema
-
       def respond_with(resource_or_collection, options = {})
         meta = options.fetch(:meta, {})
         contract_class_name = options[:contract_class_name]
-        schema_class_name = options[:schema_class_name] || options[:resource_class_name] # Support legacy
 
         # Find ActionDefinition for current action
-        # Priority: contract_class_name > schema_class_name > default
         action_def = if contract_class_name
           contract = contract_class_name.constantize
           contract.action_definition(action_name.to_sym)
-        elsif schema_class_name
-          # Build dynamic contract from schema
-          schema_class = schema_class_name.constantize
-          contract_class = Contract::Builder.build_from_schema(schema_class, action_name.to_sym)
-          contract_class.action_definition(action_name.to_sym)
         else
           find_action_definition
         end
@@ -145,9 +135,6 @@ module Apiwork
       def build_schema_context
         {}
       end
-
-      # Legacy method name (deprecated)
-      alias_method :build_resource_context, :build_schema_context
 
       # Extract includes parameter (already validated by Contract)
       def extract_includes

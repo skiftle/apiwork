@@ -17,7 +17,7 @@ module Api
         end
       end
 
-      has_many :comments, class_name: 'Api::V1::CommentSchema', writable: true, filterable: true, sortable: true, serializable: false
+      has_many :comments, schema: CommentSchema, writable: true, filterable: true, sortable: true, serializable: false
     end
   end
 end
