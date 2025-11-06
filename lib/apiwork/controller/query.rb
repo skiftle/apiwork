@@ -5,24 +5,16 @@ module Apiwork
     module Query
       extend ActiveSupport::Concern
 
-      def query(scope, schema_class_name: nil, resource_class_name: nil)
-        # Support legacy resource_class_name parameter (deprecated)
-        schema_class_name ||= resource_class_name
+      def query(scope)
+        # Go through Contract → Schema
+        contract = Contract::Resolver.call(
+          controller_class: self.class,
+          action_name: action_name,
+          metadata: find_action_metadata
+        )
 
-        schema_class = if schema_class_name
-          # Explicit override
-          schema_class_name.constantize
-        else
-          # Go through Contract → Schema
-          contract = Contract::Resolver.call(
-            controller_class: self.class,
-            action_name: action_name,
-            metadata: find_action_metadata
-          )
-
-          raise ConfigurationError, "Contract #{contract.class.name} must declare schema" unless contract.class.schema?
-          contract.class.schema_class
-        end
+        raise ConfigurationError, "Contract #{contract.class.name} must declare schema" unless contract.class.schema?
+        schema_class = contract.class.schema_class
 
         result = schema_class.query(scope, action_params)
 

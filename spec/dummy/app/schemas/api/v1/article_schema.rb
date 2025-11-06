@@ -14,7 +14,7 @@ module Api
       # to show selective attribute exposure
 
       # Comments association with sortable: false for testing error handling
-      has_many :comments, class_name: 'Api::V1::CommentSchema', sortable: false
+      has_many :comments, schema: CommentSchema, sortable: false
     end
   end
 end
