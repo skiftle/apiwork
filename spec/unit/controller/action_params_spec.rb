@@ -44,20 +44,20 @@ RSpec.describe Apiwork::Controller::ActionParams do
       let(:assoc_def) do
         double('AssociationDefinition',
           writable_for?: true,
-          resource_class: 'TestCommentResource',
+          schema_class: 'TestCommentSchema',
           allow_destroy?: true
         )
       end
 
       let(:resource) do
-        double('Resource',
+        double('Schema',
           model_class: model_class,
           association_definitions: { comments: assoc_def }
         )
       end
 
       before do
-        stub_const('TestCommentResource', nested_resource_class)
+        stub_const('TestCommentSchema', nested_resource_class)
       end
 
       it 'transforms association key to _attributes format' do
@@ -159,7 +159,7 @@ RSpec.describe Apiwork::Controller::ActionParams do
       let(:nested_assoc_def) do
         double('NestedAssociationDefinition',
           writable_for?: true,
-          resource_class: deeply_nested_resource
+          schema_class: deeply_nested_resource
         )
       end
 
@@ -190,12 +190,12 @@ RSpec.describe Apiwork::Controller::ActionParams do
       let(:assoc_def) do
         double('AssociationDefinition',
           writable_for?: true,
-          resource_class: nested_resource
+          schema_class: nested_resource
         )
       end
 
       let(:resource) do
-        double('Resource',
+        double('Schema',
           model_class: model_class,
           association_definitions: { comments: assoc_def }
         )
