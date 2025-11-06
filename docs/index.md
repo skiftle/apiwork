@@ -45,29 +45,24 @@ In practice, almost nothing. But there are a few small constraints to make every
 - Routes aren’t defined directly in `routes.rb`. Instead, they live inside your **API definitions**, using almost the same DSL as Rails’ `resources do ... end`.  
   This allows Apiwork to introspect routes, contracts, and schemas together — keeping everything in sync.
 
-That’s about it.  
-You keep the Rails you know — just with stronger boundaries, smarter defaults, and a safer surface.
+That’s about it. You keep the Rails you know — just with stronger boundaries, smarter defaults, and a safer surface.
 
 ---
-
-Apiwork doesn’t try to change Rails.  
-It just gives you a clearer, safer way to express the APIs you already write —  
-from database to frontend, with types included.
 
 ## Quick example
 
 ```ruby
-# Define your API
+# config/apis/v1.rb
 Apiwork::API.draw '/api/v1' do
   schema :openapi
 
   resources :posts
 end
 
-# Mount in routes.rb
+# config/routes.rb
  mount Apiwork.routes => '/'
 
-# Define your schemas
+# app/schemas/post_schema.rb
 class PostSchema < Apiwork::Schema::Base
   model Post
 
@@ -83,12 +78,12 @@ class PostSchema < Apiwork::Schema::Base
   end
 end
 
-# Define your contract
+# app/contracts/post_contract.rb
 class PostContract < Apiwork::Contract::Base
   schema PostSchema
 end
 
-# Define your controller
+# app/controllers/posts_controller.rb
 class PostsController < ApplicationController
   include Apiwork::Controller::Concern
 
@@ -97,7 +92,7 @@ class PostsController < ApplicationController
   end
 
   def create
-    post = Post.create(action_params)  # Validated params
+    post = Post.create(action_params)
     respond_with post
   end
 end
