@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-RSpec.describe Apiwork::Schema::Querying::Operators do
+RSpec.describe Apiwork::Schema::Model::Operators do
   let(:test_class) do
     Class.new do
-      include Apiwork::Schema::Querying::Operators
+      include Apiwork::Schema::Model::Operators
     end
   end
 

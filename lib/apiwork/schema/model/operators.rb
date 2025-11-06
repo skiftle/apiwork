@@ -2,7 +2,7 @@
 
 module Apiwork
   module Schema
-    module Querying
+    module Model
       # Centralized operator definitions for different data types
       #
       # This module provides a DRY way to define operators for filtering.
