@@ -12,7 +12,7 @@ module Api
       attribute :created_at, filterable: true, sortable: true
       attribute :updated_at, filterable: true, sortable: true
 
-      belongs_to :post, class_name: 'Api::V1::PostResource', filterable: true, sortable: true
+      belongs_to :post, class_name: 'Api::V1::PostSchema', filterable: true, sortable: true
 
     end
   end
