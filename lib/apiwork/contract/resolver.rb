@@ -3,7 +3,7 @@
 module Apiwork
   module Contract
     # Resolves Contract classes for controller actions using smart defaults
-    # Naming convention: PostsController → PostsContract
+    # Naming convention: PostsController → PostContract (singular)
     class Resolver
       # Main resolve method - called from controller with all context
       #
@@ -39,13 +39,21 @@ module Apiwork
       end
 
       private_class_method def self.infer_from_naming_convention(controller_class)
-        # PostsController → PostsContract (keep plural)
+        # PostsController → PostContract (singularize)
         contract_name = inferred_contract_name(controller_class)
         constantize_safe(contract_name)
       end
 
       private_class_method def self.inferred_contract_name(controller_class)
-        controller_class.name.sub(/Controller$/, 'Contract')
+        # Remove 'Controller' suffix, singularize, then add 'Contract'
+        # Api::V1::AccountsController → Api::V1::AccountContract
+        base_name = controller_class.name.sub(/Controller$/, '')
+        parts = base_name.split('::')
+
+        # Singularize only the last part (the resource name)
+        parts[-1] = parts[-1].singularize
+
+        "#{parts.join('::')}Contract"
       end
 
       private_class_method def self.constantize_safe(class_name)
