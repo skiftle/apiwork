@@ -86,10 +86,10 @@ module Apiwork
                  end
                when :array
                  items = if options[:of]
-                           # Check if 'of' is a custom type
-                           if definition.contract_class.custom_types&.key?(options[:of])
-                             custom_type_block = definition.contract_class.custom_types[options[:of]]
-                             custom_def = Definition.new(definition.type, definition.contract_class)
+                           # Check if 'of' is a custom type (with scope resolution)
+                           custom_type_block = definition.contract_class.resolve_custom_type(options[:of], definition.type_scope)
+                           if custom_type_block
+                             custom_def = Definition.new(definition.type, definition.contract_class, type_scope: definition.type_scope)
                              custom_def.instance_eval(&custom_type_block)
                              build_openapi_schema(custom_def)
                            else
@@ -125,10 +125,10 @@ module Apiwork
       def build_openapi_variant(variant_def)
         type = variant_def[:type]
 
-        # Check if type is a custom type
-        if definition.contract_class.custom_types&.key?(type)
-          custom_type_block = definition.contract_class.custom_types[type]
-          custom_def = Definition.new(definition.type, definition.contract_class)
+        # Check if type is a custom type (with scope resolution)
+        custom_type_block = definition.contract_class.resolve_custom_type(type, definition.type_scope)
+        if custom_type_block
+          custom_def = Definition.new(definition.type, definition.contract_class, type_scope: definition.type_scope)
           custom_def.instance_eval(&custom_type_block)
           return build_openapi_schema(custom_def)
         end
@@ -141,10 +141,10 @@ module Apiwork
         # Handle array variant
         if type == :array
           items = if variant_def[:of]
-                    # Check if 'of' is a custom type
-                    if definition.contract_class.custom_types&.key?(variant_def[:of])
-                      custom_type_block = definition.contract_class.custom_types[variant_def[:of]]
-                      custom_def = Definition.new(definition.type, definition.contract_class)
+                    # Check if 'of' is a custom type (with scope resolution)
+                    custom_type_block = definition.contract_class.resolve_custom_type(variant_def[:of], definition.type_scope)
+                    if custom_type_block
+                      custom_def = Definition.new(definition.type, definition.contract_class, type_scope: definition.type_scope)
                       custom_def.instance_eval(&custom_type_block)
                       build_openapi_schema(custom_def)
                     else
@@ -215,10 +215,10 @@ module Apiwork
                  end
                when :array
                  items = if options[:of]
-                           # Check if 'of' is a custom type
-                           if definition.contract_class.custom_types&.key?(options[:of])
-                             custom_type_block = definition.contract_class.custom_types[options[:of]]
-                             custom_def = Definition.new(definition.type, definition.contract_class)
+                           # Check if 'of' is a custom type (with scope resolution)
+                           custom_type_block = definition.contract_class.resolve_custom_type(options[:of], definition.type_scope)
+                           if custom_type_block
+                             custom_def = Definition.new(definition.type, definition.contract_class, type_scope: definition.type_scope)
                              custom_def.instance_eval(&custom_type_block)
                              build_transport_schema(custom_def, key_transform)
                            else
@@ -257,10 +257,10 @@ module Apiwork
       def build_transport_variant(variant_def, key_transform)
         type = variant_def[:type]
 
-        # Check if type is a custom type
-        if definition.contract_class.custom_types&.key?(type)
-          custom_type_block = definition.contract_class.custom_types[type]
-          custom_def = Definition.new(definition.type, definition.contract_class)
+        # Check if type is a custom type (with scope resolution)
+        custom_type_block = definition.contract_class.resolve_custom_type(type, definition.type_scope)
+        if custom_type_block
+          custom_def = Definition.new(definition.type, definition.contract_class, type_scope: definition.type_scope)
           custom_def.instance_eval(&custom_type_block)
           return build_transport_schema(custom_def, key_transform)
         end
@@ -273,10 +273,10 @@ module Apiwork
         # Handle array variant
         if type == :array
           items = if variant_def[:of]
-                    # Check if 'of' is a custom type
-                    if definition.contract_class.custom_types&.key?(variant_def[:of])
-                      custom_type_block = definition.contract_class.custom_types[variant_def[:of]]
-                      custom_def = Definition.new(definition.type, definition.contract_class)
+                    # Check if 'of' is a custom type (with scope resolution)
+                    custom_type_block = definition.contract_class.resolve_custom_type(variant_def[:of], definition.type_scope)
+                    if custom_type_block
+                      custom_def = Definition.new(definition.type, definition.contract_class, type_scope: definition.type_scope)
                       custom_def.instance_eval(&custom_type_block)
                       build_transport_schema(custom_def, key_transform)
                     else
@@ -346,10 +346,10 @@ module Apiwork
                  end
                when :array
                  items = if options[:of]
-                           # Check if 'of' is a custom type
-                           if definition.contract_class.custom_types&.key?(options[:of])
-                             custom_type_block = definition.contract_class.custom_types[options[:of]]
-                             custom_def = Definition.new(definition.type, definition.contract_class)
+                           # Check if 'of' is a custom type (with scope resolution)
+                           custom_type_block = definition.contract_class.resolve_custom_type(options[:of], definition.type_scope)
+                           if custom_type_block
+                             custom_def = Definition.new(definition.type, definition.contract_class, type_scope: definition.type_scope)
                              custom_def.instance_eval(&custom_type_block)
                              build_zod_schema(custom_def)
                            else
@@ -386,10 +386,10 @@ module Apiwork
       def build_zod_variant(variant_def)
         type = variant_def[:type]
 
-        # Check if type is a custom type
-        if definition.contract_class.custom_types&.key?(type)
-          custom_type_block = definition.contract_class.custom_types[type]
-          custom_def = Definition.new(definition.type, definition.contract_class)
+        # Check if type is a custom type (with scope resolution)
+        custom_type_block = definition.contract_class.resolve_custom_type(type, definition.type_scope)
+        if custom_type_block
+          custom_def = Definition.new(definition.type, definition.contract_class, type_scope: definition.type_scope)
           custom_def.instance_eval(&custom_type_block)
           return build_zod_schema(custom_def)
         end
@@ -402,10 +402,10 @@ module Apiwork
         # Handle array variant
         if type == :array
           items = if variant_def[:of]
-                    # Check if 'of' is a custom type
-                    if definition.contract_class.custom_types&.key?(variant_def[:of])
-                      custom_type_block = definition.contract_class.custom_types[variant_def[:of]]
-                      custom_def = Definition.new(definition.type, definition.contract_class)
+                    # Check if 'of' is a custom type (with scope resolution)
+                    custom_type_block = definition.contract_class.resolve_custom_type(variant_def[:of], definition.type_scope)
+                    if custom_type_block
+                      custom_def = Definition.new(definition.type, definition.contract_class, type_scope: definition.type_scope)
                       custom_def.instance_eval(&custom_type_block)
                       build_zod_schema(custom_def)
                     else
