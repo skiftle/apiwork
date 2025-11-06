@@ -153,7 +153,7 @@ module Apiwork
           reflection = resource_class.model_class&.reflect_on_association(name)
 
           if resolved_resource_class.nil? && resource_class.model_class
-            resolved_resource_class = Resource::Resolver.from_association(reflection, resource_class)
+            resolved_resource_class = Schema::Resolver.from_association(reflection, resource_class)
           end
 
           # Constantize if string

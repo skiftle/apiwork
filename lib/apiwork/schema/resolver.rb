@@ -3,19 +3,19 @@
 require 'concurrent/map'
 
 module Apiwork
-  module Resource
+  module Schema
     # Centralized service for resolving Resource classes from various contexts.
     # Handles auto-discovery with caching and namespace detection.
     #
     # @example Finding resource from model
-    #   Resource::Resolver.from_model(Client) # => Api::V1::ClientResource
+    #   Schema::Resolver.from_model(Client) # => Api::V1::ClientSchema
     #
     # @example Finding resource from controller
-    #   Resource::Resolver.from_controller(Api::V1::ClientsController) # => Api::V1::ClientResource
+    #   Schema::Resolver.from_controller(Api::V1::ClientsController) # => Api::V1::ClientSchema
     #
     # @example Finding resource from association
     #   reflection = Client.reflect_on_association(:projects)
-    #   Resource::Resolver.from_association(reflection, ClientResource) # => Api::V1::ProjectResource
+    #   Schema::Resolver.from_association(reflection, ClientSchema) # => Api::V1::ProjectSchema
     #
     class Resolver
       # Thread-safe cache for resolved resource classes
@@ -37,11 +37,11 @@ module Apiwork
           @cache.fetch_or_store(cache_key) do
             if namespace
               # Explicit namespace provided - use it
-              resolve_resource_class("#{namespace}::#{model_class.model_name}Resource")
+              resolve_resource_class("#{namespace}::#{model_class.model_name}Schema")
             else
               # No namespace - try root level (global scope)
-              # Example: Client → ClientResource (not Api::V1::ClientResource)
-              resolve_resource_class("#{model_class.model_name}Resource")
+              # Example: Client → ClientSchema (not Api::V1::ClientSchema)
+              resolve_resource_class("#{model_class.model_name}Schema")
             end
           end
         end
@@ -61,10 +61,10 @@ module Apiwork
           @cache.fetch_or_store(cache_key) do
             if namespace.present?
               # Controller has namespace (e.g., Api::V1::ClientsController)
-              resolve_resource_class("#{namespace}::#{resource_name}Resource")
+              resolve_resource_class("#{namespace}::#{resource_name}Schema")
             else
               # Controller at root level (e.g., ClientsController)
-              resolve_resource_class("#{resource_name}Resource")
+              resolve_resource_class("#{resource_name}Schema")
             end
           end
         end
@@ -85,7 +85,7 @@ module Apiwork
           cache_key = "association:#{namespace}:#{associated_model.name}"
 
           @cache.fetch_or_store(cache_key) do
-            resource_class_name = "#{namespace}::#{associated_model.name}Resource"
+            resource_class_name = "#{namespace}::#{associated_model.name}Schema"
             resource_class_name.safe_constantize
           end
         end
@@ -176,8 +176,8 @@ module Apiwork
           class_name.constantize
         rescue NameError => e
           raise Apiwork::ConfigurationError,
-                "Could not find Resource class '#{class_name}'. " \
-                'Make sure the resource exists and follows the naming convention. ' \
+                "Could not find Schema class '#{class_name}'. " \
+                'Make sure the schema exists and follows the naming convention. ' \
                 "Error: #{e.message}"
         end
       end

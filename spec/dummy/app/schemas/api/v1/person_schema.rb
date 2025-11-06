@@ -2,10 +2,10 @@
 
 module Api
   module V1
-    # PersonResource - Demonstrates irregular pluralization
+    # PersonSchema - Demonstrates irregular pluralization
     # Uses Post model but serializes with person/people root keys
-    class PersonResource < Apiwork::Resource::Base
-      model Post
+    class PersonSchema < Apiwork::Schema::Base
+      model 'Post'
       root :person, :people  # Explicit plural for irregular word
 
       attribute :id

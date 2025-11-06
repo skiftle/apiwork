@@ -8,7 +8,7 @@ module Apiwork
   module Contract
     class Base
       class << self
-        attr_accessor :_resource_class
+        attr_accessor :_schema_class
 
         def inherited(subclass)
           super
@@ -18,22 +18,28 @@ module Apiwork
           subclass.instance_variable_set(:@custom_types, {})
         end
 
-        # DSL method for explicit resource declaration
-        # Accepts Class, String, or Symbol for lazy loading
-        def resource(ref)
-          @_resource_class = ref
+        # DSL method for explicit schema declaration
+        # Accepts String for lazy loading (preferred per guidelines)
+        def schema(ref = nil)
+          if ref
+            # Setting schema - store reference
+            @_schema_class = ref
+          else
+            # Getting schema
+            @_schema_class
+          end
         end
 
-        # Get resource class (must be explicit)
-        def resource_class
-          return nil unless defined?(@_resource_class)
+        # Get schema class (resolves string references)
+        def schema_class
+          return nil unless @_schema_class
 
-          resolve_resource_ref(@_resource_class)
+          resolve_schema_ref(@_schema_class)
         end
 
-        # Check if this contract uses a resource
-        def uses_resource?
-          resource_class.present?
+        # Check if this contract uses a schema
+        def schema?
+          !@_schema_class.nil?
         end
 
         # DSL method to define a custom type
@@ -80,8 +86,8 @@ module Apiwork
           # Return existing definition if present
           return @action_definitions[action_sym] if @action_definitions.key?(action_sym)
 
-          # Auto-generate action if we have a resource (for any action, not just CRUD)
-          if resource_class
+          # Auto-generate action if we have a schema (for any action, not just CRUD)
+          if schema_class
             auto_generate_and_store_action(action_sym)
             return @action_definitions[action_sym]
           end
@@ -99,19 +105,20 @@ module Apiwork
 
         # Auto-generate and store a standard CRUD action (lazy loading)
         def auto_generate_and_store_action(action_name)
-          action_def = ActionDefinition.new(action_name, self)
-          @action_definitions[action_name.to_sym] = action_def
+          require_relative 'generator' unless defined?(Generator)
+          action_def = Generator.generate_action(schema_class, action_name)
+          @action_definitions[action_name.to_sym] = action_def if action_def
         end
 
-        # Resolve resource reference (Class, String, or Symbol)
-        def resolve_resource_ref(ref)
+        # Resolve schema reference (Class, String, or Symbol)
+        def resolve_schema_ref(ref)
           case ref
           when nil then nil
           when Class then ref
           when String then ref.constantize
           when Symbol then ref.to_s.camelize.constantize
           else
-            raise ArgumentError, "resource must be a Class, String, Symbol, or nil, got #{ref.class}"
+            raise ArgumentError, "schema must be a Class, String, Symbol, or nil, got #{ref.class}"
           end
         end
       end

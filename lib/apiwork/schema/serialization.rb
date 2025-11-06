@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Resource
+  module Schema
     module Serialization
       extend ActiveSupport::Concern
 
@@ -52,7 +52,7 @@ module Apiwork
         associated = object.public_send(name)
         return nil if associated.nil?
 
-        resource_class = definition.resource_class || detect_association_resource(name)
+        resource_class = definition.schema_class || detect_association_resource(name)
         return nil unless resource_class
 
         # Constantize if string
@@ -102,7 +102,7 @@ module Apiwork
 
       def detect_association_resource(association_name)
         reflection = object.class.reflect_on_association(association_name)
-        Resource::Resolver.from_association(reflection, self.class)
+        Schema::Resolver.from_association(reflection, self.class)
       end
     end
   end

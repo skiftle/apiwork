@@ -7,15 +7,15 @@ module Apiwork
       module Inference
         private
 
-        # Auto-discover the Resource class based on namespaces and resource name
+        # Auto-discover the Schema class based on namespaces and resource name
         def infer_resource_class(name)
-          # Build class name from namespaces array: [:api, :v1] -> 'Api::V1::AccountResource'
+          # Build class name from namespaces array: [:api, :v1] -> 'Api::V1::AccountSchema'
           resource_name = name.to_s.singularize.camelize
-          class_name = "#{namespaces_string}::#{resource_name}Resource"
+          class_name = "#{namespaces_string}::#{resource_name}Schema"
 
           class_name.constantize
         rescue NameError => e
-          ::Rails.logger&.warn "Could not find resource class: #{class_name}. Error: #{e.message}"
+          ::Rails.logger&.warn "Could not find schema class: #{class_name}. Error: #{e.message}"
           nil
         end
       end

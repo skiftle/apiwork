@@ -22,7 +22,7 @@ RSpec.describe 'Nested Attributes Configuration Errors', type: :request do
 
       # Attempting to create a resource with writable: true should raise ConfigurationError
       expect {
-        Class.new(Apiwork::Resource::Base) do
+        Class.new(Apiwork::Schema::Base) do
           model temp_model
           root :temp_article
 
@@ -51,7 +51,7 @@ RSpec.describe 'Nested Attributes Configuration Errors', type: :request do
 
       # This should NOT raise an error
       expect {
-        Class.new(Apiwork::Resource::Base) do
+        Class.new(Apiwork::Schema::Base) do
           model temp_model
           root :proper_article
 
@@ -78,7 +78,7 @@ RSpec.describe 'Nested Attributes Configuration Errors', type: :request do
       end
 
       begin
-        Class.new(Apiwork::Resource::Base) do
+        Class.new(Apiwork::Schema::Base) do
           model temp_model
 
           has_many :comments, class_name: 'Api::V1::CommentResource', writable: true

@@ -2,10 +2,10 @@
 
 module Api
   module V1
-    # SafeCommentContract - Contract for SafeCommentResource
+    # SafeCommentContract - Contract for SafeCommentSchema
     # Uses auto-generation with default behavior
-    class SafeCommentContract < Apiwork::Contract::Base
-      resource Api::V1::SafeCommentResource
+    class SafeCommentsContract < Apiwork::Contract::Base
+      schema 'Api::V1::Api::V1::SafeCommentSchema
 
       # Auto-generation will handle create/update actions
     end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Resource
+  module Schema
     module Querying
       module Filter
         extend ActiveSupport::Concern
@@ -147,7 +147,7 @@ module Apiwork
         # Build association filter conditions
         def build_join_conditions(key, value, association)
           reflection = model_class.reflect_on_association(key)
-          assoc_resource = association.resource_class || Apiwork::Resource::Resolver.from_association(reflection, self)
+          assoc_resource = association.schema_class || Apiwork::Schema::Resolver.from_association(reflection, self)
 
           # Constantize if string
           assoc_resource = assoc_resource.constantize if assoc_resource.is_a?(String)

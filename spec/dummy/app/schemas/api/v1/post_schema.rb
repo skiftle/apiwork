@@ -2,8 +2,8 @@
 
 module Api
   module V1
-    class PostResource < Apiwork::Resource::Base
-      model Post
+    class PostSchema < Apiwork::Schema::Base
+      model 'Post'
 
       with_options filterable: true, sortable: true do
         attribute :id
@@ -17,7 +17,7 @@ module Api
         end
       end
 
-      has_many :comments, class_name: 'Api::V1::CommentResource', writable: true, filterable: true, sortable: true, serializable: false
+      has_many :comments, class_name: 'Api::V1::CommentSchema', writable: true, filterable: true, sortable: true, serializable: false
     end
   end
 end
