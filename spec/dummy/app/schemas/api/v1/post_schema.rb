@@ -3,7 +3,7 @@
 module Api
   module V1
     class PostSchema < Apiwork::Schema::Base
-      model 'Post'
+      model Post
 
       with_options filterable: true, sortable: true do
         attribute :id

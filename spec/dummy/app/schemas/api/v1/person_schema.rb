@@ -5,7 +5,7 @@ module Api
     # PersonSchema - Demonstrates irregular pluralization
     # Uses Post model but serializes with person/people root keys
     class PersonSchema < Apiwork::Schema::Base
-      model 'Post'
+      model Post
       root :person, :people  # Explicit plural for irregular word
 
       attribute :id, filterable: true, sortable: true

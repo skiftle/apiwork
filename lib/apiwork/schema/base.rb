@@ -34,10 +34,16 @@ module Apiwork
 
       class << self
         # DSL method for explicit model declaration
-        # Accepts String for lazy loading (preferred per guidelines)
+        # Only accepts constant references (Zeitwerk autoloading)
         def model(ref = nil)
           if ref
-            # Setting model - store as string
+            # Validate that ref is a Class constant
+            unless ref.is_a?(Class)
+              raise ArgumentError, "model must be a Class constant, got #{ref.class}. " \
+                                   "Use: model Post (not 'Post' or :post)"
+            end
+
+            # Setting model - store class reference
             self._model_class = ref
 
             # Activate Model::Extension - this prepends all model-specific functionality

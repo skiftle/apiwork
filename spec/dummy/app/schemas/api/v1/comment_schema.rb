@@ -3,7 +3,7 @@
 module Api
   module V1
     class CommentSchema < Apiwork::Schema::Base
-      model 'Comment'
+      model Comment
 
       attribute :id, filterable: true, sortable: true
       attribute :content, writable: true, filterable: true, sortable: true
