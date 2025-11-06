@@ -34,14 +34,14 @@ module Apiwork
       end
 
       def merges_input?
-        return false unless contract_class.uses_resource?
+        return false unless contract_class.schema?
         return false if resets_input?
 
         true
       end
 
       def merges_output?
-        return false unless contract_class.uses_resource?
+        return false unless contract_class.schema?
         return false if resets_output?
 
         true
@@ -58,7 +58,7 @@ module Apiwork
         if block
           if should_auto_wrap_input?
             # Automatically wrap in root_key for reset writable actions
-            root_key = contract_class.resource_class.root_key.singular.to_sym
+            root_key = contract_class.schema_class.root_key.singular.to_sym
             @input_definition.param root_key, type: :object, required: true do
               instance_eval(&block)
             end
@@ -162,7 +162,7 @@ module Apiwork
       # @param includes [Hash, nil] Validated includes from query params
       # @return [Hash, Array] Serialized data (not yet validated)
       def serialize_data(data, context: {}, includes: nil)
-        return data unless contract_class.uses_resource?
+        return data unless contract_class.schema?
 
         needs_serialization = if data.is_a?(Hash)
           false # Already a hash
@@ -172,19 +172,19 @@ module Apiwork
           true # ActiveRecord object/relation
         end
 
-        needs_serialization ? contract_class.resource_class.serialize(data, context: context, includes: includes) : data
+        needs_serialization ? contract_class.schema_class.serialize(data, context: context, includes: includes) : data
       end
 
       private
 
       # Build virtual output definition from resource class
       def build_virtual_output_definition
-        return nil unless contract_class.resource_class
+        return nil unless contract_class.schema_class
 
         virtual_def = Definition.new(:output, contract_class)
 
         # Add all resource attributes
-        contract_class.resource_class.attribute_definitions.each do |name, attr_def|
+        contract_class.schema_class.attribute_definitions.each do |name, attr_def|
           virtual_def.params[name] = {
             name: name,
             type: Generator.map_type(attr_def.type),
@@ -193,7 +193,7 @@ module Apiwork
         end
 
         # Add associations
-        contract_class.resource_class.association_definitions.each do |name, assoc_def|
+        contract_class.schema_class.association_definitions.each do |name, assoc_def|
           if assoc_def.singular?
             virtual_def.params[name] = { name: name, type: :object, required: false, nullable: assoc_def.nullable? }
           elsif assoc_def.collection?
@@ -212,7 +212,7 @@ module Apiwork
 
       def schema_mismatch?(response, output_def)
         # Check if schema expects single resource but response has collection (plural key)
-        resource_key = contract_class.resource_class&.root_key
+        resource_key = contract_class.schema_class&.root_key
         return false unless resource_key
 
         singular_key = resource_key.singular.to_sym
@@ -283,11 +283,11 @@ module Apiwork
       # Auto-generate input definition for CRUD and custom actions
       # Custom actions don't get auto-generated input - must define explicitly if needed
       def auto_generate_input_if_needed
-        return unless contract_class.uses_resource?
+        return unless contract_class.schema?
 
         require_relative 'generator' unless defined?(Apiwork::Contract::Generator)
 
-        rc = contract_class.resource_class
+        rc = contract_class.schema_class
         @input_definition = Definition.new(:input, contract_class)
 
         case action_name.to_sym
@@ -310,11 +310,11 @@ module Apiwork
       # Auto-generate output definition for CRUD and custom actions
       # Custom actions get single resource output by default (like create/show/update)
       def auto_generate_output_if_needed
-        return unless contract_class.uses_resource?
+        return unless contract_class.schema?
 
         require_relative 'generator' unless defined?(Apiwork::Contract::Generator)
 
-        rc = contract_class.resource_class
+        rc = contract_class.schema_class
         @output_definition = Definition.new(:output, contract_class)
 
         case action_name.to_sym
@@ -335,7 +335,7 @@ module Apiwork
       # Only for writable actions (create/update) with reset_input! and resource
       def should_auto_wrap_input?
         return false unless @reset_input  # Only when reset_input! is used
-        return false unless contract_class.uses_resource?
+        return false unless contract_class.schema?
         return false unless writable_action?
         true
       end

@@ -2,8 +2,8 @@
 
 module Api
   module V1
-    class PostContract < Apiwork::Contract::Base
-      resource PostResource
+    class PostsContract < Apiwork::Contract::Base
+      schema 'Api::V1::PostSchema'
 
       action :create do
         input do

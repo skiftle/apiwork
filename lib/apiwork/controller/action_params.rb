@@ -8,29 +8,29 @@ module Apiwork
       def action_params(options = {})
         case action_name.to_sym
         when :create, :update
-          # Priority: contract_class_name > resource_class_name > default
-          resource = if options[:contract_class_name]
-            # Get resource from contract
+          # Priority: contract_class_name > schema_class_name > default
+          schema = if options[:contract_class_name]
+            # Get schema from contract
             contract = options[:contract_class_name].constantize
             action_def = contract.action_definition(action_name.to_sym)
-            action_def.contract_class.resource_class
-          elsif options[:resource_class_name]
-            options[:resource_class_name].constantize
+            action_def.contract_class.schema_class
+          elsif options[:schema_class_name] || options[:resource_class_name] # Support legacy
+            (options[:schema_class_name] || options[:resource_class_name]).constantize
           else
-            Resource::Resolver.from_controller(self.class)
+            Schema::Resolver.from_controller(self.class)
           end
 
-          # Use root_key if resource exists, otherwise return flat params
-          params = if resource&.root_key
-            validated_request.params[resource.root_key.singular.to_sym] || {}
+          # Use root_key if schema exists, otherwise return flat params
+          params = if schema&.root_key
+            validated_request.params[schema.root_key.singular.to_sym] || {}
           else
-            # Contract without resource - params already validated and structured by contract
+            # Contract without schema - params already validated and structured by contract
             validated_request.params
           end
 
           # Transform writable associations to _attributes format for Rails nested attributes
-          if resource
-            transform_nested_attributes(params, resource, action_name.to_sym)
+          if schema
+            transform_nested_attributes(params, schema, action_name.to_sym)
           else
             params
           end
@@ -43,26 +43,26 @@ module Apiwork
 
       # Transforms writable associations to Rails nested attributes format
       # Example: { comments: [...] } becomes { comments_attributes: [...] }
-      def transform_nested_attributes(params, resource, action)
+      def transform_nested_attributes(params, schema, action)
         return params unless params.is_a?(Hash)
 
         transformed = params.dup
 
         # Process each writable association
-        resource.association_definitions.each do |name, assoc_def|
+        schema.association_definitions.each do |name, assoc_def|
           next unless assoc_def.writable_for?(action)
           next unless transformed.key?(name)
 
-          # Note: Validation of accepts_nested_attributes_for happens at resource definition time
-          # in AssociationDefinition#validate_nested_attributes! (lines 113-131)
+          # Note: Validation of accepts_nested_attributes_for happens at schema definition time
+          # in AssociationDefinition#validate_nested_attributes!
 
           # Transform the association
           value = transformed.delete(name)
-          nested_resource = resolve_nested_resource(assoc_def)
+          nested_schema = resolve_nested_schema(assoc_def)
 
           transformed["#{name}_attributes".to_sym] = transform_association_value(
             value,
-            nested_resource,
+            nested_schema,
             action
           )
         end
@@ -70,35 +70,35 @@ module Apiwork
         transformed
       end
 
-      # Resolves the nested resource class from an association definition
+      # Resolves the nested schema class from an association definition
       # Handles both String and Class types
-      def resolve_nested_resource(assoc_def)
-        resource_class = assoc_def.resource_class
+      def resolve_nested_schema(assoc_def)
+        schema_class = assoc_def.schema_class
 
-        if resource_class.is_a?(String)
-          resource_class.constantize rescue nil
+        if schema_class.is_a?(String)
+          schema_class.constantize rescue nil
         else
-          resource_class
+          schema_class
         end
       end
 
       # Transforms an association value (Array or Hash) to _attributes format
       # Recursively processes nested associations
-      def transform_association_value(value, nested_resource, action)
+      def transform_association_value(value, nested_schema, action)
         case value
         when Array
           # has_many association
           value.map do |nested_params|
-            if nested_params.is_a?(Hash) && nested_resource
-              transform_nested_attributes(nested_params, nested_resource, action)
+            if nested_params.is_a?(Hash) && nested_schema
+              transform_nested_attributes(nested_params, nested_schema, action)
             else
               nested_params
             end
           end
         when Hash
           # belongs_to or has_one association
-          if nested_resource
-            transform_nested_attributes(value, nested_resource, action)
+          if nested_schema
+            transform_nested_attributes(value, nested_schema, action)
           else
             value
           end

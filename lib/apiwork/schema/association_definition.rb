@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Resource
+  module Schema
     class AssociationDefinition
-      attr_reader :name, :type, :resource_class, :allow_destroy
+      attr_reader :name, :type, :schema_class, :allow_destroy
 
       def initialize(name, type:, klass:, **options)
         @name = name
         @type = type # :has_one, :has_many, :belongs_to
         @klass = klass
         @model_class = klass.model_class
-        @resource_class = options[:class_name]
+        @schema_class = options[:class_name]
         @filterable = options.fetch(:filterable, false)
         @sortable = options.fetch(:sortable, false)
         @serializable = options.fetch(:serializable, false)
@@ -95,7 +95,7 @@ module Apiwork
       end
 
       def validate_association_exists!
-        return if @klass.abstract_class || !@model_class || @resource_class
+        return if @klass.abstract_class || !@model_class || @schema_class
 
         reflection = @model_class.reflect_on_association(@name)
         return if reflection

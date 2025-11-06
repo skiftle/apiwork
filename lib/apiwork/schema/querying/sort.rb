@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Resource
+  module Schema
     module Querying
       module Sort
         extend ActiveSupport::Concern
@@ -81,7 +81,7 @@ module Apiwork
                   next
                 end
 
-                association_resource = association_definitions[key].resource_class || detect_association_resource(key)
+                association_resource = association_definitions[key].schema_class || detect_association_resource(key)
 
                 if association_resource.nil?
                   error = ArgumentError.new("Cannot find resource for association #{key}")

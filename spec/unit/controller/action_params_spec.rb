@@ -246,31 +246,31 @@ RSpec.describe Apiwork::Controller::ActionParams do
   end
 
 
-  describe '#resolve_nested_resource' do
+  describe '#resolve_nested_schema' do
     let(:controller) { controller_class.new(:create, {}) }
 
-    it 'constantizes string resource class' do
+    it 'constantizes string schema class' do
       nested_class = Class.new
-      stub_const('TestResource', nested_class)
+      stub_const('TestSchema', nested_class)
 
-      assoc_def = double('AssociationDefinition', resource_class: 'TestResource')
+      assoc_def = double('AssociationDefinition', schema_class: 'TestSchema')
 
-      result = controller.send(:resolve_nested_resource, assoc_def)
+      result = controller.send(:resolve_nested_schema, assoc_def)
       expect(result).to eq(nested_class)
     end
 
     it 'returns class directly if already a class' do
       nested_class = Class.new
-      assoc_def = double('AssociationDefinition', resource_class: nested_class)
+      assoc_def = double('AssociationDefinition', schema_class: nested_class)
 
-      result = controller.send(:resolve_nested_resource, assoc_def)
+      result = controller.send(:resolve_nested_schema, assoc_def)
       expect(result).to eq(nested_class)
     end
 
     it 'returns nil if constantize fails' do
-      assoc_def = double('AssociationDefinition', resource_class: 'NonExistentClass')
+      assoc_def = double('AssociationDefinition', schema_class: 'NonExistentClass')
 
-      result = controller.send(:resolve_nested_resource, assoc_def)
+      result = controller.send(:resolve_nested_schema, assoc_def)
       expect(result).to be_nil
     end
   end

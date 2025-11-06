@@ -204,9 +204,9 @@ module Apiwork
         namespaces = assoc_info[:namespaces]
         name = assoc_info[:name]
 
-        # Build class name: e.g., Api::V1::AddressResource
+        # Build class name: e.g., Api::V1::AddressSchema
         ns_prefix = namespaces.map(&:camelize).join('::')
-        class_name = "#{ns_prefix}::#{name.to_s.camelize}Resource"
+        class_name = "#{ns_prefix}::#{name.to_s.camelize}Schema"
 
         class_name.constantize
       rescue NameError
@@ -218,8 +218,8 @@ module Apiwork
       def add_action_schemas(schema_info, schema_class)
         action_schemas = {}
 
-        # Get resource name without "Resource" suffix
-        resource_name = schema_class.name.demodulize.gsub(/Resource$/, '')
+        # Get schema name without "Schema" suffix
+        resource_name = schema_class.name.demodulize.gsub(/Schema$/, '')
 
         # Member actions
         schema_class.instance_variable_get(:@member_actions)&.each do |action, schema|

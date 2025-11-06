@@ -2,11 +2,11 @@
 
 module Api
   module V1
-    # ArticleContract - Minimal input contract for Article resources
+    # ArticlesContract - Minimal input contract for Article resources
     # Demonstrates how contracts can define minimal input requirements
     # while the underlying model may have additional fields
-    class ArticleContract < Apiwork::Contract::Base
-      resource Api::V1::ArticleResource
+    class ArticlesContract < Apiwork::Contract::Base
+      schema 'Api::V1::ArticleSchema'
 
       # Standard CRUD actions - only require title
       # Auto-wrapping in :article happens automatically with reset_input!
@@ -25,7 +25,7 @@ module Api
       end
 
       # Note: show, index, destroy use default behavior
-      # and serialize through ArticleResource
+      # and serialize through ArticleSchema
     end
   end
 end

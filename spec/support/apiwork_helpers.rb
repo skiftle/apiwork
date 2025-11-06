@@ -73,7 +73,7 @@ module ApiworkHelpers
 
   # Test resource class
   def test_resource_class(_name = 'TestResource', &block)
-    Class.new(Apiwork::Resource::Base) do
+    Class.new(Apiwork::Schema::Base) do
       self.model_class = Class.new do
         def self.column_names
           %w[id name email age created_at updated_at]

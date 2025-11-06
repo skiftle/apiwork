@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Resource
+  module Schema
     module Querying
       module Paginate
         extend ActiveSupport::Concern

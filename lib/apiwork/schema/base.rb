@@ -12,7 +12,7 @@ require_relative 'serialization'
 require_relative 'querying/includes'
 
 module Apiwork
-  module Resource
+  module Schema
     class Base
       include Serialization
       include Querying::Filter
@@ -41,26 +41,25 @@ module Apiwork
 
       class << self
         # DSL method for explicit model declaration
-        # Accepts Class, String, or Symbol for lazy loading
-        def model(ref)
-          self._model_class = case ref
-          when Class then ref
-          when String then ref.constantize
-          when Symbol then ref.to_s.camelize.constantize
-          when nil then nil
+        # Accepts String for lazy loading (preferred per guidelines)
+        def model(ref = nil)
+          if ref
+            # Setting model - store as string
+            self._model_class = ref
           else
-            raise ArgumentError, "model must be a Class, String, Symbol, or nil, got #{ref.class}"
+            # Getting model
+            _model_class
           end
         end
 
-        def model_class
-          return _model_class if _model_class
+        # Check if this schema uses a model
+        def model?
+          !_model_class.nil?
+        end
 
-          # Auto-detect from Resource class name
-          resource_name = name.demodulize.sub(/Resource$/, '')
-          resource_name.constantize
-        rescue NameError
-          nil
+        def model_class
+          return nil unless _model_class
+          _model_class.is_a?(String) ? _model_class.constantize : _model_class
         end
 
         def model_class=(klass)
@@ -145,8 +144,8 @@ module Apiwork
         #
         # @return [RootKey] object with singular and plural forms
         # @example
-        #   ClientResource.root_key.singular  # => "client"
-        #   ClientResource.root_key.plural    # => "clients"
+        #   ClientSchema.root_key.singular  # => "client"
+        #   ClientSchema.root_key.plural    # => "clients"
         def root_key
           # Priority: explicit root DSL > type attribute > model name
           if _root

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Resource
+  module Schema
     class AttributeDefinition
       attr_reader :name, :type, :enum, :required
 

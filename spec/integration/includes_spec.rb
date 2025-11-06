@@ -77,7 +77,7 @@ RSpec.describe 'Includes API', type: :request do
   describe 'nested includes' do
     before do
       # For nested includes test, we need post association on comments to be serializable: false
-      Api::V1::CommentResource.association_definitions[:post].instance_variable_set(:@serializable, false)
+      Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@serializable, false)
 
       # Clear CommentContract cache too
       if defined?(Api::V1::CommentContract)
@@ -88,7 +88,7 @@ RSpec.describe 'Includes API', type: :request do
 
     after do
       # Restore
-      Api::V1::CommentResource.association_definitions[:post].instance_variable_set(:@serializable, true)
+      Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@serializable, true)
 
       # Clear cache
       if defined?(Api::V1::CommentContract)

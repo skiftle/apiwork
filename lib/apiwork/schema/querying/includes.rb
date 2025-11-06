@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Resource
+  module Schema
     module Querying
       module Includes
         extend ActiveSupport::Concern
@@ -40,7 +40,7 @@ module Apiwork
                 includes_hash[key] = {}
               elsif value.is_a?(Hash)
                 # Nested include: recursively build for associated resource
-                assoc_resource = assoc_def.resource_class
+                assoc_resource = assoc_def.schema_class
                 if assoc_resource.is_a?(String)
                   assoc_resource = begin
                     assoc_resource.constantize
@@ -78,7 +78,7 @@ module Apiwork
               association = model_class.reflect_on_association(assoc_name)
               next if association&.polymorphic?
 
-              resource_class = assoc_def.resource_class || Apiwork::Resource::Resolver.from_association(association,
+              resource_class = assoc_def.schema_class || Apiwork::Schema::Resolver.from_association(association,
                                                                                                         self)
               if resource_class.respond_to?(:build_includes_hash)
                 nested_includes = resource_class.build_includes_hash(visited)

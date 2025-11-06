@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Resource
+  module Schema
     # Represents a root key for resource serialization
     #
     # Provides both singular and plural forms of the root key.
@@ -48,7 +48,7 @@ module Apiwork
 
       # Inspect for debugging
       def inspect
-        "#<Apiwork::Resource::RootKey singular=#{singular.inspect} plural=#{plural.inspect}>"
+        "#<Apiwork::Schema::RootKey singular=#{singular.inspect} plural=#{plural.inspect}>"
       end
     end
   end

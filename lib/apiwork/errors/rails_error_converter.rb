@@ -8,27 +8,27 @@ module Apiwork
     # with proper path tracking and JSON Pointers. It handles nested associations
     # recursively and reuses Rails error type symbols as error codes.
     #
-    # The root path is determined by the resource_class root_key:
+    # The root path is determined by the schema_class root_key:
     # - If root_key == :data → path: [:data, :name]
     # - If root_key == :type → path: [:comment, :name] (uses model singular name)
     #
     # Examples:
-    #   converter = RailsErrorConverter.new(client, resource_class: ClientResource)
+    #   converter = RailsErrorConverter.new(client, schema_class: ClientSchema)
     #   errors = converter.convert
     #   # => [
     #   #   StructuredError(code: :blank, path: [:data, :name], detail: "Name can't be blank"),
     #   #   StructuredError(code: :inclusion, path: [:data, :address, :country_code], ...)
     #   # ]
     class RailsErrorConverter
-      def initialize(record, resource_class: nil, root_path: nil)
+      def initialize(record, schema_class: nil, resource_class: nil, root_path: nil)
         @record = record
-        @resource_class = resource_class
+        @schema_class = schema_class || resource_class # Support legacy resource_class param
 
-        # Determine root path based on resource_class root_key
+        # Determine root path based on schema_class root_key
         @root_path = if root_path
                        Array(root_path)
-                     elsif resource_class
-                       build_root_path_from_resource_class(resource_class)
+                     elsif @schema_class
+                       build_root_path_from_schema_class(@schema_class)
                      else
                        [:data] # Default fallback
                      end
@@ -48,11 +48,14 @@ module Apiwork
 
       private
 
-      # Build root path from resource_class
-      def build_root_path_from_resource_class(resource_class)
-        type_key = resource_class.root_key.singular
+      # Build root path from schema_class
+      def build_root_path_from_schema_class(schema_class)
+        type_key = schema_class.root_key.singular
         [type_key.to_sym]
       end
+
+      # Legacy method name (deprecated)
+      alias_method :build_root_path_from_resource_class, :build_root_path_from_schema_class
 
       # Convert direct errors on the record
       # Excludes nested association errors (those with dots like "address.country_code")

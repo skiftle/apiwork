@@ -8,15 +8,15 @@ module Apiwork
     class Generator
       # Generate an ActionDefinition for a specific action
       # This is used when no explicit contract exists
-      # @param resource_class [Class] The resource class to generate from
+      # @param schema_class [Class] The schema class to generate from
       # @param action [Symbol] The action name
       # @return [ActionDefinition, nil] Generated action definition or nil
-      def self.generate_action(resource_class, action)
-        return nil unless resource_class
+      def self.generate_action(schema_class, action)
+        return nil unless schema_class
 
         # Create a temporary anonymous contract class
         contract_class = Class.new(Base) do
-          resource resource_class
+          schema schema_class
         end
 
         # Create and configure the action definition
@@ -25,31 +25,31 @@ module Apiwork
         case action.to_sym
         when :index
           action_def.input do
-            Generator.generate_query_params(self, resource_class)
+            Generator.generate_query_params(self, schema_class)
           end
           action_def.output do
-            Generator.generate_collection_output(self, resource_class)
+            Generator.generate_collection_output(self, schema_class)
           end
         when :show
           action_def.input do
             # Empty input - strict mode will reject any query params
           end
           action_def.output do
-            Generator.generate_single_output(self, resource_class)
+            Generator.generate_single_output(self, schema_class)
           end
         when :create
           action_def.input do
-            Generator.generate_writable_input(self, resource_class, :create)
+            Generator.generate_writable_input(self, schema_class, :create)
           end
           action_def.output do
-            Generator.generate_single_output(self, resource_class)
+            Generator.generate_single_output(self, schema_class)
           end
         when :update
           action_def.input do
-            Generator.generate_writable_input(self, resource_class, :update)
+            Generator.generate_writable_input(self, schema_class, :update)
           end
           action_def.output do
-            Generator.generate_single_output(self, resource_class)
+            Generator.generate_single_output(self, schema_class)
           end
         when :destroy
           # Destroy has no input/output by default
@@ -58,7 +58,7 @@ module Apiwork
         action_def
       end
 
-      def self.generate_query_params(definition, resource_class)
+      def self.generate_query_params(definition, schema_class)
         # Get contract class from definition
         contract_class = definition.contract_class
 
@@ -66,8 +66,8 @@ module Apiwork
         define_filter_types(contract_class)
 
         # Generate resource-specific filter and sort types (with recursive associations)
-        filter_type = generate_resource_filter_type(contract_class, resource_class)
-        sort_type = generate_resource_sort_type(contract_class, resource_class)
+        filter_type = generate_resource_filter_type(contract_class, schema_class)
+        sort_type = generate_resource_sort_type(contract_class, schema_class)
 
         # Generate nested filter parameter with resource-specific filters
         definition.param :filter, type: :union, required: false do
@@ -90,15 +90,15 @@ module Apiwork
 
         # Generate nested include parameter with strict validation
         # Type includes ALL associations - contract validates structure
-        include_type = generate_resource_include_type(contract_class, resource_class)
+        include_type = generate_resource_include_type(contract_class, schema_class)
         definition.param :include, type: include_type, required: false
       end
 
       # Generate input contract with root key (like params.require(:service).permit(...))
       # Creates: {service: {icon: ..., name: ...}}
-      def self.generate_writable_input(definition, resource_class, context)
-        root_key = resource_class.root_key.singular.to_sym
-        rc = resource_class
+      def self.generate_writable_input(definition, schema_class, context)
+        root_key = schema_class.root_key.singular.to_sym
+        rc = schema_class
         ctx = context
 
         # Create nested param with root key - REQUIRED (no flat format allowed)
@@ -107,9 +107,9 @@ module Apiwork
         end
       end
 
-      def self.generate_writable_params(definition, resource_class, context)
+      def self.generate_writable_params(definition, schema_class, context)
         # Generate from writable attributes
-        resource_class.attribute_definitions.each do |name, attr_def|
+        schema_class.attribute_definitions.each do |name, attr_def|
           next unless attr_def.writable_for?(context)
 
           param_options = {
@@ -123,7 +123,7 @@ module Apiwork
         end
 
         # Generate from writable associations
-        resource_class.association_definitions.each do |name, assoc_def|
+        schema_class.association_definitions.each do |name, assoc_def|
           next unless assoc_def.writable_for?(context)
 
           param_options = {
@@ -136,20 +136,20 @@ module Apiwork
         end
       end
 
-      def self.generate_single_output(definition, resource_class)
+      def self.generate_single_output(definition, schema_class)
         # Full response structure
         definition.param :ok, type: :boolean, required: true
 
         # Data nested under root key
-        root_key = resource_class.root_key.singular.to_sym
+        root_key = schema_class.root_key.singular.to_sym
         definition.param root_key, type: :object, required: true do
           # All resource attributes
-          resource_class.attribute_definitions.each do |name, attr_def|
+          schema_class.attribute_definitions.each do |name, attr_def|
             param name, type: Generator.map_type(attr_def.type), required: false
           end
 
           # Add associations if present
-          resource_class.association_definitions.each do |name, assoc_def|
+          schema_class.association_definitions.each do |name, assoc_def|
             if assoc_def.singular?
               param name, type: :object, required: false, nullable: assoc_def.nullable?
             elsif assoc_def.collection?
@@ -162,20 +162,20 @@ module Apiwork
         definition.param :meta, type: :object, required: false
       end
 
-      def self.generate_collection_output(definition, resource_class)
+      def self.generate_collection_output(definition, schema_class)
         # Full response structure
         definition.param :ok, type: :boolean, required: true
 
         # Array of items nested under root key
-        root_key = resource_class.root_key.plural.to_sym
+        root_key = schema_class.root_key.plural.to_sym
         definition.param root_key, type: :array, required: true, of: :object do
           # Each item has all resource attributes
-          resource_class.attribute_definitions.each do |name, attr_def|
+          schema_class.attribute_definitions.each do |name, attr_def|
             param name, type: Generator.map_type(attr_def.type), required: false
           end
 
           # Add associations if present
-          resource_class.association_definitions.each do |name, assoc_def|
+          schema_class.association_definitions.each do |name, assoc_def|
             if assoc_def.singular?
               param name, type: :object, required: false, nullable: assoc_def.nullable?
             elsif assoc_def.collection?
@@ -293,23 +293,23 @@ module Apiwork
 
       # Generate resource-specific filter type with recursive association support
       # @param contract_class [Class] The contract class to define types on
-      # @param resource_class [Class] The resource class to generate filters for
+      # @param schema_class [Class] The resource class to generate filters for
       # @param visited [Set] Set of visited resource classes (circular reference protection)
       # @param depth [Integer] Current recursion depth (max 3)
-      def self.generate_resource_filter_type(contract_class, resource_class, visited: Set.new, depth: 0)
-        type_name = :"#{resource_class.root_key.singular}_filter"
+      def self.generate_resource_filter_type(contract_class, schema_class, visited: Set.new, depth: 0)
+        type_name = :"#{schema_class.root_key.singular}_filter"
 
         # Skip if already defined or max depth reached
         return type_name if contract_class.custom_types&.key?(type_name)
         return type_name if depth >= 3
 
         # Add to visited set
-        visited = visited.dup.add(resource_class)
+        visited = visited.dup.add(schema_class)
 
         # Define the filter type
         contract_class.type type_name do
           # Add filters for each filterable attribute
-          resource_class.attribute_definitions.each do |name, attr_def|
+          schema_class.attribute_definitions.each do |name, attr_def|
             next unless attr_def.filterable?
 
             filter_type = Generator.determine_filter_type(attr_def.type)
@@ -329,7 +329,7 @@ module Apiwork
           end
 
           # Add filters for associations (recursive)
-          resource_class.association_definitions.each do |name, assoc_def|
+          schema_class.association_definitions.each do |name, assoc_def|
             # Skip if circular reference
             assoc_resource = Generator.resolve_association_resource(assoc_def)
             next unless assoc_resource
@@ -353,23 +353,23 @@ module Apiwork
 
       # Generate resource-specific sort type with recursive association support
       # @param contract_class [Class] The contract class to define types on
-      # @param resource_class [Class] The resource class to generate sorts for
+      # @param schema_class [Class] The resource class to generate sorts for
       # @param visited [Set] Set of visited resource classes (circular reference protection)
       # @param depth [Integer] Current recursion depth (max 3)
-      def self.generate_resource_sort_type(contract_class, resource_class, visited: Set.new, depth: 0)
-        type_name = :"#{resource_class.root_key.singular}_sort"
+      def self.generate_resource_sort_type(contract_class, schema_class, visited: Set.new, depth: 0)
+        type_name = :"#{schema_class.root_key.singular}_sort"
 
         # Skip if already defined or max depth reached
         return type_name if contract_class.custom_types&.key?(type_name)
         return type_name if depth >= 3
 
         # Add to visited set
-        visited = visited.dup.add(resource_class)
+        visited = visited.dup.add(schema_class)
 
         # Define the sort type
         contract_class.type type_name do
           # Add sort for each sortable attribute
-          resource_class.attribute_definitions.each do |name, attr_def|
+          schema_class.attribute_definitions.each do |name, attr_def|
             next unless attr_def.sortable?
 
             # Sort direction: asc or desc
@@ -377,7 +377,7 @@ module Apiwork
           end
 
           # Add sort for associations (recursive)
-          resource_class.association_definitions.each do |name, assoc_def|
+          schema_class.association_definitions.each do |name, assoc_def|
             # Skip if circular reference
             assoc_resource = Generator.resolve_association_resource(assoc_def)
             next unless assoc_resource
@@ -403,10 +403,10 @@ module Apiwork
       # @param assoc_def [AssociationDefinition] The association definition
       # @return [Class, nil] The associated resource class or nil
       def self.resolve_association_resource(assoc_def)
-        # If resource_class is explicitly set, use it
-        if assoc_def.resource_class
-          return assoc_def.resource_class if assoc_def.resource_class.is_a?(Class)
-          return assoc_def.resource_class.constantize rescue nil
+        # If schema_class is explicitly set, use it
+        if assoc_def.schema_class
+          return assoc_def.schema_class if assoc_def.schema_class.is_a?(Class)
+          return assoc_def.schema_class.constantize rescue nil
         end
 
         # Get the model class from the resource (stored during initialization)
@@ -421,32 +421,32 @@ module Apiwork
         assoc_model_class = reflection.klass rescue nil
         return nil unless assoc_model_class
 
-        # Find the corresponding resource class
-        # Convention: Model::User -> Api::V1::UserResource
-        # Support nested models: Model::Nested::User -> Api::V1::UserResource
-        resource_class_name = "Api::V1::#{assoc_model_class.name.demodulize}Resource"
-        resource_class_name.constantize rescue nil
+        # Find the corresponding schema class
+        # Convention: Model::User -> Api::V1::UserSchema
+        # Support nested models: Model::Nested::User -> Api::V1::UserSchema
+        schema_class_name = "Api::V1::#{assoc_model_class.name.demodulize}Schema"
+        schema_class_name.constantize rescue nil
       end
 
       # Generate resource-specific include type with recursive association support
       # @param contract_class [Class] The contract class to define types on
-      # @param resource_class [Class] The resource class to generate includes for
+      # @param schema_class [Class] The resource class to generate includes for
       # @param visited [Set] Set of visited resource classes (circular reference protection)
       # @param depth [Integer] Current recursion depth (max 3)
-      def self.generate_resource_include_type(contract_class, resource_class, visited: Set.new, depth: 0)
-        type_name = :"#{resource_class.root_key.singular}_include"
+      def self.generate_resource_include_type(contract_class, schema_class, visited: Set.new, depth: 0)
+        type_name = :"#{schema_class.root_key.singular}_include"
 
         # Skip if already defined or max depth reached
         return type_name if contract_class.custom_types&.key?(type_name)
         return type_name if depth >= 3
 
         # Add to visited set
-        visited = visited.dup.add(resource_class)
+        visited = visited.dup.add(schema_class)
 
         # Define the include type with ALL associations for strict validation
         # Contract validates structure, Resource applies validated includes
         contract_class.type type_name do
-          resource_class.association_definitions.each do |name, assoc_def|
+          schema_class.association_definitions.each do |name, assoc_def|
             assoc_resource = Generator.resolve_association_resource(assoc_def)
             next unless assoc_resource
 
