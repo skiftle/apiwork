@@ -1,7 +1,6 @@
 # Apiwork
 
-Apiwork is a small framework for building **contract-driven, type-safe APIs in Rails**. You still write your controllers and actions the way you’re used to —  
-but Apiwork takes care of everything around them: validation, serialization, queries, and documentation.
+Apiwork is a small framework for building **contract-driven, type-safe APIs in Rails**. You still write your controllers and actions the way you’re used to — but Apiwork takes care of everything around them: validation, serialization, queries, and documentation.
 
 You define your **contracts**, often based on simple **schemas** that describe your models, their attributes, and relationships. Apiwork can then validate input and output, build queries, and keep your API both safe and capable. And as a natural side effect, it can generate **OpenAPI**, **Zod**, and **TypeScript** definitions — all from one place.
 
