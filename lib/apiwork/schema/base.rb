@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 require_relative 'attribute_definition'
-require_relative 'association_definition'
 require_relative 'root_key'
 require_relative 'model/operators'
 require_relative 'model/querying'
 require_relative 'model/inspection'
+require_relative 'model/extension'
+require_relative 'model/attribute_definition'
+require_relative 'model/association_definition'
 require_relative 'serialization'
 
 module Apiwork
@@ -16,7 +18,6 @@ module Apiwork
       class_attribute :abstract_class, default: false
       class_attribute :_model_class
       class_attribute :attribute_definitions, default: {}
-      class_attribute :association_definitions, default: {}
       class_attribute :_serialize_key_transform, default: nil
       class_attribute :_deserialize_key_transform, default: nil
       class_attribute :_auto_include_associations, default: nil
@@ -39,28 +40,61 @@ module Apiwork
             # Setting model - store as string
             self._model_class = ref
 
+            # Activate Model::Extension - this prepends all model-specific functionality
+            prepend Model::Extension unless ancestors.include?(Model::Extension)
+
             # Extend with ActiveRecord-specific modules when model is set
             extend Model::Querying unless singleton_class.included_modules.include?(Model::Querying)
             extend Model::Inspection unless singleton_class.included_modules.include?(Model::Inspection)
+
+            # Override attribute factory method and add association DSL methods
+            activate_model_definitions!
           else
             # Getting model
             _model_class
           end
         end
 
-        # Check if this schema uses a model
-        def model?
-          !_model_class.nil?
+        private
+
+        def activate_model_definitions!
+          # Add association_definitions class_attribute
+          self.class_attribute :association_definitions, default: {} unless respond_to?(:association_definitions)
+
+          # Override attribute to use Model::AttributeDefinition
+          define_singleton_method(:attribute) do |name, **options|
+            self.attribute_definitions = attribute_definitions.merge(
+              name => Model::AttributeDefinition.new(name, klass: self, **options)
+            )
+          end
+
+          # Add association DSL methods (only exist in Model)
+          define_singleton_method(:has_one) do |name, **options|
+            self.association_definitions = association_definitions.merge(
+              name => Model::AssociationDefinition.new(name, type: :has_one, klass: self, **options)
+            )
+            @includes_hash = nil
+          end
+
+          define_singleton_method(:has_many) do |name, **options|
+            self.association_definitions = association_definitions.merge(
+              name => Model::AssociationDefinition.new(name, type: :has_many, klass: self, **options)
+            )
+            @includes_hash = nil
+          end
+
+          define_singleton_method(:belongs_to) do |name, **options|
+            self.association_definitions = association_definitions.merge(
+              name => Model::AssociationDefinition.new(name, type: :belongs_to, klass: self, **options)
+            )
+            @includes_hash = nil
+          end
         end
 
-        def model_class
-          return nil unless _model_class
-          _model_class.is_a?(String) ? _model_class.constantize : _model_class
-        end
+        public
 
-        def model_class=(klass)
-          self._model_class = klass
-        end
+        # Note: model_class, model?, and model_class= methods
+        # are provided by Model::Extension when model() is called
 
         # DSL method for explicit root key override
         # Accepts singular form (auto-pluralizes) or explicit singular + plural
@@ -109,31 +143,12 @@ module Apiwork
           )
         end
 
-        def has_one(name, **options) # rubocop:disable Naming/PredicatePrefix
-          self.association_definitions = association_definitions.merge(
-            name => AssociationDefinition.new(name, type: :has_one, klass: self, **options)
-          )
-          @includes_hash = nil
-        end
-
-        def has_many(name, **options) # rubocop:disable Naming/PredicatePrefix
-          self.association_definitions = association_definitions.merge(
-            name => AssociationDefinition.new(name, type: :has_many, klass: self, **options)
-          )
-          @includes_hash = nil
-        end
-
-        def belongs_to(name, **options)
-          self.association_definitions = association_definitions.merge(
-            name => AssociationDefinition.new(name, type: :belongs_to, klass: self, **options)
-          )
-          @includes_hash = nil
-        end
+        # Note: has_one, has_many, belongs_to methods are added by Model::Extension when model() is called
 
         attr_writer :type, :default_sort, :default_page_size, :maximum_page_size
 
         def type
-          @type || model_class&.model_name&.element
+          @type
         end
 
         # Returns a RootKey object for wrapping resources in responses
@@ -143,12 +158,11 @@ module Apiwork
         #   ClientSchema.root_key.singular  # => "client"
         #   ClientSchema.root_key.plural    # => "clients"
         def root_key
-          # Priority: explicit root DSL > type attribute > model name
+          # Priority: explicit root DSL > type attribute
           if _root
             RootKey.new(_root[:singular], _root[:plural])
           else
-            type_name = type || model_class&.model_name&.element
-            RootKey.new(type_name)
+            RootKey.new(type)
           end
         end
 
@@ -173,15 +187,11 @@ module Apiwork
         def required_attributes_for(action)
           @required_attributes_cache ||= {}
           @required_attributes_cache[action] ||= begin
-            return [].freeze if model_class.nil?
-
-            writable_attributes = writable_attributes_for(action)
-
-            required_columns = model_class.columns
-                                          .select { |column| !column.null && column.default.nil? }
-                                          .map { |column| column.name.to_sym }
-
-            (required_columns & writable_attributes).freeze
+            # Base version: return attributes explicitly marked as required
+            attribute_definitions
+              .select { |_, definition| definition.required? && definition.writable_for?(action) }
+              .keys
+              .freeze
           end
         end
 
