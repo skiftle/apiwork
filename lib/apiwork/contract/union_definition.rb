@@ -5,10 +5,11 @@ module Apiwork
     # UnionDefinition handles union type definitions within contracts
     # A union represents a parameter that can be one of several type alternatives
     class UnionDefinition
-      attr_reader :variants, :contract_class
+      attr_reader :variants, :contract_class, :type_scope
 
-      def initialize(contract_class)
+      def initialize(contract_class, type_scope: :root)
         @contract_class = contract_class
+        @type_scope = type_scope
         @variants = []
       end
 
@@ -27,7 +28,7 @@ module Apiwork
 
         # Handle nested block (for :object or :array with :object items)
         if block_given?
-          nested_def = Definition.new(:input, @contract_class)
+          nested_def = Definition.new(:input, @contract_class, type_scope: @type_scope)
           nested_def.instance_eval(&block)
           variant_def[:nested] = nested_def
         end
