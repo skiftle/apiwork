@@ -1,45 +1,25 @@
 # Apiwork
 
-Apiwork is a small framework for building **contract-driven, type-safe APIs in Rails**.  
-You still write your controllers and actions the way you’re used to —  
+Apiwork is a small framework for building **contract-driven, type-safe APIs in Rails**. You still write your controllers and actions the way you’re used to —  
 but Apiwork takes care of everything around them: validation, serialization, queries, and documentation.
 
-You define your **contracts**, often based on simple **schemas** that describe your models, their attributes, and relationships.  
-Apiwork can then validate input and output, build queries, and keep your API both safe and capable.  
-And as a natural side effect, it can generate **OpenAPI**, **Zod**, and **TypeScript** definitions — all from one place.
+You define your **contracts**, often based on simple **schemas** that describe your models, their attributes, and relationships. Apiwork can then validate input and output, build queries, and keep your API both safe and capable. And as a natural side effect, it can generate **OpenAPI**, **Zod**, and **TypeScript** definitions — all from one place.
 
 ---
 
 ## Design
 
-Apiwork builds on Rails without changing how you write it.  
-Controllers stay clean and explicit.  
-Requests and responses go through a **contract layer** that defines, coerces, and validates data.
+Apiwork builds on Rails without changing how you write it. Controllers stay clean and explicit. Requests and responses go through a **contract layer** that defines, coerces, and validates data. Input is validated before it reaches your action. Output is validated too — but only in development, to catch silent drift early. In production, those contracts define structure, not overhead.
 
-Input is validated before it reaches your action.  
-Output is validated too — but only in development, to catch silent drift early.  
-In production, those contracts define structure, not overhead.
-
-There’s no hidden magic here — Apiwork doesn’t patch or override Rails.  
-It’s designed to be explicit and transparent, so you always know what happens and where.
-
-The result is an API that feels familiar, stays predictable, and documents itself as you go.
+There’s no hidden magic here — Apiwork doesn’t patch or override Rails. It’s designed to be explicit and transparent, so you always know what happens and where. The result is an API that feels familiar, stays predictable, and documents itself as you go.
 
 ---
 
 ## In practice
 
-Normally you’d use a few different gems for this —  
-one for serializers, one for pagination, one for validation, one for OpenAPI.  
-Apiwork brings those ideas together into a single, coherent layer on top of Rails —  
-because in reality, these parts are already tightly coupled anyway,  
-and it just works better when they live in one place.
+Normally you’d use a few different gems for this — one for serializers, one for pagination, one for validation, one for OpenAPI. Apiwork brings those ideas together into a single, coherent layer on top of Rails — because in reality, these parts are already tightly coupled anyway, and it just works better when they live in one place.
 
-Most of the time, you don’t even write the contracts yourself.  
-You just pick which attributes to expose, and Apiwork figures out the rest from your models and database.  
-Column types, nullability, defaults, enums — it’s all there already.
-
-**Guess what:** most of your API schema already exists. Apiwork just makes use of it.
+Most of the time, you don’t even write the contracts yourself. You just pick which attributes to expose, and Apiwork figures out the rest from your models and database. Column types, nullability, defaults, enums — it’s all there already.
 
 ---
 
@@ -59,8 +39,7 @@ Column types, nullability, defaults, enums — it’s all there already.
 
 ## What you give up
 
-In practice, almost nothing.  
-But there are a few small constraints to make everything work as intended:
+In practice, almost nothing. But there are a few small constraints to make everything work as intended:
 
 - Controllers should respond using **Apiwork’s `respond_with`**, which behaves like the classic Rails helper but adds automatic output validation and serialization.
 - Requests should use **Apiwork’s validated request objects** instead of raw Rails `params`, since that’s where input coercion and validation happen.
@@ -79,49 +58,48 @@ from database to frontend, with types included.
 ## Quick example
 
 ```ruby
-# Define your API routes
+# Define your API
 Apiwork::API.draw '/api/v1' do
-  resources :posts do
-    resources :comments
-  end
+  schema :openapi
+
+  resources :posts
 end
 
-# Define your schema
+# Mount in routes.rb
+ mount Apiwork.routes => '/'
+
+# Define your schemas
 class PostSchema < Apiwork::Schema::Base
   model Post
 
-  attribute :id, filterable: true, sortable: true
-  attribute :title, filterable: true, sortable: true, writable: true
-  attribute :body, writable: true
-  attribute :published, filterable: true, writable: true
+  with_options filterable: true, sortable: true do
+    attribute :id,
+    attribute :title
 
-  has_many :comments, schema: CommentSchema
+    with_options writable: true do
+        attribute :body
+        attribute :published
+        has_many :comments, include: true
+    end
+  end
 end
 
 # Define your contract
 class PostContract < Apiwork::Contract::Base
   schema PostSchema
-
-  action :create do
-    input do
-      param :title, type: :string, required: true
-      param :body, type: :string, required: true
-    end
-  end
 end
 
-# Use in your controller
+# Define your controller
 class PostsController < ApplicationController
   include Apiwork::Controller::Concern
 
   def index
-    posts = query(Post.all)  # Auto-applies filter, sort, pagination
-    respond_with posts        # Auto-serializes with schema
+    respond_with Post.all
   end
 
   def create
     post = Post.create(action_params)  # Validated params
-    respond_with post, status: :created
+    respond_with post
   end
 end
 ```
@@ -131,10 +109,10 @@ Now you have a fully functional API with:
 - Automatic filtering: `GET /posts?filter[published]=true`
 - Automatic sorting: `GET /posts?sort[created_at]=desc`
 - Automatic pagination: `GET /posts?page[number]=2&page[size]=25`
+- Automatic inclusion of relationships
+- Nestade saves
 - Type-safe inputs and outputs
 - OpenAPI documentation: `GET /api/v1/.schema/openapi`
-
-## Documentation structure
 
 ### Getting Started
 
