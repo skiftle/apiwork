@@ -54,20 +54,59 @@ module Apiwork
         end
 
         # DSL method to define a custom type
+        # Supports lexical scoping - types can be defined at contract, action, or input/output level
         # @param name [Symbol] Name of the custom type
         # @param block [Proc] Block defining the type's parameters
         def type(name, &block)
-          @custom_types ||= {}
-          raise ArgumentError, "Custom type #{name} already defined" if @custom_types.key?(name)
           raise ArgumentError, "Block required for custom type definition" unless block_given?
 
-          @custom_types[name] = block
+          # Get current scope (set by ActionDefinition or Definition during instance_eval)
+          current_scope = Thread.current[:apiwork_type_scope] || :root
+
+          # Initialize scope storage
+          @type_scopes ||= {}
+          @type_scopes[current_scope] ||= {}
+
+          # Register type in current scope (shadowing allowed)
+          @type_scopes[current_scope][name] = block
         end
 
-        # Get custom types hash
-        # @return [Hash] Hash of custom type names to blocks
+        # Get custom types hash (legacy - returns root scope only)
+        # @return [Hash] Hash of custom type names to blocks at root level
         def custom_types
-          @custom_types || {}
+          @type_scopes ||= {}
+          @type_scopes[:root] || {}
+        end
+
+        # Resolve a custom type by searching scope chain
+        # @param type_name [Symbol] Name of the type to resolve
+        # @param scope_id [Symbol] Current scope identifier
+        # @return [Proc, nil] The type block or nil if not found
+        def resolve_custom_type(type_name, scope_id = :root)
+          @type_scopes ||= {}
+          @scope_parents ||= {}
+
+          # Search scope chain: current → parent → root
+          current = scope_id
+          while current
+            return @type_scopes.dig(current, type_name) if @type_scopes.dig(current, type_name)
+            current = @scope_parents[current]
+          end
+
+          nil
+        end
+
+        # Register a scope with its parent for chain resolution
+        # @param scope_id [Symbol] The scope identifier
+        # @param parent_scope [Symbol] The parent scope identifier
+        def register_scope(scope_id, parent_scope = :root)
+          @scope_parents ||= {}
+          @scope_parents[scope_id] = parent_scope
+        end
+
+        # Get all scopes (for debugging)
+        def type_scopes
+          @type_scopes || {}
         end
 
         # DSL method to define an action
@@ -80,8 +119,22 @@ module Apiwork
           # Create action definition
           action_def = ActionDefinition.new(action_sym, self)
 
-          # Apply custom block - auto-generation happens lazily in input/output methods
-          action_def.instance_eval(&block) if block_given?
+          # Apply custom block with action scope
+          if block_given?
+            action_scope_id = :"action_#{action_sym}"
+            register_scope(action_scope_id, :root)
+
+            # Set scope for this action block
+            previous_scope = Thread.current[:apiwork_type_scope]
+            Thread.current[:apiwork_type_scope] = action_scope_id
+
+            begin
+              action_def.instance_eval(&block)
+            ensure
+              # Restore previous scope
+              Thread.current[:apiwork_type_scope] = previous_scope
+            end
+          end
 
           @action_definitions[action_sym] = action_def
         end

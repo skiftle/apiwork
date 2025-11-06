@@ -47,17 +47,62 @@ module Apiwork
         false
       end
 
+      # Define a custom type scoped to this action
+      def type(name, &block)
+        raise ArgumentError, "Block required for custom type definition" unless block_given?
+
+        # Get current scope (should be action scope when called from action block)
+        current_scope = Thread.current[:apiwork_type_scope] || :root
+
+        # Delegate to contract class to store type in current scope
+        contract_class.type(name, &block)
+      end
+
       # Define input for this action
       def input(&block)
-        @input_definition ||= Definition.new(:input, contract_class)
-        @input_definition.instance_eval(&block) if block
+        # Create input scope as child of action scope
+        action_scope = Thread.current[:apiwork_type_scope] || :root
+        input_scope_id = :"#{action_scope}_input"
+        contract_class.register_scope(input_scope_id, action_scope)
+
+        @input_definition ||= Definition.new(:input, contract_class, type_scope: input_scope_id)
+
+        if block
+          # Set scope for input block
+          previous_scope = Thread.current[:apiwork_type_scope]
+          Thread.current[:apiwork_type_scope] = input_scope_id
+
+          begin
+            @input_definition.instance_eval(&block)
+          ensure
+            Thread.current[:apiwork_type_scope] = previous_scope
+          end
+        end
+
         @input_definition
       end
 
       # Define output for this action
       def output(&block)
-        @output_definition ||= Definition.new(:output, contract_class)
-        @output_definition.instance_eval(&block) if block
+        # Create output scope as child of action scope
+        action_scope = Thread.current[:apiwork_type_scope] || :root
+        output_scope_id = :"#{action_scope}_output"
+        contract_class.register_scope(output_scope_id, action_scope)
+
+        @output_definition ||= Definition.new(:output, contract_class, type_scope: output_scope_id)
+
+        if block
+          # Set scope for output block
+          previous_scope = Thread.current[:apiwork_type_scope]
+          Thread.current[:apiwork_type_scope] = output_scope_id
+
+          begin
+            @output_definition.instance_eval(&block)
+          ensure
+            Thread.current[:apiwork_type_scope] = previous_scope
+          end
+        end
+
         @output_definition
       end
 

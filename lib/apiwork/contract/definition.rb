@@ -5,12 +5,21 @@ require_relative 'union_definition'
 module Apiwork
   module Contract
     class Definition
-      attr_reader :type, :params, :contract_class
+      attr_reader :type, :params, :contract_class, :type_scope
 
-      def initialize(type, contract_class)
+      def initialize(type, contract_class, type_scope: :root)
         @type = type # :input or :output
         @contract_class = contract_class
+        @type_scope = type_scope
         @params = {}
+      end
+
+      # Define a custom type scoped to this input/output
+      def type(name, &block)
+        raise ArgumentError, "Block required for custom type definition" unless block_given?
+
+        # Delegate to contract class to store type in current scope
+        @contract_class.type(name, &block)
       end
 
       # Define a parameter
@@ -19,7 +28,7 @@ module Apiwork
         if type == :union
           raise ArgumentError, "Union type requires a block with variant definitions" unless block_given?
 
-          union_def = UnionDefinition.new(@contract_class)
+          union_def = UnionDefinition.new(@contract_class, type_scope: @type_scope)
           union_def.instance_eval(&block)
 
           @params[name] = {
@@ -33,11 +42,11 @@ module Apiwork
           return
         end
 
-        # Check if type is a custom type
-        if @contract_class.custom_types&.key?(type)
+        # Check if type is a custom type (with scope resolution)
+        custom_type_block = @contract_class.resolve_custom_type(type, @type_scope)
+        if custom_type_block
           # Custom type - resolve it
-          custom_type_block = @contract_class.custom_types[type]
-          nested_def = Definition.new(@type, @contract_class)
+          nested_def = Definition.new(@type, @contract_class, type_scope: @type_scope)
           nested_def.instance_eval(&custom_type_block)
 
           # Apply additional block if provided (can extend custom type)
@@ -108,7 +117,12 @@ module Apiwork
 
           # Check required (matches Rails params.require behavior)
           # Rejects: nil, empty string, empty hash, empty array
-          is_missing = value.blank?
+          # Special case: false is NOT blank for boolean fields
+          if param_options[:type] == :boolean
+            is_missing = value.nil?
+          else
+            is_missing = value.blank?
+          end
 
           if param_options[:required] && is_missing
             # For enum fields, return invalid_value error to show allowed values immediately
@@ -280,8 +294,9 @@ module Apiwork
               values << nested_result[:params]
             end
           elsif param_options[:of]
-            # Check if 'of' is a custom type
-            if @contract_class.custom_types&.key?(param_options[:of])
+            # Check if 'of' is a custom type (with scope resolution)
+            custom_type_block = @contract_class.resolve_custom_type(param_options[:of], @type_scope)
+            if custom_type_block
               # Array of custom type - must be a hash
               unless item.is_a?(Hash)
                 errors << ValidationError.invalid_type(
@@ -294,8 +309,7 @@ module Apiwork
               end
 
               # Validate as nested object
-              custom_type_block = @contract_class.custom_types[param_options[:of]]
-              custom_def = Definition.new(@type, @contract_class)
+              custom_def = Definition.new(@type, @contract_class, type_scope: @type_scope)
               custom_def.instance_eval(&custom_type_block)
 
               nested_result = custom_def.validate(
@@ -503,11 +517,11 @@ module Apiwork
         variant_of = variant_def[:of]
         variant_nested = variant_def[:nested]
 
-        # Handle custom types
-        if @contract_class.custom_types&.key?(variant_type)
+        # Handle custom types (with scope resolution)
+        custom_type_block = @contract_class.resolve_custom_type(variant_type, @type_scope)
+        if custom_type_block
           # Custom type variant
-          custom_type_block = @contract_class.custom_types[variant_type]
-          custom_def = Definition.new(@type, @contract_class)
+          custom_def = Definition.new(@type, @contract_class, type_scope: @type_scope)
           custom_def.instance_eval(&custom_type_block)
 
           # Must be a hash for custom type
