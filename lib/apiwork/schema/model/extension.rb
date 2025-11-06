@@ -22,10 +22,9 @@ module Apiwork
         end
 
         module ClassMethods
-          # Override: Get model class with lazy constantization
+          # Override: Get model class
           def model_class
-            return nil unless _model_class
-            _model_class.is_a?(String) ? _model_class.constantize : _model_class
+            _model_class
           end
 
           # Override: Check if this schema uses a model

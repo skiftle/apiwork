@@ -22,10 +22,16 @@ module Apiwork
         end
 
         # DSL method for explicit schema declaration
-        # Accepts String for lazy loading (preferred per guidelines)
+        # Only accepts constant references (Zeitwerk autoloading)
         def schema(ref = nil)
           if ref
-            # Setting schema - store reference
+            # Validate that ref is a Class constant
+            unless ref.is_a?(Class)
+              raise ArgumentError, "schema must be a Class constant, got #{ref.class}. " \
+                                   "Use: schema PostSchema (not 'PostSchema' or :post_schema)"
+            end
+
+            # Setting schema - store class reference
             @_schema_class = ref
 
             # Activate Schema::Extension - this prepends all schema-specific functionality
@@ -37,11 +43,9 @@ module Apiwork
           end
         end
 
-        # Get schema class (resolves string references)
+        # Get schema class
         def schema_class
-          return nil unless @_schema_class
-
-          resolve_schema_ref(@_schema_class)
+          @_schema_class
         end
 
         # Check if this contract uses a schema
@@ -109,18 +113,6 @@ module Apiwork
         end
 
         private
-
-        # Resolve schema reference (Class, String, or Symbol)
-        def resolve_schema_ref(ref)
-          case ref
-          when nil then nil
-          when Class then ref
-          when String then ref.constantize
-          when Symbol then ref.to_s.camelize.constantize
-          else
-            raise ArgumentError, "schema must be a Class, String, Symbol, or nil, got #{ref.class}"
-          end
-        end
       end
 
       # Instance methods for validation (used by Controller::Validation)
