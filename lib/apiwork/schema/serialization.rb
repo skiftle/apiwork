@@ -7,16 +7,7 @@ module Apiwork
 
       class_methods do
         def serialize(object_or_collection, context: {}, includes: nil)
-          # Apply database includes if we have an ActiveRecord::Relation
-          if object_or_collection.is_a?(ActiveRecord::Relation)
-            if includes.present?
-              # Apply includes (already validated by Contract)
-              object_or_collection = apply_includes(object_or_collection, includes)
-            elsif auto_include_associations
-              # Auto-include all associations
-              object_or_collection = apply_includes(object_or_collection)
-            end
-          end
+          # Note: ActiveRecord::Relation handling is done by Model::Plugin when active
 
           if object_or_collection.respond_to?(:each)
             object_or_collection.map { |obj| new(obj, context: context, includes: includes).as_json }
@@ -24,7 +15,8 @@ module Apiwork
             new(object_or_collection, context: context, includes: includes).as_json
           end
         rescue StandardError => e
-          raise Apiwork::SerializationError, "Serialization error for #{model_class.name}: #{e.message}"
+          schema_name = respond_to?(:name) ? name : 'Schema'
+          raise Apiwork::SerializationError, "Serialization error for #{schema_name}: #{e.message}"
         end
       end
 
@@ -101,8 +93,13 @@ module Apiwork
       end
 
       def detect_association_resource(association_name)
-        reflection = object.class.reflect_on_association(association_name)
-        Schema::Resolver.from_association(reflection, self.class)
+        # Base version: just use the schema_class if provided
+        # Model version will override this with ActiveRecord reflection
+        definition = self.class.association_definitions[association_name]
+        return nil unless definition
+
+        resource_class = definition.schema_class
+        resource_class.is_a?(String) ? resource_class.constantize : resource_class
       end
     end
   end

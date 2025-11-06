@@ -8,14 +8,6 @@ module Apiwork
       def initialize(name, klass:, **options)
         @name = name
         @klass = klass
-        @model_class = klass.model_class
-        @is_db_column = @model_class&.column_names&.include?(name.to_s)
-
-        # Validate early
-        validate_attribute_exists!
-
-        # Detect enum values
-        @enum = detect_enum_values
 
         # Normalize and apply defaults
         options = apply_defaults(options)
@@ -27,8 +19,12 @@ module Apiwork
         @serialize = options[:serialize]
         @deserialize = options[:deserialize]
         @null_to_empty = options[:null_to_empty]
-        @required = options[:required]
+        @required = options[:required] || false
         @type = options[:type]
+        @enum = options[:enum]
+
+        # Validate early - after all instance variables are set
+        validate_attribute_exists!
 
         # Validate and apply null_to_empty
         validate_null_to_empty!
@@ -82,28 +78,6 @@ module Apiwork
         end
       end
 
-      def detect_enum_values
-        return nil unless @model_class&.defined_enums&.key?(@name.to_s)
-
-        @model_class.defined_enums[@name.to_s].keys
-      end
-
-      def auto_detect_required
-        return false unless @model_class
-        return false unless @is_db_column
-
-        column = @model_class.columns_hash[@name.to_s]
-
-        # If column has a default value AND it's not an enum, it's not required from API perspective
-        # (database will handle it automatically)
-        # Exception: Enum fields with defaults are still required because Rails doesn't apply
-        # the default in memory, and enum validators reject nil
-        return false if column&.default.present? && !@model_class.defined_enums.key?(@name.to_s)
-
-        # Check DB constraint: null: false means required
-        true unless column&.null
-      end
-
       def apply_defaults(options)
         defaults = {
           filterable: false,
@@ -112,26 +86,23 @@ module Apiwork
           serialize: nil,
           deserialize: nil,
           null_to_empty: false,
-          required: nil,
-          type: @is_db_column ? @model_class.type_for_attribute(@name).type : nil,
-          enum: @enum
+          required: false,
+          type: nil,
+          enum: nil
         }
-
-        # Auto-detect required if not specified and is DB column
-        options[:required] = auto_detect_required if options[:required].nil?
 
         defaults.merge(options)
       end
 
       def validate_attribute_exists!
-        return if @klass.abstract_class || @is_db_column
+        return if @klass.abstract_class
 
-        model_has_method = @model_class&.instance_methods&.include?(@name.to_sym)
+        # Check if resource has a reader method for this attribute
         resource_has_method = @klass.instance_methods.include?(@name.to_sym)
-        return if model_has_method || resource_has_method
+        return if resource_has_method
 
         detail = "Undefined resource attribute '#{@name}' in #{@klass.send(:name_of_self)}: " \
-                 'no DB column and no reader method on model/resource'
+                 'no reader method on resource'
         error = ConfigurationError.new(
           code: :invalid_attribute,
           detail: detail,
