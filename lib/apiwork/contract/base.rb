@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'active_support/core_ext/hash/keys'
+require 'active_support/core_ext/class/attribute'
 require_relative '../transform/case'
 require_relative 'action_definition'
 
@@ -9,6 +10,8 @@ module Apiwork
     class Base
       class << self
         attr_accessor :_schema_class
+
+        class_attribute :abstract_class, default: false
 
         def inherited(subclass)
           super
