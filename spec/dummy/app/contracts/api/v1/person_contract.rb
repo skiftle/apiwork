@@ -4,8 +4,8 @@ module Api
   module V1
     # PersonContract - Contract for PersonSchema
     # Demonstrates custom root key usage in contracts
-    class PersonsContract < Apiwork::Contract::Base
-      schema 'Api::V1::PersonSchema'
+    class PersonContract < Apiwork::Contract::Base
+      schema PersonSchema
 
       # Note: create/update will auto-generate with wrapping key 'person'
       # (derived from PersonSchema.root_key.singular)
