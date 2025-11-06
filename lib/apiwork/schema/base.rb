@@ -3,23 +3,15 @@
 require_relative 'attribute_definition'
 require_relative 'association_definition'
 require_relative 'root_key'
-require_relative 'querying/operators'
-require_relative 'querying/relation'
-require_relative 'querying/filter'
-require_relative 'querying/sort'
-require_relative 'querying/paginate'
+require_relative 'model/operators'
+require_relative 'model/querying'
+require_relative 'model/inspection'
 require_relative 'serialization'
-require_relative 'querying/includes'
 
 module Apiwork
   module Schema
     class Base
       include Serialization
-      include Querying::Filter
-      include Querying::Includes
-      include Querying::Paginate
-      include Querying::Relation
-      include Querying::Sort
 
       class_attribute :abstract_class, default: false
       class_attribute :_model_class
@@ -46,6 +38,10 @@ module Apiwork
           if ref
             # Setting model - store as string
             self._model_class = ref
+
+            # Extend with ActiveRecord-specific modules when model is set
+            extend Model::Querying unless singleton_class.included_modules.include?(Model::Querying)
+            extend Model::Inspection unless singleton_class.included_modules.include?(Model::Inspection)
           else
             # Getting model
             _model_class

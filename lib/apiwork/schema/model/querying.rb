@@ -2,14 +2,57 @@
 
 module Apiwork
   module Schema
-    module Querying
-      module Filter
-        extend ActiveSupport::Concern
-
+    module Model
+      # Querying - ActiveRecord-specific querying functionality
+      # This module is extended into Schema::Base when model() is called
+      module Querying
         # Import operators from centralized Operators module
         include Operators
 
-      class_methods do
+        # ============================================================
+        # RELATION - Main query interface
+        # ============================================================
+
+        def query(scope, params)
+          query_params = extract_query_params(params)
+
+          scope = apply_filter(scope, query_params[:filter]) if query_params[:filter].present?
+
+          sort_params = query_params[:sort] || default_sort
+          scope = apply_sort(scope, sort_params) if sort_params.present?
+
+          scope = apply_pagination(scope, query_params[:page]) if query_params[:page].present?
+
+          scope
+        rescue ArgumentError => e
+          raise Apiwork::FilterError.new(
+            code: :filter_error,
+            detail: "Filter error: #{e.message}",
+            path: [:filter]
+          )
+        rescue StandardError => e
+          raise Apiwork::Error.new("Query error: #{e.message}")
+        end
+
+        def extract_query_params(params)
+          if params.is_a?(ActionController::Parameters)
+            params = params.dup.permit!.to_h.deep_symbolize_keys
+          elsif params.respond_to?(:to_h)
+            params = params.to_h.deep_symbolize_keys
+          end
+
+          {
+            filter: params[:filter] || {},
+            sort: params[:sort],
+            page: params[:page] || {},
+            include: params[:include]
+          }
+        end
+
+        # ============================================================
+        # FILTER - Filtering logic
+        # ============================================================
+
         def apply_filter(scope, params)
           return scope if params.blank?
 
@@ -416,8 +459,260 @@ module Apiwork
           Apiwork::Errors::Handler.handle(error, context: { value: })
           0 # Fallback value
         end
+
+        public
+
+        # ============================================================
+        # SORT - Sorting logic
+        # ============================================================
+
+        def apply_sort(scope, params)
+          return scope if params.blank?
+
+          # Convert array of hashes to single hash
+          if params.is_a?(Array)
+            # Merge all hashes in order
+            params = params.reduce({}) { |acc, hash| acc.merge(hash) }
+          end
+
+          unless params.is_a?(Hash)
+            error = ArgumentError.new('sort must be a Hash or Array of Hashes')
+            Errors::Handler.handle(error, context: { params_type: params.class })
+            return scope
+          end
+
+          orders, joins = build_order_clauses(params)
+          scope = scope.joins(joins).order(orders)
+          # Use distinct when joining associations to avoid duplicates from has_many
+          scope = scope.distinct if joins.present?
+          scope
+        end
+
+        def default_sort
+          @default_sort || Apiwork.configuration.default_sort
+        end
+
+        private
+
+        def build_order_clauses(params, target_klass = model_class)
+          params.each_with_object([[], []]) do |(key, value), (orders, joins)|
+            key = key.to_sym
+
+            if value.is_a?(String) || value.is_a?(Symbol)
+              attribute_definition = attribute_definitions[key]
+              unless attribute_definition&.sortable?
+                available = attribute_definitions
+                            .select { |_, definition| definition.sortable? }
+                            .keys
+                            .join(', ')
+
+                error = ArgumentError.new(
+                  "#{key} is not sortable on #{target_klass.name}. Sortable: #{available}"
+                )
+                Errors::Handler.handle(error, context: { field: key, class: target_klass.name })
+                next
+              end
+
+              column = target_klass.arel_table[key]
+              direction = value.to_sym
+
+              orders << case direction
+                        when :asc then column.asc
+                        when :desc then column.desc
+                        else
+                          error = ArgumentError.new("Invalid direction '#{direction}'. Use 'asc' or 'desc'")
+                          Errors::Handler.handle(error, context: { field: key, direction: direction })
+                          next
+                        end
+
+            elsif value.is_a?(Hash)
+              association = target_klass.reflect_on_association(key)
+
+              if association.nil?
+                error = ArgumentError.new("#{key} is not a valid association on #{target_klass.name}")
+                Errors::Handler.handle(error, context: { field: key, class: target_klass.name })
+                next
+              end
+
+              unless association_definitions[key]&.sortable?
+                error = ArgumentError.new("Association #{key} is not sortable")
+                Errors::Handler.handle(error, context: { association: key })
+                next
+              end
+
+              association_resource = association_definitions[key].schema_class || detect_association_resource(key)
+
+              if association_resource.nil?
+                error = ArgumentError.new("Cannot find resource for association #{key}")
+                Errors::Handler.handle(error, context: { association: key })
+                next
+              end
+
+              # Constantize if string
+              association_resource = association_resource.constantize if association_resource.is_a?(String)
+
+              nested_orders, nested_joins = association_resource.send(:build_order_clauses, value,
+                                                                      association.klass)
+              orders.concat(nested_orders)
+
+              joins << (nested_joins.any? ? { key => nested_joins } : key)
+            else
+              error = ArgumentError.new("Sort value must be 'asc', 'desc', or Hash for associations")
+              Errors::Handler.handle(error, context: { field: key, value_type: value.class })
+            end
+          end
+        end
+
+        public
+
+        # ============================================================
+        # PAGINATE - Pagination logic
+        # ============================================================
+
+        def apply_pagination(scope, params)
+          page_number = params.fetch(:number, 1).to_i
+          page_size = params.fetch(:size, default_page_size).to_i
+
+          if page_number < 1
+            error = ArgumentError.new('page[number] must be >= 1')
+            Errors::Handler.handle(error, context: { page_number: page_number })
+          end
+
+          if page_size < 1
+            error = ArgumentError.new('page[size] must be >= 1')
+            Errors::Handler.handle(error, context: { page_size: page_size })
+          end
+
+          if page_size > maximum_page_size
+            error = ArgumentError.new("page[size] must be <= #{maximum_page_size}")
+            Errors::Handler.handle(error, context: { page_size: page_size, maximum: maximum_page_size })
+          end
+
+          page_size = [page_size, maximum_page_size].min
+
+          scope.instance_variable_set(:@pagination_page, page_number)
+          scope.instance_variable_set(:@pagination_size, page_size)
+
+          offset = (page_number - 1) * page_size
+
+          scope.limit(page_size).offset(offset)
+        end
+
+        def build_meta(collection)
+          current = collection.instance_variable_get(:@pagination_page) || 1
+          size = collection.instance_variable_get(:@pagination_size) || default_page_size
+
+          items = collection.except(:limit, :offset).count
+          total = (items.to_f / size).ceil
+
+          page = {
+            current:,
+            next: (current < total ? current + 1 : nil),
+            prev: (current > 1 ? current - 1 : nil),
+            total:,
+            items:
+          }
+
+          {
+            page: Apiwork::Transform::Case.hash(page, serialize_key_transform)
+          }
+        end
+
+        def default_page_size
+          @default_page_size || Apiwork.configuration.default_page_size
+        end
+
+        def maximum_page_size
+          @maximum_page_size || Apiwork.configuration.maximum_page_size
+        end
+
+        # ============================================================
+        # INCLUDES - Association eager loading
+        # ============================================================
+
+        def apply_includes(scope, includes_param = nil)
+          return scope if association_definitions.empty?
+
+          # If specific includes provided, build hash from them
+          # Otherwise, include all associations (auto_include_associations mode)
+          includes_hash = if includes_param
+                            build_includes_hash_from_param(includes_param)
+                          else
+                            @includes_hash ||= build_includes_hash
+                          end
+
+          return scope if includes_hash.empty?
+
+          scope.includes(includes_hash)
+        end
+
+        # Build includes hash from validated includes parameter
+        # Input: { comments: true } or { comments: { author: true } }
+        # Output: Rails .includes format: :comments or { comments: :author }
+        def build_includes_hash_from_param(includes_param)
+          return {} unless includes_param.is_a?(Hash)
+
+          includes_hash = {}
+          includes_param.each do |key, value|
+            key = key.to_sym
+            assoc_def = association_definitions[key]
+            next unless assoc_def
+
+            if value.is_a?(TrueClass)
+              # Simple include: just the association name
+              includes_hash[key] = {}
+            elsif value.is_a?(Hash)
+              # Nested include: recursively build for associated resource
+              assoc_resource = assoc_def.schema_class
+              if assoc_resource.is_a?(String)
+                assoc_resource = begin
+                  assoc_resource.constantize
+                rescue StandardError
+                  nil
+                end
+              end
+
+              if assoc_resource&.respond_to?(:build_includes_hash_from_param)
+                nested_hash = assoc_resource.build_includes_hash_from_param(value)
+                includes_hash[key] = nested_hash.any? ? nested_hash : {}
+              else
+                includes_hash[key] = {}
+              end
+            end
+          end
+
+          includes_hash
+        end
+
+        def build_includes_hash(visited = Set.new)
+          includes_hash = {}
+          if visited.include?(name)
+            error = Apiwork::ConfigurationError.new(
+              code: :circular_dependency,
+              detail: "Circular dependency detected in #{name}, skipping nested includes",
+              path: [name]
+            )
+            Apiwork::Errors::Handler.handle(error, context: { resource: name })
+            return {}
+          end
+          visited = visited.dup.add(name)
+
+          association_definitions.each do |assoc_name, assoc_def|
+            association = model_class.reflect_on_association(assoc_name)
+            next if association&.polymorphic?
+
+            resource_class = assoc_def.schema_class || Apiwork::Schema::Resolver.from_association(association,
+                                                                                                      self)
+            if resource_class.respond_to?(:build_includes_hash)
+              nested_includes = resource_class.build_includes_hash(visited)
+              includes_hash[assoc_name] = nested_includes.any? ? nested_includes : {}
+            else
+              includes_hash[assoc_name] = {}
+            end
+          end
+          includes_hash
+        end
       end
     end
-  end
   end
 end
