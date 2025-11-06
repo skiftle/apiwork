@@ -8,10 +8,10 @@ module Api
       model 'Post'
       root :person, :people  # Explicit plural for irregular word
 
-      attribute :id
-      attribute :title, writable: true
-      attribute :body, writable: true
-      attribute :published, writable: true
+      attribute :id, filterable: true, sortable: true
+      attribute :title, writable: true, filterable: true, sortable: true
+      attribute :body, writable: true, filterable: true, sortable: true
+      attribute :published, writable: true, filterable: true, sortable: true
       # Demonstrates root key override with full attribute set
     end
   end
