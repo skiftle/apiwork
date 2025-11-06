@@ -14,6 +14,12 @@ module Apiwork
         @reset_output = false
         @input_definition = nil
         @output_definition = nil
+
+        # Conditionally prepend Schema::ActionDefinition if contract has schema
+        if contract_class.schema?
+          require_relative 'schema/action_definition'
+          singleton_class.prepend(Schema::ActionDefinition) unless singleton_class.ancestors.include?(Schema::ActionDefinition)
+        end
       end
 
       # Reset flags to override virtual contracts
@@ -34,65 +40,34 @@ module Apiwork
       end
 
       def merges_input?
-        return false unless contract_class.schema?
-        return false if resets_input?
-
-        true
+        false
       end
 
       def merges_output?
-        return false unless contract_class.schema?
-        return false if resets_output?
-
-        true
+        false
       end
 
       # Define input for this action
-      # Auto-generates from resource if this is a standard CRUD action (unless reset!)
       def input(&block)
-        # Auto-generate first if needed (before custom block)
-        auto_generate_input_if_needed if @reset_input == false && @input_definition.nil?
-
         @input_definition ||= Definition.new(:input, contract_class)
-
-        if block
-          if should_auto_wrap_input?
-            # Automatically wrap in root_key for reset writable actions
-            root_key = contract_class.schema_class.root_key.singular.to_sym
-            @input_definition.param root_key, type: :object, required: true do
-              instance_eval(&block)
-            end
-          else
-            # Normal behavior: evaluate block directly
-            @input_definition.instance_eval(&block)
-          end
-        end
-
+        @input_definition.instance_eval(&block) if block
         @input_definition
       end
 
       # Define output for this action
-      # Auto-generates from resource if this is a standard CRUD action (unless reset!)
       def output(&block)
-        # Auto-generate first if needed (before custom block)
-        auto_generate_output_if_needed if @reset_output == false && @output_definition.nil?
-
         @output_definition ||= Definition.new(:output, contract_class)
         @output_definition.instance_eval(&block) if block
         @output_definition
       end
 
-      # Get input definition (auto-generates if needed)
+      # Get input definition
       def input_definition
-        # Auto-generate if needed and not reset
-        auto_generate_input_if_needed if @reset_input == false && @input_definition.nil?
         @input_definition
       end
 
-      # Get output definition (auto-generates if needed)
+      # Get output definition
       def output_definition
-        # Auto-generate if needed and not reset
-        auto_generate_output_if_needed if @reset_output == false && @output_definition.nil?
         @output_definition
       end
 
@@ -108,29 +83,7 @@ module Apiwork
 
       # Get merged output definition (virtual + explicit)
       def merged_output_definition
-        return output_definition unless merges_output?
-
-        # Build virtual output from resource
-        virtual_def = build_virtual_output_definition
-        return output_definition if virtual_def.nil?
-
-        # If no explicit output, return virtual
-        return virtual_def if output_definition.nil?
-
-        # Merge: Start with virtual definition, then add/override with explicit params
-        merged_def = Definition.new(:output, contract_class)
-
-        # Copy all params from virtual output (resource attributes)
-        virtual_def.params.each do |name, param_options|
-          merged_def.params[name] = param_options
-        end
-
-        # Override/add with explicit output params (like meta)
-        output_definition.params.each do |name, param_options|
-          merged_def.params[name] = param_options
-        end
-
-        merged_def
+        output_definition
       end
 
       # Validate complete response structure (like Zod.parse())
@@ -144,91 +97,25 @@ module Apiwork
         # Custom actions without explicit output definition skip validation
         return response unless merged_output
 
-        # For custom actions: skip validation if response format doesn't match schema
-        # (e.g., controller returned collection but schema expects single resource)
-        if !standard_crud_action? && schema_mismatch?(response, merged_output)
-          return response
-        end
-
         # Validate complete response structure
         validate_output_data(response, merged_output)
 
         response
       end
 
-      # Serialize data via Resource (without validation - that happens later)
-      # @param data [Object] ActiveRecord object/relation to serialize
-      # @param context [Hash] Context for resource serialization
-      # @param includes [Hash, nil] Validated includes from query params
-      # @return [Hash, Array] Serialized data (not yet validated)
+      # Serialize data (base version: no-op, returns data as-is)
+      # @param data [Object] Data to serialize
+      # @param context [Hash] Context for serialization
+      # @param includes [Hash, nil] Includes from query params
+      # @return [Hash, Array] Serialized data
       def serialize_data(data, context: {}, includes: nil)
-        return data unless contract_class.schema?
-
-        needs_serialization = if data.is_a?(Hash)
-          false # Already a hash
-        elsif data.is_a?(Array)
-          data.empty? || data.first.class != Hash
-        else
-          true # ActiveRecord object/relation
-        end
-
-        needs_serialization ? contract_class.schema_class.serialize(data, context: context, includes: includes) : data
-      end
-
-      private
-
-      # Build virtual output definition from resource class
-      def build_virtual_output_definition
-        return nil unless contract_class.schema_class
-
-        virtual_def = Definition.new(:output, contract_class)
-
-        # Add all resource attributes
-        contract_class.schema_class.attribute_definitions.each do |name, attr_def|
-          virtual_def.params[name] = {
-            name: name,
-            type: Generator.map_type(attr_def.type),
-            required: false
-          }
-        end
-
-        # Add associations
-        contract_class.schema_class.association_definitions.each do |name, assoc_def|
-          if assoc_def.singular?
-            virtual_def.params[name] = { name: name, type: :object, required: false, nullable: assoc_def.nullable? }
-          elsif assoc_def.collection?
-            virtual_def.params[name] = { name: name, type: :array, required: false, nullable: assoc_def.nullable? }
-          end
-        end
-
-        virtual_def
+        data
       end
 
       private
 
       def standard_crud_action?
         [:index, :show, :create, :update, :destroy].include?(action_name.to_sym)
-      end
-
-      def schema_mismatch?(response, output_def)
-        # Check if schema expects single resource but response has collection (plural key)
-        resource_key = contract_class.schema_class&.root_key
-        return false unless resource_key
-
-        singular_key = resource_key.singular.to_sym
-        plural_key = resource_key.plural.to_sym
-
-        # Schema expects singular, response has plural
-        if output_def.params.key?(singular_key) && (response.key?(plural_key) || response.key?(plural_key.to_s))
-          return true
-        end
-
-        # Schema expects plural, response has singular
-        if output_def.params.key?(plural_key) && (response.key?(singular_key) || response.key?(singular_key.to_s))
-          return true
-        end
-
-        false
       end
 
       # Validate output data against definition
@@ -278,66 +165,6 @@ module Apiwork
             end
           end
         end
-      end
-
-      # Auto-generate input definition for CRUD and custom actions
-      # Custom actions don't get auto-generated input - must define explicitly if needed
-      def auto_generate_input_if_needed
-        return unless contract_class.schema?
-
-        require_relative 'generator' unless defined?(Apiwork::Contract::Generator)
-
-        rc = contract_class.schema_class
-        @input_definition = Definition.new(:input, contract_class)
-
-        case action_name.to_sym
-        when :index
-          @input_definition.instance_eval { Generator.generate_query_params(self, rc) }
-        when :show
-          # Empty input - strict mode will reject any query params
-        when :create
-          @input_definition.instance_eval { Generator.generate_writable_input(self, rc, :create) }
-        when :update
-          @input_definition.instance_eval { Generator.generate_writable_input(self, rc, :update) }
-        when :destroy
-          # No input by default
-        else
-          # Custom actions get empty input
-          # Input params MUST be defined explicitly in the action block
-        end
-      end
-
-      # Auto-generate output definition for CRUD and custom actions
-      # Custom actions get single resource output by default (like create/show/update)
-      def auto_generate_output_if_needed
-        return unless contract_class.schema?
-
-        require_relative 'generator' unless defined?(Apiwork::Contract::Generator)
-
-        rc = contract_class.schema_class
-        @output_definition = Definition.new(:output, contract_class)
-
-        case action_name.to_sym
-        when :index
-          @output_definition.instance_eval { Generator.generate_collection_output(self, rc) }
-        when :show, :create, :update
-          @output_definition.instance_eval { Generator.generate_single_output(self, rc) }
-        when :destroy
-          # No output by default
-        else
-          # Custom actions get single resource output by default (like create/show/update)
-          # But respond_with will adapt based on what controller returns (single vs collection)
-          @output_definition.instance_eval { Generator.generate_single_output(self, rc) }
-        end
-      end
-
-      # Check if input should be automatically wrapped in root_key
-      # Only for writable actions (create/update) with reset_input! and resource
-      def should_auto_wrap_input?
-        return false unless @reset_input  # Only when reset_input! is used
-        return false unless contract_class.schema?
-        return false unless writable_action?
-        true
       end
 
       # Check if action is a writable action (create/update)

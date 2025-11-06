@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
-require_relative 'action_definition'
+require_relative '../action_definition'
 
 module Apiwork
   module Contract
-    # Generates implicit contracts from Resource classes
-    class Generator
+    module Schema
+      # Generates implicit contracts from Schema classes
+      class Generator
       # Generate an ActionDefinition for a specific action
       # This is used when no explicit contract exists
       # @param schema_class [Class] The schema class to generate from
@@ -20,7 +21,7 @@ module Apiwork
         end
 
         # Create and configure the action definition
-        action_def = ActionDefinition.new(action, contract_class)
+        action_def = Apiwork::Contract::ActionDefinition.new(action, contract_class)
 
         case action.to_sym
         when :index
@@ -489,6 +490,7 @@ module Apiwork
         when :array then :array
         else :string
         end
+      end
       end
     end
   end
