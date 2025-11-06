@@ -1,0 +1,371 @@
+# Contracts
+
+Contracts define and validate your API's inputs and outputs. What shape data must have, what's required, what types are allowed.
+
+## The simplest contract
+
+```ruby
+class Api::V1::PostContract < Apiwork::Contract::Base
+  schema Api::V1::PostSchema
+end
+```
+
+One line. That's it.
+
+This automatically generates contracts for all 5 CRUD actions based on your schema.
+
+## What you get for free
+
+When you link a schema with `schema PostSchema`, Apiwork generates:
+
+### 1. INDEX - List with filtering
+
+**Auto-generated input:**
+```ruby
+{
+  filter: {
+    # Every filterable attribute gets operators based on type
+    id: integer | { equal, not_equal, greater_than, less_than, in, ... },
+    title: string | { equal, contains, starts_with, in, ... },
+    published: boolean | { equal }
+  },
+  sort: { id: 'asc'|'desc', title: 'asc'|'desc', ... } | [multiple],
+  page: { number: integer, size: integer }
+}
+```
+
+**Auto-generated output:**
+```ruby
+{
+  ok: true,
+  posts: [{ all schema attributes }],
+  meta: { page: { current, next, prev, total, items } }
+}
+```
+
+### 2. SHOW - Get single resource
+
+**Input:** None (strict mode - rejects query params)
+
+**Output:**
+```ruby
+{
+  ok: true,
+  post: { all schema attributes }
+}
+```
+
+### 3. CREATE - Create new resource
+
+**Auto-generated input (based on `writable: true`):**
+```ruby
+{
+  post: {  # Root key required
+    title: string (required),     # DB: null: false → required
+    body: string (required),      # DB: null: false → required
+    published: boolean            # DB: default: false → optional
+  }
+}
+```
+
+Required fields come from your database schema (`null: false`).
+
+**Output:**
+```ruby
+{
+  ok: true,
+  post: { all schema attributes }
+}
+```
+
+### 4. UPDATE - Update resource
+
+**Auto-generated input (all writable fields optional):**
+```ruby
+{
+  post: {
+    title: string?,      # All optional
+    body: string?,
+    published: boolean?
+  }
+}
+```
+
+**Output:**
+```ruby
+{
+  ok: true,
+  post: { all schema attributes }
+}
+```
+
+### 5. DESTROY - Delete resource
+
+**Input:** None
+
+**Output:**
+```ruby
+{ ok: true }
+```
+
+## This comes from your schema
+
+The schema tells the contract what's possible:
+
+```ruby
+class PostSchema < Apiwork::Schema::Base
+  model Post
+
+  attribute :id, filterable: true, sortable: true
+  attribute :title, filterable: true, sortable: true, writable: true
+  attribute :body, writable: true
+  attribute :published, filterable: true, writable: true
+  attribute :created_at, sortable: true
+end
+```
+
+Contract auto-generates based on flags:
+- `filterable: true` → appears in filter params
+- `sortable: true` → appears in sort params
+- `writable: true` → appears in create/update inputs
+- All attributes → appear in outputs
+
+## When to override
+
+Most of the time, `schema PostSchema` is enough.
+
+Override when you need:
+
+**Custom validation beyond schema:**
+```ruby
+action :create do
+  input do
+    param :title, type: :string, required: true, min_length: 5
+    param :slug, type: :string, required: true, pattern: /^[a-z0-9-]+$/
+  end
+end
+```
+
+**Different input shape:**
+```ruby
+action :bulk_create do
+  input do
+    param :posts, type: :array, required: true, of: :object do
+      param :title, type: :string, required: true
+      param :body, type: :string, required: true
+    end
+  end
+end
+```
+
+**Custom actions:**
+```ruby
+action :publish do
+  # No input
+  output do
+    param :id, type: :integer, required: true
+    param :published, type: :boolean, required: true
+    param :published_at, type: :datetime, required: true
+  end
+end
+```
+
+## The action DSL
+
+Define actions explicitly:
+
+```ruby
+class PostContract < Apiwork::Contract::Base
+  schema PostSchema  # Still auto-generates other actions
+
+  action :create do
+    input do
+      param :title, type: :string, required: true
+      param :body, type: :string, required: true
+      param :published, type: :boolean, default: false
+      param :tags, type: :array, of: :string
+    end
+
+    output do
+      param :id, type: :integer, required: true
+      param :title, type: :string, required: true
+      param :body, type: :string, required: true
+      param :published, type: :boolean, required: true
+      param :tags, type: :array, of: :string, required: true
+      param :created_at, type: :datetime, required: true
+    end
+  end
+end
+```
+
+This overrides the auto-generated `create` action. Other actions (show, index, update, destroy) still auto-generate.
+
+## Input and output
+
+Every action can have input and output contracts:
+
+```ruby
+action :publish do
+  input do
+    param :scheduled_for, type: :datetime, required: false
+  end
+
+  output do
+    param :id, type: :integer, required: true
+    param :published, type: :boolean, required: true
+    param :published_at, type: :datetime, required: true
+  end
+end
+```
+
+**Input** validates request params.
+**Output** validates response data.
+
+Both are optional:
+
+```ruby
+# No input validation, only output
+action :show do
+  output do
+    param :id, type: :integer, required: true
+    param :title, type: :string, required: true
+  end
+end
+
+# Only input validation
+action :create do
+  input do
+    param :title, type: :string, required: true
+  end
+end
+```
+
+## Root keys
+
+Input expects a root key matching the resource name:
+
+```ruby
+# Correct
+POST /api/v1/posts
+{
+  "post": {
+    "title": "My Post"
+  }
+}
+
+# Wrong - missing root key
+{
+  "title": "My Post"
+}
+```
+
+Configure globally:
+
+```ruby
+Apiwork.configure do |config|
+  config.require_root_key = false  # Allow flat inputs
+end
+```
+
+Or per-action:
+
+```ruby
+action :create do
+  root_key false  # No root key required
+
+  input do
+    param :title, type: :string, required: true
+  end
+end
+```
+
+## Types and validation
+
+Contracts use the same types as schemas:
+
+- `:string` - Text with optional length/pattern validation
+- `:integer` - Whole numbers with optional min/max
+- `:float` - Decimals with optional min/max
+- `:boolean` - true/false
+- `:date` - ISO 8601 date
+- `:datetime` - ISO 8601 datetime
+- `:object` - JSON objects
+- `:array` - Arrays with optional item type
+
+See [Types](./types.md) for all available types and validation options.
+
+## Validation errors
+
+Invalid input returns 422 with detailed errors:
+
+```json
+{
+  "ok": false,
+  "errors": [
+    {
+      "path": "/post/title",
+      "message": "is required"
+    },
+    {
+      "path": "/post/body",
+      "message": "must be at least 10 characters"
+    }
+  ]
+}
+```
+
+The `path` uses JSON Pointer format to show exactly where the error is.
+
+## Documentation
+
+Contracts power your OpenAPI schema:
+
+```ruby
+action :create do
+  description "Create a new post"
+
+  input do
+    param :title, type: :string, required: true, description: "Post title"
+    param :body, type: :string, required: true, description: "Post content"
+  end
+end
+```
+
+This appears in:
+- OpenAPI spec
+- Generated TypeScript types
+- API documentation
+
+## Testing contracts
+
+Contracts can be tested independently:
+
+```ruby
+# spec/contracts/api/v1/post_contract_spec.rb
+RSpec.describe Api::V1::PostContract do
+  describe 'create action' do
+    let(:contract) { described_class.new.action(:create) }
+
+    it 'validates valid input' do
+      result = contract.validate_input({
+        post: { title: 'My Post', body: 'Content' }
+      })
+      expect(result).to be_valid
+    end
+
+    it 'rejects invalid input' do
+      result = contract.validate_input({ post: { title: '' } })
+      expect(result).not_to be_valid
+      expect(result.errors).to include(path: '/post/title', message: anything)
+    end
+  end
+end
+```
+
+## Next steps
+
+- **[Actions](./actions.md)** - Defining action contracts
+- **[Parameters](./parameters.md)** - All parameter options
+- **[Types](./types.md)** - Types and validation
+- **[Validation](./validation.md)** - Custom validation rules
+- **[Documentation](./documentation.md)** - Adding descriptions
