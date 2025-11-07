@@ -94,7 +94,7 @@ module Apiwork
           @metadata.add_resource(
             name,
             singular: singular,
-            resource_class: resource_class,
+            schema_class: resource_class,
             controller_class_name: controller_class_name,
             contract_class_name: contract_class_name,
             parent: parent,
