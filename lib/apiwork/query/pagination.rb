@@ -35,37 +35,21 @@ module Apiwork
         end
 
         page_size = [page_size, maximum_page_size].min
-
-        # Store pagination info for meta generation
-        scope.instance_variable_set(:@pagination_page, page_number)
-        scope.instance_variable_set(:@pagination_size, page_size)
-
         offset = (page_number - 1) * page_size
 
-        # Build metadata
+        # Build metadata immediately
         @meta = build_meta_for_scope(scope, page_number, page_size)
 
         scope.limit(page_size).offset(offset)
       end
 
       def build_meta(collection)
-        current = collection.instance_variable_get(:@pagination_page) || 1
-        size = collection.instance_variable_get(:@pagination_size) || default_page_size
+        # Return existing meta if pagination was applied
+        return @meta if @meta.present?
 
-        items = collection.except(:limit, :offset).count
-        total = (items.to_f / size).ceil
-
-        page = {
-          current:,
-          next: (current < total ? current + 1 : nil),
-          prev: (current > 1 ? current - 1 : nil),
-          total:,
-          items:
-        }
-
-        {
-          page: Apiwork::Transform::Case.hash(page, schema.serialize_key_transform)
-        }
+        # No pagination params provided - build default pagination meta
+        # Treat as page 1 with default page size
+        build_meta_for_scope(collection, 1, default_page_size)
       end
 
       def default_page_size
