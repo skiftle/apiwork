@@ -69,7 +69,7 @@ module Apiwork
         }.freeze
 
         class << self
-          def coerce(value, type)
+          def perform(value, type)
             coercer = COERCERS[type]
             return value unless coercer
 
@@ -80,7 +80,7 @@ module Apiwork
             end
           end
 
-          def can_coerce?(type)
+          def performable?(type)
             COERCERS.key?(type)
           end
         end

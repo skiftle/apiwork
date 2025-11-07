@@ -53,8 +53,8 @@ module Apiwork
           return coerce_hash(value, param_options[:nested]) if param_options[:nested] && value.is_a?(Hash)
 
           # Handle primitive types
-          if Coercer.can_coerce?(type)
-            coerced = Coercer.coerce(value, type)
+          if Coercer.performable?(type)
+            coerced = Coercer.perform(value, type)
             return coerced unless coerced.nil?
           end
 
@@ -67,9 +67,9 @@ module Apiwork
             if param_options[:nested] && item.is_a?(Hash)
               # Nested object in array
               coerce_hash(item, param_options[:nested])
-            elsif param_options[:of] && Coercer.can_coerce?(param_options[:of])
+            elsif param_options[:of] && Coercer.performable?(param_options[:of])
               # Simple typed array
-              coerced = Coercer.coerce(item, param_options[:of])
+              coerced = Coercer.perform(item, param_options[:of])
               coerced.nil? ? item : coerced
             else
               item
@@ -81,7 +81,7 @@ module Apiwork
         def coerce_union(value, union_def)
           # Special case: boolean unions need coercion for query params
           if union_def.variants.any? { |variant| variant[:type] == :boolean }
-            coerced = Coercer.coerce(value, :boolean)
+            coerced = Coercer.perform(value, :boolean)
             return coerced unless coerced.nil?
           end
 
