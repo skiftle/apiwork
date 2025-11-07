@@ -47,7 +47,7 @@ module Apiwork
         # Validate response using Parser
         result = output.perform(response_hash)
 
-        render json: result.response, status: status || determine_status(resource_or_collection)
+        render json: result.data, status: status || determine_status(resource_or_collection)
       end
 
       private
@@ -84,7 +84,7 @@ module Apiwork
       def extract_query_params_for_output
         return {} unless action_input
 
-        params = action_input.params || {}
+        params = action_input.data || {}
         {
           filter: params[:filter],
           sort: params[:sort],
