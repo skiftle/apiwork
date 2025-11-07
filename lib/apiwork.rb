@@ -25,6 +25,25 @@ module Apiwork
     def generate_schema(type, path, **options)
       Generation::Registry[type].generate(path, **options)
     end
+
+    # Register global types (shared across all contracts)
+    #
+    # Global types are available in all contracts and don't need prefixing.
+    # Examples: string_filter, integer_filter, page_params
+    #
+    # @example Register custom global types
+    #   Apiwork.register_global_types do
+    #     type :currency_filter do
+    #       param :eq, type: :string
+    #       param :in, type: :array, of: :string
+    #     end
+    #   end
+    #
+    # @yield Block evaluated with GlobalTypeBuilder DSL
+    def register_global_types(&block)
+      builder = Contract::GlobalTypeBuilder.new
+      builder.instance_eval(&block)
+    end
   end
 end
 
