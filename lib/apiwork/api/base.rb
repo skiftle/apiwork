@@ -55,7 +55,7 @@ module Apiwork
           result = {
             path: mount_path,
             metadata: serialize_doc,
-            global_types: serialize_global_types,
+            types: serialize_all_types,
             resources: {}
           }
 
@@ -80,10 +80,10 @@ module Apiwork
           }.compact
         end
 
-        # Serialize global types from TypeRegistry
-        # Returns all global types (shared across all contracts)
-        def serialize_global_types
-          Contract::TypeRegistry.serialize_global_types
+        # Serialize all types from TypeRegistry
+        # Returns all global types + all local types from all contracts in a single hash
+        def serialize_all_types
+          Contract::TypeRegistry.serialize_all_types_for_api(self)
         end
 
         # Serialize a single resource with all its actions and metadata
@@ -94,19 +94,13 @@ module Apiwork
             path: resource_path,
             singular: resource_metadata[:singular],
             actions: resource_metadata[:actions] || [],
-            contracts: {},
-            resource_types: {}
+            contracts: {}
           }
 
           # Get contract class for this resource
           # Try explicit contract first, fall back to schema-based contract
           contract_class = resolve_contract_class(resource_metadata) ||
                           schema_based_contract_class(resource_metadata)
-
-          # Serialize resource-specific types from TypeRegistry
-          if contract_class
-            result[:resource_types] = Contract::TypeRegistry.serialize_local_types(contract_class)
-          end
 
           # Serialize CRUD actions
           (resource_metadata[:actions] || []).each do |action_name|
