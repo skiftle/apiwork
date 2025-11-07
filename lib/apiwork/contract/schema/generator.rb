@@ -21,42 +21,42 @@ module Apiwork
         end
 
         # Create and configure the action definition
-        action_def = Apiwork::Contract::ActionDefinition.new(action, contract_class)
+        action_definition = Apiwork::Contract::ActionDefinition.new(action, contract_class)
 
         case action.to_sym
         when :index
-          action_def.input do
+          action_definition.input do
             Generator.generate_query_params(self, schema_class)
           end
-          action_def.output do
+          action_definition.output do
             Generator.generate_collection_output(self, schema_class)
           end
         when :show
-          action_def.input do
+          action_definition.input do
             # Empty input - strict mode will reject any query params
           end
-          action_def.output do
+          action_definition.output do
             Generator.generate_single_output(self, schema_class)
           end
         when :create
-          action_def.input do
+          action_definition.input do
             Generator.generate_writable_input(self, schema_class, :create)
           end
-          action_def.output do
+          action_definition.output do
             Generator.generate_single_output(self, schema_class)
           end
         when :update
-          action_def.input do
+          action_definition.input do
             Generator.generate_writable_input(self, schema_class, :update)
           end
-          action_def.output do
+          action_definition.output do
             Generator.generate_single_output(self, schema_class)
           end
         when :destroy
           # Destroy has no input/output by default
         end
 
-        action_def
+        action_definition
       end
 
       def self.generate_query_params(definition, schema_class)

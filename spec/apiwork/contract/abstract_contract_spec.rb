@@ -79,9 +79,9 @@ RSpec.describe 'Abstract Contract' do
     end
 
     it 'ConcreteContract can define actions normally' do
-      action_def = TestNamespace::ConcreteContract.action_definition(:create)
-      expect(action_def).not_to be_nil
-      expect(action_def.action_name).to eq(:create)
+      action_definition = TestNamespace::ConcreteContract.action_definition(:create)
+      expect(action_definition).not_to be_nil
+      expect(action_definition.action_name).to eq(:create)
     end
   end
 end
