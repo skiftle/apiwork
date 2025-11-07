@@ -1,10 +1,21 @@
 # Contracts
 
+> **Note:** Contracts are **optional** in Apiwork. In most cases (90%+), you only need a [Schema](../schemas/introduction.md). Apiwork automatically derives contracts from schemas for standard CRUD operations.
+>
+> Only create an explicit contract when you need:
+> - Custom actions beyond CRUD
+> - Override auto-generated validation
+> - Complex input transformations
+>
+> See [Schema-First Design](../schemas/schema-first-design.md) for the recommended approach.
+
+---
+
 Contracts define and validate your API's inputs and outputs. What shape data must have, what's required, what types are allowed.
 
-Every action in your controller has a matching contract that validates the request and response.
+When you create a schema, Apiwork automatically generates a contract for all standard CRUD actions. You only need to create an explicit contract file when you want to customize this behavior.
 
-## The basics
+## When you need a contract
 
 Let's start with a simple manual contract:
 
@@ -49,17 +60,37 @@ If validation fails, Apiwork returns a 422 error with details.
 
 ## Auto-generation from schemas
 
-In most cases, you won't write contracts manually.
+**In most cases, you don't need to create a contract file at all!**
 
-Instead, you link a schema and Apiwork generates all CRUD contracts automatically:
+Just create a schema, and Apiwork automatically generates contracts for all CRUD actions:
 
 ```ruby
-class Api::V1::PostContract < Apiwork::Contract::Base
-  schema Api::V1::PostSchema
+# app/schemas/api/v1/post_schema.rb
+class Api::V1::PostSchema < Apiwork::Schema::Base
+  model Post
+
+  attribute :id, filterable: true, sortable: true
+  attribute :title, writable: true
+  attribute :body, writable: true
 end
+
+# No contract file needed! ✨
+# Apiwork creates it automatically from the schema
 ```
 
-That's it. One line.
+**Only if you need custom behavior**, create an explicit contract:
+
+```ruby
+# app/contracts/api/v1/post_contract.rb (optional!)
+class Api::V1::PostContract < Apiwork::Contract::Base
+  schema Api::V1::PostSchema
+
+  # Add custom actions
+  action :publish do
+    input { param :scheduled_at, type: :datetime }
+  end
+end
+```
 
 ### What this generates
 

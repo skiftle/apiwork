@@ -3,7 +3,12 @@
 module Apiwork
   module Contract
     # Resolves Contract classes for controller actions using smart defaults
-    # Naming convention: PostsController → PostContract (singular)
+    #
+    # Resolution order:
+    # 1. Explicit contract from routing metadata
+    # 2. Named contract via convention (PostsController → PostContract)
+    # 3. Schema-based contract (PostsController → PostSchema → anonymous contract)
+    # 4. Fail with clear error
     class Resolver
       # Main resolve method - called from controller with all context
       #
@@ -26,10 +31,18 @@ module Apiwork
         inferred_class = infer_from_naming_convention(controller_class)
         return inferred_class.new if inferred_class
 
-        # 3. Fail clearly
+        # 3. Schema-based contract (auto-derive from schema)
+        schema_class = infer_schema_from_controller(controller_class)
+        if schema_class
+          contract_class = create_anonymous_contract(schema_class)
+          return contract_class.new
+        end
+
+        # 4. Fail clearly
         raise ConfigurationError,
-              "Contract not found for #{controller_class}##{action_name}. " \
-              "Expected #{inferred_contract_name(controller_class)} or specify contract: in routing."
+              "Contract or Schema not found for #{controller_class}##{action_name}. " \
+              "Expected #{inferred_contract_name(controller_class)} or #{inferred_schema_name(controller_class)}, " \
+              "or specify contract: in routing."
       end
 
       # Legacy method for backward compatibility
@@ -54,6 +67,31 @@ module Apiwork
         parts[-1] = parts[-1].singularize
 
         "#{parts.join('::')}Contract"
+      end
+
+      private_class_method def self.infer_schema_from_controller(controller_class)
+        # PostsController → PostSchema (singularize)
+        schema_name = inferred_schema_name(controller_class)
+        constantize_safe(schema_name)
+      end
+
+      private_class_method def self.inferred_schema_name(controller_class)
+        # Remove 'Controller' suffix, singularize, then add 'Schema'
+        # Api::V1::AccountsController → Api::V1::AccountSchema
+        base_name = controller_class.name.sub(/Controller$/, '')
+        parts = base_name.split('::')
+
+        # Singularize only the last part (the resource name)
+        parts[-1] = parts[-1].singularize
+
+        "#{parts.join('::')}Schema"
+      end
+
+      private_class_method def self.create_anonymous_contract(schema_class)
+        # Create an anonymous contract class with the schema
+        Class.new(Base) do
+          schema schema_class
+        end
       end
 
       private_class_method def self.constantize_safe(class_name)

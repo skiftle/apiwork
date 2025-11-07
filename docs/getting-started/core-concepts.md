@@ -367,29 +367,37 @@ resources :posts,
 
 Understanding the difference is crucial:
 
-### Schema = What your data IS
+### Schema = Primary Building Block (Required)
 
 - Defines your data model
 - Based on ActiveRecord models
 - Controls serialization
 - Defines query capabilities (filterable, sortable)
 - Defines writability (which fields accept input)
+- **Auto-generates contracts for CRUD operations**
 
-**Think**: Schema is about the **resource** itself.
+**Think**: Schema is about the **resource** itself and what it can do.
 
-### Contract = What your API DOES
+**In 90% of cases, you only need a schema.**
 
-- Defines API operations (actions)
+### Contract = Optional Customization (Only When Needed)
+
+- Defines custom API operations beyond CRUD
 - Validates input and output for each action
-- Can have different shapes than the model
+- Can override auto-generated behavior
 - Generates API documentation
 
-**Think**: Contract is about the **interaction** with the resource.
+**Think**: Contract is for **custom interactions** beyond standard CRUD.
+
+**Only create a contract when you need:**
+- Custom actions (search, publish, etc.)
+- Override default validation behavior
+- Complex nested input transformations
 
 ### Example showing the difference:
 
 ```ruby
-# Schema: The Post resource
+# Schema: The Post resource (This is all you need!)
 class Api::V1::PostSchema < Apiwork::Schema::Base
   model Post
 
@@ -402,18 +410,28 @@ class Api::V1::PostSchema < Apiwork::Schema::Base
   attribute :updated_at, sortable: true
 end
 
-# Contract: Just link the schema!
+# Contract: OPTIONAL - only needed for custom behavior
+# If you don't create this file, Apiwork auto-generates it from the schema!
 class Api::V1::PostContract < Apiwork::Contract::Base
   schema Api::V1::PostSchema
 
-  # That's it! All CRUD actions auto-generated:
+  # Without explicit actions, all CRUD actions are auto-generated:
   # - index with filter/sort/pagination
   # - show
   # - create (writable attributes as input)
   # - update (writable attributes as input, all optional)
   # - destroy
+
+  # Only add custom actions when you need them:
+  action :publish do
+    input { param :scheduled_at, type: :datetime }
+  end
 end
 ```
+
+**Note:** In most cases, you don't need to create the contract file at all! Apiwork automatically creates it from your schema. Only create an explicit contract when you need custom actions or want to override default behavior.
+
+See [Schema-First Design](../schemas/schema-first-design.md) for more details.
 
 **Auto-generated CREATE action** looks like:
 ```ruby
