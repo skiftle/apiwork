@@ -4,7 +4,6 @@ require_relative 'attribute_definition'
 require_relative 'association_definition'
 require_relative 'root_key'
 require_relative 'operators'
-require_relative 'querying'
 require_relative 'inspection'
 require_relative 'serialization'
 
@@ -33,8 +32,7 @@ module Apiwork
       class_attribute :_validated_includes, default: nil
       class_attribute :_root, default: nil
 
-      # Always extend with Querying and Inspection modules
-      extend Querying
+      # Always extend with Inspection module
       extend Inspection
 
       attr_reader :object, :context, :includes
@@ -204,6 +202,18 @@ module Apiwork
           @type || model_class&.model_name&.element
         end
 
+        def default_sort
+          @default_sort || Apiwork.configuration.default_sort
+        end
+
+        def default_page_size
+          @default_page_size || Apiwork.configuration.default_page_size
+        end
+
+        def maximum_page_size
+          @maximum_page_size || Apiwork.configuration.maximum_page_size
+        end
+
         def root_key
           if _root
             RootKey.new(_root[:singular], _root[:plural])
@@ -244,18 +254,6 @@ module Apiwork
 
             (required_columns & writable_attrs).freeze
           end
-        end
-
-        def serialize(object_or_collection, context: {}, includes: nil)
-          if object_or_collection.is_a?(ActiveRecord::Relation)
-            if includes.present?
-              object_or_collection = apply_includes(object_or_collection, includes)
-            elsif auto_include_associations
-              object_or_collection = apply_includes(object_or_collection)
-            end
-          end
-
-          super(object_or_collection, context: context, includes: includes)
         end
 
         private
