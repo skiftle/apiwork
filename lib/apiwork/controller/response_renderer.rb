@@ -115,7 +115,8 @@ module Apiwork
 
       # Extract query params from controller
       def extract_query_params
-        params = controller.send(:action_params)
+        input = controller.send(:action_input)
+        params = input.params
         if params.is_a?(ActionController::Parameters)
           params = params.dup.permit!.to_h.deep_symbolize_keys
         elsif params.respond_to?(:to_h)
