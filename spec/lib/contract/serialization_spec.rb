@@ -187,6 +187,114 @@ RSpec.describe 'Contract Serialization' do
         }
       })
     end
+
+    it 'expands custom types in unions' do
+      contract_class = Class.new(Apiwork::Contract::Base) do
+        type :string_filter do
+          param :equal, type: :string, required: false
+          param :contains, type: :string, required: false
+          param :starts_with, type: :string, required: false
+        end
+
+        action :search do
+          input do
+            param :filter, type: :union, required: false do
+              variant type: :string_filter
+              variant type: :string
+            end
+          end
+        end
+      end
+
+      definition = contract_class.action_definition(:search).merged_input_definition
+      json = definition.as_json
+
+      expect(json).to eq({
+        filter: {
+          type: :union,
+          variants: [
+            {
+              type: :object,
+              custom_type: :string_filter,
+              shape: {
+                equal: {
+                  type: :string,
+                  required: false
+                },
+                contains: {
+                  type: :string,
+                  required: false
+                },
+                starts_with: {
+                  type: :string,
+                  required: false
+                }
+              }
+            },
+            {
+              type: :string
+            }
+          ]
+        }
+      })
+    end
+
+    it 'expands custom types in array of custom types in unions' do
+      contract_class = Class.new(Apiwork::Contract::Base) do
+        type :string_filter do
+          param :equal, type: :string, required: false
+          param :contains, type: :string, required: false
+        end
+
+        action :search do
+          input do
+            param :filters, type: :union, required: false do
+              variant type: :string_filter
+              variant type: :array, of: :string_filter
+            end
+          end
+        end
+      end
+
+      definition = contract_class.action_definition(:search).merged_input_definition
+      json = definition.as_json
+
+      expect(json).to eq({
+        filters: {
+          type: :union,
+          variants: [
+            {
+              type: :object,
+              custom_type: :string_filter,
+              shape: {
+                equal: {
+                  type: :string,
+                  required: false
+                },
+                contains: {
+                  type: :string,
+                  required: false
+                }
+              }
+            },
+            {
+              type: :array,
+              of: :string_filter,
+              of_shape: {
+                equal: {
+                  type: :string,
+                  required: false
+                },
+                contains: {
+                  type: :string,
+                  required: false
+                }
+              }
+            }
+          ]
+        }
+      })
+    end
   end
 
   describe 'ActionDefinition#as_json' do
