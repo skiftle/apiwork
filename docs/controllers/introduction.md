@@ -43,6 +43,7 @@ end
 ```
 
 That's it. Three helper methods handle everything:
+
 - `query(scope)` - Applies filters, sorting, pagination
 - `action_params` - Gets validated params for create/update
 - `respond_with(resource)` - Serializes and sends response
@@ -75,7 +76,7 @@ Here's what happens on each request:
 
 6. Response serialized → Schema serializes posts to JSON
 
-7. Output validation runs → Validates response structure against contract
+7. In dev, Output validation runs → Validates response structure against contract
 
 8. Response sent → { ok: true, posts: [...], meta: {...} }
 ```
@@ -215,6 +216,7 @@ Active Record errors are automatically converted to Apiwork's error format.
 All responses have the same structure:
 
 **Success response:**
+
 ```json
 {
   "ok": true,
@@ -223,6 +225,7 @@ All responses have the same structure:
 ```
 
 **Collection response:**
+
 ```json
 {
   "ok": true,
@@ -240,16 +243,16 @@ All responses have the same structure:
 ```
 
 **Error response:**
+
 ```json
 {
   "ok": false,
-  "errors": [
-    { "code": "...", "path": "...", "message": "..." }
-  ]
+  "errors": [{ "code": "...", "path": "...", "message": "..." }]
 }
 ```
 
 **Delete response:**
+
 ```json
 {
   "ok": true,
