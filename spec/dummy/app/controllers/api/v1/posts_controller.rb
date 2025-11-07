@@ -6,8 +6,7 @@ module Api
       before_action :set_post, only: %i[show update destroy publish archive preview]
 
       def index
-        posts = query(Post.all)
-        respond_with posts
+        respond_with Post.all
       end
 
       def show

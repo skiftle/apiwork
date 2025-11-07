@@ -66,6 +66,14 @@ module Apiwork
       end
 
       def build_collection_response(collection, action_def, schema_class, meta)
+        # Auto-query for index action
+        query_obj = nil
+        if should_auto_query?(collection, schema_class)
+          query_params = extract_query_params(action_params)
+          query_obj = Apiwork::Query.new(collection, schema: schema_class).perform(query_params)
+          collection = query_obj.result
+        end
+
         # Serialize data via Schema with validated includes from contract
         includes = extract_includes
         json_data = action_def.serialize_data(collection, context: build_schema_context, includes: includes)
@@ -73,8 +81,8 @@ module Apiwork
         # Build complete response with pagination meta
         if schema_class
           root_key = determine_root_key(schema_class, collection)
-          # Use pagination_meta from controller (set by query method)
-          pagination_meta = pagination_meta() || {}
+          # Use meta from query_obj if available
+          pagination_meta = query_obj&.meta || {}
           response = { ok: true, root_key => json_data, meta: pagination_meta.merge(meta) }
         else
           # Custom contract without schema
@@ -155,6 +163,27 @@ module Apiwork
         is_collection = resource_or_collection.is_a?(Enumerable)
         root_key = schema_class.root_key
         is_collection ? root_key.plural : root_key.singular
+      end
+
+      def should_auto_query?(resource, schema_class)
+        action_name.to_s == 'index' &&
+          resource.is_a?(ActiveRecord::Relation) &&
+          schema_class.present?
+      end
+
+      def extract_query_params(params)
+        if params.is_a?(ActionController::Parameters)
+          params = params.dup.permit!.to_h.deep_symbolize_keys
+        elsif params.respond_to?(:to_h)
+          params = params.to_h.deep_symbolize_keys
+        end
+
+        {
+          filter: params[:filter] || {},
+          sort: params[:sort],
+          page: params[:page] || {},
+          include: params[:include]
+        }
       end
     end
   end

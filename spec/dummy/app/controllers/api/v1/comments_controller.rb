@@ -8,9 +8,9 @@ module Api
       def index
         # Support both nested and non-nested routes
         comments = if params[:post_id]
-          query(Comment.where(post_id: params[:post_id]))
+          Comment.where(post_id: params[:post_id])
         else
-          query(Comment.all)
+          Comment.all
         end
         respond_with comments
       end
@@ -54,7 +54,7 @@ module Api
         else
           Comment.order(created_at: :desc).limit(5)
         end
-        respond_with query(comments)
+        respond_with comments
       end
 
       private
