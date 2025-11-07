@@ -410,8 +410,8 @@ module Apiwork
           return assoc_def.schema_class.constantize rescue nil
         end
 
-        # Get the model class from the resource (stored during initialization)
-        model_class = assoc_def.instance_variable_get(:@model_class)
+        # Get the model class from the association definition
+        model_class = assoc_def.model_class
         return nil unless model_class
 
         # Get the ActiveRecord reflection for this association

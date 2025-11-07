@@ -31,7 +31,7 @@ module Apiwork
         raise ConfigurationError, "No contract found for #{self.class.name}##{action_name}" unless action_def
 
         # Get schema class from contract (may be nil for custom contracts)
-        schema_class = action_def.contract_class.schema_class
+        schema_class = action_def.schema_class
 
         # Transform meta keys if schema exists
         if meta.present? && schema_class

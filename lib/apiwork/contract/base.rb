@@ -47,6 +47,19 @@ module Apiwork
 
         # DSL method to define a custom type
         # Supports lexical scoping - types can be defined at contract, action, or input/output level
+        #
+        # THREADING NOTES:
+        # This method uses Thread.current[:apiwork_type_scope] to maintain lexical scope
+        # during DSL evaluation (instance_eval). This is safe because:
+        # - Rails request processing is single-threaded per request
+        # - Contract definitions happen at boot time, also single-threaded
+        # - The scope is set/unset within the same method call (proper cleanup)
+        # - No state persists across requests
+        #
+        # If using async request processing (e.g., Falcon), ensure contract
+        # definitions complete before serving requests. Runtime type resolution
+        # is thread-safe as it only reads immutable @type_scopes.
+        #
         # @param name [Symbol] Name of the custom type
         # @param block [Proc] Block defining the type's parameters
         def type(name, &block)
