@@ -19,11 +19,11 @@ module Apiwork
 
       def validated_request
         @validated_request ||= begin
-          action_def = current_action_definition
+          action_definition = current_action_definition
 
           # Validate if action has input definition
-          if action_def&.input_definition
-            contract = action_def.contract_class.new
+          if action_definition&.input_definition
+            contract = action_definition.contract_class.new
             ValidatedRequest.new(**contract.validate_input(action_name.to_sym, request))
           else
             ValidatedRequest.new(params: {}, errors: [])

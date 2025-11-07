@@ -11,8 +11,8 @@ module Apiwork
           schema = if options[:contract_class_name]
             # Get schema from contract
             contract = options[:contract_class_name].constantize
-            action_def = contract.action_definition(action_name.to_sym)
-            action_def.schema_class
+            action_definition = contract.action_definition(action_name.to_sym)
+            action_definition.schema_class
           else
             Schema::Resolver.from_controller(self.class)
           end

@@ -122,7 +122,7 @@ module Apiwork
           action_sym = action_name.to_sym
 
           # Create action definition
-          action_def = ActionDefinition.new(action_sym, self)
+          action_definition = ActionDefinition.new(action_sym, self)
 
           # Apply custom block with action scope
           if block_given?
@@ -134,14 +134,14 @@ module Apiwork
             Thread.current[:apiwork_type_scope] = action_scope_id
 
             begin
-              action_def.instance_eval(&block)
+              action_definition.instance_eval(&block)
             ensure
               # Restore previous scope
               Thread.current[:apiwork_type_scope] = previous_scope
             end
           end
 
-          @action_definitions[action_sym] = action_def
+          @action_definitions[action_sym] = action_definition
         end
 
         # Get ActionDefinition for a specific action
@@ -178,17 +178,17 @@ module Apiwork
       def validate_input(action_name, request, options = {})
         params = parse_request_params(request)
 
-        action_def = self.class.action_definition(action_name)
-        return { params: params, errors: [] } unless action_def
+        action_definition = self.class.action_definition(action_name)
+        return { params: params, errors: [] } unless action_definition
 
-        action_def.input_definition&.validate(params, options) || { params: params, errors: [] }
+        action_definition.input_definition&.validate(params, options) || { params: params, errors: [] }
       end
 
       def validate_output(action_name, data, options = {})
-        action_def = self.class.action_definition(action_name)
-        return { params: data, errors: [] } unless action_def
+        action_definition = self.class.action_definition(action_name)
+        return { params: data, errors: [] } unless action_definition
 
-        action_def.output_definition&.validate(data, options) || { params: data, errors: [] }
+        action_definition.output_definition&.validate(data, options) || { params: data, errors: [] }
       end
 
       private

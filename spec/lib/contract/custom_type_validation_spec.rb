@@ -26,10 +26,10 @@ RSpec.describe 'Contract custom type unknown field validation' do
   end
 
   let(:contract) { contract_class.new }
-  let(:action_def) { contract_class.action_definition(:index) }
+  let(:action_definition) { contract_class.action_definition(:index) }
 
   it 'catches unknown fields in custom types' do
-    result = action_def.input_definition.validate({
+    result = action_definition.input_definition.validate({
       custom: {
         invalid_field: true  # This should be caught as unknown
       }
@@ -42,7 +42,7 @@ RSpec.describe 'Contract custom type unknown field validation' do
   end
 
   it 'allows known fields in custom types' do
-    result = action_def.input_definition.validate({
+    result = action_definition.input_definition.validate({
       custom: {
         valid_field: true,
         another_field: 'test'
