@@ -3,14 +3,6 @@
 module Apiwork
   module Contract
     class Parser
-      # Result object wrapping parsed data
-      #
-      # Provides a unified interface for both input and output parsing results.
-      # The main data is stored in @data and can be accessed via:
-      # - result.data (direction-agnostic)
-      # - result[:key] (hash-like accessor)
-      # - result.params (input direction only, for compatibility)
-      #
       class Result
         attr_reader :data, :errors
 
