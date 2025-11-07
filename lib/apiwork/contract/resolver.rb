@@ -24,6 +24,7 @@ module Apiwork
         if metadata&.dig(:contract_class_name)
           contract_class = constantize_safe(metadata[:contract_class_name])
           return contract_class.new if contract_class
+
           raise ConfigurationError, "Contract #{metadata[:contract_class_name]} not found"
         end
 
@@ -42,7 +43,7 @@ module Apiwork
         raise ConfigurationError,
               "Contract or Schema not found for #{controller_class}##{action_name}. " \
               "Expected #{inferred_contract_name(controller_class)} or #{inferred_schema_name(controller_class)}, " \
-              "or specify contract: in routing."
+              'or specify contract: in routing.'
       end
 
       # Legacy method for backward compatibility
