@@ -24,9 +24,11 @@ module Apiwork
         @output_definition = nil
 
         # Conditionally prepend Schema::ActionDefinition if contract has schema
-        if contract_class.schema?
-          singleton_class.prepend(Schema::ActionDefinition) unless singleton_class.ancestors.include?(Schema::ActionDefinition)
-        end
+        return unless contract_class.schema?
+
+        return if singleton_class.ancestors.include?(Schema::ActionDefinition)
+
+        singleton_class.prepend(Schema::ActionDefinition)
       end
 
       # Reset flags to override virtual contracts
@@ -56,7 +58,7 @@ module Apiwork
 
       # Define a custom type scoped to this action
       def type(name, &block)
-        raise ArgumentError, "Block required for custom type definition" unless block_given?
+        raise ArgumentError, 'Block required for custom type definition' unless block_given?
 
         # Get current scope (should be action scope when called from action block)
         current_scope = Thread.current[:apiwork_type_scope] || :root
@@ -114,14 +116,10 @@ module Apiwork
       end
 
       # Get input definition
-      def input_definition
-        @input_definition
-      end
+      attr_reader :input_definition
 
       # Get output definition
-      def output_definition
-        @output_definition
-      end
+      attr_reader :output_definition
 
       # Get merged input definition (virtual + explicit)
       def merged_input_definition
@@ -167,7 +165,7 @@ module Apiwork
       private
 
       def standard_crud_action?
-        [:index, :show, :create, :update, :destroy].include?(action_name.to_sym)
+        %i[index show create update destroy].include?(action_name.to_sym)
       end
 
       # Validate output data against definition
@@ -211,17 +209,17 @@ module Apiwork
           end
 
           # Validate arrays of nested objects
-          if value && param_options[:type] == :array && param_options[:nested] && value.is_a?(Array)
-            value.each do |item|
-              validate_single_output(item, param_options[:nested], param_options[:nested].params) if item.is_a?(Hash)
-            end
+          next unless value && param_options[:type] == :array && param_options[:nested] && value.is_a?(Array)
+
+          value.each do |item|
+            validate_single_output(item, param_options[:nested], param_options[:nested].params) if item.is_a?(Hash)
           end
         end
       end
 
       # Check if action is a writable action (create/update)
       def writable_action?
-        [:create, :update].include?(action_name.to_sym)
+        %i[create update].include?(action_name.to_sym)
       end
     end
   end
