@@ -18,12 +18,12 @@ module Apiwork
 
         # Use new Query class
         query_params = extract_query_params(action_params)
-        query_obj = Apiwork::Query.new(scope, schema: schema_class).perform(query_params)
+        query = Apiwork::Query.new(scope, schema: schema_class).perform(query_params)
 
         # Store pagination metadata
-        @pagination_meta = query_obj.meta if query_obj.meta.present?
+        @pagination_meta = query.meta if query.meta.present?
 
-        query_obj.result
+        query.result
       end
 
       def pagination_meta
