@@ -1,8 +1,8 @@
-# Parameters
+# Params
 
-Parameters define the structure and types of data in your contract's input and output definitions. This guide covers all parameter types, options, and advanced patterns.
+Params define the structure and types of data in your contract's input and output definitions. This guide covers all param types, options, and advanced patterns.
 
-## Basic parameters
+## Basic params
 
 ```ruby
 action :create do
@@ -14,8 +14,9 @@ action :create do
 end
 ```
 
-Every parameter has:
-- **Name** - The parameter key (`:title`, `:published`)
+Every param has:
+
+- **Name** - The param key (`:title`, `:published`)
 - **Type** - The data type (`:string`, `:boolean`, `:integer`)
 - **Options** - `required`, `default`, `enum`, etc.
 
@@ -24,22 +25,20 @@ Every parameter has:
 ### String
 
 ```ruby
-param :title, type: :string, required: true
-param :body, type: :string, required: false
+param :title, type: :string
 ```
 
 ### Integer
 
 ```ruby
-param :count, type: :integer, required: true
-param :age, type: :integer, required: false
+param :count, type: :integer
 ```
 
 ### Float / Decimal
 
 ```ruby
-param :rating, type: :float, required: true
-param :price, type: :decimal, required: true
+param :rating, type: :float
+param :price, type: :decimal
 ```
 
 Both map to `number` in OpenAPI and Zod.
@@ -47,8 +46,7 @@ Both map to `number` in OpenAPI and Zod.
 ### Boolean
 
 ```ruby
-param :active, type: :boolean, required: true
-param :published, type: :boolean, default: false
+param :active, type: :boolean
 ```
 
 ### UUID
@@ -62,19 +60,19 @@ Validates UUID format.
 ### Date / DateTime
 
 ```ruby
-param :birth_date, type: :date, required: false
-param :created_at, type: :datetime, required: true
+param :birth_date, type: :date
+param :created_at, type: :datetime
 ```
 
 Expects ISO 8601 format.
 
-## Parameter options
+## Param options
 
 ### required
 
 ```ruby
 param :title, type: :string, required: true   # Must be present
-param :body, type: :string, required: false   # Optional
+param :body, type: :string, required: false   # Optional (default)
 ```
 
 ### default
@@ -84,7 +82,7 @@ param :status, type: :string, default: 'draft'
 param :count, type: :integer, default: 0
 ```
 
-Applied when parameter is missing or nil.
+Applied when param is missing or nil.
 
 ### enum
 
@@ -100,7 +98,7 @@ Restricts values to specific options.
 param :title, type: :string, nullable: false  # Reject null explicitly
 ```
 
-By default, parameters can be null unless `required: true`.
+By default, params can be null unless `required: true`.
 
 ## Arrays
 
@@ -116,18 +114,6 @@ param :items, type: :array, of: :object do
   param :quantity, type: :integer, required: true
 end
 ```
-
-### Array options
-
-```ruby
-param :tags, type: :array, of: :string, max_items: 10
-```
-
-**Available:**
-- `max_items` - Maximum array length
-
-**Not supported:**
-- ❌ `min_items` - Not implemented
 
 ## Nested objects
 
@@ -317,7 +303,7 @@ This matches JavaScript's lexical scoping with `let`.
 
 ## Schema generation
 
-Parameters are used to generate schemas for frontend:
+params are used to generate schemas for frontend:
 
 ### OpenAPI 3.1.x
 
@@ -327,6 +313,7 @@ param :tags, type: :array, of: :string
 ```
 
 Generates:
+
 ```json
 {
   "type": "object",
@@ -351,6 +338,7 @@ param :email_address, type: :string, required: false
 ```
 
 With `key_transform: :camelize_lower`:
+
 ```json
 {
   "type": "object",
@@ -370,12 +358,13 @@ param :tags, type: :array, of: :string
 ```
 
 Generates:
+
 ```typescript
 z.object({
   name: z.string(),
   age: z.number().int().optional(),
-  tags: z.array(z.string())
-})
+  tags: z.array(z.string()),
+});
 ```
 
 See [Schema Generation](../schema-generation/introduction.md) for details on exposing these schemas via API endpoints.
@@ -535,7 +524,7 @@ action :create do
 end
 ```
 
-## What parameters do NOT support
+## What params do NOT support
 
 These features are **not supported**:
 
