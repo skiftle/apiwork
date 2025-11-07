@@ -11,15 +11,15 @@ module Apiwork
     module Serialization
       extend ActiveSupport::Concern
 
-      # Get action output processor for current action
+      # Get action output parser for current action
       #
-      # @return [ActionOutput] ActionOutput instance
+      # @return [Contract::OutputParser] OutputParser instance
       def action_output
         @action_output ||= begin
           contract = find_contract&.new
           return nil unless contract
 
-          ActionOutput.new(
+          Contract::OutputParser.new(
             contract: contract,
             action: action_name,
             context: build_schema_context,
@@ -36,7 +36,7 @@ module Apiwork
       # @param status [Symbol] Optional HTTP status override
       def respond_with(resource_or_collection, meta: {}, contract: nil, status: nil)
         output = if contract
-                   ActionOutput.new(
+                   Contract::OutputParser.new(
                      contract: contract.new,
                      action: action_name,
                      context: build_schema_context,
