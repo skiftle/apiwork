@@ -44,7 +44,10 @@
       "Bash(do)",
       "Bash(spec/dummy/app/contracts/api/v1/person_contract.rb )",
       "Bash(spec/dummy/app/contracts/api/v1/restricted_post_contract.rb )",
-      "Bash(spec/dummy/app/contracts/api/v1/safe_comment_contract.rb)"
+      "Bash(spec/dummy/app/contracts/api/v1/safe_comment_contract.rb)",
+      "Bash(bundle exec rails generate:*)",
+      "Bash(RAILS_ENV=test bundle exec rails db:migrate:*)",
+      "Bash(bundle exec rake:*)"
     ],
     "deny": [],
     "ask": []
