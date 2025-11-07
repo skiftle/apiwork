@@ -47,7 +47,8 @@
       "Bash(spec/dummy/app/contracts/api/v1/safe_comment_contract.rb)",
       "Bash(bundle exec rails generate:*)",
       "Bash(RAILS_ENV=test bundle exec rails db:migrate:*)",
-      "Bash(bundle exec rake:*)"
+      "Bash(bundle exec rake:*)",
+      "Bash(xargs -I {} sh -c 'echo \"\"\"\"=== {} ===\"\"\"\" && grep -n \"\"\"\"^  def \"\"\"\" {} | wc -l')"
     ],
     "deny": [],
     "ask": []

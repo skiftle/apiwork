@@ -3,10 +3,10 @@
 module Apiwork
   module Schema
     class Base
+      include Concerns::AbstractClass
       include Serialization
       extend Inspection
 
-      class_attribute :_abstract_class, default: false
       class_attribute :_model_class
       class_attribute :attribute_definitions, default: {}
       class_attribute :association_definitions, default: {}
@@ -33,26 +33,7 @@ module Apiwork
         Apiwork::Schema::Resolver.from_association(reflection, self.class)
       end
 
-      def self.inherited(subclass)
-        super
-        # Reset abstract flag so subclass doesn't inherit it
-        subclass._abstract_class = false
-      end
-
       class << self
-
-        def abstract_class=(value)
-          self._abstract_class = value
-        end
-
-        def abstract_class
-          _abstract_class
-        end
-
-        def abstract_class?
-          _abstract_class
-        end
-
         def model(ref = nil)
           if ref
             unless ref.is_a?(Class)

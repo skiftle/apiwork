@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-
-
 module Apiwork
   class Query
     module Filtering
