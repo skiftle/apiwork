@@ -8,7 +8,7 @@
 /tmp/
 
 # Dummy app logs
-/spec/dummy/log/*.log
+/spec/dummy/log/*
 
 # Gem files
 *.gem

@@ -9,21 +9,21 @@ module Apiwork
         case action_name.to_sym
         when :create, :update
           schema = if options[:contract_class_name]
-            # Get schema from contract
-            contract = options[:contract_class_name].constantize
-            action_definition = contract.action_definition(action_name.to_sym)
-            action_definition.schema_class
-          else
-            Schema::Resolver.from_controller(self.class)
-          end
+                     # Get schema from contract
+                     contract = options[:contract_class_name].constantize
+                     action_definition = contract.action_definition(action_name.to_sym)
+                     action_definition.schema_class
+                   else
+                     Schema::Resolver.from_controller(self.class)
+                   end
 
           # Use root_key if schema exists, otherwise return flat params
           params = if schema&.root_key
-            validated_request.params[schema.root_key.singular.to_sym] || {}
-          else
-            # Contract without schema - params already validated and structured by contract
-            validated_request.params
-          end
+                     validated_request.params[schema.root_key.singular.to_sym] || {}
+                   else
+                     # Contract without schema - params already validated and structured by contract
+                     validated_request.params
+                   end
 
           # Transform writable associations to _attributes format for Rails nested attributes
           if schema
@@ -50,7 +50,7 @@ module Apiwork
           next unless assoc_def.writable_for?(action)
           next unless transformed.key?(name)
 
-          # Note: Validation of accepts_nested_attributes_for happens at schema definition time
+          # NOTE: Validation of accepts_nested_attributes_for happens at schema definition time
           # in AssociationDefinition#validate_nested_attributes!
 
           # Transform the association
@@ -73,7 +73,11 @@ module Apiwork
         schema_class = assoc_def.schema_class
 
         if schema_class.is_a?(String)
-          schema_class.constantize rescue nil
+          begin
+            schema_class.constantize
+          rescue StandardError
+            nil
+          end
         else
           schema_class
         end
