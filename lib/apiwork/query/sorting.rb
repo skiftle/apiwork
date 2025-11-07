@@ -1,0 +1,106 @@
+# frozen_string_literal: true
+
+module Apiwork
+  class Query
+    module Sorting
+      def apply_sort(scope, params)
+        return scope if params.blank?
+
+        # Use default sort if no params
+        params = default_sort if params.blank?
+        return scope if params.blank?
+
+        # Convert array of hashes to single hash
+        if params.is_a?(Array)
+          params = params.reduce({}) { |acc, hash| acc.merge(hash) }
+        end
+
+        unless params.is_a?(Hash)
+          error = ArgumentError.new('sort must be a Hash or Array of Hashes')
+          Errors::Handler.handle(error, context: { params_type: params.class })
+          return scope
+        end
+
+        orders, joins = build_order_clauses(params)
+        scope = scope.joins(joins).order(orders)
+        scope = scope.distinct if joins.present?
+        scope
+      end
+
+      def default_sort
+        schema.default_sort || Apiwork.configuration.default_sort
+      end
+
+      private
+
+      def build_order_clauses(params, target_klass = schema.model_class)
+        params.each_with_object([[], []]) do |(key, value), (orders, joins)|
+          key = key.to_sym
+
+          if value.is_a?(String) || value.is_a?(Symbol)
+            attribute_definition = schema.attribute_definitions[key]
+            unless attribute_definition&.sortable?
+              available = schema.attribute_definitions
+                                .select { |_, definition| definition.sortable? }
+                                .keys
+                                .join(', ')
+
+              error = ArgumentError.new(
+                "#{key} is not sortable on #{target_klass.name}. Sortable: #{available}"
+              )
+              Errors::Handler.handle(error, context: { field: key, class: target_klass.name })
+              next
+            end
+
+            column = target_klass.arel_table[key]
+            direction = value.to_sym
+
+            orders << case direction
+                      when :asc then column.asc
+                      when :desc then column.desc
+                      else
+                        error = ArgumentError.new("Invalid direction '#{direction}'. Use 'asc' or 'desc'")
+                        Errors::Handler.handle(error, context: { field: key, direction: direction })
+                        next
+                      end
+
+          elsif value.is_a?(Hash)
+            association = target_klass.reflect_on_association(key)
+
+            if association.nil?
+              error = ArgumentError.new("#{key} is not a valid association on #{target_klass.name}")
+              Errors::Handler.handle(error, context: { field: key, class: target_klass.name })
+              next
+            end
+
+            unless schema.association_definitions[key]&.sortable?
+              error = ArgumentError.new("Association #{key} is not sortable")
+              Errors::Handler.handle(error, context: { association: key })
+              next
+            end
+
+            association_resource = schema.association_definitions[key].schema_class || schema.detect_association_resource(key)
+
+            if association_resource.nil?
+              error = ArgumentError.new("Cannot find resource for association #{key}")
+              Errors::Handler.handle(error, context: { association: key })
+              next
+            end
+
+            association_resource = association_resource.constantize if association_resource.is_a?(String)
+
+            # Use Query class for nested sorting
+            nested_query = Apiwork::Query.new(association.klass.all, schema: association_resource)
+            nested_orders, nested_joins = nested_query.send(:build_order_clauses, value, association.klass)
+            orders.concat(nested_orders)
+
+            joins << (nested_joins.any? ? { key => nested_joins } : key)
+          else
+            error = ArgumentError.new("Sort value must be 'asc', 'desc', or Hash for associations")
+            Errors::Handler.handle(error, context: { field: key, value_type: value.class })
+          end
+        end
+      end
+    end
+  end
+end

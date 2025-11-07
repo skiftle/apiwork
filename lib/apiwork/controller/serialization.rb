@@ -73,7 +73,8 @@ module Apiwork
         # Build complete response with pagination meta
         if schema_class
           root_key = determine_root_key(schema_class, collection)
-          pagination_meta = schema_class.build_meta(collection)
+          # Use pagination_meta from controller (set by query method)
+          pagination_meta = pagination_meta() || {}
           response = { ok: true, root_key => json_data, meta: pagination_meta.merge(meta) }
         else
           # Custom contract without schema
