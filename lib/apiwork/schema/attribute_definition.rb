@@ -20,7 +20,7 @@ module Apiwork
             # Auto-detect from DB
             options[:enum] ||= detect_enum_values(name)
             options[:type] ||= detect_type(name) if @is_db_column
-            options[:required] = auto_detect_required(name, options) if options[:required].nil? && @is_db_column
+            options[:required] = detect_required(name) if options[:required].nil? && @is_db_column
           rescue ActiveRecord::StatementInvalid, ActiveRecord::NoDatabaseError, ActiveRecord::ConnectionNotEstablished
             # DB not available or table doesn't exist - skip introspection
           end
@@ -191,7 +191,7 @@ module Apiwork
         @model_class.type_for_attribute(name).type
       end
 
-      def auto_detect_required(name, options)
+      def detect_required(name)
         return false unless @model_class
         return false unless @is_db_column
 

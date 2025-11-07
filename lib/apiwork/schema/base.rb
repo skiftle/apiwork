@@ -13,8 +13,19 @@ module Apiwork
     class Base
       include Serialization
 
-      class_attribute :abstract_class, default: false
+      class_attribute :_abstract_class, default: false
       class_attribute :_model_class
+
+      # Provide abstract_class API without using class_attribute
+      class << self
+        def abstract_class=(value)
+          self._abstract_class = value
+        end
+
+        def abstract_class
+          _abstract_class
+        end
+      end
       class_attribute :attribute_definitions, default: {}
       class_attribute :_serialize_key_transform, default: nil
       class_attribute :_deserialize_key_transform, default: nil
@@ -43,6 +54,8 @@ module Apiwork
       # Auto-detect model class from schema name
       def self.inherited(subclass)
         super
+        # Reset explicit flag so subclass doesn't inherit it
+        subclass._abstract_class = false
         # Don't run auto-detection here because:
         # 1. abstract_class might be set in the class body (after inherited fires)
         # 2. The class name might not be fully resolved yet with Zeitwerk
@@ -50,6 +63,11 @@ module Apiwork
       end
 
       class << self
+        # Check if abstract_class was explicitly set on THIS class (not inherited)
+        def abstract_class_explicitly_set?
+          _abstract_class
+        end
+
         # DSL method for explicit model declaration
         # Only accepts constant references (Zeitwerk autoloading)
         def model(ref = nil)
@@ -72,12 +90,12 @@ module Apiwork
         end
 
         def auto_detect_and_activate_model
-          # Skip if model already explicitly set on THIS class (not inherited)
-          return if instance_variable_defined?(:@_model_class) && _model_class.present?
+          # Skip if model already set (either explicitly or via auto-detection)
+          return if _model_class.present?
 
-          # Skip if abstract (explicitly set on this class, not inherited) or anonymous class
-          # We check the instance variable directly to avoid inheriting abstract_class from parent
-          return if (instance_variable_defined?(:@abstract_class) && @abstract_class) || name.nil?
+          # Skip if this class explicitly marked itself as abstract
+          # We check if abstract_class was set on THIS class (not inherited)
+          return if abstract_class_explicitly_set? || name.nil?
 
           # Derive model class name from schema class name
           # Api::V1::CommentSchema → Comment
@@ -97,7 +115,25 @@ module Apiwork
           if model_class.present?
             self._model_class = model_class
             activate_model_features
+          else
+            # Model not found - raise error with helpful message
+            raise_model_not_found_error(model_name)
           end
+        end
+
+        def raise_model_not_found_error(model_name)
+          error = ConfigurationError.new(
+            code: :model_not_found,
+            detail: "Could not find model '#{model_name}' for #{name}. " \
+                    "Either create the model, declare it explicitly with 'model YourModel', " \
+                    "or mark this schema as abstract with 'self.abstract_class = true'",
+            path: []
+          )
+
+          Errors::Handler.handle(error, context: {
+                                   schema: name,
+                                   expected_model: model_name
+                                 })
         end
 
         def try_constantize_model(namespace, model_name)
