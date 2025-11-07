@@ -15,7 +15,7 @@ module Apiwork
 
     # Load rake tasks
     rake_tasks do
-      load File.expand_path('../../tasks/apiwork.rake', __dir__)
+      load File.expand_path('../tasks/apiwork.rake', __dir__)
     end
 
     # Configure default settings
