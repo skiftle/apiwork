@@ -56,6 +56,16 @@ module Apiwork
         false
       end
 
+      # Serialize this action definition to JSON-friendly hash
+      # Includes both input and output definitions
+      # @return [Hash] Hash with :input and :output keys
+      def as_json
+        result = {}
+        result[:input] = merged_input_definition&.as_json
+        result[:output] = merged_output_definition&.as_json
+        result
+      end
+
       # Define a custom type scoped to this action
       def type(name, &block)
         raise ArgumentError, 'Block required for custom type definition' unless block_given?

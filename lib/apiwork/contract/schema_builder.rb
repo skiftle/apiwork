@@ -60,7 +60,7 @@ module Apiwork
 
         # Handle custom types
         if options[:custom_type]
-          return build_openapi_schema(options[:nested])
+          return build_openapi_schema(options[:shape])
         end
 
         base = case options[:type]
@@ -79,8 +79,8 @@ module Apiwork
                when :decimal, :float
                  { type: 'number', format: 'float' }
                when :object
-                 if options[:nested]
-                   build_openapi_schema(options[:nested])
+                 if options[:shape]
+                   build_openapi_schema(options[:shape])
                  else
                    { type: 'object' }
                  end
@@ -95,8 +95,8 @@ module Apiwork
                            else
                              build_openapi_property(type: options[:of])
                            end
-                         elsif options[:nested]
-                           build_openapi_schema(options[:nested])
+                         elsif options[:shape]
+                           build_openapi_schema(options[:shape])
                          else
                            { type: 'object' }
                          end
@@ -133,9 +133,9 @@ module Apiwork
           return build_openapi_schema(custom_def)
         end
 
-        # Handle nested object variant
-        if variant_def[:nested]
-          return build_openapi_schema(variant_def[:nested])
+        # Handle shape object variant
+        if variant_def[:shape]
+          return build_openapi_schema(variant_def[:shape])
         end
 
         # Handle array variant
@@ -150,8 +150,8 @@ module Apiwork
                     else
                       build_openapi_property(type: variant_def[:of])
                     end
-                  elsif variant_def[:nested]
-                    build_openapi_schema(variant_def[:nested])
+                  elsif variant_def[:shape]
+                    build_openapi_schema(variant_def[:shape])
                   else
                     { type: 'object' }
                   end
@@ -187,7 +187,7 @@ module Apiwork
 
         # Handle custom types
         if options[:custom_type]
-          schema = build_transport_schema(options[:nested], key_transform)
+          schema = build_transport_schema(options[:shape], key_transform)
           schema[:optional] = options[:required] ? false : true
           return schema
         end
@@ -208,8 +208,8 @@ module Apiwork
                when :decimal, :float
                  { type: 'number' }
                when :object
-                 if options[:nested]
-                   build_transport_schema(options[:nested], key_transform)
+                 if options[:shape]
+                   build_transport_schema(options[:shape], key_transform)
                  else
                    { type: 'object' }
                  end
@@ -224,8 +224,8 @@ module Apiwork
                            else
                              build_transport_property({ type: options[:of] }, key_transform)
                            end
-                         elsif options[:nested]
-                           build_transport_schema(options[:nested], key_transform)
+                         elsif options[:shape]
+                           build_transport_schema(options[:shape], key_transform)
                          else
                            { type: 'object' }
                          end
@@ -265,9 +265,9 @@ module Apiwork
           return build_transport_schema(custom_def, key_transform)
         end
 
-        # Handle nested object variant
-        if variant_def[:nested]
-          return build_transport_schema(variant_def[:nested], key_transform)
+        # Handle shape object variant
+        if variant_def[:shape]
+          return build_transport_schema(variant_def[:shape], key_transform)
         end
 
         # Handle array variant
@@ -282,8 +282,8 @@ module Apiwork
                     else
                       build_transport_property({ type: variant_def[:of] }, key_transform)
                     end
-                  elsif variant_def[:nested]
-                    build_transport_schema(variant_def[:nested], key_transform)
+                  elsif variant_def[:shape]
+                    build_transport_schema(variant_def[:shape], key_transform)
                   else
                     { type: 'object' }
                   end
@@ -313,7 +313,7 @@ module Apiwork
 
         # Handle custom types
         if options[:custom_type]
-          base = build_zod_schema(options[:nested])
+          base = build_zod_schema(options[:shape])
           base += '.optional()' unless options[:required]
           base += ".default(#{options[:default].inspect})" if options[:default]
           return base
@@ -339,8 +339,8 @@ module Apiwork
                when :decimal, :float
                  'z.number()'
                when :object
-                 if options[:nested]
-                   build_zod_schema(options[:nested])
+                 if options[:shape]
+                   build_zod_schema(options[:shape])
                  else
                    'z.object({})'
                  end
@@ -355,8 +355,8 @@ module Apiwork
                            else
                              build_zod_property(type: options[:of])
                            end
-                         elsif options[:nested]
-                           build_zod_schema(options[:nested])
+                         elsif options[:shape]
+                           build_zod_schema(options[:shape])
                          else
                            'z.object({})'
                          end
@@ -394,9 +394,9 @@ module Apiwork
           return build_zod_schema(custom_def)
         end
 
-        # Handle nested object variant
-        if variant_def[:nested]
-          return build_zod_schema(variant_def[:nested])
+        # Handle shape object variant
+        if variant_def[:shape]
+          return build_zod_schema(variant_def[:shape])
         end
 
         # Handle array variant
@@ -411,8 +411,8 @@ module Apiwork
                     else
                       build_zod_property(type: variant_def[:of])
                     end
-                  elsif variant_def[:nested]
-                    build_zod_schema(variant_def[:nested])
+                  elsif variant_def[:shape]
+                    build_zod_schema(variant_def[:shape])
                   else
                     'z.object({})'
                   end

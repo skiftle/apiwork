@@ -712,7 +712,7 @@ module Apiwork
 
         # Handle custom types
         if options[:custom_type]
-          return build_openapi_from_definition(options[:nested])
+          return build_openapi_from_definition(options[:shape])
         end
 
         base = case options[:type]
@@ -731,8 +731,8 @@ module Apiwork
                when :decimal, :float
                  { type: 'number', format: 'float' }
                when :object
-                 if options[:nested]
-                   build_openapi_from_definition(options[:nested])
+                 if options[:shape]
+                   build_openapi_from_definition(options[:shape])
                  else
                    { type: 'object' }
                  end
@@ -747,8 +747,8 @@ module Apiwork
                            else
                              build_openapi_property(definition, type: options[:of])
                            end
-                         elsif options[:nested]
-                           build_openapi_from_definition(options[:nested])
+                         elsif options[:shape]
+                           build_openapi_from_definition(options[:shape])
                          else
                            { type: 'object' }
                          end
@@ -785,9 +785,9 @@ module Apiwork
           return build_openapi_from_definition(custom_def)
         end
 
-        # Handle nested object variant
-        if variant_def[:nested]
-          return build_openapi_from_definition(variant_def[:nested])
+        # Handle shape object variant
+        if variant_def[:shape]
+          return build_openapi_from_definition(variant_def[:shape])
         end
 
         # Handle array variant
@@ -802,8 +802,8 @@ module Apiwork
                     else
                       build_openapi_property(definition, type: variant_def[:of])
                     end
-                  elsif variant_def[:nested]
-                    build_openapi_from_definition(variant_def[:nested])
+                  elsif variant_def[:shape]
+                    build_openapi_from_definition(variant_def[:shape])
                   else
                     { type: 'object' }
                   end

@@ -12,6 +12,12 @@ module Apiwork
         @params = {}
       end
 
+      # Serialize this definition to JSON-friendly hash
+      # @return [Hash] Serialized parameter structure
+      def as_json
+        Serialization.serialize_definition(self)
+      end
+
       # Define a custom type scoped to this input/output
       def type(name, &block)
         raise ArgumentError, 'Block required for custom type definition' unless block_given?
@@ -45,11 +51,11 @@ module Apiwork
         custom_type_block = @contract_class.resolve_custom_type(type, @type_scope)
         if custom_type_block
           # Custom type - resolve it
-          nested_def = Definition.new(@type, @contract_class, type_scope: @type_scope)
-          nested_def.instance_eval(&custom_type_block)
+          shape_def = Definition.new(@type, @contract_class, type_scope: @type_scope)
+          shape_def.instance_eval(&custom_type_block)
 
           # Apply additional block if provided (can extend custom type)
-          nested_def.instance_eval(&block) if block_given?
+          shape_def.instance_eval(&block) if block_given?
 
           @params[name] = {
             name: name,
@@ -60,7 +66,7 @@ module Apiwork
             of: of,
             as: as,
             custom_type: type, # Track original custom type name
-            nested: nested_def,
+            shape: shape_def,
             **options
           }
         else
@@ -76,11 +82,11 @@ module Apiwork
             **options
           }
 
-          # Handle nested param with do block
+          # Handle shape param with do block
           if block_given?
-            nested_def = Definition.new(@type, @contract_class)
-            nested_def.instance_eval(&block)
-            @params[name][:nested] = nested_def
+            shape_def = Definition.new(@type, @contract_class)
+            shape_def.instance_eval(&block)
+            @params[name][:shape] = shape_def
           end
         end
       end
@@ -166,11 +172,11 @@ module Apiwork
         end
 
         # Validate type
-        type_error = validate_type(name, value, param_options[:type], param_options[:nested], field_path)
+        type_error = validate_type(name, value, param_options[:type], param_options[:shape], field_path)
         return { errors: [type_error], value_set: false } if type_error
 
-        # Validate nested structures
-        validate_nested_or_array(value, param_options, field_path, max_depth, current_depth)
+        # Validate shape structures
+        validate_shape_or_array(value, param_options, field_path, max_depth, current_depth)
       end
 
       # Check if required field is missing
@@ -233,10 +239,10 @@ module Apiwork
         end
       end
 
-      # Validate nested object or array
-      def validate_nested_or_array(value, param_options, field_path, max_depth, current_depth)
-        if param_options[:nested] && value.is_a?(Hash)
-          validate_nested_object(value, param_options[:nested], field_path, max_depth, current_depth)
+      # Validate shape object or array
+      def validate_shape_or_array(value, param_options, field_path, max_depth, current_depth)
+        if param_options[:shape] && value.is_a?(Hash)
+          validate_shape_object(value, param_options[:shape], field_path, max_depth, current_depth)
         elsif param_options[:type] == :array && value.is_a?(Array)
           validate_array_param(value, param_options, field_path, max_depth, current_depth)
         else
@@ -244,18 +250,18 @@ module Apiwork
         end
       end
 
-      # Validate nested object
-      def validate_nested_object(value, nested_def, field_path, max_depth, current_depth)
-        nested_result = nested_def.validate(
+      # Validate shape object
+      def validate_shape_object(value, shape_def, field_path, max_depth, current_depth)
+        shape_result = shape_def.validate(
           value,
           max_depth: max_depth,
           current_depth: current_depth + 1,
           path: field_path
         )
-        if nested_result[:errors].any?
-          { errors: nested_result[:errors], value_set: false }
+        if shape_result[:errors].any?
+          { errors: shape_result[:errors], value_set: false }
         else
-          { errors: [], value: nested_result[:params], value_set: true }
+          { errors: [], value: shape_result[:params], value_set: true }
         end
       end
 
@@ -311,18 +317,18 @@ module Apiwork
         array.each_with_index do |item, index|
           item_path = field_path + [index]
 
-          if param_options[:nested]
-            # Nested object in array
-            nested_result = param_options[:nested].validate(
+          if param_options[:shape]
+            # Shape object in array
+            shape_result = param_options[:shape].validate(
               item,
               max_depth: max_depth,
               current_depth: current_depth + 1,
               path: item_path
             )
-            if nested_result[:errors].any?
-              errors.concat(nested_result[:errors])
+            if shape_result[:errors].any?
+              errors.concat(shape_result[:errors])
             else
-              values << nested_result[:params]
+              values << shape_result[:params]
             end
           elsif param_options[:of]
             # Check if 'of' is a custom type (with scope resolution)
@@ -339,20 +345,20 @@ module Apiwork
                 next
               end
 
-              # Validate as nested object
+              # Validate as shape object
               custom_def = Definition.new(@type, @contract_class, type_scope: @type_scope)
               custom_def.instance_eval(&custom_type_block)
 
-              nested_result = custom_def.validate(
+              shape_result = custom_def.validate(
                 item,
                 max_depth: max_depth,
                 current_depth: current_depth + 1,
                 path: item_path
               )
-              if nested_result[:errors].any?
-                errors.concat(nested_result[:errors])
+              if shape_result[:errors].any?
+                errors.concat(shape_result[:errors])
               else
-                values << nested_result[:params]
+                values << shape_result[:params]
               end
             else
               # Simple type array (e.g., array of strings)
@@ -372,7 +378,7 @@ module Apiwork
         [errors, values]
       end
 
-      def validate_type(name, value, expected_type, _nested_def, path)
+      def validate_type(name, value, expected_type, _shape_def, path)
         case expected_type
         when :string
           return nil if value.is_a?(String)
@@ -521,7 +527,7 @@ module Apiwork
       def validate_variant(name, value, variant_def, path, max_depth:, current_depth:)
         variant_type = variant_def[:type]
         variant_of = variant_def[:of]
-        variant_nested = variant_def[:nested]
+        variant_shape = variant_def[:shape]
 
         # Handle custom types (with scope resolution)
         custom_type_block = @contract_class.resolve_custom_type(variant_type, @type_scope)
@@ -566,11 +572,11 @@ module Apiwork
           end
 
           # Validate array items
-          if variant_nested || variant_of
+          if variant_shape || variant_of
             array_errors, array_values = validate_array(
               value,
               {
-                param_options: { nested: variant_nested, of: variant_of },
+                param_options: { shape: variant_shape, of: variant_of },
                 field_path: path,
                 max_depth: max_depth,
                 current_depth: current_depth
@@ -585,8 +591,8 @@ module Apiwork
           return [nil, value]
         end
 
-        # Handle object type with nested definition
-        if variant_type == :object && variant_nested
+        # Handle object type with shape definition
+        if variant_type == :object && variant_shape
           unless value.is_a?(Hash)
             type_error = ValidationError.invalid_type(
               field: name,
@@ -597,7 +603,7 @@ module Apiwork
             return [type_error, nil]
           end
 
-          result = variant_nested.validate(
+          result = variant_shape.validate(
             value,
             max_depth: max_depth,
             current_depth: current_depth + 1,
@@ -610,7 +616,7 @@ module Apiwork
         end
 
         # Handle primitive types
-        type_error = validate_type(name, value, variant_type, variant_nested, path)
+        type_error = validate_type(name, value, variant_type, variant_shape, path)
         return [type_error, nil] if type_error
 
         # Validate enum if present

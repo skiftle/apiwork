@@ -167,6 +167,30 @@ module Apiwork
           @action_definitions || {}
         end
 
+        # Serialize entire contract to JSON-friendly hash
+        # Returns all actions with their input/output definitions
+        # @return [Hash] Hash with :actions key containing all action definitions
+        def as_json
+          result = { actions: {} }
+
+          # Include all explicitly defined actions
+          action_definitions.each do |action_name, action_def|
+            result[:actions][action_name] = action_def.as_json
+          end
+
+          result
+        end
+
+        # Get introspection for a specific action
+        # @param action [Symbol] Action name
+        # @return [Hash] Hash with :input and :output definitions for the action
+        def introspection(action)
+          action_def = action_definition(action)
+          return nil unless action_def
+
+          action_def.as_json
+        end
+
         def parse(data, direction, action, **options)
           Parser.new(new, direction, action, **options).perform(data)
         end

@@ -49,8 +49,8 @@ module Apiwork
           # Handle arrays
           return coerce_array(value, param_options) if type == :array && value.is_a?(Array)
 
-          # Handle nested objects
-          return coerce_hash(value, param_options[:nested]) if param_options[:nested] && value.is_a?(Hash)
+          # Handle shape objects
+          return coerce_hash(value, param_options[:shape]) if param_options[:shape] && value.is_a?(Hash)
 
           # Handle primitive types
           if Coercer.performable?(type)
@@ -64,9 +64,9 @@ module Apiwork
         # Coerce array elements
         def coerce_array(array, param_options)
           array.map do |item|
-            if param_options[:nested] && item.is_a?(Hash)
-              # Nested object in array
-              coerce_hash(item, param_options[:nested])
+            if param_options[:shape] && item.is_a?(Hash)
+              # Shape object in array
+              coerce_hash(item, param_options[:shape])
             elsif param_options[:of] && Coercer.performable?(param_options[:of])
               # Simple typed array
               coerced = Coercer.perform(item, param_options[:of])

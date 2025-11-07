@@ -63,13 +63,13 @@ module Apiwork
               value = transformed[name]
             end
 
-            # Recursively transform nested params
-            if param_def[:nested] && value.is_a?(Hash)
-              transformed[name] = apply_transformations(value, param_def[:nested])
-            elsif param_def[:nested] && value.is_a?(Array)
+            # Recursively transform shape params
+            if param_def[:shape] && value.is_a?(Hash)
+              transformed[name] = apply_transformations(value, param_def[:shape])
+            elsif param_def[:shape] && value.is_a?(Array)
               # For arrays, transform each element
               transformed[name] = value.map do |item|
-                item.is_a?(Hash) ? apply_transformations(item, param_def[:nested]) : item
+                item.is_a?(Hash) ? apply_transformations(item, param_def[:shape]) : item
               end
             end
           end
