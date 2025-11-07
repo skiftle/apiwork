@@ -118,7 +118,7 @@ module Apiwork
         def auto_generate_input_if_needed
           return unless contract_class.schema?
 
-          require_relative 'generator' unless defined?(Apiwork::Contract::Schema::Generator)
+
 
           rc = contract_class.schema_class
           @input_definition = Definition.new(:input, contract_class)
@@ -144,7 +144,7 @@ module Apiwork
         def auto_generate_output_if_needed
           return unless contract_class.schema?
 
-          require_relative 'generator' unless defined?(Apiwork::Contract::Schema::Generator)
+
 
           rc = contract_class.schema_class
           @output_definition = Definition.new(:output, contract_class)

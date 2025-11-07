@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'union_definition'
-
 module Apiwork
   module Contract
     class Definition

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../schema/operators'
+
 
 module Apiwork
   class Query

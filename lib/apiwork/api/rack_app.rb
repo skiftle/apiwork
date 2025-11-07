@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'routing/builder'
-
 module Apiwork
   module API
     # Rack application for mounting Apiwork APIs

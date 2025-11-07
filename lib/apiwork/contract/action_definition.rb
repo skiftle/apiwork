@@ -3,7 +3,7 @@
 module Apiwork
   module Contract
     # Represents the contract definition for a single action
-    # Handles input/output definitions, merging with resource, and serialization
+    # Handles input/output definitions, merging with schema, and serialization
     class ActionDefinition
       attr_reader :action_name, :contract_class
 
@@ -17,7 +17,6 @@ module Apiwork
 
         # Conditionally prepend Schema::ActionDefinition if contract has schema
         if contract_class.schema?
-          require_relative 'schema/action_definition'
           singleton_class.prepend(Schema::ActionDefinition) unless singleton_class.ancestors.include?(Schema::ActionDefinition)
         end
       end

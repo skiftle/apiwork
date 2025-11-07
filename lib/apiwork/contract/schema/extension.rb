@@ -14,7 +14,6 @@ module Apiwork
         module ClassMethods
           # Override: Auto-generate and store a standard CRUD action (lazy loading)
           def auto_generate_and_store_action(action_name)
-            require_relative 'generator' unless defined?(Generator)
             action_def = Generator.generate_action(schema_class, action_name)
             @action_definitions[action_name.to_sym] = action_def if action_def
           end

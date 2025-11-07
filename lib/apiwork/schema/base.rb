@@ -1,29 +1,13 @@
 # frozen_string_literal: true
 
-require_relative 'attribute_definition'
-require_relative 'association_definition'
-require_relative 'root_key'
-require_relative 'operators'
-require_relative 'inspection'
-require_relative 'serialization'
-
 module Apiwork
   module Schema
     class Base
       include Serialization
+      extend Inspection
 
       class_attribute :_abstract_class, default: false
       class_attribute :_model_class
-
-      class << self
-        def abstract_class=(value)
-          self._abstract_class = value
-        end
-
-        def abstract_class
-          _abstract_class
-        end
-      end
       class_attribute :attribute_definitions, default: {}
       class_attribute :association_definitions, default: {}
       class_attribute :_serialize_key_transform, default: nil
@@ -31,9 +15,6 @@ module Apiwork
       class_attribute :_auto_include_associations, default: nil
       class_attribute :_validated_includes, default: nil
       class_attribute :_root, default: nil
-
-      # Always extend with Inspection module
-      extend Inspection
 
       attr_reader :object, :context, :includes
 
@@ -59,7 +40,16 @@ module Apiwork
       end
 
       class << self
-        def abstract_class_explicitly_set?
+
+        def abstract_class=(value)
+          self._abstract_class = value
+        end
+
+        def abstract_class
+          _abstract_class
+        end
+
+        def abstract_class?
           _abstract_class
         end
 
@@ -78,7 +68,7 @@ module Apiwork
 
         def auto_detect_model
           return if _model_class.present?
-          return if abstract_class_explicitly_set? || name.nil?
+          return if abstract_class? || name.nil?
 
           schema_name = name.demodulize
           model_name = schema_name.sub(/Schema$/, '')
