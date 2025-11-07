@@ -49,9 +49,7 @@ module Apiwork
         validated = validate(data)
 
         # Step 2: Handle errors based on direction
-        if validated[:errors].any?
-          return handle_validation_errors(data, validated[:errors])
-        end
+        return handle_validation_errors(data, validated[:errors]) if validated[:errors].any?
 
         # Step 3: Transform validated data
         transformed_data = transform(validated[:params])
@@ -66,9 +64,7 @@ module Apiwork
       # @param meta [Hash] Meta hash to transform
       # @return [Hash] Transformed meta hash
       def transform_meta_keys(meta)
-        unless @direction == :output
-          raise ArgumentError, "transform_meta_keys only available for output direction"
-        end
+        raise ArgumentError, 'transform_meta_keys only available for output direction' unless @direction == :output
 
         return meta unless meta.present? && @schema_class
 
@@ -80,9 +76,9 @@ module Apiwork
 
       # Validate direction parameter
       def validate_direction!
-        unless %i[input output].include?(@direction)
-          raise ArgumentError, "direction must be :input or :output, got #{@direction.inspect}"
-        end
+        return if %i[input output].include?(@direction)
+
+        raise ArgumentError, "direction must be :input or :output, got #{@direction.inspect}"
       end
 
       # Get the appropriate definition based on direction
