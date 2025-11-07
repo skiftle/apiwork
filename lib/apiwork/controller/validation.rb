@@ -26,7 +26,7 @@ module Apiwork
           raw_params = parse_request_params(request)
 
           # Parse: validate + transform in one step
-          Contract::Parser.new(contract, action_name, :input).perform(raw_params)
+          Contract::Parser.new(contract, :input, action_name).perform(raw_params)
         end
       end
 

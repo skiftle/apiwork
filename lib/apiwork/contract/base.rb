@@ -170,6 +170,31 @@ module Apiwork
           @action_definitions || {}
         end
 
+        # Parse data for this contract
+        #
+        # Convenience method that instantiates the contract and parser,
+        # then performs validation and transformation in one call.
+        #
+        # @param data [Hash] Data to parse (params for input, response_hash for output)
+        # @param direction [Symbol] :input or :output
+        # @param action [Symbol] Action name (:create, :index, etc.)
+        # @param options [Hash] Optional context and other options
+        # @return [Parser::Result] Result with validated/transformed data
+        #
+        # @example Parse input params
+        #   result = PostContract.parse(params, :input, :create)
+        #   if result.valid?
+        #     Post.create(result[:post])
+        #   end
+        #
+        # @example Parse output response with context
+        #   result = PostContract.parse(response, :output, :index, context: { current_user: user })
+        #   render json: result.response if result.valid?
+        #
+        def parse(data, direction, action, **options)
+          Parser.new(new, direction, action, **options).perform(data)
+        end
+
         private
       end
 

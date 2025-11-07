@@ -14,7 +14,7 @@ module Apiwork
 
       # Define a custom type scoped to this input/output
       def type(name, &block)
-        raise ArgumentError, "Block required for custom type definition" unless block_given?
+        raise ArgumentError, 'Block required for custom type definition' unless block_given?
 
         # Delegate to contract class to store type in current scope
         @contract_class.type(name, &block)
@@ -24,7 +24,7 @@ module Apiwork
       def param(name, type: :string, required: false, default: nil, enum: nil, of: nil, as: nil, **options, &block) # rubocop:disable Metrics/ParameterLists
         # Handle union types
         if type == :union
-          raise ArgumentError, "Union type requires a block with variant definitions" unless block_given?
+          raise ArgumentError, 'Union type requires a block with variant definitions' unless block_given?
 
           union_def = UnionDefinition.new(@contract_class, type_scope: @type_scope)
           union_def.instance_eval(&block)

@@ -13,14 +13,14 @@ module Apiwork
     #
     # Usage:
     #   # Input parsing
-    #   parser = Contract::Parser.new(contract, :create, :input)
+    #   parser = Contract::Parser.new(contract, :input, :create)
     #   result = parser.perform(params)
     #   if result.valid?
     #     Model.create(result[:model])
     #   end
     #
     #   # Output parsing
-    #   parser = Contract::Parser.new(contract, :index, :output, context: { current_user: user })
+    #   parser = Contract::Parser.new(contract, :output, :index, context: { current_user: user })
     #   result = parser.perform(response_hash)
     #   if result.valid?
     #     render json: result.response
@@ -29,10 +29,10 @@ module Apiwork
     class Parser
       attr_reader :contract, :action, :direction, :action_definition, :schema_class, :context
 
-      def initialize(contract, action, direction, **options)
+      def initialize(contract, direction, action, **options)
         @contract = contract
-        @action = action.to_sym
         @direction = direction.to_sym
+        @action = action.to_sym
         @context = options[:context] || {}
         @action_definition = contract.class.action_definition(@action)
         @schema_class = @action_definition&.schema_class

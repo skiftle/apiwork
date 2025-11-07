@@ -19,7 +19,7 @@ module Apiwork
           contract = find_contract&.new
           return nil unless contract
 
-          Contract::Parser.new(contract, action_name, :output, context: build_schema_context)
+          Contract::Parser.new(contract, :output, action_name, context: build_schema_context)
         end
       end
 
@@ -31,7 +31,7 @@ module Apiwork
       # @param status [Symbol] Optional HTTP status override
       def respond_with(resource_or_collection, meta: {}, contract: nil, status: nil)
         output = if contract
-                   Contract::Parser.new(contract.new, action_name, :output, context: build_schema_context)
+                   Contract::Parser.new(contract.new, :output, action_name, context: build_schema_context)
                  else
                    action_output
                  end
