@@ -52,19 +52,19 @@ module Apiwork
         def as_json
           return nil unless metadata
 
-          result = {
+          # Build resources first - this creates contract classes and registers types
+          resources = {}
+          metadata.resources.each do |resource_name, resource_metadata|
+            resources[resource_name] = serialize_resource(resource_name, resource_metadata)
+          end
+
+          # Now collect all types (after contract classes have been created)
+          {
             path: mount_path,
             metadata: serialize_doc,
             types: serialize_all_types,
-            resources: {}
+            resources: resources
           }
-
-          # Serialize each resource
-          metadata.resources.each do |resource_name, resource_metadata|
-            result[:resources][resource_name] = serialize_resource(resource_name, resource_metadata)
-          end
-
-          result
         end
 
         private

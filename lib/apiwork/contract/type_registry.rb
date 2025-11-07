@@ -123,6 +123,10 @@ module Apiwork
 
           # Local types get contract prefix
           contract_prefix = extract_contract_prefix(contract_class)
+
+          # Special case: nil name means just use the prefix (for resource types)
+          return contract_prefix.to_sym if name.nil? || name.to_s.empty?
+
           :"#{contract_prefix}_#{name}"
         end
 
@@ -264,17 +268,21 @@ module Apiwork
         #   extract_contract_prefix(Api::V1::PaymentContract)
         #   # => "payment"
         def extract_contract_prefix(contract_class)
-          # Handle anonymous classes (created in Schema::Generator)
-          # Use the schema class name as the prefix instead
-          if contract_class.name.nil?
-            # For anonymous classes, try to get schema class from _schema_class accessor
-            schema_class = contract_class._schema_class
+          # ALWAYS prefer schema's root_key if available (for consistency)
+          # This ensures AccountContract with AccountSchema both use "account" prefix
+          # instead of getting "account" from schema and "account" from contract name
+          if contract_class.respond_to?(:schema_class)
+            schema_class = contract_class.schema_class
             return schema_class.root_key.singular if schema_class
+          end
 
-            # Fallback: use object_id
+          # Handle anonymous classes without schema
+          if contract_class.name.nil?
+            # Fallback: use object_id for anonymous classes without schema
             return "anonymous_#{contract_class.object_id}"
           end
 
+          # Extract from contract class name (for contracts without schemas)
           contract_class.name
                         .demodulize           # InvoiceContract
                         .underscore           # invoice_contract
