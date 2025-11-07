@@ -13,17 +13,13 @@ module Apiwork
 
       # Get action output parser for current action
       #
-      # @return [Contract::OutputParser] OutputParser instance
+      # @return [Contract::Parser] Parser instance for output
       def action_output
         @action_output ||= begin
           contract = find_contract&.new
           return nil unless contract
 
-          Contract::OutputParser.new(
-            contract: contract,
-            action: action_name,
-            context: build_schema_context
-          )
+          Contract::Parser.new(contract, action_name, :output, context: build_schema_context)
         end
       end
 
@@ -35,11 +31,7 @@ module Apiwork
       # @param status [Symbol] Optional HTTP status override
       def respond_with(resource_or_collection, meta: {}, contract: nil, status: nil)
         output = if contract
-                   Contract::OutputParser.new(
-                     contract: contract.new,
-                     action: action_name,
-                     context: build_schema_context
-                   )
+                   Contract::Parser.new(contract.new, action_name, :output, context: build_schema_context)
                  else
                    action_output
                  end
@@ -52,7 +44,7 @@ module Apiwork
         # Build response using ResponseRenderer
         response_hash = build_response(resource_or_collection, output, transformed_meta)
 
-        # Validate response using OutputParser
+        # Validate response using Parser
         result = output.perform(response_hash)
 
         render json: result.response, status: status || determine_status(resource_or_collection)
@@ -63,7 +55,7 @@ module Apiwork
       # Build response hash using ResponseRenderer
       #
       # @param resource_or_collection [Object] Resource or collection to render
-      # @param output [Contract::OutputParser] OutputParser instance
+      # @param output [Contract::Parser] Parser instance for output
       # @param meta [Hash] Transformed meta information
       # @return [Hash] Complete response hash
       def build_response(resource_or_collection, output, meta)
