@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../action_definition'
+
 
 module Apiwork
   module Contract

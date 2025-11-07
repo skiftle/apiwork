@@ -1,28 +1,38 @@
 # frozen_string_literal: true
 
-require 'active_support/core_ext/hash/keys'
-require 'active_support/core_ext/class/attribute'
-require_relative '../transform/case'
-require_relative 'action_definition'
-
 module Apiwork
   module Contract
     class Base
+      class_attribute :_abstract_class, default: false
+
       class << self
         attr_accessor :_schema_class
 
-        class_attribute :abstract_class, default: false
+        def abstract_class=(value)
+          self._abstract_class = value
+        end
+
+        def abstract_class
+          _abstract_class
+        end
+
+        def abstract_class?
+          _abstract_class
+        end
 
         def inherited(subclass)
           super
+          # Reset abstract flag so subclass doesn't inherit it
+          subclass._abstract_class = false
           # Initialize action definitions hash for each subclass
           subclass.instance_variable_set(:@action_definitions, {})
           # Initialize custom types hash for each subclass
           subclass.instance_variable_set(:@custom_types, {})
         end
 
-        # DSL method for explicit schema declaration
-        # Only accepts constant references (Zeitwerk autoloading)
+
+
+
         def schema(ref = nil)
           if ref
             # Validate that ref is a Class constant
@@ -35,7 +45,6 @@ module Apiwork
             @_schema_class = ref
 
             # Activate Schema::Extension - this prepends all schema-specific functionality
-            require_relative 'schema/extension'
             prepend Schema::Extension unless ancestors.include?(Schema::Extension)
           else
             # Getting schema

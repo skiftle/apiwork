@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'validation'
-require_relative 'action_params'
-require_relative 'serialization'
-require_relative 'action_metadata'
+
 
 module Apiwork
   module Controller

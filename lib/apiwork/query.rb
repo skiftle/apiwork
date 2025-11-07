@@ -1,10 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'query/filtering'
-require_relative 'query/sorting'
-require_relative 'query/pagination'
-require_relative 'query/eager_loading'
-
 module Apiwork
   class Query
     include Filtering
