@@ -106,8 +106,9 @@ module Apiwork
         contract_class = definition.contract_class
 
         # Register the writable payload type with TypeRegistry
-        # Example: :create_post_payload, :update_post_payload
-        payload_type_name = :"#{context}_#{root_key}_payload"
+        # Use short name - TypeRegistry will add prefix via qualified_name
+        # Example: :create_payload, :update_payload
+        payload_type_name = :"#{context}_payload"
 
         # Check if already registered
         unless TypeRegistry.resolve(payload_type_name, contract_class: contract_class)
@@ -156,8 +157,9 @@ module Apiwork
         contract_class = definition.contract_class
 
         # Register the resource type with TypeRegistry
-        # Example: :post, :comment
-        resource_type_name = root_key
+        # Use nil - TypeRegistry will use just the prefix (e.g., "account")
+        # This gives us clean type names like :account, :post, etc.
+        resource_type_name = nil
 
         # Check if already registered
         unless TypeRegistry.resolve(resource_type_name, contract_class: contract_class)
@@ -194,8 +196,8 @@ module Apiwork
         contract_class = definition.contract_class
 
         # Register the resource type with TypeRegistry (same as single output)
-        # Example: :post, :comment
-        resource_type_name = root_key_singular
+        # Use nil - TypeRegistry will use just the prefix (e.g., "account")
+        resource_type_name = nil
 
         # Check if already registered
         unless TypeRegistry.resolve(resource_type_name, contract_class: contract_class)
@@ -271,7 +273,8 @@ module Apiwork
         # Add to visited set
         visited = visited.dup.add(schema_class)
 
-        type_name = :"#{schema_class.root_key.singular}_filter"
+        # Use short name for registration - TypeRegistry will add prefix via qualified_name
+        type_name = :filter
 
         # Check if already registered with TypeRegistry
         existing = TypeRegistry.resolve(type_name, contract_class: contract_class)
@@ -336,7 +339,8 @@ module Apiwork
         # Add to visited set
         visited = visited.dup.add(schema_class)
 
-        type_name = :"#{schema_class.root_key.singular}_sort"
+        # Use short name for registration - TypeRegistry will add prefix via qualified_name
+        type_name = :sort
 
         # Check if already registered with TypeRegistry
         existing = TypeRegistry.resolve(type_name, contract_class: contract_class)
@@ -410,7 +414,8 @@ module Apiwork
       # @param visited [Set] Set of visited schema classes (circular reference protection)
       # @param depth [Integer] Current recursion depth (max 3)
       def self.register_resource_include_type(contract_class, schema_class, visited: Set.new, depth: 0)
-        type_name = :"#{schema_class.root_key.singular}_include"
+        # Use short name for registration - TypeRegistry will add prefix via qualified_name
+        type_name = :include
 
         # Check if already registered with TypeRegistry
         existing = TypeRegistry.resolve(type_name, contract_class: contract_class)
