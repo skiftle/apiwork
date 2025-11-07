@@ -169,13 +169,21 @@ module Apiwork
 
         # Serialize entire contract to JSON-friendly hash
         # Returns all actions with their input/output definitions
+        # Only includes actions declared in API routing configuration (respects only:/except:)
         # @return [Hash] Hash with :actions key containing all action definitions
         def as_json
           result = { actions: {} }
 
-          # Include all explicitly defined actions
-          action_definitions.each do |action_name, action_def|
-            result[:actions][action_name] = action_def.as_json
+          # Get available actions from API routing configuration
+          actions = available_actions
+
+          # If no API definition found, fall back to all explicit action definitions
+          actions = action_definitions.keys if actions.empty?
+
+          # Serialize only available actions
+          actions.each do |action_name|
+            action_def = action_definition(action_name)
+            result[:actions][action_name] = action_def.as_json if action_def
           end
 
           result
@@ -191,8 +199,100 @@ module Apiwork
           action_def.as_json
         end
 
+        # Get API path for this contract based on namespace
+        # Example: Api::V1::PostContract -> "/api/v1"
+        # @return [String, nil] API path or nil if contract is anonymous
+        def api_path
+          return nil unless name # Anonymous classes don't have a name
+
+          namespace_parts = name.deconstantize.split('::')
+          return nil if namespace_parts.empty?
+
+          "/#{namespace_parts.map(&:underscore).join('/')}"
+        end
+
+        # Get API class for this contract
+        # @return [Class, nil] API class or nil if not found
+        def api_class
+          path = api_path
+          return nil unless path
+
+          Apiwork::API.find(path)
+        end
+
+        # Get resource name for this contract
+        # Example: PostContract -> :posts, PersonContract -> :people
+        # @return [Symbol, nil] Resource name (pluralized) or nil if contract is anonymous
+        def resource_name
+          return nil unless name # Anonymous classes don't have a name
+
+          name.demodulize.sub(/Contract$/, '').underscore.pluralize.to_sym
+        end
+
+        # Get resource metadata from API definition
+        # @return [Hash, nil] Resource metadata or nil if not found
+        def resource_metadata
+          api = api_class
+          return nil unless api&.metadata
+
+          find_resource_in_metadata(api.metadata, resource_name)
+        end
+
+        # Get all available actions for this resource from API routing configuration
+        # Includes CRUD actions (respecting only:/except:), member actions, and collection actions
+        # @return [Array<Symbol>] Array of action names
+        def available_actions
+          metadata = resource_metadata
+          return [] unless metadata
+
+          actions = metadata[:actions] || []
+          actions += (metadata[:members]&.keys || [])
+          actions += (metadata[:collections]&.keys || [])
+          actions
+        end
+
+        # Check if resource is singular (e.g., resource :profile vs resources :posts)
+        # @return [Boolean] true if singular resource
+        def singular_resource?
+          resource_metadata&.dig(:singular) || false
+        end
+
         def parse(data, direction, action, **options)
           Parser.new(new, direction, action, **options).perform(data)
+        end
+
+        private
+
+        # Find resource in metadata, searching nested resources recursively
+        # @param metadata [Metadata] API metadata object
+        # @param resource_name [Symbol] Resource name to find
+        # @return [Hash, nil] Resource metadata or nil if not found
+        def find_resource_in_metadata(metadata, resource_name)
+          # Check top-level resources
+          return metadata.resources[resource_name] if metadata.resources[resource_name]
+
+          # Search nested resources recursively
+          metadata.resources.each_value do |resource_metadata|
+            found = find_resource_recursive(resource_metadata, resource_name)
+            return found if found
+          end
+
+          nil
+        end
+
+        # Recursively search for resource in nested resource tree
+        # @param resource_metadata [Hash] Current resource metadata
+        # @param resource_name [Symbol] Resource name to find
+        # @return [Hash, nil] Resource metadata or nil if not found
+        def find_resource_recursive(resource_metadata, resource_name)
+          return resource_metadata[:resources][resource_name] if resource_metadata[:resources]&.key?(resource_name)
+
+          resource_metadata[:resources]&.each_value do |nested_metadata|
+            found = find_resource_recursive(nested_metadata, resource_name)
+            return found if found
+          end
+
+          nil
         end
       end
     end
