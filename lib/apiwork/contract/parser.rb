@@ -40,21 +40,24 @@ module Apiwork
         validate_direction!
       end
 
-      # Parse (validate + transform) data
+      # Parse (coerce + validate + transform) data
       #
       # @param data [Hash] Data to parse (params for input, response_hash for output)
       # @return [Result] Result object with parsed data and errors
       def perform(data)
-        # Step 1: Validate data against definition
-        validated = validate(data)
+        # Step 1: Coerce types (string → Integer, Date, etc)
+        coerced_data = coerce(data)
 
-        # Step 2: Handle errors based on direction
+        # Step 2: Validate coerced data
+        validated = validate(coerced_data)
+
+        # Step 3: Handle errors based on direction
         return handle_validation_errors(data, validated[:errors]) if validated[:errors].any?
 
-        # Step 3: Transform validated data
+        # Step 4: Transform validated data
         transformed_data = transform(validated[:params])
 
-        # Step 4: Build result
+        # Step 5: Build result
         build_result(transformed_data, [])
       end
 
@@ -85,10 +88,18 @@ module Apiwork
       def definition
         @definition ||= case @direction
                         when :input
-                          @action_definition&.input_definition
+                          @action_definition&.merged_input_definition
                         when :output
                           @action_definition&.merged_output_definition
                         end
+      end
+
+      # Coerce data types before validation
+      def coerce(data)
+        return data unless data.is_a?(Hash)
+        return data unless definition
+
+        coerce_hash(data, definition)
       end
 
       # Validate data using definition
@@ -96,6 +107,70 @@ module Apiwork
         return { params: data, errors: [] } unless definition
 
         definition.validate(data) || { params: data, errors: [] }
+      end
+
+      # Recursively coerce hash based on definition
+      def coerce_hash(hash, definition)
+        coerced = hash.dup
+
+        definition.params.each do |name, param_options|
+          next unless coerced.key?(name)
+
+          value = coerced[name]
+          coerced[name] = coerce_value(value, param_options, definition)
+        end
+
+        coerced
+      end
+
+      # Coerce single value based on param options
+      def coerce_value(value, param_options, _definition)
+        type = param_options[:type]
+
+        # Handle union types
+        return coerce_union(value, param_options[:union]) if type == :union
+
+        # Handle arrays
+        return coerce_array(value, param_options) if type == :array && value.is_a?(Array)
+
+        # Handle nested objects
+        return coerce_hash(value, param_options[:nested]) if param_options[:nested] && value.is_a?(Hash)
+
+        # Handle primitive types
+        if Coercer.can_coerce?(type)
+          coerced = Coercer.coerce(value, type)
+          return coerced unless coerced.nil?
+        end
+
+        value
+      end
+
+      # Coerce array elements
+      def coerce_array(array, param_options)
+        array.map do |item|
+          if param_options[:nested] && item.is_a?(Hash)
+            # Nested object in array
+            coerce_hash(item, param_options[:nested])
+          elsif param_options[:of] && Coercer.can_coerce?(param_options[:of])
+            # Simple typed array
+            coerced = Coercer.coerce(item, param_options[:of])
+            coerced.nil? ? item : coerced
+          else
+            item
+          end
+        end
+      end
+
+      # Coerce union - try each variant
+      def coerce_union(value, union_def)
+        # Special case: boolean unions need coercion for query params
+        if union_def.variants.any? { |variant| variant[:type] == :boolean }
+          coerced = Coercer.coerce(value, :boolean)
+          return coerced unless coerced.nil?
+        end
+
+        # For other unions, return original (validation will determine correct variant)
+        value
       end
 
       # Handle validation errors based on direction
