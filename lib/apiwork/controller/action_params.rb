@@ -12,7 +12,7 @@ module Apiwork
             # Get schema from contract
             contract = options[:contract_class_name].constantize
             action_def = contract.action_definition(action_name.to_sym)
-            action_def.contract_class.schema_class
+            action_def.schema_class
           else
             Schema::Resolver.from_controller(self.class)
           end

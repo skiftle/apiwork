@@ -5,7 +5,7 @@ module Apiwork
     # AssociationDefinition - Model-specific association definition for ActiveRecord
     # This class provides ActiveRecord reflection, validation, and auto-detection
     class AssociationDefinition
-      attr_reader :name, :type, :schema_class, :allow_destroy
+      attr_reader :name, :type, :schema_class, :allow_destroy, :model_class
 
       def initialize(name, type:, klass:, **options)
         @name = name

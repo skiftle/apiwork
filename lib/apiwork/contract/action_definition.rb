@@ -7,6 +7,14 @@ module Apiwork
     class ActionDefinition
       attr_reader :action_name, :contract_class
 
+      # Get the schema class from the contract
+      # Convenience method to avoid Law of Demeter violations
+      #
+      # @return [Class, nil] The schema class or nil if contract has no schema
+      def schema_class
+        contract_class.schema_class
+      end
+
       def initialize(action_name, contract_class)
         @action_name = action_name
         @contract_class = contract_class
