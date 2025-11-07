@@ -3,35 +3,18 @@
 module Apiwork
   module Contract
     class Base
-      class_attribute :_abstract_class, default: false
+      include Concerns::AbstractClass
 
       class << self
         attr_accessor :_schema_class
 
-        def abstract_class=(value)
-          self._abstract_class = value
-        end
-
-        def abstract_class
-          _abstract_class
-        end
-
-        def abstract_class?
-          _abstract_class
-        end
-
         def inherited(subclass)
           super
-          # Reset abstract flag so subclass doesn't inherit it
-          subclass._abstract_class = false
           # Initialize action definitions hash for each subclass
           subclass.instance_variable_set(:@action_definitions, {})
           # Initialize custom types hash for each subclass
           subclass.instance_variable_set(:@custom_types, {})
         end
-
-
-
 
         def schema(ref = nil)
           if ref

@@ -8,7 +8,7 @@ There has to be a better way.
 
 ## What if you could define your API once?
 
-That's Apiwork. You describe what your API *is* - what data it has, what operations it supports - and everything else just works.
+That's Apiwork. You describe what your API _is_ - what data it has, what operations it supports - and everything else just works.
 
 No boilerplate. No repetition. No drift between backend and frontend.
 
@@ -48,7 +48,7 @@ class PostsController < ApplicationController
 end
 ```
 
-Notice what's *not* there? No validation code. No serialization logic. No query building. No pagination. No filter parsing.
+Notice what's _not_ there? No validation code. No serialization logic. No query building. No pagination. No filter parsing.
 
 Just a description of your data.
 
@@ -71,13 +71,9 @@ From that code above, you automatically get:
 
 It builds on what Rails already gives you.
 
-Your database already knows about types. It knows `title` is a string. It knows `published` is a boolean. It knows which fields are `null: false` (required).
+Your database already knows about types — `title` is a string, `published` is a boolean, and fields marked `null: false` are required. Rails also knows which attributes are enums, including all their allowed values.
 
-Apiwork pulls those types from your database schema and makes them work for your API. When you mark an attribute as `writable: true`, it becomes available in your API inputs - with the correct type, automatically. When you mark it `filterable: true`, you get filter operators appropriate for that type (strings get `contains`, numbers get `greater_than`, etc.).
-
-The `schema PostSchema` line in your contract? That tells Apiwork to auto-generate all CRUD actions based on what your schema says is possible.
-
-No magic. Just leveraging what Rails already knows.
+Apiwork pulls this information from your models and tries to inherit as much as possible, though you can manually specify it as well. Building on these definitions, when you mark an attribute as `writable: true`, it becomes available in your API inputs with the correct type automatically. When you mark it `filterable: true`, you get filter operators appropriate for that type — strings get `contains`, numbers get `greater_than`, enums get `in` or `equals`, etc.
 
 ## It's built for Rails developers
 
@@ -150,6 +146,7 @@ end
 ```
 
 This creates:
+
 - Standard CRUD routes
 - Nested resource routes
 - Custom member actions
@@ -172,6 +169,7 @@ end
 ```
 
 Schemas control:
+
 - Serialization (what fields appear in responses)
 - Query capabilities (which fields can be filtered/sorted)
 - Writability (which fields accept user input)
@@ -196,6 +194,7 @@ end
 ```
 
 Contracts ensure:
+
 - Input validation (type checking, required fields)
 - Output validation (responses match expectations)
 - Documentation (OpenAPI knows exact shapes)
@@ -297,6 +296,7 @@ For write operations (POST, PATCH):
 ## When should you use Apiwork?
 
 **Use it if:**
+
 - You're building a REST API (not GraphQL)
 - You want your frontend and backend to stay in sync
 - You're tired of writing the same boilerplate
@@ -304,6 +304,7 @@ For write operations (POST, PATCH):
 - You value convention over configuration
 
 **Maybe not if:**
+
 - Your API is extremely custom and doesn't fit REST patterns
 - You have very simple endpoints and don't need structure
 - You prefer writing everything explicitly
@@ -313,7 +314,7 @@ But honestly? Try it. It's just Rails. If you don't like it, you can always rip 
 ## How is this different from...?
 
 **Active Model Serializers?**
-AMS handles serialization. Apiwork handles serialization *and* validation *and* querying *and* documentation. It's the whole stack.
+AMS handles serialization. Apiwork handles serialization _and_ validation _and_ querying _and_ documentation. It's the whole stack.
 
 **Grape?**
 Similar idea, but Apiwork uses Rails conventions instead of Grape's DSL. If you're already in Rails, Apiwork feels more natural.
@@ -322,7 +323,7 @@ Similar idea, but Apiwork uses Rails conventions instead of Grape's DSL. If you'
 JSON:API is a strict specification. Apiwork is more flexible - you get structure without being forced into a specific JSON format.
 
 **Just writing controllers?**
-You *can* write everything by hand. But then you write filtering logic. And pagination. And validation. And serialization. And OpenAPI specs. And TypeScript types. And keep them all in sync.
+You _can_ write everything by hand. But then you write filtering logic. And pagination. And validation. And serialization. And OpenAPI specs. And TypeScript types. And keep them all in sync.
 
 Apiwork does all that for you.
 
@@ -335,6 +336,7 @@ Ready to start? Here's your path:
 3. **[Core Concepts](./core-concepts.md)** - Understand the architecture deeply
 
 Or jump directly to specific topics:
+
 - [API Definition](../api-definition/introduction.md) - Define routes
 - [Schemas](../schemas/introduction.md) - Define data models
 - [Contracts](../contracts/introduction.md) - Define validation
