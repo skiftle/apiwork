@@ -524,16 +524,6 @@ action :create do
 end
 ```
 
-## What params do NOT support
-
-These features are **not supported**:
-
-- ❌ `min_length` / `max_length` on strings - Use model validations
-- ❌ `pattern` (regex) - Use model validations
-- ❌ `minimum` / `maximum` on numbers - Use model validations
-- ❌ `description` on params - Not part of contract DSL
-- ❌ `min_items` on arrays - Not implemented
-
 For complex validation beyond type checking and enums, use Active Record validations in your models.
 
 ## Next steps

@@ -3,6 +3,7 @@
 > **Note:** Contracts are **optional** in Apiwork. In most cases (90%+), you only need a [Schema](../schemas/introduction.md). Apiwork automatically derives contracts from schemas for standard CRUD operations.
 >
 > Only create an explicit contract when you need:
+>
 > - Custom actions beyond CRUD
 > - Override auto-generated validation
 > - Complex input transformations
@@ -47,16 +48,17 @@ class Api::V1::PostsController < ApplicationController
 
   def create
     post = Post.create(action_params)
-    respond_with post, status: :created
+    respond_with post
   end
 end
 ```
 
 The contract validates:
+
 - **Input** - Request params must match input definition
 - **Output** - Response data must match output definition
 
-If validation fails, Apiwork returns a 422 error with details.
+If validation fails, Apiwork returns a 400 error with details.
 
 ## Auto-generation from schemas
 
@@ -376,6 +378,7 @@ end
 Every action can have:
 
 **Input** - Validates request params:
+
 ```ruby
 input do
   param :title, type: :string, required: true
@@ -384,6 +387,7 @@ end
 ```
 
 **Output** - Validates response data:
+
 ```ruby
 output do
   param :id, type: :integer, required: true
@@ -530,6 +534,7 @@ Invalid input returns 422 with detailed errors:
 ```
 
 Error codes:
+
 - `field_missing` - Required field is missing
 - `invalid_type` - Wrong type
 - `invalid_value` - Value not in enum
