@@ -11,7 +11,7 @@ module Apiwork
           error = Apiwork::PaginationError.new(
             code: :invalid_page_number,
             detail: 'page[number] must be >= 1',
-            path: [:page, :number]
+            path: %i[page number]
           )
           Errors::Handler.handle(error, context: { page_number: page_number })
         end
@@ -20,7 +20,7 @@ module Apiwork
           error = Apiwork::PaginationError.new(
             code: :invalid_page_size,
             detail: 'page[size] must be >= 1',
-            path: [:page, :size]
+            path: %i[page size]
           )
           Errors::Handler.handle(error, context: { page_size: page_size })
         end
@@ -29,7 +29,7 @@ module Apiwork
           error = Apiwork::PaginationError.new(
             code: :invalid_page_size,
             detail: "page[size] must be <= #{maximum_page_size}",
-            path: [:page, :size]
+            path: %i[page size]
           )
           Errors::Handler.handle(error, context: { page_size: page_size, maximum: maximum_page_size })
         end
