@@ -37,48 +37,47 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
         expect(result[:errors]).to be_empty
       end
 
-      it 'coerces valid ISO8601 string to Time' do
-        result = definition.validate({ archived_at: '2024-01-15T10:30:00Z' })
+      it 'accepts Time object' do
+        time = Time.zone.parse('2024-01-15T10:30:00Z')
+        result = definition.validate({ archived_at: time })
 
         expect(result[:errors]).to be_empty
-        expect(result[:errors]).to be_empty
         expect(result[:params][:archived_at]).to be_a(Time)
+        expect(result[:params][:archived_at]).to eq(time)
       end
 
-      it 'coerces valid datetime string to Time' do
+      it 'rejects string without coercion' do
         result = definition.validate({ archived_at: '2024-01-15 10:30:00' })
 
-        expect(result[:errors]).to be_empty
-        expect(result[:params][:archived_at]).to be_a(Time)
+        expect(result[:errors]).not_to be_empty
+        expect(result[:errors].first.code).to eq(:invalid_type)
       end
     end
 
     context 'with invalid datetime values' do
-      it 'rejects string after coercion fails with invalid month' do
+      it 'rejects string' do
         result = definition.validate({ archived_at: '2024-13-45' })
 
         expect(result[:errors]).not_to be_empty
         expect(result[:errors].length).to eq(1)
-        expect(result[:errors].first.code).to eq(:coercion_failed)
-        expect(result[:errors].first.meta[:expected_type]).to eq(:datetime)
-        expect(result[:errors].first.meta[:actual_value]).to eq('2024-13-45')
+        expect(result[:errors].first.code).to eq(:invalid_type)
+        expect(result[:errors].first.meta[:expected]).to eq(:datetime)
+        expect(result[:errors].first.meta[:actual]).to eq(:string)
       end
 
-      it 'rejects unparseable string' do
+      it 'rejects string' do
         result = definition.validate({ archived_at: 'not-a-date' })
 
         expect(result[:errors]).not_to be_empty
         expect(result[:errors].length).to eq(1)
-        expect(result[:errors].first.code).to eq(:coercion_failed)
-        expect(result[:errors].first.detail).to eq('Could not parse value as datetime')
-        expect(result[:errors].first.meta[:actual_value]).to eq('not-a-date')
+        expect(result[:errors].first.code).to eq(:invalid_type)
       end
 
-      it 'rejects invalid day in month' do
+      it 'rejects string' do
         result = definition.validate({ archived_at: '2024-01-32' })
 
         expect(result[:errors]).not_to be_empty
-        expect(result[:errors].first.code).to eq(:coercion_failed)
+        expect(result[:errors].first.code).to eq(:invalid_type)
       end
 
       it 'rejects empty string' do
@@ -142,47 +141,39 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
         expect(result[:params][:birth_date]).to eq(date)
       end
 
-      it 'coerces valid date string to Date' do
+      it 'rejects string without coercion' do
         result = definition.validate({ birth_date: '2024-01-15' })
 
-        expect(result[:errors]).to be_empty
-        expect(result[:errors]).to be_empty
-        expect(result[:params][:birth_date]).to be_a(Date)
-        expect(result[:params][:birth_date]).to eq(Date.parse('2024-01-15'))
-      end
-
-      it 'coerces different date formats' do
-        result = definition.validate({ birth_date: '2024/01/15' })
-
-        expect(result[:errors]).to be_empty
-        expect(result[:params][:birth_date]).to be_a(Date)
+        expect(result[:errors]).not_to be_empty
+        expect(result[:errors].first.code).to eq(:invalid_type)
+        expect(result[:errors].first.meta[:expected]).to eq(:date)
+        expect(result[:errors].first.meta[:actual]).to eq(:string)
       end
     end
 
     context 'with invalid date values' do
-      it 'rejects string after coercion fails with invalid date' do
+      it 'rejects string' do
         result = definition.validate({ birth_date: '2024-02-30' })
 
         expect(result[:errors]).not_to be_empty
         expect(result[:errors].length).to eq(1)
-        expect(result[:errors].first.code).to eq(:coercion_failed)
-        expect(result[:errors].first.meta[:expected_type]).to eq(:date)
-        expect(result[:errors].first.meta[:actual_value]).to eq('2024-02-30')
+        expect(result[:errors].first.code).to eq(:invalid_type)
+        expect(result[:errors].first.meta[:expected]).to eq(:date)
+        expect(result[:errors].first.meta[:actual]).to eq(:string)
       end
 
-      it 'rejects unparseable string' do
+      it 'rejects string' do
         result = definition.validate({ birth_date: 'not-a-date' })
 
         expect(result[:errors]).not_to be_empty
-        expect(result[:errors].first.code).to eq(:coercion_failed)
-        expect(result[:errors].first.detail).to eq('Could not parse value as date')
+        expect(result[:errors].first.code).to eq(:invalid_type)
       end
 
-      it 'rejects invalid month string' do
+      it 'rejects string' do
         result = definition.validate({ birth_date: '2024-13-01' })
 
         expect(result[:errors]).not_to be_empty
-        expect(result[:errors].first.code).to eq(:coercion_failed)
+        expect(result[:errors].first.code).to eq(:invalid_type)
       end
 
       it 'rejects empty string' do
@@ -230,28 +221,6 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
     end
   end
 
-  describe 'coercion can be disabled' do
-    before do
-      definition.param :archived_at, type: :datetime, required: false
-    end
-
-    it 'does not coerce when coerce: false' do
-      result = definition.validate({ archived_at: '2024-01-15T10:30:00Z' }, coerce: false)
-
-      # String stays as string, validation fails because it's not a Time object
-      expect(result[:errors]).not_to be_empty
-      expect(result[:errors].first.code).to eq(:coercion_failed)
-      expect(result[:errors].first.meta[:actual_value]).to eq('2024-01-15T10:30:00Z')
-    end
-
-    it 'still accepts correct Ruby types when coerce: false' do
-      time = Time.zone.parse('2024-01-15T10:30:00Z')
-      result = definition.validate({ archived_at: time }, coerce: false)
-
-      expect(result[:errors]).to be_empty
-      expect(result[:params][:archived_at]).to eq(time)
-    end
-  end
 
   describe 'required enum validation' do
     before do

@@ -91,12 +91,10 @@ module Apiwork
       # @option options [Integer] :max_depth Maximum nesting depth (default: 10)
       # @option options [Integer] :current_depth Current depth (for recursion)
       # @option options [Array] :path Current path (for error messages)
-      # @option options [Boolean] :coerce Whether to coerce types (default: true)
       def validate(data, options = {})
         max_depth = options.fetch(:max_depth, 10)
         current_depth = options.fetch(:current_depth, 0)
         path = options.fetch(:path, [])
-        coerce = options.fetch(:coerce, true)
 
         errors = []
         params = {}
@@ -114,8 +112,7 @@ module Apiwork
             data,
             path,
             max_depth: max_depth,
-            current_depth: current_depth,
-            coerce: coerce
+            current_depth: current_depth
           )
           errors.concat(param_result[:errors])
           params[name] = param_result[:value] if param_result[:value_set]
@@ -140,7 +137,7 @@ module Apiwork
       end
 
       # Validate a single parameter
-      def validate_param(name, value, param_options, data, path, max_depth:, current_depth:, coerce:)
+      def validate_param(name, value, param_options, data, path, max_depth:, current_depth:)
         field_path = path + [name]
         errors = []
 
@@ -159,16 +156,13 @@ module Apiwork
         # Skip validation if value is nil and not required
         return { errors: [], value_set: false } if value.nil?
 
-        # Coerce type if enabled
-        value = apply_coercion(value, param_options[:type], coerce)
-
         # Validate enum
         enum_error = validate_enum_value(name, value, param_options[:enum], field_path)
         return { errors: [enum_error], value_set: false } if enum_error
 
         # Handle union type validation
         if param_options[:type] == :union
-          return validate_union_param(name, value, param_options, field_path, max_depth, current_depth, coerce)
+          return validate_union_param(name, value, param_options, field_path, max_depth, current_depth)
         end
 
         # Validate type
@@ -176,7 +170,7 @@ module Apiwork
         return { errors: [type_error], value_set: false } if type_error
 
         # Validate nested structures
-        validate_nested_or_array(value, param_options, field_path, max_depth, current_depth, coerce)
+        validate_nested_or_array(value, param_options, field_path, max_depth, current_depth)
       end
 
       # Check if required field is missing
@@ -208,14 +202,6 @@ module Apiwork
         end
       end
 
-      # Apply type coercion if enabled
-      def apply_coercion(value, type, coerce)
-        return value unless coerce && Coercer.can_coerce?(type)
-
-        coerced_value = Coercer.coerce(value, type)
-        coerced_value.nil? ? value : coerced_value
-      end
-
       # Validate enum value
       def validate_enum_value(name, value, enum, field_path)
         return nil unless enum&.exclude?(value)
@@ -231,15 +217,14 @@ module Apiwork
       end
 
       # Validate union type parameter
-      def validate_union_param(name, value, param_options, field_path, max_depth, current_depth, coerce)
+      def validate_union_param(name, value, param_options, field_path, max_depth, current_depth)
         union_error, union_value = validate_union(
           name,
           value,
           param_options[:union],
           field_path,
           max_depth: max_depth,
-          current_depth: current_depth,
-          coerce: coerce
+          current_depth: current_depth
         )
         if union_error
           { errors: [union_error], value_set: false }
@@ -249,24 +234,23 @@ module Apiwork
       end
 
       # Validate nested object or array
-      def validate_nested_or_array(value, param_options, field_path, max_depth, current_depth, coerce)
+      def validate_nested_or_array(value, param_options, field_path, max_depth, current_depth)
         if param_options[:nested] && value.is_a?(Hash)
-          validate_nested_object(value, param_options[:nested], field_path, max_depth, current_depth, coerce)
+          validate_nested_object(value, param_options[:nested], field_path, max_depth, current_depth)
         elsif param_options[:type] == :array && value.is_a?(Array)
-          validate_array_param(value, param_options, field_path, max_depth, current_depth, coerce)
+          validate_array_param(value, param_options, field_path, max_depth, current_depth)
         else
           { errors: [], value: value, value_set: true }
         end
       end
 
       # Validate nested object
-      def validate_nested_object(value, nested_def, field_path, max_depth, current_depth, coerce)
+      def validate_nested_object(value, nested_def, field_path, max_depth, current_depth)
         nested_result = nested_def.validate(
           value,
           max_depth: max_depth,
           current_depth: current_depth + 1,
-          path: field_path,
-          coerce: coerce
+          path: field_path
         )
         if nested_result[:errors].any?
           { errors: nested_result[:errors], value_set: false }
@@ -276,13 +260,12 @@ module Apiwork
       end
 
       # Validate array parameter
-      def validate_array_param(value, param_options, field_path, max_depth, current_depth, coerce)
+      def validate_array_param(value, param_options, field_path, max_depth, current_depth)
         array_validation_options = {
           param_options: param_options,
           field_path: field_path,
           max_depth: max_depth,
-          current_depth: current_depth,
-          coerce: coerce
+          current_depth: current_depth
         }
         array_errors, array_values = validate_array(value, array_validation_options)
         if array_errors.empty?
@@ -310,7 +293,6 @@ module Apiwork
         field_path = options[:field_path]
         max_depth = options[:max_depth]
         current_depth = options[:current_depth]
-        coerce = options[:coerce]
 
         errors = []
         values = []
@@ -335,8 +317,7 @@ module Apiwork
               item,
               max_depth: max_depth,
               current_depth: current_depth + 1,
-              path: item_path,
-              coerce: coerce
+              path: item_path
             )
             if nested_result[:errors].any?
               errors.concat(nested_result[:errors])
@@ -366,8 +347,7 @@ module Apiwork
                 item,
                 max_depth: max_depth,
                 current_depth: current_depth + 1,
-                path: item_path,
-                coerce: coerce
+                path: item_path
               )
               if nested_result[:errors].any?
                 errors.concat(nested_result[:errors])
@@ -376,14 +356,11 @@ module Apiwork
               end
             else
               # Simple type array (e.g., array of strings)
-              # Coerce the item if coercion is enabled
-              coerced_item = coerce ? Coercer.coerce(item, param_options[:of]) : item
-
-              type_error = validate_type(index, coerced_item, param_options[:of], nil, item_path)
+              type_error = validate_type(index, item, param_options[:of], nil, item_path)
               if type_error
                 errors << type_error
               else
-                values << coerced_item
+                values << item
               end
             end
           else
@@ -425,16 +402,6 @@ module Apiwork
             path: path
           )
         when :datetime
-          # If string found, coercion must have failed
-          if value.is_a?(String)
-            return ValidationError.coercion_failed(
-              field: name,
-              type: :datetime,
-              value: value,
-              path: path
-            )
-          end
-
           # Accept Time, DateTime, or ActiveSupport::TimeWithZone
           return nil if value.is_a?(Time) || value.is_a?(DateTime) || value.is_a?(ActiveSupport::TimeWithZone)
 
@@ -445,16 +412,6 @@ module Apiwork
             path: path
           )
         when :date
-          # If string found, coercion must have failed
-          if value.is_a?(String)
-            return ValidationError.coercion_failed(
-              field: name,
-              type: :date,
-              value: value,
-              path: path
-            )
-          end
-
           # Accept Date only
           return nil if value.is_a?(Date)
 
@@ -509,7 +466,7 @@ module Apiwork
 
       # Validate union type - tries each variant in order
       # Returns [error, value] tuple
-      def validate_union(name, value, union_def, path, max_depth:, current_depth:, coerce:)
+      def validate_union(name, value, union_def, path, max_depth:, current_depth:)
         variants = union_def.variants
         variant_errors = []
         most_specific_error = nil
@@ -524,8 +481,7 @@ module Apiwork
             variant_def,
             path,
             max_depth: max_depth,
-            current_depth: current_depth,
-            coerce: coerce
+            current_depth: current_depth
           )
 
           # Success! Return the validated value
@@ -562,7 +518,7 @@ module Apiwork
 
       # Validate a single variant of a union
       # Returns [error, value] tuple
-      def validate_variant(name, value, variant_def, path, max_depth:, current_depth:, coerce:)
+      def validate_variant(name, value, variant_def, path, max_depth:, current_depth:)
         variant_type = variant_def[:type]
         variant_of = variant_def[:of]
         variant_nested = variant_def[:nested]
@@ -589,8 +545,7 @@ module Apiwork
             value,
             max_depth: max_depth,
             current_depth: current_depth + 1,
-            path: path,
-            coerce: coerce
+            path: path
           )
 
           return [result[:errors].first, nil] if result[:errors].any?
@@ -618,8 +573,7 @@ module Apiwork
                 param_options: { nested: variant_nested, of: variant_of },
                 field_path: path,
                 max_depth: max_depth,
-                current_depth: current_depth,
-                coerce: coerce
+                current_depth: current_depth
               }
             )
 
@@ -647,8 +601,7 @@ module Apiwork
             value,
             max_depth: max_depth,
             current_depth: current_depth + 1,
-            path: path,
-            coerce: coerce
+            path: path
           )
 
           return [result[:errors].first, nil] if result[:errors].any?
@@ -657,30 +610,23 @@ module Apiwork
         end
 
         # Handle primitive types
-        # Coerce value if coercion is enabled - but only for boolean to handle query params
-        coerced_value = value
-        if coerce && variant_type == :boolean && Coercer.can_coerce?(:boolean)
-          coerced = Coercer.coerce(value, :boolean)
-          coerced_value = coerced unless coerced.nil?
-        end
-
-        type_error = validate_type(name, coerced_value, variant_type, variant_nested, path)
+        type_error = validate_type(name, value, variant_type, variant_nested, path)
         return [type_error, nil] if type_error
 
         # Validate enum if present
-        if variant_def[:enum] && !variant_def[:enum].include?(coerced_value)
+        if variant_def[:enum] && !variant_def[:enum].include?(value)
           enum_error = ValidationError.new(
             code: :invalid_value,
             field: name,
             detail: "Invalid value. Must be one of: #{variant_def[:enum].join(', ')}",
             path: path,
             expected: variant_def[:enum],
-            actual: coerced_value
+            actual: value
           )
           return [enum_error, nil]
         end
 
-        [nil, coerced_value]
+        [nil, value]
       end
     end
   end

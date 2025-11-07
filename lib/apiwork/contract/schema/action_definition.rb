@@ -45,6 +45,33 @@ module Apiwork
           @input_definition
         end
 
+        # Override: Get merged input definition (virtual + explicit)
+        def merged_input_definition
+          return input_definition unless merges_input?
+
+          # Build virtual input from schema (auto-generated query params for index, etc)
+          virtual_def = build_virtual_input_definition
+          return input_definition if virtual_def.nil?
+
+          # If no explicit input, return virtual
+          return virtual_def if input_definition.nil?
+
+          # Merge: Start with virtual definition, then add/override with explicit params
+          merged_def = Definition.new(:input, contract_class)
+
+          # Copy all params from virtual input (auto-generated)
+          virtual_def.params.each do |name, param_options|
+            merged_def.params[name] = param_options
+          end
+
+          # Override/add with explicit input params
+          input_definition.params.each do |name, param_options|
+            merged_def.params[name] = param_options
+          end
+
+          merged_def
+        end
+
         # Override: Get merged output definition (virtual + explicit)
         def merged_output_definition
           return output_definition unless merges_output?
@@ -85,6 +112,32 @@ module Apiwork
           end
 
           needs_serialization ? contract_class.schema_class.serialize(data, context: context, includes: includes) : data
+        end
+
+        # Schema-dependent: Build virtual input definition from schema class
+        def build_virtual_input_definition
+          return nil unless contract_class.schema_class
+
+          rc = contract_class.schema_class
+          virtual_def = Definition.new(:input, contract_class)
+
+          case action_name.to_sym
+          when :index
+            virtual_def.instance_eval { Generator.generate_query_params(self, rc) }
+          when :show
+            # Empty input - strict mode will reject any query params
+          when :create
+            virtual_def.instance_eval { Generator.generate_writable_input(self, rc, :create) }
+          when :update
+            virtual_def.instance_eval { Generator.generate_writable_input(self, rc, :update) }
+          when :destroy
+            # No input by default
+          else
+            # Custom actions get empty input
+            # Input params MUST be defined explicitly in the action block
+          end
+
+          virtual_def
         end
 
         # Schema-dependent: Build virtual output definition from schema class
