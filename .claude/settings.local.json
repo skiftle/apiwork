@@ -51,7 +51,10 @@
       "Bash(xargs -I {} sh -c 'echo \"\"\"\"=== {} ===\"\"\"\" && grep -n \"\"\"\"^  def \"\"\"\" {} | wc -l')",
       "Bash(for file in spec/dummy/app/controllers/api/v1/*.rb)",
       "Bash(do sed -i '' 's/action_params/action_input.params/g' \"$file\")",
-      "Bash(bundle exec ruby:*)"
+      "Bash(bundle exec ruby:*)",
+      "Bash(ruby /tmp/debug_circular.rb:*)",
+      "Bash(DEBUG_GENERATOR=1 ruby:*)",
+      "Bash(ruby /tmp/test_caching.rb:*)"
     ],
     "deny": [],
     "ask": []

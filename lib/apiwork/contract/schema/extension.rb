@@ -14,7 +14,9 @@ module Apiwork
         module ClassMethods
           # Override: Auto-generate and store a standard CRUD action (lazy loading)
           def auto_generate_and_store_action(action_name)
-            action_definition = Generator.generate_action(schema_class, action_name)
+            # Pass self as contract_class to reuse custom type definitions across actions
+            # This prevents creating a new temporary contract class for each action
+            action_definition = Generator.generate_action(schema_class, action_name, contract_class: self)
             @action_definitions[action_name.to_sym] = action_definition if action_definition
           end
         end
