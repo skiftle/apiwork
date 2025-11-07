@@ -64,12 +64,10 @@ module Apiwork
         # Get contract class from definition
         contract_class = definition.contract_class
 
-        # Define base filter types if not already defined
-        define_filter_types(contract_class)
-
-        # Generate resource-specific filter and sort types (with recursive associations)
-        filter_type = generate_resource_filter_type(contract_class, schema_class)
-        sort_type = generate_resource_sort_type(contract_class, schema_class)
+        # Register resource-specific filter and sort types with TypeRegistry
+        # This pre-registers all types before usage, eliminating circular recursion
+        filter_type = register_resource_filter_type(contract_class, schema_class)
+        sort_type = register_resource_sort_type(contract_class, schema_class)
 
         # Generate nested filter parameter with resource-specific filters
         if filter_type
@@ -91,26 +89,36 @@ module Apiwork
           end
         end
 
-        # Generate nested page parameter
+        # Generate nested page parameter (uses global built-in type)
         definition.param :page, type: :page_params, required: false
 
         # Generate nested include parameter with strict validation
         # Type includes ALL associations - contract validates structure
-        include_type = generate_resource_include_type(contract_class, schema_class)
+        include_type = register_resource_include_type(contract_class, schema_class)
         definition.param :include, type: include_type, required: false
       end
 
       # Generate input contract with root key (like params.require(:service).permit(...))
       # Creates: {service: {icon: ..., name: ...}}
+      # Registers the payload type with TypeRegistry for reusability
       def self.generate_writable_input(definition, schema_class, context)
         root_key = schema_class.root_key.singular.to_sym
-        rc = schema_class
-        ctx = context
+        contract_class = definition.contract_class
+
+        # Register the writable payload type with TypeRegistry
+        # Example: :create_post_payload, :update_post_payload
+        payload_type_name = :"#{context}_#{root_key}_payload"
+
+        # Check if already registered
+        unless TypeRegistry.resolve(payload_type_name, contract_class: contract_class)
+          TypeRegistry.register_local(contract_class, payload_type_name) do
+            Generator.generate_writable_params(self, schema_class, context)
+          end
+        end
 
         # Create nested param with root key - REQUIRED (no flat format allowed)
-        definition.param root_key, type: :object, required: true do
-          Generator.generate_writable_params(self, rc, ctx)
-        end
+        # Use the registered type
+        definition.param root_key, type: payload_type_name, required: true
       end
 
       def self.generate_writable_params(definition, schema_class, context)
@@ -144,52 +152,75 @@ module Apiwork
       end
 
       def self.generate_single_output(definition, schema_class)
-        # Full response structure
-        definition.param :ok, type: :boolean, required: true
-
-        # Data nested under root key
         root_key = schema_class.root_key.singular.to_sym
-        definition.param root_key, type: :object, required: true do
-          # All resource attributes
-          schema_class.attribute_definitions.each do |name, attr_def|
-            param name, type: Generator.map_type(attr_def.type), required: false
-          end
+        contract_class = definition.contract_class
 
-          # Add associations if present
-          schema_class.association_definitions.each do |name, assoc_def|
-            if assoc_def.singular?
-              param name, type: :object, required: false, nullable: assoc_def.nullable?
-            elsif assoc_def.collection?
-              param name, type: :array, required: false, nullable: assoc_def.nullable?
+        # Register the resource type with TypeRegistry
+        # Example: :post, :comment
+        resource_type_name = root_key
+
+        # Check if already registered
+        unless TypeRegistry.resolve(resource_type_name, contract_class: contract_class)
+          TypeRegistry.register_local(contract_class, resource_type_name) do
+            # All resource attributes
+            schema_class.attribute_definitions.each do |name, attr_def|
+              param name, type: Generator.map_type(attr_def.type), required: false
+            end
+
+            # Add associations if present
+            schema_class.association_definitions.each do |name, assoc_def|
+              if assoc_def.singular?
+                param name, type: :object, required: false, nullable: assoc_def.nullable?
+              elsif assoc_def.collection?
+                param name, type: :array, required: false, nullable: assoc_def.nullable?
+              end
             end
           end
         end
+
+        # Full response structure
+        definition.param :ok, type: :boolean, required: true
+
+        # Data nested under root key - use the registered type
+        definition.param root_key, type: resource_type_name, required: true
 
         # Meta is optional (only if controller adds it)
         definition.param :meta, type: :object, required: false
       end
 
       def self.generate_collection_output(definition, schema_class)
-        # Full response structure
-        definition.param :ok, type: :boolean, required: true
+        root_key_singular = schema_class.root_key.singular.to_sym
+        root_key_plural = schema_class.root_key.plural.to_sym
+        contract_class = definition.contract_class
 
-        # Array of items nested under root key
-        root_key = schema_class.root_key.plural.to_sym
-        definition.param root_key, type: :array, required: true, of: :object do
-          # Each item has all resource attributes
-          schema_class.attribute_definitions.each do |name, attr_def|
-            param name, type: Generator.map_type(attr_def.type), required: false
-          end
+        # Register the resource type with TypeRegistry (same as single output)
+        # Example: :post, :comment
+        resource_type_name = root_key_singular
 
-          # Add associations if present
-          schema_class.association_definitions.each do |name, assoc_def|
-            if assoc_def.singular?
-              param name, type: :object, required: false, nullable: assoc_def.nullable?
-            elsif assoc_def.collection?
-              param name, type: :array, required: false, nullable: assoc_def.nullable?
+        # Check if already registered
+        unless TypeRegistry.resolve(resource_type_name, contract_class: contract_class)
+          TypeRegistry.register_local(contract_class, resource_type_name) do
+            # Each item has all resource attributes
+            schema_class.attribute_definitions.each do |name, attr_def|
+              param name, type: Generator.map_type(attr_def.type), required: false
+            end
+
+            # Add associations if present
+            schema_class.association_definitions.each do |name, assoc_def|
+              if assoc_def.singular?
+                param name, type: :object, required: false, nullable: assoc_def.nullable?
+              elsif assoc_def.collection?
+                param name, type: :array, required: false, nullable: assoc_def.nullable?
+              end
             end
           end
         end
+
+        # Full response structure
+        definition.param :ok, type: :boolean, required: true
+
+        # Array of items nested under root key - use the registered type
+        definition.param root_key_plural, type: :array, required: true, of: resource_type_name
 
         # Pagination meta (always present for collections)
         definition.param :meta, type: :object, required: true do
@@ -203,92 +234,20 @@ module Apiwork
         end
       end
 
-      # Define base filter types (string, date, numeric, uuid, boolean)
-      def self.define_filter_types(contract_class)
-        # Skip if already defined
-        return if contract_class.custom_types&.key?(:string_filter)
-
-        # String filter operators
-        contract_class.type :string_filter do
-          param :equal, type: :string, required: false
-          param :not_equal, type: :string, required: false
-          param :contains, type: :string, required: false
-          param :not_contains, type: :string, required: false
-          param :starts_with, type: :string, required: false
-          param :ends_with, type: :string, required: false
-          param :in, type: :array, of: :string, required: false
-          param :not_in, type: :array, of: :string, required: false
-        end
-
-        # Date/DateTime filter operators
-        contract_class.type :date_filter do
-          param :equal, type: :string, required: false
-          param :not_equal, type: :string, required: false
-          param :greater_than, type: :string, required: false
-          param :greater_than_or_equal_to, type: :string, required: false
-          param :less_than, type: :string, required: false
-          param :less_than_or_equal_to, type: :string, required: false
-          param :between, type: :object, required: false do
-            param :from, type: :string, required: true
-            param :to, type: :string, required: true
-          end
-          param :not_between, type: :object, required: false do
-            param :from, type: :string, required: true
-            param :to, type: :string, required: true
-          end
-          param :in, type: :array, of: :string, required: false
-          param :not_in, type: :array, of: :string, required: false
-        end
-
-        # Numeric filter operators (integer, decimal, float)
-        contract_class.type :numeric_filter do
-          param :equal, type: :integer, required: false
-          param :not_equal, type: :integer, required: false
-          param :greater_than, type: :integer, required: false
-          param :greater_than_or_equal_to, type: :integer, required: false
-          param :less_than, type: :integer, required: false
-          param :less_than_or_equal_to, type: :integer, required: false
-          param :between, type: :object, required: false do
-            param :from, type: :integer, required: true
-            param :to, type: :integer, required: true
-          end
-          param :not_between, type: :object, required: false do
-            param :from, type: :integer, required: true
-            param :to, type: :integer, required: true
-          end
-          param :in, type: :array, of: :integer, required: false
-          param :not_in, type: :array, of: :integer, required: false
-        end
-
-        # UUID filter operators
-        contract_class.type :uuid_filter do
-          param :equal, type: :uuid, required: false
-          param :not_equal, type: :uuid, required: false
-          param :in, type: :array, of: :uuid, required: false
-          param :not_in, type: :array, of: :uuid, required: false
-        end
-
-        # Boolean filter (just equality)
-        contract_class.type :boolean_filter do
-          param :equal, type: :boolean, required: false
-        end
-
-        # Page parameters
-        contract_class.type :page_params do
-          param :number, type: :integer, required: false
-          param :size, type: :integer, required: false
-        end
-      end
-
       # Determine which filter type to use based on attribute type
+      # Returns global built-in filter types from TypeRegistry
       def self.determine_filter_type(attr_type)
         case attr_type
         when :string
           :string_filter
-        when :date, :datetime
+        when :date
           :date_filter
-        when :integer, :decimal, :float
-          :numeric_filter
+        when :datetime
+          :datetime_filter
+        when :integer
+          :integer_filter
+        when :decimal, :float
+          :decimal_filter
         when :uuid
           :uuid_filter
         when :boolean
@@ -298,40 +257,29 @@ module Apiwork
         end
       end
 
-      # Generate resource-specific filter type with recursive association support
-      # @param contract_class [Class] The contract class to define types on
-      # @param schema_class [Class] The resource class to generate filters for
-      # @param visited [Set] Set of visited resource classes (circular reference protection)
+      # Register resource-specific filter type with TypeRegistry
+      # Uses type references for associations to eliminate circular recursion
+      # @param contract_class [Class] The contract class to register types with
+      # @param schema_class [Class] The schema class to generate filters for
+      # @param visited [Set] Set of visited schema classes (circular reference protection)
       # @param depth [Integer] Current recursion depth (max 3)
-      def self.generate_resource_filter_type(contract_class, schema_class, visited: Set.new, depth: 0)
-        # CIRCULAR REFERENCE PROTECTION: Check visited set BEFORE accessing root_key
-        # Prevents infinite recursion when Post → Comment → Post
-        if visited.include?(schema_class)
-          puts "[CIRCULAR] Skipping #{schema_class.name} - already in visited: #{visited.map(&:name).join(', ')}"
-          return nil
-        end
-        if depth >= 3
-          puts "[DEPTH] Max depth reached for #{schema_class.name}"
-          return nil
-        end
+      def self.register_resource_filter_type(contract_class, schema_class, visited: Set.new, depth: 0)
+        # Circular reference and depth protection
+        return nil if visited.include?(schema_class)
+        return nil if depth >= 3
 
         # Add to visited set
         visited = visited.dup.add(schema_class)
-        puts "[FILTER] Generating #{schema_class.name}_filter (depth=#{depth}, visited=#{visited.map(&:name).join(', ')})"
-        puts "  Caller: #{caller[0..2].join("\n          ")}"
 
         type_name = :"#{schema_class.root_key.singular}_filter"
 
-        # Skip if already defined
-        # Use resolve_custom_type to check across all scopes (not just :root)
-        current_scope = Thread.current[:apiwork_type_scope] || :root
-        if contract_class.resolve_custom_type(type_name, current_scope)
-          puts "[FILTER] Type #{type_name} already defined in scope #{current_scope}, returning early"
-          return type_name
-        end
+        # Check if already registered with TypeRegistry
+        existing = TypeRegistry.resolve(type_name, contract_class: contract_class)
+        return type_name if existing
 
-        # Define the filter type
-        contract_class.type type_name do
+        # Pre-register type name to prevent infinite recursion
+        # We'll populate it with the actual definition below
+        TypeRegistry.register_local(contract_class, type_name) do
           # Add filters for each filterable attribute
           schema_class.attribute_definitions.each do |name, attr_def|
             next unless attr_def.filterable?
@@ -352,24 +300,21 @@ module Apiwork
             end
           end
 
-          # Add filters for associations (recursive)
-          puts "[FILTER] Processing #{schema_class.association_definitions.count} associations for #{schema_class.name}"
+          # Add filters for associations using type references
           schema_class.association_definitions.each do |name, assoc_def|
-            # Skip if circular reference
             assoc_resource = Generator.resolve_association_resource(assoc_def)
             next unless assoc_resource
-            puts "[FILTER]   Association :#{name} → #{assoc_resource.name}, visited? #{visited.include?(assoc_resource)}"
             next if visited.include?(assoc_resource)
 
-            # Recursively generate filter type for associated resource
-            assoc_filter_type = Generator.generate_resource_filter_type(
+            # Register associated resource's filter type (may return nil for max depth)
+            assoc_filter_type = Generator.register_resource_filter_type(
               contract_class,
               assoc_resource,
               visited: visited,
               depth: depth + 1
             )
 
-            # Add association filter parameter (skip if circular reference detected)
+            # Add association filter parameter using type reference
             param name, type: assoc_filter_type, required: false if assoc_filter_type
           end
         end
@@ -377,14 +322,14 @@ module Apiwork
         type_name
       end
 
-      # Generate resource-specific sort type with recursive association support
-      # @param contract_class [Class] The contract class to define types on
-      # @param schema_class [Class] The resource class to generate sorts for
-      # @param visited [Set] Set of visited resource classes (circular reference protection)
+      # Register resource-specific sort type with TypeRegistry
+      # Uses type references for associations to eliminate circular recursion
+      # @param contract_class [Class] The contract class to register types with
+      # @param schema_class [Class] The schema class to generate sorts for
+      # @param visited [Set] Set of visited schema classes (circular reference protection)
       # @param depth [Integer] Current recursion depth (max 3)
-      def self.generate_resource_sort_type(contract_class, schema_class, visited: Set.new, depth: 0)
-        # CIRCULAR REFERENCE PROTECTION: Check visited set BEFORE accessing root_key
-        # Prevents infinite recursion when Post → Comment → Post
+      def self.register_resource_sort_type(contract_class, schema_class, visited: Set.new, depth: 0)
+        # Circular reference and depth protection
         return nil if visited.include?(schema_class)
         return nil if depth >= 3
 
@@ -393,13 +338,12 @@ module Apiwork
 
         type_name = :"#{schema_class.root_key.singular}_sort"
 
-        # Skip if already defined
-        # Use resolve_custom_type to check across all scopes (not just :root)
-        current_scope = Thread.current[:apiwork_type_scope] || :root
-        return type_name if contract_class.resolve_custom_type(type_name, current_scope)
+        # Check if already registered with TypeRegistry
+        existing = TypeRegistry.resolve(type_name, contract_class: contract_class)
+        return type_name if existing
 
-        # Define the sort type
-        contract_class.type type_name do
+        # Pre-register type name to prevent infinite recursion
+        TypeRegistry.register_local(contract_class, type_name) do
           # Add sort for each sortable attribute
           schema_class.attribute_definitions.each do |name, attr_def|
             next unless attr_def.sortable?
@@ -408,22 +352,21 @@ module Apiwork
             param name, type: :string, enum: ['asc', 'desc'], required: false
           end
 
-          # Add sort for associations (recursive)
+          # Add sort for associations using type references
           schema_class.association_definitions.each do |name, assoc_def|
-            # Skip if circular reference
             assoc_resource = Generator.resolve_association_resource(assoc_def)
             next unless assoc_resource
             next if visited.include?(assoc_resource)
 
-            # Recursively generate sort type for associated resource
-            assoc_sort_type = Generator.generate_resource_sort_type(
+            # Register associated resource's sort type (may return nil for max depth)
+            assoc_sort_type = Generator.register_resource_sort_type(
               contract_class,
               assoc_resource,
               visited: visited,
               depth: depth + 1
             )
 
-            # Add association sort parameter (skip if circular reference detected)
+            # Add association sort parameter using type reference
             param name, type: assoc_sort_type, required: false if assoc_sort_type
           end
         end
@@ -460,26 +403,26 @@ module Apiwork
         schema_class_name.constantize rescue nil
       end
 
-      # Generate resource-specific include type with recursive association support
-      # @param contract_class [Class] The contract class to define types on
-      # @param schema_class [Class] The resource class to generate includes for
-      # @param visited [Set] Set of visited resource classes (circular reference protection)
+      # Register resource-specific include type with TypeRegistry
+      # Uses type references for associations to eliminate circular recursion
+      # @param contract_class [Class] The contract class to register types with
+      # @param schema_class [Class] The schema class to generate includes for
+      # @param visited [Set] Set of visited schema classes (circular reference protection)
       # @param depth [Integer] Current recursion depth (max 3)
-      def self.generate_resource_include_type(contract_class, schema_class, visited: Set.new, depth: 0)
+      def self.register_resource_include_type(contract_class, schema_class, visited: Set.new, depth: 0)
         type_name = :"#{schema_class.root_key.singular}_include"
 
-        # Skip if already defined or max depth reached
-        # Use resolve_custom_type to check across all scopes (not just :root)
-        current_scope = Thread.current[:apiwork_type_scope] || :root
-        return type_name if contract_class.resolve_custom_type(type_name, current_scope)
+        # Check if already registered with TypeRegistry
+        existing = TypeRegistry.resolve(type_name, contract_class: contract_class)
+        return type_name if existing
         return type_name if depth >= 3
 
         # Add to visited set
         visited = visited.dup.add(schema_class)
 
-        # Define the include type with ALL associations for strict validation
+        # Pre-register type name to prevent infinite recursion
         # Contract validates structure, Resource applies validated includes
-        contract_class.type type_name do
+        TypeRegistry.register_local(contract_class, type_name) do
           schema_class.association_definitions.each do |name, assoc_def|
             assoc_resource = Generator.resolve_association_resource(assoc_def)
             next unless assoc_resource
@@ -490,8 +433,8 @@ module Apiwork
               # Just allow boolean variant for circular refs (can't nest further)
               param name, type: :boolean, required: false
             else
-              # Recursively generate include type for associated resource
-              assoc_include_type = Generator.generate_resource_include_type(
+              # Register associated resource's include type (may return nil for max depth)
+              assoc_include_type = Generator.register_resource_include_type(
                 contract_class,
                 assoc_resource,
                 visited: visited,

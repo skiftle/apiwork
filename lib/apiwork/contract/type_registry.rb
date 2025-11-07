@@ -151,6 +151,43 @@ module Apiwork
           }
         end
 
+        # Serialize global types for as_json output
+        # Returns expanded type definitions with all fields
+        #
+        # @return [Hash] { type_name => type_definition }
+        def serialize_global_types
+          result = {}
+          global_types.each do |type_name, definition|
+            # Expand the type definition by calling the block in a serialization context
+            result[type_name] = expand_type_definition(definition)
+          end
+          result
+        end
+
+        # Serialize local types for a specific contract for as_json output
+        # Returns expanded type definitions with all fields using qualified names
+        #
+        # @param contract_class [Class] Contract class
+        # @return [Hash] { qualified_type_name => type_definition }
+        def serialize_local_types(contract_class)
+          result = {}
+          types = local_types[contract_class] || {}
+
+          # Convert to array first to avoid "can't add a new key into hash during iteration"
+          # This happens when expanding a type triggers registration of nested types
+          types_array = types.to_a
+
+          types_array.each do |_type_name, metadata|
+            qualified_name = metadata[:qualified_name]
+            definition = metadata[:definition]
+
+            # Expand the type definition by calling the block in a serialization context
+            result[qualified_name] = expand_type_definition(definition)
+          end
+
+          result
+        end
+
         # Clear all registered types (useful for testing)
         def clear!
           @global_types = {}
@@ -158,6 +195,23 @@ module Apiwork
         end
 
         private
+
+        # Expand a type definition block to extract its structure
+        # Evaluates the block in a definition context and returns the serialized params
+        #
+        # @param definition [Proc] The type definition block
+        # @return [Hash] Serialized type definition
+        def expand_type_definition(definition)
+          # Create a minimal anonymous contract class to satisfy Definition constructor
+          temp_contract = Class.new(Apiwork::Contract::Base)
+          temp_definition = Apiwork::Contract::Definition.new(:input, temp_contract)
+
+          # Evaluate the block in the context of the definition
+          temp_definition.instance_eval(&definition)
+
+          # Return the serialized definition
+          temp_definition.as_json
+        end
 
         # Storage for global types
         def global_types
@@ -182,6 +236,17 @@ module Apiwork
         #   extract_contract_prefix(Api::V1::PaymentContract)
         #   # => "payment"
         def extract_contract_prefix(contract_class)
+          # Handle anonymous classes (created in Schema::Generator)
+          # Use the schema class name as the prefix instead
+          if contract_class.name.nil?
+            # For anonymous classes, try to get schema class from _schema_class accessor
+            schema_class = contract_class._schema_class
+            return schema_class.root_key.singular if schema_class
+
+            # Fallback: use object_id
+            return "anonymous_#{contract_class.object_id}"
+          end
+
           contract_class.name
                         .demodulize           # InvoiceContract
                         .underscore           # invoice_contract

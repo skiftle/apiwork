@@ -63,14 +63,16 @@ module Apiwork
         def type(name, &block)
           raise ArgumentError, 'Block required for custom type definition' unless block_given?
 
-          # Get current scope (set by ActionDefinition or Definition during instance_eval)
-          current_scope = Thread.current[:apiwork_type_scope] || :root
+          # Register with TypeRegistry as a local (contract-scoped) type
+          # This allows the type to be used with short name within this contract
+          # but will be qualified (e.g., :invoice_filter) in as_json output
+          TypeRegistry.register_local(self, name, &block)
 
-          # Initialize scope storage
+          # Also store in legacy @type_scopes for backward compatibility
+          # TODO: Remove this once all code uses TypeRegistry
+          current_scope = Thread.current[:apiwork_type_scope] || :root
           @type_scopes ||= {}
           @type_scopes[current_scope] ||= {}
-
-          # Register type in current scope (shadowing allowed)
           @type_scopes[current_scope][name] = block
         end
 

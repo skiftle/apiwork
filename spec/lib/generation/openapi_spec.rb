@@ -87,7 +87,7 @@ RSpec.describe Apiwork::Generation::OpenAPI do
 
         it 'generates archive action path' do
           expect(paths).to have_key('/api/v1/posts/:id/archive')
-          expect(paths['/api/v1/posts/:id/archive']).to have_key('post')
+          expect(paths['/api/v1/posts/:id/archive']).to have_key('patch')
         end
       end
 
