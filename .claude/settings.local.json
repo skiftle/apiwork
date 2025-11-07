@@ -39,7 +39,12 @@
       "Bash(do sed -i '' \"s/schema ''Api::V1::''Api::V1::/schema ''Api::V1::/\" \"$f\")",
       "Bash(python3:*)",
       "Bash(ruby -I lib -e:*)",
-      "Bash(DEBUG_SCOPES=1 bundle exec rspec:*)"
+      "Bash(DEBUG_SCOPES=1 bundle exec rspec:*)",
+      "Bash(for file in spec/dummy/app/contracts/api/v1/*.rb)",
+      "Bash(do)",
+      "Bash(spec/dummy/app/contracts/api/v1/person_contract.rb )",
+      "Bash(spec/dummy/app/contracts/api/v1/restricted_post_contract.rb )",
+      "Bash(spec/dummy/app/contracts/api/v1/safe_comment_contract.rb)"
     ],
     "deny": [],
     "ask": []
