@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative 'validation'
-require_relative 'query'
 require_relative 'action_params'
 require_relative 'serialization'
 require_relative 'action_metadata'
@@ -12,17 +11,16 @@ module Apiwork
     #
     # This concern provides a unified interface for:
     # - Request validation (Validation)
-    # - Query building with filter/sort/pagination (Query)
     # - Action-specific parameter access (ActionParams)
     # - Resource serialization and response building (Serialization)
+    # - Automatic query building for index actions (built into Serialization)
     #
     # @example Basic usage
     #   class ClientsController < ApplicationController
     #     include Apiwork::Controller::Concern
     #
     #     def index
-    #       clients = query(Client.all)
-    #       respond_with(clients)
+    #       respond_with Client.all  # Query happens automatically
     #     end
     #
     #     def create
@@ -44,7 +42,6 @@ module Apiwork
 
       include Validation
       include Serialization
-      include Query
       include ActionParams
       include ActionMetadata
     end

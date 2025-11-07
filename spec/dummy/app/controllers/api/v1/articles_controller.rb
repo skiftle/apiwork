@@ -10,8 +10,7 @@ module Api
     class ArticlesController < V1Controller
 
       def index
-        articles = query(Post.all)
-        respond_with articles
+        respond_with Post.all
       end
 
       def show

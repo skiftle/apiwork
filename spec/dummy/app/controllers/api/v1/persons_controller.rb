@@ -8,8 +8,7 @@ module Api
       include Apiwork::Controller::Concern
 
       def index
-        persons = query(Post.all)
-        respond_with persons
+        respond_with Post.all
       end
 
       def show
