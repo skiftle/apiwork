@@ -90,10 +90,10 @@ module Apiwork
             contracts: {}
           }
 
-          # Get contract class for this resource (explicit contracts only)
-          # NOTE: We don't use schema-based contracts for introspection to avoid complexity
-          # Schema-based contracts work great at runtime but are too complex for static introspection
-          contract_class = resolve_contract_class(resource_metadata)
+          # Get contract class for this resource
+          # Try explicit contract first, fall back to schema-based contract
+          contract_class = resolve_contract_class(resource_metadata) ||
+                          schema_based_contract_class(resource_metadata)
 
           # Serialize CRUD actions
           (resource_metadata[:actions] || []).each do |action_name|
@@ -203,17 +203,24 @@ module Apiwork
         def schema_based_contract_class(resource_metadata)
           return nil unless resource_metadata[:schema_class]
 
-          # Cache key based on root_key (not schema class) to share contract classes
-          # This prevents infinite loops when RestrictedPostSchema < PostSchema both create :post_filter
-          root_key = resource_metadata[:schema_class].root_key.singular
-          cache_key = :"contract_#{root_key}"
+          schema_class = resource_metadata[:schema_class]
+
+          # Cache key based on schema class name to prevent infinite recursion
+          # Use object_id as fallback for anonymous classes
+          # Replace :: with _ to make valid instance variable name
+          cache_key = if schema_class.name
+                       :"contract_#{schema_class.name.tr('::', '_')}"
+                     else
+                       :"contract_#{schema_class.object_id}"
+                     end
 
           # Return cached if available
           return instance_variable_get("@#{cache_key}") if instance_variable_defined?("@#{cache_key}")
 
           # Create new anonymous contract class with schema
+          # Circular references are handled in Generator via visited set (checked BEFORE accessing root_key)
           contract_class = Class.new(Apiwork::Contract::Base) do
-            schema resource_metadata[:schema_class]
+            schema schema_class
           end
 
           # Cache it

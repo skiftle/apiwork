@@ -3,7 +3,7 @@
 module Apiwork
   module Generation
     class Base
-      attr_reader :path, :key_transform, :schemas, :routes, :documentation, :options
+      attr_reader :path, :key_transform, :api_data, :component_registry, :options
 
       class << self
         # Generate schema using class-level API
@@ -55,25 +55,14 @@ module Apiwork
         load_data
       end
 
-      # Load data from Inspector
-      # Override needs_* methods in subclasses to control what gets loaded
+      # Load data from API.as_json
       def load_data
-        @schemas = API::Inspector.resources(path: path) if needs_schemas?
-        @routes = API::Inspector.routes(path: path) if needs_routes?
-        @documentation = API::Inspector.documentation(path: path) if needs_documentation?
-      end
+        api = Apiwork::API.find(path)
+        raise "API not found at path: #{path}" unless api
 
-      # Override in subclasses to declare data dependencies
-      def needs_schemas?
-        true
-      end
-
-      def needs_routes?
-        false
-      end
-
-      def needs_documentation?
-        false
+        @api_data = api.as_json
+        @component_registry = ComponentRegistry.new
+        @component_registry.extract_components(@api_data)
       end
 
       # Must be implemented by subclasses
@@ -94,114 +83,25 @@ module Apiwork
         Transform::Case.string(key, strategy || @key_transform)
       end
 
-      # Find schema by name
+      # Get API metadata (title, version, description)
       #
-      # @param name [String, Symbol] Schema name
-      # @return [Hash, nil] Schema metadata
-      def find_schema(name)
-        return nil unless name
-
-        @schemas.find { |s| s[:name].to_s == name.to_s }
+      # @return [Hash, nil] API metadata
+      def metadata
+        @api_data[:metadata]
       end
 
-      # Filter attributes by context (full, create, update, query)
+      # Get all resources
       #
-      # @param schema [Hash] Schema metadata
-      # @param context [Symbol] Context to filter for
-      # @return [Hash] Filtered attributes
-      def filter_attributes(schema, context:)
-        schema[:attributes].select do |_name, info|
-          case context
-          when :full
-            true
-          when :create
-            writable_for_create?(info)
-          when :update
-            writable_for_update?(info)
-          when :query
-            info[:filterable] || info[:sortable]
-          else
-            false
-          end
-        end
+      # @return [Hash] Resources hash from API.as_json
+      def resources
+        @api_data[:resources] || {}
       end
 
-      # Check if attribute is writable for create action
+      # Iterate over all resources recursively
       #
-      # @param info [Hash] Attribute metadata
-      # @return [Boolean]
-      def writable_for_create?(info)
-        writable_config = info[:writable]
-        return false unless writable_config.is_a?(Hash)
-
-        writable_config[:on].include?(:create)
-      end
-
-      # Check if attribute is writable for update action
-      #
-      # @param info [Hash] Attribute metadata
-      # @return [Boolean]
-      def writable_for_update?(info)
-        writable_config = info[:writable]
-        return false unless writable_config.is_a?(Hash)
-
-        writable_config[:on].include?(:update)
-      end
-
-      # Build path for standard CRUD action
-      #
-      # @param resource_name [String, Symbol] Resource name
-      # @param action [Symbol] Action name (:index, :show, :create, :update, :destroy)
-      # @param metadata [Hash, nil] Resource metadata
-      # @return [String] Path for action
-      def build_path_for_action(resource_name, action, metadata = nil)
-        base_path = build_base_path(resource_name, metadata)
-
-        case action
-        when :index, :create
-          base_path
-        when :show, :update, :destroy
-          "#{base_path}/:id"
-        else
-          base_path
-        end
-      end
-
-      # Build path for member action
-      #
-      # @param resource_name [String, Symbol] Resource name
-      # @param action_name [String, Symbol] Custom action name
-      # @param metadata [Hash, nil] Resource metadata
-      # @return [String] Path for member action
-      def build_path_for_member_action(resource_name, action_name, metadata = nil)
-        base_path = build_base_path(resource_name, metadata)
-        "#{base_path}/:id/#{action_name}"
-      end
-
-      # Build path for collection action
-      #
-      # @param resource_name [String, Symbol] Resource name
-      # @param action_name [String, Symbol] Custom action name
-      # @param metadata [Hash, nil] Resource metadata
-      # @return [String] Path for collection action
-      def build_path_for_collection_action(resource_name, action_name, metadata = nil)
-        base_path = build_base_path(resource_name, metadata)
-        "#{base_path}/#{action_name}"
-      end
-
-      # Build base path for resource, handling nested resources
-      #
-      # @param resource_name [String, Symbol] Resource name
-      # @param metadata [Hash, nil] Resource metadata
-      # @return [String] Base path
-      def build_base_path(resource_name, metadata = nil)
-        if metadata&.dig(:parent)
-          parent_path = build_base_path(metadata[:parent][:name], metadata[:parent])
-          parent_param = ":#{metadata[:parent][:name].to_s.singularize}_id"
-          "#{parent_path}/#{parent_param}/#{resource_name}"
-        else
-          "/#{resource_name}"
-        end
+      # @yield [resource_name, resource_data] Yields each resource
+      def each_resource(&block)
+        iterate_resources(resources, &block)
       end
 
       # Determine HTTP method for standard action
@@ -223,24 +123,18 @@ module Apiwork
         end
       end
 
-      # Iterate over all schemas
-      #
-      # @yield [schema] Yields each schema
-      def each_schema(&block)
-        @schemas.each(&block)
-      end
+      private
 
-      # Collect nested resources recursively
-      #
-      # @param nested_resources [Hash] Nested resources hash
-      # @param collection [Array] Collection to append to
-      # @return [Array] Collection with nested resources
-      def collect_nested_resources(nested_resources, collection = [])
-        nested_resources.each_value do |metadata|
-          collection << metadata
-          collect_nested_resources(metadata[:resources] || {}, collection) if metadata[:resources]
+      # Recursively iterate over resources including nested ones
+      def iterate_resources(resources_hash, &block)
+        resources_hash.each do |resource_name, resource_data|
+          block.call(resource_name, resource_data)
+
+          # Recurse into nested resources
+          if resource_data[:resources]
+            iterate_resources(resource_data[:resources], &block)
+          end
         end
-        collection
       end
     end
   end

@@ -72,19 +72,23 @@ module Apiwork
         sort_type = generate_resource_sort_type(contract_class, schema_class)
 
         # Generate nested filter parameter with resource-specific filters
-        definition.param :filter, type: :union, required: false do
-          # Allow object form
-          variant type: filter_type
-          # Allow array form
-          variant type: :array, of: filter_type
+        if filter_type
+          definition.param :filter, type: :union, required: false do
+            # Allow object form
+            variant type: filter_type
+            # Allow array form
+            variant type: :array, of: filter_type
+          end
         end
 
         # Generate nested sort parameter
-        definition.param :sort, type: :union, required: false do
-          # Allow single sort field
-          variant type: sort_type
-          # Allow array of sort fields
-          variant type: :array, of: sort_type
+        if sort_type
+          definition.param :sort, type: :union, required: false do
+            # Allow single sort field
+            variant type: sort_type
+            # Allow array of sort fields
+            variant type: :array, of: sort_type
+          end
         end
 
         # Generate nested page parameter
@@ -300,16 +304,31 @@ module Apiwork
       # @param visited [Set] Set of visited resource classes (circular reference protection)
       # @param depth [Integer] Current recursion depth (max 3)
       def self.generate_resource_filter_type(contract_class, schema_class, visited: Set.new, depth: 0)
-        type_name = :"#{schema_class.root_key.singular}_filter"
-
-        # Skip if already defined or max depth reached
-        # Use resolve_custom_type to check across all scopes (not just :root)
-        current_scope = Thread.current[:apiwork_type_scope] || :root
-        return type_name if contract_class.resolve_custom_type(type_name, current_scope)
-        return type_name if depth >= 3
+        # CIRCULAR REFERENCE PROTECTION: Check visited set BEFORE accessing root_key
+        # Prevents infinite recursion when Post → Comment → Post
+        if visited.include?(schema_class)
+          puts "[CIRCULAR] Skipping #{schema_class.name} - already in visited: #{visited.map(&:name).join(', ')}"
+          return nil
+        end
+        if depth >= 3
+          puts "[DEPTH] Max depth reached for #{schema_class.name}"
+          return nil
+        end
 
         # Add to visited set
         visited = visited.dup.add(schema_class)
+        puts "[FILTER] Generating #{schema_class.name}_filter (depth=#{depth}, visited=#{visited.map(&:name).join(', ')})"
+        puts "  Caller: #{caller[0..2].join("\n          ")}"
+
+        type_name = :"#{schema_class.root_key.singular}_filter"
+
+        # Skip if already defined
+        # Use resolve_custom_type to check across all scopes (not just :root)
+        current_scope = Thread.current[:apiwork_type_scope] || :root
+        if contract_class.resolve_custom_type(type_name, current_scope)
+          puts "[FILTER] Type #{type_name} already defined in scope #{current_scope}, returning early"
+          return type_name
+        end
 
         # Define the filter type
         contract_class.type type_name do
@@ -334,10 +353,12 @@ module Apiwork
           end
 
           # Add filters for associations (recursive)
+          puts "[FILTER] Processing #{schema_class.association_definitions.count} associations for #{schema_class.name}"
           schema_class.association_definitions.each do |name, assoc_def|
             # Skip if circular reference
             assoc_resource = Generator.resolve_association_resource(assoc_def)
             next unless assoc_resource
+            puts "[FILTER]   Association :#{name} → #{assoc_resource.name}, visited? #{visited.include?(assoc_resource)}"
             next if visited.include?(assoc_resource)
 
             # Recursively generate filter type for associated resource
@@ -348,8 +369,8 @@ module Apiwork
               depth: depth + 1
             )
 
-            # Add association filter parameter
-            param name, type: assoc_filter_type, required: false
+            # Add association filter parameter (skip if circular reference detected)
+            param name, type: assoc_filter_type, required: false if assoc_filter_type
           end
         end
 
@@ -362,16 +383,20 @@ module Apiwork
       # @param visited [Set] Set of visited resource classes (circular reference protection)
       # @param depth [Integer] Current recursion depth (max 3)
       def self.generate_resource_sort_type(contract_class, schema_class, visited: Set.new, depth: 0)
-        type_name = :"#{schema_class.root_key.singular}_sort"
-
-        # Skip if already defined or max depth reached
-        # Use resolve_custom_type to check across all scopes (not just :root)
-        current_scope = Thread.current[:apiwork_type_scope] || :root
-        return type_name if contract_class.resolve_custom_type(type_name, current_scope)
-        return type_name if depth >= 3
+        # CIRCULAR REFERENCE PROTECTION: Check visited set BEFORE accessing root_key
+        # Prevents infinite recursion when Post → Comment → Post
+        return nil if visited.include?(schema_class)
+        return nil if depth >= 3
 
         # Add to visited set
         visited = visited.dup.add(schema_class)
+
+        type_name = :"#{schema_class.root_key.singular}_sort"
+
+        # Skip if already defined
+        # Use resolve_custom_type to check across all scopes (not just :root)
+        current_scope = Thread.current[:apiwork_type_scope] || :root
+        return type_name if contract_class.resolve_custom_type(type_name, current_scope)
 
         # Define the sort type
         contract_class.type type_name do
@@ -398,8 +423,8 @@ module Apiwork
               depth: depth + 1
             )
 
-            # Add association sort parameter
-            param name, type: assoc_sort_type, required: false
+            # Add association sort parameter (skip if circular reference detected)
+            param name, type: assoc_sort_type, required: false if assoc_sort_type
           end
         end
 
