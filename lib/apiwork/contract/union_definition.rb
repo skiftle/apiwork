@@ -17,7 +17,7 @@ module Apiwork
       # @param type [Symbol] The type of this variant
       # @param of [Symbol, nil] For arrays, the type of array items
       # @param enum [Array, nil] For string/integer types, allowed values
-      # @param block [Proc, nil] Block for nested params (for :object or :array of :object)
+      # @param block [Proc, nil] Block for shape params (for :object or :array of :object)
       def variant(type:, of: nil, enum: nil, &block)
         variant_def = {
           type: type,
@@ -26,11 +26,11 @@ module Apiwork
 
         variant_def[:enum] = enum if enum
 
-        # Handle nested block (for :object or :array with :object items)
+        # Handle shape block (for :object or :array with :object items)
         if block_given?
-          nested_def = Definition.new(:input, @contract_class, type_scope: @type_scope)
-          nested_def.instance_eval(&block)
-          variant_def[:nested] = nested_def
+          shape_def = Definition.new(:input, @contract_class, type_scope: @type_scope)
+          shape_def.instance_eval(&block)
+          variant_def[:shape] = shape_def
         end
 
         @variants << variant_def
