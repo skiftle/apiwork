@@ -3,7 +3,7 @@
 module Apiwork
   module Generation
     class Base
-      attr_reader :path, :key_transform, :resources, :routes, :documentation, :options
+      attr_reader :path, :key_transform, :schemas, :routes, :documentation, :options
 
       class << self
         # Generate schema using class-level API
@@ -58,13 +58,13 @@ module Apiwork
       # Load data from Inspector
       # Override needs_* methods in subclasses to control what gets loaded
       def load_data
-        @resources = API::Inspector.resources(path: path) if needs_resources?
+        @schemas = API::Inspector.resources(path: path) if needs_schemas?
         @routes = API::Inspector.routes(path: path) if needs_routes?
         @documentation = API::Inspector.documentation(path: path) if needs_documentation?
       end
 
       # Override in subclasses to declare data dependencies
-      def needs_resources?
+      def needs_schemas?
         true
       end
 
@@ -94,23 +94,23 @@ module Apiwork
         Transform::Case.string(key, strategy || @key_transform)
       end
 
-      # Find resource by name
+      # Find schema by name
       #
-      # @param name [String, Symbol] Resource name
-      # @return [Hash, nil] Resource metadata
-      def find_resource(name)
+      # @param name [String, Symbol] Schema name
+      # @return [Hash, nil] Schema metadata
+      def find_schema(name)
         return nil unless name
 
-        @resources.find { |r| r[:name].to_s == name.to_s }
+        @schemas.find { |s| s[:name].to_s == name.to_s }
       end
 
       # Filter attributes by context (full, create, update, query)
       #
-      # @param resource [Hash] Resource metadata
+      # @param schema [Hash] Schema metadata
       # @param context [Symbol] Context to filter for
       # @return [Hash] Filtered attributes
-      def filter_attributes(resource, context:)
-        resource[:attributes].select do |_name, info|
+      def filter_attributes(schema, context:)
+        schema[:attributes].select do |_name, info|
           case context
           when :full
             true
@@ -223,11 +223,11 @@ module Apiwork
         end
       end
 
-      # Iterate over all resources
+      # Iterate over all schemas
       #
-      # @yield [resource] Yields each resource
-      def each_resource(&block)
-        @resources.each(&block)
+      # @yield [schema] Yields each schema
+      def each_schema(&block)
+        @schemas.each(&block)
       end
 
       # Collect nested resources recursively

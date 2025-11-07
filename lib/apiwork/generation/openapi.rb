@@ -17,10 +17,10 @@ module Apiwork
 
         @documentation = API::Inspector.documentation(path: path)
         @routes = API::Inspector.routes(path: path)
-        @resources = API::Inspector.resources(path: path)
+        @schemas = API::Inspector.resources(path: path)
       end
 
-      def needs_resources?
+      def needs_schemas?
         true
       end
 
@@ -46,10 +46,10 @@ module Apiwork
       private
 
       def determine_wrapper_key(resource_name, metadata, is_collection)
-        resource_class = metadata[:resource_class]
+        schema_class = metadata[:schema_class]
 
-        if resource_class
-          root_key = resource_class.root_key
+        if schema_class
+          root_key = schema_class.root_key
           type = is_collection ? root_key.plural : root_key.singular
         else
           # Fallback when no resource class
@@ -505,13 +505,13 @@ module Apiwork
       end
 
       def build_single_resource_schema(resource_name, metadata)
-        # Get the actual Resource class to introspect attributes
-        resource_class = metadata[:resource_class]
+        # Get the actual Schema class to introspect attributes
+        schema_class = metadata[:schema_class]
 
-        if resource_class
+        if schema_class
           # Use introspection to get actual attributes
-          attributes = introspect_resource_attributes(resource_class)
-          relationships = introspect_resource_relationships(resource_class)
+          attributes = introspect_schema_attributes(schema_class)
+          relationships = introspect_schema_relationships(schema_class)
         else
           # Fallback to basic schema
           attributes = build_basic_attributes(resource_name)
@@ -545,22 +545,22 @@ module Apiwork
         }
       end
 
-      def introspect_resource_attributes(resource_class)
-        return {} unless resource_class.respond_to?(:attribute_definitions)
+      def introspect_schema_attributes(schema_class)
+        return {} unless schema_class.respond_to?(:attribute_definitions)
 
         attributes = {}
-        resource_class.attribute_definitions.each do |name, definition|
+        schema_class.attribute_definitions.each do |name, definition|
           attributes[transform_key(name.to_s)] = build_attribute_schema(definition)
         end
 
         attributes
       end
 
-      def introspect_resource_relationships(resource_class)
-        return {} unless resource_class.respond_to?(:association_definitions)
+      def introspect_schema_relationships(schema_class)
+        return {} unless schema_class.respond_to?(:association_definitions)
 
         relationships = {}
-        resource_class.association_definitions.each do |name, definition|
+        schema_class.association_definitions.each do |name, definition|
           relationships[transform_key(name.to_s)] = build_relationship_schema(definition)
         end
 

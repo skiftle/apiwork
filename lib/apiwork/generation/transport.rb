@@ -17,11 +17,11 @@ module Apiwork
         @options = options
 
         # Load data from Inspector
-        @resources = API::Inspector.resources(path: path)
+        @schemas = API::Inspector.resources(path: path)
         @routes = API::Inspector.routes(path: path)
       end
 
-      def needs_resources?
+      def needs_schemas?
         true
       end
 
@@ -31,13 +31,13 @@ module Apiwork
 
       def generate
         # 1. Validate that all schemas in API exist
-        validate_api_schemas_from_inspector(@resources, @path)
+        validate_api_schemas_from_inspector(@schemas, @path)
 
         # 2. Collect enum schemas BEFORE generating Zod schemas
-        enum_definitions = collect_enum_schemas(@resources, @key_transform)
+        enum_definitions = collect_enum_schemas(@schemas, @key_transform)
 
         # 3. Generate Zod schemas for all schemas
-        zod_schemas = Zod.generate_schemas_only(@resources, key_transform: @key_transform)
+        zod_schemas = Zod.generate_schemas_only(@schemas, key_transform: @key_transform)
 
         # 4. Build contract structure from routes metadata
         result = build_contract_structure_from_routes(@routes, zod_schemas, @key_transform)
@@ -59,28 +59,28 @@ module Apiwork
 
       private
 
-      # NOTE: Migrated from ResourceInspector - directly describe a resource class
-      # This provides metadata about a resource class similar to ResourceInspector.describe_class
-      def describe_resource_class(resource_class)
-        namespaces = resource_class.name.deconstantize.split('::').map(&:underscore).reject(&:blank?)
-        name = resource_class.name.demodulize.sub(/Resource$/, '').underscore
+      # NOTE: Migrated from ResourceInspector - directly describe a schema class
+      # This provides metadata about a schema class similar to ResourceInspector.describe_class
+      def describe_schema_class(schema_class)
+        namespaces = schema_class.name.deconstantize.split('::').map(&:underscore).reject(&:blank?)
+        name = schema_class.name.demodulize.sub(/Schema$/, '').underscore
 
         {
           namespaces: namespaces,
           name: name,
-          type: resource_class.type,
-          root_key: resource_class.root_key.to_s,
-          attributes: extract_attributes_from_resource(resource_class),
-          associations: extract_associations_from_resource(resource_class)
+          type: schema_class.type,
+          root_key: schema_class.root_key.to_s,
+          attributes: extract_attributes_from_schema(schema_class),
+          associations: extract_associations_from_schema(schema_class)
         }
       end
 
-      # Extract attributes metadata from resource class
-      def extract_attributes_from_resource(resource_class)
-        model = resource_class.model_class
+      # Extract attributes metadata from schema class
+      def extract_attributes_from_schema(schema_class)
+        model = schema_class.model_class
         columns = model&.columns_hash || {}
 
-        resource_class.attribute_definitions.each_with_object({}) do |(attr, opts), acc|
+        schema_class.attribute_definitions.each_with_object({}) do |(attr, opts), acc|
           col = columns[attr.to_s]
           acc[attr.to_s] = {
             type: normalize_attribute_type(opts[:type]),
@@ -94,13 +94,13 @@ module Apiwork
         end
       end
 
-      # Extract associations metadata from resource class
-      def extract_associations_from_resource(resource_class)
-        model = resource_class.model_class
+      # Extract associations metadata from schema class
+      def extract_associations_from_schema(schema_class)
+        model = schema_class.model_class
 
-        resource_class.association_definitions.each_with_object({}) do |(assoc, defn), acc|
+        schema_class.association_definitions.each_with_object({}) do |(assoc, defn), acc|
           reflection = model&.reflect_on_association(assoc)
-          target_ns, target_name = resolve_association_target(resource_class, defn, reflection)
+          target_ns, target_name = resolve_association_target(schema_class, defn, reflection)
 
           acc[assoc.to_s] = {
             kind: defn[:type].to_s,
@@ -114,16 +114,16 @@ module Apiwork
         end
       end
 
-      # Resolve association target resource name
-      def resolve_association_target(resource_class, assoc_def, reflection)
-        if assoc_def.resource_class
-          ns = assoc_def.resource_class.name.deconstantize.split('::').map(&:underscore).reject(&:blank?)
-          nm = assoc_def.resource_class.name.demodulize.sub(/Resource$/, '').underscore
+      # Resolve association target schema name
+      def resolve_association_target(schema_class, assoc_def, reflection)
+        if assoc_def.schema_class
+          ns = assoc_def.schema_class.name.deconstantize.split('::').map(&:underscore).reject(&:blank?)
+          nm = assoc_def.schema_class.name.demodulize.sub(/Schema$/, '').underscore
           return [ns, nm]
         end
 
         if reflection&.klass
-          ns = resource_class.name.deconstantize.split('::').map(&:underscore).reject(&:blank?)
+          ns = schema_class.name.deconstantize.split('::').map(&:underscore).reject(&:blank?)
           nm = reflection.klass.name.underscore
           return [ns, nm]
         end
@@ -173,12 +173,12 @@ module Apiwork
 
         seen_classes << schema_class
 
-        # Get the schema metadata directly from resource class
-        schema_info = describe_resource_class(schema_class)
+        # Get the schema metadata directly from schema class
+        schema_info = describe_schema_class(schema_class)
         return unless schema_info
 
         # Add schema_class for later reference
-        schema_info[:resource_class] = schema_class
+        schema_info[:schema_class] = schema_class
 
         # Add member/collection action schemas
         add_action_schemas(schema_info, schema_class)
@@ -190,17 +190,17 @@ module Apiwork
           next if assoc_info[:invalid]
           next unless assoc_info[:namespaces] && assoc_info[:name]
 
-          # Try to find the associated resource class
-          assoc_class = resolve_association_resource_class(assoc_info)
+          # Try to find the associated schema class
+          assoc_class = resolve_association_schema_class(assoc_info)
           next unless assoc_class
 
           collect_schema_with_associations(assoc_class, schemas, seen_classes)
         end
       end
 
-      # Resolve association to resource class
+      # Resolve association to schema class
       #
-      def resolve_association_resource_class(assoc_info)
+      def resolve_association_schema_class(assoc_info)
         namespaces = assoc_info[:namespaces]
         name = assoc_info[:name]
 
@@ -822,11 +822,11 @@ module Apiwork
       def build_success_error_union(schema_ref, schema_metadata, key_transform)
         return 'z.void()' unless schema_metadata
 
-        resource_class = schema_metadata[:resource_class]
-        return 'z.void()' unless resource_class
+        schema_class = schema_metadata[:schema_class]
+        return 'z.void()' unless schema_class
 
-        # Get root key from resource class (always singular for create/update)
-        type = resource_class.root_key.singular
+        # Get root key from schema class (always singular for create/update)
+        type = schema_class.root_key.singular
         wrapper_key = transform_key(type, key_transform)
 
         # Transform keys
@@ -847,11 +847,11 @@ module Apiwork
       def wrap_response_schema(schema_ref, schema_metadata, is_collection, key_transform)
         return schema_ref unless schema_metadata
 
-        resource_class = schema_metadata[:resource_class]
-        return schema_ref unless resource_class
+        schema_class = schema_metadata[:schema_class]
+        return schema_ref unless schema_class
 
-        # Get root key from resource class (plural for collections, singular for single)
-        root_key = resource_class.root_key
+        # Get root key from schema class (plural for collections, singular for single)
+        root_key = schema_class.root_key
         type = is_collection ? root_key.plural : root_key.singular
         wrapper_key = transform_key(type, key_transform)
 
@@ -869,11 +869,11 @@ module Apiwork
       def wrap_body_schema(schema_ref, schema_metadata, key_transform)
         return schema_ref unless schema_metadata
 
-        resource_class = schema_metadata[:resource_class]
-        return schema_ref unless resource_class
+        schema_class = schema_metadata[:schema_class]
+        return schema_ref unless schema_class
 
-        # Get root key from resource class (always singular for request bodies)
-        type = resource_class.root_key.singular
+        # Get root key from schema class (always singular for request bodies)
+        type = schema_class.root_key.singular
         wrapper_key = transform_key(type, key_transform)
 
         "z.object({ #{wrapper_key}: #{schema_ref} })"
@@ -1156,9 +1156,9 @@ module Apiwork
       #
       def build_schema_builder(schema, key_transform)
         name = schema[:name].to_s.camelize
-        resource_class = schema[:resource_class]
+        schema_class = schema[:schema_class]
 
-        return nil unless resource_class
+        return nil unless schema_class
 
         builders = []
 
@@ -1195,8 +1195,8 @@ module Apiwork
       # Generate a single builder function
       #
       def build_single_builder(builder_name:, type_name:, schema:, key_transform:, context:)
-        resource_class = schema[:resource_class]
-        return '' unless resource_class
+        schema_class = schema[:schema_class]
+        return '' unless schema_class
 
         # Get attributes with/without defaults
         attrs_with_defaults, attrs_without_defaults = partition_by_defaults(schema, context, key_transform)
@@ -1245,12 +1245,12 @@ module Apiwork
       # Partition attributes by whether they have database defaults
       #
       def partition_by_defaults(schema, context, key_transform)
-        resource_class = schema[:resource_class]
-        return [[], []] unless resource_class
+        schema_class = schema[:schema_class]
+        return [[], []] unless schema_class
 
-        resource_info = describe_resource_class(resource_class)
-        model_class = resource_class.model_class
-        attributes = resource_info[:attributes] || {}
+        schema_info = describe_schema_class(schema_class)
+        model_class = schema_class.model_class
+        attributes = schema_info[:attributes] || {}
 
         # Filter attributes based on context (create/update/full)
         filtered_attrs = filter_attributes_by_context(attributes, context)

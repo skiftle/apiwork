@@ -11,11 +11,11 @@ module Apiwork
       end
 
       class << self
-        # Generate schemas only (without document wrapper) from resource metadata
+        # Generate schemas only (without document wrapper) from schema metadata
         # Used by Transport to build custom TypeScript documents
-        def generate_schemas_only(resources, key_transform: :camelize_lower)
+        def generate_schemas_only(schemas, key_transform: :camelize_lower)
           instance = new(nil, key_transform: key_transform)
-          resources.map { |resource| instance.send(:generate_schemas, resource, key_transform) }
+          schemas.map { |schema| instance.send(:generate_schemas, schema, key_transform) }
         end
 
         # Build common query schemas - used by Transport
@@ -29,12 +29,12 @@ module Apiwork
         @key_transform = key_transform
         @options = options
 
-        # Only load resources if path is provided
-        @resources = path ? API::Inspector.resources(path: path) : []
+        # Only load schemas if path is provided
+        @schemas = path ? API::Inspector.resources(path: path) : []
       end
 
       def generate
-        schemas = @resources.map { |resource| generate_schemas(resource, @key_transform) }
+        schemas = @schemas.map { |schema| generate_schemas(schema, @key_transform) }
         build_typescript_document(schemas, @path, @key_transform)
       end
 
@@ -222,21 +222,21 @@ module Apiwork
         [enum_schemas, enum_filter_schemas].reject(&:empty?).join("\n\n")
       end
 
-      def generate_schemas(resource, key_transform)
+      def generate_schemas(schema, key_transform)
         result = {
-          name: resource[:name],
-          namespaces: resource[:namespaces],
-          type: resource[:type],
-          root_key: resource[:root_key],
-          resource_class: resource[:resource_class],
-          schema: build_full_schema(resource, key_transform),
-          create_payload_schema: build_create_payload_schema(resource, key_transform),
-          update_payload_schema: build_update_payload_schema(resource, key_transform),
-          query_schema: build_query_schema(resource, key_transform)
+          name: schema[:name],
+          namespaces: schema[:namespaces],
+          type: schema[:type],
+          root_key: schema[:root_key],
+          schema_class: schema[:schema_class],
+          schema: build_full_schema(schema, key_transform),
+          create_payload_schema: build_create_payload_schema(schema, key_transform),
+          update_payload_schema: build_update_payload_schema(schema, key_transform),
+          query_schema: build_query_schema(schema, key_transform)
         }
 
         # Preserve action_schemas if they exist
-        result[:action_schemas] = resource[:action_schemas] if resource[:action_schemas]
+        result[:action_schemas] = schema[:action_schemas] if schema[:action_schemas]
 
         result
       end
@@ -437,9 +437,9 @@ module Apiwork
         # Try to get name from multiple sources
         target_name = if assoc_info[:name]
                         assoc_info[:name].camelize
-                      elsif assoc_info[:resource_class_name]
-                        # Extract "Address" from "Api::V1::AddressResource"
-                        assoc_info[:resource_class_name].demodulize.sub(/Resource$/, '')
+                      elsif assoc_info[:schema_class_name]
+                        # Extract "Address" from "Api::V1::AddressSchema"
+                        assoc_info[:schema_class_name].demodulize.sub(/Schema$/, '')
                       else
                         'Unknown'
                       end
@@ -489,8 +489,8 @@ module Apiwork
         # Try to get name from multiple sources
         target_name = if assoc_info[:name]
                         assoc_info[:name].camelize
-                      elsif assoc_info[:resource_class_name]
-                        assoc_info[:resource_class_name].demodulize.sub(/Resource$/, '')
+                      elsif assoc_info[:schema_class_name]
+                        assoc_info[:schema_class_name].demodulize.sub(/Schema$/, '')
                       else
                         'Unknown'
                       end
@@ -511,8 +511,8 @@ module Apiwork
         # Try to get name from multiple sources
         target_name = if assoc_info[:name]
                         assoc_info[:name].camelize
-                      elsif assoc_info[:resource_class_name]
-                        assoc_info[:resource_class_name].demodulize.sub(/Resource$/, '')
+                      elsif assoc_info[:schema_class_name]
+                        assoc_info[:schema_class_name].demodulize.sub(/Schema$/, '')
                       else
                         'Unknown'
                       end

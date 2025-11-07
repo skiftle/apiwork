@@ -10,7 +10,7 @@ module Apiwork
     #   metadata = Metadata.new('/api/v1')
     #   metadata.path           # => '/api/v1'
     #   metadata.namespaces     # => [:api, :v1]
-    #   metadata.add_resource(:accounts, singular: false, resource_class: Api::V1::AccountResource)
+    #   metadata.add_resource(:accounts, singular: false, schema_class: Api::V1::AccountSchema)
     #   metadata.add_member_action(:accounts, :archive, method: :patch, options: {})
     class Metadata
       attr_reader :path, :namespaces, :resources, :concerns
@@ -39,7 +39,7 @@ module Apiwork
         @path.sub(%r{^/}, '')
       end
 
-      def add_resource(name, singular:, resource_class:, controller_class_name: nil, contract_class_name: nil, parent: nil, doc: nil, **options)
+      def add_resource(name, singular:, schema_class:, controller_class_name: nil, contract_class_name: nil, parent: nil, doc: nil, **options)
         # Add to structured tree
         target = if parent
                    # Find or create nested resources hash
@@ -53,7 +53,7 @@ module Apiwork
 
         target[name] = {
           singular: singular,
-          resource_class: resource_class,
+          schema_class: schema_class,
           controller_class_name: controller_class_name,
           contract_class_name: contract_class_name,
           actions: determine_actions(singular, options),
