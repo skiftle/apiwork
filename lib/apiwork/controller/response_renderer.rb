@@ -23,9 +23,13 @@ module Apiwork
 
       # Render response for any resource type
       # Follows same pattern as Query#perform for consistency
-      def perform(resource_or_collection)
+      #
+      # @param resource_or_collection [Object] Resource or collection to render
+      # @param query_params [Hash] Query parameters for auto-querying (filter, sort, page, include)
+      # @return [Hash] Complete response hash (not validated)
+      def perform(resource_or_collection, query_params: {})
         if resource_or_collection.is_a?(Enumerable)
-          build_collection_response(resource_or_collection)
+          build_collection_response(resource_or_collection, query_params)
         elsif has_errors?(resource_or_collection)
           build_error_response(resource_or_collection)
         elsif controller.request.delete?
@@ -36,11 +40,10 @@ module Apiwork
       end
 
       # Build collection response (with auto-query support)
-      def build_collection_response(collection)
+      def build_collection_response(collection, query_params)
         # Auto-query for index action
         query_obj = nil
         if should_auto_query?(collection)
-          query_params = extract_query_params
           query_obj = Apiwork::Query.new(collection, schema: schema_class).perform(query_params)
           collection = query_obj.result
         end
@@ -50,17 +53,14 @@ module Apiwork
         json_data = action_definition.serialize_data(collection, context: build_schema_context, includes: includes)
 
         # Build complete response with pagination meta
-        response = if schema_class
-                     root_key = determine_root_key(collection)
-                     pagination_meta = query_obj&.meta || {}
-                     { ok: true, root_key => json_data, meta: pagination_meta.merge(meta) }
-                   else
-                     # Custom contract without schema
-                     { ok: true }.merge(json_data).merge(meta: meta)
-                   end
-
-        # Validate complete response structure
-        action_definition.validate_response(response)
+        if schema_class
+          root_key = determine_root_key(collection)
+          pagination_meta = query_obj&.meta || {}
+          { ok: true, root_key => json_data, meta: pagination_meta.merge(meta) }
+        else
+          # Custom contract without schema
+          { ok: true }.merge(json_data).merge(meta: meta)
+        end
       end
 
       # Build single resource response
@@ -70,20 +70,17 @@ module Apiwork
         json_data = action_definition.serialize_data(resource, context: build_schema_context, includes: includes)
 
         # Build complete response
-        response = if schema_class
-                     root_key = determine_root_key(resource)
-                     resp = { ok: true, root_key => json_data }
-                     resp[:meta] = meta if meta.present?
-                     resp
-                   else
-                     # Custom contract without schema
-                     resp = { ok: true }.merge(json_data)
-                     resp[:meta] = meta if meta.present?
-                     resp
-                   end
-
-        # Validate complete response structure
-        action_definition.validate_response(response)
+        if schema_class
+          root_key = determine_root_key(resource)
+          resp = { ok: true, root_key => json_data }
+          resp[:meta] = meta if meta.present?
+          resp
+        else
+          # Custom contract without schema
+          resp = { ok: true }.merge(json_data)
+          resp[:meta] = meta if meta.present?
+          resp
+        end
       end
 
       # Build error response
@@ -111,24 +108,6 @@ module Apiwork
         controller.action_name.to_s == 'index' &&
           resource.is_a?(ActiveRecord::Relation) &&
           schema_class.present?
-      end
-
-      # Extract query params from controller
-      def extract_query_params
-        input = controller.send(:action_input)
-        params = input.params
-        if params.is_a?(ActionController::Parameters)
-          params = params.dup.permit!.to_h.deep_symbolize_keys
-        elsif params.respond_to?(:to_h)
-          params = params.to_h.deep_symbolize_keys
-        end
-
-        {
-          filter: params[:filter] || {},
-          sort: params[:sort],
-          page: params[:page] || {},
-          include: params[:include]
-        }
       end
 
       # Extract includes parameter

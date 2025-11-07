@@ -2,16 +2,19 @@
 
 module Apiwork
   module Contract
-    # Parses and builds output responses for a contract action
+    # Parses and validates output responses for a contract action
     #
-    # Handles:
-    # - Response building via ResponseRenderer
-    # - Output validation (if defined)
+    # Combines validation and transformation in a single step (Zod-like API):
+    # 1. Validates response against contract's output_definition
+    # 2. Transforms validated response (if needed)
     #
     # Usage:
     #   parser = Contract::OutputParser.new(contract: contract, action: :index)
-    #   result = parser.perform(resources, query_params: params)
-    #   render json: result.response if result.valid?
+    #   result = parser.perform(response_hash)
+    #
+    #   if result.valid?
+    #     render json: result.response
+    #   end
     #
     class OutputParser
       attr_reader :contract, :action, :action_definition, :schema_class, :context
@@ -22,28 +25,29 @@ module Apiwork
         @context = options[:context] || {}
         @action_definition = contract.class.action_definition(@action)
         @schema_class = @action_definition&.schema_class
-        @request_method = options[:request_method]
       end
 
-      # Build and validate output response
+      # Parse (validate + transform) output response
       #
-      # @param resource [Object] Resource or collection to render
-      # @param meta [Hash] Additional meta information
-      # @param query_params [Hash] Query parameters (filter, sort, page, include) for collections
-      # @return [Result] Result object with response and errors
-      def perform(resource, meta: {}, query_params: {})
-        # Transform meta keys if schema exists
-        transformed_meta = transform_meta_keys(meta)
+      # @param response_hash [Hash] Complete response hash to validate
+      # @return [Result] Result object with validated response and errors
+      def perform(response_hash)
+        # Step 1: Validate response against output_definition
+        validated = validate_response(response_hash)
 
-        # Build response using internal ResponseRenderer
-        response = build_response(resource, transformed_meta, query_params)
+        # Return response even if validation fails (errors are tracked in Result)
+        # This allows the response to be returned while logging validation issues
+        transformed_response = if validated[:errors].any?
+                                 response_hash # Return original if validation failed
+                               else
+                                 transform_response(validated[:params])
+                               end
 
-        Result.new(response: response, errors: [])
+        Result.new(response: transformed_response, errors: validated[:errors])
       end
-
-      private
 
       # Transform meta keys to match schema's key transform
+      # Called from Controller before building response
       def transform_meta_keys(meta)
         return meta unless meta.present? && @schema_class
 
@@ -51,76 +55,29 @@ module Apiwork
         Apiwork::Transform::Case.hash(meta, meta_key_transform)
       end
 
-      # Build response using ResponseRenderer
-      def build_response(resource, meta, query_params)
-        # Create a minimal controller-like object for ResponseRenderer
-        renderer_context = RendererContext.new(@action, @request_method, @context, query_params)
+      private
 
-        Controller::ResponseRenderer.new(
-          controller: renderer_context,
-          action_definition: @action_definition,
-          schema_class: @schema_class,
-          meta: meta
-        ).perform(resource)
+      # Validate response using action's output_definition
+      def validate_response(response_hash)
+        merged_output = @action_definition&.merged_output_definition
+        return { params: response_hash, errors: [] } unless merged_output
+
+        # Use Definition#validate for full validation
+        result = merged_output.validate(response_hash)
+        result || { params: response_hash, errors: [] }
       end
 
-      # Minimal controller-like object for ResponseRenderer
-      class RendererContext
-        attr_reader :request
+      # Transform response based on 'as:' options in output_definition
+      # (Future: mirror InputParser's apply_transformations if needed)
+      def transform_response(response_hash)
+        return response_hash unless @action_definition&.merged_output_definition
 
-        def initialize(action_name, request_method, schema_context, query_params = {})
-          @action_name = action_name
-          @request_method = request_method
-          @schema_context = schema_context
-          @query_params = query_params
-          @request = RequestStub.new(request_method)
-        end
-
-        def action_name
-          @action_name.to_s
-        end
-
-        def build_schema_context
-          @schema_context
-        end
-
-        # Stub action_input that returns query params
-        def action_input
-          OpenStruct.new(params: @query_params)
-        end
-
-        # Stub params that returns query params
-        def params
-          @query_params
-        end
-
-        # Stub request object
-        class RequestStub
-          def initialize(method)
-            @method = method&.to_s&.downcase
-          end
-
-          def delete?
-            @method == 'delete'
-          end
-
-          def post?
-            @method == 'post'
-          end
-
-          def patch?
-            @method == 'patch'
-          end
-
-          def put?
-            @method == 'put'
-          end
-
-          attr_reader :method
-        end
+        # For now, no transformations on output
+        # But infrastructure ready if we add 'as:' support to output definitions
+        response_hash
       end
 
-      # Result object wrapping rendered response
+      # Result object wrapping validated response
       class Result
         attr_reader :response, :errors
 
@@ -129,14 +86,14 @@ module Apiwork
           @errors = errors
         end
 
-        # Check if rendering succeeded
+        # Check if validation succeeded
         #
         # @return [Boolean] true if no errors
         def valid?
           errors.empty?
         end
 
-        # Check if rendering failed
+        # Check if validation failed
         #
         # @return [Boolean] true if errors present
         def invalid?

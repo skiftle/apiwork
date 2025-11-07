@@ -22,8 +22,7 @@ module Apiwork
           Contract::OutputParser.new(
             contract: contract,
             action: action_name,
-            context: build_schema_context,
-            request_method: request.method
+            context: build_schema_context
           )
         end
       end
@@ -39,8 +38,7 @@ module Apiwork
                    Contract::OutputParser.new(
                      contract: contract.new,
                      action: action_name,
-                     context: build_schema_context,
-                     request_method: request.method
+                     context: build_schema_context
                    )
                  else
                    action_output
@@ -48,14 +46,36 @@ module Apiwork
 
         raise ConfigurationError, "No contract found for #{self.class.name}" unless output
 
-        # Extract query params from action_input for auto-querying
-        query_params = extract_query_params_for_output
+        # Transform meta keys before building response
+        transformed_meta = output.transform_meta_keys(meta)
 
-        result = output.perform(resource_or_collection, meta: meta, query_params: query_params)
+        # Build response using ResponseRenderer
+        response_hash = build_response(resource_or_collection, output, transformed_meta)
+
+        # Validate response using OutputParser
+        result = output.perform(response_hash)
+
         render json: result.response, status: status || determine_status(resource_or_collection)
       end
 
       private
+
+      # Build response hash using ResponseRenderer
+      #
+      # @param resource_or_collection [Object] Resource or collection to render
+      # @param output [Contract::OutputParser] OutputParser instance
+      # @param meta [Hash] Transformed meta information
+      # @return [Hash] Complete response hash
+      def build_response(resource_or_collection, output, meta)
+        query_params = extract_query_params_for_output
+
+        ResponseRenderer.new(
+          controller: self,
+          action_definition: output.action_definition,
+          schema_class: output.schema_class,
+          meta: meta
+        ).perform(resource_or_collection, query_params: query_params)
+      end
 
       # Find contract for current controller
       def find_contract

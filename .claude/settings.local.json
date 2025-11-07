@@ -50,7 +50,8 @@
       "Bash(bundle exec rake:*)",
       "Bash(xargs -I {} sh -c 'echo \"\"\"\"=== {} ===\"\"\"\" && grep -n \"\"\"\"^  def \"\"\"\" {} | wc -l')",
       "Bash(for file in spec/dummy/app/controllers/api/v1/*.rb)",
-      "Bash(do sed -i '' 's/action_params/action_input.params/g' \"$file\")"
+      "Bash(do sed -i '' 's/action_params/action_input.params/g' \"$file\")",
+      "Bash(bundle exec ruby:*)"
     ],
     "deny": [],
     "ask": []
