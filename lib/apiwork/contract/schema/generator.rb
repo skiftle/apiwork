@@ -11,12 +11,13 @@ module Apiwork
       # This is used when no explicit contract exists
       # @param schema_class [Class] The schema class to generate from
       # @param action [Symbol] The action name
+      # @param contract_class [Class] Optional contract class to use (prevents creating temporary classes)
       # @return [ActionDefinition, nil] Generated action definition or nil
-      def self.generate_action(schema_class, action)
+      def self.generate_action(schema_class, action, contract_class: nil)
         return nil unless schema_class
 
-        # Create a temporary anonymous contract class
-        contract_class = Class.new(Base) do
+        # Use provided contract class or create a temporary one
+        contract_class ||= Class.new(Base) do
           schema schema_class
         end
 
@@ -302,7 +303,9 @@ module Apiwork
         type_name = :"#{schema_class.root_key.singular}_filter"
 
         # Skip if already defined or max depth reached
-        return type_name if contract_class.custom_types&.key?(type_name)
+        # Use resolve_custom_type to check across all scopes (not just :root)
+        current_scope = Thread.current[:apiwork_type_scope] || :root
+        return type_name if contract_class.resolve_custom_type(type_name, current_scope)
         return type_name if depth >= 3
 
         # Add to visited set
@@ -362,7 +365,9 @@ module Apiwork
         type_name = :"#{schema_class.root_key.singular}_sort"
 
         # Skip if already defined or max depth reached
-        return type_name if contract_class.custom_types&.key?(type_name)
+        # Use resolve_custom_type to check across all scopes (not just :root)
+        current_scope = Thread.current[:apiwork_type_scope] || :root
+        return type_name if contract_class.resolve_custom_type(type_name, current_scope)
         return type_name if depth >= 3
 
         # Add to visited set
@@ -439,7 +444,9 @@ module Apiwork
         type_name = :"#{schema_class.root_key.singular}_include"
 
         # Skip if already defined or max depth reached
-        return type_name if contract_class.custom_types&.key?(type_name)
+        # Use resolve_custom_type to check across all scopes (not just :root)
+        current_scope = Thread.current[:apiwork_type_scope] || :root
+        return type_name if contract_class.resolve_custom_type(type_name, current_scope)
         return type_name if depth >= 3
 
         # Add to visited set
@@ -452,7 +459,7 @@ module Apiwork
             assoc_resource = Generator.resolve_association_resource(assoc_def)
             next unless assoc_resource
 
-            # For circular references, still allow the association but don't recurse
+            # For circular references, just allow boolean (can't nest further)
             # This allows includes like { comments: { post: true } } where post→comments and comments→post
             if visited.include?(assoc_resource)
               # Just allow boolean variant for circular refs (can't nest further)

@@ -45,6 +45,181 @@ module Apiwork
         def controller_namespace
           namespaces_parts.map(&:to_s).map(&:camelize).join('::')
         end
+
+        # Serialize entire API to JSON-friendly hash
+        # Returns complete API structure with metadata, resources, and contracts
+        # @return [Hash] Complete API introspection
+        def as_json
+          return nil unless metadata
+
+          result = {
+            path: mount_path,
+            metadata: serialize_doc,
+            resources: {}
+          }
+
+          # Serialize each resource
+          metadata.resources.each do |resource_name, resource_metadata|
+            result[:resources][resource_name] = serialize_resource(resource_name, resource_metadata)
+          end
+
+          result
+        end
+
+        private
+
+        # Serialize documentation metadata
+        def serialize_doc
+          return nil unless metadata.doc
+
+          {
+            title: metadata.doc[:title],
+            version: metadata.doc[:version],
+            description: metadata.doc[:description]
+          }.compact
+        end
+
+        # Serialize a single resource with all its actions and metadata
+        def serialize_resource(resource_name, resource_metadata, parent_path: nil)
+          resource_path = build_resource_path(resource_name, resource_metadata, parent_path)
+
+          result = {
+            path: resource_path,
+            singular: resource_metadata[:singular],
+            actions: resource_metadata[:actions] || [],
+            contracts: {}
+          }
+
+          # Get contract class for this resource (explicit contracts only)
+          # NOTE: We don't use schema-based contracts for introspection to avoid complexity
+          # Schema-based contracts work great at runtime but are too complex for static introspection
+          contract_class = resolve_contract_class(resource_metadata)
+
+          # Serialize CRUD actions
+          (resource_metadata[:actions] || []).each do |action_name|
+            if contract_class
+              action_def = contract_class.action_definition(action_name)
+              result[:contracts][action_name] = action_def&.as_json
+            end
+          end
+
+          # Serialize member actions
+          if resource_metadata[:members]&.any?
+            result[:members] = {}
+            resource_metadata[:members].each do |action_name, action_metadata|
+              result[:members][action_name] = serialize_action(
+                action_name,
+                action_metadata,
+                resource_path,
+                :member,
+                contract_class
+              )
+            end
+          end
+
+          # Serialize collection actions
+          if resource_metadata[:collections]&.any?
+            result[:collections] = {}
+            resource_metadata[:collections].each do |action_name, action_metadata|
+              result[:collections][action_name] = serialize_action(
+                action_name,
+                action_metadata,
+                resource_path,
+                :collection,
+                contract_class
+              )
+            end
+          end
+
+          # Serialize nested resources
+          if resource_metadata[:resources]&.any?
+            result[:resources] = {}
+            resource_metadata[:resources].each do |nested_name, nested_metadata|
+              result[:resources][nested_name] = serialize_resource(
+                nested_name,
+                nested_metadata,
+                parent_path: resource_path
+              )
+            end
+          end
+
+          result
+        end
+
+        # Serialize a member or collection action
+        def serialize_action(action_name, action_metadata, resource_path, action_type, contract_class)
+          action_path = if action_type == :member
+                          "#{resource_path}/:id/#{action_name}"
+                        else
+                          "#{resource_path}/#{action_name}"
+                        end
+
+          result = {
+            method: action_metadata[:method],
+            path: action_path
+          }
+
+          # Add contract if available
+          if contract_class
+            action_def = contract_class.action_definition(action_name)
+            result[:contract] = action_def&.as_json if action_def
+          end
+
+          result
+        end
+
+        # Build full path for a resource
+        def build_resource_path(resource_name, resource_metadata, parent_path)
+          resource_segment = if resource_metadata[:singular]
+                               resource_name.to_s.singularize
+                             else
+                               resource_name.to_s
+                             end
+
+          if parent_path
+            "#{parent_path}/:id/#{resource_segment}"
+          else
+            "#{mount_path}/#{resource_segment}"
+          end
+        end
+
+        # Resolve contract class from resource metadata
+        # Only returns explicit contract classes (not schema-based)
+        def resolve_contract_class(resource_metadata)
+          return nil unless resource_metadata[:contract_class_name]
+
+          # Try to constantize the contract class name
+          resource_metadata[:contract_class_name].constantize
+        rescue NameError
+          # Contract class doesn't exist
+          nil
+        end
+
+        # Get or create schema-based contract class for a resource
+        # This uses caching to avoid creating multiple instances
+        # Safe to use thanks to circular reference protection in serialization
+        # CRITICAL: Cache by root_key (not schema class name) to share types across subclasses
+        # Example: PostSchema and RestrictedPostSchema both have root_key "post", so they share contract class
+        def schema_based_contract_class(resource_metadata)
+          return nil unless resource_metadata[:schema_class]
+
+          # Cache key based on root_key (not schema class) to share contract classes
+          # This prevents infinite loops when RestrictedPostSchema < PostSchema both create :post_filter
+          root_key = resource_metadata[:schema_class].root_key.singular
+          cache_key = :"contract_#{root_key}"
+
+          # Return cached if available
+          return instance_variable_get("@#{cache_key}") if instance_variable_defined?("@#{cache_key}")
+
+          # Create new anonymous contract class with schema
+          contract_class = Class.new(Apiwork::Contract::Base) do
+            schema resource_metadata[:schema_class]
+          end
+
+          # Cache it
+          instance_variable_set("@#{cache_key}", contract_class)
+          contract_class
+        end
       end
     end
   end
