@@ -419,4 +419,59 @@ RSpec.describe 'Contract Serialization' do
       expect(json).to be_nil
     end
   end
+
+  describe 'Contract::Base.as_json with API routing configuration' do
+    context 'when API definition is available' do
+      before do
+        # Ensure API is loaded
+        load File.expand_path('../../dummy/config/apis/v1.rb', __dir__)
+      end
+
+      it 'includes all CRUD actions plus custom actions when no restrictions specified' do
+        # PostContract should include actions based on API routing configuration
+        # as defined in /spec/dummy/config/apis/v1.rb: resources :posts with member/collection actions
+        json = Api::V1::PostContract.as_json
+
+        # Should have all CRUD actions
+        expect(json[:actions].keys).to include(:index, :show, :create, :update, :destroy)
+
+        # Should also have member actions declared in routing
+        expect(json[:actions].keys).to include(:publish, :archive, :preview)
+
+        # Should also have collection actions declared in routing
+        expect(json[:actions].keys).to include(:search, :bulk_create)
+      end
+
+      it 'serializes actions with their input/output definitions' do
+        # Verify that actions have their full definitions including schema-generated params
+        json = Api::V1::PostContract.as_json
+
+        # :index should have input with filter/sort/page/include params from schema
+        expect(json[:actions][:index]).to have_key(:input)
+        expect(json[:actions][:index]).to have_key(:output)
+
+        # :show should have input/output
+        expect(json[:actions][:show]).to have_key(:input)
+        expect(json[:actions][:show]).to have_key(:output)
+      end
+    end
+
+    context 'when API definition is not available' do
+      it 'falls back to explicitly defined actions' do
+        # Create a contract without any API definition
+        contract_class = Class.new(Apiwork::Contract::Base) do
+          action :custom_action do
+            input do
+              param :name, type: :string
+            end
+          end
+        end
+
+        json = contract_class.as_json
+
+        # Should only have explicitly defined action
+        expect(json[:actions].keys).to eq([:custom_action])
+      end
+    end
+  end
 end
