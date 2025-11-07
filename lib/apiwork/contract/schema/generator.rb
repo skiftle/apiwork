@@ -130,7 +130,8 @@ module Apiwork
           param_options = {
             type: assoc_def.singular? ? :object : :array,
             required: false, # Associations are optional by default for input
-            nullable: assoc_def.nullable?
+            nullable: assoc_def.nullable?,
+            as: "#{name}_attributes".to_sym # Transform for Rails accepts_nested_attributes_for
           }
 
           definition.param name, **param_options

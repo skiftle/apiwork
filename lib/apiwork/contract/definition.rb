@@ -21,7 +21,7 @@ module Apiwork
       end
 
       # Define a parameter
-      def param(name, type: :string, required: false, default: nil, enum: nil, of: nil, **options, &block) # rubocop:disable Metrics/ParameterLists
+      def param(name, type: :string, required: false, default: nil, enum: nil, of: nil, as: nil, **options, &block) # rubocop:disable Metrics/ParameterLists
         # Handle union types
         if type == :union
           raise ArgumentError, "Union type requires a block with variant definitions" unless block_given?
@@ -34,6 +34,7 @@ module Apiwork
             type: :union,
             required: required,
             default: default,
+            as: as,
             union: union_def,
             **options
           }
@@ -57,6 +58,7 @@ module Apiwork
             default: default,
             enum: enum,
             of: of,
+            as: as,
             custom_type: type, # Track original custom type name
             nested: nested_def,
             **options
@@ -70,6 +72,7 @@ module Apiwork
             default: default,
             enum: enum,
             of: of,
+            as: as,
             **options
           }
 

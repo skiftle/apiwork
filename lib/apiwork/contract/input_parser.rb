@@ -34,7 +34,10 @@ module Apiwork
       def perform(params)
         # Step 1: Validate params against input_definition
         validated = validate_params(params)
-        return Result.new(params: {}, errors: validated[:errors], schema_class: @schema_class) if validated[:errors].any?
+        if validated[:errors].any?
+          return Result.new(params: {}, errors: validated[:errors],
+                            schema_class: @schema_class)
+        end
 
         # Step 2: Transform validated params (nested attributes for Rails)
         transformed_params = transform_params(validated[:params])
@@ -51,24 +54,44 @@ module Apiwork
         @action_definition.input_definition.validate(params) || { params: params, errors: [] }
       end
 
-      # Transform params (nested attributes for create/update actions)
+      # Transform params based on 'as:' options in input_definition
       def transform_params(params)
-        return params unless @schema_class
-        return params unless [:create, :update].include?(@action)
+        return params unless @action_definition&.input_definition
 
-        # Get root key from schema
-        root_key_obj = @schema_class.root_key
-        singular_key = root_key_obj.singular.to_sym
+        apply_transformations(params, @action_definition.input_definition)
+      end
 
-        # If params have root key, unwrap, transform, and rewrap
-        if params.key?(singular_key)
-          inner_params = params[singular_key]
-          transformed_inner = NestedAttributesTransformer.new(@schema_class, @action).transform(inner_params)
-          params.merge(singular_key => transformed_inner)
-        else
-          # No root key, transform directly
-          NestedAttributesTransformer.new(@schema_class, @action).transform(params)
+      # Recursively apply 'as:' transformations from definition
+      def apply_transformations(params, definition)
+        return params unless params.is_a?(Hash)
+        return params unless definition
+
+        transformed = params.dup
+
+        definition.params.each do |name, param_def|
+          next unless transformed.key?(name)
+
+          value = transformed[name]
+
+          # If param has 'as:', rename the key
+          if param_def[:as]
+            transformed[param_def[:as]] = transformed.delete(name)
+            name = param_def[:as] # Update name for nested processing
+            value = transformed[name]
+          end
+
+          # Recursively transform nested params
+          if param_def[:nested] && value.is_a?(Hash)
+            transformed[name] = apply_transformations(value, param_def[:nested])
+          elsif param_def[:nested] && value.is_a?(Array)
+            # For arrays, transform each element
+            transformed[name] = value.map do |item|
+              item.is_a?(Hash) ? apply_transformations(item, param_def[:nested]) : item
+            end
+          end
         end
+
+        transformed
       end
 
       # Result object wrapping parsed parameters

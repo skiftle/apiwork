@@ -116,9 +116,7 @@ module Apiwork
             @method == 'put'
           end
 
-          def method
-            @method
-          end
+          attr_reader :method
         end
       end
 
