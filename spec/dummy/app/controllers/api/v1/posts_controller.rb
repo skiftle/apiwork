@@ -14,12 +14,12 @@ module Api
       end
 
       def create
-        post = Post.create(action_params)
+        post = Post.create(action_input[:post])
         respond_with post
       end
 
       def update
-        post.update(action_params)
+        post.update(action_input[:post])
         respond_with post
       end
 
@@ -46,7 +46,7 @@ module Api
 
       # Collection actions
       def search
-        query_string = action_params[:q]
+        query_string = action_input.params[:q]
         posts = if query_string.present?
           Post.where('title LIKE ? OR body LIKE ?', "%#{query_string}%", "%#{query_string}%")
         else
@@ -56,7 +56,7 @@ module Api
       end
 
       def bulk_create
-        posts_params = action_params[:posts] || []
+        posts_params = action_input.params[:posts] || []
         created_ids = posts_params.map do |post_params|
           post = Post.create(
             title: post_params[:title],

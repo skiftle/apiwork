@@ -1,15 +1,12 @@
 # frozen_string_literal: true
 
-
-
 module Apiwork
   module Controller
     # Main controller concern - Facade that includes all Apiwork controller functionality
     #
     # This concern provides a unified interface for:
-    # - Request validation (Validation)
-    # - Action-specific parameter access (ActionParams)
-    # - Resource serialization and response building (Serialization)
+    # - Request validation (Validation) - provides action_input
+    # - Resource serialization and response building (Serialization) - provides action_output
     # - Automatic query building for index actions (built into Serialization)
     #
     # @example Basic usage
@@ -21,8 +18,7 @@ module Apiwork
     #     end
     #
     #     def create
-    #       client = Client.new(action_params)
-    #       client.save
+    #       client = Client.create(action_input[:client])
     #       respond_with(client)
     #     end
     #   end
@@ -33,13 +29,11 @@ module Apiwork
       included do
         # Disable Rails parameter wrapping
         # Apiwork contracts define explicit parameter structures
-        # and handle wrapping through action_params helper
         wrap_parameters false
       end
 
       include Validation
       include Serialization
-      include ActionParams
       include ActionMetadata
     end
   end

@@ -48,7 +48,9 @@
       "Bash(bundle exec rails generate:*)",
       "Bash(RAILS_ENV=test bundle exec rails db:migrate:*)",
       "Bash(bundle exec rake:*)",
-      "Bash(xargs -I {} sh -c 'echo \"\"\"\"=== {} ===\"\"\"\" && grep -n \"\"\"\"^  def \"\"\"\" {} | wc -l')"
+      "Bash(xargs -I {} sh -c 'echo \"\"\"\"=== {} ===\"\"\"\" && grep -n \"\"\"\"^  def \"\"\"\" {} | wc -l')",
+      "Bash(for file in spec/dummy/app/controllers/api/v1/*.rb)",
+      "Bash(do sed -i '' 's/action_params/action_input.params/g' \"$file\")"
     ],
     "deny": [],
     "ask": []
