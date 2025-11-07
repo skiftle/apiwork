@@ -188,6 +188,34 @@ module Apiwork
           result
         end
 
+        # Serialize ALL types for an API's as_json output
+        # Returns a single hash with all global types + all local types from all contracts
+        #
+        # @param api [Apiwork::API::Base] The API instance
+        # @return [Hash] { type_name => type_definition }
+        def serialize_all_types_for_api(api)
+          result = {}
+
+          # Add all global types (no prefix)
+          global_types.each do |type_name, definition|
+            result[type_name] = expand_type_definition(definition)
+          end
+
+          # Add all local types from all contracts (prefixed)
+          local_types.each do |contract_class, types|
+            types_array = types.to_a
+
+            types_array.each do |_type_name, metadata|
+              qualified_name = metadata[:qualified_name]
+              definition = metadata[:definition]
+
+              result[qualified_name] = expand_type_definition(definition)
+            end
+          end
+
+          result
+        end
+
         # Clear all registered types (useful for testing)
         def clear!
           @global_types = {}

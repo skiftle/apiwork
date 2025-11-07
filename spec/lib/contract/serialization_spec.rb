@@ -188,7 +188,7 @@ RSpec.describe 'Contract Serialization' do
       })
     end
 
-    it 'expands custom types in unions' do
+    it 'returns type references for custom types in unions' do
       contract_class = Class.new(Apiwork::Contract::Base) do
         type :string_filter do
           param :equal, type: :string, required: false
@@ -209,27 +209,13 @@ RSpec.describe 'Contract Serialization' do
       definition = contract_class.action_definition(:search).merged_input_definition
       json = definition.as_json
 
+      # Now returns type reference instead of expanding inline
       expect(json).to eq({
         filter: {
           type: :union,
           variants: [
             {
-              type: :object,
-              custom_type: :string_filter,
-              shape: {
-                equal: {
-                  type: :string,
-                  required: false
-                },
-                contains: {
-                  type: :string,
-                  required: false
-                },
-                starts_with: {
-                  type: :string,
-                  required: false
-                }
-              }
+              type: :string_filter  # Type reference, not expanded
             },
             {
               type: :string
@@ -239,7 +225,7 @@ RSpec.describe 'Contract Serialization' do
       })
     end
 
-    it 'expands custom types in array of custom types in unions' do
+    it 'returns type references for array of custom types in unions' do
       contract_class = Class.new(Apiwork::Contract::Base) do
         type :string_filter do
           param :equal, type: :string, required: false
@@ -259,37 +245,17 @@ RSpec.describe 'Contract Serialization' do
       definition = contract_class.action_definition(:search).merged_input_definition
       json = definition.as_json
 
+      # Now returns type references instead of expanding inline
       expect(json).to eq({
         filters: {
           type: :union,
           variants: [
             {
-              type: :object,
-              custom_type: :string_filter,
-              shape: {
-                equal: {
-                  type: :string,
-                  required: false
-                },
-                contains: {
-                  type: :string,
-                  required: false
-                }
-              }
+              type: :string_filter  # Type reference
             },
             {
               type: :array,
-              of: :string_filter,
-              of_shape: {
-                equal: {
-                  type: :string,
-                  required: false
-                },
-                contains: {
-                  type: :string,
-                  required: false
-                }
-              }
+              of: :string_filter  # Type reference in 'of' as well
             }
           ]
         }

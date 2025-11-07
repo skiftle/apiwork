@@ -77,68 +77,24 @@ module Apiwork
         # @param variant_def [Hash] Variant definition hash
         # @param definition [Definition] Parent definition (for custom type resolution)
         # @param visited [Set] Set of custom type names currently being serialized (for circular reference protection)
-        # @return [Hash] Serialized variant with expanded custom types
+        # @return [Hash] Serialized variant with type references (not expanded)
         def serialize_variant(variant_def, parent_definition, visited: Set.new)
           variant_type = variant_def[:type]
 
-          # Check if variant type is a custom type and resolve it
+          # Check if variant type is a custom type - if so, just return a reference
           custom_type_block = parent_definition.contract_class.resolve_custom_type(variant_type, parent_definition.type_scope)
           if custom_type_block
-            # CIRCULAR REFERENCE PROTECTION: Check if we're already serializing this custom type
-            # This prevents infinite recursion when associations reference each other (e.g., Post ↔ Comment)
-            if visited.include?(variant_type)
-              return {
-                type: :object,
-                custom_type: variant_type,
-                circular_ref: true  # Marker indicating this is a circular reference
-              }
-            end
-
-            # Add to visited set for this serialization path
-            new_visited = visited.dup.add(variant_type)
-
-            # Expand custom type to show its structure
-            # Note: Use instance_variable_get because Definition has both attr_reader :type and def type() method
-            direction = parent_definition.instance_variable_get(:@type)
-            contract_class = parent_definition.contract_class
-            scope = parent_definition.type_scope
-
-            custom_def = Definition.new(direction, contract_class, type_scope: scope)
-            custom_def.instance_eval(&custom_type_block)
-
-            return {
-              type: :object,
-              custom_type: variant_type,
-              shape: serialize_definition(custom_def, visited: new_visited)
-            }
+            # Return type reference instead of expanding
+            # The type definition will be in the types hash at API level
+            return { type: variant_type }
           end
 
           result = { type: variant_type }
 
-          # Handle 'of' - check if it's a custom type
+          # Handle 'of' - just pass through, don't expand custom types
           if variant_def[:of]
             result[:of] = variant_def[:of]
-
-            # If 'of' is a custom type, expand it too
-            of_custom_type_block = parent_definition.contract_class.resolve_custom_type(variant_def[:of], parent_definition.type_scope)
-            if of_custom_type_block
-              # CIRCULAR REFERENCE PROTECTION: Check if we're already serializing this custom type
-              if visited.include?(variant_def[:of])
-                result[:of_circular_ref] = true
-              else
-                # Add to visited set for this serialization path
-                new_visited = visited.dup.add(variant_def[:of])
-
-                # Note: Use instance_variable_get because Definition has both attr_reader :type and def type() method
-                direction = parent_definition.instance_variable_get(:@type)
-                contract_class = parent_definition.contract_class
-                scope = parent_definition.type_scope
-
-                of_custom_def = Definition.new(direction, contract_class, type_scope: scope)
-                of_custom_def.instance_eval(&of_custom_type_block)
-                result[:of_shape] = serialize_definition(of_custom_def, visited: new_visited)
-              end
-            end
+            # Custom types in 'of' will be resolved from types hash, no expansion needed
           end
 
           result[:enum] = variant_def[:enum] if variant_def[:enum]

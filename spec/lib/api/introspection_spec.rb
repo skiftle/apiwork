@@ -128,11 +128,12 @@ RSpec.describe 'API Introspection' do
           expect(restricted_posts[:actions]).to eq([:index, :show])
         end
 
-        it 'has empty contracts hash (no explicit contract class exists)' do
-          # Resources without explicit contract files have empty contracts in introspection
-          # Schema-based contracts work at runtime but are not included in static introspection
+        it 'has schema-based contracts generated' do
+          # Resources without explicit contract files now have schema-based contracts
           expect(restricted_posts[:contracts]).to be_a(Hash)
-          expect(restricted_posts[:contracts]).to be_empty
+          expect(restricted_posts[:contracts]).not_to be_empty
+          expect(restricted_posts[:contracts][:index]).to be_present
+          expect(restricted_posts[:contracts][:show]).to be_present
         end
 
         it 'does not include excluded actions in actions list' do
@@ -147,11 +148,14 @@ RSpec.describe 'API Introspection' do
           expect(safe_comments[:actions]).to eq([:index, :show, :create, :update])
         end
 
-        it 'has empty contracts hash (no explicit contract class exists)' do
-          # Resources without explicit contract files have empty contracts in introspection
-          # Schema-based contracts work at runtime but are not included in static introspection
+        it 'has schema-based contracts generated' do
+          # Resources without explicit contract files now have schema-based contracts
           expect(safe_comments[:contracts]).to be_a(Hash)
-          expect(safe_comments[:contracts]).to be_empty
+          expect(safe_comments[:contracts]).not_to be_empty
+          expect(safe_comments[:contracts][:index]).to be_present
+          expect(safe_comments[:contracts][:create]).to be_present
+          expect(safe_comments[:contracts][:show]).to be_present
+          expect(safe_comments[:contracts][:update]).to be_present
         end
 
         it 'does not include excluded destroy action in actions list' do
