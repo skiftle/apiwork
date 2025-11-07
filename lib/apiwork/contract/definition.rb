@@ -100,157 +100,206 @@ module Apiwork
         data = data.deep_symbolize_keys if data.respond_to?(:deep_symbolize_keys)
 
         # Check max depth
-        if current_depth > max_depth
-          errors << ValidationError.max_depth_exceeded(
-            depth: current_depth,
-            max_depth: max_depth,
-            path: path
-          )
-          return { errors: errors, params: {} }
-        end
+        return max_depth_error(current_depth, max_depth, path) if current_depth > max_depth
 
+        # Validate each param
         @params.each do |name, param_options|
-          value = data[name]
-          field_path = path + [name]
-
-          # Check required (matches Rails params.require behavior)
-          # Rejects: nil, empty string, empty hash, empty array
-          # Special case: false is NOT blank for boolean fields
-          if param_options[:type] == :boolean
-            is_missing = value.nil?
-          else
-            is_missing = value.blank?
-          end
-
-          if param_options[:required] && is_missing
-            # For enum fields, return invalid_value error to show allowed values immediately
-            if param_options[:enum].present?
-              errors << ValidationError.new(
-                code: :invalid_value,
-                field: name,
-                detail: "Invalid value. Must be one of: #{param_options[:enum].join(', ')}",
-                path: field_path,
-                expected: param_options[:enum],
-                actual: value
-              )
-              next
-            else
-              # Non-enum fields get field_missing error
-              errors << ValidationError.field_missing(
-                field: name,
-                path: field_path
-              )
-              next
-            end
-          end
-
-          # Apply default if value is nil
-          value = param_options[:default] if value.nil? && param_options[:default]
-
-          # Check nullable constraint
-          # Only check if the field is actually present in the data
-          # If value is nil and nullable is explicitly false, add error
-          if data.key?(name) && value.nil? && param_options[:nullable] == false
-            errors << ValidationError.value_null(field: name, path: field_path)
-            next
-          end
-
-          # Skip validation if value is nil and not required
-          next if value.nil?
-
-          # Coerce type if enabled
-          if coerce && Coercer.can_coerce?(param_options[:type])
-            coerced_value = Coercer.coerce(value, param_options[:type])
-            value = coerced_value unless coerced_value.nil?
-          end
-
-          # Validate enum
-          if param_options[:enum]&.exclude?(value)
-            errors << ValidationError.new(
-              code: :invalid_value,
-              field: name,
-              detail: "Invalid value. Must be one of: #{param_options[:enum].join(', ')}",
-              path: field_path,
-              expected: param_options[:enum],
-              actual: value
-            )
-            next
-          end
-
-          # Handle union type validation
-          if param_options[:type] == :union
-            union_error, union_value = validate_union(
-              name,
-              value,
-              param_options[:union],
-              field_path,
-              max_depth: max_depth,
-              current_depth: current_depth,
-              coerce: coerce
-            )
-            if union_error
-              errors << union_error
-              next
-            end
-            params[name] = union_value
-            next
-          end
-
-          # Validate type
-          type_error = validate_type(name, value, param_options[:type], param_options[:nested], field_path)
-          if type_error
-            errors << type_error
-            next
-          end
-
-          # Validate nested object
-          if param_options[:nested] && value.is_a?(Hash)
-            nested_result = param_options[:nested].validate(
-              value,
-              max_depth: max_depth,
-              current_depth: current_depth + 1,
-              path: field_path,
-              coerce: coerce
-            )
-            if nested_result[:errors].any?
-              errors.concat(nested_result[:errors])
-              next
-            end
-            params[name] = nested_result[:params]
-          elsif param_options[:type] == :array && value.is_a?(Array)
-            # Validate array elements
-            array_validation_options = {
-              param_options: param_options,
-              field_path: field_path,
-              max_depth: max_depth,
-              current_depth: current_depth,
-              coerce: coerce
-            }
-            array_errors, array_values = validate_array(value, array_validation_options)
-            errors.concat(array_errors)
-            params[name] = array_values if array_errors.empty?
-          else
-            params[name] = value
-          end
+          param_result = validate_param(
+            name,
+            data[name],
+            param_options,
+            data,
+            path,
+            max_depth: max_depth,
+            current_depth: current_depth,
+            coerce: coerce
+          )
+          errors.concat(param_result[:errors])
+          params[name] = param_result[:value] if param_result[:value_set]
         end
 
         # Check for unknown params
+        errors.concat(check_unknown_params(data, path))
+
+        { errors: errors, params: params }
+      end
+
+      private
+
+      # Return max depth error
+      def max_depth_error(current_depth, max_depth, path)
+        errors = [ValidationError.max_depth_exceeded(
+          depth: current_depth,
+          max_depth: max_depth,
+          path: path
+        )]
+        { errors: errors, params: {} }
+      end
+
+      # Validate a single parameter
+      def validate_param(name, value, param_options, data, path, max_depth:, current_depth:, coerce:)
+        field_path = path + [name]
+        errors = []
+
+        # Check required
+        required_error = validate_required(name, value, param_options, field_path)
+        return { errors: [required_error], value_set: false } if required_error
+
+        # Apply default if value is nil
+        value = param_options[:default] if value.nil? && param_options[:default]
+
+        # Check nullable constraint
+        if data.key?(name) && value.nil? && param_options[:nullable] == false
+          return { errors: [ValidationError.value_null(field: name, path: field_path)], value_set: false }
+        end
+
+        # Skip validation if value is nil and not required
+        return { errors: [], value_set: false } if value.nil?
+
+        # Coerce type if enabled
+        value = apply_coercion(value, param_options[:type], coerce)
+
+        # Validate enum
+        enum_error = validate_enum_value(name, value, param_options[:enum], field_path)
+        return { errors: [enum_error], value_set: false } if enum_error
+
+        # Handle union type validation
+        if param_options[:type] == :union
+          return validate_union_param(name, value, param_options, field_path, max_depth, current_depth, coerce)
+        end
+
+        # Validate type
+        type_error = validate_type(name, value, param_options[:type], param_options[:nested], field_path)
+        return { errors: [type_error], value_set: false } if type_error
+
+        # Validate nested structures
+        validate_nested_or_array(value, param_options, field_path, max_depth, current_depth, coerce)
+      end
+
+      # Check if required field is missing
+      def validate_required(name, value, param_options, field_path)
+        return nil unless param_options[:required]
+
+        # Check if missing (matches Rails params.require behavior)
+        # Special case: false is NOT blank for boolean fields
+        is_missing = if param_options[:type] == :boolean
+                       value.nil?
+                     else
+                       value.blank?
+                     end
+
+        return nil unless is_missing
+
+        # For enum fields, return invalid_value error to show allowed values immediately
+        if param_options[:enum].present?
+          ValidationError.new(
+            code: :invalid_value,
+            field: name,
+            detail: "Invalid value. Must be one of: #{param_options[:enum].join(', ')}",
+            path: field_path,
+            expected: param_options[:enum],
+            actual: value
+          )
+        else
+          ValidationError.field_missing(field: name, path: field_path)
+        end
+      end
+
+      # Apply type coercion if enabled
+      def apply_coercion(value, type, coerce)
+        return value unless coerce && Coercer.can_coerce?(type)
+
+        coerced_value = Coercer.coerce(value, type)
+        coerced_value.nil? ? value : coerced_value
+      end
+
+      # Validate enum value
+      def validate_enum_value(name, value, enum, field_path)
+        return nil unless enum&.exclude?(value)
+
+        ValidationError.new(
+          code: :invalid_value,
+          field: name,
+          detail: "Invalid value. Must be one of: #{enum.join(', ')}",
+          path: field_path,
+          expected: enum,
+          actual: value
+        )
+      end
+
+      # Validate union type parameter
+      def validate_union_param(name, value, param_options, field_path, max_depth, current_depth, coerce)
+        union_error, union_value = validate_union(
+          name,
+          value,
+          param_options[:union],
+          field_path,
+          max_depth: max_depth,
+          current_depth: current_depth,
+          coerce: coerce
+        )
+        if union_error
+          { errors: [union_error], value_set: false }
+        else
+          { errors: [], value: union_value, value_set: true }
+        end
+      end
+
+      # Validate nested object or array
+      def validate_nested_or_array(value, param_options, field_path, max_depth, current_depth, coerce)
+        if param_options[:nested] && value.is_a?(Hash)
+          validate_nested_object(value, param_options[:nested], field_path, max_depth, current_depth, coerce)
+        elsif param_options[:type] == :array && value.is_a?(Array)
+          validate_array_param(value, param_options, field_path, max_depth, current_depth, coerce)
+        else
+          { errors: [], value: value, value_set: true }
+        end
+      end
+
+      # Validate nested object
+      def validate_nested_object(value, nested_def, field_path, max_depth, current_depth, coerce)
+        nested_result = nested_def.validate(
+          value,
+          max_depth: max_depth,
+          current_depth: current_depth + 1,
+          path: field_path,
+          coerce: coerce
+        )
+        if nested_result[:errors].any?
+          { errors: nested_result[:errors], value_set: false }
+        else
+          { errors: [], value: nested_result[:params], value_set: true }
+        end
+      end
+
+      # Validate array parameter
+      def validate_array_param(value, param_options, field_path, max_depth, current_depth, coerce)
+        array_validation_options = {
+          param_options: param_options,
+          field_path: field_path,
+          max_depth: max_depth,
+          current_depth: current_depth,
+          coerce: coerce
+        }
+        array_errors, array_values = validate_array(value, array_validation_options)
+        if array_errors.empty?
+          { errors: [], value: array_values, value_set: true }
+        else
+          { errors: array_errors, value_set: false }
+        end
+      end
+
+      # Check for unknown parameters
+      def check_unknown_params(data, path)
         extra_keys = data.keys - @params.keys
-        extra_keys.each do |key|
-          errors << ValidationError.field_unknown(
+        extra_keys.map do |key|
+          ValidationError.field_unknown(
             field: key,
             allowed: @params.keys,
             path: path + [key]
           )
         end
-
-        {
-          errors: errors,
-          params: params
-        }
       end
-
-      private
 
       # Validate array elements
       def validate_array(array, options)
