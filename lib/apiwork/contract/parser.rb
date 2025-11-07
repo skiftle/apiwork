@@ -169,6 +169,45 @@ module Apiwork
           return coerced unless coerced.nil?
         end
 
+        # For custom types and arrays, try coercing with each variant
+        union_def.variants.each do |variant|
+          variant_type = variant[:type]
+          variant_of = variant[:of]
+
+          # Handle array variant (like array of post_filter)
+          if variant_type == :array && value.is_a?(Array)
+            # If array element is a custom type, resolve and coerce each element
+            if variant_of
+              custom_type_block = definition.contract_class.resolve_custom_type(variant_of, :root)
+              if custom_type_block
+                # Build custom type definition for array elements
+                custom_def = Definition.new(@direction, definition.contract_class, type_scope: :root)
+                custom_def.instance_eval(&custom_type_block)
+
+                # Coerce each element
+                coerced_array = value.map do |item|
+                  item.is_a?(Hash) ? coerce_hash(item, custom_def) : item
+                end
+                return coerced_array
+              end
+            end
+          end
+
+          # Handle custom type variant (like post_filter)
+          custom_type_block = definition.contract_class.resolve_custom_type(variant_type, :root)
+          next unless custom_type_block
+
+          # Build custom type definition
+          custom_def = Definition.new(@direction, definition.contract_class, type_scope: :root)
+          custom_def.instance_eval(&custom_type_block)
+
+          # Try coercing with this custom type
+          if value.is_a?(Hash)
+            coerced = coerce_hash(value, custom_def)
+            return coerced
+          end
+        end
+
         # For other unions, return original (validation will determine correct variant)
         value
       end

@@ -17,15 +17,13 @@ module Apiwork
     end
 
     def perform(params)
-      @params = extract_query_params(params)
+      @params = params.slice(:filter, :sort, :page, :include)
 
       @result = apply_filter(@result, @params[:filter]) if @params[:filter].present?
       @result = apply_sort(@result, @params[:sort])
 
       # Apply pagination and build meta
-      if @params[:page].present?
-        @result = apply_pagination(@result, @params[:page])
-      end
+      @result = apply_pagination(@result, @params[:page]) if @params[:page].present?
 
       # Apply includes if explicitly requested or if auto_include_associations is enabled
       if @params[:include].present?
@@ -38,17 +36,6 @@ module Apiwork
       @meta = build_meta(@result)
 
       self
-    end
-
-    private
-
-    def extract_query_params(params)
-      {
-        filter: params[:filter],
-        sort: params[:sort],
-        page: params[:page],
-        include: params[:include]
-      }
     end
   end
 end
