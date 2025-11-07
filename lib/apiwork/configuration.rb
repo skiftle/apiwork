@@ -9,13 +9,9 @@ module Apiwork
     VALID_BOOLEAN_VALUES = [true, false].freeze
     VALID_ERROR_HANDLING_MODES = %i[raise log silent].freeze
 
-    def self.valid_key_transforms
-      Transform::Case.valid_strategies
-    end
-
     VALIDATED_ATTRIBUTES = {
-      serialize_key_transform: -> { valid_key_transforms },
-      deserialize_key_transform: -> { valid_key_transforms },
+      serialize_key_transform: -> { Transform::Case.valid_strategies },
+      deserialize_key_transform: -> { Transform::Case.valid_strategies },
       auto_include_associations: VALID_BOOLEAN_VALUES,
       error_handling_mode: VALID_ERROR_HANDLING_MODES
     }.freeze
@@ -43,7 +39,6 @@ module Apiwork
     private
 
     def validate_attribute!(attribute_name, value, valid_values)
-      # Resolve lambda to get actual valid values
       valid_values = valid_values.call if valid_values.is_a?(Proc)
 
       return if valid_values.include?(value)

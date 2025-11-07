@@ -104,12 +104,12 @@ module Apiwork
           return data unless contract_class.schema?
 
           needs_serialization = if data.is_a?(Hash)
-            false # Already a hash
-          elsif data.is_a?(Array)
-            data.empty? || data.first.class != Hash
-          else
-            true # ActiveRecord object/relation
-          end
+                                  false # Already a hash
+                                elsif data.is_a?(Array)
+                                  data.empty? || data.first.class != Hash
+                                else
+                                  true # ActiveRecord object/relation
+                                end
 
           needs_serialization ? contract_class.schema_class.serialize(data, context: context, includes: includes) : data
         end
@@ -171,8 +171,6 @@ module Apiwork
         def auto_generate_input_if_needed
           return unless contract_class.schema?
 
-
-
           rc = contract_class.schema_class
           @input_definition = Definition.new(:input, contract_class)
 
@@ -197,8 +195,6 @@ module Apiwork
         def auto_generate_output_if_needed
           return unless contract_class.schema?
 
-
-
           rc = contract_class.schema_class
           @output_definition = Definition.new(:output, contract_class)
 
@@ -218,9 +214,10 @@ module Apiwork
 
         # Schema-dependent: Check if input should be automatically wrapped in root_key
         def should_auto_wrap_input?
-          return false unless @reset_input  # Only when reset_input! is used
+          return false unless @reset_input # Only when reset_input! is used
           return false unless contract_class.schema?
           return false unless writable_action?
+
           true
         end
 

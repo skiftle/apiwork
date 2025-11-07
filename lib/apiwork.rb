@@ -14,11 +14,9 @@ module Apiwork
       yield(configuration)
     end
 
-    def rack_app
-      @rack_app ||= API::RackApp.new
+    def routes
+      @routes ||= API::RackApp.new
     end
-
-    alias_method :routes, :rack_app
 
     def register_generator(name, generator_class)
       Generation::Registry.register(name, generator_class)
