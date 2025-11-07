@@ -54,7 +54,8 @@
       "Bash(bundle exec ruby:*)",
       "Bash(ruby /tmp/debug_circular.rb:*)",
       "Bash(DEBUG_GENERATOR=1 ruby:*)",
-      "Bash(ruby /tmp/test_caching.rb:*)"
+      "Bash(ruby /tmp/test_caching.rb:*)",
+      "Bash(ruby:*)"
     ],
     "deny": [],
     "ask": []
