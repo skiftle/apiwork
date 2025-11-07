@@ -15,18 +15,21 @@ module Apiwork
         end
       end
 
-      # Get validated and processed action input
+      # Get parsed and validated action input
       #
-      # @return [ActionInput::Result] Result with validated params and errors
+      # @return [Contract::InputParser::Result] Result with parsed params and errors
       def action_input
         @action_input ||= begin
           contract = find_contract&.new
-          return ActionInput::Result.new(params: {}, errors: [], schema_class: nil) unless contract
+          return Contract::InputParser::Result.new(params: {}, errors: [], schema_class: nil) unless contract
 
-          ActionInput.new(
+          raw_params = parse_request_params(request)
+
+          # Parse: validate + transform in one step
+          Contract::InputParser.new(
             contract: contract,
             action: action_name
-          ).perform(parse_request_params(request))
+          ).perform(raw_params)
         end
       end
 
