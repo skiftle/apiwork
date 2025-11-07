@@ -29,7 +29,7 @@ module Apiwork
         namespace_parts = self.class.name.deconstantize.split('::')
         return nil if namespace_parts.empty?
 
-        api_path = '/' + namespace_parts.map(&:underscore).join('/')
+        api_path = "/#{namespace_parts.map(&:underscore).join('/')}"
 
         # Find API class
         api_class = Apiwork::API.find(api_path)
@@ -52,24 +52,22 @@ module Apiwork
             contract_class_name: resource_metadata[:contract_class_name],
             controller_class_name: resource_metadata[:controller_class_name]
           }
-        else
+        elsif resource_metadata[:members]&.key?(action_sym)
           # Check member actions
-          if resource_metadata[:members]&.key?(action_sym)
-            member_metadata = resource_metadata[:members][action_sym]
-            {
-              resource_class_name: member_metadata[:resource_class_name] || resource_metadata[:resource_class],
-              contract_class_name: member_metadata[:contract_class_name] || resource_metadata[:contract_class_name],
-              controller_class_name: resource_metadata[:controller_class_name]
-            }
+          member_metadata = resource_metadata[:members][action_sym]
+          {
+            resource_class_name: member_metadata[:resource_class_name] || resource_metadata[:resource_class],
+            contract_class_name: member_metadata[:contract_class_name] || resource_metadata[:contract_class_name],
+            controller_class_name: resource_metadata[:controller_class_name]
+          }
           # Check collection actions
-          elsif resource_metadata[:collections]&.key?(action_sym)
-            collection_metadata = resource_metadata[:collections][action_sym]
-            {
-              resource_class_name: collection_metadata[:resource_class_name] || resource_metadata[:resource_class],
-              contract_class_name: collection_metadata[:contract_class_name] || resource_metadata[:contract_class_name],
-              controller_class_name: resource_metadata[:controller_class_name]
-            }
-          end
+        elsif resource_metadata[:collections]&.key?(action_sym)
+          collection_metadata = resource_metadata[:collections][action_sym]
+          {
+            resource_class_name: collection_metadata[:resource_class_name] || resource_metadata[:resource_class],
+            contract_class_name: collection_metadata[:contract_class_name] || resource_metadata[:contract_class_name],
+            controller_class_name: resource_metadata[:controller_class_name]
+          }
         end
       end
 

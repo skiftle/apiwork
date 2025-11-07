@@ -23,7 +23,7 @@ module Apiwork
     #   parser = Contract::Parser.new(contract, :output, :index, context: { current_user: user })
     #   result = parser.perform(response_hash)
     #   if result.valid?
-    #     render json: result.response
+    #     render json: result.data
     #   end
     #
     class Parser
@@ -165,7 +165,7 @@ module Apiwork
 
       # Build result object with direction-specific attributes
       def build_result(data, errors)
-        Result.new(data, errors, @direction, schema_class: @schema_class)
+        Result.new(data, errors)
       end
 
       # Result object wrapping parsed data
@@ -175,53 +175,27 @@ module Apiwork
       # - result.data (direction-agnostic)
       # - result[:key] (hash-like accessor)
       # - result.params (input direction only, for compatibility)
-      # - result.response (output direction only, for compatibility)
       #
       class Result
-        attr_reader :data, :errors, :direction
+        attr_reader :data, :errors
 
-        def initialize(data, errors, direction, schema_class: nil)
+        def initialize(data, errors)
           @data = data
           @errors = errors
-          @direction = direction
-          @schema_class = schema_class
         end
 
-        # Hash-like accessor for convenient data access
-        #
-        # @example
-        #   result[:client]  # → { name: "Test", ... }
-        #
-        # @param key [Symbol, String] The key to access
-        # @return [Object] The value at the key
         def [](key)
           @data[key]
         end
 
-        # Alias for input direction (backward compatibility)
-        #
-        # @return [Hash] The parsed params
         def params
           @data
         end
 
-        # Alias for output direction (backward compatibility)
-        #
-        # @return [Hash] The validated response
-        def response
-          @data
-        end
-
-        # Check if parsing succeeded
-        #
-        # @return [Boolean] true if no errors
         def valid?
           errors.empty?
         end
 
-        # Check if parsing failed
-        #
-        # @return [Boolean] true if errors present
         def invalid?
           errors.any?
         end
