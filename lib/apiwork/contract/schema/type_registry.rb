@@ -44,8 +44,15 @@ module Apiwork
             # Add to visited set
             visited = visited.dup.add(schema_class)
 
-            # Use short name for registration - Descriptors::Registry will add prefix via qualified_name
-            type_name = :filter
+            # Use schema-specific type name to avoid collisions when filtering by associations
+            # For the root schema (depth 0), use :filter. For associated schemas, include schema name
+            type_name = if depth.zero?
+                          :filter
+                        else
+                          # Convert "Api::V1::CommentSchema" → :comment_filter
+                          schema_name = schema_class.name.demodulize.underscore.gsub(/_schema$/, '')
+                          :"#{schema_name}_filter"
+                        end
 
             # Check if already registered with Descriptors::Registry
             existing = Descriptors::Registry.resolve(type_name, contract_class: contract_class)
@@ -107,8 +114,15 @@ module Apiwork
             # Add to visited set
             visited = visited.dup.add(schema_class)
 
-            # Use short name for registration - Descriptors::Registry will add prefix via qualified_name
-            type_name = :sort
+            # Use schema-specific type name to avoid collisions when sorting by associations
+            # For the root schema (depth 0), use :sort. For associated schemas, include schema name
+            type_name = if depth.zero?
+                          :sort
+                        else
+                          # Convert "Api::V1::CommentSchema" → :comment_sort
+                          schema_name = schema_class.name.demodulize.underscore.gsub(/_schema$/, '')
+                          :"#{schema_name}_sort"
+                        end
 
             # Check if already registered with Descriptors::Registry
             existing = Descriptors::Registry.resolve(type_name, contract_class: contract_class)
@@ -182,8 +196,15 @@ module Apiwork
           # @param visited [Set] Set of visited schema classes (circular reference protection)
           # @param depth [Integer] Current recursion depth (max 3)
           def register_resource_include_type(contract_class, schema_class, visited: Set.new, depth: 0)
-            # Use short name for registration - Descriptors::Registry will add prefix via qualified_name
-            type_name = :include
+            # Use schema-specific type name to avoid collisions when including nested associations
+            # For the root schema (depth 0), use :include. For associated schemas, include schema name
+            type_name = if depth.zero?
+                          :include
+                        else
+                          # Convert "Api::V1::CommentSchema" → :comment_include
+                          schema_name = schema_class.name.demodulize.underscore.gsub(/_schema$/, '')
+                          :"#{schema_name}_include"
+                        end
 
             # Check if already registered with Descriptors::Registry
             existing = Descriptors::Registry.resolve(type_name, contract_class: contract_class)
@@ -216,9 +237,13 @@ module Apiwork
                   )
 
                   if association_definition.serializable?
-                    # Serializable: ONLY allow nested includes (no top-level boolean)
-                    # Example: include[comments][user]=true (OK), include[comments]=true (NOT OK)
-                    param name, type: assoc_include_type, required: false
+                    # Serializable: allow boolean OR nested includes
+                    # Boolean is redundant (always included) but accepted for flexibility
+                    # Example: include[comments]=true (OK), include[comments][user]=true (OK)
+                    param name, type: :union, required: false do
+                      variant type: :boolean
+                      variant type: assoc_include_type
+                    end
                   else
                     # Non-serializable: allow either boolean true or nested include hash
                     param name, type: :union, required: false do

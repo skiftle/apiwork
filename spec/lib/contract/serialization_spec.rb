@@ -169,21 +169,12 @@ RSpec.describe 'Contract Serialization' do
       definition = contract_class.action_definition(:create).merged_input_definition
       json = definition.as_json
 
+      # Custom types are serialized as type references (not expanded)
+      # This prevents infinite recursion and keeps API introspection clean
       expect(json).to eq({
         shipping_address: {
-          type: :object,
-          required: true,
-          custom_type: :address,
-          shape: {
-            street: {
-              type: :string,
-              required: true
-            },
-            city: {
-              type: :string,
-              required: true
-            }
-          }
+          type: :address,
+          required: true
         }
       })
     end
