@@ -3,15 +3,10 @@
 module Apiwork
   class Query
     module EagerLoading
-      def apply_includes(scope, includes_param = nil)
+      def apply_includes(scope, params = {})
         return scope if schema.association_definitions.empty?
 
-        includes_hash = if includes_param
-                          build_includes_hash_from_param(includes_param)
-                        else
-                          @includes_hash ||= build_includes_hash
-                        end
-
+        includes_hash = build_combined_includes(params)
         return scope if includes_hash.empty?
 
         scope.includes(includes_hash)
@@ -50,32 +45,84 @@ module Apiwork
         includes_hash
       end
 
-      def build_includes_hash(visited = Set.new)
-        includes_hash = {}
-        if visited.include?(schema.name)
-          error = Apiwork::ConfigurationError.new(
-            code: :circular_dependency,
-            detail: "Circular dependency detected in #{schema.name}, skipping nested includes",
-            path: [schema.name]
-          )
-          Apiwork::Errors::Handler.handle(error, context: { resource: schema.name })
-          return {}
-        end
-        visited = visited.dup.add(schema.name)
+      # Build includes hash from serializable: true associations only
+      def build_serializable_includes(visited = Set.new)
+        return {} if visited.include?(schema.name)
 
-        schema.association_definitions.each do |assoc_name, assoc_def|
-          association = schema.model_class.reflect_on_association(assoc_name)
+        visited = visited.dup.add(schema.name)
+        result = {}
+
+        schema.association_definitions.each do |name, definition|
+          next unless definition.serializable?
+
+          association = schema.model_class.reflect_on_association(name)
           next if association&.polymorphic?
 
-          resource_class = assoc_def.schema_class || Apiwork::Schema::Resolver.from_association(association, schema)
-          if resource_class.respond_to?(:build_includes_hash)
-            nested_includes = resource_class.build_includes_hash(visited)
-            includes_hash[assoc_name] = nested_includes.any? ? nested_includes : {}
+          nested_schema = definition.schema_class || Apiwork::Schema::Resolver.from_association(association, schema)
+
+          # Handle string class names
+          if nested_schema.is_a?(String)
+            nested_schema = begin
+              nested_schema.constantize
+            rescue StandardError
+              nil
+            end
+          end
+
+          if nested_schema&.respond_to?(:build_serializable_includes)
+            nested = nested_schema.build_serializable_includes(visited)
+            result[name] = nested.any? ? nested : {}
           else
-            includes_hash[assoc_name] = {}
+            result[name] = {}
           end
         end
-        includes_hash
+
+        result
+      end
+
+      # Merge all include sources with explicit params having highest priority
+      def build_combined_includes(params)
+        combined = {}
+
+        # 1. Start with serializable: true associations
+        combined.deep_merge!(build_serializable_includes)
+
+        # 2. Add associations from filter params
+        if params[:filter].present?
+          filter_includes = extract_associations_from_filter(params[:filter], schema)
+          combined.deep_merge!(filter_includes)
+        end
+
+        # 3. Add associations from sort params
+        if params[:sort].present?
+          sort_includes = extract_associations_from_sort(params[:sort], schema)
+          combined.deep_merge!(sort_includes)
+        end
+
+        # 4. Apply explicit include params (can override with false)
+        if params[:include].present?
+          apply_explicit_includes(combined, params[:include])
+        end
+
+        combined
+      end
+
+      # Apply explicit include params, respecting false to exclude
+      def apply_explicit_includes(combined, include_params)
+        include_params.each do |key, value|
+          key_sym = key.to_sym
+
+          if value == false || value == 'false'
+            # Explicit false - remove from includes
+            combined.delete(key_sym)
+          elsif value.is_a?(Hash)
+            # Nested include - merge deeply
+            combined[key_sym] = value.deep_symbolize_keys
+          elsif value == true || value == 'true'
+            # Explicit true - ensure included
+            combined[key_sym] ||= {}
+          end
+        end
       end
     end
   end
