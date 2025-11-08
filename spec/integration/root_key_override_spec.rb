@@ -4,6 +4,8 @@ require 'rails_helper'
 
 RSpec.describe 'Root key override with root DSL', type: :request do
   before(:each) do
+    # Delete comments first due to foreign key constraint
+    Comment.delete_all
     Post.delete_all
   end
 

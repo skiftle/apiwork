@@ -227,7 +227,7 @@ module Apiwork
         value = param_options[:default] if value.nil? && param_options[:default]
 
         # Check nullable constraint
-        if data.key?(name) && value.nil? && param_options[:nullable] == false
+        if data.key?(name) && value.nil? && explicitly_not_nullable?(param_options)
           return { errors: [ValidationError.value_null(field: name, path: field_path)], value_set: false }
         end
 
@@ -295,6 +295,11 @@ module Apiwork
         else
           ValidationError.field_missing(field: name, path: field_path)
         end
+      end
+
+      # Check if nullable is explicitly set to false
+      def explicitly_not_nullable?(param_options)
+        param_options[:nullable] == false
       end
 
       # Validate enum value

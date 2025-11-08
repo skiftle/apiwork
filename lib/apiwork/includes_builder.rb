@@ -81,8 +81,7 @@ module Apiwork
       include_params.each do |key, value|
         key_sym = key.to_sym
 
-        if value == false || value == 'false'
-          # Explicit false - remove from includes
+        if explicitly_false?(value)
           combined.delete(key_sym)
         elsif value.is_a?(Hash)
           # Nested include - deep merge with existing (for serializable associations)
@@ -94,8 +93,7 @@ module Apiwork
             # New association - set directly
             combined[key_sym] = normalized
           end
-        elsif value == true || value == 'true'
-          # Explicit true - ensure included
+        elsif explicitly_true?(value)
           combined[key_sym] ||= {}
         end
       end
@@ -122,17 +120,27 @@ module Apiwork
       result = {}
       hash.each do |key, value|
         key_sym = key.to_sym
-        if value == true || value == 'true'
+
+        next if explicitly_false?(value)
+
+        if explicitly_true?(value)
           result[key_sym] = {}
         elsif value.is_a?(Hash)
           result[key_sym] = normalize_nested_includes(value)
-        elsif value != false && value != 'false'
+        else
           # Unknown value type - default to empty hash
           result[key_sym] = {}
         end
-        # Skip if value is false
       end
       result
+    end
+
+    def explicitly_true?(value)
+      [true, 'true'].include?(value)
+    end
+
+    def explicitly_false?(value)
+      [false, 'false'].include?(value)
     end
 
     # Resolve schema class from definition or association
