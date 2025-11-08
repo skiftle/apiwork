@@ -14,7 +14,7 @@ module Apiwork
     #   end
     #
     # The builder evaluates the block and registers each type
-    # with the TypeRegistry.
+    # with the DescriptorRegistry.
     #
     class GlobalTypeBuilder
       # Define a global type
@@ -23,7 +23,7 @@ module Apiwork
       # @param options [Hash] Type options (e.g., enum values)
       # @param block [Proc] Type definition block
       def type(name, **options, &block)
-        TypeRegistry.register_global(name, &block)
+        DescriptorRegistry.register_global(name, &block)
       end
     end
   end
