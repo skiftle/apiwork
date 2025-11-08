@@ -4,9 +4,9 @@ require 'rails_helper'
 
 RSpec.describe 'Pagination API', type: :request do
   before(:each) do
-    # Clean database before each test to avoid pollution from other test suites
-    Post.delete_all
+    # Delete comments first due to foreign key constraint
     Comment.delete_all
+    Post.delete_all
 
     # Create 25 posts for pagination testing
     25.times do |i|
