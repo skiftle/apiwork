@@ -4,9 +4,9 @@ require 'rails_helper'
 
 RSpec.describe 'Sorting API', type: :request do
   before(:each) do
-    # Clean database before each test to avoid pollution from other test suites
-    Post.delete_all
+    # Delete comments first due to foreign key constraint
     Comment.delete_all
+    Post.delete_all
   end
 
   let!(:post_a) { Post.create!(title: 'Alpha Post', body: 'Content A', published: true, created_at: 3.days.ago) }

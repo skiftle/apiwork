@@ -4,8 +4,9 @@ require 'rails_helper'
 
 RSpec.describe 'Nested Resources Routing', type: :request do
   before(:each) do
-    Post.delete_all
+    # Delete comments first due to foreign key constraint
     Comment.delete_all
+    Post.delete_all
   end
 
   let!(:post1) { Post.create!(title: 'Post 1', body: 'Body 1', published: true) }
