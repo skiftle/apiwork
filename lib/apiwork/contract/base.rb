@@ -10,10 +10,7 @@ module Apiwork
 
         def inherited(subclass)
           super
-          # Initialize action definitions hash for each subclass
           subclass.instance_variable_set(:@action_definitions, {})
-          # Initialize custom types hash for each subclass
-          subclass.instance_variable_set(:@custom_types, {})
         end
 
         def schema(ref = nil)
@@ -43,131 +40,34 @@ module Apiwork
           !@_schema_class.nil?
         end
 
-        # DSL method to define a custom type
-        # Supports lexical scoping - types can be defined at contract, action, or input/output level
-        #
-        # THREADING NOTES:
-        # This method uses Thread.current[:apiwork_type_scope] to maintain lexical scope
-        # during DSL evaluation (instance_eval). This is safe because:
-        # - Rails request processing is single-threaded per request
-        # - Contract definitions happen at boot time, also single-threaded
-        # - The scope is set/unset within the same method call (proper cleanup)
-        # - No state persists across requests
-        #
-        # If using async request processing (e.g., Falcon), ensure contract
-        # definitions complete before serving requests. Runtime type resolution
-        # is thread-safe as it only reads immutable @type_scopes.
-        #
-        # @param name [Symbol] Name of the custom type
-        # @param block [Proc] Block defining the type's parameters
         def type(name, &block)
           raise ArgumentError, 'Block required for custom type definition' unless block_given?
 
-          # Register with Descriptors::Registry as a local (contract-scoped) type
-          # This allows the type to be used with short name within this contract
-          # but will be qualified (e.g., :invoice_filter) in as_json output
           Descriptors::Registry.register_local(self, name, &block)
-
-          # Also store in legacy @type_scopes for backward compatibility
-          # TODO: Remove this once all code uses TypeRegistry
-          current_scope = Thread.current[:apiwork_type_scope] || :root
-          @type_scopes ||= {}
-          @type_scopes[current_scope] ||= {}
-          @type_scopes[current_scope][name] = block
         end
 
-        # DSL method to define an enum at contract level
-        # Enums are reusable value lists that can be referenced in param definitions
-        #
-        # @param name [Symbol] Name of the enum (e.g., :status)
-        # @param values [Array] Array of allowed values (e.g., %w[draft published])
-        #
-        # @example
-        #   class PostContract < Apiwork::Contract::Base
-        #     enum :status, %w[draft published archived]
-        #
-        #     action :create do
-        #       input do
-        #         param :status, type: :string, enum: :status
-        #       end
-        #     end
-        #   end
         def enum(name, values)
           raise ArgumentError, 'Values array required for enum definition' unless values.is_a?(Array)
 
-          # Register with Descriptors::Registry as a local (contract-scoped) enum
-          # This allows the enum to be used within this contract
-          # and will be qualified (e.g., :post_status) in as_json output
           Descriptors::Registry.register_local_enum(self, name, values)
         end
 
-        # Get custom types hash (legacy - returns root scope only)
-        # @return [Hash] Hash of custom type names to blocks at root level
-        def custom_types
-          @type_scopes ||= {}
-          @type_scopes[:root] || {}
-        end
-
-        # Resolve a custom type by searching scope chain
-        # @param type_name [Symbol] Name of the type to resolve
-        # @param scope_id [Symbol] Current scope identifier
-        # @return [Proc, nil] The type block or nil if not found
-        def resolve_custom_type(type_name, scope_id = :root)
-          @type_scopes ||= {}
-          @scope_parents ||= {}
-
-          # Search scope chain: current → parent → root
-          current = scope_id
-          while current
-            return @type_scopes.dig(current, type_name) if @type_scopes.dig(current, type_name)
-
-            current = @scope_parents[current]
-          end
-
-          nil
-        end
-
-        # Register a scope with its parent for chain resolution
-        # @param scope_id [Symbol] The scope identifier
-        # @param parent_scope [Symbol] The parent scope identifier
-        def register_scope(scope_id, parent_scope = :root)
-          @scope_parents ||= {}
-          @scope_parents[scope_id] = parent_scope
-        end
-
-        # Get all scopes (for debugging)
-        def type_scopes
-          @type_scopes || {}
-        end
-
-        # DSL method to define an action
-        # @param action_name [Symbol] Name of the action (:index, :show, :create, etc.)
-        # @param block [Proc] Block to configure the action (merges with auto-generated if standard CRUD)
         def action(action_name, &block)
           @action_definitions ||= {}
           action_sym = action_name.to_sym
 
-          # Create action definition
           action_definition = ActionDefinition.new(action_sym, self)
-
-          # Apply custom block with action scope
-          if block_given?
-            action_scope_id = :"action_#{action_sym}"
-            register_scope(action_scope_id, :root)
-
-            # Set scope for this action block
-            previous_scope = Thread.current[:apiwork_type_scope]
-            Thread.current[:apiwork_type_scope] = action_scope_id
-
-            begin
-              action_definition.instance_eval(&block)
-            ensure
-              # Restore previous scope
-              Thread.current[:apiwork_type_scope] = previous_scope
-            end
-          end
+          action_definition.instance_eval(&block) if block_given?
 
           @action_definitions[action_sym] = action_definition
+        end
+
+        def resolve_custom_type(type_name, _scope_id = :root)
+          Descriptors::Registry.resolve(type_name, contract_class: self)
+        end
+
+        def register_scope(_scope_id, _parent_scope = :root)
+          # No-op: scope registration is no longer needed with Descriptors::Registry
         end
 
         # Get ActionDefinition for a specific action

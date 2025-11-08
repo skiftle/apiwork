@@ -78,25 +78,44 @@ module Apiwork
         # Check if type is a custom type (with scope resolution)
         custom_type_block = @contract_class.resolve_custom_type(type, @type_scope)
         if custom_type_block
-          # Custom type - resolve it
-          shape_def = Definition.new(@type, @contract_class, type_scope: @type_scope)
-          shape_def.instance_eval(&custom_type_block)
+          # Prevent infinite recursion by tracking which types we're currently expanding
+          expansion_key = [@contract_class.object_id, type]
+          expanding_types = Thread.current[:apiwork_expanding_custom_types] ||= Set.new
 
-          # Apply additional block if provided (can extend custom type)
-          shape_def.instance_eval(&block) if block_given?
+          # If we're already expanding this type, treat it as a type reference instead
+          if expanding_types.include?(expansion_key)
+            custom_type_block = nil
+          end
+        end
 
-          @params[name] = {
-            name: name,
-            type: :object, # Custom types are objects internally
-            required: required,
-            default: default,
-            enum: resolved_enum, # Store resolved enum (values or reference)
-            of: of,
-            as: as,
-            custom_type: type, # Track original custom type name
-            shape: shape_def,
-            **options
-          }
+        if custom_type_block
+          # Custom type - resolve it with recursion protection
+          expansion_key = [@contract_class.object_id, type]
+          expanding_types = Thread.current[:apiwork_expanding_custom_types] ||= Set.new
+          expanding_types.add(expansion_key)
+
+          begin
+            shape_def = Definition.new(@type, @contract_class, type_scope: @type_scope)
+            shape_def.instance_eval(&custom_type_block)
+
+            # Apply additional block if provided (can extend custom type)
+            shape_def.instance_eval(&block) if block_given?
+
+            @params[name] = {
+              name: name,
+              type: :object, # Custom types are objects internally
+              required: required,
+              default: default,
+              enum: resolved_enum, # Store resolved enum (values or reference)
+              of: of,
+              as: as,
+              custom_type: type, # Track original custom type name
+              shape: shape_def,
+              **options
+            }
+          ensure
+            expanding_types.delete(expansion_key)
+          end
         else
           # Regular type
           @params[name] = {
