@@ -48,10 +48,16 @@ module Apiwork
               next # We'll add this manually to each variant
             when :errors
               # errors is only in error variant
-              error_params[name] = serialize_param(name, param_options, definition, visited: visited)
+              # Errors should always be required in error responses
+              error_params[name] = serialize_param(name, param_options, definition, visited: visited).tap do |serialized|
+                serialized[:required] = true
+              end
             else
               # All other fields are in success variant
-              success_params[name] = serialize_param(name, param_options, definition, visited: visited)
+              serialized = serialize_param(name, param_options, definition, visited: visited)
+              # Resource fields should be required in success variant (but not meta)
+              serialized[:required] = true unless name == :meta
+              success_params[name] = serialized
             end
           end
 
