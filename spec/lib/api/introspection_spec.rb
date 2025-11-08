@@ -212,8 +212,8 @@ RSpec.describe 'API Introspection' do
     let(:api) { Apiwork::API.find('/api/v1') }
     let(:json) { api.as_json }
 
-    it 'includes API-level global error codes in metadata' do
-      expect(json[:metadata][:error_codes]).to eq([400, 500])
+    it 'includes API-level global error codes at root level' do
+      expect(json[:error_codes]).to eq([400, 500])
     end
 
     context 'when action has no specific error codes' do

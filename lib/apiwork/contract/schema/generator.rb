@@ -30,7 +30,7 @@ module Apiwork
               end
             when :show
               action_definition.input do
-                # Empty input - strict mode will reject any query params
+                # Empty
               end
               action_definition.output do
                 OutputGenerator.generate_single_output(self, schema_class)
@@ -50,9 +50,8 @@ module Apiwork
                 OutputGenerator.generate_single_output(self, schema_class)
               end
             when :destroy
-              # Destroy returns empty response (just 200 OK)
               action_definition.output do
-                # Empty output
+                # Empty
               end
             else
               # Custom member/collection actions (e.g., :search, :publish, :archive)

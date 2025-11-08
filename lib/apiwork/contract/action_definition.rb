@@ -200,14 +200,72 @@ module Apiwork
 
       private
 
-      # Get all error codes (API-level global + action-specific)
+      # Get all error codes (API-level global + action-specific + auto-generated)
       # Returns a unique, sorted array of HTTP status codes
       def all_error_codes
         api_codes = api_error_codes
         action_codes = @error_codes || []
+        auto_codes = auto_writable_error_codes
 
-        # Merge and deduplicate
-        (api_codes + action_codes).uniq.sort
+        # Merge all three sources and deduplicate
+        (api_codes + action_codes + auto_codes).uniq.sort
+      end
+
+      # Auto-add 422 for writable actions based on HTTP method
+      # Only applies to schema-based contracts
+      # Returns [422] for POST/PATCH/PUT actions, [] for GET/DELETE
+      def auto_writable_error_codes
+        return [] unless contract_class.schema?
+
+        # CRUD writable actions always get 422
+        return [422] if [:create, :update].include?(action_name.to_sym)
+
+        # Read-only CRUD actions don't get 422
+        return [] if [:index, :show, :destroy].include?(action_name.to_sym)
+
+        # Custom actions: check HTTP method from API metadata
+        http_method = find_http_method_from_api_metadata
+        return [] unless http_method
+
+        # POST, PATCH, PUT get 422
+        [:post, :patch, :put].include?(http_method) ? [422] : []
+      end
+
+      # Find HTTP method for this action from API metadata
+      # Searches member and collection actions in the resource metadata (recursively for nested resources)
+      # @return [Symbol, nil] HTTP method (:get, :post, :patch, :put, :delete) or nil
+      def find_http_method_from_api_metadata
+        api = find_api_for_contract
+        return nil unless api&.metadata
+
+        # Search all resources (including nested)
+        search_http_method_in_resources(api.metadata.resources)
+      end
+
+      # Recursively search for HTTP method in resources and nested resources
+      def search_http_method_in_resources(resources)
+        resources.each_value do |resource_metadata|
+          # Only check resources that use this contract
+          if resource_uses_contract?(resource_metadata, contract_class)
+            # Check member actions
+            if resource_metadata[:members]&.key?(action_name.to_sym)
+              return resource_metadata[:members][action_name.to_sym][:method]
+            end
+
+            # Check collection actions
+            if resource_metadata[:collections]&.key?(action_name.to_sym)
+              return resource_metadata[:collections][action_name.to_sym][:method]
+            end
+          end
+
+          # Recursively search nested resources
+          if resource_metadata[:resources]&.any?
+            result = search_http_method_in_resources(resource_metadata[:resources])
+            return result if result
+          end
+        end
+
+        nil
       end
 
       # Get global error codes from the API definition
