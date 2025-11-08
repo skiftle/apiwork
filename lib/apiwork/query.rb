@@ -5,7 +5,6 @@ module Apiwork
     include Filtering
     include Sorting
     include Pagination
-    include AssociationExtractor
     include EagerLoading
 
     attr_reader :scope, :schema, :params, :result, :meta
