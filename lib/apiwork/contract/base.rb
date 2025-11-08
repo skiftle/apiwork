@@ -76,6 +76,31 @@ module Apiwork
           @type_scopes[current_scope][name] = block
         end
 
+        # DSL method to define an enum at contract level
+        # Enums are reusable value lists that can be referenced in param definitions
+        #
+        # @param name [Symbol] Name of the enum (e.g., :status)
+        # @param values [Array] Array of allowed values (e.g., %w[draft published])
+        #
+        # @example
+        #   class PostContract < Apiwork::Contract::Base
+        #     enum :status, %w[draft published archived]
+        #
+        #     action :create do
+        #       input do
+        #         param :status, type: :string, enum: :status
+        #       end
+        #     end
+        #   end
+        def enum(name, values)
+          raise ArgumentError, 'Values array required for enum definition' unless values.is_a?(Array)
+
+          # Register with TypeRegistry as a local (contract-scoped) enum
+          # This allows the enum to be used within this contract
+          # and will be qualified (e.g., :post_status) in as_json output
+          TypeRegistry.register_local_enum(self, name, values)
+        end
+
         # Get custom types hash (legacy - returns root scope only)
         # @return [Hash] Hash of custom type names to blocks at root level
         def custom_types

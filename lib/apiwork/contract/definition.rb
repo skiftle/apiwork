@@ -3,12 +3,15 @@
 module Apiwork
   module Contract
     class Definition
-      attr_reader :type, :params, :contract_class, :type_scope
+      attr_reader :type, :params, :contract_class, :type_scope, :action_name, :direction, :parent_scope
 
-      def initialize(type, contract_class, type_scope: :root)
+      def initialize(type, contract_class, type_scope: :root, action_name: nil, parent_scope: nil)
         @type = type # :input or :output
+        @direction = type # Alias for type (used by TypeRegistry.qualified_enum_name)
         @contract_class = contract_class
         @type_scope = type_scope
+        @action_name = action_name
+        @parent_scope = parent_scope
         @params = {}
       end
 
@@ -26,8 +29,32 @@ module Apiwork
         @contract_class.type(name, &block)
       end
 
+      # Define an enum scoped to this action/input/output
+      # Enums defined here are available only within this definition's scope
+      #
+      # @param name [Symbol] Name of the enum (e.g., :priority)
+      # @param values [Array] Array of allowed values (e.g., %w[low high])
+      #
+      # @example
+      #   action :create do
+      #     input do
+      #       enum :priority, %w[low medium high]
+      #       param :priority, type: :string, enum: :priority
+      #     end
+      #   end
+      def enum(name, values)
+        raise ArgumentError, 'Values array required for enum definition' unless values.is_a?(Array)
+
+        # Register with TypeRegistry using this definition instance as scope
+        # This creates definition-level scoping for the enum
+        TypeRegistry.register_local_enum(self, name, values)
+      end
+
       # Define a parameter
       def param(name, type: :string, required: false, default: nil, enum: nil, of: nil, as: nil, **options, &block) # rubocop:disable Metrics/ParameterLists
+        # Resolve enum reference if it's a symbol
+        resolved_enum = resolve_enum_value(enum)
+
         # Handle union types
         if type == :union
           raise ArgumentError, 'Union type requires a block with variant definitions' unless block_given?
@@ -42,6 +69,7 @@ module Apiwork
             default: default,
             as: as,
             union: union_def,
+            enum: resolved_enum, # Store resolved enum (values or reference)
             **options
           }
           return
@@ -62,7 +90,7 @@ module Apiwork
             type: :object, # Custom types are objects internally
             required: required,
             default: default,
-            enum: enum,
+            enum: resolved_enum, # Store resolved enum (values or reference)
             of: of,
             as: as,
             custom_type: type, # Track original custom type name
@@ -76,7 +104,7 @@ module Apiwork
             type: type,
             required: required,
             default: default,
-            enum: enum,
+            enum: resolved_enum, # Store resolved enum (values or reference)
             of: of,
             as: as,
             **options
@@ -633,6 +661,31 @@ module Apiwork
         end
 
         [nil, value]
+      end
+
+      private
+
+      # Resolve enum value - if it's a symbol, resolve from TypeRegistry
+      # If it's an array, keep as-is (inline enum)
+      # @param enum [Symbol, Array, nil] Enum reference or inline values
+      # @return [Hash, Array, nil] Resolved enum with metadata or inline values
+      def resolve_enum_value(enum)
+        return nil if enum.nil?
+        return enum if enum.is_a?(Array) # Inline enum - keep as-is
+
+        # Enum is a symbol - resolve from TypeRegistry with lexical scoping
+        if enum.is_a?(Symbol)
+          values = TypeRegistry.resolve_enum(enum, scope: self)
+          if values
+            # Return hash with both reference and resolved values
+            # This allows serialization to use the reference and validation to use the values
+            { ref: enum, values: values }
+          else
+            raise ArgumentError, "Enum :#{enum} not found. Define it using `enum :#{enum}, %w[...]` in contract or definition scope."
+          end
+        else
+          raise ArgumentError, "enum must be a Symbol (reference) or Array (inline values), got #{enum.class}"
+        end
       end
     end
   end
