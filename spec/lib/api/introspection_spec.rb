@@ -217,18 +217,20 @@ RSpec.describe 'API Introspection' do
     end
 
     context 'when action has no specific error codes' do
-      it 'includes only global codes for index action' do
+      it 'has empty array for index action (only global codes apply)' do
         index_action = json[:resources][:posts][:actions][:index]
-        expect(index_action[:error_codes]).to eq([400, 500])
+        # Index has no action-specific codes, so empty array
+        # Consumers merge: api.error_codes + action.error_codes
+        expect(index_action[:error_codes]).to eq([])
       end
     end
 
     context 'when action has specific error codes' do
-      it 'merges API global codes with show action codes' do
+      it 'includes only action-specific codes for show action' do
         show_action = json[:resources][:posts][:actions][:show]
         # PostContract#show has error_codes 404, 403
-        # API has global codes 400, 500
-        expect(show_action[:error_codes]).to match_array([400, 403, 404, 500])
+        # Global codes (400, 500) are NOT included - they're in json[:error_codes]
+        expect(show_action[:error_codes]).to match_array([403, 404])
       end
 
       it 'keeps codes unique and sorted' do
@@ -237,26 +239,27 @@ RSpec.describe 'API Introspection' do
         expect(codes).to eq(codes.uniq.sort)
       end
 
-      it 'merges API global codes with create action codes' do
+      it 'includes only auto-generated 422 for create action' do
         create_action = json[:resources][:posts][:actions][:create]
-        # PostContract#create has error_codes 422
-        # API has global codes 400, 500
-        expect(create_action[:error_codes]).to match_array([400, 422, 500])
+        # PostContract#create has error_codes 422 (manual)
+        # Auto-generated 422 is merged with manual
+        # Global codes (400, 500) are NOT included
+        expect(create_action[:error_codes]).to eq([422])
       end
 
-      it 'merges different codes for different actions' do
+      it 'has different codes for different actions' do
         show_action = json[:resources][:posts][:actions][:show]
         create_action = json[:resources][:posts][:actions][:create]
         update_action = json[:resources][:posts][:actions][:update]
 
-        # show: 400, 403, 404, 500
-        expect(show_action[:error_codes]).to match_array([400, 403, 404, 500])
+        # show: 403, 404 (action-specific)
+        expect(show_action[:error_codes]).to match_array([403, 404])
 
-        # create: 400, 422, 500
-        expect(create_action[:error_codes]).to match_array([400, 422, 500])
+        # create: 422 (manual + auto merged)
+        expect(create_action[:error_codes]).to eq([422])
 
-        # update: 400, 404, 422, 500
-        expect(update_action[:error_codes]).to match_array([400, 404, 422, 500])
+        # update: 404 (action-specific), 422 (auto-generated)
+        expect(update_action[:error_codes]).to match_array([404, 422])
       end
     end
   end
