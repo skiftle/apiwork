@@ -23,10 +23,8 @@ module Apiwork
       @result = apply_sort(@result, @params[:sort])
       @result = apply_pagination(@result, @params[:page]) if @params[:page].present?
 
-      # Smart includes - merges serializable, filter, sort, and explicit includes
       @result = apply_includes(@result, @params)
 
-      # Always build meta for pagination info
       @meta = build_meta(@result)
 
       self
