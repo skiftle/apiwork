@@ -288,7 +288,8 @@ RSpec.describe 'Contract Serialization' do
             type: :string,
             required: true
           }
-        }
+        },
+        error_codes: []
       })
     end
 
@@ -304,7 +305,8 @@ RSpec.describe 'Contract Serialization' do
 
       expect(json).to eq({
         input: nil,
-        output: nil
+        output: nil,
+        error_codes: []
       })
     end
   end
@@ -364,7 +366,8 @@ RSpec.describe 'Contract Serialization' do
             required: true
           }
         },
-        output: nil
+        output: nil,
+        error_codes: []
       })
     end
 
