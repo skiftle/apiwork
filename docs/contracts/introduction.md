@@ -112,7 +112,13 @@ Apiwork reads:
 
 ### 3. Contracts are auto-generated
 
-Apiwork generates complete contracts for **all 5 CRUD actions** (index, show, create, update, destroy) - with full filtering, sorting, pagination, and discriminated union responses.
+Apiwork generates complete contracts for **all 5 CRUD actions** (index, show, create, update, destroy) - with full filtering, sorting, pagination, eager loading, and discriminated union responses.
+
+**Query params are generated from schema flags:**
+- `filterable: true` → Generates filter params with type-specific operators
+- `sortable: true` → Generates sort params with asc/desc options
+- `serializable: true` → Generates include params for eager loading
+- Pagination params always included for index routes
 
 **You write zero contract code.** Apiwork creates it all from your schema + database.
 
@@ -187,7 +193,9 @@ class Api::V1::PostSchema < Apiwork::Schema::Base
 end
 ```
 
-Apiwork generates **5 complete action contracts**. If you were to write them manually, it would look like this:
+Apiwork generates **5 complete action contracts**. The index action gets special treatment with full query params (filter, sort, page, include) based on your schema flags.
+
+If you were to write them manually, it would look like this:
 
 ```ruby
 class Api::V1::PostContract < Apiwork::Contract::Base
@@ -345,6 +353,11 @@ end
 **All of that from one line: `schema Api::V1::PostSchema`.**
 
 That's why you rarely write contracts manually!
+
+**Query params in detail:**
+- Filter operators are type-specific (string gets `contains`, integers get `greater_than`, etc.)
+- Both shorthand (`filter[title]=value`) and full syntax (`filter[title][contains]=value`) supported
+- See [Querying](../querying/introduction.md) for complete documentation on how these query params work at runtime
 
 ### Auto-generated outputs are discriminated unions
 

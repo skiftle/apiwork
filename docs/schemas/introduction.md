@@ -137,6 +137,23 @@ attribute :created_at  # Not writable
 
 Users can see these fields in responses but can't set them.
 
+### serializable (for associations)
+
+Controls whether an association can be included in responses:
+
+```ruby
+has_many :comments, schema: CommentSchema, serializable: true
+```
+
+Enables:
+```
+GET /api/v1/posts?include[comments]=true
+```
+
+Without `serializable: true`, the association won't appear in responses even if requested. This prevents exposing internal or sensitive associations.
+
+See [Querying: Includes](../querying/includes.md) for details on eager loading.
+
 ### Combining flags
 
 Most attributes combine multiple flags:
@@ -221,7 +238,7 @@ Notice:
 
 ## Associations
 
-Schemas can include related resources:
+Schemas can include related resources with the same flags:
 
 ```ruby
 class PostSchema < Apiwork::Schema::Base
@@ -231,37 +248,40 @@ class PostSchema < Apiwork::Schema::Base
   attribute :title
   attribute :body
 
-  # Include author
-  belongs_to :author, schema: Api::V1::UserSchema
+  # Author - can filter and sort by, and include in response
+  belongs_to :author,
+    schema: Api::V1::UserSchema,
+    filterable: true,
+    sortable: true,
+    serializable: true
 
-  # Include comments
-  has_many :comments, schema: Api::V1::CommentSchema
+  # Comments - can filter, sort, write, and include
+  has_many :comments,
+    schema: Api::V1::CommentSchema,
+    filterable: true,
+    sortable: true,
+    writable: true,
+    serializable: true
 end
 ```
 
-Now responses include nested data:
+**Association flags**:
+- `filterable: true` - Filter posts by association fields: `?filter[author][name]=Alice`
+- `sortable: true` - Sort posts by association fields: `?sort[comments][created_at]=desc`
+- `writable: true` - Create/update nested records (requires `accepts_nested_attributes_for`)
+- `serializable: true` - Include in responses: `?include[comments]=true`
 
-```json
-{
-  "post": {
-    "id": 1,
-    "title": "My Post",
-    "author": {
-      "id": 5,
-      "name": "Alice"
-    },
-    "comments": [
-      { "id": 10, "body": "Great post!" },
-      { "id": 11, "body": "Thanks!" }
-    ]
-  }
-}
-```
+Now you can:
 
-And you can filter by associations:
-
-```
+```bash
+# Filter by association
 GET /api/v1/posts?filter[author][name]=Alice
+
+# Sort by association
+GET /api/v1/posts?sort[comments][created_at]=desc
+
+# Include in response
+GET /api/v1/posts?include[comments]=true
 ```
 
 See [Schemas: Associations](./associations.md) for details.
@@ -451,8 +471,15 @@ But often, you don't need explicit validation. `schema PostSchema` auto-generate
 
 ## Next steps
 
+### Schema Details
 - **[Attributes](./attributes.md)** - Deep dive into attribute options
 - **[Associations](./associations.md)** - belongs_to, has_many, has_one
 - **[Types](./types.md)** - All available types and their behavior
 - **[Virtual Attributes](./virtual-attributes.md)** - Computed fields
 - **[Writable Associations](./writable-associations.md)** - Nested creates/updates
+
+### Querying (Using Schema Flags)
+- **[Querying Introduction](../querying/introduction.md)** - How query flags drive the query system
+- **[Filtering](../querying/filtering.md)** - Use `filterable: true` attributes
+- **[Sorting](../querying/sorting.md)** - Use `sortable: true` attributes
+- **[Includes](../querying/includes.md)** - Use `serializable: true` associations
