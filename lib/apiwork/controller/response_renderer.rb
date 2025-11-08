@@ -41,6 +41,9 @@ module Apiwork
 
       # Build collection response (with auto-query support)
       def build_collection_response(collection, query_params)
+        # Extract includes param once (used for both eager loading and serialization)
+        includes_param = extract_includes_param(query_params)
+
         # Auto-query for index action
         query_obj = nil
         if should_auto_query?(collection)
@@ -48,9 +51,8 @@ module Apiwork
           collection = query_obj.result
         end
 
-        # Serialize data via Schema with validated includes from contract
-        includes = extract_includes
-        json_data = action_definition.serialize_data(collection, context: build_schema_context, includes: includes)
+        # Serialize data with same includes used for eager loading
+        json_data = action_definition.serialize_data(collection, context: build_schema_context, includes: includes_param)
 
         # Build complete response with pagination meta
         if schema_class
@@ -65,15 +67,17 @@ module Apiwork
 
       # Build single resource response
       def build_single_resource_response(resource, query_params = {})
+        # Extract includes param once (used for both eager loading and serialization)
+        includes_param = extract_includes_param(query_params)
+
         # Eager load associations for single resources
         if should_eager_load?(resource)
-          includes_hash = build_includes_for_single_resource(query_params)
+          includes_hash = build_includes_hash_for_eager_loading(includes_param)
           resource = reload_with_includes(resource, includes_hash) if includes_hash.any?
         end
 
-        # Serialize data via Schema with validated includes from contract
-        includes = extract_includes
-        json_data = action_definition.serialize_data(resource, context: build_schema_context, includes: includes)
+        # Serialize data with same includes used for eager loading
+        json_data = action_definition.serialize_data(resource, context: build_schema_context, includes: includes_param)
 
         # Build complete response
         if schema_class
@@ -125,30 +129,31 @@ module Apiwork
         true
       end
 
-      # Build includes hash for single resource (no filter/sort extraction)
-      def build_includes_for_single_resource(query_params)
-        params = query_params.slice(:include)
-        params[:include] ||= controller.params[:include] if controller.params[:include].present?
+      # Extract includes parameter from query_params or controller.params
+      # Single source of truth for include params (used for both eager loading and serialization)
+      def extract_includes_param(query_params)
+        includes = query_params[:include] || controller.params[:include]
+        return nil unless includes.present?
 
-        IncludesBuilder.new(schema: schema_class).build(params: params, for_collection: false)
+        includes = includes.permit!.to_h if includes.is_a?(ActionController::Parameters)
+        includes = includes.to_h if includes.respond_to?(:to_h)
+        includes.deep_symbolize_keys if includes.respond_to?(:deep_symbolize_keys)
+      end
+
+      # Build Rails includes hash for eager loading from includes param
+      # Converts serialization format to Rails .includes() format
+      def build_includes_hash_for_eager_loading(includes_param)
+        return {} unless includes_param.present?
+
+        IncludesBuilder.new(schema: schema_class).build(
+          params: { include: includes_param },
+          for_collection: false
+        )
       end
 
       # Reload resource with includes to prevent N+1
       def reload_with_includes(resource, includes_hash)
         resource.class.includes(includes_hash).find(resource.id)
-      end
-
-      # Extract includes parameter
-      def extract_includes
-        return nil unless controller.params[:include].present?
-
-        includes_hash = controller.params[:include]
-        if includes_hash.is_a?(ActionController::Parameters)
-          includes_hash = includes_hash.permit!.to_h
-        elsif includes_hash.respond_to?(:to_h)
-          includes_hash = includes_hash.to_h
-        end
-        includes_hash.deep_symbolize_keys if includes_hash.respond_to?(:deep_symbolize_keys)
       end
 
       # Build schema context
