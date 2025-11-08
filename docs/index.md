@@ -146,7 +146,10 @@ Validate inputs and outputs:
 
 - [Introduction](./contracts/introduction.md) - What are contracts?
 - [Actions](./contracts/actions.md) - Define action contracts
-- [Parameters](./contracts/parameters.md) - Parameter types and options
+- [Params](./contracts/params.md) - Parameter types and options
+- [Literal Types](./contracts/literal-types.md) - Exact value matching
+- [Discriminated Unions](./contracts/discriminated-unions.md) - Type-safe unions
+- [Enums](./contracts/enums.md) - Restrict values to specific options
 - [Custom Types](./contracts/custom-types.md) - Reusable type definitions
 - [Lexical Scoping](./contracts/lexical-scoping.md) - Type scoping rules
 - [Objects & Arrays](./contracts/objects-arrays.md) - Nested structures

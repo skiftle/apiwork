@@ -1,24 +1,34 @@
 # Contracts
 
-> **Note:** Contracts are **optional** in Apiwork. In most cases (90%+), you only need a [Schema](../schemas/introduction.md). Apiwork automatically derives contracts from schemas for standard CRUD operations.
->
-> Only create an explicit contract when you need:
->
-> - Custom actions beyond CRUD
-> - Override auto-generated validation
-> - Complex input transformations
->
-> See [Schema-First Design](../schemas/schema-first-design.md) for the recommended approach.
+Contracts are the heart of Apiwork. They define the exact shape your API data must have - what types are allowed, what's required, what's optional. Every input is validated against a contract before reaching your controller. Every output is validated before being sent to the client (in development).
+
+**But here's the key:** you almost never write contracts manually.
+
+Instead, Apiwork generates them automatically from [Schemas](../schemas/introduction.md), which in turn read type information directly from your Rails models and database. You define what attributes to expose, and Apiwork figures out the rest - types from database columns, required fields from `null: false` constraints, defaults from the database, enums from Rails enums.
+
+> **In 90%+ of cases, you never create a contract file.** Just define a schema, and Apiwork generates complete contracts for all CRUD actions automatically.
+
+Only create an explicit contract when you need:
+- Custom actions beyond CRUD (like `publish`, `archive`, `bulk_create`)
+- Override auto-generated validation with custom logic
+- Complex input transformations
+
+See [Schema-First Design](../schemas/schema-first-design.md) for the recommended workflow.
 
 ---
 
-Contracts define and validate your API's inputs and outputs. What shape data must have, what's required, what types are allowed.
+## The Contract DSL: Describing shapes
 
-When you create a schema, Apiwork automatically generates a contract for all standard CRUD actions. You only need to create an explicit contract file when you want to customize this behavior.
+At its core, the contract DSL is a language for describing object shapes. It answers questions like:
 
-## When you need a contract
+- What fields exist?
+- What type is each field? (string, integer, literal value, union of types?)
+- Is it required or optional?
+- Does it have a default value?
+- Is it restricted to specific values (enums)?
+- Does it have nested structure (objects, arrays)?
 
-Let's start with a simple manual contract:
+Here's a simple contract written by hand:
 
 ```ruby
 class Api::V1::PostContract < Apiwork::Contract::Base
@@ -53,48 +63,114 @@ class Api::V1::PostsController < ApplicationController
 end
 ```
 
-The contract validates:
+This contract validates:
 
-- **Input** - Request params must match input definition
-- **Output** - Response data must match output definition
+- **Input** - Request params must match the input definition (runtime validation)
+- **Output** - Response data must match the output definition (development only)
 
-If validation fails, Apiwork returns a 400 error with details.
+If validation fails, Apiwork returns a 422 error with details.
 
-## Auto-generation from schemas
+**But writing this by hand is tedious and error-prone.** And that's not how you use Apiwork.
 
-**In most cases, you don't need to create a contract file at all!**
+## The real workflow: Schemas → Contracts → Schemas
 
-Just create a schema, and Apiwork automatically generates contracts for all CRUD actions:
+In practice, you almost never write contracts manually. Here's how it actually works:
+
+### 1. Define a schema (what to expose)
 
 ```ruby
 # app/schemas/api/v1/post_schema.rb
 class Api::V1::PostSchema < Apiwork::Schema::Base
-  model Post
+  model Post  # Points to your Rails model
 
   attribute :id, filterable: true, sortable: true
-  attribute :title, writable: true
+  attribute :title, writable: true, filterable: true, sortable: true
   attribute :body, writable: true
+  attribute :published, writable: true
 end
-
-# No contract file needed! ✨
-# Apiwork creates it automatically from the schema
 ```
 
-**Only if you need custom behavior**, create an explicit contract:
+That's it. No contract file needed.
+
+### 2. Apiwork reads your database schema
+
+```ruby
+# Your database migration
+create_table :posts do |t|
+  t.string :title, null: false          # → type: :string, required: true
+  t.text :body, null: false             # → type: :string, required: true
+  t.boolean :published, default: false  # → type: :boolean, default: false
+  t.timestamps                          # → type: :datetime
+end
+```
+
+Apiwork reads:
+- **Column types** → Contract types (`:string`, `:integer`, `:boolean`, `:datetime`)
+- **`null: false`** → `required: true` in contracts
+- **`default: value`** → `default: value` in contracts
+- **Rails enums** → Contract enums with allowed values
+
+### 3. Contracts are auto-generated
+
+Apiwork generates complete contracts for **all 5 CRUD actions** (index, show, create, update, destroy) - with full filtering, sorting, pagination, and discriminated union responses.
+
+**You write zero contract code.** Apiwork creates it all from your schema + database.
+
+### 4. Generated schemas for frontends
+
+The auto-generated contracts are then serialized to OpenAPI, TypeScript, Zod, etc. for your frontend:
+
+```bash
+GET /api/v1/.schema/openapi
+```
+
+Returns the complete contract as an OpenAPI schema, ready for code generation.
+
+**The complete flow:**
+```
+Database schema (null: false, default:, column types)
+    ↓
+Rails model (enums, associations, validations)
+    ↓
+Apiwork Schema (what to expose: writable, filterable, sortable)
+    ↓
+Contract (auto-generated: types, required, defaults, enums, filters)
+    ↓
+OpenAPI / TypeScript / Zod (for frontends)
+```
+
+**You define once (schema), validate everywhere (backend contracts + frontend types).**
+
+---
+
+## When you DO write contracts manually
+
+You only create an explicit contract file when you need custom behavior:
 
 ```ruby
 # app/contracts/api/v1/post_contract.rb (optional!)
 class Api::V1::PostContract < Apiwork::Contract::Base
-  schema Api::V1::PostSchema
+  schema Api::V1::PostSchema  # Still auto-generates CRUD actions
 
-  # Add custom actions
+  # Add custom action beyond CRUD
   action :publish do
-    input { param :scheduled_at, type: :datetime }
+    input { param :scheduled_at, type: :datetime, required: false }
+  end
+
+  # Override auto-generated create action
+  action :create do
+    input do
+      param :title, type: :string, required: true
+      param :slug, type: :string, required: true  # Custom validation
+      param :body, type: :string, required: true
+    end
   end
 end
 ```
 
-### What this generates
+Even when you write a contract, you still reference the schema with `schema Api::V1::PostSchema`. This keeps CRUD actions auto-generated unless you explicitly override them.
+
+### What gets auto-generated
 
 From your schema:
 
@@ -269,6 +345,47 @@ end
 **All of that from one line: `schema Api::V1::PostSchema`.**
 
 That's why you rarely write contracts manually!
+
+### Auto-generated outputs are discriminated unions
+
+You might notice `param :ok, type: :boolean, required: true` in every output. This isn't just a status flag - it's the discriminator for a type-safe union.
+
+Auto-generated outputs are actually discriminated unions with two variants:
+
+**Success variant** (`ok: true`):
+```ruby
+{
+  ok: true,          # literal type
+  post: { ... },     # the resource
+  meta: { ... }      # optional metadata (pagination, etc.)
+}
+```
+
+**Error variant** (`ok: false`):
+```ruby
+{
+  ok: false,         # literal type
+  errors: [...]      # array of error objects
+}
+```
+
+When serialized for code generators, this becomes a proper discriminated union with `ok` as the discriminator field. The `ok` field in each variant is a [literal type](literal-types.md) - not just boolean, but exactly `true` or exactly `false`.
+
+This means TypeScript clients can do type-safe branching:
+
+```typescript
+const response = await api.posts.create({ title: "Hello" });
+
+if (response.ok) {
+  // TypeScript knows: response.post exists here
+  console.log(response.post.id);
+} else {
+  // TypeScript knows: response.errors exists here
+  console.log(response.errors);
+}
+```
+
+See [Discriminated Unions](discriminated-unions.md) for how this works and how to use it in your own contracts.
 
 ## How schemas drive contracts
 
@@ -447,8 +564,10 @@ param :title,
 - `:date` - ISO 8601 date
 - `:datetime` - ISO 8601 datetime
 - `:uuid` - UUID format
+- `:literal` - Exact value matching (e.g., `type: :literal, value: 'archived'`)
 - `:object` - JSON objects (use with block for nested params)
 - `:array` - Arrays (use `of:` for item type)
+- `:union` - Multiple possible types (optionally discriminated)
 
 ### Arrays
 
@@ -503,13 +622,24 @@ For fields that accept multiple types:
 
 ```ruby
 param :metadata, type: :union do
-  variant :object do
+  variant type: :object do
     param :key, type: :string
     param :value, type: :string
   end
-  variant :string
+  variant type: :string
 end
 ```
+
+For type-safe unions where one field determines the variant, use discriminated unions:
+
+```ruby
+param :payment, type: :union, discriminator: :method do
+  variant tag: 'card', type: :card_payment
+  variant tag: 'bank', type: :bank_payment
+end
+```
+
+See [Discriminated Unions](discriminated-unions.md) for details.
 
 ## Validation errors
 
@@ -555,8 +685,41 @@ These validation features are **not supported**:
 
 For complex validation beyond type checking and enums, use Active Record validations in your models.
 
+## The big picture
+
+**The Contract DSL is the heart of Apiwork** - it's a precise language for describing object shapes with rich type information including:
+
+- Primitive types (string, integer, boolean, datetime, uuid, etc.)
+- [Literal types](literal-types.md) (exact values like `status: "archived"`)
+- [Enums](enums.md) (restricted value sets)
+- [Discriminated unions](discriminated-unions.md) (type-safe polymorphism)
+- [Custom types](params.md#custom-types) (reusable shapes)
+- Nested objects and arrays
+- Required/optional fields, defaults, nullable constraints
+
+**But you rarely write contracts manually.** Instead:
+
+1. **Write a Schema** - Declare what attributes to expose (`writable`, `filterable`, `sortable`)
+2. **Apiwork reads Rails** - Types from database columns, constraints from migrations, enums from models
+3. **Contracts auto-generate** - Complete CRUD actions with filtering, sorting, pagination
+4. **Schemas export** - OpenAPI, TypeScript, Zod for frontend code generation
+
+```
+You write:        10 lines of schema code
+Apiwork generates: Hundreds of lines of contract code
+Frontend gets:     Fully typed API client with autocomplete and compile-time safety
+```
+
+**This is the point:** Define your data shape once (in your database and schema), validate everywhere (backend runtime + frontend compile-time).
+
+The contract DSL is powerful when you need it (custom actions, complex validation, discriminated unions), but invisible when you don't (90% of the time).
+
 ## Next steps
 
+- **[Params](./params.md)** - Complete guide to parameter types and options
+- **[Literal Types](./literal-types.md)** - Exact value matching for type safety
+- **[Discriminated Unions](./discriminated-unions.md)** - Type-safe unions with discriminators
+- **[Enums](./enums.md)** - Restricting values to specific options
 - **[Actions](./actions.md)** - Defining action contracts in detail
-- **[Schemas](../schemas/introduction.md)** - How schemas drive auto-generation
+- **[Schemas](../schemas/introduction.md)** - How schemas drive auto-generation (recommended starting point!)
 - **[Controllers](../controllers/introduction.md)** - Using contracts in controllers
