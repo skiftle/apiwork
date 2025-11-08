@@ -38,48 +38,65 @@ RSpec.describe 'API Introspection' do
       describe 'posts resource' do
         let(:posts) { json[:resources][:posts] }
 
-        it 'includes resource metadata' do
-          expect(posts[:path]).to eq('/api/v1/posts')
-          expect(posts[:singular]).to be false
-          expect(posts[:actions]).to eq([:index, :show, :create, :update, :destroy])
+        it 'includes all CRUD actions' do
+          expect(posts[:actions]).to have_key(:index)
+          expect(posts[:actions]).to have_key(:show)
+          expect(posts[:actions]).to have_key(:create)
+          expect(posts[:actions]).to have_key(:update)
+          expect(posts[:actions]).to have_key(:destroy)
         end
 
-        it 'includes CRUD action contracts' do
-          expect(posts[:contracts]).to have_key(:index)
-          expect(posts[:contracts]).to have_key(:show)
-          expect(posts[:contracts]).to have_key(:create)
-          expect(posts[:contracts]).to have_key(:update)
-          expect(posts[:contracts]).to have_key(:destroy)
+        it 'includes method and path for CRUD actions' do
+          # Index action
+          expect(posts[:actions][:index][:method]).to eq(:get)
+          expect(posts[:actions][:index][:path]).to eq('/api/v1/posts')
+
+          # Show action
+          expect(posts[:actions][:show][:method]).to eq(:get)
+          expect(posts[:actions][:show][:path]).to eq('/api/v1/posts/:id')
+
+          # Create action
+          expect(posts[:actions][:create][:method]).to eq(:post)
+          expect(posts[:actions][:create][:path]).to eq('/api/v1/posts')
+
+          # Update action
+          expect(posts[:actions][:update][:method]).to eq(:patch)
+          expect(posts[:actions][:update][:path]).to eq('/api/v1/posts/:id')
+
+          # Destroy action
+          expect(posts[:actions][:destroy][:method]).to eq(:delete)
+          expect(posts[:actions][:destroy][:path]).to eq('/api/v1/posts/:id')
         end
 
-        it 'includes contract input/output definitions' do
+        it 'includes input/output definitions for CRUD actions' do
           # Index should have input and output
-          expect(posts[:contracts][:index]).to have_key(:input)
-          expect(posts[:contracts][:index]).to have_key(:output)
+          expect(posts[:actions][:index]).to have_key(:input)
+          expect(posts[:actions][:index]).to have_key(:output)
 
           # Create should have input and output
-          expect(posts[:contracts][:create]).to have_key(:input)
-          expect(posts[:contracts][:create]).to have_key(:output)
+          expect(posts[:actions][:create]).to have_key(:input)
+          expect(posts[:actions][:create]).to have_key(:output)
         end
 
         describe 'member actions' do
-          it 'includes all member actions' do
-            expect(posts[:members].keys).to contain_exactly(:publish, :archive, :preview)
+          it 'includes all member actions in actions hash' do
+            expect(posts[:actions].keys).to include(:publish, :archive, :preview)
           end
 
-          it 'includes member action metadata' do
-            expect(posts[:members][:publish][:method]).to eq(:patch)
-            expect(posts[:members][:publish][:path]).to eq('/api/v1/posts/:id/publish')
+          it 'includes method and path for member actions' do
+            expect(posts[:actions][:publish][:method]).to eq(:patch)
+            expect(posts[:actions][:publish][:path]).to eq('/api/v1/posts/:id/publish')
           end
 
-          it 'includes member action contract if available' do
-            expect(posts[:members][:archive]).to have_key(:contract)
+          it 'includes input/output for member actions' do
+            expect(posts[:actions][:archive]).to have_key(:input)
+            expect(posts[:actions][:archive]).to have_key(:output)
           end
 
           it 'uses unwrapped union structure for member action output' do
-            archive = posts[:members][:archive]
-            expect(archive[:contract]).to have_key(:output)
-            output = archive[:contract][:output]
+            archive = posts[:actions][:archive]
+            expect(archive).to have_key(:output)
+            output = archive[:output]
 
             # Should be a discriminated union
             expect(output[:type]).to eq(:union)
@@ -97,26 +114,25 @@ RSpec.describe 'API Introspection' do
           end
 
           it 'has empty output for destroy action' do
-            expect(posts[:contracts][:destroy]).to have_key(:output)
-            output_keys = posts[:contracts][:destroy][:output].keys
+            expect(posts[:actions][:destroy]).to have_key(:output)
+            output_keys = posts[:actions][:destroy][:output].keys
             expect(output_keys).to be_empty
           end
         end
 
         describe 'collection actions' do
-          it 'includes all collection actions' do
-            expect(posts[:collections].keys).to contain_exactly(:search, :bulk_create)
+          it 'includes all collection actions in actions hash' do
+            expect(posts[:actions].keys).to include(:search, :bulk_create)
           end
 
-          it 'includes collection action metadata' do
-            expect(posts[:collections][:search][:method]).to eq(:get)
-            expect(posts[:collections][:search][:path]).to eq('/api/v1/posts/search')
+          it 'includes method and path for collection actions' do
+            expect(posts[:actions][:search][:method]).to eq(:get)
+            expect(posts[:actions][:search][:path]).to eq('/api/v1/posts/search')
           end
 
-          it 'includes collection action contract if available' do
-            expect(posts[:collections][:search]).to have_key(:contract)
-            expect(posts[:collections][:search][:contract]).to have_key(:input)
-            expect(posts[:collections][:search][:contract]).to have_key(:output)
+          it 'includes input/output for collection actions' do
+            expect(posts[:actions][:search]).to have_key(:input)
+            expect(posts[:actions][:search]).to have_key(:output)
           end
         end
 
@@ -127,22 +143,23 @@ RSpec.describe 'API Introspection' do
             expect(posts[:resources]).to have_key(:comments)
           end
 
-          it 'includes correct nested path' do
-            expect(comments[:path]).to eq('/api/v1/posts/:post_id/comments')
+          it 'includes correct nested paths for CRUD actions' do
+            expect(comments[:actions][:index][:path]).to eq('/api/v1/posts/:post_id/comments')
+            expect(comments[:actions][:show][:path]).to eq('/api/v1/posts/:post_id/comments/:id')
           end
 
-          it 'includes nested resource actions' do
-            expect(comments[:actions]).to eq([:index, :show, :create, :update, :destroy])
+          it 'includes all nested resource actions' do
+            expect(comments[:actions].keys).to include(:index, :show, :create, :update, :destroy)
           end
 
           it 'includes nested resource member actions' do
-            expect(comments[:members]).to have_key(:approve)
-            expect(comments[:members][:approve][:path]).to eq('/api/v1/posts/:post_id/comments/:id/approve')
+            expect(comments[:actions]).to have_key(:approve)
+            expect(comments[:actions][:approve][:path]).to eq('/api/v1/posts/:post_id/comments/:id/approve')
           end
 
           it 'includes nested resource collection actions' do
-            expect(comments[:collections]).to have_key(:recent)
-            expect(comments[:collections][:recent][:path]).to eq('/api/v1/posts/:post_id/comments/recent')
+            expect(comments[:actions]).to have_key(:recent)
+            expect(comments[:actions][:recent][:path]).to eq('/api/v1/posts/:post_id/comments/recent')
           end
         end
       end
@@ -151,19 +168,19 @@ RSpec.describe 'API Introspection' do
         let(:restricted_posts) { json[:resources][:restricted_posts] }
 
         it 'includes only specified actions' do
-          expect(restricted_posts[:actions]).to eq([:index, :show])
+          expect(restricted_posts[:actions].keys).to contain_exactly(:index, :show)
         end
 
         it 'has schema-based contracts generated' do
           # Resources without explicit contract files now have schema-based contracts
-          expect(restricted_posts[:contracts]).to be_a(Hash)
-          expect(restricted_posts[:contracts]).not_to be_empty
-          expect(restricted_posts[:contracts][:index]).to be_present
-          expect(restricted_posts[:contracts][:show]).to be_present
+          expect(restricted_posts[:actions]).to be_a(Hash)
+          expect(restricted_posts[:actions]).not_to be_empty
+          expect(restricted_posts[:actions][:index]).to be_present
+          expect(restricted_posts[:actions][:show]).to be_present
         end
 
-        it 'does not include excluded actions in actions list' do
-          expect(restricted_posts[:actions]).not_to include(:create, :update, :destroy)
+        it 'does not include excluded actions' do
+          expect(restricted_posts[:actions].keys).not_to include(:create, :update, :destroy)
         end
       end
 
@@ -171,21 +188,21 @@ RSpec.describe 'API Introspection' do
         let(:safe_comments) { json[:resources][:safe_comments] }
 
         it 'includes all actions except destroyed ones' do
-          expect(safe_comments[:actions]).to eq([:index, :show, :create, :update])
+          expect(safe_comments[:actions].keys).to contain_exactly(:index, :show, :create, :update)
         end
 
         it 'has schema-based contracts generated' do
           # Resources without explicit contract files now have schema-based contracts
-          expect(safe_comments[:contracts]).to be_a(Hash)
-          expect(safe_comments[:contracts]).not_to be_empty
-          expect(safe_comments[:contracts][:index]).to be_present
-          expect(safe_comments[:contracts][:create]).to be_present
-          expect(safe_comments[:contracts][:show]).to be_present
-          expect(safe_comments[:contracts][:update]).to be_present
+          expect(safe_comments[:actions]).to be_a(Hash)
+          expect(safe_comments[:actions]).not_to be_empty
+          expect(safe_comments[:actions][:index]).to be_present
+          expect(safe_comments[:actions][:create]).to be_present
+          expect(safe_comments[:actions][:show]).to be_present
+          expect(safe_comments[:actions][:update]).to be_present
         end
 
-        it 'does not include excluded destroy action in actions list' do
-          expect(safe_comments[:actions]).not_to include(:destroy)
+        it 'does not include excluded destroy action' do
+          expect(safe_comments[:actions].keys).not_to include(:destroy)
         end
       end
     end
