@@ -5,6 +5,7 @@ module Apiwork
     include Filtering
     include Sorting
     include Pagination
+    include AssociationExtractor
     include EagerLoading
 
     attr_reader :scope, :schema, :params, :result, :meta
@@ -21,18 +22,12 @@ module Apiwork
 
       @result = apply_filter(@result, @params[:filter]) if @params[:filter].present?
       @result = apply_sort(@result, @params[:sort])
-
-      # Apply pagination and build meta
       @result = apply_pagination(@result, @params[:page]) if @params[:page].present?
 
-      # Apply includes if explicitly requested or if auto_include_associations is enabled
-      if @params[:include].present?
-        @result = apply_includes(@result, @params[:include])
-      elsif schema.auto_include_associations
-        @result = apply_includes(@result)
-      end
+      # Smart includes - merges serializable, filter, sort, and explicit includes
+      @result = apply_includes(@result, @params)
 
-      # Always build meta for the final result (for pagination info)
+      # Always build meta for pagination info
       @meta = build_meta(@result)
 
       self

@@ -4,7 +4,7 @@ module Apiwork
   class Configuration
     attr_accessor :raise_on_invalid_fields, :default_sort, :default_page_size, :maximum_page_size,
                   :max_array_items
-    attr_reader :serialize_key_transform, :deserialize_key_transform, :auto_include_associations, :error_handling_mode
+    attr_reader :serialize_key_transform, :deserialize_key_transform, :error_handling_mode
 
     VALID_BOOLEAN_VALUES = [true, false].freeze
     VALID_ERROR_HANDLING_MODES = %i[raise log silent].freeze
@@ -12,7 +12,6 @@ module Apiwork
     VALIDATED_ATTRIBUTES = {
       serialize_key_transform: -> { Transform::Case.valid_strategies },
       deserialize_key_transform: -> { Transform::Case.valid_strategies },
-      auto_include_associations: VALID_BOOLEAN_VALUES,
       error_handling_mode: VALID_ERROR_HANDLING_MODES
     }.freeze
 
@@ -23,7 +22,6 @@ module Apiwork
       @maximum_page_size = 200
       @serialize_key_transform = :none
       @deserialize_key_transform = :none
-      @auto_include_associations = false
 
       @error_handling_mode = :raise
       @max_array_items = 1000

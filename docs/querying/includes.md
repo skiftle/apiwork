@@ -1,6 +1,12 @@
 # Includes (Eager Loading)
 
-Include associated records in your response and prevent N+1 queries automatically. Mark associations as `serializable: true` and use `include` params to control what gets loaded.
+Apiwork **automatically prevents N+1 queries**. You don't need to think about eager loading - the system figures out what associations to load based on:
+
+1. **`serializable: true` associations** - Always included in responses
+2. **Filter/sort params** - Associations used in queries
+3. **Explicit `include` params** - Manual control when needed
+
+Mark associations as `serializable: true` to include them in responses, and Apiwork handles the rest.
 
 ## The N+1 problem
 
@@ -31,55 +37,122 @@ SELECT * FROM comments WHERE post_id = 3
 
 For 100 posts, that's **101 queries**. This kills performance.
 
-## The solution: Eager loading
+## The solution: Smart automatic eager loading
 
-```bash
-GET /posts?include[comments]=true
+Apiwork **automatically** eager loads associations in three scenarios:
+
+### 1. `serializable: true` associations (always)
+
+```ruby
+class PostSchema < Apiwork::Schema::Base
+  has_many :comments, schema: CommentSchema, serializable: true
+end
 ```
 
-Apiwork automatically uses `.includes()`:
+```bash
+GET /posts
+# → Auto eager-loads comments (they're in the response)
+# → No include param needed!
+```
 
-**Generated SQL**:
+**SQL**:
 ```sql
-SELECT * FROM posts                              -- 1 query
-SELECT * FROM comments WHERE post_id IN (1,2,3)  -- 1 query
+SELECT * FROM posts
+SELECT * FROM comments WHERE post_id IN (...)  -- Auto-included!
 ```
 
-Only **2 queries total**, regardless of how many posts.
+### 2. Associations used in filter/sort (automatic)
 
-## Basic syntax
+```ruby
+class PostSchema < Apiwork::Schema::Base
+  has_many :tags, schema: TagSchema, filterable: true  # serializable: false
+end
+```
 
 ```bash
-GET /posts?include[association_name]=true
+GET /posts?filter[tags][name]=ruby
+# → Auto eager-loads tags (used in filter JOIN)
+# → No N+1 even though serializable: false!
 ```
 
-**Format**: `include[association_name]=true|false`
+**SQL**:
+```sql
+SELECT * FROM posts
+INNER JOIN tags ON tags.post_id = posts.id WHERE tags.name = 'ruby'
+SELECT * FROM tags WHERE post_id IN (...)  -- Auto-included!
+```
 
-Set to `true` to include the association, `false` or omit to exclude.
+Same for sorting:
+
+```bash
+GET /posts?sort[tags][name]=asc
+# → Auto eager-loads tags (used in ORDER BY)
+```
+
+### 3. Explicit include params (manual control)
+
+```bash
+GET /posts?include[author]=true
+# → Include author even if serializable: false
+```
+
+## Smart eager loading in action
+
+**No configuration needed** - it just works:
+
+```ruby
+# Schema
+class PostSchema < Apiwork::Schema::Base
+  has_many :comments, serializable: true   # Always in response
+  has_many :tags, filterable: true         # Not in response by default
+  belongs_to :author                        # Not in response by default
+end
+```
+
+**Example 1: Simple GET**
+```bash
+GET /posts
+# Auto eager-loads: { comments: {} }
+# Only comments in response (serializable: true)
+```
+
+**Example 2: Filter on non-serializable**
+```bash
+GET /posts?filter[tags][name]=ruby
+# Auto eager-loads: { comments: {}, tags: {} }
+# Comments in response (serializable: true)
+# Tags NOT in response but eager-loaded (prevents N+1 from JOIN)
+```
+
+**Example 3: Explicit include**
+```bash
+GET /posts?include[author]=true
+# Auto eager-loads: { comments: {}, author: {} }
+# Both comments and author in response
+```
+
+**Example 4: Opt-out with false**
+```bash
+GET /posts?include[comments]=false
+# Auto eager-loads: {}
+# Skip comments even though serializable: true
+```
 
 ## Marking associations as serializable
 
-Associations must be marked `serializable: true` in your schema:
+`serializable: true` means "this association is part of the default response":
 
 ```ruby
 class PostSchema < Apiwork::Schema::Base
   model Post
 
-  attribute :title
-  attribute :body
-
-  # Without serializable: comments won't appear in response
-  has_many :comments, schema: CommentSchema
-
-  # With serializable: can be included via include params
+  # Always in response + auto eager-loaded
   has_many :comments, schema: CommentSchema, serializable: true
+
+  # Not in response unless include[tags]=true
+  # But still eager-loaded if used in filter/sort!
+  has_many :tags, schema: TagSchema, filterable: true
 end
-```
-
-Now comments can be included:
-
-```bash
-GET /posts?include[comments]=true
 ```
 
 ## Single association
@@ -148,12 +221,7 @@ end
 
 ## Nested includes
 
-Include associations of associations:
-
-```bash
-# Include comments, and include the user for each comment
-GET /posts?include[comments][user]=true
-```
+Nested `serializable: true` associations are **automatically** eager-loaded:
 
 **Schema setup**:
 ```ruby
@@ -165,6 +233,21 @@ class CommentSchema < Apiwork::Schema::Base
   belongs_to :user, schema: UserSchema, serializable: true
 end
 ```
+
+```bash
+GET /posts
+# → Auto eager-loads: { comments: { user: {} } }
+# → Comments AND users both auto-included (nested serializable)
+```
+
+**Generated SQL**:
+```sql
+SELECT * FROM posts
+SELECT * FROM comments WHERE post_id IN (...)
+SELECT * FROM users WHERE id IN (...)  -- Auto-included!
+```
+
+Only 3 queries for the entire nested structure - **completely automatic**.
 
 **Response**:
 ```json
@@ -189,14 +272,12 @@ end
 }
 ```
 
-**Generated SQL**:
-```sql
-SELECT * FROM posts
-SELECT * FROM comments WHERE post_id IN (...)
-SELECT * FROM users WHERE id IN (...)
-```
+You can also manually control nested includes:
 
-Only 3 queries for the entire nested structure.
+```bash
+# Override: include comments but NOT users
+GET /posts?include[comments][user]=false
+```
 
 ## Deep nesting
 
@@ -205,7 +286,9 @@ Only 3 queries for the entire nested structure.
 GET /posts?include[comments][user][posts]=true
 ```
 
-Works with any depth, as long as all associations are marked `serializable: true`.
+Works with any depth for any association defined in the schema (has_many, has_one, belongs_to).
+
+**Note**: Associations with `serializable: true` are **automatically** included at all nesting levels without needing explicit include params. Associations with `serializable: false` (the default) can still be included but require explicit include params.
 
 **Warning**: Deep nesting loads a lot of data. Use sparingly.
 
@@ -256,88 +339,82 @@ end
 
 Works the same as `belongs_to` and `has_many`.
 
-## Excluding associations
+## Excluding associations with `include[foo]=false`
 
-By default, associations are **not** included unless:
-1. Explicitly requested via `include` params
-2. Or schema has `auto_include_associations = true`
+Use `include[association]=false` to opt-out of automatic includes:
 
-```bash
-# Don't include comments
-GET /posts
-GET /posts?include[comments]=false
-```
-
-Both return posts without comments.
-
-## Auto-including associations
-
-Force associations to always be included:
+### Skip `serializable: true` associations
 
 ```ruby
 class PostSchema < Apiwork::Schema::Base
-  self.auto_include_associations = true
-
-  has_many :comments, schema: CommentSchema, serializable: true
+  has_many :comments, serializable: true  # Auto-included by default
 end
 ```
 
-Now comments are **always** included, even without `include` params:
-
-```bash
-GET /posts
-# Comments are included automatically
-```
-
-You can still exclude them explicitly:
-
 ```bash
 GET /posts?include[comments]=false
-# Comments are excluded
+# → Skips comments (even though serializable: true)
+# → Performance optimization when you don't need them
 ```
 
-**Use cases**:
-- Critical associations that are always needed
-- Small associations with minimal overhead
-- APIs where you control the frontend and always need the data
+### Skip filter/sort auto-includes
 
-**Warning**: Auto-including large associations can hurt performance.
+```bash
+GET /posts?filter[tags][name]=ruby&include[tags]=false
+# → Uses tags for filtering (JOIN)
+# → But doesn't eager-load them
+# → Useful when tags aren't serializable anyway
+```
+
+**When to use `false`:**
+- Performance optimization for expensive associations
+- You need to filter/sort but don't need the data
+- Reduce response payload size
+
+**Default behavior without `false`:**
+- `serializable: true` → Always eager-loaded and in response
+- `serializable: false` + used in filter/sort → Eager-loaded but NOT in response
+- `serializable: false` + not used → Not eager-loaded
 
 ## Combining with filters
 
+**Smart auto-detection prevents N+1:**
+
 ```bash
-# Published posts with their comments
-GET /posts?filter[published][equal]=true&include[comments]=true
+# Filter on association - auto eager-loads!
+GET /posts?filter[tags][name]=ruby
+# → Auto eager-loads tags (prevents N+1 from JOIN)
+# → No manual include needed!
 ```
 
-Filtering applies to the main collection, includes apply to associations:
-
+**SQL**:
 ```sql
-SELECT * FROM posts WHERE published = true
-SELECT * FROM comments WHERE post_id IN (...)
+SELECT * FROM posts
+INNER JOIN tags ON tags.post_id = posts.id WHERE tags.name = 'ruby'
+SELECT * FROM tags WHERE post_id IN (...)  -- Auto-included!
 ```
 
-**Important**: The filter does NOT apply to the included comments. All comments for filtered posts are loaded.
-
-If you want to filter comments, use association filtering (see [Filtering](filtering.md#association-filtering)).
+**Important**: The filter does NOT apply to eager-loaded tags. All tags for matching posts are loaded. The filter only determines which posts match.
 
 ## Combining with sorting
 
+**Smart auto-detection for sorts too:**
+
 ```bash
-# Sort posts by title, include comments
-GET /posts?sort[title]=asc&include[comments]=true
+# Sort by association - auto eager-loads!
+GET /posts?sort[comments][created_at]=desc
+# → Auto eager-loads comments (prevents N+1 from JOIN)
 ```
 
-Sorting applies to the main collection, not to included associations:
-
+**SQL**:
 ```sql
-SELECT * FROM posts ORDER BY title ASC
-SELECT * FROM comments WHERE post_id IN (...)
+SELECT * FROM posts
+LEFT JOIN comments ON comments.post_id = posts.id
+ORDER BY comments.created_at DESC
+SELECT * FROM comments WHERE post_id IN (...)  -- Auto-included!
 ```
 
-Comments appear in database order (usually by id).
-
-**To sort included associations**, you'd need to define ordering in the association:
+**To sort included associations**, define ordering in the model:
 
 ```ruby
 class Post < ApplicationRecord
@@ -581,16 +658,45 @@ GET /posts?include[comments]=true
 
 Users can only see comments for their own posts.
 
+## Summary: How Smart Eager Loading Works
+
+Apiwork automatically prevents N+1 queries by eager-loading associations from **three sources**:
+
+### 1. `serializable: true` → Always eager-loaded
+```ruby
+has_many :comments, serializable: true
+# GET /posts → Auto eager-loads comments
+```
+
+### 2. Filter/Sort → Auto-detected and eager-loaded
+```bash
+GET /posts?filter[tags][name]=ruby
+# → Auto eager-loads tags (prevents N+1 from JOIN)
+
+GET /posts?sort[category][name]=asc
+# → Auto eager-loads category (prevents N+1 from ORDER BY)
+```
+
+### 3. Explicit `include` → Manual control
+```bash
+GET /posts?include[author]=true
+# → Include author in response
+
+GET /posts?include[comments]=false
+# → Skip comments (opt-out)
+```
+
+**The magic:** All three sources are **automatically merged**. You never have to think about N+1 queries - Apiwork figures out what to eager-load based on your query.
+
 ## Best practices
 
-1. **Mark only needed associations as serializable** - Don't expose internal data
-2. **Include only what you need** - More data = slower response
-3. **Combine with pagination** - Limit main collection size
-4. **Profile slow queries** - Check SQL logs for inefficient includes
-5. **Add database indexes** - Index foreign keys for faster joins
-6. **Avoid deep nesting** - Keep includes shallow for performance
-7. **Use separate endpoints** - For detailed nested data, consider dedicated routes
-8. **Don't auto-include large associations** - Reserve auto-include for small data
+1. **Mark response associations as `serializable: true`** - They'll auto eager-load
+2. **Mark query associations as `filterable`/`sortable`** - They'll auto eager-load when used
+3. **Use `include[foo]=false` sparingly** - Only for performance optimization
+4. **Add database indexes** - Index foreign keys and filtered/sorted columns
+5. **Combine with pagination** - Limit main collection size
+6. **Profile slow queries** - Check SQL logs if performance degrades
+7. **Trust the system** - Don't manually add includes unless you have a specific need
 
 ## Next steps
 
