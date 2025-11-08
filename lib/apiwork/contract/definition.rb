@@ -51,15 +51,37 @@ module Apiwork
       end
 
       # Define a parameter
-      def param(name, type: :string, required: false, default: nil, enum: nil, of: nil, as: nil, **options, &block) # rubocop:disable Metrics/ParameterLists
+      # rubocop:disable Metrics/ParameterLists
+      def param(name, type: :string, required: false, default: nil, enum: nil, of: nil, as: nil,
+                discriminator: nil, value: nil, **options, &block)
+        # rubocop:enable Metrics/ParameterLists
         # Resolve enum reference if it's a symbol
         resolved_enum = resolve_enum_value(enum)
+
+        # Handle literal types
+        if type == :literal
+          raise ArgumentError, 'Literal type requires a value parameter' unless options.key?(:value) || value
+
+          @params[name] = {
+            name: name,
+            type: :literal,
+            value: value,
+            required: required,
+            default: default,
+            as: as,
+            **options
+          }
+          return
+        end
+
+        # Validate discriminator usage
+        raise ArgumentError, 'discriminator can only be used with type: :union' if discriminator && type != :union
 
         # Handle union types
         if type == :union
           raise ArgumentError, 'Union type requires a block with variant definitions' unless block_given?
 
-          union_def = UnionDefinition.new(@contract_class, type_scope: @type_scope)
+          union_def = UnionDefinition.new(@contract_class, type_scope: @type_scope, discriminator: discriminator)
           union_def.instance_eval(&block)
 
           @params[name] = {
@@ -69,6 +91,7 @@ module Apiwork
             default: default,
             as: as,
             union: union_def,
+            discriminator: discriminator,
             enum: resolved_enum, # Store resolved enum (values or reference)
             **options
           }
@@ -77,45 +100,27 @@ module Apiwork
 
         # Check if type is a custom type (with scope resolution)
         custom_type_block = @contract_class.resolve_custom_type(type, @type_scope)
-        if custom_type_block
-          # Prevent infinite recursion by tracking which types we're currently expanding
-          expansion_key = [@contract_class.object_id, type]
-          expanding_types = Thread.current[:apiwork_expanding_custom_types] ||= Set.new
-
-          # If we're already expanding this type, treat it as a type reference instead
-          if expanding_types.include?(expansion_key)
-            custom_type_block = nil
-          end
-        end
 
         if custom_type_block
-          # Custom type - resolve it with recursion protection
-          expansion_key = [@contract_class.object_id, type]
-          expanding_types = Thread.current[:apiwork_expanding_custom_types] ||= Set.new
-          expanding_types.add(expansion_key)
+          # Custom type - expand it
+          shape_def = Definition.new(@type, @contract_class, type_scope: @type_scope)
+          shape_def.instance_eval(&custom_type_block)
 
-          begin
-            shape_def = Definition.new(@type, @contract_class, type_scope: @type_scope)
-            shape_def.instance_eval(&custom_type_block)
+          # Apply additional block if provided (can extend custom type)
+          shape_def.instance_eval(&block) if block_given?
 
-            # Apply additional block if provided (can extend custom type)
-            shape_def.instance_eval(&block) if block_given?
-
-            @params[name] = {
-              name: name,
-              type: :object, # Custom types are objects internally
-              required: required,
-              default: default,
-              enum: resolved_enum, # Store resolved enum (values or reference)
-              of: of,
-              as: as,
-              custom_type: type, # Track original custom type name
-              shape: shape_def,
-              **options
-            }
-          ensure
-            expanding_types.delete(expansion_key)
-          end
+          @params[name] = {
+            name: name,
+            type: :object, # Custom types are objects internally
+            required: required,
+            default: default,
+            enum: resolved_enum, # Store resolved enum (values or reference)
+            of: of,
+            as: as,
+            custom_type: type, # Track original custom type name
+            shape: shape_def,
+            **options
+          }
         else
           # Regular type
           @params[name] = {
@@ -192,7 +197,6 @@ module Apiwork
       # Validate a single parameter
       def validate_param(name, value, param_options, data, path, max_depth:, current_depth:)
         field_path = path + [name]
-        errors = []
 
         # Check required
         required_error = validate_required(name, value, param_options, field_path)
@@ -212,6 +216,23 @@ module Apiwork
         # Validate enum
         enum_error = validate_enum_value(name, value, param_options[:enum], field_path)
         return { errors: [enum_error], value_set: false } if enum_error
+
+        # Handle literal type validation
+        if param_options[:type] == :literal
+          expected = param_options[:value]
+          unless value == expected
+            error = ValidationError.new(
+              code: :invalid_value,
+              field: name,
+              detail: "Value must be exactly #{expected.inspect}",
+              path: field_path,
+              expected: expected,
+              actual: value
+            )
+            return { errors: [error], value_set: false }
+          end
+          return { errors: [], value: value, value_set: true }
+        end
 
         # Handle union type validation
         if param_options[:type] == :union
@@ -521,6 +542,15 @@ module Apiwork
       # Returns [error, value] tuple
       def validate_union(name, value, union_def, path, max_depth:, current_depth:)
         variants = union_def.variants
+
+        # Discriminated union - use discriminator field to select variant
+        if union_def.discriminator
+          return validate_discriminated_union(
+            name, value, union_def, path, max_depth: max_depth, current_depth: current_depth
+          )
+        end
+
+        # Non-discriminated union - try each variant
         variant_errors = []
         most_specific_error = nil
 
@@ -567,6 +597,70 @@ module Apiwork
         )
 
         [error, nil]
+      end
+
+      # Validate discriminated union - uses discriminator field to select variant
+      # Returns [error, value] tuple
+      def validate_discriminated_union(name, value, union_def, path, max_depth:, current_depth:)
+        discriminator = union_def.discriminator
+        variants = union_def.variants
+
+        # Value must be a hash for discriminated unions
+        unless value.is_a?(Hash)
+          error = ValidationError.invalid_type(
+            field: name,
+            expected: :object,
+            actual: value.class.name.underscore.to_sym,
+            path: path
+          )
+          return [error, nil]
+        end
+
+        # Check if discriminator field exists
+        discriminator_value = value[discriminator]
+        unless discriminator_value
+          error = ValidationError.new(
+            code: :field_missing,
+            field: discriminator,
+            detail: "Discriminator field '#{discriminator}' is required",
+            path: path + [discriminator]
+          )
+          return [error, nil]
+        end
+
+        # Find variant matching the discriminator value
+        matching_variant = variants.find { |v| v[:tag] == discriminator_value }
+        unless matching_variant
+          valid_tags = variants.map { |v| v[:tag] }.compact
+          error = ValidationError.new(
+            code: :invalid_value,
+            field: discriminator,
+            detail: "Invalid discriminator value. Must be one of: #{valid_tags.join(', ')}",
+            path: path + [discriminator],
+            expected: valid_tags,
+            actual: discriminator_value
+          )
+          return [error, nil]
+        end
+
+        # Remove discriminator field from value before validating the variant
+        # The discriminator is already validated and used, variants should only see their own fields
+        value_without_discriminator = value.reject { |k, _v| k == discriminator }
+
+        # Validate against the matching variant
+        error, validated_value = validate_variant(
+          name,
+          value_without_discriminator,
+          matching_variant,
+          path,
+          max_depth: max_depth,
+          current_depth: current_depth
+        )
+
+        # Add discriminator back to validated value
+        validated_value = validated_value.merge(discriminator => discriminator_value) if validated_value.is_a?(Hash)
+
+        [error, validated_value]
       end
 
       # Validate a single variant of a union
@@ -682,8 +776,6 @@ module Apiwork
         [nil, value]
       end
 
-      private
-
       # Resolve enum value - if it's a symbol, resolve from Descriptors::Registry
       # If it's an array, keep as-is (inline enum)
       # @param enum [Symbol, Array, nil] Enum reference or inline values
@@ -693,17 +785,18 @@ module Apiwork
         return enum if enum.is_a?(Array) # Inline enum - keep as-is
 
         # Enum is a symbol - resolve from Descriptors::Registry with lexical scoping
-        if enum.is_a?(Symbol)
-          values = Descriptors::Registry.resolve_enum(enum, scope: self)
-          if values
-            # Return hash with both reference and resolved values
-            # This allows serialization to use the reference and validation to use the values
-            { ref: enum, values: values }
-          else
-            raise ArgumentError, "Enum :#{enum} not found. Define it using `enum :#{enum}, %w[...]` in contract or definition scope."
-          end
-        else
+        unless enum.is_a?(Symbol)
           raise ArgumentError, "enum must be a Symbol (reference) or Array (inline values), got #{enum.class}"
+        end
+
+        values = Descriptors::Registry.resolve_enum(enum, scope: self)
+        if values
+          # Return hash with both reference and resolved values
+          # This allows serialization to use the reference and validation to use the values
+          { ref: enum, values: values }
+        else
+          raise ArgumentError,
+                "Enum :#{enum} not found. Define it using `enum :#{enum}, %w[...]` in contract or definition scope."
         end
       end
     end
