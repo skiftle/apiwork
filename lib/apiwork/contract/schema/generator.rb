@@ -21,6 +21,10 @@ module Apiwork
           schema schema_class
         end
 
+        # Register all schema enums at contract level ONCE
+        # This ensures they're available for all action definitions (create, update, show, index, filters)
+        register_contract_enums(contract_class, schema_class)
+
         # Create and configure the action definition
         action_definition = Apiwork::Contract::ActionDefinition.new(action, contract_class)
 
@@ -132,7 +136,9 @@ module Apiwork
             required: attr_def.required? # Auto-detected from DB schema and model validations
           }
 
-          param_options[:enum] = attr_def.enum if attr_def.enum
+          # Reference registered enum by attribute name (registered at contract level)
+          # E.g., :status references the :post_status enum
+          param_options[:enum] = name if attr_def.enum
 
           definition.param name, **param_options
         end
@@ -174,7 +180,10 @@ module Apiwork
           Descriptors::Registry.register_local(contract_class, resource_type_name) do
             # All resource attributes
             schema_class.attribute_definitions.each do |name, attr_def|
-              param name, type: Generator.map_type(attr_def.type), required: false
+              param name,
+                   type: Generator.map_type(attr_def.type),
+                   required: false,
+                   **(attr_def.enum ? { enum: name } : {})
             end
 
             # Add associations using pre-registered types
@@ -232,7 +241,10 @@ module Apiwork
           Descriptors::Registry.register_local(contract_class, resource_type_name) do
             # Each item has all resource attributes
             schema_class.attribute_definitions.each do |name, attr_def|
-              param name, type: Generator.map_type(attr_def.type), required: false
+              param name,
+                   type: Generator.map_type(attr_def.type),
+                   required: false,
+                   **(attr_def.enum ? { enum: name } : {})
             end
 
             # Add associations using pre-registered types
@@ -332,12 +344,9 @@ module Apiwork
             # Support shorthand: allow primitive value OR filter object
             param name, type: :union, required: false do
               # Primitive value variant (shorthand)
-              if attr_def.enum
-                # If attribute has enum, pass it to the variant
-                variant type: Generator.map_type(attr_def.type), enum: attr_def.enum
-              else
-                variant type: Generator.map_type(attr_def.type)
-              end
+              # Reference enum by attribute name (registered at contract level)
+              variant type: Generator.map_type(attr_def.type),
+                      **(attr_def.enum ? { enum: name } : {})
               # Filter object variant
               variant type: filter_type
             end
@@ -554,6 +563,32 @@ module Apiwork
 
         # Return the qualified type name for reference
         Descriptors::Registry.qualified_name(assoc_contract_class, resource_type_name)
+      end
+
+      # Register all schema enums at contract level for reuse
+      #
+      # Enums are registered ONCE per contract and can be referenced in:
+      # - Input schemas (create/update)
+      # - Output schemas (show/index)
+      # - Filter variants
+      #
+      # @param contract_class [Class] Contract class to register enums with
+      # @param schema_class [Class] Schema class containing attribute definitions
+      #
+      # @example
+      #   # For PostContract with status attribute:
+      #   register_contract_enums(PostContract, PostSchema)
+      #   # Registers: :status -> [:draft, :published]
+      #   # Qualified as: :post_status in enums hash
+      #   # Referenced as: enum: :status in params
+      def self.register_contract_enums(contract_class, schema_class)
+        schema_class.attribute_definitions.each do |name, attr_def|
+          next unless attr_def.enum&.any?
+
+          # Register at contract level (not action/definition level)
+          # This makes enum available everywhere in this contract
+          Descriptors::Registry.register_local_enum(contract_class, name, attr_def.enum)
+        end
       end
 
       def self.map_type(resource_type)
