@@ -43,7 +43,18 @@ module Apiwork
 
           # Add optional metadata (only if meaningfully set)
           result[:default] = options[:default] if options.key?(:default) && !options[:default].nil?
-          result[:enum] = options[:enum] if options[:enum]
+
+          # Handle enum - differentiate between reference (hash with :ref) and inline (array)
+          if options[:enum]
+            if options[:enum].is_a?(Hash) && options[:enum][:ref]
+              # Enum reference - output the reference symbol for code generators
+              result[:enum] = options[:enum][:ref]
+            else
+              # Inline enum - output the values array
+              result[:enum] = options[:enum]
+            end
+          end
+
           result[:as] = options[:as] if options[:as]
           result[:of] = options[:of] if options[:of]
           result[:nullable] = options[:nullable] if options[:nullable]

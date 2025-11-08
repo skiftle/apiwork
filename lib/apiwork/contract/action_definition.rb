@@ -77,6 +77,28 @@ module Apiwork
         contract_class.type(name, &block)
       end
 
+      # Define an enum at action level
+      # Enums defined here are available in this action's input and output
+      #
+      # @param name [Symbol] Name of the enum (e.g., :priority)
+      # @param values [Array] Array of allowed values (e.g., %w[low high])
+      #
+      # @example
+      #   action :create do
+      #     enum :priority, %w[low medium high]
+      #
+      #     input do
+      #       param :priority, type: :string, enum: :priority
+      #     end
+      #   end
+      def enum(name, values)
+        raise ArgumentError, 'Values array required for enum definition' unless values.is_a?(Array)
+
+        # Register with TypeRegistry using this ActionDefinition instance as scope
+        # This creates action-level scoping for the enum
+        TypeRegistry.register_local_enum(self, name, values)
+      end
+
       # Define input for this action
       def input(&block)
         # Create input scope as child of action scope
@@ -84,7 +106,7 @@ module Apiwork
         input_scope_id = :"#{action_scope}_input"
         contract_class.register_scope(input_scope_id, action_scope)
 
-        @input_definition ||= Definition.new(:input, contract_class, type_scope: input_scope_id)
+        @input_definition ||= Definition.new(:input, contract_class, type_scope: input_scope_id, action_name: action_name)
 
         if block
           # Set scope for input block
@@ -108,7 +130,7 @@ module Apiwork
         output_scope_id = :"#{action_scope}_output"
         contract_class.register_scope(output_scope_id, action_scope)
 
-        @output_definition ||= Definition.new(:output, contract_class, type_scope: output_scope_id)
+        @output_definition ||= Definition.new(:output, contract_class, type_scope: output_scope_id, action_name: action_name)
 
         if block
           # Set scope for output block

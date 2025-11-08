@@ -2,14 +2,20 @@
 
 module Apiwork
   module Contract
-    # TypeRegistry: Centralized storage for all custom types
+    # TypeRegistry: Centralized storage for all custom types and enums
     #
-    # Manages two categories of types:
-    # 1. Global types - Shared across all contracts (e.g., string_filter, page_params)
-    # 2. Local types - Scoped to specific contracts (e.g., InvoiceContract's :filter)
+    # Manages two categories of types and enums:
+    # 1. Global - Shared across all contracts (e.g., string_filter, common enums)
+    # 2. Local - Scoped to specific contracts/actions/definitions
     #
-    # Global types are registered via Apiwork.register_global_types
-    # Local types are registered when Contract classes define types
+    # Both types and enums support lexical scoping:
+    # - Global scope (available everywhere)
+    # - Contract scope (available in contract and its actions)
+    # - Action scope (available in action's input/output)
+    # - Definition scope (available in specific input/output block)
+    #
+    # Global types/enums are registered via Apiwork.register_global_types
+    # Local types/enums are registered when Contract classes or Definitions define them
     #
     # Example:
     #   # Global type (available everywhere)
@@ -66,6 +72,33 @@ module Apiwork
           }
         end
 
+        # Register a global enum (shared across all contracts)
+        #
+        # @param name [Symbol] Enum name (e.g., :status)
+        # @param values [Array] Enum values (e.g., %w[draft published])
+        # @raise [ArgumentError] if enum already registered
+        def register_global_enum(name, values)
+          if global_enums.key?(name)
+            raise ArgumentError, "Global enum :#{name} already registered"
+          end
+
+          global_enums[name] = values
+        end
+
+        # Register a local enum (scoped to a contract, action, or definition)
+        #
+        # @param scope [Class, Object] Scope object (Contract class or Definition instance)
+        # @param name [Symbol] Short enum name (e.g., :status)
+        # @param values [Array] Enum values (e.g., %w[draft published])
+        def register_local_enum(scope, name, values)
+          local_enums[scope] ||= {}
+          local_enums[scope][name] = {
+            short_name: name,
+            qualified_name: qualified_enum_name(scope, name),
+            values: values
+          }
+        end
+
         # Resolve a type definition
         #
         # Resolution order:
@@ -102,6 +135,69 @@ module Apiwork
           local_types[contract_class]&.key?(name) || false
         end
 
+        # Resolve an enum with lexical scoping
+        #
+        # Resolution order (lexical scoping):
+        # 1. Local enums in the given scope (most specific - Definition instance)
+        # 2. Parent scopes (Definition → ActionDefinition → Contract)
+        # 3. Global enums
+        #
+        # @param name [Symbol] Enum name to resolve
+        # @param scope [Object] Scope object (Definition, ActionDefinition, Contract class)
+        # @return [Array, nil] Enum values array or nil if not found
+        def resolve_enum(name, scope:)
+          # First check if this exact scope has the enum
+          if local_enums[scope]&.key?(name)
+            return local_enums[scope][name][:values]
+          end
+
+          # If scope is a Definition, walk up the scope chain
+          if scope.respond_to?(:parent_scope) && scope.parent_scope
+            result = resolve_enum(name, scope: scope.parent_scope)
+            return result if result
+          end
+
+          # If scope is a Definition with an action_name, check the ActionDefinition
+          # This is needed because Definitions created inside action blocks don't have parent_scope set
+          # but should still be able to resolve action-level enums
+          if scope.class.name == 'Apiwork::Contract::Definition' && scope.respond_to?(:action_name) && scope.action_name
+            # Try to find the ActionDefinition for this action
+            contract_class = scope.contract_class
+            action_def = contract_class.action_definition(scope.action_name) if contract_class.respond_to?(:action_definition)
+            if action_def && local_enums[action_def]&.key?(name)
+              return local_enums[action_def][name][:values]
+            end
+          end
+
+          # If scope is a Definition or ActionDefinition, also check its contract class
+          if scope.respond_to?(:contract_class)
+            contract_class = scope.contract_class
+            if local_enums[contract_class]&.key?(name)
+              return local_enums[contract_class][name][:values]
+            end
+          end
+
+          # Fall back to global enums
+          global_enums[name]
+        end
+
+        # Check if an enum is registered as global
+        #
+        # @param name [Symbol] Enum name
+        # @return [Boolean]
+        def global_enum?(name)
+          global_enums.key?(name)
+        end
+
+        # Check if an enum is registered locally for a scope
+        #
+        # @param name [Symbol] Enum name
+        # @param scope [Object] Scope object
+        # @return [Boolean]
+        def local_enum?(name, scope)
+          local_enums[scope]&.key?(name) || false
+        end
+
         # Get qualified name for a type (used in as_json output)
         #
         # Global types keep their name
@@ -128,6 +224,55 @@ module Apiwork
           return contract_prefix.to_sym if name.nil? || name.to_s.empty?
 
           :"#{contract_prefix}_#{name}"
+        end
+
+        # Get qualified name for an enum (used in as_json output)
+        #
+        # Global enums keep their name
+        # Local enums get prefixed based on their scope
+        #
+        # @param scope [Object] Scope object (Contract class, Definition instance, etc.)
+        # @param name [Symbol] Short enum name
+        # @return [Symbol] Qualified enum name
+        #
+        # @example
+        #   # Contract-level enum
+        #   qualified_enum_name(PostContract, :status)
+        #   # => :post_status
+        #
+        #   # Action-level enum (Definition with action_name)
+        #   qualified_enum_name(definition_instance, :priority)
+        #   # => :post_create_priority
+        #
+        #   # Global enum
+        #   qualified_enum_name(anything, :global_status)
+        #   # => :global_status
+        def qualified_enum_name(scope, name)
+          # Global enums keep their name
+          return name if global_enum?(name)
+
+          # Extract prefix based on scope type
+          if scope.is_a?(Class)
+            # Contract-level enum
+            contract_prefix = extract_contract_prefix(scope)
+            return :"#{contract_prefix}_#{name}"
+          elsif scope.respond_to?(:contract_class) && scope.respond_to?(:action_name)
+            # Action/Definition-level enum
+            contract_prefix = extract_contract_prefix(scope.contract_class)
+            action_name = scope.action_name
+
+            # Check if this is an input/output definition (has direction)
+            if scope.respond_to?(:direction)
+              direction = scope.direction
+              return :"#{contract_prefix}_#{action_name}_#{direction}_#{name}"
+            else
+              # Action-level (no direction)
+              return :"#{contract_prefix}_#{action_name}_#{name}"
+            end
+          else
+            # Fallback: just use the name
+            name
+          end
         end
 
         # Get all registered global type names
@@ -221,10 +366,39 @@ module Apiwork
           result
         end
 
-        # Clear all registered types (useful for testing)
+        # Serialize ALL enums for an API's as_json output
+        # Returns a single hash with all global enums + all local enums from all scopes
+        #
+        # @param api [Apiwork::API::Base] The API instance
+        # @return [Hash] { enum_name => values_array }
+        def serialize_all_enums_for_api(api)
+          result = {}
+
+          # Add all global enums (no prefix)
+          global_enums.each do |enum_name, values|
+            result[enum_name] = values
+          end
+
+          # Add all local enums from all scopes (prefixed)
+          # Convert to array to prevent iteration issues
+          local_enums.to_a.each do |scope, enums|
+            enums.to_a.each do |_enum_name, metadata|
+              qualified_name = metadata[:qualified_name]
+              values = metadata[:values]
+
+              result[qualified_name] = values
+            end
+          end
+
+          result
+        end
+
+        # Clear all registered types and enums (useful for testing)
         def clear!
           @global_types = {}
           @local_types = {}
+          @global_enums = {}
+          @local_enums = {}
         end
 
         private
@@ -255,6 +429,21 @@ module Apiwork
         # Structure: { ContractClass => { type_name => metadata } }
         def local_types
           @local_types ||= {}
+        end
+
+        # Storage for global enums
+        # Structure: { enum_name => values_array }
+        def global_enums
+          @global_enums ||= {}
+        end
+
+        # Storage for local enums
+        # Structure: { scope_key => { enum_name => metadata } }
+        # scope_key can be:
+        #   - Contract class (for contract-level enums)
+        #   - Definition instance (for action/input/output-level enums)
+        def local_enums
+          @local_enums ||= {}
         end
 
         # Extract contract prefix from contract class name

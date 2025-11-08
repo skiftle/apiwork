@@ -47,22 +47,23 @@ module Apiwork
         end
 
         # Serialize entire API to JSON-friendly hash
-        # Returns complete API structure with metadata, resources, and contracts
+        # Returns complete API structure with metadata, resources, contracts, types, and enums
         # @return [Hash] Complete API introspection
         def as_json
           return nil unless metadata
 
-          # Build resources first - this creates contract classes and registers types
+          # Build resources first - this creates contract classes and registers types/enums
           resources = {}
           metadata.resources.each do |resource_name, resource_metadata|
             resources[resource_name] = serialize_resource(resource_name, resource_metadata)
           end
 
-          # Now collect all types (after contract classes have been created)
+          # Now collect all types and enums (after contract classes have been created)
           {
             path: mount_path,
             metadata: serialize_doc,
             types: serialize_all_types,
+            enums: serialize_all_enums,
             resources: resources
           }
         end
@@ -84,6 +85,12 @@ module Apiwork
         # Returns all global types + all local types from all contracts in a single hash
         def serialize_all_types
           Contract::TypeRegistry.serialize_all_types_for_api(self)
+        end
+
+        # Serialize all enums from TypeRegistry
+        # Returns all global enums + all local enums from all scopes in a single hash
+        def serialize_all_enums
+          Contract::TypeRegistry.serialize_all_enums_for_api(self)
         end
 
         # Serialize a single resource with all its actions and metadata
