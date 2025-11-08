@@ -72,13 +72,18 @@ module Apiwork
 
         # Serialize documentation metadata
         def serialize_doc
-          return nil unless metadata.doc
+          result = {}
 
-          {
-            title: metadata.doc[:title],
-            version: metadata.doc[:version],
-            description: metadata.doc[:description]
-          }.compact
+          if metadata.doc
+            result[:title] = metadata.doc[:title]
+            result[:version] = metadata.doc[:version]
+            result[:description] = metadata.doc[:description]
+          end
+
+          # Add global error codes if defined
+          result[:error_codes] = metadata.error_codes if metadata.error_codes&.any?
+
+          result.compact.presence
         end
 
         # Serialize all types from Descriptors::Registry
@@ -185,6 +190,7 @@ module Apiwork
           contract_json = action_definition.as_json
           actions[name][:input] = contract_json[:input] || {}
           actions[name][:output] = contract_json[:output] || {}
+          actions[name][:error_codes] = contract_json[:error_codes] if contract_json[:error_codes]
         end
 
         # Build full path for a resource

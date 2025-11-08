@@ -208,6 +208,59 @@ RSpec.describe 'API Introspection' do
     end
   end
 
+  describe 'error_codes' do
+    let(:api) { Apiwork::API.find('/api/v1') }
+    let(:json) { api.as_json }
+
+    it 'includes API-level global error codes in metadata' do
+      expect(json[:metadata][:error_codes]).to eq([400, 500])
+    end
+
+    context 'when action has no specific error codes' do
+      it 'includes only global codes for index action' do
+        index_action = json[:resources][:posts][:actions][:index]
+        expect(index_action[:error_codes]).to eq([400, 500])
+      end
+    end
+
+    context 'when action has specific error codes' do
+      it 'merges API global codes with show action codes' do
+        show_action = json[:resources][:posts][:actions][:show]
+        # PostContract#show has error_codes 404, 403
+        # API has global codes 400, 500
+        expect(show_action[:error_codes]).to match_array([400, 403, 404, 500])
+      end
+
+      it 'keeps codes unique and sorted' do
+        show_action = json[:resources][:posts][:actions][:show]
+        codes = show_action[:error_codes]
+        expect(codes).to eq(codes.uniq.sort)
+      end
+
+      it 'merges API global codes with create action codes' do
+        create_action = json[:resources][:posts][:actions][:create]
+        # PostContract#create has error_codes 422
+        # API has global codes 400, 500
+        expect(create_action[:error_codes]).to match_array([400, 422, 500])
+      end
+
+      it 'merges different codes for different actions' do
+        show_action = json[:resources][:posts][:actions][:show]
+        create_action = json[:resources][:posts][:actions][:create]
+        update_action = json[:resources][:posts][:actions][:update]
+
+        # show: 400, 403, 404, 500
+        expect(show_action[:error_codes]).to match_array([400, 403, 404, 500])
+
+        # create: 400, 422, 500
+        expect(create_action[:error_codes]).to match_array([400, 422, 500])
+
+        # update: 400, 404, 422, 500
+        expect(update_action[:error_codes]).to match_array([400, 404, 422, 500])
+      end
+    end
+  end
+
   describe 'nil handling' do
     it 'returns nil when API has no metadata' do
       api_class = Class.new(Apiwork::API::Base)

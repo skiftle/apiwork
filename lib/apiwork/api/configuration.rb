@@ -76,6 +76,15 @@ module Apiwork
         @schemas&.any?
       end
 
+      # Set global error codes for all endpoints in this API
+      #
+      # @param codes [Array<Integer>] HTTP status codes that can be returned
+      # @example
+      #   error_codes 400, 500, 503
+      def error_codes(*codes)
+        @metadata.error_codes = codes.flatten.map(&:to_i).uniq.sort
+      end
+
       private
 
       # Convert path to namespaces array

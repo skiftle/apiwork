@@ -5,7 +5,13 @@ module Api
     class PostContract < Apiwork::Contract::Base
       schema PostSchema
 
+      action :show do
+        error_codes 404, 403  # Not found, forbidden
+      end
+
       action :create do
+        error_codes 422  # Validation error
+
         input do
           param :title, type: :string
           param :body, type: :string, required: false
@@ -14,6 +20,8 @@ module Api
       end
 
       action :update do
+        error_codes 404, 422  # Not found, validation error
+
         input do
           param :title, type: :string, required: false
           param :body, type: :string, required: false
