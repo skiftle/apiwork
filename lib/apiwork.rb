@@ -26,22 +26,24 @@ module Apiwork
       Generation::Registry[type].generate(path, **options)
     end
 
-    # Register global types (shared across all contracts)
+    # Register global descriptors (types and enums shared across all contracts)
     #
-    # Global types are available in all contracts and don't need prefixing.
-    # Examples: string_filter, integer_filter, page_params
+    # Global descriptors are available in all contracts and don't need prefixing.
+    # Examples: string_filter, integer_filter, status enum
     #
-    # @example Register custom global types
-    #   Apiwork.register_global_types do
+    # @example Register custom global descriptors
+    #   Apiwork.register_global_descriptors do
     #     type :currency_filter do
     #       param :eq, type: :string
     #       param :in, type: :array, of: :string
     #     end
+    #
+    #     enum :status, %w[draft published archived]
     #   end
     #
-    # @yield Block evaluated with GlobalTypeBuilder DSL
-    def register_global_types(&block)
-      builder = Contract::GlobalTypeBuilder.new
+    # @yield Block evaluated with Descriptors::GlobalBuilder DSL
+    def register_global_descriptors(&block)
+      builder = Contract::Descriptors::GlobalBuilder.new
       builder.instance_eval(&block)
     end
   end

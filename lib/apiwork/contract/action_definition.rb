@@ -94,9 +94,9 @@ module Apiwork
       def enum(name, values)
         raise ArgumentError, 'Values array required for enum definition' unless values.is_a?(Array)
 
-        # Register with DescriptorRegistry using this ActionDefinition instance as scope
+        # Register with Descriptors::Registry using this ActionDefinition instance as scope
         # This creates action-level scoping for the enum
-        DescriptorRegistry.register_local_enum(self, name, values)
+        Descriptors::Registry.register_local_enum(self, name, values)
       end
 
       # Define input for this action

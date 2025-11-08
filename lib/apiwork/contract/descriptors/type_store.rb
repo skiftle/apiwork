@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
-require_relative 'base'
 
 module Apiwork
   module Contract
-    module DescriptorRegistry
+    module Descriptors
       # TypeStore handles custom type registration and resolution
       # Types are stored as Proc blocks that define parameter structures
       class TypeStore < Base

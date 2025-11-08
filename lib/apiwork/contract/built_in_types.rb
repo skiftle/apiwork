@@ -14,7 +14,7 @@ module Apiwork
     #
     module BuiltInTypes
       def self.register
-        Apiwork.register_global_types do
+        Apiwork.register_global_descriptors do
           # String filter type
           # Provides common string comparison and pattern matching operators
           type :string_filter do

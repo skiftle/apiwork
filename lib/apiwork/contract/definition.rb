@@ -7,7 +7,7 @@ module Apiwork
 
       def initialize(type, contract_class, type_scope: :root, action_name: nil, parent_scope: nil)
         @type = type # :input or :output
-        @direction = type # Alias for type (used by DescriptorRegistry.qualified_enum_name)
+        @direction = type # Alias for type (used by Descriptors::Registry.qualified_enum_name)
         @contract_class = contract_class
         @type_scope = type_scope
         @action_name = action_name
@@ -45,9 +45,9 @@ module Apiwork
       def enum(name, values)
         raise ArgumentError, 'Values array required for enum definition' unless values.is_a?(Array)
 
-        # Register with DescriptorRegistry using this definition instance as scope
+        # Register with Descriptors::Registry using this definition instance as scope
         # This creates definition-level scoping for the enum
-        DescriptorRegistry.register_local_enum(self, name, values)
+        Descriptors::Registry.register_local_enum(self, name, values)
       end
 
       # Define a parameter
@@ -665,7 +665,7 @@ module Apiwork
 
       private
 
-      # Resolve enum value - if it's a symbol, resolve from DescriptorRegistry
+      # Resolve enum value - if it's a symbol, resolve from Descriptors::Registry
       # If it's an array, keep as-is (inline enum)
       # @param enum [Symbol, Array, nil] Enum reference or inline values
       # @return [Hash, Array, nil] Resolved enum with metadata or inline values
@@ -673,9 +673,9 @@ module Apiwork
         return nil if enum.nil?
         return enum if enum.is_a?(Array) # Inline enum - keep as-is
 
-        # Enum is a symbol - resolve from DescriptorRegistry with lexical scoping
+        # Enum is a symbol - resolve from Descriptors::Registry with lexical scoping
         if enum.is_a?(Symbol)
-          values = DescriptorRegistry.resolve_enum(enum, scope: self)
+          values = Descriptors::Registry.resolve_enum(enum, scope: self)
           if values
             # Return hash with both reference and resolved values
             # This allows serialization to use the reference and validation to use the values
