@@ -66,6 +66,16 @@ param :created_at, type: :datetime
 
 Expects ISO 8601 format.
 
+### Literal
+
+```ruby
+param :status, type: :literal, value: 'archived'
+param :version, type: :literal, value: 1
+param :ok, type: :literal, value: true
+```
+
+A literal type validates that a parameter must be exactly the specified value. See [Literal Types](literal-types.md) for details.
+
 ## Param options
 
 ### required
@@ -90,7 +100,7 @@ Applied when param is missing or nil.
 param :status, type: :string, enum: ['draft', 'published', 'archived']
 ```
 
-Restricts values to specific options.
+Restricts values to specific options. See [Enums](enums.md) for complete documentation on inline enums, named enums, scoped enums, and built-in filter enums.
 
 ### nullable
 
@@ -202,6 +212,47 @@ action :create do
     end
   end
 end
+```
+
+### Discriminated unions
+
+For type-safe unions where one field determines the variant:
+
+```ruby
+param :payment, type: :union, discriminator: :method do
+  variant tag: 'card', type: :card_payment
+  variant tag: 'bank', type: :bank_payment
+end
+```
+
+See [Discriminated Unions](discriminated-unions.md) for complete documentation.
+
+### Variant options
+
+Variants support these options:
+
+```ruby
+# Basic variant with custom type
+variant type: :custom_type
+
+# Variant with inline shape
+variant type: :object do
+  param :field, type: :string
+end
+
+# Variant with array
+variant type: :array, of: :item_type
+
+# Variant with enum
+variant type: :string, enum: ['value1', 'value2']
+
+# Variant with tag (for discriminated unions)
+variant tag: 'tag_value', type: :variant_type
+```
+
+Complete variant signature:
+```ruby
+variant type: :type_name, of: :item_type, enum: :enum_ref, tag: 'discriminator_value', &block
 ```
 
 ## Lexical scoping
@@ -528,6 +579,9 @@ For complex validation beyond type checking and enums, use Active Record validat
 
 ## Next steps
 
+- **[Literal Types](./literal-types.md)** - Exact value matching for type safety
+- **[Discriminated Unions](./discriminated-unions.md)** - Type-safe unions with discriminators
+- **[Enums](./enums.md)** - Complete guide to enums and scoping
 - **[Actions](./actions.md)** - Defining action contracts
 - **[Types](./types.md)** - Deep dive into custom and union types
 - **[Introduction](./introduction.md)** - Back to contracts overview
