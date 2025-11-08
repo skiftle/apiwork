@@ -66,9 +66,9 @@ module Apiwork
         result[:input] = merged_input_definition&.as_json
         result[:output] = merged_output_definition&.as_json
 
-        # Include error codes (merged with API-level global codes)
-        merged_codes = all_error_codes
-        result[:error_codes] = merged_codes if merged_codes.any?
+        # Always include error_codes (empty array if no action-specific codes)
+        # Global codes are in json[:error_codes], consumers merge them
+        result[:error_codes] = all_error_codes
 
         result
       end
@@ -200,15 +200,16 @@ module Apiwork
 
       private
 
-      # Get all error codes (API-level global + action-specific + auto-generated)
+      # Get action-specific error codes (action-specific + auto-generated)
+      # Does NOT include API-level global codes (those are in json[:error_codes])
       # Returns a unique, sorted array of HTTP status codes
+      # Consumers should merge: api.error_codes + (action.error_codes || [])
       def all_error_codes
-        api_codes = api_error_codes
         action_codes = @error_codes || []
         auto_codes = auto_writable_error_codes
 
-        # Merge all three sources and deduplicate
-        (api_codes + action_codes + auto_codes).uniq.sort
+        # Merge action-specific and auto-generated codes only
+        (action_codes + auto_codes).uniq.sort
       end
 
       # Auto-add 422 for writable actions based on HTTP method
@@ -266,17 +267,6 @@ module Apiwork
         end
 
         nil
-      end
-
-      # Get global error codes from the API definition
-      # Searches through all registered APIs to find the one containing this contract
-      def api_error_codes
-        # Find the API that contains this contract class
-        api = find_api_for_contract
-
-        return [] unless api&.metadata
-
-        api.metadata.error_codes || []
       end
 
       # Find the API definition class that contains this contract
