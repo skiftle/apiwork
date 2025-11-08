@@ -59,13 +59,18 @@ module Apiwork
           end
 
           # Now collect all types and enums (after contract classes have been created)
-          {
+          result = {
             path: mount_path,
             metadata: serialize_doc,
             types: serialize_all_types,
             enums: serialize_all_enums,
             resources: resources
           }
+
+          # Add global error codes at root level if defined
+          result[:error_codes] = metadata.error_codes if metadata.error_codes&.any?
+
+          result
         end
 
         private
@@ -79,9 +84,6 @@ module Apiwork
             result[:version] = metadata.doc[:version]
             result[:description] = metadata.doc[:description]
           end
-
-          # Add global error codes if defined
-          result[:error_codes] = metadata.error_codes if metadata.error_codes&.any?
 
           result.compact.presence
         end
