@@ -60,16 +60,20 @@ module Apiwork
 
         # Handle literal types
         if type == :literal
-          raise ArgumentError, 'Literal type requires a value parameter' unless options.key?(:value) || value
+          # value can be false (boolean), so check if it was provided (not nil)
+          raise ArgumentError, 'Literal type requires a value parameter' if value.nil? && !options.key?(:value)
+
+          # Use value from named parameter or from options hash
+          literal_value = value.nil? ? options[:value] : value
 
           @params[name] = {
             name: name,
             type: :literal,
-            value: value,
+            value: literal_value,
             required: required,
             default: default,
             as: as,
-            **options
+            **options.except(:value) # Remove :value from options to avoid duplication
           }
           return
         end
@@ -101,26 +105,43 @@ module Apiwork
         # Check if type is a custom type (with scope resolution)
         custom_type_block = @contract_class.resolve_custom_type(type, @type_scope)
 
+        # Check if we're already expanding this type (prevent infinite recursion)
         if custom_type_block
-          # Custom type - expand it
-          shape_def = Definition.new(@type, @contract_class, type_scope: @type_scope)
-          shape_def.instance_eval(&custom_type_block)
+          expansion_key = [@contract_class.object_id, type]
+          expanding_types = Thread.current[:apiwork_expanding_custom_types] ||= Set.new
 
-          # Apply additional block if provided (can extend custom type)
-          shape_def.instance_eval(&block) if block_given?
+          # If already expanding this type, treat it as a reference instead of expanding
+          custom_type_block = nil if expanding_types.include?(expansion_key)
+        end
 
-          @params[name] = {
-            name: name,
-            type: :object, # Custom types are objects internally
-            required: required,
-            default: default,
-            enum: resolved_enum, # Store resolved enum (values or reference)
-            of: of,
-            as: as,
-            custom_type: type, # Track original custom type name
-            shape: shape_def,
-            **options
-          }
+        if custom_type_block
+          # Custom type - expand it with recursion protection
+          expansion_key = [@contract_class.object_id, type]
+          expanding_types = Thread.current[:apiwork_expanding_custom_types] ||= Set.new
+          expanding_types.add(expansion_key)
+
+          begin
+            shape_def = Definition.new(@type, @contract_class, type_scope: @type_scope)
+            shape_def.instance_eval(&custom_type_block)
+
+            # Apply additional block if provided (can extend custom type)
+            shape_def.instance_eval(&block) if block_given?
+
+            @params[name] = {
+              name: name,
+              type: :object, # Custom types are objects internally
+              required: required,
+              default: default,
+              enum: resolved_enum, # Store resolved enum (values or reference)
+              of: of,
+              as: as,
+              custom_type: type, # Track original custom type name
+              shape: shape_def,
+              **options
+            }
+          ensure
+            expanding_types.delete(expansion_key)
+          end
         else
           # Regular type
           @params[name] = {
@@ -278,14 +299,19 @@ module Apiwork
 
       # Validate enum value
       def validate_enum_value(name, value, enum, field_path)
-        return nil unless enum&.exclude?(value)
+        return nil if enum.nil?
+
+        # Extract values array from enum (handle both inline arrays and resolved hashes)
+        enum_values = enum.is_a?(Hash) ? enum[:values] : enum
+
+        return nil unless enum_values&.exclude?(value)
 
         ValidationError.new(
           code: :invalid_value,
           field: name,
-          detail: "Invalid value. Must be one of: #{enum.join(', ')}",
+          detail: "Invalid value. Must be one of: #{enum_values.join(', ')}",
           path: field_path,
-          expected: enum,
+          expected: enum_values,
           actual: value
         )
       end
@@ -616,9 +642,8 @@ module Apiwork
           return [error, nil]
         end
 
-        # Check if discriminator field exists
-        discriminator_value = value[discriminator]
-        unless discriminator_value
+        # Check if discriminator field exists (use key? to handle false values)
+        unless value.key?(discriminator)
           error = ValidationError.new(
             code: :field_missing,
             field: discriminator,
@@ -628,8 +653,15 @@ module Apiwork
           return [error, nil]
         end
 
+        discriminator_value = value[discriminator]
+
         # Find variant matching the discriminator value
-        matching_variant = variants.find { |v| v[:tag] == discriminator_value }
+        # Normalize for comparison: boolean true/false should match string 'true'/'false'
+        normalized_discriminator = normalize_discriminator_value(discriminator_value)
+        matching_variant = variants.find do |v|
+          normalize_discriminator_value(v[:tag]) == normalized_discriminator
+        end
+
         unless matching_variant
           valid_tags = variants.map { |v| v[:tag] }.compact
           error = ValidationError.new(
@@ -661,6 +693,17 @@ module Apiwork
         validated_value = validated_value.merge(discriminator => discriminator_value) if validated_value.is_a?(Hash)
 
         [error, validated_value]
+      end
+
+      # Normalize discriminator values for comparison
+      # Booleans true/false are converted to strings 'true'/'false'
+      # This allows boolean discriminator values to match string tags
+      def normalize_discriminator_value(value)
+        case value
+        when true then 'true'
+        when false then 'false'
+        else value
+        end
       end
 
       # Validate a single variant of a union
