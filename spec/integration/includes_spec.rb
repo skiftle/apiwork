@@ -79,11 +79,18 @@ RSpec.describe 'Includes API', type: :request do
       # For nested includes test, we need post association on comments to be serializable: false
       Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@serializable, false)
 
-      # Clear CommentContract cache too
+      # Clear PostContract and CommentContract cache
+      if defined?(Api::V1::PostContract)
+        Api::V1::PostContract.instance_variable_set(:@custom_types, {}) if Api::V1::PostContract.instance_variable_defined?(:@custom_types)
+        Api::V1::PostContract.instance_variable_set(:@action_definitions, {}) if Api::V1::PostContract.instance_variable_defined?(:@action_definitions)
+      end
       if defined?(Api::V1::CommentContract)
         Api::V1::CommentContract.instance_variable_set(:@custom_types, {}) if Api::V1::CommentContract.instance_variable_defined?(:@custom_types)
         Api::V1::CommentContract.instance_variable_set(:@action_definitions, {}) if Api::V1::CommentContract.instance_variable_defined?(:@action_definitions)
       end
+
+      # Clear descriptor registry cache for the include type
+      Apiwork::Contract::Descriptors::Registry.instance_variable_set(:@types, {}) if Apiwork::Contract::Descriptors::Registry.instance_variable_defined?(:@types)
     end
 
     after do
@@ -91,10 +98,17 @@ RSpec.describe 'Includes API', type: :request do
       Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@serializable, true)
 
       # Clear cache
+      if defined?(Api::V1::PostContract)
+        Api::V1::PostContract.instance_variable_set(:@custom_types, {}) if Api::V1::PostContract.instance_variable_defined?(:@custom_types)
+        Api::V1::PostContract.instance_variable_set(:@action_definitions, {}) if Api::V1::PostContract.instance_variable_defined?(:@action_definitions)
+      end
       if defined?(Api::V1::CommentContract)
         Api::V1::CommentContract.instance_variable_set(:@custom_types, {}) if Api::V1::CommentContract.instance_variable_defined?(:@custom_types)
         Api::V1::CommentContract.instance_variable_set(:@action_definitions, {}) if Api::V1::CommentContract.instance_variable_defined?(:@action_definitions)
       end
+
+      # Clear descriptor registry cache
+      Apiwork::Contract::Descriptors::Registry.instance_variable_set(:@types, {}) if Apiwork::Contract::Descriptors::Registry.instance_variable_defined?(:@types)
     end
 
     it 'supports nested includes' do

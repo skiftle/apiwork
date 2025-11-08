@@ -45,7 +45,15 @@ module Apiwork
             Generator.generate_single_output(self, schema_class)
           end
         when :destroy
-          # Destroy has no input/output by default
+          # Destroy returns empty response (just 200 OK)
+          action_definition.output do
+            # Empty output
+          end
+        else
+          # Member/collection actions use single resource output (unwrapped union, like create/show/update)
+          action_definition.output do
+            Generator.generate_single_output(self, schema_class)
+          end
         end
 
         action_definition
