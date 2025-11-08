@@ -23,6 +23,7 @@ module Apiwork
         @reset_output = false
         @input_definition = nil
         @output_definition = nil
+        @error_codes = []  # Action-specific error codes
 
         # Conditionally prepend Schema::ActionDefinition if contract has schema
         return unless contract_class.schema?
@@ -64,6 +65,11 @@ module Apiwork
         result = {}
         result[:input] = merged_input_definition&.as_json
         result[:output] = merged_output_definition&.as_json
+
+        # Include error codes (merged with API-level global codes)
+        merged_codes = all_error_codes
+        result[:error_codes] = merged_codes if merged_codes.any?
+
         result
       end
 
@@ -96,6 +102,23 @@ module Apiwork
         # Register with Descriptors::Registry using this ActionDefinition instance as scope
         # This creates action-level scoping for the enum
         Descriptors::Registry.register_local_enum(self, name, values)
+      end
+
+      # Define action-specific error codes that can be returned
+      # These codes are merged with API-level global error codes
+      #
+      # @param codes [Array<Integer>] HTTP status codes specific to this action
+      #
+      # @example
+      #   action :show do
+      #     error_codes 404, 403  # Not found, forbidden
+      #
+      #     input do
+      #       param :id, type: :integer
+      #     end
+      #   end
+      def error_codes(*codes)
+        @error_codes = codes.flatten.map(&:to_i)
       end
 
       # Define input for this action
@@ -176,6 +199,75 @@ module Apiwork
       end
 
       private
+
+      # Get all error codes (API-level global + action-specific)
+      # Returns a unique, sorted array of HTTP status codes
+      def all_error_codes
+        api_codes = api_error_codes
+        action_codes = @error_codes || []
+
+        # Merge and deduplicate
+        (api_codes + action_codes).uniq.sort
+      end
+
+      # Get global error codes from the API definition
+      # Searches through all registered APIs to find the one containing this contract
+      def api_error_codes
+        # Find the API that contains this contract class
+        api = find_api_for_contract
+
+        return [] unless api&.metadata
+
+        api.metadata.error_codes || []
+      end
+
+      # Find the API definition class that contains this contract
+      def find_api_for_contract
+        # Search all registered APIs
+        Apiwork::API.all.find do |api_class|
+          next unless api_class.metadata
+
+          # Check if this contract is used in any of the API's resources
+          contract_used_in_api?(api_class, contract_class)
+        end
+      end
+
+      # Check if a contract class is used in an API (recursively checks nested resources)
+      def contract_used_in_api?(api_class, contract)
+        api_class.metadata.resources.each_value do |resource_metadata|
+          return true if resource_uses_contract?(resource_metadata, contract)
+        end
+
+        false
+      end
+
+      # Check if a resource (or its nested resources) uses a specific contract
+      def resource_uses_contract?(resource_metadata, contract)
+        # Check explicit contract
+        if resource_metadata[:contract_class_name]
+          begin
+            resource_contract = resource_metadata[:contract_class_name].constantize
+            return true if resource_contract == contract
+          rescue NameError
+            # Contract doesn't exist
+          end
+        end
+
+        # Check schema-based contract (would need to instantiate to compare)
+        # For now, we can compare by schema class if contract has one
+        if resource_metadata[:schema_class] && contract.schema_class
+          return true if resource_metadata[:schema_class] == contract.schema_class
+        end
+
+        # Check nested resources recursively
+        if resource_metadata[:resources]&.any?
+          resource_metadata[:resources].each_value do |nested_resource|
+            return true if resource_uses_contract?(nested_resource, contract)
+          end
+        end
+
+        false
+      end
 
       def standard_crud_action?
         %i[index show create update destroy].include?(action_name.to_sym)

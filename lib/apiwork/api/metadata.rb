@@ -14,7 +14,7 @@ module Apiwork
     #   metadata.add_member_action(:accounts, :archive, method: :patch, options: {})
     class Metadata
       attr_reader :path, :namespaces, :resources, :concerns
-      attr_accessor :doc
+      attr_accessor :doc, :error_codes
 
       def initialize(path)
         # Store path as source of truth
@@ -26,6 +26,7 @@ module Apiwork
         @resources = {}  # Structured tree, not flat array
         @concerns = {}
         @doc = nil
+        @error_codes = []  # Global error codes for all endpoints in this API
       end
 
       # Derive namespace string for class names: [:api, :v1] -> 'Api::V1'
