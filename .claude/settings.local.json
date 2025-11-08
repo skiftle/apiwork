@@ -55,7 +55,8 @@
       "Bash(ruby /tmp/debug_circular.rb:*)",
       "Bash(DEBUG_GENERATOR=1 ruby:*)",
       "Bash(ruby /tmp/test_caching.rb:*)",
-      "Bash(ruby:*)"
+      "Bash(ruby:*)",
+      "Bash(timeout 10 bundle exec rails runner:*)"
     ],
     "deny": [],
     "ask": []

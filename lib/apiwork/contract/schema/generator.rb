@@ -1,32 +1,19 @@
 # frozen_string_literal: true
 
-
-
 module Apiwork
   module Contract
     module Schema
-      # Generates implicit contracts from Schema classes
       class Generator
-      # Generate an ActionDefinition for a specific action
-      # This is used when no explicit contract exists
-      # @param schema_class [Class] The schema class to generate from
-      # @param action [Symbol] The action name
-      # @param contract_class [Class] Optional contract class to use (prevents creating temporary classes)
-      # @return [ActionDefinition, nil] Generated action definition or nil
-      def self.generate_action(schema_class, action, contract_class: nil)
-        return nil unless schema_class
+        def self.generate_action(schema_class, action, contract_class: nil)
+          return nil unless schema_class
 
-        # Use provided contract class or create a temporary one
-        contract_class ||= Class.new(Base) do
-          schema schema_class
-        end
+          contract_class ||= Class.new(Base) do
+            schema schema_class
+          end
 
-        # Register all schema enums at contract level ONCE
-        # This ensures they're available for all action definitions (create, update, show, index, filters)
-        register_contract_enums(contract_class, schema_class)
+          register_contract_enums(contract_class, schema_class)
 
-        # Create and configure the action definition
-        action_definition = Apiwork::Contract::ActionDefinition.new(action, contract_class)
+          action_definition = Apiwork::Contract::ActionDefinition.new(action, contract_class)
 
         case action.to_sym
         when :index
