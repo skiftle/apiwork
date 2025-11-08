@@ -25,8 +25,9 @@ module Apiwork
       def type(name, &block)
         raise ArgumentError, 'Block required for custom type definition' unless block_given?
 
-        # Delegate to contract class to store type in current scope
-        @contract_class.type(name, &block)
+        # Register type scoped to this Definition instance (not contract class)
+        # This ensures input/output-scoped types are isolated
+        Descriptors::Registry.register_local(self, name, &block)
       end
 
       # Define an enum scoped to this action/input/output
@@ -103,7 +104,8 @@ module Apiwork
         end
 
         # Check if type is a custom type (with scope resolution)
-        custom_type_block = @contract_class.resolve_custom_type(type, @type_scope)
+        # Pass self as scope to enable parent-chain resolution
+        custom_type_block = @contract_class.resolve_custom_type(type, self)
 
         # Check if we're already expanding this type (prevent infinite recursion)
         if custom_type_block
@@ -121,7 +123,7 @@ module Apiwork
           expanding_types.add(expansion_key)
 
           begin
-            shape_def = Definition.new(@type, @contract_class, type_scope: @type_scope)
+            shape_def = Definition.new(@type, @contract_class, type_scope: @type_scope, action_name: @action_name, parent_scope: @parent_scope)
             shape_def.instance_eval(&custom_type_block)
 
             # Apply additional block if provided (can extend custom type)

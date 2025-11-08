@@ -13,8 +13,8 @@ module Apiwork
             TypeStore.register_local(contract_class, name, &block)
           end
 
-          def resolve(name, contract_class:)
-            TypeStore.resolve(name, contract_class: contract_class)
+          def resolve(name, contract_class:, scope: nil)
+            TypeStore.resolve(name, contract_class: contract_class, scope: scope)
           end
 
           def global?(name)

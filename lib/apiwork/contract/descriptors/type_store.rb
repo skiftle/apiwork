@@ -13,15 +13,57 @@ module Apiwork
             super(contract_class, name, block, { definition: block })
           end
 
-          def resolve(name, contract_class:)
+          def resolve(name, contract_class:, scope: nil)
+            # If scope provided, use parent-chain resolution (like EnumStore)
+            if scope
+              # Check local storage for this scope
+              return local_storage[scope][name][:definition] if local_storage[scope]&.key?(name)
+
+              # Check parent scope if available
+              if scope.respond_to?(:parent_scope) && scope.parent_scope
+                return resolve(name, contract_class: contract_class, scope: scope.parent_scope)
+              end
+
+              # For Definition instances, check action scope
+              if scope.class.name == 'Apiwork::Contract::Definition' && scope.respond_to?(:action_name) && scope.action_name
+                action_def = contract_class.action_definition(scope.action_name)
+                if action_def && local_storage[action_def]&.key?(name)
+                  return local_storage[action_def][name][:definition]
+                end
+              end
+            end
+
+            # Check contract class scope
             if local_storage[contract_class]&.key?(name)
               return local_storage[contract_class][name][:definition]
             end
 
+            # Check global
             global_storage[name]
           end
 
           def qualified_name(contract_class_or_scope, name)
+            # Handle ActionDefinition instances
+            if contract_class_or_scope.class.name == 'Apiwork::Contract::ActionDefinition'
+              contract_class = contract_class_or_scope.contract_class
+              action_name = contract_class_or_scope.action_name
+              contract_prefix = extract_contract_prefix(contract_class)
+              return :"#{contract_prefix}_#{action_name}_#{name}"
+            end
+
+            # Handle Definition instances
+            if contract_class_or_scope.class.name == 'Apiwork::Contract::Definition'
+              contract_class = contract_class_or_scope.contract_class
+              action_name = contract_class_or_scope.action_name
+              direction = contract_class_or_scope.direction
+              contract_prefix = extract_contract_prefix(contract_class)
+              if action_name
+                return :"#{contract_prefix}_#{action_name}_#{direction}_#{name}"
+              else
+                return :"#{contract_prefix}_#{direction}_#{name}"
+              end
+            end
+
             contract_class = if contract_class_or_scope.respond_to?(:contract_class)
                               contract_class_or_scope.contract_class
                             else

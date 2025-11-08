@@ -5,7 +5,7 @@ module Apiwork
     # Represents the contract definition for a single action
     # Handles input/output definitions, merging with schema, and serialization
     class ActionDefinition
-      attr_reader :action_name, :contract_class
+      attr_reader :action_name, :contract_class, :parent_scope
 
       # Get the schema class from the contract
       # Convenience method to avoid Law of Demeter violations
@@ -18,6 +18,7 @@ module Apiwork
       def initialize(action_name, contract_class)
         @action_name = action_name
         @contract_class = contract_class
+        @parent_scope = contract_class  # Parent scope is the contract class
         @reset_input = false
         @reset_output = false
         @input_definition = nil
@@ -70,11 +71,9 @@ module Apiwork
       def type(name, &block)
         raise ArgumentError, 'Block required for custom type definition' unless block_given?
 
-        # Get current scope (should be action scope when called from action block)
-        current_scope = Thread.current[:apiwork_type_scope] || :root
-
-        # Delegate to contract class to store type in current scope
-        contract_class.type(name, &block)
+        # Register type scoped to this ActionDefinition instance (not contract class)
+        # This ensures action-scoped types are isolated from other actions
+        Descriptors::Registry.register_local(self, name, &block)
       end
 
       # Define an enum at action level
@@ -101,48 +100,30 @@ module Apiwork
 
       # Define input for this action
       def input(&block)
-        # Create input scope as child of action scope
-        action_scope = Thread.current[:apiwork_type_scope] || :root
-        input_scope_id = :"#{action_scope}_input"
-        contract_class.register_scope(input_scope_id, action_scope)
+        @input_definition ||= Definition.new(
+          :input,
+          contract_class,
+          type_scope: nil,  # No longer needed with parent_scope chain
+          action_name: action_name,
+          parent_scope: self  # THIS ActionDefinition is the parent
+        )
 
-        @input_definition ||= Definition.new(:input, contract_class, type_scope: input_scope_id, action_name: action_name)
-
-        if block
-          # Set scope for input block
-          previous_scope = Thread.current[:apiwork_type_scope]
-          Thread.current[:apiwork_type_scope] = input_scope_id
-
-          begin
-            @input_definition.instance_eval(&block)
-          ensure
-            Thread.current[:apiwork_type_scope] = previous_scope
-          end
-        end
+        @input_definition.instance_eval(&block) if block
 
         @input_definition
       end
 
       # Define output for this action
       def output(&block)
-        # Create output scope as child of action scope
-        action_scope = Thread.current[:apiwork_type_scope] || :root
-        output_scope_id = :"#{action_scope}_output"
-        contract_class.register_scope(output_scope_id, action_scope)
+        @output_definition ||= Definition.new(
+          :output,
+          contract_class,
+          type_scope: nil,  # No longer needed with parent_scope chain
+          action_name: action_name,
+          parent_scope: self  # THIS ActionDefinition is the parent
+        )
 
-        @output_definition ||= Definition.new(:output, contract_class, type_scope: output_scope_id, action_name: action_name)
-
-        if block
-          # Set scope for output block
-          previous_scope = Thread.current[:apiwork_type_scope]
-          Thread.current[:apiwork_type_scope] = output_scope_id
-
-          begin
-            @output_definition.instance_eval(&block)
-          ensure
-            Thread.current[:apiwork_type_scope] = previous_scope
-          end
-        end
+        @output_definition.instance_eval(&block) if block
 
         @output_definition
       end
