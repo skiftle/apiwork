@@ -35,7 +35,7 @@ module Apiwork
         elsif controller.request.delete?
           { ok: true, meta: meta.presence || {} }
         else
-          build_single_resource_response(resource_or_collection)
+          build_single_resource_response(resource_or_collection, query_params)
         end
       end
 
@@ -64,7 +64,13 @@ module Apiwork
       end
 
       # Build single resource response
-      def build_single_resource_response(resource)
+      def build_single_resource_response(resource, query_params = {})
+        # Eager load associations for single resources
+        if should_eager_load?(resource)
+          includes_hash = build_includes_for_single_resource(query_params)
+          resource = reload_with_includes(resource, includes_hash) if includes_hash.any?
+        end
+
         # Serialize data via Schema with validated includes from contract
         includes = extract_includes
         json_data = action_definition.serialize_data(resource, context: build_schema_context, includes: includes)
@@ -108,6 +114,28 @@ module Apiwork
         controller.action_name.to_s == 'index' &&
           resource.is_a?(ActiveRecord::Relation) &&
           schema_class.present?
+      end
+
+      # Check if we should eager load for single resource
+      def should_eager_load?(resource)
+        return false unless resource.is_a?(ActiveRecord::Base)
+        return false if resource.new_record?
+        return false unless schema_class.present?
+
+        true
+      end
+
+      # Build includes hash for single resource (no filter/sort extraction)
+      def build_includes_for_single_resource(query_params)
+        params = query_params.slice(:include)
+        params[:include] ||= controller.params[:include] if controller.params[:include].present?
+
+        IncludesBuilder.new(schema: schema_class).build(params: params, for_collection: false)
+      end
+
+      # Reload resource with includes to prevent N+1
+      def reload_with_includes(resource, includes_hash)
+        resource.class.includes(includes_hash).find(resource.id)
       end
 
       # Extract includes parameter

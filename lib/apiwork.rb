@@ -3,7 +3,6 @@
 require 'zeitwerk'
 require_relative 'apiwork/version'
 
-# Apiwork - A unified resource system for Rails APIs
 module Apiwork
   class << self
     def configuration
@@ -26,22 +25,6 @@ module Apiwork
       Generation::Registry[type].generate(path, **options)
     end
 
-    # Register global descriptors (types and enums shared across all contracts)
-    #
-    # Global descriptors are available in all contracts and don't need prefixing.
-    # Examples: string_filter, integer_filter, status enum
-    #
-    # @example Register custom global descriptors
-    #   Apiwork.register_global_descriptors do
-    #     type :currency_filter do
-    #       param :eq, type: :string
-    #       param :in, type: :array, of: :string
-    #     end
-    #
-    #     enum :status, %w[draft published archived]
-    #   end
-    #
-    # @yield Block evaluated with Descriptors::GlobalBuilder DSL
     def register_global_descriptors(&block)
       builder = Contract::Descriptors::GlobalBuilder.new
       builder.instance_eval(&block)

@@ -4,9 +4,9 @@ require 'rails_helper'
 
 RSpec.describe 'Includes API', type: :request do
   before(:each) do
-    # Clean database before each test
-    Post.delete_all
+    # Clean database before each test (delete comments first due to foreign key)
     Comment.delete_all
+    Post.delete_all
   end
 
   let!(:post1) do
