@@ -91,7 +91,7 @@ module Apiwork
             # Add all global types (no prefix)
             # Convert to array to avoid iteration issues if new types are registered during expansion
             global_storage.to_a.each do |type_name, definition|
-              result[type_name] = expand_type_definition(definition)
+              result[type_name] = expand_type_definition(definition, contract_class: nil)
             end
 
             # Add all local types from all contracts (prefixed)
@@ -102,7 +102,7 @@ module Apiwork
                 qualified_type_name = metadata[:qualified_name]
                 definition = metadata[:definition]
 
-                result[qualified_type_name] = expand_type_definition(definition)
+                result[qualified_type_name] = expand_type_definition(definition, contract_class: contract_class)
               end
             end
 
@@ -121,10 +121,12 @@ module Apiwork
           # Evaluates the block in a definition context and returns the serialized params
           #
           # @param definition [Proc] The type definition block
+          # @param contract_class [Class, nil] Optional contract class for enum resolution
           # @return [Hash] Serialized type definition
-          def expand_type_definition(definition)
-            # Create a minimal anonymous contract class to satisfy Definition constructor
-            temp_contract = Class.new(Apiwork::Contract::Base)
+          def expand_type_definition(definition, contract_class: nil)
+            # Use provided contract class or create a minimal anonymous one
+            # Using the real contract class allows enum resolution to work
+            temp_contract = contract_class || Class.new(Apiwork::Contract::Base)
             temp_definition = Apiwork::Contract::Definition.new(:input, temp_contract)
 
             # Evaluate the block in the context of the definition
