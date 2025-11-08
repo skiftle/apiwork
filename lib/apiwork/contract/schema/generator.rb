@@ -484,8 +484,9 @@ module Apiwork
             # For circular references, just allow boolean (can't nest further)
             # This allows includes like { comments: { post: true } } where post→comments and comments→post
             if visited.include?(assoc_resource)
-              # Just allow boolean variant for circular refs (can't nest further)
-              param name, type: :boolean, required: false
+              # Circular ref: only allow boolean for non-serializable
+              # Serializable associations don't need params (always included)
+              param name, type: :boolean, required: false unless assoc_def.serializable?
             else
               # Register associated resource's include type (may return nil for max depth)
               assoc_include_type = Generator.register_resource_include_type(
@@ -495,10 +496,16 @@ module Apiwork
                 depth: depth + 1
               )
 
-              # Allow either boolean true or nested include hash
-              param name, type: :union, required: false do
-                variant type: :boolean
-                variant type: assoc_include_type
+              if assoc_def.serializable?
+                # Serializable: ONLY allow nested includes (no top-level boolean)
+                # Example: include[comments][user]=true (OK), include[comments]=true (NOT OK)
+                param name, type: assoc_include_type, required: false
+              else
+                # Non-serializable: allow either boolean true or nested include hash
+                param name, type: :union, required: false do
+                  variant type: :boolean
+                  variant type: assoc_include_type
+                end
               end
             end
           end

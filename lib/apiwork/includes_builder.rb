@@ -76,6 +76,7 @@ module Apiwork
     end
 
     # Apply explicit include params, respecting false to exclude
+    # For serializable associations, merge nested includes rather than replace
     def apply_explicit_includes(combined, include_params)
       include_params.each do |key, value|
         key_sym = key.to_sym
@@ -84,13 +85,35 @@ module Apiwork
           # Explicit false - remove from includes
           combined.delete(key_sym)
         elsif value.is_a?(Hash)
-          # Nested include - process recursively to convert true → {}
-          combined[key_sym] = normalize_nested_includes(value)
+          # Nested include - deep merge with existing (for serializable associations)
+          normalized = normalize_nested_includes(value)
+          if combined.key?(key_sym) && combined[key_sym].is_a?(Hash)
+            # Association already exists (likely serializable) - deep merge nested includes
+            combined[key_sym] = deep_merge_includes(combined[key_sym], normalized)
+          else
+            # New association - set directly
+            combined[key_sym] = normalized
+          end
         elsif value == true || value == 'true'
           # Explicit true - ensure included
           combined[key_sym] ||= {}
         end
       end
+    end
+
+    # Deep merge two include hashes
+    # Recursively merges nested hashes, preserving both automatic and explicit includes
+    def deep_merge_includes(base, override)
+      result = base.dup
+      override.each do |key, value|
+        key_sym = key.to_sym
+        if result[key_sym].is_a?(Hash) && value.is_a?(Hash)
+          result[key_sym] = deep_merge_includes(result[key_sym], value)
+        else
+          result[key_sym] = value
+        end
+      end
+      result
     end
 
     # Normalize nested include params by converting true → {}
