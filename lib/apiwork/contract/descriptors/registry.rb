@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-require_relative 'type_store'
-require_relative 'enum_store'
 
 module Apiwork
   module Contract
-    module DescriptorRegistry
+    module Descriptors
       # Unified registry facade for both types and enums
       # Delegates to TypeStore and EnumStore for specific operations
       class Registry

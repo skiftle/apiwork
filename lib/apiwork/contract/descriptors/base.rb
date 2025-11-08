@@ -2,7 +2,7 @@
 
 module Apiwork
   module Contract
-    module DescriptorRegistry
+    module Descriptors
       # Base class for descriptor stores (types and enums)
       # Contains shared logic for registration, resolution, and serialization
       #

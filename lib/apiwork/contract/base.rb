@@ -63,10 +63,10 @@ module Apiwork
         def type(name, &block)
           raise ArgumentError, 'Block required for custom type definition' unless block_given?
 
-          # Register with DescriptorRegistry as a local (contract-scoped) type
+          # Register with Descriptors::Registry as a local (contract-scoped) type
           # This allows the type to be used with short name within this contract
           # but will be qualified (e.g., :invoice_filter) in as_json output
-          DescriptorRegistry.register_local(self, name, &block)
+          Descriptors::Registry.register_local(self, name, &block)
 
           # Also store in legacy @type_scopes for backward compatibility
           # TODO: Remove this once all code uses TypeRegistry
@@ -95,10 +95,10 @@ module Apiwork
         def enum(name, values)
           raise ArgumentError, 'Values array required for enum definition' unless values.is_a?(Array)
 
-          # Register with DescriptorRegistry as a local (contract-scoped) enum
+          # Register with Descriptors::Registry as a local (contract-scoped) enum
           # This allows the enum to be used within this contract
           # and will be qualified (e.g., :post_status) in as_json output
-          DescriptorRegistry.register_local_enum(self, name, values)
+          Descriptors::Registry.register_local_enum(self, name, values)
         end
 
         # Get custom types hash (legacy - returns root scope only)

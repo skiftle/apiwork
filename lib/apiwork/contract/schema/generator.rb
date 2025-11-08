@@ -64,7 +64,7 @@ module Apiwork
         # Get contract class from definition
         contract_class = definition.contract_class
 
-        # Register resource-specific filter and sort types with DescriptorRegistry
+        # Register resource-specific filter and sort types with Descriptors::Registry
         # This pre-registers all types before usage, eliminating circular recursion
         filter_type = register_resource_filter_type(contract_class, schema_class)
         sort_type = register_resource_sort_type(contract_class, schema_class)
@@ -100,19 +100,19 @@ module Apiwork
 
       # Generate input contract with root key (like params.require(:service).permit(...))
       # Creates: {service: {icon: ..., name: ...}}
-      # Registers the payload type with DescriptorRegistry for reusability
+      # Registers the payload type with Descriptors::Registry for reusability
       def self.generate_writable_input(definition, schema_class, context)
         root_key = schema_class.root_key.singular.to_sym
         contract_class = definition.contract_class
 
-        # Register the writable payload type with DescriptorRegistry
-        # Use short name - DescriptorRegistry will add prefix via qualified_name
+        # Register the writable payload type with Descriptors::Registry
+        # Use short name - Descriptors::Registry will add prefix via qualified_name
         # Example: :create_payload, :update_payload
         payload_type_name = :"#{context}_payload"
 
         # Check if already registered
-        unless DescriptorRegistry.resolve(payload_type_name, contract_class: contract_class)
-          DescriptorRegistry.register_local(contract_class, payload_type_name) do
+        unless Descriptors::Registry.resolve(payload_type_name, contract_class: contract_class)
+          Descriptors::Registry.register_local(contract_class, payload_type_name) do
             Generator.generate_writable_params(self, schema_class, context)
           end
         end
@@ -156,13 +156,13 @@ module Apiwork
         root_key = schema_class.root_key.singular.to_sym
         contract_class = definition.contract_class
 
-        # Register the resource type with DescriptorRegistry
-        # Use nil - DescriptorRegistry will use just the prefix (e.g., "account")
+        # Register the resource type with Descriptors::Registry
+        # Use nil - Descriptors::Registry will use just the prefix (e.g., "account")
         # This gives us clean type names like :account, :post, etc.
         resource_type_name = nil
 
         # Check if already registered
-        unless DescriptorRegistry.resolve(resource_type_name, contract_class: contract_class)
+        unless Descriptors::Registry.resolve(resource_type_name, contract_class: contract_class)
           # PRE-REGISTER: Register all association types BEFORE defining the resource type
           # This prevents "can't add a new key into hash during iteration" errors
           assoc_type_map = {}
@@ -171,7 +171,7 @@ module Apiwork
           end
 
           # NOW register the resource type
-          DescriptorRegistry.register_local(contract_class, resource_type_name) do
+          Descriptors::Registry.register_local(contract_class, resource_type_name) do
             # All resource attributes
             schema_class.attribute_definitions.each do |name, attr_def|
               param name, type: Generator.map_type(attr_def.type), required: false
@@ -215,12 +215,12 @@ module Apiwork
         root_key_plural = schema_class.root_key.plural.to_sym
         contract_class = definition.contract_class
 
-        # Register the resource type with DescriptorRegistry (same as single output)
-        # Use nil - DescriptorRegistry will use just the prefix (e.g., "account")
+        # Register the resource type with Descriptors::Registry (same as single output)
+        # Use nil - Descriptors::Registry will use just the prefix (e.g., "account")
         resource_type_name = nil
 
         # Check if already registered
-        unless DescriptorRegistry.resolve(resource_type_name, contract_class: contract_class)
+        unless Descriptors::Registry.resolve(resource_type_name, contract_class: contract_class)
           # PRE-REGISTER: Register all association types BEFORE defining the resource type
           # This prevents "can't add a new key into hash during iteration" errors
           assoc_type_map = {}
@@ -229,7 +229,7 @@ module Apiwork
           end
 
           # NOW register the resource type
-          DescriptorRegistry.register_local(contract_class, resource_type_name) do
+          Descriptors::Registry.register_local(contract_class, resource_type_name) do
             # Each item has all resource attributes
             schema_class.attribute_definitions.each do |name, attr_def|
               param name, type: Generator.map_type(attr_def.type), required: false
@@ -277,7 +277,7 @@ module Apiwork
       end
 
       # Determine which filter type to use based on attribute type
-      # Returns global built-in filter types from DescriptorRegistry
+      # Returns global built-in filter types from Descriptors::Registry
       def self.determine_filter_type(attr_type)
         case attr_type
         when :string
@@ -299,7 +299,7 @@ module Apiwork
         end
       end
 
-      # Register resource-specific filter type with DescriptorRegistry
+      # Register resource-specific filter type with Descriptors::Registry
       # Uses type references for associations to eliminate circular recursion
       # @param contract_class [Class] The contract class to register types with
       # @param schema_class [Class] The schema class to generate filters for
@@ -313,16 +313,16 @@ module Apiwork
         # Add to visited set
         visited = visited.dup.add(schema_class)
 
-        # Use short name for registration - DescriptorRegistry will add prefix via qualified_name
+        # Use short name for registration - Descriptors::Registry will add prefix via qualified_name
         type_name = :filter
 
-        # Check if already registered with DescriptorRegistry
-        existing = DescriptorRegistry.resolve(type_name, contract_class: contract_class)
+        # Check if already registered with Descriptors::Registry
+        existing = Descriptors::Registry.resolve(type_name, contract_class: contract_class)
         return type_name if existing
 
         # Pre-register type name to prevent infinite recursion
         # We'll populate it with the actual definition below
-        DescriptorRegistry.register_local(contract_class, type_name) do
+        Descriptors::Registry.register_local(contract_class, type_name) do
           # Add filters for each filterable attribute
           schema_class.attribute_definitions.each do |name, attr_def|
             next unless attr_def.filterable?
@@ -365,7 +365,7 @@ module Apiwork
         type_name
       end
 
-      # Register resource-specific sort type with DescriptorRegistry
+      # Register resource-specific sort type with Descriptors::Registry
       # Uses type references for associations to eliminate circular recursion
       # @param contract_class [Class] The contract class to register types with
       # @param schema_class [Class] The schema class to generate sorts for
@@ -379,15 +379,15 @@ module Apiwork
         # Add to visited set
         visited = visited.dup.add(schema_class)
 
-        # Use short name for registration - DescriptorRegistry will add prefix via qualified_name
+        # Use short name for registration - Descriptors::Registry will add prefix via qualified_name
         type_name = :sort
 
-        # Check if already registered with DescriptorRegistry
-        existing = DescriptorRegistry.resolve(type_name, contract_class: contract_class)
+        # Check if already registered with Descriptors::Registry
+        existing = Descriptors::Registry.resolve(type_name, contract_class: contract_class)
         return type_name if existing
 
         # Pre-register type name to prevent infinite recursion
-        DescriptorRegistry.register_local(contract_class, type_name) do
+        Descriptors::Registry.register_local(contract_class, type_name) do
           # Add sort for each sortable attribute
           schema_class.attribute_definitions.each do |name, attr_def|
             next unless attr_def.sortable?
@@ -447,18 +447,18 @@ module Apiwork
         schema_class_name.constantize rescue nil
       end
 
-      # Register resource-specific include type with DescriptorRegistry
+      # Register resource-specific include type with Descriptors::Registry
       # Uses type references for associations to eliminate circular recursion
       # @param contract_class [Class] The contract class to register types with
       # @param schema_class [Class] The schema class to generate includes for
       # @param visited [Set] Set of visited schema classes (circular reference protection)
       # @param depth [Integer] Current recursion depth (max 3)
       def self.register_resource_include_type(contract_class, schema_class, visited: Set.new, depth: 0)
-        # Use short name for registration - DescriptorRegistry will add prefix via qualified_name
+        # Use short name for registration - Descriptors::Registry will add prefix via qualified_name
         type_name = :include
 
-        # Check if already registered with DescriptorRegistry
-        existing = DescriptorRegistry.resolve(type_name, contract_class: contract_class)
+        # Check if already registered with Descriptors::Registry
+        existing = Descriptors::Registry.resolve(type_name, contract_class: contract_class)
         return type_name if existing
         return type_name if depth >= 3
 
@@ -467,7 +467,7 @@ module Apiwork
 
         # Pre-register type name to prevent infinite recursion
         # Contract validates structure, Resource applies validated includes
-        DescriptorRegistry.register_local(contract_class, type_name) do
+        Descriptors::Registry.register_local(contract_class, type_name) do
           schema_class.association_definitions.each do |name, assoc_def|
             assoc_resource = Generator.resolve_association_resource(assoc_def)
             next unless assoc_resource
@@ -523,8 +523,8 @@ module Apiwork
         resource_type_name = nil
 
         # Check if already registered
-        unless DescriptorRegistry.resolve(resource_type_name, contract_class: assoc_contract_class)
-          DescriptorRegistry.register_local(assoc_contract_class, resource_type_name) do
+        unless Descriptors::Registry.resolve(resource_type_name, contract_class: assoc_contract_class)
+          Descriptors::Registry.register_local(assoc_contract_class, resource_type_name) do
             # All resource attributes
             assoc_schema.attribute_definitions.each do |name, attr_def|
               param name, type: Generator.map_type(attr_def.type), required: false
@@ -553,7 +553,7 @@ module Apiwork
         end
 
         # Return the qualified type name for reference
-        DescriptorRegistry.qualified_name(assoc_contract_class, resource_type_name)
+        Descriptors::Registry.qualified_name(assoc_contract_class, resource_type_name)
       end
 
       def self.map_type(resource_type)

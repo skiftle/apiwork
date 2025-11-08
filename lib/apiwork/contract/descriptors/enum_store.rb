@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
-require_relative 'base'
 
 module Apiwork
   module Contract
-    module DescriptorRegistry
+    module Descriptors
       # EnumStore handles enum registration and resolution
       # Enums are stored as Arrays of allowed values with complex lexical scoping
       class EnumStore < Base
