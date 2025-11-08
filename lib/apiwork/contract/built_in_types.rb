@@ -133,6 +133,12 @@ module Apiwork
             param :number, type: :integer, required: false
             param :size, type: :integer, required: false
           end
+
+          # Global enums - reusable across all contracts
+
+          # Sort direction enum
+          # Used in all sortable attribute contracts for ordering results
+          enum :sort_direction, %w[asc desc]
         end
       end
     end

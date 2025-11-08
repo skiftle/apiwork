@@ -401,8 +401,8 @@ module Apiwork
           schema_class.attribute_definitions.each do |name, attr_def|
             next unless attr_def.sortable?
 
-            # Sort direction: asc or desc
-            param name, type: :string, enum: ['asc', 'desc'], required: false
+            # Sort direction: asc or desc (references global :sort_direction enum)
+            param name, type: :string, enum: :sort_direction, required: false
           end
 
           # Add sort for associations using type references
