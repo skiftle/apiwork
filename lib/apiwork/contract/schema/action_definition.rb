@@ -3,10 +3,9 @@
 module Apiwork
   module Contract
     module Schema
-      # ActionDefinition - Schema-specific methods for ActionDefinition
-      # This module is prepended when an action's contract has a schema
+      # Schema-specific methods for ActionDefinition
+      # Prepended when an action's contract has a schema
       module ActionDefinition
-        # Override: merges_input? - check if contract has schema
         def merges_input?
           return false unless contract_class.schema?
           return false if resets_input?
@@ -14,7 +13,6 @@ module Apiwork
           true
         end
 
-        # Override: merges_output? - check if contract has schema
         def merges_output?
           return false unless contract_class.schema?
           return false if resets_output?
@@ -22,10 +20,9 @@ module Apiwork
           true
         end
 
-        # Override: Define input with auto-wrapping for reset writable actions
         def input(&block)
           # Auto-generate first if needed (before custom block)
-          auto_generate_input_if_needed if @reset_input == false && @input_definition.nil?
+          auto_generate_input_if_needed if merges_input? && @input_definition.nil?
 
           @input_definition ||= Definition.new(:input, contract_class)
 
@@ -45,26 +42,20 @@ module Apiwork
           @input_definition
         end
 
-        # Override: Get merged input definition (virtual + explicit)
         def merged_input_definition
           return input_definition unless merges_input?
 
-          # Build virtual input from schema (auto-generated query params for index, etc)
           virtual_def = build_virtual_input_definition
           return input_definition if virtual_def.nil?
-
-          # If no explicit input, return virtual
           return virtual_def if input_definition.nil?
 
-          # Merge: Start with virtual definition, then add/override with explicit params
+          # Merge virtual (schema-generated) with explicit params
           merged_def = Definition.new(:input, contract_class)
 
-          # Copy all params from virtual input (auto-generated)
           virtual_def.params.each do |name, param_options|
             merged_def.params[name] = param_options
           end
 
-          # Override/add with explicit input params
           input_definition.params.each do |name, param_options|
             merged_def.params[name] = param_options
           end
@@ -72,34 +63,22 @@ module Apiwork
           merged_def
         end
 
-        # Override: Get merged output definition (virtual + explicit)
         def merged_output_definition
-          # If output_definition has unwrapped union structure (ok param), use it directly
-          # This covers CRUD actions AND custom member/collection actions
           return output_definition if output_definition && has_unwrapped_union?
-
-          # If output_definition is explicitly empty (destroy action), use it directly
           return output_definition if output_definition && is_destroy_action?
-
-          # For other cases, use the old merging logic
           return output_definition unless merges_output?
 
-          # Build virtual output from schema
           virtual_def = build_virtual_output_definition
           return output_definition if virtual_def.nil?
-
-          # If no explicit output, return virtual
           return virtual_def if output_definition.nil?
 
-          # Merge: Start with virtual definition, then add/override with explicit params
+          # Merge virtual (schema-generated) with explicit params
           merged_def = Definition.new(:output, contract_class)
 
-          # Copy all params from virtual output (schema attributes)
           virtual_def.params.each do |name, param_options|
             merged_def.params[name] = param_options
           end
 
-          # Override/add with explicit output params (like meta)
           output_definition.params.each do |name, param_options|
             merged_def.params[name] = param_options
           end
@@ -123,22 +102,20 @@ module Apiwork
           %i[index show create update destroy].include?(action_name.to_sym)
         end
 
-        # Override: Serialize data via Schema
         def serialize_data(data, context: {}, includes: nil)
           return data unless contract_class.schema?
 
           needs_serialization = if data.is_a?(Hash)
-                                  false # Already a hash
+                                  false
                                 elsif data.is_a?(Array)
                                   data.empty? || data.first.class != Hash
                                 else
-                                  true # ActiveRecord object/relation
+                                  true
                                 end
 
           needs_serialization ? contract_class.schema_class.serialize(data, context: context, includes: includes) : data
         end
 
-        # Schema-dependent: Build virtual input definition from schema class
         def build_virtual_input_definition
           return nil unless contract_class.schema_class
 
@@ -147,51 +124,44 @@ module Apiwork
 
           case action_name.to_sym
           when :index
-            virtual_def.instance_eval { Generator.generate_query_params(self, rc) }
+            virtual_def.instance_eval { InputGenerator.generate_query_params(self, rc) }
           when :show
-            # Empty input - strict mode will reject any query params
+            # Empty input
           when :create
-            virtual_def.instance_eval { Generator.generate_writable_input(self, rc, :create) }
+            virtual_def.instance_eval { InputGenerator.generate_writable_input(self, rc, :create) }
           when :update
-            virtual_def.instance_eval { Generator.generate_writable_input(self, rc, :update) }
+            virtual_def.instance_eval { InputGenerator.generate_writable_input(self, rc, :update) }
           when :destroy
-            # No input by default
-          else
-            # Custom actions get empty input
-            # Input params MUST be defined explicitly in the action block
+            # No input
           end
 
           virtual_def
         end
 
-        # Schema-dependent: Build virtual output definition from schema class
         def build_virtual_output_definition
           return nil unless contract_class.schema_class
 
           virtual_def = Definition.new(:output, contract_class)
 
-          # Add all schema attributes
-          contract_class.schema_class.attribute_definitions.each do |name, attr_def|
+          contract_class.schema_class.attribute_definitions.each do |name, attribute_definition|
             virtual_def.params[name] = {
-              name: name,
-              type: Generator.map_type(attr_def.type),
+              name:,
+              type: Generator.map_type(attribute_definition.type),
               required: false
             }
           end
 
-          # Add associations
-          contract_class.schema_class.association_definitions.each do |name, assoc_def|
-            if assoc_def.singular?
-              virtual_def.params[name] = { name: name, type: :object, required: false, nullable: assoc_def.nullable? }
-            elsif assoc_def.collection?
-              virtual_def.params[name] = { name: name, type: :array, required: false, nullable: assoc_def.nullable? }
+          contract_class.schema_class.association_definitions.each do |name, association_definition|
+            if association_definition.singular?
+              virtual_def.params[name] = { name:, type: :object, required: false, nullable: association_definition.nullable? }
+            elsif association_definition.collection?
+              virtual_def.params[name] = { name:, type: :array, required: false, nullable: association_definition.nullable? }
             end
           end
 
           virtual_def
         end
 
-        # Schema-dependent: Auto-generate input definition for CRUD and custom actions
         def auto_generate_input_if_needed
           return unless contract_class.schema?
 
@@ -200,13 +170,13 @@ module Apiwork
 
           case action_name.to_sym
           when :index
-            @input_definition.instance_eval { Generator.generate_query_params(self, rc) }
+            @input_definition.instance_eval { InputGenerator.generate_query_params(self, rc) }
           when :show
             # Empty input - strict mode will reject any query params
           when :create
-            @input_definition.instance_eval { Generator.generate_writable_input(self, rc, :create) }
+            @input_definition.instance_eval { InputGenerator.generate_writable_input(self, rc, :create) }
           when :update
-            @input_definition.instance_eval { Generator.generate_writable_input(self, rc, :update) }
+            @input_definition.instance_eval { InputGenerator.generate_writable_input(self, rc, :update) }
           when :destroy
             # No input by default
           else
@@ -224,16 +194,18 @@ module Apiwork
 
           case action_name.to_sym
           when :index
-            @output_definition.instance_eval { Generator.generate_collection_output(self, rc) }
+            @output_definition.instance_eval { OutputGenerator.generate_collection_output(self, rc) }
           when :show, :create, :update
-            @output_definition.instance_eval { Generator.generate_single_output(self, rc) }
+            @output_definition.instance_eval { OutputGenerator.generate_single_output(self, rc) }
           when :destroy
             # Destroy returns empty response (just 200 OK)
             # Leave @output_definition empty
           else
-            # Member/collection actions use single resource output (unwrapped union, like create/show/update)
-            # But respond_with will adapt based on what controller returns (single vs collection)
-            @output_definition.instance_eval { Generator.generate_single_output(self, rc) }
+            # Custom member/collection actions default to single resource output
+            # This provides a sensible default that works for most member actions
+            # Collection actions can override with reset_output! and explicit output definition
+            # The respond_with helper will adapt the response based on what controller returns
+            @output_definition.instance_eval { OutputGenerator.generate_single_output(self, rc) }
           end
         end
 

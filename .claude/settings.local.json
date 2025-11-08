@@ -60,7 +60,13 @@
       "Bash(git stash:*)",
       "Bash(timeout 10 bin/rails runner:*)",
       "Bash(RAILS_ENV=test bin/rails runner:*)",
-      "Bash(RAILS_ENV=test ruby:*)"
+      "Bash(RAILS_ENV=test ruby:*)",
+      "Bash(xargs -I {} sh -c 'grep -L \"\"\"\"Comment.delete_all\"\"\"\" {}')",
+      "Bash(do if grep -q \"Post.delete_all\" \"$file\")",
+      "Bash(! grep -B1 \"Post.delete_all\" \"$file\")",
+      "Bash(then echo \"$file\")",
+      "Bash(fi)",
+      "Bash(xargs -I {} sh -c 'if ! grep -B1 \"\"\"\"Post.delete_all\"\"\"\" \"\"\"\"{}\"\"\"\" | grep -q \"\"\"\"Comment.delete_all\"\"\"\"; then echo \"\"\"\"{}\"\"\"\"; fi')"
     ],
     "deny": [],
     "ask": []

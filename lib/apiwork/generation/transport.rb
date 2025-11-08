@@ -98,27 +98,27 @@ module Apiwork
       def extract_associations_from_schema(schema_class)
         model = schema_class.model_class
 
-        schema_class.association_definitions.each_with_object({}) do |(assoc, defn), acc|
+        schema_class.association_definitions.each_with_object({}) do |(assoc, association_definition), acc|
           reflection = model&.reflect_on_association(assoc)
-          target_ns, target_name = resolve_association_target(schema_class, defn, reflection)
+          target_ns, target_name = resolve_association_target(schema_class, association_definition, reflection)
 
           acc[assoc.to_s] = {
-            kind: defn[:type].to_s,
+            kind: association_definition[:type].to_s,
             namespaces: target_ns,
             name: target_name,
             nullable: association_nullable?(reflection),
             polymorphic: reflection&.polymorphic? || false,
-            writable: writable_descriptor(defn[:writable]),
-            serializable: defn.serializable? || false
+            writable: writable_descriptor(association_definition[:writable]),
+            serializable: association_definition.serializable? || false
           }
         end
       end
 
       # Resolve association target schema name
-      def resolve_association_target(schema_class, assoc_def, reflection)
-        if assoc_def.schema_class
-          ns = assoc_def.schema_class.name.deconstantize.split('::').map(&:underscore).reject(&:blank?)
-          nm = assoc_def.schema_class.name.demodulize.sub(/Schema$/, '').underscore
+      def resolve_association_target(schema_class, association_definition, reflection)
+        if association_definition.schema_class
+          ns = association_definition.schema_class.name.deconstantize.split('::').map(&:underscore).reject(&:blank?)
+          nm = association_definition.schema_class.name.demodulize.sub(/Schema$/, '').underscore
           return [ns, nm]
         end
 
@@ -134,9 +134,13 @@ module Apiwork
       # Check if association is nullable
       def association_nullable?(reflection)
         return true unless reflection
-        return reflection.options[:optional] != false if reflection.macro == :belongs_to
 
-        true
+        if reflection.macro == :belongs_to
+          # belongs_to is nullable unless explicitly required (optional: false)
+          reflection.options[:optional] != false
+        else
+          true
+        end
       end
 
       # Normalize attribute type to standard types

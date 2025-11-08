@@ -4,8 +4,9 @@ require 'rails_helper'
 
 RSpec.describe 'Custom Actions API', type: :request do
   before(:each) do
-    Post.delete_all
+    # Delete comments first due to foreign key constraint
     Comment.delete_all
+    Post.delete_all
   end
 
   describe 'Custom member actions' do
