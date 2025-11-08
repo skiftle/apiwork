@@ -102,7 +102,7 @@ RSpec.describe 'API Introspection' do
           end
 
           it 'includes correct nested path' do
-            expect(comments[:path]).to eq('/api/v1/posts/:id/comments')
+            expect(comments[:path]).to eq('/api/v1/posts/:post_id/comments')
           end
 
           it 'includes nested resource actions' do
@@ -111,12 +111,12 @@ RSpec.describe 'API Introspection' do
 
           it 'includes nested resource member actions' do
             expect(comments[:members]).to have_key(:approve)
-            expect(comments[:members][:approve][:path]).to eq('/api/v1/posts/:id/comments/:id/approve')
+            expect(comments[:members][:approve][:path]).to eq('/api/v1/posts/:post_id/comments/:id/approve')
           end
 
           it 'includes nested resource collection actions' do
             expect(comments[:collections]).to have_key(:recent)
-            expect(comments[:collections][:recent][:path]).to eq('/api/v1/posts/:id/comments/recent')
+            expect(comments[:collections][:recent][:path]).to eq('/api/v1/posts/:post_id/comments/recent')
           end
         end
       end

@@ -94,8 +94,8 @@ module Apiwork
         end
 
         # Serialize a single resource with all its actions and metadata
-        def serialize_resource(resource_name, resource_metadata, parent_path: nil)
-          resource_path = build_resource_path(resource_name, resource_metadata, parent_path)
+        def serialize_resource(resource_name, resource_metadata, parent_path: nil, parent_resource_name: nil)
+          resource_path = build_resource_path(resource_name, resource_metadata, parent_path, parent_resource_name: parent_resource_name)
 
           result = {
             path: resource_path,
@@ -152,7 +152,8 @@ module Apiwork
               result[:resources][nested_name] = serialize_resource(
                 nested_name,
                 nested_metadata,
-                parent_path: resource_path
+                parent_path: resource_path,
+                parent_resource_name: resource_name
               )
             end
           end
@@ -183,7 +184,7 @@ module Apiwork
         end
 
         # Build full path for a resource
-        def build_resource_path(resource_name, resource_metadata, parent_path)
+        def build_resource_path(resource_name, resource_metadata, parent_path, parent_resource_name: nil)
           resource_segment = if resource_metadata[:singular]
                                resource_name.to_s.singularize
                              else
@@ -191,7 +192,13 @@ module Apiwork
                              end
 
           if parent_path
-            "#{parent_path}/:id/#{resource_segment}"
+            # Use parent resource name for ID parameter to avoid duplicate :id in nested routes
+            parent_id_param = if parent_resource_name
+                                ":#{parent_resource_name.to_s.singularize}_id"
+                              else
+                                ":id"
+                              end
+            "#{parent_path}/#{parent_id_param}/#{resource_segment}"
           else
             "#{mount_path}/#{resource_segment}"
           end
