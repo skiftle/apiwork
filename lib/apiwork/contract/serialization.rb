@@ -41,6 +41,9 @@ module Apiwork
             required: options[:required] || false
           }
 
+          # Add literal value for literal types
+          result[:value] = options[:value] if options[:type] == :literal
+
           # Add optional metadata (only if meaningfully set)
           result[:default] = options[:default] if options.key?(:default) && !options[:default].nil?
 
@@ -78,10 +81,12 @@ module Apiwork
         # @param visited [Set] Set of custom type names currently being serialized (for circular reference protection)
         # @return [Hash] Union representation with variants
         def serialize_union(union_def, definition, visited: Set.new)
-          {
+          result = {
             type: :union,
             variants: union_def.variants.map { |variant| serialize_variant(variant, definition, visited: visited) }
           }
+          result[:discriminator] = union_def.discriminator if union_def.discriminator
+          result
         end
 
         # Serialize a single union variant
@@ -97,10 +102,15 @@ module Apiwork
           if custom_type_block
             # Return type reference instead of expanding
             # The type definition will be in the types hash at API level
-            return { type: variant_type }
+            result = { type: variant_type }
+            result[:tag] = variant_def[:tag] if variant_def[:tag]
+            return result
           end
 
           result = { type: variant_type }
+
+          # Add tag for discriminated unions
+          result[:tag] = variant_def[:tag] if variant_def[:tag]
 
           # Handle 'of' - just pass through, don't expand custom types
           if variant_def[:of]
