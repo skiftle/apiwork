@@ -15,6 +15,11 @@ module Apiwork
         def serialize_definition(definition, visited: Set.new)
           return nil unless definition
 
+          # Check if this is an unwrapped union (special case for response outputs)
+          if definition.instance_variable_get(:@unwrapped_union)
+            return serialize_unwrapped_union(definition, visited: visited)
+          end
+
           result = {}
 
           definition.params.each do |name, param_options|
@@ -22,6 +27,57 @@ module Apiwork
           end
 
           result
+        end
+
+        # Serialize an unwrapped discriminated union
+        # This represents a flat structure as a discriminated union in the schema
+        # @param definition [Definition] The definition marked as unwrapped union
+        # @param visited [Set] Visited types for circular reference protection
+        # @return [Hash] Union representation
+        def serialize_unwrapped_union(definition, visited: Set.new)
+          discriminator = definition.instance_variable_get(:@unwrapped_union_discriminator)
+
+          # Separate params into success and error variants based on typical patterns
+          success_params = {}
+          error_params = {}
+
+          definition.params.each do |name, param_options|
+            case name
+            when :ok
+              # ok field with literal values in each variant
+              next # We'll add this manually to each variant
+            when :errors
+              # errors is only in error variant
+              error_params[name] = serialize_param(name, param_options, definition, visited: visited)
+            else
+              # All other fields are in success variant
+              success_params[name] = serialize_param(name, param_options, definition, visited: visited)
+            end
+          end
+
+          # Build union structure
+          {
+            type: :union,
+            discriminator: discriminator,
+            variants: [
+              {
+                tag: 'true',
+                type: :object,
+                shape: {
+                  ok: { type: :literal, value: true, required: true },
+                  **success_params
+                }
+              },
+              {
+                tag: 'false',
+                type: :object,
+                shape: {
+                  ok: { type: :literal, value: false, required: true },
+                  **error_params
+                }
+              }
+            ]
+          }
         end
 
         # Serialize a single parameter with all its metadata
@@ -34,6 +90,17 @@ module Apiwork
           # Handle union types
           if options[:type] == :union
             return serialize_union(options[:union], definition, visited: visited)
+          end
+
+          # Handle custom types - return type reference instead of expanding
+          if options[:custom_type]
+            result = {
+              type: options[:custom_type],
+              required: options[:required] || false
+            }
+            result[:nullable] = options[:nullable] if options[:nullable]
+            result[:as] = options[:as] if options[:as]
+            return result
           end
 
           result = {
@@ -62,12 +129,7 @@ module Apiwork
           result[:of] = options[:of] if options[:of]
           result[:nullable] = options[:nullable] if options[:nullable]
 
-          # Handle custom types
-          if options[:custom_type]
-            result[:custom_type] = options[:custom_type]
-          end
-
-          # Handle shape (nested objects)
+          # Handle shape (nested objects) - only for non-custom types
           if options[:shape]
             result[:shape] = serialize_definition(options[:shape], visited: visited)
           end

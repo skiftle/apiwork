@@ -150,9 +150,9 @@ module Apiwork
         contract_class = definition.contract_class
 
         # Register the resource type with Descriptors::Registry
-        # Use nil - Descriptors::Registry will use just the prefix (e.g., "account")
-        # This gives us clean type names like :account, :post, etc.
-        resource_type_name = nil
+        # Use nil for registration - Descriptors::Registry will use just the prefix (e.g., "locale", "post")
+        # Get the qualified name for reference
+        resource_type_name = Descriptors::Registry.qualified_name(contract_class, nil)
 
         # Check if already registered
         unless Descriptors::Registry.resolve(resource_type_name, contract_class: contract_class)
@@ -163,8 +163,8 @@ module Apiwork
             assoc_type_map[name] = Generator.register_association_type(contract_class, assoc_def)
           end
 
-          # NOW register the resource type
-          Descriptors::Registry.register_local(contract_class, resource_type_name) do
+          # NOW register the resource type (with nil, which uses contract prefix)
+          Descriptors::Registry.register_local(contract_class, nil) do
             # All resource attributes
             schema_class.attribute_definitions.each do |name, attr_def|
               param name,
@@ -196,14 +196,23 @@ module Apiwork
           end
         end
 
-        # Full response structure
+        # Output is a discriminated union based on 'ok' field (literal values)
+        # The union is "unwrapped" - fields are at top level, not under a wrapper key
+        # Variant 1: ok: true (literal) with resource and optional meta
+        # Variant 2: ok: false (literal) with errors array
+
+        # Mark this definition as an unwrapped union for special serialization
+        definition.instance_variable_set(:@unwrapped_union, true)
+        definition.instance_variable_set(:@unwrapped_union_discriminator, :ok)
+
+        # Define all possible fields from both variants
+        # Success fields (ok: true variant)
         definition.param :ok, type: :boolean, required: true
-
-        # Data nested under root key - use the registered type
-        definition.param root_key, type: resource_type_name, required: true
-
-        # Meta is optional (only if controller adds it)
+        definition.param root_key, type: resource_type_name, required: false
         definition.param :meta, type: :object, required: false
+
+        # Error fields (ok: false variant)
+        definition.param :errors, type: :array, of: :error, required: false
       end
 
       def self.generate_collection_output(definition, schema_class)
@@ -212,8 +221,9 @@ module Apiwork
         contract_class = definition.contract_class
 
         # Register the resource type with Descriptors::Registry (same as single output)
-        # Use nil - Descriptors::Registry will use just the prefix (e.g., "account")
-        resource_type_name = nil
+        # Use nil for registration - Descriptors::Registry will use just the prefix
+        # Get the qualified name for reference
+        resource_type_name = Descriptors::Registry.qualified_name(contract_class, nil)
 
         # Check if already registered
         unless Descriptors::Registry.resolve(resource_type_name, contract_class: contract_class)
@@ -224,8 +234,8 @@ module Apiwork
             assoc_type_map[name] = Generator.register_association_type(contract_class, assoc_def)
           end
 
-          # NOW register the resource type
-          Descriptors::Registry.register_local(contract_class, resource_type_name) do
+          # NOW register the resource type (with nil, which uses contract prefix)
+          Descriptors::Registry.register_local(contract_class, nil) do
             # Each item has all resource attributes
             schema_class.attribute_definitions.each do |name, attr_def|
               param name,
@@ -257,22 +267,25 @@ module Apiwork
           end
         end
 
-        # Full response structure
+        # Output is a discriminated union based on 'ok' field (literal values)
+        # The union is "unwrapped" - fields are at top level, not under a wrapper key
+        # Variant 1: ok: true (literal) with resources array and meta with pagination
+        # Variant 2: ok: false (literal) with errors array
+
+        # Mark this definition as an unwrapped union for special serialization
+        definition.instance_variable_set(:@unwrapped_union, true)
+        definition.instance_variable_set(:@unwrapped_union_discriminator, :ok)
+
+        # Define all possible fields from both variants
+        # Success fields (ok: true variant)
         definition.param :ok, type: :boolean, required: true
-
-        # Array of items nested under root key - use the registered type
-        definition.param root_key_plural, type: :array, required: true, of: resource_type_name
-
-        # Pagination meta (always present for collections)
-        definition.param :meta, type: :object, required: true do
-          param :page, type: :object, required: true do
-            param :current, type: :integer, required: true
-            param :next, type: :integer, required: false
-            param :prev, type: :integer, required: false
-            param :total, type: :integer, required: true
-            param :items, type: :integer, required: true
-          end
+        definition.param root_key_plural, type: :array, of: resource_type_name, required: false
+        definition.param :meta, type: :object, required: false do
+          param :page, type: :page, required: true
         end
+
+        # Error fields (ok: false variant)
+        definition.param :errors, type: :array, of: :error, required: false
       end
 
       # Determine which filter type to use based on attribute type

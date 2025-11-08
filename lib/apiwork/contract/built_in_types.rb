@@ -134,6 +134,25 @@ module Apiwork
             param :size, type: :integer, required: false
           end
 
+          # Pagination metadata
+          # Standard pagination info returned in collection responses
+          type :page do
+            param :current, type: :integer, required: true
+            param :next, type: :integer, required: false
+            param :prev, type: :integer, required: false
+            param :total, type: :integer, required: true
+            param :items, type: :integer, required: true
+          end
+
+          # Error type
+          # Standard error structure for API responses
+          type :error do
+            param :code, type: :string, required: true
+            param :field, type: :string, required: false
+            param :detail, type: :string, required: false
+            param :path, type: :array, of: :string, required: false
+          end
+
           # Global enums - reusable across all contracts
 
           # Sort direction enum

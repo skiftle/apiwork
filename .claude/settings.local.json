@@ -57,7 +57,8 @@
       "Bash(ruby /tmp/test_caching.rb:*)",
       "Bash(ruby:*)",
       "Bash(timeout 10 bundle exec rails runner:*)",
-      "Bash(git stash:*)"
+      "Bash(git stash:*)",
+      "Bash(timeout 10 bin/rails runner:*)"
     ],
     "deny": [],
     "ask": []
