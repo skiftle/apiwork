@@ -75,6 +75,32 @@ RSpec.describe 'API Introspection' do
           it 'includes member action contract if available' do
             expect(posts[:members][:archive]).to have_key(:contract)
           end
+
+          it 'uses unwrapped union structure for member action output' do
+            archive = posts[:members][:archive]
+            expect(archive[:contract]).to have_key(:output)
+            output = archive[:contract][:output]
+
+            # Should be a discriminated union
+            expect(output[:type]).to eq(:union)
+            expect(output[:discriminator]).to eq(:ok)
+            expect(output[:variants]).to be_an(Array)
+            expect(output[:variants].length).to eq(2)
+
+            # Success variant should have post field
+            success_variant = output[:variants].find { |v| v[:tag] == 'true' }
+            expect(success_variant[:shape].keys).to include(:post)
+
+            # Error variant should have errors field
+            error_variant = output[:variants].find { |v| v[:tag] == 'false' }
+            expect(error_variant[:shape].keys).to include(:errors)
+          end
+
+          it 'has empty output for destroy action' do
+            expect(posts[:contracts][:destroy]).to have_key(:output)
+            output_keys = posts[:contracts][:destroy][:output].keys
+            expect(output_keys).to be_empty
+          end
         end
 
         describe 'collection actions' do
