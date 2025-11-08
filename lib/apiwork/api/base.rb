@@ -105,6 +105,7 @@ module Apiwork
           resource_path = build_resource_path(resource_name, resource_metadata, parent_path, parent_resource_name: parent_resource_name)
 
           result = {
+            path: resource_path,  # Resource-level relative path
             actions: {}
           }
 
@@ -164,19 +165,24 @@ module Apiwork
           end
         end
 
-        # Build path for any action type
+        # Build relative path for any action type
+        # Returns only the action-specific segment with generic :id
+        # index/create: "/"
+        # show/update/destroy: "/:id"
+        # member: "/:id/action_name"
+        # collection: "/action_name"
         def build_action_path(resource_path, action_name, action_type)
           case action_type
           when :index, :create
-            resource_path
+            "/"
           when :show, :update, :destroy
-            "#{resource_path}/:id"
+            "/:id"
           when :member
-            "#{resource_path}/:id/#{action_name}"
+            "/:id/#{action_name}"
           when :collection
-            "#{resource_path}/#{action_name}"
+            "/#{action_name}"
           else
-            resource_path
+            "/"
           end
         end
 
@@ -195,7 +201,10 @@ module Apiwork
           actions[name][:error_codes] = contract_json[:error_codes] if contract_json[:error_codes]
         end
 
-        # Build full path for a resource
+        # Build relative path for a resource
+        # Returns only the local segment, not the full absolute path
+        # Top-level: "posts"
+        # Nested: ":post_id/comments"
         def build_resource_path(resource_name, resource_metadata, parent_path, parent_resource_name: nil)
           resource_segment = if resource_metadata[:singular]
                                resource_name.to_s.singularize
@@ -204,15 +213,12 @@ module Apiwork
                              end
 
           if parent_path
-            # Use parent resource name for ID parameter to avoid duplicate :id in nested routes
-            parent_id_param = if parent_resource_name
-                                ":#{parent_resource_name.to_s.singularize}_id"
-                              else
-                                ":id"
-                              end
-            "#{parent_path}/#{parent_id_param}/#{resource_segment}"
+            # Nested: use parent resource name for ID parameter
+            parent_id_param = ":#{parent_resource_name.to_s.singularize}_id"
+            "#{parent_id_param}/#{resource_segment}"
           else
-            "#{mount_path}/#{resource_segment}"
+            # Top-level: just the resource segment
+            resource_segment
           end
         end
 

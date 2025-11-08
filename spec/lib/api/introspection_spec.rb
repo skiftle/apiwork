@@ -38,6 +38,10 @@ RSpec.describe 'API Introspection' do
       describe 'posts resource' do
         let(:posts) { json[:resources][:posts] }
 
+        it 'includes resource path' do
+          expect(posts[:path]).to eq('posts')
+        end
+
         it 'includes all CRUD actions' do
           expect(posts[:actions]).to have_key(:index)
           expect(posts[:actions]).to have_key(:show)
@@ -49,23 +53,23 @@ RSpec.describe 'API Introspection' do
         it 'includes method and path for CRUD actions' do
           # Index action
           expect(posts[:actions][:index][:method]).to eq(:get)
-          expect(posts[:actions][:index][:path]).to eq('/api/v1/posts')
+          expect(posts[:actions][:index][:path]).to eq('/')
 
           # Show action
           expect(posts[:actions][:show][:method]).to eq(:get)
-          expect(posts[:actions][:show][:path]).to eq('/api/v1/posts/:id')
+          expect(posts[:actions][:show][:path]).to eq('/:id')
 
           # Create action
           expect(posts[:actions][:create][:method]).to eq(:post)
-          expect(posts[:actions][:create][:path]).to eq('/api/v1/posts')
+          expect(posts[:actions][:create][:path]).to eq('/')
 
           # Update action
           expect(posts[:actions][:update][:method]).to eq(:patch)
-          expect(posts[:actions][:update][:path]).to eq('/api/v1/posts/:id')
+          expect(posts[:actions][:update][:path]).to eq('/:id')
 
           # Destroy action
           expect(posts[:actions][:destroy][:method]).to eq(:delete)
-          expect(posts[:actions][:destroy][:path]).to eq('/api/v1/posts/:id')
+          expect(posts[:actions][:destroy][:path]).to eq('/:id')
         end
 
         it 'includes input/output definitions for CRUD actions' do
@@ -85,7 +89,7 @@ RSpec.describe 'API Introspection' do
 
           it 'includes method and path for member actions' do
             expect(posts[:actions][:publish][:method]).to eq(:patch)
-            expect(posts[:actions][:publish][:path]).to eq('/api/v1/posts/:id/publish')
+            expect(posts[:actions][:publish][:path]).to eq('/:id/publish')
           end
 
           it 'includes input/output for member actions' do
@@ -127,7 +131,7 @@ RSpec.describe 'API Introspection' do
 
           it 'includes method and path for collection actions' do
             expect(posts[:actions][:search][:method]).to eq(:get)
-            expect(posts[:actions][:search][:path]).to eq('/api/v1/posts/search')
+            expect(posts[:actions][:search][:path]).to eq('/search')
           end
 
           it 'includes input/output for collection actions' do
@@ -143,9 +147,13 @@ RSpec.describe 'API Introspection' do
             expect(posts[:resources]).to have_key(:comments)
           end
 
+          it 'includes nested resource path with parent ID' do
+            expect(comments[:path]).to eq(':post_id/comments')
+          end
+
           it 'includes correct nested paths for CRUD actions' do
-            expect(comments[:actions][:index][:path]).to eq('/api/v1/posts/:post_id/comments')
-            expect(comments[:actions][:show][:path]).to eq('/api/v1/posts/:post_id/comments/:id')
+            expect(comments[:actions][:index][:path]).to eq('/')
+            expect(comments[:actions][:show][:path]).to eq('/:id')
           end
 
           it 'includes all nested resource actions' do
@@ -154,12 +162,12 @@ RSpec.describe 'API Introspection' do
 
           it 'includes nested resource member actions' do
             expect(comments[:actions]).to have_key(:approve)
-            expect(comments[:actions][:approve][:path]).to eq('/api/v1/posts/:post_id/comments/:id/approve')
+            expect(comments[:actions][:approve][:path]).to eq('/:id/approve')
           end
 
           it 'includes nested resource collection actions' do
             expect(comments[:actions]).to have_key(:recent)
-            expect(comments[:actions][:recent][:path]).to eq('/api/v1/posts/:post_id/comments/recent')
+            expect(comments[:actions][:recent][:path]).to eq('/recent')
           end
         end
       end
