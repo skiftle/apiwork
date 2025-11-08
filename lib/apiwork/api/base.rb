@@ -98,10 +98,7 @@ module Apiwork
           resource_path = build_resource_path(resource_name, resource_metadata, parent_path, parent_resource_name: parent_resource_name)
 
           result = {
-            path: resource_path,
-            singular: resource_metadata[:singular],
-            actions: resource_metadata[:actions] || [],
-            contracts: {}
+            actions: {}
           }
 
           # Get contract class for this resource
@@ -109,39 +106,68 @@ module Apiwork
           contract_class = resolve_contract_class(resource_metadata) ||
                           schema_based_contract_class(resource_metadata)
 
-          # Serialize CRUD actions
+          # Serialize CRUD actions with method and path
           (resource_metadata[:actions] || []).each do |action_name|
+            action_method = crud_action_method(action_name)
+            action_path = crud_action_path(resource_path, action_name)
+
+            result[:actions][action_name] = {
+              method: action_method,
+              path: action_path
+            }
+
+            # Add input/output from contract
             if contract_class
               action_def = contract_class.action_definition(action_name)
-              result[:contracts][action_name] = action_def&.as_json
+              if action_def
+                contract_json = action_def.as_json
+                result[:actions][action_name][:input] = contract_json[:input] || {}
+                result[:actions][action_name][:output] = contract_json[:output] || {}
+              end
             end
           end
 
           # Serialize member actions
           if resource_metadata[:members]&.any?
-            result[:members] = {}
             resource_metadata[:members].each do |action_name, action_metadata|
-              result[:members][action_name] = serialize_action(
-                action_name,
-                action_metadata,
-                resource_path,
-                :member,
-                contract_class
-              )
+              action_path = "#{resource_path}/:id/#{action_name}"
+
+              result[:actions][action_name] = {
+                method: action_metadata[:method],
+                path: action_path
+              }
+
+              # Add input/output from contract
+              if contract_class
+                action_def = contract_class.action_definition(action_name)
+                if action_def
+                  contract_json = action_def.as_json
+                  result[:actions][action_name][:input] = contract_json[:input] || {}
+                  result[:actions][action_name][:output] = contract_json[:output] || {}
+                end
+              end
             end
           end
 
           # Serialize collection actions
           if resource_metadata[:collections]&.any?
-            result[:collections] = {}
             resource_metadata[:collections].each do |action_name, action_metadata|
-              result[:collections][action_name] = serialize_action(
-                action_name,
-                action_metadata,
-                resource_path,
-                :collection,
-                contract_class
-              )
+              action_path = "#{resource_path}/#{action_name}"
+
+              result[:actions][action_name] = {
+                method: action_metadata[:method],
+                path: action_path
+              }
+
+              # Add input/output from contract
+              if contract_class
+                action_def = contract_class.action_definition(action_name)
+                if action_def
+                  contract_json = action_def.as_json
+                  result[:actions][action_name][:input] = contract_json[:input] || {}
+                  result[:actions][action_name][:output] = contract_json[:output] || {}
+                end
+              end
             end
           end
 
@@ -161,26 +187,28 @@ module Apiwork
           result
         end
 
-        # Serialize a member or collection action
-        def serialize_action(action_name, action_metadata, resource_path, action_type, contract_class)
-          action_path = if action_type == :member
-                          "#{resource_path}/:id/#{action_name}"
-                        else
-                          "#{resource_path}/#{action_name}"
-                        end
-
-          result = {
-            method: action_metadata[:method],
-            path: action_path
-          }
-
-          # Add contract if available
-          if contract_class
-            action_def = contract_class.action_definition(action_name)
-            result[:contract] = action_def&.as_json if action_def
+        # Map CRUD action names to HTTP methods
+        def crud_action_method(action_name)
+          case action_name.to_sym
+          when :index then :get
+          when :show then :get
+          when :create then :post
+          when :update then :patch
+          when :destroy then :delete
+          else :get
           end
+        end
 
-          result
+        # Build path for CRUD actions
+        def crud_action_path(resource_path, action_name)
+          case action_name.to_sym
+          when :index, :create
+            resource_path
+          when :show, :update, :destroy
+            "#{resource_path}/:id"
+          else
+            resource_path
+          end
         end
 
         # Build full path for a resource
