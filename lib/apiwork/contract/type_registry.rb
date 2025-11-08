@@ -201,15 +201,16 @@ module Apiwork
           result = {}
 
           # Add all global types (no prefix)
-          global_types.each do |type_name, definition|
+          # Convert to array to avoid iteration issues if new types are registered during expansion
+          global_types.to_a.each do |type_name, definition|
             result[type_name] = expand_type_definition(definition)
           end
 
           # Add all local types from all contracts (prefixed)
-          local_types.each do |contract_class, types|
-            types_array = types.to_a
-
-            types_array.each do |_type_name, metadata|
+          # Convert to array TWICE (both levels) to prevent "can't add a new key into hash during iteration" errors
+          # This allows new types to be registered during expansion without affecting iteration
+          local_types.to_a.each do |contract_class, types|
+            types.to_a.each do |_type_name, metadata|
               qualified_name = metadata[:qualified_name]
               definition = metadata[:definition]
 

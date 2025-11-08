@@ -163,18 +163,38 @@ module Apiwork
 
         # Check if already registered
         unless TypeRegistry.resolve(resource_type_name, contract_class: contract_class)
+          # PRE-REGISTER: Register all association types BEFORE defining the resource type
+          # This prevents "can't add a new key into hash during iteration" errors
+          assoc_type_map = {}
+          schema_class.association_definitions.each do |name, assoc_def|
+            assoc_type_map[name] = Generator.register_association_type(contract_class, assoc_def)
+          end
+
+          # NOW register the resource type
           TypeRegistry.register_local(contract_class, resource_type_name) do
             # All resource attributes
             schema_class.attribute_definitions.each do |name, attr_def|
               param name, type: Generator.map_type(attr_def.type), required: false
             end
 
-            # Add associations if present
+            # Add associations using pre-registered types
             schema_class.association_definitions.each do |name, assoc_def|
-              if assoc_def.singular?
-                param name, type: :object, required: false, nullable: assoc_def.nullable?
-              elsif assoc_def.collection?
-                param name, type: :array, required: false, nullable: assoc_def.nullable?
+              assoc_type = assoc_type_map[name]
+
+              if assoc_type
+                # Use the registered type
+                if assoc_def.singular?
+                  param name, type: assoc_type, required: false, nullable: assoc_def.nullable?
+                elsif assoc_def.collection?
+                  param name, type: :array, of: assoc_type, required: false, nullable: assoc_def.nullable?
+                end
+              else
+                # Fallback to generic types if no schema
+                if assoc_def.singular?
+                  param name, type: :object, required: false, nullable: assoc_def.nullable?
+                elsif assoc_def.collection?
+                  param name, type: :array, required: false, nullable: assoc_def.nullable?
+                end
               end
             end
           end
@@ -201,18 +221,38 @@ module Apiwork
 
         # Check if already registered
         unless TypeRegistry.resolve(resource_type_name, contract_class: contract_class)
+          # PRE-REGISTER: Register all association types BEFORE defining the resource type
+          # This prevents "can't add a new key into hash during iteration" errors
+          assoc_type_map = {}
+          schema_class.association_definitions.each do |name, assoc_def|
+            assoc_type_map[name] = Generator.register_association_type(contract_class, assoc_def)
+          end
+
+          # NOW register the resource type
           TypeRegistry.register_local(contract_class, resource_type_name) do
             # Each item has all resource attributes
             schema_class.attribute_definitions.each do |name, attr_def|
               param name, type: Generator.map_type(attr_def.type), required: false
             end
 
-            # Add associations if present
+            # Add associations using pre-registered types
             schema_class.association_definitions.each do |name, assoc_def|
-              if assoc_def.singular?
-                param name, type: :object, required: false, nullable: assoc_def.nullable?
-              elsif assoc_def.collection?
-                param name, type: :array, required: false, nullable: assoc_def.nullable?
+              assoc_type = assoc_type_map[name]
+
+              if assoc_type
+                # Use the registered type
+                if assoc_def.singular?
+                  param name, type: assoc_type, required: false, nullable: assoc_def.nullable?
+                elsif assoc_def.collection?
+                  param name, type: :array, of: assoc_type, required: false, nullable: assoc_def.nullable?
+                end
+              else
+                # Fallback to generic types if no schema
+                if assoc_def.singular?
+                  param name, type: :object, required: false, nullable: assoc_def.nullable?
+                elsif assoc_def.collection?
+                  param name, type: :array, required: false, nullable: assoc_def.nullable?
+                end
               end
             end
           end
@@ -456,6 +496,64 @@ module Apiwork
         end
 
         type_name
+      end
+
+      # Register a type for an associated resource schema
+      # This allows associations to reference their schema types instead of generic :object
+      # @param contract_class [Class] The contract class to register types with
+      # @param assoc_def [AssociationDefinition] The association definition
+      # @param visited [Set] Set of visited schema classes (circular reference protection)
+      # @return [Symbol, nil] The type name to reference or nil if no schema
+      def self.register_association_type(contract_class, assoc_def, visited: Set.new)
+        # Resolve the associated resource schema
+        assoc_schema = resolve_association_resource(assoc_def)
+        return nil unless assoc_schema
+        return nil if visited.include?(assoc_schema)
+
+        # Add to visited set
+        visited = visited.dup.add(assoc_schema)
+
+        # Create a temporary contract class for the associated schema
+        # This is needed to get the proper qualified type name
+        assoc_contract_class = Class.new(Base) do
+          schema assoc_schema
+        end
+
+        # Register the resource type for the associated schema (using nil as type name)
+        resource_type_name = nil
+
+        # Check if already registered
+        unless TypeRegistry.resolve(resource_type_name, contract_class: assoc_contract_class)
+          TypeRegistry.register_local(assoc_contract_class, resource_type_name) do
+            # All resource attributes
+            assoc_schema.attribute_definitions.each do |name, attr_def|
+              param name, type: Generator.map_type(attr_def.type), required: false
+            end
+
+            # Add nested associations recursively
+            assoc_schema.association_definitions.each do |name, nested_assoc_def|
+              nested_type = Generator.register_association_type(assoc_contract_class, nested_assoc_def, visited: visited)
+
+              if nested_type
+                if nested_assoc_def.singular?
+                  param name, type: nested_type, required: false, nullable: nested_assoc_def.nullable?
+                elsif nested_assoc_def.collection?
+                  param name, type: :array, of: nested_type, required: false, nullable: nested_assoc_def.nullable?
+                end
+              else
+                # Fallback to generic types if no schema
+                if nested_assoc_def.singular?
+                  param name, type: :object, required: false, nullable: nested_assoc_def.nullable?
+                elsif nested_assoc_def.collection?
+                  param name, type: :array, required: false, nullable: nested_assoc_def.nullable?
+                end
+              end
+            end
+          end
+        end
+
+        # Return the qualified type name for reference
+        TypeRegistry.qualified_name(assoc_contract_class, resource_type_name)
       end
 
       def self.map_type(resource_type)
