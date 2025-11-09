@@ -111,13 +111,10 @@ module Apiwork
             z.string(),
             z.object({
               #{transform_operator_keys('eq', key_transform)}: z.string().optional(),
-              #{transform_operator_keys('neq', key_transform)}: z.string().optional(),
               #{transform_operator_keys('contains', key_transform)}: z.string().optional(),
-              #{transform_operator_keys('ncontains', key_transform)}: z.string().optional(),
               #{transform_operator_keys('starts_with', key_transform)}: z.string().optional(),
               #{transform_operator_keys('ends_with', key_transform)}: z.string().optional(),
-              in: z.array(z.string()).optional(),
-              nin: z.array(z.string()).optional()
+              in: z.array(z.string()).optional()
             })
           ]);
 
@@ -127,15 +124,12 @@ module Apiwork
             z.null(),
             z.object({
               #{transform_operator_keys('eq', key_transform)}: z.number().optional(),
-              #{transform_operator_keys('neq', key_transform)}: z.number().optional(),
               #{transform_operator_keys('gt', key_transform)}: z.number().optional(),
               #{transform_operator_keys('gte', key_transform)}: z.number().optional(),
               #{transform_operator_keys('lt', key_transform)}: z.number().optional(),
               #{transform_operator_keys('lte', key_transform)}: z.number().optional(),
               #{transform_operator_keys('between', key_transform)}: z.tuple([z.number(), z.number()]).optional(),
-              #{transform_operator_keys('nbetween', key_transform)}: z.tuple([z.number(), z.number()]).optional(),
-              in: z.array(z.number()).optional(),
-              nin: z.array(z.number()).optional()
+              in: z.array(z.number()).optional()
             })
           ]);
 
@@ -143,15 +137,12 @@ module Apiwork
             z.string().nullable(),
             z.object({
               #{transform_operator_keys('eq', key_transform)}: z.string().nullable().optional(),
-              #{transform_operator_keys('neq', key_transform)}: z.string().nullable().optional(),
               #{transform_operator_keys('gt', key_transform)}: z.string().optional(),
               #{transform_operator_keys('gte', key_transform)}: z.string().optional(),
               #{transform_operator_keys('lt', key_transform)}: z.string().optional(),
               #{transform_operator_keys('lte', key_transform)}: z.string().optional(),
               #{transform_operator_keys('between', key_transform)}: z.tuple([z.string(), z.string()]).optional(),
-              #{transform_operator_keys('nbetween', key_transform)}: z.tuple([z.string(), z.string()]).optional(),
-              in: z.array(z.string()).optional(),
-              nin: z.array(z.string()).optional()
+              in: z.array(z.string()).optional()
             })
           ]);
 
@@ -160,9 +151,7 @@ module Apiwork
             z.array(z.string().uuid()),
             z.object({
               #{transform_operator_keys('eq', key_transform)}: z.string().uuid().optional(),
-              #{transform_operator_keys('neq', key_transform)}: z.string().uuid().optional(),
-              in: z.array(z.string().uuid()).optional(),
-              nin: z.array(z.string().uuid()).optional()
+              in: z.array(z.string().uuid()).optional()
             })
           ]);
 
@@ -172,9 +161,7 @@ module Apiwork
             z.number().int().min(0).max(1),
             z.null(),
             z.object({
-              #{transform_operator_keys('eq', key_transform)}: z.boolean().optional(),
-              #{transform_operator_keys('neq', key_transform)}: z.boolean().optional(),
-              in: z.array(z.boolean()).optional()
+              #{transform_operator_keys('eq', key_transform)}: z.boolean().optional()
             })
           ]);
 
@@ -216,9 +203,7 @@ module Apiwork
               #{name}Schema,
               z.object({
                 #{transform_operator_keys('eq', key_transform)}: #{name}Schema.optional(),
-                #{transform_operator_keys('neq', key_transform)}: #{name}Schema.optional(),
-                in: z.array(#{name}Schema).optional(),
-                nin: z.array(#{name}Schema).optional()
+                in: z.array(#{name}Schema).optional()
               })
             ]);
           TYPESCRIPT
