@@ -9,17 +9,15 @@ module Api
       schema ArticleSchema
 
       # Standard CRUD actions - only require title
-      # Auto-wrapping in :article happens automatically with reset_input!
+      # Auto-wrapping in :article happens automatically with input replace: true
       action :create do
-        reset_input!
-        input do
+        input replace: true do
           param :title, type: :string
         end
       end
 
       action :update do
-        reset_input!
-        input do
+        input replace: true do
           param :title, type: :string
         end
       end

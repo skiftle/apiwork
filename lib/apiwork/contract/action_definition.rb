@@ -15,12 +15,12 @@ module Apiwork
         contract_class.schema_class
       end
 
-      def initialize(action_name, contract_class)
+      def initialize(action_name, contract_class, replace: false)
         @action_name = action_name
         @contract_class = contract_class
         @parent_scope = contract_class  # Parent scope is the contract class
-        @reset_input = false
-        @reset_output = false
+        @reset_input = replace
+        @reset_output = replace
         @input_definition = nil
         @output_definition = nil
         @error_codes = []  # Action-specific error codes
@@ -31,15 +31,6 @@ module Apiwork
         return if singleton_class.ancestors.include?(Schema::ActionDefinition)
 
         singleton_class.prepend(Schema::ActionDefinition)
-      end
-
-      # Reset flags to override virtual contracts
-      def reset_input!
-        @reset_input = true
-      end
-
-      def reset_output!
-        @reset_output = true
       end
 
       def resets_input?
@@ -122,7 +113,9 @@ module Apiwork
       end
 
       # Define input for this action
-      def input(&block)
+      def input(replace: false, &block)
+        @reset_input = replace if replace
+
         @input_definition ||= Definition.new(
           :input,
           contract_class,
@@ -137,7 +130,9 @@ module Apiwork
       end
 
       # Define output for this action
-      def output(&block)
+      def output(replace: false, &block)
+        @reset_output = replace if replace
+
         @output_definition ||= Definition.new(
           :output,
           contract_class,
