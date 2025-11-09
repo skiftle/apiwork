@@ -10,7 +10,12 @@
       "Bash(spec/apiwork/schema/operators_spec.rb)",
       "Bash(RAILS_ENV=test bin/rails generate:*)",
       "Bash(RAILS_ENV=test bin/rails db:migrate:*)",
-      "Bash(RAILS_ENV=test bin/rails db:migrate:up:*)"
+      "Bash(RAILS_ENV=test bin/rails db:migrate:up:*)",
+      "Bash(DEBUG_ACTION_NAME=1 RAILS_ENV=test bundle exec rails runner:*)",
+      "Bash(RAILS_ENV=test bundle exec rails runner:*)",
+      "Bash(RAILS_ENV=test bin/rails runner:*)",
+      "Bash(bundle exec rspec:*)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []

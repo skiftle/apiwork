@@ -44,22 +44,35 @@ module Apiwork
           def qualified_name(scope, name)
             return name if global?(name)
 
+            # Handle ActionDefinition instances
+            if scope.class.name == 'Apiwork::Contract::ActionDefinition'
+              contract_class = scope.contract_class
+              action_name = scope.action_name
+              contract_prefix = extract_contract_prefix(contract_class)
+              return :"#{contract_prefix}_#{action_name}_#{name}"
+            end
+
+            # Handle Definition instances (input/output)
+            if scope.class.name == 'Apiwork::Contract::Definition'
+              contract_class = scope.contract_class
+              action_name = scope.action_name
+              direction = scope.direction
+              contract_prefix = extract_contract_prefix(contract_class)
+              if action_name
+                return :"#{contract_prefix}_#{action_name}_#{direction}_#{name}"
+              else
+                return :"#{contract_prefix}_#{direction}_#{name}"
+              end
+            end
+
+            # Handle contract class scope
             if scope.is_a?(Class)
               contract_prefix = extract_contract_prefix(scope)
               return :"#{contract_prefix}_#{name}"
-            elsif scope.respond_to?(:contract_class) && scope.respond_to?(:action_name)
-              contract_prefix = extract_contract_prefix(scope.contract_class)
-              action_name = scope.action_name
-
-              if scope.respond_to?(:direction)
-                direction = scope.direction
-                return :"#{contract_prefix}_#{action_name}_#{direction}_#{name}"
-              else
-                return :"#{contract_prefix}_#{action_name}_#{name}"
-              end
-            else
-              name
             end
+
+            # Fallback
+            name
           end
 
           def serialize_all_for_api(api)

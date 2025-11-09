@@ -85,12 +85,20 @@ module Apiwork
               result[type_name] = expand_type_definition(definition, contract_class: nil, type_name: type_name)
             end
 
-            local_storage.to_a.each do |contract_class, types|
+            local_storage.to_a.each do |scope, types|
+              # scope can be a Contract class, ActionDefinition, or Definition instance
+              # Extract the actual contract class
+              actual_contract_class = if scope.respond_to?(:contract_class)
+                                        scope.contract_class
+                                      else
+                                        scope
+                                      end
+
               types.to_a.each do |type_name, metadata|
                 qualified_type_name = metadata[:qualified_name]
                 definition = metadata[:definition]
 
-                result[qualified_type_name] = expand_type_definition(definition, contract_class: contract_class, type_name: type_name)
+                result[qualified_type_name] = expand_type_definition(definition, contract_class: actual_contract_class, type_name: type_name)
               end
             end
 

@@ -96,9 +96,9 @@ module Apiwork
               # All resource attributes
               schema_class.attribute_definitions.each do |name, attribute_definition|
                 param name,
-                     type: Generator.map_type(attribute_definition.type),
-                     required: false,
-                     **(attribute_definition.enum ? { enum: name } : {})
+                      type: Generator.map_type(attribute_definition.type),
+                      required: false,
+                      **(attribute_definition.enum ? { enum: name } : {})
               end
 
               # Add associations using pre-registered types
@@ -110,15 +110,14 @@ module Apiwork
                   if association_definition.singular?
                     param name, type: assoc_type, required: false, nullable: association_definition.nullable?
                   elsif association_definition.collection?
-                    param name, type: :array, of: assoc_type, required: false, nullable: association_definition.nullable?
+                    param name, type: :array, of: assoc_type, required: false,
+                                nullable: association_definition.nullable?
                   end
-                else
+                elsif association_definition.singular?
                   # Fallback to generic types if no schema
-                  if association_definition.singular?
-                    param name, type: :object, required: false, nullable: association_definition.nullable?
-                  elsif association_definition.collection?
-                    param name, type: :array, required: false, nullable: association_definition.nullable?
-                  end
+                  param name, type: :object, required: false, nullable: association_definition.nullable?
+                elsif association_definition.collection?
+                  param name, type: :array, required: false, nullable: association_definition.nullable?
                 end
               end
             end
