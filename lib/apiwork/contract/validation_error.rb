@@ -8,7 +8,7 @@ module Apiwork
     class ValidationError < StandardError
       attr_reader :code, :field, :detail, :path, :meta
 
-      def initialize(code:, field: nil, detail:, path: [], **meta)
+      def initialize(code:, detail:, field: nil, path: [], **meta)
         @code = code
         @field = field
         @detail = detail
@@ -20,7 +20,7 @@ module Apiwork
       end
 
       def pointer
-        @pointer ||= Apiwork::Errors::JSONPointer.build(*path)
+        @pointer ||= Apiwork::Errors::JsonPointer.build(*path)
       end
 
       def to_h
@@ -39,7 +39,7 @@ module Apiwork
           new(
             code: :field_unknown,
             field: field,
-            detail: "Unknown field",
+            detail: 'Unknown field',
             path: path,
             allowed: allowed
           )
@@ -49,7 +49,7 @@ module Apiwork
           new(
             code: :field_missing,
             field: field,
-            detail: "Field required",
+            detail: 'Field required',
             path: path
           )
         end
@@ -58,7 +58,7 @@ module Apiwork
           new(
             code: :invalid_type,
             field: field,
-            detail: "Invalid type",
+            detail: 'Invalid type',
             path: path,
             expected: expected,
             actual: actual
@@ -69,7 +69,7 @@ module Apiwork
           new(
             code: :invalid_association,
             field: field,
-            detail: "Invalid value",
+            detail: 'Invalid value',
             path: path,
             expected: association_type
           )
@@ -79,7 +79,7 @@ module Apiwork
           new(
             code: :value_null,
             field: field,
-            detail: "Value cannot be null",
+            detail: 'Value cannot be null',
             path: path
           )
         end
@@ -87,7 +87,7 @@ module Apiwork
         def max_depth_exceeded(depth:, max_depth:, path: [])
           new(
             code: :max_depth_exceeded,
-            detail: "Max depth exceeded",
+            detail: 'Max depth exceeded',
             path: path,
             depth: depth,
             max_depth: max_depth
@@ -97,7 +97,7 @@ module Apiwork
         def array_too_large(size:, max_size:, path: [])
           new(
             code: :array_too_large,
-            detail: "Value too large",
+            detail: 'Value too large',
             path: path,
             size: size,
             max_size: max_size
