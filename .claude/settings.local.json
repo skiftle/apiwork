@@ -7,7 +7,10 @@
       "Bash(do echo \"=== Seed $seed ===\")",
       "Bash(spec/integration/filtering_spec.rb spec/integration/advanced_filtering_spec.rb spec/integration/association_filtering_spec.rb spec/integration/includes_spec.rb spec/integration/association_sorting_spec.rb spec/integration/sorting_spec.rb spec/integration/pagination_spec.rb)",
       "Bash(spec/apiwork/schema/operators_spec.rb spec/apiwork/querying/operators_spec.rb)",
-      "Bash(spec/apiwork/schema/operators_spec.rb)"
+      "Bash(spec/apiwork/schema/operators_spec.rb)",
+      "Bash(RAILS_ENV=test bin/rails generate:*)",
+      "Bash(RAILS_ENV=test bin/rails db:migrate:*)",
+      "Bash(RAILS_ENV=test bin/rails db:migrate:up:*)"
     ],
     "deny": [],
     "ask": []

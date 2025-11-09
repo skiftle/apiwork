@@ -3,7 +3,7 @@
 module Apiwork
   module Schema
     class AttributeDefinition
-      attr_reader :name, :type, :enum, :required
+      attr_reader :name, :type, :enum, :required, :null_to_empty
 
       def initialize(name, klass:, **options)
         @name = name
@@ -21,6 +21,7 @@ module Apiwork
             options[:enum] ||= detect_enum_values(name)
             options[:type] ||= detect_type(name) if @is_db_column
             options[:required] = detect_required(name) if options[:required].nil? && @is_db_column
+            options[:nullable] = detect_nullable(name) if options[:nullable].nil? && @is_db_column
           rescue ActiveRecord::StatementInvalid, ActiveRecord::NoDatabaseError, ActiveRecord::ConnectionNotEstablished
             # DB not available or table doesn't exist - skip introspection
           end
@@ -36,6 +37,7 @@ module Apiwork
         @serialize = options[:serialize]
         @deserialize = options[:deserialize]
         @null_to_empty = options[:null_to_empty]
+        @nullable = options[:nullable]  # Explicit nullable option (overrides DB detection)
         @required = options[:required] || false
         @type = options[:type]
         @enum = options[:enum]
@@ -62,6 +64,15 @@ module Apiwork
 
       def required?
         @required
+      end
+
+      def nullable?
+        # null_to_empty ALWAYS overrides to false
+        # (transformation happens in serialize/deserialize, so frontend never sees null)
+        return false if @null_to_empty
+
+        # Otherwise use the stored value (from explicit config or DB detection)
+        @nullable
       end
 
       def writable?
@@ -103,6 +114,7 @@ module Apiwork
           serialize: nil,
           deserialize: nil,
           null_to_empty: false,
+          nullable: false,  # Default to false (stricter by default)
           required: false,
           type: nil,
           enum: nil
@@ -203,6 +215,16 @@ module Apiwork
 
         # null: false constraint means required
         !column&.null
+      end
+
+      def detect_nullable(name)
+        return false unless @model_class
+        return false unless @is_db_column
+
+        column = @model_class.columns_hash[name.to_s]
+
+        # Return true if column allows NULL, false if NOT NULL
+        column&.null || false
       end
     end
   end
