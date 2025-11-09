@@ -174,7 +174,7 @@ module Apiwork
       def build_string_where_clause(key, value, target_klass)
         column = target_klass.arel_table[key]
 
-        value = { equal: value } if value.is_a?(String) || value.nil?
+        value = { eq: value } if value.is_a?(String) || value.nil?
 
         unless value.is_a?(Hash)
           error = ArgumentError.new('Expected Hash for string filter')
@@ -194,14 +194,14 @@ module Apiwork
           end
 
           case operator
-          when :equal then column.eq(compare)
-          when :not_equal then column.not_eq(compare)
+          when :eq then column.eq(compare)
+          when :neq then column.not_eq(compare)
           when :contains then column.matches("%#{compare}%")
-          when :not_contains then column.does_not_match("%#{compare}%")
+          when :ncontains then column.does_not_match("%#{compare}%")
           when :starts_with then column.matches("#{compare}%")
           when :ends_with then column.matches("%#{compare}")
           when :in then column.in(compare)
-          when :not_in then column.not_in(compare)
+          when :nin then column.not_in(compare)
           end
         end.reduce(:and)
       end
@@ -242,9 +242,9 @@ module Apiwork
                 next
               end
 
-              operator == :equal ? column.eq(nil) : column.not_eq(nil)
+              operator == :eq ? column.eq(nil) : column.not_eq(nil)
             else
-              if (operator == :between || operator == :not_between) && compare.is_a?(Hash)
+              if (operator == :between || operator == :nbetween) && compare.is_a?(Hash)
                 from_date = parse_date(compare[:from] || compare['from']).beginning_of_day
                 to_date = parse_date(compare[:to] || compare['to']).end_of_day
 
@@ -258,14 +258,14 @@ module Apiwork
               else
                 date = parse_date(compare)
                 case operator
-                when :equal then column.eq(date)
-                when :not_equal then column.not_eq(date)
-                when :greater_than then column.gt(date)
-                when :greater_than_or_equal_to then column.gteq(date)
-                when :less_than then column.lt(date)
-                when :less_than_or_equal_to then column.lteq(date)
+                when :eq then column.eq(date)
+                when :neq then column.not_eq(date)
+                when :gt then column.gt(date)
+                when :gte then column.gteq(date)
+                when :lt then column.lt(date)
+                when :lte then column.lteq(date)
                 when :in then column.in(Array(date))
-                when :not_in then column.not_in(Array(date))
+                when :nin then column.not_in(Array(date))
                 end
               end
             end
@@ -295,34 +295,34 @@ module Apiwork
             end
 
             case operator
-            when :equal
+            when :eq
               number = parse_numeric(compare)
               column.eq(number)
-            when :not_equal
+            when :neq
               number = parse_numeric(compare)
               column.not_eq(number)
-            when :greater_than
+            when :gt
               number = parse_numeric(compare)
               column.gt(number)
-            when :greater_than_or_equal_to
+            when :gte
               number = parse_numeric(compare)
               column.gteq(number)
-            when :less_than
+            when :lt
               number = parse_numeric(compare)
               column.lt(number)
-            when :less_than_or_equal_to
+            when :lte
               number = parse_numeric(compare)
               column.lteq(number)
             when :between
               number = parse_numeric(compare)
               column.between(number..number)
-            when :not_between
+            when :nbetween
               number = parse_numeric(compare)
               column.not_between(number..number)
             when :in
               numbers = Array(compare).map { |v| parse_numeric(v) }
               column.in(numbers)
-            when :not_in
+            when :nin
               numbers = Array(compare).map { |v| parse_numeric(v) }
               column.not_in(numbers)
             end
@@ -341,9 +341,9 @@ module Apiwork
           bool_value = normalize_boolean(operand)
 
           case operator.to_sym
-          when :equal
+          when :eq
             column.eq(bool_value)
-          when :not_equal
+          when :neq
             column.not_eq(bool_value)
           else
             error = ArgumentError.new("Unsupported boolean operator: #{operator}")

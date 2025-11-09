@@ -4,7 +4,10 @@
       "Bash(then if ! grep -B1 Post.delete_all $file)",
       "Bash(then echo $file fi fi fi done)",
       "Bash(for seed in 1 10 100 999 1234 5678)",
-      "Bash(do echo \"=== Seed $seed ===\")"
+      "Bash(do echo \"=== Seed $seed ===\")",
+      "Bash(spec/integration/filtering_spec.rb spec/integration/advanced_filtering_spec.rb spec/integration/association_filtering_spec.rb spec/integration/includes_spec.rb spec/integration/association_sorting_spec.rb spec/integration/sorting_spec.rb spec/integration/pagination_spec.rb)",
+      "Bash(spec/apiwork/schema/operators_spec.rb spec/apiwork/querying/operators_spec.rb)",
+      "Bash(spec/apiwork/schema/operators_spec.rb)"
     ],
     "deny": [],
     "ask": []

@@ -50,7 +50,7 @@ RSpec.describe 'Includes API', type: :request do
 
       it 'works with filtering and sorting' do
         get '/api/v1/posts', params: {
-          filter: { published: { equal: true } },
+          filter: { published: { eq: true } },
           sort: { title: 'asc' },
           include: { comments: true }
         }

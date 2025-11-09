@@ -95,7 +95,7 @@ RSpec.describe 'Pagination API', type: :request do
 
     it 'combines pagination with filtering' do
       get '/api/v1/posts', params: {
-        filter: { published: { equal: true } },
+        filter: { published: { eq: true } },
         page: { number: 1, size: 5 }
       }
 
@@ -128,7 +128,7 @@ RSpec.describe 'Pagination API', type: :request do
 
     it 'combines pagination, filtering, and sorting' do
       get '/api/v1/posts', params: {
-        filter: { published: { equal: true } },
+        filter: { published: { eq: true } },
         sort: { title: 'asc' },
         page: { number: 1, size: 3 }
       }
