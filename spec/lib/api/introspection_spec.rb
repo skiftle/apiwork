@@ -147,12 +147,12 @@ RSpec.describe 'API Introspection' do
             expect(shape_keys).to include(:archived_at, :archive_note)
           end
 
-          it 'replaces output completely when reset_output! is used' do
+          it 'replaces output completely when output replace: true is used' do
             destroy = posts[:actions][:destroy]
             expect(destroy).to have_key(:output)
             output = destroy[:output]
 
-            # Should NOT have discriminated union (reset_output! disables merging)
+            # Should NOT have discriminated union (output replace: true disables merging)
             expect(output[:type]).not_to eq(:union)
 
             # Should only have custom-defined fields

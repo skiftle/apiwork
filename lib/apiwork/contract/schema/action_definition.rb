@@ -20,9 +20,12 @@ module Apiwork
           true
         end
 
-        def input(&block)
+        def input(replace: false, &block)
           # Auto-generate first if needed (before custom block)
           auto_generate_input_if_needed if merges_input? && @input_definition.nil?
+
+          # Set reset flag if replace is true
+          @reset_input = replace if replace
 
           @input_definition ||= Definition.new(:input, contract_class)
 

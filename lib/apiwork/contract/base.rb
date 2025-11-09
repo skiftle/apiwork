@@ -52,11 +52,11 @@ module Apiwork
           Descriptors::Registry.register_local_enum(self, name, values)
         end
 
-        def action(action_name, &block)
+        def action(action_name, replace: false, &block)
           @action_definitions ||= {}
           action_sym = action_name.to_sym
 
-          action_definition = ActionDefinition.new(action_sym, self)
+          action_definition = ActionDefinition.new(action_sym, self, replace: replace)
           action_definition.instance_eval(&block) if block_given?
 
           @action_definitions[action_sym] = action_definition

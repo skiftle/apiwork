@@ -65,10 +65,9 @@ module Api
         end
       end
 
-      # Override destroy to test reset_output! (complete replacement, no discriminated union)
+      # Override destroy to test output replace: true (complete replacement, no discriminated union)
       action :destroy do
-        reset_output!
-        output do
+        output replace: true do
           param :deleted_id, type: :uuid, required: true
         end
       end
