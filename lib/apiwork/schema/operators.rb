@@ -19,7 +19,7 @@ module Apiwork
       # These are shared across multiple data types
 
       # Equality operators - supported by all types
-      EQUALITY_OPERATORS = %i[eq neq].freeze
+      EQUALITY_OPERATORS = %i[eq].freeze
 
       # Comparison operators - for ordered types (dates, numbers)
       COMPARISON_OPERATORS = %i[
@@ -30,18 +30,21 @@ module Apiwork
       ].freeze
 
       # Range operators - for types that support ranges
-      RANGE_OPERATORS = %i[between nbetween].freeze
+      RANGE_OPERATORS = %i[between].freeze
 
       # Collection operators - for checking membership
-      COLLECTION_OPERATORS = %i[in nin].freeze
+      COLLECTION_OPERATORS = %i[in].freeze
 
       # String-specific operators
       STRING_SPECIFIC_OPERATORS = %i[
         contains
-        ncontains
         starts_with
         ends_with
       ].freeze
+
+      # Logical operators - for combining and negating filters
+      # These work at the top level of filter expressions and support recursion
+      LOGICAL_OPERATORS = %i[_or _and _not].freeze
 
       # ============================================================
       # TYPE-SPECIFIC OPERATOR SETS

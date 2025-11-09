@@ -79,8 +79,8 @@ RSpec.describe 'Filtering API', type: :request do
       expect(ids).to match_array([post1.id, post3.id])
     end
 
-    it 'filters by not equal' do
-      get '/api/v1/posts', params: { filter: { title: { neq: 'First Post' } } }
+    it 'filters by not equal using _not operator' do
+      get '/api/v1/posts', params: { filter: { _not: { title: { eq: 'First Post' } } } }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)

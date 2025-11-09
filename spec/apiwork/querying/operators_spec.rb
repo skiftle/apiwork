@@ -11,7 +11,7 @@ RSpec.describe Apiwork::Schema::Operators do
 
   describe 'constants' do
     it 'defines EQUALITY_OPERATORS' do
-      expect(described_class::EQUALITY_OPERATORS).to eq(%i[eq neq])
+      expect(described_class::EQUALITY_OPERATORS).to eq(%i[eq])
     end
 
     it 'defines COMPARISON_OPERATORS' do
@@ -24,41 +24,41 @@ RSpec.describe Apiwork::Schema::Operators do
     end
 
     it 'defines RANGE_OPERATORS' do
-      expect(described_class::RANGE_OPERATORS).to eq(%i[between nbetween])
+      expect(described_class::RANGE_OPERATORS).to eq(%i[between])
     end
 
     it 'defines COLLECTION_OPERATORS' do
-      expect(described_class::COLLECTION_OPERATORS).to eq(%i[in nin])
+      expect(described_class::COLLECTION_OPERATORS).to eq(%i[in])
     end
 
     it 'defines STRING_SPECIFIC_OPERATORS' do
       expect(described_class::STRING_SPECIFIC_OPERATORS).to eq(%i[
         contains
-        ncontains
         starts_with
         ends_with
       ])
+    end
+
+    it 'defines LOGICAL_OPERATORS' do
+      expect(described_class::LOGICAL_OPERATORS).to eq(%i[_or _and _not])
     end
   end
 
   describe 'composed operators' do
     it 'defines STRING_OPERATORS as composition' do
-      expected = %i[eq neq in nin contains ncontains starts_with ends_with]
+      expected = %i[eq in contains starts_with ends_with]
       expect(described_class::STRING_OPERATORS).to eq(expected)
     end
 
     it 'defines DATE_OPERATORS as composition' do
       expected = %i[
         eq
-        neq
         gt
         gte
         lt
         lte
         between
-        nbetween
         in
-        nin
       ]
       expect(described_class::DATE_OPERATORS).to eq(expected)
     end
@@ -66,26 +66,23 @@ RSpec.describe Apiwork::Schema::Operators do
     it 'defines NUMERIC_OPERATORS as composition' do
       expected = %i[
         eq
-        neq
         gt
         gte
         lt
         lte
         between
-        nbetween
         in
-        nin
       ]
       expect(described_class::NUMERIC_OPERATORS).to eq(expected)
     end
 
     it 'defines BOOLEAN_OPERATORS as composition' do
-      expected = %i[eq neq]
+      expected = %i[eq]
       expect(described_class::BOOLEAN_OPERATORS).to eq(expected)
     end
 
     it 'defines UUID_OPERATORS as composition' do
-      expected = %i[eq neq in nin]
+      expected = %i[eq in]
       expect(described_class::UUID_OPERATORS).to eq(expected)
     end
   end

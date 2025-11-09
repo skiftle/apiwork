@@ -61,6 +61,12 @@ module Apiwork
             # Pre-register type name to prevent infinite recursion
             # We'll populate it with the actual definition below
             Descriptors::Registry.register_local(contract_class, type_name) do
+              # Add logical operators that recursively reference this filter type
+              # These allow combining filters with AND, OR, and NOT logic
+              param :_and, type: :array, of: type_name, required: false
+              param :_or, type: :array, of: type_name, required: false
+              param :_not, type: type_name, required: false
+
               # Add filters for each filterable attribute
               schema_class.attribute_definitions.each do |name, attribute_definition|
                 next unless attribute_definition.filterable?

@@ -10,10 +10,31 @@ module Apiwork
 
         scope = case params
                 when Hash
-                  conditions, joins = build_where_conditions(params)
-                  result = scope.joins(joins).where(conditions.reduce(:and))
-                  joins.present? ? result.distinct : result
+                  # Separate logical operators from regular attributes
+                  logical_ops = params.slice(:_and, :_or, :_not)
+                  regular_attrs = params.except(:_and, :_or, :_not)
+
+                  # Apply regular attributes first (if any)
+                  if regular_attrs.present?
+                    conditions, joins = build_where_conditions(regular_attrs)
+                    result = scope.joins(joins).where(conditions.reduce(:and))
+                    scope = joins.present? ? result.distinct : result
+                  end
+
+                  # Then apply logical operators (if any)
+                  if logical_ops.key?(:_not)
+                    scope = apply_not(scope, logical_ops[:_not])
+                  end
+                  if logical_ops.key?(:_or)
+                    scope = apply_or(scope, logical_ops[:_or])
+                  end
+                  if logical_ops.key?(:_and)
+                    scope = apply_and(scope, logical_ops[:_and])
+                  end
+
+                  scope
                 when Array
+                  # Array format = OR logic (existing functionality)
                   individual_conditions = params.map do |filter_hash|
                     conditions, _joins = build_where_conditions(filter_hash)
                     conditions.compact.reduce(:and) if conditions.any?
@@ -31,6 +52,133 @@ module Apiwork
       end
 
       private
+
+      # Apply NOT operator - negates the entire filter expression
+      # Recursively processes the filter and negates the result
+      def apply_not(scope, filter_params)
+        # Use build_conditions_recursive to handle nested logical operators
+        condition, joins = build_conditions_recursive(filter_params)
+
+        return scope if condition.nil?
+
+        result = scope.joins(joins)
+        result = result.where.not(condition)
+        joins.present? ? result.distinct : result
+      end
+
+      # Apply OR operator - combines multiple filter expressions with OR
+      # Each element in the array is recursively processed
+      # Handles both regular filters and nested logical operators
+      def apply_or(scope, conditions_array)
+        return scope if conditions_array.blank?
+
+        Rails.logger.debug "🔍 OR: Array has #{conditions_array.length} elements: #{conditions_array.inspect}"
+
+        or_conditions = []
+        all_joins = {}
+
+        conditions_array.each_with_index do |filter_hash, idx|
+          # Build conditions recursively (handles nested logical operators)
+          Rails.logger.debug "🔍 OR[#{idx}]: Processing filter: #{filter_hash.inspect}"
+          conditions, joins = build_conditions_recursive(filter_hash)
+          Rails.logger.debug "🔍 OR[#{idx}]: Got conditions: #{conditions.inspect}"
+          or_conditions << conditions if conditions
+          all_joins = all_joins.deep_merge(joins)
+        end
+
+        or_condition = or_conditions.compact.reduce(:or) if or_conditions.any?
+        Rails.logger.debug "🔍 OR: Final condition: #{or_condition.inspect}"
+
+        result = scope
+        result = result.joins(all_joins) if all_joins.present?
+        result = result.where(or_condition) if or_condition
+        all_joins.present? ? result.distinct : result
+      end
+
+      # Apply AND operator - combines multiple filter expressions with AND
+      # Each element is recursively processed and chained
+      def apply_and(scope, conditions_array)
+        return scope if conditions_array.blank?
+
+        conditions_array.reduce(scope) do |current_scope, filter_hash|
+          apply_filter(current_scope, filter_hash)
+        end
+      end
+
+      # Build where conditions with recursive support for logical operators
+      # Checks if the filter contains logical operators before processing
+      def build_where_conditions_recursive(filter_params)
+        return [[], {}] if filter_params.blank?
+
+        # If this is a logical operator, we don't build conditions here
+        # The apply_* methods will handle recursion
+        if filter_params.is_a?(Hash) &&
+           (filter_params.key?(:_not) || filter_params.key?(:_or) || filter_params.key?(:_and))
+          # For logical operators at this level, return empty conditions
+          # They should be handled by apply_filter recursively
+          return [[], {}]
+        end
+
+        # Normal attribute filtering
+        build_where_conditions(filter_params)
+      end
+
+      # Build Arel conditions recursively, handling logical operators
+      # Returns [condition, joins] where condition is an Arel node
+      def build_conditions_recursive(filter_params)
+        return [nil, {}] if filter_params.blank?
+
+        if filter_params.is_a?(Hash)
+          # Separate logical operators from regular attributes
+          logical_ops = filter_params.slice(:_and, :_or, :_not)
+          regular_attrs = filter_params.except(:_and, :_or, :_not)
+
+          conditions = []
+          all_joins = {}
+
+          # Build conditions for regular attributes
+          if regular_attrs.present?
+            attr_conditions, joins = build_where_conditions(regular_attrs)
+            conditions << attr_conditions.reduce(:and) if attr_conditions.any?
+            all_joins = all_joins.deep_merge(joins)
+          end
+
+          # Handle _and
+          if logical_ops.key?(:_and)
+            and_conditions = []
+            logical_ops[:_and].each do |filter_hash|
+              cond, joins = build_conditions_recursive(filter_hash)
+              and_conditions << cond if cond
+              all_joins = all_joins.deep_merge(joins)
+            end
+            conditions << and_conditions.reduce(:and) if and_conditions.any?
+          end
+
+          # Handle _or
+          if logical_ops.key?(:_or)
+            or_conditions = []
+            logical_ops[:_or].each do |filter_hash|
+              cond, joins = build_conditions_recursive(filter_hash)
+              or_conditions << cond if cond
+              all_joins = all_joins.deep_merge(joins)
+            end
+            conditions << or_conditions.reduce(:or) if or_conditions.any?
+          end
+
+          # Handle _not
+          if logical_ops.key?(:_not)
+            not_cond, joins = build_conditions_recursive(logical_ops[:_not])
+            conditions << not_cond.not if not_cond
+            all_joins = all_joins.deep_merge(joins)
+          end
+
+          # Combine all conditions with AND
+          final_condition = conditions.compact.reduce(:and)
+          [final_condition, all_joins]
+        else
+          [nil, {}]
+        end
+      end
 
       def build_where_conditions(filter, target_klass = schema.model_class)
         filter.each_with_object([[], {}]) do |(key, value), (conditions, joins)|
@@ -195,13 +343,10 @@ module Apiwork
 
           case operator
           when :eq then column.eq(compare)
-          when :neq then column.not_eq(compare)
           when :contains then column.matches("%#{compare}%")
-          when :ncontains then column.does_not_match("%#{compare}%")
           when :starts_with then column.matches("#{compare}%")
           when :ends_with then column.matches("%#{compare}")
           when :in then column.in(compare)
-          when :nin then column.not_in(compare)
           end
         end.reduce(:and)
       end
@@ -242,30 +387,21 @@ module Apiwork
                 next
               end
 
-              operator == :eq ? column.eq(nil) : column.not_eq(nil)
+              column.eq(nil)
             else
-              if (operator == :between || operator == :nbetween) && compare.is_a?(Hash)
+              if operator == :between && compare.is_a?(Hash)
                 from_date = parse_date(compare[:from] || compare['from']).beginning_of_day
                 to_date = parse_date(compare[:to] || compare['to']).end_of_day
-
-                if operator == :between
-                  column.gteq(from_date).and(column.lteq(to_date))
-                else
-                  Arel::Nodes::Grouping.new(
-                    column.lt(from_date).or(column.gt(to_date))
-                  )
-                end
+                column.gteq(from_date).and(column.lteq(to_date))
               else
                 date = parse_date(compare)
                 case operator
                 when :eq then column.eq(date)
-                when :neq then column.not_eq(date)
                 when :gt then column.gt(date)
                 when :gte then column.gteq(date)
                 when :lt then column.lt(date)
                 when :lte then column.lteq(date)
                 when :in then column.in(Array(date))
-                when :nin then column.not_in(Array(date))
                 end
               end
             end
@@ -298,9 +434,6 @@ module Apiwork
             when :eq
               number = parse_numeric(compare)
               column.eq(number)
-            when :neq
-              number = parse_numeric(compare)
-              column.not_eq(number)
             when :gt
               number = parse_numeric(compare)
               column.gt(number)
@@ -314,17 +447,17 @@ module Apiwork
               number = parse_numeric(compare)
               column.lteq(number)
             when :between
-              number = parse_numeric(compare)
-              column.between(number..number)
-            when :nbetween
-              number = parse_numeric(compare)
-              column.not_between(number..number)
+              if compare.is_a?(Hash)
+                from_num = parse_numeric(compare[:from] || compare['from'])
+                to_num = parse_numeric(compare[:to] || compare['to'])
+                column.between(from_num..to_num)
+              else
+                number = parse_numeric(compare)
+                column.between(number..number)
+              end
             when :in
               numbers = Array(compare).map { |v| parse_numeric(v) }
               column.in(numbers)
-            when :nin
-              numbers = Array(compare).map { |v| parse_numeric(v) }
-              column.not_in(numbers)
             end
           end.compact.reduce(:and)
         else
@@ -343,10 +476,8 @@ module Apiwork
           case operator.to_sym
           when :eq
             column.eq(bool_value)
-          when :neq
-            column.not_eq(bool_value)
           else
-            error = ArgumentError.new("Unsupported boolean operator: #{operator}")
+            error = ArgumentError.new("Unsupported boolean operator: #{operator}. Only 'eq' is supported.")
             Apiwork::Errors::Handler.handle(error, context: { field: key, operator: })
           end
         elsif [true, false, nil].include?(value) || ['true', 'false', '1', '0', 1, 0].include?(value)

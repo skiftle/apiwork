@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Apiwork::Schema::Operators do
   describe 'BASE OPERATOR SETS' do
     it 'defines EQUALITY_OPERATORS' do
-      expect(described_class::EQUALITY_OPERATORS).to eq(%i[eq neq])
+      expect(described_class::EQUALITY_OPERATORS).to eq(%i[eq])
     end
 
     it 'defines COMPARISON_OPERATORS' do
@@ -18,20 +18,23 @@ RSpec.describe Apiwork::Schema::Operators do
     end
 
     it 'defines RANGE_OPERATORS' do
-      expect(described_class::RANGE_OPERATORS).to eq(%i[between nbetween])
+      expect(described_class::RANGE_OPERATORS).to eq(%i[between])
     end
 
     it 'defines COLLECTION_OPERATORS' do
-      expect(described_class::COLLECTION_OPERATORS).to eq(%i[in nin])
+      expect(described_class::COLLECTION_OPERATORS).to eq(%i[in])
     end
 
     it 'defines STRING_SPECIFIC_OPERATORS' do
       expect(described_class::STRING_SPECIFIC_OPERATORS).to eq(%i[
         contains
-        ncontains
         starts_with
         ends_with
       ])
+    end
+
+    it 'defines LOGICAL_OPERATORS' do
+      expect(described_class::LOGICAL_OPERATORS).to eq(%i[_or _and _not])
     end
   end
 
@@ -39,8 +42,8 @@ RSpec.describe Apiwork::Schema::Operators do
     describe 'STRING_OPERATORS' do
       it 'includes equality, collection, and string-specific operators' do
         expect(described_class::STRING_OPERATORS).to include(
-          :eq, :neq,           # equality
-          :in, :nin,                 # collection
+          :eq,           # equality
+          :in,                 # collection
           :contains, :starts_with       # string-specific
         )
       end
@@ -48,50 +51,66 @@ RSpec.describe Apiwork::Schema::Operators do
       it 'does not include comparison operators' do
         expect(described_class::STRING_OPERATORS).not_to include(:gt, :lt)
       end
+
+      it 'does not include negation operators' do
+        expect(described_class::STRING_OPERATORS).not_to include(:neq, :nin, :ncontains)
+      end
     end
 
     describe 'DATE_OPERATORS' do
       it 'includes equality, comparison, range, and collection operators' do
         expect(described_class::DATE_OPERATORS).to include(
-          :eq, :neq,                           # equality
+          :eq,                           # equality
           :gt, :lt,                    # comparison
-          :between, :nbetween,                       # range
-          :in, :nin                                  # collection
+          :between,                       # range
+          :in                                  # collection
         )
       end
 
       it 'does not include string-specific operators' do
         expect(described_class::DATE_OPERATORS).not_to include(:contains, :starts_with)
       end
+
+      it 'does not include negation operators' do
+        expect(described_class::DATE_OPERATORS).not_to include(:neq, :nin, :nbetween)
+      end
     end
 
     describe 'NUMERIC_OPERATORS' do
       it 'includes equality, comparison, range, and collection operators' do
         expect(described_class::NUMERIC_OPERATORS).to include(
-          :eq, :neq,                           # equality
+          :eq,                           # equality
           :gt, :lt,                    # comparison
-          :between, :nbetween,                       # range
-          :in, :nin                                  # collection
+          :between,                       # range
+          :in                                  # collection
         )
+      end
+
+      it 'does not include negation operators' do
+        expect(described_class::NUMERIC_OPERATORS).not_to include(:neq, :nin, :nbetween)
       end
     end
 
     describe 'UUID_OPERATORS' do
       it 'includes only equality and collection operators' do
         expect(described_class::UUID_OPERATORS).to eq(%i[
-          eq neq
-          in nin
+          eq
+          in
         ])
       end
 
       it 'does not include comparison or range operators' do
         expect(described_class::UUID_OPERATORS).not_to include(:gt, :between)
       end
+
+      it 'does not include negation operators' do
+        expect(described_class::UUID_OPERATORS).not_to include(:neq, :nin)
+      end
     end
 
     describe 'BOOLEAN_OPERATORS' do
       it 'includes only equality operators' do
-        expect(described_class::BOOLEAN_OPERATORS).to eq(%i[eq neq])
+        expect(described_class::BOOLEAN_OPERATORS).to eq(%i[eq])
       end
     end
   end

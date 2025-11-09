@@ -174,8 +174,31 @@ module Apiwork
         visited = visited.dup.add(schema.name)
         result = {}
 
+        # Handle array format (OR logic)
+        if filter_hash.is_a?(Array)
+          filter_hash.each do |filter_item|
+            extracted = extract_from_filter(filter_item, visited)
+            result = deep_merge_includes(result, extracted)
+          end
+          return result
+        end
+
         filter_hash.each do |key, value|
           key_sym = key.to_sym
+
+          # Handle logical operators - recursively extract from their values
+          if %i[_or _and].include?(key_sym) && value.is_a?(Array)
+            value.each do |filter_item|
+              extracted = extract_from_filter(filter_item, visited)
+              result = deep_merge_includes(result, extracted)
+            end
+            next
+          elsif key_sym == :_not && value.is_a?(Hash)
+            extracted = extract_from_filter(value, visited)
+            result = deep_merge_includes(result, extracted)
+            next
+          end
+
           association_definition = schema.association_definitions[key_sym]
 
           next unless association_definition
@@ -236,6 +259,19 @@ module Apiwork
       end
 
       private
+
+      def deep_merge_includes(base, override)
+        result = base.dup
+        override.each do |key, value|
+          key_sym = key.to_sym
+          if result[key_sym].is_a?(Hash) && value.is_a?(Hash)
+            result[key_sym] = deep_merge_includes(result[key_sym], value)
+          else
+            result[key_sym] = value
+          end
+        end
+        result
+      end
 
       def resolve_nested_schema(association_definition)
         nested_schema = association_definition.schema_class

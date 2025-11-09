@@ -71,6 +71,17 @@ module Apiwork
               # Simple typed array
               coerced = Coercer.perform(item, param_options[:of])
               coerced.nil? ? item : coerced
+            elsif param_options[:of] && item.is_a?(Hash)
+              # Array of custom type (like array of :filter)
+              # Resolve custom type and coerce each element
+              custom_type_block = definition.contract_class.resolve_custom_type(param_options[:of], :root)
+              if custom_type_block
+                custom_def = Definition.new(@direction, definition.contract_class, type_scope: :root)
+                custom_def.instance_eval(&custom_type_block)
+                coerce_hash(item, custom_def)
+              else
+                item
+              end
             else
               item
             end
