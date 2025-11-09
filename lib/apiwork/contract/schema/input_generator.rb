@@ -78,7 +78,8 @@ module Apiwork
 
               param_options = {
                 type: Generator.map_type(attribute_definition.type),
-                required: attribute_definition.required? # Auto-detected from DB schema and model validations
+                required: attribute_definition.required?, # Auto-detected from DB schema and model validations
+                nullable: attribute_definition.nullable? # Auto-detected from DB schema or explicit config
               }
 
               # Reference registered enum by attribute name (registered at contract level)

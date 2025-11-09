@@ -101,5 +101,21 @@ RSpec.describe 'Writable context filtering in auto-generated contracts', type: :
       expect(update_payload).not_to have_key(:bio)
       expect(update_payload).to have_key(:verified)
     end
+
+    it 'includes nullable in introspection' do
+      Api::V1::AuthorContract.action_definition(:create)
+
+      all_types = Apiwork::Contract::Descriptors::Registry.serialize_all_types_for_api('api/v1')
+      create_payload = all_types[:author_create_payload]
+
+      # All fields should have nullable key (even if false)
+      expect(create_payload[:name]).to have_key(:nullable)
+      expect(create_payload[:bio]).to have_key(:nullable)
+
+      # nullable should match DB constraints
+      # (Author fields allow NULL, so they should be nullable: true)
+      expect(create_payload[:name][:nullable]).to eq(true)
+      expect(create_payload[:bio][:nullable]).to eq(true)
+    end
   end
 end

@@ -113,9 +113,9 @@ module Apiwork
 
             result = {
               type: custom_type_name,
-              required: options[:required] || false
+              required: options[:required] || false,
+              nullable: options[:nullable] || false
             }
-            result[:nullable] = options[:nullable] if options[:nullable]
             result[:as] = options[:as] if options[:as]
             return result
           end
@@ -135,7 +135,8 @@ module Apiwork
 
           result = {
             type: type_value,
-            required: options[:required] || false
+            required: options[:required] || false,
+            nullable: options[:nullable] || false
           }
 
           # Add literal value for literal types
@@ -183,8 +184,6 @@ module Apiwork
               result[:of] = options[:of]
             end
           end
-
-          result[:nullable] = options[:nullable] if options[:nullable]
 
           # Handle shape (nested objects) - only for non-custom types
           if options[:shape]

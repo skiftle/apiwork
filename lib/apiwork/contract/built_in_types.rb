@@ -121,8 +121,8 @@ module Apiwork
           # Standard pagination info returned in collection responses
           type :page do
             param :current, type: :integer, required: true
-            param :next, type: :integer, required: false
-            param :prev, type: :integer, required: false
+            param :next, type: :integer, required: false, nullable: true
+            param :prev, type: :integer, required: false, nullable: true
             param :total, type: :integer, required: true
             param :items, type: :integer, required: true
           end
