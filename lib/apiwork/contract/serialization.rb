@@ -100,8 +100,19 @@ module Apiwork
 
           # Handle custom types - return type reference instead of expanding
           if options[:custom_type]
+            # Qualify custom type name (only for contracts with schema_class)
+            custom_type_name = options[:custom_type]
+            if definition.contract_class.respond_to?(:schema_class) &&
+               definition.contract_class.schema_class &&
+               definition.contract_class.resolve_custom_type(custom_type_name, :root)
+              custom_type_name = Descriptors::Registry.qualified_name(
+                definition.contract_class,
+                custom_type_name
+              )
+            end
+
             result = {
-              type: options[:custom_type],
+              type: custom_type_name,
               required: options[:required] || false
             }
             result[:nullable] = options[:nullable] if options[:nullable]
@@ -109,8 +120,21 @@ module Apiwork
             return result
           end
 
+          # Qualify custom type names in 'type' parameter (only for contracts with schema_class)
+          type_value = options[:type]
+          if type_value &&
+             definition.contract_class.respond_to?(:schema_class) &&
+             definition.contract_class.schema_class &&
+             definition.contract_class.resolve_custom_type(type_value, :root)
+            # Custom type - use qualified name
+            type_value = Descriptors::Registry.qualified_name(
+              definition.contract_class,
+              type_value
+            )
+          end
+
           result = {
-            type: options[:type],
+            type: type_value,
             required: options[:required] || false
           }
 
@@ -123,8 +147,18 @@ module Apiwork
           # Handle enum - differentiate between reference (hash with :ref) and inline (array)
           if options[:enum]
             if options[:enum].is_a?(Hash) && options[:enum][:ref]
-              # Enum reference - output the reference symbol for code generators
-              result[:enum] = options[:enum][:ref]
+              # Enum reference - output the qualified reference symbol for code generators
+              # Use qualified name (e.g., account_first_day_of_week) for schema-based contracts
+              if definition.contract_class.respond_to?(:schema_class) &&
+                 definition.contract_class.schema_class
+                qualified_enum_name = Descriptors::EnumStore.qualified_name(
+                  definition.contract_class,
+                  options[:enum][:ref]
+                )
+                result[:enum] = qualified_enum_name
+              else
+                result[:enum] = options[:enum][:ref]
+              end
             else
               # Inline enum - output the values array
               result[:enum] = options[:enum]
@@ -132,7 +166,24 @@ module Apiwork
           end
 
           result[:as] = options[:as] if options[:as]
-          result[:of] = options[:of] if options[:of]
+
+          # Handle 'of' parameter - qualify custom types (only for contracts with schema_class)
+          if options[:of]
+            # Check if it's a custom type that needs qualification
+            if definition.contract_class.respond_to?(:schema_class) &&
+               definition.contract_class.schema_class &&
+               definition.contract_class.resolve_custom_type(options[:of], :root)
+              # Custom type - use qualified name (e.g., service_filter instead of filter)
+              result[:of] = Descriptors::Registry.qualified_name(
+                definition.contract_class,
+                options[:of]
+              )
+            else
+              # Primitive type or global type - keep as-is
+              result[:of] = options[:of]
+            end
+          end
+
           result[:nullable] = options[:nullable] if options[:nullable]
 
           # Handle shape (nested objects) - only for non-custom types
@@ -180,13 +231,41 @@ module Apiwork
           # Add tag for discriminated unions
           result[:tag] = variant_def[:tag] if variant_def[:tag]
 
-          # Handle 'of' - just pass through, don't expand custom types
+          # Handle 'of' - qualify custom types but don't expand them (only for contracts with schema_class)
           if variant_def[:of]
-            result[:of] = variant_def[:of]
-            # Custom types in 'of' will be resolved from types hash, no expansion needed
+            # Check if it's a custom type that needs qualification
+            if parent_definition.contract_class.respond_to?(:schema_class) &&
+               parent_definition.contract_class.schema_class &&
+               parent_definition.contract_class.resolve_custom_type(variant_def[:of], :root)
+              # Custom type - use qualified name (e.g., service_filter instead of filter)
+              result[:of] = Descriptors::Registry.qualified_name(
+                parent_definition.contract_class,
+                variant_def[:of]
+              )
+            else
+              # Primitive type or global type - keep as-is
+              result[:of] = variant_def[:of]
+            end
           end
 
-          result[:enum] = variant_def[:enum] if variant_def[:enum]
+          # Handle enum - qualify if it's a reference (only for contracts with schema_class)
+          if variant_def[:enum]
+            if variant_def[:enum].is_a?(Symbol)
+              # Enum reference - use qualified name for schema-based contracts
+              if parent_definition.contract_class.respond_to?(:schema_class) &&
+                 parent_definition.contract_class.schema_class
+                result[:enum] = Descriptors::EnumStore.qualified_name(
+                  parent_definition.contract_class,
+                  variant_def[:enum]
+                )
+              else
+                result[:enum] = variant_def[:enum]
+              end
+            else
+              # Inline enum array - keep as-is
+              result[:enum] = variant_def[:enum]
+            end
+          end
 
           # Handle shape in variant (for object or array of object)
           if variant_def[:shape]

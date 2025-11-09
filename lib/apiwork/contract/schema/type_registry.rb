@@ -80,7 +80,9 @@ module Apiwork
                   variant type: Generator.map_type(attribute_definition.type),
                           **(attribute_definition.enum ? { enum: name } : {})
                   # Filter object variant
-                  variant type: filter_type
+                  # If attribute has enum, also include enum reference in filter variant
+                  variant type: filter_type,
+                          **(attribute_definition.enum ? { enum: name } : {})
                 end
               end
 
