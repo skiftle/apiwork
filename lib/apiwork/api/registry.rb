@@ -28,24 +28,15 @@ module Apiwork
           end
         end
 
-        # Find an API class by path or namespaces (backward compatible)
+        # Find an API class by path
         #
-        # @param path_or_namespaces [String, Array] The path or namespaces to look up
+        # @param path [String] The path to look up
         #   - "/api/v1" (path with leading slash)
         #   - "api/v1" (path without leading slash)
         #   - "/" (root path)
-        #   - [:api, :v1] (namespaces array - backward compatible)
         # @return [Class, nil] The found API class or nil
-        def find(path_or_namespaces)
-          return nil unless path_or_namespaces
-
-          # Convert to path if array (backward compatibility)
-          path = if path_or_namespaces.is_a?(Array)
-                   # [:api, :v1] -> "api/v1"
-                   path_or_namespaces.map(&:to_s).join('/')
-                 else
-                   path_or_namespaces
-                 end
+        def find(path)
+          return nil unless path
 
           # Normalize path for lookup
           normalized_path = normalize_path(path)
