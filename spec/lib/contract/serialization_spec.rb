@@ -353,7 +353,7 @@ RSpec.describe 'Contract Serialization' do
     end
   end
 
-  describe 'Contract::Base.introspection' do
+  describe 'Contract::Base.introspect' do
     it 'returns introspection for specific action' do
       contract_class = Class.new(Apiwork::Contract::Base) do
         action :create do
@@ -369,7 +369,7 @@ RSpec.describe 'Contract Serialization' do
         end
       end
 
-      json = contract_class.introspection(:create)
+      json = contract_class.introspect(:create)
 
       expect(json).to eq({
         input: {
@@ -387,7 +387,7 @@ RSpec.describe 'Contract Serialization' do
     it 'returns nil for non-existent action' do
       contract_class = Class.new(Apiwork::Contract::Base)
 
-      json = contract_class.introspection(:nonexistent)
+      json = contract_class.introspect(:nonexistent)
 
       expect(json).to be_nil
     end

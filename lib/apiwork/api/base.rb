@@ -17,10 +17,7 @@ module Apiwork
           namespaces_parts.map(&:to_s).map(&:camelize).join('::')
         end
 
-        # Serialize entire API to JSON-friendly hash
-        # Returns complete API structure with metadata, resources, contracts, types, and enums
-        # @return [Hash] Complete API introspection
-        def as_json
+        def introspect
           return nil unless metadata
 
           # Build resources first - this creates contract classes and registers types/enums
@@ -42,6 +39,10 @@ module Apiwork
           result[:error_codes] = metadata.error_codes if metadata.error_codes&.any?
 
           result
+        end
+
+        def as_json
+          introspect
         end
 
         private

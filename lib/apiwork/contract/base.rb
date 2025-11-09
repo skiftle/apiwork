@@ -96,36 +96,41 @@ module Apiwork
           @action_definitions || {}
         end
 
-        # Serialize entire contract to JSON-friendly hash
-        # Returns all actions with their input/output definitions
+        # Introspect entire contract or a specific action
+        # When action is nil: Returns all actions with their input/output definitions
+        # When action is provided: Returns input/output for that specific action
         # Only includes actions declared in API routing configuration (respects only:/except:)
-        # @return [Hash] Hash with :actions key containing all action definitions
-        def as_json
-          result = { actions: {} }
+        # @param action [Symbol, nil] Optional action name for specific action introspection
+        # @return [Hash] Hash with :actions key (when action=nil) or :input/:output keys (when action provided)
+        def introspect(action = nil)
+          if action
+            # Specific action introspection
+            action_def = action_definition(action)
+            return nil unless action_def
 
-          # Get available actions from API routing configuration
-          actions = available_actions
+            action_def.as_json
+          else
+            # Full contract introspection
+            result = { actions: {} }
 
-          # If no API definition found, fall back to all explicit action definitions
-          actions = action_definitions.keys if actions.empty?
+            # Get available actions from API routing configuration
+            actions = available_actions
 
-          # Serialize only available actions
-          actions.each do |action_name|
-            action_def = action_definition(action_name)
-            result[:actions][action_name] = action_def.as_json if action_def
+            # If no API definition found, fall back to all explicit action definitions
+            actions = action_definitions.keys if actions.empty?
+
+            # Serialize only available actions
+            actions.each do |action_name|
+              action_def = action_definition(action_name)
+              result[:actions][action_name] = action_def.as_json if action_def
+            end
+
+            result
           end
-
-          result
         end
 
-        # Get introspection for a specific action
-        # @param action [Symbol] Action name
-        # @return [Hash] Hash with :input and :output definitions for the action
-        def introspection(action)
-          action_def = action_definition(action)
-          return nil unless action_def
-
-          action_def.as_json
+        def as_json
+          introspect
         end
 
         # Get API path for this contract based on namespace
