@@ -102,17 +102,18 @@ module Apiwork
 
         # Serialize a single resource with all its actions and metadata
         def serialize_resource(resource_name, resource_metadata, parent_path: nil, parent_resource_name: nil)
-          resource_path = build_resource_path(resource_name, resource_metadata, parent_path, parent_resource_name: parent_resource_name)
+          resource_path = build_resource_path(resource_name, resource_metadata, parent_path,
+                                              parent_resource_name: parent_resource_name)
 
           result = {
-            path: resource_path,  # Resource-level relative path
+            path: resource_path, # Resource-level relative path
             actions: {}
           }
 
           # Get contract class for this resource
           # Try explicit contract first, fall back to schema-based contract
           contract_class = resolve_contract_class(resource_metadata) ||
-                          schema_based_contract_class(resource_metadata)
+                           schema_based_contract_class(resource_metadata)
 
           # Serialize CRUD actions
           (resource_metadata[:actions] || []).each do |action_name|
@@ -174,15 +175,15 @@ module Apiwork
         def build_action_path(resource_path, action_name, action_type)
           case action_type
           when :index, :create
-            "/"
+            '/'
           when :show, :update, :destroy
-            "/:id"
+            '/:id'
           when :member
             "/:id/#{action_name}"
           when :collection
             "/#{action_name}"
           else
-            "/"
+            '/'
           end
         end
 
@@ -248,10 +249,10 @@ module Apiwork
           # Use object_id as fallback for anonymous classes
           # Replace :: with _ to make valid instance variable name
           cache_key = if schema_class.name
-                       :"contract_#{schema_class.name.tr('::', '_')}"
-                     else
-                       :"contract_#{schema_class.object_id}"
-                     end
+                        :"contract_#{schema_class.name.tr('::', '_')}"
+                      else
+                        :"contract_#{schema_class.object_id}"
+                      end
 
           # Return cached if available
           return instance_variable_get("@#{cache_key}") if instance_variable_defined?("@#{cache_key}")
