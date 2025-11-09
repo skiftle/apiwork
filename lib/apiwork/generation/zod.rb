@@ -92,26 +92,139 @@ module Apiwork
 
       # Build schemas for all types from introspect
       def build_type_schemas
-        types.map do |type_name, type_shape|
+        # Separate recursive and non-recursive types
+        recursive_types = types.select { |_name, shape| shape[:recursive] }
+        non_recursive_types = types.reject { |_name, shape| shape[:recursive] }
+
+        parts = []
+
+        # 1. Generate non-recursive schemas
+        non_recursive_schemas = non_recursive_types.map do |type_name, type_shape|
           # Detect if this is an update payload type
           action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
           build_object_schema(type_name, type_shape, action_name)
-        end.join("\n\n")
+        end
+
+        parts << non_recursive_schemas.join("\n\n") if non_recursive_schemas.any?
+
+        # 2. Generate recursive schemas with z.lazy()
+        # Sort schemas in topological order to avoid forward references
+        if recursive_types.any?
+          sorted_recursive_types = topological_sort_types(recursive_types)
+
+          recursive_schemas = sorted_recursive_types.map do |type_name, type_shape|
+            # Detect if this is an update payload type
+            action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
+            build_object_schema(type_name, type_shape, action_name, recursive: true)
+          end
+
+          parts << recursive_schemas.join("\n\n")
+        end
+
+        parts.reject(&:empty?).join("\n\n")
+      end
+
+      # Sort recursive types in topological order to avoid forward references
+      # Types that don't depend on other recursive types come first
+      def topological_sort_types(recursive_types)
+        # Build dependency graph
+        dependencies = {}
+        recursive_types.each do |type_name, type_shape|
+          # Extract type references from this type
+          refs = extract_recursive_type_references(type_shape, recursive_types.keys)
+          dependencies[type_name] = refs
+        end
+
+        # Topological sort using Kahn's algorithm
+        sorted = []
+        in_degree = Hash.new(0)
+
+        # Calculate in-degrees
+        dependencies.each do |_type, deps|
+          deps.each { |dep| in_degree[dep] += 1 }
+        end
+
+        # Start with types that have no incoming edges
+        queue = dependencies.keys.select { |type| in_degree[type].zero? }
+
+        while queue.any?
+          current = queue.shift
+          sorted << current
+
+          # Remove edges from current node
+          dependencies[current].each do |dep|
+            in_degree[dep] -= 1
+            queue << dep if in_degree[dep].zero?
+          end
+        end
+
+        # If there's a cycle, just use original order
+        if sorted.size != recursive_types.size
+          recursive_types.to_a
+        else
+          sorted.map { |type_name| [type_name, recursive_types[type_name]] }
+        end
+      end
+
+      # Extract references to other recursive types from a type definition
+      def extract_recursive_type_references(type_shape, recursive_type_names)
+        refs = []
+
+        type_shape.each do |key, value|
+          next if key == :recursive
+          next unless value.is_a?(Hash)
+
+          # Direct type reference
+          if value[:type].is_a?(Symbol) && recursive_type_names.include?(value[:type])
+            refs << value[:type]
+          end
+
+          # Array 'of' reference
+          if value[:of].is_a?(Symbol) && recursive_type_names.include?(value[:of])
+            refs << value[:of]
+          end
+
+          # Union variant references
+          if value[:variants].is_a?(Array)
+            value[:variants].each do |variant|
+              next unless variant.is_a?(Hash)
+
+              if variant[:type].is_a?(Symbol) && recursive_type_names.include?(variant[:type])
+                refs << variant[:type]
+              end
+
+              if variant[:of].is_a?(Symbol) && recursive_type_names.include?(variant[:of])
+                refs << variant[:of]
+              end
+            end
+          end
+        end
+
+        refs.uniq
       end
 
       # Build Zod object schema from type shape
-      def build_object_schema(type_name, type_shape, action_name = nil)
+      def build_object_schema(type_name, type_shape, action_name = nil, recursive: false)
         schema_name = zod_type_name(type_name)
 
-        properties = type_shape.map do |property_name, property_def|
+        # Filter out the :recursive key from type_shape
+        filtered_shape = type_shape.reject { |k, _v| k == :recursive }
+
+        properties = filtered_shape.map do |property_name, property_def|
           key = transform_key(property_name)
           zod_type = map_field_definition(property_def, action_name)
           "  #{key}: #{zod_type}"
         end.join(",\n")
 
-        schema_def = "export const #{schema_name}Schema = z.object({\n#{properties}\n});"
-        type_export = "export type #{schema_name} = z.infer<typeof #{schema_name}Schema>;"
+        schema_def = if recursive
+                       # Recursive types use z.lazy()
+                       "export const #{schema_name}Schema = z.lazy(() => z.object({\n#{properties}\n}));"
+                     else
+                       # Non-recursive types use normal z.object()
+                       "export const #{schema_name}Schema = z.object({\n#{properties}\n});"
+                     end
 
+        type_export = "export type #{schema_name} = z.infer<typeof #{schema_name}Schema>;"
         [schema_def, type_export].join("\n")
       end
 

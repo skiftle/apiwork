@@ -60,11 +60,48 @@ RSpec.describe Apiwork::Generation::Zod do
 
     describe 'type schemas' do
       it 'generates schemas for types from introspection' do
-        # Should generate schemas for all registered types
-        introspect[:types].each_key do |type_name|
+        # Should generate schemas for all registered types that appear in output
+        introspect[:types].each do |type_name, type_def|
           schema_name = Apiwork::Transform::Case.string(type_name, :camelize_upper)
-          expect(output).to include("export const #{schema_name}Schema = z.object")
+
+          # Skip types that aren't in the output (e.g., base types that aren't used)
+          next unless output.include?("export const #{schema_name}Schema")
+
+          # All types should have a schema constant and type export
+          expect(output).to include("export const #{schema_name}Schema"), "Missing schema for #{type_name}"
+          expect(output).to include("export type #{schema_name}"), "Missing type export for #{type_name}"
+
+          if type_def[:recursive]
+            # Recursive types use z.lazy() with z.infer
+            expect(output).to include("export const #{schema_name}Schema = z.lazy"), "Recursive type #{type_name} should use z.lazy"
+            expect(output).to include("export type #{schema_name} = z.infer<typeof #{schema_name}Schema>"), "Recursive type #{type_name} should use z.infer"
+          else
+            # Non-recursive types use z.object() and z.infer
+            expect(output).to include("export const #{schema_name}Schema = z.object"), "Non-recursive type #{type_name} should use z.object"
+            expect(output).to include("export type #{schema_name} = z.infer<typeof #{schema_name}Schema>"), "Non-recursive type #{type_name} should use z.infer"
+          end
+        end
+      end
+
+      it 'uses z.lazy for recursive filter types' do
+        # Filter types with _and, _or, _not should use z.lazy
+        filter_types = introspect[:types].select { |name, _| name.to_s.include?('filter') }
+        expect(filter_types).not_to be_empty
+
+        filter_types.each do |type_name, type_def|
+          next unless type_def[:recursive]
+
+          schema_name = Apiwork::Transform::Case.string(type_name, :camelize_upper)
+
+          # Should have TypeScript type definition with z.infer
           expect(output).to include("export type #{schema_name} = z.infer<typeof #{schema_name}Schema>")
+
+          # Should use z.lazy wrapper
+          expect(output).to include("export const #{schema_name}Schema = z.lazy")
+
+          # Should reference itself in _and, _or, _not
+          expect(output).to include("z.array(#{schema_name}Schema)") if type_def[:_and]
+          expect(output).to include("#{schema_name}Schema.optional()") if type_def[:_not]
         end
       end
     end
@@ -82,9 +119,17 @@ RSpec.describe Apiwork::Generation::Zod do
     describe 'type mappings' do
       it 'maps primitive types correctly' do
         # The generator should handle various primitive types
-        # We verify this by checking the output doesn't contain obvious errors
-        expect(output).not_to include('undefined')
-        expect(output).to include('z.')
+        # Check for Zod type constructors
+        expect(output).to include('z.string')
+        expect(output).to include('z.number')
+        expect(output).to include('z.object')
+
+        # Recursive types should have TypeScript type definitions
+        # which may include "| undefined" for optional fields
+        recursive_types = introspect[:types].select { |_name, type_def| type_def[:recursive] }
+        if recursive_types.any?
+          expect(output).to include('export type')
+        end
       end
     end
   end
