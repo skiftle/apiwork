@@ -11,7 +11,7 @@ module Apiwork
     #   generator = OpenAPI.new('/api/v1')
     #   spec = generator.generate
     #   File.write('openapi.json', JSON.pretty_generate(spec))
-    class OpenApi < Base
+    class OpenAPI < Base
       generator_name :openapi
       content_type 'application/json'
 

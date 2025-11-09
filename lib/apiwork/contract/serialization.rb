@@ -148,14 +148,9 @@ module Apiwork
             if options[:enum].is_a?(Hash) && options[:enum][:ref]
               # Enum reference - output the qualified reference symbol for code generators
               # Use qualified name with correct scope for hierarchical naming
-              if definition.contract_class.respond_to?(:schema_class) &&
-                 definition.contract_class.schema_class
-                scope = determine_scope_for_enum(definition, options[:enum][:ref])
-                qualified_enum_name = Descriptors::EnumStore.qualified_name(scope, options[:enum][:ref])
-                result[:enum] = qualified_enum_name
-              else
-                result[:enum] = options[:enum][:ref]
-              end
+              scope = determine_scope_for_enum(definition, options[:enum][:ref])
+              qualified_enum_name = Descriptors::EnumStore.qualified_name(scope, options[:enum][:ref])
+              result[:enum] = qualified_enum_name
             else
               # Inline enum - output the values array
               result[:enum] = options[:enum]

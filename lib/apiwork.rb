@@ -34,15 +34,18 @@ end
 
 loader = Zeitwerk::Loader.for_gem
 loader.inflector.inflect(
-  'api' => 'API'
+  'api' => 'API',
+  'openapi' => 'OpenAPI',
+  'json_pointer' => 'JSONPointer'
 )
+
 loader.ignore("#{__dir__}/apiwork/version.rb")
 loader.ignore("#{__dir__}/apiwork/engine.rb")
 loader.setup
 loader.eager_load
 
 # Register built-in generators
-Apiwork.register_generator(:openapi, Apiwork::Generation::OpenApi)
+Apiwork.register_generator(:openapi, Apiwork::Generation::OpenAPI)
 Apiwork.register_generator(:transport, Apiwork::Generation::Transport)
 Apiwork.register_generator(:zod, Apiwork::Generation::Zod)
 

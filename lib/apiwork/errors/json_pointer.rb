@@ -3,7 +3,7 @@
 module Apiwork
   module Errors
     # JSON Pointer (RFC 6901) implementation
-    module JsonPointer
+    module JSONPointer
       # Build a JSON Pointer string from a path array
       #
       # @param path [Array<Symbol, String, Integer>] Path components
