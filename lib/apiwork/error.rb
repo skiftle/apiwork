@@ -21,7 +21,7 @@ module Apiwork
     end
 
     def pointer
-      @pointer ||= Errors::JSONPointer.build(*path)
+      @pointer ||= Errors::JsonPointer.build(*path)
     end
 
     def dot_path

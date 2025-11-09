@@ -11,7 +11,7 @@ module Apiwork
     #   generator = OpenAPI.new('/api/v1')
     #   spec = generator.generate
     #   File.write('openapi.json', JSON.pretty_generate(spec))
-    class OpenAPI < Base
+    class OpenApi < Base
       generator_name :openapi
       content_type 'application/json'
 
@@ -129,9 +129,7 @@ module Apiwork
         }
 
         # Add requestBody if action has input
-        if contract[:input]
-          operation[:requestBody] = build_request_body(resource_name, action_name, contract[:input])
-        end
+        operation[:requestBody] = build_request_body(resource_name, action_name, contract[:input]) if contract[:input]
 
         operation.compact
       end
