@@ -120,11 +120,11 @@ RSpec.describe 'API Introspection' do
             expect(output[:variants].length).to eq(2)
 
             # Success variant should have post field
-            success_variant = output[:variants].find { |v| v[:tag] == 'true' }
+            success_variant = output[:variants].find { |v| v[:tag] == true }
             expect(success_variant[:shape].keys).to include(:post)
 
             # Error variant should have errors field
-            error_variant = output[:variants].find { |v| v[:tag] == 'false' }
+            error_variant = output[:variants].find { |v| v[:tag] == false }
             expect(error_variant[:shape].keys).to include(:errors)
           end
 
@@ -137,7 +137,7 @@ RSpec.describe 'API Introspection' do
             expect(output[:discriminator]).to eq(:ok)
 
             # Success variant should have BOTH schema-generated AND custom fields at top level
-            success_variant = output[:variants].find { |v| v[:tag] == 'true' }
+            success_variant = output[:variants].find { |v| v[:tag] == true }
             shape_keys = success_variant[:shape].keys
 
             # Schema-generated fields (from discriminated union)
@@ -186,7 +186,7 @@ RSpec.describe 'API Introspection' do
             expect(output[:discriminator]).to eq(:ok)
 
             # Success variant should have BOTH collection wrapper AND custom fields at top level
-            success_variant = output[:variants].find { |v| v[:tag] == 'true' }
+            success_variant = output[:variants].find { |v| v[:tag] == true }
             shape_keys = success_variant[:shape].keys
 
             # Schema-generated fields (from collection wrapper)

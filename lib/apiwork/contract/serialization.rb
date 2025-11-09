@@ -67,7 +67,7 @@ module Apiwork
             discriminator: discriminator,
             variants: [
               {
-                tag: 'true',
+                tag: true,
                 type: :object,
                 shape: {
                   ok: { type: :literal, value: true, required: true },
@@ -75,7 +75,7 @@ module Apiwork
                 }
               },
               {
-                tag: 'false',
+                tag: false,
                 type: :object,
                 shape: {
                   ok: { type: :literal, value: false, required: true },
