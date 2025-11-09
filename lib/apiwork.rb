@@ -46,7 +46,6 @@ loader.eager_load
 
 # Register built-in generators
 Apiwork.register_generator(:openapi, Apiwork::Generation::OpenAPI)
-Apiwork.register_generator(:transport, Apiwork::Generation::Transport)
 Apiwork.register_generator(:zod, Apiwork::Generation::Zod)
 
 # Rails integration

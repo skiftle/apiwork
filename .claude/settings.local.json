@@ -19,7 +19,13 @@
       "Bash(bin/rails runner:*)",
       "Bash(bundle exec rails runner:*)",
       "Bash(ruby test_operation_ids.rb:*)",
-      "Bash(ruby debug_filter_fields.rb:*)"
+      "Bash(ruby debug_filter_fields.rb:*)",
+      "Bash(ruby debug_introspect.rb:*)",
+      "Bash(ruby -rjson -e \"data = JSON.parse(STDIN.read); puts data[''''examples''''].first[''''full_description'''']\")",
+      "Bash(RAILS_ENV=test bundle exec ruby:*)",
+      "Bash(ruby test_payload_types.rb:*)",
+      "Bash(ruby test_update_optional.rb:*)",
+      "Bash(ruby -e:*)"
     ],
     "deny": [],
     "ask": []
