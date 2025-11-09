@@ -110,8 +110,8 @@ module Apiwork
       # @return [Array<Symbol>] Valid operators for the type
       #
       # @example
-      #   Operators.for_type(:string)  # => [:eq, :neq, :contains, ...]
-      #   Operators.for_type(:integer) # => [:eq, :neq, :gt, ...]
+      #   Operators.for_type(:string)  # => [:eq, :contains, :starts_with, ...]
+      #   Operators.for_type(:integer) # => [:eq, :gt, :gte, :lt, ...]
       #
       def self.for_type(type)
         OPERATORS_BY_TYPE[type] || EQUALITY_OPERATORS

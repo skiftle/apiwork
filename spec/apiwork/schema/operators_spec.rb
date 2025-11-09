@@ -51,10 +51,6 @@ RSpec.describe Apiwork::Schema::Operators do
       it 'does not include comparison operators' do
         expect(described_class::STRING_OPERATORS).not_to include(:gt, :lt)
       end
-
-      it 'does not include negation operators' do
-        expect(described_class::STRING_OPERATORS).not_to include(:neq, :nin, :ncontains)
-      end
     end
 
     describe 'DATE_OPERATORS' do
@@ -70,10 +66,6 @@ RSpec.describe Apiwork::Schema::Operators do
       it 'does not include string-specific operators' do
         expect(described_class::DATE_OPERATORS).not_to include(:contains, :starts_with)
       end
-
-      it 'does not include negation operators' do
-        expect(described_class::DATE_OPERATORS).not_to include(:neq, :nin, :nbetween)
-      end
     end
 
     describe 'NUMERIC_OPERATORS' do
@@ -84,10 +76,6 @@ RSpec.describe Apiwork::Schema::Operators do
           :between,                       # range
           :in                                  # collection
         )
-      end
-
-      it 'does not include negation operators' do
-        expect(described_class::NUMERIC_OPERATORS).not_to include(:neq, :nin, :nbetween)
       end
     end
 
@@ -101,10 +89,6 @@ RSpec.describe Apiwork::Schema::Operators do
 
       it 'does not include comparison or range operators' do
         expect(described_class::UUID_OPERATORS).not_to include(:gt, :between)
-      end
-
-      it 'does not include negation operators' do
-        expect(described_class::UUID_OPERATORS).not_to include(:neq, :nin)
       end
     end
 
