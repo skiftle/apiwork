@@ -27,8 +27,8 @@ RSpec.describe 'Advanced Filtering API', type: :request do
     it 'filters posts matching any condition' do
       get '/api/v1/posts', params: {
         filter: [
-          { title: { equal: 'Advanced Filter Test Ruby Basics' } },
-          { title: { equal: 'Advanced Filter Test Rails Basics' } }
+          { title: { eq: 'Advanced Filter Test Ruby Basics' } },
+          { title: { eq: 'Advanced Filter Test Rails Basics' } }
         ]
       }
 
@@ -115,7 +115,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
       excluded_ids = [post1.id, post3.id]
 
       get '/api/v1/posts', params: {
-        filter: { id: { not_in: excluded_ids } }
+        filter: { id: { nin: excluded_ids } }
       }
 
       expect(response).to have_http_status(:ok)
@@ -128,7 +128,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
     it 'returns all posts when excluding non-existent ids' do
       get '/api/v1/posts', params: {
-        filter: { id: { not_in: [99999, 88888] } }
+        filter: { id: { nin: [99999, 88888] } }
       }
 
       expect(response).to have_http_status(:ok)
@@ -141,7 +141,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
   describe 'not_contains operator for strings' do
     it 'filters posts not containing specific text' do
       get '/api/v1/posts', params: {
-        filter: { title: { not_contains: 'Ruby' } }
+        filter: { title: { ncontains: 'Ruby' } }
       }
 
       expect(response).to have_http_status(:ok)
@@ -154,7 +154,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
     it 'returns all posts when not_contains matches nothing' do
       get '/api/v1/posts', params: {
-        filter: { title: { not_contains: 'Python' } }
+        filter: { title: { ncontains: 'Python' } }
       }
 
       expect(response).to have_http_status(:ok)
@@ -221,7 +221,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
       to_date = 2.days.ago.iso8601
 
       get '/api/v1/posts', params: {
-        filter: { created_at: { not_between: { from: from_date, to: to_date } } }
+        filter: { created_at: { nbetween: { from: from_date, to: to_date } } }
       }
 
       expect(response).to have_http_status(:ok)
@@ -238,8 +238,8 @@ RSpec.describe 'Advanced Filtering API', type: :request do
       get '/api/v1/posts', params: {
         filter: {
           title: { starts_with: 'Advanced Filter Test Ruby' },
-          published: { equal: true },
-          created_at: { greater_than: 6.days.ago.iso8601 }
+          published: { eq: true },
+          created_at: { gt: 6.days.ago.iso8601 }
         }
       }
 
@@ -256,11 +256,11 @@ RSpec.describe 'Advanced Filtering API', type: :request do
         filter: [
           {
             title: { contains: 'Ruby' },
-            published: { equal: true }
+            published: { eq: true }
           },
           {
             title: { contains: 'Rails' },
-            published: { equal: true }
+            published: { eq: true }
           }
         ]
       }

@@ -87,7 +87,7 @@ RSpec.describe 'Association Sorting API', type: :request do
 
     it 'combines association sorting with filtering' do
       get '/api/v1/posts', params: {
-        filter: { published: { equal: true } },
+        filter: { published: { eq: true } },
         sort: { comments: { author: 'asc' } }
       }
 
@@ -102,7 +102,7 @@ RSpec.describe 'Association Sorting API', type: :request do
 
     it 'combines association sorting with association filtering' do
       get '/api/v1/posts', params: {
-        filter: { comments: { author: { equal: 'Alice' } } },
+        filter: { comments: { author: { eq: 'Alice' } } },
         sort: { comments: { created_at: 'desc' } }
       }
 
@@ -156,7 +156,7 @@ RSpec.describe 'Association Sorting API', type: :request do
 
     it 'combines post sorting with comment filtering' do
       get '/api/v1/comments', params: {
-        filter: { author: { equal: 'Alice' } },
+        filter: { author: { eq: 'Alice' } },
         sort: { post: { title: 'asc' } }
       }
 

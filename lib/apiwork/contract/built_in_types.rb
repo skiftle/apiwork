@@ -18,12 +18,12 @@ module Apiwork
           # String filter type
           # Provides common string comparison and pattern matching operators
           type :string_filter do
-            param :equal, type: :string, required: false
-            param :not_equal, type: :string, required: false
+            param :eq, type: :string, required: false
+            param :neq, type: :string, required: false
             param :in, type: :array, of: :string, required: false
-            param :not_in, type: :array, of: :string, required: false
+            param :nin, type: :array, of: :string, required: false
             param :contains, type: :string, required: false
-            param :not_contains, type: :string, required: false
+            param :ncontains, type: :string, required: false
             param :starts_with, type: :string, required: false
             param :ends_with, type: :string, required: false
           end
@@ -37,16 +37,16 @@ module Apiwork
           # Integer filter type
           # Provides numeric comparison operators
           type :integer_filter do
-            param :equal, type: :integer, required: false
-            param :not_equal, type: :integer, required: false
-            param :greater_than, type: :integer, required: false
-            param :greater_than_or_equal_to, type: :integer, required: false
-            param :less_than, type: :integer, required: false
-            param :less_than_or_equal_to, type: :integer, required: false
+            param :eq, type: :integer, required: false
+            param :neq, type: :integer, required: false
+            param :gt, type: :integer, required: false
+            param :gte, type: :integer, required: false
+            param :lt, type: :integer, required: false
+            param :lte, type: :integer, required: false
             param :in, type: :array, of: :integer, required: false
-            param :not_in, type: :array, of: :integer, required: false
+            param :nin, type: :array, of: :integer, required: false
             param :between, type: :integer_filter_between, required: false
-            param :not_between, type: :integer_filter_between, required: false
+            param :nbetween, type: :integer_filter_between, required: false
           end
 
           # Decimal range type (for between queries)
@@ -58,22 +58,22 @@ module Apiwork
           # Decimal filter type (for decimal, float)
           # Provides numeric comparison operators
           type :decimal_filter do
-            param :equal, type: :decimal, required: false
-            param :not_equal, type: :decimal, required: false
-            param :greater_than, type: :decimal, required: false
-            param :greater_than_or_equal_to, type: :decimal, required: false
-            param :less_than, type: :decimal, required: false
-            param :less_than_or_equal_to, type: :decimal, required: false
+            param :eq, type: :decimal, required: false
+            param :neq, type: :decimal, required: false
+            param :gt, type: :decimal, required: false
+            param :gte, type: :decimal, required: false
+            param :lt, type: :decimal, required: false
+            param :lte, type: :decimal, required: false
             param :in, type: :array, of: :decimal, required: false
-            param :not_in, type: :array, of: :decimal, required: false
+            param :nin, type: :array, of: :decimal, required: false
             param :between, type: :decimal_filter_between, required: false
-            param :not_between, type: :decimal_filter_between, required: false
+            param :nbetween, type: :decimal_filter_between, required: false
           end
 
           # Boolean filter type
           # Simple equality check for booleans
           type :boolean_filter do
-            param :equal, type: :boolean, required: false
+            param :eq, type: :boolean, required: false
           end
 
           # Date range type (for between queries)
@@ -85,16 +85,16 @@ module Apiwork
           # Date filter type
           # Provides date comparison operators
           type :date_filter do
-            param :equal, type: :string, required: false
-            param :not_equal, type: :string, required: false
-            param :greater_than, type: :string, required: false
-            param :greater_than_or_equal_to, type: :string, required: false
-            param :less_than, type: :string, required: false
-            param :less_than_or_equal_to, type: :string, required: false
+            param :eq, type: :string, required: false
+            param :neq, type: :string, required: false
+            param :gt, type: :string, required: false
+            param :gte, type: :string, required: false
+            param :lt, type: :string, required: false
+            param :lte, type: :string, required: false
             param :between, type: :date_filter_between, required: false
-            param :not_between, type: :date_filter_between, required: false
+            param :nbetween, type: :date_filter_between, required: false
             param :in, type: :array, of: :string, required: false
-            param :not_in, type: :array, of: :string, required: false
+            param :nin, type: :array, of: :string, required: false
           end
 
           # Datetime range type (for between queries)
@@ -106,25 +106,25 @@ module Apiwork
           # Datetime filter type
           # Provides temporal comparison operators
           type :datetime_filter do
-            param :equal, type: :string, required: false
-            param :not_equal, type: :string, required: false
-            param :greater_than, type: :string, required: false
-            param :greater_than_or_equal_to, type: :string, required: false
-            param :less_than, type: :string, required: false
-            param :less_than_or_equal_to, type: :string, required: false
+            param :eq, type: :string, required: false
+            param :neq, type: :string, required: false
+            param :gt, type: :string, required: false
+            param :gte, type: :string, required: false
+            param :lt, type: :string, required: false
+            param :lte, type: :string, required: false
             param :between, type: :datetime_filter_between, required: false
-            param :not_between, type: :datetime_filter_between, required: false
+            param :nbetween, type: :datetime_filter_between, required: false
             param :in, type: :array, of: :string, required: false
-            param :not_in, type: :array, of: :string, required: false
+            param :nin, type: :array, of: :string, required: false
           end
 
           # UUID filter type
           # Provides UUID comparison operators
           type :uuid_filter do
-            param :equal, type: :uuid, required: false
-            param :not_equal, type: :uuid, required: false
+            param :eq, type: :uuid, required: false
+            param :neq, type: :uuid, required: false
             param :in, type: :array, of: :uuid, required: false
-            param :not_in, type: :array, of: :uuid, required: false
+            param :nin, type: :array, of: :uuid, required: false
           end
 
           # Pagination parameters

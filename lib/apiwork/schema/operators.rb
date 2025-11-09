@@ -19,26 +19,26 @@ module Apiwork
       # These are shared across multiple data types
 
       # Equality operators - supported by all types
-      EQUALITY_OPERATORS = %i[equal not_equal].freeze
+      EQUALITY_OPERATORS = %i[eq neq].freeze
 
       # Comparison operators - for ordered types (dates, numbers)
       COMPARISON_OPERATORS = %i[
-        greater_than
-        greater_than_or_equal_to
-        less_than
-        less_than_or_equal_to
+        gt
+        gte
+        lt
+        lte
       ].freeze
 
       # Range operators - for types that support ranges
-      RANGE_OPERATORS = %i[between not_between].freeze
+      RANGE_OPERATORS = %i[between nbetween].freeze
 
       # Collection operators - for checking membership
-      COLLECTION_OPERATORS = %i[in not_in].freeze
+      COLLECTION_OPERATORS = %i[in nin].freeze
 
       # String-specific operators
       STRING_SPECIFIC_OPERATORS = %i[
         contains
-        not_contains
+        ncontains
         starts_with
         ends_with
       ].freeze
@@ -107,8 +107,8 @@ module Apiwork
       # @return [Array<Symbol>] Valid operators for the type
       #
       # @example
-      #   Operators.for_type(:string)  # => [:equal, :not_equal, :contains, ...]
-      #   Operators.for_type(:integer) # => [:equal, :not_equal, :greater_than, ...]
+      #   Operators.for_type(:string)  # => [:eq, :neq, :contains, ...]
+      #   Operators.for_type(:integer) # => [:eq, :neq, :gt, ...]
       #
       def self.for_type(type)
         OPERATORS_BY_TYPE[type] || EQUALITY_OPERATORS

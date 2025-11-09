@@ -35,7 +35,7 @@ RSpec.describe 'Association Filtering API', type: :request do
 
   describe 'GET /api/v1/posts with comment filters (has_many)' do
     it 'filters posts by comment author' do
-      get '/api/v1/posts', params: { filter: { comments: { author: { equal: 'Alice' } } } }
+      get '/api/v1/posts', params: { filter: { comments: { author: { eq: 'Alice' } } } }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
@@ -57,7 +57,7 @@ RSpec.describe 'Association Filtering API', type: :request do
 
     it 'filters posts by comment created_at' do
       get '/api/v1/posts', params: {
-        filter: { comments: { created_at: { greater_than: 1.5.days.ago.iso8601 } } }
+        filter: { comments: { created_at: { gt: 1.5.days.ago.iso8601 } } }
       }
 
       expect(response).to have_http_status(:ok)
@@ -69,8 +69,8 @@ RSpec.describe 'Association Filtering API', type: :request do
     it 'combines post filters with comment filters (AND logic)' do
       get '/api/v1/posts', params: {
         filter: {
-          published: { equal: true },
-          comments: { author: { equal: 'Alice' } }
+          published: { eq: true },
+          comments: { author: { eq: 'Alice' } }
         }
       }
 
@@ -85,7 +85,7 @@ RSpec.describe 'Association Filtering API', type: :request do
       get '/api/v1/posts', params: {
         filter: {
           comments: {
-            author: { equal: 'Alice' },
+            author: { eq: 'Alice' },
             content: { contains: 'tutorial' }
           }
         }
@@ -99,7 +99,7 @@ RSpec.describe 'Association Filtering API', type: :request do
     end
 
     it 'returns empty array when no posts match comment filter' do
-      get '/api/v1/posts', params: { filter: { comments: { author: { equal: 'Nonexistent' } } } }
+      get '/api/v1/posts', params: { filter: { comments: { author: { eq: 'Nonexistent' } } } }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
@@ -110,7 +110,7 @@ RSpec.describe 'Association Filtering API', type: :request do
 
   describe 'GET /api/v1/comments with post filters (belongs_to)' do
     it 'filters comments by post title' do
-      get '/api/v1/comments', params: { filter: { post: { title: { equal: 'Ruby Tutorial' } } } }
+      get '/api/v1/comments', params: { filter: { post: { title: { eq: 'Ruby Tutorial' } } } }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
@@ -121,7 +121,7 @@ RSpec.describe 'Association Filtering API', type: :request do
     end
 
     it 'filters comments by post published status' do
-      get '/api/v1/comments', params: { filter: { post: { published: { equal: true } } } }
+      get '/api/v1/comments', params: { filter: { post: { published: { eq: true } } } }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
@@ -131,7 +131,7 @@ RSpec.describe 'Association Filtering API', type: :request do
 
     it 'filters comments by post created_at' do
       get '/api/v1/comments', params: {
-        filter: { post: { created_at: { greater_than: 2.5.days.ago.iso8601 } } }
+        filter: { post: { created_at: { gt: 2.5.days.ago.iso8601 } } }
       }
 
       expect(response).to have_http_status(:ok)
@@ -143,8 +143,8 @@ RSpec.describe 'Association Filtering API', type: :request do
     it 'combines comment filters with post filters' do
       get '/api/v1/comments', params: {
         filter: {
-          author: { equal: 'Alice' },
-          post: { published: { equal: true } }
+          author: { eq: 'Alice' },
+          post: { published: { eq: true } }
         }
       }
 
@@ -158,7 +158,7 @@ RSpec.describe 'Association Filtering API', type: :request do
 
   describe 'Error handling' do
     it 'handles invalid association filter field gracefully' do
-      get '/api/v1/posts', params: { filter: { comments: { invalid_field: { equal: 'value' } } } }
+      get '/api/v1/posts', params: { filter: { comments: { invalid_field: { eq: 'value' } } } }
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)

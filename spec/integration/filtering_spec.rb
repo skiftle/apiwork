@@ -15,7 +15,7 @@ RSpec.describe 'Filtering API', type: :request do
 
   describe 'GET /api/v1/posts with filters' do
     it 'filters by exact match' do
-      get '/api/v1/posts', params: { filter: { title: { equal: 'First Post' } } }
+      get '/api/v1/posts', params: { filter: { title: { eq: 'First Post' } } }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
@@ -36,7 +36,7 @@ RSpec.describe 'Filtering API', type: :request do
     end
 
     it 'filters by boolean value' do
-      get '/api/v1/posts', params: { filter: { published: { equal: true } } }
+      get '/api/v1/posts', params: { filter: { published: { eq: true } } }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
@@ -48,7 +48,7 @@ RSpec.describe 'Filtering API', type: :request do
     end
 
     it 'filters by greater than' do
-      get '/api/v1/posts', params: { filter: { created_at: { greater_than: 1.day.ago.iso8601 } } }
+      get '/api/v1/posts', params: { filter: { created_at: { gt: 1.day.ago.iso8601 } } }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
@@ -58,7 +58,7 @@ RSpec.describe 'Filtering API', type: :request do
     end
 
     it 'filters by less than or equal' do
-      get '/api/v1/posts', params: { filter: { created_at: { less_than_or_equal_to: 1.day.ago.iso8601 } } }
+      get '/api/v1/posts', params: { filter: { created_at: { lte: 1.day.ago.iso8601 } } }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
@@ -80,7 +80,7 @@ RSpec.describe 'Filtering API', type: :request do
     end
 
     it 'filters by not equal' do
-      get '/api/v1/posts', params: { filter: { title: { not_equal: 'First Post' } } }
+      get '/api/v1/posts', params: { filter: { title: { neq: 'First Post' } } }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
@@ -94,7 +94,7 @@ RSpec.describe 'Filtering API', type: :request do
     it 'combines multiple filters with AND logic' do
       get '/api/v1/posts', params: {
         filter: {
-          published: { equal: true },
+          published: { eq: true },
           body: { contains: 'Rails' }
         }
       }
@@ -110,7 +110,7 @@ RSpec.describe 'Filtering API', type: :request do
     end
 
     it 'returns empty array when no matches found' do
-      get '/api/v1/posts', params: { filter: { title: { equal: 'Nonexistent' } } }
+      get '/api/v1/posts', params: { filter: { title: { eq: 'Nonexistent' } } }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
@@ -119,7 +119,7 @@ RSpec.describe 'Filtering API', type: :request do
     end
 
     it 'handles invalid filter field gracefully' do
-      get '/api/v1/posts', params: { filter: { invalid_field: { equal: 'value' } } }
+      get '/api/v1/posts', params: { filter: { invalid_field: { eq: 'value' } } }
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)

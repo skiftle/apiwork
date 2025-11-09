@@ -101,7 +101,7 @@ RSpec.describe 'Sorting API', type: :request do
 
     it 'combines sorting with filtering' do
       get '/api/v1/posts', params: {
-        filter: { published: { equal: true } },
+        filter: { published: { eq: true } },
         sort: { title: 'desc' }
       }
 
