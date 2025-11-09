@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(then if ! grep -B1 Post.delete_all $file)",
-      "Bash(then echo $file fi fi fi done)"
+      "Bash(then echo $file fi fi fi done)",
+      "Bash(for seed in 1 10 100 999 1234 5678)",
+      "Bash(do echo \"=== Seed $seed ===\")"
     ],
     "deny": [],
     "ask": []

@@ -75,6 +75,17 @@ module Apiwork
           # Merge virtual (schema-generated) with explicit params
           merged_def = Definition.new(:output, contract_class)
 
+          # Copy unwrapped union metadata from virtual to merged definition
+          # This ensures the merged output is still recognized as a discriminated union
+          if virtual_def.instance_variable_get(:@unwrapped_union)
+            merged_def.instance_variable_set(:@unwrapped_union, true)
+            merged_def.instance_variable_set(
+              :@unwrapped_union_discriminator,
+              virtual_def.instance_variable_get(:@unwrapped_union_discriminator)
+            )
+          end
+
+          # Deep merge: virtual params first (from schema), then custom (can override)
           virtual_def.params.each do |name, param_options|
             merged_def.params[name] = param_options
           end
@@ -141,25 +152,52 @@ module Apiwork
         def build_virtual_output_definition
           return nil unless contract_class.schema_class
 
+          schema_class = contract_class.schema_class
           virtual_def = Definition.new(:output, contract_class)
 
-          contract_class.schema_class.attribute_definitions.each do |name, attribute_definition|
-            virtual_def.params[name] = {
-              name:,
-              type: Generator.map_type(attribute_definition.type),
-              required: false
-            }
-          end
-
-          contract_class.schema_class.association_definitions.each do |name, association_definition|
-            if association_definition.singular?
-              virtual_def.params[name] = { name:, type: :object, required: false, nullable: association_definition.nullable? }
-            elsif association_definition.collection?
-              virtual_def.params[name] = { name:, type: :array, required: false, nullable: association_definition.nullable? }
-            end
+          # Generate FULL output structure (discriminated union for single, collection wrapper for arrays)
+          # Detect if this is a collection or member action from API metadata
+          if collection_action?
+            virtual_def.instance_eval { OutputGenerator.generate_collection_output(self, schema_class) }
+          else
+            # Member actions get single resource output (discriminated union)
+            virtual_def.instance_eval { OutputGenerator.generate_single_output(self, schema_class) }
           end
 
           virtual_def
+        end
+
+        # Check if this action is a collection action (returns array of resources)
+        # CRUD action :index is always collection
+        # Custom actions are checked from API metadata (collection do ... end)
+        def collection_action?
+          return true if action_name.to_sym == :index
+
+          # For custom actions, check API metadata
+          api = find_api_for_contract
+          return false unless api&.metadata
+
+          # Check if action is defined under collection in any resource using this contract
+          is_collection_in_resources?(api.metadata.resources)
+        end
+
+        # Recursively check if action is defined as collection action in resources
+        def is_collection_in_resources?(resources)
+          resources.each_value do |resource_metadata|
+            if resource_uses_contract?(resource_metadata, contract_class)
+              # Check if this action is in collections hash
+              if resource_metadata[:collections]&.key?(action_name.to_sym)
+                return true
+              end
+            end
+
+            # Recursively search nested resources
+            if resource_metadata[:resources]&.any?
+              return true if is_collection_in_resources?(resource_metadata[:resources])
+            end
+          end
+
+          false
         end
 
         def auto_generate_input_if_needed
