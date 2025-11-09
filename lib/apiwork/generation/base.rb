@@ -2,8 +2,20 @@
 
 module Apiwork
   module Generation
+    # Base class for all schema generators
+    #
+    # Provides utilities for accessing API introspection data and transforming keys.
+    # Subclasses implement specific schema formats (OpenAPI, Zod, etc).
+    #
+    # @example
+    #   class MyGenerator < Base
+    #     def generate
+    #       # Use data, types, enums, resources
+    #       # Use transform_key for key transformation
+    #     end
+    #   end
     class Base
-      attr_reader :path, :key_transform, :api_data, :component_registry, :options
+      attr_reader :path, :data, :options
 
       class << self
         # Generate schema using class-level API
@@ -46,23 +58,21 @@ module Apiwork
       # Initialize generator
       #
       # @param path [String] API mount path
-      # @param key_transform [Symbol] Key transformation strategy
-      # @param options [Hash] Additional generator-specific options
-      def initialize(path, key_transform: :camelize_lower, **options)
+      # @param options [Hash] Generator options including :key_transform
+      # @option options [Symbol] :key_transform (:none) Key transformation strategy
+      def initialize(path, **options)
         @path = path
-        @key_transform = key_transform
         @options = options
+        @options[:key_transform] ||= :none
         load_data
       end
 
-      # Load data from API.as_json
+      # Load data from API introspection
       def load_data
         api = Apiwork::API.find(path)
         raise "API not found at path: #{path}" unless api
 
-        @api_data = api.as_json
-        @component_registry = ComponentRegistry.new
-        @component_registry.extract_components(@api_data)
+        @data = api.introspect
       end
 
       # Must be implemented by subclasses
@@ -74,34 +84,85 @@ module Apiwork
 
       protected
 
+      # Get key transformation strategy from options
+      #
+      # @return [Symbol] Key transformation strategy
+      def key_transform
+        @options[:key_transform]
+      end
+
       # Transform key using Transform::Case
+      # Preserves leading underscores for special fields like _and, _or, _not
       #
       # @param key [String, Symbol] Key to transform
-      # @param strategy [Symbol, nil] Transformation strategy (defaults to @key_transform)
+      # @param strategy [Symbol, nil] Transformation strategy (defaults to key_transform)
       # @return [String] Transformed key
       def transform_key(key, strategy = nil)
-        Transform::Case.string(key, strategy || @key_transform)
+        key_str = key.to_s
+
+        # Preserve leading underscores (e.g., _and, _or, _not)
+        if key_str.start_with?('_')
+          underscore_prefix = key_str.match(/^_+/)[0]
+          key_without_prefix = key_str[underscore_prefix.length..]
+          transformed = Transform::Case.string(key_without_prefix, strategy || key_transform)
+          "#{underscore_prefix}#{transformed}"
+        else
+          Transform::Case.string(key_str, strategy || key_transform)
+        end
       end
 
       # Get API metadata (title, version, description)
       #
       # @return [Hash, nil] API metadata
       def metadata
-        @api_data[:metadata]
+        @data[:metadata]
+      end
+
+      # Get all custom types
+      #
+      # @return [Hash] Types hash from introspection
+      def types
+        @data[:types] || {}
+      end
+
+      # Get all enums
+      #
+      # @return [Hash] Enums hash from introspection
+      def enums
+        @data[:enums] || {}
       end
 
       # Get all resources
       #
-      # @return [Hash] Resources hash from API.as_json
+      # @return [Hash] Resources hash from introspection
       def resources
-        @api_data[:resources] || {}
+        @data[:resources] || {}
+      end
+
+      # Get global error codes
+      #
+      # @return [Array] Error codes array
+      def error_codes
+        @data[:error_codes] || []
       end
 
       # Iterate over all resources recursively
       #
-      # @yield [resource_name, resource_data] Yields each resource
+      # @yield [resource_name, resource_data, parent_path] Yields each resource
       def each_resource(&block)
         iterate_resources(resources, &block)
+      end
+
+      # Iterate over all actions in a resource
+      #
+      # @param resource_data [Hash] Resource data hash
+      # @yield [action_name, action_data] Yields each action
+      def each_action(resource_data, &block)
+        return unless resource_data[:actions]
+
+        resource_data[:actions].each do |action_name, action_data|
+          block.call(action_name, action_data)
+        end
       end
 
       # Determine HTTP method for standard action
@@ -109,7 +170,7 @@ module Apiwork
       # @param action [Symbol] Action name
       # @return [String] HTTP method (GET, POST, PATCH, DELETE)
       def http_method_for_action(action)
-        case action
+        case action.to_sym
         when :index, :show
           'GET'
         when :create
@@ -123,16 +184,45 @@ module Apiwork
         end
       end
 
+      # Build full path for a resource
+      #
+      # @param resource_data [Hash] Resource data hash
+      # @param parent_path [String, nil] Parent path prefix
+      # @return [String] Full resource path
+      def build_full_resource_path(resource_data, parent_path = nil)
+        if parent_path
+          "#{parent_path}/#{resource_data[:path]}"
+        else
+          resource_data[:path]
+        end
+      end
+
+      # Build full path for an action
+      #
+      # @param resource_data [Hash] Resource data hash
+      # @param action_data [Hash] Action data hash
+      # @param parent_path [String, nil] Parent path prefix
+      # @return [String] Full action path
+      def build_full_action_path(resource_data, action_data, parent_path = nil)
+        resource_path = build_full_resource_path(resource_data, parent_path)
+        "#{resource_path}#{action_data[:path]}"
+      end
+
       private
 
       # Recursively iterate over resources including nested ones
-      def iterate_resources(resources_hash, &block)
+      #
+      # @param resources_hash [Hash] Resources to iterate
+      # @param parent_path [String, nil] Parent path prefix
+      # @yield [resource_name, resource_data, parent_path] Yields each resource
+      def iterate_resources(resources_hash, parent_path = nil, &block)
         resources_hash.each do |resource_name, resource_data|
-          block.call(resource_name, resource_data)
+          block.call(resource_name, resource_data, parent_path)
 
           # Recurse into nested resources
           if resource_data[:resources]
-            iterate_resources(resource_data[:resources], &block)
+            current_path = build_full_resource_path(resource_data, parent_path)
+            iterate_resources(resource_data[:resources], current_path, &block)
           end
         end
       end
