@@ -268,11 +268,7 @@ module Apiwork
 
       # Resolve enum reference
       def resolve_enum(enum_ref)
-        if enum_ref.is_a?(Symbol) && enums.key?(enum_ref)
-          enum_ref
-        else
-          enum_ref
-        end
+        enum_ref
       end
     end
   end
