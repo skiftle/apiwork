@@ -17,8 +17,12 @@ module Apiwork
 
       # Serialize this definition to JSON-friendly hash
       # @return [Hash] Serialized parameter structure
-      def as_json
+      def introspect
         Serialization.serialize_definition(self)
+      end
+
+      def as_json
+        introspect
       end
 
       # Define a custom type scoped to this input/output

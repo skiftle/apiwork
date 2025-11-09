@@ -52,7 +52,7 @@ module Apiwork
       # Serialize this action definition to JSON-friendly hash
       # Includes both input and output definitions
       # @return [Hash] Hash with :input and :output keys
-      def as_json
+      def introspect
         result = {}
         result[:input] = merged_input_definition&.as_json
         result[:output] = merged_output_definition&.as_json
@@ -62,6 +62,10 @@ module Apiwork
         result[:error_codes] = all_error_codes
 
         result
+      end
+
+      def as_json
+        introspect
       end
 
       # Define a custom type scoped to this action
