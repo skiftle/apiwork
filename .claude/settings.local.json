@@ -17,7 +17,9 @@
       "Bash(bundle exec rspec:*)",
       "Bash(find:*)",
       "Bash(bin/rails runner:*)",
-      "Bash(bundle exec rails runner:*)"
+      "Bash(bundle exec rails runner:*)",
+      "Bash(ruby test_operation_ids.rb:*)",
+      "Bash(ruby debug_filter_fields.rb:*)"
     ],
     "deny": [],
     "ask": []
