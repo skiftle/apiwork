@@ -29,7 +29,8 @@
       "Bash(ruby test_openapi_nullable.rb:*)",
       "Bash(ruby -rjson -e:*)",
       "Bash(ruby verify_nullable.rb:*)",
-      "Bash(RAILS_ENV=test bundle exec rspec:*)"
+      "Bash(RAILS_ENV=test bundle exec rspec:*)",
+      "Bash(bundle exec ruby:*)"
     ],
     "deny": [],
     "ask": []

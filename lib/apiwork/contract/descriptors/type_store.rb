@@ -81,6 +81,7 @@ module Apiwork
           def serialize_all_for_api(api)
             result = {}
 
+            # First pass: expand all type definitions
             global_storage.to_a.each do |type_name, definition|
               result[type_name] = expand_type_definition(definition, contract_class: nil, type_name: type_name)
             end
@@ -107,7 +108,29 @@ module Apiwork
               end
             end
 
+            # Second pass: detect circular references and add recursive property
+            result.each do |type_name, type_def|
+              type_def[:recursive] = detect_circular_references(type_name, type_def, result)
+            end
+
             result
+          end
+
+          # Detect if a type has DIRECT circular references (references itself)
+          # Note: This only checks for direct self-references, not transitive cycles.
+          # For example, a filter type with `_and: [self]` is recursive.
+          # But a type that references another type that references back is not marked as recursive.
+          #
+          # @param type_name [Symbol] The name of the type being checked
+          # @param type_def [Hash] The expanded type definition (from as_json)
+          # @param all_types [Hash] All type definitions (not used, kept for compatibility)
+          # @return [Boolean] true if type directly references itself
+          def detect_circular_references(type_name, type_def, all_types)
+            # Extract all type references from this definition
+            referenced_types = extract_type_references(type_def)
+
+            # Check if this type references itself directly
+            referenced_types.include?(type_name)
           end
 
           protected
@@ -147,6 +170,64 @@ module Apiwork
 
             temp_definition.instance_eval(&definition)
             temp_definition.as_json
+          end
+
+          # Extract all type references from a type definition
+          # @param definition [Hash] Type definition (params hash)
+          # @return [Array<Symbol>] Array of referenced type names
+          def extract_type_references(definition)
+            refs = []
+
+            definition.each_value do |param|
+              next unless param.is_a?(Hash)
+
+              # Direct type reference
+              if param[:type].is_a?(Symbol) && !primitive_type?(param[:type])
+                refs << param[:type]
+              end
+
+              # Array 'of' reference
+              if param[:of].is_a?(Symbol) && !primitive_type?(param[:of])
+                refs << param[:of]
+              end
+
+              # Union variant references
+              if param[:variants].is_a?(Array)
+                param[:variants].each do |variant|
+                  next unless variant.is_a?(Hash)
+
+                  if variant[:type].is_a?(Symbol) && !primitive_type?(variant[:type])
+                    refs << variant[:type]
+                  end
+
+                  if variant[:of].is_a?(Symbol) && !primitive_type?(variant[:of])
+                    refs << variant[:of]
+                  end
+
+                  # Recursively check nested shape in variants
+                  if variant[:shape].is_a?(Hash)
+                    refs.concat(extract_type_references(variant[:shape]))
+                  end
+                end
+              end
+
+              # Nested shape references (for nested objects)
+              if param[:shape].is_a?(Hash)
+                refs.concat(extract_type_references(param[:shape]))
+              end
+            end
+
+            refs.uniq
+          end
+
+          # Check if a type is a primitive (not a custom type reference)
+          # @param type [Symbol] Type name to check
+          # @return [Boolean] true if type is a primitive
+          def primitive_type?(type)
+            %i[
+              string integer boolean datetime date uuid object array
+              decimal float literal union enum
+            ].include?(type)
           end
         end
       end
