@@ -2,7 +2,6 @@
 
 Apiwork::API.draw '/api/v1' do
   schema :openapi
-  schema :transport
 
   # Global error codes for all endpoints
   error_codes 400, 500

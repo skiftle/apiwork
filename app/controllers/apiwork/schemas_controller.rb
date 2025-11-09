@@ -7,11 +7,10 @@ module Apiwork
   #
   # Supports query parameters:
   # - key_transform: Transform key casing (underscore, camelize_lower, etc.)
-  # - builders: Include builder functions (for Transport generator)
   #
   # @example GET /api/v1/.schema/openapi
   # @example GET /api/v1/.schema/openapi?key_transform=underscore
-  # @example GET /api/v1/.schema/transport?builders=true&key_transform=camelize_lower
+  # @example GET /api/v1/.schema/zod?key_transform=camelize_lower
   class SchemasController < ActionController::API
     # GET /.schema/:type
     #
@@ -21,8 +20,7 @@ module Apiwork
       schema = ::Apiwork::Generation::Schema.generate(
         api_path: params[:api_path],
         format: params[:schema_type].to_sym,
-        key_transform: params[:key_transform],
-        builders: params[:builders]
+        key_transform: params[:key_transform]
       )
 
       # Render with appropriate content type
