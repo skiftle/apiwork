@@ -4,8 +4,19 @@ require 'rails_helper'
 
 RSpec.describe 'API Introspection' do
   before do
-    # Ensure API is loaded
+    # Reload API configuration first (this loads the Rails app and defines constants)
     load File.expand_path('../../dummy/config/apis/v1.rb', __dir__)
+
+    # Clear and reload contract definitions to prevent test pollution
+    # This ensures error_codes and other action metadata are fresh
+    if defined?(Api::V1::PostContract)
+      Api::V1::PostContract.instance_variable_set(:@action_definitions, nil)
+      load File.expand_path('../../dummy/app/contracts/api/v1/post_contract.rb', __dir__)
+    end
+    if defined?(Api::V1::ArticleContract)
+      Api::V1::ArticleContract.instance_variable_set(:@action_definitions, nil)
+      load File.expand_path('../../dummy/app/contracts/api/v1/article_contract.rb', __dir__)
+    end
   end
 
   describe 'API.as_json' do
@@ -117,10 +128,37 @@ RSpec.describe 'API Introspection' do
             expect(error_variant[:shape].keys).to include(:errors)
           end
 
-          it 'has empty output for destroy action' do
-            expect(posts[:actions][:destroy]).to have_key(:output)
-            output_keys = posts[:actions][:destroy][:output].keys
-            expect(output_keys).to be_empty
+          it 'merges custom output params with discriminated union at top level' do
+            archive = posts[:actions][:archive]
+            output = archive[:output]
+
+            # Should still be a discriminated union
+            expect(output[:type]).to eq(:union)
+            expect(output[:discriminator]).to eq(:ok)
+
+            # Success variant should have BOTH schema-generated AND custom fields at top level
+            success_variant = output[:variants].find { |v| v[:tag] == 'true' }
+            shape_keys = success_variant[:shape].keys
+
+            # Schema-generated fields (from discriminated union)
+            expect(shape_keys).to include(:ok, :post, :meta)
+
+            # Custom output params (defined in PostContract#archive)
+            expect(shape_keys).to include(:archived_at, :archive_note)
+          end
+
+          it 'replaces output completely when reset_output! is used' do
+            destroy = posts[:actions][:destroy]
+            expect(destroy).to have_key(:output)
+            output = destroy[:output]
+
+            # Should NOT have discriminated union (reset_output! disables merging)
+            expect(output[:type]).not_to eq(:union)
+
+            # Should only have custom-defined fields
+            expect(output.keys).to eq([:deleted_id])
+            expect(output[:deleted_id][:type]).to eq(:uuid)
+            expect(output[:deleted_id][:required]).to eq(true)
           end
         end
 
@@ -137,6 +175,25 @@ RSpec.describe 'API Introspection' do
           it 'includes input/output for collection actions' do
             expect(posts[:actions][:search]).to have_key(:input)
             expect(posts[:actions][:search]).to have_key(:output)
+          end
+
+          it 'merges custom output params with collection wrapper at top level' do
+            search = posts[:actions][:search]
+            output = search[:output]
+
+            # Should still be a discriminated union (collection wrapper)
+            expect(output[:type]).to eq(:union)
+            expect(output[:discriminator]).to eq(:ok)
+
+            # Success variant should have BOTH collection wrapper AND custom fields at top level
+            success_variant = output[:variants].find { |v| v[:tag] == 'true' }
+            shape_keys = success_variant[:shape].keys
+
+            # Schema-generated fields (from collection wrapper)
+            expect(shape_keys).to include(:ok, :posts, :meta)
+
+            # Custom output params (defined in PostContract#search)
+            expect(shape_keys).to include(:search_query, :result_count)
           end
         end
 

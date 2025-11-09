@@ -29,10 +29,28 @@ module Api
         end
       end
 
-      # Custom collection action - search posts
+      # Custom member action - archive post (test deep merge with discriminated union)
+      action :archive do
+        input do
+          param :reason, type: :string, required: false
+          param :notify_users, type: :boolean, required: false, default: true
+        end
+
+        output do
+          param :archived_at, type: :datetime, required: false
+          param :archive_note, type: :string, required: false
+        end
+      end
+
+      # Custom collection action - search posts (test deep merge with collection wrapper)
       action :search do
         input do
           param :q, type: :string
+        end
+
+        output do
+          param :search_query, type: :string, required: false
+          param :result_count, type: :integer, required: false
         end
       end
 
@@ -44,6 +62,14 @@ module Api
             param :body, type: :string
             param :published, type: :boolean
           end
+        end
+      end
+
+      # Override destroy to test reset_output! (complete replacement, no discriminated union)
+      action :destroy do
+        reset_output!
+        output do
+          param :deleted_id, type: :uuid, required: true
         end
       end
     end
