@@ -15,7 +15,9 @@
       "Bash(RAILS_ENV=test bundle exec rails runner:*)",
       "Bash(RAILS_ENV=test bin/rails runner:*)",
       "Bash(bundle exec rspec:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(bin/rails runner:*)",
+      "Bash(bundle exec rails runner:*)"
     ],
     "deny": [],
     "ask": []

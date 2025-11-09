@@ -20,7 +20,7 @@ module Apiwork
       end
 
       def pointer
-        @pointer ||= Apiwork::Errors::JsonPointer.build(*path)
+        @pointer ||= Apiwork::Errors::JSONPointer.build(*path)
       end
 
       def to_h

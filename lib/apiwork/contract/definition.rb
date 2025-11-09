@@ -159,7 +159,7 @@ module Apiwork
 
           # Handle shape param with do block
           if block_given?
-            shape_def = Definition.new(@type, @contract_class)
+            shape_def = Definition.new(@type, @contract_class, type_scope: @type_scope, action_name: @action_name, parent_scope: self)
             shape_def.instance_eval(&block)
             @params[name][:shape] = shape_def
           end
@@ -447,7 +447,7 @@ module Apiwork
               end
 
               # Validate as shape object
-              custom_def = Definition.new(@type, @contract_class, type_scope: @type_scope)
+              custom_def = Definition.new(@type, @contract_class, type_scope: @type_scope, action_name: @action_name, parent_scope: @parent_scope)
               custom_def.instance_eval(&custom_type_block)
 
               shape_result = custom_def.validate(
@@ -724,7 +724,7 @@ module Apiwork
         custom_type_block = @contract_class.resolve_custom_type(variant_type, @type_scope)
         if custom_type_block
           # Custom type variant
-          custom_def = Definition.new(@type, @contract_class, type_scope: @type_scope)
+          custom_def = Definition.new(@type, @contract_class, type_scope: @type_scope, action_name: @action_name, parent_scope: @parent_scope)
           custom_def.instance_eval(&custom_type_block)
 
           # Must be a hash for custom type

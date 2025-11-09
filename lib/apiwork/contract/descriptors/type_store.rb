@@ -98,7 +98,12 @@ module Apiwork
                 qualified_type_name = metadata[:qualified_name]
                 definition = metadata[:definition]
 
-                result[qualified_type_name] = expand_type_definition(definition, contract_class: actual_contract_class, type_name: type_name)
+                result[qualified_type_name] = expand_type_definition(
+                  definition,
+                  contract_class: actual_contract_class,
+                  type_name: type_name,
+                  scope: scope
+                )
               end
             end
 
@@ -113,9 +118,32 @@ module Apiwork
 
           private
 
-          def expand_type_definition(definition, contract_class: nil, type_name: nil)
+          def expand_type_definition(definition, contract_class: nil, type_name: nil, scope: nil)
             temp_contract = contract_class || Class.new(Apiwork::Contract::Base)
-            temp_definition = Apiwork::Contract::Definition.new(:input, temp_contract)
+
+            # Extract action_name and parent_scope from scope if available
+            action_name = nil
+            parent_scope = nil
+
+            if scope
+              if scope.class.name == 'Apiwork::Contract::ActionDefinition'
+                # For ActionDefinition, use it as parent_scope AND extract action_name
+                parent_scope = scope
+                action_name = scope.action_name
+              elsif scope.respond_to?(:action_name)
+                # For Definition instances, inherit action_name and parent_scope
+                action_name = scope.action_name
+                parent_scope = scope.parent_scope if scope.respond_to?(:parent_scope)
+              end
+            end
+
+            temp_definition = Apiwork::Contract::Definition.new(
+              :input,
+              temp_contract,
+              type_scope: nil,
+              action_name: action_name,
+              parent_scope: parent_scope
+            )
 
             temp_definition.instance_eval(&definition)
             temp_definition.as_json
