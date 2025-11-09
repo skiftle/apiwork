@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_01_03_000002) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_09_113238) do
+  create_table "authors", force: :cascade do |t|
+    t.text "bio"
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.datetime "updated_at", null: false
+    t.boolean "verified"
+  end
+
   create_table "comments", force: :cascade do |t|
     t.string "author"
     t.text "content", null: false
@@ -29,9 +37,9 @@ ActiveRecord::Schema[8.1].define(version: 2025_01_03_000002) do
   end
 
   create_table "users", force: :cascade do |t|
+    t.datetime "created_at", null: false
     t.string "email"
     t.string "name"
-    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
