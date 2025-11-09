@@ -27,7 +27,13 @@ module Apiwork
           # Set reset flag if replace is true
           @reset_input = replace if replace
 
-          @input_definition ||= Definition.new(:input, contract_class)
+          @input_definition ||= Definition.new(
+            :input,
+            contract_class,
+            type_scope: nil,
+            action_name: action_name,
+            parent_scope: self
+          )
 
           if block
             if should_auto_wrap_input?
@@ -52,18 +58,14 @@ module Apiwork
           return input_definition if virtual_def.nil?
           return virtual_def if input_definition.nil?
 
-          # Merge virtual (schema-generated) with explicit params
-          merged_def = Definition.new(:input, contract_class)
-
+          # Merge by adding virtual params to the existing input_definition
+          # This preserves enum/type registrations that are keyed by the Definition instance
           virtual_def.params.each do |name, param_options|
-            merged_def.params[name] = param_options
+            # Only add if not already defined (explicit params override virtual ones)
+            input_definition.params[name] ||= param_options
           end
 
-          input_definition.params.each do |name, param_options|
-            merged_def.params[name] = param_options
-          end
-
-          merged_def
+          input_definition
         end
 
         def merged_output_definition
@@ -75,29 +77,25 @@ module Apiwork
           return output_definition if virtual_def.nil?
           return virtual_def if output_definition.nil?
 
-          # Merge virtual (schema-generated) with explicit params
-          merged_def = Definition.new(:output, contract_class)
-
-          # Copy unwrapped union metadata from virtual to merged definition
+          # Copy unwrapped union metadata from virtual to output_definition if present
           # This ensures the merged output is still recognized as a discriminated union
           if virtual_def.instance_variable_get(:@unwrapped_union)
-            merged_def.instance_variable_set(:@unwrapped_union, true)
-            merged_def.instance_variable_set(
+            output_definition.instance_variable_set(:@unwrapped_union, true)
+            output_definition.instance_variable_set(
               :@unwrapped_union_discriminator,
               virtual_def.instance_variable_get(:@unwrapped_union_discriminator)
             )
           end
 
-          # Deep merge: virtual params first (from schema), then custom (can override)
+          # Merge by adding virtual params to the existing output_definition
+          # This preserves enum/type registrations that are keyed by the Definition instance
           virtual_def.params.each do |name, param_options|
-            merged_def.params[name] = param_options
+            # Virtual params are added first, custom params override them
+            output_definition.params[name] = param_options unless output_definition.params.key?(name)
           end
 
-          output_definition.params.each do |name, param_options|
-            merged_def.params[name] = param_options
-          end
-
-          merged_def
+          # Note: We modify output_definition in-place to preserve enum/type registrations
+          output_definition
         end
 
         # Check if this is a destroy action
@@ -134,7 +132,13 @@ module Apiwork
           return nil unless contract_class.schema_class
 
           rc = contract_class.schema_class
-          virtual_def = Definition.new(:input, contract_class)
+          virtual_def = Definition.new(
+            :input,
+            contract_class,
+            type_scope: nil,
+            action_name: action_name,
+            parent_scope: self
+          )
 
           case action_name.to_sym
           when :index
@@ -156,7 +160,13 @@ module Apiwork
           return nil unless contract_class.schema_class
 
           schema_class = contract_class.schema_class
-          virtual_def = Definition.new(:output, contract_class)
+          virtual_def = Definition.new(
+            :output,
+            contract_class,
+            type_scope: nil,
+            action_name: action_name,
+            parent_scope: self
+          )
 
           # Generate FULL output structure (discriminated union for single, collection wrapper for arrays)
           # Detect if this is a collection or member action from API metadata
@@ -207,7 +217,13 @@ module Apiwork
           return unless contract_class.schema?
 
           rc = contract_class.schema_class
-          @input_definition = Definition.new(:input, contract_class)
+          @input_definition = Definition.new(
+            :input,
+            contract_class,
+            type_scope: nil,
+            action_name: action_name,
+            parent_scope: self
+          )
 
           case action_name.to_sym
           when :index
@@ -231,7 +247,13 @@ module Apiwork
           return unless contract_class.schema?
 
           rc = contract_class.schema_class
-          @output_definition = Definition.new(:output, contract_class)
+          @output_definition = Definition.new(
+            :output,
+            contract_class,
+            type_scope: nil,
+            action_name: action_name,
+            parent_scope: self
+          )
 
           case action_name.to_sym
           when :index
