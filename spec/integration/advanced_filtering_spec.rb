@@ -23,7 +23,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
     Post.create!(title: 'Advanced Filter Test JavaScript Guide', body: 'Learn JavaScript', published: true, created_at: 2.days.ago)
   end
 
-  describe 'OR logic filtering (array of filters)', :skip do
+  describe 'OR logic filtering (array of filters)' do
     it 'filters posts matching any condition' do
       get '/api/v1/posts', params: {
         filter: [
@@ -110,12 +110,12 @@ RSpec.describe 'Advanced Filtering API', type: :request do
     end
   end
 
-  describe 'not_in operator' do
-    it 'filters posts excluding specific ids' do
+  describe '_not operator with :in' do
+    it 'filters posts excluding specific ids using _not' do
       excluded_ids = [post1.id, post3.id]
 
       get '/api/v1/posts', params: {
-        filter: { id: { nin: excluded_ids } }
+        filter: { _not: { id: { in: excluded_ids } } }
       }
 
       expect(response).to have_http_status(:ok)
@@ -128,7 +128,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
     it 'returns all posts when excluding non-existent ids' do
       get '/api/v1/posts', params: {
-        filter: { id: { nin: [99999, 88888] } }
+        filter: { _not: { id: { in: [99999, 88888] } } }
       }
 
       expect(response).to have_http_status(:ok)
@@ -138,10 +138,10 @@ RSpec.describe 'Advanced Filtering API', type: :request do
     end
   end
 
-  describe 'not_contains operator for strings' do
-    it 'filters posts not containing specific text' do
+  describe '_not operator with :contains' do
+    it 'filters posts not containing specific text using _not' do
       get '/api/v1/posts', params: {
-        filter: { title: { ncontains: 'Ruby' } }
+        filter: { _not: { title: { contains: 'Ruby' } } }
       }
 
       expect(response).to have_http_status(:ok)
@@ -152,9 +152,9 @@ RSpec.describe 'Advanced Filtering API', type: :request do
       expect(titles).to match_array(['Advanced Filter Test Rails Basics', 'Advanced Filter Test JavaScript Guide'])
     end
 
-    it 'returns all posts when not_contains matches nothing' do
+    it 'returns all posts when _not + contains matches nothing' do
       get '/api/v1/posts', params: {
-        filter: { title: { ncontains: 'Python' } }
+        filter: { _not: { title: { contains: 'Python' } } }
       }
 
       expect(response).to have_http_status(:ok)
@@ -215,13 +215,13 @@ RSpec.describe 'Advanced Filtering API', type: :request do
     end
   end
 
-  describe 'not_between operator for dates' do
-    it 'filters posts outside a date range' do
+  describe '_not operator with :between' do
+    it 'filters posts outside a date range using _not' do
       from_date = 4.days.ago.iso8601
       to_date = 2.days.ago.iso8601
 
       get '/api/v1/posts', params: {
-        filter: { created_at: { nbetween: { from: from_date, to: to_date } } }
+        filter: { _not: { created_at: { between: { from: from_date, to: to_date } } } }
       }
 
       expect(response).to have_http_status(:ok)
@@ -250,7 +250,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
       expect(json['posts'][0]['title']).to eq('Advanced Filter Test Ruby Basics')
     end
 
-    it 'combines OR logic with AND logic', :skip do
+    it 'combines OR logic with AND logic' do
       # This tests: (title contains Ruby OR title contains Rails) AND published = true
       get '/api/v1/posts', params: {
         filter: [
@@ -273,6 +273,210 @@ RSpec.describe 'Advanced Filtering API', type: :request do
       expect(json['posts'].length).to eq(2)
       titles = json['posts'].map { |p| p['title'] }
       expect(titles).to match_array(['Advanced Filter Test Ruby Basics', 'Advanced Filter Test Advanced Ruby'])
+    end
+  end
+
+  describe 'Logical operators (_or, _and, _not)' do
+    describe '_or operator' do
+      it 'filters posts matching any condition using _or' do
+        get '/api/v1/posts', params: {
+          filter: {
+            _or: [
+              { title: { contains: 'Ruby Basics' } },
+              { title: { contains: 'Rails' } }
+            ]
+          }
+        }
+
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+        expect(json['ok']).to eq(true)
+        expect(json['posts'].length).to eq(2)
+        titles = json['posts'].map { |p| p['title'] }
+        expect(titles).to match_array(['Advanced Filter Test Ruby Basics', 'Advanced Filter Test Rails Basics'])
+      end
+
+      it 'combines _or with other filters (implicit AND)' do
+        # This tests: published = true AND (title contains Ruby OR title contains JavaScript)
+        get '/api/v1/posts', params: {
+          filter: {
+            published: { eq: true },
+            _or: [
+              { title: { contains: 'Ruby' } },
+              { title: { contains: 'JavaScript' } }
+            ]
+          }
+        }
+
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+        expect(json['ok']).to eq(true)
+        # Should return Ruby Basics, Advanced Ruby, and JavaScript Guide (all published)
+        expect(json['posts'].length).to eq(3)
+        titles = json['posts'].map { |p| p['title'] }
+        expect(titles).to match_array([
+          'Advanced Filter Test Ruby Basics',
+          'Advanced Filter Test Advanced Ruby',
+          'Advanced Filter Test JavaScript Guide'
+        ])
+      end
+    end
+
+    describe '_and operator' do
+      it 'explicitly combines conditions with _and' do
+        get '/api/v1/posts', params: {
+          filter: {
+            _and: [
+              { published: { eq: true } },
+              { title: { contains: 'Ruby' } }
+            ]
+          }
+        }
+
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+        expect(json['ok']).to eq(true)
+        expect(json['posts'].length).to eq(2)
+        titles = json['posts'].map { |p| p['title'] }
+        expect(titles).to match_array(['Advanced Filter Test Ruby Basics', 'Advanced Filter Test Advanced Ruby'])
+      end
+
+      it 'chains multiple _and conditions' do
+        get '/api/v1/posts', params: {
+          filter: {
+            _and: [
+              { published: { eq: true } },
+              { title: { contains: 'Ruby' } },
+              { created_at: { lt: 2.days.ago.iso8601 } }
+            ]
+          }
+        }
+
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+        expect(json['ok']).to eq(true)
+        expect(json['posts'].length).to eq(1)
+        expect(json['posts'][0]['title']).to eq('Advanced Filter Test Ruby Basics')
+      end
+    end
+
+    describe '_not operator' do
+      it 'negates a single condition' do
+        get '/api/v1/posts', params: {
+          filter: {
+            _not: { published: { eq: true } }
+          }
+        }
+
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+        expect(json['ok']).to eq(true)
+        expect(json['posts'].length).to eq(1)
+        expect(json['posts'][0]['title']).to eq('Advanced Filter Test Rails Basics')
+      end
+
+      it 'combines _not with other filters' do
+        # published = true AND NOT (title contains JavaScript)
+        get '/api/v1/posts', params: {
+          filter: {
+            published: { eq: true },
+            _not: { title: { contains: 'JavaScript' } }
+          }
+        }
+
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+        expect(json['ok']).to eq(true)
+        expect(json['posts'].length).to eq(2)
+        titles = json['posts'].map { |p| p['title'] }
+        expect(titles).to match_array(['Advanced Filter Test Ruby Basics', 'Advanced Filter Test Advanced Ruby'])
+      end
+
+      it 'negates multiple conditions (De Morgan: NOT (A AND B))' do
+        # NOT (published = true AND title contains Ruby)
+        # Equivalent to: published != true OR title NOT contains Ruby
+        get '/api/v1/posts', params: {
+          filter: {
+            _not: {
+              published: { eq: true },
+              title: { contains: 'Ruby' }
+            }
+          }
+        }
+
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+        expect(json['ok']).to eq(true)
+        # Should return: Rails Basics (not published), JavaScript Guide (doesn't contain Ruby)
+        expect(json['posts'].length).to eq(2)
+        titles = json['posts'].map { |p| p['title'] }
+        expect(titles).to match_array(['Advanced Filter Test Rails Basics', 'Advanced Filter Test JavaScript Guide'])
+      end
+    end
+
+    describe 'Recursive nesting' do
+      it 'nests _or inside _and' do
+        # published = true AND (title contains Ruby OR title contains Rails)
+        get '/api/v1/posts', params: {
+          filter: {
+            _and: [
+              { published: { eq: true } },
+              {
+                _or: [
+                  { title: { contains: 'Ruby' } },
+                  { title: { contains: 'Rails' } }
+                ]
+              }
+            ]
+          }
+        }
+
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+        expect(json['ok']).to eq(true)
+        # Rails Basics is not published, so it's excluded
+        expect(json['posts'].length).to eq(2)
+        titles = json['posts'].map { |p| p['title'] }
+        expect(titles).to match_array(['Advanced Filter Test Ruby Basics', 'Advanced Filter Test Advanced Ruby'])
+      end
+
+      it 'nests _not inside _or' do
+        # title contains JavaScript OR NOT (published = true)
+        # Use explicit array indexing to avoid Rails merging array elements
+        get '/api/v1/posts', params: {
+          'filter[_or][0][title][contains]' => 'JavaScript',
+          'filter[_or][1][_not][published][eq]' => 'true'
+        }
+
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+        expect(json['ok']).to eq(true)
+        # Should return: Rails Basics (not published), JavaScript Guide (contains JavaScript)
+        expect(json['posts'].length).to eq(2)
+        titles = json['posts'].map { |p| p['title'] }
+        expect(titles).to match_array(['Advanced Filter Test Rails Basics', 'Advanced Filter Test JavaScript Guide'])
+      end
+
+      it 'handles complex nested logic: NOT ((A OR B) AND C)' do
+        # NOT ((title contains Ruby OR title contains Rails) AND published = true)
+        # By De Morgan: (title NOT contains Ruby AND title NOT contains Rails) OR published != true
+        # Use explicit array indexing for nested arrays
+        get '/api/v1/posts', params: {
+          'filter[_not][_and][0][_or][0][title][contains]' => 'Ruby',
+          'filter[_not][_and][0][_or][1][title][contains]' => 'Rails',
+          'filter[_not][_and][1][published][eq]' => 'true'
+        }
+
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+        expect(json['ok']).to eq(true)
+        # Should return: Rails Basics (not published, contains Rails but fails the AND),
+        #                JavaScript Guide (published but doesn't contain Ruby/Rails)
+        
+        expect(json['posts'].length).to eq(2)
+        titles = json['posts'].map { |p| p['title'] }
+        expect(titles).to match_array(['Advanced Filter Test Rails Basics', 'Advanced Filter Test JavaScript Guide'])
+      end
     end
   end
 end
