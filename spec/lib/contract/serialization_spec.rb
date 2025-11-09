@@ -19,13 +19,15 @@ RSpec.describe 'Contract Serialization' do
 
       expect(json).to eq({
         title: {
-          type: :string,
-          required: true
+          nullable: false,
+          required: true,
+          type: :string
         },
         published: {
-          type: :boolean,
+          default: false,
+          nullable: false,
           required: false,
-          default: false
+          type: :boolean
         }
       })
     end
@@ -47,18 +49,21 @@ RSpec.describe 'Contract Serialization' do
 
       expect(json).to eq({
         post: {
-          type: :object,
+          nullable: false,
           required: true,
           shape: {
             title: {
-              type: :string,
-              required: true
+              nullable: false,
+              required: true,
+              type: :string
             },
             body: {
-              type: :string,
-              required: false
+              nullable: false,
+              required: false,
+              type: :string
             }
-          }
+          },
+          type: :object
         }
       })
     end
@@ -77,9 +82,10 @@ RSpec.describe 'Contract Serialization' do
 
       expect(json).to eq({
         tags: {
-          type: :array,
+          nullable: false,
+          of: :string,
           required: false,
-          of: :string
+          type: :array
         }
       })
     end
@@ -98,9 +104,10 @@ RSpec.describe 'Contract Serialization' do
 
       expect(json).to eq({
         status: {
-          type: :string,
+          enum: %w[draft published archived],
+          nullable: false,
           required: true,
-          enum: %w[draft published archived]
+          type: :string
         }
       })
     end
@@ -119,9 +126,10 @@ RSpec.describe 'Contract Serialization' do
 
       expect(json).to eq({
         comments: {
-          type: :array,
+          as: :comments_attributes,
+          nullable: false,
           required: false,
-          as: :comments_attributes
+          type: :array
         }
       })
     end
@@ -173,8 +181,9 @@ RSpec.describe 'Contract Serialization' do
       # This prevents infinite recursion and keeps API introspection clean
       expect(json).to eq({
         shipping_address: {
-          type: :address,
-          required: true
+          nullable: false,
+          required: true,
+          type: :address
         }
       })
     end
@@ -275,18 +284,21 @@ RSpec.describe 'Contract Serialization' do
       expect(json).to eq({
         input: {
           title: {
-            type: :string,
-            required: true
+            nullable: false,
+            required: true,
+            type: :string
           }
         },
         output: {
           id: {
-            type: :integer,
-            required: true
+            nullable: false,
+            required: true,
+            type: :integer
           },
           title: {
-            type: :string,
-            required: true
+            nullable: false,
+            required: true,
+            type: :string
           }
         },
         error_codes: []
@@ -362,8 +374,9 @@ RSpec.describe 'Contract Serialization' do
       expect(json).to eq({
         input: {
           title: {
-            type: :string,
-            required: true
+            nullable: false,
+            required: true,
+            type: :string
           }
         },
         output: nil,
