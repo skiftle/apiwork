@@ -23,62 +23,69 @@ RSpec.describe Apiwork::Generation::Zod do
 
     describe 'filter and utility schemas from introspect' do
       it 'includes SortDirectionSchema from introspect enums' do
-        expect(output).to include('export const SortDirectionSchema = z.enum')
+        expect(output).to include("export type SortDirection = 'asc' | 'desc'")
+        expect(output).to include('export const SortDirectionSchema: z.ZodType<SortDirection> = z.enum')
         expect(output).to match(/SortDirectionSchema.*asc.*desc/m)
       end
 
       it 'includes StringFilterSchema from introspect types' do
-        expect(output).to include('export const StringFilterSchema = z.object')
-        expect(output).to include('export type StringFilter = z.infer<typeof StringFilterSchema>')
+        expect(output).to include('export type StringFilter =')
+        expect(output).to include('export const StringFilterSchema: z.ZodType<StringFilter> = z.object')
       end
 
       it 'includes IntegerFilterSchema from introspect types' do
-        expect(output).to include('export const IntegerFilterSchema = z.object')
-        expect(output).to include('export type IntegerFilter = z.infer<typeof IntegerFilterSchema>')
+        expect(output).to include('export type IntegerFilter =')
+        expect(output).to include('export const IntegerFilterSchema: z.ZodType<IntegerFilter> = z.object')
       end
 
       it 'includes DateFilterSchema from introspect types' do
-        expect(output).to include('export const DateFilterSchema = z.object')
-        expect(output).to include('export type DateFilter = z.infer<typeof DateFilterSchema>')
+        expect(output).to include('export type DateFilter =')
+        expect(output).to include('export const DateFilterSchema: z.ZodType<DateFilter> = z.object')
       end
 
       it 'includes UuidFilterSchema from introspect types' do
-        expect(output).to include('export const UuidFilterSchema = z.object')
-        expect(output).to include('export type UuidFilter = z.infer<typeof UuidFilterSchema>')
+        expect(output).to include('export type UuidFilter =')
+        expect(output).to include('export const UuidFilterSchema: z.ZodType<UuidFilter> = z.object')
       end
 
       it 'includes BooleanFilterSchema from introspect types' do
-        expect(output).to include('export const BooleanFilterSchema = z.object')
-        expect(output).to include('export type BooleanFilter = z.infer<typeof BooleanFilterSchema>')
+        expect(output).to include('export type BooleanFilter =')
+        expect(output).to include('export const BooleanFilterSchema: z.ZodType<BooleanFilter> = z.object')
       end
 
       it 'includes PageParamsSchema (pagination) from introspect types' do
-        expect(output).to include('export const PageParamsSchema = z.object')
-        expect(output).to include('export type PageParams = z.infer<typeof PageParamsSchema>')
+        expect(output).to include('export type PageParams =')
+        expect(output).to include('export const PageParamsSchema: z.ZodType<PageParams> = z.object')
       end
     end
 
     describe 'type schemas' do
-      it 'generates schemas for types from introspection' do
-        # Should generate schemas for all registered types that appear in output
+      it 'generates TypeScript types and Zod schemas for types from introspection' do
+        # Should generate TypeScript types and schemas for all registered types that appear in output
         introspect[:types].each do |type_name, type_def|
           schema_name = Apiwork::Transform::Case.string(type_name, :camelize_upper)
 
           # Skip types that aren't in the output (e.g., base types that aren't used)
           next unless output.include?("export const #{schema_name}Schema")
 
-          # All types should have a schema constant and type export
-          expect(output).to include("export const #{schema_name}Schema"), "Missing schema for #{type_name}"
-          expect(output).to include("export type #{schema_name}"), "Missing type export for #{type_name}"
+          # All types should have a TypeScript type declaration
+          if type_def[:recursive]
+            # Recursive types use interface
+            expect(output).to include("export interface #{schema_name}"), "Missing interface for recursive type #{type_name}"
+          else
+            # Non-recursive types use type alias
+            expect(output).to include("export type #{schema_name} ="), "Missing type alias for #{type_name}"
+          end
+
+          # All types should have a Zod schema with z.ZodType annotation
+          expect(output).to include("export const #{schema_name}Schema: z.ZodType<#{schema_name}>"), "Missing schema for #{type_name}"
 
           if type_def[:recursive]
-            # Recursive types use z.lazy() with z.infer
-            expect(output).to include("export const #{schema_name}Schema = z.lazy"), "Recursive type #{type_name} should use z.lazy"
-            expect(output).to include("export type #{schema_name} = z.infer<typeof #{schema_name}Schema>"), "Recursive type #{type_name} should use z.infer"
+            # Recursive types use z.lazy()
+            expect(output).to include("z.lazy"), "Recursive type #{type_name} should use z.lazy"
           else
-            # Non-recursive types use z.object() and z.infer
-            expect(output).to include("export const #{schema_name}Schema = z.object"), "Non-recursive type #{type_name} should use z.object"
-            expect(output).to include("export type #{schema_name} = z.infer<typeof #{schema_name}Schema>"), "Non-recursive type #{type_name} should use z.infer"
+            # Non-recursive types use z.object()
+            expect(output).to include("z.object"), "Non-recursive type #{type_name} should use z.object"
           end
         end
       end
@@ -93,11 +100,11 @@ RSpec.describe Apiwork::Generation::Zod do
 
           schema_name = Apiwork::Transform::Case.string(type_name, :camelize_upper)
 
-          # Should have TypeScript type definition with z.infer
-          expect(output).to include("export type #{schema_name} = z.infer<typeof #{schema_name}Schema>")
+          # Should have TypeScript interface declaration (not type alias)
+          expect(output).to include("export interface #{schema_name}")
 
-          # Should use z.lazy wrapper
-          expect(output).to include("export const #{schema_name}Schema = z.lazy")
+          # Should use z.lazy wrapper with z.ZodType annotation
+          expect(output).to include("export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.lazy")
 
           # Should reference itself in _and, _or, _not
           expect(output).to include("z.array(#{schema_name}Schema)") if type_def[:_and]
@@ -110,8 +117,12 @@ RSpec.describe Apiwork::Generation::Zod do
       it 'generates enum value and filter schemas for all registered enums' do
         introspect[:enums].each_key do |enum_name|
           schema_name = Apiwork::Transform::Case.string(enum_name, :camelize_upper)
-          expect(output).to include("export const #{schema_name}Schema = z.enum")
-          expect(output).to include("export const #{schema_name}FilterSchema = z.union")
+          # Should have TypeScript type declarations
+          expect(output).to include("export type #{schema_name} =")
+          expect(output).to include("export type #{schema_name}Filter =")
+          # Should have Zod schemas with type annotations
+          expect(output).to include("export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.enum")
+          expect(output).to include("export const #{schema_name}FilterSchema: z.ZodType<#{schema_name}Filter> = z.union")
         end
       end
     end
