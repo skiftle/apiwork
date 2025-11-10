@@ -35,7 +35,21 @@ module Apiwork
           parts << ''
         end
 
-        # 3. Type schemas from introspect
+        # 3. TypeScript enum types
+        typescript_enum_types = build_typescript_enum_types
+        if typescript_enum_types.present?
+          parts << typescript_enum_types
+          parts << ''
+        end
+
+        # 4. TypeScript type declarations
+        typescript_types = build_typescript_types
+        if typescript_types.present?
+          parts << typescript_types
+          parts << ''
+        end
+
+        # 5. Zod schemas (referencing TypeScript types)
         type_schemas = build_type_schemas
         if type_schemas.present?
           parts << type_schemas
@@ -71,13 +85,13 @@ module Apiwork
         enum_value_schemas = enums.map do |enum_name, enum_values|
           schema_name = zod_type_name(enum_name)
           values_str = enum_values.map { |v| "'#{v}'" }.join(', ')
-          "export const #{schema_name}Schema = z.enum([#{values_str}]);"
+          "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.enum([#{values_str}]);"
         end.join("\n")
 
         enum_filter_schemas = enums.map do |enum_name, _enum_values|
           schema_name = zod_type_name(enum_name)
           <<~TYPESCRIPT.strip
-            export const #{schema_name}FilterSchema = z.union([
+            export const #{schema_name}FilterSchema: z.ZodType<#{schema_name}Filter> = z.union([
               #{schema_name}Schema,
               z.object({
                 #{transform_key('eq')}: #{schema_name}Schema.optional(),
@@ -90,48 +104,58 @@ module Apiwork
         [enum_value_schemas, enum_filter_schemas].reject(&:empty?).join("\n\n")
       end
 
-      # Build schemas for all types from introspect
-      def build_type_schemas
-        # Separate recursive and non-recursive types
-        recursive_types = types.select { |_name, shape| shape[:recursive] }
-        non_recursive_types = types.reject { |_name, shape| shape[:recursive] }
+      # Build TypeScript enum types from introspect data
+      def build_typescript_enum_types
+        return '' if enums.empty?
 
-        parts = []
+        # Generate TypeScript union types for enums
+        enum_types = enums.map do |enum_name, enum_values|
+          type_name = zod_type_name(enum_name)
+          # Create a union of literal types
+          values_str = enum_values.map { |v| "'#{v}'" }.join(' | ')
+          "export type #{type_name} = #{values_str};"
+        end.join("\n")
 
-        # 1. Generate non-recursive schemas
-        non_recursive_schemas = non_recursive_types.map do |type_name, type_shape|
-          # Detect if this is an update payload type
-          action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
-          build_object_schema(type_name, type_shape, action_name)
-        end
+        # Generate TypeScript types for enum filters
+        enum_filter_types = enums.map do |enum_name, _enum_values|
+          type_name = zod_type_name(enum_name)
+          eq_key = transform_key('eq')
+          <<~TYPESCRIPT.strip
+            export type #{type_name}Filter = #{type_name} | {
+              #{eq_key}?: #{type_name};
+              in?: #{type_name}[];
+            };
+          TYPESCRIPT
+        end.join("\n\n")
 
-        parts << non_recursive_schemas.join("\n\n") if non_recursive_schemas.any?
-
-        # 2. Generate recursive schemas with z.lazy()
-        # Sort schemas in topological order to avoid forward references
-        if recursive_types.any?
-          sorted_recursive_types = topological_sort_types(recursive_types)
-
-          recursive_schemas = sorted_recursive_types.map do |type_name, type_shape|
-            # Detect if this is an update payload type
-            action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
-            build_object_schema(type_name, type_shape, action_name, recursive: true)
-          end
-
-          parts << recursive_schemas.join("\n\n")
-        end
-
-        parts.reject(&:empty?).join("\n\n")
+        [enum_types, enum_filter_types].reject(&:empty?).join("\n\n")
       end
 
-      # Sort recursive types in topological order to avoid forward references
-      # Types that don't depend on other recursive types come first
-      def topological_sort_types(recursive_types)
+      # Build schemas for all types from introspect
+      def build_type_schemas
+        # Sort ALL types in topological order to avoid forward references
+        sorted_types = topological_sort_types(types)
+
+        # Generate schemas for all types
+        schemas = sorted_types.map do |type_name, type_shape|
+          # Detect if this is an update payload type
+          action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
+          # Check if type is recursive
+          recursive = type_shape[:recursive] == true
+          build_object_schema(type_name, type_shape, action_name, recursive: recursive)
+        end
+
+        schemas.join("\n\n")
+      end
+
+      # Sort types in topological order to avoid forward references
+      # Types that don't depend on other types come first
+      def topological_sort_types(all_types)
         # Build dependency graph
         dependencies = {}
-        recursive_types.each do |type_name, type_shape|
+        all_types.each do |type_name, type_shape|
           # Extract type references from this type
-          refs = extract_recursive_type_references(type_shape, recursive_types.keys)
+          refs = extract_type_references_for_sorting(type_shape, all_types.keys)
           dependencies[type_name] = refs
         end
 
@@ -159,15 +183,15 @@ module Apiwork
         end
 
         # If there's a cycle, just use original order
-        if sorted.size != recursive_types.size
-          recursive_types.to_a
+        if sorted.size != all_types.size
+          all_types.to_a
         else
-          sorted.map { |type_name| [type_name, recursive_types[type_name]] }
+          sorted.map { |type_name| [type_name, all_types[type_name]] }
         end
       end
 
-      # Extract references to other recursive types from a type definition
-      def extract_recursive_type_references(type_shape, recursive_type_names)
+      # Extract references to other types from a type definition (for sorting)
+      def extract_type_references_for_sorting(type_shape, all_type_names)
         refs = []
 
         type_shape.each do |key, value|
@@ -175,12 +199,12 @@ module Apiwork
           next unless value.is_a?(Hash)
 
           # Direct type reference
-          if value[:type].is_a?(Symbol) && recursive_type_names.include?(value[:type])
+          if value[:type].is_a?(Symbol) && all_type_names.include?(value[:type])
             refs << value[:type]
           end
 
           # Array 'of' reference
-          if value[:of].is_a?(Symbol) && recursive_type_names.include?(value[:of])
+          if value[:of].is_a?(Symbol) && all_type_names.include?(value[:of])
             refs << value[:of]
           end
 
@@ -189,11 +213,11 @@ module Apiwork
             value[:variants].each do |variant|
               next unless variant.is_a?(Hash)
 
-              if variant[:type].is_a?(Symbol) && recursive_type_names.include?(variant[:type])
+              if variant[:type].is_a?(Symbol) && all_type_names.include?(variant[:type])
                 refs << variant[:type]
               end
 
-              if variant[:of].is_a?(Symbol) && recursive_type_names.include?(variant[:of])
+              if variant[:of].is_a?(Symbol) && all_type_names.include?(variant[:of])
                 refs << variant[:of]
               end
             end
@@ -216,16 +240,13 @@ module Apiwork
           "  #{key}: #{zod_type}"
         end.join(",\n")
 
-        schema_def = if recursive
-                       # Recursive types use z.lazy()
-                       "export const #{schema_name}Schema = z.lazy(() => z.object({\n#{properties}\n}));"
-                     else
-                       # Non-recursive types use normal z.object()
-                       "export const #{schema_name}Schema = z.object({\n#{properties}\n});"
-                     end
-
-        type_export = "export type #{schema_name} = z.infer<typeof #{schema_name}Schema>;"
-        [schema_def, type_export].join("\n")
+        if recursive
+          # Recursive types use z.lazy() with TypeScript type annotation
+          "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.lazy(() => z.object({\n#{properties}\n}));"
+        else
+          # Non-recursive types use z.object() with TypeScript type annotation
+          "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.object({\n#{properties}\n});"
+        end
       end
 
       # Map field definition to Zod type
@@ -346,6 +367,173 @@ module Apiwork
           'z.null()'
         else
           "z.literal('#{value}')"
+        end
+      end
+
+      # Build TypeScript type declarations for all types
+      def build_typescript_types
+        # Sort ALL types in topological order
+        sorted_types = topological_sort_types(types)
+
+        # Generate TypeScript type/interface declarations
+        type_declarations = sorted_types.map do |type_name, type_shape|
+          action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
+          recursive = type_shape[:recursive] == true
+          build_typescript_type(type_name, type_shape, action_name, recursive: recursive)
+        end
+
+        type_declarations.join("\n\n")
+      end
+
+      # Build TypeScript type declaration
+      def build_typescript_type(type_name, type_shape, action_name = nil, recursive: false)
+        type_name_pascal = zod_type_name(type_name)
+        filtered_shape = type_shape.reject { |k, _v| k == :recursive }
+
+        properties = filtered_shape.map do |property_name, property_def|
+          key = transform_key(property_name)
+          is_update = action_name.to_s == 'update'
+          is_optional = is_update || !property_def[:required]
+
+          ts_type = map_typescript_field(property_def, action_name)
+          optional_marker = is_optional ? '?' : ''
+          "  #{key}#{optional_marker}: #{ts_type};"
+        end.join("\n")
+
+        if recursive
+          # Use interface for recursive types
+          "export interface #{type_name_pascal} {\n#{properties}\n}"
+        else
+          # Use type for non-recursive types
+          "export type #{type_name_pascal} = {\n#{properties}\n};"
+        end
+      end
+
+      # Map field definition to TypeScript type syntax
+      def map_typescript_field(definition, action_name = nil)
+        return 'string' unless definition.is_a?(Hash)
+
+        is_nullable = definition[:nullable]
+
+        # Handle custom type references
+        if definition[:type].is_a?(Symbol) && types.key?(definition[:type])
+          base_type = zod_type_name(definition[:type])
+        else
+          base_type = map_typescript_type_definition(definition, action_name)
+        end
+
+        # Handle enum
+        if definition[:enum]
+          enum_ref = resolve_enum(definition[:enum])
+          if enum_ref.is_a?(Symbol) && enums.key?(enum_ref)
+            base_type = zod_type_name(enum_ref)
+          elsif enum_ref.is_a?(Array)
+            base_type = enum_ref.map { |v| "'#{v}'" }.join(' | ')
+          end
+        end
+
+        # Apply nullable (add | null to the type)
+        base_type = "#{base_type} | null" if is_nullable
+
+        base_type
+      end
+
+      # Map type definition to TypeScript type syntax
+      def map_typescript_type_definition(definition, action_name = nil)
+        type = definition[:type]
+
+        case type
+        when :object
+          map_typescript_object_type(definition, action_name)
+        when :array
+          map_typescript_array_type(definition, action_name)
+        when :union
+          map_typescript_union_type(definition, action_name)
+        when :literal
+          map_typescript_literal_type(definition)
+        else
+          # Primitive or custom type reference
+          if types.key?(type)
+            zod_type_name(type)
+          else
+            map_typescript_primitive(type)
+          end
+        end
+      end
+
+      # Map object type to TypeScript syntax (inline)
+      def map_typescript_object_type(definition, action_name = nil)
+        return '{}' unless definition[:shape]
+
+        properties = definition[:shape].map do |property_name, property_def|
+          key = transform_key(property_name)
+          ts_type = map_typescript_field(property_def, action_name)
+          "#{key}: #{ts_type}"
+        end.join('; ')
+
+        "{ #{properties} }"
+      end
+
+      # Map array type to TypeScript syntax
+      def map_typescript_array_type(definition, action_name = nil)
+        items_type = definition[:of]
+        return 'string[]' unless items_type
+
+        if items_type.is_a?(Symbol) && types.key?(items_type)
+          element_type = zod_type_name(items_type)
+        elsif items_type.is_a?(Hash)
+          element_type = map_typescript_type_definition(items_type, action_name)
+        else
+          element_type = map_typescript_primitive(items_type)
+        end
+
+        # Use bracket notation for arrays
+        # For complex types (unions, intersections), wrap in parentheses
+        if element_type.include?(' | ') || element_type.include?(' & ')
+          "(#{element_type})[]"
+        else
+          "#{element_type}[]"
+        end
+      end
+
+      # Map union type to TypeScript union syntax
+      def map_typescript_union_type(definition, action_name = nil)
+        variants = definition[:variants].map do |variant|
+          map_typescript_type_definition(variant, action_name)
+        end
+        variants.join(' | ')
+      end
+
+      # Map literal type to TypeScript literal syntax
+      def map_typescript_literal_type(definition)
+        value = definition[:value]
+        case value
+        when String
+          "'#{value}'"
+        when Integer, Float
+          value.to_s
+        when TrueClass, FalseClass
+          value.to_s
+        when NilClass
+          'null'
+        else
+          "'#{value}'"
+        end
+      end
+
+      # Map primitive type to TypeScript primitive
+      def map_typescript_primitive(type)
+        case type.to_sym
+        when :string, :text, :uuid, :date, :datetime, :time, :binary
+          'string'
+        when :integer, :float, :decimal, :number
+          'number'
+        when :boolean
+          'boolean'
+        when :json
+          'Record<string, any>'
+        else
+          'string'
         end
       end
 
