@@ -48,7 +48,7 @@ module Apiwork
         if resource_metadata[:actions]&.include?(action_sym)
           # Standard action - return resource-level metadata
           {
-            resource_class_name: resource_metadata[:resource_class],
+            schema_class: resource_metadata[:schema_class],
             contract_class_name: resource_metadata[:contract_class_name],
             controller_class_name: resource_metadata[:controller_class_name]
           }
@@ -56,7 +56,7 @@ module Apiwork
           # Check member actions
           member_metadata = resource_metadata[:members][action_sym]
           {
-            resource_class_name: member_metadata[:resource_class_name] || resource_metadata[:resource_class],
+            schema_class: member_metadata[:schema_class] || resource_metadata[:schema_class],
             contract_class_name: member_metadata[:contract_class_name] || resource_metadata[:contract_class_name],
             controller_class_name: resource_metadata[:controller_class_name]
           }
@@ -64,7 +64,7 @@ module Apiwork
         elsif resource_metadata[:collections]&.key?(action_sym)
           collection_metadata = resource_metadata[:collections][action_sym]
           {
-            resource_class_name: collection_metadata[:resource_class_name] || resource_metadata[:resource_class],
+            schema_class: collection_metadata[:schema_class] || resource_metadata[:schema_class],
             contract_class_name: collection_metadata[:contract_class_name] || resource_metadata[:contract_class_name],
             controller_class_name: resource_metadata[:controller_class_name]
           }
@@ -74,30 +74,53 @@ module Apiwork
       private
 
       # Recursively find resource in metadata tree
+      # For nested resources with custom actions, we need to find the resource
+      # that actually has the action we're looking for
       def find_resource_in_metadata(metadata, resource_name)
+        action_sym = action_name.to_sym
+
+        # Collect all resources with this name (top-level and nested)
+        candidates = []
+
         # Check top-level resources
-        return metadata.resources[resource_name] if metadata.resources[resource_name]
+        candidates << metadata.resources[resource_name] if metadata.resources[resource_name]
 
         # Search nested resources recursively
         metadata.resources.each_value do |resource_metadata|
-          found = find_resource_recursive(resource_metadata, resource_name)
-          return found if found
+          found = find_all_resources_recursive(resource_metadata, resource_name, [])
+          candidates.concat(found)
         end
 
-        nil
+        # If we have multiple candidates, prefer the one that has the current action
+        # This handles nested resources with custom member/collection actions
+        if candidates.size > 1
+          # Check which candidate has this action defined
+          candidate_with_action = candidates.find do |candidate|
+            candidate[:actions]&.include?(action_sym) ||
+              candidate[:members]&.key?(action_sym) ||
+              candidate[:collections]&.key?(action_sym)
+          end
+          return candidate_with_action if candidate_with_action
+        end
+
+        # Return first candidate (or nil if no candidates)
+        candidates.first
       end
 
-      # Recursively search nested resources
-      def find_resource_recursive(resource_metadata, resource_name)
-        return resource_metadata[:resources][resource_name] if resource_metadata[:resources]&.key?(resource_name)
+      # Recursively search and collect ALL resources with the given name
+      # (both top-level and nested)
+      def find_all_resources_recursive(resource_metadata, resource_name, results)
+        # Check if this level has the resource
+        if resource_metadata[:resources]&.key?(resource_name)
+          results << resource_metadata[:resources][resource_name]
+        end
 
         # Search deeper
         resource_metadata[:resources]&.each_value do |nested_metadata|
-          found = find_resource_recursive(nested_metadata, resource_name)
-          return found if found
+          find_all_resources_recursive(nested_metadata, resource_name, results)
         end
 
-        nil
+        results
       end
     end
   end

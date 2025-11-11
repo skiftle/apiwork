@@ -34,6 +34,13 @@ module Apiwork
       end
 
       class << self
+        # Returns contract class for this schema (explicit or generated)
+        # Uses SchemaContractRegistry to cache and manage contracts
+        # @return [Class] Contract class
+        def contract
+          Contract::SchemaContractRegistry.contract_for_schema(self)
+        end
+
         def model(ref = nil)
           if ref
             unless ref.is_a?(Class)

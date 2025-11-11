@@ -26,4 +26,10 @@ RSpec.configure do |config|
 
   # Filter Rails gems from backtraces
   config.filter_rails_from_backtrace!
+
+  # Clear schema-contract registry before each test
+  # This ensures tests don't interfere with each other
+  config.before(:each) do
+    Apiwork::Contract::SchemaContractRegistry.clear!
+  end
 end

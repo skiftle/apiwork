@@ -15,5 +15,11 @@ module Apiwork
         config.maximum_page_size = 200
       end
     end
+
+    # Clear registry on code reload (development mode)
+    # This ensures contracts are regenerated with updated schema code
+    config.to_prepare do
+      Apiwork::Contract::SchemaContractRegistry.clear!
+    end
   end
 end
