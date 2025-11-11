@@ -19,11 +19,13 @@ module Apiwork
 
             # Auto-detect from DB
             options[:enum] ||= detect_enum_values(name)
+            # TODO: Raise if type cannot be detected and not provided?
             options[:type] ||= detect_type(name) if @is_db_column
-            options[:required] = detect_required(name) if options[:required].nil? && @is_db_column
-            options[:nullable] = detect_nullable(name) if options[:nullable].nil? && @is_db_column
+            options[:required] = detect_required(name) if options[:required].nil?
+            options[:nullable] = detect_nullable(name) if options[:nullable].nil?
           rescue ActiveRecord::StatementInvalid, ActiveRecord::NoDatabaseError, ActiveRecord::ConnectionNotEstablished
             # DB not available or table doesn't exist - skip introspection
+            # TODO Throw warning in development?
           end
         end
 
@@ -37,7 +39,7 @@ module Apiwork
         @serialize = options[:serialize]
         @deserialize = options[:deserialize]
         @null_to_empty = options[:null_to_empty]
-        @nullable = options[:nullable]  # Explicit nullable option (overrides DB detection)
+        @nullable = options[:nullable] # Explicit nullable option (overrides DB detection)
         @required = options[:required] || false
         @type = options[:type]
         @enum = options[:enum]
@@ -50,15 +52,11 @@ module Apiwork
         apply_null_to_empty_transformers! if @null_to_empty
       end
 
-      def filterable?(context = nil)
-        return @filterable.call(context) if @filterable.is_a?(Proc)
-
+      def filterable?
         @filterable
       end
 
-      def sortable?(context = nil)
-        return @sortable.call(context) if @sortable.is_a?(Proc)
-
+      def sortable?
         @sortable
       end
 
@@ -67,11 +65,9 @@ module Apiwork
       end
 
       def nullable?
-        # null_to_empty ALWAYS overrides to false
-        # (transformation happens in serialize/deserialize, so frontend never sees null)
+        # null_to_empty always overrides to false
         return false if @null_to_empty
 
-        # Otherwise use the stored value (from explicit config or DB detection)
         @nullable
       end
 
@@ -114,7 +110,7 @@ module Apiwork
           serialize: nil,
           deserialize: nil,
           null_to_empty: false,
-          nullable: false,  # Default to false (stricter by default)
+          nullable: false,
           required: false,
           type: nil,
           enum: nil
@@ -127,9 +123,7 @@ module Apiwork
         return if @klass.abstract_class
 
         # Check model first (DB column or model method) if model exists
-        if @model_class
-          return if @is_db_column || @model_class.instance_methods.include?(@name.to_sym)
-        end
+        return if @model_class && (@is_db_column || @model_class.instance_methods.include?(@name.to_sym))
 
         # Check resource methods
         return if @klass.instance_methods.include?(@name.to_sym)

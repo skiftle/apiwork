@@ -31,14 +31,11 @@ module Apiwork
           contract_class = constantize_safe(contract_class_name)
           return contract_class.new if contract_class
 
-          raise ConfigurationError, "Contract #{contract_class_name} not found"
+          raise_contract_not_found_error(contract_class_name)
         end
 
         # 3. Fail clearly
-        raise ConfigurationError,
-              "No schema or contract found for #{controller_class}##{action_name}. " \
-              "Expected schema: #{inferred_schema_name(controller_class)} " \
-              "or contract: #{inferred_contract_name(controller_class)}"
+        raise_configuration_error(controller_class, action_name)
       end
 
       # Legacy method for backward compatibility
@@ -70,6 +67,17 @@ module Apiwork
         class_name.constantize
       rescue NameError
         nil
+      end
+
+      private_class_method def self.raise_contract_not_found_error(contract_class_name)
+        raise ConfigurationError, "Contract #{contract_class_name} not found"
+      end
+
+      private_class_method def self.raise_configuration_error(controller_class, action_name)
+        raise ConfigurationError,
+              "No schema or contract found for #{controller_class}##{action_name}. " \
+              "Expected schema: #{inferred_schema_name(controller_class)} " \
+              "or contract: #{inferred_contract_name(controller_class)}"
       end
     end
   end

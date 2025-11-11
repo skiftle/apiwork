@@ -72,10 +72,6 @@ module Apiwork
           Descriptors::Registry.resolve(type_name, contract_class: self, scope: scope)
         end
 
-        def register_scope(_scope_id, _parent_scope = :root)
-          # No-op: scope registration is no longer needed with Descriptors::Registry
-        end
-
         # Get ActionDefinition for a specific action
         # Auto-generates actions if not explicitly defined and we have a resource
         # @param action_name [Symbol] Name of the action
@@ -206,31 +202,7 @@ module Apiwork
         # @param resource_name [Symbol] Resource name to find
         # @return [Hash, nil] Resource metadata or nil if not found
         def find_resource_in_metadata(metadata, resource_name)
-          # Check top-level resources
-          return metadata.resources[resource_name] if metadata.resources[resource_name]
-
-          # Search nested resources recursively
-          metadata.resources.each_value do |resource_metadata|
-            found = find_resource_recursive(resource_metadata, resource_name)
-            return found if found
-          end
-
-          nil
-        end
-
-        # Recursively search for resource in nested resource tree
-        # @param resource_metadata [Hash] Current resource metadata
-        # @param resource_name [Symbol] Resource name to find
-        # @return [Hash, nil] Resource metadata or nil if not found
-        def find_resource_recursive(resource_metadata, resource_name)
-          return resource_metadata[:resources][resource_name] if resource_metadata[:resources]&.key?(resource_name)
-
-          resource_metadata[:resources]&.each_value do |nested_metadata|
-            found = find_resource_recursive(nested_metadata, resource_name)
-            return found if found
-          end
-
-          nil
+          MetadataSearcher.new(metadata).find_resource(resource_name)
         end
       end
     end
