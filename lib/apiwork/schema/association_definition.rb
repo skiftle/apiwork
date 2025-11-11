@@ -25,22 +25,15 @@ module Apiwork
         validate_nested_attributes! if @model_class && writable?
       end
 
-      # Query methods
-      def filterable?(context = nil)
-        return @filterable.call(context) if @filterable.is_a?(Proc)
-
+      def filterable?
         @filterable
       end
 
-      def sortable?(context = nil)
-        return @sortable.call(context) if @sortable.is_a?(Proc)
-
+      def sortable?
         @sortable
       end
 
-      def serializable?(context = nil)
-        return @serializable.call(context) if @serializable.is_a?(Proc)
-
+      def serializable?
         @serializable
       end
 

@@ -28,15 +28,11 @@ module Apiwork
       # @param query_params [Hash] Query parameters for auto-querying (filter, sort, page, include)
       # @return [Hash] Complete response hash (not validated)
       def perform(resource_or_collection, query_params: {})
-        if resource_or_collection.is_a?(Enumerable)
-          build_collection_response(resource_or_collection, query_params)
-        elsif has_errors?(resource_or_collection)
-          build_error_response(resource_or_collection)
-        elsif controller.request.delete?
-          { ok: true, meta: meta.presence || {} }
-        else
-          build_single_resource_response(resource_or_collection, query_params)
-        end
+        return build_collection_response(resource_or_collection, query_params) if resource_or_collection.is_a?(Enumerable)
+        return build_error_response(resource_or_collection) if errors?(resource_or_collection)
+        return { ok: true, meta: meta.presence || {} } if controller.request.delete?
+
+        build_single_resource_response(resource_or_collection, query_params)
       end
 
       # Build collection response (with auto-query support)
@@ -107,7 +103,7 @@ module Apiwork
       private
 
       # Check if resource has errors
-      def has_errors?(resource)
+      def errors?(resource)
         return false unless resource.respond_to?(:errors)
 
         resource.errors.any?

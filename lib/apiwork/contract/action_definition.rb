@@ -238,34 +238,16 @@ module Apiwork
         api = find_api_for_contract
         return nil unless api&.metadata
 
-        # Search all resources (including nested)
-        search_http_method_in_resources(api.metadata.resources)
-      end
+        searcher = Apiwork::MetadataSearcher.new(api.metadata)
+        searcher.search_resources do |resource_metadata|
+          next unless resource_uses_contract?(resource_metadata, contract_class)
 
-      # Recursively search for HTTP method in resources and nested resources
-      def search_http_method_in_resources(resources)
-        resources.each_value do |resource_metadata|
-          # Only check resources that use this contract
-          if resource_uses_contract?(resource_metadata, contract_class)
-            # Check member actions
-            if resource_metadata[:members]&.key?(action_name.to_sym)
-              return resource_metadata[:members][action_name.to_sym][:method]
-            end
+          # Check member actions
+          return resource_metadata[:members][action_name.to_sym][:method] if resource_metadata[:members]&.key?(action_name.to_sym)
 
-            # Check collection actions
-            if resource_metadata[:collections]&.key?(action_name.to_sym)
-              return resource_metadata[:collections][action_name.to_sym][:method]
-            end
-          end
-
-          # Recursively search nested resources
-          if resource_metadata[:resources]&.any?
-            result = search_http_method_in_resources(resource_metadata[:resources])
-            return result if result
-          end
+          # Check collection actions
+          resource_metadata[:collections][action_name.to_sym][:method] if resource_metadata[:collections]&.key?(action_name.to_sym)
         end
-
-        nil
       end
 
       # Find the API definition class that contains this contract
@@ -281,39 +263,52 @@ module Apiwork
 
       # Check if a contract class is used in an API (recursively checks nested resources)
       def contract_used_in_api?(api_class, contract)
-        api_class.metadata.resources.each_value do |resource_metadata|
-          return true if resource_uses_contract?(resource_metadata, contract)
+        searcher = Apiwork::MetadataSearcher.new(api_class.metadata)
+        searcher.search_resources do |resource_metadata|
+          true if resource_uses_contract?(resource_metadata, contract)
+        end || false
+      end
+
+      # Check if a resource (or its nested resources) uses a specific contract
+      def resource_uses_contract?(resource_metadata, contract)
+        return true if matches_explicit_contract?(resource_metadata, contract)
+        return true if matches_schema_contract?(resource_metadata, contract)
+        return true if nested_resource_uses_contract?(resource_metadata, contract)
+
+        false
+      end
+
+      def matches_explicit_contract?(resource_metadata, contract)
+        contract_class_name = resource_metadata[:contract_class_name]
+        return false unless contract_class_name
+
+        resource_contract = constantize_contract_safe(contract_class_name)
+        resource_contract == contract
+      end
+
+      def matches_schema_contract?(resource_metadata, contract)
+        schema_class = resource_metadata[:schema_class]
+        return false unless schema_class
+        return false unless contract.schema_class
+
+        schema_class == contract.schema_class
+      end
+
+      def nested_resource_uses_contract?(resource_metadata, contract)
+        nested_resources = resource_metadata[:resources]
+        return false unless nested_resources&.any?
+
+        nested_resources.each_value do |nested_resource|
+          return true if resource_uses_contract?(nested_resource, contract)
         end
 
         false
       end
 
-      # Check if a resource (or its nested resources) uses a specific contract
-      def resource_uses_contract?(resource_metadata, contract)
-        # Check explicit contract
-        if resource_metadata[:contract_class_name]
-          begin
-            resource_contract = resource_metadata[:contract_class_name].constantize
-            return true if resource_contract == contract
-          rescue NameError
-            # Contract doesn't exist
-          end
-        end
-
-        # Check schema-based contract (would need to instantiate to compare)
-        # For now, we can compare by schema class if contract has one
-        if resource_metadata[:schema_class] && contract.schema_class
-          return true if resource_metadata[:schema_class] == contract.schema_class
-        end
-
-        # Check nested resources recursively
-        if resource_metadata[:resources]&.any?
-          resource_metadata[:resources].each_value do |nested_resource|
-            return true if resource_uses_contract?(nested_resource, contract)
-          end
-        end
-
-        false
+      def constantize_contract_safe(contract_class_name)
+        contract_class_name.constantize
+      rescue NameError
+        nil
       end
 
       def standard_crud_action?

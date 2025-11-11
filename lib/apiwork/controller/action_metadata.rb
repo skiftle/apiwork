@@ -78,18 +78,10 @@ module Apiwork
       # that actually has the action we're looking for
       def find_resource_in_metadata(metadata, resource_name)
         action_sym = action_name.to_sym
+        searcher = Apiwork::MetadataSearcher.new(metadata)
 
         # Collect all resources with this name (top-level and nested)
-        candidates = []
-
-        # Check top-level resources
-        candidates << metadata.resources[resource_name] if metadata.resources[resource_name]
-
-        # Search nested resources recursively
-        metadata.resources.each_value do |resource_metadata|
-          found = find_all_resources_recursive(resource_metadata, resource_name, [])
-          candidates.concat(found)
-        end
+        candidates = searcher.find_all_resources(resource_name)
 
         # If we have multiple candidates, prefer the one that has the current action
         # This handles nested resources with custom member/collection actions
@@ -105,22 +97,6 @@ module Apiwork
 
         # Return first candidate (or nil if no candidates)
         candidates.first
-      end
-
-      # Recursively search and collect ALL resources with the given name
-      # (both top-level and nested)
-      def find_all_resources_recursive(resource_metadata, resource_name, results)
-        # Check if this level has the resource
-        if resource_metadata[:resources]&.key?(resource_name)
-          results << resource_metadata[:resources][resource_name]
-        end
-
-        # Search deeper
-        resource_metadata[:resources]&.each_value do |nested_metadata|
-          find_all_resources_recursive(nested_metadata, resource_name, results)
-        end
-
-        results
       end
     end
   end

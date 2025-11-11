@@ -100,7 +100,6 @@ module Apiwork
           nil
         end
 
-
         def model_class
           ensure_auto_detection_complete
           _model_class
@@ -113,6 +112,7 @@ module Apiwork
 
         def ensure_auto_detection_complete
           return if instance_variable_defined?(:@auto_detection_complete) && @auto_detection_complete
+
           @auto_detection_complete = true
           auto_detect_model
         end
