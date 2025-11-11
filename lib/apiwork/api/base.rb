@@ -208,36 +208,10 @@ module Apiwork
         end
 
         # Get or create schema-based contract class for a resource
-        # This uses caching to avoid creating multiple instances
-        # Safe to use thanks to circular reference protection in serialization
-        # CRITICAL: Cache by root_key (not schema class name) to share types across subclasses
-        # Example: PostSchema and RestrictedPostSchema both have root_key "post", so they share contract class
+        # Uses SchemaContractRegistry for consistent contract instances
         def schema_based_contract_class(resource_metadata)
-          return nil unless resource_metadata[:schema_class]
-
           schema_class = resource_metadata[:schema_class]
-
-          # Cache key based on schema class name to prevent infinite recursion
-          # Use object_id as fallback for anonymous classes
-          # Replace :: with _ to make valid instance variable name
-          cache_key = if schema_class.name
-                        :"contract_#{schema_class.name.tr('::', '_')}"
-                      else
-                        :"contract_#{schema_class.object_id}"
-                      end
-
-          # Return cached if available
-          return instance_variable_get("@#{cache_key}") if instance_variable_defined?("@#{cache_key}")
-
-          # Create new anonymous contract class with schema
-          # Circular references are handled in Generator via visited set (checked BEFORE accessing root_key)
-          contract_class = Class.new(Apiwork::Contract::Base) do
-            schema schema_class
-          end
-
-          # Cache it
-          instance_variable_set("@#{cache_key}", contract_class)
-          contract_class
+          schema_class&.contract
         end
       end
     end

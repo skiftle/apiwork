@@ -23,6 +23,10 @@ module Apiwork
 
             @_schema_class = ref
 
+            # Register this explicit contract in the registry
+            # This ensures schema.contract returns this class, not an anonymous one
+            SchemaContractRegistry.register(ref, self)
+
             prepend Schema::Extension unless ancestors.include?(Schema::Extension)
           else
             # Getting schema
