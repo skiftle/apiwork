@@ -3,12 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Custom type hierarchical scoping and serialization', type: :integration do
-  # Test custom types at contract, action, and input/output levels
-  # Verifies that types defined at different scopes are correctly serialized
-  # and that qualified names follow the hierarchical naming pattern
-
   before(:all) do
-    # Create a test contract with custom types at different scopes
     Object.send(:remove_const, :TestScopedContract) if defined?(TestScopedContract)
     Object.send(:remove_const, :TestScopedSchema) if defined?(TestScopedSchema)
 
@@ -23,19 +18,16 @@ RSpec.describe 'Custom type hierarchical scoping and serialization', type: :inte
     class TestScopedContract < Apiwork::Contract::Base
       schema TestScopedSchema
 
-      # Contract-level type
       type :contract_level_type do
         param :field1, type: :string, required: false
       end
 
       action :custom_action do
-        # Action-level type
         type :action_level_type do
           param :field2, type: :string, required: false
         end
 
         input do
-          # Input-level type
           type :input_level_type do
             param :field3, type: :string, required: false
           end
@@ -55,7 +47,6 @@ RSpec.describe 'Custom type hierarchical scoping and serialization', type: :inte
 
   describe 'Type serialization with hierarchical scoping' do
     it 'serializes types without NoMethodError' do
-      # This would previously fail with NoMethodError: undefined method `resolve_custom_type' for ActionDefinition
       expect do
         Apiwork::Contract::Descriptors::Registry.serialize_all_types_for_api('api/v1')
       end.not_to raise_error

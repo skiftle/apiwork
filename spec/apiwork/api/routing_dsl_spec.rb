@@ -385,24 +385,4 @@ RSpec.describe 'Apiwork Routing DSL' do
       expect(account_metadata[:members]).to have_key(:dashboard)
     end
   end
-
-  # TODO: Add tests for concerns integration when concern system is fully implemented
-  # describe 'concerns integration' do
-  #   it 'captures member/collection actions from concerns' do
-  #     recorder.instance_eval do
-  #       concern :archivable do
-  #         member do
-  #           patch :archive
-  #           patch :unarchive
-  #         end
-  #       end
-  #
-  #       resources :posts, concerns: [:archivable]
-  #     end
-  #
-  #     members = metadata.resources[:posts][:members]
-  #     expect(members).to have_key(:archive)
-  #     expect(members).to have_key(:unarchive)
-  #   end
-  # end
 end

@@ -56,16 +56,6 @@ RSpec.describe 'Includes API', type: :request do
         expect(json['posts'].first['comments']).to be_present
       end
     end
-
-    # TODO: Add contract validation tests for include parameter
-    # Contract validates structure and catches typos
-    # context 'with invalid include parameter' do
-    #   it 'returns validation error for non-existent association'
-    #   it 'returns validation error for invalid value type'
-    # end
-
-    # TODO: Add show/create/update tests once includes are supported in those actions
-    # Currently includes only work in index (query) action
   end
 
   describe 'nested includes' do
