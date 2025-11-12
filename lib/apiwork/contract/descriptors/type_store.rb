@@ -163,7 +163,6 @@ module Apiwork
             temp_definition = Apiwork::Contract::Definition.new(
               :input,
               temp_contract,
-              type_scope: nil,
               action_name: action_name,
               parent_scope: parent_scope
             )

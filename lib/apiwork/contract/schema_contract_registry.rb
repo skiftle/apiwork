@@ -53,7 +53,8 @@ module Apiwork
           # Try naming convention: PostSchema → PostContract
           contract_name = schema_class.name.gsub(/Schema$/, 'Contract')
           contract_name.constantize
-        rescue NameError
+        rescue NameError => e
+          Rails.logger&.debug("No explicit contract found for #{schema_class.name}: #{e.message}") if defined?(Rails)
           nil
         end
 

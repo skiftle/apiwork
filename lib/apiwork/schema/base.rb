@@ -91,13 +91,17 @@ module Apiwork
             full_name = "#{namespace}::#{model_name}"
             begin
               return full_name.constantize
-            rescue NameError
+            rescue NameError => e
+              if defined?(Rails)
+                Rails.logger&.debug("Model #{full_name} not found, trying without namespace: #{e.message}")
+              end
               # continue to try without namespace
             end
           end
 
           model_name.constantize
-        rescue NameError
+        rescue NameError => e
+          Rails.logger&.debug("Model #{model_name} not found: #{e.message}") if defined?(Rails)
           nil
         end
 

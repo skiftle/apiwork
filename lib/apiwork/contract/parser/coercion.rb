@@ -74,9 +74,9 @@ module Apiwork
             elsif param_options[:of] && item.is_a?(Hash)
               # Array of custom type (like array of :filter)
               # Resolve custom type and coerce each element
-              custom_type_block = definition.contract_class.resolve_custom_type(param_options[:of], :root)
+              custom_type_block = definition.contract_class.resolve_custom_type(param_options[:of], nil)
               if custom_type_block
-                custom_def = Definition.new(@direction, definition.contract_class, type_scope: :root)
+                custom_def = Definition.new(@direction, definition.contract_class)
                 custom_def.instance_eval(&custom_type_block)
                 coerce_hash(item, custom_def)
               else
@@ -108,7 +108,7 @@ module Apiwork
                 custom_type_block = definition.contract_class.resolve_custom_type(variant_of, :root)
                 if custom_type_block
                   # Build custom type definition for array elements
-                  custom_def = Definition.new(@direction, definition.contract_class, type_scope: :root)
+                  custom_def = Definition.new(@direction, definition.contract_class)
                   custom_def.instance_eval(&custom_type_block)
 
                   # Coerce each element
@@ -125,7 +125,7 @@ module Apiwork
             next unless custom_type_block
 
             # Build custom type definition
-            custom_def = Definition.new(@direction, definition.contract_class, type_scope: :root)
+            custom_def = Definition.new(@direction, definition.contract_class)
             custom_def.instance_eval(&custom_type_block)
 
             # Try coercing with this custom type
