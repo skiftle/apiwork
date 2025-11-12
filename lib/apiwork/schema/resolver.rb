@@ -112,29 +112,6 @@ module Apiwork
           from_model(model_class, namespace: namespace)
         end
 
-        # Find Contract class for a specific controller action
-        #
-        # @param controller_class [Class] Controller class
-        # @param action_name [String, Symbol] Action name
-        # @return [Class, nil] Contract class, or nil if not found
-        #
-        def contract_for_action(controller_class, action_name)
-          namespace = extract_namespace_from_controller(controller_class)
-          controller_base_name = controller_class.name.demodulize.sub(/Controller$/, '').singularize
-          action_name_camelized = action_name.to_s.camelize
-
-          cache_key = "contract:#{controller_class.name}:#{action_name}"
-
-          @cache.fetch_or_store(cache_key) do
-            contract_class_name = "#{namespace}::#{controller_base_name}#{action_name_camelized}Contract"
-            begin
-              contract_class_name.constantize
-            rescue NameError
-              nil
-            end
-          end
-        end
-
         # Clear the cache (useful for testing and development)
         #
         # @return [void]

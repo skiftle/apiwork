@@ -7,8 +7,7 @@ module Apiwork
 
       class_methods do
         def serialize(object_or_collection, context: {}, includes: nil)
-          # NOTE: ActiveRecord::Relation handling is done by Model::Plugin when active
-
+          # Collections (including ActiveRecord::Relation) are handled via .each
           if object_or_collection.respond_to?(:each)
             object_or_collection.map { |obj| new(obj, context: context, includes: includes).as_json }
           else
@@ -90,16 +89,6 @@ module Apiwork
 
         # Support both string and symbol keys
         @includes[association_name] || @includes[association_name.to_s] || @includes[association_name.to_sym]
-      end
-
-      def detect_association_resource(association_name)
-        # Base version: just use the schema_class if provided
-        # Model version will override this with ActiveRecord reflection
-        definition = self.class.association_definitions[association_name]
-        return nil unless definition
-
-        resource_class = definition.schema_class
-        resource_class.is_a?(String) ? resource_class.constantize : resource_class
       end
     end
   end
