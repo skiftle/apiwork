@@ -81,22 +81,22 @@ module Apiwork
     # For serializable associations, merge nested includes rather than replace
     def apply_explicit_includes(combined, include_params)
       include_params.each do |key, value|
-        key_sym = key.to_sym
+        key_name_sym = key.to_sym
 
         if explicitly_false?(value)
-          combined.delete(key_sym)
+          combined.delete(key_name_sym)
         elsif value.is_a?(Hash)
           # Nested include - deep merge with existing (for serializable associations)
           normalized = normalize_nested_includes(value)
-          combined[key_sym] = if combined.key?(key_sym) && combined[key_sym].is_a?(Hash)
-                                # Association already exists (likely serializable) - deep merge nested includes
-                                deep_merge_includes(combined[key_sym], normalized)
-                              else
-                                # New association - set directly
-                                normalized
-                              end
+          combined[key_name_sym] = if combined.key?(key_name_sym) && combined[key_name_sym].is_a?(Hash)
+                                     # Association already exists (likely serializable) - deep merge nested includes
+                                     deep_merge_includes(combined[key_name_sym], normalized)
+                                   else
+                                     # New association - set directly
+                                     normalized
+                                   end
         elsif explicitly_true?(value)
-          combined[key_sym] ||= {}
+          combined[key_name_sym] ||= {}
         end
       end
     end
@@ -110,12 +110,12 @@ module Apiwork
     def self.deep_merge_includes(base, override)
       result = base.dup
       override.each do |key, value|
-        key_sym = key.to_sym
-        result[key_sym] = if result[key_sym].is_a?(Hash) && value.is_a?(Hash)
-                            deep_merge_includes(result[key_sym], value)
-                          else
-                            value
-                          end
+        key_name_sym = key.to_sym
+        result[key_name_sym] = if result[key_name_sym].is_a?(Hash) && value.is_a?(Hash)
+                                 deep_merge_includes(result[key_name_sym], value)
+                               else
+                                 value
+                               end
       end
       result
     end
@@ -125,18 +125,18 @@ module Apiwork
     def normalize_nested_includes(hash)
       result = {}
       hash.each do |key, value|
-        key_sym = key.to_sym
+        key_name_sym = key.to_sym
 
         next if explicitly_false?(value)
 
-        result[key_sym] = if explicitly_true?(value)
-                            {}
-                          elsif value.is_a?(Hash)
-                            normalize_nested_includes(value)
-                          else
-                            # Unknown value type - default to empty hash
-                            {}
-                          end
+        result[key_name_sym] = if explicitly_true?(value)
+                                 {}
+                               elsif value.is_a?(Hash)
+                                 normalize_nested_includes(value)
+                               else
+                                 # Unknown value type - default to empty hash
+                                 {}
+                               end
       end
       result
     end
@@ -186,27 +186,27 @@ module Apiwork
         end
 
         filter_hash.each do |key, value|
-          key_sym = key.to_sym
+          key_name_sym = key.to_sym
 
           # Handle logical operators - recursively extract from their values
-          if %i[_or _and].include?(key_sym) && value.is_a?(Array)
+          if %i[_or _and].include?(key_name_sym) && value.is_a?(Array)
             value.each do |filter_item|
               extracted = extract_from_filter(filter_item, visited)
               result = IncludesBuilder.deep_merge_includes(result, extracted)
             end
             next
-          elsif key_sym == :_not && value.is_a?(Hash)
+          elsif key_name_sym == :_not && value.is_a?(Hash)
             extracted = extract_from_filter(value, visited)
             result = IncludesBuilder.deep_merge_includes(result, extracted)
             next
           end
 
-          association_definition = schema.association_definitions[key_sym]
+          association_definition = schema.association_definitions[key_name_sym]
 
           next unless association_definition
 
           # Found association in filter - must include it
-          result[key_sym] = {}
+          result[key_name_sym] = {}
 
           # Check if there are nested associations to extract
           next unless value.is_a?(Hash)
@@ -217,7 +217,7 @@ module Apiwork
 
           extractor = self.class.new(schema: nested_schema)
           nested_includes = extractor.extract_from_filter(value, visited)
-          result[key_sym] = nested_includes if nested_includes.any?
+          result[key_name_sym] = nested_includes if nested_includes.any?
         end
 
         result
@@ -236,13 +236,13 @@ module Apiwork
           next unless sort_item.is_a?(Hash)
 
           sort_item.each do |key, value|
-            key_sym = key.to_sym
-            association_definition = schema.association_definitions[key_sym]
+            key_name_sym = key.to_sym
+            association_definition = schema.association_definitions[key_name_sym]
 
             next unless association_definition
 
             # Found association in sort - must include it
-            result[key_sym] = {}
+            result[key_name_sym] = {}
 
             # Check if there are nested associations to extract
             next unless value.is_a?(Hash)
@@ -253,7 +253,7 @@ module Apiwork
 
             extractor = self.class.new(schema: nested_schema)
             nested_includes = extractor.extract_from_sort(value, visited)
-            result[key_sym] = nested_includes if nested_includes.any?
+            result[key_name_sym] = nested_includes if nested_includes.any?
           end
         end
 

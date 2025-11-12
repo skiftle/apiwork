@@ -78,15 +78,15 @@ module Apiwork
         # @return [ActionDefinition, nil] The action definition or nil if not found
         def action_definition(action_name)
           @action_definitions ||= {}
-          action_sym = action_name.to_sym
+          action_name_sym = action_name.to_sym
 
           # Return existing definition if present
-          return @action_definitions[action_sym] if @action_definitions.key?(action_sym)
+          return @action_definitions[action_name_sym] if @action_definitions.key?(action_name_sym)
 
           # Auto-generate action if we have a schema (for any action, not just CRUD)
           if schema_class
-            auto_generate_and_store_action(action_sym)
-            return @action_definitions[action_sym]
+            auto_generate_and_store_action(action_name_sym)
+            return @action_definitions[action_name_sym]
           end
 
           nil
