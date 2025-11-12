@@ -49,7 +49,7 @@ jobs:
           bundle install --jobs 4 --retry 3
 
       - name: Set up database
-        run: cd spec/dummy && bundle exec rake db:schema:load
+        run: RAILS_ENV=test bundle exec rake -f spec/dummy/Rakefile db:schema:load
 
       - name: Run tests
         run: bundle exec rspec
