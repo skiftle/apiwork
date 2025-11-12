@@ -6,6 +6,7 @@ module Apiwork
   class DependencyError < Error; end
   class ConfigurationError < Error; end
   class TransformationError < Error; end
+  class CircularImportError < Error; end
   class APIError < StandardError; end
 
   # Structured error with metadata for API responses

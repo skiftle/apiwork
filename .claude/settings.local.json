@@ -9,7 +9,8 @@
       "Bash(bundle install:*)",
       "Bash(gh pr list:*)",
       "Bash(perl -i -pe:*)",
-      "Bash(ruby -i -pe:*)"
+      "Bash(ruby -i -pe:*)",
+      "Bash(exit 1)"
     ],
     "deny": [],
     "ask": []

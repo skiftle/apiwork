@@ -181,6 +181,47 @@ action :create do
 end
 ```
 
+### Importing types from other contracts
+
+Reuse types and enums defined in other contracts with `import`:
+
+```ruby
+# UserContract defines shared types
+class Api::V1::UserContract < Apiwork::Contract::Base
+  type :address do
+    param :street, type: :string, required: true
+    param :city, type: :string, required: true
+    param :country, type: :string, required: true
+  end
+
+  enum :role, %w[admin user guest]
+end
+
+# OrderContract imports and uses them
+class Api::V1::OrderContract < Apiwork::Contract::Base
+  import Api::V1::UserContract, as: :user
+
+  action :create do
+    input do
+      # Reference imported type with alias prefix
+      param :shipping_address, type: :user_address, required: true
+      param :billing_address, type: :user_address, required: false
+
+      # Reference imported enum
+      param :creator_role, type: :string, enum: :user_role
+    end
+  end
+end
+```
+
+**Key points:**
+- Import syntax: `import ContractClass, as: :alias`
+- Reference imported types with alias prefix: `:user_address` refers to `:address` from UserContract
+- Works with both types and enums
+- Supports multiple imports: `import UserContract, as: :user` and `import ProductContract, as: :product`
+- Works with auto-generated schema-based contracts
+- Circular import chains are detected and prevented
+
 ## Union types
 
 For fields that accept multiple types:

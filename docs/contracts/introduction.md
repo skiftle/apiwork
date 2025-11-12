@@ -629,6 +629,51 @@ class PostContract < Apiwork::Contract::Base
 end
 ```
 
+### Importing types from other contracts
+
+When you need to reuse types or enums from other contracts, use `import`:
+
+```ruby
+class Api::V1::UserContract < Apiwork::Contract::Base
+  type :address do
+    param :street, type: :string, required: true
+    param :city, type: :string, required: true
+    param :country, type: :string, required: true
+  end
+
+  enum :status, %w[active inactive suspended]
+end
+
+class Api::V1::OrderContract < Apiwork::Contract::Base
+  import Api::V1::UserContract, as: :user
+
+  action :create do
+    input do
+      param :shipping_address, type: :user_address, required: true
+      param :account_status, type: :string, enum: :user_status
+    end
+  end
+end
+```
+
+**How it works:**
+- Use `import ContractClass, as: :alias` to import types and enums from another contract
+- Reference imported types with the alias prefix: `:user_address` references `:address` from `UserContract`
+- Reference imported enums the same way: `:user_status` references `:status` from `UserContract`
+- Works with both explicit contracts and auto-generated schema-based contracts
+- Multiple imports are supported: `import UserContract, as: :user` and `import ProductContract, as: :product`
+
+**Common use cases:**
+- Sharing address types across User, Order, and Vendor contracts
+- Reusing status enums across multiple resources
+- Importing types from schema-generated contracts in custom contracts
+- Building modular contracts with shared vocabularies
+
+**Important:**
+- Always use the Class constant, not a string: `import UserContract` not `import 'UserContract'`
+- The alias must be a Symbol: `as: :user` not `as: 'user'`
+- Circular imports are detected and prevented (A imports B, B imports C, C imports A would error)
+
 ### Union types
 
 For fields that accept multiple types:
