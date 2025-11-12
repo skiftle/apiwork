@@ -211,6 +211,44 @@ collection
 
 ---
 
+## 🔄 Autoloading with Zeitwerk
+
+**Never use `require` or `require_relative` for application code when Zeitwerk can handle it.**
+
+Rails uses Zeitwerk for autoloading. Let it do its job.
+
+```ruby
+# ❌ Bad - manual requires in app code
+require 'app/models/user'
+require_relative '../services/user_service'
+
+# ✅ Good - just use the class, Zeitwerk loads it
+User.find(1)
+UserService.new.call
+```
+
+**When to use `require`:**
+- Loading gems or standard library: `require 'json'`, `require 'net/http'`
+- In `lib/` files that aren't in the autoload path
+- In test setup or configuration files
+
+**The rule:** If it's in `app/`, `lib/apiwork/`, or other autoloaded paths, don't require it.
+
+---
+
+## 🎨 Code Style & Linting
+
+**Always follow RuboCop rules.** This project uses RuboCop to enforce consistent style.
+
+- Run `bundle exec rubocop` before committing
+- Fix all RuboCop offenses, don't disable cops without good reason
+- RuboCop's suggestions are not optional — they're part of our style
+- Use `rubocop -a` or `rubocop -A` for auto-corrections when safe
+
+**If you think a RuboCop rule should be changed, discuss it first.** Don't just disable it.
+
+---
+
 ## ✅ Good vs ❌ Bad — Common Patterns
 
 ```ruby

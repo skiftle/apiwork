@@ -136,7 +136,7 @@ module Apiwork
           if segment.match?(/:(\w+)_id/)
             match = segment.match(/:(\w+)_id/)
             parent_paths << match[1].pluralize if match
-          elsif !segment.match?(/:/)
+          elsif segment.match?(/:/).nil?
             # Regular path segment (not a parameter)
             parent_paths << segment
           end
