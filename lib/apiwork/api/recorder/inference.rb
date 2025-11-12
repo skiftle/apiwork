@@ -15,7 +15,6 @@ module Apiwork
 
           class_name.constantize
         rescue NameError => e
-          ::Rails.logger&.warn "Could not find schema class: #{class_name}. Error: #{e.message}"
           nil
         end
 
@@ -27,7 +26,6 @@ module Apiwork
 
           class_name.constantize
         rescue NameError => e
-          ::Rails.logger&.warn "Could not find contract class: #{class_name}. Error: #{e.message}"
           nil
         end
 
@@ -39,7 +37,6 @@ module Apiwork
 
           class_name.constantize
         rescue NameError => e
-          ::Rails.logger&.warn "Could not find controller class: #{class_name}. Error: #{e.message}"
           nil
         end
 
