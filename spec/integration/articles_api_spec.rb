@@ -3,12 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Resource override and selective serialization', type: :request do
-  before(:each) do
-    # Delete comments first due to foreign key constraint
-    Comment.delete_all
-    Post.delete_all
-  end
-
   describe 'GET /api/v1/articles' do
     it 'serializes with custom resource root key' do
       Post.create!(title: 'Test Post', body: 'Test body', published: true)

@@ -57,12 +57,7 @@ RSpec.describe 'Custom type hierarchical scoping and serialization', type: :inte
     it 'serializes types without NoMethodError' do
       # This would previously fail with NoMethodError: undefined method `resolve_custom_type' for ActionDefinition
       expect {
-        all_types = Apiwork::Contract::Descriptors::Registry.serialize_all_types_for_api('api/v1')
-        puts "\n=== All registered types ==="
-        all_types.keys.select { |k| k.to_s.include?('test_scoped') }.each do |key|
-          puts "  #{key}"
-        end
-        puts "=========================\n"
+        Apiwork::Contract::Descriptors::Registry.serialize_all_types_for_api('api/v1')
       }.not_to raise_error
     end
 
@@ -84,12 +79,6 @@ RSpec.describe 'Custom type hierarchical scoping and serialization', type: :inte
 
     it 'includes input-level types with correct qualified name' do
       all_types = Apiwork::Contract::Descriptors::Registry.serialize_all_types_for_api('api/v1')
-
-      # Debug: Show what input-level types we actually have
-      puts "\nInput-level types found:"
-      all_types.keys.select { |k| k.to_s.include?('input_level_type') }.each do |key|
-        puts "  #{key}"
-      end
 
       # Input-level type should be qualified as: test_scoped_custom_action_input_input_level_type
       # But it's actually showing as: test_scoped_input_input_level_type

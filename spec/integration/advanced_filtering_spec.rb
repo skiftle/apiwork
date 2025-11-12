@@ -3,13 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Advanced Filtering API', type: :request do
-  before(:each) do
-    # Clean database before each test to avoid pollution from other test suites
-    # Delete comments first due to foreign key constraint
-    Comment.delete_all
-    Post.delete_all
-  end
-
   let!(:post1) do
     Post.create!(title: 'Advanced Filter Test Ruby Basics', body: 'Introduction to Ruby', published: true, created_at: 5.days.ago)
   end

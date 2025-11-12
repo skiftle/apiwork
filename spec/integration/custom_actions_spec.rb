@@ -3,12 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Custom Actions API', type: :request do
-  before(:each) do
-    # Delete comments first due to foreign key constraint
-    Comment.delete_all
-    Post.delete_all
-  end
-
   describe 'Custom member actions' do
     describe 'PATCH /api/v1/posts/:id/publish' do
       it 'routes to custom member action and serializes response' do

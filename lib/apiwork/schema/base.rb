@@ -92,6 +92,7 @@ module Apiwork
             begin
               return full_name.constantize
             rescue NameError
+              # continue to try without namespace
             end
           end
 
@@ -153,14 +154,14 @@ module Apiwork
           )
         end
 
-        def has_one(name, **options)
+        def has_one(name, **options) # rubocop:disable Naming/PredicatePrefix
           self.association_definitions = association_definitions.merge(
             name => AssociationDefinition.new(name, type: :has_one, klass: self, **options)
           )
           @includes_hash = nil
         end
 
-        def has_many(name, **options)
+        def has_many(name, **options) # rubocop:disable Naming/PredicatePrefix
           self.association_definitions = association_definitions.merge(
             name => AssociationDefinition.new(name, type: :has_many, klass: self, **options)
           )

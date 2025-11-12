@@ -3,12 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Includes API', type: :request do
-  before(:each) do
-    # Clean database before each test (delete comments first due to foreign key)
-    Comment.delete_all
-    Post.delete_all
-  end
-
   let!(:post1) do
     Post.create!(title: 'First Post', body: 'Content', published: true).tap do |post|
       post.comments.create!(content: 'Great post!', author: 'Alice')

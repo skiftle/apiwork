@@ -3,12 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Filtering API', type: :request do
-  before(:each) do
-    # Delete comments first due to foreign key constraint
-    Comment.delete_all
-    Post.delete_all
-  end
-
   let!(:post1) { Post.create!(title: 'First Post', body: 'Rails tutorial', published: true, created_at: 3.days.ago) }
   let!(:post2) { Post.create!(title: 'Second Post', body: 'Ruby guide', published: false, created_at: 2.days.ago) }
   let!(:post3) { Post.create!(title: 'Third Post', body: 'Rails advanced', published: true, created_at: 1.hour.ago) }

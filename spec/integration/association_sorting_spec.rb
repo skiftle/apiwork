@@ -3,12 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Association Sorting API', type: :request do
-  before(:each) do
-    # Delete comments first due to foreign key constraint
-    Comment.delete_all
-    Post.delete_all
-  end
-
   let!(:post1) do
     Post.create!(title: 'Sort Test Alpha', body: 'First', published: true, created_at: 3.days.ago)
   end

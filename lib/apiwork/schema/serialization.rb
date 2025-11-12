@@ -7,7 +7,7 @@ module Apiwork
 
       class_methods do
         def serialize(object_or_collection, context: {}, includes: nil)
-          # Note: ActiveRecord::Relation handling is done by Model::Plugin when active
+          # NOTE: ActiveRecord::Relation handling is done by Model::Plugin when active
 
           if object_or_collection.respond_to?(:each)
             object_or_collection.map { |obj| new(obj, context: context, includes: includes).as_json }

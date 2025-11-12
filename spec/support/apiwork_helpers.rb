@@ -56,14 +56,13 @@ module ApiworkHelpers
   # Mock request object
   def mock_request(method: :get)
     double('Request',
-      get?: method == :get,
-      post?: method == :post,
-      patch?: method == :patch,
-      put?: method == :put,
-      delete?: method == :delete,
-      variant: [],
-      query_parameters: {}
-    )
+           get?: method == :get,
+           post?: method == :post,
+           patch?: method == :patch,
+           put?: method == :put,
+           delete?: method == :delete,
+           variant: [],
+           query_parameters: {})
   end
 
   # Mock params
@@ -98,21 +97,21 @@ module ApiworkHelpers
           {}
         end
 
-                def self.validators_on(attr_name)
-                  []
-                end
+        def self.validators_on(attr_name)
+          []
+        end
 
-          def self.name
-            'TestModel'
-          end
+        def self.name
+          'TestModel'
+        end
 
-          def self.model_name
-            OpenStruct.new(element: 'test_model')
-          end
+        def self.model_name
+          OpenStruct.new(element: 'test_model')
+        end
 
-          def self.reflect_on_association(name)
-            nil # No real associations in mock
-          end
+        def self.reflect_on_association(name)
+          nil # No real associations in mock
+        end
       end
 
       class_eval(&block) if block_given?
@@ -130,13 +129,12 @@ module ApiworkHelpers
   # Test model instance
   def test_model_instance(attributes = {})
     double('ModelInstance',
-      id: attributes[:id] || SecureRandom.uuid,
-      name: attributes[:name] || 'Test Name',
-      email: attributes[:email] || 'test@example.com',
-      created_at: attributes[:created_at] || Time.current,
-      updated_at: attributes[:updated_at] || Time.current,
-      **attributes
-    )
+           id: attributes[:id] || SecureRandom.uuid,
+           name: attributes[:name] || 'Test Name',
+           email: attributes[:email] || 'test@example.com',
+           created_at: attributes[:created_at] || Time.current,
+           updated_at: attributes[:updated_at] || Time.current,
+           **attributes)
   end
 
   # Mock Current context
@@ -194,19 +192,17 @@ module ApiworkHelpers
   # Mock errors object
   def mock_errors(messages = {})
     errors = double('Errors',
-      full_messages: messages.values.flatten,
-      messages: messages,
-      any?: messages.any? { |_, msgs| msgs.any? }
-    )
+                    full_messages: messages.values.flatten,
+                    messages: messages,
+                    any?: messages.any? { |_, msgs| msgs.any? })
 
     # Mock the map method for error iteration
     allow(errors).to receive(:map).and_return(messages.map do |attr, msgs|
       msgs.map do |msg|
         double('Error',
-          attribute: attr,
-          message: msg,
-          to_h: { attribute: attr, message: msg }
-        )
+               attribute: attr,
+               message: msg,
+               to_h: { attribute: attr, message: msg })
       end
     end.flatten)
 

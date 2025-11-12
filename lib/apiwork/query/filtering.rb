@@ -8,47 +8,40 @@ module Apiwork
       def apply_filter(scope, params)
         return scope if params.blank?
 
-        scope = case params
-                when Hash
-                  # Separate logical operators from regular attributes
-                  logical_ops = params.slice(:_and, :_or, :_not)
-                  regular_attrs = params.except(:_and, :_or, :_not)
+        case params
+        when Hash
+          # Separate logical operators from regular attributes
+          logical_ops = params.slice(:_and, :_or, :_not)
+          regular_attrs = params.except(:_and, :_or, :_not)
 
-                  # Apply regular attributes first (if any)
-                  if regular_attrs.present?
-                    conditions, joins = build_where_conditions(regular_attrs)
-                    result = scope.joins(joins).where(conditions.reduce(:and))
-                    scope = joins.present? ? result.distinct : result
-                  end
+          # Apply regular attributes first (if any)
+          if regular_attrs.present?
+            conditions, joins = build_where_conditions(regular_attrs)
+            result = scope.joins(joins).where(conditions.reduce(:and))
+            scope = joins.present? ? result.distinct : result
+          end
 
-                  # Then apply logical operators (if any)
-                  if logical_ops.key?(:_not)
-                    scope = apply_not(scope, logical_ops[:_not])
-                  end
-                  if logical_ops.key?(:_or)
-                    scope = apply_or(scope, logical_ops[:_or])
-                  end
-                  if logical_ops.key?(:_and)
-                    scope = apply_and(scope, logical_ops[:_and])
-                  end
+          # Then apply logical operators (if any)
+          scope = apply_not(scope, logical_ops[:_not]) if logical_ops.key?(:_not)
+          scope = apply_or(scope, logical_ops[:_or]) if logical_ops.key?(:_or)
+          scope = apply_and(scope, logical_ops[:_and]) if logical_ops.key?(:_and)
 
-                  scope
-                when Array
-                  # Array format = OR logic (existing functionality)
-                  individual_conditions = params.map do |filter_hash|
-                    conditions, _joins = build_where_conditions(filter_hash)
-                    conditions.compact.reduce(:and) if conditions.any?
-                  end.compact
+          scope
+        when Array
+          # Array format = OR logic (existing functionality)
+          individual_conditions = params.map do |filter_hash|
+            conditions, _joins = build_where_conditions(filter_hash)
+            conditions.compact.reduce(:and) if conditions.any?
+          end.compact
 
-                  or_condition = individual_conditions.reduce(:or) if individual_conditions.any?
-                  all_joins = params.map { |p| build_where_conditions(p)[1] }.reduce({}) { |acc, j| acc.deep_merge(j) }
+          or_condition = individual_conditions.reduce(:or) if individual_conditions.any?
+          all_joins = params.map { |p| build_where_conditions(p)[1] }.reduce({}) { |acc, j| acc.deep_merge(j) }
 
-                  result = scope
-                  result = result.joins(all_joins) if all_joins.present?
-                  result = result.where(or_condition) if or_condition
-                  all_joins.present? ? result.distinct : result
-                end
-        scope
+          result = scope
+          result = result.joins(all_joins) if all_joins.present?
+          result = result.where(or_condition) if or_condition
+          all_joins.present? ? result.distinct : result
+        end
       end
 
       private
@@ -273,7 +266,9 @@ module Apiwork
       end
 
       def find_filterable_association(key)
-        schema.association_definitions[key] if schema.association_definitions.key?(key) && schema.association_definitions[key].filterable?
+        return unless schema.association_definitions.key?(key) && schema.association_definitions[key].filterable?
+
+        schema.association_definitions[key]
       end
 
       def build_join_conditions(key, value, association)
@@ -297,7 +292,8 @@ module Apiwork
 
         # Use Query class for nested filtering
         nested_query = Apiwork::Query.new(association_reflection.klass.all, schema: assoc_resource)
-        nested_conditions, nested_joins = nested_query.send(:build_where_conditions, value, association_reflection.klass)
+        nested_conditions, nested_joins = nested_query.send(:build_where_conditions, value,
+                                                            association_reflection.klass)
 
         join_conditions = {}
         join_conditions[key] = nested_joins.any? ? nested_joins : {}
@@ -388,21 +384,19 @@ module Apiwork
               end
 
               column.eq(nil)
+            elsif operator == :between && compare.is_a?(Hash)
+              from_date = parse_date(compare[:from] || compare['from']).beginning_of_day
+              to_date = parse_date(compare[:to] || compare['to']).end_of_day
+              column.gteq(from_date).and(column.lteq(to_date))
             else
-              if operator == :between && compare.is_a?(Hash)
-                from_date = parse_date(compare[:from] || compare['from']).beginning_of_day
-                to_date = parse_date(compare[:to] || compare['to']).end_of_day
-                column.gteq(from_date).and(column.lteq(to_date))
-              else
-                date = parse_date(compare)
-                case operator
-                when :eq then column.eq(date)
-                when :gt then column.gt(date)
-                when :gte then column.gteq(date)
-                when :lt then column.lt(date)
-                when :lte then column.lteq(date)
-                when :in then column.in(Array(date))
-                end
+              date = parse_date(compare)
+              case operator
+              when :eq then column.eq(date)
+              when :gt then column.gt(date)
+              when :gte then column.gteq(date)
+              when :lt then column.lt(date)
+              when :lte then column.lteq(date)
+              when :in then column.in(Array(date))
               end
             end
           end.compact.reduce(:and)
@@ -491,6 +485,7 @@ module Apiwork
 
       def normalize_boolean(value)
         return nil if value.nil?
+
         [true, 'true', 1, '1'].include?(value)
       end
 

@@ -3,12 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Standard CRUD endpoints', type: :request do
-  before(:each) do
-    # Delete comments first due to foreign key constraint
-    Comment.delete_all
-    Post.delete_all
-  end
-
   describe 'GET /api/v1/posts' do
     it 'wraps empty collections in response envelope' do
       get '/api/v1/posts'
