@@ -6,9 +6,7 @@ module Apiwork
       class Base
         class << self
           def register_global(name, payload)
-            if global_storage.key?(name)
-              raise ArgumentError, "Global #{storage_name.to_s.singularize} :#{name} already registered"
-            end
+            raise ArgumentError, "Global #{storage_name.to_s.singularize} :#{name} already registered" if global_storage.key?(name)
 
             global_storage[name] = payload
           end
@@ -47,9 +45,7 @@ module Apiwork
               if scope.instance_of?(::Apiwork::Contract::Definition) &&
                  scope.respond_to?(:action_name) && scope.action_name
                 action_def = contract_class.action_definition(scope.action_name) if contract_class
-                if action_def && local_storage[action_def]&.key?(name)
-                  return extract_payload_value(local_storage[action_def][name])
-                end
+                return extract_payload_value(local_storage[action_def][name]) if action_def && local_storage[action_def]&.key?(name)
               end
 
               # Check contract class scope if scope has contract_class
@@ -60,9 +56,7 @@ module Apiwork
             end
 
             # Check contract class scope directly (for legacy TypeStore calls)
-            if contract_class && local_storage[contract_class]&.key?(name)
-              return extract_payload_value(local_storage[contract_class][name])
-            end
+            return extract_payload_value(local_storage[contract_class][name]) if contract_class && local_storage[contract_class]&.key?(name)
 
             # Check global
             global_storage[name]

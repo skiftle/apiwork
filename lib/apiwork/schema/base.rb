@@ -144,13 +144,13 @@ module Apiwork
           )
         end
 
-        def has_one(name, **options) # rubocop:disable Naming/PredicatePrefix
+        def has_one(name, **options)
           self.association_definitions = association_definitions.merge(
             name => AssociationDefinition.new(name, type: :has_one, klass: self, **options)
           )
         end
 
-        def has_many(name, **options) # rubocop:disable Naming/PredicatePrefix
+        def has_many(name, **options)
           self.association_definitions = association_definitions.merge(
             name => AssociationDefinition.new(name, type: :has_many, klass: self, **options)
           )

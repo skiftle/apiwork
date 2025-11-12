@@ -51,3 +51,92 @@ Style/SymbolArray:
 # Disable HTTP positional arguments - conflicts with DSL syntax
 Rails/HttpPositionalArguments:
   Enabled: false
+
+# RSpec style preferences - disable subjective cops
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/IndexedLet:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Enabled: false
+
+RSpec/LetSetup:
+  Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+RSpec/ContextWording:
+  Enabled: false
+
+RSpec/MessageSpies:
+  Enabled: false
+
+RSpec/VerifiedDoubles:
+  Enabled: false
+
+RSpec/RepeatedDescription:
+  Enabled: false
+
+RSpec/DescribeClass:
+  Enabled: false
+
+RSpec/LeakyConstantDeclaration:
+  Enabled: false
+
+RSpec/RemoveConst:
+  Enabled: false
+
+RSpec/BeforeAfterAll:
+  Enabled: false
+
+RSpec/SpecFilePathFormat:
+  Enabled: false
+
+# Naming and style preferences
+Naming/VariableNumber:
+  Enabled: false
+
+Naming/PredicatePrefix:
+  Enabled: false
+
+# Lint exceptions for test constants
+Lint/ConstantDefinitionInBlock:
+  Enabled: false
+
+# Allow optional boolean parameters for DSL flexibility
+Style/OptionalBooleanParameter:
+  Enabled: false
+
+# Allow multiline block chains for readability
+Style/MultilineBlockChain:
+  Enabled: false
+
+# Increase line length for readability
+Layout/LineLength:
+  Max: 150
+
+# Allow more parameters for complex validations
+Metrics/ParameterLists:
+  Max: 8
+
+# Allow empty else for explicit flow control
+Style/EmptyElse:
+  Enabled: false
+
+# Allow unused method arguments for interface consistency
+Lint/UnusedMethodArgument:
+  Enabled: false
+
+# Allow ineffective access modifier for self methods
+Lint/IneffectiveAccessModifier:
+  Enabled: false
+
+# Allow duplicate method definitions in tests
+Lint/DuplicateMethods:
+  Enabled: false

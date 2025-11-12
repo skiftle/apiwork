@@ -385,9 +385,7 @@ module Apiwork
           next unless tag
 
           # If variant is a custom type reference, use $ref
-          if variant[:type].is_a?(Symbol) && types.key?(variant[:type])
-            mapping[tag.to_s] = "#/components/schemas/#{schema_name(variant[:type])}"
-          end
+          mapping[tag.to_s] = "#/components/schemas/#{schema_name(variant[:type])}" if variant[:type].is_a?(Symbol) && types.key?(variant[:type])
         end
 
         result = { oneOf: one_of_schemas }
