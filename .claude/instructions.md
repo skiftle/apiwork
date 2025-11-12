@@ -45,6 +45,38 @@ Simplicity is not the absence of complexity; it's the result of care.
 - Simplicity over complexity — even if it means writing more lines.
 - Explicit over implicit. Avoid magic, monkey patching, and surprises.
 - Use guard clauses instead of deep nesting.
+- **Don't duplicate conditional logic between call site and method.**
+  If a condition is part of the method's internal logic, it belongs in the method — not at the call site.
+  ```ruby
+  # ❌ Bad - duplicate guard logic
+  validate_association_exists! if @model_class
+
+  def validate_association_exists!
+    return unless @model_class  # Same check! This is the method's responsibility
+    # ...
+  end
+
+  # ✅ Good - single guard clause in method
+  validate_association_exists!
+
+  def validate_association_exists!
+    return unless @model_class
+    # ...
+  end
+  ```
+
+  **Exception:** Surrounding context conditions that aren't part of the method's responsibility can stay at the call site.
+  ```ruby
+  # ✅ OK - surrounding context condition
+  send_notification if user.opted_in?
+
+  def send_notification
+    # Method doesn't care about opt-in status, that's caller's concern
+    mailer.deliver_now
+  end
+  ```
+
+  **The rule:** If the condition is part of the method's validation or core logic, move it inside. If it's about *whether to call* the method based on external context, it can stay outside.
 - Write positive conditions. Avoid `unless`, `!`, and `== false`.
   **Exception:** `unless` may be used when it reads naturally and clearly with a simple condition,
   e.g. `unless completed` ✅

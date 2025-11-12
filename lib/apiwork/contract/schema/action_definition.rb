@@ -7,14 +7,12 @@ module Apiwork
       # Prepended when an action's contract has a schema
       module ActionDefinition
         def merges_input?
-          return false unless contract_class.schema?
           return false if resets_input?
 
           true
         end
 
         def merges_output?
-          return false unless contract_class.schema?
           return false if resets_output?
 
           true
@@ -22,7 +20,7 @@ module Apiwork
 
         def input(replace: false, &block)
           # Auto-generate first if needed (before custom block)
-          auto_generate_input_if_needed if merges_input? && @input_definition.nil?
+          auto_generate_input_if_needed
 
           # Set reset flag if replace is true
           @reset_input = replace if replace
@@ -110,8 +108,6 @@ module Apiwork
         end
 
         def serialize_data(data, context: {}, includes: nil)
-          return data unless contract_class.schema?
-
           needs_serialization = if data.is_a?(Hash)
                                   false
                                 elsif data.is_a?(Array)
@@ -124,9 +120,7 @@ module Apiwork
         end
 
         def build_virtual_input_definition
-          return nil unless contract_class.schema_class
-
-          rc = contract_class.schema_class
+          schema_class = contract_class.schema_class
           virtual_def = Definition.new(
             type: :input,
             contract_class: contract_class,
@@ -136,13 +130,13 @@ module Apiwork
 
           case action_name.to_sym
           when :index
-            virtual_def.instance_eval { InputGenerator.generate_query_params(self, rc) }
+            virtual_def.instance_eval { InputGenerator.generate_query_params(self, schema_class) }
           when :show
             # Empty input
           when :create
-            virtual_def.instance_eval { InputGenerator.generate_writable_input(self, rc, :create) }
+            virtual_def.instance_eval { InputGenerator.generate_writable_input(self, schema_class, :create) }
           when :update
-            virtual_def.instance_eval { InputGenerator.generate_writable_input(self, rc, :update) }
+            virtual_def.instance_eval { InputGenerator.generate_writable_input(self, schema_class, :update) }
           when :destroy
             # No input
           end
@@ -151,8 +145,6 @@ module Apiwork
         end
 
         def build_virtual_output_definition
-          return nil unless contract_class.schema_class
-
           schema_class = contract_class.schema_class
           virtual_def = Definition.new(
             type: :output,
@@ -166,7 +158,7 @@ module Apiwork
           if collection_action?
             virtual_def.instance_eval { OutputGenerator.generate_collection_output(self, schema_class) }
           else
-            # Member actions get single resource output (discriminated union)
+            # Member actions get single resouschema_classe output (discriminated union)
             virtual_def.instance_eval { OutputGenerator.generate_single_output(self, schema_class) }
           end
 
@@ -193,9 +185,9 @@ module Apiwork
         end
 
         def auto_generate_input_if_needed
-          return unless contract_class.schema?
+          return if @input_definition # Make idempotent
 
-          rc = contract_class.schema_class
+          schema_class = contract_class.schema_class
           @input_definition = Definition.new(
             type: :input,
             contract_class: contract_class,
@@ -205,13 +197,13 @@ module Apiwork
 
           case action_name.to_sym
           when :index
-            @input_definition.instance_eval { InputGenerator.generate_query_params(self, rc) }
+            @input_definition.instance_eval { InputGenerator.generate_query_params(self, schema_class) }
           when :show
             # Empty input - strict mode will reject any query params
           when :create
-            @input_definition.instance_eval { InputGenerator.generate_writable_input(self, rc, :create) }
+            @input_definition.instance_eval { InputGenerator.generate_writable_input(self, schema_class, :create) }
           when :update
-            @input_definition.instance_eval { InputGenerator.generate_writable_input(self, rc, :update) }
+            @input_definition.instance_eval { InputGenerator.generate_writable_input(self, schema_class, :update) }
           when :destroy
             # No input by default
           else
@@ -222,9 +214,7 @@ module Apiwork
 
         # Schema-dependent: Auto-generate output definition for CRUD and custom actions
         def auto_generate_output_if_needed
-          return unless contract_class.schema?
-
-          rc = contract_class.schema_class
+          schema_class = contract_class.schema_class
           @output_definition = Definition.new(
             type: :output,
             contract_class: contract_class,
@@ -234,9 +224,9 @@ module Apiwork
 
           case action_name.to_sym
           when :index
-            @output_definition.instance_eval { OutputGenerator.generate_collection_output(self, rc) }
+            @output_definition.instance_eval { OutputGenerator.generate_collection_output(self, schema_class) }
           when :show, :create, :update
-            @output_definition.instance_eval { OutputGenerator.generate_single_output(self, rc) }
+            @output_definition.instance_eval { OutputGenerator.generate_single_output(self, schema_class) }
           when :destroy
             # Destroy returns empty response (just 200 OK)
             # Leave @output_definition empty
@@ -245,14 +235,13 @@ module Apiwork
             # This provides a sensible default that works for most member actions
             # Collection actions can override with reset_output! and explicit output definition
             # The respond_with helper will adapt the response based on what controller returns
-            @output_definition.instance_eval { OutputGenerator.generate_single_output(self, rc) }
+            @output_definition.instance_eval { OutputGenerator.generate_single_output(self, schema_class) }
           end
         end
 
         # Schema-dependent: Check if input should be automatically wrapped in root_key
         def should_auto_wrap_input?
           return false unless @reset_input # Only when reset_input! is used
-          return false unless contract_class.schema?
           return false unless %i[create update].include?(action_name.to_sym)
 
           true

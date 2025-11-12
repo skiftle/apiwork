@@ -23,8 +23,8 @@ module Apiwork
         @nullable = options[:nullable] # Explicit nullable flag, auto-detected if nil
 
         # Validate against ActiveRecord
-        validate_association_exists! if @model_class
-        validate_nested_attributes! if @model_class && writable?
+        validate_association_exists!
+        validate_nested_attributes!
       end
 
       def filterable?
@@ -105,6 +105,7 @@ module Apiwork
 
       def validate_nested_attributes!
         return unless @model_class
+        return unless writable?
 
         nested_attribute_method = "#{@name}_attributes="
         unless @model_class.instance_methods.include?(nested_attribute_method.to_sym)
