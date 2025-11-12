@@ -125,6 +125,10 @@ module Apiwork
       #
       # @example
       #   Operators.valid?(:contains, :string)  # => true
+      #   Operators.valid?(:contains, :integer) # => false
+      def self.valid?(operator, type)
+        for_type(type).include?(operator)
+      end
     end
   end
 end
