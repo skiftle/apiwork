@@ -6,6 +6,10 @@ module Apiwork
       # Handles type registration and resolution for schemas
       # Manages filter, sort, include, and association types with circular reference protection
       class TypeRegistry
+        # Maximum recursion depth for nested type generation
+        # Prevents excessive nesting in deeply nested associations
+        MAX_RECURSION_DEPTH = 3
+
         class << self
           # Determine which filter type to use based on attribute type
           # Returns global built-in filter types from Descriptors::Registry
@@ -39,20 +43,14 @@ module Apiwork
           def register_resource_filter_type(contract_class, schema_class, visited: Set.new, depth: 0)
             # Circular reference and depth protection
             return nil if visited.include?(schema_class)
-            return nil if depth >= 3
+            return nil if depth >= MAX_RECURSION_DEPTH
 
             # Add to visited set
             visited = visited.dup.add(schema_class)
 
             # Use schema-specific type name to avoid collisions when filtering by associations
             # For the root schema (depth 0), use :filter. For associated schemas, include schema name
-            type_name = if depth.zero?
-                          :filter
-                        else
-                          # Convert "Api::V1::CommentSchema" → :comment_filter
-                          schema_name = schema_class.name.demodulize.underscore.gsub(/_schema$/, '')
-                          :"#{schema_name}_filter"
-                        end
+            type_name = build_type_name(schema_class, :filter, depth)
 
             # Check if already registered with Descriptors::Registry
             existing = Descriptors::Registry.resolve(type_name, contract_class: contract_class)
@@ -91,32 +89,32 @@ module Apiwork
                 # Skip non-filterable associations
                 next unless association_definition.filterable?
 
-                assoc_resource = TypeRegistry.resolve_association_resource(association_definition)
-                next unless assoc_resource
-                next if visited.include?(assoc_resource)
+                association_resource = TypeRegistry.resolve_association_resource(association_definition)
+                next unless association_resource
+                next if visited.include?(association_resource)
 
                 # Try to auto-import the association's contract and reuse its filter type
                 import_alias = TypeRegistry.auto_import_association_contract(
                   contract_class,
-                  assoc_resource,
+                  association_resource,
                   visited
                 )
 
-                assoc_filter_type = if import_alias
-                                      # Reference imported type: e.g., :comment_filter
-                                      :"#{import_alias}_filter"
-                                    else
-                                      # Fall back to creating type in this contract
-                                      TypeRegistry.register_resource_filter_type(
-                                        contract_class,
-                                        assoc_resource,
-                                        visited: visited,
-                                        depth: depth + 1
-                                      )
-                                    end
+                association_filter_type = if import_alias
+                                            # Reference imported type: e.g., :comment_filter
+                                            :"#{import_alias}_filter"
+                                          else
+                                            # Fall back to creating type in this contract
+                                            TypeRegistry.register_resource_filter_type(
+                                              contract_class,
+                                              association_resource,
+                                              visited: visited,
+                                              depth: depth + 1
+                                            )
+                                          end
 
                 # Add association filter parameter using type reference
-                param name, type: assoc_filter_type, required: false if assoc_filter_type
+                param name, type: association_filter_type, required: false if association_filter_type
               end
             end
 
@@ -132,20 +130,14 @@ module Apiwork
           def register_resource_sort_type(contract_class, schema_class, visited: Set.new, depth: 0)
             # Circular reference and depth protection
             return nil if visited.include?(schema_class)
-            return nil if depth >= 3
+            return nil if depth >= MAX_RECURSION_DEPTH
 
             # Add to visited set
             visited = visited.dup.add(schema_class)
 
             # Use schema-specific type name to avoid collisions when sorting by associations
             # For the root schema (depth 0), use :sort. For associated schemas, include schema name
-            type_name = if depth.zero?
-                          :sort
-                        else
-                          # Convert "Api::V1::CommentSchema" → :comment_sort
-                          schema_name = schema_class.name.demodulize.underscore.gsub(/_schema$/, '')
-                          :"#{schema_name}_sort"
-                        end
+            type_name = build_type_name(schema_class, :sort, depth)
 
             # Check if already registered with Descriptors::Registry
             existing = Descriptors::Registry.resolve(type_name, contract_class: contract_class)
@@ -166,32 +158,32 @@ module Apiwork
                 # Skip non-sortable associations
                 next unless association_definition.sortable?
 
-                assoc_resource = TypeRegistry.resolve_association_resource(association_definition)
-                next unless assoc_resource
-                next if visited.include?(assoc_resource)
+                association_resource = TypeRegistry.resolve_association_resource(association_definition)
+                next unless association_resource
+                next if visited.include?(association_resource)
 
                 # Try to auto-import the association's contract and reuse its sort type
                 import_alias = TypeRegistry.auto_import_association_contract(
                   contract_class,
-                  assoc_resource,
+                  association_resource,
                   visited
                 )
 
-                assoc_sort_type = if import_alias
-                                    # Reference imported type: e.g., :comment_sort
-                                    :"#{import_alias}_sort"
-                                  else
-                                    # Fall back to creating type in this contract
-                                    TypeRegistry.register_resource_sort_type(
-                                      contract_class,
-                                      assoc_resource,
-                                      visited: visited,
-                                      depth: depth + 1
-                                    )
-                                  end
+                association_sort_type = if import_alias
+                                          # Reference imported type: e.g., :comment_sort
+                                          :"#{import_alias}_sort"
+                                        else
+                                          # Fall back to creating type in this contract
+                                          TypeRegistry.register_resource_sort_type(
+                                            contract_class,
+                                            association_resource,
+                                            visited: visited,
+                                            depth: depth + 1
+                                          )
+                                        end
 
                 # Add association sort parameter using type reference
-                param name, type: assoc_sort_type, required: false if assoc_sort_type
+                param name, type: association_sort_type, required: false if association_sort_type
               end
             end
 
@@ -222,17 +214,17 @@ module Apiwork
             return nil unless reflection
 
             # Get the associated model class from the reflection
-            assoc_model_class = begin
+            association_model_class = begin
               reflection.klass
             rescue StandardError
               nil
             end
-            return nil unless assoc_model_class
+            return nil unless association_model_class
 
             # Find the corresponding schema class
             # Convention: Model::User -> Api::V1::UserSchema
             # Support nested models: Model::Nested::User -> Api::V1::UserSchema
-            schema_class_name = "Api::V1::#{assoc_model_class.name.demodulize}Schema"
+            schema_class_name = "Api::V1::#{association_model_class.name.demodulize}Schema"
             begin
               schema_class_name.constantize
             rescue StandardError
@@ -249,18 +241,12 @@ module Apiwork
           def register_resource_include_type(contract_class, schema_class, visited: Set.new, depth: 0)
             # Use schema-specific type name to avoid collisions when including nested associations
             # For the root schema (depth 0), use :include. For associated schemas, include schema name
-            type_name = if depth.zero?
-                          :include
-                        else
-                          # Convert "Api::V1::CommentSchema" → :comment_include
-                          schema_name = schema_class.name.demodulize.underscore.gsub(/_schema$/, '')
-                          :"#{schema_name}_include"
-                        end
+            type_name = build_type_name(schema_class, :include, depth)
 
             # Check if already registered with Descriptors::Registry
             existing = Descriptors::Registry.resolve(type_name, contract_class: contract_class)
             return type_name if existing
-            return type_name if depth >= 3
+            return type_name if depth >= MAX_RECURSION_DEPTH
 
             # Add to visited set
             visited = visited.dup.add(schema_class)
@@ -269,12 +255,12 @@ module Apiwork
             # Contract validates structure, Resource applies validated includes
             Descriptors::Registry.register_local(contract_class, type_name) do
               schema_class.association_definitions.each do |name, association_definition|
-                assoc_resource = TypeRegistry.resolve_association_resource(association_definition)
-                next unless assoc_resource
+                association_resource = TypeRegistry.resolve_association_resource(association_definition)
+                next unless association_resource
 
                 # For circular references, just allow boolean (can't nest further)
                 # This allows includes like { comments: { post: true } } where post→comments and comments→post
-                if visited.include?(assoc_resource)
+                if visited.include?(association_resource)
                   # Circular ref: only allow boolean for non-serializable
                   # Serializable associations don't need params (always included)
                   param name, type: :boolean, required: false unless association_definition.serializable?
@@ -282,33 +268,29 @@ module Apiwork
                   # Try to auto-import the association's contract and reuse its include type
                   import_alias = TypeRegistry.auto_import_association_contract(
                     contract_class,
-                    assoc_resource,
+                    association_resource,
                     visited
                   )
 
-                  assoc_include_type = if import_alias
-                                         # Reference imported type: e.g., :comment_include
-                                         :"#{import_alias}_include"
-                                       else
-                                         # Fall back to creating type in this contract
-                                         TypeRegistry.register_resource_include_type(
-                                           contract_class,
-                                           assoc_resource,
-                                           visited: visited,
-                                           depth: depth + 1
-                                         )
-                                       end
+                  association_include_type = if import_alias
+                                               # Reference imported type: e.g., :comment_include
+                                               :"#{import_alias}_include"
+                                             else
+                                               # Fall back to creating type in this contract
+                                               TypeRegistry.register_resource_include_type(
+                                                 contract_class,
+                                                 association_resource,
+                                                 visited: visited,
+                                                 depth: depth + 1
+                                               )
+                                             end
 
-                  if association_definition.serializable?
-                    # Serializable: allow boolean OR nested includes
-                    # Boolean is redundant (always included) but accepted for flexibility
-                    # Example: include[comments]=true (OK), include[comments][user]=true (OK)
-                  else
-                    # Non-serializable: allow either boolean true or nested include hash
-                  end
+                  # Allow boolean OR nested includes for all associations
+                  # Serializable: Boolean is redundant (always included) but accepted for flexibility
+                  # Non-serializable: Boolean true or nested include hash both supported
                   param name, type: :union, required: false do
                     variant type: :boolean
-                    variant type: assoc_include_type
+                    variant type: association_include_type
                   end
                 end
               end
@@ -325,15 +307,15 @@ module Apiwork
           # @return [Symbol, nil] The type name to reference or nil if no schema
           def register_association_type(contract_class, association_definition, visited: Set.new)
             # Resolve the associated resource schema
-            assoc_schema = resolve_association_resource(association_definition)
-            return nil unless assoc_schema
-            return nil if visited.include?(assoc_schema)
+            association_schema = resolve_association_resource(association_definition)
+            return nil unless association_schema
+            return nil if visited.include?(association_schema)
 
             # Add to visited set
-            visited = visited.dup.add(assoc_schema)
+            visited = visited.dup.add(association_schema)
 
             # Try to auto-import the association's contract and reuse its resource type
-            import_alias = auto_import_association_contract(contract_class, assoc_schema, visited)
+            import_alias = auto_import_association_contract(contract_class, association_schema, visited)
 
             if import_alias
               # Reference imported type: e.g., :comment
@@ -343,24 +325,24 @@ module Apiwork
 
             # Fall back to creating a temporary contract for the associated schema
             # This is needed when no contract exists yet
-            assoc_contract_class = Class.new(Base) do
-              schema assoc_schema
+            association_contract_class = Class.new(Base) do
+              schema association_schema
             end
 
             # Register the resource type for the associated schema (using nil as type name)
             resource_type_name = nil
 
             # Check if already registered
-            unless Descriptors::Registry.resolve(resource_type_name, contract_class: assoc_contract_class)
-              Descriptors::Registry.register_local(assoc_contract_class, resource_type_name) do
+            unless Descriptors::Registry.resolve(resource_type_name, contract_class: association_contract_class)
+              Descriptors::Registry.register_local(association_contract_class, resource_type_name) do
                 # All resource attributes
-                assoc_schema.attribute_definitions.each do |name, attribute_definition|
+                association_schema.attribute_definitions.each do |name, attribute_definition|
                   param name, type: Generator.map_type(attribute_definition.type), required: false
                 end
 
                 # Add nested associations recursively
-                assoc_schema.association_definitions.each do |name, nested_association_definition|
-                  nested_type = TypeRegistry.register_association_type(assoc_contract_class,
+                association_schema.association_definitions.each do |name, nested_association_definition|
+                  nested_type = TypeRegistry.register_association_type(association_contract_class,
                                                                        nested_association_definition, visited: visited)
 
                   if nested_type
@@ -381,7 +363,7 @@ module Apiwork
             end
 
             # Return the qualified type name for reference
-            Descriptors::Registry.qualified_name(assoc_contract_class, resource_type_name)
+            Descriptors::Registry.qualified_name(association_contract_class, resource_type_name)
           end
 
           # Auto-import association contract to reuse its types
@@ -454,6 +436,28 @@ module Apiwork
               # This makes enum available everywhere in this contract
               Descriptors::Registry.register_local_enum(contract_class, name, attribute_definition.enum)
             end
+          end
+
+          private
+
+          # Build type name based on schema and depth
+          # For root schema (depth 0), use base_name directly
+          # For nested schemas, prefix with schema name
+          #
+          # @param schema_class [Class] Schema class
+          # @param base_name [Symbol] Base type name (:filter, :sort, :include)
+          # @param depth [Integer] Recursion depth
+          # @return [Symbol] Type name
+          #
+          # @example
+          #   build_type_name(PostSchema, :filter, 0)  # => :filter
+          #   build_type_name(CommentSchema, :filter, 1)  # => :comment_filter
+          def build_type_name(schema_class, base_name, depth)
+            return base_name if depth.zero?
+
+            # Convert "Api::V1::CommentSchema" → :comment_filter
+            schema_name = schema_class.name.demodulize.underscore.gsub(/_schema$/, '')
+            :"#{schema_name}_#{base_name}"
           end
         end
       end
