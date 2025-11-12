@@ -7,11 +7,9 @@ module Apiwork
       # This module is prepended when schema() is called, providing schema-specific
       # functionality without polluting the base Contract class
       module Extension
-        def self.prepended(base)
-          base.extend(ClassMethods)
-        end
+        extend ActiveSupport::Concern
 
-        module ClassMethods
+        class_methods do
           # Override: Auto-generate and store a standard CRUD action (lazy loading)
           def auto_generate_and_store_action(action_name)
             # Pass self as contract_class to reuse custom type definitions across actions

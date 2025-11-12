@@ -55,7 +55,7 @@ module Apiwork
               context.instance_eval do
                 resource name, only: metadata[:actions], controller: controller_option do
                   # Draw member actions
-                  unless metadata[:members].empty?
+                  if metadata[:members].any?
                     member do
                       metadata[:members].each do |action, action_metadata|
                         send(action_metadata[:method], action)
@@ -64,7 +64,7 @@ module Apiwork
                   end
 
                   # Draw collection actions
-                  unless metadata[:collections].empty?
+                  if metadata[:collections].any?
                     collection do
                       metadata[:collections].each do |action, action_metadata|
                         send(action_metadata[:method], action)
@@ -81,7 +81,7 @@ module Apiwork
               context.instance_eval do
                 resources name, only: metadata[:actions], controller: controller_option do
                   # Draw member actions
-                  unless metadata[:members].empty?
+                  if metadata[:members].any?
                     member do
                       metadata[:members].each do |action, action_metadata|
                         send(action_metadata[:method], action)
@@ -90,7 +90,7 @@ module Apiwork
                   end
 
                   # Draw collection actions
-                  unless metadata[:collections].empty?
+                  if metadata[:collections].any?
                     collection do
                       metadata[:collections].each do |action, action_metadata|
                         send(action_metadata[:method], action)
