@@ -14,7 +14,7 @@ module Apiwork
           class_name = "#{namespaces_string}::#{resource_name}Schema"
 
           class_name.constantize
-        rescue NameError => e
+        rescue NameError
           nil
         end
 
@@ -25,7 +25,7 @@ module Apiwork
           class_name = "#{namespaces_string}::#{contract_name}Contract"
 
           class_name.constantize
-        rescue NameError => e
+        rescue NameError
           nil
         end
 
@@ -36,7 +36,7 @@ module Apiwork
           class_name = "#{namespaces_string}::#{controller_name}Controller"
 
           class_name.constantize
-        rescue NameError => e
+        rescue NameError
           nil
         end
 
@@ -53,20 +53,20 @@ module Apiwork
         #   resolve_contract_path('/custom/post') # => 'Custom::PostContract'
         #
         def resolve_contract_path(path)
-          if path.start_with?('/')
-            # Absolute path: '/admin/post' → 'Admin::PostContract'
-            parts = path[1..].split('/')
-          else
-            # Relative path: 'admin/post' → 'Api::V1::Admin::PostContract'
-            parts = @namespaces + path.split('/')
-          end
+          parts = if path.start_with?('/')
+                    # Absolute path: '/admin/post' → 'Admin::PostContract'
+                    path[1..].split('/')
+                  else
+                    # Relative path: 'admin/post' → 'Api::V1::Admin::PostContract'
+                    @namespaces + path.split('/')
+                  end
 
           # Camelize all parts and singularize the last part
           parts = parts.map { |part| part.to_s.camelize }
           parts[-1] = parts[-1].singularize
 
           # Join and append 'Contract'
-          parts.join('::') + 'Contract'
+          "#{parts.join('::')}Contract"
         end
       end
     end

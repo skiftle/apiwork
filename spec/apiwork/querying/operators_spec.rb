@@ -16,11 +16,11 @@ RSpec.describe Apiwork::Schema::Operators do
 
     it 'defines COMPARISON_OPERATORS' do
       expect(described_class::COMPARISON_OPERATORS).to eq(%i[
-        gt
-        gte
-        lt
-        lte
-      ])
+                                                            gt
+                                                            gte
+                                                            lt
+                                                            lte
+                                                          ])
     end
 
     it 'defines RANGE_OPERATORS' do
@@ -33,10 +33,10 @@ RSpec.describe Apiwork::Schema::Operators do
 
     it 'defines STRING_SPECIFIC_OPERATORS' do
       expect(described_class::STRING_SPECIFIC_OPERATORS).to eq(%i[
-        contains
-        starts_with
-        ends_with
-      ])
+                                                                 contains
+                                                                 starts_with
+                                                                 ends_with
+                                                               ])
     end
 
     it 'defines LOGICAL_OPERATORS' do
@@ -135,7 +135,7 @@ RSpec.describe Apiwork::Schema::Operators do
     end
 
     it 'makes constants available to including class' do
-      instance = test_class.new
+      test_class.new
       expect(test_class::STRING_OPERATORS).to eq(described_class::STRING_OPERATORS)
     end
   end

@@ -164,7 +164,7 @@ module Apiwork
         in_degree = Hash.new(0)
 
         # Calculate in-degrees
-        dependencies.each do |_type, deps|
+        dependencies.each_value do |deps|
           deps.each { |dep| in_degree[dep] += 1 }
         end
 
@@ -199,28 +199,20 @@ module Apiwork
           next unless value.is_a?(Hash)
 
           # Direct type reference
-          if value[:type].is_a?(Symbol) && all_type_names.include?(value[:type])
-            refs << value[:type]
-          end
+          refs << value[:type] if value[:type].is_a?(Symbol) && all_type_names.include?(value[:type])
 
           # Array 'of' reference
-          if value[:of].is_a?(Symbol) && all_type_names.include?(value[:of])
-            refs << value[:of]
-          end
+          refs << value[:of] if value[:of].is_a?(Symbol) && all_type_names.include?(value[:of])
 
           # Union variant references
-          if value[:variants].is_a?(Array)
-            value[:variants].each do |variant|
-              next unless variant.is_a?(Hash)
+          next unless value[:variants].is_a?(Array)
 
-              if variant[:type].is_a?(Symbol) && all_type_names.include?(variant[:type])
-                refs << variant[:type]
-              end
+          value[:variants].each do |variant|
+            next unless variant.is_a?(Hash)
 
-              if variant[:of].is_a?(Symbol) && all_type_names.include?(variant[:of])
-                refs << variant[:of]
-              end
-            end
+            refs << variant[:type] if variant[:type].is_a?(Symbol) && all_type_names.include?(variant[:type])
+
+            refs << variant[:of] if variant[:of].is_a?(Symbol) && all_type_names.include?(variant[:of])
           end
         end
 
@@ -416,11 +408,11 @@ module Apiwork
         is_nullable = definition[:nullable]
 
         # Handle custom type references
-        if definition[:type].is_a?(Symbol) && types.key?(definition[:type])
-          base_type = zod_type_name(definition[:type])
-        else
-          base_type = map_typescript_type_definition(definition, action_name)
-        end
+        base_type = if definition[:type].is_a?(Symbol) && types.key?(definition[:type])
+                      zod_type_name(definition[:type])
+                    else
+                      map_typescript_type_definition(definition, action_name)
+                    end
 
         # Handle enum
         if definition[:enum]
@@ -479,13 +471,13 @@ module Apiwork
         items_type = definition[:of]
         return 'string[]' unless items_type
 
-        if items_type.is_a?(Symbol) && types.key?(items_type)
-          element_type = zod_type_name(items_type)
-        elsif items_type.is_a?(Hash)
-          element_type = map_typescript_type_definition(items_type, action_name)
-        else
-          element_type = map_typescript_primitive(items_type)
-        end
+        element_type = if items_type.is_a?(Symbol) && types.key?(items_type)
+                         zod_type_name(items_type)
+                       elsif items_type.is_a?(Hash)
+                         map_typescript_type_definition(items_type, action_name)
+                       else
+                         map_typescript_primitive(items_type)
+                       end
 
         # Use bracket notation for arrays
         # For complex types (unions, intersections), wrap in parentheses

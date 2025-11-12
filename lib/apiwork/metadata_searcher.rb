@@ -79,9 +79,7 @@ module Apiwork
 
     # Recursively collect all resources matching name
     def find_all_resources_recursive(resource_metadata, resource_name, results)
-      if resource_metadata[:resources]&.key?(resource_name)
-        results << resource_metadata[:resources][resource_name]
-      end
+      results << resource_metadata[:resources][resource_name] if resource_metadata[:resources]&.key?(resource_name)
 
       resource_metadata[:resources]&.each_value do |nested_metadata|
         find_all_resources_recursive(nested_metadata, resource_name, results)

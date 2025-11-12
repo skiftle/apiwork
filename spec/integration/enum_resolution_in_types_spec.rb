@@ -32,20 +32,20 @@ RSpec.describe 'Enum resolution in custom types - basic functionality', type: :i
   end
 
   it 'does not raise ArgumentError when defining enum in action and using it in action-level custom type' do
-    expect {
+    expect do
       action_def = TestEnumResolutionContract.action_definition(:archive)
       input_def = action_def.merged_input_definition
 
       # Just accessing the definition should work without errors
       input_def.params
-    }.not_to raise_error
+    end.not_to raise_error
   end
 
   it 'can serialize the action definition without errors' do
-    expect {
+    expect do
       action_def = TestEnumResolutionContract.action_definition(:archive)
       action_def.as_json
-    }.not_to raise_error
+    end.not_to raise_error
   end
 
   it 'includes the enum in the registered enums list' do

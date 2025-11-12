@@ -2,7 +2,7 @@
 
 # Set up the dummy Rails app environment
 ENV['RAILS_ENV'] ||= 'test'
-require File.expand_path('../dummy/config/environment', __FILE__)
+require File.expand_path('dummy/config/environment', __dir__)
 
 # Load RSpec Rails
 require 'rspec/rails'
@@ -29,7 +29,7 @@ RSpec.configure do |config|
 
   # Clear schema-contract registry before each test
   # This ensures tests don't interfere with each other
-  config.before(:each) do
+  config.before do
     Apiwork::Contract::SchemaContractRegistry.clear!
   end
 end

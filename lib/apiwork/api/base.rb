@@ -144,7 +144,7 @@ module Apiwork
         # show/update/destroy: "/:id"
         # member: "/:id/action_name"
         # collection: "/action_name"
-        def build_action_path(resource_path, action_name, action_type)
+        def build_action_path(_resource_path, action_name, action_type)
           case action_type
           when :index, :create
             '/'

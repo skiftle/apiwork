@@ -23,7 +23,7 @@ RSpec.describe 'Includes API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to eq(true)
+        expect(json['ok']).to be(true)
         expect(json['posts'].first.keys).not_to include('comments')
       end
     end
@@ -34,7 +34,7 @@ RSpec.describe 'Includes API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to eq(true)
+        expect(json['ok']).to be(true)
 
         first_post = json['posts'].find { |p| p['title'] == 'First Post' }
         expect(first_post['comments']).to be_present
@@ -51,7 +51,7 @@ RSpec.describe 'Includes API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to eq(true)
+        expect(json['ok']).to be(true)
         expect(json['posts'].length).to eq(1)
         expect(json['posts'].first['comments']).to be_present
       end
@@ -75,16 +75,26 @@ RSpec.describe 'Includes API', type: :request do
 
       # Clear PostContract and CommentContract cache
       if defined?(Api::V1::PostContract)
-        Api::V1::PostContract.instance_variable_set(:@custom_types, {}) if Api::V1::PostContract.instance_variable_defined?(:@custom_types)
-        Api::V1::PostContract.instance_variable_set(:@action_definitions, {}) if Api::V1::PostContract.instance_variable_defined?(:@action_definitions)
+        if Api::V1::PostContract.instance_variable_defined?(:@custom_types)
+          Api::V1::PostContract.instance_variable_set(:@custom_types, {})
+        end
+        if Api::V1::PostContract.instance_variable_defined?(:@action_definitions)
+          Api::V1::PostContract.instance_variable_set(:@action_definitions, {})
+        end
       end
       if defined?(Api::V1::CommentContract)
-        Api::V1::CommentContract.instance_variable_set(:@custom_types, {}) if Api::V1::CommentContract.instance_variable_defined?(:@custom_types)
-        Api::V1::CommentContract.instance_variable_set(:@action_definitions, {}) if Api::V1::CommentContract.instance_variable_defined?(:@action_definitions)
+        if Api::V1::CommentContract.instance_variable_defined?(:@custom_types)
+          Api::V1::CommentContract.instance_variable_set(:@custom_types, {})
+        end
+        if Api::V1::CommentContract.instance_variable_defined?(:@action_definitions)
+          Api::V1::CommentContract.instance_variable_set(:@action_definitions, {})
+        end
       end
 
       # Clear descriptor registry cache for the include type
-      Apiwork::Contract::Descriptors::Registry.instance_variable_set(:@types, {}) if Apiwork::Contract::Descriptors::Registry.instance_variable_defined?(:@types)
+      if Apiwork::Contract::Descriptors::Registry.instance_variable_defined?(:@types)
+        Apiwork::Contract::Descriptors::Registry.instance_variable_set(:@types, {})
+      end
     end
 
     after do
@@ -93,16 +103,26 @@ RSpec.describe 'Includes API', type: :request do
 
       # Clear cache
       if defined?(Api::V1::PostContract)
-        Api::V1::PostContract.instance_variable_set(:@custom_types, {}) if Api::V1::PostContract.instance_variable_defined?(:@custom_types)
-        Api::V1::PostContract.instance_variable_set(:@action_definitions, {}) if Api::V1::PostContract.instance_variable_defined?(:@action_definitions)
+        if Api::V1::PostContract.instance_variable_defined?(:@custom_types)
+          Api::V1::PostContract.instance_variable_set(:@custom_types, {})
+        end
+        if Api::V1::PostContract.instance_variable_defined?(:@action_definitions)
+          Api::V1::PostContract.instance_variable_set(:@action_definitions, {})
+        end
       end
       if defined?(Api::V1::CommentContract)
-        Api::V1::CommentContract.instance_variable_set(:@custom_types, {}) if Api::V1::CommentContract.instance_variable_defined?(:@custom_types)
-        Api::V1::CommentContract.instance_variable_set(:@action_definitions, {}) if Api::V1::CommentContract.instance_variable_defined?(:@action_definitions)
+        if Api::V1::CommentContract.instance_variable_defined?(:@custom_types)
+          Api::V1::CommentContract.instance_variable_set(:@custom_types, {})
+        end
+        if Api::V1::CommentContract.instance_variable_defined?(:@action_definitions)
+          Api::V1::CommentContract.instance_variable_set(:@action_definitions, {})
+        end
       end
 
       # Clear descriptor registry cache
-      Apiwork::Contract::Descriptors::Registry.instance_variable_set(:@types, {}) if Apiwork::Contract::Descriptors::Registry.instance_variable_defined?(:@types)
+      if Apiwork::Contract::Descriptors::Registry.instance_variable_defined?(:@types)
+        Apiwork::Contract::Descriptors::Registry.instance_variable_set(:@types, {})
+      end
     end
 
     it 'supports nested includes' do
@@ -116,7 +136,7 @@ RSpec.describe 'Includes API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
 
       first_post = json['posts'].first
       expect(first_post['comments']).to be_present
@@ -138,16 +158,26 @@ RSpec.describe 'Includes API', type: :request do
 
         # Clear contract cache to pick up the change
         if defined?(Api::V1::PostContract)
-          Api::V1::PostContract.instance_variable_set(:@custom_types, {}) if Api::V1::PostContract.instance_variable_defined?(:@custom_types)
-          Api::V1::PostContract.instance_variable_set(:@action_definitions, {}) if Api::V1::PostContract.instance_variable_defined?(:@action_definitions)
+          if Api::V1::PostContract.instance_variable_defined?(:@custom_types)
+            Api::V1::PostContract.instance_variable_set(:@custom_types, {})
+          end
+          if Api::V1::PostContract.instance_variable_defined?(:@action_definitions)
+            Api::V1::PostContract.instance_variable_set(:@action_definitions, {})
+          end
         end
         if defined?(Api::V1::CommentContract)
-          Api::V1::CommentContract.instance_variable_set(:@custom_types, {}) if Api::V1::CommentContract.instance_variable_defined?(:@custom_types)
-          Api::V1::CommentContract.instance_variable_set(:@action_definitions, {}) if Api::V1::CommentContract.instance_variable_defined?(:@action_definitions)
+          if Api::V1::CommentContract.instance_variable_defined?(:@custom_types)
+            Api::V1::CommentContract.instance_variable_set(:@custom_types, {})
+          end
+          if Api::V1::CommentContract.instance_variable_defined?(:@action_definitions)
+            Api::V1::CommentContract.instance_variable_set(:@action_definitions, {})
+          end
         end
 
         # Clear descriptor registry cache for the include type
-        Apiwork::Contract::Descriptors::Registry.instance_variable_set(:@types, {}) if Apiwork::Contract::Descriptors::Registry.instance_variable_defined?(:@types)
+        if Apiwork::Contract::Descriptors::Registry.instance_variable_defined?(:@types)
+          Apiwork::Contract::Descriptors::Registry.instance_variable_set(:@types, {})
+        end
       end
 
       after do
@@ -157,16 +187,26 @@ RSpec.describe 'Includes API', type: :request do
 
         # Clear contract cache
         if defined?(Api::V1::PostContract)
-          Api::V1::PostContract.instance_variable_set(:@custom_types, {}) if Api::V1::PostContract.instance_variable_defined?(:@custom_types)
-          Api::V1::PostContract.instance_variable_set(:@action_definitions, {}) if Api::V1::PostContract.instance_variable_defined?(:@action_definitions)
+          if Api::V1::PostContract.instance_variable_defined?(:@custom_types)
+            Api::V1::PostContract.instance_variable_set(:@custom_types, {})
+          end
+          if Api::V1::PostContract.instance_variable_defined?(:@action_definitions)
+            Api::V1::PostContract.instance_variable_set(:@action_definitions, {})
+          end
         end
         if defined?(Api::V1::CommentContract)
-          Api::V1::CommentContract.instance_variable_set(:@custom_types, {}) if Api::V1::CommentContract.instance_variable_defined?(:@custom_types)
-          Api::V1::CommentContract.instance_variable_set(:@action_definitions, {}) if Api::V1::CommentContract.instance_variable_defined?(:@action_definitions)
+          if Api::V1::CommentContract.instance_variable_defined?(:@custom_types)
+            Api::V1::CommentContract.instance_variable_set(:@custom_types, {})
+          end
+          if Api::V1::CommentContract.instance_variable_defined?(:@action_definitions)
+            Api::V1::CommentContract.instance_variable_set(:@action_definitions, {})
+          end
         end
 
         # Clear descriptor registry cache
-        Apiwork::Contract::Descriptors::Registry.instance_variable_set(:@types, {}) if Apiwork::Contract::Descriptors::Registry.instance_variable_defined?(:@types)
+        if Apiwork::Contract::Descriptors::Registry.instance_variable_defined?(:@types)
+          Apiwork::Contract::Descriptors::Registry.instance_variable_set(:@types, {})
+        end
       end
 
       it 'accepts but ignores top-level boolean for serializable: true association' do
@@ -176,7 +216,7 @@ RSpec.describe 'Includes API', type: :request do
         # but it's redundant since comments is already auto-included via serializable: true
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to eq(true)
+        expect(json['ok']).to be(true)
 
         # Comments should be included (would be included anyway due to serializable: true)
         first_post = json['posts'].first
@@ -188,7 +228,7 @@ RSpec.describe 'Includes API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to eq(true)
+        expect(json['ok']).to be(true)
 
         # Comments should be automatically included (serializable: true)
         first_post = json['posts'].first
@@ -205,7 +245,7 @@ RSpec.describe 'Includes API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to eq(true)
+        expect(json['ok']).to be(true)
 
         # Comments should be automatically included (serializable: true)
         first_post = json['posts'].first
@@ -223,7 +263,7 @@ RSpec.describe 'Includes API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to eq(true)
+        expect(json['ok']).to be(true)
         expect(json['posts'].first['comments']).to be_present
       end
 
@@ -232,7 +272,7 @@ RSpec.describe 'Includes API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to eq(true)
+        expect(json['ok']).to be(true)
         expect(json['posts'].first.keys).not_to include('comments')
       end
     end

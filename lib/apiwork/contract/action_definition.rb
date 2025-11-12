@@ -18,12 +18,12 @@ module Apiwork
       def initialize(action_name, contract_class, replace: false)
         @action_name = action_name
         @contract_class = contract_class
-        @parent_scope = contract_class  # Parent scope is the contract class
+        @parent_scope = contract_class # Parent scope is the contract class
         @reset_input = replace
         @reset_output = replace
         @input_definition = nil
         @output_definition = nil
-        @error_codes = []  # Action-specific error codes
+        @error_codes = [] # Action-specific error codes
 
         # Conditionally prepend Schema::ActionDefinition if contract has schema
         return unless contract_class.schema?
@@ -226,10 +226,14 @@ module Apiwork
           next unless matches_contract?(resource_metadata)
 
           # Check member actions
-          return resource_metadata[:members][action_name.to_sym][:method] if resource_metadata[:members]&.key?(action_name.to_sym)
+          if resource_metadata[:members]&.key?(action_name.to_sym)
+            return resource_metadata[:members][action_name.to_sym][:method]
+          end
 
           # Check collection actions
-          resource_metadata[:collections][action_name.to_sym][:method] if resource_metadata[:collections]&.key?(action_name.to_sym)
+          if resource_metadata[:collections]&.key?(action_name.to_sym)
+            resource_metadata[:collections][action_name.to_sym][:method]
+          end
         end
       end
 

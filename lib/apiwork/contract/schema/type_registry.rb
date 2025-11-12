@@ -175,7 +175,12 @@ module Apiwork
             # If schema_class is explicitly set, use it
             if association_definition.schema_class
               return association_definition.schema_class if association_definition.schema_class.is_a?(Class)
-              return association_definition.schema_class.constantize rescue nil
+
+              begin
+                return association_definition.schema_class.constantize
+              rescue StandardError
+                nil
+              end
             end
 
             # Get the model class from the association definition
@@ -187,14 +192,22 @@ module Apiwork
             return nil unless reflection
 
             # Get the associated model class from the reflection
-            assoc_model_class = reflection.klass rescue nil
+            assoc_model_class = begin
+              reflection.klass
+            rescue StandardError
+              nil
+            end
             return nil unless assoc_model_class
 
             # Find the corresponding schema class
             # Convention: Model::User -> Api::V1::UserSchema
             # Support nested models: Model::Nested::User -> Api::V1::UserSchema
             schema_class_name = "Api::V1::#{assoc_model_class.name.demodulize}Schema"
-            schema_class_name.constantize rescue nil
+            begin
+              schema_class_name.constantize
+            rescue StandardError
+              nil
+            end
           end
 
           # Register resource-specific include type with Descriptors::Registry
@@ -248,16 +261,12 @@ module Apiwork
                     # Serializable: allow boolean OR nested includes
                     # Boolean is redundant (always included) but accepted for flexibility
                     # Example: include[comments]=true (OK), include[comments][user]=true (OK)
-                    param name, type: :union, required: false do
-                      variant type: :boolean
-                      variant type: assoc_include_type
-                    end
                   else
                     # Non-serializable: allow either boolean true or nested include hash
-                    param name, type: :union, required: false do
-                      variant type: :boolean
-                      variant type: assoc_include_type
-                    end
+                  end
+                  param name, type: :union, required: false do
+                    variant type: :boolean
+                    variant type: assoc_include_type
                   end
                 end
               end
@@ -272,7 +281,7 @@ module Apiwork
           # @param association_definition [AssociationDefinition] The association definition
           # @param visited [Set] Set of visited schema classes (circular reference protection)
           # @return [Symbol, nil] The type name to reference or nil if no schema
-          def register_association_type(contract_class, association_definition, visited: Set.new)
+          def register_association_type(_contract_class, association_definition, visited: Set.new)
             # Resolve the associated resource schema
             assoc_schema = resolve_association_resource(association_definition)
             return nil unless assoc_schema
@@ -300,21 +309,21 @@ module Apiwork
 
                 # Add nested associations recursively
                 assoc_schema.association_definitions.each do |name, nested_association_definition|
-                  nested_type = TypeRegistry.register_association_type(assoc_contract_class, nested_association_definition, visited: visited)
+                  nested_type = TypeRegistry.register_association_type(assoc_contract_class,
+                                                                       nested_association_definition, visited: visited)
 
                   if nested_type
                     if nested_association_definition.singular?
                       param name, type: nested_type, required: false, nullable: nested_association_definition.nullable?
                     elsif nested_association_definition.collection?
-                      param name, type: :array, of: nested_type, required: false, nullable: nested_association_definition.nullable?
+                      param name, type: :array, of: nested_type, required: false,
+                                  nullable: nested_association_definition.nullable?
                     end
-                  else
+                  elsif nested_association_definition.singular?
                     # Fallback to generic types if no schema
-                    if nested_association_definition.singular?
-                      param name, type: :object, required: false, nullable: nested_association_definition.nullable?
-                    elsif nested_association_definition.collection?
-                      param name, type: :array, required: false, nullable: nested_association_definition.nullable?
-                    end
+                    param name, type: :object, required: false, nullable: nested_association_definition.nullable?
+                  elsif nested_association_definition.collection?
+                    param name, type: :array, required: false, nullable: nested_association_definition.nullable?
                   end
                 end
               end

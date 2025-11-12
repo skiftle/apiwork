@@ -73,21 +73,23 @@ RSpec.describe Apiwork::Generation::Zod do
           # All types should have a TypeScript type declaration
           if type_def[:recursive]
             # Recursive types use interface
-            expect(output).to include("export interface #{schema_name}"), "Missing interface for recursive type #{type_name}"
+            expect(output).to include("export interface #{schema_name}"),
+                              "Missing interface for recursive type #{type_name}"
           else
             # Non-recursive types use type alias
             expect(output).to include("export type #{schema_name} ="), "Missing type alias for #{type_name}"
           end
 
           # All types should have a Zod schema with z.ZodType annotation
-          expect(output).to include("export const #{schema_name}Schema: z.ZodType<#{schema_name}>"), "Missing schema for #{type_name}"
+          expect(output).to include("export const #{schema_name}Schema: z.ZodType<#{schema_name}>"),
+                            "Missing schema for #{type_name}"
 
           if type_def[:recursive]
             # Recursive types use z.lazy()
-            expect(output).to include("z.lazy"), "Recursive type #{type_name} should use z.lazy"
+            expect(output).to include('z.lazy'), "Recursive type #{type_name} should use z.lazy"
           else
             # Non-recursive types use z.object()
-            expect(output).to include("z.object"), "Non-recursive type #{type_name} should use z.object"
+            expect(output).to include('z.object'), "Non-recursive type #{type_name} should use z.object"
           end
         end
       end
@@ -140,9 +142,7 @@ RSpec.describe Apiwork::Generation::Zod do
         # Recursive types should have TypeScript type definitions
         # which may include "| undefined" for optional fields
         recursive_types = introspect[:types].select { |_name, type_def| type_def[:recursive] }
-        if recursive_types.any?
-          expect(output).to include('export type')
-        end
+        expect(output).to include('export type') if recursive_types.any?
       end
     end
   end

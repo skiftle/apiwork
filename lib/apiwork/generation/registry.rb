@@ -21,9 +21,7 @@ module Apiwork
         # @param generator_class [Class] Generator class (must inherit from Base)
         # @raise [ArgumentError] if generator doesn't inherit from Base
         def register(name, generator_class)
-          unless generator_class < Base
-            raise ArgumentError, 'Generator must inherit from Apiwork::Generation::Base'
-          end
+          raise ArgumentError, 'Generator must inherit from Apiwork::Generation::Base' unless generator_class < Base
 
           generators[name.to_sym] = generator_class
         end

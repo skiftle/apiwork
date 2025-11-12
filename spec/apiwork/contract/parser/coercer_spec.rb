@@ -144,7 +144,7 @@ RSpec.describe Apiwork::Contract::Parser::Coercer do
       end
 
       it 'preserves Date value' do
-        date = Date.today
+        date = Time.zone.today
         result = described_class.perform(date, :date)
 
         expect(result).to eq(date)

@@ -36,9 +36,7 @@ module Apiwork
             # If scope provided, use parent-chain resolution
             if scope
               # Check local storage for this scope
-              if local_storage[scope]&.key?(name)
-                return extract_payload_value(local_storage[scope][name])
-              end
+              return extract_payload_value(local_storage[scope][name]) if local_storage[scope]&.key?(name)
 
               # Check parent scope if available
               if scope.respond_to?(:parent_scope) && scope.parent_scope
@@ -46,7 +44,7 @@ module Apiwork
               end
 
               # For Definition instances, check action scope
-              if scope.class.name == 'Apiwork::Contract::Definition' &&
+              if scope.instance_of?(::Apiwork::Contract::Definition) &&
                  scope.respond_to?(:action_name) && scope.action_name
                 action_def = contract_class.action_definition(scope.action_name) if contract_class
                 if action_def && local_storage[action_def]&.key?(name)
@@ -57,9 +55,7 @@ module Apiwork
               # Check contract class scope if scope has contract_class
               if scope.respond_to?(:contract_class)
                 contract = scope.contract_class
-                if local_storage[contract]&.key?(name)
-                  return extract_payload_value(local_storage[contract][name])
-                end
+                return extract_payload_value(local_storage[contract][name]) if local_storage[contract]&.key?(name)
               end
             end
 
@@ -76,7 +72,7 @@ module Apiwork
             return name if global?(name)
 
             # Handle ActionDefinition instances
-            if scope.class.name == 'Apiwork::Contract::ActionDefinition'
+            if scope.instance_of?(::Apiwork::Contract::ActionDefinition)
               contract_class = scope.contract_class
               action_name = scope.action_name
               contract_prefix = extract_contract_prefix(contract_class)
@@ -84,26 +80,25 @@ module Apiwork
             end
 
             # Handle Definition instances (input/output)
-            if scope.class.name == 'Apiwork::Contract::Definition'
+            if scope.instance_of?(::Apiwork::Contract::Definition)
               contract_class = scope.contract_class
               action_name = scope.action_name
               direction = scope.direction
               contract_prefix = extract_contract_prefix(contract_class)
-              if action_name
-                return :"#{contract_prefix}_#{action_name}_#{direction}_#{name}"
-              else
-                return :"#{contract_prefix}_#{direction}_#{name}"
-              end
+              return :"#{contract_prefix}_#{action_name}_#{direction}_#{name}" if action_name
+
+              return :"#{contract_prefix}_#{direction}_#{name}"
+
             end
 
             # Handle contract class scope (for both Class and instances with contract_class)
             contract_class = if scope.respond_to?(:contract_class)
-                              scope.contract_class
-                            elsif scope.is_a?(Class)
-                              scope
-                            else
-                              scope
-                            end
+                               scope.contract_class
+                             elsif scope.is_a?(Class)
+                               scope
+                             else
+                               scope
+                             end
 
             contract_prefix = extract_contract_prefix(contract_class)
             return contract_prefix.to_sym if name.nil? || name.to_s.empty?
@@ -125,7 +120,7 @@ module Apiwork
           end
 
           def serialize_all_for_api(api)
-            raise NotImplementedError, "Subclasses must implement serialize_all_for_api"
+            raise NotImplementedError, 'Subclasses must implement serialize_all_for_api'
           end
 
           protected
@@ -134,7 +129,7 @@ module Apiwork
           # TypeStore returns metadata[:definition]
           # EnumStore returns metadata[:values]
           def extract_payload_value(metadata)
-            raise NotImplementedError, "Subclasses must implement extract_payload_value"
+            raise NotImplementedError, 'Subclasses must implement extract_payload_value'
           end
 
           def extract_contract_prefix(contract_class)
@@ -152,7 +147,7 @@ module Apiwork
           end
 
           def storage_name
-            raise NotImplementedError, "Subclasses must implement storage_name"
+            raise NotImplementedError, 'Subclasses must implement storage_name'
           end
 
           def global_storage

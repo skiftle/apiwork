@@ -7,18 +7,18 @@ RSpec.describe 'Custom Actions API', type: :request do
     describe 'PATCH /api/v1/posts/:id/publish' do
       it 'routes to custom member action and serializes response' do
         post = Post.create!(title: 'Draft Post', body: 'Draft content', published: false)
-        expect(post.published).to eq(false)
+        expect(post.published).to be(false)
 
         patch "/api/v1/posts/#{post.id}/publish"
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to eq(true)
+        expect(json['ok']).to be(true)
         expect(json['post']['id']).to eq(post.id)
-        expect(json['post']['published']).to eq(true)
+        expect(json['post']['published']).to be(true)
 
         post.reload
-        expect(post.published).to eq(true)
+        expect(post.published).to be(true)
       end
 
       it 'works with idempotent operations' do
@@ -28,7 +28,7 @@ RSpec.describe 'Custom Actions API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['post']['published']).to eq(true)
+        expect(json['post']['published']).to be(true)
       end
 
       it 'returns 404 for custom member actions' do
@@ -41,18 +41,18 @@ RSpec.describe 'Custom Actions API', type: :request do
     describe 'PATCH /api/v1/posts/:id/archive' do
       it 'handles custom member actions that modify state' do
         post = Post.create!(title: 'Published Post', body: 'Content', published: true)
-        expect(post.published).to eq(true)
+        expect(post.published).to be(true)
 
         patch "/api/v1/posts/#{post.id}/archive"
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to eq(true)
+        expect(json['ok']).to be(true)
         expect(json['post']['id']).to eq(post.id)
-        expect(json['post']['published']).to eq(false)
+        expect(json['post']['published']).to be(false)
 
         post.reload
-        expect(post.published).to eq(false)
+        expect(post.published).to be(false)
       end
 
       it 'handles idempotent custom actions' do
@@ -62,7 +62,7 @@ RSpec.describe 'Custom Actions API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['post']['published']).to eq(false)
+        expect(json['post']['published']).to be(false)
       end
     end
 
@@ -78,12 +78,12 @@ RSpec.describe 'Custom Actions API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to eq(true)
+        expect(json['ok']).to be(true)
         expect(json['post']).to be_present
         expect(json['post']['id']).to eq(post.id)
         expect(json['post']['title']).to eq('Test Post')
         expect(json['post']['body']).to eq('This is a long post body.')
-        expect(json['post']['published']).to eq(true)
+        expect(json['post']['published']).to be(true)
       end
 
       it 'serializes resources with varying attribute values' do
@@ -122,7 +122,7 @@ RSpec.describe 'Custom Actions API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to eq(true)
+        expect(json['ok']).to be(true)
         expect(json['posts'].length).to eq(1)
         expect(json['posts'][0]['title']).to eq('Ruby Tutorial')
       end
@@ -155,7 +155,7 @@ RSpec.describe 'Custom Actions API', type: :request do
         get '/api/v1/posts/search', params: { q: 'NonExistent' }
 
         json = JSON.parse(response.body)
-        expect(json['ok']).to eq(true)
+        expect(json['ok']).to be(true)
         expect(json['posts']).to eq([])
       end
 
@@ -177,13 +177,13 @@ RSpec.describe 'Custom Actions API', type: :request do
           ]
         }
 
-        expect {
+        expect do
           post '/api/v1/posts/bulk_create', params: posts_params, as: :json
-        }.to change(Post, :count).by(3)
+        end.to change(Post, :count).by(3)
 
         expect(response).to have_http_status(:created)
         json = JSON.parse(response.body)
-        expect(json['ok']).to eq(true)
+        expect(json['ok']).to be(true)
         expect(json['posts'].length).to eq(3)
 
         titles = json['posts'].map { |p| p['title'] }.sort
@@ -208,7 +208,7 @@ RSpec.describe 'Custom Actions API', type: :request do
         post '/api/v1/posts/bulk_create', params: posts_params, as: :json
 
         json = JSON.parse(response.body)
-        expect(json['posts'][0]['published']).to eq(false)
+        expect(json['posts'][0]['published']).to be(false)
       end
 
       it 'handles missing params gracefully' do
@@ -236,7 +236,7 @@ RSpec.describe 'Custom Actions API', type: :request do
       # Standard show again to verify change
       get "/api/v1/posts/#{post.id}"
       json = JSON.parse(response.body)
-      expect(json['post']['published']).to eq(true)
+      expect(json['post']['published']).to be(true)
 
       # Custom archive
       patch "/api/v1/posts/#{post.id}/archive"
@@ -245,7 +245,7 @@ RSpec.describe 'Custom Actions API', type: :request do
       # Standard show to verify second change
       get "/api/v1/posts/#{post.id}"
       json = JSON.parse(response.body)
-      expect(json['post']['published']).to eq(false)
+      expect(json['post']['published']).to be(false)
     end
 
     it 'custom and standard collection actions coexist' do

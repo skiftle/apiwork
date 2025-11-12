@@ -22,10 +22,10 @@ module Apiwork
           apis[api_class.name] = api_class if api_class.name
 
           # Register by path (primary key)
-          if api_class.metadata&.path
-            normalized_path = normalize_path(api_class.metadata.path)
-            apis_by_path[normalized_path] = api_class
-          end
+          return unless api_class.metadata&.path
+
+          normalized_path = normalize_path(api_class.metadata.path)
+          apis_by_path[normalized_path] = api_class
         end
 
         # Find an API class by path

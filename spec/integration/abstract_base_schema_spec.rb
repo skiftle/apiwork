@@ -31,9 +31,9 @@ RSpec.describe 'Abstract Base Schema with Auto-Detection' do
 
     it 'null_to_empty validation works with auto-detected type' do
       # This should NOT raise an error because type was auto-detected as :string
-      expect {
+      expect do
         Api::V1::UserSchema.attribute_definitions[:name]
-      }.not_to raise_error
+      end.not_to raise_error
     end
 
     it 'can serialize User objects' do

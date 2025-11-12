@@ -20,11 +20,11 @@ module Apiwork
           )
 
           # Handle nested block with context
-          if block
-            @resource_stack.push(name)
-            instance_eval(&block)
-            @resource_stack.pop
-          end
+          return unless block
+
+          @resource_stack.push(name)
+          instance_eval(&block)
+          @resource_stack.pop
         end
 
         # Intercept resource call (singular)
@@ -41,11 +41,11 @@ module Apiwork
           )
 
           # Handle nested block with context
-          if block
-            @resource_stack.push(name)
-            instance_eval(&block)
-            @resource_stack.pop
-          end
+          return unless block
+
+          @resource_stack.push(name)
+          instance_eval(&block)
+          @resource_stack.pop
         end
 
         # Support for with_options pattern
@@ -61,7 +61,7 @@ module Apiwork
 
         private
 
-        def capture_resource_metadata(name, singular:, doc: nil, options:)
+        def capture_resource_metadata(name, singular:, options:, doc: nil)
           # Merge current options (from with_options) with resource-specific options
           merged_options = (@current_options || {}).merge(options)
 
@@ -77,18 +77,18 @@ module Apiwork
 
           # Resolve contract: use explicit path or infer from name
           contract_class_name = if contract_path
-            resolve_contract_path(contract_path)
-          else
-            infer_contract_class(name)&.name
-          end
+                                  resolve_contract_path(contract_path)
+                                else
+                                  infer_contract_class(name)&.name
+                                end
 
           # Resolve controller: use explicit path or infer from name
           controller_class_name = if controller_path
-            # Rails handles controller: path natively, convert to class name for metadata
-            resolve_controller_path(controller_path)
-          else
-            infer_controller_class(name)&.name
-          end
+                                    # Rails handles controller: path natively, convert to class name for metadata
+                                    resolve_controller_path(controller_path)
+                                  else
+                                    infer_controller_class(name)&.name
+                                  end
 
           # Add to metadata
           @metadata.add_resource(
@@ -107,19 +107,19 @@ module Apiwork
         # @param path [String] Controller path (e.g., 'admin/posts' or '/admin/posts')
         # @return [String] Full controller class name
         def resolve_controller_path(path)
-          if path.start_with?('/')
-            # Absolute path: '/admin/posts' → 'Admin::PostsController'
-            parts = path[1..].split('/')
-          else
-            # Relative path: 'admin/posts' → 'Api::V1::Admin::PostsController'
-            parts = @namespaces + path.split('/')
-          end
+          parts = if path.start_with?('/')
+                    # Absolute path: '/admin/posts' → 'Admin::PostsController'
+                    path[1..].split('/')
+                  else
+                    # Relative path: 'admin/posts' → 'Api::V1::Admin::PostsController'
+                    @namespaces + path.split('/')
+                  end
 
           # Camelize all parts (keep plural for controller)
           parts = parts.map { |part| part.to_s.camelize }
 
           # Join and append 'Controller'
-          parts.join('::') + 'Controller'
+          "#{parts.join('::')}Controller"
         end
       end
     end

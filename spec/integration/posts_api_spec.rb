@@ -9,7 +9,7 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts']).to eq([])
     end
 
@@ -21,10 +21,10 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(2)
       titles = json['posts'].map { |p| p['title'] }
-      expect(titles).to match_array([post1.title, post2.title])
+      expect(titles).to contain_exactly(post1.title, post2.title)
     end
   end
 
@@ -36,11 +36,11 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['post']['id']).to eq(post.id)
       expect(json['post']['title']).to eq('Test Post')
       expect(json['post']['body']).to eq('Test body')
-      expect(json['post']['published']).to eq(true)
+      expect(json['post']['published']).to be(true)
     end
 
     it 'returns 404 when resource not found' do
@@ -60,16 +60,16 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
         }
       }
 
-      expect {
+      expect do
         post '/api/v1/posts', params: post_params, as: :json
-      }.to change(Post, :count).by(1)
+      end.to change(Post, :count).by(1)
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['post']['title']).to eq('New Post')
       expect(json['post']['body']).to eq('New body')
-      expect(json['post']['published']).to eq(true)
+      expect(json['post']['published']).to be(true)
     end
 
     it 'returns validation errors for required fields' do
@@ -80,13 +80,13 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
         }
       }
 
-      expect {
+      expect do
         post '/api/v1/posts', params: post_params, as: :json
-      }.not_to change(Post, :count)
+      end.not_to change(Post, :count)
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(false)
+      expect(json['ok']).to be(false)
       expect(json['errors']).to be_present
     end
   end
@@ -101,13 +101,13 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['post']['title']).to eq('Updated Title')
-      expect(json['post']['published']).to eq(true)
+      expect(json['post']['published']).to be(true)
 
       post_record.reload
       expect(post_record.title).to eq('Updated Title')
-      expect(post_record.published).to eq(true)
+      expect(post_record.published).to be(true)
     end
 
     it 'returns 404 when updating missing resource' do
@@ -121,13 +121,13 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
     it 'returns success envelope after deletion' do
       post_record = Post.create!(title: 'To Delete', body: 'Delete me')
 
-      expect {
+      expect do
         delete "/api/v1/posts/#{post_record.id}"
-      }.to change(Post, :count).by(-1)
+      end.to change(Post, :count).by(-1)
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
     end
 
     it 'returns 404 when deleting missing resource' do

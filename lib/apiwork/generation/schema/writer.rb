@@ -16,7 +16,7 @@ module Apiwork
         # @param format [Symbol, nil] Schema format (e.g., :openapi)
         # @param extension [String] File extension (e.g., '.json', '.ts')
         # @return [String] Path to written file
-        def self.write(content:, output:, api_path: nil, format: nil, extension:)
+        def self.write(content:, output:, extension:, api_path: nil, format: nil)
           if file_path?(output)
             # Single file mode - write directly
             write_file(content, output)
@@ -36,13 +36,13 @@ module Apiwork
           if File.exist?(output)
             if File.directory?(output)
               FileUtils.rm_rf(output)
-              puts "Cleaned directory: #{output}"
+              Rails.logger.debug "Cleaned directory: #{output}"
             else
               FileUtils.rm_f(output)
-              puts "Cleaned file: #{output}"
+              Rails.logger.debug "Cleaned file: #{output}"
             end
           else
-            puts "Path does not exist: #{output}"
+            Rails.logger.debug "Path does not exist: #{output}"
           end
         end
 

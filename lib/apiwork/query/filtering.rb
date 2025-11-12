@@ -472,7 +472,7 @@ module Apiwork
 
       def parse_date(value)
         DateTime.parse(value.to_s)
-      rescue ArgumentError => e
+      rescue ArgumentError
         error = ArgumentError.new("'#{value}' is not a valid date")
         Apiwork::Errors::Handler.handle(error, context: { value: })
         DateTime.now
@@ -487,7 +487,7 @@ module Apiwork
           Apiwork::Errors::Handler.handle(error, context: { value: })
           0
         end
-      rescue ArgumentError => e
+      rescue ArgumentError
         error = ArgumentError.new("'#{value}' is not a valid number")
         Apiwork::Errors::Handler.handle(error, context: { value: })
         0

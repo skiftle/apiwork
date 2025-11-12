@@ -13,7 +13,7 @@ module Apiwork
             super(contract_class, name, block, { definition: block })
           end
 
-          def serialize_all_for_api(api)
+          def serialize_all_for_api(_api)
             result = {}
 
             # First pass: expand all type definitions
@@ -60,7 +60,7 @@ module Apiwork
           # @param type_def [Hash] The expanded type definition (from as_json)
           # @param all_types [Hash] All type definitions (not used, kept for compatibility)
           # @return [Boolean] true if type directly references itself
-          def detect_circular_references(type_name, type_def, all_types)
+          def detect_circular_references(type_name, type_def, _all_types)
             # Extract all type references from this definition
             referenced_types = extract_type_references(type_def)
 
@@ -88,7 +88,7 @@ module Apiwork
             parent_scope = nil
 
             if scope
-              if scope.class.name == 'Apiwork::Contract::ActionDefinition'
+              if scope.instance_of?(::Apiwork::Contract::ActionDefinition)
                 # For ActionDefinition, use it as parent_scope AND extract action_name
                 parent_scope = scope
                 action_name = scope.action_name
@@ -120,39 +120,27 @@ module Apiwork
               next unless param.is_a?(Hash)
 
               # Direct type reference
-              if param[:type].is_a?(Symbol) && !primitive_type?(param[:type])
-                refs << param[:type]
-              end
+              refs << param[:type] if param[:type].is_a?(Symbol) && !primitive_type?(param[:type])
 
               # Array 'of' reference
-              if param[:of].is_a?(Symbol) && !primitive_type?(param[:of])
-                refs << param[:of]
-              end
+              refs << param[:of] if param[:of].is_a?(Symbol) && !primitive_type?(param[:of])
 
               # Union variant references
               if param[:variants].is_a?(Array)
                 param[:variants].each do |variant|
                   next unless variant.is_a?(Hash)
 
-                  if variant[:type].is_a?(Symbol) && !primitive_type?(variant[:type])
-                    refs << variant[:type]
-                  end
+                  refs << variant[:type] if variant[:type].is_a?(Symbol) && !primitive_type?(variant[:type])
 
-                  if variant[:of].is_a?(Symbol) && !primitive_type?(variant[:of])
-                    refs << variant[:of]
-                  end
+                  refs << variant[:of] if variant[:of].is_a?(Symbol) && !primitive_type?(variant[:of])
 
                   # Recursively check nested shape in variants
-                  if variant[:shape].is_a?(Hash)
-                    refs.concat(extract_type_references(variant[:shape]))
-                  end
+                  refs.concat(extract_type_references(variant[:shape])) if variant[:shape].is_a?(Hash)
                 end
               end
 
               # Nested shape references (for nested objects)
-              if param[:shape].is_a?(Hash)
-                refs.concat(extract_type_references(param[:shape]))
-              end
+              refs.concat(extract_type_references(param[:shape])) if param[:shape].is_a?(Hash)
             end
 
             refs.uniq

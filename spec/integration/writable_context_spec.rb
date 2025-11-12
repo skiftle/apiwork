@@ -114,8 +114,8 @@ RSpec.describe 'Writable context filtering in auto-generated contracts', type: :
 
       # nullable should match DB constraints
       # (Author fields allow NULL, so they should be nullable: true)
-      expect(create_payload[:name][:nullable]).to eq(true)
-      expect(create_payload[:bio][:nullable]).to eq(true)
+      expect(create_payload[:name][:nullable]).to be(true)
+      expect(create_payload[:bio][:nullable]).to be(true)
     end
   end
 end

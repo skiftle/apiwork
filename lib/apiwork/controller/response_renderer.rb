@@ -28,8 +28,13 @@ module Apiwork
       # @param query_params [Hash] Query parameters for auto-querying (filter, sort, page, include)
       # @return [Hash] Complete response hash (not validated)
       def perform(resource_or_collection, query_params: {})
-        return build_collection_response(resource_or_collection, query_params) if resource_or_collection.is_a?(Enumerable)
-        return build_error_response(resource_or_collection) if resource_or_collection.respond_to?(:errors) && resource_or_collection.errors.any?
+        if resource_or_collection.is_a?(Enumerable)
+          return build_collection_response(resource_or_collection,
+                                           query_params)
+        end
+        if resource_or_collection.respond_to?(:errors) && resource_or_collection.errors.any?
+          return build_error_response(resource_or_collection)
+        end
         return { ok: true, meta: meta.presence || {} } if controller.request.delete?
 
         build_single_resource_response(resource_or_collection, query_params)
@@ -48,7 +53,8 @@ module Apiwork
         end
 
         # Serialize data with same includes used for eager loading
-        json_data = action_definition.serialize_data(collection, context: build_schema_context, includes: includes_param)
+        json_data = action_definition.serialize_data(collection, context: build_schema_context,
+                                                                 includes: includes_param)
 
         # Build complete response with pagination meta
         if schema_class
@@ -79,14 +85,12 @@ module Apiwork
         if schema_class
           root_key = determine_root_key(resource)
           resp = { ok: true, root_key => json_data }
-          resp[:meta] = meta if meta.present?
-          resp
         else
           # Custom contract without schema
           resp = { ok: true }.merge(json_data)
-          resp[:meta] = meta if meta.present?
-          resp
         end
+        resp[:meta] = meta if meta.present?
+        resp
       end
 
       # Build error response
@@ -106,7 +110,7 @@ module Apiwork
       # Single source of truth for include params (used for both eager loading and serialization)
       def extract_includes_param(query_params)
         includes = query_params[:include] || controller.params[:include]
-        return nil unless includes.present?
+        return nil if includes.blank?
 
         includes = includes.permit!.to_h if includes.is_a?(ActionController::Parameters)
         includes = includes.to_h if includes.respond_to?(:to_h)
@@ -116,7 +120,7 @@ module Apiwork
       # Build Rails includes hash for eager loading from includes param
       # Converts serialization format to Rails .includes() format
       def build_includes_hash_for_eager_loading(includes_param)
-        return {} unless includes_param.present?
+        return {} if includes_param.blank?
 
         IncludesBuilder.new(schema: schema_class).build(
           params: { include: includes_param },

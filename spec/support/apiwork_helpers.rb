@@ -5,7 +5,7 @@ require 'ostruct'
 module ApiworkHelpers
   # Mock controller with Resourceable concern
   def mock_controller(action_name: :index, request_method: :get, params: {})
-    controller_class = Class.new(ActionController::Base) do
+    controller_class = Class.new(ApplicationController) do
       include Apiwork::Controller::Concern
 
       def controller_name
@@ -30,20 +30,18 @@ module ApiworkHelpers
         'Api::V1::TestController'
       end
     end
-    allow(controller).to receive(:class).and_return(controller_class)
 
     # Mock request
     request = mock_request(method: request_method)
-    allow(controller).to receive(:request).and_return(request)
 
     # Mock params
     controller_params = ActionController::Parameters.new(params)
-    allow(controller).to receive(:params).and_return(controller_params)
 
     # Mock response
     response = double('Response')
     allow(response).to receive(:status=)
-    allow(controller).to receive(:response).and_return(response)
+    allow(controller).to receive_messages(class: controller_class, request: request, params: controller_params,
+                                          response: response)
 
     # Mock render method
     allow(controller).to receive(:render) do |options|
@@ -97,7 +95,7 @@ module ApiworkHelpers
           {}
         end
 
-        def self.validators_on(attr_name)
+        def self.validators_on(_attr_name)
           []
         end
 
@@ -109,7 +107,7 @@ module ApiworkHelpers
           OpenStruct.new(element: 'test_model')
         end
 
-        def self.reflect_on_association(name)
+        def self.reflect_on_association(_name)
           nil # No real associations in mock
         end
       end
@@ -139,9 +137,7 @@ module ApiworkHelpers
 
   # Mock Current context
   def mock_current(user: nil, session: nil, membership: nil)
-    allow(Current).to receive(:user).and_return(user)
-    allow(Current).to receive(:session).and_return(session)
-    allow(Current).to receive(:membership).and_return(membership)
+    allow(Current).to receive_messages(user: user, session: session, membership: membership)
   end
 
   # Test context hash
@@ -164,12 +160,9 @@ module ApiworkHelpers
 
     relation = double('ActiveRecord::Relation')
     allow(relation).to receive(:each).and_yield(*records)
-    allow(relation).to receive(:map).and_return(records.map { |r| r })
-    allow(relation).to receive(:to_a).and_return(records)
-    allow(relation).to receive(:count).and_return(records.length)
-    allow(relation).to receive(:empty?).and_return(records.empty?)
-    allow(relation).to receive(:present?).and_return(!records.empty?)
-    allow(relation).to receive(:klass).and_return(model_class)
+    allow(relation).to receive_messages(map: records.map { |r|
+      r
+    }, to_a: records, count: records.length, empty?: records.empty?, present?: !records.empty?, klass: model_class)
     relation
   end
 

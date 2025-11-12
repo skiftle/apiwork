@@ -56,9 +56,9 @@ RSpec.describe 'Custom type hierarchical scoping and serialization', type: :inte
   describe 'Type serialization with hierarchical scoping' do
     it 'serializes types without NoMethodError' do
       # This would previously fail with NoMethodError: undefined method `resolve_custom_type' for ActionDefinition
-      expect {
+      expect do
         Apiwork::Contract::Descriptors::Registry.serialize_all_types_for_api('api/v1')
-      }.not_to raise_error
+      end.not_to raise_error
     end
 
     it 'includes contract-level types with correct qualified name' do
@@ -90,9 +90,9 @@ RSpec.describe 'Custom type hierarchical scoping and serialization', type: :inte
     it 'serializes action definition without errors' do
       action_def = TestScopedContract.action_definition(:custom_action)
 
-      expect {
+      expect do
         action_def.as_json
-      }.not_to raise_error
+      end.not_to raise_error
     end
 
     it 'references types correctly in action input' do

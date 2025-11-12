@@ -21,13 +21,9 @@ module Apiwork
       # @param block [Proc, nil] Block for shape params (for :object or :array of :object)
       def variant(type:, of: nil, enum: nil, tag: nil, &block)
         # Validate tag usage with discriminator
-        if tag && !@discriminator
-          raise ArgumentError, 'tag can only be used when union has a discriminator'
-        end
+        raise ArgumentError, 'tag can only be used when union has a discriminator' if tag && !@discriminator
 
-        if @discriminator && !tag
-          raise ArgumentError, 'tag is required for all variants when union has a discriminator'
-        end
+        raise ArgumentError, 'tag is required for all variants when union has a discriminator' if @discriminator && !tag
 
         variant_def = {
           type: type,

@@ -120,7 +120,7 @@ module Apiwork
 
         def eager_load_apis
           # Load all API definitions from config/apis
-          apis_path = ::Rails.root.join('config', 'apis')
+          apis_path = ::Rails.root.join('config/apis')
           return unless apis_path.exist?
 
           Dir[apis_path.join('**', '*.rb')].sort.each do |file|

@@ -148,7 +148,8 @@ RSpec.describe 'Routing DSL Override with only/except', type: :request do
 
     it 'unrestricted comments allow all actions including destroy' do
       # Create
-      post '/api/v1/comments', params: { comment: { content: 'New', author: 'Author', post_id: test_post.id } }, as: :json
+      post '/api/v1/comments', params: { comment: { content: 'New', author: 'Author', post_id: test_post.id } },
+                               as: :json
       expect(response).to have_http_status(:created)
       created_id = JSON.parse(response.body)['comment']['id']
 

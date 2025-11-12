@@ -54,7 +54,7 @@ RSpec.describe 'Root key override with root DSL', type: :request do
       json = JSON.parse(response.body)
       expect(json).to have_key('person')
       expect(json).not_to have_key('post')
-      expect(json).not_to have_key('persons')  # Not 'persons'
+      expect(json).not_to have_key('persons') # Not 'persons'
       expect(json['person']['title']).to eq('John Doe')
     end
 
@@ -66,7 +66,7 @@ RSpec.describe 'Root key override with root DSL', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json).to have_key('people')  # Not 'persons'!
+      expect(json).to have_key('people') # Not 'persons'!
       expect(json).not_to have_key('posts')
       expect(json).not_to have_key('persons')
       expect(json['people'].length).to eq(2)

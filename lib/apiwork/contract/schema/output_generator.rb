@@ -45,7 +45,7 @@ module Apiwork
           # Generate output for collection actions (index)
           # Returns unwrapped discriminated union with ok field and pagination
           def generate_collection_output(definition, schema_class)
-            root_key_singular = schema_class.root_key.singular.to_sym
+            schema_class.root_key.singular.to_sym
             root_key_plural = schema_class.root_key.plural.to_sym
             contract_class = definition.contract_class
 

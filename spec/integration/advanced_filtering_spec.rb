@@ -4,16 +4,20 @@ require 'rails_helper'
 
 RSpec.describe 'Advanced Filtering API', type: :request do
   let!(:post1) do
-    Post.create!(title: 'Advanced Filter Test Ruby Basics', body: 'Introduction to Ruby', published: true, created_at: 5.days.ago)
+    Post.create!(title: 'Advanced Filter Test Ruby Basics', body: 'Introduction to Ruby', published: true,
+                 created_at: 5.days.ago)
   end
   let!(:post2) do
-    Post.create!(title: 'Advanced Filter Test Rails Basics', body: 'Introduction to Rails', published: false, created_at: 3.days.ago)
+    Post.create!(title: 'Advanced Filter Test Rails Basics', body: 'Introduction to Rails', published: false,
+                 created_at: 3.days.ago)
   end
   let!(:post3) do
-    Post.create!(title: 'Advanced Filter Test Advanced Ruby', body: 'Deep dive into Ruby', published: true, created_at: 1.day.ago)
+    Post.create!(title: 'Advanced Filter Test Advanced Ruby', body: 'Deep dive into Ruby', published: true,
+                 created_at: 1.day.ago)
   end
   let!(:post4) do
-    Post.create!(title: 'Advanced Filter Test JavaScript Guide', body: 'Learn JavaScript', published: true, created_at: 2.days.ago)
+    Post.create!(title: 'Advanced Filter Test JavaScript Guide', body: 'Learn JavaScript', published: true,
+                 created_at: 2.days.ago)
   end
 
   describe 'OR logic filtering (array of filters)' do
@@ -27,10 +31,10 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(2)
       titles = json['posts'].map { |p| p['title'] }
-      expect(titles).to match_array(['Advanced Filter Test Ruby Basics', 'Advanced Filter Test Rails Basics'])
+      expect(titles).to contain_exactly('Advanced Filter Test Ruby Basics', 'Advanced Filter Test Rails Basics')
     end
 
     it 'filters posts with OR logic on different fields using array indices' do
@@ -47,10 +51,11 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(3)
       titles = json['posts'].map { |p| p['title'] }
-      expect(titles).to match_array(['Advanced Filter Test Ruby Basics', 'Advanced Filter Test Advanced Ruby', 'Advanced Filter Test JavaScript Guide'])
+      expect(titles).to contain_exactly('Advanced Filter Test Ruby Basics', 'Advanced Filter Test Advanced Ruby',
+                                        'Advanced Filter Test JavaScript Guide')
     end
 
     it 'combines OR logic with other parameters' do
@@ -64,7 +69,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(3)
       titles = json['posts'].map { |p| p['title'] }
       expect(titles.first).to eq('Advanced Filter Test Advanced Ruby')
@@ -82,10 +87,10 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(2)
       titles = json['posts'].map { |p| p['title'] }
-      expect(titles).to match_array(['Advanced Filter Test Rails Basics', 'Advanced Filter Test JavaScript Guide'])
+      expect(titles).to contain_exactly('Advanced Filter Test Rails Basics', 'Advanced Filter Test JavaScript Guide')
     end
 
     it 'returns empty array when no posts in date range' do
@@ -98,7 +103,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts']).to eq([])
     end
   end
@@ -113,20 +118,20 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(2)
       ids = json['posts'].map { |p| p['id'] }
-      expect(ids).to match_array([post2.id, post4.id])
+      expect(ids).to contain_exactly(post2.id, post4.id)
     end
 
     it 'returns all posts when excluding non-existent ids' do
       get '/api/v1/posts', params: {
-        filter: { _not: { id: { in: [99999, 88888] } } }
+        filter: { _not: { id: { in: [99_999, 88_888] } } }
       }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(4)
     end
   end
@@ -139,10 +144,10 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(2)
       titles = json['posts'].map { |p| p['title'] }
-      expect(titles).to match_array(['Advanced Filter Test Rails Basics', 'Advanced Filter Test JavaScript Guide'])
+      expect(titles).to contain_exactly('Advanced Filter Test Rails Basics', 'Advanced Filter Test JavaScript Guide')
     end
 
     it 'returns all posts when _not + contains matches nothing' do
@@ -152,7 +157,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(4)
     end
   end
@@ -165,7 +170,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(1)
       expect(json['posts'][0]['title']).to eq('Advanced Filter Test Ruby Basics')
     end
@@ -177,7 +182,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts']).to eq([])
     end
   end
@@ -190,10 +195,10 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(2)
       titles = json['posts'].map { |p| p['title'] }
-      expect(titles).to match_array(['Advanced Filter Test Ruby Basics', 'Advanced Filter Test Rails Basics'])
+      expect(titles).to contain_exactly('Advanced Filter Test Ruby Basics', 'Advanced Filter Test Rails Basics')
     end
 
     it 'returns empty array when no matches' do
@@ -203,7 +208,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts']).to eq([])
     end
   end
@@ -219,10 +224,10 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(2)
       titles = json['posts'].map { |p| p['title'] }
-      expect(titles).to match_array(['Advanced Filter Test Ruby Basics', 'Advanced Filter Test Advanced Ruby'])
+      expect(titles).to contain_exactly('Advanced Filter Test Ruby Basics', 'Advanced Filter Test Advanced Ruby')
     end
   end
 
@@ -238,7 +243,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(1)
       expect(json['posts'][0]['title']).to eq('Advanced Filter Test Ruby Basics')
     end
@@ -260,12 +265,12 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       # Should return Ruby Basics and Advanced Ruby (both published)
       # Rails Basics is not published, so it's excluded
       expect(json['posts'].length).to eq(2)
       titles = json['posts'].map { |p| p['title'] }
-      expect(titles).to match_array(['Advanced Filter Test Ruby Basics', 'Advanced Filter Test Advanced Ruby'])
+      expect(titles).to contain_exactly('Advanced Filter Test Ruby Basics', 'Advanced Filter Test Advanced Ruby')
     end
   end
 
@@ -283,10 +288,10 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to eq(true)
+        expect(json['ok']).to be(true)
         expect(json['posts'].length).to eq(2)
         titles = json['posts'].map { |p| p['title'] }
-        expect(titles).to match_array(['Advanced Filter Test Ruby Basics', 'Advanced Filter Test Rails Basics'])
+        expect(titles).to contain_exactly('Advanced Filter Test Ruby Basics', 'Advanced Filter Test Rails Basics')
       end
 
       it 'combines _or with other filters (implicit AND)' do
@@ -303,15 +308,12 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to eq(true)
+        expect(json['ok']).to be(true)
         # Should return Ruby Basics, Advanced Ruby, and JavaScript Guide (all published)
         expect(json['posts'].length).to eq(3)
         titles = json['posts'].map { |p| p['title'] }
-        expect(titles).to match_array([
-          'Advanced Filter Test Ruby Basics',
-          'Advanced Filter Test Advanced Ruby',
-          'Advanced Filter Test JavaScript Guide'
-        ])
+        expect(titles).to contain_exactly('Advanced Filter Test Ruby Basics', 'Advanced Filter Test Advanced Ruby',
+                                          'Advanced Filter Test JavaScript Guide')
       end
     end
 
@@ -328,10 +330,10 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to eq(true)
+        expect(json['ok']).to be(true)
         expect(json['posts'].length).to eq(2)
         titles = json['posts'].map { |p| p['title'] }
-        expect(titles).to match_array(['Advanced Filter Test Ruby Basics', 'Advanced Filter Test Advanced Ruby'])
+        expect(titles).to contain_exactly('Advanced Filter Test Ruby Basics', 'Advanced Filter Test Advanced Ruby')
       end
 
       it 'chains multiple _and conditions' do
@@ -347,7 +349,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to eq(true)
+        expect(json['ok']).to be(true)
         expect(json['posts'].length).to eq(1)
         expect(json['posts'][0]['title']).to eq('Advanced Filter Test Ruby Basics')
       end
@@ -363,7 +365,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to eq(true)
+        expect(json['ok']).to be(true)
         expect(json['posts'].length).to eq(1)
         expect(json['posts'][0]['title']).to eq('Advanced Filter Test Rails Basics')
       end
@@ -379,10 +381,10 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to eq(true)
+        expect(json['ok']).to be(true)
         expect(json['posts'].length).to eq(2)
         titles = json['posts'].map { |p| p['title'] }
-        expect(titles).to match_array(['Advanced Filter Test Ruby Basics', 'Advanced Filter Test Advanced Ruby'])
+        expect(titles).to contain_exactly('Advanced Filter Test Ruby Basics', 'Advanced Filter Test Advanced Ruby')
       end
 
       it 'negates multiple conditions (De Morgan: NOT (A AND B))' do
@@ -399,11 +401,11 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to eq(true)
+        expect(json['ok']).to be(true)
         # Should return: Rails Basics (not published), JavaScript Guide (doesn't contain Ruby)
         expect(json['posts'].length).to eq(2)
         titles = json['posts'].map { |p| p['title'] }
-        expect(titles).to match_array(['Advanced Filter Test Rails Basics', 'Advanced Filter Test JavaScript Guide'])
+        expect(titles).to contain_exactly('Advanced Filter Test Rails Basics', 'Advanced Filter Test JavaScript Guide')
       end
     end
 
@@ -426,11 +428,11 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to eq(true)
+        expect(json['ok']).to be(true)
         # Rails Basics is not published, so it's excluded
         expect(json['posts'].length).to eq(2)
         titles = json['posts'].map { |p| p['title'] }
-        expect(titles).to match_array(['Advanced Filter Test Ruby Basics', 'Advanced Filter Test Advanced Ruby'])
+        expect(titles).to contain_exactly('Advanced Filter Test Ruby Basics', 'Advanced Filter Test Advanced Ruby')
       end
 
       it 'nests _not inside _or' do
@@ -443,11 +445,11 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to eq(true)
+        expect(json['ok']).to be(true)
         # Should return: Rails Basics (not published), JavaScript Guide (contains JavaScript)
         expect(json['posts'].length).to eq(2)
         titles = json['posts'].map { |p| p['title'] }
-        expect(titles).to match_array(['Advanced Filter Test Rails Basics', 'Advanced Filter Test JavaScript Guide'])
+        expect(titles).to contain_exactly('Advanced Filter Test Rails Basics', 'Advanced Filter Test JavaScript Guide')
       end
 
       it 'handles complex nested logic: NOT ((A OR B) AND C)' do
@@ -462,13 +464,13 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to eq(true)
+        expect(json['ok']).to be(true)
         # Should return: Rails Basics (not published, contains Rails but fails the AND),
         #                JavaScript Guide (published but doesn't contain Ruby/Rails)
-        
+
         expect(json['posts'].length).to eq(2)
         titles = json['posts'].map { |p| p['title'] }
-        expect(titles).to match_array(['Advanced Filter Test Rails Basics', 'Advanced Filter Test JavaScript Guide'])
+        expect(titles).to contain_exactly('Advanced Filter Test Rails Basics', 'Advanced Filter Test JavaScript Guide')
       end
     end
   end

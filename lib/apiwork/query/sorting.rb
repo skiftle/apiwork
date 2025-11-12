@@ -11,9 +11,7 @@ module Apiwork
         return scope if params.blank?
 
         # Convert array of hashes to single hash
-        if params.is_a?(Array)
-          params = params.reduce({}) { |acc, hash| acc.merge(hash) }
-        end
+        params = params.reduce({}) { |acc, hash| acc.merge(hash) } if params.is_a?(Array)
 
         unless params.is_a?(Hash)
           error = ArgumentError.new('sort must be a Hash or Array of Hashes')
