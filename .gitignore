@@ -7,8 +7,22 @@
 /spec/reports/
 /tmp/
 
-# Dummy app logs
-/spec/dummy/log/*
+# Dummy app - logs
+/spec/dummy/log/*.log
+/spec/dummy/log/*.log.*
+
+# Dummy app - databases
+/spec/dummy/db/*.sqlite3
+/spec/dummy/db/*.sqlite3-*
+/spec/dummy/storage/*.sqlite3
+/spec/dummy/storage/*.sqlite3-*
+
+# Dummy app - temporary files
+/spec/dummy/tmp/*
+!/spec/dummy/tmp/.keep
+
+# OS files
+.DS_Store
 
 # Gem files
 *.gem
