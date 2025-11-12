@@ -39,8 +39,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: ['3.2', '3.3', '3.4']
-        experimental: [false, false, true]
+        include:
+          - ruby: '3.2'
+            experimental: false
+          - ruby: '3.3'
+            experimental: false
+          - ruby: '3.4'
+            experimental: true
 
     steps:
       - uses: actions/checkout@v5
