@@ -57,7 +57,7 @@ module Apiwork
             result[:description] = metadata.doc[:description]
           end
 
-          result.compact.presence
+          result
         end
 
         # Serialize all types from Descriptors::Registry

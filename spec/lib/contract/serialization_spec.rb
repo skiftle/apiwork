@@ -152,6 +152,8 @@ RSpec.describe 'Contract Serialization' do
       expect(json).to eq({
                            value: {
                              type: :union,
+                             required: true,
+                             nullable: false,
                              variants: [
                                { type: :string },
                                { type: :integer }
@@ -213,6 +215,8 @@ RSpec.describe 'Contract Serialization' do
       expect(json).to eq({
                            filter: {
                              type: :union,
+                             required: false,
+                             nullable: false,
                              variants: [
                                {
                                  type: :string_filter # Type reference, not expanded
@@ -249,6 +253,8 @@ RSpec.describe 'Contract Serialization' do
       expect(json).to eq({
                            filters: {
                              type: :union,
+                             required: false,
+                             nullable: false,
                              variants: [
                                {
                                  type: :string_filter # Type reference

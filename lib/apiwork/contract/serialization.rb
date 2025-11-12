@@ -90,7 +90,12 @@ module Apiwork
         # @return [Hash] Serialized parameter with type, required, shape, etc.
         def serialize_param(_name, options, definition, visited: Set.new)
           # Handle union types
-          return serialize_union(options[:union], definition, visited: visited) if options[:type] == :union
+          if options[:type] == :union
+            result = serialize_union(options[:union], definition, visited: visited)
+            result[:required] = options[:required] || false
+            result[:nullable] = options[:nullable] || false
+            return result
+          end
 
           # Handle custom types - return type reference instead of expanding
           if options[:custom_type]
