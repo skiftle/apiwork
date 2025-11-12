@@ -4,6 +4,8 @@ require 'rails_helper'
 
 RSpec.describe Apiwork::Generation::Zod do
   before do
+    # Reset registries to prevent accumulation
+    Apiwork.reset_registries!
     # Load test API
     load File.expand_path('../../dummy/config/apis/v1.rb', __dir__)
   end

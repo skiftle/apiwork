@@ -29,6 +29,14 @@ module Apiwork
       builder = Contract::Descriptors::GlobalBuilder.new
       builder.instance_eval(&block)
     end
+
+    # Reset all registries and re-register built-in types
+    # Useful for testing when you need to reload API configurations
+    def reset_registries!
+      Contract::Descriptors::Registry.clear!
+      API::Registry.clear
+      Contract::BuiltInTypes.register
+    end
   end
 end
 
