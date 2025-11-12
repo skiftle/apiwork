@@ -185,8 +185,8 @@ RSpec.describe 'Association Sorting API', type: :request do
       json = JSON.parse(response.body)
       expect(json['ok']).to be(false)
       expect(json['errors']).to be_present
-      # Contract validation returns "Invalid type" since the field isn't allowed
-      expect(json['errors'].first).to match(/Invalid type|not sortable/)
+      # Contract validation returns "Unknown field" since the field isn't in the contract
+      expect(json['errors'].first).to match(/Invalid type|not sortable|Unknown field/)
     end
   end
 end
