@@ -44,9 +44,6 @@ Style/FrozenStringLiteralComment:
 Style/SafeNavigation:
   SafeAutoCorrect: true
 
-Lint/RedundantSafeNavigation:
-  SafeAutoCorrect: true
-
 # Disable delegate cop - causes issues with constant vs symbol
 Rails/Delegate:
   Enabled: false
