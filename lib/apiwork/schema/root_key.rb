@@ -26,17 +26,13 @@ module Apiwork
       # Used for: show, create, update, error responses
       #
       # @return [String] singular form (e.g., "client")
-      def singular
-        @singular
-      end
+      attr_reader :singular
 
       # Returns the plural form of the root key
       # Used for: index (collection) responses
       #
       # @return [String] plural form (e.g., "clients")
-      def plural
-        @plural
-      end
+      attr_reader :plural
 
       # String representation defaults to singular
       # Allows using root_key in string contexts

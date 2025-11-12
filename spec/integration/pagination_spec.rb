@@ -4,10 +4,6 @@ require 'rails_helper'
 
 RSpec.describe 'Pagination API', type: :request do
   before(:each) do
-    # Delete comments first due to foreign key constraint
-    Comment.delete_all
-    Post.delete_all
-
     # Create 25 posts for pagination testing
     25.times do |i|
       Post.create!(

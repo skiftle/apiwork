@@ -3,12 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :request do
-  before(:each) do
-    # Delete comments first due to foreign key constraint
-    Comment.delete_all
-    Post.delete_all
-  end
-
   describe 'Creating with nested has_many' do
     it 'creates a post with nested comments' do
       post_params = {

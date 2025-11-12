@@ -30,7 +30,11 @@
       "Bash(ruby -rjson -e:*)",
       "Bash(ruby verify_nullable.rb:*)",
       "Bash(RAILS_ENV=test bundle exec rspec:*)",
-      "Bash(bundle exec ruby:*)"
+      "Bash(bundle exec ruby:*)",
+      "Bash(for:*)",
+      "Bash(done)",
+      "Bash(sort:*)",
+      "Bash(xargs ls:*)"
     ],
     "deny": [],
     "ask": []

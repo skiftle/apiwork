@@ -3,12 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Nested Resources Routing', type: :request do
-  before(:each) do
-    # Delete comments first due to foreign key constraint
-    Comment.delete_all
-    Post.delete_all
-  end
-
   let!(:post1) { Post.create!(title: 'Post 1', body: 'Body 1', published: true) }
   let!(:post2) { Post.create!(title: 'Post 2', body: 'Body 2', published: false) }
   let!(:comment1) { Comment.create!(post: post1, content: 'Comment 1 for Post 1', author: 'Author 1') }
@@ -201,9 +195,13 @@ RSpec.describe 'Nested Resources Routing', type: :request do
     end
 
     it 'returns recent comments in descending order' do
-      # Create comments with different timestamps
-      sleep 0.01
-      new_comment = Comment.create!(post: post1, content: 'Newest comment', author: 'Author')
+      # Create comment with explicit timestamp to ensure it's newest
+      new_comment = Comment.create!(
+        post: post1,
+        content: 'Newest comment',
+        author: 'Author',
+        created_at: Time.current
+      )
 
       get "/api/v1/posts/#{post1.id}/comments/recent"
 

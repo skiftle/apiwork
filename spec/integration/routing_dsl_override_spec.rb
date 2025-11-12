@@ -3,12 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Routing DSL Override with only/except', type: :request do
-  before(:each) do
-    # Delete comments first due to foreign key constraint
-    Comment.delete_all
-    Post.delete_all
-  end
-
   describe 'Restricted resources with only: [:index, :show]' do
     let!(:post1) { Post.create!(title: 'Post 1', body: 'Body 1', published: true) }
     let!(:post2) { Post.create!(title: 'Post 2', body: 'Body 2', published: false) }
