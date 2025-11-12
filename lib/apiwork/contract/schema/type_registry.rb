@@ -92,13 +92,25 @@ module Apiwork
                 next unless assoc_resource
                 next if visited.include?(assoc_resource)
 
-                # Register associated resource's filter type (may return nil for max depth)
-                assoc_filter_type = TypeRegistry.register_resource_filter_type(
+                # Try to auto-import the association's contract and reuse its filter type
+                import_alias = TypeRegistry.auto_import_association_contract(
                   contract_class,
                   assoc_resource,
-                  visited: visited,
-                  depth: depth + 1
+                  visited
                 )
+
+                assoc_filter_type = if import_alias
+                                      # Reference imported type: e.g., :comment_filter
+                                      :"#{import_alias}_filter"
+                                    else
+                                      # Fall back to creating type in this contract
+                                      TypeRegistry.register_resource_filter_type(
+                                        contract_class,
+                                        assoc_resource,
+                                        visited: visited,
+                                        depth: depth + 1
+                                      )
+                                    end
 
                 # Add association filter parameter using type reference
                 param name, type: assoc_filter_type, required: false if assoc_filter_type
@@ -152,13 +164,25 @@ module Apiwork
                 next unless assoc_resource
                 next if visited.include?(assoc_resource)
 
-                # Register associated resource's sort type (may return nil for max depth)
-                assoc_sort_type = TypeRegistry.register_resource_sort_type(
+                # Try to auto-import the association's contract and reuse its sort type
+                import_alias = TypeRegistry.auto_import_association_contract(
                   contract_class,
                   assoc_resource,
-                  visited: visited,
-                  depth: depth + 1
+                  visited
                 )
+
+                assoc_sort_type = if import_alias
+                                    # Reference imported type: e.g., :comment_sort
+                                    :"#{import_alias}_sort"
+                                  else
+                                    # Fall back to creating type in this contract
+                                    TypeRegistry.register_resource_sort_type(
+                                      contract_class,
+                                      assoc_resource,
+                                      visited: visited,
+                                      depth: depth + 1
+                                    )
+                                  end
 
                 # Add association sort parameter using type reference
                 param name, type: assoc_sort_type, required: false if assoc_sort_type
@@ -249,13 +273,25 @@ module Apiwork
                   # Serializable associations don't need params (always included)
                   param name, type: :boolean, required: false unless association_definition.serializable?
                 else
-                  # Register associated resource's include type (may return nil for max depth)
-                  assoc_include_type = TypeRegistry.register_resource_include_type(
+                  # Try to auto-import the association's contract and reuse its include type
+                  import_alias = TypeRegistry.auto_import_association_contract(
                     contract_class,
                     assoc_resource,
-                    visited: visited,
-                    depth: depth + 1
+                    visited
                   )
+
+                  assoc_include_type = if import_alias
+                                         # Reference imported type: e.g., :comment_include
+                                         :"#{import_alias}_include"
+                                       else
+                                         # Fall back to creating type in this contract
+                                         TypeRegistry.register_resource_include_type(
+                                           contract_class,
+                                           assoc_resource,
+                                           visited: visited,
+                                           depth: depth + 1
+                                         )
+                                       end
 
                   if association_definition.serializable?
                     # Serializable: allow boolean OR nested includes
@@ -281,7 +317,7 @@ module Apiwork
           # @param association_definition [AssociationDefinition] The association definition
           # @param visited [Set] Set of visited schema classes (circular reference protection)
           # @return [Symbol, nil] The type name to reference or nil if no schema
-          def register_association_type(_contract_class, association_definition, visited: Set.new)
+          def register_association_type(contract_class, association_definition, visited: Set.new)
             # Resolve the associated resource schema
             assoc_schema = resolve_association_resource(association_definition)
             return nil unless assoc_schema
@@ -290,8 +326,17 @@ module Apiwork
             # Add to visited set
             visited = visited.dup.add(assoc_schema)
 
-            # Create a temporary contract class for the associated schema
-            # This is needed to get the proper qualified type name
+            # Try to auto-import the association's contract and reuse its resource type
+            import_alias = auto_import_association_contract(contract_class, assoc_schema, visited)
+
+            if import_alias
+              # Reference imported type: e.g., :comment
+              # The base resource type is the same as the import alias
+              return import_alias
+            end
+
+            # Fall back to creating a temporary contract for the associated schema
+            # This is needed when no contract exists yet
             assoc_contract_class = Class.new(Base) do
               schema assoc_schema
             end
@@ -331,6 +376,44 @@ module Apiwork
 
             # Return the qualified type name for reference
             Descriptors::Registry.qualified_name(assoc_contract_class, resource_type_name)
+          end
+
+          # Auto-import association contract to reuse its types
+          #
+          # When processing associations, check if the association's schema has a contract.
+          # If it does, automatically import that contract so we can reference its types
+          # instead of creating duplicates.
+          #
+          # Uses schema's root_key.singular as the import alias for consistency.
+          # Example: CommentSchema -> import as :comment
+          #
+          # This enables type reuse:
+          # - :comment_filter instead of creating new filter type
+          # - :comment_sort instead of creating new sort type
+          # - :comment instead of creating temporary contract
+          #
+          # @param parent_contract [Class] The parent contract doing the importing
+          # @param association_schema [Class] The schema class for the association
+          # @param visited [Set] Set of visited schemas for circular reference protection
+          # @return [Symbol, nil] Import alias if successful, nil otherwise
+          def auto_import_association_contract(parent_contract, association_schema, visited)
+            # Guard: circular reference protection
+            return nil if visited.include?(association_schema)
+
+            # Find contract via registry
+            association_contract = SchemaContractRegistry.contract_for_schema(association_schema)
+            return nil unless association_contract
+
+            # Use schema's root_key.singular as alias (convention)
+            # Convert to symbol since root_key.singular returns a String
+            alias_name = association_schema.root_key.singular.to_sym
+
+            # Import if not already done (idempotent)
+            unless parent_contract.imports.key?(alias_name)
+              parent_contract.import(association_contract, as: alias_name)
+            end
+
+            alias_name
           end
 
           # Register all schema enums at contract level for reuse
