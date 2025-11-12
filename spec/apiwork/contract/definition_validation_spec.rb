@@ -65,7 +65,7 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
         expect(result[:errors].first.meta[:actual]).to eq(:string)
       end
 
-      it 'rejects string' do
+      it 'rejects non-date string' do
         result = definition.validate({ archived_at: 'not-a-date' })
 
         expect(result[:errors]).not_to be_empty
@@ -73,7 +73,7 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
         expect(result[:errors].first.code).to eq(:invalid_type)
       end
 
-      it 'rejects string' do
+      it 'rejects invalid date string' do
         result = definition.validate({ archived_at: '2024-01-32' })
 
         expect(result[:errors]).not_to be_empty

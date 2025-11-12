@@ -3,13 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe 'Enum resolution in custom types - basic functionality', type: :integration do
-  # Test that the original user issue is fixed:
-  # Enums defined at action level CAN be referenced inside custom types without errors
-
   before(:all) do
     Object.send(:remove_const, :TestEnumResolutionContract) if defined?(TestEnumResolutionContract)
 
-    # This was the user's failing scenario
     class TestEnumResolutionContract < Apiwork::Contract::Base
       action :archive do
         enum :hahahehe, %w[asc desc]
@@ -35,8 +31,6 @@ RSpec.describe 'Enum resolution in custom types - basic functionality', type: :i
     expect do
       action_def = TestEnumResolutionContract.action_definition(:archive)
       input_def = action_def.merged_input_definition
-
-      # Just accessing the definition should work without errors
       input_def.params
     end.not_to raise_error
   end
@@ -50,8 +44,6 @@ RSpec.describe 'Enum resolution in custom types - basic functionality', type: :i
 
   it 'includes the enum in the registered enums list' do
     all_enums = Apiwork::Contract::Descriptors::Registry.serialize_all_enums_for_api('api/v1')
-
-    # The enum should be registered with qualified name
     expect(all_enums).to have_key(:test_enum_resolution_archive_hahahehe)
     expect(all_enums[:test_enum_resolution_archive_hahahehe]).to eq(%w[asc desc])
   end
