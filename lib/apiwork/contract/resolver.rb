@@ -42,7 +42,7 @@ module Apiwork
 
       # Legacy method for backward compatibility
       # Returns ActionDefinition instead of Contract instance
-      def self.resolve(controller_class, action_name, metadata: nil)
+      def self.resolve(controller_class:, action_name:, metadata: nil)
         contract = call(controller_class: controller_class, action_name: action_name, metadata: metadata)
         contract.class.action_definition(action_name)
       end

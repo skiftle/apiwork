@@ -100,8 +100,8 @@ module Apiwork
             end
 
             temp_definition = Apiwork::Contract::Definition.new(
-              :input,
-              temp_contract,
+              type: :input,
+              contract_class: temp_contract,
               action_name: action_name,
               parent_scope: parent_scope
             )

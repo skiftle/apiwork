@@ -9,11 +9,11 @@ module Apiwork
 
       attr_reader :name, :type, :schema_class, :allow_destroy, :model_class
 
-      def initialize(name, type:, klass:, **options)
+      def initialize(name, type:, schema_class:, **options)
         @name = name
         @type = type # :has_one, :has_many, :belongs_to
-        @klass = klass
-        @model_class = klass.model_class
+        @klass = schema_class
+        @model_class = schema_class.model_class
         @schema_class = options[:schema]
         @filterable = options.fetch(:filterable, false)
         @sortable = options.fetch(:sortable, false)

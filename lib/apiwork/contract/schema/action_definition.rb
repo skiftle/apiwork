@@ -28,8 +28,8 @@ module Apiwork
           @reset_input = replace if replace
 
           @input_definition ||= Definition.new(
-            :input,
-            contract_class,
+            type: :input,
+            contract_class: contract_class,
             action_name: action_name,
             parent_scope: self
           )
@@ -128,8 +128,8 @@ module Apiwork
 
           rc = contract_class.schema_class
           virtual_def = Definition.new(
-            :input,
-            contract_class,
+            type: :input,
+            contract_class: contract_class,
             action_name: action_name,
             parent_scope: self
           )
@@ -155,8 +155,8 @@ module Apiwork
 
           schema_class = contract_class.schema_class
           virtual_def = Definition.new(
-            :output,
-            contract_class,
+            type: :output,
+            contract_class: contract_class,
             action_name: action_name,
             parent_scope: self
           )
@@ -197,8 +197,8 @@ module Apiwork
 
           rc = contract_class.schema_class
           @input_definition = Definition.new(
-            :input,
-            contract_class,
+            type: :input,
+            contract_class: contract_class,
             action_name: action_name,
             parent_scope: self
           )
@@ -226,8 +226,8 @@ module Apiwork
 
           rc = contract_class.schema_class
           @output_definition = Definition.new(
-            :output,
-            contract_class,
+            type: :output,
+            contract_class: contract_class,
             action_name: action_name,
             parent_scope: self
           )

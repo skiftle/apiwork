@@ -153,6 +153,34 @@ Use the noun first (what it is), followed by its property (how it is).
 | `user_serialized`    | `serialized_user`    |
 | `params_query`       | `query_params`       |
 
+### Don't shorten or change variable names
+
+**Keep the full semantic name when deriving new variables.** Don't abbreviate or rename just to be brief.
+
+```ruby
+# ✅ Good - preserves full semantic meaning
+action_name_sym = action_name.to_sym
+user_id_str = user_id.to_s
+params_json = params.to_json
+invoice_total = invoice.total
+customer_email = customer.email
+
+# ❌ Bad - loses or changes semantic meaning
+action_sym = action_name.to_sym       # What action? "name" is lost
+id_str = user_id.to_s                 # Which ID? "user" is lost
+json_data = params.to_json            # Renames "params" to "data"
+total = invoice.total                 # "invoice" context is lost
+email = customer.email                # Which email? "customer" is lost
+```
+
+**The rule:** Append modifiers to the full name, never replace or shorten it.
+
+- Type conversions: `original_name_type` (e.g., `action_name_sym`)
+- Derived values: `original_name_property` (e.g., `invoice_total`)
+- Transformed data: `transformed_original_name` (e.g., `serialized_user`)
+
+This keeps variables **traceable** — you can always see where the data came from.
+
 ### Positive predicates
 
 Name predicates positively: `allowed?`, `active?`, not `not_allowed?`.

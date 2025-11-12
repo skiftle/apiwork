@@ -22,7 +22,7 @@ module Apiwork
     end
 
     def generate_schema(type, path, **options)
-      Generation::Registry[type].generate(path, **options)
+      Generation::Registry[type].generate(path: path, **options)
     end
 
     def register_global_descriptors(&block)

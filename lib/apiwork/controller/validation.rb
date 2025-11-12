@@ -57,7 +57,7 @@ module Apiwork
 
       # Get current action definition for this action
       def current_action_definition
-        @current_action_definition ||= Contract::Resolver.resolve(self.class, action_name.to_sym)
+        @current_action_definition ||= Contract::Resolver.resolve(controller_class: self.class, action_name: action_name.to_sym)
       end
 
       # Parse request parameters from query string and body

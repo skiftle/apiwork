@@ -35,7 +35,7 @@ module Apiwork
 
         # Handle shape block (for :object or :array with :object items)
         if block_given?
-          shape_def = Definition.new(:input, @contract_class)
+          shape_def = Definition.new(type: :input, contract_class: @contract_class)
           shape_def.instance_eval(&block)
           variant_def[:shape] = shape_def
         end

@@ -77,7 +77,7 @@ module Apiwork
 
       # Find action definition for current action
       def find_action_definition
-        Contract::Resolver.resolve(self.class, action_name.to_sym, metadata: find_action_metadata)
+        Contract::Resolver.resolve(controller_class: self.class, action_name: action_name.to_sym, metadata: find_action_metadata)
       end
 
       # Extract query params for ActionOutput
