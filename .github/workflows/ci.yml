@@ -4,12 +4,18 @@ on:
   push:
     branches: [ master ]
   pull_request:
-    branches: [ '**' ]
   workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   lint:
-    name: Lint (RuboCop)
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,7 +23,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.3'
+          ruby-version: '3.2'
 
       - name: Install dependencies
         run: |
@@ -30,10 +36,12 @@ jobs:
   test:
     name: Test (Ruby ${{ matrix.ruby }})
     runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
       matrix:
         ruby: ['3.2', '3.3', '3.4']
+        experimental: [false, false, true]
 
     steps:
       - uses: actions/checkout@v4
@@ -60,7 +68,7 @@ jobs:
     needs: [lint, test]
     runs-on: ubuntu-latest
     steps:
-      - name: Check build status
+      - name: Check status
         run: |
           if [ "${{ needs.lint.result }}" != "success" ] || [ "${{ needs.test.result }}" != "success" ]; then
             echo "One or more jobs failed"
