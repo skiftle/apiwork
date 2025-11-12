@@ -34,7 +34,8 @@
       "Bash(for:*)",
       "Bash(done)",
       "Bash(sort:*)",
-      "Bash(xargs ls:*)"
+      "Bash(xargs ls:*)",
+      "Bash(git log:*)"
     ],
     "deny": [],
     "ask": []

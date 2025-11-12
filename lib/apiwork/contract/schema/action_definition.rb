@@ -188,26 +188,12 @@ module Apiwork
           return false unless api&.metadata
 
           # Check if action is defined under collection in any resource using this contract
-          is_collection_in_resources?(api.metadata.resources)
-        end
+          searcher = Apiwork::MetadataSearcher.new(api.metadata)
+          searcher.search_resources do |resource_metadata|
+            next unless resource_uses_contract?(resource_metadata, contract_class)
 
-        # Recursively check if action is defined as collection action in resources
-        def is_collection_in_resources?(resources)
-          resources.each_value do |resource_metadata|
-            if resource_uses_contract?(resource_metadata, contract_class)
-              # Check if this action is in collections hash
-              if resource_metadata[:collections]&.key?(action_name.to_sym)
-                return true
-              end
-            end
-
-            # Recursively search nested resources
-            if resource_metadata[:resources]&.any?
-              return true if is_collection_in_resources?(resource_metadata[:resources])
-            end
-          end
-
-          false
+            true if resource_metadata[:collections]&.key?(action_name.to_sym)
+          end || false
         end
 
         def auto_generate_input_if_needed

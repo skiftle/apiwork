@@ -258,11 +258,8 @@ module Apiwork
 
       # Check if a resource (or its nested resources) uses a specific contract
       def resource_uses_contract?(resource_metadata, contract)
-        return true if matches_explicit_contract?(resource_metadata, contract)
-        return true if matches_schema_contract?(resource_metadata, contract)
-        return true if nested_resource_uses_contract?(resource_metadata, contract)
-
-        false
+        matches_explicit_contract?(resource_metadata, contract) ||
+          matches_schema_contract?(resource_metadata, contract)
       end
 
       def matches_explicit_contract?(resource_metadata, contract)
@@ -279,17 +276,6 @@ module Apiwork
         return false unless contract.schema_class
 
         schema_class == contract.schema_class
-      end
-
-      def nested_resource_uses_contract?(resource_metadata, contract)
-        nested_resources = resource_metadata[:resources]
-        return false unless nested_resources&.any?
-
-        nested_resources.each_value do |nested_resource|
-          return true if resource_uses_contract?(nested_resource, contract)
-        end
-
-        false
       end
 
       def constantize_contract_safe(contract_class_name)
