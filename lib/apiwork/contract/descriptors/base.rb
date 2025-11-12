@@ -7,7 +7,7 @@ module Apiwork
         class << self
           def register_global(name, payload)
             if global_storage.key?(name)
-              raise ArgumentError, "Global #{descriptor_type} :#{name} already registered"
+              raise ArgumentError, "Global #{storage_name.to_s.singularize} :#{name} already registered"
             end
 
             global_storage[name] = payload
@@ -153,10 +153,6 @@ module Apiwork
 
           def storage_name
             raise NotImplementedError, "Subclasses must implement storage_name"
-          end
-
-          def descriptor_type
-            storage_name.to_s.singularize
           end
 
           def global_storage
