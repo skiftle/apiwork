@@ -86,9 +86,7 @@ module Apiwork
         }
 
         # Add requestBody if action has input
-        if action_data[:input]
-          operation[:requestBody] = build_request_body(action_data[:input], action_name)
-        end
+        operation[:requestBody] = build_request_body(action_data[:input], action_name) if action_data[:input]
 
         operation.compact
       end
@@ -99,7 +97,7 @@ module Apiwork
       # Applies key_transform for consistency
       # Supports deep nesting: accounts/:account_id/shifts/:shift_id/breaks -> account_shift_break_index
       # For camelCase transforms, concatenates without underscores (e.g., accountsLeaveRequestsApprove)
-      def operation_id(resource_name, resource_path, action_name, parent_paths = [])
+      def operation_id(_resource_name, resource_path, action_name, parent_paths = [])
         # Build parts array starting with parent paths (in snake_case)
         parts = parent_paths.dup
 
@@ -161,7 +159,7 @@ module Apiwork
       end
 
       # Build OpenAPI responses from action output
-      def build_responses(action_name, output_params, action_error_codes = [])
+      def build_responses(_action_name, output_params, action_error_codes = [])
         responses = {}
 
         # Success response
@@ -284,9 +282,7 @@ module Apiwork
         schema = map_type_definition(definition, action_name)
 
         # Handle enum references or inline enums
-        if definition[:enum]
-          schema[:enum] = resolve_enum(definition[:enum])
-        end
+        schema[:enum] = resolve_enum(definition[:enum]) if definition[:enum]
 
         apply_nullable(schema, definition[:nullable])
       end
@@ -324,11 +320,9 @@ module Apiwork
         }
 
         # Map each property in shape
-        if definition[:shape]
-          definition[:shape].each do |property_name, property_def|
-            transformed_key = transform_key(property_name)
-            result[:properties][transformed_key] = map_field_definition(property_def, action_name)
-          end
+        definition[:shape]&.each do |property_name, property_def|
+          transformed_key = transform_key(property_name)
+          result[:properties][transformed_key] = map_field_definition(property_def, action_name)
         end
 
         # Collect required fields from shape (skip for update actions)
@@ -399,17 +393,17 @@ module Apiwork
         result = { oneOf: one_of_schemas }
 
         # Add discriminator with mapping if available
-        if mapping.any?
-          result[:discriminator] = {
-            propertyName: discriminator_field.to_s,
-            mapping:
-          }
-        else
-          # No mapping, just propertyName
-          result[:discriminator] = {
-            propertyName: discriminator_field.to_s
-          }
-        end
+        result[:discriminator] = if mapping.any?
+                                   {
+                                     propertyName: discriminator_field.to_s,
+                                     mapping:
+                                   }
+                                 else
+                                   # No mapping, just propertyName
+                                   {
+                                     propertyName: discriminator_field.to_s
+                                   }
+                                 end
 
         result
       end

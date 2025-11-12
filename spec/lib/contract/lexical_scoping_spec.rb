@@ -37,16 +37,16 @@ RSpec.describe 'Contract custom type lexical scoping' do
     it 'are available in all action inputs' do
       first_action = contract_class.action_definition(:first_action)
       result = first_action.input_definition.validate({
-        data: { global_field: 'test' }
-      })
+                                                        data: { global_field: 'test' }
+                                                      })
 
       expect(result[:errors]).to be_empty
       expect(result[:params][:data][:global_field]).to eq('test')
 
       second_action = contract_class.action_definition(:second_action)
       result2 = second_action.input_definition.validate({
-        data: { global_field: 'test2' }
-      })
+                                                          data: { global_field: 'test2' }
+                                                        })
 
       expect(result2[:errors]).to be_empty
       expect(result2[:params][:data][:global_field]).to eq('test2')
@@ -55,8 +55,8 @@ RSpec.describe 'Contract custom type lexical scoping' do
     it 'are available in action outputs' do
       action_definition = contract_class.action_definition(:first_action)
       result = action_definition.output_definition.validate({
-        result: { global_field: 'output_test' }
-      })
+                                                              result: { global_field: 'output_test' }
+                                                            })
 
       expect(result[:errors]).to be_empty
       expect(result[:params][:result][:global_field]).to eq('output_test')
@@ -112,8 +112,8 @@ RSpec.describe 'Contract custom type lexical scoping' do
 
       # Should validate using action-scoped version (action_field, not global_field)
       result = first_action.input_definition.validate({
-        shadowed: { action_field: 42 }
-      })
+                                                        shadowed: { action_field: 42 }
+                                                      })
 
       expect(result[:errors]).to be_empty
       expect(result[:params][:shadowed][:action_field]).to eq(42)
@@ -124,8 +124,8 @@ RSpec.describe 'Contract custom type lexical scoping' do
 
       # Should fail with global_field since action scope shadows it
       result = first_action.input_definition.validate({
-        shadowed: { global_field: 'test' }
-      })
+                                                        shadowed: { global_field: 'test' }
+                                                      })
 
       expect(result[:errors]).not_to be_empty
       expect(result[:errors].first.code).to eq(:field_missing)
@@ -136,15 +136,15 @@ RSpec.describe 'Contract custom type lexical scoping' do
       action_definition = contract_class.action_definition(:first_action)
 
       input_result = action_definition.input_definition.validate({
-        unique: { unique_field: true }
-      })
+                                                                   unique: { unique_field: true }
+                                                                 })
 
       expect(input_result[:errors]).to be_empty
 
       # Output should also use shadowed version
       output_result = action_definition.output_definition.validate({
-        shadowed_out: { action_field: 123 }
-      })
+                                                                     shadowed_out: { action_field: 123 }
+                                                                   })
 
       expect(output_result[:errors]).to be_empty
       expect(output_result[:params][:shadowed_out][:action_field]).to eq(123)
@@ -155,8 +155,8 @@ RSpec.describe 'Contract custom type lexical scoping' do
 
       # Should use global version in second_action
       result = second_action.input_definition.validate({
-        global_version: { global_field: 'works' }
-      })
+                                                         global_version: { global_field: 'works' }
+                                                       })
 
       expect(result[:errors]).to be_empty
       expect(result[:params][:global_version][:global_field]).to eq('works')
@@ -221,11 +221,11 @@ RSpec.describe 'Contract custom type lexical scoping' do
 
       # Should use input-scoped version (input_field)
       result = action_definition.input_definition.validate({
-        triple_shadowed: { input_field: true }
-      })
+                                                             triple_shadowed: { input_field: true }
+                                                           })
 
       expect(result[:errors]).to be_empty
-      expect(result[:params][:triple_shadowed][:input_field]).to eq(true)
+      expect(result[:params][:triple_shadowed][:input_field]).to be(true)
     end
 
     it 'output-scoped types shadow action scope types' do
@@ -233,8 +233,8 @@ RSpec.describe 'Contract custom type lexical scoping' do
 
       # Should use output-scoped version (output_field)
       result = action_definition.output_definition.validate({
-        output_shadowed: { output_field: 3.14 }
-      })
+                                                              output_shadowed: { output_field: 3.14 }
+                                                            })
 
       expect(result[:errors]).to be_empty
       expect(result[:params][:output_shadowed][:output_field]).to eq(3.14)
@@ -245,8 +245,8 @@ RSpec.describe 'Contract custom type lexical scoping' do
 
       # Should fail with action_field since input scope shadows it
       result = action_definition.input_definition.validate({
-        triple_shadowed: { action_field: 42 }
-      })
+                                                             triple_shadowed: { action_field: 42 }
+                                                           })
 
       expect(result[:errors]).not_to be_empty
       expect(result[:errors].first.code).to eq(:field_missing)
@@ -258,8 +258,8 @@ RSpec.describe 'Contract custom type lexical scoping' do
 
       # Should fail - input_only_type not in output scope
       result = action_definition.output_definition.validate({
-        output_exclusive_param: { input_exclusive: 'test' }
-      })
+                                                              output_exclusive_param: { input_exclusive: 'test' }
+                                                            })
 
       # This should error because output_exclusive_param expects output_only_type
       # which has output_exclusive field, not input_exclusive
@@ -271,8 +271,8 @@ RSpec.describe 'Contract custom type lexical scoping' do
 
       # Should fail - output_only_type not in input scope
       result = action_definition.input_definition.validate({
-        input_exclusive_param: { output_exclusive: 123 }
-      })
+                                                             input_exclusive_param: { output_exclusive: 123 }
+                                                           })
 
       # This should error because input_exclusive_param expects input_only_type
       # which has input_exclusive field, not output_exclusive
@@ -320,20 +320,20 @@ RSpec.describe 'Contract custom type lexical scoping' do
 
       # Test root level access
       result = action_definition.input_definition.validate({
-        from_root: { root: 'test_root' }
-      })
+                                                             from_root: { root: 'test_root' }
+                                                           })
       expect(result[:errors]).to be_empty
 
       # Test action level access
       result = action_definition.input_definition.validate({
-        from_action: { action: 'test_action' }
-      })
+                                                             from_action: { action: 'test_action' }
+                                                           })
       expect(result[:errors]).to be_empty
 
       # Test input level access
       result = action_definition.input_definition.validate({
-        from_input: { input: 'test_input' }
-      })
+                                                             from_input: { input: 'test_input' }
+                                                           })
       expect(result[:errors]).to be_empty
     end
   end
@@ -372,11 +372,11 @@ RSpec.describe 'Contract custom type lexical scoping' do
       action_definition = contract_class.action_definition(:list_action)
 
       result = action_definition.input_definition.validate({
-        items: [
-          { name: 'first', count: 1 },
-          { name: 'second', count: 2 }
-        ]
-      })
+                                                             items: [
+                                                               { name: 'first', count: 1 },
+                                                               { name: 'second', count: 2 }
+                                                             ]
+                                                           })
 
       expect(result[:errors]).to be_empty
       expect(result[:params][:items].length).to eq(2)
@@ -388,15 +388,15 @@ RSpec.describe 'Contract custom type lexical scoping' do
       action_definition = contract_class.action_definition(:list_action)
 
       result = action_definition.input_definition.validate({
-        special_items: [
-          { id: 1, special_flag: true },
-          { id: 2, special_flag: false }
-        ]
-      })
+                                                             special_items: [
+                                                               { id: 1, special_flag: true },
+                                                               { id: 2, special_flag: false }
+                                                             ]
+                                                           })
 
       expect(result[:errors]).to be_empty
       expect(result[:params][:special_items].length).to eq(2)
-      expect(result[:params][:special_items][0][:special_flag]).to eq(true)
+      expect(result[:params][:special_items][0][:special_flag]).to be(true)
     end
   end
 
@@ -449,8 +449,8 @@ RSpec.describe 'Contract custom type lexical scoping' do
       action_definition = contract_class.action_definition(:union_action)
 
       result = action_definition.input_definition.validate({
-        mixed_data: { text: 'hello' }
-      })
+                                                             mixed_data: { text: 'hello' }
+                                                           })
 
       expect(result[:errors]).to be_empty
       expect(result[:params][:mixed_data][:text]).to eq('hello')
@@ -460,8 +460,8 @@ RSpec.describe 'Contract custom type lexical scoping' do
       action_definition = contract_class.action_definition(:union_action)
 
       result = action_definition.input_definition.validate({
-        mixed_data: { number: 42 }
-      })
+                                                             mixed_data: { number: 42 }
+                                                           })
 
       expect(result[:errors]).to be_empty
       expect(result[:params][:mixed_data][:number]).to eq(42)
@@ -471,11 +471,11 @@ RSpec.describe 'Contract custom type lexical scoping' do
       action_definition = contract_class.action_definition(:union_action)
 
       result = action_definition.input_definition.validate({
-        mixed_data: { flag: true }
-      })
+                                                             mixed_data: { flag: true }
+                                                           })
 
       expect(result[:errors]).to be_empty
-      expect(result[:params][:mixed_data][:flag]).to eq(true)
+      expect(result[:params][:mixed_data][:flag]).to be(true)
     end
 
     it 'respects scope isolation in output unions' do
@@ -483,14 +483,14 @@ RSpec.describe 'Contract custom type lexical scoping' do
 
       # Should work with global type
       result = action_definition.output_definition.validate({
-        limited_union: { text: 'output' }
-      })
+                                                              limited_union: { text: 'output' }
+                                                            })
       expect(result[:errors]).to be_empty
 
       # Should work with action type
       result = action_definition.output_definition.validate({
-        limited_union: { number: 99 }
-      })
+                                                              limited_union: { number: 99 }
+                                                            })
       expect(result[:errors]).to be_empty
     end
   end
@@ -520,8 +520,8 @@ RSpec.describe 'Contract custom type lexical scoping' do
       # The behavior here depends on how Definition handles unknown types
       # Based on the code, it will just skip validation if type is not found
       result = action_definition.input_definition.validate({
-        missing: { any: 'value' }
-      })
+                                                             missing: { any: 'value' }
+                                                           })
 
       # This might pass (if undefined types are treated as any)
       # or fail (if they're strictly validated) - documenting current behavior
@@ -570,10 +570,10 @@ RSpec.describe 'Contract custom type lexical scoping' do
       # In this case, the input scope has access to the action-scoped :inner (which shadows global)
       # So it should use action_value, not value
       result = action_definition.input_definition.validate({
-        data: {
-          nested: { action_value: 123 }
-        }
-      })
+                                                             data: {
+                                                               nested: { action_value: 123 }
+                                                             }
+                                                           })
 
       expect(result[:errors]).to be_empty
       expect(result[:params][:data][:nested][:action_value]).to eq(123)

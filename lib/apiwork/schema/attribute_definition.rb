@@ -168,7 +168,7 @@ module Apiwork
             when :nil_to_empty
               val.nil? ? '' : val
             when :blank_to_nil
-              val.blank? ? nil : val
+              val.presence
             else
               val
             end
@@ -211,8 +211,6 @@ module Apiwork
         # Return true if column allows NULL, false if NOT NULL
         column&.null || false
       end
-
-      private
 
       def column_for(name)
         @model_class.columns_hash[name.to_s]

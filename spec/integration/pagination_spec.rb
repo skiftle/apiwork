@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Pagination API', type: :request do
-  before(:each) do
+  before do
     # Create 25 posts for pagination testing
     25.times do |i|
       Post.create!(
@@ -21,7 +21,7 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(10)
       expect(json['meta']['page']['current']).to eq(1)
       expect(json['meta']['page']['total']).to eq(3)
@@ -33,7 +33,7 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(10)
       expect(json['meta']['page']['current']).to eq(2)
     end
@@ -43,7 +43,7 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(5)
       expect(json['meta']['page']['current']).to eq(3)
       expect(json['meta']['page']['total']).to eq(3)
@@ -54,7 +54,7 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(5)
       expect(json['meta']['page']['total']).to eq(5)
     end
@@ -64,7 +64,7 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts']).to eq([])
       expect(json['meta']['page']['current']).to eq(100)
     end
@@ -74,7 +74,7 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['meta']['page']['current']).to eq(1)
     end
 
@@ -83,7 +83,7 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       # Default page size should be 20 or similar
       expect(json['posts'].length).to be <= 25
       expect(json['meta']['page']).to be_present
@@ -97,10 +97,10 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(5)
       json['posts'].each do |post|
-        expect(post['published']).to eq(true)
+        expect(post['published']).to be(true)
       end
       # 13 even-numbered posts out of 25 total
       expect(json['meta']['page']['items']).to eq(13)
@@ -114,7 +114,7 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(5)
 
       titles = json['posts'].map { |p| p['title'] }
@@ -131,11 +131,11 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(3)
 
       json['posts'].each do |post|
-        expect(post['published']).to eq(true)
+        expect(post['published']).to be(true)
       end
 
       titles = json['posts'].map { |p| p['title'] }
@@ -147,7 +147,7 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(false)
+      expect(json['ok']).to be(false)
       expect(json['errors']).to be_present
     end
 
@@ -156,16 +156,16 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(false)
+      expect(json['ok']).to be(false)
       expect(json['errors']).to be_present
     end
 
     it 'enforces maximum page size' do
-      get '/api/v1/posts', params: { page: { number: 1, size: 10000 } }
+      get '/api/v1/posts', params: { page: { number: 1, size: 10_000 } }
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(false)
+      expect(json['ok']).to be(false)
       expect(json['errors']).to be_present
     end
   end

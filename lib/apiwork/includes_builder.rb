@@ -88,13 +88,13 @@ module Apiwork
         elsif value.is_a?(Hash)
           # Nested include - deep merge with existing (for serializable associations)
           normalized = normalize_nested_includes(value)
-          if combined.key?(key_sym) && combined[key_sym].is_a?(Hash)
-            # Association already exists (likely serializable) - deep merge nested includes
-            combined[key_sym] = deep_merge_includes(combined[key_sym], normalized)
-          else
-            # New association - set directly
-            combined[key_sym] = normalized
-          end
+          combined[key_sym] = if combined.key?(key_sym) && combined[key_sym].is_a?(Hash)
+                                # Association already exists (likely serializable) - deep merge nested includes
+                                deep_merge_includes(combined[key_sym], normalized)
+                              else
+                                # New association - set directly
+                                normalized
+                              end
         elsif explicitly_true?(value)
           combined[key_sym] ||= {}
         end
@@ -111,11 +111,11 @@ module Apiwork
       result = base.dup
       override.each do |key, value|
         key_sym = key.to_sym
-        if result[key_sym].is_a?(Hash) && value.is_a?(Hash)
-          result[key_sym] = deep_merge_includes(result[key_sym], value)
-        else
-          result[key_sym] = value
-        end
+        result[key_sym] = if result[key_sym].is_a?(Hash) && value.is_a?(Hash)
+                            deep_merge_includes(result[key_sym], value)
+                          else
+                            value
+                          end
       end
       result
     end
@@ -129,14 +129,14 @@ module Apiwork
 
         next if explicitly_false?(value)
 
-        if explicitly_true?(value)
-          result[key_sym] = {}
-        elsif value.is_a?(Hash)
-          result[key_sym] = normalize_nested_includes(value)
-        else
-          # Unknown value type - default to empty hash
-          result[key_sym] = {}
-        end
+        result[key_sym] = if explicitly_true?(value)
+                            {}
+                          elsif value.is_a?(Hash)
+                            normalize_nested_includes(value)
+                          else
+                            # Unknown value type - default to empty hash
+                            {}
+                          end
       end
       result
     end
@@ -154,9 +154,7 @@ module Apiwork
       schema_class = definition.schema_class || Apiwork::Schema::Resolver.from_association(association, schema)
 
       # Handle string class names
-      if schema_class.is_a?(String)
-        schema_class = constantize_safe(schema_class)
-      end
+      schema_class = constantize_safe(schema_class) if schema_class.is_a?(String)
 
       schema_class
     end
@@ -211,15 +209,15 @@ module Apiwork
           result[key_sym] = {}
 
           # Check if there are nested associations to extract
-          if value.is_a?(Hash)
-            nested_schema = resolve_nested_schema(association_definition)
+          next unless value.is_a?(Hash)
 
-            if nested_schema&.respond_to?(:association_definitions)
-              extractor = self.class.new(schema: nested_schema)
-              nested_includes = extractor.extract_from_filter(value, visited)
-              result[key_sym] = nested_includes if nested_includes.any?
-            end
-          end
+          nested_schema = resolve_nested_schema(association_definition)
+
+          next unless nested_schema.respond_to?(:association_definitions)
+
+          extractor = self.class.new(schema: nested_schema)
+          nested_includes = extractor.extract_from_filter(value, visited)
+          result[key_sym] = nested_includes if nested_includes.any?
         end
 
         result
@@ -247,15 +245,15 @@ module Apiwork
             result[key_sym] = {}
 
             # Check if there are nested associations to extract
-            if value.is_a?(Hash)
-              nested_schema = resolve_nested_schema(association_definition)
+            next unless value.is_a?(Hash)
 
-              if nested_schema&.respond_to?(:association_definitions)
-                extractor = self.class.new(schema: nested_schema)
-                nested_includes = extractor.extract_from_sort(value, visited)
-                result[key_sym] = nested_includes if nested_includes.any?
-              end
-            end
+            nested_schema = resolve_nested_schema(association_definition)
+
+            next unless nested_schema.respond_to?(:association_definitions)
+
+            extractor = self.class.new(schema: nested_schema)
+            nested_includes = extractor.extract_from_sort(value, visited)
+            result[key_sym] = nested_includes if nested_includes.any?
           end
         end
 
@@ -268,9 +266,7 @@ module Apiwork
         nested_schema = association_definition.schema_class
 
         # Handle string class names
-        if nested_schema.is_a?(String)
-          nested_schema = constantize_safe(nested_schema)
-        end
+        nested_schema = constantize_safe(nested_schema) if nested_schema.is_a?(String)
 
         nested_schema
       end

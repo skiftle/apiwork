@@ -160,9 +160,7 @@ module Apiwork
       def each_action(resource_data, &block)
         return unless resource_data[:actions]
 
-        resource_data[:actions].each do |action_name, action_data|
-          block.call(action_name, action_data)
-        end
+        resource_data[:actions].each(&block)
       end
 
       # Determine HTTP method for standard action
@@ -217,7 +215,7 @@ module Apiwork
       # @yield [resource_name, resource_data, parent_path] Yields each resource
       def iterate_resources(resources_hash, parent_path = nil, &block)
         resources_hash.each do |resource_name, resource_data|
-          block.call(resource_name, resource_data, parent_path)
+          yield(resource_name, resource_data, parent_path)
 
           # Recurse into nested resources
           if resource_data[:resources]

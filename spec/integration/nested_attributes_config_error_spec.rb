@@ -21,7 +21,7 @@ RSpec.describe 'Nested Attributes Configuration Errors', type: :request do
       end
 
       # Attempting to create a resource with writable: true should raise ConfigurationError
-      expect {
+      expect do
         Class.new(Apiwork::Schema::Base) do
           model temp_model
           root :temp_article
@@ -33,7 +33,8 @@ RSpec.describe 'Nested Attributes Configuration Errors', type: :request do
           # doesn't have accepts_nested_attributes_for :comments
           has_many :comments, class_name: 'Api::V1::CommentResource', writable: true
         end
-      }.to raise_error(Apiwork::ConfigurationError, /doesn't accept nested attributes.*accepts_nested_attributes_for :comments/)
+      end.to raise_error(Apiwork::ConfigurationError,
+                         /doesn't accept nested attributes.*accepts_nested_attributes_for :comments/)
     end
 
     it 'succeeds when model has accepts_nested_attributes_for configured' do
@@ -50,7 +51,7 @@ RSpec.describe 'Nested Attributes Configuration Errors', type: :request do
       end
 
       # This should NOT raise an error
-      expect {
+      expect do
         Class.new(Apiwork::Schema::Base) do
           model temp_model
           root :proper_article
@@ -61,7 +62,7 @@ RSpec.describe 'Nested Attributes Configuration Errors', type: :request do
           # This is fine because ProperlyConfiguredModel has accepts_nested_attributes_for
           has_many :comments, class_name: 'Api::V1::CommentResource', writable: true
         end
-      }.not_to raise_error
+      end.not_to raise_error
     end
   end
 
@@ -83,7 +84,7 @@ RSpec.describe 'Nested Attributes Configuration Errors', type: :request do
 
           has_many :comments, class_name: 'Api::V1::CommentResource', writable: true
         end
-        fail 'Expected ConfigurationError to be raised'
+        raise 'Expected ConfigurationError to be raised'
       rescue Apiwork::ConfigurationError => e
         # Error message should include:
         expect(e.message).to include('TestModelForError')
@@ -94,6 +95,6 @@ RSpec.describe 'Nested Attributes Configuration Errors', type: :request do
     end
   end
 
-  # Note: Runtime behavior with proper configuration is already tested in
+  # NOTE: Runtime behavior with proper configuration is already tested in
   # spec/integration/nested_attributes_spec.rb, so we don't duplicate it here
 end

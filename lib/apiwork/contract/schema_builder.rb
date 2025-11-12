@@ -54,14 +54,10 @@ module Apiwork
 
       def build_openapi_property(options)
         # Handle union types
-        if options[:type] == :union
-          return build_openapi_union(options[:union])
-        end
+        return build_openapi_union(options[:union]) if options[:type] == :union
 
         # Handle custom types
-        if options[:custom_type]
-          return build_openapi_schema(options[:shape])
-        end
+        return build_openapi_schema(options[:shape]) if options[:custom_type]
 
         base = case options[:type]
                when :string
@@ -87,7 +83,8 @@ module Apiwork
                when :array
                  items = if options[:of]
                            # Check if 'of' is a custom type (with scope resolution)
-                           custom_type_block = definition.contract_class.resolve_custom_type(options[:of], definition.parent_scope)
+                           custom_type_block = definition.contract_class.resolve_custom_type(options[:of],
+                                                                                             definition.parent_scope)
                            if custom_type_block
                              custom_def = Definition.new(definition.type, definition.contract_class)
                              custom_def.instance_eval(&custom_type_block)
@@ -134,15 +131,14 @@ module Apiwork
         end
 
         # Handle shape object variant
-        if variant_def[:shape]
-          return build_openapi_schema(variant_def[:shape])
-        end
+        return build_openapi_schema(variant_def[:shape]) if variant_def[:shape]
 
         # Handle array variant
         if type == :array
           items = if variant_def[:of]
                     # Check if 'of' is a custom type (with scope resolution)
-                    custom_type_block = definition.contract_class.resolve_custom_type(variant_def[:of], definition.parent_scope)
+                    custom_type_block = definition.contract_class.resolve_custom_type(variant_def[:of],
+                                                                                      definition.parent_scope)
                     if custom_type_block
                       custom_def = Definition.new(definition.type, definition.contract_class)
                       custom_def.instance_eval(&custom_type_block)
@@ -181,9 +177,7 @@ module Apiwork
 
       def build_transport_property(options, key_transform)
         # Handle union types
-        if options[:type] == :union
-          return build_transport_union(options[:union], options[:required], key_transform)
-        end
+        return build_transport_union(options[:union], options[:required], key_transform) if options[:type] == :union
 
         # Handle custom types
         if options[:custom_type]
@@ -216,7 +210,8 @@ module Apiwork
                when :array
                  items = if options[:of]
                            # Check if 'of' is a custom type (with scope resolution)
-                           custom_type_block = definition.contract_class.resolve_custom_type(options[:of], definition.parent_scope)
+                           custom_type_block = definition.contract_class.resolve_custom_type(options[:of],
+                                                                                             definition.parent_scope)
                            if custom_type_block
                              custom_def = Definition.new(definition.type, definition.contract_class)
                              custom_def.instance_eval(&custom_type_block)
@@ -266,15 +261,14 @@ module Apiwork
         end
 
         # Handle shape object variant
-        if variant_def[:shape]
-          return build_transport_schema(variant_def[:shape], key_transform)
-        end
+        return build_transport_schema(variant_def[:shape], key_transform) if variant_def[:shape]
 
         # Handle array variant
         if type == :array
           items = if variant_def[:of]
                     # Check if 'of' is a custom type (with scope resolution)
-                    custom_type_block = definition.contract_class.resolve_custom_type(variant_def[:of], definition.parent_scope)
+                    custom_type_block = definition.contract_class.resolve_custom_type(variant_def[:of],
+                                                                                      definition.parent_scope)
                     if custom_type_block
                       custom_def = Definition.new(definition.type, definition.contract_class)
                       custom_def.instance_eval(&custom_type_block)
@@ -307,9 +301,7 @@ module Apiwork
 
       def build_zod_property(options)
         # Handle union types
-        if options[:type] == :union
-          return build_zod_union(options[:union], options[:required])
-        end
+        return build_zod_union(options[:union], options[:required]) if options[:type] == :union
 
         # Handle custom types
         if options[:custom_type]
@@ -347,7 +339,8 @@ module Apiwork
                when :array
                  items = if options[:of]
                            # Check if 'of' is a custom type (with scope resolution)
-                           custom_type_block = definition.contract_class.resolve_custom_type(options[:of], definition.parent_scope)
+                           custom_type_block = definition.contract_class.resolve_custom_type(options[:of],
+                                                                                             definition.parent_scope)
                            if custom_type_block
                              custom_def = Definition.new(definition.type, definition.contract_class)
                              custom_def.instance_eval(&custom_type_block)
@@ -395,15 +388,14 @@ module Apiwork
         end
 
         # Handle shape object variant
-        if variant_def[:shape]
-          return build_zod_schema(variant_def[:shape])
-        end
+        return build_zod_schema(variant_def[:shape]) if variant_def[:shape]
 
         # Handle array variant
         if type == :array
           items = if variant_def[:of]
                     # Check if 'of' is a custom type (with scope resolution)
-                    custom_type_block = definition.contract_class.resolve_custom_type(variant_def[:of], definition.parent_scope)
+                    custom_type_block = definition.contract_class.resolve_custom_type(variant_def[:of],
+                                                                                      definition.parent_scope)
                     if custom_type_block
                       custom_def = Definition.new(definition.type, definition.contract_class)
                       custom_def.instance_eval(&custom_type_block)
@@ -421,9 +413,7 @@ module Apiwork
 
         # Handle primitive type variant
         # If enum is present, use z.enum instead of the type
-        if variant_def[:enum]
-          return "z.enum([#{variant_def[:enum].map { |v| "'#{v}'" }.join(', ')}])"
-        end
+        return "z.enum([#{variant_def[:enum].map { |v| "'#{v}'" }.join(', ')}])" if variant_def[:enum]
 
         build_zod_property(type: type)
       end

@@ -46,7 +46,8 @@ RSpec.describe 'API Introspection' do
 
     describe 'resources' do
       it 'includes all top-level resources' do
-        expect(json[:resources].keys).to include(:posts, :comments, :articles, :persons, :restricted_posts, :safe_comments)
+        expect(json[:resources].keys).to include(:posts, :comments, :articles, :persons, :restricted_posts,
+                                                 :safe_comments)
       end
 
       describe 'posts resource' do
@@ -161,7 +162,7 @@ RSpec.describe 'API Introspection' do
             # Should only have custom-defined fields
             expect(output.keys).to eq([:deleted_id])
             expect(output[:deleted_id][:type]).to eq(:uuid)
-            expect(output[:deleted_id][:required]).to eq(true)
+            expect(output[:deleted_id][:required]).to be(true)
           end
         end
 
@@ -298,7 +299,7 @@ RSpec.describe 'API Introspection' do
         show_action = json[:resources][:posts][:actions][:show]
         # PostContract#show has error_codes 404, 403
         # Global codes (400, 500) are NOT included - they're in json[:error_codes]
-        expect(show_action[:error_codes]).to match_array([403, 404])
+        expect(show_action[:error_codes]).to contain_exactly(403, 404)
       end
 
       it 'keeps codes unique and sorted' do
@@ -321,13 +322,13 @@ RSpec.describe 'API Introspection' do
         update_action = json[:resources][:posts][:actions][:update]
 
         # show: 403, 404 (action-specific)
-        expect(show_action[:error_codes]).to match_array([403, 404])
+        expect(show_action[:error_codes]).to contain_exactly(403, 404)
 
         # create: 422 (manual + auto merged)
         expect(create_action[:error_codes]).to eq([422])
 
         # update: 404 (action-specific), 422 (auto-generated)
-        expect(update_action[:error_codes]).to match_array([404, 422])
+        expect(update_action[:error_codes]).to contain_exactly(404, 422)
       end
     end
   end

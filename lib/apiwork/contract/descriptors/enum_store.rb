@@ -5,22 +5,18 @@ module Apiwork
     module Descriptors
       class EnumStore < Base
         class << self
-          def register_global(name, values)
-            super(name, values)
-          end
-
           def register_local(scope, name, values)
             super(scope, name, values, { values: values })
           end
 
-          def serialize_all_for_api(api)
+          def serialize_all_for_api(_api)
             result = {}
 
             global_storage.each do |enum_name, values|
               result[enum_name] = values
             end
 
-            local_storage.to_a.each do |scope, enums|
+            local_storage.to_a.each do |_scope, enums|
               enums.to_a.each do |_enum_name, metadata|
                 qualified_enum_name = metadata[:qualified_name]
                 values = metadata[:values]

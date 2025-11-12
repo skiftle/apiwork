@@ -450,7 +450,8 @@ module Apiwork
               end
 
               # Validate as shape object
-              custom_def = Definition.new(@type, @contract_class, action_name: @action_name, parent_scope: @parent_scope)
+              custom_def = Definition.new(@type, @contract_class, action_name: @action_name,
+                                                                  parent_scope: @parent_scope)
               custom_def.instance_eval(&custom_type_block)
 
               shape_result = custom_def.validate(

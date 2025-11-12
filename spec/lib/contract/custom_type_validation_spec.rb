@@ -30,10 +30,10 @@ RSpec.describe 'Contract custom type unknown field validation' do
 
   it 'catches unknown fields in custom types' do
     result = action_definition.input_definition.validate({
-      custom: {
-        invalid_field: true  # This should be caught as unknown
-      }
-    })
+                                                           custom: {
+                                                             invalid_field: true # This should be caught as unknown
+                                                           }
+                                                         })
 
     expect(result[:errors]).not_to be_empty
     error = result[:errors].first
@@ -43,14 +43,14 @@ RSpec.describe 'Contract custom type unknown field validation' do
 
   it 'allows known fields in custom types' do
     result = action_definition.input_definition.validate({
-      custom: {
-        valid_field: true,
-        another_field: 'test'
-      }
-    })
+                                                           custom: {
+                                                             valid_field: true,
+                                                             another_field: 'test'
+                                                           }
+                                                         })
 
     expect(result[:errors]).to be_empty
-    expect(result[:params][:custom][:valid_field]).to eq(true)
+    expect(result[:params][:custom][:valid_field]).to be(true)
     expect(result[:params][:custom][:another_field]).to eq('test')
   end
 end

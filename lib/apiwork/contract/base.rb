@@ -180,8 +180,8 @@ module Apiwork
           return [] unless metadata
 
           actions = metadata[:actions] || []
-          actions += (metadata[:members]&.keys || [])
-          actions += (metadata[:collections]&.keys || [])
+          actions += metadata[:members]&.keys || []
+          actions += metadata[:collections]&.keys || []
           actions
         end
 

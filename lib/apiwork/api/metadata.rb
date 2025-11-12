@@ -23,10 +23,10 @@ module Apiwork
         # Derive namespaces from path
         @namespaces = path_to_namespaces(path)
 
-        @resources = {}  # Structured tree, not flat array
+        @resources = {} # Structured tree, not flat array
         @concerns = {}
         @doc = nil
-        @error_codes = []  # Global error codes for all endpoints in this API
+        @error_codes = [] # Global error codes for all endpoints in this API
       end
 
       # Derive namespace string for class names: [:api, :v1] -> 'Api::V1'
@@ -40,7 +40,8 @@ module Apiwork
         @path.sub(%r{^/}, '')
       end
 
-      def add_resource(name, singular:, schema_class:, controller_class_name: nil, contract_class_name: nil, parent: nil, doc: nil, **options)
+      def add_resource(name, singular:, schema_class:, controller_class_name: nil, contract_class_name: nil,
+                       parent: nil, doc: nil, **options)
         # Add to structured tree
         target = if parent
                    # Find or create nested resources hash
@@ -134,14 +135,14 @@ module Apiwork
         target[:collections].merge!(source[:collections]) if source[:collections]
 
         # Recursively merge nested resources
-        if source[:resources]
-          target[:resources] ||= {}
-          source[:resources].each do |name, nested_resource|
-            if target[:resources][name]
-              merge_nested_resources(target[:resources][name], nested_resource)
-            else
-              target[:resources][name] = nested_resource
-            end
+        return unless source[:resources]
+
+        target[:resources] ||= {}
+        source[:resources].each do |name, nested_resource|
+          if target[:resources][name]
+            merge_nested_resources(target[:resources][name], nested_resource)
+          else
+            target[:resources][name] = nested_resource
           end
         end
       end
@@ -155,7 +156,7 @@ module Apiwork
         else
           # Determine default actions based on resource type
           default_actions = if singular
-                              [:show, :create, :update, :destroy]  # No :index for singular
+                              [:show, :create, :update, :destroy] # No :index for singular
                             else
                               [:index, :show, :create, :update, :destroy]
                             end

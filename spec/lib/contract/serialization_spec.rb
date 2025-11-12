@@ -18,18 +18,18 @@ RSpec.describe 'Contract Serialization' do
       json = definition.as_json
 
       expect(json).to eq({
-        title: {
-          nullable: false,
-          required: true,
-          type: :string
-        },
-        published: {
-          default: false,
-          nullable: false,
-          required: false,
-          type: :boolean
-        }
-      })
+                           title: {
+                             nullable: false,
+                             required: true,
+                             type: :string
+                           },
+                           published: {
+                             default: false,
+                             nullable: false,
+                             required: false,
+                             type: :boolean
+                           }
+                         })
     end
 
     it 'serializes object with shape' do
@@ -48,24 +48,24 @@ RSpec.describe 'Contract Serialization' do
       json = definition.as_json
 
       expect(json).to eq({
-        post: {
-          nullable: false,
-          required: true,
-          shape: {
-            title: {
-              nullable: false,
-              required: true,
-              type: :string
-            },
-            body: {
-              nullable: false,
-              required: false,
-              type: :string
-            }
-          },
-          type: :object
-        }
-      })
+                           post: {
+                             nullable: false,
+                             required: true,
+                             shape: {
+                               title: {
+                                 nullable: false,
+                                 required: true,
+                                 type: :string
+                               },
+                               body: {
+                                 nullable: false,
+                                 required: false,
+                                 type: :string
+                               }
+                             },
+                             type: :object
+                           }
+                         })
     end
 
     it 'serializes arrays with of type' do
@@ -81,13 +81,13 @@ RSpec.describe 'Contract Serialization' do
       json = definition.as_json
 
       expect(json).to eq({
-        tags: {
-          nullable: false,
-          of: :string,
-          required: false,
-          type: :array
-        }
-      })
+                           tags: {
+                             nullable: false,
+                             of: :string,
+                             required: false,
+                             type: :array
+                           }
+                         })
     end
 
     it 'serializes enums' do
@@ -103,13 +103,13 @@ RSpec.describe 'Contract Serialization' do
       json = definition.as_json
 
       expect(json).to eq({
-        status: {
-          enum: %w[draft published archived],
-          nullable: false,
-          required: true,
-          type: :string
-        }
-      })
+                           status: {
+                             enum: %w[draft published archived],
+                             nullable: false,
+                             required: true,
+                             type: :string
+                           }
+                         })
     end
 
     it 'serializes param with as: transformation' do
@@ -125,13 +125,13 @@ RSpec.describe 'Contract Serialization' do
       json = definition.as_json
 
       expect(json).to eq({
-        comments: {
-          as: :comments_attributes,
-          nullable: false,
-          required: false,
-          type: :array
-        }
-      })
+                           comments: {
+                             as: :comments_attributes,
+                             nullable: false,
+                             required: false,
+                             type: :array
+                           }
+                         })
     end
 
     it 'serializes union types' do
@@ -150,14 +150,14 @@ RSpec.describe 'Contract Serialization' do
       json = definition.as_json
 
       expect(json).to eq({
-        value: {
-          type: :union,
-          variants: [
-            { type: :string },
-            { type: :integer }
-          ]
-        }
-      })
+                           value: {
+                             type: :union,
+                             variants: [
+                               { type: :string },
+                               { type: :integer }
+                             ]
+                           }
+                         })
     end
 
     it 'serializes custom types' do
@@ -180,12 +180,12 @@ RSpec.describe 'Contract Serialization' do
       # Custom types are serialized as type references (not expanded)
       # This prevents infinite recursion and keeps API introspection clean
       expect(json).to eq({
-        shipping_address: {
-          nullable: false,
-          required: true,
-          type: :address
-        }
-      })
+                           shipping_address: {
+                             nullable: false,
+                             required: true,
+                             type: :address
+                           }
+                         })
     end
 
     it 'returns type references for custom types in unions' do
@@ -211,18 +211,18 @@ RSpec.describe 'Contract Serialization' do
 
       # Now returns type reference instead of expanding inline
       expect(json).to eq({
-        filter: {
-          type: :union,
-          variants: [
-            {
-              type: :string_filter  # Type reference, not expanded
-            },
-            {
-              type: :string
-            }
-          ]
-        }
-      })
+                           filter: {
+                             type: :union,
+                             variants: [
+                               {
+                                 type: :string_filter # Type reference, not expanded
+                               },
+                               {
+                                 type: :string
+                               }
+                             ]
+                           }
+                         })
     end
 
     it 'returns type references for array of custom types in unions' do
@@ -247,19 +247,19 @@ RSpec.describe 'Contract Serialization' do
 
       # Now returns type references instead of expanding inline
       expect(json).to eq({
-        filters: {
-          type: :union,
-          variants: [
-            {
-              type: :string_filter  # Type reference
-            },
-            {
-              type: :array,
-              of: :string_filter  # Type reference in 'of' as well
-            }
-          ]
-        }
-      })
+                           filters: {
+                             type: :union,
+                             variants: [
+                               {
+                                 type: :string_filter # Type reference
+                               },
+                               {
+                                 type: :array,
+                                 of: :string_filter # Type reference in 'of' as well
+                               }
+                             ]
+                           }
+                         })
     end
   end
 
@@ -282,27 +282,27 @@ RSpec.describe 'Contract Serialization' do
       json = action_def.as_json
 
       expect(json).to eq({
-        input: {
-          title: {
-            nullable: false,
-            required: true,
-            type: :string
-          }
-        },
-        output: {
-          id: {
-            nullable: false,
-            required: true,
-            type: :integer
-          },
-          title: {
-            nullable: false,
-            required: true,
-            type: :string
-          }
-        },
-        error_codes: []
-      })
+                           input: {
+                             title: {
+                               nullable: false,
+                               required: true,
+                               type: :string
+                             }
+                           },
+                           output: {
+                             id: {
+                               nullable: false,
+                               required: true,
+                               type: :integer
+                             },
+                             title: {
+                               nullable: false,
+                               required: true,
+                               type: :string
+                             }
+                           },
+                           error_codes: []
+                         })
     end
 
     it 'returns nil for missing definitions' do
@@ -316,10 +316,10 @@ RSpec.describe 'Contract Serialization' do
       json = action_def.as_json
 
       expect(json).to eq({
-        input: nil,
-        output: nil,
-        error_codes: []
-      })
+                           input: nil,
+                           output: nil,
+                           error_codes: []
+                         })
     end
   end
 
@@ -372,16 +372,16 @@ RSpec.describe 'Contract Serialization' do
       json = contract_class.introspect(:create)
 
       expect(json).to eq({
-        input: {
-          title: {
-            nullable: false,
-            required: true,
-            type: :string
-          }
-        },
-        output: nil,
-        error_codes: []
-      })
+                           input: {
+                             title: {
+                               nullable: false,
+                               required: true,
+                               type: :string
+                             }
+                           },
+                           output: nil,
+                           error_codes: []
+                         })
     end
 
     it 'returns nil for non-existent action' do

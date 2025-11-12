@@ -6,7 +6,7 @@ module Apiwork
     #
     # Coordinates recording by delegating to specialized modules
     class Recorder
-      include Recorder::Resources   # Handles resources/resource calls
+      include Recorder::Resources # Handles resources/resource calls
       include Recorder::Actions      # Handles member/collection actions
       include Recorder::Concerns     # Handles concern definitions
       include Recorder::Inference    # Handles class inference

@@ -11,7 +11,7 @@ RSpec.describe 'Resource override and selective serialization', type: :request d
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json).to have_key('articles')
       expect(json).not_to have_key('posts')
     end
@@ -48,7 +48,7 @@ RSpec.describe 'Resource override and selective serialization', type: :request d
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json).to have_key('article')
       expect(json['article']['id']).to eq(post.id)
       expect(json['article']['title']).to eq('Test Post')
@@ -65,13 +65,13 @@ RSpec.describe 'Resource override and selective serialization', type: :request d
         }
       }
 
-      expect {
+      expect do
         post '/api/v1/articles', params: article_params, as: :json
-      }.to change(Post, :count).by(1)
+      end.to change(Post, :count).by(1)
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['article']['title']).to eq('New Article')
       expect(json['article']).not_to have_key('body')
 
@@ -79,7 +79,7 @@ RSpec.describe 'Resource override and selective serialization', type: :request d
       created_post = Post.last
       expect(created_post.title).to eq('New Article')
       expect(created_post.body).to eq('Auto-generated body')
-      expect(created_post.published).to eq(false)
+      expect(created_post.published).to be(false)
     end
 
     it 'serializes response through custom resource despite full model' do
@@ -92,7 +92,7 @@ RSpec.describe 'Resource override and selective serialization', type: :request d
       post '/api/v1/articles', params: article_params, as: :json
 
       json = JSON.parse(response.body)
-      expect(json['article'].keys.sort).to eq(['id', 'title'])
+      expect(json['article'].keys.sort).to eq(%w[id title])
     end
   end
 
@@ -146,13 +146,13 @@ RSpec.describe 'Resource override and selective serialization', type: :request d
     it 'works with custom resource serialization' do
       post_record = Post.create!(title: 'To Delete', body: 'Delete me')
 
-      expect {
+      expect do
         delete "/api/v1/articles/#{post_record.id}"
-      }.to change(Post, :count).by(-1)
+      end.to change(Post, :count).by(-1)
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
     end
   end
 end

@@ -48,7 +48,7 @@ module Apiwork
       # @param options [Hash] Generator options
       # @return [Integer] Number of schemas generated
       # @raise [ArgumentError] if output missing or invalid combination
-      def self.write(api_path: nil, output:, format: nil, **options)
+      def self.write(output:, api_path: nil, format: nil, **options)
         raise ArgumentError, 'output path required' unless output
 
         # Validate if single file mode
@@ -61,10 +61,10 @@ module Apiwork
         formats = format ? [format] : Registry.all
 
         # Generate and write
-        start_time = Time.now
+        start_time = Time.zone.now
         count = 0
 
-        puts 'Generating schemas...'
+        Rails.logger.debug 'Generating schemas...'
 
         apis.each do |api_class|
           formats.each do |fmt|
@@ -77,8 +77,8 @@ module Apiwork
           end
         end
 
-        elapsed = Time.now - start_time
-        puts "\nGenerated #{count} schema#{count == 1 ? '' : 's'} in #{elapsed.round(2)}s"
+        elapsed = Time.zone.now - start_time
+        Rails.logger.debug "\nGenerated #{count} schema#{count == 1 ? '' : 's'} in #{elapsed.round(2)}s"
 
         count
       end
@@ -117,7 +117,7 @@ module Apiwork
       #
       # @return [Array<Class>] API classes
       def self.find_all_apis
-        API::Registry.all_classes.select { |k| k.metadata }
+        API::Registry.all_classes.select(&:metadata)
       end
       private_class_method :find_all_apis
 
@@ -133,13 +133,13 @@ module Apiwork
 
         # Check if schema is configured
         unless api_class.schemas&.key?(format)
-          puts "  ⊘ Skipping #{api_path} → #{format} (not configured)"
+          Rails.logger.debug "  ⊘ Skipping #{api_path} → #{format} (not configured)"
           return 0
         end
 
         # Generate using core generate method
         opts_str = options.any? ? " (#{options.map { |k, v| "#{k}: #{v}" }.join(', ')})" : ''
-        puts "  ✓ #{api_path} → #{format}#{opts_str}"
+        Rails.logger.debug "  ✓ #{api_path} → #{format}#{opts_str}"
 
         content = generate(api_path: api_path, format: format, **options)
 
@@ -156,10 +156,10 @@ module Apiwork
           extension: extension
         )
 
-        puts "    → #{file_path}"
+        Rails.logger.debug "    → #{file_path}"
         1
       rescue StandardError => e
-        puts "  ✗ #{api_path} → #{format} (error: #{e.message})"
+        Rails.logger.debug "  ✗ #{api_path} → #{format} (error: #{e.message})"
         0
       end
       private_class_method :write_schema

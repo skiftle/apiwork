@@ -93,7 +93,7 @@ module Apiwork
             output_definition.params[name] = param_options unless output_definition.params.key?(name)
           end
 
-          # Note: We modify output_definition in-place to preserve enum/type registrations
+          # NOTE: We modify output_definition in-place to preserve enum/type registrations
           output_definition
         end
 
@@ -105,8 +105,10 @@ module Apiwork
         # Check if output definition has unwrapped union structure
         def has_unwrapped_union?
           return false unless output_definition
+
           output_definition.params.key?(:ok)
         end
+
         def serialize_data(data, context: {}, includes: nil)
           return data unless contract_class.schema?
 

@@ -32,7 +32,7 @@ RSpec.describe 'Association Sorting API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts'].length).to be >= 3
 
       # Posts with comments should be sorted by their comments' author
@@ -42,12 +42,14 @@ RSpec.describe 'Association Sorting API', type: :request do
       # Post2 has Bob
       # Post3 has Charlie
       # Find our test posts
-      test_posts = json['posts'].select { |p| ['Sort Test Alpha', 'Sort Test Beta', 'Sort Test Gamma'].include?(p['title']) }
+      test_posts = json['posts'].select do |p|
+        ['Sort Test Alpha', 'Sort Test Beta', 'Sort Test Gamma'].include?(p['title'])
+      end
       expect(test_posts.length).to eq(3)
 
       # Verify posts are in the result (exact order may vary for posts with multiple comments)
       titles = test_posts.map { |p| p['title'] }
-      expect(titles).to match_array(['Sort Test Alpha', 'Sort Test Beta', 'Sort Test Gamma'])
+      expect(titles).to contain_exactly('Sort Test Alpha', 'Sort Test Beta', 'Sort Test Gamma')
     end
 
     it 'sorts posts by comment author descending' do
@@ -55,7 +57,7 @@ RSpec.describe 'Association Sorting API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       titles = json['posts'].map { |p| p['title'] }
       expect(titles.first).to eq('Sort Test Alpha') # Has Zara
     end
@@ -65,7 +67,7 @@ RSpec.describe 'Association Sorting API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts'].length).to be >= 3
     end
 
@@ -74,7 +76,7 @@ RSpec.describe 'Association Sorting API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       titles = json['posts'].map { |p| p['title'] }
       expect(titles.first).to eq('Sort Test Gamma') # Has most recent comment
     end
@@ -87,10 +89,10 @@ RSpec.describe 'Association Sorting API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts'].length).to be >= 2
       json['posts'].each do |post|
-        expect(post['published']).to eq(true)
+        expect(post['published']).to be(true)
       end
     end
 
@@ -102,7 +104,7 @@ RSpec.describe 'Association Sorting API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(1)
       expect(json['posts'][0]['title']).to eq('Sort Test Alpha')
     end
@@ -115,7 +117,7 @@ RSpec.describe 'Association Sorting API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       titles = json['posts'].map { |p| p['title'] }
       expect(titles).to eq(titles.sort)
     end
@@ -127,7 +129,7 @@ RSpec.describe 'Association Sorting API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
 
       # Comments should be sorted by their post's title
       # Alpha Post -> comment1, comment2
@@ -141,7 +143,7 @@ RSpec.describe 'Association Sorting API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['comments'].length).to eq(4)
 
       # Most recent post is post3, so comment4 should be first
@@ -156,7 +158,7 @@ RSpec.describe 'Association Sorting API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(true)
+      expect(json['ok']).to be(true)
       expect(json['comments'].length).to eq(1)
     end
   end
@@ -167,7 +169,7 @@ RSpec.describe 'Association Sorting API', type: :request do
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(false)
+      expect(json['ok']).to be(false)
       expect(json['errors']).to be_present
     end
 
@@ -181,7 +183,7 @@ RSpec.describe 'Association Sorting API', type: :request do
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
-      expect(json['ok']).to eq(false)
+      expect(json['ok']).to be(false)
       expect(json['errors']).to be_present
       # Contract validation returns "Invalid type" since the field isn't allowed
       expect(json['errors'].first).to match(/Invalid type|not sortable/)

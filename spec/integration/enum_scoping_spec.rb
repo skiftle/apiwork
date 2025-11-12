@@ -49,9 +49,9 @@ RSpec.describe 'Enum hierarchical scoping and serialization', type: :integration
 
   describe 'Enum serialization with hierarchical scoping' do
     it 'serializes enums without errors' do
-      expect {
+      expect do
         Apiwork::Contract::Descriptors::Registry.serialize_all_enums_for_api('api/v1')
-      }.not_to raise_error
+      end.not_to raise_error
     end
 
     it 'includes contract-level enums with correct qualified name' do
@@ -81,9 +81,9 @@ RSpec.describe 'Enum hierarchical scoping and serialization', type: :integration
     it 'serializes action definition without errors' do
       action_def = TestEnumScopedContract.action_definition(:custom_action)
 
-      expect {
+      expect do
         action_def.as_json
-      }.not_to raise_error
+      end.not_to raise_error
     end
 
     it 'references enums correctly in action input' do

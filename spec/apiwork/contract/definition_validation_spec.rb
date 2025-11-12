@@ -193,7 +193,7 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
       end
 
       it 'rejects Time object' do
-        result = definition.validate({ birth_date: Time.now })
+        result = definition.validate({ birth_date: Time.zone.now })
 
         expect(result[:errors]).not_to be_empty
         expect(result[:errors].first.code).to eq(:invalid_type)
@@ -220,7 +220,6 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
       end
     end
   end
-
 
   describe 'required enum validation' do
     before do

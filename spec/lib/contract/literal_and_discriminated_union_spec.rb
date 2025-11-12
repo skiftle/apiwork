@@ -150,7 +150,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
           action :test do
             input do
               param :filter, type: :union, discriminator: :kind do
-                variant type: :string  # Missing tag!
+                variant type: :string # Missing tag!
               end
             end
           end

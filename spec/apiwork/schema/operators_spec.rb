@@ -10,11 +10,11 @@ RSpec.describe Apiwork::Schema::Operators do
 
     it 'defines COMPARISON_OPERATORS' do
       expect(described_class::COMPARISON_OPERATORS).to eq(%i[
-        gt
-        gte
-        lt
-        lte
-      ])
+                                                            gt
+                                                            gte
+                                                            lt
+                                                            lte
+                                                          ])
     end
 
     it 'defines RANGE_OPERATORS' do
@@ -27,10 +27,10 @@ RSpec.describe Apiwork::Schema::Operators do
 
     it 'defines STRING_SPECIFIC_OPERATORS' do
       expect(described_class::STRING_SPECIFIC_OPERATORS).to eq(%i[
-        contains
-        starts_with
-        ends_with
-      ])
+                                                                 contains
+                                                                 starts_with
+                                                                 ends_with
+                                                               ])
     end
 
     it 'defines LOGICAL_OPERATORS' do
@@ -42,9 +42,9 @@ RSpec.describe Apiwork::Schema::Operators do
     describe 'STRING_OPERATORS' do
       it 'includes equality, collection, and string-specific operators' do
         expect(described_class::STRING_OPERATORS).to include(
-          :eq,           # equality
-          :in,                 # collection
-          :contains, :starts_with       # string-specific
+          :eq, # equality
+          :in, # collection
+          :contains, :starts_with # string-specific
         )
       end
 
@@ -56,10 +56,10 @@ RSpec.describe Apiwork::Schema::Operators do
     describe 'DATE_OPERATORS' do
       it 'includes equality, comparison, range, and collection operators' do
         expect(described_class::DATE_OPERATORS).to include(
-          :eq,                           # equality
-          :gt, :lt,                    # comparison
-          :between,                       # range
-          :in                                  # collection
+          :eq, # equality
+          :gt, :lt, # comparison
+          :between, # range
+          :in # collection
         )
       end
 
@@ -71,10 +71,10 @@ RSpec.describe Apiwork::Schema::Operators do
     describe 'NUMERIC_OPERATORS' do
       it 'includes equality, comparison, range, and collection operators' do
         expect(described_class::NUMERIC_OPERATORS).to include(
-          :eq,                           # equality
-          :gt, :lt,                    # comparison
-          :between,                       # range
-          :in                                  # collection
+          :eq, # equality
+          :gt, :lt, # comparison
+          :between, # range
+          :in # collection
         )
       end
     end
@@ -82,9 +82,9 @@ RSpec.describe Apiwork::Schema::Operators do
     describe 'UUID_OPERATORS' do
       it 'includes only equality and collection operators' do
         expect(described_class::UUID_OPERATORS).to eq(%i[
-          eq
-          in
-        ])
+                                                        eq
+                                                        in
+                                                      ])
       end
 
       it 'does not include comparison or range operators' do

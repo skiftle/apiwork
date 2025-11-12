@@ -55,7 +55,7 @@ module Apiwork
       end
 
       # Legacy method name (deprecated)
-      alias_method :build_root_path_from_resource_class, :build_root_path_from_schema_class
+      alias build_root_path_from_resource_class build_root_path_from_schema_class
 
       # Convert direct errors on the record
       # Excludes nested association errors (those with dots like "address.country_code")

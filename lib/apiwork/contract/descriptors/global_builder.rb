@@ -4,7 +4,7 @@ module Apiwork
   module Contract
     module Descriptors
       class GlobalBuilder
-        def type(name, **options, &block)
+        def type(name, **_options, &block)
           Registry.register_global(name, &block)
         end
 

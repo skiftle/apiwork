@@ -39,3 +39,15 @@ Style/ClassAndModuleChildren:
 
 Style/FrozenStringLiteralComment:
   SafeAutoCorrect: true
+
+# Disable delegate cop - causes issues with constant vs symbol
+Rails/Delegate:
+  Enabled: false
+
+# Disable symbol array cop - breaks validation logic
+Style/SymbolArray:
+  Enabled: false
+
+# Disable HTTP positional arguments - conflicts with DSL syntax
+Rails/HttpPositionalArguments:
+  Enabled: false

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'set'
-
 module Apiwork
   module Contract
     # Serialization module for converting Contract definitions to JSON
@@ -92,11 +90,9 @@ module Apiwork
         # @param definition [Definition] Parent definition (for custom type resolution)
         # @param visited [Set] Set of custom type names currently being serialized (for circular reference protection)
         # @return [Hash] Serialized parameter with type, required, shape, etc.
-        def serialize_param(name, options, definition, visited: Set.new)
+        def serialize_param(_name, options, definition, visited: Set.new)
           # Handle union types
-          if options[:type] == :union
-            return serialize_union(options[:union], definition, visited: visited)
-          end
+          return serialize_union(options[:union], definition, visited: visited) if options[:type] == :union
 
           # Handle custom types - return type reference instead of expanding
           if options[:custom_type]
@@ -175,9 +171,7 @@ module Apiwork
           end
 
           # Handle shape (nested objects) - only for non-custom types
-          if options[:shape]
-            result[:shape] = serialize_definition(options[:shape], visited: visited)
-          end
+          result[:shape] = serialize_definition(options[:shape], visited: visited) if options[:shape]
 
           result
         end
@@ -254,9 +248,7 @@ module Apiwork
           end
 
           # Handle shape in variant (for object or array of object)
-          if variant_def[:shape]
-            result[:shape] = serialize_definition(variant_def[:shape], visited: visited)
-          end
+          result[:shape] = serialize_definition(variant_def[:shape], visited: visited) if variant_def[:shape]
 
           result
         end

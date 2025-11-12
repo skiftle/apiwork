@@ -13,9 +13,9 @@ RSpec.describe Apiwork::Errors::Handler do
       end
 
       it 'raises the error' do
-        expect {
+        expect do
           described_class.handle(error, context: context)
-        }.to raise_error(StandardError, 'Test error message')
+        end.to raise_error(StandardError, 'Test error message')
       end
     end
 
@@ -79,10 +79,10 @@ RSpec.describe Apiwork::Errors::Handler do
         allow(described_class).to receive(:defined?).with(::Rails).and_return(false)
 
         # Should not raise error, just return nil
-        expect {
+        expect do
           result = described_class.handle(error, context: context)
           expect(result).to be_nil
-        }.not_to raise_error
+        end.not_to raise_error
       end
     end
   end
@@ -102,9 +102,9 @@ RSpec.describe Apiwork::Errors::Handler do
       end
 
       it 'raises the Apiwork error' do
-        expect {
+        expect do
           described_class.handle(pagination_error, context: { page_number: 0 })
-        }.to raise_error(Apiwork::PaginationError)
+        end.to raise_error(Apiwork::PaginationError)
       end
     end
 

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Apiwork::Generation::OpenAPI, skip: "OpenAPI generation tests temporarily disabled" do
+RSpec.describe Apiwork::Generation::OpenAPI, skip: 'OpenAPI generation tests temporarily disabled' do
   before do
     # Reset registries to prevent accumulation
     Apiwork.reset_registries!
@@ -320,9 +320,7 @@ RSpec.describe Apiwork::Generation::OpenAPI, skip: "OpenAPI generation tests tem
         end
 
         it 'each variant has valid schema' do
-          filter[:oneOf].each do |variant|
-            expect(variant).to have_key(:type)
-          end
+          expect(filter[:oneOf]).to all(have_key(:type))
         end
       end
 

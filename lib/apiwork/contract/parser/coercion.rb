@@ -102,21 +102,19 @@ module Apiwork
             variant_of = variant[:of]
 
             # Handle array variant (like array of post_filter)
-            if variant_type == :array && value.is_a?(Array)
-              # If array element is a custom type, resolve and coerce each element
-              if variant_of
-                custom_type_block = definition.contract_class.resolve_custom_type(variant_of, :root)
-                if custom_type_block
-                  # Build custom type definition for array elements
-                  custom_def = Definition.new(@direction, definition.contract_class)
-                  custom_def.instance_eval(&custom_type_block)
+            # If array element is a custom type, resolve and coerce each element
+            if variant_type == :array && value.is_a?(Array) && variant_of
+              custom_type_block = definition.contract_class.resolve_custom_type(variant_of, :root)
+              if custom_type_block
+                # Build custom type definition for array elements
+                custom_def = Definition.new(@direction, definition.contract_class)
+                custom_def.instance_eval(&custom_type_block)
 
-                  # Coerce each element
-                  coerced_array = value.map do |item|
-                    item.is_a?(Hash) ? coerce_hash(item, custom_def) : item
-                  end
-                  return coerced_array
+                # Coerce each element
+                coerced_array = value.map do |item|
+                  item.is_a?(Hash) ? coerce_hash(item, custom_def) : item
                 end
+                return coerced_array
               end
             end
 

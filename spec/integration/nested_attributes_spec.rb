@@ -198,9 +198,9 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
         }
       }
 
-      expect {
+      expect do
         post '/api/v1/posts', params: post_params, as: :json
-      }.to change(Comment, :count).by(1)
+      end.to change(Comment, :count).by(1)
 
       expect(response).to have_http_status(:created)
     end
