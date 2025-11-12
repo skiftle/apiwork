@@ -93,24 +93,6 @@ module Apiwork
         end
       end
 
-      # Build where conditions with recursive support for logical operators
-      # Checks if the filter contains logical operators before processing
-      def build_where_conditions_recursive(filter_params)
-        return [[], {}] if filter_params.blank?
-
-        # If this is a logical operator, we don't build conditions here
-        # The apply_* methods will handle recursion
-        if filter_params.is_a?(Hash) &&
-           (filter_params.key?(:_not) || filter_params.key?(:_or) || filter_params.key?(:_and))
-          # For logical operators at this level, return empty conditions
-          # They should be handled by apply_filter recursively
-          return [[], {}]
-        end
-
-        # Normal attribute filtering
-        build_where_conditions(filter_params)
-      end
-
       # Build Arel conditions recursively, handling logical operators
       # Returns [condition, joins] where condition is an Arel node
       def build_conditions_recursive(filter_params)

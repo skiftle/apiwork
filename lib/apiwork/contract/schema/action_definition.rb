@@ -107,12 +107,6 @@ module Apiwork
           return false unless output_definition
           output_definition.params.key?(:ok)
         end
-
-        # Check if this is a CRUD action
-        def crud_action?
-          %i[index show create update destroy].include?(action_name.to_sym)
-        end
-
         def serialize_data(data, context: {}, includes: nil)
           return data unless contract_class.schema?
 
@@ -260,28 +254,6 @@ module Apiwork
           return false unless writable_action?
 
           true
-        end
-
-        # Schema-dependent: Check for schema mismatch
-        def schema_mismatch?(response, output_def)
-          # Check if schema expects single resource but response has collection (plural key)
-          resource_key = contract_class.schema_class&.root_key
-          return false unless resource_key
-
-          singular_key = resource_key.singular.to_sym
-          plural_key = resource_key.plural.to_sym
-
-          # Schema expects singular, response has plural
-          if output_def.params.key?(singular_key) && (response.key?(plural_key) || response.key?(plural_key.to_s))
-            return true
-          end
-
-          # Schema expects plural, response has singular
-          if output_def.params.key?(plural_key) && (response.key?(singular_key) || response.key?(singular_key.to_s))
-            return true
-          end
-
-          false
         end
       end
     end
