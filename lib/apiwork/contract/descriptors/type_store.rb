@@ -34,29 +34,7 @@ module Apiwork
               end
             end
 
-            # Second pass: detect circular references and add recursive property
-            result.each do |type_name, type_def|
-              type_def[:recursive] = detect_circular_references(type_name, type_def, result)
-            end
-
             result
-          end
-
-          # Detect if a type has DIRECT circular references (references itself)
-          # Note: This only checks for direct self-references, not transitive cycles.
-          # For example, a filter type with `_and: [self]` is recursive.
-          # But a type that references another type that references back is not marked as recursive.
-          #
-          # @param type_name [Symbol] The name of the type being checked
-          # @param type_def [Hash] The expanded type definition (from as_json)
-          # @param all_types [Hash] All type definitions (not used, kept for compatibility)
-          # @return [Boolean] true if type directly references itself
-          def detect_circular_references(type_name, type_def, _all_types)
-            # Extract all type references from this definition
-            referenced_types = extract_type_references(type_def)
-
-            # Check if this type references itself directly
-            referenced_types.include?(type_name)
           end
 
           protected
