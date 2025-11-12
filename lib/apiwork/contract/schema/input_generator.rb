@@ -93,12 +93,43 @@ module Apiwork
             schema_class.association_definitions.each do |name, association_definition|
               next unless association_definition.writable_for?(context)
 
+              # Try to get the association's schema for typed payloads
+              # Only use typed payloads when allow_destroy is false (typed payloads don't include _destroy)
+              assoc_schema = TypeRegistry.resolve_association_resource(association_definition)
+              assoc_payload_type = nil
+
+              if assoc_schema && !association_definition.allow_destroy
+                # Try to auto-import the association's contract and reuse its payload type
+                import_alias = TypeRegistry.auto_import_association_contract(
+                  definition.contract_class,
+                  assoc_schema,
+                  Set.new
+                )
+
+                if import_alias
+                  # Reference imported payload type: e.g., :comment_create_payload
+                  assoc_payload_type = :"#{import_alias}_#{context}_payload"
+                end
+              end
+
               param_options = {
-                type: association_definition.singular? ? :object : :array,
                 required: false, # Associations are optional by default for input
                 nullable: association_definition.nullable?,
                 as: "#{name}_attributes".to_sym # Transform for Rails accepts_nested_attributes_for
               }
+
+              # Set type based on whether we have a typed payload and whether it's a collection
+              if assoc_payload_type
+                if association_definition.collection?
+                  param_options[:type] = :array
+                  param_options[:of] = assoc_payload_type
+                else
+                  param_options[:type] = assoc_payload_type
+                end
+              else
+                # Fall back to generic types (either because allow_destroy or no schema)
+                param_options[:type] = association_definition.collection? ? :array : :object
+              end
 
               definition.param name, **param_options
             end

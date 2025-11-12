@@ -431,10 +431,16 @@ UserService.new.call
 
 **Always follow RuboCop rules.** This project uses RuboCop to enforce consistent style.
 
-- Run `bundle exec rubocop` before committing
+- **Run `bundle exec rubocop -a` on every file you create or modify** — auto-fix safe offenses immediately
 - Fix all RuboCop offenses, don't disable cops without good reason
 - RuboCop's suggestions are not optional — they're part of our style
-- Use `rubocop -a` or `rubocop -A` for auto-corrections when safe
+- Use `rubocop -A` for aggressive auto-corrections only when appropriate
+
+**Workflow:**
+1. Write or modify code
+2. Run `bundle exec rubocop -a <file_path>` to auto-fix
+3. Address any remaining offenses manually
+4. Verify tests still pass
 
 **If you think a RuboCop rule should be changed, discuss it first.** Don't just disable it.
 

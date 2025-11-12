@@ -10,7 +10,9 @@
       "Bash(gh pr list:*)",
       "Bash(perl -i -pe:*)",
       "Bash(ruby -i -pe:*)",
-      "Bash(exit 1)"
+      "Bash(exit 1)",
+      "Bash(git stash:*)",
+      "Bash(ruby /tmp/debug_filter_fields.rb:*)"
     ],
     "deny": [],
     "ask": []
