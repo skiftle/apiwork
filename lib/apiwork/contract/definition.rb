@@ -483,95 +483,28 @@ module Apiwork
       end
 
       def validate_type(name, value, expected_type, _shape_def, path)
-        case expected_type
-        when :string
-          return nil if value.is_a?(String)
+        # Check if value matches expected type
+        valid = case expected_type
+                when :string then value.is_a?(String)
+                when :integer then value.is_a?(Integer)
+                when :boolean then [true, false].include?(value)
+                when :datetime then value.is_a?(Time) || value.is_a?(DateTime) || value.is_a?(ActiveSupport::TimeWithZone)
+                when :date then value.is_a?(Date)
+                when :uuid then value.is_a?(String) && value.match?(/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/i)
+                when :object then value.is_a?(Hash)
+                when :array then value.is_a?(Array)
+                when :decimal, :float then value.is_a?(Numeric)
+                else true # Unknown type, don't validate
+                end
 
-          ValidationError.invalid_type(
-            field: name,
-            expected: :string,
-            actual: value.class.name.underscore.to_sym,
-            path: path
-          )
-        when :integer
-          return nil if value.is_a?(Integer)
+        return nil if valid
 
-          ValidationError.invalid_type(
-            field: name,
-            expected: :integer,
-            actual: value.class.name.underscore.to_sym,
-            path: path
-          )
-        when :boolean
-          return nil if [true, false].include?(value)
-
-          ValidationError.invalid_type(
-            field: name,
-            expected: :boolean,
-            actual: value.class.name.underscore.to_sym,
-            path: path
-          )
-        when :datetime
-          # Accept Time, DateTime, or ActiveSupport::TimeWithZone
-          return nil if value.is_a?(Time) || value.is_a?(DateTime) || value.is_a?(ActiveSupport::TimeWithZone)
-
-          ValidationError.invalid_type(
-            field: name,
-            expected: :datetime,
-            actual: value.class.name.underscore.to_sym,
-            path: path
-          )
-        when :date
-          # Accept Date only
-          return nil if value.is_a?(Date)
-
-          ValidationError.invalid_type(
-            field: name,
-            expected: :date,
-            actual: value.class.name.underscore.to_sym,
-            path: path
-          )
-        when :uuid
-          if value.is_a?(String) && value.match?(/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/i)
-            return nil
-          end
-
-          ValidationError.invalid_type(
-            field: name,
-            expected: :uuid,
-            actual: value.class.name.underscore.to_sym,
-            path: path
-          )
-        when :object
-          return nil if value.is_a?(Hash)
-
-          ValidationError.invalid_type(
-            field: name,
-            expected: :object,
-            actual: value.class.name.underscore.to_sym,
-            path: path
-          )
-        when :array
-          return nil if value.is_a?(Array)
-
-          ValidationError.invalid_type(
-            field: name,
-            expected: :array,
-            actual: value.class.name.underscore.to_sym,
-            path: path
-          )
-        when :decimal, :float
-          return nil if value.is_a?(Numeric)
-
-          ValidationError.invalid_type(
-            field: name,
-            expected: :decimal,
-            actual: value.class.name.underscore.to_sym,
-            path: path
-          )
-        else
-          nil # Unknown type, don't validate
-        end
+        ValidationError.invalid_type(
+          field: name,
+          expected: expected_type,
+          actual: value.class.name.underscore.to_sym,
+          path: path
+        )
       end
 
       # Validate union type - tries each variant in order

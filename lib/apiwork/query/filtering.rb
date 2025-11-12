@@ -65,22 +65,17 @@ module Apiwork
       def apply_or(scope, conditions_array)
         return scope if conditions_array.blank?
 
-        Rails.logger.debug "🔍 OR: Array has #{conditions_array.length} elements: #{conditions_array.inspect}"
-
         or_conditions = []
         all_joins = {}
 
-        conditions_array.each_with_index do |filter_hash, idx|
+        conditions_array.each_with_index do |filter_hash, _idx|
           # Build conditions recursively (handles nested logical operators)
-          Rails.logger.debug "🔍 OR[#{idx}]: Processing filter: #{filter_hash.inspect}"
           conditions, joins = build_conditions_recursive(filter_hash)
-          Rails.logger.debug "🔍 OR[#{idx}]: Got conditions: #{conditions.inspect}"
           or_conditions << conditions if conditions
           all_joins = all_joins.deep_merge(joins)
         end
 
         or_condition = or_conditions.compact.reduce(:or) if or_conditions.any?
-        Rails.logger.debug "🔍 OR: Final condition: #{or_condition.inspect}"
 
         result = scope
         result = result.joins(all_joins) if all_joins.present?

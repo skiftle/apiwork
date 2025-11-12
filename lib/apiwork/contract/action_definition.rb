@@ -281,12 +281,11 @@ module Apiwork
       def constantize_contract_safe(contract_class_name)
         contract_class_name.constantize
       rescue NameError => e
-        Rails.logger&.debug("Failed to constantize contract '#{contract_class_name}': #{e.message}") if defined?(Rails)
+        if defined?(Rails)
+          Rails.logger&.debug("ActionDefinition: Failed to constantize contract '#{contract_class_name}' " \
+                              "for action '#{action_name}' on contract '#{contract_class.name}': #{e.message}")
+        end
         nil
-      end
-
-      def standard_crud_action?
-        %i[index show create update destroy].include?(action_name.to_sym)
       end
 
       # Validate output data against definition
