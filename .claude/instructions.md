@@ -27,6 +27,16 @@ Simplicity is not the absence of complexity; it's the result of care.
 - **Never break what already works.**
   Refactor inside, not outside. The public API stays untouched, and the tests stay green.
 
+- **Clean up as you go.**
+  When you change an approach or refactor a feature, remove the legacy code that's no longer needed.
+  Dead code is not neutral — it confuses, misleads, and costs maintenance.
+  Leave the codebase cleaner than you found it.
+
+- **Breaking changes are fine — this is pre-release.**
+  Don't preserve backward compatibility just because something exists.
+  If a better approach emerges, take it. Remove the old way entirely.
+  We're still shaping the API. Make it right, not compatible.
+
 ---
 
 ## ✨ Core Principles
@@ -186,6 +196,122 @@ end
 collection
   .map { process(_1) }
   .select { valid?(_1) }
+```
+
+---
+
+## 🎯 Method Arguments: Positional vs Keyword vs Options
+
+**Choose the right argument style for clarity and maintainability.**
+
+### Positional arguments
+Use when the argument is **unambiguous, essential, and has fixed order**.
+
+```ruby
+# ✅ Good - obvious from method name
+User.find(id)
+Money.new(amount, currency)
+distance(point_a, point_b)
+
+# ❌ Bad - unclear meaning
+resize(800, 600)           # width/height? who knows
+broadcast(event, true)     # what does true mean?
+```
+
+**Rule:** If you can guess what the argument means without a name → positional.
+
+**Avoid positional when:**
+- Hard to remember the order
+- Not mandatory
+- More than 2–3 arguments
+
+### Keyword arguments
+Use when **readability matters** or **meaning isn't self-evident**.
+
+```ruby
+# ✅ Good - self-documenting
+resize(width: 800, height: 600)
+paginate(page: 1, per_page: 20)
+broadcast(event, async: true)
+
+# ✅ Good - multiple optional arguments
+def send_email(to:, subject:, body:, cc: nil, bcc: nil, priority: :normal)
+end
+```
+
+**Benefits:**
+- Order doesn't matter
+- Self-documenting
+- Future-proof (can add more without breaking)
+- IDE-friendly
+
+**Prefer keyword args for:**
+- Boolean flags
+- Optional arguments
+- When there are > 2 arguments
+- Rails-style declarative APIs
+
+### Options hash (`**options`)
+Use **sparingly** — only when the API is truly open-ended or dynamic.
+
+```ruby
+# ✅ Good - genuinely dynamic/extensible
+define_resource(:invoice, cache: true, **options)
+render :template, locals: { ... }, layout: true
+
+# ❌ Bad - you know the keys, use keyword args instead
+def resize(**options)  # Vague, avoid
+  width = options[:width]
+  height = options[:height]
+end
+
+# ✅ Better
+def resize(width:, height:)
+end
+```
+
+**Rule:** If you know the keys → keyword args. If you don't → options hash.
+
+### Combining styles
+
+**Order matters:** positional → keyword → splat
+
+```ruby
+# ✅ Correct order
+def process(data, mode:, format: :json, **options)
+end
+
+# ❌ Wrong order
+def process(mode:, data, **options)  # positional after keyword
+end
+```
+
+### Specific guidelines
+
+**Booleans:** Always keyword, never positional
+```ruby
+broadcast(event, async: true)  # ✅ clear
+broadcast(event, true)         # ❌ unclear
+```
+
+**Constructors:** Positional for essentials, keyword for everything else
+```ruby
+User.new(email:, name:, admin: false, verified: true)
+```
+
+**More than 3 arguments?** → Consider keyword args or a parameter object
+```ruby
+# ❌ Too many positional
+def create_invoice(customer, amount, currency, due_date, notes)
+end
+
+# ✅ Better - keyword args
+def create_invoice(customer:, amount:, currency:, due_date:, notes: nil)
+end
+
+# ✅ Best - parameter object when it gets complex
+params = InvoiceParams.new(customer:, amount:, currency:, due_date:)
+create_invoice(params)
 ```
 
 ---
