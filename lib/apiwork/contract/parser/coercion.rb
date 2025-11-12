@@ -74,7 +74,7 @@ module Apiwork
             elsif param_options[:of] && item.is_a?(Hash)
               # Array of custom type (like array of :filter)
               # Resolve custom type and coerce each element
-              custom_type_block = definition.contract_class.resolve_custom_type(param_options[:of], nil)
+              custom_type_block = definition.contract_class.resolve_custom_type(param_options[:of])
               if custom_type_block
                 custom_def = Definition.new(type: @direction, contract_class: definition.contract_class)
                 custom_def.instance_eval(&custom_type_block)
@@ -104,7 +104,7 @@ module Apiwork
             # Handle array variant (like array of post_filter)
             # If array element is a custom type, resolve and coerce each element
             if variant_type == :array && value.is_a?(Array) && variant_of
-              custom_type_block = definition.contract_class.resolve_custom_type(variant_of, :root)
+              custom_type_block = definition.contract_class.resolve_custom_type(variant_of)
               if custom_type_block
                 # Build custom type definition for array elements
                 custom_def = Definition.new(type: @direction, contract_class: definition.contract_class)
@@ -119,7 +119,7 @@ module Apiwork
             end
 
             # Handle custom type variant (like post_filter)
-            custom_type_block = definition.contract_class.resolve_custom_type(variant_type, :root)
+            custom_type_block = definition.contract_class.resolve_custom_type(variant_type)
             next unless custom_type_block
 
             # Build custom type definition

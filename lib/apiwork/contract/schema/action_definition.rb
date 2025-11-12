@@ -28,8 +28,7 @@ module Apiwork
           @input_definition ||= Definition.new(
             type: :input,
             contract_class: contract_class,
-            action_name: action_name,
-            parent_scope: self
+            action_name: action_name
           )
 
           if block
@@ -124,8 +123,7 @@ module Apiwork
           virtual_def = Definition.new(
             type: :input,
             contract_class: contract_class,
-            action_name: action_name,
-            parent_scope: self
+            action_name: action_name
           )
 
           case action_name.to_sym
@@ -149,8 +147,7 @@ module Apiwork
           virtual_def = Definition.new(
             type: :output,
             contract_class: contract_class,
-            action_name: action_name,
-            parent_scope: self
+            action_name: action_name
           )
 
           # Generate FULL output structure (discriminated union for single, collection wrapper for arrays)
@@ -191,8 +188,7 @@ module Apiwork
           @input_definition = Definition.new(
             type: :input,
             contract_class: contract_class,
-            action_name: action_name,
-            parent_scope: self
+            action_name: action_name
           )
 
           case action_name.to_sym
@@ -218,8 +214,7 @@ module Apiwork
           @output_definition = Definition.new(
             type: :output,
             contract_class: contract_class,
-            action_name: action_name,
-            parent_scope: self
+            action_name: action_name
           )
 
           case action_name.to_sym

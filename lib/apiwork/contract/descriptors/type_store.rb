@@ -21,24 +21,15 @@ module Apiwork
               result[type_name] = expand_type_definition(definition, contract_class: nil, type_name: type_name)
             end
 
-            local_storage.to_a.each do |scope, types|
-              # scope can be a Contract class, ActionDefinition, or Definition instance
-              # Extract the actual contract class
-              actual_contract_class = if scope.respond_to?(:contract_class)
-                                        scope.contract_class
-                                      else
-                                        scope
-                                      end
-
+            local_storage.to_a.each do |contract_class, types|
               types.to_a.each do |type_name, metadata|
                 qualified_type_name = metadata[:qualified_name]
                 definition = metadata[:definition]
 
                 result[qualified_type_name] = expand_type_definition(
                   definition,
-                  contract_class: actual_contract_class,
-                  type_name: type_name,
-                  scope: scope
+                  contract_class: contract_class,
+                  type_name: type_name
                 )
               end
             end
@@ -83,27 +74,9 @@ module Apiwork
           def expand_type_definition(definition, contract_class: nil, type_name: nil, scope: nil)
             temp_contract = contract_class || Class.new(Apiwork::Contract::Base)
 
-            # Extract action_name and parent_scope from scope if available
-            action_name = nil
-            parent_scope = nil
-
-            if scope
-              if scope.instance_of?(::Apiwork::Contract::ActionDefinition)
-                # For ActionDefinition, use it as parent_scope AND extract action_name
-                parent_scope = scope
-                action_name = scope.action_name
-              elsif scope.respond_to?(:action_name)
-                # For Definition instances, inherit action_name and parent_scope
-                action_name = scope.action_name
-                parent_scope = scope.parent_scope if scope.respond_to?(:parent_scope)
-              end
-            end
-
             temp_definition = Apiwork::Contract::Definition.new(
               type: :input,
-              contract_class: temp_contract,
-              action_name: action_name,
-              parent_scope: parent_scope
+              contract_class: temp_contract
             )
 
             temp_definition.instance_eval(&definition)
