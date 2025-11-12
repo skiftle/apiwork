@@ -95,20 +95,20 @@ module Apiwork
 
               # Try to get the association's schema for typed payloads
               # Only use typed payloads when allow_destroy is false (typed payloads don't include _destroy)
-              assoc_schema = TypeRegistry.resolve_association_resource(association_definition)
-              assoc_payload_type = nil
+              association_schema = TypeRegistry.resolve_association_resource(association_definition)
+              association_payload_type = nil
 
-              if assoc_schema && !association_definition.allow_destroy
+              if association_schema && !association_definition.allow_destroy
                 # Try to auto-import the association's contract and reuse its payload type
                 import_alias = TypeRegistry.auto_import_association_contract(
                   definition.contract_class,
-                  assoc_schema,
+                  association_schema,
                   Set.new
                 )
 
                 if import_alias
                   # Reference imported payload type: e.g., :comment_create_payload
-                  assoc_payload_type = :"#{import_alias}_#{context}_payload"
+                  association_payload_type = :"#{import_alias}_#{context}_payload"
                 end
               end
 
@@ -119,12 +119,12 @@ module Apiwork
               }
 
               # Set type based on whether we have a typed payload and whether it's a collection
-              if assoc_payload_type
+              if association_payload_type
                 if association_definition.collection?
                   param_options[:type] = :array
-                  param_options[:of] = assoc_payload_type
+                  param_options[:of] = association_payload_type
                 else
-                  param_options[:type] = assoc_payload_type
+                  param_options[:type] = association_payload_type
                 end
               else
                 # Fall back to generic types (either because allow_destroy or no schema)

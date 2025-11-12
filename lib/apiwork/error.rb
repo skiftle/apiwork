@@ -11,6 +11,10 @@ module Apiwork
 
   # Structured error with metadata for API responses
   class StructuredError < Error
+    # Metadata keys that are useful for API error responses
+    # Filters out internal metadata that shouldn't be exposed to clients
+    USEFUL_METADATA_KEYS = %i[attribute in minimum maximum count is too_short too_long].freeze
+
     attr_reader :code, :path, :detail, :metadata
 
     def initialize(code:, detail:, path: [], **metadata)
@@ -30,8 +34,7 @@ module Apiwork
     end
 
     def to_h
-      useful_keys = %i[attribute in minimum maximum count is too_short too_long]
-      filtered_metadata = metadata.slice(*useful_keys)
+      filtered_metadata = metadata.slice(*USEFUL_METADATA_KEYS)
 
       result = {
         code: code,
