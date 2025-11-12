@@ -18,8 +18,9 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.3'
-          bundler-cache: true
-          cache-version: 1
+
+      - name: Install dependencies
+        run: bundle install
 
       - name: Run RuboCop
         run: bundle exec rubocop
@@ -39,8 +40,9 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
-          bundler-cache: true
-          cache-version: 1
+
+      - name: Install dependencies
+        run: bundle install
 
       - name: Set up database
         run: cd spec/dummy && bundle exec rake db:schema:load
