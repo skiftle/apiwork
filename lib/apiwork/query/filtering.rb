@@ -247,9 +247,11 @@ module Apiwork
       end
 
       def find_filterable_association(key)
-        return unless schema.association_definitions.key?(key) && schema.association_definitions[key].filterable?
+        association = schema.association_definitions[key]
+        return unless association
+        return unless association.filterable?
 
-        schema.association_definitions[key]
+        association
       end
 
       def build_join_conditions(key, value, association)

@@ -95,10 +95,12 @@ module Apiwork
 
         @record.class.reflect_on_all_associations(:has_many).each do |association|
           associated_records = @record.send(association.name)
-          next unless associated_records.respond_to?(:each) && associated_records.any?
+          next unless associated_records.respond_to?(:each)
+          next unless associated_records.any?
 
           associated_records.each_with_index do |associated_record, index|
-            next unless associated_record.respond_to?(:errors) && associated_record.errors.any?
+            next unless associated_record.respond_to?(:errors)
+            next unless associated_record.errors.any?
 
             # Build path for this association item: [:data, :sites, 0]
             association_path = [@root_path, association.name, index].flatten
@@ -119,7 +121,8 @@ module Apiwork
         @record.class.reflect_on_all_associations(:has_one).each do |association|
           associated_record = @record.send(association.name)
           next unless associated_record
-          next unless associated_record.respond_to?(:errors) && associated_record.errors.any?
+          next unless associated_record.respond_to?(:errors)
+          next unless associated_record.errors.any?
 
           # Build path for this association: [:data, :address]
           association_path = [@root_path, association.name].flatten

@@ -23,7 +23,8 @@ module Apiwork
       end
 
       def detect_association_resource(association_name)
-        return nil unless self.class.respond_to?(:model_class) && self.class.model_class
+        return nil unless self.class.respond_to?(:model_class)
+        return nil unless self.class.model_class
 
         reflection = object.class.reflect_on_association(association_name)
         return nil unless reflection
@@ -199,12 +200,12 @@ module Apiwork
 
         def writable_attributes_for(action)
           @writable_attributes_cache ||= {}
-          @writable_attributes_cache[action] ||= attribute_definitions
-                                                 .select do |_, definition|
-            definition.writable_for?(action)
+          @writable_attributes_cache[action] ||= begin
+            writable = attribute_definitions.select do |_, definition|
+              definition.writable_for?(action)
+            end
+            writable.keys.freeze
           end
-                                                 .keys
-                                                 .freeze
         end
 
         def required_attributes_for(action)
@@ -258,13 +259,11 @@ module Apiwork
         private
 
         def attributes_with_option(option)
-          attribute_definitions
-            .select do |_, definition|
-              value = definition.public_send("#{option}?")
-              value.is_a?(TrueClass) || (value.is_a?(Proc) && value)
-            end
-            .keys
-            .freeze
+          selected = attribute_definitions.select do |_, definition|
+            value = definition.public_send("#{option}?")
+            value.is_a?(TrueClass) || (value.is_a?(Proc) && value)
+          end
+          selected.keys.freeze
         end
 
         def name_of_self
