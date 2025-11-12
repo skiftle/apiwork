@@ -44,25 +44,25 @@ module Apiwork
         return nil unless resource_metadata
 
         # Check if current action is a standard REST action
-        action_sym = action_name.to_sym
-        if resource_metadata[:actions]&.include?(action_sym)
+        action_name_sym = action_name.to_sym
+        if resource_metadata[:actions]&.include?(action_name_sym)
           # Standard action - return resource-level metadata
           {
             schema_class: resource_metadata[:schema_class],
             contract_class_name: resource_metadata[:contract_class_name],
             controller_class_name: resource_metadata[:controller_class_name]
           }
-        elsif resource_metadata[:members]&.key?(action_sym)
+        elsif resource_metadata[:members]&.key?(action_name_sym)
           # Check member actions
-          member_metadata = resource_metadata[:members][action_sym]
+          member_metadata = resource_metadata[:members][action_name_sym]
           {
             schema_class: member_metadata[:schema_class] || resource_metadata[:schema_class],
             contract_class_name: member_metadata[:contract_class_name] || resource_metadata[:contract_class_name],
             controller_class_name: resource_metadata[:controller_class_name]
           }
           # Check collection actions
-        elsif resource_metadata[:collections]&.key?(action_sym)
-          collection_metadata = resource_metadata[:collections][action_sym]
+        elsif resource_metadata[:collections]&.key?(action_name_sym)
+          collection_metadata = resource_metadata[:collections][action_name_sym]
           {
             schema_class: collection_metadata[:schema_class] || resource_metadata[:schema_class],
             contract_class_name: collection_metadata[:contract_class_name] || resource_metadata[:contract_class_name],
@@ -77,7 +77,7 @@ module Apiwork
       # For nested resources with custom actions, we need to find the resource
       # that actually has the action we're looking for
       def find_resource_in_metadata(metadata, resource_name)
-        action_sym = action_name.to_sym
+        action_name_sym = action_name.to_sym
         searcher = Apiwork::MetadataSearcher.new(metadata)
 
         # Collect all resources with this name (top-level and nested)
@@ -88,9 +88,9 @@ module Apiwork
         if candidates.many?
           # Check which candidate has this action defined
           candidate_with_action = candidates.find do |candidate|
-            candidate[:actions]&.include?(action_sym) ||
-              candidate[:members]&.key?(action_sym) ||
-              candidate[:collections]&.key?(action_sym)
+            candidate[:actions]&.include?(action_name_sym) ||
+              candidate[:members]&.key?(action_name_sym) ||
+              candidate[:collections]&.key?(action_name_sym)
           end
           return candidate_with_action if candidate_with_action
         end
