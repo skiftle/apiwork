@@ -222,12 +222,8 @@ module Apiwork
       # Searches member and collection actions in the resource metadata (recursively for nested resources)
       # @return [Symbol, nil] HTTP method (:get, :post, :patch, :put, :delete) or nil
       def find_http_method_from_api_metadata
-        api = find_api_for_contract
-        return nil unless api&.metadata
-
-        searcher = Apiwork::MetadataSearcher.new(api.metadata)
-        searcher.search_resources do |resource_metadata|
-          next unless resource_uses_contract?(resource_metadata, contract_class)
+        search_in_api_metadata do |resource_metadata|
+          next unless matches_contract?(resource_metadata)
 
           # Check member actions
           return resource_metadata[:members][action_name.to_sym][:method] if resource_metadata[:members]&.key?(action_name.to_sym)
@@ -239,24 +235,42 @@ module Apiwork
 
       # Find the API definition class that contains this contract
       def find_api_for_contract
-        # Search all registered APIs
         Apiwork::API.all.find do |api_class|
           next unless api_class.metadata
 
-          # Check if this contract is used in any of the API's resources
-          contract_used_in_api?(api_class, contract_class)
+          search_in_metadata(api_class.metadata) { |resource| matches_contract?(resource) }
         end
       end
 
-      # Check if a contract class is used in an API (recursively checks nested resources)
-      def contract_used_in_api?(api_class, contract)
-        searcher = Apiwork::MetadataSearcher.new(api_class.metadata)
-        searcher.search_resources do |resource_metadata|
-          true if resource_uses_contract?(resource_metadata, contract)
-        end || false
+      # Search in API metadata with a block
+      # @yield [resource_metadata] Yields each resource for custom matching
+      # @return [Object, nil] Result from block or nil
+      def search_in_api_metadata(&block)
+        api = find_api_for_contract
+        return nil unless api&.metadata
+
+        search_in_metadata(api.metadata, &block)
+      end
+
+      # Search in metadata hash
+      # @param metadata [Hash] Metadata to search
+      # @yield [resource_metadata] Yields each resource for custom matching
+      # @return [Object, nil] Result from block or nil
+      def search_in_metadata(metadata, &block)
+        Apiwork::MetadataSearcher.new(metadata).search_resources(&block)
+      end
+
+      # Check if a resource matches this action's contract
+      # @param resource_metadata [Hash] Resource metadata to check
+      # @return [Boolean] True if resource uses this contract
+      def matches_contract?(resource_metadata)
+        resource_uses_contract?(resource_metadata, contract_class)
       end
 
       # Check if a resource (or its nested resources) uses a specific contract
+      # @param resource_metadata [Hash] Resource metadata to check
+      # @param contract [Class] Contract class to match against
+      # @return [Boolean] True if resource uses the specified contract
       def resource_uses_contract?(resource_metadata, contract)
         matches_explicit_contract?(resource_metadata, contract) ||
           matches_schema_contract?(resource_metadata, contract)

@@ -85,7 +85,7 @@ module Apiwork
 
         # If we have multiple candidates, prefer the one that has the current action
         # This handles nested resources with custom member/collection actions
-        if candidates.size > 1
+        if candidates.many?
           # Check which candidate has this action defined
           candidate_with_action = candidates.find do |candidate|
             candidate[:actions]&.include?(action_sym) ||

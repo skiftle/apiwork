@@ -35,7 +35,10 @@
       "Bash(done)",
       "Bash(sort:*)",
       "Bash(xargs ls:*)",
-      "Bash(git log:*)"
+      "Bash(git log:*)",
+      "Bash(git check-ignore:*)",
+      "Bash(git rev-list:*)",
+      "Bash(git cat-file:*)"
     ],
     "deny": [],
     "ask": []
