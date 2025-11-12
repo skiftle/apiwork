@@ -251,7 +251,7 @@ module Apiwork
         def should_auto_wrap_input?
           return false unless @reset_input # Only when reset_input! is used
           return false unless contract_class.schema?
-          return false unless writable_action?
+          return false unless %i[create update].include?(action_name.to_sym)
 
           true
         end

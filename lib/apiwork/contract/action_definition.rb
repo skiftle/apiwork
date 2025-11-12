@@ -336,11 +336,6 @@ module Apiwork
           end
         end
       end
-
-      # Check if action is a writable action (create/update)
-      def writable_action?
-        %i[create update].include?(action_name.to_sym)
-      end
     end
   end
 end

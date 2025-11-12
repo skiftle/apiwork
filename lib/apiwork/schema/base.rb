@@ -11,8 +11,6 @@ module Apiwork
       class_attribute :association_definitions, default: {}
       class_attribute :_serialize_key_transform, default: nil
       class_attribute :_deserialize_key_transform, default: nil
-      class_attribute :_auto_include_associations, default: nil
-      class_attribute :_validated_includes, default: nil
       class_attribute :_root, default: nil
       class_attribute :_auto_detection_complete, default: false
 
@@ -138,14 +136,6 @@ module Apiwork
 
         def deserialize_key_transform=(value)
           self._deserialize_key_transform = value
-        end
-
-        def auto_include_associations
-          _auto_include_associations.nil? ? Apiwork.configuration.auto_include_associations : _auto_include_associations
-        end
-
-        def auto_include_associations=(value)
-          self._auto_include_associations = value
         end
 
         def attribute(name, **options)

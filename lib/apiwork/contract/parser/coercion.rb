@@ -33,14 +33,14 @@ module Apiwork
             next unless coerced.key?(name)
 
             value = coerced[name]
-            coerced[name] = coerce_value(value, param_options, definition)
+            coerced[name] = coerce_value(value, param_options)
           end
 
           coerced
         end
 
         # Coerce single value based on param options
-        def coerce_value(value, param_options, _definition)
+        def coerce_value(value, param_options)
           type = param_options[:type]
 
           # Handle union types
