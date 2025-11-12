@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
+require_relative '../concerns/writable_normalization'
+
 module Apiwork
   module Schema
     class AttributeDefinition
+      include Apiwork::Concerns::WritableNormalization
+
       attr_reader :name, :type, :enum, :required, :null_to_empty
 
       def initialize(name, klass:, **options)
@@ -90,15 +94,6 @@ module Apiwork
       end
 
       private
-
-      def normalize_writable(value)
-        case value
-        when true then { on: %i[create update] }
-        when false then { on: [] }
-        when Hash then { on: Array(value[:on] || %i[create update]) }
-        else { on: [] }
-        end
-      end
 
       def apply_defaults(options)
         defaults = {

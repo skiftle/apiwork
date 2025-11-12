@@ -29,7 +29,7 @@ module Apiwork
       # @return [Hash] Complete response hash (not validated)
       def perform(resource_or_collection, query_params: {})
         return build_collection_response(resource_or_collection, query_params) if resource_or_collection.is_a?(Enumerable)
-        return build_error_response(resource_or_collection) if errors?(resource_or_collection)
+        return build_error_response(resource_or_collection) if resource_or_collection.respond_to?(:errors) && resource_or_collection.errors.any?
         return { ok: true, meta: meta.presence || {} } if controller.request.delete?
 
         build_single_resource_response(resource_or_collection, query_params)
@@ -42,7 +42,7 @@ module Apiwork
 
         # Auto-query for index action
         query_obj = nil
-        if should_auto_query?(collection)
+        if controller.action_name.to_s == 'index' && collection.is_a?(ActiveRecord::Relation) && schema_class.present?
           query_obj = Apiwork::Query.new(collection, schema: schema_class).perform(query_params)
           collection = query_obj.result
         end
@@ -67,7 +67,7 @@ module Apiwork
         includes_param = extract_includes_param(query_params)
 
         # Eager load associations for single resources
-        if should_eager_load?(resource)
+        if resource.is_a?(ActiveRecord::Base) && !resource.new_record? && schema_class.present?
           includes_hash = build_includes_hash_for_eager_loading(includes_param)
           resource = reload_with_includes(resource, includes_hash) if includes_hash.any?
         end
@@ -101,29 +101,6 @@ module Apiwork
       end
 
       private
-
-      # Check if resource has errors
-      def errors?(resource)
-        return false unless resource.respond_to?(:errors)
-
-        resource.errors.any?
-      end
-
-      # Check if we should auto-query (index action with AR relation and schema)
-      def should_auto_query?(resource)
-        controller.action_name.to_s == 'index' &&
-          resource.is_a?(ActiveRecord::Relation) &&
-          schema_class.present?
-      end
-
-      # Check if we should eager load for single resource
-      def should_eager_load?(resource)
-        return false unless resource.is_a?(ActiveRecord::Base)
-        return false if resource.new_record?
-        return false unless schema_class.present?
-
-        true
-      end
 
       # Extract includes parameter from query_params or controller.params
       # Single source of truth for include params (used for both eager loading and serialization)
