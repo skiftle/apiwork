@@ -5,7 +5,6 @@ module Apiwork
     class Base
       include Concerns::AbstractClass
       include Serialization
-      extend Inspection
 
       class_attribute :_model_class
       class_attribute :attribute_definitions, default: {}
@@ -15,6 +14,7 @@ module Apiwork
       class_attribute :_auto_include_associations, default: nil
       class_attribute :_validated_includes, default: nil
       class_attribute :_root, default: nil
+      class_attribute :_auto_detection_complete, default: false
 
       attr_reader :object, :context, :includes
 
@@ -41,14 +41,14 @@ module Apiwork
           Contract::SchemaContractRegistry.contract_for_schema(self)
         end
 
-        def model(ref = nil)
-          if ref
-            unless ref.is_a?(Class)
-              raise ArgumentError, "model must be a Class constant, got #{ref.class}. " \
+        def model(value = nil)
+          if value
+            unless value.is_a?(Class)
+              raise ArgumentError, "model must be a Class constant, got #{value.class}. " \
                                    "Use: model Post (not 'Post' or :post)"
             end
-            self._model_class = ref
-            ref
+            self._model_class = value
+            value
           else
             _model_class
           end
@@ -112,9 +112,9 @@ module Apiwork
         end
 
         def ensure_auto_detection_complete
-          return if instance_variable_defined?(:@auto_detection_complete) && @auto_detection_complete
+          return if _auto_detection_complete
 
-          @auto_detection_complete = true
+          self._auto_detection_complete = true
           auto_detect_model
         end
 
@@ -223,13 +223,46 @@ module Apiwork
             return [].freeze if model_class.nil?
 
             writable_attrs = writable_attributes_for(action)
-
-            required_columns = model_class.columns
-                                          .select { |col| !col.null && col.default.nil? }
-                                          .map { |col| col.name.to_sym }
-
             (required_columns & writable_attrs).freeze
           end
+        end
+
+        # Model introspection helpers
+        # Get column metadata for an attribute
+        #
+        # @param attribute_name [Symbol, String] Attribute name
+        # @return [ActiveRecord::ConnectionAdapters::Column, nil] Column object or nil
+        def column_for(attribute_name)
+          model_class&.columns_hash&.[](attribute_name.to_s)
+        end
+
+        # Get list of required column names (non-null with no default)
+        #
+        # @return [Array<Symbol>] Array of required column names
+        def required_columns
+          return [] unless model_class
+
+          model_class.columns
+                     .reject(&:null)
+                     .select { |col| col.default.nil? }
+                     .map(&:name)
+                     .map(&:to_sym)
+        end
+
+        # Check if a column is nullable
+        #
+        # @param attribute_name [Symbol, String] Attribute name
+        # @return [Boolean] True if column allows null values
+        def column_nullable?(attribute_name)
+          column_for(attribute_name)&.null || false
+        end
+
+        # Get column type for an attribute
+        #
+        # @param attribute_name [Symbol, String] Attribute name
+        # @return [Symbol, nil] Column type (:string, :integer, etc.) or nil
+        def column_type_for(attribute_name)
+          model_class&.type_for_attribute(attribute_name.to_s)&.type
         end
 
         private

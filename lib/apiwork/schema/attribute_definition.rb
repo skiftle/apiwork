@@ -19,13 +19,11 @@ module Apiwork
 
             # Auto-detect from DB
             options[:enum] ||= detect_enum_values(name)
-            # TODO: Raise if type cannot be detected and not provided?
             options[:type] ||= detect_type(name) if @is_db_column
             options[:required] = detect_required(name) if options[:required].nil?
             options[:nullable] = detect_nullable(name) if options[:nullable].nil?
           rescue ActiveRecord::StatementInvalid, ActiveRecord::NoDatabaseError, ActiveRecord::ConnectionNotEstablished
             # DB not available or table doesn't exist - skip introspection
-            # TODO Throw warning in development?
           end
         end
 
@@ -201,7 +199,7 @@ module Apiwork
         return false unless @model_class
         return false unless @is_db_column
 
-        column = @model_class.columns_hash[name.to_s]
+        column = column_for(name)
 
         # Column with default not required (DB handles it)
         # Exception: Enum fields with defaults still required
@@ -215,10 +213,16 @@ module Apiwork
         return false unless @model_class
         return false unless @is_db_column
 
-        column = @model_class.columns_hash[name.to_s]
+        column = column_for(name)
 
         # Return true if column allows NULL, false if NOT NULL
         column&.null || false
+      end
+
+      private
+
+      def column_for(name)
+        @model_class.columns_hash[name.to_s]
       end
     end
   end

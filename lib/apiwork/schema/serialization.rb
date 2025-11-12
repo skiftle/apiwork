@@ -87,7 +87,6 @@ module Apiwork
       def build_nested_includes(association_name)
         return nil unless @includes.is_a?(Hash)
 
-        # Support both string and symbol keys
         @includes[association_name] || @includes[association_name.to_s] || @includes[association_name.to_sym]
       end
     end

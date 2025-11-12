@@ -66,7 +66,7 @@ module Apiwork
         # Auto-detect for belongs_to from foreign key constraint
         if @type == :belongs_to && @model_class
           foreign_key = detect_foreign_key
-          column = @model_class.columns_hash[foreign_key]
+          column = column_for(foreign_key)
           return column.null if column
         end
 
@@ -75,6 +75,10 @@ module Apiwork
       end
 
       private
+
+      def column_for(name)
+        @model_class.columns_hash[name.to_s]
+      end
 
       def normalize_writable(value)
         case value
