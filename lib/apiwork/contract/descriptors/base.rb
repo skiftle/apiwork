@@ -30,12 +30,40 @@ module Apiwork
 
           # Unified resolve implementation for both types and enums
           # Subclasses specify what key to extract from metadata (:definition or :values)
-          def resolve(name, contract_class: nil, scope: nil)
+          # Supports imports: types/enums prefixed with import alias (e.g., :user_address)
+          def resolve(name, contract_class: nil, scope: nil, visited_contracts: Set.new)
             # Get contract from scope if available
             contract = scope&.contract_class || contract_class
 
-            # Check contract class
+            # Check for circular imports
+            raise CircularImportError, "Circular import detected while resolving :#{name}" if contract && visited_contracts.include?(contract)
+
+            visited_contracts = visited_contracts.dup.add(contract) if contract
+
+            # Check contract class local storage
             return extract_payload_value(local_storage[contract][name]) if contract && local_storage[contract]&.key?(name)
+
+            # Check imports for prefixed types (e.g., :user_address where :user is import alias)
+            if contract.respond_to?(:imports)
+              contract.imports.each do |import_alias, imported_contract|
+                # Check if type name starts with import alias prefix
+                prefix = "#{import_alias}_"
+                next unless name.to_s.start_with?(prefix)
+
+                # Extract the actual type name without prefix
+                imported_type_name = name.to_s.sub(prefix, '').to_sym
+
+                # Recursively resolve from imported contract
+                result = resolve(
+                  imported_type_name,
+                  contract_class: imported_contract,
+                  scope: nil,
+                  visited_contracts: visited_contracts
+                )
+
+                return result if result
+              end
+            end
 
             # Check global
             global_storage[name]
@@ -55,6 +83,10 @@ module Apiwork
 
           def clear!
             instance_variable_set("@global_#{storage_name}", {})
+            instance_variable_set("@local_#{storage_name}", {})
+          end
+
+          def clear_local!
             instance_variable_set("@local_#{storage_name}", {})
           end
 

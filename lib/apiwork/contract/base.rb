@@ -11,6 +11,7 @@ module Apiwork
         def inherited(subclass)
           super
           subclass.instance_variable_set(:@action_definitions, {})
+          subclass.instance_variable_set(:@imports, {})
         end
 
         def schema(ref = nil)
@@ -54,6 +55,49 @@ module Apiwork
           raise ArgumentError, 'Values array required for enum definition' unless values.is_a?(Array)
 
           Descriptors::Registry.register_local_enum(self, name, values)
+        end
+
+        # Import types and enums from another contract
+        # @param contract_class [Class] The contract class to import from
+        # @param as [Symbol] The alias to use for imported types
+        #
+        # @example
+        #   class OrderContract < Apiwork::Contract::Base
+        #     import UserContract, as: :user
+        #
+        #     action :create do
+        #       input do
+        #         param :shipping_address, type: :user_address
+        #       end
+        #     end
+        #   end
+        def import(contract_class, as:)
+          # Validate contract_class is a Class
+          unless contract_class.is_a?(Class)
+            raise ArgumentError, "import must be a Class constant, got #{contract_class.class}. " \
+                                 "Use: import UserContract, as: :user (not 'UserContract' or :user_contract)"
+          end
+
+          # Validate contract_class is a Contract
+          unless contract_class < Apiwork::Contract::Base
+            raise ArgumentError, 'import must be a Contract class (subclass of Apiwork::Contract::Base), ' \
+                                 "got #{contract_class}"
+          end
+
+          # Validate alias is a symbol
+          unless as.is_a?(Symbol)
+            raise ArgumentError, "import alias must be a Symbol, got #{as.class}. " \
+                                 'Use: import UserContract, as: :user'
+          end
+
+          @imports ||= {}
+          @imports[as] = contract_class
+        end
+
+        # Get all imports for this contract
+        # @return [Hash{Symbol => Class}] Hash of alias => contract class
+        def imports
+          @imports || {}
         end
 
         def action(action_name, replace: false, &block)

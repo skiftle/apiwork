@@ -8,8 +8,8 @@ AllCops:
   NewCops: disable
   SuggestExtensions: false
   Exclude:
-    - 'spec/dummy/**/*'
-    - 'vendor/**/*'
+    - "spec/dummy/**/*"
+    - "vendor/**/*"
 
 Metrics/MethodLength:
   Enabled: false
@@ -39,6 +39,12 @@ Style/ClassAndModuleChildren:
   SafeAutoCorrect: true
 
 Style/FrozenStringLiteralComment:
+  SafeAutoCorrect: true
+
+Style/SafeNavigation:
+  SafeAutoCorrect: true
+
+Lint/RedundantSafeNavigation:
   SafeAutoCorrect: true
 
 # Disable delegate cop - causes issues with constant vs symbol
