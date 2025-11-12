@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ENV['RAILS_ENV'] = 'test'
 require_relative 'spec/dummy/config/environment'
 
@@ -10,15 +12,15 @@ puts "\nResources:"
 api.metadata.resources.each do |name, data|
   puts "  #{name}: schema=#{data[:schema_class].inspect}"
   if data[:members]&.any?
-    puts "    Members:"
+    puts '    Members:'
     data[:members].each do |action_name, action_data|
       puts "      #{action_name}: #{action_data.inspect}"
     end
   end
-  if data[:collections]&.any?
-    puts "    Collections:"
-    data[:collections].each do |action_name, action_data|
-      puts "      #{action_name}: #{action_data.inspect}"
-    end
+  next unless data[:collections]&.any?
+
+  puts '    Collections:'
+  data[:collections].each do |action_name, action_data|
+    puts "      #{action_name}: #{action_data.inspect}"
   end
 end

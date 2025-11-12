@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.homepage = 'https://apiwork.dev'
   s.license  = 'MIT'
 
-  s.required_ruby_version = '>= 3.1'
+  s.required_ruby_version = '>= 3.2'
 
   s.add_dependency 'rails', '>= 8.0'
 
@@ -18,8 +18,10 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec', '~> 3.0'
   s.add_development_dependency 'rspec-rails', '~> 6.0'
   s.add_development_dependency 'rubocop', '~> 1.0'
+  s.add_development_dependency 'rubocop-performance', '~> 1.0'
   s.add_development_dependency 'rubocop-rails', '~> 2.0'
   s.add_development_dependency 'rubocop-rspec', '~> 3.0'
+  s.add_development_dependency 'simplecov', '~> 0.22'
   s.add_development_dependency 'sqlite3', '~> 2.0'
 
   s.files = Dir['{app,lib}/**/*', 'LICENSE.txt', 'Rakefile', 'README.md']

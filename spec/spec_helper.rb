@@ -1,5 +1,14 @@
 # frozen_string_literal: true
 
+# Coverage tracking (only when COVERAGE env is set)
+if ENV.fetch('COVERAGE', 'false') == 'true'
+  require 'simplecov'
+  SimpleCov.start 'rails' do
+    add_filter '/spec/'
+    add_filter '/dummy/'
+  end
+end
+
 # Don't require apiwork here - it's loaded in rails_helper after Rails is set up
 
 RSpec.configure do |config|
