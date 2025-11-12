@@ -15,6 +15,40 @@ RSpec.describe Apiwork::Generation::Zod do
   let(:api) { Apiwork::API::Registry.find(path) }
   let(:introspect) { api.introspect }
 
+  # Helper method to detect if a type is recursive (references itself)
+  def detect_recursive_type(type_name, type_def)
+    referenced_types = extract_type_references(type_def)
+    referenced_types.include?(type_name)
+  end
+
+  # Helper method to extract type references from a type definition
+  def extract_type_references(definition)
+    refs = []
+
+    definition.each_value do |param|
+      next unless param.is_a?(Hash)
+
+      refs << param[:type] if param[:type].is_a?(Symbol) && !primitive_type?(param[:type])
+      refs << param[:of] if param[:of].is_a?(Symbol) && !primitive_type?(param[:of])
+
+      next unless param[:variants].is_a?(Array)
+
+      param[:variants].each do |variant|
+        next unless variant.is_a?(Hash)
+
+        refs << variant[:type] if variant[:type].is_a?(Symbol) && !primitive_type?(variant[:type])
+        refs << variant[:of] if variant[:of].is_a?(Symbol) && !primitive_type?(variant[:of])
+      end
+    end
+
+    refs.uniq
+  end
+
+  # Helper method to check if a type is primitive
+  def primitive_type?(type)
+    %i[string integer boolean datetime date uuid object array decimal float literal union enum].include?(type)
+  end
+
   describe '#generate' do
     let(:output) { generator.generate }
 
@@ -70,8 +104,11 @@ RSpec.describe Apiwork::Generation::Zod do
           # Skip types that aren't in the output (e.g., base types that aren't used)
           next unless output.include?("export const #{schema_name}Schema")
 
+          # Detect if type is recursive by checking if it references itself
+          is_recursive = detect_recursive_type(type_name, type_def)
+
           # All types should have a TypeScript type declaration
-          if type_def[:recursive]
+          if is_recursive
             # Recursive types use interface
             expect(output).to include("export interface #{schema_name}"),
                               "Missing interface for recursive type #{type_name}"
@@ -84,7 +121,7 @@ RSpec.describe Apiwork::Generation::Zod do
           expect(output).to include("export const #{schema_name}Schema: z.ZodType<#{schema_name}>"),
                             "Missing schema for #{type_name}"
 
-          if type_def[:recursive]
+          if is_recursive
             # Recursive types use z.lazy()
             expect(output).to include('z.lazy'), "Recursive type #{type_name} should use z.lazy"
           else
@@ -100,7 +137,7 @@ RSpec.describe Apiwork::Generation::Zod do
         expect(filter_types).not_to be_empty
 
         filter_types.each do |type_name, type_def|
-          next unless type_def[:recursive]
+          next unless detect_recursive_type(type_name, type_def)
 
           schema_name = Apiwork::Transform::Case.string(type_name, :camelize_upper)
 

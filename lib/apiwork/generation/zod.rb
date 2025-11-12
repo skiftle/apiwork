@@ -140,8 +140,8 @@ module Apiwork
         schemas = sorted_types.map do |type_name, type_shape|
           # Detect if this is an update payload type
           action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
-          # Check if type is recursive
-          recursive = type_shape[:recursive] == true
+          # Detect circular references on-demand for this type
+          recursive = detect_circular_references(type_name, type_shape)
           build_object_schema(type_name, type_shape, action_name, recursive: recursive)
         end
 
@@ -194,8 +194,7 @@ module Apiwork
       def extract_type_references_for_sorting(type_shape, all_type_names)
         refs = []
 
-        type_shape.each do |key, value|
-          next if key == :recursive
+        type_shape.each_value do |value|
           next unless value.is_a?(Hash)
 
           # Direct type reference
@@ -223,10 +222,7 @@ module Apiwork
       def build_object_schema(type_name, type_shape, action_name = nil, recursive: false)
         schema_name = zod_type_name(type_name)
 
-        # Filter out the :recursive key from type_shape
-        filtered_shape = type_shape.reject { |k, _v| k == :recursive }
-
-        properties = filtered_shape.map do |property_name, property_def|
+        properties = type_shape.map do |property_name, property_def|
           key = transform_key(property_name)
           zod_type = map_field_definition(property_def, action_name)
           "  #{key}: #{zod_type}"
@@ -370,7 +366,8 @@ module Apiwork
         # Generate TypeScript type/interface declarations
         type_declarations = sorted_types.map do |type_name, type_shape|
           action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
-          recursive = type_shape[:recursive] == true
+          # Detect circular references on-demand for this type
+          recursive = detect_circular_references(type_name, type_shape)
           build_typescript_type(type_name, type_shape, action_name, recursive: recursive)
         end
 
@@ -380,9 +377,8 @@ module Apiwork
       # Build TypeScript type declaration
       def build_typescript_type(type_name, type_shape, action_name = nil, recursive: false)
         type_name_pascal = zod_type_name(type_name)
-        filtered_shape = type_shape.reject { |k, _v| k == :recursive }
 
-        properties = filtered_shape.map do |property_name, property_def|
+        properties = type_shape.map do |property_name, property_def|
           key = transform_key(property_name)
           is_update = action_name.to_s == 'update'
           is_optional = is_update || !property_def[:required]
@@ -428,6 +424,65 @@ module Apiwork
         base_type = "#{base_type} | null" if is_nullable
 
         base_type
+      end
+
+      # Detect if a type has direct circular references (references itself)
+      # Used to determine if z.lazy() is needed for the Zod schema
+      #
+      # @param type_name [Symbol] The name of the type being checked
+      # @param type_def [Hash] The type definition (params hash)
+      # @return [Boolean] true if type directly references itself
+      def detect_circular_references(type_name, type_def)
+        referenced_types = extract_custom_type_references(type_def)
+        referenced_types.include?(type_name)
+      end
+
+      # Extract all custom type references from a type definition
+      # Returns array of type names (symbols) that are referenced
+      #
+      # @param definition [Hash] Type definition (params hash)
+      # @return [Array<Symbol>] Array of referenced type names
+      def extract_custom_type_references(definition)
+        refs = []
+
+        definition.each_value do |param|
+          next unless param.is_a?(Hash)
+
+          # Direct type reference
+          refs << param[:type] if param[:type].is_a?(Symbol) && !primitive_type?(param[:type])
+
+          # Array 'of' reference
+          refs << param[:of] if param[:of].is_a?(Symbol) && !primitive_type?(param[:of])
+
+          # Union variant references
+          if param[:variants].is_a?(Array)
+            param[:variants].each do |variant|
+              next unless variant.is_a?(Hash)
+
+              refs << variant[:type] if variant[:type].is_a?(Symbol) && !primitive_type?(variant[:type])
+              refs << variant[:of] if variant[:of].is_a?(Symbol) && !primitive_type?(variant[:of])
+
+              # Recursively check nested shape in variants
+              refs.concat(extract_custom_type_references(variant[:shape])) if variant[:shape].is_a?(Hash)
+            end
+          end
+
+          # Nested shape references
+          refs.concat(extract_custom_type_references(param[:shape])) if param[:shape].is_a?(Hash)
+        end
+
+        refs.uniq
+      end
+
+      # Check if a type is a primitive/built-in type (not a custom type reference)
+      #
+      # @param type [Symbol] Type name to check
+      # @return [Boolean] true if type is a primitive
+      def primitive_type?(type)
+        %i[
+          string integer boolean datetime date uuid object array
+          decimal float literal union enum
+        ].include?(type)
       end
 
       # Map type definition to TypeScript type syntax
