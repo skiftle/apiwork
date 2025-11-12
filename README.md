@@ -1,5 +1,7 @@
 # Apiwork
 
+[![CI](https://github.com/skiftle/apiwork/workflows/CI/badge.svg)](https://github.com/skiftle/apiwork/actions/workflows/ci.yml)
+
 A unified resource system for Rails APIs with filtering, sorting, pagination, and serialization.
 
 Apiwork provides a powerful DSL for Rails APIs that handles filtering, sorting, pagination, and serialization. It includes contract validation, schema generation (OpenAPI, Transport, Zod), and a flexible query system.
