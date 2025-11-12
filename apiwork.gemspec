@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'bundler-audit', '~> 0.9'
   s.add_development_dependency 'rake', '~> 13.0'
   s.add_development_dependency 'rspec', '~> 3.0'
-  s.add_development_dependency 'rspec-rails', '~> 6.0'
+  s.add_development_dependency 'rspec-rails', '~> 8.0'
   s.add_development_dependency 'rubocop', '~> 1.0'
   s.add_development_dependency 'rubocop-performance', '~> 1.0'
   s.add_development_dependency 'rubocop-rails', '~> 2.0'
