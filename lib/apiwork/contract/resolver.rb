@@ -65,7 +65,8 @@ module Apiwork
 
       private_class_method def self.constantize_safe(class_name)
         class_name.constantize
-      rescue NameError
+      rescue NameError => e
+        Rails.logger&.debug("Failed to constantize #{class_name}: #{e.message}") if defined?(Rails)
         nil
       end
 

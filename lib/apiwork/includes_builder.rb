@@ -102,6 +102,10 @@ module Apiwork
     # Deep merge two include hashes
     # Recursively merges nested hashes, preserving both automatic and explicit includes
     def deep_merge_includes(base, override)
+      self.class.deep_merge_includes(base, override)
+    end
+
+    def self.deep_merge_includes(base, override)
       result = base.dup
       override.each do |key, value|
         key_sym = key.to_sym
@@ -151,7 +155,8 @@ module Apiwork
       if schema_class.is_a?(String)
         schema_class = begin
           schema_class.constantize
-        rescue StandardError
+        rescue StandardError => e
+          Rails.logger&.warn("Failed to constantize schema class '#{schema_class}': #{e.message}") if defined?(Rails)
           nil
         end
       end
@@ -178,7 +183,7 @@ module Apiwork
         if filter_hash.is_a?(Array)
           filter_hash.each do |filter_item|
             extracted = extract_from_filter(filter_item, visited)
-            result = deep_merge_includes(result, extracted)
+            result = IncludesBuilder.deep_merge_includes(result, extracted)
           end
           return result
         end
@@ -190,12 +195,12 @@ module Apiwork
           if %i[_or _and].include?(key_sym) && value.is_a?(Array)
             value.each do |filter_item|
               extracted = extract_from_filter(filter_item, visited)
-              result = deep_merge_includes(result, extracted)
+              result = IncludesBuilder.deep_merge_includes(result, extracted)
             end
             next
           elsif key_sym == :_not && value.is_a?(Hash)
             extracted = extract_from_filter(value, visited)
-            result = deep_merge_includes(result, extracted)
+            result = IncludesBuilder.deep_merge_includes(result, extracted)
             next
           end
 
@@ -260,19 +265,6 @@ module Apiwork
 
       private
 
-      def deep_merge_includes(base, override)
-        result = base.dup
-        override.each do |key, value|
-          key_sym = key.to_sym
-          if result[key_sym].is_a?(Hash) && value.is_a?(Hash)
-            result[key_sym] = deep_merge_includes(result[key_sym], value)
-          else
-            result[key_sym] = value
-          end
-        end
-        result
-      end
-
       def resolve_nested_schema(association_definition)
         nested_schema = association_definition.schema_class
 
@@ -280,7 +272,8 @@ module Apiwork
         if nested_schema.is_a?(String)
           nested_schema = begin
             nested_schema.constantize
-          rescue StandardError
+          rescue StandardError => e
+            Rails.logger&.warn("Failed to constantize nested schema '#{nested_schema}': #{e.message}") if defined?(Rails)
             nil
           end
         end

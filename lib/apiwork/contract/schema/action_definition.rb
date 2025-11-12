@@ -30,7 +30,6 @@ module Apiwork
           @input_definition ||= Definition.new(
             :input,
             contract_class,
-            type_scope: nil,
             action_name: action_name,
             parent_scope: self
           )
@@ -135,7 +134,6 @@ module Apiwork
           virtual_def = Definition.new(
             :input,
             contract_class,
-            type_scope: nil,
             action_name: action_name,
             parent_scope: self
           )
@@ -163,7 +161,6 @@ module Apiwork
           virtual_def = Definition.new(
             :output,
             contract_class,
-            type_scope: nil,
             action_name: action_name,
             parent_scope: self
           )
@@ -220,7 +217,6 @@ module Apiwork
           @input_definition = Definition.new(
             :input,
             contract_class,
-            type_scope: nil,
             action_name: action_name,
             parent_scope: self
           )
@@ -250,7 +246,6 @@ module Apiwork
           @output_definition = Definition.new(
             :output,
             contract_class,
-            type_scope: nil,
             action_name: action_name,
             parent_scope: self
           )

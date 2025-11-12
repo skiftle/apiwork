@@ -41,14 +41,6 @@ module Apiwork
         @reset_output
       end
 
-      def merges_input?
-        false
-      end
-
-      def merges_output?
-        false
-      end
-
       # Serialize this action definition to JSON-friendly hash
       # Includes both input and output definitions
       # @return [Hash] Hash with :input and :output keys
@@ -123,9 +115,8 @@ module Apiwork
         @input_definition ||= Definition.new(
           :input,
           contract_class,
-          type_scope: nil,  # No longer needed with parent_scope chain
           action_name: action_name,
-          parent_scope: self  # THIS ActionDefinition is the parent
+          parent_scope: self
         )
 
         @input_definition.instance_eval(&block) if block
@@ -140,9 +131,8 @@ module Apiwork
         @output_definition ||= Definition.new(
           :output,
           contract_class,
-          type_scope: nil,  # No longer needed with parent_scope chain
           action_name: action_name,
-          parent_scope: self  # THIS ActionDefinition is the parent
+          parent_scope: self
         )
 
         @output_definition.instance_eval(&block) if block
@@ -157,12 +147,9 @@ module Apiwork
       attr_reader :output_definition
 
       # Get merged input definition (virtual + explicit)
+      # Base implementation just returns input definition
+      # Schema::ActionDefinition overrides this for schema-based contracts
       def merged_input_definition
-        return input_definition unless merges_input?
-        return input_definition if input_definition.nil?
-
-        # For now, just return explicit input
-        # TODO: Implement full merging when needed
         input_definition
       end
 
@@ -307,7 +294,8 @@ module Apiwork
 
       def constantize_contract_safe(contract_class_name)
         contract_class_name.constantize
-      rescue NameError
+      rescue NameError => e
+        Rails.logger&.debug("Failed to constantize contract '#{contract_class_name}': #{e.message}") if defined?(Rails)
         nil
       end
 

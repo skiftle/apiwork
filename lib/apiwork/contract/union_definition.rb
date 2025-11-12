@@ -5,11 +5,10 @@ module Apiwork
     # UnionDefinition handles union type definitions within contracts
     # A union represents a parameter that can be one of several type alternatives
     class UnionDefinition
-      attr_reader :variants, :contract_class, :type_scope, :discriminator
+      attr_reader :variants, :contract_class, :discriminator
 
-      def initialize(contract_class, type_scope: :root, discriminator: nil)
+      def initialize(contract_class, discriminator: nil)
         @contract_class = contract_class
-        @type_scope = type_scope
         @discriminator = discriminator
         @variants = []
       end
@@ -40,7 +39,7 @@ module Apiwork
 
         # Handle shape block (for :object or :array with :object items)
         if block_given?
-          shape_def = Definition.new(:input, @contract_class, type_scope: @type_scope)
+          shape_def = Definition.new(:input, @contract_class)
           shape_def.instance_eval(&block)
           variant_def[:shape] = shape_def
         end
