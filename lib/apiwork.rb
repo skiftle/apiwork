@@ -30,6 +30,15 @@ module Apiwork
       builder.instance_eval(&block)
     end
 
+    # Introspect an API by path
+    # Returns the introspection hash for the specified API
+    #
+    # @param path [String] The API path (e.g., '/api/v1')
+    # @return [Hash, nil] Introspection data or nil if API not found
+    def introspect(path)
+      API.find(path)&.introspect
+    end
+
     # Reset all registries and re-register built-in types
     # Useful for testing when you need to reload API configurations
     def reset_registries!
