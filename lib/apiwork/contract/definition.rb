@@ -266,7 +266,7 @@ module Apiwork
         end
 
         # Validate type
-        type_error = validate_type(name, value, param_options[:type], param_options[:shape], field_path)
+        type_error = validate_type(name, value, param_options[:type], field_path)
         return { errors: [type_error], value_set: false } if type_error
 
         # Validate shape structures
@@ -466,7 +466,7 @@ module Apiwork
               end
             else
               # Simple type array (e.g., array of strings)
-              type_error = validate_type(index, item, param_options[:of], nil, item_path)
+              type_error = validate_type(index, item, param_options[:of], item_path)
               if type_error
                 errors << type_error
               else
@@ -482,7 +482,7 @@ module Apiwork
         [errors, values]
       end
 
-      def validate_type(name, value, expected_type, _shape_def, path)
+      def validate_type(name, value, expected_type, path)
         # Check if value matches expected type
         valid = case expected_type
                 when :string then value.is_a?(String)
@@ -743,7 +743,7 @@ module Apiwork
         end
 
         # Handle primitive types
-        type_error = validate_type(name, value, variant_type, variant_shape, path)
+        type_error = validate_type(name, value, variant_type, path)
         return [type_error, nil] if type_error
 
         # Validate enum if present

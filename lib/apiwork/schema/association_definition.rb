@@ -1,10 +1,14 @@
 # frozen_string_literal: true
 
+require_relative '../concerns/writable_normalization'
+
 module Apiwork
   module Schema
     # AssociationDefinition - Model-specific association definition for ActiveRecord
     # This class provides ActiveRecord reflection, validation, and auto-detection
     class AssociationDefinition
+      include Apiwork::Concerns::WritableNormalization
+
       attr_reader :name, :type, :schema_class, :allow_destroy, :model_class
 
       def initialize(name, type:, klass:, **options)
@@ -78,15 +82,6 @@ module Apiwork
 
       def column_for(name)
         @model_class.columns_hash[name.to_s]
-      end
-
-      def normalize_writable(value)
-        case value
-        when true then { on: %i[create update] }
-        when false then { on: [] }
-        when Hash then { on: Array(value[:on] || %i[create update]) }
-        else { on: [] }
-        end
       end
 
       def detect_foreign_key
