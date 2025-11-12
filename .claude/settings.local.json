@@ -38,7 +38,10 @@
       "Bash(git log:*)",
       "Bash(git check-ignore:*)",
       "Bash(git rev-list:*)",
-      "Bash(git cat-file:*)"
+      "Bash(git cat-file:*)",
+      "Bash(git count-objects:*)",
+      "Bash(git remote add:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []
