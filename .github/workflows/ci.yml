@@ -20,7 +20,9 @@ jobs:
           ruby-version: '3.3'
 
       - name: Install dependencies
-        run: bundle install
+        run: |
+          bundle config set --local path vendor/bundle
+          bundle install --jobs 4 --retry 3
 
       - name: Run RuboCop
         run: bundle exec rubocop
@@ -42,7 +44,9 @@ jobs:
           ruby-version: ${{ matrix.ruby }}
 
       - name: Install dependencies
-        run: bundle install
+        run: |
+          bundle config set --local path vendor/bundle
+          bundle install --jobs 4 --retry 3
 
       - name: Set up database
         run: cd spec/dummy && bundle exec rake db:schema:load
