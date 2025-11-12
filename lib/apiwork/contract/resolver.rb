@@ -9,6 +9,8 @@ module Apiwork
     # 2. Explicit contract from metadata (standalone, no schema)
     # 3. Fail with clear error
     class Resolver
+      extend Concerns::SafeConstantize
+
       # Main resolve method - called from controller with all context
       #
       # @param controller_class [Class] Controller class
@@ -61,13 +63,6 @@ module Apiwork
         parts = base_name.split('::')
         parts[-1] = parts[-1].singularize
         "#{parts.join('::')}Contract"
-      end
-
-      private_class_method def self.constantize_safe(class_name)
-        class_name.constantize
-      rescue NameError => e
-        Rails.logger&.debug("Failed to constantize #{class_name}: #{e.message}") if defined?(Rails)
-        nil
       end
 
       private_class_method def self.raise_contract_not_found_error(contract_class_name)

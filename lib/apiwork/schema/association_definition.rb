@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
-require_relative '../concerns/writable_normalization'
-
 module Apiwork
   module Schema
     # AssociationDefinition - Model-specific association definition for ActiveRecord
     # This class provides ActiveRecord reflection, validation, and auto-detection
     class AssociationDefinition
-      include Apiwork::Concerns::WritableNormalization
+      include Concerns::WritableNormalization
 
       attr_reader :name, :type, :schema_class, :allow_destroy, :model_class
 
