@@ -34,7 +34,7 @@ module Apiwork
     # Useful for testing when you need to reload API configurations
     def reset_registries!
       Contract::Descriptors::Registry.clear!
-      API::Registry.clear
+      API::Registry.clear!
       Contract::BuiltInTypes.register
     end
   end

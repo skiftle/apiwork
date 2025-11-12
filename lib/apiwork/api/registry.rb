@@ -54,7 +54,7 @@ module Apiwork
         end
 
         # Clear all registered APIs (useful for testing)
-        def clear
+        def clear!
           apis.clear
           apis_by_path.clear
         end

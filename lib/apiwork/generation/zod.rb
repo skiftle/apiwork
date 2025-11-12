@@ -545,7 +545,7 @@ module Apiwork
         if is_update
           # Update actions: all fields optional
           type += '.optional()' unless type.include?('.optional()')
-        elsif !definition[:required]
+        elsif definition[:required] == false
           # Regular fields: optional if not required
           type += '.optional()'
         end
