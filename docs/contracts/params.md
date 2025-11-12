@@ -100,7 +100,7 @@ Applied when param is missing or nil.
 param :status, type: :string, enum: ['draft', 'published', 'archived']
 ```
 
-Restricts values to specific options. See [Enums](enums.md) for complete documentation on inline enums, named enums, scoped enums, and built-in filter enums.
+Restricts values to specific options. See [Enums](enums.md) for complete documentation on inline enums, named enums, and built-in filter enums.
 
 ### nullable
 
@@ -255,103 +255,6 @@ Complete variant signature:
 variant type: :type_name, of: :item_type, enum: :enum_ref, tag: 'discriminator_value', &block
 ```
 
-## Lexical scoping
-
-Custom types follow lexical scoping like JavaScript:
-
-### Global scope
-
-```ruby
-# Available everywhere
-type :timestamp do
-  param :value, type: :datetime, required: true
-end
-
-action :create do
-  input do
-    param :created, type: :timestamp, required: true
-  end
-end
-
-action :update do
-  input do
-    param :updated, type: :timestamp, required: true
-  end
-end
-```
-
-### Action scope
-
-```ruby
-# Global type
-type :metadata do
-  param :version, type: :string, required: true
-end
-
-action :create do
-  # Action-scoped type (shadows global)
-  type :metadata do
-    param :source, type: :string, required: true
-    param :version, type: :integer, required: true
-  end
-
-  input do
-    # Uses action-scoped :metadata (integer version)
-    param :meta, type: :metadata, required: true
-  end
-end
-
-action :update do
-  input do
-    # Uses global :metadata (string version)
-    param :meta, type: :metadata, required: true
-  end
-end
-```
-
-### Input/Output scope
-
-```ruby
-action :transform do
-  # Action-scoped type
-  type :data do
-    param :raw, type: :string, required: true
-  end
-
-  input do
-    # Input-scoped type (shadows action scope)
-    type :data do
-      param :value, type: :string, required: true
-      param :format, type: :string, required: true
-    end
-
-    # Uses input-scoped :data
-    param :input_data, type: :data, required: true
-  end
-
-  output do
-    # Output-scoped type (shadows action scope)
-    type :data do
-      param :processed, type: :string, required: true
-      param :checksum, type: :string, required: true
-    end
-
-    # Uses output-scoped :data
-    param :output_data, type: :data, required: true
-  end
-end
-```
-
-### Scope resolution order
-
-Types are resolved in this order:
-
-1. **Input/Output scope** (highest priority)
-2. **Action scope**
-3. **Root/Global scope** (lowest priority)
-
-This matches JavaScript's lexical scoping with `let`.
-
 ## Schema generation
 
 params are used to generate schemas for frontend:
@@ -444,26 +347,6 @@ action :search do
 end
 ```
 
-### Type aliases with scoping
-
-```ruby
-# Global UUID type
-type :id do
-  param :value, type: :uuid, required: true
-end
-
-action :special_create do
-  # Override for specific action - use integer IDs instead
-  type :id do
-    param :value, type: :integer, required: true
-  end
-
-  input do
-    param :id, type: :id, required: true  # Uses integer version
-  end
-end
-```
-
 ### Complex nested structures
 
 ```ruby
@@ -487,90 +370,26 @@ end
 
 Generates nested structure: `addresses → address → location`.
 
-### Union types with mixed scopes
-
-```ruby
-type :text_payload do
-  param :text, type: :string, required: true
-end
-
-action :process do
-  type :number_payload do
-    param :number, type: :integer, required: true
-  end
-
-  input do
-    type :bool_payload do
-      param :flag, type: :boolean, required: true
-    end
-
-    param :data, type: :union, required: true do
-      variant type: :text_payload    # Global scope
-      variant type: :number_payload  # Action scope
-      variant type: :bool_payload    # Input scope
-    end
-  end
-end
-```
-
-All variants resolve from correct scope.
-
 ## Troubleshooting
 
 ### Custom type not found
 
 ```ruby
-# Problem: Type not in scope
+# Problem: Type not defined at contract level
 action :create do
   input do
     param :data, type: :my_type, required: true  # Error!
   end
 end
 
-# Solution: Define type in correct scope
+# Solution: Define type at contract level
 type :my_type do
   param :value, type: :string, required: true
 end
 
-# Or define in action scope
 action :create do
-  type :my_type do
-    param :value, type: :string, required: true
-  end
-
   input do
     param :data, type: :my_type, required: true  # Works!
-  end
-end
-```
-
-### Shadowing confusion
-
-```ruby
-# Problem: Using wrong version of type
-type :data do
-  param :version, type: :string, required: true
-end
-
-action :create do
-  type :data do
-    param :version, type: :integer, required: true  # Shadows global!
-  end
-
-  input do
-    param :info, type: :data, required: true  # Uses INTEGER version
-  end
-end
-
-# Solution: Use different names or understand scoping
-action :create do
-  type :create_data do  # Unique name
-    param :version, type: :integer, required: true
-  end
-
-  input do
-    param :info, type: :create_data, required: true
-    param :global_info, type: :data, required: true  # Global version
   end
 end
 ```
@@ -581,7 +400,7 @@ For complex validation beyond type checking and enums, use Active Record validat
 
 - **[Literal Types](./literal-types.md)** - Exact value matching for type safety
 - **[Discriminated Unions](./discriminated-unions.md)** - Type-safe unions with discriminators
-- **[Enums](./enums.md)** - Complete guide to enums and scoping
+- **[Enums](./enums.md)** - Complete guide to enums
 - **[Actions](./actions.md)** - Defining action contracts
 - **[Types](./types.md)** - Deep dive into custom and union types
 - **[Introduction](./introduction.md)** - Back to contracts overview

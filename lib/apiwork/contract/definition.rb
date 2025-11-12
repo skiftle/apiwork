@@ -3,14 +3,13 @@
 module Apiwork
   module Contract
     class Definition
-      attr_reader :type, :params, :contract_class, :action_name, :direction, :parent_scope
+      attr_reader :type, :params, :contract_class, :action_name, :direction
 
-      def initialize(type:, contract_class:, action_name: nil, parent_scope: nil)
+      def initialize(type:, contract_class:, action_name: nil)
         @type = type # :input or :output
         @direction = type # Alias for type (used by Descriptors::Registry.qualified_enum_name)
         @contract_class = contract_class
         @action_name = action_name
-        @parent_scope = parent_scope
         @params = {}
       end
 
@@ -22,36 +21,6 @@ module Apiwork
 
       def as_json
         introspect
-      end
-
-      # Define a custom type scoped to this input/output
-      def type(name, &block)
-        raise ArgumentError, 'Block required for custom type definition' unless block_given?
-
-        # Register type scoped to this Definition instance (not contract class)
-        # This ensures input/output-scoped types are isolated
-        Descriptors::Registry.register_local(self, name, &block)
-      end
-
-      # Define an enum scoped to this action/input/output
-      # Enums defined here are available only within this definition's scope
-      #
-      # @param name [Symbol] Name of the enum (e.g., :priority)
-      # @param values [Array] Array of allowed values (e.g., %w[low high])
-      #
-      # @example
-      #   action :create do
-      #     input do
-      #       enum :priority, %w[low medium high]
-      #       param :priority, type: :string, enum: :priority
-      #     end
-      #   end
-      def enum(name, values)
-        raise ArgumentError, 'Values array required for enum definition' unless values.is_a?(Array)
-
-        # Register with Descriptors::Registry using this definition instance as scope
-        # This creates definition-level scoping for the enum
-        Descriptors::Registry.register_local_enum(self, name, values)
       end
 
       # Define a parameter
@@ -106,9 +75,8 @@ module Apiwork
           return
         end
 
-        # Check if type is a custom type (with scope resolution)
-        # Pass self as scope to enable parent-chain resolution
-        custom_type_block = @contract_class.resolve_custom_type(type, self)
+        # Check if type is a custom type
+        custom_type_block = @contract_class.resolve_custom_type(type)
 
         # Check if we're already expanding this type (prevent infinite recursion)
         if custom_type_block
@@ -126,7 +94,7 @@ module Apiwork
           expanding_types.add(expansion_key)
 
           begin
-            shape_def = Definition.new(type: @type, contract_class: @contract_class, action_name: @action_name, parent_scope: @parent_scope)
+            shape_def = Definition.new(type: @type, contract_class: @contract_class, action_name: @action_name)
             shape_def.instance_eval(&custom_type_block)
 
             # Apply additional block if provided (can extend custom type)
@@ -162,7 +130,7 @@ module Apiwork
 
           # Handle shape param with do block
           if block_given?
-            shape_def = Definition.new(type: @type, contract_class: @contract_class, action_name: @action_name, parent_scope: self)
+            shape_def = Definition.new(type: @type, contract_class: @contract_class, action_name: @action_name)
             shape_def.instance_eval(&block)
             @params[name][:shape] = shape_def
           end
@@ -434,7 +402,7 @@ module Apiwork
             end
           elsif param_options[:of]
             # Check if 'of' is a custom type (with scope resolution)
-            custom_type_block = @contract_class.resolve_custom_type(param_options[:of], @parent_scope)
+            custom_type_block = @contract_class.resolve_custom_type(param_options[:of])
             if custom_type_block
               # Array of custom type - must be a hash
               unless item.is_a?(Hash)
@@ -448,8 +416,7 @@ module Apiwork
               end
 
               # Validate as shape object
-              custom_def = Definition.new(type: @type, contract_class: @contract_class, action_name: @action_name,
-                                          parent_scope: @parent_scope)
+              custom_def = Definition.new(type: @type, contract_class: @contract_class, action_name: @action_name)
               custom_def.instance_eval(&custom_type_block)
 
               shape_result = custom_def.validate(
@@ -656,10 +623,10 @@ module Apiwork
         variant_shape = variant_def[:shape]
 
         # Handle custom types (with scope resolution)
-        custom_type_block = @contract_class.resolve_custom_type(variant_type, @parent_scope)
+        custom_type_block = @contract_class.resolve_custom_type(variant_type)
         if custom_type_block
           # Custom type variant
-          custom_def = Definition.new(type: @type, contract_class: @contract_class, action_name: @action_name, parent_scope: @parent_scope)
+          custom_def = Definition.new(type: @type, contract_class: @contract_class, action_name: @action_name)
           custom_def.instance_eval(&custom_type_block)
 
           # Must be a hash for custom type

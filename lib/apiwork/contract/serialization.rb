@@ -98,7 +98,7 @@ module Apiwork
             custom_type_name = options[:custom_type]
             if definition.contract_class.respond_to?(:schema_class) &&
                definition.contract_class.schema_class &&
-               definition.contract_class.resolve_custom_type(custom_type_name, definition)
+               definition.contract_class.resolve_custom_type(custom_type_name)
               # Determine scope for qualification
               scope = determine_scope_for_type(definition, custom_type_name)
               custom_type_name = Descriptors::Registry.qualified_name(scope, custom_type_name)
@@ -118,7 +118,7 @@ module Apiwork
           if type_value &&
              definition.contract_class.respond_to?(:schema_class) &&
              definition.contract_class.schema_class &&
-             definition.contract_class.resolve_custom_type(type_value, definition)
+             definition.contract_class.resolve_custom_type(type_value)
             # Custom type - use qualified name
             # Determine scope for qualification
             scope = determine_scope_for_type(definition, type_value)
@@ -158,7 +158,7 @@ module Apiwork
             # Check if it's a custom type that needs qualification
             if definition.contract_class.respond_to?(:schema_class) &&
                definition.contract_class.schema_class &&
-               definition.contract_class.resolve_custom_type(options[:of], definition)
+               definition.contract_class.resolve_custom_type(options[:of])
               # Custom type - use qualified name (e.g., service_filter instead of filter)
               scope = determine_scope_for_type(definition, options[:of])
               result[:of] = Descriptors::Registry.qualified_name(scope, options[:of])
@@ -197,7 +197,7 @@ module Apiwork
           variant_type = variant_def[:type]
 
           # Check if variant type is a custom type - if so, just return a reference
-          custom_type_block = parent_definition.contract_class.resolve_custom_type(variant_type, parent_definition)
+          custom_type_block = parent_definition.contract_class.resolve_custom_type(variant_type)
           if custom_type_block
             # Return type reference with qualified name
             # The type definition will be in the types hash at API level
@@ -218,7 +218,7 @@ module Apiwork
             # Check if it's a custom type that needs qualification
             if parent_definition.contract_class.respond_to?(:schema_class) &&
                parent_definition.contract_class.schema_class &&
-               parent_definition.contract_class.resolve_custom_type(variant_def[:of], parent_definition)
+               parent_definition.contract_class.resolve_custom_type(variant_def[:of])
               # Custom type - use qualified name (e.g., service_filter instead of filter)
               scope = determine_scope_for_type(parent_definition, variant_def[:of])
               result[:of] = Descriptors::Registry.qualified_name(scope, variant_def[:of])
@@ -255,42 +255,18 @@ module Apiwork
         # This is needed to generate the correct qualified name
         # @param definition [Definition] The definition where the type is being used
         # @param type_name [Symbol] The type name to look up
-        # @return [Object] The scope (Definition, ActionDefinition, or Contract class)
+        # @return [Class] The contract class
         def determine_scope_for_type(definition, type_name)
-          determine_scope_for(definition, type_name, Descriptors::TypeStore)
+          definition.contract_class
         end
 
         # Determine the scope where an enum is defined
         # This is needed to generate the correct qualified name
         # @param definition [Definition] The definition where the enum is being used
         # @param enum_name [Symbol] The enum name to look up
-        # @return [Object] The scope (Definition, ActionDefinition, or Contract class)
+        # @return [Class] The contract class
         def determine_scope_for_enum(definition, enum_name)
-          determine_scope_for(definition, enum_name, Descriptors::EnumStore)
-        end
-
-        # Generic scope determination for types and enums
-        # @param definition [Definition] The definition where the item is being used
-        # @param name [Symbol] The type/enum name to look up
-        # @param store_class [Class] The store class (TypeStore or EnumStore)
-        # @return [Object] The scope (Definition, ActionDefinition, or Contract class)
-        def determine_scope_for(definition, name, store_class)
-          contract_class = definition.contract_class
-
-          # Check if defined at definition level (input/output)
-          return definition if store_class.local?(name, definition)
-
-          # Check if defined at action level
-          if definition.parent_scope&.class&.name == 'Apiwork::Contract::ActionDefinition'
-            action_def = definition.parent_scope
-            return action_def if store_class.local?(name, action_def)
-          end
-
-          # Check if defined at contract level
-          return contract_class if store_class.local?(name, contract_class)
-
-          # Fall back to contract class for global items
-          contract_class
+          definition.contract_class
         end
       end
     end

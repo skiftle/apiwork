@@ -31,32 +31,11 @@ module Apiwork
           # Unified resolve implementation for both types and enums
           # Subclasses specify what key to extract from metadata (:definition or :values)
           def resolve(name, contract_class: nil, scope: nil)
-            # If scope provided, use parent-chain resolution
-            if scope
-              # Check local storage for this scope
-              return extract_payload_value(local_storage[scope][name]) if local_storage[scope]&.key?(name)
+            # Get contract from scope if available
+            contract = scope&.contract_class || contract_class
 
-              # Check parent scope if available
-              if scope.respond_to?(:parent_scope) && scope.parent_scope
-                return resolve(name, contract_class: contract_class, scope: scope.parent_scope)
-              end
-
-              # For Definition instances, check action scope
-              if scope.instance_of?(::Apiwork::Contract::Definition) &&
-                 scope.respond_to?(:action_name) && scope.action_name
-                action_def = contract_class.action_definition(scope.action_name) if contract_class
-                return extract_payload_value(local_storage[action_def][name]) if action_def && local_storage[action_def]&.key?(name)
-              end
-
-              # Check contract class scope if scope has contract_class
-              if scope.respond_to?(:contract_class)
-                contract = scope.contract_class
-                return extract_payload_value(local_storage[contract][name]) if local_storage[contract]&.key?(name)
-              end
-            end
-
-            # Check contract class scope directly (for legacy TypeStore calls)
-            return extract_payload_value(local_storage[contract_class][name]) if contract_class && local_storage[contract_class]&.key?(name)
+            # Check contract class
+            return extract_payload_value(local_storage[contract][name]) if contract && local_storage[contract]&.key?(name)
 
             # Check global
             global_storage[name]
@@ -65,34 +44,8 @@ module Apiwork
           def qualified_name(scope, name)
             return name if global?(name)
 
-            # Handle ActionDefinition instances
-            if scope.instance_of?(::Apiwork::Contract::ActionDefinition)
-              contract_class = scope.contract_class
-              action_name = scope.action_name
-              contract_prefix = extract_contract_prefix(contract_class)
-              return :"#{contract_prefix}_#{action_name}_#{name}"
-            end
-
-            # Handle Definition instances (input/output)
-            if scope.instance_of?(::Apiwork::Contract::Definition)
-              contract_class = scope.contract_class
-              action_name = scope.action_name
-              direction = scope.direction
-              contract_prefix = extract_contract_prefix(contract_class)
-              return :"#{contract_prefix}_#{action_name}_#{direction}_#{name}" if action_name
-
-              return :"#{contract_prefix}_#{direction}_#{name}"
-
-            end
-
-            # Handle contract class scope (for both Class and instances with contract_class)
-            contract_class = if scope.respond_to?(:contract_class)
-                               scope.contract_class
-                             elsif scope.is_a?(Class)
-                               scope
-                             else
-                               scope
-                             end
+            # Handle contract class scope (both Class and instances with contract_class)
+            contract_class = scope.is_a?(Class) ? scope : scope.contract_class
 
             contract_prefix = extract_contract_prefix(contract_class)
             return contract_prefix.to_sym if name.nil? || name.to_s.empty?

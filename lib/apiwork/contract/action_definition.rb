@@ -18,7 +18,6 @@ module Apiwork
       def initialize(action_name:, contract_class:, replace: false)
         @action_name = action_name
         @contract_class = contract_class
-        @parent_scope = contract_class # Parent scope is the contract class
         @reset_input = replace
         @reset_output = replace
         @input_definition = nil
@@ -60,37 +59,6 @@ module Apiwork
         introspect
       end
 
-      # Define a custom type scoped to this action
-      def type(name, &block)
-        raise ArgumentError, 'Block required for custom type definition' unless block_given?
-
-        # Register type scoped to this ActionDefinition instance (not contract class)
-        # This ensures action-scoped types are isolated from other actions
-        Descriptors::Registry.register_local(self, name, &block)
-      end
-
-      # Define an enum at action level
-      # Enums defined here are available in this action's input and output
-      #
-      # @param name [Symbol] Name of the enum (e.g., :priority)
-      # @param values [Array] Array of allowed values (e.g., %w[low high])
-      #
-      # @example
-      #   action :create do
-      #     enum :priority, %w[low medium high]
-      #
-      #     input do
-      #       param :priority, type: :string, enum: :priority
-      #     end
-      #   end
-      def enum(name, values)
-        raise ArgumentError, 'Values array required for enum definition' unless values.is_a?(Array)
-
-        # Register with Descriptors::Registry using this ActionDefinition instance as scope
-        # This creates action-level scoping for the enum
-        Descriptors::Registry.register_local_enum(self, name, values)
-      end
-
       # Define action-specific error codes that can be returned
       # These codes are merged with API-level global error codes
       #
@@ -115,8 +83,7 @@ module Apiwork
         @input_definition ||= Definition.new(
           type: :input,
           contract_class: contract_class,
-          action_name: action_name,
-          parent_scope: self
+          action_name: action_name
         )
 
         @input_definition.instance_eval(&block) if block
@@ -131,8 +98,7 @@ module Apiwork
         @output_definition ||= Definition.new(
           type: :output,
           contract_class: contract_class,
-          action_name: action_name,
-          parent_scope: self
+          action_name: action_name
         )
 
         @output_definition.instance_eval(&block) if block

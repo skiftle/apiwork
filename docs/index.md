@@ -151,7 +151,6 @@ Validate inputs and outputs:
 - [Discriminated Unions](./contracts/discriminated-unions.md) - Type-safe unions
 - [Enums](./contracts/enums.md) - Restrict values to specific options
 - [Custom Types](./contracts/custom-types.md) - Reusable type definitions
-- [Lexical Scoping](./contracts/lexical-scoping.md) - Type scoping rules
 - [Objects & Arrays](./contracts/objects-arrays.md) - Nested structures
 - [Union Types](./contracts/union-types.md) - Multiple possible types
 - [Validation](./contracts/validation.md) - How validation works

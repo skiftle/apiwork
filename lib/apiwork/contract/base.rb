@@ -66,10 +66,8 @@ module Apiwork
           @action_definitions[action_name_sym] = action_definition
         end
 
-        def resolve_custom_type(type_name, scope_id = :root)
-          # scope_id can be :root (legacy) or a scope object (Definition, ActionDefinition)
-          scope = scope_id == :root ? nil : scope_id
-          Descriptors::Registry.resolve(type_name, contract_class: self, scope: scope)
+        def resolve_custom_type(type_name)
+          Descriptors::Registry.resolve(type_name, contract_class: self)
         end
 
         # Get ActionDefinition for a specific action

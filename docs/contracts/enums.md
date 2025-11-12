@@ -66,8 +66,6 @@ action :create do
 end
 ```
 
-Named enums follow lexical scoping - they're available in the scope where they're defined.
-
 ### Global enums
 
 Define enums at the contract level to use them across all actions:
@@ -89,92 +87,6 @@ class Api::V1::PostContract < Apiwork::Contract::Base
     input do
       param :status, type: :string, enum: :post_status
     end
-  end
-end
-```
-
-### Action-scoped enums
-
-Define enums within an action to limit their scope:
-
-```ruby
-class Api::V1::PostContract < Apiwork::Contract::Base
-  action :search do
-    # Only available within this action
-    enum :search_mode, ['simple', 'advanced', 'fuzzy']
-
-    input do
-      param :mode, type: :string, enum: :search_mode
-    end
-  end
-
-  action :filter do
-    # Different enum with same values but different context
-    enum :filter_mode, ['and', 'or']
-
-    input do
-      param :mode, type: :string, enum: :filter_mode
-    end
-  end
-end
-```
-
-### Input/Output-scoped enums
-
-For even finer control, define enums within input or output blocks:
-
-```ruby
-action :transform do
-  input do
-    # Only available in this input block
-    enum :input_format, ['json', 'xml', 'csv']
-
-    param :format, type: :string, enum: :input_format
-  end
-
-  output do
-    # Different enum for output format
-    enum :output_format, ['json', 'yaml', 'msgpack']
-
-    param :format, type: :string, enum: :output_format
-  end
-end
-```
-
-## Enum scoping rules
-
-Like custom types, enums follow lexical scoping:
-
-1. **Input/Output scope** (highest priority)
-2. **Action scope**
-3. **Global/Root scope** (lowest priority)
-
-```ruby
-# Global enum
-enum :format, ['json', 'xml']
-
-action :export do
-  # Action-scoped enum (shadows global)
-  enum :format, ['pdf', 'csv', 'xlsx']
-
-  input do
-    # Input-scoped enum (shadows action)
-    enum :format, ['raw', 'formatted']
-
-    # Uses input-scoped enum: ['raw', 'formatted']
-    param :input_format, type: :string, enum: :format
-  end
-
-  output do
-    # Uses action-scoped enum: ['pdf', 'csv', 'xlsx']
-    param :output_format, type: :string, enum: :format
-  end
-end
-
-action :import do
-  input do
-    # Uses global enum: ['json', 'xml']
-    param :input_format, type: :string, enum: :format
   end
 end
 ```
