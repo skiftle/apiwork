@@ -107,22 +107,18 @@ module Apiwork
 
       # Normalize a single value (recursive)
       def normalize_indexed_value(value)
-        case value
-        when Hash
-          # Check if this hash has numeric string keys
-          if indexed_hash?(value)
-            # Convert to array, preserving order
-            value.keys.sort_by { |k| k.to_s.to_i }.map { |key| normalize_indexed_value(value[key]) }
-          else
-            # Recursively normalize nested hashes
-            normalize_indexed_hashes(value)
-          end
-        when Array
-          # Recursively normalize array elements
-          value.map { |v| normalize_indexed_value(v) }
-        else
-          value
-        end
+        return value unless value.is_a?(Hash) || value.is_a?(Array)
+        return value.map { |v| normalize_indexed_value(v) } if value.is_a?(Array)
+
+        # Handle hash: check if numeric-indexed or regular nested hash
+        return convert_indexed_hash_to_array(value) if indexed_hash?(value)
+
+        normalize_indexed_hashes(value)
+      end
+
+      # Convert indexed hash to array, preserving numeric order
+      def convert_indexed_hash_to_array(hash)
+        hash.keys.sort_by { |k| k.to_s.to_i }.map { |key| normalize_indexed_value(hash[key]) }
       end
 
       # Check if hash has only numeric string keys

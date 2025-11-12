@@ -97,57 +97,61 @@ module Apiwork
       # Returns [condition, joins] where condition is an Arel node
       def build_conditions_recursive(filter_params)
         return [nil, {}] if filter_params.blank?
+        return [nil, {}] unless filter_params.is_a?(Hash)
 
-        if filter_params.is_a?(Hash)
-          # Separate logical operators from regular attributes
-          logical_ops = filter_params.slice(:_and, :_or, :_not)
-          regular_attrs = filter_params.except(:_and, :_or, :_not)
+        # Separate logical operators from regular attributes
+        logical_ops = filter_params.slice(:_and, :_or, :_not)
+        regular_attrs = filter_params.except(:_and, :_or, :_not)
 
-          conditions = []
-          all_joins = {}
+        conditions = []
+        all_joins = {}
 
-          # Build conditions for regular attributes
-          if regular_attrs.present?
-            attr_conditions, joins = build_where_conditions(regular_attrs)
-            conditions << attr_conditions.reduce(:and) if attr_conditions.any?
-            all_joins = all_joins.deep_merge(joins)
-          end
-
-          # Handle _and
-          if logical_ops.key?(:_and)
-            and_conditions = []
-            logical_ops[:_and].each do |filter_hash|
-              cond, joins = build_conditions_recursive(filter_hash)
-              and_conditions << cond if cond
-              all_joins = all_joins.deep_merge(joins)
-            end
-            conditions << and_conditions.reduce(:and) if and_conditions.any?
-          end
-
-          # Handle _or
-          if logical_ops.key?(:_or)
-            or_conditions = []
-            logical_ops[:_or].each do |filter_hash|
-              cond, joins = build_conditions_recursive(filter_hash)
-              or_conditions << cond if cond
-              all_joins = all_joins.deep_merge(joins)
-            end
-            conditions << or_conditions.reduce(:or) if or_conditions.any?
-          end
-
-          # Handle _not
-          if logical_ops.key?(:_not)
-            not_cond, joins = build_conditions_recursive(logical_ops[:_not])
-            conditions << not_cond.not if not_cond
-            all_joins = all_joins.deep_merge(joins)
-          end
-
-          # Combine all conditions with AND
-          final_condition = conditions.compact.reduce(:and)
-          [final_condition, all_joins]
-        else
-          [nil, {}]
+        # Build conditions for regular attributes
+        if regular_attrs.present?
+          attr_conditions, joins = build_where_conditions(regular_attrs)
+          conditions << attr_conditions.reduce(:and) if attr_conditions.any?
+          all_joins = all_joins.deep_merge(joins)
         end
+
+        # Handle _and operator
+        if logical_ops.key?(:_and)
+          cond, joins = process_logical_operator(logical_ops[:_and], :and)
+          conditions << cond if cond
+          all_joins = all_joins.deep_merge(joins)
+        end
+
+        # Handle _or operator
+        if logical_ops.key?(:_or)
+          cond, joins = process_logical_operator(logical_ops[:_or], :or)
+          conditions << cond if cond
+          all_joins = all_joins.deep_merge(joins)
+        end
+
+        # Handle _not operator
+        if logical_ops.key?(:_not)
+          not_cond, joins = build_conditions_recursive(logical_ops[:_not])
+          conditions << not_cond.not if not_cond
+          all_joins = all_joins.deep_merge(joins)
+        end
+
+        # Combine all conditions with AND
+        final_condition = conditions.compact.reduce(:and)
+        [final_condition, all_joins]
+      end
+
+      # Process logical operators (_and, _or) by recursively building conditions
+      def process_logical_operator(filters, combinator)
+        collected_conditions = []
+        all_joins = {}
+
+        filters.each do |filter_hash|
+          cond, joins = build_conditions_recursive(filter_hash)
+          collected_conditions << cond if cond
+          all_joins = all_joins.deep_merge(joins)
+        end
+
+        combined = collected_conditions.reduce(combinator) if collected_conditions.any?
+        [combined, all_joins]
       end
 
       def build_where_conditions(filter, target_klass = schema.model_class)

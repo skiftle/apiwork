@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-require_relative '../concerns/writable_normalization'
-
 module Apiwork
   module Schema
     class AttributeDefinition
-      include Apiwork::Concerns::WritableNormalization
+      include Concerns::WritableNormalization
 
       attr_reader :name, :type, :enum, :required, :null_to_empty
 

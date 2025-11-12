@@ -2,6 +2,8 @@
 
 module Apiwork
   class IncludesBuilder
+    include Concerns::SafeConstantize
+
     attr_reader :schema
 
     def initialize(schema:)
@@ -153,12 +155,7 @@ module Apiwork
 
       # Handle string class names
       if schema_class.is_a?(String)
-        schema_class = begin
-          schema_class.constantize
-        rescue StandardError => e
-          Rails.logger&.warn("Failed to constantize schema class '#{schema_class}': #{e.message}") if defined?(Rails)
-          nil
-        end
+        schema_class = constantize_safe(schema_class)
       end
 
       schema_class
@@ -166,6 +163,8 @@ module Apiwork
 
     # Helper class to extract associations from filter/sort params
     class AssociationExtractor
+      include Concerns::SafeConstantize
+
       attr_reader :schema
 
       def initialize(schema:)
@@ -270,12 +269,7 @@ module Apiwork
 
         # Handle string class names
         if nested_schema.is_a?(String)
-          nested_schema = begin
-            nested_schema.constantize
-          rescue StandardError => e
-            Rails.logger&.warn("Failed to constantize nested schema '#{nested_schema}': #{e.message}") if defined?(Rails)
-            nil
-          end
+          nested_schema = constantize_safe(nested_schema)
         end
 
         nested_schema
