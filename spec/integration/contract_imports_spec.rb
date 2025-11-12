@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Contract Imports' do
-  after(:each) do
+  after do
     # Only clear local types/enums, not global ones (like :sort_direction)
     Apiwork::Contract::Descriptors::TypeStore.clear_local!
     Apiwork::Contract::Descriptors::EnumStore.clear_local!
@@ -297,13 +297,13 @@ RSpec.describe 'Contract Imports' do
 
         # Define local type with same base name
         type :metadata do
-          param :version, type: :string  # Different type
+          param :version, type: :string # Different type
         end
 
         action :create do
           input do
-            param :local_meta, type: :metadata  # Should use local
-            param :imported_meta, type: :base_metadata  # Should use imported
+            param :local_meta, type: :metadata # Should use local
+            param :imported_meta, type: :base_metadata # Should use imported
           end
         end
       end
