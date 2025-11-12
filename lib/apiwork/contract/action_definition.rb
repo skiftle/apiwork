@@ -15,7 +15,7 @@ module Apiwork
         contract_class.schema_class
       end
 
-      def initialize(action_name, contract_class, replace: false)
+      def initialize(action_name:, contract_class:, replace: false)
         @action_name = action_name
         @contract_class = contract_class
         @parent_scope = contract_class # Parent scope is the contract class
@@ -113,8 +113,8 @@ module Apiwork
         @reset_input = replace if replace
 
         @input_definition ||= Definition.new(
-          :input,
-          contract_class,
+          type: :input,
+          contract_class: contract_class,
           action_name: action_name,
           parent_scope: self
         )
@@ -129,8 +129,8 @@ module Apiwork
         @reset_output = replace if replace
 
         @output_definition ||= Definition.new(
-          :output,
-          contract_class,
+          type: :output,
+          contract_class: contract_class,
           action_name: action_name,
           parent_scope: self
         )

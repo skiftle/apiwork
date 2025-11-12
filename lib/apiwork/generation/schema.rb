@@ -37,7 +37,7 @@ module Apiwork
         generator_class = Registry[format]
 
         # Generate schema
-        generator_class.generate(api_path, **opts)
+        generator_class.generate(path: api_path, **opts)
       end
 
       # Write schemas to files

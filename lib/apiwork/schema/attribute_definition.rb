@@ -7,13 +7,13 @@ module Apiwork
 
       attr_reader :name, :type, :enum, :required, :null_to_empty
 
-      def initialize(name, klass:, **options)
+      def initialize(name, schema_class:, **options)
         @name = name
-        @klass = klass
+        @klass = schema_class
 
         # Model introspection (if model exists)
-        if klass.respond_to?(:model_class) && klass.model_class.present?
-          @model_class = klass.model_class
+        if schema_class.respond_to?(:model_class) && schema_class.model_class.present?
+          @model_class = schema_class.model_class
 
           # Only introspect if DB is connected and table exists
           begin

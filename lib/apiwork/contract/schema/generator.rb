@@ -18,7 +18,7 @@ module Apiwork
 
             TypeRegistry.register_contract_enums(contract_class, schema_class)
 
-            action_definition = Apiwork::Contract::ActionDefinition.new(action, contract_class)
+            action_definition = Apiwork::Contract::ActionDefinition.new(action_name: action, contract_class: contract_class)
 
             case action.to_sym
             when :index

@@ -23,7 +23,7 @@ module Apiwork
         # @param path [String] API mount path (e.g., '/api/v1')
         # @param options [Hash] Generator-specific options
         # @return [String] Generated schema content
-        def generate(path, **options)
+        def generate(path:, **options)
           new(path, **options).generate
         end
 
