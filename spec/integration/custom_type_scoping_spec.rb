@@ -6,7 +6,7 @@ RSpec.describe 'Schema-based Type Reuse via Imports' do
   # This spec verifies that types are properly imported and reused across contracts
   # instead of being duplicated
 
-  after(:each) do
+  after do
     Apiwork::Contract::Descriptors::TypeStore.clear_local!
     Apiwork::Contract::Descriptors::EnumStore.clear_local!
   end
@@ -26,20 +26,16 @@ RSpec.describe 'Schema-based Type Reuse via Imports' do
     expect(imported_contract.schema_class).to eq(Api::V1::CommentSchema)
   end
 
-  it 'references imported filter types' do
-    post_contract = Api::V1::PostContract
-    action_def = post_contract.action_definition(:index)
+  it 'reuses types through imports instead of duplicating' do
+    # Trigger type generation by accessing the index action
+    Api::V1::PostContract.action_definition(:index)
 
-    # The comments filter should reference the imported :comment_filter type
-    # instead of creating a duplicate type in PostContract
-    expect(post_contract.imports).to have_key(:comment)
-  end
+    # PostContract should have imported CommentContract
+    # This enables reuse of filter, sort, and include types instead of duplicating them
+    expect(Api::V1::PostContract.imports).to have_key(:comment)
 
-  it 'references imported sort types' do
-    post_contract = Api::V1::PostContract
-    action_def = post_contract.action_definition(:index)
-
-    # The comments sort should reference the imported :comment_sort type
-    expect(post_contract.imports).to have_key(:comment)
+    # The imported contract should have the CommentSchema associated
+    imported_contract = Api::V1::PostContract.imports[:comment]
+    expect(imported_contract.schema_class).to eq(Api::V1::CommentSchema)
   end
 end

@@ -88,6 +88,9 @@ module Apiwork
 
               # Add filters for associations using type references
               schema_class.association_definitions.each do |name, association_definition|
+                # Skip non-filterable associations
+                next unless association_definition.filterable?
+
                 assoc_resource = TypeRegistry.resolve_association_resource(association_definition)
                 next unless assoc_resource
                 next if visited.include?(assoc_resource)
@@ -160,6 +163,9 @@ module Apiwork
 
               # Add sort for associations using type references
               schema_class.association_definitions.each do |name, association_definition|
+                # Skip non-sortable associations
+                next unless association_definition.sortable?
+
                 assoc_resource = TypeRegistry.resolve_association_resource(association_definition)
                 next unless assoc_resource
                 next if visited.include?(assoc_resource)
@@ -404,14 +410,22 @@ module Apiwork
             association_contract = SchemaContractRegistry.contract_for_schema(association_schema)
             return nil unless association_contract
 
+            # Ensure the association contract has generated its filter/sort/include types
+            # This is necessary so that when we reference :comment_filter from PostContract,
+            # CommentContract already has :filter registered locally
+            # We pass a new visited set to avoid false circular reference detection
+            if association_contract.schema?
+              register_resource_filter_type(association_contract, association_schema, visited: Set.new, depth: 0)
+              register_resource_sort_type(association_contract, association_schema, visited: Set.new, depth: 0)
+              register_resource_include_type(association_contract, association_schema, visited: Set.new, depth: 0)
+            end
+
             # Use schema's root_key.singular as alias (convention)
             # Convert to symbol since root_key.singular returns a String
             alias_name = association_schema.root_key.singular.to_sym
 
             # Import if not already done (idempotent)
-            unless parent_contract.imports.key?(alias_name)
-              parent_contract.import(association_contract, as: alias_name)
-            end
+            parent_contract.import(association_contract, as: alias_name) unless parent_contract.imports.key?(alias_name)
 
             alias_name
           end
