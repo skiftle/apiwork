@@ -49,31 +49,36 @@ Simplicity is not the absence of complexity; it's the result of care.
 
 ---
 
-## 🏗️ Class References & Lazy Loading
+## 🏗️ Class References
 
-**Always use strings for class references** to enable lazy loading and avoid eager loading dependencies.
+**Always use class constants (not strings) for class references** to leverage Zeitwerk autoloading and enable proper static analysis.
 
 ```ruby
-# ✅ Correct - uses strings
+# ✅ Correct - uses class constants
 class UserResource < Resource::Base
-  has_one :profile, class_name: 'ProfileResource'
-  has_many :posts, class_name: 'PostResource'
+  has_one :profile, class_name: ProfileResource
+  has_many :posts, class_name: PostResource
 end
 
 class UserContract < Contract::Base
-  resource 'UserResource'
+  resource UserResource
 end
 
-# ❌ Wrong - uses class constants
-has_one :profile, class_name: ProfileResource    # No eager loading!
-resource UserResource                             # No constants!
+# ❌ Wrong - uses strings unnecessarily
+has_one :profile, class_name: 'ProfileResource'
+resource 'UserResource'
 ```
 
-**Why strings?**
-- Avoids circular dependencies
-- Enables lazy loading
-- Works with Rails autoloading
-- Safer in development with code reloading
+**Exception: Use strings in contexts where classes aren't loaded yet:**
+- In `config/routes.rb` before application loads
+- In configuration files that run before autoloading
+- When dealing with dynamic/runtime class names
+
+**Why class constants?**
+- Works seamlessly with Zeitwerk autoloading
+- Better IDE support (jump to definition, refactoring)
+- Catches typos at load time instead of runtime
+- Clearer dependencies and static analysis
 
 ---
 
