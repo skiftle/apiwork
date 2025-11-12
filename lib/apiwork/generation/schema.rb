@@ -52,9 +52,7 @@ module Apiwork
         raise ArgumentError, 'output path required' unless output
 
         # Validate if single file mode
-        if Writer.file_path?(output) && (!api_path || !format)
-          raise ArgumentError, 'api_path and format required when output is a file'
-        end
+        raise ArgumentError, 'api_path and format required when output is a file' if Writer.file_path?(output) && (!api_path || !format)
 
         # Find APIs and formats
         apis = api_path ? [find_api(api_path)] : find_all_apis

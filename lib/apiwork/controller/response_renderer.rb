@@ -32,9 +32,7 @@ module Apiwork
           return build_collection_response(resource_or_collection,
                                            query_params)
         end
-        if resource_or_collection.respond_to?(:errors) && resource_or_collection.errors.any?
-          return build_error_response(resource_or_collection)
-        end
+        return build_error_response(resource_or_collection) if resource_or_collection.respond_to?(:errors) && resource_or_collection.errors.any?
         return { ok: true, meta: meta.presence || {} } if controller.request.delete?
 
         build_single_resource_response(resource_or_collection, query_params)

@@ -53,9 +53,7 @@ module Apiwork
 
           uuid: lambda { |val|
             return nil if val.nil?
-            if val.is_a?(String) && val.match?(/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/i)
-              return val
-            end
+            return val if val.is_a?(String) && val.match?(/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/i)
 
             nil
           },

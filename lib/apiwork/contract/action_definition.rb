@@ -226,14 +226,10 @@ module Apiwork
           next unless matches_contract?(resource_metadata)
 
           # Check member actions
-          if resource_metadata[:members]&.key?(action_name.to_sym)
-            return resource_metadata[:members][action_name.to_sym][:method]
-          end
+          return resource_metadata[:members][action_name.to_sym][:method] if resource_metadata[:members]&.key?(action_name.to_sym)
 
           # Check collection actions
-          if resource_metadata[:collections]&.key?(action_name.to_sym)
-            resource_metadata[:collections][action_name.to_sym][:method]
-          end
+          resource_metadata[:collections][action_name.to_sym][:method] if resource_metadata[:collections]&.key?(action_name.to_sym)
         end
       end
 
@@ -342,9 +338,7 @@ module Apiwork
           end
 
           # Validate nested objects if present
-          if value && param_options[:nested] && value.is_a?(Hash)
-            validate_single_output(value, param_options[:nested], param_options[:nested].params)
-          end
+          validate_single_output(value, param_options[:nested], param_options[:nested].params) if value && param_options[:nested] && value.is_a?(Hash)
 
           # Validate arrays of nested objects
           next unless value && param_options[:type] == :array && param_options[:nested] && value.is_a?(Array)

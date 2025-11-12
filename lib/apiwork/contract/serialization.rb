@@ -14,9 +14,7 @@ module Apiwork
           return nil unless definition
 
           # Check if this is an unwrapped union (special case for response outputs)
-          if definition.instance_variable_get(:@unwrapped_union)
-            return serialize_unwrapped_union(definition, visited: visited)
-          end
+          return serialize_unwrapped_union(definition, visited: visited) if definition.instance_variable_get(:@unwrapped_union)
 
           result = {}
 

@@ -261,9 +261,7 @@ module Apiwork
         end
 
         # Handle union type validation
-        if param_options[:type] == :union
-          return validate_union_param(name, value, param_options, field_path, max_depth, current_depth)
-        end
+        return validate_union_param(name, value, param_options, field_path, max_depth, current_depth) if param_options[:type] == :union
 
         # Validate type
         type_error = validate_type(name, value, param_options[:type], field_path)
@@ -772,9 +770,7 @@ module Apiwork
         return enum if enum.is_a?(Array) # Inline enum - keep as-is
 
         # Enum is a symbol - resolve from Descriptors::Registry with lexical scoping
-        unless enum.is_a?(Symbol)
-          raise ArgumentError, "enum must be a Symbol (reference) or Array (inline values), got #{enum.class}"
-        end
+        raise ArgumentError, "enum must be a Symbol (reference) or Array (inline values), got #{enum.class}" unless enum.is_a?(Symbol)
 
         values = Descriptors::Registry.resolve_enum(enum, scope: self)
         if values
