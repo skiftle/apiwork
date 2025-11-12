@@ -3,7 +3,11 @@
     "allow": [
       "*",
       "Bash(git checkout:*)",
-      "Bash(gh run list:*)"
+      "Bash(gh run list:*)",
+      "Bash(RAILS_ENV=test bundle exec rake:*)",
+      "Bash(git reset:*)",
+      "Bash(bundle install:*)",
+      "Bash(gh pr list:*)"
     ],
     "deny": [],
     "ask": []
