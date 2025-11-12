@@ -122,28 +122,8 @@ module Apiwork
       end
 
       def find_resource(name)
-        # Search in top-level resources first
-        return @resources[name] if @resources[name]
-
-        # Search in nested resources recursively
-        @resources.each_value do |resource|
-          found = find_resource_recursive(resource, name)
-          return found if found
-        end
-
-        nil
-      end
-
-      def find_resource_recursive(resource, name)
-        return resource[:resources][name] if resource[:resources] && resource[:resources][name]
-
-        # Search deeper
-        resource[:resources]&.each_value do |nested_resource|
-          found = find_resource_recursive(nested_resource, name)
-          return found if found
-        end
-
-        nil
+        searcher = MetadataSearcher.new(self)
+        searcher.find_resource(name)
       end
 
       def merge_nested_resources(target, source)

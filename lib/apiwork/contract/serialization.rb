@@ -267,27 +267,19 @@ module Apiwork
         # @param type_name [Symbol] The type name to look up
         # @return [Object] The scope (Definition, ActionDefinition, or Contract class)
         def determine_scope_for_type(definition, type_name)
-          # Use TypeStore.resolve to find where the type is defined
-          # It uses parent-chain resolution to find the type
           contract_class = definition.contract_class
 
           # Check if type is defined at definition level (input/output)
-          if Descriptors::TypeStore.local?(type_name, definition)
-            return definition
-          end
+          return definition if Descriptors::TypeStore.local?(type_name, definition)
 
           # Check if type is defined at action level
-          if definition.parent_scope && definition.parent_scope.class.name == 'Apiwork::Contract::ActionDefinition'
+          if definition.parent_scope&.class&.name == 'Apiwork::Contract::ActionDefinition'
             action_def = definition.parent_scope
-            if Descriptors::TypeStore.local?(type_name, action_def)
-              return action_def
-            end
+            return action_def if Descriptors::TypeStore.local?(type_name, action_def)
           end
 
           # Check if type is defined at contract level
-          if Descriptors::TypeStore.local?(type_name, contract_class)
-            return contract_class
-          end
+          return contract_class if Descriptors::TypeStore.local?(type_name, contract_class)
 
           # Fall back to contract class for global types
           contract_class
@@ -299,27 +291,19 @@ module Apiwork
         # @param enum_name [Symbol] The enum name to look up
         # @return [Object] The scope (Definition, ActionDefinition, or Contract class)
         def determine_scope_for_enum(definition, enum_name)
-          # Use EnumStore.resolve to find where the enum is defined
-          # It uses parent-chain resolution to find the enum
           contract_class = definition.contract_class
 
           # Check if enum is defined at definition level (input/output)
-          if Descriptors::EnumStore.local?(enum_name, definition)
-            return definition
-          end
+          return definition if Descriptors::EnumStore.local?(enum_name, definition)
 
           # Check if enum is defined at action level
-          if definition.parent_scope && definition.parent_scope.class.name == 'Apiwork::Contract::ActionDefinition'
+          if definition.parent_scope&.class&.name == 'Apiwork::Contract::ActionDefinition'
             action_def = definition.parent_scope
-            if Descriptors::EnumStore.local?(enum_name, action_def)
-              return action_def
-            end
+            return action_def if Descriptors::EnumStore.local?(enum_name, action_def)
           end
 
           # Check if enum is defined at contract level
-          if Descriptors::EnumStore.local?(enum_name, contract_class)
-            return contract_class
-          end
+          return contract_class if Descriptors::EnumStore.local?(enum_name, contract_class)
 
           # Fall back to contract class for global enums
           contract_class
