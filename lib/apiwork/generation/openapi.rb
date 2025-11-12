@@ -123,31 +123,6 @@ module Apiwork
         end
       end
 
-      # Extract parent resource name from parent_path
-      # e.g., ":post_id/comments" -> "post"
-      def extract_parent_resource_name(parent_path)
-        return nil unless parent_path
-
-        # Parent path format: ":parent_id/resource" or "parent/:parent_id/resource"
-        # Extract the word before "_id"
-        match = parent_path.match(/:(\w+)_id/)
-        match[1] if match
-      end
-
-      # Extract parent resource path from parent_path
-      # e.g., "posts/:post_id/comments" -> "posts"
-      # e.g., ":post_id/comments" -> "posts" (pluralize from :post_id)
-      def extract_parent_resource_path(parent_path)
-        return nil unless parent_path
-
-        # If path starts with :param_id, extract and pluralize
-        match = parent_path.match(/:(\w+)_id/)
-        return match[1].pluralize if match
-
-        # Otherwise get first segment
-        parent_path.to_s.split('/').first
-      end
-
       # Extract all parent resource paths from parent_path (supports deep nesting)
       # e.g., "posts/:post_id/comments" -> ["posts"]
       # e.g., "accounts/:account_id/shifts/:shift_id/breaks" -> ["accounts", "shifts"]
