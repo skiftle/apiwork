@@ -18,7 +18,7 @@ module Apiwork
 
           result = {}
 
-          definition.params.each do |name, param_options|
+          definition.params.sort_by { |name, _| name.to_s }.each do |name, param_options|
             result[name] = serialize_param(name, param_options, definition, visited: visited)
           end
 
@@ -37,7 +37,7 @@ module Apiwork
           success_params = {}
           error_params = {}
 
-          definition.params.each do |name, param_options|
+          definition.params.sort_by { |name, _| name.to_s }.each do |name, param_options|
             case name
             when :ok
               # ok field with literal values in each variant

@@ -12,12 +12,12 @@ module Apiwork
           def serialize_all_for_api(_api)
             result = {}
 
-            global_storage.each do |enum_name, values|
+            global_storage.sort_by { |enum_name, _| enum_name.to_s }.each do |enum_name, values|
               result[enum_name] = values
             end
 
-            local_storage.to_a.each do |_scope, enums|
-              enums.to_a.each do |_enum_name, metadata|
+            local_storage.to_a.sort_by { |scope, _| scope.to_s }.each do |_scope, enums|
+              enums.to_a.sort_by { |enum_name, _| enum_name.to_s }.each do |_enum_name, metadata|
                 qualified_enum_name = metadata[:qualified_name]
                 values = metadata[:values]
 

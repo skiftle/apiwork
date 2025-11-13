@@ -17,12 +17,12 @@ module Apiwork
             result = {}
 
             # First pass: expand all type definitions
-            global_storage.to_a.each do |type_name, definition|
+            global_storage.to_a.sort_by { |type_name, _| type_name.to_s }.each do |type_name, definition|
               result[type_name] = expand_type_definition(definition, contract_class: nil, type_name: type_name)
             end
 
-            local_storage.to_a.each do |contract_class, types|
-              types.to_a.each do |type_name, metadata|
+            local_storage.to_a.sort_by { |contract_class, _| contract_class.to_s }.each do |contract_class, types|
+              types.to_a.sort_by { |type_name, _| type_name.to_s }.each do |type_name, metadata|
                 qualified_type_name = metadata[:qualified_name]
                 definition = metadata[:definition]
 

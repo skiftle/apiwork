@@ -60,15 +60,15 @@ module Apiwork
       TYPE_MAP = {
         string: 'z.string()',
         text: 'z.string()',
-        uuid: 'z.string().uuid()',
+        uuid: 'z.uuid()',
         integer: 'z.number().int()',
         float: 'z.number()',
         decimal: 'z.number()',
         number: 'z.number()',
         boolean: 'z.boolean()',
-        date: 'z.string().date()',
-        datetime: 'z.string().datetime()',
-        time: 'z.string().time()',
+        date: 'z.iso.date()',
+        datetime: 'z.iso.datetime()',
+        time: 'z.iso.time()',
         json: 'z.record(z.string(), z.any())',
         binary: 'z.string()'
       }.freeze
@@ -256,7 +256,7 @@ module Apiwork
       def build_object_schema(type_name, type_shape, action_name = nil, recursive: false)
         schema_name = zod_type_name(type_name)
 
-        properties = type_shape.map do |property_name, property_def|
+        properties = type_shape.sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
           key = transform_key(property_name)
           zod_type = map_field_definition(property_def, action_name)
           "  #{key}: #{zod_type}"
@@ -328,7 +328,7 @@ module Apiwork
       def map_object_type(definition, action_name = nil)
         return 'z.object({})' unless definition[:shape]
 
-        properties = definition[:shape].map do |property_name, property_def|
+        properties = definition[:shape].sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
           key = transform_key(property_name)
           zod_type = map_field_definition(property_def, action_name)
           "#{key}: #{zod_type}"
@@ -412,7 +412,7 @@ module Apiwork
       def build_typescript_type(type_name, type_shape, action_name = nil, recursive: false)
         type_name_pascal = zod_type_name(type_name)
 
-        properties = type_shape.map do |property_name, property_def|
+        properties = type_shape.sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
           key = transform_key(property_name)
           is_update = action_name.to_s == 'update'
           is_optional = is_update || !property_def[:required]
@@ -509,7 +509,7 @@ module Apiwork
       def map_typescript_object_type(definition, action_name = nil)
         return '{}' unless definition[:shape]
 
-        properties = definition[:shape].map do |property_name, property_def|
+        properties = definition[:shape].sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
           key = transform_key(property_name)
           ts_type = map_typescript_field(property_def, action_name)
           "#{key}: #{ts_type}"
