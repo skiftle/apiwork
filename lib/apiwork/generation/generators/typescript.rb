@@ -3,22 +3,6 @@
 module Apiwork
   module Generation
     module Generators
-      # TypeScript type generator using API introspection
-      #
-      # Generates pure TypeScript type definitions from API introspection data.
-      # Types are sorted alphabetically for consistency and readability.
-      # Targets TypeScript 5 by default.
-      #
-      # Available at: GET /api/v1/.spec/typescript
-      #
-      # @example Generate TypeScript types
-      #   generator = Typescript.new('/api/v1')
-      #   types = generator.generate
-      #   File.write('types.ts', types)
-      #
-      # @example Target specific TypeScript version
-      #   generator = Typescript.new('/api/v1', version: '5')
-      #   types = generator.generate
       class Typescript < Base
         generator_name :typescript
         content_type 'text/plain; charset=utf-8'
@@ -38,21 +22,16 @@ module Apiwork
           validate_version!
         end
 
-        # Generate complete TypeScript document with type definitions
-        #
-        # @return [String] TypeScript document content
         def generate
           all_declarations = []
 
           # Combine enums and types, sort alphabetically
           combined = {}
 
-          # Add all enums
           enums.each do |enum_name, enum_values|
             combined[enum_name] = { kind: :enum, data: enum_values }
           end
 
-          # Add all types
           types.each do |type_name, type_shape|
             combined[type_name] = { kind: :type, data: type_shape }
           end
@@ -71,7 +50,6 @@ module Apiwork
 
         private
 
-        # Build a single TypeScript enum type
         def build_single_typescript_enum(enum_name, enum_values)
           type_name = pascal_case_type_name(enum_name)
           # Create a union of literal types
@@ -79,9 +57,7 @@ module Apiwork
           "export type #{type_name} = #{values_str};"
         end
 
-        # Build a single TypeScript type declaration
         def build_single_typescript_type(type_name, type_shape)
-          # Check if this is a union type
           if type_shape.is_a?(Hash) && type_shape[:type] == :union
             build_typescript_union_type(type_name, type_shape)
           else
@@ -89,7 +65,6 @@ module Apiwork
           end
         end
 
-        # Build TypeScript type declaration (interface)
         def build_typescript_interface(type_name, type_shape)
           type_name_pascal = pascal_case_type_name(type_name)
 
@@ -106,32 +81,27 @@ module Apiwork
           "export interface #{type_name_pascal} {\n#{properties}\n}"
         end
 
-        # Build TypeScript union type declaration
         def build_typescript_union_type(type_name, type_shape)
           type_name_pascal = pascal_case_type_name(type_name)
           variants = type_shape[:variants]
 
-          # Map each variant to its TypeScript type representation
           variant_types = variants.map { |variant| map_typescript_type_definition(variant) }
 
           # Use type alias for unions (not interface)
           "export type #{type_name_pascal} = #{variant_types.join(' | ')};"
         end
 
-        # Map field definition to TypeScript type syntax
         def map_typescript_field(definition)
           return 'string' unless definition.is_a?(Hash)
 
           is_nullable = definition[:nullable]
 
-          # Handle custom type or enum references
           base_type = if definition[:type].is_a?(Symbol) && enum_or_type_reference?(definition[:type])
                         typescript_reference(definition[:type])
                       else
                         map_typescript_type_definition(definition)
                       end
 
-          # Handle enum
           if definition[:enum]
             enum_ref = resolve_enum(definition[:enum])
             if enum_ref.is_a?(Symbol) && enums.key?(enum_ref)
@@ -142,7 +112,6 @@ module Apiwork
             end
           end
 
-          # Apply nullable modifier
           if is_nullable
             "#{base_type} | null"
           else
@@ -150,7 +119,6 @@ module Apiwork
           end
         end
 
-        # Map type definition to TypeScript syntax
         def map_typescript_type_definition(definition)
           return 'string' unless definition.is_a?(Hash)
 
@@ -166,23 +134,19 @@ module Apiwork
           when :literal
             map_typescript_literal_type(definition)
           else
-            # Check if this is a custom type reference (in types) or enum reference
             enum_or_type_reference?(type) ? typescript_reference(type) : map_typescript_primitive(type)
           end
         end
 
-        # Map object type to TypeScript syntax (inline)
         def map_typescript_object_type(definition)
           return '{}' unless definition[:shape]
 
-          # Check if this is a partial object (all fields optional)
           is_partial = definition[:partial] == true
 
           # Sort properties alphabetically
           properties = definition[:shape].sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
             key = transform_key(property_name)
             ts_type = map_typescript_field(property_def)
-            # For partial objects, all fields are optional regardless of required flag
             is_optional = is_partial || !property_def[:required]
             optional_marker = is_optional ? '?' : ''
             "#{key}#{optional_marker}: #{ts_type}"
@@ -191,7 +155,6 @@ module Apiwork
           "{ #{properties} }"
         end
 
-        # Map array type to TypeScript syntax
         def map_typescript_array_type(definition)
           items_type = definition[:of]
           return 'string[]' unless items_type
@@ -205,7 +168,6 @@ module Apiwork
                          end
 
           # Use bracket notation for arrays
-          # For complex types (unions, intersections), wrap in parentheses
           if element_type.include?('|') || element_type.include?('&')
             "(#{element_type})[]"
           else
@@ -213,7 +175,6 @@ module Apiwork
           end
         end
 
-        # Map union type to TypeScript syntax (inline union for fields)
         def map_typescript_union_type(definition)
           variants = definition[:variants]
           return 'string' unless variants
@@ -222,7 +183,6 @@ module Apiwork
           variant_types.join(' | ')
         end
 
-        # Map literal type to TypeScript syntax
         def map_typescript_literal_type(definition)
           value = definition[:value]
 
@@ -242,7 +202,6 @@ module Apiwork
           end
         end
 
-        # Map primitive type to TypeScript type
         def map_typescript_primitive(type)
           case type.to_sym
           when :string, :text, :binary then 'string'
@@ -257,27 +216,22 @@ module Apiwork
           end
         end
 
-        # Check if a symbol is a custom type or enum reference
         def enum_or_type_reference?(symbol)
           types.key?(symbol) || enums.key?(symbol)
         end
 
-        # Check if a type is a primitive type
         def primitive_type?(type)
           %i[string integer float decimal boolean date datetime time text binary json].include?(type.to_sym)
         end
 
-        # Get the TypeScript type name for a custom type or enum
         def typescript_reference(symbol)
           pascal_case_type_name(symbol)
         end
 
-        # Convert snake_case symbol to PascalCase type name
         def pascal_case_type_name(name)
           Transform::Case.string(name.to_s, :camelize_upper)
         end
 
-        # Resolve enum reference
         def resolve_enum(enum_ref)
           enum_ref
         end
