@@ -17,7 +17,8 @@
       "Bash(bundle exec rubocop:*)",
       "Bash(ruby:*)",
       "Bash(bundle exec ruby:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(bundle exec rails runner:*)"
     ],
     "deny": [],
     "ask": []
