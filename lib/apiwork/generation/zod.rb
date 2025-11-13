@@ -25,34 +25,29 @@ module Apiwork
       def generate
         parts = []
 
-        # 1. Imports
         parts << "import { z } from 'zod';\n"
 
-        # 2. Enum schemas
         enum_schemas = build_enum_schemas
         if enum_schemas.present?
           parts << enum_schemas
           parts << ''
         end
 
-        # 3. TypeScript enum types
+        type_schemas = build_type_schemas
+        if type_schemas.present?
+          parts << type_schemas
+          parts << ''
+        end
+
         typescript_enum_types = build_typescript_enum_types
         if typescript_enum_types.present?
           parts << typescript_enum_types
           parts << ''
         end
 
-        # 4. TypeScript type declarations
         typescript_types = build_typescript_types
         if typescript_types.present?
           parts << typescript_types
-          parts << ''
-        end
-
-        # 5. Zod schemas (referencing TypeScript types)
-        type_schemas = build_type_schemas
-        if type_schemas.present?
-          parts << type_schemas
           parts << ''
         end
 
@@ -157,7 +152,7 @@ module Apiwork
 
         all_types.each do |type_name, type_shape|
           # Extract type references from this type
-          referenced_types = extract_type_references_for_sorting(type_shape, all_types.keys)
+          referenced_types = extract_type_references(type_shape, filter: all_types.keys)
 
           referenced_types.each do |ref|
             next if ref == type_name # Skip self-references (recursive types)
@@ -189,53 +184,72 @@ module Apiwork
           end
         end
 
-        # If sorted.size != all_types.size, there's a cycle or unreachable types
-        # Fall back to original order (recursive types will use z.lazy())
+        # If sorted.size != all_types.size, there's a cycle
+        # Keep successfully sorted types, append unsorted (circular) types at end
+        # Circular types will use z.lazy() which supports forward references
         if sorted.size != all_types.size
-          all_types.to_a
+          unsorted_types = all_types.keys - sorted
+          (sorted + unsorted_types).map { |type_name| [type_name, all_types[type_name]] }
         else
           sorted.map { |type_name| [type_name, all_types[type_name]] }
         end
       end
 
-      # Extract references to other types from a type definition (for sorting)
-      def extract_type_references_for_sorting(type_shape, all_type_names)
+      # Extract references to other types from a type definition
+      # Unified method that handles both topological sorting and circular reference detection
+      #
+      # @param definition [Hash] Type definition (params hash)
+      # @param filter [Symbol, Array] Filter strategy:
+      #   - :custom_only - Only custom types (excludes primitives)
+      #   - Array - Only types in the provided list
+      # @return [Array<Symbol>] Array of referenced type names
+      def extract_type_references(definition, filter: :custom_only)
         referenced_types = []
 
-        type_shape.each_value do |value|
-          next unless value.is_a?(Hash)
+        definition.each_value do |param|
+          next unless param.is_a?(Hash)
 
-          # Direct type reference (normalize to symbol)
-          type_ref = value[:type]&.to_sym
-          referenced_types << type_ref if type_ref && all_type_names.include?(type_ref)
+          # Direct type reference
+          add_type_if_matches(referenced_types, param[:type], filter)
 
-          # Array 'of' reference (normalize to symbol)
-          of_ref = value[:of]&.to_sym
-          referenced_types << of_ref if of_ref && all_type_names.include?(of_ref)
+          # Array 'of' reference
+          add_type_if_matches(referenced_types, param[:of], filter)
 
           # Union variant references
-          if value[:variants].is_a?(Array)
-            value[:variants].each do |variant|
+          if param[:variants].is_a?(Array)
+            param[:variants].each do |variant|
               next unless variant.is_a?(Hash)
 
-              # Variant type reference (normalize to symbol)
-              variant_type_ref = variant[:type]&.to_sym
-              referenced_types << variant_type_ref if variant_type_ref && all_type_names.include?(variant_type_ref)
-
-              # Variant 'of' reference (normalize to symbol)
-              variant_of_ref = variant[:of]&.to_sym
-              referenced_types << variant_of_ref if variant_of_ref && all_type_names.include?(variant_of_ref)
+              add_type_if_matches(referenced_types, variant[:type], filter)
+              add_type_if_matches(referenced_types, variant[:of], filter)
 
               # Recursively check nested shape in variants
-              referenced_types.concat(extract_type_references_for_sorting(variant[:shape], all_type_names)) if variant[:shape].is_a?(Hash)
+              referenced_types.concat(extract_type_references(variant[:shape], filter: filter)) if variant[:shape].is_a?(Hash)
             end
           end
 
           # Recursively check nested shapes
-          referenced_types.concat(extract_type_references_for_sorting(value[:shape], all_type_names)) if value[:shape].is_a?(Hash)
+          referenced_types.concat(extract_type_references(param[:shape], filter: filter)) if param[:shape].is_a?(Hash)
         end
 
         referenced_types.uniq
+      end
+
+      # Helper to add a type reference if it matches the filter criteria
+      def add_type_if_matches(collection, type_ref, filter)
+        return unless type_ref
+
+        # Normalize to symbol
+        type_sym = type_ref.is_a?(String) ? type_ref.to_sym : type_ref
+        return unless type_sym.is_a?(Symbol)
+
+        # Apply filter
+        case filter
+        when :custom_only
+          collection << type_sym unless primitive_type?(type_sym)
+        when Array
+          collection << type_sym if filter.include?(type_sym)
+        end
       end
 
       # Build Zod object schema from type shape
@@ -453,45 +467,8 @@ module Apiwork
       # @param type_def [Hash] The type definition (params hash)
       # @return [Boolean] true if type directly references itself
       def detect_circular_references(type_name, type_def)
-        referenced_types = extract_custom_type_references(type_def)
+        referenced_types = extract_type_references(type_def, filter: :custom_only)
         referenced_types.include?(type_name)
-      end
-
-      # Extract all custom type references from a type definition
-      # Returns array of type names (symbols) that are referenced
-      #
-      # @param definition [Hash] Type definition (params hash)
-      # @return [Array<Symbol>] Array of referenced type names
-      def extract_custom_type_references(definition)
-        referenced_types = []
-
-        definition.each_value do |param|
-          next unless param.is_a?(Hash)
-
-          # Direct type reference
-          referenced_types << param[:type] if param[:type].is_a?(Symbol) && !primitive_type?(param[:type])
-
-          # Array 'of' reference
-          referenced_types << param[:of] if param[:of].is_a?(Symbol) && !primitive_type?(param[:of])
-
-          # Union variant references
-          if param[:variants].is_a?(Array)
-            param[:variants].each do |variant|
-              next unless variant.is_a?(Hash)
-
-              referenced_types << variant[:type] if variant[:type].is_a?(Symbol) && !primitive_type?(variant[:type])
-              referenced_types << variant[:of] if variant[:of].is_a?(Symbol) && !primitive_type?(variant[:of])
-
-              # Recursively check nested shape in variants
-              referenced_types.concat(extract_custom_type_references(variant[:shape])) if variant[:shape].is_a?(Hash)
-            end
-          end
-
-          # Nested shape references
-          referenced_types.concat(extract_custom_type_references(param[:shape])) if param[:shape].is_a?(Hash)
-        end
-
-        referenced_types.uniq
       end
 
       # Check if a type is a primitive/built-in type (not a custom type reference)
