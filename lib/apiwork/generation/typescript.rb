@@ -20,12 +20,19 @@ module Apiwork
       generator_name :typescript
       content_type 'text/plain; charset=utf-8'
 
+      VALID_VERSIONS = ['4', '5'].freeze
+
       def self.file_extension
         '.ts'
       end
 
       def self.default_options
         { version: '5' }
+      end
+
+      def initialize(path, **options)
+        super
+        validate_version!
       end
 
       # Generate complete TypeScript document with type definitions
@@ -270,6 +277,17 @@ module Apiwork
       # Resolve enum reference
       def resolve_enum(enum_ref)
         enum_ref
+      end
+
+      # Validate version option
+      def validate_version!
+        return if version.nil?
+
+        unless VALID_VERSIONS.include?(version)
+          raise ArgumentError,
+                "Invalid version for typescript: #{version.inspect}. " \
+                "Valid versions: #{VALID_VERSIONS.join(', ')}"
+        end
       end
     end
   end
