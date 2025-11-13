@@ -18,12 +18,12 @@ module Apiwork
             api_classes.each do |api_class|
               next unless api_class.mount_path && api_class.metadata
 
-              # Draw schema endpoints first (outside module namespace)
-              if api_class.schemas?
+              # Draw spec endpoints first (outside module namespace)
+              if api_class.specs?
                 scope path: api_class.mount_path do
-                  api_class.schemas.each do |schema_type, schema_path|
-                    get schema_path, to: 'apiwork/schemas#show', defaults: {
-                      schema_type: schema_type,
+                  api_class.specs.each do |spec_type, spec_path|
+                    get spec_path, to: 'apiwork/specs#show', defaults: {
+                      spec_type: spec_type,
                       api_path: api_class.metadata.path
                     }
                   end

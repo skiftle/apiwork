@@ -6,7 +6,9 @@ module Apiwork
     #
     # Generates TypeScript Zod schemas from API introspection data.
     # Uses contract-based type system instead of schema introspection.
-    # Targets Zod 3 API by default.
+    # Targets Zod 4 by default.
+    #
+    # Available at: GET /api/v1/.spec/zod
     #
     # @example Generate Zod schemas
     #   generator = Zod.new('/api/v1')

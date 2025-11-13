@@ -4,7 +4,7 @@ module Apiwork
   module API
     # Configuration DSL for API classes
     #
-    # Provides: configure_from_path, schema, mount_at
+    # Provides: configure_from_path, spec, mount_at
     module Configuration
       # Configure API from path - path is the source of truth
       #
@@ -19,7 +19,7 @@ module Apiwork
       #   configure_from_path('/')        # => Root controllers, mounted at /
       def configure_from_path(path)
         @mount_path = path
-        @schemas = {}
+        @specs = {}
 
         # Parse path to namespaces array
         @namespaces_parts = path_to_namespaces(path)
@@ -42,38 +42,38 @@ module Apiwork
         @mount_path = path
       end
 
-      # Expose a schema endpoint
+      # Expose a spec endpoint
       #
-      # @param type [Symbol] Schema type to expose (:openapi, :transport, :zod)
-      # @param path [String] Optional custom path for the schema endpoint
+      # @param type [Symbol] Spec type to expose (:openapi, :zod, :typescript)
+      # @param path [String] Optional custom path for the spec endpoint
       # @example
-      #   schema :openapi
-      #   schema :transport
-      #   schema :openapi, path: '/openapi.json'
-      def schema(type, path: nil)
+      #   spec :openapi
+      #   spec :zod
+      #   spec :openapi, path: '/openapi.json'
+      def spec(type, path: nil)
         # Validate that type is registered
         unless Generation::Registry.registered?(type)
           available = Generation::Registry.all.join(', ')
           raise ConfigurationError,
-                "Unknown schema generator: :#{type}. " \
+                "Unknown spec generator: :#{type}. " \
                 "Available generators: #{available}"
         end
 
-        # Initialize schemas hash if needed
-        @schemas ||= {}
+        # Initialize specs hash if needed
+        @specs ||= {}
 
         # Default path if not specified
-        path ||= "/.schema/#{type}"
+        path ||= "/.spec/#{type}"
 
-        # Add to schemas hash
-        @schemas[type] = path
+        # Add to specs hash
+        @specs[type] = path
       end
 
-      # Check if any schemas are exposed
+      # Check if any specs are exposed
       #
       # @return [Boolean]
-      def schemas?
-        @schemas&.any?
+      def specs?
+        @specs&.any?
       end
 
       # Set global error codes for all endpoints in this API
