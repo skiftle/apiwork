@@ -21,16 +21,8 @@ module Apiwork
           union_def = UnionDefinition.new(nil)
           union_def.instance_eval(&block)
 
-          # Serialize the union to a data structure
-          union_data = {
-            _union: {
-              type: :union,
-              required: false,
-              nullable: false,
-              variants: union_def.variants,
-              discriminator: union_def.discriminator
-            }.compact # Remove nil discriminator if not set
-          }
+          # Serialize the union definition
+          union_data = union_def.serialize
 
           TypeStore.register_global_union(name, union_data)
         end

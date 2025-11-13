@@ -60,9 +60,10 @@ module Apiwork
           def register_enum_filter_type(enum_name, is_global:, scope: nil)
             filter_name = :"#{enum_name}_filter"
 
-            # Create union definition programmatically with a temporary contract class
-            temp_contract = is_global ? Class.new(Apiwork::Contract::Base) : scope
-            union_def = Apiwork::Contract::UnionDefinition.new(temp_contract)
+            # Create union definition programmatically
+            # We need to pass a contract class for type resolution in variant blocks
+            contract_class = is_global ? Class.new(Apiwork::Contract::Base) : scope
+            union_def = Apiwork::Contract::UnionDefinition.new(contract_class)
 
             # Add variant 1: the enum itself
             union_def.variant(type: enum_name)
@@ -73,21 +74,8 @@ module Apiwork
               param :in, type: :array, of: enum_name, required: false
             end
 
-            # Serialize variants to ensure all nested structures are converted
-            serialized_variants = union_def.variants.map do |variant|
-              serialized = variant.dup
-              # If the variant has a shape (Definition object), serialize it
-              serialized[:shape] = serialized[:shape].as_json if serialized[:shape].is_a?(Apiwork::Contract::Definition)
-              serialized
-            end
-
-            # Serialize to data structure (union metadata directly, not wrapped in a field)
-            union_data = {
-              type: :union,
-              required: false,
-              nullable: false,
-              variants: serialized_variants
-            }
+            # Serialize the union definition
+            union_data = union_def.serialize
 
             if is_global
               TypeStore.register_global_union(filter_name, union_data)

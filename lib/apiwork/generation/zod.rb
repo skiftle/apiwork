@@ -306,17 +306,7 @@ module Apiwork
           map_literal_type(definition)
         else
           # Check if this is a custom type reference (in types) or enum reference
-          if types.key?(type)
-            schema_name = zod_type_name(type)
-            "#{schema_name}Schema"
-          elsif enums.key?(type)
-            # Enum reference - use the enum schema
-            schema_name = zod_type_name(type)
-            "#{schema_name}Schema"
-          else
-            # Primitive type
-            map_primitive(type)
-          end
+          enum_or_type_reference?(type) ? schema_reference(type) : map_primitive(type)
         end
       end
 
@@ -338,9 +328,8 @@ module Apiwork
         items_type = definition[:of]
         return 'z.array(z.string())' unless items_type
 
-        if items_type.is_a?(Symbol) && (types.key?(items_type) || enums.key?(items_type))
-          schema_name = zod_type_name(items_type)
-          "z.array(#{schema_name}Schema)"
+        if items_type.is_a?(Symbol) && enum_or_type_reference?(items_type)
+          "z.array(#{schema_reference(items_type)})"
         elsif items_type.is_a?(Hash)
           items_schema = map_type_definition(items_type, action_name)
           "z.array(#{items_schema})"
@@ -504,15 +493,7 @@ module Apiwork
           map_typescript_literal_type(definition)
         else
           # Check if this is a custom type reference (in types) or enum reference
-          if types.key?(type)
-            zod_type_name(type)
-          elsif enums.key?(type)
-            # Enum reference - use the enum type name
-            zod_type_name(type)
-          else
-            # Primitive type
-            map_typescript_primitive(type)
-          end
+          enum_or_type_reference?(type) ? typescript_reference(type) : map_typescript_primitive(type)
         end
       end
 
@@ -534,8 +515,8 @@ module Apiwork
         items_type = definition[:of]
         return 'string[]' unless items_type
 
-        element_type = if items_type.is_a?(Symbol) && (types.key?(items_type) || enums.key?(items_type))
-                         zod_type_name(items_type)
+        element_type = if items_type.is_a?(Symbol) && enum_or_type_reference?(items_type)
+                         typescript_reference(items_type)
                        elsif items_type.is_a?(Hash)
                          map_typescript_type_definition(items_type, action_name)
                        else
@@ -595,6 +576,21 @@ module Apiwork
       # Map primitive type to Zod type
       def map_primitive(type)
         TYPE_MAP[type.to_sym] || 'z.string()'
+      end
+
+      # Check if a symbol is a custom type or enum reference
+      def enum_or_type_reference?(symbol)
+        types.key?(symbol) || enums.key?(symbol)
+      end
+
+      # Get the schema reference name for a custom type or enum
+      def schema_reference(symbol)
+        "#{zod_type_name(symbol)}Schema"
+      end
+
+      # Get the TypeScript type name for a custom type or enum
+      def typescript_reference(symbol)
+        zod_type_name(symbol)
       end
 
       # Apply nullable and optional modifiers
