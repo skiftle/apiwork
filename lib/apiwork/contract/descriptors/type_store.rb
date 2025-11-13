@@ -13,24 +13,47 @@ module Apiwork
             super(contract_class, name, block, { definition: block })
           end
 
+          # Register a pre-serialized union type directly (without DSL expansion)
+          # This is used for types that can't be expressed with the standard DSL
+          def register_global_union(name, data)
+            global_storage[name] = data
+          end
+
+          def register_local_union(contract_class, name, data)
+            local_storage[contract_class] ||= {}
+            local_storage[contract_class][name] = {
+              qualified_name: qualified_name(contract_class, name),
+              data: data
+            }
+          end
+
           def serialize_all_for_api(_api)
             result = {}
 
             # First pass: expand all type definitions
-            global_storage.to_a.sort_by { |type_name, _| type_name.to_s }.each do |type_name, definition|
-              result[type_name] = expand_type_definition(definition, contract_class: nil, type_name: type_name)
+            global_storage.to_a.sort_by { |type_name, _| type_name.to_s }.each do |type_name, definition_or_data|
+              # Check if this is pre-serialized data (Hash) or a DSL block (Proc)
+              result[type_name] = if definition_or_data.is_a?(Hash)
+                                    definition_or_data
+                                  else
+                                    expand_type_definition(definition_or_data, contract_class: nil, type_name: type_name)
+                                  end
             end
 
             local_storage.to_a.sort_by { |contract_class, _| contract_class.to_s }.each do |contract_class, types|
               types.to_a.sort_by { |type_name, _| type_name.to_s }.each do |type_name, metadata|
                 qualified_type_name = metadata[:qualified_name]
-                definition = metadata[:definition]
 
-                result[qualified_type_name] = expand_type_definition(
-                  definition,
-                  contract_class: contract_class,
-                  type_name: type_name
-                )
+                # Check if this is pre-serialized data or a DSL definition
+                result[qualified_type_name] = if metadata[:data]
+                                                metadata[:data]
+                                              elsif metadata[:definition]
+                                                expand_type_definition(
+                                                  metadata[:definition],
+                                                  contract_class: contract_class,
+                                                  type_name: type_name
+                                                )
+                                              end
               end
             end
 

@@ -112,23 +112,35 @@ RSpec.describe Apiwork::Generation::Zod do
           # Skip types that aren't in the output (e.g., base types that aren't used)
           next unless output.include?("export const #{schema_name}Schema")
 
+          # Check if this is a union type (has :type => :union at root level)
+          is_union = type_def.is_a?(Hash) && type_def[:type] == :union
+
           # Detect if type is recursive by checking if it references itself
-          is_recursive = detect_recursive_type(type_name, type_def)
+          is_recursive = !is_union && detect_recursive_type(type_name, type_def)
 
-          # All types should have a TypeScript interface declaration
-          expect(output).to include("export interface #{schema_name}"),
-                            "Missing interface for #{type_name}"
-
-          # All types should have a Zod schema with z.ZodType annotation
-          expect(output).to include("export const #{schema_name}Schema: z.ZodType<#{schema_name}>"),
-                            "Missing schema for #{type_name}"
-
-          if is_recursive
-            # Recursive types use z.lazy()
-            expect(output).to include('z.lazy'), "Recursive type #{type_name} should use z.lazy"
+          if is_union
+            # Union types should have TypeScript type alias (not interface)
+            expect(output).to include("export type #{schema_name} ="),
+                              "Missing type alias for union type #{type_name}"
+            # Union types should use z.union()
+            expect(output).to include("export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.union"),
+                              "Union type #{type_name} should use z.union"
           else
-            # Non-recursive types use z.object()
-            expect(output).to include('z.object'), "Non-recursive type #{type_name} should use z.object"
+            # Object types should have a TypeScript interface declaration
+            expect(output).to include("export interface #{schema_name}"),
+                              "Missing interface for #{type_name}"
+
+            # All types should have a Zod schema with z.ZodType annotation
+            expect(output).to include("export const #{schema_name}Schema: z.ZodType<#{schema_name}>"),
+                              "Missing schema for #{type_name}"
+
+            if is_recursive
+              # Recursive types use z.lazy()
+              expect(output).to include('z.lazy'), "Recursive type #{type_name} should use z.lazy"
+            else
+              # Non-recursive types use z.object()
+              expect(output).to include('z.object'), "Non-recursive type #{type_name} should use z.object"
+            end
           end
         end
       end
