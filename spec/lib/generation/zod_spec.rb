@@ -15,6 +15,24 @@ RSpec.describe Apiwork::Generation::Zod do
   let(:api) { Apiwork::API::Registry.find(path) }
   let(:introspect) { api.introspect }
 
+  describe 'default options' do
+    it 'has default version' do
+      expect(described_class.default_options[:version]).to eq('3')
+    end
+  end
+
+  describe '#version' do
+    it 'uses default version when not specified' do
+      gen = described_class.new(path)
+      expect(gen.send(:version)).to eq('3')
+    end
+
+    it 'allows version override' do
+      gen = described_class.new(path, version: '4')
+      expect(gen.send(:version)).to eq('4')
+    end
+  end
+
   # Helper method to detect if a type is recursive (references itself)
   def detect_recursive_type(type_name, type_def)
     referenced_types = extract_type_references(type_def)

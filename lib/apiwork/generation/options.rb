@@ -11,10 +11,12 @@ module Apiwork
       # Build options hash from raw values
       #
       # @param key_transform [String, Symbol, nil] Key transform option
+      # @param version [String, nil] Generator version option
       # @return [Hash] Validated options hash with symbolized keys
-      def self.build(key_transform: nil, **_ignored)
+      def self.build(key_transform: nil, version: nil, **_ignored)
         {
-          key_transform: parse_key_transform(key_transform)
+          key_transform: parse_key_transform(key_transform),
+          version: version&.to_s
         }.compact
       end
 

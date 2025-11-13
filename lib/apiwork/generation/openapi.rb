@@ -2,15 +2,19 @@
 
 module Apiwork
   module Generation
-    # OpenAPI 3.1.0 generator using API introspection
+    # OpenAPI 3.1 generator using API introspection
     #
-    # Generates OpenAPI specifications from API introspection data.
+    # Generates OpenAPI 3.1 specifications from API introspection data.
     # Uses introspection data directly - all types become components with $ref.
     #
     # @example Generate OpenAPI spec
     #   generator = OpenAPI.new('/api/v1')
     #   spec = generator.generate
     #   File.write('openapi.json', JSON.pretty_generate(spec))
+    #
+    # @example Specify version explicitly
+    #   generator = OpenAPI.new('/api/v1', version: '3.1.0')
+    #   spec = generator.generate
     class OpenAPI < Base
       generator_name :openapi
       content_type 'application/json'
@@ -19,12 +23,16 @@ module Apiwork
         '.json'
       end
 
-      # Generate OpenAPI 3.1.0 specification
+      def self.default_options
+        { version: '3.1.0' }
+      end
+
+      # Generate OpenAPI specification
       #
       # @return [Hash] OpenAPI specification
       def generate
         {
-          openapi: '3.1.0',
+          openapi: version,
           info: build_info,
           paths: build_paths,
           components: {
@@ -453,7 +461,7 @@ module Apiwork
       def apply_nullable(schema, nullable)
         return schema unless nullable
 
-        # If schema has $ref, wrap it
+        # If schema has $ref, wrap it in oneOf
         if schema[:'$ref']
           {
             oneOf: [

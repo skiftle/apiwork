@@ -6,17 +6,26 @@ module Apiwork
     #
     # Generates pure TypeScript type definitions from API introspection data.
     # Types are sorted alphabetically for consistency and readability.
+    # Targets TypeScript 5 by default.
     #
     # @example Generate TypeScript types
     #   generator = Typescript.new('/api/v1')
     #   types = generator.generate
     #   File.write('types.ts', types)
+    #
+    # @example Target specific TypeScript version
+    #   generator = Typescript.new('/api/v1', version: '5')
+    #   types = generator.generate
     class Typescript < Base
       generator_name :typescript
       content_type 'text/plain; charset=utf-8'
 
       def self.file_extension
         '.ts'
+      end
+
+      def self.default_options
+        { version: '5' }
       end
 
       # Generate complete TypeScript document with type definitions
