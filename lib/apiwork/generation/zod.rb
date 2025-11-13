@@ -20,12 +20,19 @@ module Apiwork
       generator_name :zod
       content_type 'text/plain; charset=utf-8'
 
+      VALID_VERSIONS = ['3', '4'].freeze
+
       def self.file_extension
         '.ts'
       end
 
       def self.default_options
-        { version: '3' }
+        { version: '4' }
+      end
+
+      def initialize(path, **options)
+        super
+        validate_version!
       end
 
       # Generate complete TypeScript document with Zod schemas
@@ -645,6 +652,17 @@ module Apiwork
       # Resolve enum reference
       def resolve_enum(enum_ref)
         enum_ref
+      end
+
+      # Validate version option
+      def validate_version!
+        return if version.nil?
+
+        unless VALID_VERSIONS.include?(version)
+          raise ArgumentError,
+                "Invalid version for zod: #{version.inspect}. " \
+                "Valid versions: #{VALID_VERSIONS.join(', ')}"
+        end
       end
     end
   end

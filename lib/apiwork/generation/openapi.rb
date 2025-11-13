@@ -19,12 +19,19 @@ module Apiwork
       generator_name :openapi
       content_type 'application/json'
 
+      VALID_VERSIONS = ['3.1.0'].freeze
+
       def self.file_extension
         '.json'
       end
 
       def self.default_options
         { version: '3.1.0' }
+      end
+
+      def initialize(path, **options)
+        super
+        validate_version!
       end
 
       # Generate OpenAPI specification
@@ -496,6 +503,17 @@ module Apiwork
       # Uses key_transform option directly - :none means leave as-is (underscore)
       def schema_name(name)
         transform_key(name, key_transform)
+      end
+
+      # Validate version option
+      def validate_version!
+        return if version.nil?
+
+        unless VALID_VERSIONS.include?(version)
+          raise ArgumentError,
+                "Invalid version for openapi: #{version.inspect}. " \
+                "Valid versions: #{VALID_VERSIONS.join(', ')}"
+        end
       end
     end
   end

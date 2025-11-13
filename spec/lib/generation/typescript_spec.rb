@@ -28,8 +28,34 @@ RSpec.describe Apiwork::Generation::Typescript do
     end
 
     it 'allows version override' do
-      gen = described_class.new(path, version: '4.5')
-      expect(gen.send(:version)).to eq('4.5')
+      gen = described_class.new(path, version: '4')
+      expect(gen.send(:version)).to eq('4')
+    end
+  end
+
+  describe 'version validation' do
+    it 'accepts valid version 4' do
+      expect { described_class.new(path, version: '4') }.not_to raise_error
+    end
+
+    it 'accepts valid version 5' do
+      expect { described_class.new(path, version: '5') }.not_to raise_error
+    end
+
+    it 'raises error for invalid version' do
+      expect do
+        described_class.new(path, version: '3')
+      end.to raise_error(ArgumentError, /Invalid version for typescript: "3"/)
+    end
+
+    it 'raises error for version 6' do
+      expect do
+        described_class.new(path, version: '6')
+      end.to raise_error(ArgumentError, /Invalid version for typescript/)
+    end
+
+    it 'accepts nil version' do
+      expect { described_class.new(path, version: nil) }.not_to raise_error
     end
   end
 
