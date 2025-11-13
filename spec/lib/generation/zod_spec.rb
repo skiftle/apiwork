@@ -73,32 +73,32 @@ RSpec.describe Apiwork::Generation::Zod do
       end
 
       it 'includes StringFilterSchema from introspect types' do
-        expect(output).to include('export type StringFilter =')
+        expect(output).to include('export interface StringFilter')
         expect(output).to include('export const StringFilterSchema: z.ZodType<StringFilter> = z.object')
       end
 
       it 'includes IntegerFilterSchema from introspect types' do
-        expect(output).to include('export type IntegerFilter =')
+        expect(output).to include('export interface IntegerFilter')
         expect(output).to include('export const IntegerFilterSchema: z.ZodType<IntegerFilter> = z.object')
       end
 
       it 'includes DateFilterSchema from introspect types' do
-        expect(output).to include('export type DateFilter =')
+        expect(output).to include('export interface DateFilter')
         expect(output).to include('export const DateFilterSchema: z.ZodType<DateFilter> = z.object')
       end
 
       it 'includes UuidFilterSchema from introspect types' do
-        expect(output).to include('export type UuidFilter =')
+        expect(output).to include('export interface UuidFilter')
         expect(output).to include('export const UuidFilterSchema: z.ZodType<UuidFilter> = z.object')
       end
 
       it 'includes BooleanFilterSchema from introspect types' do
-        expect(output).to include('export type BooleanFilter =')
+        expect(output).to include('export interface BooleanFilter')
         expect(output).to include('export const BooleanFilterSchema: z.ZodType<BooleanFilter> = z.object')
       end
 
       it 'includes PageParamsSchema (pagination) from introspect types' do
-        expect(output).to include('export type PageParams =')
+        expect(output).to include('export interface PageParams')
         expect(output).to include('export const PageParamsSchema: z.ZodType<PageParams> = z.object')
       end
     end
@@ -115,15 +115,9 @@ RSpec.describe Apiwork::Generation::Zod do
           # Detect if type is recursive by checking if it references itself
           is_recursive = detect_recursive_type(type_name, type_def)
 
-          # All types should have a TypeScript type declaration
-          if is_recursive
-            # Recursive types use interface
-            expect(output).to include("export interface #{schema_name}"),
-                              "Missing interface for recursive type #{type_name}"
-          else
-            # Non-recursive types use type alias
-            expect(output).to include("export type #{schema_name} ="), "Missing type alias for #{type_name}"
-          end
+          # All types should have a TypeScript interface declaration
+          expect(output).to include("export interface #{schema_name}"),
+                            "Missing interface for #{type_name}"
 
           # All types should have a Zod schema with z.ZodType annotation
           expect(output).to include("export const #{schema_name}Schema: z.ZodType<#{schema_name}>"),
@@ -184,10 +178,10 @@ RSpec.describe Apiwork::Generation::Zod do
         expect(output).to include('z.number')
         expect(output).to include('z.object')
 
-        # Recursive types should have TypeScript type definitions
+        # All types should have TypeScript interface definitions
         # which may include "| undefined" for optional fields
-        recursive_types = introspect[:types].select { |_name, type_def| type_def[:recursive] }
-        expect(output).to include('export type') if recursive_types.any?
+        types_count = introspect[:types].count
+        expect(output).to include('export interface') if types_count.positive?
       end
     end
 

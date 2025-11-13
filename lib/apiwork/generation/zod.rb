@@ -422,13 +422,8 @@ module Apiwork
           "  #{key}#{optional_marker}: #{ts_type};"
         end.join("\n")
 
-        if recursive
-          # Use interface for recursive types
-          "export interface #{type_name_pascal} {\n#{properties}\n}"
-        else
-          # Use type for non-recursive types
-          "export type #{type_name_pascal} = {\n#{properties}\n};"
-        end
+        # Always use interface for consistency
+        "export interface #{type_name_pascal} {\n#{properties}\n}"
       end
 
       # Map field definition to TypeScript type syntax
