@@ -103,9 +103,6 @@ module Apiwork
           )
         end
 
-        # Resolve Rails controller path to full class name
-        # @param path [String] Controller path (e.g., 'admin/posts' or '/admin/posts')
-        # @return [String] Full controller class name
         def resolve_controller_path(path)
           parts = if path.start_with?('/')
                     # Absolute path: '/admin/posts' → 'Admin::PostsController'

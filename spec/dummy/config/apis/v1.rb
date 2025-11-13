@@ -11,7 +11,7 @@ Apiwork::API.draw '/api/v1' do
   doc do
     title 'Test API'
     version '1.0.0'
-    description 'Test API for Apiwork gem'
+    description 'Dummy API for the Apiwork gem'
   end
 
   resources :posts do

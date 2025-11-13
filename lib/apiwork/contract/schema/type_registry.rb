@@ -34,12 +34,6 @@ module Apiwork
             end
           end
 
-          # Register resource-specific filter type with Descriptors::Registry
-          # Uses type references for associations to eliminate circular recursion
-          # @param contract_class [Class] The contract class to register types with
-          # @param schema_class [Class] The schema class to generate filters for
-          # @param visited [Set] Set of visited schema classes (circular reference protection)
-          # @param depth [Integer] Current recursion depth (max 3)
           def register_resource_filter_type(contract_class, schema_class, visited: Set.new, depth: 0)
             # Circular reference and depth protection
             return nil if visited.include?(schema_class)
@@ -121,12 +115,6 @@ module Apiwork
             type_name
           end
 
-          # Register resource-specific sort type with Descriptors::Registry
-          # Uses type references for associations to eliminate circular recursion
-          # @param contract_class [Class] The contract class to register types with
-          # @param schema_class [Class] The schema class to generate sorts for
-          # @param visited [Set] Set of visited schema classes (circular reference protection)
-          # @param depth [Integer] Current recursion depth (max 3)
           def register_resource_sort_type(contract_class, schema_class, visited: Set.new, depth: 0)
             # Circular reference and depth protection
             return nil if visited.include?(schema_class)
@@ -190,9 +178,6 @@ module Apiwork
             type_name
           end
 
-          # Resolve the resource class from an association definition
-          # @param association_definition [AssociationDefinition] The association definition
-          # @return [Class, nil] The associated resource class or nil
           def resolve_association_resource(association_definition)
             # If schema_class is explicitly set, use it
             if association_definition.schema_class
@@ -200,7 +185,7 @@ module Apiwork
 
               begin
                 return association_definition.schema_class.constantize
-              rescue StandardError
+              rescue NameError
                 nil
               end
             end
@@ -216,7 +201,7 @@ module Apiwork
             # Get the associated model class from the reflection
             association_model_class = begin
               reflection.klass
-            rescue StandardError
+            rescue ActiveRecord::AssociationNotFoundError, NameError
               nil
             end
             return nil unless association_model_class
@@ -227,17 +212,11 @@ module Apiwork
             schema_class_name = "Api::V1::#{association_model_class.name.demodulize}Schema"
             begin
               schema_class_name.constantize
-            rescue StandardError
+            rescue NameError
               nil
             end
           end
 
-          # Register resource-specific include type with Descriptors::Registry
-          # Uses type references for associations to eliminate circular recursion
-          # @param contract_class [Class] The contract class to register types with
-          # @param schema_class [Class] The schema class to generate includes for
-          # @param visited [Set] Set of visited schema classes (circular reference protection)
-          # @param depth [Integer] Current recursion depth (max 3)
           def register_resource_include_type(contract_class, schema_class, visited: Set.new, depth: 0)
             # Use schema-specific type name to avoid collisions when including nested associations
             # For the root schema (depth 0), use :include. For associated schemas, include schema name
@@ -299,12 +278,6 @@ module Apiwork
             type_name
           end
 
-          # Register a type for an associated resource schema
-          # This allows associations to reference their schema types instead of generic :object
-          # @param contract_class [Class] The contract class to register types with
-          # @param association_definition [AssociationDefinition] The association definition
-          # @param visited [Set] Set of visited schema classes (circular reference protection)
-          # @return [Symbol, nil] The type name to reference or nil if no schema
           def register_association_type(contract_class, association_definition, visited: Set.new)
             # Resolve the associated resource schema
             association_schema = resolve_association_resource(association_definition)
@@ -366,24 +339,6 @@ module Apiwork
             Descriptors::Registry.qualified_name(association_contract_class, resource_type_name)
           end
 
-          # Auto-import association contract to reuse its types
-          #
-          # When processing associations, check if the association's schema has a contract.
-          # If it does, automatically import that contract so we can reference its types
-          # instead of creating duplicates.
-          #
-          # Uses schema's root_key.singular as the import alias for consistency.
-          # Example: CommentSchema -> import as :comment
-          #
-          # This enables type reuse:
-          # - :comment_filter instead of creating new filter type
-          # - :comment_sort instead of creating new sort type
-          # - :comment instead of creating temporary contract
-          #
-          # @param parent_contract [Class] The parent contract doing the importing
-          # @param association_schema [Class] The schema class for the association
-          # @param visited [Set] Set of visited schemas for circular reference protection
-          # @return [Symbol, nil] Import alias if successful, nil otherwise
           def auto_import_association_contract(parent_contract, association_schema, visited)
             # Guard: circular reference protection
             return nil if visited.include?(association_schema)
@@ -412,22 +367,6 @@ module Apiwork
             alias_name
           end
 
-          # Register all schema enums at contract level for reuse
-          #
-          # Enums are registered ONCE per contract and can be referenced in:
-          # - Input schemas (create/update)
-          # - Output schemas (show/index)
-          # - Filter variants
-          #
-          # @param contract_class [Class] Contract class to register enums with
-          # @param schema_class [Class] Schema class containing attribute definitions
-          #
-          # @example
-          #   # For PostContract with status attribute:
-          #   register_contract_enums(PostContract, PostSchema)
-          #   # Registers: :status -> [:draft, :published]
-          #   # Qualified as: :post_status in enums hash
-          #   # Referenced as: enum: :status in params
           def register_contract_enums(contract_class, schema_class)
             schema_class.attribute_definitions.each do |name, attribute_definition|
               next unless attribute_definition.enum&.any?
@@ -440,18 +379,6 @@ module Apiwork
 
           private
 
-          # Build type name based on schema and depth
-          # For root schema (depth 0), use base_name directly
-          # For nested schemas, prefix with schema name
-          #
-          # @param schema_class [Class] Schema class
-          # @param base_name [Symbol] Base type name (:filter, :sort, :include)
-          # @param depth [Integer] Recursion depth
-          # @return [Symbol] Type name
-          #
-          # @example
-          #   build_type_name(PostSchema, :filter, 0)  # => :filter
-          #   build_type_name(CommentSchema, :filter, 1)  # => :comment_filter
           def build_type_name(schema_class, base_name, depth)
             return base_name if depth.zero?
 

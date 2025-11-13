@@ -2,21 +2,8 @@
 
 module Apiwork
   module API
-    # Maintains a global registry of all defined API classes
-    #
-    # Path is the primary key for lookups
-    #
-    # @example
-    #   Registry.register(api_class)
-    #   Registry.find('/api/v1')
-    #   Registry.find('api/v1')
-    #   Registry.find('/')
-    #   Registry.all_classes
     class Registry
       class << self
-        # Register an API class in the global registry
-        #
-        # @param api_class [Class] The API class to register
         def register(api_class)
           # Register by class name (for legacy/debug)
           apis[api_class.name] = api_class if api_class.name
@@ -28,13 +15,6 @@ module Apiwork
           apis_by_path[normalized_path] = api_class
         end
 
-        # Find an API class by path
-        #
-        # @param path [String] The path to look up
-        #   - "/api/v1" (path with leading slash)
-        #   - "api/v1" (path without leading slash)
-        #   - "/" (root path)
-        # @return [Class, nil] The found API class or nil
         def find(path)
           return nil unless path
 
@@ -45,9 +25,6 @@ module Apiwork
           apis_by_path[normalized_path]
         end
 
-        # Get all registered API classes
-        #
-        # @return [Array<Class>] All registered API classes
         def all_classes
           # Use apis_by_path since anonymous classes from .draw don't have names
           apis_by_path.values.uniq
@@ -61,10 +38,6 @@ module Apiwork
 
         private
 
-        # Normalize path for consistent lookups
-        #
-        # @param path [String] The path to normalize
-        # @return [String] Normalized path (lowercase, no leading slash, 'root' for '/')
         def normalize_path(path)
           return 'root' if path == '/'
 

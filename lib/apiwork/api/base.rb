@@ -10,9 +10,6 @@ module Apiwork
       class << self
         attr_reader :metadata, :recorder, :mount_path, :namespaces_parts, :specs
 
-        # Get controller namespace derived from namespaces parts
-        #
-        # @return [String] Controller namespace (e.g., "Api::V1")
         def controller_namespace
           namespaces_parts.map(&:to_s).map(&:camelize).join('::')
         end

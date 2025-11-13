@@ -6,7 +6,6 @@ module Apiwork
                   :max_array_items
     attr_reader :serialize_key_transform, :deserialize_key_transform, :error_handling_mode
 
-    VALID_BOOLEAN_VALUES = [true, false].freeze
     VALID_ERROR_HANDLING_MODES = %i[raise log silent].freeze
 
     VALIDATED_ATTRIBUTES = {
@@ -41,11 +40,7 @@ module Apiwork
 
       return if valid_values.include?(value)
 
-      error_message = if valid_values == VALID_BOOLEAN_VALUES
-                        "Invalid #{attribute_name}: #{value}. Must be true or false"
-                      else
-                        "Invalid #{attribute_name}: #{value}. Must be one of #{valid_values.join(', ')}"
-                      end
+      error_message = "Invalid #{attribute_name}: #{value}. Must be one of #{valid_values.join(', ')}"
 
       raise ConfigurationError, error_message
     end

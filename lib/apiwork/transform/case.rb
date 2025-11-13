@@ -13,11 +13,6 @@ module Apiwork
         none: lambda(&:to_s)
       }.freeze
 
-      # Transform all keys in a hash using the specified strategy
-      #
-      # @param hash [Hash] The hash to transform
-      # @param strategy [Symbol] The transformation strategy
-      # @return [Hash] Hash with transformed keys (symbolized)
       def self.hash(hash, strategy)
         return hash if [:none, nil].include?(strategy)
 
@@ -32,12 +27,6 @@ module Apiwork
         end
       end
 
-      # Transform a single string using the specified strategy
-      # Used by generation code for naming schemas and fields
-      #
-      # @param string [String, Symbol] The string to transform
-      # @param strategy [Symbol] The transformation strategy
-      # @return [String] Transformed string
       def self.string(string, strategy)
         return string.to_s if [:none, nil].include?(strategy)
 
@@ -50,10 +39,6 @@ module Apiwork
         transformer.call(string)
       end
 
-      # Returns list of valid strategy names
-      # Used by Configuration for validation
-      #
-      # @return [Array<Symbol>] List of valid strategies
       def self.valid_strategies
         STRATEGIES.keys
       end

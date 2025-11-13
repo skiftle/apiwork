@@ -93,14 +93,14 @@ module Apiwork
         reflection = @model_class.reflect_on_association(@name)
         return if reflection
 
-        detail = "Undefined resource association '#{@name}' in #{@klass.send(:name_of_self)}: no association on model"
+        detail = "Undefined resource association '#{@name}' in #{@klass.name}: no association on model"
         error = ConfigurationError.new(
           code: :invalid_association,
           detail: detail,
           path: [@name]
         )
 
-        Errors::Handler.handle(error, context: { association: @name, resource: @klass.send(:name_of_self) })
+        Errors::Handler.handle(error, context: { association: @name, resource: @klass.name })
       end
 
       def validate_nested_attributes!

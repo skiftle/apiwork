@@ -84,9 +84,6 @@ module Apiwork
             temp_definition.as_json
           end
 
-          # Extract all type references from a type definition
-          # @param definition [Hash] Type definition (params hash)
-          # @return [Array<Symbol>] Array of referenced type names
           def extract_type_references(definition)
             refs = []
 
@@ -120,9 +117,6 @@ module Apiwork
             refs.uniq
           end
 
-          # Check if a type is a primitive (not a custom type reference)
-          # @param type [Symbol] Type name to check
-          # @return [Boolean] true if type is a primitive
           def primitive_type?(type)
             %i[
               string integer boolean datetime date uuid object array

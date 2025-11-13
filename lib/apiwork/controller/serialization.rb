@@ -11,9 +11,6 @@ module Apiwork
     module Serialization
       extend ActiveSupport::Concern
 
-      # Get action output parser for current action
-      #
-      # @return [Contract::Parser] Parser instance for output
       def action_output
         @action_output ||= begin
           contract = find_contract&.new
@@ -23,12 +20,6 @@ module Apiwork
         end
       end
 
-      # Unified response builder for all actions
-      #
-      # @param resource_or_collection [Object] Resource or collection to render
-      # @param meta [Hash] Additional meta information
-      # @param contract [Class] Optional contract class override
-      # @param status [Symbol] Optional HTTP status override
       def respond_with(resource_or_collection, meta: {}, contract: nil, status: nil)
         output = if contract
                    Contract::Parser.new(contract.new, :output, action_name, context: build_schema_context)
@@ -52,12 +43,6 @@ module Apiwork
 
       private
 
-      # Build response hash using ResponseRenderer
-      #
-      # @param resource_or_collection [Object] Resource or collection to render
-      # @param output [Contract::Parser] Parser instance for output
-      # @param meta [Hash] Transformed meta information
-      # @return [Hash] Complete response hash
       def build_response(resource_or_collection, output, meta)
         query_params = extract_query_params_for_output
 

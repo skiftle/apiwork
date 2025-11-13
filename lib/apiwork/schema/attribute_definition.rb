@@ -121,10 +121,10 @@ module Apiwork
 
         # Attribute not found
         detail = if @model_class
-                   "Undefined resource attribute '#{@name}' in #{@klass.send(:name_of_self)}: " \
+                   "Undefined resource attribute '#{@name}' in #{@klass.name}: " \
                    'no DB column, no reader method on model, and no reader method on resource'
                  else
-                   "Undefined resource attribute '#{@name}' in #{@klass.send(:name_of_self)}: " \
+                   "Undefined resource attribute '#{@name}' in #{@klass.name}: " \
                    'no reader method on resource'
                  end
         error = ConfigurationError.new(
@@ -133,7 +133,7 @@ module Apiwork
           path: [@name]
         )
 
-        Errors::Handler.handle(error, context: { attribute: @name, resource: @klass.send(:name_of_self) })
+        Errors::Handler.handle(error, context: { attribute: @name, resource: @klass.name })
       end
 
       def validate_null_to_empty!
@@ -141,14 +141,14 @@ module Apiwork
         return if %i[string text].include?(@type)
 
         detail = 'null_to_empty option can only be used on string/text attributes, ' \
-                 "not #{@type} for '#{@name}' in #{@klass.send(:name_of_self)}"
+                 "not #{@type} for '#{@name}' in #{@klass.name}"
         error = ConfigurationError.new(
           code: :invalid_null_to_empty,
           detail: detail,
           path: [@name]
         )
 
-        Errors::Handler.handle(error, context: { attribute: @name, type: @type, resource: @klass.send(:name_of_self) })
+        Errors::Handler.handle(error, context: { attribute: @name, type: @type, resource: @klass.name })
       end
 
       def apply_null_to_empty_transformers!

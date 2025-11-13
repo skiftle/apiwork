@@ -57,20 +57,6 @@ module Apiwork
           Descriptors::Registry.register_local_enum(self, name, values)
         end
 
-        # Import types and enums from another contract
-        # @param contract_class [Class] The contract class to import from
-        # @param as [Symbol] The alias to use for imported types
-        #
-        # @example
-        #   class OrderContract < Apiwork::Contract::Base
-        #     import UserContract, as: :user
-        #
-        #     action :create do
-        #       input do
-        #         param :shipping_address, type: :user_address
-        #       end
-        #     end
-        #   end
         def import(contract_class, as:)
           # Validate contract_class is a Class
           unless contract_class.is_a?(Class)
@@ -94,8 +80,6 @@ module Apiwork
           @imports[as] = contract_class
         end
 
-        # Get all imports for this contract
-        # @return [Hash{Symbol => Class}] Hash of alias => contract class
         def imports
           @imports || {}
         end
@@ -114,10 +98,6 @@ module Apiwork
           Descriptors::Registry.resolve(type_name, contract_class: self)
         end
 
-        # Get ActionDefinition for a specific action
-        # Auto-generates actions if not explicitly defined and we have a resource
-        # @param action_name [Symbol] Name of the action
-        # @return [ActionDefinition, nil] The action definition or nil if not found
         def action_definition(action_name)
           @action_definitions ||= {}
           action_name_sym = action_name.to_sym
@@ -138,12 +118,6 @@ module Apiwork
           @action_definitions || {}
         end
 
-        # Introspect entire contract or a specific action
-        # When action is nil: Returns all actions with their input/output definitions
-        # When action is provided: Returns input/output for that specific action
-        # Only includes actions declared in API routing configuration (respects only:/except:)
-        # @param action [Symbol, nil] Optional action name for specific action introspection
-        # @return [Hash] Hash with :actions key (when action=nil) or :input/:output keys (when action provided)
         def introspect(action = nil)
           if action
             # Specific action introspection
@@ -175,9 +149,6 @@ module Apiwork
           introspect
         end
 
-        # Get API path for this contract based on namespace
-        # Example: Api::V1::PostContract -> "/api/v1"
-        # @return [String, nil] API path or nil if contract is anonymous
         def api_path
           return nil unless name # Anonymous classes don't have a name
 
@@ -187,8 +158,6 @@ module Apiwork
           "/#{namespace_parts.map(&:underscore).join('/')}"
         end
 
-        # Get API class for this contract
-        # @return [Class, nil] API class or nil if not found
         def api_class
           path = api_path
           return nil unless path
@@ -196,17 +165,12 @@ module Apiwork
           Apiwork::API.find(path)
         end
 
-        # Get resource name for this contract
-        # Example: PostContract -> :posts, PersonContract -> :people
-        # @return [Symbol, nil] Resource name (pluralized) or nil if contract is anonymous
         def resource_name
           return nil unless name # Anonymous classes don't have a name
 
           name.demodulize.sub(/Contract$/, '').underscore.pluralize.to_sym
         end
 
-        # Get resource metadata from API definition
-        # @return [Hash, nil] Resource metadata or nil if not found
         def resource_metadata
           api = api_class
           return nil unless api&.metadata
@@ -214,9 +178,6 @@ module Apiwork
           find_resource_in_metadata(api.metadata, resource_name)
         end
 
-        # Get all available actions for this resource from API routing configuration
-        # Includes CRUD actions (respecting only:/except:), member actions, and collection actions
-        # @return [Array<Symbol>] Array of action names
         def available_actions
           metadata = resource_metadata
           return [] unless metadata
@@ -227,8 +188,6 @@ module Apiwork
           actions
         end
 
-        # Check if resource is singular (e.g., resource :profile vs resources :posts)
-        # @return [Boolean] true if singular resource
         def singular_resource?
           resource_metadata&.dig(:singular) || false
         end
@@ -239,10 +198,6 @@ module Apiwork
 
         private
 
-        # Find resource in metadata, searching nested resources recursively
-        # @param metadata [Metadata] API metadata object
-        # @param resource_name [Symbol] Resource name to find
-        # @return [Hash, nil] Resource metadata or nil if not found
         def find_resource_in_metadata(metadata, resource_name)
           MetadataSearcher.new(metadata).find_resource(resource_name)
         end

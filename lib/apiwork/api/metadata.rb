@@ -2,16 +2,6 @@
 
 module Apiwork
   module API
-    # Stores structured metadata about API definitions for introspection and code generation
-    #
-    # Path is the source of truth - all other values are derived from it
-    #
-    # @example
-    #   metadata = Metadata.new('/api/v1')
-    #   metadata.path           # => '/api/v1'
-    #   metadata.namespaces     # => [:api, :v1]
-    #   metadata.add_resource(:accounts, singular: false, schema_class: Api::V1::AccountSchema)
-    #   metadata.add_member_action(:accounts, :archive, method: :patch, options: {})
     class Metadata
       attr_reader :path, :namespaces, :resources, :concerns
       attr_accessor :doc, :error_codes
@@ -21,7 +11,7 @@ module Apiwork
         @path = path
 
         # Derive namespaces from path
-        @namespaces = path_to_namespaces(path)
+        @namespaces = path == '/' ? [:root] : path.split('/').reject(&:empty?).map(&:to_sym)
 
         @resources = {} # Structured tree, not flat array
         @concerns = {}
@@ -111,16 +101,6 @@ module Apiwork
       end
 
       private
-
-      # Convert path to namespaces array
-      #
-      # @param path [String] The path
-      # @return [Array<Symbol>] Namespaces array
-      def path_to_namespaces(path)
-        return [:root] if path == '/'
-
-        path.split('/').reject(&:empty?).map(&:to_sym)
-      end
 
       def find_resource(name)
         searcher = MetadataSearcher.new(self)
