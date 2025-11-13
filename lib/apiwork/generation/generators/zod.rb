@@ -91,7 +91,7 @@ module Apiwork
           # No need for manual generation here
           enums.map do |enum_name, enum_values|
             schema_name = zod_type_name(enum_name)
-            values_str = enum_values.map { |v| "'#{v}'" }.join(', ')
+            values_str = enum_values.sort.map { |v| "'#{v}'" }.join(', ')
             "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.enum([#{values_str}]);"
           end.join("\n")
         end
@@ -101,10 +101,10 @@ module Apiwork
 
           # Generate TypeScript union types for enums
           # Enum filter types are now auto-generated as union types in introspect[:types]
-          enums.map do |enum_name, enum_values|
+          enums.sort_by { |enum_name, _| enum_name.to_s }.map do |enum_name, enum_values|
             type_name = zod_type_name(enum_name)
             # Create a union of literal types
-            values_str = enum_values.map { |v| "'#{v}'" }.join(' | ')
+            values_str = enum_values.sort.map { |v| "'#{v}'" }.join(' | ')
             "export type #{type_name} = #{values_str};"
           end.join("\n")
         end
@@ -366,8 +366,8 @@ module Apiwork
         end
 
         def build_typescript_types
-          # Sort ALL types in topological order
-          sorted_types = topological_sort_types(types)
+          # Sort types alphabetically by name
+          sorted_types = types.sort_by { |type_name, _| type_name.to_s }
 
           # Generate TypeScript type/interface declarations
           type_declarations = sorted_types.map do |type_name, type_shape|
