@@ -241,9 +241,15 @@ module Apiwork
 
         types.each do |type_name, type_shape|
           component_name = schema_name(type_name)
-          # Types in introspect are object shapes (fields hash), not type definitions
-          # Wrap as object type
-          schemas[component_name] = map_object({ shape: type_shape })
+
+          # Check if this is a union type
+          if type_shape.is_a?(Hash) && type_shape[:type] == :union
+            # Handle union types directly
+            schemas[component_name] = map_union(type_shape)
+          else
+            # Regular object type - wrap as object
+            schemas[component_name] = map_object({ shape: type_shape })
+          end
         end
 
         schemas
