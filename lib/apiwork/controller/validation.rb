@@ -15,9 +15,6 @@ module Apiwork
         end
       end
 
-      # Get parsed and validated action input
-      #
-      # @return [Contract::Parser::Result] Result with parsed params and errors
       def action_input
         @action_input ||= begin
           contract = find_contract&.new
@@ -60,10 +57,6 @@ module Apiwork
         @current_action_definition ||= Contract::Resolver.resolve(controller_class: self.class, action_name: action_name.to_sym)
       end
 
-      # Parse request parameters from query string and body
-      #
-      # @param request [ActionDispatch::Request] The HTTP request
-      # @return [Hash] Merged and normalized parameters
       def parse_request_params(request)
         query = parse_query_params(request)
         body = parse_body_params(request)

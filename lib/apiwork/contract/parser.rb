@@ -53,10 +53,6 @@ module Apiwork
         @schema_class ||= action_definition&.schema_class
       end
 
-      # Parse (coerce + validate + transform) data
-      #
-      # @param data [Hash] Data to parse (params for input, response_hash for output)
-      # @return [Result] Result object with parsed data and errors
       def perform(data)
         # Step 1: Coerce types (string → Integer, Date, etc)
         coerced_data = coerce(data)

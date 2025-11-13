@@ -6,10 +6,6 @@ module Apiwork
     # Used for debugging auto-generated contracts and route introspection
     module Serialization
       class << self
-        # Serialize a Definition to a hash representation
-        # @param definition [Definition] The definition to serialize
-        # @param visited [Set] Set of custom type names currently being serialized (for circular reference protection)
-        # @return [Hash] Hash representation with params and their metadata
         def serialize_definition(definition, visited: Set.new)
           return nil unless definition
 
@@ -25,11 +21,6 @@ module Apiwork
           result
         end
 
-        # Serialize an unwrapped discriminated union
-        # This represents a flat structure as a discriminated union in the schema
-        # @param definition [Definition] The definition marked as unwrapped union
-        # @param visited [Set] Visited types for circular reference protection
-        # @return [Hash] Union representation
         def serialize_unwrapped_union(definition, visited: Set.new)
           discriminator = definition.instance_variable_get(:@unwrapped_union_discriminator)
 
@@ -82,12 +73,6 @@ module Apiwork
           }
         end
 
-        # Serialize a single parameter with all its metadata
-        # @param name [Symbol] Parameter name
-        # @param options [Hash] Parameter options from definition
-        # @param definition [Definition] Parent definition (for custom type resolution)
-        # @param visited [Set] Set of custom type names currently being serialized (for circular reference protection)
-        # @return [Hash] Serialized parameter with type, required, shape, etc.
         def serialize_param(_name, options, definition, visited: Set.new)
           # Handle union types
           if options[:type] == :union
@@ -179,11 +164,6 @@ module Apiwork
           result
         end
 
-        # Serialize a union type
-        # @param union_def [UnionDefinition] The union definition
-        # @param definition [Definition] Parent definition (for custom type resolution)
-        # @param visited [Set] Set of custom type names currently being serialized (for circular reference protection)
-        # @return [Hash] Union representation with variants
         def serialize_union(union_def, definition, visited: Set.new)
           result = {
             type: :union,
@@ -193,11 +173,6 @@ module Apiwork
           result
         end
 
-        # Serialize a single union variant
-        # @param variant_def [Hash] Variant definition hash
-        # @param definition [Definition] Parent definition (for custom type resolution)
-        # @param visited [Set] Set of custom type names currently being serialized (for circular reference protection)
-        # @return [Hash] Serialized variant with type references (not expanded)
         def serialize_variant(variant_def, parent_definition, visited: Set.new)
           variant_type = variant_def[:type]
 
@@ -256,20 +231,10 @@ module Apiwork
           result
         end
 
-        # Determine the scope where a custom type is defined
-        # This is needed to generate the correct qualified name
-        # @param definition [Definition] The definition where the type is being used
-        # @param type_name [Symbol] The type name to look up
-        # @return [Class] The contract class
         def determine_scope_for_type(definition, type_name)
           definition.contract_class
         end
 
-        # Determine the scope where an enum is defined
-        # This is needed to generate the correct qualified name
-        # @param definition [Definition] The definition where the enum is being used
-        # @param enum_name [Symbol] The enum name to look up
-        # @return [Class] The contract class
         def determine_scope_for_enum(definition, enum_name)
           definition.contract_class
         end

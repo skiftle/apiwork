@@ -13,11 +13,6 @@ module Apiwork
       module Transformation
         extend ActiveSupport::Concern
 
-        # Transform meta keys to match schema's key transform
-        # Only available for output direction
-        #
-        # @param meta [Hash] Meta hash to transform
-        # @return [Hash] Transformed meta hash
         def transform_meta_keys(meta)
           raise ArgumentError, 'transform_meta_keys only available for output direction' unless @direction == :output
 

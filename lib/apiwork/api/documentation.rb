@@ -6,15 +6,6 @@ module Apiwork
     #
     # Provides: doc
     module Documentation
-      # Define API-level documentation
-      #
-      # @yield Block for documentation DSL
-      # @example
-      #   doc do
-      #     title "My API"
-      #     version "1.0.0"
-      #     description "Complete API for my application"
-      #   end
       def doc(&block)
         builder = DocumentationBuilder.new(level: :api)
         builder.instance_eval(&block)

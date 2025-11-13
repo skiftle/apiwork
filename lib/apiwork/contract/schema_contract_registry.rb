@@ -12,18 +12,11 @@ module Apiwork
     # Thread-safety: Optimistic lazy creation (harmless races)
     class SchemaContractRegistry
       class << self
-        # Get or create contract for schema
-        # @param schema_class [Class] Schema class
-        # @return [Class] Contract class (explicit or anonymous)
         def contract_for_schema(schema_class)
           # Return cached if exists (thread-safe read)
           @registry[schema_class] ||= find_or_create_contract(schema_class)
         end
 
-        # Explicitly register contract (from schema() DSL)
-        # This ensures explicit contracts are always used, not anonymous
-        # @param schema_class [Class] Schema class
-        # @param contract_class [Class] Contract class
         def register(schema_class, contract_class)
           @registry[schema_class] = contract_class
         end

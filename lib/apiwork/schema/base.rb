@@ -33,9 +33,6 @@ module Apiwork
       end
 
       class << self
-        # Returns contract class for this schema (explicit or generated)
-        # Uses SchemaContractRegistry to cache and manage contracts
-        # @return [Class] Contract class
         def contract
           Contract::SchemaContractRegistry.contract_for_schema(self)
         end
@@ -218,18 +215,10 @@ module Apiwork
           end
         end
 
-        # Model introspection helpers
-        # Get column metadata for an attribute
-        #
-        # @param attribute_name [Symbol, String] Attribute name
-        # @return [ActiveRecord::ConnectionAdapters::Column, nil] Column object or nil
         def column_for(attribute_name)
           model_class&.columns_hash&.[](attribute_name.to_s)
         end
 
-        # Get list of required column names (non-null with no default)
-        #
-        # @return [Array<Symbol>] Array of required column names
         def required_columns
           return [] unless model_class
 
@@ -240,18 +229,10 @@ module Apiwork
                      .map(&:to_sym)
         end
 
-        # Check if a column is nullable
-        #
-        # @param attribute_name [Symbol, String] Attribute name
-        # @return [Boolean] True if column allows null values
         def column_nullable?(attribute_name)
           column_for(attribute_name)&.null || false
         end
 
-        # Get column type for an attribute
-        #
-        # @param attribute_name [Symbol, String] Attribute name
-        # @return [Symbol, nil] Column type (:string, :integer, etc.) or nil
         def column_type_for(attribute_name)
           model_class&.type_for_attribute(attribute_name.to_s)&.type
         end
@@ -264,10 +245,6 @@ module Apiwork
             value.is_a?(TrueClass) || (value.is_a?(Proc) && value)
           end
           selected.keys.freeze
-        end
-
-        def name_of_self
-          respond_to?(:name) ? name : to_s
         end
       end
     end

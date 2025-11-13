@@ -41,7 +41,7 @@ RSpec.describe 'API Introspection' do
       expect(json[:metadata]).to be_a(Hash)
       expect(json[:metadata][:title]).to eq('Test API')
       expect(json[:metadata][:version]).to eq('1.0.0')
-      expect(json[:metadata][:description]).to eq('Test API for Apiwork gem')
+      expect(json[:metadata][:description]).to eq('Dummy API for the Apiwork gem')
     end
 
     describe 'resources' do

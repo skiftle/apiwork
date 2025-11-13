@@ -34,9 +34,6 @@ module Apiwork
                      end
       end
 
-      # Convert all errors to StructuredError array
-      #
-      # @return [Array<StructuredError>] Array of structured errors
       def convert
         return [] unless @record.respond_to?(:errors)
 

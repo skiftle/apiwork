@@ -21,12 +21,6 @@ module Apiwork
         @meta = meta
       end
 
-      # Render response for any resource type
-      # Follows same pattern as Query#perform for consistency
-      #
-      # @param resource_or_collection [Object] Resource or collection to render
-      # @param query_params [Hash] Query parameters for auto-querying (filter, sort, page, include)
-      # @return [Hash] Complete response hash (not validated)
       def perform(resource_or_collection, query_params: {})
         if resource_or_collection.is_a?(Enumerable)
           return build_collection_response(resource_or_collection,

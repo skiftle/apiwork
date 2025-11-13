@@ -20,7 +20,8 @@
       "Bash(find:*)",
       "Bash(bundle exec rails runner:*)",
       "Bash(tree:*)",
-      "Bash(git mv:*)"
+      "Bash(git mv:*)",
+      "Bash(python3:*)"
     ],
     "deny": [],
     "ask": []

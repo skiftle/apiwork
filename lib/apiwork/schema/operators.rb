@@ -2,16 +2,6 @@
 
 module Apiwork
   module Schema
-    # Centralized operator definitions for different data types
-    #
-    # This module provides a DRY way to define operators for filtering.
-    # Operators are composed from base sets to avoid duplication.
-    #
-    # @example Using operators in filter validation
-    #   unless STRING_OPERATORS.include?(operator)
-    #     raise ArgumentError, "Invalid operator. Valid: #{STRING_OPERATORS.join(', ')}"
-    #   end
-    #
     module Operators
       # ============================================================
       # BASE OPERATOR SETS
@@ -104,28 +94,10 @@ module Apiwork
         boolean: BOOLEAN_OPERATORS
       }.freeze
 
-      # Get valid operators for a given data type
-      #
-      # @param type [Symbol] The data type
-      # @return [Array<Symbol>] Valid operators for the type
-      #
-      # @example
-      #   Operators.for_type(:string)  # => [:eq, :contains, :starts_with, ...]
-      #   Operators.for_type(:integer) # => [:eq, :gt, :gte, :lt, ...]
-      #
       def self.for_type(type)
         OPERATORS_BY_TYPE[type] || EQUALITY_OPERATORS
       end
 
-      # Check if an operator is valid for a given type
-      #
-      # @param operator [Symbol] The operator to check
-      # @param type [Symbol] The data type
-      # @return [Boolean] True if operator is valid for type
-      #
-      # @example
-      #   Operators.valid?(:contains, :string)  # => true
-      #   Operators.valid?(:contains, :integer) # => false
       def self.valid?(operator, type)
         for_type(type).include?(operator)
       end

@@ -12,11 +12,6 @@ module Apiwork
       @metadata = metadata
     end
 
-    # Find a single resource by name (returns first match)
-    # Searches top-level first, then nested resources
-    #
-    # @param resource_name [Symbol] Resource name to find
-    # @return [Hash, nil] Resource metadata or nil if not found
     def find_resource(resource_name)
       return metadata.resources[resource_name] if metadata.resources[resource_name]
 
@@ -28,11 +23,6 @@ module Apiwork
       nil
     end
 
-    # Find all resources matching a name (including nested)
-    # Useful for finding nested resources with same name at different levels
-    #
-    # @param resource_name [Symbol] Resource name to find
-    # @return [Array<Hash>] Array of matching resource metadata hashes
     def find_all_resources(resource_name)
       results = []
       results << metadata.resources[resource_name] if metadata.resources[resource_name]
@@ -44,16 +34,6 @@ module Apiwork
       results
     end
 
-    # Search for specific data in resources matching a condition
-    # Yields each resource metadata to the block for custom matching
-    #
-    # @yield [resource_metadata] Block that returns truthy value for matches
-    # @return [Object, nil] First truthy result from block or nil
-    #
-    # @example Find HTTP method for an action
-    #   searcher.search_resources do |resource_metadata|
-    #     resource_metadata[:members]&.dig(:publish, :method) if matches_contract?(resource_metadata)
-    #   end
     def search_resources(&block)
       metadata.resources.each_value do |resource_metadata|
         result = search_in_resource_tree(resource_metadata, &block)

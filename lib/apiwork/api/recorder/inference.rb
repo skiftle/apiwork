@@ -40,18 +40,6 @@ module Apiwork
           nil
         end
 
-        # Resolve contract path to full class name (Rails controller-style resolution)
-        # Supports both absolute ('/admin/post') and relative ('admin/post') paths
-        #
-        # @param path [String] Contract path (e.g., 'admin/post' or '/custom/post')
-        # @return [String] Full contract class name
-        #
-        # @example Relative path in Api::V1 namespace
-        #   resolve_contract_path('admin/post') # => 'Api::V1::Admin::PostContract'
-        #
-        # @example Absolute path
-        #   resolve_contract_path('/custom/post') # => 'Custom::PostContract'
-        #
         def resolve_contract_path(path)
           parts = if path.start_with?('/')
                     # Absolute path: '/admin/post' → 'Admin::PostContract'

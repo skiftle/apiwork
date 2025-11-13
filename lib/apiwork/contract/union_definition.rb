@@ -13,13 +13,6 @@ module Apiwork
         @variants = []
       end
 
-      # Define a variant (type alternative) in the union
-      # @param type [Symbol] The type of this variant
-      # @param of [Symbol, nil] For arrays, the type of array items
-      # @param enum [Array, nil] For string/integer types, allowed values
-      # @param tag [String, nil] Tag value for discriminated unions
-      # @param partial [Boolean, nil] For :object types, makes all fields optional (uses Zod's .partial())
-      # @param block [Proc, nil] Block for shape params (for :object or :array of :object)
       def variant(type:, of: nil, enum: nil, tag: nil, partial: nil, &block)
         # Validate tag usage with discriminator
         raise ArgumentError, 'tag can only be used when union has a discriminator' if tag && @discriminator.nil?
@@ -45,8 +38,6 @@ module Apiwork
         @variants << variant_def
       end
 
-      # Serialize the union definition to a data structure
-      # @return [Hash] Serialized union data ready for storage
       def serialize
         serialized_variants = @variants.map do |variant|
           serialized = variant.dup

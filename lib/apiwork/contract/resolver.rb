@@ -11,15 +11,6 @@ module Apiwork
     class Resolver
       extend Concerns::SafeConstantize
 
-      # Main resolve method - called from controller with all context
-      #
-      # @param controller_class [Class] Controller class
-      # @param action_name [Symbol] Action name (:index, :show, :create, :update, :destroy)
-      # @param metadata [Hash, nil] Optional metadata from routing DSL with overrides
-      # @option metadata [Class] :schema_class Schema class (preferred)
-      # @option metadata [String] :contract_class_name Standalone contract class name (fallback)
-      # @return [Contract::Base] Contract instance
-      # @raise [ConfigurationError] If neither schema nor contract found
       def self.call(controller_class:, action_name:, metadata: nil)
         # 1. Try schema first (preferred)
         if (schema_class = metadata&.dig(:schema_class))

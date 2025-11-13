@@ -11,18 +11,6 @@ module Apiwork
     module ActionMetadata
       extend ActiveSupport::Concern
 
-      # Find metadata for the current action from routing DSL
-      #
-      # @return [Hash, nil] Metadata hash with :resource_class_name, :contract_class_name, etc.
-      #
-      # @example
-      #   # In a controller action:
-      #   metadata = find_action_metadata
-      #   if metadata
-      #     resource_class_name = metadata[:resource_class_name]
-      #     contract_class_name = metadata[:contract_class_name]
-      #   end
-      #
       def find_action_metadata
         # Determine API path from controller namespace
         # e.g., Api::V1::ArticlesController -> '/api/v1'

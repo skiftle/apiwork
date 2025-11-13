@@ -7,10 +7,6 @@ module Apiwork
     class ActionDefinition
       attr_reader :action_name, :contract_class, :parent_scope
 
-      # Get the schema class from the contract
-      # Convenience method to avoid Law of Demeter violations
-      #
-      # @return [Class, nil] The schema class or nil if contract has no schema
       def schema_class
         contract_class.schema_class
       end
@@ -40,9 +36,6 @@ module Apiwork
         @reset_output
       end
 
-      # Serialize this action definition to JSON-friendly hash
-      # Includes both input and output definitions
-      # @return [Hash] Hash with :input and :output keys
       def introspect
         result = {}
         result[:input] = merged_input_definition&.as_json
@@ -59,19 +52,6 @@ module Apiwork
         introspect
       end
 
-      # Define action-specific error codes that can be returned
-      # These codes are merged with API-level global error codes
-      #
-      # @param codes [Array<Integer>] HTTP status codes specific to this action
-      #
-      # @example
-      #   action :show do
-      #     error_codes 404, 403  # Not found, forbidden
-      #
-      #     input do
-      #       param :id, type: :integer
-      #     end
-      #   end
       def error_codes(*codes)
         @error_codes = codes.flatten.map(&:to_i)
       end
@@ -124,11 +104,6 @@ module Apiwork
         output_definition
       end
 
-      # Validate complete response structure (like Zod.parse())
-      # Called by Controller after response is fully built
-      # @param response [Hash] Complete response with ok, root key, data, meta
-      # @return [Hash] Validated response
-      # @raise [ValidationError] If output doesn't match definition
       def validate_response(response)
         merged_output = merged_output_definition
 
@@ -141,11 +116,6 @@ module Apiwork
         response
       end
 
-      # Serialize data (base version: no-op, returns data as-is)
-      # @param data [Object] Data to serialize
-      # @param context [Hash] Context for serialization
-      # @param includes [Hash, nil] Includes from query params
-      # @return [Hash, Array] Serialized data
       def serialize_data(data, context: {}, includes: nil)
         data
       end
@@ -184,9 +154,6 @@ module Apiwork
         [:post, :patch, :put].include?(http_method) ? [422] : []
       end
 
-      # Find HTTP method for this action from API metadata
-      # Searches member and collection actions in the resource metadata (recursively for nested resources)
-      # @return [Symbol, nil] HTTP method (:get, :post, :patch, :put, :delete) or nil
       def find_http_method_from_api_metadata
         search_in_api_metadata do |resource_metadata|
           next unless matches_contract?(resource_metadata)
@@ -208,9 +175,6 @@ module Apiwork
         end
       end
 
-      # Search in API metadata with a block
-      # @yield [resource_metadata] Yields each resource for custom matching
-      # @return [Object, nil] Result from block or nil
       def search_in_api_metadata(&block)
         api = find_api_for_contract
         return nil unless api&.metadata
@@ -218,25 +182,14 @@ module Apiwork
         search_in_metadata(api.metadata, &block)
       end
 
-      # Search in metadata hash
-      # @param metadata [Hash] Metadata to search
-      # @yield [resource_metadata] Yields each resource for custom matching
-      # @return [Object, nil] Result from block or nil
       def search_in_metadata(metadata, &block)
         Apiwork::MetadataSearcher.new(metadata).search_resources(&block)
       end
 
-      # Check if a resource matches this action's contract
-      # @param resource_metadata [Hash] Resource metadata to check
-      # @return [Boolean] True if resource uses this contract
       def matches_contract?(resource_metadata)
         resource_uses_contract?(resource_metadata, contract_class)
       end
 
-      # Check if a resource (or its nested resources) uses a specific contract
-      # @param resource_metadata [Hash] Resource metadata to check
-      # @param contract [Class] Contract class to match against
-      # @return [Boolean] True if resource uses the specified contract
       def resource_uses_contract?(resource_metadata, contract)
         matches_explicit_contract?(resource_metadata, contract) ||
           matches_schema_contract?(resource_metadata, contract)

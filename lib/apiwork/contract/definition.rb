@@ -13,8 +13,6 @@ module Apiwork
         @params = {}
       end
 
-      # Serialize this definition to JSON-friendly hash
-      # @return [Hash] Serialized parameter structure
       def introspect
         Serialization.serialize_definition(self)
       end
@@ -137,12 +135,6 @@ module Apiwork
         end
       end
 
-      # Validate data against this definition
-      # @param data [Hash] Data to validate
-      # @param options [Hash] Validation options
-      # @option options [Integer] :max_depth Maximum nesting depth (default: 10)
-      # @option options [Integer] :current_depth Current depth (for recursion)
-      # @option options [Array] :path Current path (for error messages)
       def validate(data, options = {})
         max_depth = options.fetch(:max_depth, 10)
         current_depth = options.fetch(:current_depth, 0)
@@ -728,10 +720,6 @@ module Apiwork
         [nil, value]
       end
 
-      # Resolve enum value - if it's a symbol, resolve from Descriptors::Registry
-      # If it's an array, keep as-is (inline enum)
-      # @param enum [Symbol, Array, nil] Enum reference or inline values
-      # @return [Hash, Array, nil] Resolved enum with metadata or inline values
       def resolve_enum_value(enum)
         return nil if enum.nil?
         return enum if enum.is_a?(Array) # Inline enum - keep as-is
