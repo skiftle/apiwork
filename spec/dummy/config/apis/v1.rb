@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 Apiwork::API.draw '/api/v1' do
-  schema :openapi
+  spec :openapi
+  spec :zod
+  spec :typescript
 
   # Global error codes for all endpoints
   error_codes 400, 500

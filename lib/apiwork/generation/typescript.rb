@@ -8,6 +8,8 @@ module Apiwork
     # Types are sorted alphabetically for consistency and readability.
     # Targets TypeScript 5 by default.
     #
+    # Available at: GET /api/v1/.spec/typescript
+    #
     # @example Generate TypeScript types
     #   generator = Typescript.new('/api/v1')
     #   types = generator.generate

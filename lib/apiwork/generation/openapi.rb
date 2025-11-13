@@ -7,6 +7,8 @@ module Apiwork
     # Generates OpenAPI 3.1 specifications from API introspection data.
     # Uses introspection data directly - all types become components with $ref.
     #
+    # Available at: GET /api/v1/.spec/openapi
+    #
     # @example Generate OpenAPI spec
     #   generator = OpenAPI.new('/api/v1')
     #   spec = generator.generate

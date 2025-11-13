@@ -3,12 +3,12 @@
 module Apiwork
   module API
     class Base
-      extend Configuration   # Adds: configure_from_path, mount_at, schema
+      extend Configuration   # Adds: configure_from_path, mount_at, spec
       extend Documentation   # Adds: doc
       extend Routing         # Adds: resources, resource, concern, with_options
 
       class << self
-        attr_reader :metadata, :recorder, :mount_path, :namespaces_parts, :schemas
+        attr_reader :metadata, :recorder, :mount_path, :namespaces_parts, :specs
 
         # Get controller namespace derived from namespaces parts
         #
