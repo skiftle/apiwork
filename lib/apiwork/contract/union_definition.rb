@@ -18,8 +18,9 @@ module Apiwork
       # @param of [Symbol, nil] For arrays, the type of array items
       # @param enum [Array, nil] For string/integer types, allowed values
       # @param tag [String, nil] Tag value for discriminated unions
+      # @param partial [Boolean, nil] For :object types, makes all fields optional (uses Zod's .partial())
       # @param block [Proc, nil] Block for shape params (for :object or :array of :object)
-      def variant(type:, of: nil, enum: nil, tag: nil, &block)
+      def variant(type:, of: nil, enum: nil, tag: nil, partial: nil, &block)
         # Validate tag usage with discriminator
         raise ArgumentError, 'tag can only be used when union has a discriminator' if tag && @discriminator.nil?
 
@@ -32,6 +33,7 @@ module Apiwork
 
         variant_def[:enum] = enum if enum
         variant_def[:tag] = tag if tag
+        variant_def[:partial] = partial.nil? ? false : partial
 
         # Handle shape block (for :object or :array with :object items)
         if block_given?
