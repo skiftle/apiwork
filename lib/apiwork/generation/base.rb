@@ -53,16 +53,25 @@ module Apiwork
         def file_extension
           raise NotImplementedError, "#{self} must implement .file_extension"
         end
+
+        # Define default options for this generator
+        # Subclasses can override to provide generator-specific defaults
+        #
+        # @return [Hash] Default options hash
+        def default_options
+          {}
+        end
       end
 
       # Initialize generator
       #
       # @param path [String] API mount path
-      # @param options [Hash] Generator options including :key_transform
+      # @param options [Hash] Generator options including :key_transform and :version
       # @option options [Symbol] :key_transform (:none) Key transformation strategy
+      # @option options [String] :version Generator-specific version
       def initialize(path, **options)
         @path = path
-        @options = options
+        @options = self.class.default_options.merge(options)
         @options[:key_transform] ||= :none
         load_data
       end
@@ -89,6 +98,13 @@ module Apiwork
       # @return [Symbol] Key transformation strategy
       def key_transform
         @options[:key_transform]
+      end
+
+      # Get generator version from options
+      #
+      # @return [String, nil] Generator version
+      def version
+        @options[:version]
       end
 
       # Transform key using Transform::Case

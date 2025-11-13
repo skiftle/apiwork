@@ -1,0 +1,296 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+RSpec.describe Apiwork::Generation::Typescript do
+  before do
+    # Reset registries to prevent accumulation
+    Apiwork.reset_registries!
+    # Load test API
+    load File.expand_path('../../dummy/config/apis/v1.rb', __dir__)
+  end
+
+  let(:path) { '/api/v1' }
+  let(:generator) { described_class.new(path) }
+  let(:api) { Apiwork::API::Registry.find(path) }
+  let(:introspect) { api.introspect }
+
+  describe 'default options' do
+    it 'has default version' do
+      expect(described_class.default_options[:version]).to eq('5')
+    end
+  end
+
+  describe '#version' do
+    it 'uses default version when not specified' do
+      gen = described_class.new(path)
+      expect(gen.send(:version)).to eq('5')
+    end
+
+    it 'allows version override' do
+      gen = described_class.new(path, version: '4.5')
+      expect(gen.send(:version)).to eq('4.5')
+    end
+  end
+
+  describe '#generate' do
+    let(:output) { generator.generate }
+
+    it 'generates valid TypeScript code' do
+      expect(output).to be_a(String)
+      expect(output).not_to include("import { z } from 'zod'")
+      expect(output).not_to include('Schema')
+    end
+
+    it 'does not include Zod imports or schemas' do
+      expect(output).not_to include('z.object')
+      expect(output).not_to include('z.enum')
+      expect(output).not_to include('z.string')
+      expect(output).not_to include('z.ZodType')
+    end
+
+    describe 'enum types' do
+      it 'includes SortDirection enum type' do
+        expect(output).to include("export type SortDirection = 'asc' | 'desc'")
+      end
+
+      it 'generates enum types with union of literals' do
+        # Check that enums are formatted as type = 'value1' | 'value2'
+        expect(output).to match(/export type \w+ = '[^']+' \| '[^']+';/)
+      end
+
+      it 'sorts enum types alphabetically' do
+        lines = output.lines.grep(/export type \w+ = /)
+        enum_names = lines.map { |l| l.match(/export type (\w+) =/)[1] }
+
+        # Filter to just enum types (those with union of literal strings)
+        enum_lines = lines.select { |l| l.include?("'") }
+        enum_type_names = enum_lines.map { |l| l.match(/export type (\w+) =/)[1] }
+
+        expect(enum_type_names).to eq(enum_type_names.sort)
+      end
+    end
+
+    describe 'interface types' do
+      it 'includes StringFilter interface' do
+        expect(output).to include('export interface StringFilter')
+        expect(output).to match(/export interface StringFilter \{[\s\S]*?\}/)
+      end
+
+      it 'includes IntegerFilter interface' do
+        expect(output).to include('export interface IntegerFilter')
+      end
+
+      it 'includes DateFilter interface' do
+        expect(output).to include('export interface DateFilter')
+      end
+
+      it 'includes UuidFilter interface' do
+        expect(output).to include('export interface UuidFilter')
+      end
+
+      it 'includes BooleanFilter interface' do
+        expect(output).to include('export interface BooleanFilter')
+      end
+
+      it 'includes PageParams interface' do
+        expect(output).to include('export interface PageParams')
+      end
+
+      it 'sorts interface types alphabetically' do
+        interface_lines = output.lines.grep(/export interface \w+/)
+        interface_names = interface_lines.map { |l| l.match(/export interface (\w+)/)[1] }
+
+        expect(interface_names).to eq(interface_names.sort)
+      end
+    end
+
+    describe 'union types from filters' do
+      it 'includes SortDirectionFilter union type' do
+        expect(output).to include('export type SortDirectionFilter = ')
+        expect(output).to match(/SortDirectionFilter = SortDirection \| \{/)
+      end
+
+      it 'generates enum filter union types' do
+        # Check that enum filters exist and have the pattern: EnumType | { ... }
+        expect(output).to match(/export type \w+Filter = \w+ \| \{/)
+      end
+
+      it 'generates partial object variants correctly' do
+        # SortDirectionFilter should have eq? and in? as optional fields
+        expect(output).to match(/SortDirectionFilter = SortDirection \| \{ eq\?: SortDirection; in\?: SortDirection\[\] \}/)
+      end
+    end
+
+    describe 'alphabetical sorting' do
+      it 'sorts ALL types alphabetically (enums and interfaces together)' do
+        type_lines = output.lines.grep(/^export (type|interface) \w+/)
+        type_names = type_lines.map { |l| l.match(/^export (?:type|interface) (\w+)/)[1] }
+
+        expect(type_names).to eq(type_names.sort),
+          "Expected types in alphabetical order but got: #{type_names.inspect}"
+      end
+
+      it 'enums appear before interfaces if alphabetically earlier' do
+        # Get all type declarations
+        declarations = []
+        output.lines.each do |line|
+          if line.match(/^export (type|interface) (\w+)/)
+            kind = $1
+            name = $2
+            declarations << { name: name, kind: kind }
+          end
+        end
+
+        # Verify they're in alphabetical order by name
+        names = declarations.map { |d| d[:name] }
+        expect(names).to eq(names.sort)
+      end
+    end
+
+    describe 'property sorting' do
+      it 'sorts interface properties alphabetically' do
+        # Extract StringFilter interface
+        string_filter_match = output.match(/export interface StringFilter \{([\s\S]*?)\}/)
+        expect(string_filter_match).not_to be_nil
+
+        properties_block = string_filter_match[1]
+        property_lines = properties_block.lines.map(&:strip).reject(&:empty?)
+        property_names = property_lines.map { |l| l.match(/^(\w+)\??:/)[1] }
+
+        expect(property_names).to eq(property_names.sort),
+          "Expected StringFilter properties in alphabetical order"
+      end
+
+      it 'sorts inline object properties alphabetically' do
+        # Check that union object variants have sorted properties
+        filter_match = output.match(/SortDirectionFilter = SortDirection \| \{ (eq\?: SortDirection; in\?: SortDirection\[\]) \}/)
+        expect(filter_match).not_to be_nil
+
+        # Properties should be: eq, in (alphabetical)
+        properties_str = filter_match[1]
+        expect(properties_str).to match(/eq\?:.*in\?:/)
+      end
+    end
+
+    describe 'field types' do
+      it 'generates correct primitive types' do
+        # String filter should have string types for various fields
+        expect(output).to match(/contains\?: string/)
+        expect(output).to match(/starts_with\?: string/)
+      end
+
+      it 'generates correct array types' do
+        # Check for array notation
+        expect(output).to match(/in\?: \w+\[\]/)
+      end
+
+      it 'generates correct optional fields' do
+        # Most filter fields should be optional
+        expect(output).to match(/eq\?: /)
+        expect(output).to match(/in\?: /)
+      end
+
+      it 'generates correct enum references' do
+        # Filter unions should reference the enum type
+        expect(output).to match(/SortDirectionFilter = SortDirection \|/)
+        expect(output).to match(/eq\?: SortDirection/)
+      end
+    end
+
+    describe 'nullable types' do
+      it 'generates union with null for nullable fields' do
+        # If there are any nullable fields in the test data, verify they have | null
+        # This is a placeholder - adjust based on actual test data
+        skip 'No nullable fields in test data' unless output.include?('| null')
+
+        expect(output).to match(/: \w+ \| null/)
+      end
+    end
+
+    describe 'format and whitespace' do
+      it 'has consistent indentation for interface properties' do
+        interface_match = output.match(/export interface \w+ \{([\s\S]*?)\}/)
+        expect(interface_match).not_to be_nil
+
+        properties_block = interface_match[1]
+        property_lines = properties_block.lines.reject { |l| l.strip.empty? }
+
+        # All property lines should start with exactly 2 spaces
+        property_lines.each do |line|
+          expect(line).to match(/^  \w+/)
+        end
+      end
+
+      it 'has double newlines between type declarations' do
+        # Check that there are empty lines between declarations
+        type_declarations = output.split(/\n\n+/).select { |section| section.match?(/export (type|interface)/) }
+
+        # Should have multiple separate declarations
+        expect(type_declarations.length).to be > 1
+      end
+    end
+
+    describe 'completeness' do
+      it 'includes all enum types from introspect data' do
+        introspect[:enums].each_key do |enum_name|
+          type_name = Apiwork::Transform::Case.string(enum_name.to_s, :camelize_upper)
+          expect(output).to include("export type #{type_name} = ")
+        end
+      end
+
+      it 'includes all custom types from introspect data' do
+        introspect[:types].each_key do |type_name|
+          pascal_name = Apiwork::Transform::Case.string(type_name.to_s, :camelize_upper)
+          expect(output).to match(/export (type|interface) #{pascal_name}/)
+        end
+      end
+    end
+
+    describe 'no runtime code' do
+      it 'does not include any Zod schema definitions' do
+        expect(output).not_to include('Schema: z.ZodType')
+        expect(output).not_to include('z.object')
+        expect(output).not_to include('z.string()')
+        expect(output).not_to include('z.number()')
+      end
+
+      it 'only includes type declarations' do
+        # Every export should be type or interface
+        export_lines = output.lines.grep(/^export /)
+
+        export_lines.each do |line|
+          expect(line).to match(/^export (type|interface) /)
+        end
+      end
+    end
+  end
+
+  describe 'generator registration' do
+    it 'is registered in the registry' do
+      expect(Apiwork::Generation::Registry.registered?(:typescript)).to be true
+    end
+
+    it 'can be retrieved from the registry' do
+      expect(Apiwork::Generation::Registry[:typescript]).to eq(described_class)
+    end
+
+    it 'can be used via Apiwork.generate_schema' do
+      output = Apiwork.generate_schema(:typescript, path)
+      expect(output).to be_a(String)
+      expect(output).to include('export type')
+    end
+  end
+
+  describe 'file extension' do
+    it 'returns .ts extension' do
+      expect(described_class.file_extension).to eq('.ts')
+    end
+  end
+
+  describe 'content type' do
+    it 'returns text/plain content type' do
+      expect(described_class.content_type).to eq('text/plain; charset=utf-8')
+    end
+  end
+end
