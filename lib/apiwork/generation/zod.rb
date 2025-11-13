@@ -77,26 +77,13 @@ module Apiwork
       def build_enum_schemas
         return '' if enums.empty?
 
-        enum_value_schemas = enums.map do |enum_name, enum_values|
+        # Enum filter schemas are now auto-generated as union types in introspect[:types]
+        # No need for manual generation here
+        enums.map do |enum_name, enum_values|
           schema_name = zod_type_name(enum_name)
           values_str = enum_values.map { |v| "'#{v}'" }.join(', ')
           "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.enum([#{values_str}]);"
         end.join("\n")
-
-        enum_filter_schemas = enums.map do |enum_name, _enum_values|
-          schema_name = zod_type_name(enum_name)
-          <<~TYPESCRIPT.strip
-            export const #{schema_name}FilterSchema: z.ZodType<#{schema_name}Filter> = z.union([
-              #{schema_name}Schema,
-              z.object({
-                #{transform_key('eq')}: #{schema_name}Schema.optional(),
-                in: z.array(#{schema_name}Schema).optional()
-              })
-            ]);
-          TYPESCRIPT
-        end.join("\n\n")
-
-        [enum_value_schemas, enum_filter_schemas].reject(&:empty?).join("\n\n")
       end
 
       # Build TypeScript enum types from introspect data
@@ -104,26 +91,13 @@ module Apiwork
         return '' if enums.empty?
 
         # Generate TypeScript union types for enums
-        enum_types = enums.map do |enum_name, enum_values|
+        # Enum filter types are now auto-generated as union types in introspect[:types]
+        enums.map do |enum_name, enum_values|
           type_name = zod_type_name(enum_name)
           # Create a union of literal types
           values_str = enum_values.map { |v| "'#{v}'" }.join(' | ')
           "export type #{type_name} = #{values_str};"
         end.join("\n")
-
-        # Generate TypeScript types for enum filters
-        enum_filter_types = enums.map do |enum_name, _enum_values|
-          type_name = zod_type_name(enum_name)
-          eq_key = transform_key('eq')
-          <<~TYPESCRIPT.strip
-            export type #{type_name}Filter = #{type_name} | {
-              #{eq_key}?: #{type_name};
-              in?: #{type_name}[];
-            };
-          TYPESCRIPT
-        end.join("\n\n")
-
-        [enum_types, enum_filter_types].reject(&:empty?).join("\n\n")
       end
 
       # Build schemas for all types from introspect
@@ -133,11 +107,15 @@ module Apiwork
 
         # Generate schemas for all types
         schemas = sorted_types.map do |type_name, type_shape|
-          # Detect if this is an update payload type
-          action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
-          # Detect circular references on-demand for this type
-          recursive = detect_circular_references(type_name, type_shape)
-          build_object_schema(type_name, type_shape, action_name, recursive: recursive)
+          # Check if this is a union type (has :type => :union at root level)
+          if type_shape.is_a?(Hash) && type_shape[:type] == :union
+            build_union_schema(type_name, type_shape)
+          else
+            # Regular object type
+            action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
+            recursive = detect_circular_references(type_name, type_shape)
+            build_object_schema(type_name, type_shape, action_name, recursive: recursive)
+          end
         end
 
         schemas.join("\n\n")
@@ -271,6 +249,19 @@ module Apiwork
         end
       end
 
+      # Build Zod union schema from union type shape
+      def build_union_schema(type_name, type_shape)
+        schema_name = zod_type_name(type_name)
+        variants = type_shape[:variants]
+
+        # Map each variant to its Zod schema representation
+        variant_schemas = variants.map { |variant| map_type_definition(variant, nil) }
+
+        # Format with line breaks for readability
+        variants_str = variant_schemas.map { |v| "  #{v}" }.join(",\n")
+        "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.union([\n#{variants_str}\n]);"
+      end
+
       # Map field definition to Zod type
       def map_field_definition(definition, action_name = nil)
         return 'z.string()' unless definition.is_a?(Hash)
@@ -314,11 +305,16 @@ module Apiwork
         when :literal
           map_literal_type(definition)
         else
-          # Primitive or custom type reference
+          # Check if this is a custom type reference (in types) or enum reference
           if types.key?(type)
             schema_name = zod_type_name(type)
             "#{schema_name}Schema"
+          elsif enums.key?(type)
+            # Enum reference - use the enum schema
+            schema_name = zod_type_name(type)
+            "#{schema_name}Schema"
           else
+            # Primitive type
             map_primitive(type)
           end
         end
@@ -342,7 +338,7 @@ module Apiwork
         items_type = definition[:of]
         return 'z.array(z.string())' unless items_type
 
-        if items_type.is_a?(Symbol) && types.key?(items_type)
+        if items_type.is_a?(Symbol) && (types.key?(items_type) || enums.key?(items_type))
           schema_name = zod_type_name(items_type)
           "z.array(#{schema_name}Schema)"
         elsif items_type.is_a?(Hash)
@@ -399,10 +395,14 @@ module Apiwork
 
         # Generate TypeScript type/interface declarations
         type_declarations = sorted_types.map do |type_name, type_shape|
-          action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
-          # Detect circular references on-demand for this type
-          recursive = detect_circular_references(type_name, type_shape)
-          build_typescript_type(type_name, type_shape, action_name, recursive: recursive)
+          # Check if this is a union type
+          if type_shape.is_a?(Hash) && type_shape[:type] == :union
+            build_typescript_union_type(type_name, type_shape)
+          else
+            action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
+            recursive = detect_circular_references(type_name, type_shape)
+            build_typescript_type(type_name, type_shape, action_name, recursive: recursive)
+          end
         end
 
         type_declarations.join("\n\n")
@@ -424,6 +424,18 @@ module Apiwork
 
         # Always use interface for consistency
         "export interface #{type_name_pascal} {\n#{properties}\n}"
+      end
+
+      # Build TypeScript union type declaration
+      def build_typescript_union_type(type_name, type_shape)
+        type_name_pascal = zod_type_name(type_name)
+        variants = type_shape[:variants]
+
+        # Map each variant to its TypeScript type representation
+        variant_types = variants.map { |variant| map_typescript_type_definition(variant, nil) }
+
+        # Use type alias for unions (not interface)
+        "export type #{type_name_pascal} = #{variant_types.join(' | ')};"
       end
 
       # Map field definition to TypeScript type syntax
@@ -491,10 +503,14 @@ module Apiwork
         when :literal
           map_typescript_literal_type(definition)
         else
-          # Primitive or custom type reference
+          # Check if this is a custom type reference (in types) or enum reference
           if types.key?(type)
             zod_type_name(type)
+          elsif enums.key?(type)
+            # Enum reference - use the enum type name
+            zod_type_name(type)
           else
+            # Primitive type
             map_typescript_primitive(type)
           end
         end
@@ -518,7 +534,7 @@ module Apiwork
         items_type = definition[:of]
         return 'string[]' unless items_type
 
-        element_type = if items_type.is_a?(Symbol) && types.key?(items_type)
+        element_type = if items_type.is_a?(Symbol) && (types.key?(items_type) || enums.key?(items_type))
                          zod_type_name(items_type)
                        elsif items_type.is_a?(Hash)
                          map_typescript_type_definition(items_type, action_name)
