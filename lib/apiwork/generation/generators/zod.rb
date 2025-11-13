@@ -3,22 +3,6 @@
 module Apiwork
   module Generation
     module Generators
-      # Zod schema generator using API introspection
-      #
-      # Generates TypeScript Zod schemas from API introspection data.
-      # Uses contract-based type system instead of schema introspection.
-      # Targets Zod 4 by default.
-      #
-      # Available at: GET /api/v1/.spec/zod
-      #
-      # @example Generate Zod schemas
-      #   generator = Zod.new('/api/v1')
-      #   schemas = generator.generate
-      #   File.write('schemas.ts', schemas)
-      #
-      # @example Target specific Zod version
-      #   generator = Zod.new('/api/v1', version: '3')
-      #   schemas = generator.generate
       class Zod < Base
         generator_name :zod
         content_type 'text/plain; charset=utf-8'
@@ -38,9 +22,6 @@ module Apiwork
           validate_version!
         end
 
-        # Generate complete TypeScript document with Zod schemas
-        #
-        # @return [String] TypeScript document content
         def generate
           parts = []
 
@@ -75,7 +56,6 @@ module Apiwork
 
         private
 
-        # Map contract type to Zod type
         TYPE_MAP = {
           string: 'z.string()',
           text: 'z.string()',
@@ -92,7 +72,6 @@ module Apiwork
           binary: 'z.string()'
         }.freeze
 
-        # Build enum schemas from introspect data
         def build_enum_schemas
           return '' if enums.empty?
 
@@ -105,7 +84,6 @@ module Apiwork
           end.join("\n")
         end
 
-        # Build TypeScript enum types from introspect data
         def build_typescript_enum_types
           return '' if enums.empty?
 
@@ -119,14 +97,12 @@ module Apiwork
           end.join("\n")
         end
 
-        # Build schemas for all types from introspect
         def build_type_schemas
           # Sort ALL types in topological order to avoid forward references
           sorted_types = topological_sort_types(types)
 
           # Generate schemas for all types
           schemas = sorted_types.map do |type_name, type_shape|
-            # Check if this is a union type (has :type => :union at root level)
             if type_shape.is_a?(Hash) && type_shape[:type] == :union
               build_union_schema(type_name, type_shape)
             else
@@ -143,12 +119,9 @@ module Apiwork
         # Sort types in topological order to avoid forward references
         # Types that don't depend on other types come first
         def topological_sort_types(all_types)
-          # Build reverse dependency graph (who depends on me)
-          # If A depends on B, we store B -> [A] so B comes before A
           reverse_deps = Hash.new { |h, k| h[k] = [] }
 
           all_types.each do |type_name, type_shape|
-            # Extract type references from this type
             referenced_types = extract_type_references(type_shape, filter: all_types.keys)
 
             referenced_types.each do |ref|
@@ -181,9 +154,6 @@ module Apiwork
             end
           end
 
-          # If sorted.size != all_types.size, there's a cycle
-          # Keep successfully sorted types, append unsorted (circular) types at end
-          # Circular types will use z.lazy() which supports forward references
           if sorted.size != all_types.size
             unsorted_types = all_types.keys - sorted
             (sorted + unsorted_types).map { |type_name| [type_name, all_types[type_name]] }
@@ -192,14 +162,6 @@ module Apiwork
           end
         end
 
-        # Extract references to other types from a type definition
-        # Unified method that handles both topological sorting and circular reference detection
-        #
-        # @param definition [Hash] Type definition (params hash)
-        # @param filter [Symbol, Array] Filter strategy:
-        #   - :custom_only - Only custom types (excludes primitives)
-        #   - Array - Only types in the provided list
-        # @return [Array<Symbol>] Array of referenced type names
         def extract_type_references(definition, filter: :custom_only)
           referenced_types = []
 
@@ -240,7 +202,6 @@ module Apiwork
           type_sym = type_ref.is_a?(String) ? type_ref.to_sym : type_ref
           return unless type_sym.is_a?(Symbol)
 
-          # Apply filter
           case filter
           when :custom_only
             collection << type_sym unless primitive_type?(type_sym)
@@ -249,7 +210,6 @@ module Apiwork
           end
         end
 
-        # Build Zod object schema from type shape
         def build_object_schema(type_name, type_shape, action_name = nil, recursive: false)
           schema_name = zod_type_name(type_name)
 
@@ -268,12 +228,10 @@ module Apiwork
           end
         end
 
-        # Build Zod union schema from union type shape
         def build_union_schema(type_name, type_shape)
           schema_name = zod_type_name(type_name)
           variants = type_shape[:variants]
 
-          # Map each variant to its Zod schema representation
           variant_schemas = variants.map { |variant| map_type_definition(variant, nil) }
 
           # Format with line breaks for readability
@@ -281,21 +239,17 @@ module Apiwork
           "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.union([\n#{variants_str}\n]);"
         end
 
-        # Map field definition to Zod type
         def map_field_definition(definition, action_name = nil)
           return 'z.string()' unless definition.is_a?(Hash)
 
-          # Handle custom type references
           if definition[:type].is_a?(Symbol) && types.key?(definition[:type])
             schema_name = zod_type_name(definition[:type])
             type = "#{schema_name}Schema"
             return apply_modifiers(type, definition, action_name)
           end
 
-          # Map inline type
           type = map_type_definition(definition, action_name)
 
-          # Handle enum
           if definition[:enum]
             enum_ref = resolve_enum(definition[:enum])
             if enum_ref.is_a?(Symbol) && enums.key?(enum_ref)
@@ -310,7 +264,6 @@ module Apiwork
           apply_modifiers(type, definition, action_name)
         end
 
-        # Map type definition to Zod schema
         def map_type_definition(definition, action_name = nil)
           type = definition[:type]
 
@@ -324,21 +277,17 @@ module Apiwork
           when :literal
             map_literal_type(definition)
           else
-            # Check if this is a custom type reference (in types) or enum reference
             enum_or_type_reference?(type) ? schema_reference(type) : map_primitive(type)
           end
         end
 
-        # Map object type to Zod schema (inline)
         def map_object_type(definition, action_name = nil)
           return 'z.object({})' unless definition[:shape]
 
-          # Check if this is a partial object (all fields optional)
           is_partial = definition[:partial] == true
 
           properties = definition[:shape].sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
             key = transform_key(property_name)
-            # For partial objects, don't add .optional() modifiers - let .partial() handle it
             zod_type = if is_partial
                          map_field_definition(property_def.merge(required: true), nil)
                        else
@@ -351,7 +300,6 @@ module Apiwork
           is_partial ? "#{base_object}.partial()" : base_object
         end
 
-        # Map array type to Zod schema
         def map_array_type(definition, action_name = nil)
           items_type = definition[:of]
           return 'z.array(z.string())' unless items_type
@@ -367,7 +315,6 @@ module Apiwork
           end
         end
 
-        # Map union type to Zod union
         def map_union_type(definition, action_name = nil)
           if definition[:discriminator]
             map_discriminated_union(definition, action_name)
@@ -377,18 +324,15 @@ module Apiwork
           end
         end
 
-        # Map discriminated union to Zod discriminatedUnion
         def map_discriminated_union(definition, action_name = nil)
           discriminator_field = transform_key(definition[:discriminator])
           variants = definition[:variants]
 
-          # Build array of variant schemas
           variant_schemas = variants.map { |variant| map_type_definition(variant, action_name) }
 
           "z.discriminatedUnion('#{discriminator_field}', [#{variant_schemas.join(', ')}])"
         end
 
-        # Map literal type to Zod literal
         def map_literal_type(definition)
           value = definition[:value]
           case value
@@ -405,14 +349,12 @@ module Apiwork
           end
         end
 
-        # Build TypeScript type declarations for all types
         def build_typescript_types
           # Sort ALL types in topological order
           sorted_types = topological_sort_types(types)
 
           # Generate TypeScript type/interface declarations
           type_declarations = sorted_types.map do |type_name, type_shape|
-            # Check if this is a union type
             if type_shape.is_a?(Hash) && type_shape[:type] == :union
               build_typescript_union_type(type_name, type_shape)
             else
@@ -425,7 +367,6 @@ module Apiwork
           type_declarations.join("\n\n")
         end
 
-        # Build TypeScript type declaration
         def build_typescript_type(type_name, type_shape, action_name = nil, recursive: false)
           type_name_pascal = zod_type_name(type_name)
 
@@ -443,32 +384,27 @@ module Apiwork
           "export interface #{type_name_pascal} {\n#{properties}\n}"
         end
 
-        # Build TypeScript union type declaration
         def build_typescript_union_type(type_name, type_shape)
           type_name_pascal = zod_type_name(type_name)
           variants = type_shape[:variants]
 
-          # Map each variant to its TypeScript type representation
           variant_types = variants.map { |variant| map_typescript_type_definition(variant, nil) }
 
           # Use type alias for unions (not interface)
           "export type #{type_name_pascal} = #{variant_types.join(' | ')};"
         end
 
-        # Map field definition to TypeScript type syntax
         def map_typescript_field(definition, action_name = nil)
           return 'string' unless definition.is_a?(Hash)
 
           is_nullable = definition[:nullable]
 
-          # Handle custom type or enum references
           base_type = if definition[:type].is_a?(Symbol) && enum_or_type_reference?(definition[:type])
                         typescript_reference(definition[:type])
                       else
                         map_typescript_type_definition(definition, action_name)
                       end
 
-          # Handle enum
           if definition[:enum]
             enum_ref = resolve_enum(definition[:enum])
             if enum_ref.is_a?(Symbol) && enums.key?(enum_ref)
@@ -478,27 +414,16 @@ module Apiwork
             end
           end
 
-          # Apply nullable (add | null to the type)
           base_type = "#{base_type} | null" if is_nullable
 
           base_type
         end
 
-        # Detect if a type has direct circular references (references itself)
-        # Used to determine if z.lazy() is needed for the Zod schema
-        #
-        # @param type_name [Symbol] The name of the type being checked
-        # @param type_def [Hash] The type definition (params hash)
-        # @return [Boolean] true if type directly references itself
         def detect_circular_references(type_name, type_def)
           referenced_types = extract_type_references(type_def, filter: :custom_only)
           referenced_types.include?(type_name)
         end
 
-        # Check if a type is a primitive/built-in type (not a custom type reference)
-        #
-        # @param type [Symbol] Type name to check
-        # @return [Boolean] true if type is a primitive
         def primitive_type?(type)
           %i[
             string integer boolean datetime date uuid object array
@@ -506,7 +431,6 @@ module Apiwork
           ].include?(type)
         end
 
-        # Map type definition to TypeScript type syntax
         def map_typescript_type_definition(definition, action_name = nil)
           type = definition[:type]
 
@@ -520,22 +444,18 @@ module Apiwork
           when :literal
             map_typescript_literal_type(definition)
           else
-            # Check if this is a custom type reference (in types) or enum reference
             enum_or_type_reference?(type) ? typescript_reference(type) : map_typescript_primitive(type)
           end
         end
 
-        # Map object type to TypeScript syntax (inline)
         def map_typescript_object_type(definition, action_name = nil)
           return '{}' unless definition[:shape]
 
-          # Check if this is a partial object (all fields optional)
           is_partial = definition[:partial] == true
 
           properties = definition[:shape].sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
             key = transform_key(property_name)
             ts_type = map_typescript_field(property_def, action_name)
-            # For partial objects, all fields are optional regardless of required flag
             is_optional = is_partial || !property_def[:required]
             optional_marker = is_optional ? '?' : ''
             "#{key}#{optional_marker}: #{ts_type}"
@@ -544,7 +464,6 @@ module Apiwork
           "{ #{properties} }"
         end
 
-        # Map array type to TypeScript syntax
         def map_typescript_array_type(definition, action_name = nil)
           items_type = definition[:of]
           return 'string[]' unless items_type
@@ -558,7 +477,6 @@ module Apiwork
                          end
 
           # Use bracket notation for arrays
-          # For complex types (unions, intersections), wrap in parentheses
           if element_type.include?(' | ') || element_type.include?(' & ')
             "(#{element_type})[]"
           else
@@ -566,7 +484,6 @@ module Apiwork
           end
         end
 
-        # Map union type to TypeScript union syntax
         def map_typescript_union_type(definition, action_name = nil)
           variants = definition[:variants].map do |variant|
             map_typescript_type_definition(variant, action_name)
@@ -574,7 +491,6 @@ module Apiwork
           variants.join(' | ')
         end
 
-        # Map literal type to TypeScript literal syntax
         def map_typescript_literal_type(definition)
           value = definition[:value]
           case value
@@ -591,7 +507,6 @@ module Apiwork
           end
         end
 
-        # Map primitive type to TypeScript primitive
         def map_typescript_primitive(type)
           case type.to_sym
           when :string, :text, :uuid, :date, :datetime, :time, :binary
@@ -607,34 +522,27 @@ module Apiwork
           end
         end
 
-        # Map primitive type to Zod type
         def map_primitive(type)
           TYPE_MAP[type.to_sym] || 'z.string()'
         end
 
-        # Check if a symbol is a custom type or enum reference
         def enum_or_type_reference?(symbol)
           types.key?(symbol) || enums.key?(symbol)
         end
 
-        # Get the schema reference name for a custom type or enum
         def schema_reference(symbol)
           "#{zod_type_name(symbol)}Schema"
         end
 
-        # Get the TypeScript type name for a custom type or enum
         def typescript_reference(symbol)
           zod_type_name(symbol)
         end
 
-        # Apply nullable and optional modifiers
         def apply_modifiers(type, definition, action_name)
           is_update = action_name.to_s == 'update'
 
-          # Add nullable if specified
           type += '.nullable()' if definition[:nullable]
 
-          # Add optional based on context
           if is_update
             # Update actions: all fields optional
             type += '.optional()' unless type.include?('.optional()')
@@ -646,13 +554,11 @@ module Apiwork
           type
         end
 
-        # Convert type name to Zod schema name (PascalCase)
         def zod_type_name(name)
           # Use transform_key with :camelize to get PascalCase
           Transform::Case.string(name, :camelize_upper)
         end
 
-        # Resolve enum reference
         def resolve_enum(enum_ref)
           enum_ref
         end

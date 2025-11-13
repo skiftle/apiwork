@@ -2,17 +2,9 @@
 
 module Apiwork
   module Generation
-    # Shared options parsing and validation for schema generation
-    #
-    # Used by both controller (HTTP params) and Schema.write (ENV vars)
     class Options
       VALID_KEY_TRANSFORMS = %i[camelize_lower camelize_upper underscore dasherize none].freeze
 
-      # Build options hash from raw values
-      #
-      # @param key_transform [String, Symbol, nil] Key transform option
-      # @param version [String, nil] Generator version option
-      # @return [Hash] Validated options hash with symbolized keys
       def self.build(key_transform: nil, version: nil, **_ignored)
         {
           key_transform: parse_key_transform(key_transform),
@@ -20,11 +12,6 @@ module Apiwork
         }.compact
       end
 
-      # Parse and validate key_transform value
-      #
-      # @param value [String, Symbol, nil] Raw key transform value
-      # @return [Symbol, nil] Validated key transform or nil
-      # @raise [ArgumentError] if value is invalid
       def self.parse_key_transform(value)
         return nil if value.blank?
 
