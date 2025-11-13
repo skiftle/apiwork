@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 namespace :apiwork do
-  namespace :schema do
-    desc 'Write schemas to files'
+  namespace :spec do
+    desc 'Write specs to files'
     task write: :environment do
       # Load API definitions
       Dir[Rails.root.join('config/apis/**/*.rb')].sort.each { |f| load f }
@@ -15,13 +15,13 @@ namespace :apiwork do
       unless output
         puts 'Error: OUTPUT required'
         puts ''
-        puts 'Usage: rake apiwork:schema:write OUTPUT=path [API_PATH=/api/v1] [FORMAT=openapi] [KEY_TRANSFORM=underscore]'
+        puts 'Usage: rake apiwork:spec:write OUTPUT=path [API_PATH=/api/v1] [FORMAT=openapi] [KEY_TRANSFORM=underscore]'
         puts ''
         puts 'Examples:'
-        puts '  rake apiwork:schema:write OUTPUT=public/schemas'
-        puts '  rake apiwork:schema:write API_PATH=/api/v1 OUTPUT=public/schemas'
-        puts '  rake apiwork:schema:write API_PATH=/api/v1 FORMAT=openapi OUTPUT=public/openapi.json'
-        puts '  rake apiwork:schema:write FORMAT=transport KEY_TRANSFORM=underscore OUTPUT=public/schemas'
+        puts '  rake apiwork:spec:write OUTPUT=public/specs'
+        puts '  rake apiwork:spec:write API_PATH=/api/v1 OUTPUT=public/specs'
+        puts '  rake apiwork:spec:write API_PATH=/api/v1 FORMAT=openapi OUTPUT=public/openapi.json'
+        puts '  rake apiwork:spec:write FORMAT=zod KEY_TRANSFORM=camelize_lower OUTPUT=public/specs'
         puts ''
         puts 'Available formats:'
         puts "  #{Apiwork::Generation::Registry.all.join(', ')}"
@@ -32,7 +32,7 @@ namespace :apiwork do
       end
 
       begin
-        Apiwork::Generation::Schema.write(
+        Apiwork::Generation::Spec.write(
           api_path: api_path,
           output: output,
           format: format,
@@ -48,23 +48,23 @@ namespace :apiwork do
       end
     end
 
-    desc 'Clean generated schema files'
+    desc 'Clean generated spec files'
     task clean: :environment do
       output = ENV['OUTPUT']
 
       unless output
         puts 'Error: OUTPUT required'
         puts ''
-        puts 'Usage: rake apiwork:schema:clean OUTPUT=path'
+        puts 'Usage: rake apiwork:spec:clean OUTPUT=path'
         puts ''
         puts 'Examples:'
-        puts '  rake apiwork:schema:clean OUTPUT=public/schemas'
-        puts '  rake apiwork:schema:clean OUTPUT=public/openapi.json'
+        puts '  rake apiwork:spec:clean OUTPUT=public/specs'
+        puts '  rake apiwork:spec:clean OUTPUT=public/openapi.json'
         exit 1
       end
 
       begin
-        Apiwork::Generation::Schema.clean(output: output)
+        Apiwork::Generation::Spec.clean(output: output)
       rescue ArgumentError => e
         puts "Error: #{e.message}"
         exit 1

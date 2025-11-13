@@ -18,7 +18,9 @@
       "Bash(ruby:*)",
       "Bash(bundle exec ruby:*)",
       "Bash(find:*)",
-      "Bash(bundle exec rails runner:*)"
+      "Bash(bundle exec rails runner:*)",
+      "Bash(tree:*)",
+      "Bash(git mv:*)"
     ],
     "deny": [],
     "ask": []

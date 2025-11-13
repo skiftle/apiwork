@@ -2,31 +2,31 @@
 
 module Apiwork
   module Generation
-    # Unified schema generation
+    # Unified spec generation
     #
     # Provides two interfaces:
-    # 1. generate() - Pure function, returns schema content
+    # 1. generate() - Pure function, returns spec content
     # 2. write()    - Side effects, writes to files
     #
-    # @example Generate schema (pure)
-    #   schema = Apiwork::Generation::Schema.generate(
+    # @example Generate spec (pure)
+    #   spec = Apiwork::Generation::Spec.generate(
     #     api_path: '/api/v1',
     #     format: :openapi,
     #     key_transform: :underscore
     #   )
     #
-    # @example Write schemas to files
-    #   Apiwork::Generation::Schema.write(
-    #     output: 'public/schemas',
+    # @example Write specs to files
+    #   Apiwork::Generation::Spec.write(
+    #     output: 'public/specs',
     #     key_transform: :underscore
     #   )
-    class Schema
-      # Generate schema content
+    class Spec
+      # Generate spec content
       #
       # @param api_path [String] API path (e.g., '/api/v1')
-      # @param format [Symbol] Schema format (:openapi, :transport, :zod)
-      # @param options [Hash] Generator options (key_transform, builders)
-      # @return [String, Hash] Generated schema content
+      # @param format [Symbol] Spec format (:openapi, :zod, :typescript)
+      # @param options [Hash] Generator options (key_transform, version)
+      # @return [String, Hash] Generated spec content
       # @raise [Registry::GeneratorNotFound] if format not registered
       # @raise [ArgumentError] if options invalid
       def self.generate(api_path:, format:, **options)
@@ -36,17 +36,17 @@ module Apiwork
         # Lookup generator
         generator_class = Registry[format]
 
-        # Generate schema
+        # Generate spec
         generator_class.generate(path: api_path, **opts)
       end
 
-      # Write schemas to files
+      # Write specs to files
       #
       # @param api_path [String, nil] Specific API or nil for all
       # @param output [String] Output path (file or directory)
       # @param format [Symbol, nil] Specific format or nil for all
       # @param options [Hash] Generator options
-      # @return [Integer] Number of schemas generated
+      # @return [Integer] Number of specs generated
       # @raise [ArgumentError] if output missing or invalid combination
       def self.write(output:, api_path: nil, format: nil, **options)
         raise ArgumentError, 'output path required' unless output
@@ -62,11 +62,11 @@ module Apiwork
         start_time = Time.zone.now
         count = 0
 
-        Rails.logger.debug 'Generating schemas...'
+        Rails.logger.debug 'Generating specs...'
 
         apis.each do |api_class|
           formats.each do |fmt|
-            count += write_schema(
+            count += write_spec(
               api_class: api_class,
               format: fmt,
               output: output,
@@ -76,7 +76,7 @@ module Apiwork
         end
 
         elapsed = Time.zone.now - start_time
-        Rails.logger.debug "\nGenerated #{count} schema#{count == 1 ? '' : 's'} in #{elapsed.round(2)}s"
+        Rails.logger.debug "\nGenerated #{count} spec#{count == 1 ? '' : 's'} in #{elapsed.round(2)}s"
 
         count
       end
@@ -119,18 +119,18 @@ module Apiwork
       end
       private_class_method :find_all_apis
 
-      # Write a single schema
+      # Write a single spec
       #
       # @param api_class [Class] API class
       # @param format [Symbol] Format name
       # @param output [String] Output path
       # @param options [Hash] Generator options
       # @return [Integer] 1 if generated, 0 if skipped
-      def self.write_schema(api_class:, format:, output:, options:)
+      def self.write_spec(api_class:, format:, output:, options:)
         api_path = api_class.metadata.path
 
-        # Check if schema is configured
-        unless api_class.schemas&.key?(format)
+        # Check if spec is configured
+        unless api_class.specs&.key?(format)
           Rails.logger.debug "  ⊘ Skipping #{api_path} → #{format} (not configured)"
           return 0
         end
@@ -160,7 +160,7 @@ module Apiwork
         Rails.logger.debug "  ✗ #{api_path} → #{format} (error: #{e.message})"
         0
       end
-      private_class_method :write_schema
+      private_class_method :write_spec
     end
   end
 end

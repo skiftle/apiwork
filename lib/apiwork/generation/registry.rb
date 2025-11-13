@@ -2,7 +2,7 @@
 
 module Apiwork
   module Generation
-    # Registry for schema generators
+    # Registry for spec generators
     # Allows registration and lookup of generator classes
     class Registry
       class GeneratorNotFound < StandardError; end
@@ -18,10 +18,10 @@ module Apiwork
         # Register a generator
         #
         # @param name [Symbol] Generator name (e.g., :openapi, :zod)
-        # @param generator_class [Class] Generator class (must inherit from Base)
-        # @raise [ArgumentError] if generator doesn't inherit from Base
+        # @param generator_class [Class] Generator class (must inherit from Generators::Base)
+        # @raise [ArgumentError] if generator doesn't inherit from Generators::Base
         def register(name, generator_class)
-          raise ArgumentError, 'Generator must inherit from Apiwork::Generation::Base' unless generator_class < Base
+          raise ArgumentError, 'Generator must inherit from Apiwork::Generation::Generators::Base' unless generator_class < Generators::Base
 
           generators[name.to_sym] = generator_class
         end

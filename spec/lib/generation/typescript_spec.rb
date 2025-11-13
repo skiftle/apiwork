@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Apiwork::Generation::Typescript do
+RSpec.describe Apiwork::Generation::Generators::Typescript do
   before do
     # Reset registries to prevent accumulation
     Apiwork.reset_registries!
@@ -301,8 +301,8 @@ RSpec.describe Apiwork::Generation::Typescript do
       expect(Apiwork::Generation::Registry[:typescript]).to eq(described_class)
     end
 
-    it 'can be used via Apiwork.generate_schema' do
-      output = Apiwork.generate_schema(:typescript, path)
+    it 'can be used via Apiwork.generate_spec' do
+      output = Apiwork.generate_spec(:typescript, path)
       expect(output).to be_a(String)
       expect(output).to include('export type')
     end

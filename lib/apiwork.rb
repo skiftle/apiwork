@@ -21,7 +21,7 @@ module Apiwork
       Generation::Registry.register(name, generator_class)
     end
 
-    def generate_schema(type, path, **options)
+    def generate_spec(type, path, **options)
       Generation::Registry[type].generate(path: path, **options)
     end
 
@@ -62,9 +62,9 @@ loader.setup
 loader.eager_load
 
 # Register built-in generators
-Apiwork.register_generator(:openapi, Apiwork::Generation::OpenAPI)
-Apiwork.register_generator(:zod, Apiwork::Generation::Zod)
-Apiwork.register_generator(:typescript, Apiwork::Generation::Typescript)
+Apiwork.register_generator(:openapi, Apiwork::Generation::Generators::OpenAPI)
+Apiwork.register_generator(:zod, Apiwork::Generation::Generators::Zod)
+Apiwork.register_generator(:typescript, Apiwork::Generation::Generators::Typescript)
 
 # Rails integration
 require_relative 'apiwork/engine' if defined?(Rails::Engine)
