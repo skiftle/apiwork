@@ -151,38 +151,46 @@ module Apiwork
       # Sort types in topological order to avoid forward references
       # Types that don't depend on other types come first
       def topological_sort_types(all_types)
-        # Build dependency graph
-        dependencies = {}
+        # Build reverse dependency graph (who depends on me)
+        # If A depends on B, we store B -> [A] so B comes before A
+        reverse_deps = Hash.new { |h, k| h[k] = [] }
+
         all_types.each do |type_name, type_shape|
           # Extract type references from this type
-          refs = extract_type_references_for_sorting(type_shape, all_types.keys)
-          dependencies[type_name] = refs
+          referenced_types = extract_type_references_for_sorting(type_shape, all_types.keys)
+
+          referenced_types.each do |ref|
+            next if ref == type_name # Skip self-references (recursive types)
+
+            reverse_deps[ref] << type_name
+          end
         end
 
         # Topological sort using Kahn's algorithm
         sorted = []
         in_degree = Hash.new(0)
 
-        # Calculate in-degrees
-        dependencies.each_value do |deps|
-          deps.each { |dep| in_degree[dep] += 1 }
+        # Calculate in-degrees (how many types depend on me)
+        reverse_deps.each_value do |dependents|
+          dependents.each { |dependent| in_degree[dependent] += 1 }
         end
 
-        # Start with types that have no incoming edges
-        queue = dependencies.keys.select { |type| in_degree[type].zero? }
+        # Start with types that have no dependencies (in_degree = 0)
+        queue = all_types.keys.select { |type| in_degree[type].zero? }
 
         while queue.any?
           current = queue.shift
           sorted << current
 
-          # Remove edges from current node
-          dependencies[current].each do |dep|
-            in_degree[dep] -= 1
-            queue << dep if in_degree[dep].zero?
+          # Remove edges: types that depend on current can now be processed
+          reverse_deps[current].each do |dependent|
+            in_degree[dependent] -= 1
+            queue << dependent if in_degree[dependent].zero?
           end
         end
 
-        # If there's a cycle, just use original order
+        # If sorted.size != all_types.size, there's a cycle or unreachable types
+        # Fall back to original order (recursive types will use z.lazy())
         if sorted.size != all_types.size
           all_types.to_a
         else
@@ -192,30 +200,42 @@ module Apiwork
 
       # Extract references to other types from a type definition (for sorting)
       def extract_type_references_for_sorting(type_shape, all_type_names)
-        refs = []
+        referenced_types = []
 
         type_shape.each_value do |value|
           next unless value.is_a?(Hash)
 
-          # Direct type reference
-          refs << value[:type] if value[:type].is_a?(Symbol) && all_type_names.include?(value[:type])
+          # Direct type reference (normalize to symbol)
+          type_ref = value[:type]&.to_sym
+          referenced_types << type_ref if type_ref && all_type_names.include?(type_ref)
 
-          # Array 'of' reference
-          refs << value[:of] if value[:of].is_a?(Symbol) && all_type_names.include?(value[:of])
+          # Array 'of' reference (normalize to symbol)
+          of_ref = value[:of]&.to_sym
+          referenced_types << of_ref if of_ref && all_type_names.include?(of_ref)
 
           # Union variant references
-          next unless value[:variants].is_a?(Array)
+          if value[:variants].is_a?(Array)
+            value[:variants].each do |variant|
+              next unless variant.is_a?(Hash)
 
-          value[:variants].each do |variant|
-            next unless variant.is_a?(Hash)
+              # Variant type reference (normalize to symbol)
+              variant_type_ref = variant[:type]&.to_sym
+              referenced_types << variant_type_ref if variant_type_ref && all_type_names.include?(variant_type_ref)
 
-            refs << variant[:type] if variant[:type].is_a?(Symbol) && all_type_names.include?(variant[:type])
+              # Variant 'of' reference (normalize to symbol)
+              variant_of_ref = variant[:of]&.to_sym
+              referenced_types << variant_of_ref if variant_of_ref && all_type_names.include?(variant_of_ref)
 
-            refs << variant[:of] if variant[:of].is_a?(Symbol) && all_type_names.include?(variant[:of])
+              # Recursively check nested shape in variants
+              referenced_types.concat(extract_type_references_for_sorting(variant[:shape], all_type_names)) if variant[:shape].is_a?(Hash)
+            end
           end
+
+          # Recursively check nested shapes
+          referenced_types.concat(extract_type_references_for_sorting(value[:shape], all_type_names)) if value[:shape].is_a?(Hash)
         end
 
-        refs.uniq
+        referenced_types.uniq
       end
 
       # Build Zod object schema from type shape
@@ -443,35 +463,35 @@ module Apiwork
       # @param definition [Hash] Type definition (params hash)
       # @return [Array<Symbol>] Array of referenced type names
       def extract_custom_type_references(definition)
-        refs = []
+        referenced_types = []
 
         definition.each_value do |param|
           next unless param.is_a?(Hash)
 
           # Direct type reference
-          refs << param[:type] if param[:type].is_a?(Symbol) && !primitive_type?(param[:type])
+          referenced_types << param[:type] if param[:type].is_a?(Symbol) && !primitive_type?(param[:type])
 
           # Array 'of' reference
-          refs << param[:of] if param[:of].is_a?(Symbol) && !primitive_type?(param[:of])
+          referenced_types << param[:of] if param[:of].is_a?(Symbol) && !primitive_type?(param[:of])
 
           # Union variant references
           if param[:variants].is_a?(Array)
             param[:variants].each do |variant|
               next unless variant.is_a?(Hash)
 
-              refs << variant[:type] if variant[:type].is_a?(Symbol) && !primitive_type?(variant[:type])
-              refs << variant[:of] if variant[:of].is_a?(Symbol) && !primitive_type?(variant[:of])
+              referenced_types << variant[:type] if variant[:type].is_a?(Symbol) && !primitive_type?(variant[:type])
+              referenced_types << variant[:of] if variant[:of].is_a?(Symbol) && !primitive_type?(variant[:of])
 
               # Recursively check nested shape in variants
-              refs.concat(extract_custom_type_references(variant[:shape])) if variant[:shape].is_a?(Hash)
+              referenced_types.concat(extract_custom_type_references(variant[:shape])) if variant[:shape].is_a?(Hash)
             end
           end
 
           # Nested shape references
-          refs.concat(extract_custom_type_references(param[:shape])) if param[:shape].is_a?(Hash)
+          referenced_types.concat(extract_custom_type_references(param[:shape])) if param[:shape].is_a?(Hash)
         end
 
-        refs.uniq
+        referenced_types.uniq
       end
 
       # Check if a type is a primitive/built-in type (not a custom type reference)
