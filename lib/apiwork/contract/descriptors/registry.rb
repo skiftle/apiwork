@@ -68,14 +68,17 @@ module Apiwork
             # Add variant 1: the enum itself
             union_def.variant(type: enum_name)
 
-            # Add variant 2: object with eq and in fields
+            # Add variant 2: object with eq and in fields (all fields required, but object will be partial)
             union_def.variant(type: :object) do
-              param :eq, type: enum_name, required: false
-              param :in, type: :array, of: enum_name, required: false
+              param :eq, type: enum_name, required: true
+              param :in, type: :array, of: enum_name, required: true
             end
 
             # Serialize the union definition
             union_data = union_def.serialize
+
+            # Mark the object variant as partial (all fields should be optional in Zod)
+            union_data[:variants][1][:partial] = true if union_data[:variants].is_a?(Array) && union_data[:variants][1]
 
             if is_global
               TypeStore.register_global_union(filter_name, union_data)
