@@ -12,7 +12,12 @@
       "Bash(ruby -i -pe:*)",
       "Bash(exit 1)",
       "Bash(git stash:*)",
-      "Bash(ruby /tmp/debug_filter_fields.rb:*)"
+      "Bash(ruby /tmp/debug_filter_fields.rb:*)",
+      "Bash(bundle exec rspec:*)",
+      "Bash(bundle exec rubocop:*)",
+      "Bash(ruby:*)",
+      "Bash(bundle exec ruby:*)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []
