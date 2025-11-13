@@ -64,6 +64,7 @@ loader.eager_load
 # Register built-in generators
 Apiwork.register_generator(:openapi, Apiwork::Generation::OpenAPI)
 Apiwork.register_generator(:zod, Apiwork::Generation::Zod)
+Apiwork.register_generator(:typescript, Apiwork::Generation::Typescript)
 
 # Rails integration
 require_relative 'apiwork/engine' if defined?(Rails::Engine)
