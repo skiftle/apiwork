@@ -87,7 +87,7 @@ RSpec.describe Apiwork::Generation::Generators::Typescript do
 
       it 'sorts enum types alphabetically' do
         lines = output.lines.grep(/export type \w+ = /)
-        enum_names = lines.map { |l| l.match(/export type (\w+) =/)[1] }
+        lines.map { |l| l.match(/export type (\w+) =/)[1] }
 
         # Filter to just enum types (those with union of literal strings)
         enum_lines = lines.select { |l| l.include?("'") }
@@ -154,18 +154,18 @@ RSpec.describe Apiwork::Generation::Generators::Typescript do
         type_names = type_lines.map { |l| l.match(/^export (?:type|interface) (\w+)/)[1] }
 
         expect(type_names).to eq(type_names.sort),
-          "Expected types in alphabetical order but got: #{type_names.inspect}"
+                              "Expected types in alphabetical order but got: #{type_names.inspect}"
       end
 
       it 'enums appear before interfaces if alphabetically earlier' do
         # Get all type declarations
         declarations = []
         output.lines.each do |line|
-          if line.match(/^export (type|interface) (\w+)/)
-            kind = $1
-            name = $2
-            declarations << { name: name, kind: kind }
-          end
+          next unless line =~ /^export (type|interface) (\w+)/
+
+          kind = Regexp.last_match(1)
+          name = Regexp.last_match(2)
+          declarations << { name: name, kind: kind }
         end
 
         # Verify they're in alphabetical order by name
@@ -185,7 +185,7 @@ RSpec.describe Apiwork::Generation::Generators::Typescript do
         property_names = property_lines.map { |l| l.match(/^(\w+)\??:/)[1] }
 
         expect(property_names).to eq(property_names.sort),
-          "Expected StringFilter properties in alphabetical order"
+                                  'Expected StringFilter properties in alphabetical order'
       end
 
       it 'sorts inline object properties alphabetically' do
@@ -243,9 +243,7 @@ RSpec.describe Apiwork::Generation::Generators::Typescript do
         property_lines = properties_block.lines.reject { |l| l.strip.empty? }
 
         # All property lines should start with exactly 2 spaces
-        property_lines.each do |line|
-          expect(line).to match(/^  \w+/)
-        end
+        expect(property_lines).to all(match(/^  \w+/))
       end
 
       it 'has double newlines between type declarations' do
@@ -285,9 +283,7 @@ RSpec.describe Apiwork::Generation::Generators::Typescript do
         # Every export should be type or interface
         export_lines = output.lines.grep(/^export /)
 
-        export_lines.each do |line|
-          expect(line).to match(/^export (type|interface) /)
-        end
+        expect(export_lines).to all(match(/^export (type|interface) /))
       end
     end
   end

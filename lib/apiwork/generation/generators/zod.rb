@@ -51,6 +51,18 @@ module Apiwork
             parts << ''
           end
 
+          action_typescript_types = build_action_typescript_types
+          if action_typescript_types.present?
+            parts << action_typescript_types
+            parts << ''
+          end
+
+          action_schemas = build_action_schemas
+          if action_schemas.present?
+            parts << action_schemas
+            parts << ''
+          end
+
           parts.join("\n")
         end
 
@@ -265,6 +277,8 @@ module Apiwork
         end
 
         def map_type_definition(definition, action_name = nil)
+          return 'z.never()' unless definition.is_a?(Hash)
+
           type = definition[:type]
 
           case type
@@ -276,6 +290,8 @@ module Apiwork
             map_union_type(definition, action_name)
           when :literal
             map_literal_type(definition)
+          when nil
+            'z.never()'
           else
             enum_or_type_reference?(type) ? schema_reference(type) : map_primitive(type)
           end
@@ -367,6 +383,96 @@ module Apiwork
           type_declarations.join("\n\n")
         end
 
+        def build_action_typescript_types
+          types = []
+
+          each_resource do |resource_name, resource_data, _parent_path|
+            each_action(resource_data) do |action_name, action_data|
+              # Generate TypeScript type for input if present
+              types << build_action_input_typescript_type(resource_name, action_name, action_data[:input]) if action_data[:input]&.any?
+
+              # Generate TypeScript type for output if present
+              types << build_action_output_typescript_type(resource_name, action_name, action_data[:output]) if action_data[:output]
+            end
+          end
+
+          types.join("\n\n")
+        end
+
+        def build_action_schemas
+          schemas = []
+
+          each_resource do |resource_name, resource_data, _parent_path|
+            each_action(resource_data) do |action_name, action_data|
+              # Generate input schema if present
+              schemas << build_action_input_schema(resource_name, action_name, action_data[:input]) if action_data[:input]&.any?
+
+              # Generate output schema if present
+              schemas << build_action_output_schema(resource_name, action_name, action_data[:output]) if action_data[:output]
+            end
+          end
+
+          schemas.join("\n\n")
+        end
+
+        def build_action_input_typescript_type(resource_name, action_name, input_params)
+          type_name = action_schema_name(resource_name, action_name, 'Input')
+
+          # Build TypeScript interface
+          properties = input_params.sort_by { |k, _| k.to_s }.map do |param_name, param_def|
+            key = transform_key(param_name)
+            ts_type = map_typescript_field(param_def, action_name)
+            is_optional = !param_def[:required]
+            optional_marker = is_optional ? '?' : ''
+            "  #{key}#{optional_marker}: #{ts_type};"
+          end.join("\n")
+
+          "export interface #{type_name} {\n#{properties}\n}"
+        end
+
+        def build_action_output_typescript_type(resource_name, action_name, output_def)
+          type_name = action_schema_name(resource_name, action_name, 'Output')
+
+          # Map output definition to TypeScript type
+          ts_type = map_typescript_type_definition(output_def, action_name)
+
+          "export type #{type_name} = #{ts_type};"
+        end
+
+        def build_action_input_schema(resource_name, action_name, input_params)
+          schema_name = action_schema_name(resource_name, action_name, 'Input')
+
+          # Build Zod object schema
+          # Don't pass action_name - input fields should follow their own required flags
+          properties = input_params.sort_by { |k, _| k.to_s }.map do |param_name, param_def|
+            key = transform_key(param_name)
+            zod_type = map_field_definition(param_def, nil)
+            "  #{key}: #{zod_type}"
+          end.join(",\n")
+
+          "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.object({\n#{properties}\n});"
+        end
+
+        def build_action_output_schema(resource_name, action_name, output_def)
+          schema_name = action_schema_name(resource_name, action_name, 'Output')
+
+          # Map the output definition (handles unions, objects, etc.)
+          # Don't pass action_name - output fields should follow their own required flags
+          zod_schema = map_type_definition(output_def, nil)
+
+          "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = #{zod_schema};"
+        end
+
+        def action_schema_name(resource_name, action_name, suffix)
+          # e.g., posts, create, Input -> PostsCreateInput
+          parts = [
+            resource_name.to_s,
+            action_name.to_s,
+            suffix
+          ]
+          zod_type_name(parts.join('_'))
+        end
+
         def build_typescript_type(type_name, type_shape, action_name = nil, recursive: false)
           type_name_pascal = zod_type_name(type_name)
 
@@ -380,8 +486,12 @@ module Apiwork
             "  #{key}#{optional_marker}: #{ts_type};"
           end.join("\n")
 
-          # Always use interface for consistency
-          "export interface #{type_name_pascal} {\n#{properties}\n}"
+          # Empty objects become type aliases to object
+          if properties.empty?
+            "export type #{type_name_pascal} = object;"
+          else
+            "export interface #{type_name_pascal} {\n#{properties}\n}"
+          end
         end
 
         def build_typescript_union_type(type_name, type_shape)
@@ -432,6 +542,8 @@ module Apiwork
         end
 
         def map_typescript_type_definition(definition, action_name = nil)
+          return 'never' unless definition.is_a?(Hash)
+
           type = definition[:type]
 
           case type
@@ -443,13 +555,15 @@ module Apiwork
             map_typescript_union_type(definition, action_name)
           when :literal
             map_typescript_literal_type(definition)
+          when nil
+            'never'
           else
             enum_or_type_reference?(type) ? typescript_reference(type) : map_typescript_primitive(type)
           end
         end
 
         def map_typescript_object_type(definition, action_name = nil)
-          return '{}' unless definition[:shape]
+          return 'object' unless definition[:shape]
 
           is_partial = definition[:partial] == true
 

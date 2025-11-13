@@ -170,9 +170,10 @@ RSpec.describe Apiwork::Generation::Generators::Zod do
             expect(output).to include("export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.union"),
                               "Union type #{type_name} should use z.union"
           else
-            # Object types should have a TypeScript interface declaration
-            expect(output).to include("export interface #{schema_name}"),
-                              "Missing interface for #{type_name}"
+            # Object types should have either interface or type declaration
+            # Empty objects use type alias, non-empty use interface
+            expect(output).to match(/export (interface|type) #{schema_name}( =|(\s*\{))/),
+                              "Missing interface or type declaration for #{type_name}"
 
             # All types should have a Zod schema with z.ZodType annotation
             expect(output).to include("export const #{schema_name}Schema: z.ZodType<#{schema_name}>"),
@@ -379,6 +380,55 @@ RSpec.describe Apiwork::Generation::Generators::Zod do
       # Should have proper Zod schema syntax
       expect(output).to include('z.object')
       expect(output).to include('z.enum') | include('z.string') | include('z.number')
+    end
+  end
+
+  describe 'action input/output schemas' do
+    let(:output) { generator.generate }
+
+    it 'generates TypeScript types for action inputs' do
+      # Check for TypeScript interface/type declarations (e.g., PostsCreateInput)
+      expect(output).to match(/export (interface|type) \w+Input/)
+    end
+
+    it 'generates TypeScript types for action outputs' do
+      # Check for TypeScript type declarations (e.g., PostsCreateOutput)
+      expect(output).to match(/export type \w+Output =/)
+    end
+
+    it 'generates Zod schemas with z.ZodType annotation for inputs' do
+      # Check for Zod schema with z.ZodType<TypeName> annotation
+      expect(output).to match(/export const \w+InputSchema: z\.ZodType<\w+Input> = z\.object/)
+    end
+
+    it 'generates Zod schemas with z.ZodType annotation for outputs' do
+      # Check for Zod schema with z.ZodType<TypeName> annotation
+      expect(output).to match(/export const \w+OutputSchema: z\.ZodType<\w+Output> =/)
+    end
+
+    it 'uses discriminated unions for success/error responses' do
+      # Output schemas should use discriminated unions with 'ok' field
+      expect(output).to match(/z\.discriminatedUnion\('ok'/)
+    end
+
+    it 'generates types before schemas (correct order)' do
+      # TypeScript types should come before Zod schemas
+      type_positions = output.enum_for(:scan, /export (interface|type) \w+(?:Input|Output)/).map { Regexp.last_match.begin(0) }
+      schema_positions = output.enum_for(:scan, /export const \w+(?:Input|Output)Schema/).map { Regexp.last_match.begin(0) }
+
+      expect(type_positions).not_to be_empty
+      expect(schema_positions).not_to be_empty
+
+      # First type should come before first schema
+      expect(type_positions.min).to be < schema_positions.min
+    end
+
+    it 'follows same pattern as introspect types (z.ZodType annotation, not z.infer)' do
+      # Action schemas should NOT use z.infer
+      expect(output).not_to match(/z\.infer<typeof \w+(?:Input|Output)Schema>/)
+
+      # Action schemas SHOULD use z.ZodType<TypeName> annotation (same as StringFilter, etc.)
+      expect(output).to match(/: z\.ZodType<\w+(?:Input|Output)>/)
     end
   end
 end
