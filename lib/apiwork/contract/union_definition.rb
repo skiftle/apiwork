@@ -42,6 +42,25 @@ module Apiwork
 
         @variants << variant_def
       end
+
+      # Serialize the union definition to a data structure
+      # @return [Hash] Serialized union data ready for storage
+      def serialize
+        serialized_variants = @variants.map do |variant|
+          serialized = variant.dup
+          # If the variant has a shape (Definition object), serialize it
+          serialized[:shape] = serialized[:shape].as_json if serialized[:shape].is_a?(Apiwork::Contract::Definition)
+          serialized
+        end
+
+        {
+          type: :union,
+          required: false,
+          nullable: false,
+          variants: serialized_variants,
+          discriminator: @discriminator
+        }.compact # Remove nil discriminator if not set
+      end
     end
   end
 end
