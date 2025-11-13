@@ -314,13 +314,22 @@ module Apiwork
       def map_object_type(definition, action_name = nil)
         return 'z.object({})' unless definition[:shape]
 
+        # Check if this is a partial object (all fields optional)
+        is_partial = definition[:partial] == true
+
         properties = definition[:shape].sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
           key = transform_key(property_name)
-          zod_type = map_field_definition(property_def, action_name)
+          # For partial objects, don't add .optional() modifiers - let .partial() handle it
+          zod_type = if is_partial
+                       map_field_definition(property_def.merge(required: true), nil)
+                     else
+                       map_field_definition(property_def, action_name)
+                     end
           "#{key}: #{zod_type}"
         end.join(', ')
 
-        "z.object({ #{properties} })"
+        base_object = "z.object({ #{properties} })"
+        is_partial ? "#{base_object}.partial()" : base_object
       end
 
       # Map array type to Zod schema
@@ -433,9 +442,9 @@ module Apiwork
 
         is_nullable = definition[:nullable]
 
-        # Handle custom type references
-        base_type = if definition[:type].is_a?(Symbol) && types.key?(definition[:type])
-                      zod_type_name(definition[:type])
+        # Handle custom type or enum references
+        base_type = if definition[:type].is_a?(Symbol) && enum_or_type_reference?(definition[:type])
+                      typescript_reference(definition[:type])
                     else
                       map_typescript_type_definition(definition, action_name)
                     end
@@ -501,10 +510,16 @@ module Apiwork
       def map_typescript_object_type(definition, action_name = nil)
         return '{}' unless definition[:shape]
 
+        # Check if this is a partial object (all fields optional)
+        is_partial = definition[:partial] == true
+
         properties = definition[:shape].sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
           key = transform_key(property_name)
           ts_type = map_typescript_field(property_def, action_name)
-          "#{key}: #{ts_type}"
+          # For partial objects, all fields are optional regardless of required flag
+          is_optional = is_partial || !property_def[:required]
+          optional_marker = is_optional ? '?' : ''
+          "#{key}#{optional_marker}: #{ts_type}"
         end.join('; ')
 
         "{ #{properties} }"
