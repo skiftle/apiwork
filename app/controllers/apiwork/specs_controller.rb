@@ -16,8 +16,8 @@ module Apiwork
     #
     # Returns spec for the current API
     def show
-      # Use unified Schema.generate
-      spec = ::Apiwork::Generation::Schema.generate(
+      # Use unified Spec.generate
+      spec = ::Apiwork::Generation::Spec.generate(
         api_path: params[:api_path],
         format: params[:spec_type].to_sym,
         key_transform: params[:key_transform]

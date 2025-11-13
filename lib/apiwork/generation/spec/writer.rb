@@ -5,15 +5,15 @@ require 'tempfile'
 
 module Apiwork
   module Generation
-    class Schema
-      # Handles writing schema files to disk with atomic operations
+    class Spec
+      # Handles writing spec files to disk with atomic operations
       class Writer
-        # Write schema content to file or directory structure
+        # Write spec content to file or directory structure
         #
-        # @param content [String, Hash] Schema content to write
+        # @param content [String, Hash] Spec content to write
         # @param output [String] Output path (file or directory)
         # @param api_path [String, nil] API path (e.g., '/api/v1')
-        # @param format [Symbol, nil] Schema format (e.g., :openapi)
+        # @param format [Symbol, nil] Spec format (e.g., :openapi)
         # @param extension [String] File extension (e.g., '.json', '.ts')
         # @return [String] Path to written file
         def self.write(content:, output:, extension:, api_path: nil, format: nil)
@@ -58,7 +58,7 @@ module Apiwork
         #
         # @param output [String] Base output directory
         # @param api_path [String] API path (e.g., '/api/v1')
-        # @param format [Symbol] Schema format
+        # @param format [Symbol] Spec format
         # @param extension [String] File extension
         # @return [String] Full file path
         def self.build_file_path(output, api_path, format, extension)
@@ -86,7 +86,7 @@ module Apiwork
                            end
 
           # Atomic write: write to temp file, then move
-          temp_file = Tempfile.new(['schema', File.extname(file_path)])
+          temp_file = Tempfile.new(['spec', File.extname(file_path)])
           begin
             temp_file.write(content_string)
             temp_file.close
