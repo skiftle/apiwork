@@ -2,18 +2,10 @@
 
 module Apiwork
   module Controller
-    # Handles schema serialization and response building
-    #
-    # Provides:
-    # - respond_with - Unified response builder for all actions
-    # - action_output - ActionOutput instance for current action
-    #
     module Serialization
       extend ActiveSupport::Concern
 
       def respond_with(resource_or_collection, meta: {}, status: nil)
-        raise ConfigurationError, "No contract found for #{self.class.name}" unless current_contract
-
         output_parser = Contract::Parser.new(current_contract, :output, action_name, context: context)
 
         responder = Responder.new(
@@ -23,17 +15,20 @@ module Apiwork
           meta: output_parser.transform_meta_keys(meta)
         )
 
-        validaed = responder.perform(resource_or_collection, query_params: action_input.data)
+        response = responder.perform(resource_or_collection, query_params: action_input.data)
 
-        validated_response = output_parser.perform(validaed)
+        if Rails.env.development?
 
-        render json: validated_response.data, status: status || :ok
+          result = output_parser.perform(response)
+
+          raise ContractError, result.issues if result.invalid?
+        end
+
+        render json: response, status: status || :ok
       end
 
       private
 
-      # Override in controller to provide custom schema context
-      # @return [Hash] context hash passed to schema serialization
       def context
         {}
       end

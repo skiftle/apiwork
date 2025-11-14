@@ -2,32 +2,52 @@
 
 module Apiwork
   module Controller
-    # Shared contract and action definition resolution logic
-    # Used by both Validation and Serialization modules
     module ContractResolution
       extend ActiveSupport::Concern
 
+      included do
+        before_action :set_current_contract
+      end
+
       private
 
-      # Find contract for current controller
+      def set_current_contract
+        @current_contract = infer_schema_contract || infer_contract_class || raise_no_contract_class_error
+      end
+
       def current_contract
-        current_action_definition&.contract_class
+        @current_contract
       end
 
-      # Get current action definition for this action
-      def current_action_definition
-        @current_action_definition ||= Contract::Resolver.resolve(
-          controller_class: self.class,
-          action_name: action_name.to_sym,
-          metadata: current_action_metadata
-        )
+      def infer_schema_contract
+        schema_class = infer_schema_class
+        return nil unless schema_class
+
+        schema_class.contract
       end
 
-      # Get metadata for current action (provided by ActionMetadata concern)
-      def current_action_metadata
-        return {} unless respond_to?(:find_action_metadata, true)
+      def infer_schema_class
+        # Api::V1::ArticlesController → Api::V1::ArticleSchema
+        schema_name = "#{self.class.name.sub(/Controller$/, '').singularize}Schema"
+        schema_name.constantize
+      rescue NameError
+        nil
+      end
 
-        find_action_metadata
+      def infer_contract_class
+        # Api::V1::ArticlesController → Api::V1::ArticleContract
+        contract_name = "#{self.class.name.sub(/Controller$/, '').singularize}Contract"
+        contract_name.constantize
+      rescue NameError
+        nil
+      end
+
+      def raise_no_contract_class_error
+        schema_class_name = "#{self.class.name.sub(/Controller$/, '').singularize}Schema"
+        contract_class_name = "#{self.class.name.sub(/Controller$/, '').singularize}Contract"
+
+        raise ConfigurationError, "No schema or contract found for #{self.class.name}. " \
+                                  "Expected #{schema_class_name} or #{contract_class_name} to be defined."
       end
     end
   end
