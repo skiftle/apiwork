@@ -30,6 +30,6 @@ RSpec.configure do |config|
   # Clear schema-contract registry before each test
   # This ensures tests don't interfere with each other
   config.before do
-    Apiwork::Contract::SchemaContractRegistry.clear!
+    Apiwork::Contract::SchemaRegistry.clear!
   end
 end

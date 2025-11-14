@@ -205,7 +205,7 @@ module Apiwork
         end
 
         # Get or create schema-based contract class for a resource
-        # Uses SchemaContractRegistry for consistent contract instances
+        # Uses SchemaRegistry for consistent contract instances
         def schema_based_contract_class(resource_metadata)
           schema_class = resource_metadata[:schema_class]
           schema_class&.contract

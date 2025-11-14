@@ -11,7 +11,7 @@ module Apiwork
 
     config.to_prepare do
       # Clear all registries on code reload (development mode)
-      Apiwork::Contract::SchemaContractRegistry.clear!
+      Apiwork::Contract::SchemaRegistry.clear!
       Apiwork::API::Registry.clear!
 
       # Register built-in types
