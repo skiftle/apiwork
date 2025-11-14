@@ -2,7 +2,7 @@
 
 module Apiwork
   module Controller
-    module Validation
+    module Deserialization
       extend ActiveSupport::Concern
 
       included do
@@ -17,13 +17,12 @@ module Apiwork
 
       def action_input
         @action_input ||= begin
-          contract = current_contract&.new
-          return Contract::Parser::Result.new({}, [], :input, schema_class: nil) unless contract
+          return Contract::Parser::Result.new({}, [], :input, schema_class: nil) unless current_contract
 
           raw_params = parse_request_params(request)
 
           # Parse: validate + transform in one step
-          Contract::Parser.new(contract, :input, action_name).perform(raw_params)
+          Contract::Parser.new(current_contract, :input, action_name).perform(raw_params)
         end
       end
 

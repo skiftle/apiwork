@@ -193,7 +193,7 @@ module Apiwork
         end
 
         def parse(data, direction, action, **options)
-          Parser.new(new, direction, action, **options).perform(data)
+          Parser.new(self, direction, action, **options).perform(data)
         end
 
         private

@@ -5,6 +5,11 @@ module Apiwork
     module Concern
       extend ActiveSupport::Concern
 
+      include ContractResolution
+      include Serialization
+      include Deserialization
+      include ActionMetadata
+
       included do
         # Disable Rails parameter wrapping
         # Apiwork contracts define explicit parameter structures
@@ -22,11 +27,6 @@ module Apiwork
           render json: { ok: false, errors: error.to_array }, status: :unprocessable_entity
         end
       end
-
-      include ContractResolution
-      include Validation
-      include Serialization
-      include ActionMetadata
     end
   end
 end
