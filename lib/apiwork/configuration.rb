@@ -2,8 +2,12 @@
 
 module Apiwork
   class Configuration
-    attr_accessor :raise_on_invalid_fields, :default_sort, :default_page_size, :maximum_page_size,
+    attr_accessor :raise_on_invalid_fields,
+                  :default_sort,
+                  :default_page_size,
+                  :maximum_page_size,
                   :max_array_items
+
     attr_reader :serialize_key_transform, :deserialize_key_transform
 
     VALIDATED_ATTRIBUTES = {
