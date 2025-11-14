@@ -14,14 +14,14 @@ module Apiwork
     #
     # Usage:
     #   # Input parsing
-    #   parser = Contract::Parser.new(contract, :input, :create)
+    #   parser = Contract::Parser.new(contract_class, :input, :create)
     #   result = parser.perform(params)
     #   if result.valid?
     #     Model.create(result[:model])
     #   end
     #
     #   # Output parsing
-    #   parser = Contract::Parser.new(contract, :output, :index, context: { current_user: user })
+    #   parser = Contract::Parser.new(contract_class, :output, :index, context: { current_user: user })
     #   result = parser.perform(response_hash)
     #   if result.valid?
     #     render json: result.data
@@ -32,10 +32,10 @@ module Apiwork
       include Transformation
       include Validation
 
-      attr_reader :contract, :action, :direction, :context
+      attr_reader :contract_class, :action, :direction, :context
 
-      def initialize(contract, direction, action, **options)
-        @contract = contract
+      def initialize(contract_class, direction, action, **options)
+        @contract_class = contract_class
         @direction = direction.to_sym
         @action = action.to_sym
         @context = options[:context] || {}
@@ -45,7 +45,7 @@ module Apiwork
 
       # Get action definition for current action
       def action_definition
-        @action_definition ||= contract.class.action_definition(action)
+        @action_definition ||= contract_class.action_definition(action)
       end
 
       # Get schema class from action definition

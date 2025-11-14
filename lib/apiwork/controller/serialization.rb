@@ -17,61 +17,33 @@ module Apiwork
         @action_output ||= begin
           contract = current_contract&.new
           return nil unless contract
-
-          Contract::Parser.new(contract, :output, action_name, context: build_schema_context)
         end
       end
 
-      def respond_with(resource_or_collection, meta: {}, contract: nil, status: nil)
-        output = resolve_output_parser(contract)
-        raise ConfigurationError, "No contract found for #{self.class.name}" unless output
+      def respond_with(resource_or_collection, meta: {}, status: nil)
+        raise ConfigurationError, "No contract found for #{self.class.name}" unless current_contract
 
-        transformed_meta = transform_meta(output, meta)
-        response_hash = build_response(resource_or_collection, output, transformed_meta)
-        validated_response = validate_response(output, response_hash)
+        output_parser = Contract::Parser.new(current_contract, :output, action_name, context: context)
+
+        responder = Responder.new(
+          controller: self,
+          action_definition: output_parser.action_definition,
+          schema_class: output_parser.schema_class,
+          meta: output_parser.transform_meta_keys(meta)
+        )
+
+        validaed = responder.perform(resource_or_collection, query_params: action_input.data)
+
+        validated_response = output.perform(validaed)
 
         render json: validated_response.data, status: status || :ok
       end
 
       private
 
-      def resolve_output_parser(contract)
-        if contract
-          Contract::Parser.new(contract.new, :output, action_name, context: build_schema_context)
-        else
-          action_output
-        end
-      end
-
-      def transform_meta(output, meta)
-        output.transform_meta_keys(meta)
-      end
-
-      def validate_response(output, response_hash)
-        output.perform(response_hash)
-      end
-
-      def build_response(resource_or_collection, output, meta)
-        query_params = extract_query_params_for_output
-
-        Responder.new(
-          controller: self,
-          action_definition: output.action_definition,
-          schema_class: output.schema_class,
-          meta: meta
-        ).perform(resource_or_collection, query_params: query_params)
-      end
-
-      def extract_query_params_for_output
-        return {} unless action_input
-
-        params = action_input.data || {}
-        params.slice(*QUERY_PARAMS).compact
-      end
-
       # Override in controller to provide custom schema context
       # @return [Hash] context hash passed to schema serialization
-      def build_schema_context
+      def context
         {}
       end
     end
