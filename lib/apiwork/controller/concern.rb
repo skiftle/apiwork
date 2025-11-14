@@ -10,7 +10,10 @@ module Apiwork
         # Apiwork contracts define explicit parameter structures
         wrap_parameters false
 
-        # Default error handlers
+        rescue_from Apiwork::QueryError do |error|
+          render json: { ok: false, errors: error.to_array }, status: :bad_request
+        end
+
         rescue_from Apiwork::ContractError do |error|
           render json: { ok: false, errors: error.to_array }, status: :bad_request
         end

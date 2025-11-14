@@ -7,20 +7,36 @@ module Apiwork
         page_number = params.fetch(:number, 1).to_i
         page_size = params.fetch(:size, default_page_size).to_i
 
+        issues = []
+
         if page_number < 1
-          error = Apiwork::QueryError.new('page[number] must be >= 1')
-          Errors::Handler.handle(error, context: { page_number: page_number })
+          issues << Issue.new(
+            code: :invalid_value,
+            message: 'page[number] must be >= 1',
+            path: [:page, :number],
+            meta: { actual: page_number, minimum: 1 }
+          )
         end
 
         if page_size < 1
-          error = Apiwork::QueryError.new('page[size] must be >= 1')
-          Errors::Handler.handle(error, context: { page_size: page_size })
+          issues << Issue.new(
+            code: :invalid_value,
+            message: 'page[size] must be >= 1',
+            path: [:page, :size],
+            meta: { actual: page_size, minimum: 1 }
+          )
         end
 
         if page_size > maximum_page_size
-          error = Apiwork::QueryError.new("page[size] must be <= #{maximum_page_size}")
-          Errors::Handler.handle(error, context: { page_size: page_size, maximum: maximum_page_size })
+          issues << Issue.new(
+            code: :invalid_value,
+            message: "page[size] must be <= #{maximum_page_size}",
+            path: [:page, :size],
+            meta: { actual: page_size, maximum: maximum_page_size }
+          )
         end
+
+        raise QueryError, issues if issues.any?
 
         page_size = [page_size, maximum_page_size].min
         offset = (page_number - 1) * page_size

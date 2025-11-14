@@ -76,10 +76,7 @@ module Apiwork
             path: []
           )
 
-          Errors::Handler.handle(error, context: {
-                                   schema: name,
-                                   expected_model: model_name
-                                 })
+          raise error
         end
 
         def try_constantize_model(namespace, model_name)

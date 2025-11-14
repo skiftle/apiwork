@@ -100,7 +100,7 @@ module Apiwork
           path: [@name]
         )
 
-        Errors::Handler.handle(error, context: { association: @name, resource: @klass.name })
+        raise error
       end
 
       def validate_nested_attributes!
@@ -117,7 +117,7 @@ module Apiwork
             path: [@name]
           )
 
-          Errors::Handler.handle(error, context: { association: @name, model: @model_class.name })
+          raise error
         end
 
         nested_options = @model_class.nested_attributes_options[@name]

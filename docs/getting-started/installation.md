@@ -43,8 +43,6 @@ Apiwork.configure do |config|
   # Association behavior
   config.auto_include_associations = false  # Don't auto-eager-load
 
-  # Error handling
-  config.error_handling_mode = :raise  # :raise, :log, or :silent
 end
 ```
 
@@ -92,6 +90,7 @@ end
 ```
 
 Apiwork automatically mounts this API. The path `/api/v1` determines:
+
 - Mount point: `/api/v1`
 - Namespace: `Api::V1`
 

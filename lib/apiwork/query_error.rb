@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
 module Apiwork
-  class QueryError < Error
+  class QueryError < ConstraintError
   end
 end

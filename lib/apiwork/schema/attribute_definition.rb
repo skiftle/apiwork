@@ -127,13 +127,12 @@ module Apiwork
                    "Undefined resource attribute '#{@name}' in #{@klass.name}: " \
                    'no reader method on resource'
                  end
-        error = ConfigurationError.new(
+
+        raise ConfigurationError.new(
           code: :invalid_attribute,
           detail: detail,
           path: [@name]
         )
-
-        Errors::Handler.handle(error, context: { attribute: @name, resource: @klass.name })
       end
 
       def validate_null_to_empty!
@@ -142,13 +141,12 @@ module Apiwork
 
         detail = 'null_to_empty option can only be used on string/text attributes, ' \
                  "not #{@type} for '#{@name}' in #{@klass.name}"
-        error = ConfigurationError.new(
+
+        raise ConfigurationError.new(
           code: :invalid_null_to_empty,
           detail: detail,
           path: [@name]
         )
-
-        Errors::Handler.handle(error, context: { attribute: @name, type: @type, resource: @klass.name })
       end
 
       def apply_null_to_empty_transformers!
