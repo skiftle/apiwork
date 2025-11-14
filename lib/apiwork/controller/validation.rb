@@ -17,7 +17,7 @@ module Apiwork
 
       def action_input
         @action_input ||= begin
-          contract = find_contract&.new
+          contract = current_contract&.new
           return Contract::Parser::Result.new({}, [], :input, schema_class: nil) unless contract
 
           raw_params = parse_request_params(request)
@@ -35,17 +35,6 @@ module Apiwork
       end
 
       private
-
-      # Find contract for current controller
-      def find_contract
-        action_definition = current_action_definition
-        action_definition&.contract_class
-      end
-
-      # Get current action definition for this action
-      def current_action_definition
-        @current_action_definition ||= Contract::Resolver.resolve(controller_class: self.class, action_name: action_name.to_sym)
-      end
 
       def parse_request_params(request)
         query = parse_query_params(request)
