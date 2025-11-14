@@ -6,9 +6,8 @@ module Apiwork
       extend ActiveSupport::Concern
 
       include ContractResolution
-      include Serialization
       include Deserialization
-      include ActionMetadata
+      include Serialization
 
       included do
         # Disable Rails parameter wrapping

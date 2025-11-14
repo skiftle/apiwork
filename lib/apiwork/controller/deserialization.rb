@@ -19,21 +19,20 @@ module Apiwork
         @action_input ||= begin
           return Contract::Parser::Result.new({}, [], :input, schema_class: nil) unless current_contract
 
-          raw_params = parse_request_params(request)
+          request_params = parse_request_params(request)
 
           # Parse: validate + transform in one step
-          Contract::Parser.new(current_contract, :input, action_name).perform(raw_params)
+          Contract::Parser.new(current_contract, :input, action_name).perform(request_params)
         end
       end
 
-      # Input validation using contracts (before_action)
+      private
+
       def validate_input
         return if action_input.valid?
 
         raise ContractError, action_input.issues
       end
-
-      private
 
       def parse_request_params(request)
         query = parse_query_params(request)
@@ -47,10 +46,7 @@ module Apiwork
 
         params = request.query_parameters
         params = Transform::Case.hash(params, key_transform)
-        params = params.deep_symbolize_keys
-
-        # Normalize hash with numeric keys to array (for filter/sort/include params)
-        normalize_indexed_hashes(params)
+        params.deep_symbolize_keys
       end
 
       # Parse body parameters from POST/PATCH/PUT
@@ -65,38 +61,6 @@ module Apiwork
       # Get key transform from configuration
       def key_transform
         Apiwork.configuration.deserialize_key_transform
-      end
-
-      # Recursively normalize hashes with numeric string keys to arrays
-      def normalize_indexed_hashes(params)
-        return params unless params.is_a?(Hash)
-
-        params.transform_values do |value|
-          normalize_indexed_value(value)
-        end
-      end
-
-      # Normalize a single value (recursive)
-      def normalize_indexed_value(value)
-        return value unless value.is_a?(Hash) || value.is_a?(Array)
-        return value.map { |v| normalize_indexed_value(v) } if value.is_a?(Array)
-
-        # Handle hash: check if numeric-indexed or regular nested hash
-        return convert_indexed_hash_to_array(value) if indexed_hash?(value)
-
-        normalize_indexed_hashes(value)
-      end
-
-      # Convert indexed hash to array, preserving numeric order
-      def convert_indexed_hash_to_array(hash)
-        hash.keys.sort_by { |k| k.to_s.to_i }.map { |key| normalize_indexed_value(hash[key]) }
-      end
-
-      # Check if hash has only numeric string keys
-      def indexed_hash?(hash)
-        return false if hash.empty?
-
-        hash.keys.all? { |k| k.to_s =~ /^\d+$/ }
       end
     end
   end
