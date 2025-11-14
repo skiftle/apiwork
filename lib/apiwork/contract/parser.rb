@@ -61,7 +61,7 @@ module Apiwork
         validated = validate(coerced_data)
 
         # Step 3: Handle errors based on direction
-        return handle_validation_errors(data, validated[:errors]) if validated[:errors].any?
+        return handle_validation_errors(data, validated[:issues]) if validated[:issues].any?
 
         # Step 4: Transform validated data
         transformed_data = transform(validated[:params])

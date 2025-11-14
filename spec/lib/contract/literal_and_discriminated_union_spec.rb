@@ -19,15 +19,15 @@ RSpec.describe 'Literal and Discriminated Union Features' do
 
     it 'accepts the exact literal value' do
       result = definition.validate({ status: 'archived', name: 'Test' })
-      expect(result[:errors]).to be_empty
+      expect(result[:issues]).to be_empty
       expect(result[:params][:status]).to eq('archived')
     end
 
     it 'rejects different values' do
       result = definition.validate({ status: 'active', name: 'Test' })
-      expect(result[:errors]).not_to be_empty
-      expect(result[:errors].first.code).to eq(:invalid_value)
-      expect(result[:errors].first.detail).to include('must be exactly')
+      expect(result[:issues]).not_to be_empty
+      expect(result[:issues].first.code).to eq(:invalid_value)
+      expect(result[:issues].first.message).to include('must be exactly')
     end
 
     it 'serializes with value in AST' do
@@ -76,35 +76,35 @@ RSpec.describe 'Literal and Discriminated Union Features' do
 
     it 'validates string variant with correct discriminator' do
       result = definition.validate({ filter: { kind: 'string', value: 'test' } })
-      expect(result[:errors]).to be_empty
+      expect(result[:issues]).to be_empty
       expect(result[:params][:filter][:value]).to eq('test')
     end
 
     it 'validates range variant with correct discriminator' do
       result = definition.validate({ filter: { kind: 'range', gte: 10, lte: 20 } })
-      expect(result[:errors]).to be_empty
+      expect(result[:issues]).to be_empty
       expect(result[:params][:filter][:gte]).to eq(10)
       expect(result[:params][:filter][:lte]).to eq(20)
     end
 
     it 'rejects invalid discriminator value' do
       result = definition.validate({ filter: { kind: 'invalid' } })
-      expect(result[:errors]).not_to be_empty
-      expect(result[:errors].first.code).to eq(:invalid_value)
-      expect(result[:errors].first.detail).to include('Invalid discriminator value')
+      expect(result[:issues]).not_to be_empty
+      expect(result[:issues].first.code).to eq(:invalid_value)
+      expect(result[:issues].first.message).to include('Invalid discriminator value')
     end
 
     it 'rejects missing discriminator field' do
       result = definition.validate({ filter: { gte: 10 } })
-      expect(result[:errors]).not_to be_empty
-      expect(result[:errors].first.code).to eq(:field_missing)
-      expect(result[:errors].first.detail).to include("Discriminator field 'kind' is required")
+      expect(result[:issues]).not_to be_empty
+      expect(result[:issues].first.code).to eq(:field_missing)
+      expect(result[:issues].first.message).to include("Discriminator field 'kind' is required")
     end
 
     it 'rejects non-hash values for discriminated unions' do
       result = definition.validate({ filter: 'string' })
-      expect(result[:errors]).not_to be_empty
-      expect(result[:errors].first.code).to eq(:invalid_type)
+      expect(result[:issues]).not_to be_empty
+      expect(result[:issues].first.code).to eq(:invalid_type)
     end
 
     it 'serializes with discriminator in AST' do

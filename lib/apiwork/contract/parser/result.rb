@@ -4,11 +4,11 @@ module Apiwork
   module Contract
     class Parser
       class Result
-        attr_reader :data, :errors
+        attr_reader :data, :issues
 
-        def initialize(data, errors)
+        def initialize(data, issues)
           @data = data
-          @errors = errors
+          @issues = issues
         end
 
         def [](key)
@@ -20,11 +20,11 @@ module Apiwork
         end
 
         def valid?
-          errors.empty?
+          issues.empty?
         end
 
         def invalid?
-          errors.any?
+          issues.any?
         end
       end
     end

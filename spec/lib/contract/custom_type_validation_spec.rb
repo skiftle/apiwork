@@ -35,10 +35,10 @@ RSpec.describe 'Contract custom type unknown field validation' do
                                                            }
                                                          })
 
-    expect(result[:errors]).not_to be_empty
-    error = result[:errors].first
+    expect(result[:issues]).not_to be_empty
+    error = result[:issues].first
     expect(error.code).to eq(:field_unknown)
-    expect(error.field).to eq(:invalid_field)
+    expect(error.meta[:field]).to eq(:invalid_field)
   end
 
   it 'allows known fields in custom types' do
@@ -49,7 +49,7 @@ RSpec.describe 'Contract custom type unknown field validation' do
                                                            }
                                                          })
 
-    expect(result[:errors]).to be_empty
+    expect(result[:issues]).to be_empty
     expect(result[:params][:custom][:valid_field]).to be(true)
     expect(result[:params][:custom][:another_field]).to eq('test')
   end

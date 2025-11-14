@@ -140,7 +140,7 @@ module Apiwork
         current_depth = options.fetch(:current_depth, 0)
         path = options.fetch(:path, [])
 
-        errors = []
+        issues = []
         params = {}
         data = data.deep_symbolize_keys if data.respond_to?(:deep_symbolize_keys)
 
@@ -158,26 +158,27 @@ module Apiwork
             max_depth: max_depth,
             current_depth: current_depth
           )
-          errors.concat(param_result[:errors])
+          issues.concat(param_result[:issues])
           params[name] = param_result[:value] if param_result[:value_set]
         end
 
         # Check for unknown params
-        errors.concat(check_unknown_params(data, path))
+        issues.concat(check_unknown_params(data, path))
 
-        { errors: errors, params: params }
+        { issues: issues, params: params }
       end
 
       private
 
       # Return max depth error
       def max_depth_error(current_depth, max_depth, path)
-        errors = [ValidationError.max_depth_exceeded(
-          depth: current_depth,
-          max_depth: max_depth,
-          path: path
+        issues = [Issue.new(
+          code: :max_depth_exceeded,
+          message: 'Max depth exceeded',
+          path: path,
+          meta: { depth: current_depth, max_depth: max_depth }
         )]
-        { errors: errors, params: {} }
+        { issues: issues, params: {} }
       end
 
       # Validate a single parameter
@@ -186,38 +187,37 @@ module Apiwork
 
         # Check required
         required_error = validate_required(name, value, param_options, field_path)
-        return { errors: [required_error], value_set: false } if required_error
+        return { issues: [required_error], value_set: false } if required_error
 
         # Apply default if value is nil
         value = param_options[:default] if value.nil? && param_options[:default]
 
         # Check nullable constraint
         if data.key?(name) && value.nil? && explicitly_not_nullable?(param_options)
-          return { errors: [ValidationError.value_null(field: name, path: field_path)], value_set: false }
+          return { issues: [Issue.new(code: :value_null, message: 'Value cannot be null', path: field_path, meta: { field: name })],
+                   value_set: false }
         end
 
         # Skip validation if value is nil and not required
-        return { errors: [], value_set: false } if value.nil?
+        return { issues: [], value_set: false } if value.nil?
 
         # Validate enum
         enum_error = validate_enum_value(name, value, param_options[:enum], field_path)
-        return { errors: [enum_error], value_set: false } if enum_error
+        return { issues: [enum_error], value_set: false } if enum_error
 
         # Handle literal type validation
         if param_options[:type] == :literal
           expected = param_options[:value]
           unless value == expected
-            error = ValidationError.new(
+            error = Issue.new(
               code: :invalid_value,
-              field: name,
-              detail: "Value must be exactly #{expected.inspect}",
+              message: "Value must be exactly #{expected.inspect}",
               path: field_path,
-              expected: expected,
-              actual: value
+              meta: { field: name, expected: expected, actual: value }
             )
-            return { errors: [error], value_set: false }
+            return { issues: [error], value_set: false }
           end
-          return { errors: [], value: value, value_set: true }
+          return { issues: [], value: value, value_set: true }
         end
 
         # Handle union type validation
@@ -225,7 +225,7 @@ module Apiwork
 
         # Validate type
         type_error = validate_type(name, value, param_options[:type], field_path)
-        return { errors: [type_error], value_set: false } if type_error
+        return { issues: [type_error], value_set: false } if type_error
 
         # Validate shape structures
         validate_shape_or_array(value, param_options, field_path, max_depth, current_depth)
@@ -247,16 +247,14 @@ module Apiwork
 
         # For enum fields, return invalid_value error to show allowed values immediately
         if param_options[:enum].present?
-          ValidationError.new(
+          Issue.new(
             code: :invalid_value,
-            field: name,
-            detail: "Invalid value. Must be one of: #{param_options[:enum].join(', ')}",
+            message: "Invalid value. Must be one of: #{param_options[:enum].join(', ')}",
             path: field_path,
-            expected: param_options[:enum],
-            actual: value
+            meta: { field: name, expected: param_options[:enum], actual: value }
           )
         else
-          ValidationError.field_missing(field: name, path: field_path)
+          Issue.new(code: :field_missing, message: 'Field required', path: field_path, meta: { field: name })
         end
       end
 
@@ -274,13 +272,11 @@ module Apiwork
 
         return nil unless enum_values&.exclude?(value)
 
-        ValidationError.new(
+        Issue.new(
           code: :invalid_value,
-          field: name,
-          detail: "Invalid value. Must be one of: #{enum_values.join(', ')}",
+          message: "Invalid value. Must be one of: #{enum_values.join(', ')}",
           path: field_path,
-          expected: enum_values,
-          actual: value
+          meta: { field: name, expected: enum_values, actual: value }
         )
       end
 
@@ -295,9 +291,9 @@ module Apiwork
           current_depth: current_depth
         )
         if union_error
-          { errors: [union_error], value_set: false }
+          { issues: [union_error], value_set: false }
         else
-          { errors: [], value: union_value, value_set: true }
+          { issues: [], value: union_value, value_set: true }
         end
       end
 
@@ -308,7 +304,7 @@ module Apiwork
         elsif param_options[:type] == :array && value.is_a?(Array)
           validate_array_param(value, param_options, field_path, max_depth, current_depth)
         else
-          { errors: [], value: value, value_set: true }
+          { issues: [], value: value, value_set: true }
         end
       end
 
@@ -320,10 +316,10 @@ module Apiwork
           current_depth: current_depth + 1,
           path: field_path
         )
-        if shape_result[:errors].any?
-          { errors: shape_result[:errors], value_set: false }
+        if shape_result[:issues].any?
+          { issues: shape_result[:issues], value_set: false }
         else
-          { errors: [], value: shape_result[:params], value_set: true }
+          { issues: [], value: shape_result[:params], value_set: true }
         end
       end
 
@@ -335,11 +331,11 @@ module Apiwork
           max_depth: max_depth,
           current_depth: current_depth
         }
-        array_errors, array_values = validate_array(value, array_validation_options)
-        if array_errors.empty?
-          { errors: [], value: array_values, value_set: true }
+        array_issues, array_values = validate_array(value, array_validation_options)
+        if array_issues.empty?
+          { issues: [], value: array_values, value_set: true }
         else
-          { errors: array_errors, value_set: false }
+          { issues: array_issues, value_set: false }
         end
       end
 
@@ -347,10 +343,11 @@ module Apiwork
       def check_unknown_params(data, path)
         extra_keys = data.keys - @params.keys
         extra_keys.map do |key|
-          ValidationError.field_unknown(
-            field: key,
-            allowed: @params.keys,
-            path: path + [key]
+          Issue.new(
+            code: :field_unknown,
+            message: 'Unknown field',
+            path: path + [key],
+            meta: { field: key, allowed: @params.keys }
           )
         end
       end
@@ -362,18 +359,19 @@ module Apiwork
         max_depth = options[:max_depth]
         current_depth = options[:current_depth]
 
-        errors = []
+        issues = []
         values = []
 
         # Check max items
         max_items = param_options[:max_items] || Apiwork.configuration.max_array_items
         if array.length > max_items
-          errors << ValidationError.array_too_large(
-            size: array.length,
-            max_size: max_items,
-            path: field_path
+          issues << Issue.new(
+            code: :array_too_large,
+            message: 'Value too large',
+            path: field_path,
+            meta: { max_size: max_items, actual: array.length }
           )
-          return [errors, []]
+          return [issues, []]
         end
 
         array.each_with_index do |item, index|
@@ -387,8 +385,8 @@ module Apiwork
               current_depth: current_depth + 1,
               path: item_path
             )
-            if shape_result[:errors].any?
-              errors.concat(shape_result[:errors])
+            if shape_result[:issues].any?
+              issues.concat(shape_result[:issues])
             else
               values << shape_result[:params]
             end
@@ -398,11 +396,11 @@ module Apiwork
             if custom_type_block
               # Array of custom type - must be a hash
               unless item.is_a?(Hash)
-                errors << ValidationError.invalid_type(
-                  field: index,
-                  expected: param_options[:of],
-                  actual: item.class.name.underscore.to_sym,
-                  path: item_path
+                issues << Issue.new(
+                  code: :invalid_type,
+                  message: 'Invalid type',
+                  path: item_path,
+                  meta: { field: index, expected: param_options[:of], actual: item.class.name.underscore.to_sym }
                 )
                 next
               end
@@ -417,8 +415,8 @@ module Apiwork
                 current_depth: current_depth + 1,
                 path: item_path
               )
-              if shape_result[:errors].any?
-                errors.concat(shape_result[:errors])
+              if shape_result[:issues].any?
+                issues.concat(shape_result[:issues])
               else
                 values << shape_result[:params]
               end
@@ -426,7 +424,7 @@ module Apiwork
               # Simple type array (e.g., array of strings)
               type_error = validate_type(index, item, param_options[:of], item_path)
               if type_error
-                errors << type_error
+                issues << type_error
               else
                 values << item
               end
@@ -437,7 +435,7 @@ module Apiwork
           end
         end
 
-        [errors, values]
+        [issues, values]
       end
 
       def validate_type(name, value, expected_type, path)
@@ -457,11 +455,11 @@ module Apiwork
 
         return nil if valid
 
-        ValidationError.invalid_type(
-          field: name,
-          expected: expected_type,
-          actual: value.class.name.underscore.to_sym,
-          path: path
+        Issue.new(
+          code: :invalid_type,
+          message: 'Invalid type',
+          path: path,
+          meta: { field: name, expected: expected_type, actual: value.class.name.underscore.to_sym }
         )
       end
 
@@ -516,11 +514,11 @@ module Apiwork
 
         # All variants failed - return error listing all expected types
         expected_types = variants.map { |v| v[:type] }
-        error = ValidationError.invalid_type(
-          field: name,
-          expected: expected_types.join(' | '),
-          actual: value.class.name.underscore.to_sym,
-          path: path
+        error = Issue.new(
+          code: :invalid_type,
+          message: 'Invalid type',
+          path: path,
+          meta: { field: name, expected: expected_types.join(' | '), actual: value.class.name.underscore.to_sym }
         )
 
         [error, nil]
@@ -534,22 +532,22 @@ module Apiwork
 
         # Value must be a hash for discriminated unions
         unless value.is_a?(Hash)
-          error = ValidationError.invalid_type(
-            field: name,
-            expected: :object,
-            actual: value.class.name.underscore.to_sym,
-            path: path
+          error = Issue.new(
+            code: :invalid_type,
+            message: 'Invalid type',
+            path: path,
+            meta: { field: name, expected: :object, actual: value.class.name.underscore.to_sym }
           )
           return [error, nil]
         end
 
         # Check if discriminator field exists (use key? to handle false values)
         unless value.key?(discriminator)
-          error = ValidationError.new(
+          error = Issue.new(
             code: :field_missing,
-            field: discriminator,
-            detail: "Discriminator field '#{discriminator}' is required",
-            path: path + [discriminator]
+            message: "Discriminator field '#{discriminator}' is required",
+            path: path + [discriminator],
+            meta: { field: discriminator }
           )
           return [error, nil]
         end
@@ -565,13 +563,11 @@ module Apiwork
 
         unless matching_variant
           valid_tags = variants.map { |v| v[:tag] }.compact
-          error = ValidationError.new(
+          error = Issue.new(
             code: :invalid_value,
-            field: discriminator,
-            detail: "Invalid discriminator value. Must be one of: #{valid_tags.join(', ')}",
+            message: "Invalid discriminator value. Must be one of: #{valid_tags.join(', ')}",
             path: path + [discriminator],
-            expected: valid_tags,
-            actual: discriminator_value
+            meta: { field: discriminator, expected: valid_tags, actual: discriminator_value }
           )
           return [error, nil]
         end
@@ -623,11 +619,11 @@ module Apiwork
 
           # Must be a hash for custom type
           unless value.is_a?(Hash)
-            type_error = ValidationError.invalid_type(
-              field: name,
-              expected: variant_type,
-              actual: value.class.name.underscore.to_sym,
-              path: path
+            type_error = Issue.new(
+              code: :invalid_type,
+              message: 'Invalid type',
+              path: path,
+              meta: { field: name, expected: variant_type, actual: value.class.name.underscore.to_sym }
             )
             return [type_error, nil]
           end
@@ -639,7 +635,7 @@ module Apiwork
             path: path
           )
 
-          return [result[:errors].first, nil] if result[:errors].any?
+          return [result[:issues].first, nil] if result[:issues].any?
 
           return [nil, result[:params]]
         end
@@ -647,18 +643,18 @@ module Apiwork
         # Handle array type
         if variant_type == :array
           unless value.is_a?(Array)
-            type_error = ValidationError.invalid_type(
-              field: name,
-              expected: :array,
-              actual: value.class.name.underscore.to_sym,
-              path: path
+            type_error = Issue.new(
+              code: :invalid_type,
+              message: 'Invalid type',
+              path: path,
+              meta: { field: name, expected: :array, actual: value.class.name.underscore.to_sym }
             )
             return [type_error, nil]
           end
 
           # Validate array items
           if variant_shape || variant_of
-            array_errors, array_values = validate_array(
+            array_issues, array_values = validate_array(
               value,
               {
                 param_options: { shape: variant_shape, of: variant_of },
@@ -668,7 +664,7 @@ module Apiwork
               }
             )
 
-            return [array_errors.first, nil] if array_errors.any?
+            return [array_issues.first, nil] if array_issues.any?
 
             return [nil, array_values]
           end
@@ -679,11 +675,11 @@ module Apiwork
         # Handle object type with shape definition
         if variant_type == :object && variant_shape
           unless value.is_a?(Hash)
-            type_error = ValidationError.invalid_type(
-              field: name,
-              expected: :object,
-              actual: value.class.name.underscore.to_sym,
-              path: path
+            type_error = Issue.new(
+              code: :invalid_type,
+              message: 'Invalid type',
+              path: path,
+              meta: { field: name, expected: :object, actual: value.class.name.underscore.to_sym }
             )
             return [type_error, nil]
           end
@@ -695,7 +691,7 @@ module Apiwork
             path: path
           )
 
-          return [result[:errors].first, nil] if result[:errors].any?
+          return [result[:issues].first, nil] if result[:issues].any?
 
           return [nil, result[:params]]
         end
@@ -706,13 +702,11 @@ module Apiwork
 
         # Validate enum if present
         if variant_def[:enum] && !variant_def[:enum].include?(value)
-          enum_error = ValidationError.new(
+          enum_error = Issue.new(
             code: :invalid_value,
-            field: name,
-            detail: "Invalid value. Must be one of: #{variant_def[:enum].join(', ')}",
+            message: "Invalid value. Must be one of: #{variant_def[:enum].join(', ')}",
             path: path,
-            expected: variant_def[:enum],
-            actual: value
+            meta: { field: name, expected: variant_def[:enum], actual: value }
           )
           return [enum_error, nil]
         end
