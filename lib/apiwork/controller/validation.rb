@@ -29,19 +29,19 @@ module Apiwork
 
       # Input validation using contracts (before_action)
       def validate_input
-        return unless action_input.invalid?
+        return if action_input.valid?
 
-        # Convert ValidationError objects to StructuredError format
-        structured_errors = action_input.errors.map do |error|
-          StructuredError.new(
+        # Convert ValidationError objects to ContractError format
+        contract_errors = action_input.errors.map do |error|
+          ContractError.new(
             code: error.code,
-            detail: error.detail,
+            message: error.detail,
             path: error.path,
-            **error.meta
+            meta: error.meta
           )
         end
 
-        raise StructuredErrorCollection, structured_errors
+        raise ConstraintErrorCollection, contract_errors
       end
 
       private

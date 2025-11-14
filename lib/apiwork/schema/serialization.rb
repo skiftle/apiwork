@@ -15,7 +15,7 @@ module Apiwork
           end
         rescue StandardError => e
           schema_name = respond_to?(:name) ? name : 'Schema'
-          raise Apiwork::SerializationError, "Serialization error for #{schema_name}: #{e.message}"
+          raise Apiwork::SchemaError, "Serialization error for #{schema_name}: #{e.message}"
         end
       end
 
