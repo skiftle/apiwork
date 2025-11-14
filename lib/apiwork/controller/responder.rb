@@ -11,7 +11,7 @@ module Apiwork
     # - Delete responses
     #
     # Separated from Controller::Serialization for better separation of concerns
-    class ResponseRenderer
+    class Responder
       attr_reader :controller, :action_definition, :schema_class, :meta
 
       def initialize(controller:, action_definition:, schema_class:, meta: {})
@@ -125,7 +125,6 @@ module Apiwork
         controller.respond_to?(:build_schema_context, true) ? controller.send(:build_schema_context) : {}
       end
 
-      # Determine root key for response
       def determine_root_key(resource_or_collection)
         root_key = schema_class.root_key
         resource_or_collection.is_a?(Enumerable) ? root_key.plural : root_key.singular
