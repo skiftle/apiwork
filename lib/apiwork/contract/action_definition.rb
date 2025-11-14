@@ -250,9 +250,11 @@ module Apiwork
 
           # Check required fields
           if param_options[:required] && value.nil?
-            raise ValidationError.new(
+            raise Issue.new(
               code: :missing_field,
-              detail: "Required field '#{param_name}' is missing in output"
+              message: "Required field '#{param_name}' is missing in output",
+              path: [],
+              meta: {}
             )
           end
 
