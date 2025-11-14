@@ -19,7 +19,7 @@ module Apiwork
         @action_input ||= begin
           data = request.query_parameters.merge(request.request_parameters).deep_symbolize_keys
 
-          Contract::Parser.new(current_contract, :input, action_name).perform(Transform::Case.hash(data, key_transform))
+          Contract::Parser.new(current_contract, :input, action_name, coerce: true).perform(Transform::Case.hash(data, key_transform))
         end
       end
 

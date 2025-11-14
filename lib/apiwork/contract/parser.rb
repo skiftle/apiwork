@@ -13,15 +13,15 @@ module Apiwork
     # 3. Transforms validated data (nested attributes, etc.)
     #
     # Usage:
-    #   # Input parsing
-    #   parser = Contract::Parser.new(contract_class, :input, :create)
+    #   # Input parsing (with coercion enabled to convert strings from HTTP to proper types)
+    #   parser = Contract::Parser.new(contract_class, :input, :create, coerce: true)
     #   result = parser.perform(params)
     #   if result.valid?
     #     Model.create(result[:model])
     #   end
     #
-    #   # Output parsing
-    #   parser = Contract::Parser.new(contract_class, :output, :index, context: { current_user: user })
+    #   # Output parsing (without coercion - validates types as-is from Ruby code)
+    #   parser = Contract::Parser.new(contract_class, :output, :index, coerce: false, context: { current_user: user })
     #   result = parser.perform(response_hash)
     #   if result.valid?
     #     render json: result.data
@@ -38,6 +38,7 @@ module Apiwork
         @contract_class = contract_class
         @direction = direction.to_sym
         @action = action.to_sym
+        @coerce = options.fetch(:coerce, false)
         @context = options[:context] || {}
 
         validate_direction!
@@ -54,8 +55,8 @@ module Apiwork
       end
 
       def perform(data)
-        # Step 1: Coerce types (string → Integer, Date, etc)
-        coerced_data = coerce(data)
+        # Step 1: Coerce types (only for input - output already has correct types)
+        coerced_data = @coerce ? coerce(data) : data
 
         # Step 2: Validate coerced data
         validated = validate(coerced_data)
