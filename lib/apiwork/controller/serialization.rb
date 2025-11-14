@@ -11,15 +11,6 @@ module Apiwork
     module Serialization
       extend ActiveSupport::Concern
 
-      QUERY_PARAMS = %i[filter sort page include].freeze
-
-      def action_output
-        @action_output ||= begin
-          contract = current_contract&.new
-          return nil unless contract
-        end
-      end
-
       def respond_with(resource_or_collection, meta: {}, status: nil)
         raise ConfigurationError, "No contract found for #{self.class.name}" unless current_contract
 
@@ -34,7 +25,7 @@ module Apiwork
 
         validaed = responder.perform(resource_or_collection, query_params: action_input.data)
 
-        validated_response = output.perform(validaed)
+        validated_response = output_parser.perform(validaed)
 
         render json: validated_response.data, status: status || :ok
       end
