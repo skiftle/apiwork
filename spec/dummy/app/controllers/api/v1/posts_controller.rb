@@ -66,7 +66,7 @@ module Api
           post.id
         end
         posts = Post.where(id: created_ids)
-        respond_with posts
+        respond_with posts, status: :created
       end
 
       private

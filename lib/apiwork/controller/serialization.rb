@@ -17,8 +17,13 @@ module Apiwork
 
         response = responder.perform(resource_or_collection, query_params: action_input.data)
 
-        result = output_parser.perform(response)
-        raise ContractError, result.issues if result.invalid?
+        # Skip output validation for DELETE actions with schema
+        # (they return { ok: true, meta: {} } without resource data to validate)
+        skip_validation = request.delete? && output_parser.schema_class.present?
+        unless skip_validation
+          result = output_parser.perform(response)
+          raise ContractError, result.issues if result.invalid?
+        end
 
         render json: response, status: status || action_name.to_sym == :create ? :created : :ok
       end
