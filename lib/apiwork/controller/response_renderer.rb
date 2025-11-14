@@ -127,9 +127,8 @@ module Apiwork
 
       # Determine root key for response
       def determine_root_key(resource_or_collection)
-        is_collection = resource_or_collection.is_a?(Enumerable)
         root_key = schema_class.root_key
-        is_collection ? root_key.plural : root_key.singular
+        resource_or_collection.is_a?(Enumerable) ? root_key.plural : root_key.singular
       end
     end
   end
