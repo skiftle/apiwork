@@ -27,8 +27,8 @@ module Apiwork
 
       def spec(type, path: nil)
         # Validate that type is registered
-        unless Generation::Registry.registered?(type)
-          available = Generation::Registry.all.join(', ')
+        unless Generator::Registry.registered?(type)
+          available = Generator::Registry.all.join(', ')
           raise ConfigurationError,
                 "Unknown spec generator: :#{type}. " \
                 "Available generators: #{available}"

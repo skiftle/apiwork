@@ -1,7 +1,13 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Generation
+  module Generator
+    # Registry for managing available generators
+    #
+    # Usage:
+    #   Registry.register(:zod, Generator::Zod)
+    #   generator_class = Registry[:zod]
+    #
     class Registry
       class GeneratorNotFound < StandardError; end
 
@@ -11,7 +17,7 @@ module Apiwork
         end
 
         def register(name, generator_class)
-          raise ArgumentError, 'Generator must inherit from Apiwork::Generation::Generators::Base' unless generator_class < Generators::Base
+          raise ArgumentError, 'Generator must inherit from Apiwork::Generator::Base' unless generator_class < Base
 
           generators[name.to_sym] = generator_class
         end

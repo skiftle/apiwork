@@ -24,7 +24,7 @@ namespace :apiwork do
         puts '  rake apiwork:spec:write FORMAT=zod KEY_TRANSFORM=camelize_lower OUTPUT=public/specs'
         puts ''
         puts 'Available formats:'
-        puts "  #{Apiwork::Generation::Registry.all.join(', ')}"
+        puts "  #{Apiwork::Generator::Registry.all.join(', ')}"
         puts ''
         puts 'Available key transforms:'
         puts '  camelize_lower, camelize_upper, underscore, dasherize, none'
@@ -32,7 +32,7 @@ namespace :apiwork do
       end
 
       begin
-        Apiwork::Generation::Spec.write(
+        Apiwork::Generator::Pipeline.write(
           api_path: api_path,
           output: output,
           format: format,
@@ -64,7 +64,7 @@ namespace :apiwork do
       end
 
       begin
-        Apiwork::Generation::Spec.clean(output: output)
+        Apiwork::Generator::Pipeline.clean(output: output)
       rescue ArgumentError => e
         puts "Error: #{e.message}"
         exit 1

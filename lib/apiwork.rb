@@ -18,11 +18,11 @@ module Apiwork
     end
 
     def register_generator(name, generator_class)
-      Generation::Registry.register(name, generator_class)
+      Generator::Registry.register(name, generator_class)
     end
 
     def generate_spec(type, path, **options)
-      Generation::Registry[type].generate(path: path, **options)
+      Generator::Registry[type].generate(path: path, **options)
     end
 
     def register_global_descriptors(&block)
@@ -47,7 +47,6 @@ end
 loader = Zeitwerk::Loader.for_gem
 loader.inflector.inflect(
   'api' => 'API',
-  'openapi' => 'OpenAPI',
   'json_pointer' => 'JSONPointer'
 )
 
