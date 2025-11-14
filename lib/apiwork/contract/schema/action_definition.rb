@@ -150,13 +150,24 @@ module Apiwork
             action_name: action_name
           )
 
-          # Generate FULL output structure (discriminated union for single, collection wrapper for arrays)
-          # Detect if this is a collection or member action from API metadata
-          if collection_action?
+          # Generate output based on action type
+          case action_name.to_sym
+          when :index
             virtual_def.instance_eval { OutputGenerator.generate_collection_output(self, schema_class) }
-          else
-            # Member actions get single resouschema_classe output (discriminated union)
+          when :show, :create, :update
             virtual_def.instance_eval { OutputGenerator.generate_single_output(self, schema_class) }
+          when :destroy
+            # Destroy has empty output
+          else
+            # Custom actions: only generate wrapper if there's an explicit output definition
+            return nil unless output_definition
+
+            # Generate wrapper based on whether it's a collection or member action
+            if collection_action?
+              virtual_def.instance_eval { OutputGenerator.generate_collection_output(self, schema_class) }
+            else
+              virtual_def.instance_eval { OutputGenerator.generate_single_output(self, schema_class) }
+            end
           end
 
           virtual_def
@@ -226,11 +237,8 @@ module Apiwork
             # Destroy returns empty response (just 200 OK)
             # Leave @output_definition empty
           else
-            # Custom member/collection actions default to single resource output
-            # This provides a sensible default that works for most member actions
-            # Collection actions can override with reset_output! and explicit output definition
-            # The respond_with helper will adapt the response based on what controller returns
-            @output_definition.instance_eval { OutputGenerator.generate_single_output(self, schema_class) }
+            # Custom actions must define their own output
+            # Leave @output_definition empty
           end
         end
 

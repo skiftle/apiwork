@@ -33,8 +33,6 @@ module Apiwork
           raise ValidationError, issues
         end
 
-        return { ok: true, meta: meta.presence || {} } if controller.request.delete?
-
         build_single_resource_response(resource_or_collection, query_params)
       end
 
@@ -54,11 +52,15 @@ module Apiwork
         json_data = action_definition.serialize_data(collection, context: build_schema_context,
                                                                  includes: includes_param)
 
-        # Build complete response with pagination meta
+        # Build complete response
         if schema_class
           root_key = determine_root_key(collection)
-          pagination_meta = query_obj&.meta || {}
-          { ok: true, root_key => json_data, meta: pagination_meta.merge(meta) }
+          # Only index action has pagination meta
+          pagination_meta = controller.action_name.to_s == 'index' ? (query_obj&.meta || {}) : {}
+          combined_meta = pagination_meta.merge(meta)
+          resp = { ok: true, root_key => json_data }
+          resp[:meta] = combined_meta if combined_meta.present?
+          resp
         else
           # Custom contract without schema
           { ok: true }.merge(json_data).merge(meta: meta)
@@ -80,13 +82,18 @@ module Apiwork
         json_data = action_definition.serialize_data(resource, context: build_schema_context, includes: includes_param)
 
         # Build complete response
-        if schema_class
+        if action_definition.schema_class
+          # For DELETE requests with schema, return simple success response
+          return { ok: true, meta: meta.presence || {} } if controller.request.delete?
+
+          # Schema-based: wrap in discriminated union
           root_key = determine_root_key(resource)
           resp = { ok: true, root_key => json_data }
         else
-          # Custom contract without schema
-          resp = { ok: true }.merge(json_data)
+          # No schema: contract determines format
+          resp = json_data
         end
+
         resp[:meta] = meta if meta.present?
         resp
       end

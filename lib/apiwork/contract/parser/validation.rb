@@ -18,9 +18,10 @@ module Apiwork
 
         # Validate data using definition
         def validate(data)
-          return { params: data, errors: [] } unless definition
+          return { params: data, issues: [] } unless definition
+          return { params: data, issues: [] } if definition.params.empty?
 
-          definition.validate(data) || { params: data, errors: [] }
+          definition.validate(data) || { params: data, issues: [] }
         end
 
         # Handle validation errors based on direction

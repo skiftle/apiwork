@@ -6,11 +6,11 @@ module Api
       schema PostSchema
 
       action :show do
-        error_codes 404, 403  # Not found, forbidden
+        error_codes 404, 403 # Not found, forbidden
       end
 
       action :create do
-        error_codes 422  # Validation error
+        error_codes 422 # Validation error
 
         input do
           param :title, type: :string
@@ -20,7 +20,7 @@ module Api
       end
 
       action :update do
-        error_codes 404, 422  # Not found, validation error
+        error_codes 404, 422 # Not found, validation error
 
         input do
           param :title, type: :string, required: false
@@ -65,7 +65,7 @@ module Api
         end
       end
 
-      # Override destroy to test output replace: true (complete replacement, no discriminated union)
+      # Test replace: true for output (completely replaces schema output)
       action :destroy do
         output replace: true do
           param :deleted_id, type: :uuid, required: true

@@ -54,12 +54,10 @@ module Apiwork
                 # Empty
               end
             else
-              # Custom member/collection actions (e.g., :search, :publish, :archive)
-              # Default to single resource output (unwrapped discriminated union)
-              # This works well for member actions that return a single resource
-              # Collection actions should define explicit output with reset_output! if they return arrays
+              # Custom actions get empty output by default
+              # Must define explicit output if needed
               action_definition.output do
-                OutputGenerator.generate_single_output(self, schema_class)
+                # Empty
               end
             end
 

@@ -32,5 +32,14 @@ module Apiwork
       result[:options] = filtered_meta if filtered_meta && (filtered_meta.respond_to?(:empty?) ? !filtered_meta.empty? : true)
       result
     end
+
+    def pretty
+      <<~TXT
+        - code:    #{code}
+          path:    #{dot_path}
+          pointer: #{pointer}
+          detail:  #{message}
+      TXT
+    end
   end
 end
