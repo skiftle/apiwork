@@ -39,21 +39,9 @@ module Apiwork
             parts << ''
           end
 
-          typescript_enum_types = build_typescript_enum_types
-          if typescript_enum_types.present?
-            parts << typescript_enum_types
-            parts << ''
-          end
-
-          typescript_types = build_typescript_types
-          if typescript_types.present?
-            parts << typescript_types
-            parts << ''
-          end
-
-          action_typescript_types = build_action_typescript_types
-          if action_typescript_types.present?
-            parts << action_typescript_types
+          all_typescript_types = build_all_typescript_types
+          if all_typescript_types.present?
+            parts << all_typescript_types
             parts << ''
           end
 
@@ -399,6 +387,50 @@ module Apiwork
           types.join("\n\n")
         end
 
+        def build_all_typescript_types
+          all_types = []
+
+          # Collect enum types with their names
+          enums.each do |enum_name, enum_values|
+            type_name = zod_type_name(enum_name)
+            values_str = enum_values.sort.map { |v| "'#{v}'" }.join(' | ')
+            all_types << { name: type_name, code: "export type #{type_name} = #{values_str};" }
+          end
+
+          # Collect regular types with their names
+          types.each do |type_name, type_shape|
+            type_name_pascal = zod_type_name(type_name)
+            code = if type_shape.is_a?(Hash) && type_shape[:type] == :union
+                     build_typescript_union_type(type_name, type_shape)
+                   else
+                     action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
+                     recursive = detect_circular_references(type_name, type_shape)
+                     build_typescript_type(type_name, type_shape, action_name, recursive: recursive)
+                   end
+            all_types << { name: type_name_pascal, code: code }
+          end
+
+          # Collect action types with their names
+          each_resource do |resource_name, resource_data, _parent_path|
+            each_action(resource_data) do |action_name, action_data|
+              if action_data[:input]&.any?
+                type_name = action_schema_name(resource_name, action_name, 'Input')
+                code = build_action_input_typescript_type(resource_name, action_name, action_data[:input])
+                all_types << { name: type_name, code: code }
+              end
+
+              next unless action_data[:output]
+
+              type_name = action_schema_name(resource_name, action_name, 'Output')
+              code = build_action_output_typescript_type(resource_name, action_name, action_data[:output])
+              all_types << { name: type_name, code: code }
+            end
+          end
+
+          # Sort all types alphabetically by name
+          all_types.sort_by { |t| t[:name] }.map { |t| t[:code] }.join("\n\n")
+        end
+
         def build_action_schemas
           schemas = []
 
@@ -520,11 +552,14 @@ module Apiwork
             if enum_ref.is_a?(Symbol) && enums.key?(enum_ref)
               base_type = zod_type_name(enum_ref)
             elsif enum_ref.is_a?(Array)
-              base_type = enum_ref.map { |v| "'#{v}'" }.join(' | ')
+              base_type = enum_ref.sort.map { |v| "'#{v}'" }.join(' | ')
             end
           end
 
-          base_type = "#{base_type} | null" if is_nullable
+          if is_nullable
+            members = [base_type, 'null'].sort
+            base_type = members.join(' | ')
+          end
 
           base_type
         end
@@ -602,7 +637,7 @@ module Apiwork
           variants = definition[:variants].map do |variant|
             map_typescript_type_definition(variant, action_name)
           end
-          variants.join(' | ')
+          variants.sort.join(' | ')
         end
 
         def map_typescript_literal_type(definition)

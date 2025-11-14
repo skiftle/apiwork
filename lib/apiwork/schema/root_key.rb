@@ -14,7 +14,6 @@ module Apiwork
         singular
       end
 
-      # Inspect for debugging
       def inspect
         "#<Apiwork::Schema::RootKey singular=#{singular.inspect} plural=#{plural.inspect}>"
       end

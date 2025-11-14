@@ -51,15 +51,12 @@ loader.inflector.inflect(
   'json_pointer' => 'JSONPointer'
 )
 
-loader.ignore("#{__dir__}/apiwork/version.rb")
-loader.ignore("#{__dir__}/apiwork/engine.rb")
+# error.rb contains multiple classes, so we need to require it explicitly
+loader.ignore("#{__dir__}/apiwork/error.rb")
+
 loader.setup
-loader.eager_load
 
-# Register built-in generators
-Apiwork.register_generator(:openapi, Apiwork::Generation::Generators::OpenAPI)
-Apiwork.register_generator(:zod, Apiwork::Generation::Generators::Zod)
-Apiwork.register_generator(:typescript, Apiwork::Generation::Generators::Typescript)
+# Explicitly require files that Zeitwerk ignores
+require_relative 'apiwork/error'
 
-# Rails integration
 require_relative 'apiwork/engine' if defined?(Rails::Engine)
