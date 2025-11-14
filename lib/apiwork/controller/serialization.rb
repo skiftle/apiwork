@@ -18,9 +18,7 @@ module Apiwork
         response = responder.perform(resource_or_collection, query_params: action_input.data)
 
         if Rails.env.development?
-
           result = output_parser.perform(response)
-
           raise ContractError, result.issues if result.invalid?
         end
 

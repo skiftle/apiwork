@@ -17,12 +17,9 @@ module Apiwork
 
       def action_input
         @action_input ||= begin
-          return Contract::Parser::Result.new({}, [], :input, schema_class: nil) unless current_contract
+          data = request.query_parameters.merge(request.request_parameters).deep_symbolize_keys
 
-          request_params = parse_request_params(request)
-
-          # Parse: validate + transform in one step
-          Contract::Parser.new(current_contract, :input, action_name).perform(request_params)
+          Contract::Parser.new(current_contract, :input, action_name).perform(Transform::Case.hash(data, key_transform))
         end
       end
 
@@ -34,31 +31,6 @@ module Apiwork
         raise ContractError, action_input.issues
       end
 
-      def parse_request_params(request)
-        query = parse_query_params(request)
-        body = parse_body_params(request)
-        query.merge(body)
-      end
-
-      # Parse query parameters from URL
-      def parse_query_params(request)
-        return {} unless request.query_parameters
-
-        params = request.query_parameters
-        params = Transform::Case.hash(params, key_transform)
-        params.deep_symbolize_keys
-      end
-
-      # Parse body parameters from POST/PATCH/PUT
-      def parse_body_params(request)
-        return {} unless request.post? || request.patch? || request.put?
-
-        body_hash = request.request_parameters.except(:controller, :action, :format)
-        body_hash = Transform::Case.hash(body_hash, key_transform)
-        body_hash.deep_symbolize_keys
-      end
-
-      # Get key transform from configuration
       def key_transform
         Apiwork.configuration.deserialize_key_transform
       end
