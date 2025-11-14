@@ -27,7 +27,11 @@
       "Bash(bundle show:*)",
       "Bash(gem which:*)",
       "Bash(gem env:*)",
-      "Bash(git log:*)"
+      "Bash(git log:*)",
+      "Bash(RAILS_ENV=test bin/rails db:migrate:*)",
+      "Bash(RAILS_ENV=test bundle exec rails:*)",
+      "Bash(bundle exec rails db:migrate:*)",
+      "Bash(RAILS_ENV=test bundle exec bin/rails runner:*)"
     ],
     "deny": [],
     "ask": []

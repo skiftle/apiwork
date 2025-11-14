@@ -227,6 +227,10 @@ module Apiwork
         type_error = validate_type(name, value, param_options[:type], field_path)
         return { issues: [type_error], value_set: false } if type_error
 
+        # Validate custom types (registered type references)
+        custom_type_result = validate_custom_type(value, param_options[:type], field_path, max_depth, current_depth)
+        return custom_type_result if custom_type_result
+
         # Validate shape structures
         validate_shape_or_array(value, param_options, field_path, max_depth, current_depth)
       end
@@ -439,6 +443,22 @@ module Apiwork
         end
 
         [issues, values]
+      end
+
+      def validate_custom_type(value, type_name, field_path, max_depth, current_depth)
+        # Return nil if not a custom type (let normal validation continue)
+        return nil unless type_name.is_a?(Symbol)
+
+        # Try to resolve custom type from registry
+        type_def = Descriptors::Registry.resolve(type_name, contract_class: @contract_class, scope: self)
+
+        return nil unless type_def # Not a registered custom type
+
+        # Validate value against custom type definition
+        type_def.validate(value, max_depth: max_depth, current_depth: current_depth + 1, field_path: field_path)
+      rescue StandardError
+        # If resolution fails, treat as non-custom type
+        nil
       end
 
       def validate_type(name, value, expected_type, path)

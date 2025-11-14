@@ -6,7 +6,7 @@ module Apiwork
       extend ActiveSupport::Concern
 
       def respond_with(resource_or_collection, meta: {}, status: nil)
-        output_parser = Contract::Parser.new(current_contract, :output, action_name, context: context)
+        output_parser = Contract::Parser.new(current_contract, :output, action_name, coerce: false, context: context)
 
         responder = Responder.new(
           controller: self,
@@ -17,10 +17,8 @@ module Apiwork
 
         response = responder.perform(resource_or_collection, query_params: action_input.data)
 
-        if Rails.env.development?
-          result = output_parser.perform(response)
-          raise ContractError, result.issues if result.invalid?
-        end
+        result = output_parser.perform(response)
+        raise ContractError, result.issues if result.invalid?
 
         render json: response, status: status || :ok
       end

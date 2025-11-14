@@ -54,4 +54,7 @@ Apiwork::API.draw '/api/v1' do
 
   # Routing DSL override testing - exclude specific actions
   resources :safe_comments, except: [:destroy]
+
+  # Account resource for testing enum validation
+  resources :accounts, only: [:show]
 end
