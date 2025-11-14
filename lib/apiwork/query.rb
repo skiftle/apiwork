@@ -19,9 +19,24 @@ module Apiwork
     def perform(params)
       @params = params.slice(:filter, :sort, :page, :include)
 
-      @result = apply_filter(@result, @params[:filter]) if @params[:filter].present?
-      @result = apply_sort(@result, @params[:sort])
-      @result = apply_pagination(@result, @params[:page]) if @params[:page].present?
+      issues = []
+
+      # Apply filter and collect issues
+      @result = apply_filter(@result, @params[:filter], issues) if @params[:filter].present?
+
+      # Apply sort and collect issues
+      @result = apply_sort(@result, @params[:sort], issues)
+
+      # Apply pagination - raises QueryError if validation fails
+      # Pagination validates immediately since it needs valid page params
+      begin
+        @result = apply_pagination(@result, @params[:page]) if @params[:page].present?
+      rescue QueryError => e
+        issues.concat(e.issues)
+      end
+
+      # Raise QueryError if any issues were collected
+      raise QueryError, issues if issues.any?
 
       @result = apply_includes(@result, @params)
 

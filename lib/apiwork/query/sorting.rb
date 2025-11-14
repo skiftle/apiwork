@@ -3,7 +3,7 @@
 module Apiwork
   class Query
     module Sorting
-      def apply_sort(scope, params)
+      def apply_sort(scope, params, issues = [])
         return scope if params.blank?
 
         # Use default sort if no params
@@ -14,12 +14,16 @@ module Apiwork
         params = params.reduce({}) { |acc, hash| acc.merge(hash) } if params.is_a?(Array)
 
         unless params.is_a?(Hash)
-          error = ArgumentError.new('sort must be a Hash or Array of Hashes')
-          Errors::Handler.handle(error, context: { params_type: params.class })
+          issues << Issue.new(
+            code: :invalid_sort_params_type,
+            message: 'sort must be a Hash or Array of Hashes',
+            path: [:sort],
+            meta: { params_type: params.class.name }
+          )
           return scope
         end
 
-        orders, joins = build_order_clauses(params)
+        orders, joins = build_order_clauses(params, schema.model_class, issues)
         scope = scope.joins(joins).order(orders)
         scope = scope.distinct if joins.present?
         scope
@@ -31,7 +35,7 @@ module Apiwork
 
       private
 
-      def build_order_clauses(params, target_klass = schema.model_class)
+      def build_order_clauses(params, target_klass = schema.model_class, issues = [])
         params.each_with_object([[], []]) do |(key, value), (orders, joins)|
           key = key.to_sym
 
@@ -41,12 +45,13 @@ module Apiwork
               available = schema.attribute_definitions
                                 .select { |_, definition| definition.sortable? }
                                 .keys
-                                .join(', ')
 
-              error = ArgumentError.new(
-                "#{key} is not sortable on #{target_klass.name}. Sortable: #{available}"
+              issues << Issue.new(
+                code: :field_not_sortable,
+                message: "#{key} is not sortable on #{target_klass.name}. Sortable: #{available.join(', ')}",
+                path: [:sort, key],
+                meta: { field: key, class: target_klass.name, available: available }
               )
-              Errors::Handler.handle(error, context: { field: key, class: target_klass.name })
               next
             end
 
@@ -57,8 +62,12 @@ module Apiwork
                       when :asc then column.asc
                       when :desc then column.desc
                       else
-                        error = ArgumentError.new("Invalid direction '#{direction}'. Use 'asc' or 'desc'")
-                        Errors::Handler.handle(error, context: { field: key, direction: direction })
+                        issues << Issue.new(
+                          code: :invalid_sort_direction,
+                          message: "Invalid direction '#{direction}'. Use 'asc' or 'desc'",
+                          path: [:sort, key],
+                          meta: { field: key, direction: direction, valid_directions: [:asc, :desc] }
+                        )
                         next
                       end
 
@@ -66,22 +75,34 @@ module Apiwork
             association = target_klass.reflect_on_association(key)
 
             if association.nil?
-              error = ArgumentError.new("#{key} is not a valid association on #{target_klass.name}")
-              Errors::Handler.handle(error, context: { field: key, class: target_klass.name })
+              issues << Issue.new(
+                code: :invalid_association,
+                message: "#{key} is not a valid association on #{target_klass.name}",
+                path: [:sort, key],
+                meta: { field: key, class: target_klass.name }
+              )
               next
             end
 
             unless schema.association_definitions[key]&.sortable?
-              error = ArgumentError.new("Association #{key} is not sortable")
-              Errors::Handler.handle(error, context: { association: key })
+              issues << Issue.new(
+                code: :association_not_sortable,
+                message: "Association #{key} is not sortable",
+                path: [:sort, key],
+                meta: { association: key }
+              )
               next
             end
 
             association_resource = schema.association_definitions[key].schema_class || schema.detect_association_resource(key)
 
             if association_resource.nil?
-              error = ArgumentError.new("Cannot find resource for association #{key}")
-              Errors::Handler.handle(error, context: { association: key })
+              issues << Issue.new(
+                code: :association_resource_not_found,
+                message: "Cannot find resource for association #{key}",
+                path: [:sort, key],
+                meta: { association: key }
+              )
               next
             end
 
@@ -89,13 +110,17 @@ module Apiwork
 
             # Use Query class for nested sorting
             nested_query = Apiwork::Query.new(association.klass.all, schema: association_resource)
-            nested_orders, nested_joins = nested_query.send(:build_order_clauses, value, association.klass)
+            nested_orders, nested_joins = nested_query.send(:build_order_clauses, value, association.klass, issues)
             orders.concat(nested_orders)
 
             joins << (nested_joins.any? ? { key => nested_joins } : key)
           else
-            error = ArgumentError.new("Sort value must be 'asc', 'desc', or Hash for associations")
-            Errors::Handler.handle(error, context: { field: key, value_type: value.class })
+            issues << Issue.new(
+              code: :invalid_sort_value_type,
+              message: "Sort value must be 'asc', 'desc', or Hash for associations",
+              path: [:sort, key],
+              meta: { field: key, value_type: value.class.name }
+            )
           end
         end
       end
