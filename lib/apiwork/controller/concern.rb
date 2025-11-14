@@ -23,6 +23,7 @@ module Apiwork
         end
       end
 
+      include ContractResolution
       include Validation
       include Serialization
       include ActionMetadata
