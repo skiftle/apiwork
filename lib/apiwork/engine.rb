@@ -18,9 +18,9 @@ module Apiwork
       Apiwork::Contract::BuiltInTypes.register
 
       # Register generators
-      Apiwork.register_generator(:openapi, Apiwork::Generation::Generators::OpenAPI)
-      Apiwork.register_generator(:zod, Apiwork::Generation::Generators::Zod)
-      Apiwork.register_generator(:typescript, Apiwork::Generation::Generators::Typescript)
+      Apiwork.register_generator(:openapi, Apiwork::Generator::Openapi)
+      Apiwork.register_generator(:zod, Apiwork::Generator::Zod)
+      Apiwork.register_generator(:typescript, Apiwork::Generator::Typescript)
     end
   end
 end

@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Generation
+  module Generator
+    # Options parsing and validation for generators
     class Options
       VALID_KEY_TRANSFORMS = %i[camelize_lower camelize_upper underscore dasherize none].freeze
 

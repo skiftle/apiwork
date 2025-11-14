@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Apiwork::Generation::Generators::Zod do
+RSpec.describe Apiwork::Generator::Zod do
   before do
     # Reset registries to prevent accumulation
     Apiwork.reset_registries!

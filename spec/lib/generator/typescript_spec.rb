@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Apiwork::Generation::Generators::Typescript do
+RSpec.describe Apiwork::Generator::Typescript do
   before do
     # Reset registries to prevent accumulation
     Apiwork.reset_registries!
@@ -290,11 +290,11 @@ RSpec.describe Apiwork::Generation::Generators::Typescript do
 
   describe 'generator registration' do
     it 'is registered in the registry' do
-      expect(Apiwork::Generation::Registry.registered?(:typescript)).to be true
+      expect(Apiwork::Generator::Registry.registered?(:typescript)).to be true
     end
 
     it 'can be retrieved from the registry' do
-      expect(Apiwork::Generation::Registry[:typescript]).to eq(described_class)
+      expect(Apiwork::Generator::Registry[:typescript]).to eq(described_class)
     end
 
     it 'can be used via Apiwork.generate_spec' do
