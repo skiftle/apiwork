@@ -247,11 +247,14 @@ module Apiwork
 
         # For enum fields, return invalid_value error to show allowed values immediately
         if param_options[:enum].present?
+          # Extract values array from enum (handle both inline arrays and resolved hashes)
+          enum_values = param_options[:enum].is_a?(Hash) ? param_options[:enum][:values] : param_options[:enum]
+
           Issue.new(
             code: :invalid_value,
-            message: "Invalid value. Must be one of: #{param_options[:enum].join(', ')}",
+            message: "Invalid value. Must be one of: #{enum_values.join(', ')}",
             path: field_path,
-            meta: { field: name, expected: param_options[:enum], actual: value }
+            meta: { field: name, expected: enum_values, actual: value }
           )
         else
           Issue.new(code: :field_missing, message: 'Field required', path: field_path, meta: { field: name })

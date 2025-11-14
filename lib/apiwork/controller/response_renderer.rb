@@ -26,7 +26,13 @@ module Apiwork
           return build_collection_response(resource_or_collection,
                                            query_params)
         end
-        return build_error_response(resource_or_collection) if resource_or_collection.respond_to?(:errors) && resource_or_collection.errors.any?
+
+        if resource_or_collection.respond_to?(:errors) && resource_or_collection.errors.any?
+          adapter = ValidationAdapter.new(resource_or_collection, schema_class: schema_class)
+          issues = adapter.convert
+          raise ValidationError, issues
+        end
+
         return { ok: true, meta: meta.presence || {} } if controller.request.delete?
 
         build_single_resource_response(resource_or_collection, query_params)
@@ -83,17 +89,6 @@ module Apiwork
         end
         resp[:meta] = meta if meta.present?
         resp
-      end
-
-      # Build error response
-      def build_error_response(resource)
-        if schema_class
-          adapter = ValidationAdapter.new(resource, schema_class: schema_class)
-          { ok: false, errors: adapter.convert.map(&:to_h) }
-        else
-          # Without schema, just return basic error structure
-          { ok: false, errors: resource.respond_to?(:errors) ? resource.errors.full_messages : [] }
-        end
       end
 
       private
