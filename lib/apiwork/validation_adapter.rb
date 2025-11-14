@@ -50,9 +50,6 @@ module Apiwork
       [type_key.to_sym]
     end
 
-    # Legacy method name (deprecated)
-    alias build_root_path_from_resource_class build_root_path_from_schema_class
-
     # Convert direct errors on the record
     # Excludes nested association errors (those with dots like "address.country_code")
     # because they're handled recursively via convert_association_errors
