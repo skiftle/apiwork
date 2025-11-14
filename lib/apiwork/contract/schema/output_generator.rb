@@ -117,7 +117,7 @@ module Apiwork
                     param transformed_name, type: assoc_type, required: false, nullable: association_definition.nullable?
                   elsif association_definition.collection?
                     param transformed_name, type: :array, of: assoc_type, required: false,
-                                nullable: association_definition.nullable?
+                                            nullable: association_definition.nullable?
                   end
                 elsif association_definition.singular?
                   # Fallback to generic types if no schema
