@@ -90,11 +90,7 @@ RSpec.describe Apiwork::Errors::Handler do
   describe 'with different error types' do
     context 'with Apiwork::QueryError' do
       let(:query_error) do
-        Apiwork::QueryError.new(
-          code: :invalid_page_number,
-          message: 'page[number] must be >= 1',
-          path: [:page, :number]
-        )
+        Apiwork::QueryError.new('page[number] must be >= 1')
       end
 
       before do
@@ -110,11 +106,12 @@ RSpec.describe Apiwork::Errors::Handler do
 
     context 'with Apiwork::ContractError' do
       let(:contract_error) do
-        Apiwork::ContractError.new(
+        issue = Apiwork::ContractError::Issue.new(
           code: :invalid_field,
           message: 'Invalid value for field',
           path: [:data, :status]
         )
+        Apiwork::ContractError.new([issue])
       end
 
       before do

@@ -31,9 +31,9 @@ module Apiwork
       def validate_input
         return if action_input.valid?
 
-        # Convert ValidationError objects to ContractError format
-        contract_errors = action_input.errors.map do |error|
-          ContractError.new(
+        # Convert Contract::ValidationError objects to ContractError::Issue objects
+        issues = action_input.errors.map do |error|
+          ContractError::Issue.new(
             code: error.code,
             message: error.detail,
             path: error.path,
@@ -41,7 +41,7 @@ module Apiwork
           )
         end
 
-        raise ConstraintErrorCollection, contract_errors
+        raise ContractError, issues
       end
 
       private
