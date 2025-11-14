@@ -68,7 +68,7 @@ module Apiwork
         or_conditions = []
         all_joins = {}
 
-        conditions_array.each_with_index do |filter_hash, _idx|
+        conditions_array.each do |filter_hash|
           # Build conditions recursively (handles nested logical operators)
           conditions, joins = build_conditions_recursive(filter_hash, issues)
           or_conditions << conditions if conditions
