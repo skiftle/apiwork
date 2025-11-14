@@ -43,7 +43,6 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      puts "DEBUG: Found #{json['posts']&.length || 0} posts: #{json['posts']&.map { |p| "#{p['title']} (body: #{p['body']})" }}" if json['posts']&.length != 3
       expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(3)
       titles = json['posts'].map { |p| p['title'] }
