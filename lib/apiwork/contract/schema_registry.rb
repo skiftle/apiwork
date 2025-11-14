@@ -10,7 +10,7 @@ module Apiwork
     # 2. Anonymous contract (generated) if no explicit contract
     #
     # Thread-safety: Optimistic lazy creation (harmless races)
-    class SchemaContractRegistry
+    class SchemaRegistry
       class << self
         def contract_for_schema(schema_class)
           # Return cached if exists (thread-safe read)

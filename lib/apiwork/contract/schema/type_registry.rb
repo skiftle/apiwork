@@ -344,7 +344,7 @@ module Apiwork
             return nil if visited.include?(association_schema)
 
             # Find contract via registry
-            association_contract = SchemaContractRegistry.contract_for_schema(association_schema)
+            association_contract = SchemaRegistry.contract_for_schema(association_schema)
             return nil unless association_contract
 
             # Ensure the association contract has generated its filter/sort/include types

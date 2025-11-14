@@ -34,7 +34,7 @@ module Apiwork
 
       class << self
         def contract
-          Contract::SchemaContractRegistry.contract_for_schema(self)
+          Contract::SchemaRegistry.contract_for_schema(self)
         end
 
         def model(value = nil)
