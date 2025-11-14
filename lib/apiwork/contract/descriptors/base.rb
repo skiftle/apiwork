@@ -36,7 +36,7 @@ module Apiwork
             contract = scope&.contract_class || contract_class
 
             # Check for circular imports
-            raise CircularImportError, "Circular import detected while resolving :#{name}" if contract && visited_contracts.include?(contract)
+            raise ConfigurationError, "Circular import detected while resolving :#{name}" if contract && visited_contracts.include?(contract)
 
             visited_contracts = visited_contracts.dup.add(contract) if contract
 

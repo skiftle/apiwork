@@ -88,11 +88,11 @@ RSpec.describe Apiwork::Errors::Handler do
   end
 
   describe 'with different error types' do
-    context 'with Apiwork::PaginationError' do
-      let(:pagination_error) do
-        Apiwork::PaginationError.new(
+    context 'with Apiwork::QueryError' do
+      let(:query_error) do
+        Apiwork::QueryError.new(
           code: :invalid_page_number,
-          detail: 'page[number] must be >= 1',
+          message: 'page[number] must be >= 1',
           path: [:page, :number]
         )
       end
@@ -103,17 +103,17 @@ RSpec.describe Apiwork::Errors::Handler do
 
       it 'raises the Apiwork error' do
         expect do
-          described_class.handle(pagination_error, context: { page_number: 0 })
-        end.to raise_error(Apiwork::PaginationError)
+          described_class.handle(query_error, context: { page_number: 0 })
+        end.to raise_error(Apiwork::QueryError)
       end
     end
 
-    context 'with Apiwork::FilterError' do
-      let(:filter_error) do
-        Apiwork::FilterError.new(
-          code: :invalid_operator,
-          detail: 'Invalid operator for field',
-          path: [:filter, :status]
+    context 'with Apiwork::ContractError' do
+      let(:contract_error) do
+        Apiwork::ContractError.new(
+          code: :invalid_field,
+          message: 'Invalid value for field',
+          path: [:data, :status]
         )
       end
 
@@ -121,10 +121,10 @@ RSpec.describe Apiwork::Errors::Handler do
         allow(Apiwork.configuration).to receive(:error_handling_mode).and_return(:log)
       end
 
-      it 'logs the filter error' do
-        expect(Rails.logger).to receive(:warn).with(/Apiwork Error: Apiwork::FilterError/)
+      it 'logs the contract error' do
+        expect(Rails.logger).to receive(:warn).with(/Apiwork Error: Apiwork::ContractError/)
 
-        described_class.handle(filter_error, context: { operator: :bad_op })
+        described_class.handle(contract_error, context: { field: :status })
       end
     end
   end

@@ -2,9 +2,9 @@
 
 module Apiwork
   module Errors
-    # Converts Rails ActiveModel::Errors to structured error arrays
+    # Converts Rails ActiveModel::Errors to ValidationError arrays
     #
-    # This class converts Rails model validation errors into StructuredError objects
+    # This class converts Rails model validation errors into ValidationError objects
     # with proper path tracking and JSON Pointers. It handles nested associations
     # recursively and reuses Rails error type symbols as error codes.
     #
@@ -16,8 +16,8 @@ module Apiwork
     #   converter = RailsErrorConverter.new(client, schema_class: ClientSchema)
     #   errors = converter.convert
     #   # => [
-    #   #   StructuredError(code: :blank, path: [:data, :name], detail: "Name can't be blank"),
-    #   #   StructuredError(code: :inclusion, path: [:data, :address, :country_code], ...)
+    #   #   ValidationError(code: :blank, path: [:data, :name], message: "Name can't be blank"),
+    #   #   ValidationError(code: :inclusion, path: [:data, :address, :country_code], ...)
     #   # ]
     class RailsErrorConverter
       def initialize(record, schema_class: nil, resource_class: nil, root_path: nil)
@@ -74,7 +74,7 @@ module Apiwork
 
           path = [@root_path, attribute_name].flatten
 
-          StructuredError.for_rails_validation(error, path: path)
+          ValidationError.from_rails_error(error, path: path)
         end.compact
       end
 

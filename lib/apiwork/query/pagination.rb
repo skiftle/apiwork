@@ -8,27 +8,27 @@ module Apiwork
         page_size = params.fetch(:size, default_page_size).to_i
 
         if page_number < 1
-          error = Apiwork::PaginationError.new(
+          error = Apiwork::QueryError.new(
             code: :invalid_page_number,
-            detail: 'page[number] must be >= 1',
+            message: 'page[number] must be >= 1',
             path: %i[page number]
           )
           Errors::Handler.handle(error, context: { page_number: page_number })
         end
 
         if page_size < 1
-          error = Apiwork::PaginationError.new(
+          error = Apiwork::QueryError.new(
             code: :invalid_page_size,
-            detail: 'page[size] must be >= 1',
+            message: 'page[size] must be >= 1',
             path: %i[page size]
           )
           Errors::Handler.handle(error, context: { page_size: page_size })
         end
 
         if page_size > maximum_page_size
-          error = Apiwork::PaginationError.new(
+          error = Apiwork::QueryError.new(
             code: :invalid_page_size,
-            detail: "page[size] must be <= #{maximum_page_size}",
+            message: "page[size] must be <= #{maximum_page_size}",
             path: %i[page size]
           )
           Errors::Handler.handle(error, context: { page_size: page_size, maximum: maximum_page_size })

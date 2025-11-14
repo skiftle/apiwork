@@ -238,7 +238,7 @@ RSpec.describe 'Contract Imports' do
       # Looking for :b_c_a_something from contract_a should detect the loop
       expect do
         contract_a.resolve_custom_type(:b_c_a_something)
-      end.to raise_error(Apiwork::CircularImportError)
+      end.to raise_error(Apiwork::ConfigurationError)
     end
   end
 

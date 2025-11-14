@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
 module Apiwork
-  class Error < StandardError
+  class ConfigurationError < Error
   end
 end

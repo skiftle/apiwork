@@ -5,15 +5,11 @@ module Api
     class V1Controller < ApplicationController
       include Apiwork::Controller::Concern
 
-      rescue_from Apiwork::StructuredErrorCollection do |error|
-        render json: { ok: false, errors: error.errors }, status: :bad_request
+      rescue_from Apiwork::ConstraintErrorCollection do |error|
+        render json: { ok: false, errors: error.to_array }, status: :bad_request
       end
 
-      rescue_from Apiwork::FilterError do |error|
-        render json: { ok: false, errors: [error.to_h] }, status: :bad_request
-      end
-
-      rescue_from Apiwork::PaginationError do |error|
+      rescue_from Apiwork::ConstraintError, Apiwork::QueryError, Apiwork::SchemaError do |error|
         render json: { ok: false, errors: [error.to_h] }, status: :bad_request
       end
 

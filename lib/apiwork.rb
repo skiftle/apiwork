@@ -51,12 +51,6 @@ loader.inflector.inflect(
   'json_pointer' => 'JSONPointer'
 )
 
-# error.rb contains multiple classes, so we need to require it explicitly
-loader.ignore("#{__dir__}/apiwork/error.rb")
-
 loader.setup
-
-# Explicitly require files that Zeitwerk ignores
-require_relative 'apiwork/error'
 
 require_relative 'apiwork/engine' if defined?(Rails::Engine)
