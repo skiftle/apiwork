@@ -57,4 +57,7 @@ Apiwork::API.draw '/api/v1' do
 
   # Account resource for testing enum validation
   resources :accounts, only: [:show]
+
+  # Camelized account resource for testing enum validation with key transformation
+  resources :camelized_accounts, only: [:show]
 end

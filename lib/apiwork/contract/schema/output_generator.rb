@@ -95,30 +95,35 @@ module Apiwork
             # This ensures the type can be resolved later using the same name
             Descriptors::Registry.register_local(contract_class, type_name) do
               # All resource attributes
+              # Transform attribute names according to serialize_key_transform
+              # because output validation happens AFTER serialization
               schema_class.attribute_definitions.each do |name, attribute_definition|
-                param name,
+                transformed_name = Transform::Case.string(name, schema_class.serialize_key_transform).to_sym
+                param transformed_name,
                       type: Generator.map_type(attribute_definition.type),
                       required: false,
                       **(attribute_definition.enum ? { enum: attribute_definition.enum } : {})
               end
 
               # Add associations using pre-registered types
+              # Transform association names according to serialize_key_transform
               schema_class.association_definitions.each do |name, association_definition|
+                transformed_name = Transform::Case.string(name, schema_class.serialize_key_transform).to_sym
                 assoc_type = assoc_type_map[name]
 
                 if assoc_type
                   # Use the registered type
                   if association_definition.singular?
-                    param name, type: assoc_type, required: false, nullable: association_definition.nullable?
+                    param transformed_name, type: assoc_type, required: false, nullable: association_definition.nullable?
                   elsif association_definition.collection?
-                    param name, type: :array, of: assoc_type, required: false,
+                    param transformed_name, type: :array, of: assoc_type, required: false,
                                 nullable: association_definition.nullable?
                   end
                 elsif association_definition.singular?
                   # Fallback to generic types if no schema
-                  param name, type: :object, required: false, nullable: association_definition.nullable?
+                  param transformed_name, type: :object, required: false, nullable: association_definition.nullable?
                 elsif association_definition.collection?
-                  param name, type: :array, required: false, nullable: association_definition.nullable?
+                  param transformed_name, type: :array, required: false, nullable: association_definition.nullable?
                 end
               end
             end
