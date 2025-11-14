@@ -44,7 +44,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
         account: {
           id: 1,
           name: 'Test Account',
-          status: 'deleted',  # Not in enum
+          status: 'deleted', # Not in enum
           first_day_of_week: 'monday'
         }
       }
@@ -61,7 +61,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
           id: 1,
           name: 'Test Account',
           status: 'active',
-          first_day_of_week: 'hahahahahaha'  # Not in enum
+          first_day_of_week: 'hahahahahaha' # Not in enum
         }
       }
       result = parser.perform(invalid_fdow)
@@ -93,7 +93,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
         ok: true,
         account: {
           id: 1,
-          name: 42  # Should be string
+          name: 42 # Should be string
         }
       }
       result = parser.perform(invalid_output)
@@ -132,7 +132,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
           id: 1,
           address: {
             city: 'Stockholm',
-            country: 'INVALID'  # Not in enum
+            country: 'INVALID' # Not in enum
           }
         }
       }
