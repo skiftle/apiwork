@@ -2,9 +2,9 @@
 
 module Apiwork
   module Errors
-    # Converts Rails ActiveModel::Errors to ValidationError::Issue arrays
+    # Converts Rails ActiveModel::Errors to Issue arrays
     #
-    # This class converts Rails model validation errors into ValidationError::Issue objects
+    # This class converts Rails model validation errors into Issue objects
     # with proper path tracking and JSON Pointers. It handles nested associations
     # recursively and reuses Rails error type symbols as error codes.
     #
@@ -16,8 +16,8 @@ module Apiwork
     #   converter = RailsErrorConverter.new(client, schema_class: ClientSchema)
     #   errors = converter.convert
     #   # => [
-    #   #   ValidationError::Issue(code: :blank, path: [:data, :name], message: "Name can't be blank"),
-    #   #   ValidationError::Issue(code: :inclusion, path: [:data, :address, :country_code], ...)
+    #   #   Issue(code: :blank, path: [:data, :name], message: "Name can't be blank"),
+    #   #   Issue(code: :inclusion, path: [:data, :address, :country_code], ...)
     #   # ]
     class RailsErrorConverter
       def initialize(record, schema_class: nil, resource_class: nil, root_path: nil)
@@ -74,7 +74,7 @@ module Apiwork
 
           path = [@root_path, attribute_name].flatten
 
-          ValidationError::Issue.from_model_validation(error, path: path)
+          Issue.from_model_validation(error, path: path)
         end.compact
       end
 
