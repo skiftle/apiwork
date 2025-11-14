@@ -12,11 +12,11 @@ module Apiwork
 
         # Default error handlers
         rescue_from Apiwork::ContractError do |error|
-          render json: { ok: false, errors: error.issues }, status: :bad_request
+          render json: { ok: false, errors: error.to_array }, status: :bad_request
         end
 
         rescue_from Apiwork::ValidationError do |error|
-          render json: { ok: false, errors: error.issues }, status: :unprocessable_entity
+          render json: { ok: false, errors: error.to_array }, status: :unprocessable_entity
         end
       end
 

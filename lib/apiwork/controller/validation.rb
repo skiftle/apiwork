@@ -31,9 +31,9 @@ module Apiwork
       def validate_input
         return if action_input.valid?
 
-        # Convert Contract::ValidationError objects to ContractError::Issue objects
+        # Convert Contract::ValidationError objects to Issue objects
         issues = action_input.errors.map do |error|
-          ContractError::Issue.new(
+          Issue.new(
             code: error.code,
             message: error.detail,
             path: error.path,

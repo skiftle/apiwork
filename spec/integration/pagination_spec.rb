@@ -143,30 +143,21 @@ RSpec.describe 'Pagination API', type: :request do
     end
 
     it 'rejects negative page numbers' do
-      get '/api/v1/posts', params: { page: { number: -1, size: 10 } }
-
-      expect(response).to have_http_status(:bad_request)
-      json = JSON.parse(response.body)
-      expect(json['ok']).to be(false)
-      expect(json['errors']).to be_present
+      expect do
+        get '/api/v1/posts', params: { page: { number: -1, size: 10 } }
+      end.to raise_error(Apiwork::QueryError, 'page[number] must be >= 1')
     end
 
     it 'rejects zero page size' do
-      get '/api/v1/posts', params: { page: { number: 1, size: 0 } }
-
-      expect(response).to have_http_status(:bad_request)
-      json = JSON.parse(response.body)
-      expect(json['ok']).to be(false)
-      expect(json['errors']).to be_present
+      expect do
+        get '/api/v1/posts', params: { page: { number: 1, size: 0 } }
+      end.to raise_error(Apiwork::QueryError, 'page[size] must be >= 1')
     end
 
     it 'enforces maximum page size' do
-      get '/api/v1/posts', params: { page: { number: 1, size: 10_000 } }
-
-      expect(response).to have_http_status(:bad_request)
-      json = JSON.parse(response.body)
-      expect(json['ok']).to be(false)
-      expect(json['errors']).to be_present
+      expect do
+        get '/api/v1/posts', params: { page: { number: 1, size: 10_000 } }
+      end.to raise_error(Apiwork::QueryError, /page\[size\] must be <= \d+/)
     end
   end
 end

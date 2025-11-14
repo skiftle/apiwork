@@ -106,7 +106,7 @@ RSpec.describe Apiwork::Errors::Handler do
 
     context 'with Apiwork::ContractError' do
       let(:contract_error) do
-        issue = Apiwork::ContractError::Issue.new(
+        issue = Apiwork::Issue.new(
           code: :invalid_field,
           message: 'Invalid value for field',
           path: [:data, :status]
