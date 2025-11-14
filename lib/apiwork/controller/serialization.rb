@@ -32,7 +32,7 @@ module Apiwork
         # Transform meta keys before building response
         transformed_meta = output.transform_meta_keys(meta)
 
-        # Build response using ResponseRenderer
+        # Build response using Responder
         response_hash = build_response(resource_or_collection, output, transformed_meta)
 
         # Validate response using Parser
@@ -46,7 +46,7 @@ module Apiwork
       def build_response(resource_or_collection, output, meta)
         query_params = extract_query_params_for_output
 
-        ResponseRenderer.new(
+        Responder.new(
           controller: self,
           action_definition: output.action_definition,
           schema_class: output.schema_class,
