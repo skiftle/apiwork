@@ -5,10 +5,10 @@ module Apiwork
     def self.draw(path, &block)
       return unless block
 
-      definition_class = Class.new(Base)
-      definition_class.configure_from_path(path)
-      definition_class.class_eval(&block)
-      definition_class
+      Class.new(Base).tap do |klass|
+        klass.configure_from_path(path)
+        klass.class_eval(&block)
+      end
     end
 
     def self.find(path)
