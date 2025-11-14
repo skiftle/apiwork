@@ -2,8 +2,7 @@
 
 module Apiwork
   class Configuration
-    attr_accessor :raise_on_invalid_fields,
-                  :default_sort,
+    attr_accessor :default_sort,
                   :default_page_size,
                   :maximum_page_size,
                   :max_array_items
@@ -16,7 +15,6 @@ module Apiwork
     }.freeze
 
     def initialize
-      @raise_on_invalid_fields = false
       @default_sort = { id: :asc }
       @default_page_size = 20
       @maximum_page_size = 200

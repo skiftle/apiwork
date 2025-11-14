@@ -20,7 +20,7 @@ module Apiwork
 
             # Check if already registered
             unless Descriptors::Registry.resolve(resource_type_name, contract_class: contract_class)
-              register_resource_type(contract_class, schema_class)
+              register_resource_type(contract_class, schema_class, root_key)
             end
 
             # Output is a discriminated union based on 'ok' field (literal values)
@@ -45,7 +45,7 @@ module Apiwork
           # Generate output for collection actions (index)
           # Returns unwrapped discriminated union with ok field and pagination
           def generate_collection_output(definition, schema_class)
-            schema_class.root_key.singular.to_sym
+            root_key = schema_class.root_key.singular.to_sym
             root_key_plural = schema_class.root_key.plural.to_sym
             contract_class = definition.contract_class
 
@@ -56,7 +56,7 @@ module Apiwork
 
             # Check if already registered
             unless Descriptors::Registry.resolve(resource_type_name, contract_class: contract_class)
-              register_resource_type(contract_class, schema_class)
+              register_resource_type(contract_class, schema_class, root_key)
             end
 
             # Output is a discriminated union based on 'ok' field (literal values)
@@ -83,7 +83,7 @@ module Apiwork
           private
 
           # Register resource type with all attributes and associations
-          def register_resource_type(contract_class, schema_class)
+          def register_resource_type(contract_class, schema_class, type_name)
             # PRE-REGISTER: Register all association types BEFORE defining the resource type
             # This prevents "can't add a new key into hash during iteration" errors
             assoc_type_map = {}
@@ -91,14 +91,15 @@ module Apiwork
               assoc_type_map[name] = TypeRegistry.register_association_type(contract_class, association_definition)
             end
 
-            # NOW register the resource type (with nil, which uses contract prefix)
-            Descriptors::Registry.register_local(contract_class, nil) do
+            # NOW register the resource type with the root key as the name
+            # This ensures the type can be resolved later using the same name
+            Descriptors::Registry.register_local(contract_class, type_name) do
               # All resource attributes
               schema_class.attribute_definitions.each do |name, attribute_definition|
                 param name,
                       type: Generator.map_type(attribute_definition.type),
                       required: false,
-                      **(attribute_definition.enum ? { enum: name } : {})
+                      **(attribute_definition.enum ? { enum: attribute_definition.enum } : {})
               end
 
               # Add associations using pre-registered types
