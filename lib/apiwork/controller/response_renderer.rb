@@ -88,8 +88,8 @@ module Apiwork
       # Build error response
       def build_error_response(resource)
         if schema_class
-          converter = Errors::RailsErrorConverter.new(resource, schema_class: schema_class)
-          { ok: false, errors: converter.convert.map(&:to_h) }
+          adapter = ValidationAdapter.new(resource, schema_class: schema_class)
+          { ok: false, errors: adapter.convert.map(&:to_h) }
         else
           # Without schema, just return basic error structure
           { ok: false, errors: resource.respond_to?(:errors) ? resource.errors.full_messages : [] }
