@@ -9,10 +9,10 @@ module Apiwork
       load File.expand_path('../tasks/apiwork.rake', __dir__)
     end
 
-    # Initialize gem on Rails boot and code reload
     config.to_prepare do
-      # Clear registry on code reload (development mode)
+      # Clear all registries on code reload (development mode)
       Apiwork::Contract::SchemaContractRegistry.clear!
+      Apiwork::API::Registry.clear!
 
       # Register built-in types
       Apiwork::Contract::BuiltInTypes.register
@@ -21,6 +21,12 @@ module Apiwork
       Apiwork.register_generator(:openapi, Apiwork::Generator::Openapi)
       Apiwork.register_generator(:zod, Apiwork::Generator::Zod)
       Apiwork.register_generator(:typescript, Apiwork::Generator::Typescript)
+
+      if Rails.root.join('config/apis').exist?
+        Dir[Rails.root.join('config/apis/**/*.rb')].sort.each do |file|
+          load file
+        end
+      end
     end
   end
 end
