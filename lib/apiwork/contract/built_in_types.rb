@@ -146,6 +146,3 @@ module Apiwork
     end
   end
 end
-
-# Auto-register built-in types at load time
-Apiwork::Contract::BuiltInTypes.register

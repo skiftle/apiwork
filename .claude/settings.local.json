@@ -23,7 +23,10 @@
       "Bash(git mv:*)",
       "Bash(python3:*)",
       "Bash(BUNDLE_GEMFILE=../../Gemfile bundle exec rails runner:*)",
-      "Bash(bundle exec rake:*)"
+      "Bash(bundle exec rake:*)",
+      "Bash(bundle show:*)",
+      "Bash(gem which:*)",
+      "Bash(gem env:*)"
     ],
     "deny": [],
     "ask": []
