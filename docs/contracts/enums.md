@@ -105,7 +105,7 @@ You can register your own global enums:
 
 ```ruby
 # In an initializer or config
-Apiwork.register_global_descriptors do
+Apiwork.register_descriptors do
   enum :http_method, %w[get post put patch delete]
   enum :content_type, %w[json xml csv]
 end
@@ -205,6 +205,7 @@ end
 ```
 
 Available built-in filter types:
+
 - `:string_filter` - String comparison operators
 - `:integer_filter` - Integer comparison and range operators
 - `:decimal_filter` - Decimal/float comparison operators
@@ -248,13 +249,13 @@ This lets code generators look up the enum definition and create typed constants
 
 ```typescript
 enum StatusValues {
-  Draft = 'draft',
-  Published = 'published'
+  Draft = "draft",
+  Published = "published",
 }
 
 type CreateInput = {
   status: StatusValues;
-}
+};
 ```
 
 ## Enums vs unions
@@ -262,12 +263,14 @@ type CreateInput = {
 Enums and unions solve different problems:
 
 **Enums** restrict a single type to specific values:
+
 ```ruby
 # status must be a string, and specifically one of these
 param :status, type: :string, enum: ['draft', 'published', 'archived']
 ```
 
 **Unions** allow different types entirely:
+
 ```ruby
 # id can be a string OR an integer
 param :id, type: :union do
@@ -276,7 +279,7 @@ param :id, type: :union do
 end
 ```
 
-**Enums** are about restricting *values*. **Unions** are about allowing *types*.
+**Enums** are about restricting _values_. **Unions** are about allowing _types_.
 
 You can combine them:
 
@@ -313,10 +316,12 @@ param :status, type: :string, enum: ['draft', 'published']
 ```
 
 Valid values:
+
 - `"draft"` ✅
 - `"published"` ✅
 
 Invalid values:
+
 - `"DRAFT"` ❌ (case-sensitive)
 - `"Draft"` ❌ (case-sensitive)
 - `"pending"` ❌ (not in enum)
@@ -346,12 +351,14 @@ If the parameter is absent, validation passes. If it's present, it must be one o
 ## When to use enums
 
 **Use enums when:**
+
 - You have a fixed set of allowed values
 - The values are known at development time
 - You want client-side type safety
 - You need validation without custom code
 
 **Don't use enums when:**
+
 - Values come from the database (use a separate lookup endpoint)
 - The set of values changes frequently
 - You have too many values (>20 or so)
@@ -408,19 +415,21 @@ end
 Code generators can create TypeScript in different ways:
 
 **Option 1: Union of literal types**
+
 ```typescript
 type CreateInput = {
   status: "draft" | "published" | "archived";
   priority: 1 | 2 | 3 | 4 | 5;
-}
+};
 ```
 
 **Option 2: TypeScript enums**
+
 ```typescript
 enum PostStatus {
   Draft = "draft",
   Published = "published",
-  Archived = "archived"
+  Archived = "archived",
 }
 
 enum Priority {
@@ -428,13 +437,13 @@ enum Priority {
   Low = 2,
   Medium = 3,
   High = 4,
-  Highest = 5
+  Highest = 5,
 }
 
 type CreateInput = {
   status: PostStatus;
   priority: Priority;
-}
+};
 ```
 
 Both give you autocomplete and compile-time checking:
@@ -442,26 +451,26 @@ Both give you autocomplete and compile-time checking:
 ```typescript
 // With union literals
 const input: CreateInput = {
-  status: "draft",     // ✅ Autocomplete suggests: draft, published, archived
-  priority: 3          // ✅ Autocomplete suggests: 1, 2, 3, 4, 5
+  status: "draft", // ✅ Autocomplete suggests: draft, published, archived
+  priority: 3, // ✅ Autocomplete suggests: 1, 2, 3, 4, 5
 };
 
 const invalid: CreateInput = {
-  status: "pending",   // ❌ Type error! "pending" not in enum
-  priority: 10         // ❌ Type error! 10 not in enum
+  status: "pending", // ❌ Type error! "pending" not in enum
+  priority: 10, // ❌ Type error! 10 not in enum
 };
 
 // With TypeScript enums
 const input: CreateInput = {
-  status: PostStatus.Draft,    // ✅ Autocomplete works
-  priority: Priority.Medium    // ✅ Autocomplete works
+  status: PostStatus.Draft, // ✅ Autocomplete works
+  priority: Priority.Medium, // ✅ Autocomplete works
 };
 ```
 
 ### Zod (runtime validation + types)
 
 ```typescript
-import { z } from 'zod';
+import { z } from "zod";
 
 const CreateInput = z.object({
   status: z.enum(["draft", "published", "archived"]),
@@ -470,8 +479,8 @@ const CreateInput = z.object({
     z.literal(2),
     z.literal(3),
     z.literal(4),
-    z.literal(5)
-  ])
+    z.literal(5),
+  ]),
 });
 
 // Infer TypeScript type from Zod schema
@@ -482,6 +491,7 @@ type CreateInput = z.infer<typeof CreateInput>;
 ### The complete flow
 
 1. **Backend** - Define enum in contract:
+
 ```ruby
 action :create do
   input do
@@ -492,6 +502,7 @@ end
 ```
 
 2. **Runtime validation** - Apiwork validates input:
+
 ```ruby
 # ✅ Valid
 { status: 'draft' }
@@ -501,25 +512,28 @@ end
 ```
 
 3. **Schema endpoint** - Expose as OpenAPI:
+
 ```bash
 GET /api/v1/.schema/openapi
 ```
 
 4. **Code generation** - Generate TypeScript/Zod:
+
 ```bash
 npx @apiwork/codegen --input /api/v1/.schema/openapi --output ./src/api
 ```
 
 5. **Frontend** - Get compile-time safety:
+
 ```typescript
 // Editor autocomplete
 const input: CreateInput = {
-  status: "..." // Suggests: draft, published, archived
+  status: "...", // Suggests: draft, published, archived
 };
 
 // Compile-time errors
 const invalid: CreateInput = {
-  status: "wrong" // ❌ Type error before you even save
+  status: "wrong", // ❌ Type error before you even save
 };
 ```
 
@@ -543,22 +557,22 @@ Generated TypeScript:
 ```typescript
 enum SortDirection {
   Asc = "asc",
-  Desc = "desc"
+  Desc = "desc",
 }
 
 type IndexInput = {
   sort?: {
     created_at?: SortDirection;
     title?: SortDirection;
-  }
-}
+  };
+};
 
 // Usage with autocomplete
 api.posts.index({
   sort: {
-    created_at: SortDirection.Desc,  // ✅ Autocomplete works
-    title: SortDirection.Asc
-  }
+    created_at: SortDirection.Desc, // ✅ Autocomplete works
+    title: SortDirection.Asc,
+  },
 });
 ```
 
@@ -568,10 +582,12 @@ Generated Zod:
 const SortDirection = z.enum(["asc", "desc"]);
 
 const IndexInput = z.object({
-  sort: z.object({
-    created_at: SortDirection.optional(),
-    title: SortDirection.optional()
-  }).optional()
+  sort: z
+    .object({
+      created_at: SortDirection.optional(),
+      title: SortDirection.optional(),
+    })
+    .optional(),
 });
 ```
 
@@ -603,17 +619,17 @@ Generated TypeScript creates a single enum used in multiple places:
 enum PostStatus {
   Draft = "draft",
   Published = "published",
-  Archived = "archived"
+  Archived = "archived",
 }
 
 // Used in multiple input types
 type CreateInput = {
   status: PostStatus;
-}
+};
 
 type UpdateInput = {
   status: PostStatus;
-}
+};
 ```
 
 ### Enums in filter inputs
@@ -644,57 +660,60 @@ type PostStatus = "draft" | "published" | "archived";
 type IndexInput = {
   filter?: {
     status?:
-      | PostStatus  // Simple: filter[status]=draft
-      | {           // Complex: filter[status][equal]=draft
+      | PostStatus // Simple: filter[status]=draft
+      | {
+          // Complex: filter[status][equal]=draft
           equal?: PostStatus;
           in?: PostStatus[];
-        }
-  }
-}
+        };
+  };
+};
 
 // Usage
 api.posts.index({
   filter: {
-    status: "draft"  // ✅ Autocomplete suggests enum values
-  }
+    status: "draft", // ✅ Autocomplete suggests enum values
+  },
 });
 
 api.posts.index({
   filter: {
     status: {
-      in: ["draft", "published"]  // ✅ Autocomplete for array items
-    }
-  }
+      in: ["draft", "published"], // ✅ Autocomplete for array items
+    },
+  },
 });
 ```
 
 ### Why this matters
 
 **Without enums:**
+
 ```typescript
 // Anything goes, errors at runtime
 type CreateInput = {
-  status: string;  // Could be anything!
-  priority: number;  // Could be -999 or 1000000!
-}
+  status: string; // Could be anything!
+  priority: number; // Could be -999 or 1000000!
+};
 
 await api.posts.create({
-  status: "pendng",  // Typo! Only caught at runtime
-  priority: 99       // Invalid! Only caught at runtime
+  status: "pendng", // Typo! Only caught at runtime
+  priority: 99, // Invalid! Only caught at runtime
 });
 ```
 
 **With enums:**
+
 ```typescript
 // Restricted values, errors at compile-time
 type CreateInput = {
   status: "draft" | "published" | "archived";
   priority: 1 | 2 | 3 | 4 | 5;
-}
+};
 
 await api.posts.create({
-  status: "pendng",  // ❌ Compile error! (suggests: draft, published, archived)
-  priority: 99       // ❌ Compile error! (suggests: 1, 2, 3, 4, 5)
+  status: "pendng", // ❌ Compile error! (suggests: draft, published, archived)
+  priority: 99, // ❌ Compile error! (suggests: 1, 2, 3, 4, 5)
 });
 ```
 
@@ -724,17 +743,17 @@ Generated TypeScript with full type narrowing:
 ```typescript
 type Filter =
   | { type: "status"; value: "draft" | "published" | "archived" }
-  | { type: "priority"; value: 1 | 2 | 3 | 4 | 5 }
+  | { type: "priority"; value: 1 | 2 | 3 | 4 | 5 };
 
 function applyFilter(filter: Filter) {
   switch (filter.type) {
     case "status":
       // TypeScript knows: filter.value is a status string
-      console.log(filter.value);  // Autocomplete: draft, published, archived
+      console.log(filter.value); // Autocomplete: draft, published, archived
       break;
     case "priority":
       // TypeScript knows: filter.value is a priority number
-      console.log(filter.value);  // Autocomplete: 1, 2, 3, 4, 5
+      console.log(filter.value); // Autocomplete: 1, 2, 3, 4, 5
       break;
   }
 }

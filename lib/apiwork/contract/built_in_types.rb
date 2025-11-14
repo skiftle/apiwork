@@ -14,7 +14,7 @@ module Apiwork
     #
     module BuiltInTypes
       def self.register
-        Apiwork.register_global_descriptors do
+        Apiwork.register_descriptors do
           # String filter type
           # Provides common string comparison and pattern matching operators
           type :string_filter do
@@ -121,8 +121,8 @@ module Apiwork
           # Standard pagination info returned in collection responses
           type :page do
             param :current, type: :integer, required: true
-            param :next, type: :integer, required: false, nullable: true
-            param :prev, type: :integer, required: false, nullable: true
+            param :next, type: :integer, nullable: true
+            param :prev, type: :integer, nullable: true
             param :total, type: :integer, required: true
             param :items, type: :integer, required: true
           end
@@ -131,9 +131,9 @@ module Apiwork
           # Standard error structure for API responses
           type :error do
             param :code, type: :string, required: true
-            param :field, type: :string, required: false
-            param :detail, type: :string, required: false
-            param :path, type: :array, of: :string, required: false
+            param :field, type: :string, required: true
+            param :detail, type: :string, required: true
+            param :path, type: :array, of: :string, required: true
           end
 
           # Global enums - reusable across all contracts
