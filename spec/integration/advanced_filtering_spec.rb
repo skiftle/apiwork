@@ -37,20 +37,13 @@ RSpec.describe 'Advanced Filtering API', type: :request do
       expect(titles).to contain_exactly('Advanced Filter Test Ruby Basics', 'Advanced Filter Test Rails Basics')
     end
 
-    it 'filters posts with OR logic on different fields using array indices' do
-      # Use array indices to preserve array structure in URL params
-      # filter[0][title][contains]=Ruby&filter[1][body][contains]=JavaScript
-      # Rails parses as: {"filter"=>{"0"=>{...}, "1"=>{...}}}
-      # Apiwork normalizes to: {"filter"=>[{...}, {...}]}
-      get '/api/v1/posts', params: {
-        filter: {
-          '0' => { title: { contains: 'Ruby' } },
-          '1' => { body: { contains: 'JavaScript' } }
-        }
-      }
+    it 'filters posts with OR logic on different fields using _or operator' do
+      # Use URL query string format for _or operator (to preserve array structure)
+      get '/api/v1/posts?filter[_or][0][title][contains]=Ruby&filter[_or][1][body][contains]=JavaScript'
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
+      puts "DEBUG: Found #{json['posts']&.length || 0} posts: #{json['posts']&.map { |p| "#{p['title']} (body: #{p['body']})" }}" if json['posts']&.length != 3
       expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(3)
       titles = json['posts'].map { |p| p['title'] }

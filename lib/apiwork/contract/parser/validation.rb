@@ -18,8 +18,16 @@ module Apiwork
 
         # Validate data using definition
         def validate(data)
+          # For OUTPUT: skip validation if no definition or empty params
+          if @direction == :output
+            return { params: data, issues: [] } unless definition
+            return { params: data, issues: [] } if definition.params.empty?
+          end
+
+          # For INPUT: only skip if no definition AND no data
+          return { params: {}, issues: [] } if (@direction == :input) && !(definition || data.present?)
+
           return { params: data, issues: [] } unless definition
-          return { params: data, issues: [] } if definition.params.empty?
 
           definition.validate(data) || { params: data, issues: [] }
         end

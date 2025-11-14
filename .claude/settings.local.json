@@ -32,7 +32,10 @@
       "Bash(RAILS_ENV=test bundle exec rails:*)",
       "Bash(bundle exec rails db:migrate:*)",
       "Bash(RAILS_ENV=test bundle exec bin/rails runner:*)",
-      "Bash(RAILS_ENV=test bundle exec rspec:*)"
+      "Bash(RAILS_ENV=test bundle exec rspec:*)",
+      "Bash(rspec:*)",
+      "Bash(rails runner:*)",
+      "Bash(bin/rails runner:*)"
     ],
     "deny": [],
     "ask": []
