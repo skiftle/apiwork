@@ -26,7 +26,8 @@
       "Bash(bundle exec rake:*)",
       "Bash(bundle show:*)",
       "Bash(gem which:*)",
-      "Bash(gem env:*)"
+      "Bash(gem env:*)",
+      "Bash(git log:*)"
     ],
     "deny": [],
     "ask": []
