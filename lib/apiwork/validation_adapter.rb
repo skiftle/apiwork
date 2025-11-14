@@ -70,7 +70,7 @@ module Apiwork
 
         path = [@root_path, attribute_name].flatten
 
-        Issue.from_model_validation(error, path: path)
+        build_issue_from_error(error, path: path)
       end.compact
     end
 
@@ -133,6 +133,25 @@ module Apiwork
       @record.class.reflect_on_all_associations(:belongs_to)
              .map(&:name)
              .include?(attribute)
+    end
+
+    # Build Issue from Rails ActiveModel error
+    def build_issue_from_error(rails_error, path:)
+      meta = { attribute: rails_error.attribute }
+
+      if rails_error.options
+        %i[in minimum maximum count is too_short too_long].each do |key|
+          value = rails_error.options[key]
+          meta[key] = value if value
+        end
+      end
+
+      Issue.new(
+        code: rails_error.type,
+        message: rails_error.message,
+        path: path,
+        meta: meta
+      )
     end
   end
 end
