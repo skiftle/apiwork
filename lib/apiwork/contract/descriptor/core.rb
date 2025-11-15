@@ -6,8 +6,8 @@ module Apiwork
       # Core: Register Apiwork's core global descriptors
       #
       # Core descriptors are registered at boot time and include:
-      # - page, page_metadata (pagination)
-      # - error (error responses)
+      # - page, pagination (pagination)
+      # - issue (issue responses)
       #
       # Conditional descriptors are registered lazily when needed:
       # - Filter descriptors (only for schemas with filterable attributes)
@@ -39,9 +39,9 @@ module Apiwork
                 param :items, type: :integer, required: true
               end
 
-              # Error type
-              # Standard error structure for API responses
-              type :error do
+              # Issue type
+              # Standard issue structure for API responses
+              type :issue do
                 param :code, type: :string, required: true
                 param :field, type: :string, required: true
                 param :detail, type: :string, required: true

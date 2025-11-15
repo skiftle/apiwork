@@ -25,19 +25,19 @@ module Apiwork
         def serialize_unwrapped_union(definition, visited: Set.new)
           discriminator = definition.instance_variable_get(:@unwrapped_union_discriminator)
 
-          # Separate params into success and error variants based on typical patterns
+          # Separate params into success and issue variants based on typical patterns
           success_params = {}
-          error_params = {}
+          issue_params = {}
 
           definition.params.sort_by { |name, _| name.to_s }.each do |name, param_options|
             case name
             when :ok
               # ok field with literal values in each variant
               next # We'll add this manually to each variant
-            when :errors
-              # errors is only in error variant
-              # Errors should always be required in error responses
-              error_params[name] = serialize_param(name, param_options, definition, visited: visited).tap do |serialized|
+            when :issues
+              # issues is only in issue variant
+              # Issues should always be required in issue responses
+              issue_params[name] = serialize_param(name, param_options, definition, visited: visited).tap do |serialized|
                 serialized[:required] = true
               end
             else
@@ -67,7 +67,7 @@ module Apiwork
                 type: :object,
                 shape: {
                   ok: { type: :literal, value: false, required: true },
-                  **error_params
+                  **issue_params
                 }
               }
             ]

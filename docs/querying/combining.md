@@ -486,7 +486,7 @@ GET /posts?filter[invalid_field][equal]=true
 ```json
 {
   "ok": false,
-  "errors": [
+  "issues": [
     {
       "code": "unknown_field",
       "detail": "Unknown field: invalid_field",

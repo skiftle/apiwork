@@ -202,7 +202,7 @@ output do
   param :meta, type: :object, required: false
 
   # Error variant (ok: false)
-  param :errors, type: :array, of: :error, required: false
+  param :issues, type: :array, of: :issue, required: false
 end
 ```
 
@@ -227,7 +227,7 @@ In serialized form, this becomes a proper discriminated union:
       "type": "object",
       "shape": {
         "ok": { "type": "literal", "value": false, "required": true },
-        "errors": { "type": "array", "of": "error", "required": false }
+        "issues": { "type": "array", "of": "error", "required": false }
       }
     }
   ]
@@ -245,7 +245,7 @@ type CreatePostResponse =
 if (response.ok) {
   console.log(response.post.title); // ✅ TypeScript knows 'post' exists
 } else {
-  console.log(response.errors); // ✅ TypeScript knows 'errors' exists
+  console.log(response.errors); // ✅ TypeScript knows 'issues' exists
 }
 ```
 
@@ -262,7 +262,7 @@ param :result, type: :union, discriminator: :ok do
 
   variant tag: 'false' do
     param :ok, type: :literal, value: false
-    param :error, type: :string
+    param :issue, type: :string
   end
 end
 ```
@@ -576,7 +576,7 @@ Remember how Apiwork auto-generates `ok: true`/`ok: false` responses? That's a d
 output do
   param :ok, type: :boolean, required: true
   param :post, type: :post_schema, required: false
-  param :errors, type: :array, of: :error, required: false
+  param :issues, type: :array, of: :issue, required: false
 end
 ```
 

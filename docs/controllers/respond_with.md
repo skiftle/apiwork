@@ -136,7 +136,7 @@ Response:
 ```json
 {
   "ok": false,
-  "errors": [
+  "issues": [
     {
       "code": "invalid",
       "path": "/post/title",
@@ -336,7 +336,7 @@ All responses follow this structure:
 ```json
 {
   "ok": false,
-  "errors": [
+  "issues": [
     { "code": "...", "path": "...", "message": "..." }
   ]
 }

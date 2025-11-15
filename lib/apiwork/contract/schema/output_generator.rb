@@ -39,7 +39,7 @@ module Apiwork
             definition.param :meta, type: :object, required: false
 
             # Error fields (ok: false variant)
-            definition.param :errors, type: :array, of: :error, required: false
+            definition.param :issues, type: :array, of: :issue, required: false
           end
 
           # Generate output for collection actions (index)
@@ -77,7 +77,7 @@ module Apiwork
             end
 
             # Error fields (ok: false variant)
-            definition.param :errors, type: :array, of: :error, required: false
+            definition.param :issues, type: :array, of: :issue, required: false
           end
 
           private

@@ -197,7 +197,7 @@ If `post.save` fails (Active Record validations):
 ```json
 {
   "ok": false,
-  "errors": [
+  "issues": [
     {
       "code": "invalid",
       "path": "/post/title",
@@ -247,7 +247,7 @@ All responses have the same structure:
 ```json
 {
   "ok": false,
-  "errors": [{ "code": "...", "path": "...", "message": "..." }]
+  "issues": [{ "code": "...", "path": "...", "message": "..." }]
 }
 ```
 
