@@ -153,7 +153,7 @@ module Apiwork
               return contract_class.name
                                    .demodulize
                                    .underscore
-                                   .gsub(/_contract$/, '')
+                                   .gsub(/_(contract|schema)$/, '')
             end
 
             # 4. Error - require explicit naming

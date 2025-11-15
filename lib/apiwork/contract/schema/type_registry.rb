@@ -143,7 +143,7 @@ module Apiwork
                 next unless attribute_definition.sortable?
 
                 # Sort direction: asc or desc (references global :sort_direction enum)
-                param name, type: :string, enum: :sort_direction, required: false
+                param name, type: :sort_direction, required: false
               end
 
               # Add sort for associations using type references
