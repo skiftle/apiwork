@@ -3,7 +3,7 @@
 module Apiwork
   module Contract
     module Descriptor
-      class TypeStore < Base
+      class TypeStore < Store
         class << self
           def register_global(name, &block)
             super(name, block)

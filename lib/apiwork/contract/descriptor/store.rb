@@ -3,7 +3,7 @@
 module Apiwork
   module Contract
     module Descriptor
-      class Base
+      class Store
         class << self
           def register_global(name, payload)
             raise ArgumentError, "Global #{storage_name.to_s.singularize} :#{name} already registered" if global_storage.key?(name)
