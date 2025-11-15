@@ -61,7 +61,7 @@ module Apiwork
           return unless current_resource
 
           # Validate :on parameter if provided
-          if options[:on] && ![:member, :collection].include?(options[:on])
+          if options[:on] && [:member, :collection].exclude?(options[:on])
             raise Apiwork::ConfigurationError,
                   ":on option must be either :member or :collection, got #{options[:on].inspect}"
           end

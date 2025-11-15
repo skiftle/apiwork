@@ -39,7 +39,7 @@ module Apiwork
       # @return [Integer] Number of files generated
       def self.write(output:, api_path: nil, format: nil, **options)
         raise ArgumentError, 'output path required' unless output
-        raise ArgumentError, 'api_path and format required when output is a file' if Writer.file_path?(output) && (!api_path || !format)
+        raise ArgumentError, 'api_path and format required when output is a file' if Writer.file_path?(output) && (api_path.nil? || format.nil?)
 
         apis = api_path ? [find_api(api_path)] : find_all_apis
         formats = format ? [format] : Registry.all

@@ -71,8 +71,8 @@ module Apiwork
         properties = type_shape.sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
           key = transform_key(property_name)
           ts_type = map_typescript_field(property_def)
-          is_optional = !property_def[:required]
-          optional_marker = is_optional ? '?' : ''
+          is_required = property_def[:required]
+          optional_marker = is_required ? '' : '?'
           "  #{key}#{optional_marker}: #{ts_type};"
         end.join("\n")
 
@@ -140,14 +140,14 @@ module Apiwork
       def map_typescript_object_type(definition)
         return '{}' unless definition[:shape]
 
-        is_partial = definition[:partial] == true
+        is_partial = definition[:partial]
 
         # Sort properties alphabetically
         properties = definition[:shape].sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
           key = transform_key(property_name)
           ts_type = map_typescript_field(property_def)
-          is_optional = is_partial || !property_def[:required]
-          optional_marker = is_optional ? '?' : ''
+          is_required = property_def[:required]
+          optional_marker = is_partial || !is_required ? '?' : ''
           "#{key}#{optional_marker}: #{ts_type}"
         end.join('; ')
 

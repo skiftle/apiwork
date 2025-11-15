@@ -88,7 +88,7 @@ module Apiwork
       end
 
       def validate_association_exists!
-        return if @klass.abstract_class || !@model_class || @schema_class
+        return if @klass.abstract_class || @model_class.nil? || @schema_class
 
         reflection = @model_class.reflect_on_association(@name)
         return if reflection

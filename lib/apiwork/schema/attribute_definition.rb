@@ -195,7 +195,7 @@ module Apiwork
 
         # Column with default not required (DB handles it)
         # Exception: Enum fields with defaults still required
-        return false if column&.default.present? && !@model_class.defined_enums.key?(name.to_s)
+        return false if column&.default.present? && @model_class.defined_enums.exclude?(name.to_s)
 
         # null: false constraint means required
         !column&.null

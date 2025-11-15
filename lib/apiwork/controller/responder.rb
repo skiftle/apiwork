@@ -73,7 +73,7 @@ module Apiwork
         includes_param = extract_includes_param(query_params)
 
         # Eager load associations for single resources
-        if resource.is_a?(ActiveRecord::Base) && !resource.new_record? && schema_class.present?
+        if resource.is_a?(ActiveRecord::Base) && resource.persisted? && schema_class.present?
           includes_hash = build_includes_hash_for_eager_loading(includes_param)
           resource = reload_with_includes(resource, includes_hash) if includes_hash.any?
         end

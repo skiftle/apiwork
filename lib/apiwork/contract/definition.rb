@@ -23,7 +23,7 @@ module Apiwork
 
       # Check if this definition represents an unwrapped union
       def unwrapped_union?
-        @unwrapped_union == true
+        @unwrapped_union
       end
 
       # Define a parameter
@@ -563,7 +563,7 @@ module Apiwork
           # These are more helpful than generic "wrong type" errors
           if error.code == :field_unknown
             most_specific_error = error
-          elsif error.code == :invalid_value && (!most_specific_error || most_specific_error.code != :field_unknown)
+          elsif error.code == :invalid_value && (most_specific_error.nil? || most_specific_error.code != :field_unknown)
             most_specific_error = error
           end
         end
@@ -760,7 +760,7 @@ module Apiwork
         return [type_error, nil] if type_error
 
         # Validate enum if present
-        if variant_def[:enum] && !variant_def[:enum].include?(value)
+        if variant_def[:enum]&.exclude?(value)
           enum_error = Issue.new(
             code: :invalid_value,
             message: "Invalid value. Must be one of: #{variant_def[:enum].join(', ')}",

@@ -25,7 +25,7 @@ module Apiwork
           end
 
           # For INPUT: only skip if no definition AND no data
-          return { params: {}, issues: [] } if (@direction == :input) && !(definition || data.present?)
+          return { params: {}, issues: [] } if (@direction == :input) && definition.nil? && data.blank?
 
           return { params: data, issues: [] } unless definition
 

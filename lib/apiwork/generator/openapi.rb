@@ -221,13 +221,14 @@ module Apiwork
         return map_type_definition(params_hash, action_name) if params_hash.key?(:type)
 
         is_update_action = action_name.to_s == 'update'
+        is_create_action = !is_update_action
         properties = {}
         required_fields = []
 
         params_hash.each do |param_name, param_def|
           transformed_key = transform_key(param_name)
           properties[transformed_key] = map_field_definition(param_def, action_name)
-          required_fields << transformed_key if param_def.is_a?(Hash) && param_def[:required] && !is_update_action
+          required_fields << transformed_key if param_def.is_a?(Hash) && param_def[:required] && is_create_action
         end
 
         result = { type: 'object', properties: }
@@ -274,7 +275,6 @@ module Apiwork
       end
 
       def map_object(definition, action_name = nil)
-        is_update_action = action_name.to_s == 'update'
         result = {
           type: 'object',
           properties: {}
@@ -286,7 +286,8 @@ module Apiwork
         end
 
         # Collect required fields from shape (skip for update actions)
-        if definition[:shape] && !is_update_action
+        is_create_action = action_name.to_s != 'update'
+        if definition[:shape] && is_create_action
           required_keys = definition[:shape].select { |_name, prop_def| prop_def[:required] }.keys
           required_fields = required_keys.map { |k| transform_key(k) }
           result[:required] = required_fields if required_fields.any?
