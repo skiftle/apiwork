@@ -38,7 +38,7 @@ module Apiwork
             end
 
             # Generate nested page parameter (uses global built-in type)
-            definition.param :page, type: :page_params, required: false
+            definition.param :page, type: :page, required: false
 
             # Generate nested include parameter with strict validation
             # Type includes ALL associations - contract validates structure

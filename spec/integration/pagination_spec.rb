@@ -23,9 +23,9 @@ RSpec.describe 'Pagination API', type: :request do
       json = JSON.parse(response.body)
       expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(10)
-      expect(json['meta']['page']['current']).to eq(1)
-      expect(json['meta']['page']['total']).to eq(3)
-      expect(json['meta']['page']['items']).to eq(25)
+      expect(json['meta']['pagination']['current']).to eq(1)
+      expect(json['meta']['pagination']['total']).to eq(3)
+      expect(json['meta']['pagination']['items']).to eq(25)
     end
 
     it 'returns second page' do
@@ -35,7 +35,7 @@ RSpec.describe 'Pagination API', type: :request do
       json = JSON.parse(response.body)
       expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(10)
-      expect(json['meta']['page']['current']).to eq(2)
+      expect(json['meta']['pagination']['current']).to eq(2)
     end
 
     it 'returns last page with remaining items' do
@@ -45,8 +45,8 @@ RSpec.describe 'Pagination API', type: :request do
       json = JSON.parse(response.body)
       expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(5)
-      expect(json['meta']['page']['current']).to eq(3)
-      expect(json['meta']['page']['total']).to eq(3)
+      expect(json['meta']['pagination']['current']).to eq(3)
+      expect(json['meta']['pagination']['total']).to eq(3)
     end
 
     it 'handles different page sizes' do
@@ -56,7 +56,7 @@ RSpec.describe 'Pagination API', type: :request do
       json = JSON.parse(response.body)
       expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(5)
-      expect(json['meta']['page']['total']).to eq(5)
+      expect(json['meta']['pagination']['total']).to eq(5)
     end
 
     it 'returns empty array for page beyond total pages' do
@@ -66,7 +66,7 @@ RSpec.describe 'Pagination API', type: :request do
       json = JSON.parse(response.body)
       expect(json['ok']).to be(true)
       expect(json['posts']).to eq([])
-      expect(json['meta']['page']['current']).to eq(100)
+      expect(json['meta']['pagination']['current']).to eq(100)
     end
 
     it 'defaults to page 1 when no page number specified' do
@@ -75,7 +75,7 @@ RSpec.describe 'Pagination API', type: :request do
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
       expect(json['ok']).to be(true)
-      expect(json['meta']['page']['current']).to eq(1)
+      expect(json['meta']['pagination']['current']).to eq(1)
     end
 
     it 'uses default page size when not specified' do
@@ -86,7 +86,7 @@ RSpec.describe 'Pagination API', type: :request do
       expect(json['ok']).to be(true)
       # Default page size should be 20 or similar
       expect(json['posts'].length).to be <= 25
-      expect(json['meta']['page']).to be_present
+      expect(json['meta']['pagination']).to be_present
     end
 
     it 'combines pagination with filtering' do
@@ -103,7 +103,7 @@ RSpec.describe 'Pagination API', type: :request do
         expect(post['published']).to be(true)
       end
       # 13 even-numbered posts out of 25 total
-      expect(json['meta']['page']['items']).to eq(13)
+      expect(json['meta']['pagination']['items']).to eq(13)
     end
 
     it 'combines pagination with sorting' do

@@ -6,7 +6,7 @@ module Apiwork
       # Core: Register Apiwork's core global descriptors
       #
       # Core descriptors are registered at boot time and include:
-      # - page_params, page (pagination)
+      # - page, page_metadata (pagination)
       # - error (error responses)
       #
       # Conditional descriptors are registered lazily when needed:
@@ -24,14 +24,14 @@ module Apiwork
             Apiwork.register_descriptors do
               # Pagination parameters
               # Standard pagination with page number and size
-              type :page_params do
+              type :page do
                 param :number, type: :integer, required: false
                 param :size, type: :integer, required: false
               end
 
               # Pagination metadata
               # Standard pagination info returned in collection responses
-              type :page do
+              type :pagination do
                 param :current, type: :integer, required: true
                 param :next, type: :integer, nullable: true
                 param :prev, type: :integer, nullable: true

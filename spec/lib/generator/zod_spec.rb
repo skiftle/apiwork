@@ -139,9 +139,9 @@ RSpec.describe Apiwork::Generator::Zod do
         expect(output).to include('export const BooleanFilterSchema: z.ZodType<BooleanFilter> = z.object')
       end
 
-      it 'includes PageParamsSchema (pagination) from introspect types' do
-        expect(output).to include('export interface PageParams')
-        expect(output).to include('export const PageParamsSchema: z.ZodType<PageParams> = z.object')
+      it 'includes PageSchema (pagination) from introspect types' do
+        expect(output).to include('export interface Page')
+        expect(output).to include('export const PageSchema: z.ZodType<Page> = z.object')
       end
     end
 

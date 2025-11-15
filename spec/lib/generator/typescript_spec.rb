@@ -118,8 +118,8 @@ RSpec.describe Apiwork::Generator::Typescript do
         expect(output).to include('export interface BooleanFilter')
       end
 
-      it 'includes PageParams interface' do
-        expect(output).to include('export interface PageParams')
+      it 'includes Page interface' do
+        expect(output).to include('export interface Page')
       end
 
       it 'sorts interface types alphabetically' do

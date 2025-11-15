@@ -79,7 +79,7 @@ module Apiwork
         }
 
         {
-          page: Apiwork::Transform::Case.hash(page, schema.serialize_key_transform)
+          pagination: Apiwork::Transform::Case.hash(page, schema.serialize_key_transform)
         }
       end
     end
