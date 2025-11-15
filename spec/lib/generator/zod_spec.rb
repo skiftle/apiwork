@@ -412,16 +412,16 @@ RSpec.describe Apiwork::Generator::Zod do
       expect(output).to match(/z\.discriminatedUnion\('ok'/)
     end
 
-    it 'generates types before schemas (correct order)' do
-      # TypeScript types should come before Zod schemas
+    it 'generates schemas before types (correct order)' do
+      # Zod schemas should come before TypeScript types
       type_positions = output.enum_for(:scan, /export (interface|type) \w+(?:Input|Output)/).map { Regexp.last_match.begin(0) }
       schema_positions = output.enum_for(:scan, /export const \w+(?:Input|Output)Schema/).map { Regexp.last_match.begin(0) }
 
       expect(type_positions).not_to be_empty
       expect(schema_positions).not_to be_empty
 
-      # First type should come before first schema
-      expect(type_positions.min).to be < schema_positions.min
+      # First schema should come before first type
+      expect(schema_positions.min).to be < type_positions.min
     end
 
     it 'follows same pattern as introspect types (z.ZodType annotation, not z.infer)' do

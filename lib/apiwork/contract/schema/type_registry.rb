@@ -74,10 +74,9 @@ module Apiwork
                   # Reference enum by attribute name (registered at contract level)
                   variant type: Generator.map_type(attribute_definition.type),
                           **(attribute_definition.enum ? { enum: name } : {})
-                  # Filter object variant
-                  # If attribute has enum, also include enum reference in filter variant
-                  variant type: filter_type,
-                          **(attribute_definition.enum ? { enum: name } : {})
+                  # Filter object variant (eq, in, contains, etc.)
+                  # Don't include enum here - filter_type is already the correct object type
+                  variant type: filter_type
                 end
               end
 
