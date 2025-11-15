@@ -46,7 +46,8 @@
       "Bash(curl:*)",
       "Bash(bin/rails server:*)",
       "Bash(bundle exec bin/rails server:*)",
-      "Bash(bundle exec rails server:*)"
+      "Bash(bundle exec rails server:*)",
+      "Bash(BUNDLE_GEMFILE=spec/dummy/Gemfile bundle exec rails runner:*)"
     ],
     "deny": [],
     "ask": []

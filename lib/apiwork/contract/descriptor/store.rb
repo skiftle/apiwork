@@ -102,6 +102,9 @@ module Apiwork
             contract_prefix = extract_contract_prefix(contract_class)
             return contract_prefix.to_sym if name.nil? || name.to_s.empty?
 
+            # If name already equals the prefix, don't duplicate
+            return name.to_sym if name.to_s == contract_prefix
+
             :"#{contract_prefix}_#{name}"
           end
 
@@ -176,13 +179,17 @@ module Apiwork
           def api_storage(api_class)
             all_api_storages = instance_variable_get("@api_#{storage_name}") ||
                                instance_variable_set("@api_#{storage_name}", {})
-            all_api_storages[api_class] ||= {}
+            # Use API path as key instead of API instance to survive code reloading
+            api_key = api_class.respond_to?(:path) ? api_class.path : api_class
+            all_api_storages[api_key] ||= {}
           end
 
           def api_local_storage(api_class)
             all_api_local_storages = instance_variable_get("@api_local_#{storage_name}") ||
                                      instance_variable_set("@api_local_#{storage_name}", {})
-            all_api_local_storages[api_class] ||= {}
+            # Use API path as key instead of API instance to survive code reloading
+            api_key = api_class.respond_to?(:path) ? api_class.path : api_class
+            all_api_local_storages[api_key] ||= {}
           end
         end
       end
