@@ -85,36 +85,36 @@ module Apiwork
           end
 
           def extract_type_references(definition)
-            refs = []
+            references = []
 
             definition.each_value do |param|
               next unless param.is_a?(Hash)
 
               # Direct type reference
-              refs << param[:type] if param[:type].is_a?(Symbol) && !primitive_type?(param[:type])
+              references << param[:type] if param[:type].is_a?(Symbol) && !primitive_type?(param[:type])
 
               # Array 'of' reference
-              refs << param[:of] if param[:of].is_a?(Symbol) && !primitive_type?(param[:of])
+              references << param[:of] if param[:of].is_a?(Symbol) && !primitive_type?(param[:of])
 
               # Union variant references
               if param[:variants].is_a?(Array)
                 param[:variants].each do |variant|
                   next unless variant.is_a?(Hash)
 
-                  refs << variant[:type] if variant[:type].is_a?(Symbol) && !primitive_type?(variant[:type])
+                  references << variant[:type] if variant[:type].is_a?(Symbol) && !primitive_type?(variant[:type])
 
-                  refs << variant[:of] if variant[:of].is_a?(Symbol) && !primitive_type?(variant[:of])
+                  references << variant[:of] if variant[:of].is_a?(Symbol) && !primitive_type?(variant[:of])
 
                   # Recursively check nested shape in variants
-                  refs.concat(extract_type_references(variant[:shape])) if variant[:shape].is_a?(Hash)
+                  references.concat(extract_type_references(variant[:shape])) if variant[:shape].is_a?(Hash)
                 end
               end
 
               # Nested shape references (for nested objects)
-              refs.concat(extract_type_references(param[:shape])) if param[:shape].is_a?(Hash)
+              references.concat(extract_type_references(param[:shape])) if param[:shape].is_a?(Hash)
             end
 
-            refs.uniq
+            references.uniq
           end
 
           def primitive_type?(type)
