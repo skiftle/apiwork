@@ -13,13 +13,13 @@ module Apiwork
             root_key = schema_class.root_key.singular.to_sym
             contract_class = definition.contract_class
 
-            # Register the resource type with Descriptors::Registry
-            # Use nil for registration - Descriptors::Registry will use just the prefix (e.g., "locale", "post")
+            # Register the resource type with Descriptor::Registry
+            # Use nil for registration - Descriptor::Registry will use just the prefix (e.g., "locale", "post")
             # Get the qualified name for reference
-            resource_type_name = Descriptors::Registry.qualified_name(contract_class, nil)
+            resource_type_name = Descriptor::Registry.qualified_name(contract_class, nil)
 
             # Check if already registered
-            unless Descriptors::Registry.resolve(resource_type_name, contract_class: contract_class)
+            unless Descriptor::Registry.resolve(resource_type_name, contract_class: contract_class)
               register_resource_type(contract_class, schema_class, root_key)
             end
 
@@ -49,13 +49,13 @@ module Apiwork
             root_key_plural = schema_class.root_key.plural.to_sym
             contract_class = definition.contract_class
 
-            # Register the resource type with Descriptors::Registry (same as single output)
-            # Use nil for registration - Descriptors::Registry will use just the prefix
+            # Register the resource type with Descriptor::Registry (same as single output)
+            # Use nil for registration - Descriptor::Registry will use just the prefix
             # Get the qualified name for reference
-            resource_type_name = Descriptors::Registry.qualified_name(contract_class, nil)
+            resource_type_name = Descriptor::Registry.qualified_name(contract_class, nil)
 
             # Check if already registered
-            unless Descriptors::Registry.resolve(resource_type_name, contract_class: contract_class)
+            unless Descriptor::Registry.resolve(resource_type_name, contract_class: contract_class)
               register_resource_type(contract_class, schema_class, root_key)
             end
 
@@ -93,7 +93,7 @@ module Apiwork
 
             # NOW register the resource type with the root key as the name
             # This ensures the type can be resolved later using the same name
-            Descriptors::Registry.register_local(contract_class, type_name) do
+            Descriptor::Registry.register_local(contract_class, type_name) do
               # All resource attributes
               # Transform attribute names according to serialize_key_transform
               # because output validation happens AFTER serialization

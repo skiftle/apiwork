@@ -2,7 +2,7 @@
 
 module Apiwork
   module Contract
-    module Descriptors
+    module Descriptor
       class EnumStore < Base
         class << self
           def register_local(scope, name, values)

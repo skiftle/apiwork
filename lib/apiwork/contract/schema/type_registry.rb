@@ -12,7 +12,7 @@ module Apiwork
 
         class << self
           # Determine which filter type to use based on attribute type
-          # Returns global built-in filter types from Descriptors::Registry
+          # Returns global built-in filter types from Descriptor::Registry
           def determine_filter_type(attr_type)
             case attr_type
             when :string
@@ -43,19 +43,19 @@ module Apiwork
             visited = visited.dup.add(schema_class)
 
             # Ensure filter descriptors are registered for this schema's filterable attributes
-            Contract::BuiltInTypes.ensure_filter_descriptors_registered(schema_class)
+            Contract::Descriptor::Core.ensure_filter_descriptors_registered(schema_class)
 
             # Use schema-specific type name to avoid collisions when filtering by associations
             # For the root schema (depth 0), use :filter. For associated schemas, include schema name
             type_name = build_type_name(schema_class, :filter, depth)
 
-            # Check if already registered with Descriptors::Registry
-            existing = Descriptors::Registry.resolve(type_name, contract_class: contract_class)
+            # Check if already registered with Descriptor::Registry
+            existing = Descriptor::Registry.resolve(type_name, contract_class: contract_class)
             return type_name if existing
 
             # Pre-register type name to prevent infinite recursion
             # We'll populate it with the actual definition below
-            Descriptors::Registry.register_local(contract_class, type_name) do
+            Descriptor::Registry.register_local(contract_class, type_name) do
               # Add logical operators that recursively reference this filter type
               # These allow combining filters with AND, OR, and NOT logic
               param :_and, type: :array, of: type_name, required: false
@@ -127,18 +127,18 @@ module Apiwork
             visited = visited.dup.add(schema_class)
 
             # Ensure sort descriptor is registered if schema has sortable attributes
-            Contract::BuiltInTypes.ensure_sort_descriptor_registered(schema_class)
+            Contract::Descriptor::Core.ensure_sort_descriptor_registered(schema_class)
 
             # Use schema-specific type name to avoid collisions when sorting by associations
             # For the root schema (depth 0), use :sort. For associated schemas, include schema name
             type_name = build_type_name(schema_class, :sort, depth)
 
-            # Check if already registered with Descriptors::Registry
-            existing = Descriptors::Registry.resolve(type_name, contract_class: contract_class)
+            # Check if already registered with Descriptor::Registry
+            existing = Descriptor::Registry.resolve(type_name, contract_class: contract_class)
             return type_name if existing
 
             # Pre-register type name to prevent infinite recursion
-            Descriptors::Registry.register_local(contract_class, type_name) do
+            Descriptor::Registry.register_local(contract_class, type_name) do
               # Add sort for each sortable attribute
               schema_class.attribute_definitions.each do |name, attribute_definition|
                 next unless attribute_definition.sortable?
@@ -228,8 +228,8 @@ module Apiwork
             # For the root schema (depth 0), use :include. For associated schemas, include schema name
             type_name = build_type_name(schema_class, :include, depth)
 
-            # Check if already registered with Descriptors::Registry
-            existing = Descriptors::Registry.resolve(type_name, contract_class: contract_class)
+            # Check if already registered with Descriptor::Registry
+            existing = Descriptor::Registry.resolve(type_name, contract_class: contract_class)
             return type_name if existing
             return type_name if depth >= MAX_RECURSION_DEPTH
 
@@ -238,7 +238,7 @@ module Apiwork
 
             # Pre-register type name to prevent infinite recursion
             # Contract validates structure, Resource applies validated includes
-            Descriptors::Registry.register_local(contract_class, type_name) do
+            Descriptor::Registry.register_local(contract_class, type_name) do
               schema_class.association_definitions.each do |name, association_definition|
                 association_resource = TypeRegistry.resolve_association_resource(association_definition)
                 next unless association_resource
@@ -312,8 +312,8 @@ module Apiwork
             resource_type_name = nil
 
             # Check if already registered
-            unless Descriptors::Registry.resolve(resource_type_name, contract_class: association_contract_class)
-              Descriptors::Registry.register_local(association_contract_class, resource_type_name) do
+            unless Descriptor::Registry.resolve(resource_type_name, contract_class: association_contract_class)
+              Descriptor::Registry.register_local(association_contract_class, resource_type_name) do
                 # All resource attributes
                 association_schema.attribute_definitions.each do |name, attribute_definition|
                   param name, type: Generator.map_type(attribute_definition.type), required: false
@@ -342,7 +342,7 @@ module Apiwork
             end
 
             # Return the qualified type name for reference
-            Descriptors::Registry.qualified_name(association_contract_class, resource_type_name)
+            Descriptor::Registry.qualified_name(association_contract_class, resource_type_name)
           end
 
           def auto_import_association_contract(parent_contract, association_schema, visited)
@@ -379,7 +379,7 @@ module Apiwork
 
               # Register at contract level (not action/definition level)
               # This makes enum available everywhere in this contract
-              Descriptors::Registry.register_local_enum(contract_class, name, attribute_definition.enum)
+              Descriptor::Registry.register_local_enum(contract_class, name, attribute_definition.enum)
             end
           end
 

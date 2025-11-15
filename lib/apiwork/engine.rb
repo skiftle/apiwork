@@ -15,7 +15,7 @@ module Apiwork
       Apiwork::API::Registry.clear!
 
       # Register core built-in descriptors
-      Apiwork::Contract::BuiltInTypes.register_core_descriptors
+      Apiwork::Contract::Descriptor::Core.register_core_descriptors
 
       # Register generators
       Apiwork.register_generator(:openapi, Apiwork::Generator::Openapi)

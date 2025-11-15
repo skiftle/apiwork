@@ -5,8 +5,8 @@ require 'rails_helper'
 RSpec.describe 'Contract Imports' do
   after do
     # Only clear local types/enums, not global ones (like :sort_direction)
-    Apiwork::Contract::Descriptors::TypeStore.clear_local!
-    Apiwork::Contract::Descriptors::EnumStore.clear_local!
+    Apiwork::Contract::Descriptor::TypeStore.clear_local!
+    Apiwork::Contract::Descriptor::EnumStore.clear_local!
   end
 
   describe 'basic import functionality' do
@@ -69,7 +69,7 @@ RSpec.describe 'Contract Imports' do
       end
 
       # Should be able to resolve the imported enum
-      enum_values = Apiwork::Contract::Descriptors::EnumStore.resolve(
+      enum_values = Apiwork::Contract::Descriptor::EnumStore.resolve(
         :user_status,
         contract_class: importing_contract
       )

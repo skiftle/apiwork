@@ -10,7 +10,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
         identifier :nested_enum_test
 
         # Register custom type for account
-        Apiwork::Contract::Descriptors::Registry.register_local(self, :account) do
+        Apiwork::Contract::Descriptor::Registry.register_local(self, :account) do
           param :id, type: :integer, required: true
           param :name, type: :string, required: true
           param :status, type: :string, enum: %w[active inactive archived], required: true
@@ -77,7 +77,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
       contract_class = Class.new(Apiwork::Contract::Base) do
         identifier :type_error_test
 
-        Apiwork::Contract::Descriptors::Registry.register_local(self, :account) do
+        Apiwork::Contract::Descriptor::Registry.register_local(self, :account) do
           param :id, type: :integer, required: true
           param :name, type: :string, required: true
         end
@@ -111,12 +111,12 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
         identifier :deep_nested_test
 
         # Nested custom type
-        Apiwork::Contract::Descriptors::Registry.register_local(self, :address) do
+        Apiwork::Contract::Descriptor::Registry.register_local(self, :address) do
           param :city, type: :string, required: true
           param :country, type: :string, enum: %w[US UK SE], required: true
         end
 
-        Apiwork::Contract::Descriptors::Registry.register_local(self, :account) do
+        Apiwork::Contract::Descriptor::Registry.register_local(self, :account) do
           param :id, type: :integer, required: true
           param :address, type: :address, required: true
         end
