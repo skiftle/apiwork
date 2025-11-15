@@ -21,58 +21,78 @@ module Apiwork
         introspect
       end
 
+      # Check if this definition represents an unwrapped union
+      def unwrapped_union?
+        @unwrapped_union == true
+      end
+
       # Define a parameter
       # rubocop:disable Metrics/ParameterLists
       def param(name, type: :string, required: false, default: nil, enum: nil, of: nil, as: nil,
                 discriminator: nil, value: nil, **options, &block)
         # rubocop:enable Metrics/ParameterLists
-        # Resolve enum reference if it's a symbol
-        resolved_enum = resolve_enum_value(enum)
-
-        # Handle literal types
-        if type == :literal
-          # value can be false (boolean), so check if it was provided (not nil)
-          raise ArgumentError, 'Literal type requires a value parameter' if value.nil? && !options.key?(:value)
-
-          # Use value from named parameter or from options hash
-          literal_value = value.nil? ? options[:value] : value
-
-          @params[name] = {
-            name: name,
-            type: :literal,
-            value: literal_value,
-            required: required,
-            default: default,
-            as: as,
-            **options.except(:value) # Remove :value from options to avoid duplication
-          }
-          return
-        end
-
         # Validate discriminator usage
         raise ArgumentError, 'discriminator can only be used with type: :union' if discriminator && type != :union
 
-        # Handle union types
-        if type == :union
-          raise ArgumentError, 'Union type requires a block with variant definitions' unless block_given?
+        # Resolve enum reference if it's a symbol
+        resolved_enum = resolve_enum_value(enum)
 
-          union_def = UnionDefinition.new(@contract_class, discriminator: discriminator)
-          union_def.instance_eval(&block)
-
-          @params[name] = {
-            name: name,
-            type: :union,
-            required: required,
-            default: default,
-            as: as,
-            union: union_def,
-            discriminator: discriminator,
-            enum: resolved_enum, # Store resolved enum (values or reference)
-            **options
-          }
-          return
+        # Dispatch to appropriate handler based on type
+        case type
+        when :literal
+          define_literal_param(name, value: value, required: required, default: default, as: as, options: options)
+        when :union
+          define_union_param(name, discriminator: discriminator, resolved_enum: resolved_enum,
+                                   required: required, default: default, as: as, options: options, &block)
+        else
+          define_regular_param(name, type: type, resolved_enum: resolved_enum,
+                                     required: required, default: default, of: of, as: as, options: options, &block)
         end
+      end
 
+      private
+
+      # Define a literal type parameter
+      def define_literal_param(name, value:, required:, default:, as:, options:)
+        # value can be false (boolean), so check if it was provided (not nil)
+        raise ArgumentError, 'Literal type requires a value parameter' if value.nil? && !options.key?(:value)
+
+        # Use value from named parameter or from options hash
+        literal_value = value.nil? ? options[:value] : value
+
+        @params[name] = {
+          name: name,
+          type: :literal,
+          value: literal_value,
+          required: required,
+          default: default,
+          as: as,
+          **options.except(:value) # Remove :value from options to avoid duplication
+        }
+      end
+
+      # Define a union type parameter
+      def define_union_param(name, discriminator:, resolved_enum:, required:, default:, as:, options:, &block)
+        raise ArgumentError, 'Union type requires a block with variant definitions' unless block_given?
+
+        union_definition = UnionDefinition.new(@contract_class, discriminator: discriminator)
+        union_definition.instance_eval(&block)
+
+        @params[name] = {
+          name: name,
+          type: :union,
+          required: required,
+          default: default,
+          as: as,
+          union: union_definition,
+          discriminator: discriminator,
+          enum: resolved_enum, # Store resolved enum (values or reference)
+          **options
+        }
+      end
+
+      # Define a regular or custom type parameter
+      def define_regular_param(name, type:, resolved_enum:, required:, default:, of:, as:, options:, &block)
         # Check if type is a custom type
         custom_type_block = @contract_class.resolve_custom_type(type)
 
@@ -86,54 +106,69 @@ module Apiwork
         end
 
         if custom_type_block
-          # Custom type - expand it with recursion protection
-          expansion_key = [@contract_class.object_id, type]
-          expanding_types = Thread.current[:apiwork_expanding_custom_types] ||= Set.new
-          expanding_types.add(expansion_key)
-
-          begin
-            shape_def = Definition.new(type: @type, contract_class: @contract_class, action_name: @action_name)
-            shape_def.instance_eval(&custom_type_block)
-
-            # Apply additional block if provided (can extend custom type)
-            shape_def.instance_eval(&block) if block_given?
-
-            @params[name] = {
-              name: name,
-              type: :object, # Custom types are objects internally
-              required: required,
-              default: default,
-              enum: resolved_enum, # Store resolved enum (values or reference)
-              of: of,
-              as: as,
-              custom_type: type, # Track original custom type name
-              shape: shape_def,
-              **options
-            }
-          ensure
-            expanding_types.delete(expansion_key)
-          end
+          define_custom_type_param(name, type: type, custom_type_block: custom_type_block,
+                                         resolved_enum: resolved_enum, required: required,
+                                         default: default, of: of, as: as, options: options, &block)
         else
-          # Regular type
+          define_standard_param(name, type: type, resolved_enum: resolved_enum,
+                                      required: required, default: default, of: of, as: as, options: options, &block)
+        end
+      end
+
+      # Define a custom type parameter with recursion protection
+      # rubocop:disable Metrics/ParameterLists
+      def define_custom_type_param(name, type:, custom_type_block:, resolved_enum:, required:, default:, of:, as:, options:, &block)
+        # rubocop:enable Metrics/ParameterLists
+        expansion_key = [@contract_class.object_id, type]
+        expanding_types = Thread.current[:apiwork_expanding_custom_types] ||= Set.new
+        expanding_types.add(expansion_key)
+
+        begin
+          shape_definition = Definition.new(type: @type, contract_class: @contract_class, action_name: @action_name)
+          shape_definition.instance_eval(&custom_type_block)
+
+          # Apply additional block if provided (can extend custom type)
+          shape_definition.instance_eval(&block) if block_given?
+
           @params[name] = {
             name: name,
-            type: type,
+            type: :object, # Custom types are objects internally
             required: required,
             default: default,
             enum: resolved_enum, # Store resolved enum (values or reference)
             of: of,
             as: as,
+            custom_type: type, # Track original custom type name
+            shape: shape_definition,
             **options
           }
-
-          # Handle shape param with do block
-          if block_given?
-            shape_def = Definition.new(type: @type, contract_class: @contract_class, action_name: @action_name)
-            shape_def.instance_eval(&block)
-            @params[name][:shape] = shape_def
-          end
+        ensure
+          expanding_types.delete(expansion_key)
         end
       end
+
+      # Define a standard (non-custom) type parameter
+      def define_standard_param(name, type:, resolved_enum:, required:, default:, of:, as:, options:, &block)
+        @params[name] = {
+          name: name,
+          type: type,
+          required: required,
+          default: default,
+          enum: resolved_enum, # Store resolved enum (values or reference)
+          of: of,
+          as: as,
+          **options
+        }
+
+        # Handle shape param with do block
+        return unless block_given?
+
+        shape_definition = Definition.new(type: @type, contract_class: @contract_class, action_name: @action_name)
+        shape_definition.instance_eval(&block)
+        @params[name][:shape] = shape_definition
+      end
+
+      public
 
       def validate(data, options = {})
         max_depth = options.fetch(:max_depth, 10)
@@ -193,7 +228,7 @@ module Apiwork
         value = param_options[:default] if value.nil? && param_options[:default]
 
         # Check nullable constraint
-        if data.key?(name) && value.nil? && explicitly_not_nullable?(param_options)
+        if data.key?(name) && value.nil? && null_value_forbidden?(param_options)
           return { issues: [Issue.new(code: :value_null, message: 'Value cannot be null', path: field_path, meta: { field: name })],
                    value_set: false }
         end
@@ -265,8 +300,8 @@ module Apiwork
         end
       end
 
-      # Check if nullable is explicitly set to false
-      def explicitly_not_nullable?(param_options)
+      # Check if null values are explicitly forbidden (nullable: false)
+      def null_value_forbidden?(param_options)
         param_options[:nullable] == false
       end
 
@@ -275,15 +310,15 @@ module Apiwork
         return nil if enum.nil?
 
         # Extract values array from enum (handle both inline arrays and resolved hashes)
-        enum_values = enum.is_a?(Hash) ? enum[:values] : enum
+        param_enum_values = enum.is_a?(Hash) ? enum[:values] : enum
 
-        return nil unless enum_values&.exclude?(value)
+        return nil if param_enum_values&.include?(value)
 
         Issue.new(
           code: :invalid_value,
-          message: "Invalid value. Must be one of: #{enum_values.join(', ')}",
+          message: "Invalid value. Must be one of: #{param_enum_values.join(', ')}",
           path: field_path,
-          meta: { field: name, expected: enum_values, actual: value }
+          meta: { field: name, expected: param_enum_values, actual: value }
         )
       end
 
@@ -450,14 +485,15 @@ module Apiwork
         return nil unless type_name.is_a?(Symbol)
 
         # Try to resolve custom type from registry
-        type_def = Descriptor::Registry.resolve(type_name, contract_class: @contract_class, scope: self)
+        type_definition = Descriptor::Registry.resolve(type_name, contract_class: @contract_class, scope: self)
 
-        return nil unless type_def # Not a registered custom type
+        return nil unless type_definition # Not a registered custom type
 
         # Validate value against custom type definition
-        type_def.validate(value, max_depth: max_depth, current_depth: current_depth + 1, field_path: field_path)
-      rescue StandardError
-        # If resolution fails, treat as non-custom type
+        type_definition.validate(value, max_depth: max_depth, current_depth: current_depth + 1, field_path: field_path)
+      rescue NameError, ArgumentError => e
+        # If resolution fails due to missing constant or invalid arguments, treat as non-custom type
+        Rails.logger.debug("Custom type resolution failed for :#{type_name}: #{e.message}") if defined?(Rails)
         nil
       end
 

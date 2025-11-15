@@ -10,11 +10,12 @@ module Apiwork
           return nil unless definition
 
           # Check if this is an unwrapped union (special case for response outputs)
-          return serialize_unwrapped_union(definition, visited: visited) if definition.instance_variable_get(:@unwrapped_union)
+          return serialize_unwrapped_union(definition, visited: visited) if definition.unwrapped_union?
 
           result = {}
 
-          definition.params.sort_by { |name, _| name.to_s }.each do |name, param_options|
+          sorted_params = definition.params.sort_by { |name, _| name.to_s }
+          sorted_params.each do |name, param_options|
             result[name] = serialize_param(name, param_options, definition, visited: visited)
           end
 

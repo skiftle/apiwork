@@ -15,33 +15,25 @@ module Apiwork
         end
 
         def identifier(value = nil)
-          if value
-            @_identifier = value.to_s
-            value
-          else
-            @_identifier
-          end
+          return @_identifier if value.nil?
+
+          @_identifier = value.to_s
         end
 
-        def schema(ref = nil)
-          if ref
-            # Validate that ref is a Class constant
-            unless ref.is_a?(Class)
-              raise ArgumentError, "schema must be a Class constant, got #{ref.class}. " \
-                                   "Use: schema PostSchema (not 'PostSchema' or :post_schema)"
-            end
-
-            @_schema_class = ref
-
-            # Register this explicit contract in the registry
-            # This ensures schema.contract returns this class, not an anonymous one
-            SchemaRegistry.register(ref, self)
-
-            prepend Schema::Extension unless ancestors.include?(Schema::Extension)
-          else
-            # Getting schema
-            @_schema_class
+        def schema(ref)
+          # Validate that ref is a Class constant
+          unless ref.is_a?(Class)
+            raise ArgumentError, "schema must be a Class constant, got #{ref.class}. " \
+                                 "Use: schema PostSchema (not 'PostSchema' or :post_schema)"
           end
+
+          @_schema_class = ref
+
+          # Register this explicit contract in the registry
+          # This ensures schema.contract returns this class, not an anonymous one
+          SchemaRegistry.register(ref, self)
+
+          prepend Schema::Extension unless ancestors.include?(Schema::Extension)
         end
 
         # Get schema class
@@ -51,7 +43,7 @@ module Apiwork
 
         # Check if this contract uses a schema
         def schema?
-          !@_schema_class.nil?
+          @_schema_class.present?
         end
 
         def type(name, &block)
