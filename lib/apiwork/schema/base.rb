@@ -175,6 +175,11 @@ module Apiwork
           @maximum_page_size || Apiwork.configuration.maximum_page_size
         end
 
+        # Validate all attribute definitions (call explicitly in tests after database setup)
+        def validate!
+          attribute_definitions.each_value(&:validate!)
+        end
+
         def root_key
           if _root
             RootKey.new(_root[:singular], _root[:plural])
