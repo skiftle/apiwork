@@ -92,13 +92,13 @@ module Apiwork
             end
 
             # PRE-REGISTER: Register all enum types BEFORE defining the resource type
-            # This allows param to resolve enum references
+            # This allows param to resolve enum references and auto-generates filter types
             schema_class.attribute_definitions.each do |name, attribute_definition|
               next unless attribute_definition.enum
 
               enum_values = attribute_definition.enum
-              Descriptor::EnumStore.register_enum(name, enum_values, scope: contract_class,
-                                                                     api_class: contract_class.api_class)
+              Descriptor::Registry.register_enum(name, enum_values, scope: contract_class,
+                                                                    api_class: contract_class.api_class)
             end
 
             # NOW register the resource type with the root key as the name

@@ -38,15 +38,15 @@ module Apiwork
           parts << ''
         end
 
-        all_typescript_types = build_all_typescript_types
-        if all_typescript_types.present?
-          parts << all_typescript_types
-          parts << ''
-        end
-
         action_schemas = build_action_schemas
         if action_schemas.present?
           parts << action_schemas
+          parts << ''
+        end
+
+        all_typescript_types = build_all_typescript_types
+        if all_typescript_types.present?
+          parts << all_typescript_types
           parts << ''
         end
 
@@ -80,7 +80,7 @@ module Apiwork
           schema_name = zod_type_name(enum_name)
           values_str = enum_values.sort.map { |v| "'#{v}'" }.join(', ')
           "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.enum([#{values_str}]);"
-        end.join("\n")
+        end.join("\n\n")
       end
 
       def build_typescript_enum_types
