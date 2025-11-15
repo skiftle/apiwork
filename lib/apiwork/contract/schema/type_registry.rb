@@ -43,7 +43,7 @@ module Apiwork
             visited = visited.dup.add(schema_class)
 
             # Ensure filter descriptors are registered for this schema's filterable attributes
-            Contract::Descriptor::Core.ensure_filter_descriptors_registered(schema_class)
+            Contract::Descriptor::Core.ensure_filter_descriptors_registered(schema_class, api_class: contract_class.api_class)
 
             # Use schema-specific type name to avoid collisions when filtering by associations
             # For the root schema (depth 0), use :filter. For associated schemas, include schema name
@@ -55,7 +55,7 @@ module Apiwork
 
             # Pre-register type name to prevent infinite recursion
             # We'll populate it with the actual definition below
-            Descriptor::Registry.register_local(contract_class, type_name) do
+            Descriptor::Registry.register_type(type_name, scope: contract_class, api_class: contract_class.api_class) do
               # Add logical operators that recursively reference this filter type
               # These allow combining filters with AND, OR, and NOT logic
               param :_and, type: :array, of: type_name, required: false
@@ -127,7 +127,7 @@ module Apiwork
             visited = visited.dup.add(schema_class)
 
             # Ensure sort descriptor is registered if schema has sortable attributes
-            Contract::Descriptor::Core.ensure_sort_descriptor_registered(schema_class)
+            Contract::Descriptor::Core.ensure_sort_descriptor_registered(schema_class, api_class: contract_class.api_class)
 
             # Use schema-specific type name to avoid collisions when sorting by associations
             # For the root schema (depth 0), use :sort. For associated schemas, include schema name
@@ -138,7 +138,7 @@ module Apiwork
             return type_name if existing
 
             # Pre-register type name to prevent infinite recursion
-            Descriptor::Registry.register_local(contract_class, type_name) do
+            Descriptor::Registry.register_type(type_name, scope: contract_class, api_class: contract_class.api_class) do
               # Add sort for each sortable attribute
               schema_class.attribute_definitions.each do |name, attribute_definition|
                 next unless attribute_definition.sortable?
@@ -238,7 +238,7 @@ module Apiwork
 
             # Pre-register type name to prevent infinite recursion
             # Contract validates structure, Resource applies validated includes
-            Descriptor::Registry.register_local(contract_class, type_name) do
+            Descriptor::Registry.register_type(type_name, scope: contract_class, api_class: contract_class.api_class) do
               schema_class.association_definitions.each do |name, association_definition|
                 association_resource = TypeRegistry.resolve_association_resource(association_definition)
                 next unless association_resource
@@ -313,7 +313,8 @@ module Apiwork
 
             # Check if already registered
             unless Descriptor::Registry.resolve(resource_type_name, contract_class: association_contract_class)
-              Descriptor::Registry.register_local(association_contract_class, resource_type_name) do
+              Descriptor::Registry.register_type(resource_type_name, scope: association_contract_class,
+                                                                     api_class: association_contract_class.api_class) do
                 # All resource attributes
                 association_schema.attribute_definitions.each do |name, attribute_definition|
                   param name, type: Generator.map_type(attribute_definition.type), required: false
@@ -374,12 +375,17 @@ module Apiwork
           end
 
           def register_contract_enums(contract_class, schema_class)
+            api_class = contract_class.api_class
+
             schema_class.attribute_definitions.each do |name, attribute_definition|
               next unless attribute_definition.enum&.any?
 
-              # Register at contract level (not action/definition level)
-              # This makes enum available everywhere in this contract
-              Descriptor::Registry.register_local_enum(contract_class, name, attribute_definition.enum)
+              # Register at contract level (with filter type generation)
+              Descriptor::Registry.register_enum(name, attribute_definition.enum, scope: contract_class, api_class: api_class)
+
+              # Also register at schema level (raw storage only, no filter type)
+              # This provides fallback lookup when different contract instances exist (anonymous vs explicit)
+              Descriptor::EnumStore.register_enum(name, attribute_definition.enum, scope: schema_class, api_class: api_class)
             end
           end
 

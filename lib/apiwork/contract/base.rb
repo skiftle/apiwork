@@ -33,6 +33,10 @@ module Apiwork
           # This ensures schema.contract returns this class, not an anonymous one
           SchemaRegistry.register(ref, self)
 
+          # Register enums from schema when contract is defined/reloaded
+          # This ensures enums are available even if actions are cached
+          Schema::TypeRegistry.register_contract_enums(self, ref)
+
           prepend Schema::Extension unless ancestors.include?(Schema::Extension)
         end
 
@@ -49,13 +53,13 @@ module Apiwork
         def type(name, &block)
           raise ArgumentError, 'Block required for custom type definition' unless block_given?
 
-          Descriptor::Registry.register_local(self, name, &block)
+          Descriptor::Registry.register_type(name, scope: self, api_class: api_class, &block)
         end
 
         def enum(name, values)
           raise ArgumentError, 'Values array required for enum definition' unless values.is_a?(Array)
 
-          Descriptor::Registry.register_local_enum(self, name, values)
+          Descriptor::Registry.register_enum(name, values, scope: self, api_class: api_class)
         end
 
         def import(contract_class, as:)
@@ -96,7 +100,7 @@ module Apiwork
         end
 
         def resolve_custom_type(type_name)
-          Descriptor::Registry.resolve(type_name, contract_class: self)
+          Descriptor::Registry.resolve(type_name, contract_class: self, api_class: api_class)
         end
 
         def action_definition(action_name)

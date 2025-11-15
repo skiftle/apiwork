@@ -780,7 +780,8 @@ module Apiwork
         # Enum is a symbol - resolve from Descriptor::Registry with lexical scoping
         raise ArgumentError, "enum must be a Symbol (reference) or Array (inline values), got #{enum.class}" unless enum.is_a?(Symbol)
 
-        values = Descriptor::Registry.resolve_enum(enum, scope: self)
+        values = Descriptor::Registry.resolve_enum(enum, scope: self, api_class: contract_class.api_class)
+
         if values
           # Return hash with both reference and resolved values
           # This allows serialization to use the reference and validation to use the values

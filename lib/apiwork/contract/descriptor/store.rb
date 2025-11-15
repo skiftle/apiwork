@@ -5,33 +5,33 @@ module Apiwork
     module Descriptor
       class Store
         class << self
-          def register_global(name, payload)
-            raise ArgumentError, "Global #{storage_name.to_s.singularize} :#{name} already registered" if global_storage.key?(name)
+          def register(name, payload, scope: nil, metadata: {}, api_class: nil)
+            if scope
+              # Scoped registration (contract-level, gets prefix)
+              storage = api_class ? api_local_storage(api_class) : local_storage
+              storage[scope] ||= {}
+              storage[scope][name] = {
+                short_name: name,
+                qualified_name: qualified_name(scope, name),
+                payload: payload
+              }.merge(metadata)
+            else
+              # Shared registration (no prefix)
+              storage = api_class ? api_storage(api_class) : global_storage
 
-            global_storage[name] = payload
-          end
+              if storage.key?(name)
+                scope_desc = api_class ? "for API #{api_class}" : 'shared'
+                raise ArgumentError, "#{storage_name.to_s.singularize.capitalize} :#{name} already registered #{scope_desc}"
+              end
 
-          def register_local(scope, name, payload, metadata = {})
-            local_storage[scope] ||= {}
-            local_storage[scope][name] = {
-              short_name: name,
-              qualified_name: qualified_name(scope, name),
-              payload: payload
-            }.merge(metadata)
-          end
-
-          def global?(name)
-            global_storage.key?(name)
-          end
-
-          def local?(name, scope)
-            local_storage[scope]&.key?(name) || false
+              storage[name] = payload
+            end
           end
 
           # Unified resolve implementation for both types and enums
           # Subclasses specify what key to extract from metadata (:definition or :values)
           # Supports imports: types/enums prefixed with import alias (e.g., :user_address)
-          def resolve(name, contract_class: nil, scope: nil, visited_contracts: Set.new)
+          def resolve(name, contract_class: nil, api_class: nil, scope: nil, visited_contracts: Set.new)
             # Get contract from scope if available
             contract = scope&.contract_class || contract_class
 
@@ -40,10 +40,30 @@ module Apiwork
 
             visited_contracts = visited_contracts.dup.add(contract) if contract
 
-            # Check contract class local storage
+            # 1. Check API-local storage (contract-specific within API)
+            if api_class && contract
+              api_local = api_local_storage(api_class)[contract]&.[](name)
+              return extract_payload_value(api_local) if api_local
+            end
+
+            # 2. Check contract class local storage (legacy fallback)
             return extract_payload_value(local_storage[contract][name]) if contract && local_storage[contract]&.key?(name)
 
-            # Check imports for prefixed types (e.g., :user_address where :user is import alias)
+            # 2.5. Check schema class storage (fallback for when different contract instances exist)
+            # This handles cases where enums are registered on schema class to work across anonymous and explicit contracts
+            if api_class && contract.respond_to?(:schema_class) && contract.schema_class
+              schema_class = contract.schema_class
+              api_local_schema = api_local_storage(api_class)[schema_class]&.[](name)
+              return extract_payload_value(api_local_schema) if api_local_schema
+            end
+
+            # Also check legacy storage for schema class
+            if contract.respond_to?(:schema_class) && contract.schema_class
+              schema_class = contract.schema_class
+              return extract_payload_value(local_storage[schema_class][name]) if local_storage[schema_class]&.key?(name)
+            end
+
+            # 3. Check imports for prefixed types (e.g., :user_address where :user is import alias)
             if contract.respond_to?(:imports)
               contract.imports.each do |import_alias, imported_contract|
                 # Check if type name starts with import alias prefix
@@ -57,6 +77,7 @@ module Apiwork
                 result = resolve(
                   imported_type_name,
                   contract_class: imported_contract,
+                  api_class: api_class,
                   scope: nil,
                   visited_contracts: visited_contracts
                 )
@@ -65,12 +86,15 @@ module Apiwork
               end
             end
 
-            # Check global
+            # 4. Check API-global storage (shared within API)
+            return api_storage(api_class)[name] if api_class && api_storage(api_class).key?(name)
+
+            # 5. Check global storage (legacy fallback)
             global_storage[name]
           end
 
           def qualified_name(scope, name)
-            return name if global?(name)
+            return name unless scope
 
             # Handle contract class scope (both Class and instances with contract_class)
             contract_class = scope.is_a?(Class) ? scope : scope.contract_class
@@ -84,10 +108,13 @@ module Apiwork
           def clear!
             instance_variable_set("@global_#{storage_name}", {})
             instance_variable_set("@local_#{storage_name}", {})
+            instance_variable_set("@api_#{storage_name}", {})
+            instance_variable_set("@api_local_#{storage_name}", {})
           end
 
           def clear_local!
             instance_variable_set("@local_#{storage_name}", {})
+            instance_variable_set("@api_local_#{storage_name}", {})
           end
 
           def all_global
@@ -144,6 +171,18 @@ module Apiwork
           def local_storage
             instance_variable_get("@local_#{storage_name}") ||
               instance_variable_set("@local_#{storage_name}", {})
+          end
+
+          def api_storage(api_class)
+            all_api_storages = instance_variable_get("@api_#{storage_name}") ||
+                               instance_variable_set("@api_#{storage_name}", {})
+            all_api_storages[api_class] ||= {}
+          end
+
+          def api_local_storage(api_class)
+            all_api_local_storages = instance_variable_get("@api_local_#{storage_name}") ||
+                                     instance_variable_set("@api_local_#{storage_name}", {})
+            all_api_local_storages[api_class] ||= {}
           end
         end
       end

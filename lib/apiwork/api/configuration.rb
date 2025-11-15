@@ -19,6 +19,9 @@ module Apiwork
 
         # Register in Registry
         Registry.register(self)
+
+        # Register core descriptors for this API
+        Contract::Descriptor::Core.register_core_descriptors(self)
       end
 
       def mount_at(path)
