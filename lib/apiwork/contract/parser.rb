@@ -58,8 +58,24 @@ module Apiwork
         # Step 1: Coerce types (only for input - output already has correct types)
         coerced_data = @coerce ? coerce(data) : data
 
-        # Step 2: Validate coerced data
-        validated = validate(coerced_data)
+        # Step 1.5: For output, reverse key transformation before validation
+        # Output data is already serialized with serialize_key_transform applied,
+        # but validation must happen against snake_case definition keys
+        data_for_validation = if @direction == :output && schema_class&.serialize_key_transform
+                                Transform::Case.hash(coerced_data, :underscore)
+                              else
+                                coerced_data
+                              end
+
+        # Step 2: Validate data (with reversed keys for output)
+        validated = validate(data_for_validation)
+
+        # Step 2.5: For output, transform error paths back to serialized key format
+        # Validation happened against snake_case keys, but errors should reference
+        # the actual serialized key format (e.g., camelCase)
+        if validated[:issues].any? && @direction == :output && schema_class&.serialize_key_transform
+          validated[:issues] = transform_issue_paths(validated[:issues], schema_class.serialize_key_transform)
+        end
 
         # Step 3: Handle errors based on direction
         return handle_validation_errors(data, validated[:issues]) if validated[:issues].any?
@@ -93,6 +109,26 @@ module Apiwork
       # Build result object with direction-specific attributes
       def build_result(data, errors)
         Result.new(data, errors)
+      end
+
+      # Transform issue paths to match serialized key format
+      # When validating output, we validate against snake_case keys but errors
+      # should reference the actual serialized format (e.g., camelCase)
+      def transform_issue_paths(issues, key_transform)
+        issues.map do |issue|
+          transformed_path = issue.path.map do |segment|
+            # Keep numeric indices as-is, only transform string/symbol keys
+            segment.is_a?(Integer) ? segment : Transform::Case.string(segment, key_transform).to_sym
+          end
+
+          # Create new Issue with transformed path
+          Issue.new(
+            code: issue.code,
+            message: issue.message,
+            path: transformed_path,
+            meta: issue.meta
+          )
+        end
       end
     end
   end
