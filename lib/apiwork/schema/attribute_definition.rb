@@ -44,12 +44,13 @@ module Apiwork
         @type = options[:type]
         @enum = options[:enum]
 
-        # Validate early - after all instance variables are set
-        validate_attribute_exists!
-
-        # Validate and apply null_to_empty
         validate_null_to_empty!
         apply_null_to_empty_transformers! if @null_to_empty
+      end
+
+      # Validate that this attribute exists (lazy - called explicitly, not during class loading)
+      def validate!
+        validate_attribute_exists!
       end
 
       def filterable?
