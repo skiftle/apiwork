@@ -91,19 +91,19 @@ module Apiwork
               next unless param.is_a?(Hash)
 
               # Direct type reference
-              references << param[:type] if param[:type].is_a?(Symbol) && !primitive_type?(param[:type])
+              references << param[:type] if param[:type].is_a?(Symbol) && custom_type?(param[:type])
 
               # Array 'of' reference
-              references << param[:of] if param[:of].is_a?(Symbol) && !primitive_type?(param[:of])
+              references << param[:of] if param[:of].is_a?(Symbol) && custom_type?(param[:of])
 
               # Union variant references
               if param[:variants].is_a?(Array)
                 param[:variants].each do |variant|
                   next unless variant.is_a?(Hash)
 
-                  references << variant[:type] if variant[:type].is_a?(Symbol) && !primitive_type?(variant[:type])
+                  references << variant[:type] if variant[:type].is_a?(Symbol) && custom_type?(variant[:type])
 
-                  references << variant[:of] if variant[:of].is_a?(Symbol) && !primitive_type?(variant[:of])
+                  references << variant[:of] if variant[:of].is_a?(Symbol) && custom_type?(variant[:of])
 
                   # Recursively check nested shape in variants
                   references.concat(extract_type_references(variant[:shape])) if variant[:shape].is_a?(Hash)
@@ -122,6 +122,10 @@ module Apiwork
               string integer boolean datetime date uuid object array
               decimal float literal union enum
             ].include?(type)
+          end
+
+          def custom_type?(type)
+            !primitive_type?(type)
           end
         end
       end

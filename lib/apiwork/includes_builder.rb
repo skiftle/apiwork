@@ -23,12 +23,12 @@ module Apiwork
 
       # 2. Add associations from filter/sort (collections only)
       if for_collection
-        combined.deep_merge!(extract_from_filter(params[:filter])) if params[:filter].present?
-        combined.deep_merge!(extract_from_sort(params[:sort])) if params[:sort].present?
+        combined.deep_merge!(extract_from_filter(params[:filter]))
+        combined.deep_merge!(extract_from_sort(params[:sort]))
       end
 
       # 3. Apply explicit include params (can override with false)
-      apply_explicit_includes(combined, params[:include]) if params[:include].present?
+      apply_explicit_includes(combined, params[:include])
 
       combined
     end
@@ -80,6 +80,8 @@ module Apiwork
     # Apply explicit include params, respecting false to exclude
     # For serializable associations, merge nested includes rather than replace
     def apply_explicit_includes(combined, include_params)
+      return if include_params.blank?
+
       include_params.each do |key, value|
         key_name_sym = key.to_sym
 

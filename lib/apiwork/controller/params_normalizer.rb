@@ -30,7 +30,7 @@ module Apiwork
 
       # Normalize a single value (recursive)
       def self.normalize_indexed_value(value)
-        return value unless value.is_a?(Hash) || value.is_a?(Array)
+        return value if !value.is_a?(Hash) && !value.is_a?(Array)
         return value.map { |v| normalize_indexed_value(v) } if value.is_a?(Array)
 
         # Handle hash: check if numeric-indexed or regular nested hash
