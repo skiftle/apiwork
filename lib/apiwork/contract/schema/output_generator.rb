@@ -73,7 +73,7 @@ module Apiwork
             definition.param :ok, type: :boolean, required: true
             definition.param root_key_plural, type: :array, of: resource_type_name, required: false
             definition.param :meta, type: :object, required: false do
-              param :page, type: :page, required: true
+              param :pagination, type: :pagination, required: true
             end
 
             # Error fields (ok: false variant)
