@@ -179,11 +179,16 @@ module Apiwork
           # Check if variant type is a custom type - if so, just return a reference
           custom_type_block = parent_definition.contract_class.resolve_custom_type(variant_type)
           if custom_type_block
-            # Return type reference with qualified name
+            # Return type reference (qualified only for schema-based contracts)
             # The type definition will be in the types hash at API level
-            scope = determine_scope_for_type(parent_definition, variant_type)
-            qualified_type_name = Descriptors::Registry.qualified_name(scope, variant_type)
-            result = { type: qualified_type_name }
+            if parent_definition.contract_class.respond_to?(:schema_class) &&
+               parent_definition.contract_class.schema_class
+              scope = determine_scope_for_type(parent_definition, variant_type)
+              qualified_type_name = Descriptors::Registry.qualified_name(scope, variant_type)
+              result = { type: qualified_type_name }
+            else
+              result = { type: variant_type }
+            end
             result[:tag] = variant_def[:tag] if variant_def[:tag]
             return result
           end

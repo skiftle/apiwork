@@ -39,7 +39,8 @@ module Apiwork
     def reset_registries!
       Contract::Descriptors::Registry.clear!
       API::Registry.clear!
-      Contract::BuiltInTypes.register
+      Contract::BuiltInTypes.reset!
+      Contract::BuiltInTypes.register_core_descriptors
     end
   end
 end

@@ -35,7 +35,9 @@
       "Bash(RAILS_ENV=test bundle exec rspec:*)",
       "Bash(rspec:*)",
       "Bash(rails runner:*)",
-      "Bash(bin/rails runner:*)"
+      "Bash(bin/rails runner:*)",
+      "Bash(/Users/joakim/.rvm/gems/ruby-3.2.0/bin/rspec spec/lib/contract/serialization_spec.rb:193 --format documentation)",
+      "Bash(/Users/joakim/.rvm/gems/ruby-3.2.0/bin/rspec:*)"
     ],
     "deny": [],
     "ask": []

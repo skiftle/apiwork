@@ -126,15 +126,13 @@ RSpec.describe Apiwork::Generator::Zod do
         expect(output).to include('export const IntegerFilterSchema: z.ZodType<IntegerFilter> = z.object')
       end
 
-      it 'includes DateFilterSchema from introspect types' do
-        expect(output).to include('export interface DateFilter')
-        expect(output).to include('export const DateFilterSchema: z.ZodType<DateFilter> = z.object')
+      it 'includes DatetimeFilterSchema from introspect types' do
+        expect(output).to include('export interface DatetimeFilter')
+        expect(output).to include('export const DatetimeFilterSchema: z.ZodType<DatetimeFilter> = z.object')
       end
 
-      it 'includes UuidFilterSchema from introspect types' do
-        expect(output).to include('export interface UuidFilter')
-        expect(output).to include('export const UuidFilterSchema: z.ZodType<UuidFilter> = z.object')
-      end
+      # DateFilter and UuidFilter are not included because no schema uses date or uuid types
+      # Only types actually used by schemas are registered with lazy loading
 
       it 'includes BooleanFilterSchema from introspect types' do
         expect(output).to include('export interface BooleanFilter')
@@ -292,9 +290,12 @@ RSpec.describe Apiwork::Generator::Zod do
         end
       end
 
-      it 'places date_filter_between before date_filter' do
-        expect_before(:date_filter_between, :date_filter,
-                      'DateFilterBetween must be declared before DateFilter uses it')
+      # date_filter is not registered because no schema uses date type
+      # Only types actually used by schemas are registered with lazy loading
+
+      it 'places datetime_filter_between before datetime_filter' do
+        expect_before(:datetime_filter_between, :datetime_filter,
+                      'DatetimeFilterBetween must be declared before DatetimeFilter uses it')
       end
 
       it 'places integer_filter_between before integer_filter' do

@@ -42,6 +42,9 @@ module Apiwork
             # Add to visited set
             visited = visited.dup.add(schema_class)
 
+            # Ensure filter descriptors are registered for this schema's filterable attributes
+            Contract::BuiltInTypes.ensure_filter_descriptors_registered(schema_class)
+
             # Use schema-specific type name to avoid collisions when filtering by associations
             # For the root schema (depth 0), use :filter. For associated schemas, include schema name
             type_name = build_type_name(schema_class, :filter, depth)
@@ -122,6 +125,9 @@ module Apiwork
 
             # Add to visited set
             visited = visited.dup.add(schema_class)
+
+            # Ensure sort descriptor is registered if schema has sortable attributes
+            Contract::BuiltInTypes.ensure_sort_descriptor_registered(schema_class)
 
             # Use schema-specific type name to avoid collisions when sorting by associations
             # For the root schema (depth 0), use :sort. For associated schemas, include schema name

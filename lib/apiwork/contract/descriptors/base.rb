@@ -112,17 +112,24 @@ module Apiwork
           end
 
           def extract_contract_prefix(contract_class)
-            if contract_class.respond_to?(:schema_class)
-              schema_class = contract_class.schema_class
-              return schema_class.root_key.singular if schema_class
+            # 1. Explicit identifier (highest priority - developer choice)
+            return contract_class._identifier if contract_class.respond_to?(:_identifier) && contract_class._identifier
+
+            # 2. Schema root_key (fallback if no identifier)
+            return contract_class.schema_class.root_key.singular if contract_class.respond_to?(:schema_class) && contract_class.schema_class
+
+            # 3. Class name
+            if contract_class.name
+              return contract_class.name
+                                   .demodulize
+                                   .underscore
+                                   .gsub(/_contract$/, '')
             end
 
-            return "anonymous_#{contract_class.object_id}" if contract_class.name.nil?
-
-            contract_class.name
-                          .demodulize
-                          .underscore
-                          .gsub(/_contract$/, '')
+            # 4. Error - require explicit naming
+            raise ConfigurationError,
+                  'Anonymous contract must have a schema or explicit identifier. ' \
+                  "Use: identifier 'resource_name' or schema YourSchema"
           end
 
           def storage_name

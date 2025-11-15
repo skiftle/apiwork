@@ -52,6 +52,8 @@ RSpec.describe 'Literal and Discriminated Union Features' do
   describe 'Discriminated union' do
     let(:contract_class) do
       Class.new(Apiwork::Contract::Base) do
+        identifier :discriminated_union_test
+
         # Define custom types first
         type :string_filter do
           param :value, type: :string
