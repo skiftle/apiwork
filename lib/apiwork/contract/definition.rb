@@ -7,7 +7,7 @@ module Apiwork
 
       def initialize(type:, contract_class:, action_name: nil)
         @type = type # :input or :output
-        @direction = type # Alias for type (used by Descriptors::Registry.qualified_enum_name)
+        @direction = type # Alias for type (used by Descriptor::Registry.qualified_enum_name)
         @contract_class = contract_class
         @action_name = action_name
         @params = {}
@@ -450,7 +450,7 @@ module Apiwork
         return nil unless type_name.is_a?(Symbol)
 
         # Try to resolve custom type from registry
-        type_def = Descriptors::Registry.resolve(type_name, contract_class: @contract_class, scope: self)
+        type_def = Descriptor::Registry.resolve(type_name, contract_class: @contract_class, scope: self)
 
         return nil unless type_def # Not a registered custom type
 
@@ -741,10 +741,10 @@ module Apiwork
         return nil if enum.nil?
         return enum if enum.is_a?(Array) # Inline enum - keep as-is
 
-        # Enum is a symbol - resolve from Descriptors::Registry with lexical scoping
+        # Enum is a symbol - resolve from Descriptor::Registry with lexical scoping
         raise ArgumentError, "enum must be a Symbol (reference) or Array (inline values), got #{enum.class}" unless enum.is_a?(Symbol)
 
-        values = Descriptors::Registry.resolve_enum(enum, scope: self)
+        values = Descriptor::Registry.resolve_enum(enum, scope: self)
         if values
           # Return hash with both reference and resolved values
           # This allows serialization to use the reference and validation to use the values

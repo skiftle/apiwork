@@ -12,7 +12,7 @@ module Apiwork
           def generate_query_params(definition, schema_class)
             contract_class = definition.contract_class
 
-            # Register resource-specific filter and sort types with Descriptors::Registry
+            # Register resource-specific filter and sort types with Descriptor::Registry
             # This pre-registers all types before usage, eliminating circular recursion
             filter_type = TypeRegistry.register_resource_filter_type(contract_class, schema_class)
             sort_type = TypeRegistry.register_resource_sort_type(contract_class, schema_class)
@@ -48,19 +48,19 @@ module Apiwork
 
           # Generate input contract with root key (like params.require(:service).permit(...))
           # Creates: {service: {icon: ..., name: ...}}
-          # Registers the payload type with Descriptors::Registry for reusability
+          # Registers the payload type with Descriptor::Registry for reusability
           def generate_writable_input(definition, schema_class, context)
             root_key = schema_class.root_key.singular.to_sym
             contract_class = definition.contract_class
 
-            # Register the writable payload type with Descriptors::Registry
-            # Use short name - Descriptors::Registry will add prefix via qualified_name
+            # Register the writable payload type with Descriptor::Registry
+            # Use short name - Descriptor::Registry will add prefix via qualified_name
             # Example: :create_payload, :update_payload
             payload_type_name = :"#{context}_payload"
 
             # Check if already registered
-            unless Descriptors::Registry.resolve(payload_type_name, contract_class: contract_class)
-              Descriptors::Registry.register_local(contract_class, payload_type_name) do
+            unless Descriptor::Registry.resolve(payload_type_name, contract_class: contract_class)
+              Descriptor::Registry.register_local(contract_class, payload_type_name) do
                 InputGenerator.generate_writable_params(self, schema_class, context)
               end
             end

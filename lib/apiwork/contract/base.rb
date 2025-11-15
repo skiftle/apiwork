@@ -57,13 +57,13 @@ module Apiwork
         def type(name, &block)
           raise ArgumentError, 'Block required for custom type definition' unless block_given?
 
-          Descriptors::Registry.register_local(self, name, &block)
+          Descriptor::Registry.register_local(self, name, &block)
         end
 
         def enum(name, values)
           raise ArgumentError, 'Values array required for enum definition' unless values.is_a?(Array)
 
-          Descriptors::Registry.register_local_enum(self, name, values)
+          Descriptor::Registry.register_local_enum(self, name, values)
         end
 
         def import(contract_class, as:)
@@ -104,7 +104,7 @@ module Apiwork
         end
 
         def resolve_custom_type(type_name)
-          Descriptors::Registry.resolve(type_name, contract_class: self)
+          Descriptor::Registry.resolve(type_name, contract_class: self)
         end
 
         def action_definition(action_name)

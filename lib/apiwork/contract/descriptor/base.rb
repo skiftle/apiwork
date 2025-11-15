@@ -2,7 +2,7 @@
 
 module Apiwork
   module Contract
-    module Descriptors
+    module Descriptor
       class Base
         class << self
           def register_global(name, payload)
