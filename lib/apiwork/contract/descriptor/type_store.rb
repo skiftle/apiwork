@@ -5,34 +5,44 @@ module Apiwork
     module Descriptor
       class TypeStore < Store
         class << self
-          def register_global(name, &block)
-            super(name, block)
+          def register_type(name, scope: nil, api_class: nil, &block)
+            register(name, block, scope: scope, metadata: { definition: block }, api_class: api_class)
           end
 
-          def register_local(contract_class, name, &block)
-            super(contract_class, name, block, { definition: block })
+          def register_union(name, data, scope: nil, api_class: nil)
+            if scope
+              # Scoped union
+              storage = api_class ? api_local_storage(api_class) : local_storage
+              storage[scope] ||= {}
+              storage[scope][name] = {
+                qualified_name: qualified_name(scope, name),
+                data: data
+              }
+            else
+              # Shared union
+              storage = api_class ? api_storage(api_class) : global_storage
+              storage[name] = data
+            end
           end
 
-          # Register a pre-serialized union type directly (without DSL expansion)
-          # This is used for types that can't be expressed with the standard DSL
-          def register_global_union(name, data)
-            global_storage[name] = data
-          end
-
-          def register_local_union(contract_class, name, data)
-            local_storage[contract_class] ||= {}
-            local_storage[contract_class][name] = {
-              qualified_name: qualified_name(contract_class, name),
-              data: data
-            }
-          end
-
-          def serialize_all_for_api(_api)
+          def serialize_all_for_api(api)
             result = {}
 
-            # First pass: expand all type definitions
+            # Serialize API-scoped global types
+            if api
+              api_storage(api).to_a.sort_by { |type_name, _| type_name.to_s }.each do |type_name, definition_or_data|
+                result[type_name] = if definition_or_data.is_a?(Hash)
+                                      definition_or_data
+                                    else
+                                      expand_type_definition(definition_or_data, contract_class: nil, type_name: type_name)
+                                    end
+              end
+            end
+
+            # Fallback: include truly global types (legacy)
             global_storage.to_a.sort_by { |type_name, _| type_name.to_s }.each do |type_name, definition_or_data|
-              # Check if this is pre-serialized data (Hash) or a DSL block (Proc)
+              next if result.key?(type_name) # API-scoped takes precedence
+
               result[type_name] = if definition_or_data.is_a?(Hash)
                                     definition_or_data
                                   else
@@ -40,11 +50,31 @@ module Apiwork
                                   end
             end
 
+            # Serialize API-scoped local types
+            if api
+              api_local_storage(api).to_a.sort_by { |contract_class, _| contract_class.to_s }.each do |contract_class, types|
+                types.to_a.sort_by { |type_name, _| type_name.to_s }.each do |type_name, metadata|
+                  qualified_type_name = metadata[:qualified_name]
+
+                  result[qualified_type_name] = if metadata[:data]
+                                                  metadata[:data]
+                                                elsif metadata[:definition]
+                                                  expand_type_definition(
+                                                    metadata[:definition],
+                                                    contract_class: contract_class,
+                                                    type_name: type_name
+                                                  )
+                                                end
+                end
+              end
+            end
+
+            # Fallback: include legacy local types
             local_storage.to_a.sort_by { |contract_class, _| contract_class.to_s }.each do |contract_class, types|
               types.to_a.sort_by { |type_name, _| type_name.to_s }.each do |type_name, metadata|
                 qualified_type_name = metadata[:qualified_name]
+                next if result.key?(qualified_type_name) # API-scoped takes precedence
 
-                # Check if this is pre-serialized data or a DSL definition
                 result[qualified_type_name] = if metadata[:data]
                                                 metadata[:data]
                                               elsif metadata[:definition]

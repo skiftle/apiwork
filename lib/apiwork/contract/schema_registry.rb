@@ -13,7 +13,6 @@ module Apiwork
     class SchemaRegistry
       class << self
         def contract_for_schema(schema_class)
-          # Return cached if exists (thread-safe read)
           @registry[schema_class] ||= find_or_create_contract(schema_class)
         end
 
@@ -46,14 +45,16 @@ module Apiwork
           # Try naming convention: PostSchema → PostContract
           contract_name = schema_class.name.gsub(/Schema$/, 'Contract')
           contract_name.constantize
-        rescue NameError => e
-          Rails.logger&.debug("No explicit contract found for #{schema_class.name}: #{e.message}") if defined?(Rails)
+        rescue NameError
           nil
         end
 
         def create_anonymous_contract(schema_class)
           # Create anonymous contract ONLY when no explicit contract exists
-          Class.new(Base) do
+          # Derive API class from schema namespace
+          api_class_for_schema = derive_api_class_from_schema(schema_class)
+
+          contract = Class.new(Base) do
             @_schema_class = schema_class
             prepend Schema::Extension
 
@@ -64,7 +65,29 @@ module Apiwork
             define_singleton_method(:inspect) do
               name
             end
+
+            # Override api_class to use schema's namespace
+            define_singleton_method(:api_class) do
+              api_class_for_schema
+            end
           end
+
+          # Register enums for anonymous contracts
+          Schema::TypeRegistry.register_contract_enums(contract, schema_class)
+
+          contract
+        end
+
+        # Derive API class from schema class namespace
+        # Example: Api::V1::AccountSchema → /api/v1 → finds API class
+        def derive_api_class_from_schema(schema_class)
+          return nil unless schema_class.name
+
+          namespace_parts = schema_class.name.deconstantize.split('::')
+          return nil if namespace_parts.empty?
+
+          api_path = "/#{namespace_parts.map(&:underscore).join('/')}"
+          Apiwork::API.find(api_path)
         end
 
         def registry

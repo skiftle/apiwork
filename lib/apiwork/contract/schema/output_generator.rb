@@ -93,7 +93,7 @@ module Apiwork
 
             # NOW register the resource type with the root key as the name
             # This ensures the type can be resolved later using the same name
-            Descriptor::Registry.register_local(contract_class, type_name) do
+            Descriptor::Registry.register_type(type_name, scope: contract_class, api_class: contract_class.api_class) do
               # All resource attributes
               # Transform attribute names according to serialize_key_transform
               # because output validation happens AFTER serialization

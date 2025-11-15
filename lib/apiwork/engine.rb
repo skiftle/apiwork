@@ -13,15 +13,14 @@ module Apiwork
       # Clear all registries on code reload (development mode)
       Apiwork::Contract::SchemaRegistry.clear!
       Apiwork::API::Registry.clear!
-
-      # Register core built-in descriptors
-      Apiwork::Contract::Descriptor::Core.register_core_descriptors
+      Apiwork::Contract::Descriptor::Registry.clear!
 
       # Register generators
       Apiwork.register_generator(:openapi, Apiwork::Generator::Openapi)
       Apiwork.register_generator(:zod, Apiwork::Generator::Zod)
       Apiwork.register_generator(:typescript, Apiwork::Generator::Typescript)
 
+      # Load API definitions (core descriptors registered per-API in configure_from_path)
       if Rails.root.join('config/apis').exist?
         Dir[Rails.root.join('config/apis/**/*.rb')].sort.each do |file|
           load file

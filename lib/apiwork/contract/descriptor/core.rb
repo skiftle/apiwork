@@ -6,12 +6,13 @@ module Apiwork
       module Core
         class << self
           def reset!
-            @registered_filter_descriptors = Set.new
-            @sort_descriptor_registered = false
+            @api_registered_filter_descriptors = {}
+            @api_sort_descriptor_registered = {}
           end
 
-          def register_core_descriptors
-            Apiwork.register_descriptors do
+          def register_core_descriptors(api_class)
+            builder = GlobalBuilder.new(api_class: api_class)
+            builder.instance_eval do
               type :page do
                 param :number, type: :integer, required: false
                 param :size, type: :integer, required: false
@@ -34,56 +35,60 @@ module Apiwork
             end
           end
 
-          def ensure_filter_descriptors_registered(schema_class)
+          def ensure_filter_descriptors_registered(schema_class, api_class:)
             needed = determine_needed_filter_descriptors(schema_class)
-            needed.each { |type| register_filter_descriptor(type) }
+            needed.each { |type| register_filter_descriptor(type, api_class: api_class) }
           end
 
-          def ensure_sort_descriptor_registered(schema_class)
-            return if @sort_descriptor_registered
+          def ensure_sort_descriptor_registered(schema_class, api_class:)
+            @api_sort_descriptor_registered ||= {}
+            return if @api_sort_descriptor_registered[api_class]
 
             has_attributes_sortable = schema_class.attribute_definitions.values.any?(&:sortable?)
             has_associations_sortable = schema_class.association_definitions.values.any?(&:sortable?)
 
             has_sortable = has_attributes_sortable || has_associations_sortable
 
-            register_sort_descriptor if has_sortable
+            register_sort_descriptor(api_class: api_class) if has_sortable
           end
 
-          def register_filter_descriptor(type_name)
-            @registered_filter_descriptors ||= Set.new
-            return if @registered_filter_descriptors.include?(type_name)
+          def register_filter_descriptor(type_name, api_class:)
+            @api_registered_filter_descriptors ||= {}
+            @api_registered_filter_descriptors[api_class] ||= Set.new
+            return if @api_registered_filter_descriptors[api_class].include?(type_name)
 
-            @registered_filter_descriptors.add(type_name)
+            @api_registered_filter_descriptors[api_class].add(type_name)
 
             case type_name
             when :string_filter
-              register_string_filter
+              register_string_filter(api_class: api_class)
             when :integer_filter
-              register_integer_filter_between
-              register_integer_filter
+              register_integer_filter_between(api_class: api_class)
+              register_integer_filter(api_class: api_class)
             when :decimal_filter
-              register_decimal_filter_between
-              register_decimal_filter
+              register_decimal_filter_between(api_class: api_class)
+              register_decimal_filter(api_class: api_class)
             when :boolean_filter
-              register_boolean_filter
+              register_boolean_filter(api_class: api_class)
             when :date_filter
-              register_date_filter_between
-              register_date_filter
+              register_date_filter_between(api_class: api_class)
+              register_date_filter(api_class: api_class)
             when :datetime_filter
-              register_datetime_filter_between
-              register_datetime_filter
+              register_datetime_filter_between(api_class: api_class)
+              register_datetime_filter(api_class: api_class)
             when :uuid_filter
-              register_uuid_filter
+              register_uuid_filter(api_class: api_class)
             end
           end
 
-          def register_sort_descriptor
-            return if @sort_descriptor_registered
+          def register_sort_descriptor(api_class:)
+            @api_sort_descriptor_registered ||= {}
+            return if @api_sort_descriptor_registered[api_class]
 
-            @sort_descriptor_registered = true
+            @api_sort_descriptor_registered[api_class] = true
 
-            Apiwork.register_descriptors do
+            builder = GlobalBuilder.new(api_class: api_class)
+            builder.instance_eval do
               enum :sort_direction, %w[asc desc]
             end
           end
@@ -101,8 +106,9 @@ module Apiwork
             descriptors
           end
 
-          def register_string_filter
-            Apiwork.register_descriptors do
+          def register_string_filter(api_class:)
+            builder = GlobalBuilder.new(api_class: api_class)
+            builder.instance_eval do
               type :string_filter do
                 param :eq, type: :string, required: false
                 param :in, type: :array, of: :string, required: false
@@ -113,8 +119,9 @@ module Apiwork
             end
           end
 
-          def register_integer_filter_between
-            Apiwork.register_descriptors do
+          def register_integer_filter_between(api_class:)
+            builder = GlobalBuilder.new(api_class: api_class)
+            builder.instance_eval do
               type :integer_filter_between do
                 param :from, type: :integer, required: false
                 param :to, type: :integer, required: false
@@ -122,8 +129,9 @@ module Apiwork
             end
           end
 
-          def register_integer_filter
-            Apiwork.register_descriptors do
+          def register_integer_filter(api_class:)
+            builder = GlobalBuilder.new(api_class: api_class)
+            builder.instance_eval do
               type :integer_filter do
                 param :eq, type: :integer, required: false
                 param :gt, type: :integer, required: false
@@ -136,8 +144,9 @@ module Apiwork
             end
           end
 
-          def register_decimal_filter_between
-            Apiwork.register_descriptors do
+          def register_decimal_filter_between(api_class:)
+            builder = GlobalBuilder.new(api_class: api_class)
+            builder.instance_eval do
               type :decimal_filter_between do
                 param :from, type: :decimal, required: false
                 param :to, type: :decimal, required: false
@@ -145,8 +154,9 @@ module Apiwork
             end
           end
 
-          def register_decimal_filter
-            Apiwork.register_descriptors do
+          def register_decimal_filter(api_class:)
+            builder = GlobalBuilder.new(api_class: api_class)
+            builder.instance_eval do
               type :decimal_filter do
                 param :eq, type: :decimal, required: false
                 param :gt, type: :decimal, required: false
@@ -159,16 +169,18 @@ module Apiwork
             end
           end
 
-          def register_boolean_filter
-            Apiwork.register_descriptors do
+          def register_boolean_filter(api_class:)
+            builder = GlobalBuilder.new(api_class: api_class)
+            builder.instance_eval do
               type :boolean_filter do
                 param :eq, type: :boolean, required: false
               end
             end
           end
 
-          def register_date_filter_between
-            Apiwork.register_descriptors do
+          def register_date_filter_between(api_class:)
+            builder = GlobalBuilder.new(api_class: api_class)
+            builder.instance_eval do
               type :date_filter_between do
                 param :from, type: :date, required: false
                 param :to, type: :date, required: false
@@ -176,8 +188,9 @@ module Apiwork
             end
           end
 
-          def register_date_filter
-            Apiwork.register_descriptors do
+          def register_date_filter(api_class:)
+            builder = GlobalBuilder.new(api_class: api_class)
+            builder.instance_eval do
               type :date_filter do
                 param :eq, type: :date, required: false
                 param :gt, type: :date, required: false
@@ -190,8 +203,9 @@ module Apiwork
             end
           end
 
-          def register_datetime_filter_between
-            Apiwork.register_descriptors do
+          def register_datetime_filter_between(api_class:)
+            builder = GlobalBuilder.new(api_class: api_class)
+            builder.instance_eval do
               type :datetime_filter_between do
                 param :from, type: :datetime, required: false
                 param :to, type: :datetime, required: false
@@ -199,8 +213,9 @@ module Apiwork
             end
           end
 
-          def register_datetime_filter
-            Apiwork.register_descriptors do
+          def register_datetime_filter(api_class:)
+            builder = GlobalBuilder.new(api_class: api_class)
+            builder.instance_eval do
               type :datetime_filter do
                 param :eq, type: :datetime, required: false
                 param :gt, type: :datetime, required: false
@@ -213,8 +228,9 @@ module Apiwork
             end
           end
 
-          def register_uuid_filter
-            Apiwork.register_descriptors do
+          def register_uuid_filter(api_class:)
+            builder = GlobalBuilder.new(api_class: api_class)
+            builder.instance_eval do
               type :uuid_filter do
                 param :eq, type: :uuid, required: false
                 param :in, type: :array, of: :uuid, required: false

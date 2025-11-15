@@ -34,13 +34,13 @@ module Apiwork
       API.find(path)&.introspect
     end
 
-    # Reset all registries and re-register core descriptors
+    # Reset all registries
     # Useful for testing when you need to reload API configurations
+    # Core descriptors will be registered per-API when APIs are configured
     def reset_registries!
       Contract::Descriptor::Registry.clear!
       API::Registry.clear!
       Contract::Descriptor::Core.reset!
-      Contract::Descriptor::Core.register_core_descriptors
     end
   end
 end

@@ -38,7 +38,15 @@
       "Bash(bin/rails runner:*)",
       "Bash(/Users/joakim/.rvm/gems/ruby-3.2.0/bin/rspec spec/lib/contract/serialization_spec.rb:193 --format documentation)",
       "Bash(/Users/joakim/.rvm/gems/ruby-3.2.0/bin/rspec:*)",
-      "Bash(xargs ls:*)"
+      "Bash(xargs ls:*)",
+      "Bash(for i in {1..5})",
+      "Bash(do bundle exec rspec:*)",
+      "Bash(done)",
+      "Bash(bundle exec bin/rails runner:*)",
+      "Bash(curl:*)",
+      "Bash(bin/rails server:*)",
+      "Bash(bundle exec bin/rails server:*)",
+      "Bash(bundle exec rails server:*)"
     ],
     "deny": [],
     "ask": []

@@ -4,14 +4,18 @@ module Apiwork
   module Contract
     module Descriptor
       class GlobalBuilder
+        def initialize(api_class: nil)
+          @api_class = api_class
+        end
+
         def type(name, **_options, &block)
-          Registry.register_global(name, &block)
+          Registry.register_type(name, api_class: @api_class, &block)
         end
 
         def enum(name, values)
           raise ArgumentError, 'Values array required for enum definition' unless values.is_a?(Array)
 
-          Registry.register_global_enum(name, values)
+          Registry.register_enum(name, values, api_class: @api_class)
         end
 
         def union(name, &block)
@@ -24,7 +28,7 @@ module Apiwork
           # Serialize the union definition
           union_data = union_def.serialize
 
-          TypeStore.register_global_union(name, union_data)
+          Registry.register_union(name, union_data, api_class: @api_class)
         end
       end
     end
