@@ -164,6 +164,8 @@ RSpec.describe 'Contract Serialization' do
 
     it 'serializes custom types' do
       contract_class = Class.new(Apiwork::Contract::Base) do
+        identifier :shipping
+
         type :address do
           param :street, type: :string, required: true
           param :city, type: :string, required: true
@@ -181,6 +183,7 @@ RSpec.describe 'Contract Serialization' do
 
       # Custom types are serialized as type references (not expanded)
       # This prevents infinite recursion and keeps API introspection clean
+      # Note: For non-schema contracts, types are not qualified
       expect(json).to eq({
                            shipping_address: {
                              nullable: false,
@@ -192,7 +195,9 @@ RSpec.describe 'Contract Serialization' do
 
     it 'returns type references for custom types in unions' do
       contract_class = Class.new(Apiwork::Contract::Base) do
-        type :string_filter do
+        identifier :test_union
+
+        type :test_union_filter_a do
           param :equal, type: :string, required: false
           param :contains, type: :string, required: false
           param :starts_with, type: :string, required: false
@@ -201,7 +206,7 @@ RSpec.describe 'Contract Serialization' do
         action :search do
           input do
             param :filter, type: :union, required: false do
-              variant type: :string_filter
+              variant type: :test_union_filter_a
               variant type: :string
             end
           end
@@ -219,7 +224,7 @@ RSpec.describe 'Contract Serialization' do
                              nullable: false,
                              variants: [
                                {
-                                 type: :string_filter # Type reference, not expanded
+                                 type: :test_union_filter_a # Type reference, not expanded
                                },
                                {
                                  type: :string
@@ -231,7 +236,9 @@ RSpec.describe 'Contract Serialization' do
 
     it 'returns type references for array of custom types in unions' do
       contract_class = Class.new(Apiwork::Contract::Base) do
-        type :string_filter do
+        identifier :test_array_union
+
+        type :test_union_filter_b do
           param :equal, type: :string, required: false
           param :contains, type: :string, required: false
         end
@@ -239,8 +246,8 @@ RSpec.describe 'Contract Serialization' do
         action :search do
           input do
             param :filters, type: :union, required: false do
-              variant type: :string_filter
-              variant type: :array, of: :string_filter
+              variant type: :test_union_filter_b
+              variant type: :array, of: :test_union_filter_b
             end
           end
         end
@@ -257,11 +264,11 @@ RSpec.describe 'Contract Serialization' do
                              nullable: false,
                              variants: [
                                {
-                                 type: :string_filter # Type reference
+                                 type: :test_union_filter_b # Type reference
                                },
                                {
                                  type: :array,
-                                 of: :string_filter # Type reference in 'of' as well
+                                 of: :test_union_filter_b # Type reference in 'of' as well
                                }
                              ]
                            }

@@ -6,12 +6,21 @@ module Apiwork
       include Concerns::AbstractClass
 
       class << self
-        attr_accessor :_schema_class
+        attr_accessor :_schema_class, :_identifier
 
         def inherited(subclass)
           super
           subclass.instance_variable_set(:@action_definitions, {})
           subclass.instance_variable_set(:@imports, {})
+        end
+
+        def identifier(value = nil)
+          if value
+            @_identifier = value.to_s
+            value
+          else
+            @_identifier
+          end
         end
 
         def schema(ref = nil)

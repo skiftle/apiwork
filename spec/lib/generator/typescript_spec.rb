@@ -107,13 +107,12 @@ RSpec.describe Apiwork::Generator::Typescript do
         expect(output).to include('export interface IntegerFilter')
       end
 
-      it 'includes DateFilter interface' do
-        expect(output).to include('export interface DateFilter')
+      it 'includes DatetimeFilter interface' do
+        expect(output).to include('export interface DatetimeFilter')
       end
 
-      it 'includes UuidFilter interface' do
-        expect(output).to include('export interface UuidFilter')
-      end
+      # DateFilter and UuidFilter are not included because no schema uses date or uuid types
+      # Only types actually used by schemas are registered with lazy loading
 
       it 'includes BooleanFilter interface' do
         expect(output).to include('export interface BooleanFilter')
