@@ -205,8 +205,8 @@ module Apiwork
             Apiwork.register_descriptors do
               # Date range type (for between queries)
               type :date_filter_between do
-                param :from, type: :string, required: false
-                param :to, type: :string, required: false
+                param :from, type: :date, required: false
+                param :to, type: :date, required: false
               end
             end
           end
@@ -216,13 +216,13 @@ module Apiwork
               # Date filter type
               # Provides date comparison operators
               type :date_filter do
-                param :eq, type: :string, required: false
-                param :gt, type: :string, required: false
-                param :gte, type: :string, required: false
-                param :lt, type: :string, required: false
-                param :lte, type: :string, required: false
+                param :eq, type: :date, required: false
+                param :gt, type: :date, required: false
+                param :gte, type: :date, required: false
+                param :lt, type: :date, required: false
+                param :lte, type: :date, required: false
                 param :between, type: :date_filter_between, required: false
-                param :in, type: :array, of: :string, required: false
+                param :in, type: :array, of: :date, required: false
               end
             end
           end
@@ -231,8 +231,8 @@ module Apiwork
             Apiwork.register_descriptors do
               # Datetime range type (for between queries)
               type :datetime_filter_between do
-                param :from, type: :string, required: false
-                param :to, type: :string, required: false
+                param :from, type: :datetime, required: false
+                param :to, type: :datetime, required: false
               end
             end
           end
@@ -242,13 +242,13 @@ module Apiwork
               # Datetime filter type
               # Provides temporal comparison operators
               type :datetime_filter do
-                param :eq, type: :string, required: false
-                param :gt, type: :string, required: false
-                param :gte, type: :string, required: false
-                param :lt, type: :string, required: false
-                param :lte, type: :string, required: false
+                param :eq, type: :datetime, required: false
+                param :gt, type: :datetime, required: false
+                param :gte, type: :datetime, required: false
+                param :lt, type: :datetime, required: false
+                param :lte, type: :datetime, required: false
                 param :between, type: :datetime_filter_between, required: false
-                param :in, type: :array, of: :string, required: false
+                param :in, type: :array, of: :datetime, required: false
               end
             end
           end
