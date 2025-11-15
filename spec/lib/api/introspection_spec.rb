@@ -129,7 +129,7 @@ RSpec.describe 'API Introspection' do
 
             # Error variant should have errors field
             error_variant = output[:variants].find { |v| v[:tag] == false }
-            expect(error_variant[:shape].keys).to include(:errors)
+            expect(error_variant[:shape].keys).to include(:issues)
           end
 
           it 'merges custom output params with discriminated union at top level' do

@@ -487,7 +487,7 @@ Response:
 ```json
 {
   "ok": false,
-  "errors": [
+  "issues": [
     {
       "code": "filter_error",
       "path": "/filter",

@@ -286,7 +286,7 @@ Returns validation errors:
 ```json
 {
   "ok": false,
-  "errors": [
+  "issues": [
     {
       "path": "/post/comments/0/body",
       "message": "must be at least 3 characters"

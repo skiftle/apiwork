@@ -706,7 +706,7 @@ Invalid input returns 422 with detailed errors:
 ```json
 {
   "ok": false,
-  "errors": [
+  "issues": [
     {
       "code": "field_missing",
       "path": "/post/title",

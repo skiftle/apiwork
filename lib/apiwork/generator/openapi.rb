@@ -172,14 +172,14 @@ module Apiwork
                     type: 'boolean',
                     const: false
                   },
-                  errors: {
+                  issues: {
                     type: 'array',
                     items: {
-                      '$ref': "#/components/schemas/#{schema_name(:error)}"
+                      '$ref': "#/components/schemas/#{schema_name(:issue)}"
                     }
                   }
                 },
-                required: %w[ok errors]
+                required: %w[ok issues]
               }
             }
           }

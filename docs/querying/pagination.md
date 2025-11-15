@@ -501,7 +501,7 @@ GET /posts?page[number]=0
 ```json
 {
   "ok": false,
-  "errors": [
+  "issues": [
     {
       "code": "invalid_page_number",
       "detail": "page[number] must be >= 1",
@@ -520,7 +520,7 @@ GET /posts?page[size]=-10
 ```json
 {
   "ok": false,
-  "errors": [
+  "issues": [
     {
       "code": "invalid_page_size",
       "detail": "page[size] must be >= 1",
@@ -540,7 +540,7 @@ GET /posts?page[size]=1000
 ```json
 {
   "ok": false,
-  "errors": [
+  "issues": [
     {
       "code": "invalid_page_size",
       "detail": "page[size] must be <= 200",

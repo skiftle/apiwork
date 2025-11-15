@@ -77,7 +77,7 @@ action :create do
     param :post, type: :post_schema, required: false
 
     # When ok is false, these are present:
-    param :errors, type: :array, of: :error, required: false
+    param :issues, type: :array, of: :issue, required: false
   end
 end
 ```
@@ -102,7 +102,7 @@ param :result, type: :union, discriminator: :status do
 
   variant tag: 'error' do
     param :status, type: :literal, value: 'error'
-    param :error, type: :string
+    param :issue, type: :string
   end
 end
 ```
@@ -252,7 +252,7 @@ output do
 
   # Error variant: ok is literally false
   param :ok, type: :literal, value: false, required: false
-  param :errors, type: :array, of: :error, required: false
+  param :issues, type: :array, of: :issue, required: false
 end
 ```
 
