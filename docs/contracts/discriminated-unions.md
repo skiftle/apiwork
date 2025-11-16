@@ -174,7 +174,25 @@ Each filter type gets exactly the parameters it needs, no more, no less.
 
 ## Auto-generated discriminated unions
 
-When you use schema-based resource contracts, Apiwork automatically generates discriminated union responses for you:
+When you use schema-based resource contracts, Apiwork automatically generates discriminated union responses for you.
+
+### Why `ok` is always present
+
+The `ok: true`/`ok: false` field is **always** added to responses automatically - you cannot remove it, even with `replace: true`. This is intentional and necessary for discriminated unions in type generators.
+
+**Why this matters:**
+- Type generators (TypeScript, Zod, etc.) need a discriminator field to distinguish success from error responses
+- The `ok` field enables compile-time type safety in generated clients
+- It allows TypeScript to narrow types: `if (response.ok)` tells the compiler which fields exist
+- Without it, type generators cannot create proper discriminated union types
+
+**How it works:**
+1. **Contract level**: `ok` and `issues` parameters are automatically added to output contracts
+2. **Response level**: The Responder always adds `ok: true` to success responses
+3. **Error level**: Error handlers add `ok: false` to error responses
+4. **Cannot be overridden**: These parameters are protected - you cannot replace or remove them
+
+This ensures consistent, type-safe responses across all endpoints.
 
 ```ruby
 class PostContract < Apiwork::Contract::Base

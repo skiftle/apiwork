@@ -366,18 +366,18 @@ These don't modify the resource, just return derived data:
 def preview
   post = Post.find(params[:id])
   preview_html = MarkdownRenderer.render(post.body)
-  render json: { ok: true, preview: preview_html }
+  render json: { preview: preview_html }  # ok: true added automatically
 end
 
 def stats
   post = Post.find(params[:id])
   render json: {
-    ok: true,
     stats: {
       views: post.view_count,
       likes: post.likes_count,
       comments: post.comments_count
     }
+    # ok: true added automatically
   }
 end
 ```
