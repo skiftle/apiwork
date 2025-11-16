@@ -31,7 +31,7 @@ module Apiwork
               end
 
               # Draw resource routes (inside module namespace)
-              scope path: api_class.mount_path, module: builder_instance.controller_namespace(api_class) do
+              scope path: api_class.mount_path, module: builder_instance.controller_path(api_class) do
                 # Draw resources recursively
                 builder_instance.draw_resources_in_context(self, api_class.metadata.resources)
               end
@@ -41,7 +41,7 @@ module Apiwork
           set
         end
 
-        def controller_namespace(api_class)
+        def controller_path(api_class)
           api_class.namespaces_parts.map(&:to_s).join('/').underscore
         end
 
@@ -49,58 +49,30 @@ module Apiwork
           resources_hash.each do |name, metadata|
             builder_instance = self
             controller_option = extract_controller_option(metadata)
+            resource_method = metadata[:singular] ? :resource : :resources
 
-            if metadata[:singular]
-              # Singular resource
-              context.instance_eval do
-                resource name, only: metadata[:actions], controller: controller_option do
-                  # Draw member actions
-                  if metadata[:members].any?
-                    member do
-                      metadata[:members].each do |action, action_metadata|
-                        send(action_metadata[:method], action)
-                      end
+            context.instance_eval do
+              send(resource_method, name, only: metadata[:actions], controller: controller_option) do
+                # Draw member actions
+                if metadata[:members].any?
+                  member do
+                    metadata[:members].each do |action, action_metadata|
+                      send(action_metadata[:method], action)
                     end
                   end
-
-                  # Draw collection actions
-                  if metadata[:collections].any?
-                    collection do
-                      metadata[:collections].each do |action, action_metadata|
-                        send(action_metadata[:method], action)
-                      end
-                    end
-                  end
-
-                  # Draw nested resources INSIDE this block
-                  builder_instance.draw_resources_in_context(self, metadata[:resources]) if metadata[:resources].any?
                 end
-              end
-            else
-              # Plural resources
-              context.instance_eval do
-                resources name, only: metadata[:actions], controller: controller_option do
-                  # Draw member actions
-                  if metadata[:members].any?
-                    member do
-                      metadata[:members].each do |action, action_metadata|
-                        send(action_metadata[:method], action)
-                      end
+
+                # Draw collection actions
+                if metadata[:collections].any?
+                  collection do
+                    metadata[:collections].each do |action, action_metadata|
+                      send(action_metadata[:method], action)
                     end
                   end
-
-                  # Draw collection actions
-                  if metadata[:collections].any?
-                    collection do
-                      metadata[:collections].each do |action, action_metadata|
-                        send(action_metadata[:method], action)
-                      end
-                    end
-                  end
-
-                  # Draw nested resources INSIDE this block
-                  builder_instance.draw_resources_in_context(self, metadata[:resources]) if metadata[:resources].any?
                 end
+
+                # Draw nested resources INSIDE this block
+                builder_instance.draw_resources_in_context(self, metadata[:resources]) if metadata[:resources].any?
               end
             end
           end

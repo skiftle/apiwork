@@ -73,7 +73,7 @@ module Apiwork
         end
 
         def controller_namespace
-          namespaces_parts.map(&:to_s).map(&:camelize).join('::')
+          metadata.namespaces_string
         end
 
         def descriptors(&block)
@@ -86,6 +86,16 @@ module Apiwork
         def introspect
           return nil unless metadata
 
+          @introspect ||= build_introspection_result
+        end
+
+        def as_json
+          introspect
+        end
+
+        private
+
+        def build_introspection_result
           # Build resources first - this creates contract classes and registers types/enums
           resources = {}
           metadata.resources.each do |resource_name, resource_metadata|
@@ -96,8 +106,8 @@ module Apiwork
           result = {
             path: mount_path,
             metadata: serialize_doc,
-            types: serialize_all_types,
-            enums: serialize_all_enums,
+            types: types,
+            enums: enums,
             resources: resources
           }
 
@@ -106,12 +116,6 @@ module Apiwork
 
           result
         end
-
-        def as_json
-          introspect
-        end
-
-        private
 
         # Serialize documentation metadata
         def serialize_doc
@@ -126,15 +130,15 @@ module Apiwork
           result
         end
 
-        # Serialize all types from Descriptor::Registry
+        # All types from Descriptor::Registry
         # Returns all global types + all local types from all contracts in a single hash
-        def serialize_all_types
+        def types
           Contract::Descriptor::Registry.types(self)
         end
 
-        # Serialize all enums from Descriptor::Registry
+        # All enums from Descriptor::Registry
         # Returns all global enums + all local enums from all scopes in a single hash
-        def serialize_all_enums
+        def enums
           Contract::Descriptor::Registry.enums(self)
         end
 
@@ -156,14 +160,14 @@ module Apiwork
           # Serialize CRUD actions
           (resource_metadata[:actions] || []).each do |action_name|
             method = crud_action_method(action_name)
-            path = build_action_path(resource_path, action_name, action_name.to_sym)
+            path = build_action_path(action_name, action_name.to_sym)
             add_action_with_contract(result[:actions], action_name, method, path, contract_class)
           end
 
           # Serialize member actions
           if resource_metadata[:members]&.any?
             resource_metadata[:members].each do |action_name, action_metadata|
-              path = build_action_path(resource_path, action_name, :member)
+              path = build_action_path(action_name, :member)
               add_action_with_contract(result[:actions], action_name, action_metadata[:method], path, contract_class)
             end
           end
@@ -171,7 +175,7 @@ module Apiwork
           # Serialize collection actions
           if resource_metadata[:collections]&.any?
             resource_metadata[:collections].each do |action_name, action_metadata|
-              path = build_action_path(resource_path, action_name, :collection)
+              path = build_action_path(action_name, :collection)
               add_action_with_contract(result[:actions], action_name, action_metadata[:method], path, contract_class)
             end
           end
@@ -210,7 +214,7 @@ module Apiwork
         # show/update/destroy: "/:id"
         # member: "/:id/action_name"
         # collection: "/action_name"
-        def build_action_path(_resource_path, action_name, action_type)
+        def build_action_path(action_name, action_type)
           case action_type
           when :index, :create
             '/'
