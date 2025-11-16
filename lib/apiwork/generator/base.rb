@@ -51,7 +51,7 @@ module Apiwork
       def initialize(path, **options)
         @path = path
         @options = self.class.default_options.merge(options)
-        @options[:key_transform] ||= :none
+        @options[:key_transform] ||= :keep
         load_data
       end
 

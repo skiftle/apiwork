@@ -18,7 +18,7 @@ module Apiwork
 
           return meta unless meta.present? && @schema_class
 
-          meta_key_transform = @schema_class.serialize_key_transform
+          meta_key_transform = @schema_class.output_key_format
           Apiwork::Transform::Case.hash(meta, meta_key_transform)
         end
 

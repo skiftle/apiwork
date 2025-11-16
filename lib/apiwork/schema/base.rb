@@ -9,8 +9,8 @@ module Apiwork
       class_attribute :_model_class
       class_attribute :attribute_definitions, default: {}
       class_attribute :association_definitions, default: {}
-      class_attribute :_serialize_key_transform, default: nil
-      class_attribute :_deserialize_key_transform, default: nil
+      class_attribute :_output_key_format, default: nil
+      class_attribute :_input_key_format, default: nil
       class_attribute :_root, default: nil
       class_attribute :_auto_detection_complete, default: false
       class_attribute :_configuration, default: {}
@@ -138,28 +138,28 @@ module Apiwork
           "/#{namespace_parts.map(&:underscore).join('/')}"
         end
 
-        def serialize_key_transform
+        def output_key_format
           Configuration::Resolver.resolve(
-            :serialize_key_transform,
+            :output_key_format,
             schema_class: self,
             api_class: api_class
           )
         end
 
-        def deserialize_key_transform
+        def input_key_format
           Configuration::Resolver.resolve(
-            :deserialize_key_transform,
+            :input_key_format,
             schema_class: self,
             api_class: api_class
           )
         end
 
-        def serialize_key_transform=(value)
-          self._serialize_key_transform = value
+        def output_key_format=(value)
+          self._output_key_format = value
         end
 
-        def deserialize_key_transform=(value)
-          self._deserialize_key_transform = value
+        def input_key_format=(value)
+          self._input_key_format = value
         end
 
         # Configure schema-level settings

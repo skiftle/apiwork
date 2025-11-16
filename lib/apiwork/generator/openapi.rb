@@ -95,7 +95,7 @@ module Apiwork
         # Join all parts with underscore
         joined = parts.join('_')
 
-        if key_transform == :none
+        if key_transform == :keep
           joined
         else
           transform_key(joined, key_transform)

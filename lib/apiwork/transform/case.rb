@@ -10,11 +10,11 @@ module Apiwork
         camelize_lower: ->(value) { value.to_s.camelize(:lower) },
         camelize_upper: ->(value) { value.to_s.camelize(:upper) },
         dasherize: ->(value) { value.to_s.dasherize },
-        none: lambda(&:to_s)
+        keep: lambda(&:to_s)
       }.freeze
 
       def self.hash(hash, strategy)
-        return hash if [:none, nil].include?(strategy)
+        return hash if [:keep, nil].include?(strategy)
 
         transformer = STRATEGIES.fetch(strategy) do
           raise ConfigurationError,
@@ -28,7 +28,7 @@ module Apiwork
       end
 
       def self.string(string, strategy)
-        return string.to_s if [:none, nil].include?(strategy)
+        return string.to_s if [:keep, nil].include?(strategy)
 
         transformer = STRATEGIES.fetch(strategy) do
           raise ConfigurationError,

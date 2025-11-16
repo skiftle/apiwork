@@ -181,7 +181,7 @@ Options:
 - `:camelize_upper` - `CreatedAt` (PascalCase)
 - `:underscore` - `created_at` (snake_case)
 - `:dasherize` - `created-at` (kebab-case)
-- `:none` - No transformation
+- `:keep` - Keep keys unchanged
 
 ## Multiple API versions
 

@@ -27,8 +27,8 @@ Create an initializer at `config/initializers/apiwork.rb`:
 ```ruby
 Apiwork.configure do |config|
   # Key transformation for JSON serialization
-  config.serialize_key_transform = :camel      # camelCase for frontend
-  config.deserialize_key_transform = :snake    # snake_case for Rails
+  config.output_key_format = :camel      # camelCase for frontend
+  config.input_key_format = :snake    # snake_case for Rails
 
   # Pagination defaults
   config.default_page_size = 20

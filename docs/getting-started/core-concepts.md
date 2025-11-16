@@ -548,7 +548,7 @@ Client sends:                          Controller receives:
     "title": "Hello"        →              "title": "Hello"
   }                                        }
 }                                      }
-        ↓ deserialize_key_transform           ↓ Contract validation
+        ↓ input_key_format           ↓ Contract validation
 Rails params:                          Validated params:
 {                                      {
   "post" => {                            title: "Hello",
@@ -564,7 +564,7 @@ Post.create(                           #<Post
                                          created_at: ...,
                                          updated_at: ...
                                        >
-        ↓ Schema serialization                ↓ serialize_key_transform
+        ↓ Schema serialization                ↓ output_key_format
 Serialized hash:                       Final JSON:
 {                                      {
   id: 1,                   →             "ok": true,
@@ -695,8 +695,8 @@ By default, Apiwork transforms keys between client and server:
 
 ```ruby
 Apiwork.configure do |config|
-  config.serialize_key_transform = :camel      # For responses (to client)
-  config.deserialize_key_transform = :snake    # For requests (from client)
+  config.output_key_format = :camel      # For responses (to client)
+  config.input_key_format = :snake    # For requests (from client)
 end
 ```
 
