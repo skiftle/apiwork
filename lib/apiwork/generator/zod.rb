@@ -44,8 +44,8 @@ module Apiwork
           parts << ''
         end
 
-        # Use TypeScript generator for TypeScript types
-        typescript_types = typescript_generator.generate
+        # Use TypeScript mapper for TypeScript types
+        typescript_types = build_typescript_types
         if typescript_types.present?
           parts << typescript_types
           parts << ''
@@ -56,21 +56,15 @@ module Apiwork
 
       private
 
-      TYPE_MAP = {
-        string: 'z.string()',
-        text: 'z.string()',
-        uuid: 'z.uuid()',
-        integer: 'z.number().int()',
-        float: 'z.number()',
-        decimal: 'z.number()',
-        number: 'z.number()',
-        boolean: 'z.boolean()',
-        date: 'z.iso.date()',
-        datetime: 'z.iso.datetime()',
-        time: 'z.iso.time()',
-        json: 'z.record(z.string(), z.any())',
-        binary: 'z.string()'
-      }.freeze
+      # ZodMapper instance for Zod schema generation
+      def zod_mapper
+        @zod_mapper ||= ZodMapper.new(introspection: @data, key_transform: key_transform)
+      end
+
+      # TypescriptMapper instance for TypeScript type generation
+      def typescript_mapper
+        @typescript_mapper ||= TypescriptMapper.new(introspection: @data, key_transform: key_transform)
+      end
 
       def build_enum_schemas
         return '' if enums.empty?
@@ -78,7 +72,7 @@ module Apiwork
         # Enum filter schemas are now auto-generated as union types in introspect[:types]
         # No need for manual generation here
         enums.map do |enum_name, enum_values|
-          schema_name = zod_type_name(enum_name)
+          schema_name = zod_mapper.pascal_case(enum_name)
           values_str = enum_values.sort.map { |v| "'#{v}'" }.join(', ')
           "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.enum([#{values_str}]);"
         end.join("\n\n")
@@ -86,259 +80,21 @@ module Apiwork
 
       def build_type_schemas
         # Sort ALL types in topological order to avoid forward references
-        sorted_types = topological_sort_types(types)
+        sorted_types = TypeAnalysis.topological_sort_types(types)
 
         # Generate schemas for all types
         schemas = sorted_types.map do |type_name, type_shape|
           if type_shape.is_a?(Hash) && type_shape[:type] == :union
-            build_union_schema(type_name, type_shape)
+            zod_mapper.build_union_schema(type_name, type_shape)
           else
             # Regular object type
             action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
-            recursive = detect_circular_references(type_name, type_shape)
-            build_object_schema(type_name, type_shape, action_name, recursive: recursive)
+            recursive = TypeAnalysis.detect_circular_references(type_name, type_shape, filter: :custom_only)
+            zod_mapper.build_object_schema(type_name, type_shape, action_name, recursive: recursive)
           end
         end
 
         schemas.join("\n\n")
-      end
-
-      # Sort types in topological order to avoid forward references
-      # Types that don't depend on other types come first
-      def topological_sort_types(all_types)
-        reverse_deps = Hash.new { |h, k| h[k] = [] }
-
-        all_types.each do |type_name, type_shape|
-          referenced_types = extract_type_references(type_shape, filter: all_types.keys)
-
-          referenced_types.each do |ref|
-            next if ref == type_name # Skip self-references (recursive types)
-
-            reverse_deps[ref] << type_name
-          end
-        end
-
-        # Topological sort using Kahn's algorithm
-        sorted = []
-        in_degree = Hash.new(0)
-
-        # Calculate in-degrees (how many types depend on me)
-        reverse_deps.each_value do |dependents|
-          dependents.each { |dependent| in_degree[dependent] += 1 }
-        end
-
-        # Start with types that have no dependencies (in_degree = 0)
-        queue = all_types.keys.select { |type| in_degree[type].zero? }
-
-        while queue.any?
-          current = queue.shift
-          sorted << current
-
-          # Remove edges: types that depend on current can now be processed
-          reverse_deps[current].each do |dependent|
-            in_degree[dependent] -= 1
-            queue << dependent if in_degree[dependent].zero?
-          end
-        end
-
-        if sorted.size != all_types.size
-          unsorted_types = all_types.keys - sorted
-          (sorted + unsorted_types).map { |type_name| [type_name, all_types[type_name]] }
-        else
-          sorted.map { |type_name| [type_name, all_types[type_name]] }
-        end
-      end
-
-      def extract_type_references(definition, filter: :custom_only)
-        referenced_types = []
-
-        definition.each_value do |param|
-          next unless param.is_a?(Hash)
-
-          # Direct type reference
-          add_type_if_matches(referenced_types, param[:type], filter)
-
-          # Array 'of' reference
-          add_type_if_matches(referenced_types, param[:of], filter)
-
-          # Union variant references
-          if param[:variants].is_a?(Array)
-            param[:variants].each do |variant|
-              next unless variant.is_a?(Hash)
-
-              add_type_if_matches(referenced_types, variant[:type], filter)
-              add_type_if_matches(referenced_types, variant[:of], filter)
-
-              # Recursively check nested shape in variants
-              referenced_types.concat(extract_type_references(variant[:shape], filter: filter)) if variant[:shape].is_a?(Hash)
-            end
-          end
-
-          # Recursively check nested shapes
-          referenced_types.concat(extract_type_references(param[:shape], filter: filter)) if param[:shape].is_a?(Hash)
-        end
-
-        referenced_types.uniq
-      end
-
-      # Helper to add a type reference if it matches the filter criteria
-      def add_type_if_matches(collection, type_ref, filter)
-        return unless type_ref
-
-        # Normalize to symbol
-        type_sym = type_ref.is_a?(String) ? type_ref.to_sym : type_ref
-        return unless type_sym.is_a?(Symbol)
-
-        case filter
-        when :custom_only
-          collection << type_sym unless primitive_type?(type_sym)
-        when Array
-          collection << type_sym if filter.include?(type_sym)
-        end
-      end
-
-      def build_object_schema(type_name, type_shape, action_name = nil, recursive: false)
-        schema_name = zod_type_name(type_name)
-
-        properties = type_shape.sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
-          key = transform_key(property_name)
-          zod_type = map_field_definition(property_def, action_name)
-          "  #{key}: #{zod_type}"
-        end.join(",\n")
-
-        if recursive
-          # Recursive types use z.lazy() with TypeScript type annotation
-          "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.lazy(() => z.object({\n#{properties}\n}));"
-        else
-          # Non-recursive types use z.object() with TypeScript type annotation
-          "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.object({\n#{properties}\n});"
-        end
-      end
-
-      def build_union_schema(type_name, type_shape)
-        schema_name = zod_type_name(type_name)
-        variants = type_shape[:variants]
-
-        variant_schemas = variants.map { |variant| map_type_definition(variant, nil) }
-
-        # Format with line breaks for readability
-        variants_str = variant_schemas.map { |v| "  #{v}" }.join(",\n")
-        "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.union([\n#{variants_str}\n]);"
-      end
-
-      def map_field_definition(definition, action_name = nil)
-        return 'z.string()' unless definition.is_a?(Hash)
-
-        if definition[:type].is_a?(Symbol) && types.key?(definition[:type])
-          schema_name = zod_type_name(definition[:type])
-          type = "#{schema_name}Schema"
-          return apply_modifiers(type, definition, action_name)
-        end
-
-        type = map_type_definition(definition, action_name)
-
-        if definition[:enum]
-          enum_ref = resolve_enum(definition[:enum])
-          if enum_ref.is_a?(Symbol) && enums.key?(enum_ref)
-            enum_name = zod_type_name(enum_ref)
-            type = "#{enum_name}Schema"
-          elsif enum_ref.is_a?(Array)
-            values_str = enum_ref.map { |v| "'#{v}'" }.join(', ')
-            type = "z.enum([#{values_str}])"
-          end
-        end
-
-        apply_modifiers(type, definition, action_name)
-      end
-
-      def map_type_definition(definition, action_name = nil)
-        return 'z.never()' unless definition.is_a?(Hash)
-
-        type = definition[:type]
-
-        case type
-        when :object
-          map_object_type(definition, action_name)
-        when :array
-          map_array_type(definition, action_name)
-        when :union
-          map_union_type(definition, action_name)
-        when :literal
-          map_literal_type(definition)
-        when nil
-          'z.never()'
-        else
-          enum_or_type_reference?(type) ? schema_reference(type) : map_primitive(definition)
-        end
-      end
-
-      def map_object_type(definition, action_name = nil)
-        return 'z.object({})' unless definition[:shape]
-
-        is_partial = definition[:partial]
-
-        properties = definition[:shape].sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
-          key = transform_key(property_name)
-          zod_type = if is_partial
-                       map_field_definition(property_def.merge(required: true), nil)
-                     else
-                       map_field_definition(property_def, action_name)
-                     end
-          "#{key}: #{zod_type}"
-        end.join(', ')
-
-        base_object = "z.object({ #{properties} })"
-        is_partial ? "#{base_object}.partial()" : base_object
-      end
-
-      def map_array_type(definition, action_name = nil)
-        items_type = definition[:of]
-        return 'z.array(z.string())' unless items_type
-
-        if items_type.is_a?(Symbol) && enum_or_type_reference?(items_type)
-          "z.array(#{schema_reference(items_type)})"
-        elsif items_type.is_a?(Hash)
-          items_schema = map_type_definition(items_type, action_name)
-          "z.array(#{items_schema})"
-        else
-          # items_type is a primitive type symbol - construct minimal definition
-          primitive = map_primitive({ type: items_type })
-          "z.array(#{primitive})"
-        end
-      end
-
-      def map_union_type(definition, action_name = nil)
-        if definition[:discriminator]
-          map_discriminated_union(definition, action_name)
-        else
-          variants = definition[:variants].map { |variant| map_type_definition(variant, action_name) }
-          "z.union([#{variants.join(', ')}])"
-        end
-      end
-
-      def map_discriminated_union(definition, action_name = nil)
-        discriminator_field = transform_key(definition[:discriminator])
-        variants = definition[:variants]
-
-        variant_schemas = variants.map { |variant| map_type_definition(variant, action_name) }
-
-        "z.discriminatedUnion('#{discriminator_field}', [#{variant_schemas.join(', ')}])"
-      end
-
-      def map_literal_type(definition)
-        value = definition[:value]
-        case value
-        when String
-          "z.literal('#{value}')"
-        when Integer, Float
-          "z.literal(#{value})"
-        when TrueClass, FalseClass
-          "z.literal(#{value})"
-        when NilClass
-          'z.null()'
-        else
-          "z.literal('#{value}')"
-        end
       end
 
       def build_action_schemas
@@ -347,133 +103,59 @@ module Apiwork
         each_resource do |resource_name, resource_data, parent_path|
           each_action(resource_data) do |action_name, action_data|
             # Generate input schema if present
-            schemas << build_action_input_schema(resource_name, action_name, action_data[:input], parent_path) if action_data[:input]&.any?
+            schemas << zod_mapper.build_action_input_schema(resource_name, action_name, action_data[:input], parent_path) if action_data[:input]&.any?
 
             # Generate output schema if present
-            schemas << build_action_output_schema(resource_name, action_name, action_data[:output], parent_path) if action_data[:output]
+            schemas << zod_mapper.build_action_output_schema(resource_name, action_name, action_data[:output], parent_path) if action_data[:output]
           end
         end
 
         schemas.join("\n\n")
       end
 
-      def build_action_input_schema(resource_name, action_name, input_params, parent_path = nil)
-        schema_name = action_schema_name(resource_name, action_name, 'Input', parent_path)
+      # Build all TypeScript types using TypescriptMapper
+      def build_typescript_types
+        all_types = []
 
-        # Build Zod object schema
-        # Don't pass action_name - input fields should follow their own required flags
-        properties = input_params.sort_by { |k, _| k.to_s }.map do |param_name, param_def|
-          key = transform_key(param_name)
-          zod_type = map_field_definition(param_def, nil)
-          "  #{key}: #{zod_type}"
-        end.join(",\n")
-
-        "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.object({\n#{properties}\n});"
-      end
-
-      def build_action_output_schema(resource_name, action_name, output_def, parent_path = nil)
-        schema_name = action_schema_name(resource_name, action_name, 'Output', parent_path)
-
-        # Map the output definition (handles unions, objects, etc.)
-        # Don't pass action_name - output fields should follow their own required flags
-        zod_schema = map_type_definition(output_def, nil)
-
-        "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = #{zod_schema};"
-      end
-
-      def action_schema_name(resource_name, action_name, suffix, parent_path = nil)
-        parent_names = extract_parent_resource_names(parent_path)
-        parts = parent_names + [
-          resource_name.to_s,
-          action_name.to_s,
-          suffix
-        ]
-        zod_type_name(parts.join('_'))
-      end
-
-      def extract_parent_resource_names(parent_path)
-        return [] unless parent_path
-
-        parent_names = []
-        segments = parent_path.to_s.split('/')
-
-        segments.each do |segment|
-          next if segment.match?(/:/) # Skip ID parameters like :post_id
-
-          parent_names << segment
+        # Collect enum types
+        enums.each do |enum_name, enum_values|
+          type_name = typescript_mapper.pascal_case(enum_name)
+          values_str = enum_values.sort.map { |v| "'#{v}'" }.join(' | ')
+          all_types << { name: type_name, code: "export type #{type_name} = #{values_str};" }
         end
 
-        parent_names
-      end
-
-      def detect_circular_references(type_name, type_def)
-        referenced_types = extract_type_references(type_def, filter: :custom_only)
-        referenced_types.include?(type_name)
-      end
-
-      def primitive_type?(type)
-        %i[
-          string integer boolean datetime date uuid object array
-          decimal float literal union enum
-        ].include?(type)
-      end
-
-      def map_primitive(definition)
-        type = definition[:type]
-        base_type = TYPE_MAP[type.to_sym] || 'z.string()'
-
-        # Add min/max constraints for numeric types
-        if numeric_type?(type)
-          base_type += ".min(#{definition[:min]})" if definition[:min]
-          base_type += ".max(#{definition[:max]})" if definition[:max]
+        # Collect regular types
+        types.each do |type_name, type_shape|
+          type_name_pascal = typescript_mapper.pascal_case(type_name)
+          code = if type_shape.is_a?(Hash) && type_shape[:type] == :union
+                   typescript_mapper.build_union_type(type_name, type_shape)
+                 else
+                   action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
+                   recursive = TypeAnalysis.detect_circular_references(type_name, type_shape, filter: :custom_only)
+                   typescript_mapper.build_interface(type_name, type_shape, action_name, recursive: recursive)
+                 end
+          all_types << { name: type_name_pascal, code: code }
         end
 
-        base_type
-      end
+        # Collect action types
+        each_resource do |resource_name, resource_data, parent_path|
+          each_action(resource_data) do |action_name, action_data|
+            if action_data[:input]&.any?
+              type_name = typescript_mapper.action_type_name(resource_name, action_name, 'Input', parent_path)
+              code = typescript_mapper.build_action_input_type(resource_name, action_name, action_data[:input], parent_path)
+              all_types << { name: type_name, code: code }
+            end
 
-      def enum_or_type_reference?(symbol)
-        types.key?(symbol) || enums.key?(symbol)
-      end
+            next unless action_data[:output]
 
-      def schema_reference(symbol)
-        "#{zod_type_name(symbol)}Schema"
-      end
-
-      def apply_modifiers(type, definition, action_name)
-        is_update = action_name.to_s == 'update'
-
-        type += '.nullable()' if definition[:nullable]
-
-        if is_update
-          # Update actions: all fields optional
-          type += '.optional()' unless type.include?('.optional()')
-        elsif !definition[:required]
-          # Regular fields: optional if not required
-          type += '.optional()'
+            type_name = typescript_mapper.action_type_name(resource_name, action_name, 'Output', parent_path)
+            code = typescript_mapper.build_action_output_type(resource_name, action_name, action_data[:output], parent_path)
+            all_types << { name: type_name, code: code }
+          end
         end
 
-        type
-      end
-
-      def zod_type_name(name)
-        # Convert to PascalCase for Zod schema exports
-        name.to_s.camelize(:upper)
-      end
-
-      def resolve_enum(enum_ref)
-        enum_ref
-      end
-
-      # Instantiate TypeScript generator to reuse TypeScript generation logic
-      # Share the already-loaded introspection data to avoid duplicate loading
-      def typescript_generator
-        @typescript_generator ||= begin
-          ts_gen = Generator::Typescript.allocate
-          ts_gen.instance_variable_set(:@path, @path)
-          ts_gen.instance_variable_set(:@options, @options)
-          ts_gen.instance_variable_set(:@data, @data) # Share introspection data
-          ts_gen
-        end
+        # Sort all types alphabetically by name
+        all_types.sort_by { |t| t[:name] }.map { |t| t[:code] }.join("\n\n")
       end
 
       # Validate version option
@@ -485,11 +167,6 @@ module Apiwork
         raise ArgumentError,
               "Invalid version for zod: #{version.inspect}. " \
               "Valid versions: #{VALID_VERSIONS.join(', ')}"
-      end
-
-      # Check if a type is numeric
-      def numeric_type?(type)
-        [:integer, :float, :decimal, :number].include?(type&.to_sym)
       end
     end
   end
