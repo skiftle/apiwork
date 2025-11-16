@@ -6,9 +6,10 @@ module Apiwork
     # Used in API, Schema, and Contract configure blocks
     class Builder
       # Configuration settings with validation
+      # DSL only allows three key formats: underscore, camel, keep
       VALIDATED_SETTINGS = {
-        output_key_format: -> { Transform::Case.valid_strategies },
-        input_key_format: -> { Transform::Case.valid_strategies }
+        output_key_format: -> { %i[underscore camel keep] },
+        input_key_format: -> { %i[underscore camel keep] }
       }.freeze
 
       def initialize(storage)
@@ -38,8 +39,8 @@ module Apiwork
       end
 
       # Set maximum page size
-      def maximum_page_size(value)
-        @storage[:maximum_page_size] = value
+      def max_page_size(value)
+        @storage[:max_page_size] = value
       end
 
       # Set maximum array items

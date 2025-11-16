@@ -3,8 +3,9 @@
 module Apiwork
   module Generator
     # Options parsing and validation for generators
+    # DSL only allows three key formats: underscore, camel, keep
     class Options
-      VALID_KEY_TRANSFORMS = %i[camelize_lower camelize_upper underscore dasherize keep].freeze
+      VALID_KEY_TRANSFORMS = %i[underscore camel keep].freeze
 
       def self.build(key_transform: nil, version: nil, **_ignored)
         {

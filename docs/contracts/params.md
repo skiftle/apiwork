@@ -332,7 +332,7 @@ param :user_name, type: :string, required: true
 param :email_address, type: :string, required: false
 ```
 
-With `key_transform: :camelize_lower`:
+With `key_transform: :camel`:
 
 ```json
 {

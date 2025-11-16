@@ -11,7 +11,7 @@ module Apiwork
         input_key_format: :keep,
         default_sort: { id: :asc },
         default_page_size: 20,
-        maximum_page_size: 200,
+        max_page_size: 200,
         max_array_items: 1000
       }.freeze
 

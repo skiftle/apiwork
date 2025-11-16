@@ -11,6 +11,7 @@ GET /posts?page[number]=1&page[size]=10
 **Format**: `page[number]=X&page[size]=Y`
 
 **Parameters**:
+
 - `number` - Which page to retrieve (starts at 1)
 - `size` - How many items per page
 
@@ -24,6 +25,7 @@ GET /posts
 ```
 
 **Defaults**:
+
 - `page[number]` defaults to `1`
 - `page[size]` defaults to `20` (configurable)
 
@@ -41,6 +43,7 @@ GET /posts?page[number]=3&page[size]=25
 ```
 
 **Generated SQL**:
+
 ```sql
 -- Page 1, size 10
 SELECT * FROM posts LIMIT 10 OFFSET 0
@@ -75,6 +78,7 @@ Every response includes pagination metadata in the `meta` field:
 ```
 
 **Metadata fields**:
+
 - `current` - Current page number
 - `next` - Next page number (null if on last page)
 - `prev` - Previous page number (null if on first page)
@@ -191,6 +195,7 @@ GET /posts?page[size]=1000
 ```
 
 **Limits**:
+
 - Minimum: `1`
 - Maximum: `200` (default, configurable)
 
@@ -204,7 +209,7 @@ If you exceed the maximum, Apiwork raises a `PaginationError`.
 # config/initializers/apiwork.rb
 Apiwork.configure do |config|
   config.default_page_size = 25   # Default: 20
-  config.maximum_page_size = 100  # Default: 200
+  config.max_page_size = 100  # Default: 200
 end
 ```
 
@@ -220,7 +225,7 @@ class PostSchema < Apiwork::Schema::Base
 
   # Override pagination for this schema
   self.default_page_size = 50
-  self.maximum_page_size = 500
+  self.max_page_size = 500
 
   attribute :title, filterable: true
   # ...
@@ -287,16 +292,16 @@ GET /posts?sort[0][created_at]=desc&sort[1][id]=asc&page[number]=1
 
 ```javascript
 // Simple pagination
-const url = new URL('/api/v1/posts');
-url.searchParams.append('page[number]', '2');
-url.searchParams.append('page[size]', '10');
+const url = new URL("/api/v1/posts");
+url.searchParams.append("page[number]", "2");
+url.searchParams.append("page[size]", "10");
 
 const response = await fetch(url);
 const data = await response.json();
 
-console.log(data.posts);  // Current page items
-console.log(data.meta.page.total);  // Total pages
-console.log(data.meta.page.items);  // Total items
+console.log(data.posts); // Current page items
+console.log(data.meta.page.total); // Total pages
+console.log(data.meta.page.items); // Total items
 ```
 
 ### Building a paginator
@@ -311,7 +316,7 @@ function buildPaginator(meta) {
     hasNext: next !== null,
     hasPrev: prev !== null,
     nextPage: next,
-    prevPage: prev
+    prevPage: prev,
   };
 }
 
@@ -330,8 +335,8 @@ if (paginator.hasNext) {
 const response = await api.posts.index({
   page: {
     number: 2,
-    size: 10
-  }
+    size: 10,
+  },
 });
 
 // Response type includes pagination metadata
@@ -367,6 +372,7 @@ SELECT * FROM posts WHERE published = true LIMIT 10 OFFSET 10
 **Impact**: Two queries per paginated request.
 
 For large tables, counting can be slow. Consider:
+
 - Adding indexes on filtered columns
 - Caching total counts for static data
 - Using cursor-based pagination for very large datasets
@@ -389,6 +395,7 @@ SELECT * FROM posts LIMIT 10 OFFSET 9990
 The database must scan and discard offset rows before returning results.
 
 **Best practices**:
+
 - Limit maximum page number for public APIs
 - Use cursor-based pagination for deep pagination
 - Encourage users to use filters instead of deep pagination
@@ -398,6 +405,7 @@ The database must scan and discard offset rows before returning results.
 Offset-based pagination has limitations for large datasets. Cursor-based pagination (keyset pagination) is more efficient but not yet implemented in Apiwork.
 
 **How it would work**:
+
 ```bash
 # First page
 GET /posts?page[size]=10
@@ -407,11 +415,13 @@ GET /posts?page[size]=10&page[after]=eyJpZCI6MTIzfQ==
 ```
 
 **Benefits**:
+
 - Consistent results even when data changes
 - Fast for any page depth
 - No expensive offset scans
 
 **Drawbacks**:
+
 - No random page access (only next/prev)
 - More complex implementation
 
@@ -427,7 +437,7 @@ const pageSize = 20;
 
 async function loadMore() {
   const response = await api.posts.index({
-    page: { number: page, size: pageSize }
+    page: { number: page, size: pageSize },
   });
 
   displayPosts(response.posts);
@@ -472,17 +482,11 @@ function Navigation({ meta }) {
 
   return (
     <div>
-      <button
-        disabled={!prev}
-        onClick={() => loadPage(prev)}
-      >
+      <button disabled={!prev} onClick={() => loadPage(prev)}>
         Previous
       </button>
 
-      <button
-        disabled={!next}
-        onClick={() => loadPage(next)}
-      >
+      <button disabled={!next} onClick={() => loadPage(next)}>
         Next
       </button>
     </div>

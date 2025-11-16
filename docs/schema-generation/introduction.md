@@ -171,16 +171,14 @@ Control how keys are transformed in generated schemas:
 ```ruby
 # config/apis/v1.rb
 Apiwork::API.draw '/api/v1' do
-  schema :transport, key_transform: :camelize_lower  # camelCase (default)
-  schema :openapi, key_transform: :underscore        # snake_case
+  schema :transport, key_transform: :camel       # camelCase (default)
+  schema :openapi, key_transform: :underscore   # snake_case
 end
 ```
 
 Options:
-- `:camelize_lower` - `createdAt` (default for TypeScript)
-- `:camelize_upper` - `CreatedAt` (PascalCase)
+- `:camel` - `createdAt` (camelCase, default for TypeScript)
 - `:underscore` - `created_at` (snake_case)
-- `:dasherize` - `created-at` (kebab-case)
 - `:keep` - Keep keys unchanged
 
 ## Multiple API versions

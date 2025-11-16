@@ -41,6 +41,7 @@ GET /api/v1/posts?filter[created_at][greater_than]=2024-01-01
 ```
 
 Controller:
+
 ```ruby
 def index
   posts = query(Post.all)  # Automatically applies filter param
@@ -72,6 +73,7 @@ Attempting to filter by `body` returns a 422 error.
 Different types support different operators:
 
 **String/Text:**
+
 ```
 filter[title][equal]=My Post
 filter[title][not_equal]=Draft
@@ -84,6 +86,7 @@ filter[title][not_in][]=Archived&filter[title][not_in][]=Deleted
 ```
 
 **Numeric (integer/decimal/float):**
+
 ```
 filter[id][equal]=1
 filter[id][not_equal]=5
@@ -98,12 +101,14 @@ filter[id][not_in][]=99&filter[id][not_in][]=100
 ```
 
 **Boolean:**
+
 ```
 filter[published][equal]=true
 filter[published][not_equal]=false
 ```
 
 **Date/DateTime:**
+
 ```
 filter[created_at][equal]=2024-01-15
 filter[created_at][not_equal]=2024-01-01
@@ -118,6 +123,7 @@ filter[created_at][not_in][]=2024-12-25&filter[created_at][not_in][]=2024-12-26
 ```
 
 **UUID:**
+
 ```
 filter[id]=550e8400-e29b-41d4-a716-446655440000
 filter[id][]=uuid1&filter[id][]=uuid2  (array of UUIDs)
@@ -169,6 +175,7 @@ GET /api/v1/posts?filter[comments][body][contains]=great
 ```
 
 Schema requirements:
+
 ```ruby
 class Api::V1::PostSchema < Apiwork::Schema::Base
   model Post
@@ -220,6 +227,7 @@ GET /api/v1/posts?sort[title]=asc
 ```
 
 Controller:
+
 ```ruby
 def index
   posts = query(Post.all)  # Automatically applies sort param
@@ -283,6 +291,7 @@ GET /api/v1/posts?sort[author][name]=asc
 ```
 
 Schema requirements:
+
 ```ruby
 class Api::V1::PostSchema < Apiwork::Schema::Base
   model Post
@@ -338,6 +347,7 @@ GET /api/v1/posts?page[number]=2&page[size]=50
 ```
 
 Controller:
+
 ```ruby
 def index
   posts = query(Post.all)  # Automatically applies pagination
@@ -383,7 +393,7 @@ Configure default and maximum page size:
 # config/initializers/apiwork.rb
 Apiwork.configure do |config|
   config.default_page_size = 25   # Default if not specified
-  config.maximum_page_size = 100  # Maximum allowed
+  config.max_page_size = 100  # Maximum allowed
 end
 ```
 
@@ -394,7 +404,7 @@ class Api::V1::PostSchema < Apiwork::Schema::Base
   model Post
 
   default_page_size 25
-  maximum_page_size 100
+  max_page_size 100
 end
 ```
 
@@ -419,6 +429,7 @@ GET /api/v1/posts?filter[published]=true&sort[created_at]=desc&page[number]=1&pa
 ```
 
 Execution order:
+
 1. Filter → `WHERE published = true`
 2. Sort → `ORDER BY created_at DESC`
 3. Paginate → `LIMIT 20 OFFSET 0`
@@ -484,6 +495,7 @@ GET /api/v1/posts?filter[invalid_field]=value
 ```
 
 Response:
+
 ```json
 {
   "ok": false,
@@ -498,6 +510,7 @@ Response:
 ```
 
 Common error scenarios:
+
 - Filtering/sorting by non-filterable/non-sortable attributes
 - Invalid filter operators for type
 - Invalid enum values

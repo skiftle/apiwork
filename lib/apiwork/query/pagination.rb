@@ -27,18 +27,18 @@ module Apiwork
           )
         end
 
-        if page_size > maximum_page_size
+        if page_size > max_page_size
           issues << Issue.new(
             code: :invalid_value,
-            message: "page[size] must be <= #{maximum_page_size}",
+            message: "page[size] must be <= #{max_page_size}",
             path: [:page, :size],
-            meta: { actual: page_size, maximum: maximum_page_size }
+            meta: { actual: page_size, maximum: max_page_size }
           )
         end
 
         raise QueryError, issues if issues.any?
 
-        page_size = [page_size, maximum_page_size].min
+        page_size = [page_size, max_page_size].min
         offset = (page_number - 1) * page_size
 
         # Build metadata immediately
@@ -60,8 +60,8 @@ module Apiwork
         schema.default_page_size
       end
 
-      def maximum_page_size
-        schema.maximum_page_size
+      def max_page_size
+        schema.max_page_size
       end
 
       private

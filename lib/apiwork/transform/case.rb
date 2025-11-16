@@ -7,7 +7,7 @@ module Apiwork
       # Returns strings (not symbols) - symbolization happens in hash() method
       STRATEGIES = {
         underscore: ->(value) { value.to_s.underscore },
-        camelize_lower: ->(value) { value.to_s.camelize(:lower) },
+        camel: ->(value) { value.to_s.camelize(:lower) },
         camelize_upper: ->(value) { value.to_s.camelize(:upper) },
         dasherize: ->(value) { value.to_s.dasherize },
         keep: lambda(&:to_s)

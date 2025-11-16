@@ -9,7 +9,7 @@ module Apiwork
     #
     # Usage:
     #   # Generate in memory (returns content)
-    #   Pipeline.generate(api_path: '/api/v1', format: :zod, key_transform: :camelize_lower)
+    #   Pipeline.generate(api_path: '/api/v1', format: :zod, key_transform: :camel)
     #
     #   # Write to filesystem
     #   Pipeline.write(output: 'generated/', format: :zod)

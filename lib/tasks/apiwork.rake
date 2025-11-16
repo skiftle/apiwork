@@ -21,13 +21,13 @@ namespace :apiwork do
         puts '  rake apiwork:spec:write OUTPUT=public/specs'
         puts '  rake apiwork:spec:write API_PATH=/api/v1 OUTPUT=public/specs'
         puts '  rake apiwork:spec:write API_PATH=/api/v1 FORMAT=openapi OUTPUT=public/openapi.json'
-        puts '  rake apiwork:spec:write FORMAT=zod KEY_TRANSFORM=camelize_lower OUTPUT=public/specs'
+        puts '  rake apiwork:spec:write FORMAT=zod KEY_TRANSFORM=camel OUTPUT=public/specs'
         puts ''
         puts 'Available formats:'
         puts "  #{Apiwork::Generator::Registry.all.join(', ')}"
         puts ''
         puts 'Available key transforms:'
-        puts '  camelize_lower, camelize_upper, underscore, dasherize, none'
+        puts '  underscore, camel, keep'
         exit 1
       end
 

@@ -53,6 +53,7 @@ Returns a complete OpenAPI 3.1 specification:
 ```
 
 Use this to:
+
 - Generate API documentation (Swagger UI, Redoc)
 - Generate client libraries (openapi-generator)
 - Import into Postman or Insomnia
@@ -86,6 +87,7 @@ Returns a TypeScript-friendly format:
 ```
 
 Use this to:
+
 - Generate TypeScript types
 - Build type-safe API clients
 - Power frontend code generators
@@ -103,7 +105,7 @@ Creates: `GET /api/v1/.schema/zod`
 Returns Zod validation schemas:
 
 ```typescript
-import { z } from 'zod';
+import { z } from "zod";
 
 export const PostSchema = z.object({
   id: z.number(),
@@ -115,19 +117,24 @@ export const PostSchema = z.object({
 });
 
 export const ListPostsInput = z.object({
-  filter: z.object({
-    published: z.boolean().optional(),
-    title: z.string().optional(),
-  }).optional(),
-  sort: z.record(z.enum(['asc', 'desc'])).optional(),
-  page: z.object({
-    number: z.number().optional(),
-    size: z.number().optional(),
-  }).optional(),
+  filter: z
+    .object({
+      published: z.boolean().optional(),
+      title: z.string().optional(),
+    })
+    .optional(),
+  sort: z.record(z.enum(["asc", "desc"])).optional(),
+  page: z
+    .object({
+      number: z.number().optional(),
+      size: z.number().optional(),
+    })
+    .optional(),
 });
 ```
 
 Use this to:
+
 - Validate API responses in your frontend
 - Type-check API calls
 - Generate forms with react-hook-form
@@ -149,6 +156,7 @@ end
 ```
 
 Now:
+
 - `GET /api/v1/openapi.json`
 - `GET /api/v1/types`
 - `GET /api/v1/validators`
@@ -195,6 +203,7 @@ end
 ```
 
 This documentation appears in:
+
 - OpenAPI schema
 - Generated documentation
 - API explorers (Swagger UI, Redoc)
@@ -251,6 +260,7 @@ end
 ```
 
 Each API is completely independent:
+
 - Separate namespaces (`Api::V1`, `Api::V2`, `Api::Admin`)
 - Separate controllers, contracts, schemas
 - Separate OpenAPI specs
@@ -288,7 +298,7 @@ Apiwork.configure do |config|
 
   # Pagination
   config.default_page_size = 20
-  config.maximum_page_size = 100
+  config.max_page_size = 100
 
   # Sorting
   config.default_sort = { id: :asc }
