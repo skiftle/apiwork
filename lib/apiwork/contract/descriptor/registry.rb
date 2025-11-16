@@ -19,16 +19,16 @@ module Apiwork
             TypeStore.register_union(name, data, scope: scope, api_class: api_class)
           end
 
-          def resolve(name, contract_class:, api_class: nil, scope: nil)
+          def resolve_type(name, contract_class:, api_class: nil, scope: nil)
             TypeStore.resolve(name, contract_class: contract_class, api_class: api_class, scope: scope)
           end
 
-          def qualified_name(contract_class, name)
-            TypeStore.qualified_name(contract_class, name)
+          def scoped_name(contract_class, name)
+            TypeStore.scoped_name(contract_class, name)
           end
 
-          def serialize_all_types_for_api(api)
-            TypeStore.serialize_all_for_api(normalize_api(api))
+          def types(api)
+            TypeStore.serialize(normalize_api(api))
           end
 
           private
@@ -64,8 +64,8 @@ module Apiwork
             EnumStore.resolve(name, scope: scope, api_class: api_class)
           end
 
-          def serialize_all_enums_for_api(api)
-            EnumStore.serialize_all_for_api(normalize_api(api))
+          def enums(api)
+            EnumStore.serialize(normalize_api(api))
           end
 
           def clear!

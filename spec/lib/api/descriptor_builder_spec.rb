@@ -21,7 +21,7 @@ RSpec.describe 'API Descriptor Builder' do
       end
     end
 
-    types = Apiwork::Contract::Descriptor::Registry.serialize_all_types_for_api(api)
+    types = Apiwork::Contract::Descriptor::Registry.types(api)
 
     expect(types).to have_key(:error)
     expect(types[:error]).to eq(
@@ -37,7 +37,7 @@ RSpec.describe 'API Descriptor Builder' do
       end
     end
 
-    enums = Apiwork::Contract::Descriptor::Registry.serialize_all_enums_for_api(api)
+    enums = Apiwork::Contract::Descriptor::Registry.enums(api)
 
     expect(enums).to have_key(:sort_direction)
     expect(enums[:sort_direction]).to eq(%i[asc desc])
@@ -50,7 +50,7 @@ RSpec.describe 'API Descriptor Builder' do
       end
     end
 
-    types = Apiwork::Contract::Descriptor::Registry.serialize_all_types_for_api(api)
+    types = Apiwork::Contract::Descriptor::Registry.types(api)
 
     expect(types).to have_key(:status_filter)
     expect(types[:status_filter][:type]).to eq(:union)
@@ -66,7 +66,7 @@ RSpec.describe 'API Descriptor Builder' do
       end
     end
 
-    types = Apiwork::Contract::Descriptor::Registry.serialize_all_types_for_api(api)
+    types = Apiwork::Contract::Descriptor::Registry.types(api)
 
     # Should be registered as :global_type, not qualified with any contract prefix
     expect(types).to have_key(:global_type)
@@ -86,8 +86,8 @@ RSpec.describe 'API Descriptor Builder' do
       end
     end
 
-    types = Apiwork::Contract::Descriptor::Registry.serialize_all_types_for_api(api)
-    enums = Apiwork::Contract::Descriptor::Registry.serialize_all_enums_for_api(api)
+    types = Apiwork::Contract::Descriptor::Registry.types(api)
+    enums = Apiwork::Contract::Descriptor::Registry.enums(api)
 
     expect(types).to have_key(:error)
     expect(enums).to have_key(:priority)

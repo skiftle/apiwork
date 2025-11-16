@@ -13,7 +13,7 @@ RSpec.describe 'Writable context filtering in auto-generated contracts', type: :
       expect(serialized[:input][:author][:type]).to eq(:author_create_payload)
 
       # Get the actual payload type from registry
-      all_types = Apiwork::Contract::Descriptor::Registry.serialize_all_types_for_api('api/v1')
+      all_types = Apiwork::Contract::Descriptor::Registry.types('api/v1')
       create_payload = all_types[:author_create_payload]
 
       # name (writable: true) should be present
@@ -35,7 +35,7 @@ RSpec.describe 'Writable context filtering in auto-generated contracts', type: :
       expect(serialized[:input][:author][:type]).to eq(:author_update_payload)
 
       # Get the actual payload type from registry
-      all_types = Apiwork::Contract::Descriptor::Registry.serialize_all_types_for_api('api/v1')
+      all_types = Apiwork::Contract::Descriptor::Registry.types('api/v1')
       update_payload = all_types[:author_update_payload]
 
       # name (writable: true) should be present
@@ -73,7 +73,7 @@ RSpec.describe 'Writable context filtering in auto-generated contracts', type: :
       Api::V1::AuthorContract.action_definition(:create)
       Api::V1::AuthorContract.action_definition(:update)
 
-      all_types = Apiwork::Contract::Descriptor::Registry.serialize_all_types_for_api('api/v1')
+      all_types = Apiwork::Contract::Descriptor::Registry.types('api/v1')
 
       # Keys are symbols in the registry
       expect(all_types).to have_key(:author_create_payload)
@@ -83,7 +83,7 @@ RSpec.describe 'Writable context filtering in auto-generated contracts', type: :
     it 'create_payload excludes update-only fields' do
       Api::V1::AuthorContract.action_definition(:create)
 
-      all_types = Apiwork::Contract::Descriptor::Registry.serialize_all_types_for_api('api/v1')
+      all_types = Apiwork::Contract::Descriptor::Registry.types('api/v1')
       create_payload = all_types[:author_create_payload]
 
       expect(create_payload).to have_key(:name)
@@ -94,7 +94,7 @@ RSpec.describe 'Writable context filtering in auto-generated contracts', type: :
     it 'update_payload excludes create-only fields' do
       Api::V1::AuthorContract.action_definition(:update)
 
-      all_types = Apiwork::Contract::Descriptor::Registry.serialize_all_types_for_api('api/v1')
+      all_types = Apiwork::Contract::Descriptor::Registry.types('api/v1')
       update_payload = all_types[:author_update_payload]
 
       expect(update_payload).to have_key(:name)
@@ -105,7 +105,7 @@ RSpec.describe 'Writable context filtering in auto-generated contracts', type: :
     it 'includes nullable in introspection' do
       Api::V1::AuthorContract.action_definition(:create)
 
-      all_types = Apiwork::Contract::Descriptor::Registry.serialize_all_types_for_api('api/v1')
+      all_types = Apiwork::Contract::Descriptor::Registry.types('api/v1')
       create_payload = all_types[:author_create_payload]
 
       # All fields should have nullable key (even if false)

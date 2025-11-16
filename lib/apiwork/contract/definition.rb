@@ -485,7 +485,7 @@ module Apiwork
         return nil unless type_name.is_a?(Symbol)
 
         # Try to resolve custom type from registry
-        type_definition = Descriptor::Registry.resolve(type_name, contract_class: @contract_class, scope: self)
+        type_definition = Descriptor::Registry.resolve_type(type_name, contract_class: @contract_class, scope: self)
 
         return nil unless type_definition # Not a registered custom type
 
