@@ -3,7 +3,7 @@
 module Apiwork
   module Schema
     class Base
-      include Concerns::AbstractClass
+      include Abstractable
       include Serialization
 
       class_attribute :_model_class

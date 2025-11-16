@@ -79,8 +79,19 @@ module Apiwork
         }
 
         {
-          pagination: Apiwork::Transform::Case.hash(page, schema.output_key_format)
+          pagination: transform_pagination_keys(page)
         }
+      end
+
+      def transform_pagination_keys(hash)
+        case schema.output_key_format
+        when :camel
+          hash.deep_transform_keys { |key| key.to_s.camelize(:lower).to_sym }
+        when :underscore
+          hash.deep_transform_keys { |key| key.to_s.underscore.to_sym }
+        else
+          hash
+        end
       end
     end
   end

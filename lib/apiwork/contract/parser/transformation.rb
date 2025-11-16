@@ -18,8 +18,14 @@ module Apiwork
 
           return meta unless meta.present? && @schema_class
 
-          meta_key_transform = @schema_class.output_key_format
-          Apiwork::Transform::Case.hash(meta, meta_key_transform)
+          case @schema_class.output_key_format
+          when :camel
+            meta.deep_transform_keys { |key| key.to_s.camelize(:lower).to_sym }
+          when :underscore
+            meta.deep_transform_keys { |key| key.to_s.underscore.to_sym }
+          else
+            meta
+          end
         end
 
         private

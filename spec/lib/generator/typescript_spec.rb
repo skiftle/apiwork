@@ -257,14 +257,14 @@ RSpec.describe Apiwork::Generator::Typescript do
     describe 'completeness' do
       it 'includes all enum types from introspect data' do
         introspect[:enums].each_key do |enum_name|
-          type_name = Apiwork::Transform::Case.string(enum_name.to_s, :camelize_upper)
+          type_name = enum_name.to_s.camelize(:upper)
           expect(output).to include("export type #{type_name} = ")
         end
       end
 
       it 'includes all custom types from introspect data' do
         introspect[:types].each_key do |type_name|
-          pascal_name = Apiwork::Transform::Case.string(type_name.to_s, :camelize_upper)
+          pascal_name = type_name.to_s.camelize(:upper)
           expect(output).to match(/export (type|interface) #{pascal_name}/)
         end
       end

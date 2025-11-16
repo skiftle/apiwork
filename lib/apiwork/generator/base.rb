@@ -79,15 +79,27 @@ module Apiwork
       # Preserves leading underscores for special fields like _and, _or, _not
       def transform_key(key, strategy = nil)
         key_str = key.to_s
+        transform_strategy = strategy || key_transform
 
         # Preserve leading underscores (e.g., _and, _or, _not)
         if key_str.start_with?('_')
           underscore_prefix = key_str.match(/^_+/)[0]
           key_without_prefix = key_str[underscore_prefix.length..]
-          transformed = Transform::Case.string(key_without_prefix, strategy || key_transform)
+          transformed = transform_string(key_without_prefix, transform_strategy)
           "#{underscore_prefix}#{transformed}"
         else
-          Transform::Case.string(key_str, strategy || key_transform)
+          transform_string(key_str, transform_strategy)
+        end
+      end
+
+      def transform_string(string, strategy)
+        case strategy
+        when :camel
+          string.to_s.camelize(:lower)
+        when :underscore
+          string.to_s.underscore
+        else
+          string.to_s
         end
       end
 

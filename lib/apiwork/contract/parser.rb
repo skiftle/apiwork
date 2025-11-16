@@ -62,7 +62,7 @@ module Apiwork
         # Output data is already serialized with output_key_format applied,
         # but validation must happen against snake_case definition keys
         data_for_validation = if @direction == :output && schema_class&.output_key_format
-                                Transform::Case.hash(coerced_data, :underscore)
+                                coerced_data.deep_transform_keys { |key| key.to_s.underscore.to_sym }
                               else
                                 coerced_data
                               end
@@ -118,7 +118,16 @@ module Apiwork
         issues.map do |issue|
           transformed_path = issue.path.map do |segment|
             # Keep numeric indices as-is, only transform string/symbol keys
-            segment.is_a?(Integer) ? segment : Transform::Case.string(segment, key_transform).to_sym
+            next segment if segment.is_a?(Integer)
+
+            case key_transform
+            when :camel
+              segment.to_s.camelize(:lower).to_sym
+            when :underscore
+              segment.to_s.underscore.to_sym
+            else
+              segment
+            end
           end
 
           # Create new Issue with transformed path
