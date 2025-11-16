@@ -273,8 +273,13 @@ module Apiwork
           api_class = definition.contract_class.api_class
           return false unless api_class
 
-          # Check if type exists in API global storage (not contract-scoped)
-          Descriptor::TypeStore.send(:api_storage, api_class).key?(type_name)
+          # Check if type exists in unified storage with scope: nil (unprefixed = global)
+          store = Descriptor::TypeStore.send(:storage, api_class)
+          metadata = store[type_name]
+          return false unless metadata
+
+          # Type is global if it has no scope (scope: nil)
+          metadata[:scope].nil?
         end
       end
     end

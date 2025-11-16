@@ -14,6 +14,13 @@ module Apiwork
           namespaces_parts.map(&:to_s).map(&:camelize).join('::')
         end
 
+        def descriptors(&block)
+          return unless block
+
+          builder = DescriptorBuilder.new(api_class: self)
+          builder.instance_eval(&block)
+        end
+
         def introspect
           return nil unless metadata
 

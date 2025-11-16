@@ -10,27 +10,54 @@ module Apiwork
           end
 
           def register_union(name, data, scope: nil, api_class: nil)
-            if scope
-              # Scoped union
-              storage = api_class ? api_local_storage(api_class) : local_storage
-              storage[scope] ||= {}
-              storage[scope][name] = {
-                qualified_name: qualified_name(scope, name),
-                data: data
-              }
-            else
-              # Shared union
-              storage = api_class ? api_storage(api_class) : global_storage
-              storage[name] = data
-            end
+            store = storage(api_class)
+            qualified = scope ? qualified_name(scope, name) : name
+
+            store[qualified] = {
+              short_name: name,
+              qualified_name: qualified,
+              scope: scope,
+              payload: data,
+              data: data # Union data stored in both payload and data for compatibility
+            }
           end
 
           def serialize_all_for_api(api)
             result = {}
 
-            # Serialize API-scoped global types
+            # Serialize from unified storage
+            if api
+              storage(api).to_a.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
+                # metadata structure: { short_name:, qualified_name:, scope:, payload:, data:, definition: }
+                result[qualified_name] = if metadata[:data]
+                                           # Union data
+                                           metadata[:data]
+                                         elsif metadata[:payload].is_a?(Proc)
+                                           # Block definition - expand it
+                                           expand_type_definition(
+                                             metadata[:payload],
+                                             contract_class: metadata[:scope],
+                                             type_name: metadata[:short_name]
+                                           )
+                                         elsif metadata[:payload].is_a?(Hash)
+                                           # Already expanded data
+                                           metadata[:payload]
+                                         else
+                                           # Fallback - use metadata[:definition] if available
+                                           expand_type_definition(
+                                             metadata[:definition] || metadata[:payload],
+                                             contract_class: metadata[:scope],
+                                             type_name: metadata[:short_name]
+                                           )
+                                         end
+              end
+            end
+
+            # Legacy fallback: include old API-scoped global types
             if api
               api_storage(api).to_a.sort_by { |type_name, _| type_name.to_s }.each do |type_name, definition_or_data|
+                next if result.key?(type_name) # Unified storage takes precedence
+
                 result[type_name] = if definition_or_data.is_a?(Hash)
                                       definition_or_data
                                     else
@@ -39,9 +66,9 @@ module Apiwork
               end
             end
 
-            # Fallback: include truly global types (legacy)
+            # Legacy fallback: include truly global types
             global_storage.to_a.sort_by { |type_name, _| type_name.to_s }.each do |type_name, definition_or_data|
-              next if result.key?(type_name) # API-scoped takes precedence
+              next if result.key?(type_name)
 
               result[type_name] = if definition_or_data.is_a?(Hash)
                                     definition_or_data
@@ -50,11 +77,12 @@ module Apiwork
                                   end
             end
 
-            # Serialize API-scoped local types
+            # Legacy fallback: include API-scoped local types
             if api
               api_local_storage(api).to_a.sort_by { |contract_class, _| contract_class.to_s }.each do |contract_class, types|
                 types.to_a.sort_by { |type_name, _| type_name.to_s }.each do |type_name, metadata|
                   qualified_type_name = metadata[:qualified_name]
+                  next if result.key?(qualified_type_name)
 
                   result[qualified_type_name] = if metadata[:data]
                                                   metadata[:data]
@@ -69,11 +97,11 @@ module Apiwork
               end
             end
 
-            # Fallback: include legacy local types
+            # Legacy fallback: include local types
             local_storage.to_a.sort_by { |contract_class, _| contract_class.to_s }.each do |contract_class, types|
               types.to_a.sort_by { |type_name, _| type_name.to_s }.each do |type_name, metadata|
                 qualified_type_name = metadata[:qualified_name]
-                next if result.key?(qualified_type_name) # API-scoped takes precedence
+                next if result.key?(qualified_type_name)
 
                 result[qualified_type_name] = if metadata[:data]
                                                 metadata[:data]
