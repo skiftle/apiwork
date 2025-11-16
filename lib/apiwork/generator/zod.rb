@@ -373,13 +373,13 @@ module Apiwork
       def build_action_typescript_types
         types = []
 
-        each_resource do |resource_name, resource_data, _parent_path|
+        each_resource do |resource_name, resource_data, parent_path|
           each_action(resource_data) do |action_name, action_data|
             # Generate TypeScript type for input if present
-            types << build_action_input_typescript_type(resource_name, action_name, action_data[:input]) if action_data[:input]&.any?
+            types << build_action_input_typescript_type(resource_name, action_name, action_data[:input], parent_path) if action_data[:input]&.any?
 
             # Generate TypeScript type for output if present
-            types << build_action_output_typescript_type(resource_name, action_name, action_data[:output]) if action_data[:output]
+            types << build_action_output_typescript_type(resource_name, action_name, action_data[:output], parent_path) if action_data[:output]
           end
         end
 
@@ -410,18 +410,18 @@ module Apiwork
         end
 
         # Collect action types with their names
-        each_resource do |resource_name, resource_data, _parent_path|
+        each_resource do |resource_name, resource_data, parent_path|
           each_action(resource_data) do |action_name, action_data|
             if action_data[:input]&.any?
-              type_name = action_schema_name(resource_name, action_name, 'Input')
-              code = build_action_input_typescript_type(resource_name, action_name, action_data[:input])
+              type_name = action_schema_name(resource_name, action_name, 'Input', parent_path)
+              code = build_action_input_typescript_type(resource_name, action_name, action_data[:input], parent_path)
               all_types << { name: type_name, code: code }
             end
 
             next unless action_data[:output]
 
-            type_name = action_schema_name(resource_name, action_name, 'Output')
-            code = build_action_output_typescript_type(resource_name, action_name, action_data[:output])
+            type_name = action_schema_name(resource_name, action_name, 'Output', parent_path)
+            code = build_action_output_typescript_type(resource_name, action_name, action_data[:output], parent_path)
             all_types << { name: type_name, code: code }
           end
         end
@@ -433,21 +433,21 @@ module Apiwork
       def build_action_schemas
         schemas = []
 
-        each_resource do |resource_name, resource_data, _parent_path|
+        each_resource do |resource_name, resource_data, parent_path|
           each_action(resource_data) do |action_name, action_data|
             # Generate input schema if present
-            schemas << build_action_input_schema(resource_name, action_name, action_data[:input]) if action_data[:input]&.any?
+            schemas << build_action_input_schema(resource_name, action_name, action_data[:input], parent_path) if action_data[:input]&.any?
 
             # Generate output schema if present
-            schemas << build_action_output_schema(resource_name, action_name, action_data[:output]) if action_data[:output]
+            schemas << build_action_output_schema(resource_name, action_name, action_data[:output], parent_path) if action_data[:output]
           end
         end
 
         schemas.join("\n\n")
       end
 
-      def build_action_input_typescript_type(resource_name, action_name, input_params)
-        type_name = action_schema_name(resource_name, action_name, 'Input')
+      def build_action_input_typescript_type(resource_name, action_name, input_params, parent_path = nil)
+        type_name = action_schema_name(resource_name, action_name, 'Input', parent_path)
 
         # Build TypeScript interface
         properties = input_params.sort_by { |k, _| k.to_s }.map do |param_name, param_def|
@@ -461,8 +461,8 @@ module Apiwork
         "export interface #{type_name} {\n#{properties}\n}"
       end
 
-      def build_action_output_typescript_type(resource_name, action_name, output_def)
-        type_name = action_schema_name(resource_name, action_name, 'Output')
+      def build_action_output_typescript_type(resource_name, action_name, output_def, parent_path = nil)
+        type_name = action_schema_name(resource_name, action_name, 'Output', parent_path)
 
         # Map output definition to TypeScript type
         ts_type = map_typescript_type_definition(output_def, action_name)
@@ -470,8 +470,8 @@ module Apiwork
         "export type #{type_name} = #{ts_type};"
       end
 
-      def build_action_input_schema(resource_name, action_name, input_params)
-        schema_name = action_schema_name(resource_name, action_name, 'Input')
+      def build_action_input_schema(resource_name, action_name, input_params, parent_path = nil)
+        schema_name = action_schema_name(resource_name, action_name, 'Input', parent_path)
 
         # Build Zod object schema
         # Don't pass action_name - input fields should follow their own required flags
@@ -484,8 +484,8 @@ module Apiwork
         "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.object({\n#{properties}\n});"
       end
 
-      def build_action_output_schema(resource_name, action_name, output_def)
-        schema_name = action_schema_name(resource_name, action_name, 'Output')
+      def build_action_output_schema(resource_name, action_name, output_def, parent_path = nil)
+        schema_name = action_schema_name(resource_name, action_name, 'Output', parent_path)
 
         # Map the output definition (handles unions, objects, etc.)
         # Don't pass action_name - output fields should follow their own required flags
@@ -494,14 +494,29 @@ module Apiwork
         "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = #{zod_schema};"
       end
 
-      def action_schema_name(resource_name, action_name, suffix)
-        # e.g., posts, create, Input -> PostsCreateInput
-        parts = [
+      def action_schema_name(resource_name, action_name, suffix, parent_path = nil)
+        parent_names = extract_parent_resource_names(parent_path)
+        parts = parent_names + [
           resource_name.to_s,
           action_name.to_s,
           suffix
         ]
         zod_type_name(parts.join('_'))
+      end
+
+      def extract_parent_resource_names(parent_path)
+        return [] unless parent_path
+
+        parent_names = []
+        segments = parent_path.to_s.split('/')
+
+        segments.each do |segment|
+          next if segment.match?(/:/) # Skip ID parameters like :post_id
+
+          parent_names << segment
+        end
+
+        parent_names
       end
 
       def build_typescript_type(type_name, type_shape, action_name = nil, recursive: false)
