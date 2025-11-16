@@ -44,9 +44,10 @@ module Apiwork
           parts << ''
         end
 
-        all_typescript_types = build_all_typescript_types
-        if all_typescript_types.present?
-          parts << all_typescript_types
+        # Use TypeScript generator for TypeScript types
+        typescript_types = typescript_generator.generate
+        if typescript_types.present?
+          parts << typescript_types
           parts << ''
         end
 
@@ -81,19 +82,6 @@ module Apiwork
           values_str = enum_values.sort.map { |v| "'#{v}'" }.join(', ')
           "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.enum([#{values_str}]);"
         end.join("\n\n")
-      end
-
-      def build_typescript_enum_types
-        return '' if enums.empty?
-
-        # Generate TypeScript union types for enums
-        # Enum filter types are now auto-generated as union types in introspect[:types]
-        enums.sort_by { |enum_name, _| enum_name.to_s }.map do |enum_name, enum_values|
-          type_name = zod_type_name(enum_name)
-          # Create a union of literal types
-          values_str = enum_values.sort.map { |v| "'#{v}'" }.join(' | ')
-          "export type #{type_name} = #{values_str};"
-        end.join("\n")
       end
 
       def build_type_schemas
@@ -353,84 +341,6 @@ module Apiwork
         end
       end
 
-      def build_typescript_types
-        # Sort types alphabetically by name
-        sorted_types = types.sort_by { |type_name, _| type_name.to_s }
-
-        # Generate TypeScript type/interface declarations
-        type_declarations = sorted_types.map do |type_name, type_shape|
-          if type_shape.is_a?(Hash) && type_shape[:type] == :union
-            build_typescript_union_type(type_name, type_shape)
-          else
-            action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
-            recursive = detect_circular_references(type_name, type_shape)
-            build_typescript_type(type_name, type_shape, action_name, recursive: recursive)
-          end
-        end
-
-        type_declarations.join("\n\n")
-      end
-
-      def build_action_typescript_types
-        types = []
-
-        each_resource do |resource_name, resource_data, parent_path|
-          each_action(resource_data) do |action_name, action_data|
-            # Generate TypeScript type for input if present
-            types << build_action_input_typescript_type(resource_name, action_name, action_data[:input], parent_path) if action_data[:input]&.any?
-
-            # Generate TypeScript type for output if present
-            types << build_action_output_typescript_type(resource_name, action_name, action_data[:output], parent_path) if action_data[:output]
-          end
-        end
-
-        types.join("\n\n")
-      end
-
-      def build_all_typescript_types
-        all_types = []
-
-        # Collect enum types with their names
-        enums.each do |enum_name, enum_values|
-          type_name = zod_type_name(enum_name)
-          values_str = enum_values.sort.map { |v| "'#{v}'" }.join(' | ')
-          all_types << { name: type_name, code: "export type #{type_name} = #{values_str};" }
-        end
-
-        # Collect regular types with their names
-        types.each do |type_name, type_shape|
-          type_name_pascal = zod_type_name(type_name)
-          code = if type_shape.is_a?(Hash) && type_shape[:type] == :union
-                   build_typescript_union_type(type_name, type_shape)
-                 else
-                   action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
-                   recursive = detect_circular_references(type_name, type_shape)
-                   build_typescript_type(type_name, type_shape, action_name, recursive: recursive)
-                 end
-          all_types << { name: type_name_pascal, code: code }
-        end
-
-        # Collect action types with their names
-        each_resource do |resource_name, resource_data, parent_path|
-          each_action(resource_data) do |action_name, action_data|
-            if action_data[:input]&.any?
-              type_name = action_schema_name(resource_name, action_name, 'Input', parent_path)
-              code = build_action_input_typescript_type(resource_name, action_name, action_data[:input], parent_path)
-              all_types << { name: type_name, code: code }
-            end
-
-            next unless action_data[:output]
-
-            type_name = action_schema_name(resource_name, action_name, 'Output', parent_path)
-            code = build_action_output_typescript_type(resource_name, action_name, action_data[:output], parent_path)
-            all_types << { name: type_name, code: code }
-          end
-        end
-
-        # Sort all types alphabetically by name
-        all_types.sort_by { |t| t[:name] }.map { |t| t[:code] }.join("\n\n")
-      end
-
       def build_action_schemas
         schemas = []
 
@@ -445,30 +355,6 @@ module Apiwork
         end
 
         schemas.join("\n\n")
-      end
-
-      def build_action_input_typescript_type(resource_name, action_name, input_params, parent_path = nil)
-        type_name = action_schema_name(resource_name, action_name, 'Input', parent_path)
-
-        # Build TypeScript interface
-        properties = input_params.sort_by { |k, _| k.to_s }.map do |param_name, param_def|
-          key = transform_key(param_name)
-          ts_type = map_typescript_field(param_def, action_name)
-          is_required = param_def[:required]
-          optional_marker = is_required ? '' : '?'
-          "  #{key}#{optional_marker}: #{ts_type};"
-        end.join("\n")
-
-        "export interface #{type_name} {\n#{properties}\n}"
-      end
-
-      def build_action_output_typescript_type(resource_name, action_name, output_def, parent_path = nil)
-        type_name = action_schema_name(resource_name, action_name, 'Output', parent_path)
-
-        # Map output definition to TypeScript type
-        ts_type = map_typescript_type_definition(output_def, action_name)
-
-        "export type #{type_name} = #{ts_type};"
       end
 
       def build_action_input_schema(resource_name, action_name, input_params, parent_path = nil)
@@ -520,65 +406,6 @@ module Apiwork
         parent_names
       end
 
-      def build_typescript_type(type_name, type_shape, action_name = nil, recursive: false)
-        type_name_pascal = zod_type_name(type_name)
-
-        properties = type_shape.sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
-          key = transform_key(property_name)
-          is_update = action_name.to_s == 'update'
-          is_required = property_def[:required]
-
-          ts_type = map_typescript_field(property_def, action_name)
-          optional_marker = is_update || !is_required ? '?' : ''
-          "  #{key}#{optional_marker}: #{ts_type};"
-        end.join("\n")
-
-        # Empty objects become type aliases to object
-        if properties.empty?
-          "export type #{type_name_pascal} = object;"
-        else
-          "export interface #{type_name_pascal} {\n#{properties}\n}"
-        end
-      end
-
-      def build_typescript_union_type(type_name, type_shape)
-        type_name_pascal = zod_type_name(type_name)
-        variants = type_shape[:variants]
-
-        variant_types = variants.map { |variant| map_typescript_type_definition(variant, nil) }
-
-        # Use type alias for unions (not interface)
-        "export type #{type_name_pascal} = #{variant_types.join(' | ')};"
-      end
-
-      def map_typescript_field(definition, action_name = nil)
-        return 'string' unless definition.is_a?(Hash)
-
-        is_nullable = definition[:nullable]
-
-        base_type = if definition[:type].is_a?(Symbol) && enum_or_type_reference?(definition[:type])
-                      typescript_reference(definition[:type])
-                    else
-                      map_typescript_type_definition(definition, action_name)
-                    end
-
-        if definition[:enum]
-          enum_ref = resolve_enum(definition[:enum])
-          if enum_ref.is_a?(Symbol) && enums.key?(enum_ref)
-            base_type = zod_type_name(enum_ref)
-          elsif enum_ref.is_a?(Array)
-            base_type = enum_ref.sort.map { |v| "'#{v}'" }.join(' | ')
-          end
-        end
-
-        if is_nullable
-          members = [base_type, 'null'].sort
-          base_type = members.join(' | ')
-        end
-
-        base_type
-      end
-
       def detect_circular_references(type_name, type_def)
         referenced_types = extract_type_references(type_def, filter: :custom_only)
         referenced_types.include?(type_name)
@@ -589,101 +416,6 @@ module Apiwork
           string integer boolean datetime date uuid object array
           decimal float literal union enum
         ].include?(type)
-      end
-
-      def map_typescript_type_definition(definition, action_name = nil)
-        return 'never' unless definition.is_a?(Hash)
-
-        type = definition[:type]
-
-        case type
-        when :object
-          map_typescript_object_type(definition, action_name)
-        when :array
-          map_typescript_array_type(definition, action_name)
-        when :union
-          map_typescript_union_type(definition, action_name)
-        when :literal
-          map_typescript_literal_type(definition)
-        when nil
-          'never'
-        else
-          enum_or_type_reference?(type) ? typescript_reference(type) : map_typescript_primitive(type)
-        end
-      end
-
-      def map_typescript_object_type(definition, action_name = nil)
-        return 'object' unless definition[:shape]
-
-        is_partial = definition[:partial]
-
-        properties = definition[:shape].sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
-          key = transform_key(property_name)
-          ts_type = map_typescript_field(property_def, action_name)
-          is_required = property_def[:required]
-          optional_marker = is_partial || !is_required ? '?' : ''
-          "#{key}#{optional_marker}: #{ts_type}"
-        end.join('; ')
-
-        "{ #{properties} }"
-      end
-
-      def map_typescript_array_type(definition, action_name = nil)
-        items_type = definition[:of]
-        return 'string[]' unless items_type
-
-        element_type = if items_type.is_a?(Symbol) && enum_or_type_reference?(items_type)
-                         typescript_reference(items_type)
-                       elsif items_type.is_a?(Hash)
-                         map_typescript_type_definition(items_type, action_name)
-                       else
-                         map_typescript_primitive(items_type)
-                       end
-
-        # Use bracket notation for arrays
-        if element_type.include?(' | ') || element_type.include?(' & ')
-          "(#{element_type})[]"
-        else
-          "#{element_type}[]"
-        end
-      end
-
-      def map_typescript_union_type(definition, action_name = nil)
-        variants = definition[:variants].map do |variant|
-          map_typescript_type_definition(variant, action_name)
-        end
-        variants.sort.join(' | ')
-      end
-
-      def map_typescript_literal_type(definition)
-        value = definition[:value]
-        case value
-        when String
-          "'#{value}'"
-        when Integer, Float
-          value.to_s
-        when TrueClass, FalseClass
-          value.to_s
-        when NilClass
-          'null'
-        else
-          "'#{value}'"
-        end
-      end
-
-      def map_typescript_primitive(type)
-        case type.to_sym
-        when :string, :text, :uuid, :date, :datetime, :time, :binary
-          'string'
-        when :integer, :float, :decimal, :number
-          'number'
-        when :boolean
-          'boolean'
-        when :json
-          'Record<string, any>'
-        else
-          'string'
-        end
       end
 
       def map_primitive(definition)
@@ -705,10 +437,6 @@ module Apiwork
 
       def schema_reference(symbol)
         "#{zod_type_name(symbol)}Schema"
-      end
-
-      def typescript_reference(symbol)
-        zod_type_name(symbol)
       end
 
       def apply_modifiers(type, definition, action_name)
@@ -734,6 +462,18 @@ module Apiwork
 
       def resolve_enum(enum_ref)
         enum_ref
+      end
+
+      # Instantiate TypeScript generator to reuse TypeScript generation logic
+      # Share the already-loaded introspection data to avoid duplicate loading
+      def typescript_generator
+        @typescript_generator ||= begin
+          ts_gen = Generator::Typescript.allocate
+          ts_gen.instance_variable_set(:@path, @path)
+          ts_gen.instance_variable_set(:@options, @options)
+          ts_gen.instance_variable_set(:@data, @data) # Share introspection data
+          ts_gen
+        end
       end
 
       # Validate version option
