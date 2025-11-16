@@ -20,7 +20,7 @@ module Apiwork
         # Register in Registry
         Registry.register(self)
 
-        # Register core descriptors for this API
+        # Register core descriptors for this API (idempotent - allows re-registration on Rails reload)
         Contract::Descriptor::Core.register_core_descriptors(self)
       end
 
