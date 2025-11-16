@@ -19,7 +19,7 @@ RSpec.describe 'Missing Model Error Handling' do
     it 'allows abstract schemas without models' do
       expect do
         class AbstractNoModelSchema < Apiwork::Schema::Base
-          self.abstract_class = true
+          abstract
           attribute :id
         end
       end.not_to raise_error

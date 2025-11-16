@@ -28,6 +28,15 @@ module Apiwork
       # @param api_class [Apiwork::API::Base, nil] API instance (lowest priority)
       # @return [Object] The resolved configuration value
       def resolve(setting_name, contract_class: nil, schema_class: nil, api_class: nil)
+        # Auto-resolve related classes if not explicitly provided
+        schema_class = contract_class.schema_class if contract_class && !schema_class
+
+        if contract_class && !api_class
+          api_class = contract_class.api_class
+        elsif schema_class && !api_class
+          api_class = schema_class.api_class
+        end
+
         # Collect values from all levels (skip nil classes)
         values = []
 
