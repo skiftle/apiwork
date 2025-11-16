@@ -92,10 +92,6 @@ module Apiwork
             @storage = {}
           end
 
-          def clear_local!
-            @storage = {}
-          end
-
           def serialize(api)
             raise NotImplementedError, 'Subclasses must implement serialize'
           end
