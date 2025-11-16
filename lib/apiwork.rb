@@ -25,8 +25,8 @@ module Apiwork
       Generator::Registry[type].generate(path: path, **options)
     end
 
-    def register_descriptors(&block)
-      builder = Contract::Descriptor::GlobalBuilder.new
+    def register_descriptors(api_class: nil, &block)
+      builder = Contract::Descriptor::Builder.new(api_class: api_class, scope: nil)
       builder.instance_eval(&block)
     end
 

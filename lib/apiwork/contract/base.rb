@@ -51,15 +51,18 @@ module Apiwork
         end
 
         def type(name, &block)
-          raise ArgumentError, 'Block required for custom type definition' unless block_given?
-
-          Descriptor::Registry.register_type(name, scope: self, api_class: api_class, &block)
+          builder = Descriptor::Builder.new(api_class: api_class, scope: self)
+          builder.type(name, &block)
         end
 
         def enum(name, values)
-          raise ArgumentError, 'Values array required for enum definition' unless values.is_a?(Array)
+          builder = Descriptor::Builder.new(api_class: api_class, scope: self)
+          builder.enum(name, values)
+        end
 
-          Descriptor::Registry.register_enum(name, values, scope: self, api_class: api_class)
+        def union(name, &block)
+          builder = Descriptor::Builder.new(api_class: api_class, scope: self)
+          builder.union(name, &block)
         end
 
         def import(contract_class, as:)

@@ -17,7 +17,7 @@ module Apiwork
         def descriptors(&block)
           return unless block
 
-          builder = DescriptorBuilder.new(api_class: self)
+          builder = Contract::Descriptor::Builder.new(api_class: self, scope: nil)
           builder.instance_eval(&block)
         end
 
