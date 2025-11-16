@@ -3,12 +3,74 @@
 module Apiwork
   module API
     class Base
-      extend Configuration   # Adds: configure_from_path, mount_at, spec
       extend Documentation   # Adds: doc
       extend Routing         # Adds: resources, resource, concern, with_options
 
       class << self
         attr_reader :metadata, :recorder, :mount_path, :namespaces_parts, :specs
+
+        def configure_from_path(path)
+          @mount_path = path
+          @specs = {}
+
+          # Parse path to namespaces array
+          @namespaces_parts = path == '/' ? [:root] : path.split('/').reject(&:empty?).map(&:to_sym)
+
+          # Create metadata with path as source
+          @metadata = Metadata.new(path)
+          @recorder = Recorder.new(@metadata, @namespaces_parts)
+
+          # Register in Registry
+          Registry.register(self)
+
+          # Register core descriptors for this API (idempotent - allows re-registration on Rails reload)
+          Contract::Descriptor::Core.register_core_descriptors(self)
+
+          # Initialize configuration hash
+          @configuration = {}
+        end
+
+        def mount_at(path)
+          @mount_path = path
+        end
+
+        def spec(type, path: nil)
+          # Validate that type is registered
+          unless Generator::Registry.registered?(type)
+            available = Generator::Registry.all.join(', ')
+            raise ConfigurationError,
+                  "Unknown spec generator: :#{type}. " \
+                  "Available generators: #{available}"
+          end
+
+          # Initialize specs hash if needed
+          @specs ||= {}
+
+          # Default path if not specified
+          path ||= "/.spec/#{type}"
+
+          # Add to specs hash
+          @specs[type] = path
+        end
+
+        def specs?
+          @specs&.any?
+        end
+
+        def error_codes(*codes)
+          @metadata.error_codes = codes.flatten.map(&:to_i).uniq.sort
+        end
+
+        def configure(&block)
+          return unless block
+
+          builder = Configuration::Builder.new(@configuration)
+          builder.instance_eval(&block)
+        end
+
+        def configuration
+          @configuration ||= {}
+        end
 
         def controller_namespace
           namespaces_parts.map(&:to_s).map(&:camelize).join('::')

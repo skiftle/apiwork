@@ -14,6 +14,16 @@ Apiwork::API.draw '/api/v1' do
     description 'Dummy API for the Apiwork gem'
   end
 
+  # API-level configuration
+  configure do
+    serialize_key_transform :none
+    deserialize_key_transform :none
+    default_sort id: :asc
+    default_page_size 20
+    maximum_page_size 200
+    max_array_items 1000
+  end
+
   # API-level descriptors - available to all contracts in this API
   descriptors do
     # Error response type

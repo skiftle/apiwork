@@ -57,11 +57,11 @@ module Apiwork
       end
 
       def default_page_size
-        schema.default_page_size || Apiwork.configuration.default_page_size
+        schema.default_page_size
       end
 
       def maximum_page_size
-        schema.maximum_page_size || Apiwork.configuration.maximum_page_size
+        schema.maximum_page_size
       end
 
       private

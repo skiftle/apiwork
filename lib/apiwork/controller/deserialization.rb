@@ -36,7 +36,12 @@ module Apiwork
       end
 
       def key_transform
-        Apiwork.configuration.deserialize_key_transform
+        Configuration::Resolver.resolve(
+          :deserialize_key_transform,
+          contract_class: current_contract,
+          schema_class: current_contract.schema_class,
+          api_class: current_contract.api_class
+        )
       end
     end
   end

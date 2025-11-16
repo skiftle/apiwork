@@ -4,7 +4,10 @@ module Api
   module V1
     class CamelizedAccountSchema < Apiwork::Schema::Base
       model Account
-      self.serialize_key_transform = :camelize_lower
+
+      configure do
+        serialize_key_transform :camelize_lower
+      end
 
       attribute :id
       attribute :name
