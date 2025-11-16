@@ -18,6 +18,7 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
       }
 
       post '/api/v1/posts', params: post_params, as: :json
+      puts "DEBUG single-level: status=#{response.status}, body=#{response.body[0..500]}" if response.status != 201
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
@@ -234,11 +235,12 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
           }
         }
 
-        expect do
-          post '/api/v1/posts', params: post_params, as: :json
-        end.to change(Post, :count).by(1)
-                                   .and change(Comment, :count).by(2)
-                                                               .and change(Reply, :count).by(3)
+        post '/api/v1/posts', params: post_params, as: :json
+        puts "DEBUG test: response.status=#{response.status}, body=#{response.body[0..500]}"
+
+        expect(Post.count).to eq(1)
+        expect(Comment.count).to eq(2)
+        expect(Reply.count).to eq(3)
 
         expect(response).to have_http_status(:created)
         json = JSON.parse(response.body)

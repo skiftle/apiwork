@@ -366,6 +366,7 @@ module Apiwork
               register_resource_filter_type(association_contract, association_schema, visited: Set.new, depth: 0)
               register_resource_sort_type(association_contract, association_schema, visited: Set.new, depth: 0)
               register_resource_include_type(association_contract, association_schema, visited: Set.new, depth: 0)
+              register_nested_payload_union(association_contract, association_schema)
             end
 
             # Use schema's root_key.singular as alias (convention)
@@ -391,6 +392,28 @@ module Apiwork
               # This provides fallback lookup when different contract instances exist (anonymous vs explicit)
               Descriptor::EnumStore.register_enum(name, attribute_definition.enum, scope: schema_class, api_class: api_class)
             end
+          end
+
+          # Register nested_payload union for schemas with writable associations
+          # This is called when contract is defined to ensure the union type is always available
+          def register_nested_payload_union(contract_class, schema_class)
+            # Only register if schema has writable associations
+            return unless schema_class.association_definitions.any? { |_, ad| ad.writable? }
+
+            api_class = contract_class.api_class
+            nested_payload_type_name = :nested_payload
+
+            # Check if already registered (idempotent)
+            return if Descriptor::Registry.resolve_type(nested_payload_type_name, contract_class: contract_class)
+
+            # Create union definition using InputGenerator logic
+            union_def = UnionDefinition.new(contract_class, discriminator: :_type)
+            InputGenerator.populate_nested_payload_union(union_def, schema_class, contract_class)
+            union_data = union_def.serialize
+
+            # Register as top-level union
+            Descriptor::Registry.register_union(nested_payload_type_name, union_data,
+                                                scope: contract_class, api_class: api_class)
           end
 
           private
