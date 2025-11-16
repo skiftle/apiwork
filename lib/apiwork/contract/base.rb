@@ -228,7 +228,7 @@ module Apiwork
         private
 
         def find_resource_in_metadata(metadata, resource_name)
-          MetadataSearcher.new(metadata).find_resource(resource_name)
+          metadata.find_resource(resource_name)
         end
       end
     end

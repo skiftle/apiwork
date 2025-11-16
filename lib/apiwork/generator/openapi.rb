@@ -366,9 +366,15 @@ module Apiwork
       end
 
       def map_primitive(definition)
-        {
-          type: openapi_type(definition[:type])
-        }
+        result = { type: openapi_type(definition[:type]) }
+
+        # Add numeric constraints for OpenAPI 3.1
+        if numeric_type?(definition[:type])
+          result[:minimum] = definition[:min] if definition[:min]
+          result[:maximum] = definition[:max] if definition[:max]
+        end
+
+        result
       end
 
       def openapi_type(type)
@@ -435,6 +441,11 @@ module Apiwork
         raise ArgumentError,
               "Invalid version for openapi: #{version.inspect}. " \
               "Valid versions: #{VALID_VERSIONS.join(', ')}"
+      end
+
+      # Check if a type is numeric
+      def numeric_type?(type)
+        [:integer, :float, :decimal, :number].include?(type&.to_sym)
       end
     end
   end

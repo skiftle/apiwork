@@ -100,11 +100,51 @@ module Apiwork
         @concerns.merge!(other_metadata.concerns)
       end
 
+      def find_resource(resource_name)
+        return resources[resource_name] if resources[resource_name]
+
+        resources.each_value do |resource_metadata|
+          found = find_resource_recursive(resource_metadata, resource_name)
+          return found if found
+        end
+
+        nil
+      end
+
+      def search_resources(&block)
+        resources.each_value do |resource_metadata|
+          result = search_in_resource_tree(resource_metadata, &block)
+          return result if result
+        end
+
+        nil
+      end
+
       private
 
-      def find_resource(name)
-        searcher = MetadataSearcher.new(self)
-        searcher.find_resource(name)
+      def find_resource_recursive(resource_metadata, resource_name)
+        return resource_metadata[:resources][resource_name] if resource_metadata[:resources]&.key?(resource_name)
+
+        resource_metadata[:resources]&.each_value do |nested_metadata|
+          found = find_resource_recursive(nested_metadata, resource_name)
+          return found if found
+        end
+
+        nil
+      end
+
+      def search_in_resource_tree(resource_metadata, &block)
+        # Check current resource
+        result = yield(resource_metadata)
+        return result if result
+
+        # Search nested resources
+        resource_metadata[:resources]&.each_value do |nested_metadata|
+          result = search_in_resource_tree(nested_metadata, &block)
+          return result if result
+        end
+
+        nil
       end
 
       def merge_nested_resources(target, source)

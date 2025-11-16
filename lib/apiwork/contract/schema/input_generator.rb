@@ -82,6 +82,10 @@ module Apiwork
                 nullable: attribute_definition.nullable? # Auto-detected from DB schema or explicit config
               }
 
+              # Add numeric constraints if present
+              param_options[:min] = attribute_definition.min if attribute_definition.min
+              param_options[:max] = attribute_definition.max if attribute_definition.max
+
               # Reference registered enum by attribute name (registered at contract level)
               # E.g., :status references the :post_status enum
               param_options[:enum] = name if attribute_definition.enum

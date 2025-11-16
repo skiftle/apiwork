@@ -183,7 +183,7 @@ module Apiwork
       end
 
       def search_in_metadata(metadata, &block)
-        Apiwork::MetadataSearcher.new(metadata).search_resources(&block)
+        metadata.search_resources(&block)
       end
 
       def matches_contract?(resource_metadata)

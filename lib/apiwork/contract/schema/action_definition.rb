@@ -184,8 +184,7 @@ module Apiwork
           return false unless api&.metadata
 
           # Check if action is defined under collection in any resource using this contract
-          searcher = Apiwork::MetadataSearcher.new(api.metadata)
-          searcher.search_resources do |resource_metadata|
+          api.metadata.search_resources do |resource_metadata|
             next unless resource_uses_contract?(resource_metadata, contract_class)
 
             true if resource_metadata[:collections]&.key?(action_name.to_sym)

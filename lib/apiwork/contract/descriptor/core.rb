@@ -14,8 +14,8 @@ module Apiwork
             builder = Builder.new(api_class: api_class)
             builder.instance_eval do
               type :page do
-                param :number, type: :integer, required: false
-                param :size, type: :integer, required: false
+                param :number, type: :integer, required: false, min: 1
+                param :size, type: :integer, required: false, min: 1, max: 200
               end
 
               type :pagination do
