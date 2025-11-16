@@ -2,17 +2,17 @@
 
 require 'rails_helper'
 
-# NOTE: null_to_empty currently only works for OUTPUT serialization, not INPUT deserialization
-# - Serialize (output): nil → "" (works ✅)
-# - Deserialize (input): "" → nil (NOT IMPLEMENTED ❌)
+# null_to_empty attribute option provides bidirectional transformation:
+# - Serialize (output): nil → "" (frontend always gets string, never null)
+# - Deserialize (input): "" → nil (database stores nil for empty strings)
 #
-# The blank_to_nil deserialize transformer is defined but never called during input parsing.
-# This test documents the CURRENT behavior, not the ideal behavior.
+# This allows frontend to work with strings (no nullable types needed),
+# while backend normalizes empty values to nil in the database.
 
 RSpec.describe 'null_to_empty workflow', type: :request do
   describe 'POST /api/v1/users' do
     context 'when name is empty string' do
-      it 'stores empty string as-is (deserialization not implemented)' do
+      it 'converts empty string to nil in database' do
         post '/api/v1/users', params: {
           user: {
             email: 'test@example.com',
@@ -23,11 +23,11 @@ RSpec.describe 'null_to_empty workflow', type: :request do
         expect(response).to have_http_status(:created)
         json = JSON.parse(response.body)
 
-        # Database stores empty string (deserialization transformers not applied)
+        # Empty string converted to nil in database (blank_to_nil deserialization)
         user = User.last
-        expect(user.name).to eq('')
+        expect(user.name).to be_nil
 
-        # Response also returns empty string
+        # Response serializes nil back to empty string (nil_to_empty serialization)
         expect(json.dig('user', 'name')).to eq('')
       end
     end
@@ -72,7 +72,7 @@ RSpec.describe 'null_to_empty workflow', type: :request do
     let!(:user) { User.create!(email: 'test@example.com', name: 'Original Name') }
 
     context 'when updating name to empty string' do
-      it 'stores empty string as-is' do
+      it 'converts empty string to nil in database' do
         patch "/api/v1/users/#{user.id}", params: {
           user: {
             name: ''
@@ -81,9 +81,9 @@ RSpec.describe 'null_to_empty workflow', type: :request do
 
         expect(response).to have_http_status(:ok)
 
-        # Database stores empty string
+        # Empty string converted to nil in database
         user.reload
-        expect(user.name).to eq('')
+        expect(user.name).to be_nil
       end
     end
 
@@ -131,7 +131,44 @@ RSpec.describe 'null_to_empty workflow', type: :request do
     end
   end
 
-  describe 'null_to_empty serialization (the part that works)' do
+  describe 'round-trip behavior' do
+    it 'maintains "" → nil → "" cycle correctly' do
+      # 1. POST with empty string
+      post '/api/v1/users', params: {
+        user: {
+          email: 'test@example.com',
+          name: ''
+        }
+      }, as: :json
+
+      user_id = JSON.parse(response.body).dig('user', 'id')
+
+      # 2. Database has nil (empty string was converted)
+      user = User.find(user_id)
+      expect(user.name).to be_nil
+
+      # 3. GET returns empty string (nil converted back)
+      get "/api/v1/users/#{user_id}", as: :json
+      json = JSON.parse(response.body)
+      expect(json.dig('user', 'name')).to eq('')
+
+      # 4. PATCH with empty string again
+      patch "/api/v1/users/#{user_id}", params: {
+        user: {
+          name: ''
+        }
+      }, as: :json
+
+      # 5. Database still has nil
+      user.reload
+      expect(user.name).to be_nil
+
+      # 6. GET still returns empty string
+      get "/api/v1/users/#{user_id}", as: :json
+      json = JSON.parse(response.body)
+      expect(json.dig('user', 'name')).to eq('')
+    end
+
     it 'converts nil to empty string on output' do
       # Create user directly with nil (bypassing API)
       user = User.create!(email: 'test@example.com', name: nil)

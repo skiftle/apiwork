@@ -11,7 +11,7 @@ module Api
       attribute :updated_at, filterable: true, sortable: true
 
       belongs_to :post, schema: PostSchema, filterable: true, sortable: true
-
+      has_many :replies, schema: ReplySchema, writable: true
     end
   end
 end

@@ -205,4 +205,204 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
       expect(response).to have_http_status(:created)
     end
   end
+
+  describe 'Deep nesting (Post -> Comments -> Replies)' do
+    describe 'Creating with deeply nested data' do
+      it 'creates post with nested comments and replies' do
+        post_params = {
+          post: {
+            title: 'Post with Deep Nesting',
+            body: 'Post body',
+            published: true,
+            comments: [
+              {
+                content: 'First comment',
+                author: 'Author 1',
+                replies: [
+                  { content: 'Reply to first comment', author: 'Replier 1' },
+                  { content: 'Another reply to first', author: 'Replier 2' }
+                ]
+              },
+              {
+                content: 'Second comment',
+                author: 'Author 2',
+                replies: [
+                  { content: 'Reply to second comment', author: 'Replier 3' }
+                ]
+              }
+            ]
+          }
+        }
+
+        expect do
+          post '/api/v1/posts', params: post_params, as: :json
+        end.to change(Post, :count).by(1)
+                                   .and change(Comment, :count).by(2)
+                                                               .and change(Reply, :count).by(3)
+
+        expect(response).to have_http_status(:created)
+        json = JSON.parse(response.body)
+
+        created_post = Post.find(json['post']['id'])
+        expect(created_post.comments.count).to eq(2)
+
+        first_comment = created_post.comments.find_by(content: 'First comment')
+        expect(first_comment.replies.count).to eq(2)
+        expect(first_comment.replies.pluck(:content)).to contain_exactly(
+          'Reply to first comment',
+          'Another reply to first'
+        )
+
+        second_comment = created_post.comments.find_by(content: 'Second comment')
+        expect(second_comment.replies.count).to eq(1)
+        expect(second_comment.replies.first.content).to eq('Reply to second comment')
+      end
+
+      it 'creates post with comment but no replies' do
+        post_params = {
+          post: {
+            title: 'Post',
+            body: 'Body',
+            published: true,
+            comments: [
+              {
+                content: 'Comment without replies',
+                author: 'Author',
+                replies: []
+              }
+            ]
+          }
+        }
+
+        post '/api/v1/posts', params: post_params, as: :json
+
+        expect(Comment.count).to eq(1)
+        expect(Reply.count).to eq(0)
+
+        expect(response).to have_http_status(:created)
+      end
+    end
+
+    describe 'Updating with deeply nested data' do
+      let!(:post_record) { Post.create!(title: 'Post', body: 'Body', published: true) }
+      let!(:comment) { Comment.create!(post: post_record, content: 'Comment', author: 'Author') }
+      let!(:reply) { Reply.create!(comment: comment, content: 'Existing reply', author: 'Replier') }
+
+      it 'updates existing replies and adds new ones' do
+        post_params = {
+          post: {
+            title: 'Updated Post',
+            comments: [
+              {
+                id: comment.id,
+                content: 'Updated comment',
+                author: 'Author',
+                replies: [
+                  { id: reply.id, content: 'Updated reply', author: 'Replier' },
+                  { content: 'New reply', author: 'New Replier' }
+                ]
+              }
+            ]
+          }
+        }
+
+        expect do
+          patch "/api/v1/posts/#{post_record.id}", params: post_params, as: :json
+        end.to change(Reply, :count).by(1)
+
+        expect(response).to have_http_status(:ok)
+
+        comment.reload
+        expect(comment.content).to eq('Updated comment')
+        expect(comment.replies.count).to eq(2)
+
+        reply.reload
+        expect(reply.content).to eq('Updated reply')
+
+        new_reply = comment.replies.find_by(content: 'New reply')
+        expect(new_reply).to be_present
+        expect(new_reply.author).to eq('New Replier')
+      end
+
+      it 'destroys replies with _destroy flag' do
+        post_params = {
+          post: {
+            comments: [
+              {
+                id: comment.id,
+                replies: [
+                  { id: reply.id, _destroy: true }
+                ]
+              }
+            ]
+          }
+        }
+
+        expect do
+          patch "/api/v1/posts/#{post_record.id}", params: post_params, as: :json
+        end.to change(Reply, :count).by(-1)
+
+        expect(response).to have_http_status(:ok)
+        expect(Reply.find_by(id: reply.id)).to be_nil
+      end
+    end
+
+    describe 'Validation with deeply nested data' do
+      it 'validates required fields in nested replies' do
+        post_params = {
+          post: {
+            title: 'Post',
+            body: 'Body',
+            published: true,
+            comments: [
+              {
+                content: 'Valid comment',
+                author: 'Author',
+                replies: [
+                  { content: '', author: 'Replier' } # Invalid: content is required
+                ]
+              }
+            ]
+          }
+        }
+
+        post '/api/v1/posts', params: post_params, as: :json
+
+        expect(response).to have_http_status(:unprocessable_content)
+        json = JSON.parse(response.body)
+        expect(json['ok']).to be false
+      end
+    end
+
+    describe 'Transformation verification' do
+      it 'transforms replies to replies_attributes recursively' do
+        post_params = {
+          post: {
+            title: 'Test Deep Transformation',
+            body: 'Body',
+            published: true,
+            comments: [
+              {
+                content: 'Comment',
+                author: 'Author',
+                replies: [
+                  { content: 'Reply via transformation', author: 'Replier' }
+                ]
+              }
+            ]
+          }
+        }
+
+        expect do
+          post '/api/v1/posts', params: post_params, as: :json
+        end.to change(Reply, :count).by(1)
+
+        expect(response).to have_http_status(:created)
+
+        created_post = Post.last
+        expect(created_post.comments.first.replies.count).to eq(1)
+        expect(created_post.comments.first.replies.first.content).to eq('Reply via transformation')
+      end
+    end
+  end
 end

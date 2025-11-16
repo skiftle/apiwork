@@ -10,7 +10,8 @@ module Apiwork
     # Combines validation and transformation in a single step (Zod-like API):
     # 1. Coerces types (string → Integer, Date, etc)
     # 2. Validates data against contract's definition (input_definition or output_definition)
-    # 3. Transforms validated data (nested attributes, etc.)
+    # 3. Applies deserialization transformers (e.g., blank_to_nil for null_to_empty attributes)
+    # 4. Transforms validated data (nested attributes, etc.)
     #
     # Usage:
     #   # Input parsing (with coercion enabled to convert strings from HTTP to proper types)
@@ -29,6 +30,7 @@ module Apiwork
     #
     class Parser
       include Coercion
+      include Deserialization
       include Transformation
       include Validation
 
@@ -58,7 +60,7 @@ module Apiwork
         # Step 1: Coerce types (only for input - output already has correct types)
         coerced_data = @coerce ? coerce(data) : data
 
-        # Step 1.5: For output, reverse key transformation before validation
+        # Step 2: For output, reverse key transformation before validation
         # Output data is already serialized with output_key_format applied,
         # but validation must happen against snake_case definition keys
         data_for_validation = if @direction == :output && schema_class&.output_key_format
@@ -67,23 +69,32 @@ module Apiwork
                                 coerced_data
                               end
 
-        # Step 2: Validate data (with reversed keys for output)
+        # Step 3: Validate data (with reversed keys for output)
         validated = validate(data_for_validation)
 
-        # Step 2.5: For output, transform error paths back to serialized key format
+        # Step 3.5: For output, transform error paths back to serialized key format
         # Validation happened against snake_case keys, but errors should reference
         # the actual serialized key format (e.g., camelCase)
         if validated[:issues].any? && @direction == :output && schema_class&.output_key_format
           validated[:issues] = transform_issue_paths(validated[:issues], schema_class.output_key_format)
         end
 
-        # Step 3: Handle errors based on direction
+        # Step 4: Handle errors based on direction
         return handle_validation_errors(data, validated[:issues]) if validated[:issues].any?
 
-        # Step 4: Transform validated data
-        transformed_data = transform(validated[:params])
+        # Step 5: Apply deserialization transformers (only for input, after validation)
+        # Validates "" (which is valid), then transforms to nil for database
+        # This allows null_to_empty to reject null input while accepting empty strings
+        deserialized_data = if @direction == :input
+                              apply_deserialize_transformers(validated[:params])
+                            else
+                              validated[:params]
+                            end
 
-        # Step 5: Build result
+        # Step 6: Transform validated data (apply 'as:' renaming, etc.)
+        transformed_data = transform(deserialized_data)
+
+        # Step 7: Build result
         build_result(transformed_data, [])
       end
 

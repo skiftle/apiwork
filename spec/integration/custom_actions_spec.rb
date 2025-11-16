@@ -268,4 +268,36 @@ RSpec.describe 'Custom Actions API', type: :request do
       expect(json['posts'].length).to eq(2)
     end
   end
+
+  describe 'Custom action input validation' do
+    let!(:post_record) { Post.create!(title: 'Test Post', body: 'Body') }
+
+    context 'archive action' do
+      it 'validates boolean parameter types' do
+        patch "/api/v1/posts/#{post_record.id}/archive", params: {
+          notify_users: 'not-a-boolean'
+        }, as: :json
+
+        expect(response).to have_http_status(:bad_request)
+        json = JSON.parse(response.body)
+        expect(json['ok']).to be(false)
+
+        notify_issue = json['issues'].find { |issue| issue['pointer']&.include?('notify_users') }
+        expect(notify_issue).to be_present
+        expect(notify_issue['code']).to eq('invalid_type')
+      end
+
+      it 'rejects unknown fields' do
+        patch "/api/v1/posts/#{post_record.id}/archive", params: {
+          unknown_field: 'value'
+        }, as: :json
+
+        expect(response).to have_http_status(:bad_request)
+        json = JSON.parse(response.body)
+
+        unknown_issue = json['issues'].find { |issue| issue['code'] == 'field_unknown' }
+        expect(unknown_issue).to be_present
+      end
+    end
+  end
 end

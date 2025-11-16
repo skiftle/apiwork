@@ -79,7 +79,8 @@ module Apiwork
               param_options = {
                 type: Generator.map_type(attribute_definition.type),
                 required: attribute_definition.required?, # Auto-detected from DB schema and model validations
-                nullable: attribute_definition.nullable? # Auto-detected from DB schema or explicit config
+                nullable: attribute_definition.nullable?, # Auto-detected from DB schema or explicit config
+                attribute_definition: attribute_definition # Reference for deserialization transformers
               }
 
               # Add numeric constraints if present
@@ -125,17 +126,27 @@ module Apiwork
               # Set type based on whether we have a typed payload and whether it's a collection
               if association_payload_type
                 if association_definition.collection?
+                  # For arrays with custom types, we need to set type: array and use a block
+                  # The block will be evaluated per array element for transformation
                   param_options[:type] = :array
                   param_options[:of] = association_payload_type
+
+                  # Add param with block that references the custom type
+                  # This ensures shape is set for recursive transformation
+                  definition.param name, **param_options do
+                    # This block creates the shape definition by referencing the custom type
+                    # When definition.param processes this, it will resolve the custom type
+                    # and create a shape definition that includes nested associations
+                  end
                 else
                   param_options[:type] = association_payload_type
+                  definition.param name, **param_options
                 end
               else
                 # Fall back to generic types (either because allow_destroy or no schema)
                 param_options[:type] = association_definition.collection? ? :array : :object
+                definition.param name, **param_options
               end
-
-              definition.param name, **param_options
             end
           end
         end
