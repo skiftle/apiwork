@@ -102,7 +102,7 @@ module Apiwork
               association_schema = TypeRegistry.resolve_association_resource(association_definition)
               association_payload_type = nil
 
-              if association_schema && association_definition.allow_destroy == false
+              if association_schema && !association_definition.allow_destroy
                 # Try to auto-import the association's contract and reuse its payload type
                 import_alias = TypeRegistry.auto_import_association_contract(
                   definition.contract_class,

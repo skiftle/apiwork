@@ -312,7 +312,7 @@ module Apiwork
 
       # Check if null values are explicitly forbidden (nullable: false)
       def null_value_forbidden?(param_options)
-        param_options[:nullable] == false
+        param_options[:nullable] == false # Explicit false check needed to distinguish from nil
       end
 
       # Validate enum value

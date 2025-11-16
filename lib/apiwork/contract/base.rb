@@ -204,7 +204,7 @@ module Apiwork
           api = api_class
           return nil unless api&.metadata
 
-          find_resource_in_metadata(api.metadata, resource_name)
+          api.metadata.find_resource(resource_name)
         end
 
         def available_actions
@@ -223,12 +223,6 @@ module Apiwork
 
         def parse(data, direction, action, **options)
           Parser.new(self, direction, action, **options).perform(data)
-        end
-
-        private
-
-        def find_resource_in_metadata(metadata, resource_name)
-          metadata.find_resource(resource_name)
         end
       end
     end

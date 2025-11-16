@@ -11,11 +11,10 @@ module Apiwork
       include Recorder::Concerns     # Handles concern definitions
       include Recorder::Inference    # Handles class inference
 
-      attr_reader :metadata, :namespaces_parts
+      attr_reader :metadata
 
       def initialize(metadata, namespaces_parts)
         @metadata = metadata
-        @namespaces_parts = Array(namespaces_parts).map(&:to_sym)
         @resource_stack = []
         @pending_doc = nil
         @current_options = nil
@@ -23,9 +22,9 @@ module Apiwork
         @in_collection_block = false
       end
 
-      # Derive namespace string for class names: [:api, :v1] -> 'Api::V1'
+      # Delegate to metadata
       def namespaces_string
-        @namespaces_parts.map(&:to_s).map(&:camelize).join('::')
+        metadata.namespaces_string
       end
 
       # Add doc method for documentation blocks
