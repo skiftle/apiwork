@@ -12,8 +12,8 @@ RSpec.describe Apiwork::Generator::Options do
 
     context 'with key_transform' do
       it 'parses valid key_transform' do
-        result = described_class.build(key_transform: 'camelize_lower')
-        expect(result).to eq({ key_transform: :camelize_lower })
+        result = described_class.build(key_transform: 'camel')
+        expect(result).to eq({ key_transform: :camel })
       end
 
       it 'raises error for invalid key_transform' do
@@ -50,12 +50,12 @@ RSpec.describe Apiwork::Generator::Options do
     context 'with unknown options' do
       it 'ignores unknown options' do
         result = described_class.build(
-          key_transform: 'camelize_lower',
+          key_transform: 'camel',
           version: '3.1.0',
           unknown_option: 'value',
           another_unknown: 123
         )
-        expect(result).to eq({ key_transform: :camelize_lower, version: '3.1.0' })
+        expect(result).to eq({ key_transform: :camel, version: '3.1.0' })
       end
     end
   end

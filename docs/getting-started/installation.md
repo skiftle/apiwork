@@ -32,7 +32,7 @@ Apiwork.configure do |config|
 
   # Pagination defaults
   config.default_page_size = 20
-  config.maximum_page_size = 100
+  config.max_page_size = 100
 
   # Query defaults
   config.default_sort = { id: :asc }

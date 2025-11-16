@@ -12,13 +12,13 @@ RSpec.describe 'Configuration Integration', type: :request do
   end
 
   describe 'API-level configuration' do
-    before(:all) do
-      @config_test_api = Apiwork::API.draw '/api/config_test' do
+    let(:config_test_api) do
+      Apiwork::API.draw '/api/config_test' do
         configure do
-          output_key_format :camelize_lower
+          output_key_format :camel
           input_key_format :underscore
           default_page_size 25
-          maximum_page_size 100
+          max_page_size 100
           default_sort title: :asc
           max_array_items 500
         end
@@ -27,7 +27,11 @@ RSpec.describe 'Configuration Integration', type: :request do
       end
     end
 
-    after(:all) do
+    before do
+      config_test_api # Trigger let to create API
+    end
+
+    after do
       Apiwork::API::Registry.instance_variable_get(:@apis).delete('/api/config_test')
     end
 
@@ -39,68 +43,76 @@ RSpec.describe 'Configuration Integration', type: :request do
       end
 
       # Should use API configuration
-      expect(schema_class.output_key_format).to eq(:camelize_lower)
+      expect(schema_class.output_key_format).to eq(:camel)
       expect(schema_class.input_key_format).to eq(:underscore)
       expect(schema_class.default_page_size).to eq(25)
-      expect(schema_class.maximum_page_size).to eq(100)
+      expect(schema_class.max_page_size).to eq(100)
       expect(schema_class.default_sort).to eq(title: :asc)
     end
   end
 
   describe 'Schema-level configuration override' do
-    before(:all) do
-      @schema_override_api = Apiwork::API.draw '/api/schema_override' do
+    let(:schema_override_api) do
+      Apiwork::API.draw '/api/schema_override' do
         configure do
           default_page_size 20
-          maximum_page_size 200
+          max_page_size 200
           default_sort id: :asc
         end
 
         resources :posts
       end
+    end
 
-      @schema_with_config = Class.new(Apiwork::Schema::Base) do
+    let(:schema_with_config) do
+      Class.new(Apiwork::Schema::Base) do
         def self.name
           'Api::SchemaOverride::PostSchema'
         end
 
         configure do
           default_page_size 50
-          maximum_page_size 150
+          max_page_size 150
         end
       end
     end
 
-    after(:all) do
+    before do
+      schema_override_api # Trigger let to create API
+      schema_with_config  # Trigger let to create Schema
+    end
+
+    after do
       Apiwork::API::Registry.instance_variable_get(:@apis).delete('/api/schema_override')
     end
 
     it 'schema configuration overrides API configuration' do
       # Schema overrides should win
-      expect(@schema_with_config.default_page_size).to eq(50)
-      expect(@schema_with_config.maximum_page_size).to eq(150)
+      expect(schema_with_config.default_page_size).to eq(50)
+      expect(schema_with_config.max_page_size).to eq(150)
 
       # Non-overridden values should inherit from API
-      expect(@schema_with_config.default_sort).to eq(id: :asc)
+      expect(schema_with_config.default_sort).to eq(id: :asc)
     end
   end
 
   describe 'Configuration inheritance chain' do
-    before(:all) do
-      @inheritance_api = Apiwork::API.draw '/api/inheritance' do
+    let(:inheritance_api) do
+      Apiwork::API.draw '/api/inheritance' do
         configure do
-          output_key_format :camelize_lower
+          output_key_format :camel
           default_page_size 20
-          maximum_page_size 200
+          max_page_size 200
           default_sort id: :asc
           max_array_items 1000
         end
 
         resources :posts
       end
+    end
 
-      # Create schema first
-      @inheritance_schema = Class.new(Apiwork::Schema::Base) do
+    let(:inheritance_schema) do
+      Class.new(Apiwork::Schema::Base) do
         def self.name
           'Api::Inheritance::PostSchema'
         end
@@ -109,15 +121,16 @@ RSpec.describe 'Configuration Integration', type: :request do
           default_page_size 50
         end
       end
+    end
 
-      # Create contract referencing the schema
-      inheritance_schema = @inheritance_schema # Capture for closure
-      @inheritance_contract = Class.new(Apiwork::Contract::Base) do
+    let(:inheritance_contract) do
+      schema_class = inheritance_schema # Capture for closure
+      Class.new(Apiwork::Contract::Base) do
         def self.name
           'Api::Inheritance::PostContract'
         end
 
-        schema inheritance_schema
+        schema schema_class
 
         configure do
           max_array_items 500
@@ -132,7 +145,13 @@ RSpec.describe 'Configuration Integration', type: :request do
       end
     end
 
-    after(:all) do
+    before do
+      inheritance_api      # Trigger let to create API
+      inheritance_schema   # Trigger let to create Schema
+      inheritance_contract # Trigger let to create Contract
+    end
+
+    after do
       Apiwork::API::Registry.instance_variable_get(:@apis).delete('/api/inheritance')
     end
 
@@ -140,40 +159,42 @@ RSpec.describe 'Configuration Integration', type: :request do
       # Contract override wins
       expect(Apiwork::Configuration::Resolver.resolve(
                :max_array_items,
-               contract_class: @inheritance_contract,
-               schema_class: @inheritance_schema,
-               api_class: @inheritance_api
+               contract_class: inheritance_contract,
+               schema_class: inheritance_schema,
+               api_class: inheritance_api
              )).to eq(500)
 
       # Schema override wins over API
       expect(Apiwork::Configuration::Resolver.resolve(
                :default_page_size,
-               contract_class: @inheritance_contract,
-               schema_class: @inheritance_schema,
-               api_class: @inheritance_api
+               contract_class: inheritance_contract,
+               schema_class: inheritance_schema,
+               api_class: inheritance_api
              )).to eq(50)
 
       # API value when no overrides
       expect(Apiwork::Configuration::Resolver.resolve(
                :output_key_format,
-               contract_class: @inheritance_contract,
-               schema_class: @inheritance_schema,
-               api_class: @inheritance_api
-             )).to eq(:camelize_lower)
+               contract_class: inheritance_contract,
+               schema_class: inheritance_schema,
+               api_class: inheritance_api
+             )).to eq(:camel)
     end
   end
 
   describe 'Deep merge for hash settings' do
-    before(:all) do
-      @deep_merge_api = Apiwork::API.draw '/api/deep_merge' do
+    let(:deep_merge_api) do
+      Apiwork::API.draw '/api/deep_merge' do
         configure do
           default_sort id: :asc, created_at: :desc
         end
 
         resources :posts
       end
+    end
 
-      @deep_merge_schema = Class.new(Apiwork::Schema::Base) do
+    let(:deep_merge_schema) do
+      Class.new(Apiwork::Schema::Base) do
         def self.name
           'Api::DeepMerge::PostSchema'
         end
@@ -184,7 +205,12 @@ RSpec.describe 'Configuration Integration', type: :request do
       end
     end
 
-    after(:all) do
+    before do
+      deep_merge_api    # Trigger let to create API
+      deep_merge_schema # Trigger let to create Schema
+    end
+
+    after do
       Apiwork::API::Registry.instance_variable_get(:@apis).delete('/api/deep_merge')
     end
 
@@ -192,8 +218,8 @@ RSpec.describe 'Configuration Integration', type: :request do
       # Should merge API and Schema default_sort
       result = Apiwork::Configuration::Resolver.resolve(
         :default_sort,
-        schema_class: @deep_merge_schema,
-        api_class: @deep_merge_api
+        schema_class: deep_merge_schema,
+        api_class: deep_merge_api
       )
 
       # Schema value should win for 'title', API values should be included

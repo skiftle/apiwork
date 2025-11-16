@@ -6,7 +6,7 @@ module Api
       model Account
 
       configure do
-        output_key_format :camelize_lower
+        output_key_format :camel
       end
 
       attribute :id

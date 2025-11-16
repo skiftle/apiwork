@@ -6,11 +6,11 @@ module Apiwork
   # Automatically mounted by Routes when API classes use `spec` DSL
   #
   # Supports query parameters:
-  # - key_transform: Transform key casing (underscore, camelize_lower, etc.)
+  # - key_transform: Transform key casing (underscore, camel, keep)
   #
   # @example GET /api/v1/.spec/openapi
   # @example GET /api/v1/.spec/openapi?key_transform=underscore
-  # @example GET /api/v1/.spec/zod?key_transform=camelize_lower
+  # @example GET /api/v1/.spec/zod?key_transform=camel
   class SpecsController < ActionController::API
     # GET /.spec/:type
     #

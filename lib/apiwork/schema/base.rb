@@ -167,7 +167,7 @@ module Apiwork
         # @example
         #   configure do
         #     default_page_size 50
-        #     maximum_page_size 200
+        #     max_page_size 200
         #   end
         def configure(&block)
           return unless block
@@ -206,7 +206,7 @@ module Apiwork
           )
         end
 
-        attr_writer :type, :default_sort, :default_page_size, :maximum_page_size
+        attr_writer :type, :default_sort, :default_page_size, :max_page_size
 
         def type
           @type || model_class&.model_name&.element
@@ -228,9 +228,9 @@ module Apiwork
           )
         end
 
-        def maximum_page_size
+        def max_page_size
           Configuration::Resolver.resolve(
-            :maximum_page_size,
+            :max_page_size,
             schema_class: self,
             api_class: api_class
           )
