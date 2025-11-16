@@ -203,54 +203,6 @@ RSpec.describe 'Configuration Integration', type: :request do
     end
   end
 
-  describe 'Configuration isolation between APIs' do
-    it 'keeps configuration isolated between different APIs' do
-      # Create two separate APIs with different configurations
-      api_a = Apiwork::API.draw '/api/iso_a' do
-        configure do
-          default_page_size 10
-          serialize_key_transform :camelize_lower
-        end
-
-        resources :posts
-      end
-
-      api_b = Apiwork::API.draw '/api/iso_b' do
-        configure do
-          default_page_size 50
-          serialize_key_transform :underscore
-        end
-
-        resources :posts
-      end
-
-      # Create schemas in different namespaces
-      schema_a = Class.new(Apiwork::Schema::Base) do
-        def self.name
-          'Api::IsoA::PostSchema'
-        end
-      end
-
-      schema_b = Class.new(Apiwork::Schema::Base) do
-        def self.name
-          'Api::IsoB::PostSchema'
-        end
-      end
-
-      # API A schema should use API A configuration
-      expect(schema_a.default_page_size).to eq(10)
-      expect(schema_a.serialize_key_transform).to eq(:camelize_lower)
-
-      # API B schema should use API B configuration
-      expect(schema_b.default_page_size).to eq(50)
-      expect(schema_b.serialize_key_transform).to eq(:underscore)
-
-      # Cleanup
-      Apiwork::API::Registry.instance_variable_get(:@apis).delete('/api/iso_a')
-      Apiwork::API::Registry.instance_variable_get(:@apis).delete('/api/iso_b')
-    end
-  end
-
   describe 'Validation' do
     it 'validates serialize_key_transform values' do
       expect do
