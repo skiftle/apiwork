@@ -86,9 +86,9 @@ module Apiwork
           # Merge by adding virtual params to the existing output_definition
           # This preserves enum/type registrations that are keyed by the Definition instance
           virtual_def.params.each do |name, param_options|
-            # ok and issues parameters cannot be overridden - always use virtual definition
-            # These are required for discriminated union pattern used by type generators
-            if [:ok, :issues].include?(name)
+            # ok parameter cannot be overridden - always use virtual definition
+            # Required for discriminated union pattern used by type generators
+            if name == :ok
               output_definition.params[name] = param_options
             else
               # Virtual params are added first, custom params override them
