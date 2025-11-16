@@ -5,14 +5,6 @@ require_relative 'apiwork/version'
 
 module Apiwork
   class << self
-    def configuration
-      @configuration ||= Configuration.new
-    end
-
-    def configure
-      yield(configuration)
-    end
-
     def routes
       @routes ||= API::RackApp.new
     end

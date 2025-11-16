@@ -405,7 +405,12 @@ module Apiwork
         values = []
 
         # Check max items
-        max_items = param_options[:max_items] || Apiwork.configuration.max_array_items
+        max_items = param_options[:max_items] || Configuration::Resolver.resolve(
+          :max_array_items,
+          contract_class: @contract_class,
+          schema_class: @contract_class.schema_class,
+          api_class: @contract_class.api_class
+        )
         if array.length > max_items
           issues << Issue.new(
             code: :array_too_large,

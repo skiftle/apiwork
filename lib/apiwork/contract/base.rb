@@ -12,6 +12,7 @@ module Apiwork
           super
           subclass.instance_variable_set(:@action_definitions, {})
           subclass.instance_variable_set(:@imports, {})
+          subclass.instance_variable_set(:@configuration, {})
         end
 
         def identifier(value = nil)
@@ -63,6 +64,26 @@ module Apiwork
         def union(name, &block)
           builder = Descriptor::Builder.new(api_class: api_class, scope: self)
           builder.union(name, &block)
+        end
+
+        # Configure contract-level settings
+        #
+        # @example
+        #   configure do
+        #     max_array_items 500
+        #   end
+        def configure(&block)
+          return unless block
+
+          @configuration ||= {}
+          builder = Configuration::Builder.new(@configuration)
+          builder.instance_eval(&block)
+        end
+
+        # Access configuration hash
+        # @return [Hash] Contract configuration settings
+        def configuration
+          @configuration ||= {}
         end
 
         def import(contract_class, as:)

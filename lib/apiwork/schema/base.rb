@@ -13,6 +13,7 @@ module Apiwork
       class_attribute :_deserialize_key_transform, default: nil
       class_attribute :_root, default: nil
       class_attribute :_auto_detection_complete, default: false
+      class_attribute :_configuration, default: {}
 
       attr_reader :object, :context, :includes
 
@@ -117,12 +118,40 @@ module Apiwork
           self._root = { singular: singular_str, plural: plural_str }
         end
 
+        # Resolve API class from schema namespace
+        # Example: Api::V1::PostSchema → /api/v1
+        def api_class
+          path = api_path
+          return nil unless path
+
+          Apiwork::API.find(path)
+        end
+
+        # Derive API path from schema class namespace
+        # Example: Api::V1::PostSchema → /api/v1
+        def api_path
+          return nil unless name # Anonymous classes don't have a name
+
+          namespace_parts = name.deconstantize.split('::')
+          return nil if namespace_parts.empty?
+
+          "/#{namespace_parts.map(&:underscore).join('/')}"
+        end
+
         def serialize_key_transform
-          _serialize_key_transform || Apiwork.configuration.serialize_key_transform
+          Configuration::Resolver.resolve(
+            :serialize_key_transform,
+            schema_class: self,
+            api_class: api_class
+          )
         end
 
         def deserialize_key_transform
-          _deserialize_key_transform || Apiwork.configuration.deserialize_key_transform
+          Configuration::Resolver.resolve(
+            :deserialize_key_transform,
+            schema_class: self,
+            api_class: api_class
+          )
         end
 
         def serialize_key_transform=(value)
@@ -131,6 +160,26 @@ module Apiwork
 
         def deserialize_key_transform=(value)
           self._deserialize_key_transform = value
+        end
+
+        # Configure schema-level settings
+        #
+        # @example
+        #   configure do
+        #     default_page_size 50
+        #     maximum_page_size 200
+        #   end
+        def configure(&block)
+          return unless block
+
+          builder = Configuration::Builder.new(_configuration)
+          builder.instance_eval(&block)
+        end
+
+        # Access configuration hash
+        # @return [Hash] Schema configuration settings
+        def configuration
+          _configuration
         end
 
         def attribute(name, **options)
@@ -164,15 +213,27 @@ module Apiwork
         end
 
         def default_sort
-          @default_sort || Apiwork.configuration.default_sort
+          Configuration::Resolver.resolve(
+            :default_sort,
+            schema_class: self,
+            api_class: api_class
+          )
         end
 
         def default_page_size
-          @default_page_size || Apiwork.configuration.default_page_size
+          Configuration::Resolver.resolve(
+            :default_page_size,
+            schema_class: self,
+            api_class: api_class
+          )
         end
 
         def maximum_page_size
-          @maximum_page_size || Apiwork.configuration.maximum_page_size
+          Configuration::Resolver.resolve(
+            :maximum_page_size,
+            schema_class: self,
+            api_class: api_class
+          )
         end
 
         # Validate all attribute definitions (call explicitly in tests after database setup)

@@ -30,7 +30,7 @@ module Apiwork
       end
 
       def default_sort
-        schema.default_sort || Apiwork.configuration.default_sort
+        schema.default_sort
       end
 
       private
