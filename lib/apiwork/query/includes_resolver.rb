@@ -161,6 +161,10 @@ module Apiwork
       end
 
       def constantize_safe(class_name)
+        self.class.constantize_safe(class_name)
+      end
+
+      def self.constantize_safe(class_name)
         class_name.constantize
       rescue NameError
         nil
@@ -271,15 +275,9 @@ module Apiwork
           nested_schema = association_definition.schema_class
 
           # Handle string class names
-          nested_schema = constantize_safe(nested_schema) if nested_schema.is_a?(String)
+          nested_schema = IncludesResolver.constantize_safe(nested_schema) if nested_schema.is_a?(String)
 
           nested_schema
-        end
-
-        def constantize_safe(class_name)
-          class_name.constantize
-        rescue NameError
-          nil
         end
       end
     end

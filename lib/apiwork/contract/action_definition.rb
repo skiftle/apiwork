@@ -104,18 +104,6 @@ module Apiwork
         output_definition
       end
 
-      def validate_response(response)
-        merged_output = merged_output_definition
-
-        # Custom actions without explicit output definition skip validation
-        return response unless merged_output
-
-        # Validate complete response structure
-        validate_output_data(response, merged_output)
-
-        response
-      end
-
       def serialize_data(data, context: {}, includes: nil)
         data
       end
@@ -219,55 +207,6 @@ module Apiwork
                               "for action '#{action_name}' on contract '#{contract_class.name}': #{e.message}")
         end
         nil
-      end
-
-      # Validate output data against definition
-      # For collections (arrays), validates each item (excluding meta which is response-level)
-      # For single objects, validates the object
-      def validate_output_data(data, definition)
-        if data.is_a?(Array)
-          # For collections, validate each item but skip meta validation
-          # Meta is added at response level, not per-item
-          item_definition_params = definition.params.reject { |k, _v| k == :meta }
-
-          data.each do |item|
-            validate_single_output(item, definition, item_definition_params)
-          end
-        else
-          # For single object, validate everything including meta
-          validate_single_output(data, definition, definition.params)
-        end
-      end
-
-      # Validate a single output object against definition
-      def validate_single_output(data, definition, params_to_validate = nil)
-        return unless data.is_a?(Hash)
-
-        params_to_validate ||= definition.params
-
-        params_to_validate.each do |param_name, param_options|
-          value = data[param_name] || data[param_name.to_s]
-
-          # Check required fields
-          if param_options[:required] && value.nil?
-            raise Issue.new(
-              code: :missing_field,
-              message: "Required field '#{param_name}' is missing in output",
-              path: [],
-              meta: {}
-            )
-          end
-
-          # Validate nested objects if present
-          validate_single_output(value, param_options[:nested], param_options[:nested].params) if value && param_options[:nested] && value.is_a?(Hash)
-
-          # Validate arrays of nested objects
-          next unless value && param_options[:type] == :array && param_options[:nested] && value.is_a?(Array)
-
-          value.each do |item|
-            validate_single_output(item, param_options[:nested], param_options[:nested].params) if item.is_a?(Hash)
-          end
-        end
       end
     end
   end
