@@ -5,8 +5,6 @@ module Apiwork
     # AssociationDefinition - Model-specific association definition for ActiveRecord
     # This class provides ActiveRecord reflection, validation, and auto-detection
     class AssociationDefinition
-      include Concerns::WritableNormalization
-
       attr_reader :name, :type, :schema_class, :allow_destroy, :model_class
 
       def initialize(name, type:, schema_class:, **options)
@@ -18,7 +16,13 @@ module Apiwork
         @filterable = options.fetch(:filterable, false)
         @sortable = options.fetch(:sortable, false)
         @serializable = options.fetch(:serializable, false)
-        @writable = normalize_writable(options.fetch(:writable, false))
+        writable_value = options.fetch(:writable, false)
+        @writable = case writable_value
+                    when true then { on: %i[create update] }
+                    when false then { on: [] }
+                    when Hash then { on: Array(writable_value[:on] || %i[create update]) }
+                    else { on: [] }
+                    end
         @allow_destroy = options[:allow_destroy]
         @nullable = options[:nullable] # Explicit nullable flag, auto-detected if nil
 

@@ -34,10 +34,21 @@ module Apiwork
           serialized_attributes[association] = serialize_association(association, definition)
         end
 
-        Transform::Case.hash(serialized_attributes, self.class.output_key_format)
+        transform_keys(serialized_attributes)
       end
 
       private
+
+      def transform_keys(hash)
+        case self.class.output_key_format
+        when :camel
+          hash.deep_transform_keys { |key| key.to_s.camelize(:lower).to_sym }
+        when :underscore
+          hash.deep_transform_keys { |key| key.to_s.underscore.to_sym }
+        else
+          hash
+        end
+      end
 
       def serialize_association(name, definition)
         associated = object.public_send(name)

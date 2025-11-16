@@ -3,8 +3,6 @@
 module Apiwork
   module Schema
     class AttributeDefinition
-      include Concerns::WritableNormalization
-
       attr_reader :name, :type, :enum, :required, :null_to_empty
 
       def initialize(name, schema_class:, **options)
@@ -35,7 +33,12 @@ module Apiwork
         # Store all options
         @filterable = options[:filterable]
         @sortable = options[:sortable]
-        @writable = normalize_writable(options[:writable])
+        @writable = case options[:writable]
+                    when true then { on: %i[create update] }
+                    when false then { on: [] }
+                    when Hash then { on: Array(options[:writable][:on] || %i[create update]) }
+                    else { on: [] }
+                    end
         @serialize = options[:serialize]
         @deserialize = options[:deserialize]
         @null_to_empty = options[:null_to_empty]

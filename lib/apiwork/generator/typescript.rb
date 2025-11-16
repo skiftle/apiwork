@@ -228,7 +228,7 @@ module Apiwork
       end
 
       def pascal_case_type_name(name)
-        Transform::Case.string(name.to_s, :camelize_upper)
+        name.to_s.camelize(:upper)
       end
 
       def resolve_enum(enum_ref)

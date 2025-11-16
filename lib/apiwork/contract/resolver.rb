@@ -9,8 +9,6 @@ module Apiwork
     # 2. Explicit contract from metadata (standalone, no schema)
     # 3. Fail with clear error
     class Resolver
-      extend Concerns::SafeConstantize
-
       def self.call(controller_class:, action_name:, metadata: nil)
         # 1. Try schema first (preferred)
         if (schema_class = metadata&.dig(:schema_class))
@@ -65,6 +63,12 @@ module Apiwork
               "No schema or contract found for #{controller_class}##{action_name}. " \
               "Expected schema: #{inferred_schema_name(controller_class)} " \
               "or contract: #{inferred_contract_name(controller_class)}"
+      end
+
+      private_class_method def self.constantize_safe(class_name)
+        class_name.constantize
+      rescue NameError
+        nil
       end
     end
   end

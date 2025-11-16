@@ -3,7 +3,7 @@
 module Apiwork
   module Contract
     class Base
-      include Concerns::AbstractClass
+      include Abstractable
 
       class << self
         attr_accessor :_schema_class, :_identifier

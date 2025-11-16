@@ -718,8 +718,8 @@ module Apiwork
       end
 
       def zod_type_name(name)
-        # Use transform_key with :camelize to get PascalCase
-        Transform::Case.string(name, :camelize_upper)
+        # Convert to PascalCase for Zod schema exports
+        name.to_s.camelize(:upper)
       end
 
       def resolve_enum(enum_ref)

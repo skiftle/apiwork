@@ -149,7 +149,7 @@ RSpec.describe Apiwork::Generator::Zod do
       it 'generates TypeScript types and Zod schemas for types from introspection' do
         # Should generate TypeScript types and schemas for all registered types that appear in output
         introspect[:types].each do |type_name, type_def|
-          schema_name = Apiwork::Transform::Case.string(type_name, :camelize_upper)
+          schema_name = type_name.to_s.camelize(:upper)
 
           # Skip types that aren't in the output (e.g., base types that aren't used)
           next unless output.include?("export const #{schema_name}Schema")
@@ -196,7 +196,7 @@ RSpec.describe Apiwork::Generator::Zod do
         filter_types.each do |type_name, type_def|
           next unless detect_recursive_type(type_name, type_def)
 
-          schema_name = Apiwork::Transform::Case.string(type_name, :camelize_upper)
+          schema_name = type_name.to_s.camelize(:upper)
 
           # Should have TypeScript interface declaration (not type alias)
           expect(output).to include("export interface #{schema_name}")
@@ -214,7 +214,7 @@ RSpec.describe Apiwork::Generator::Zod do
     describe 'enum schemas' do
       it 'generates enum value and filter schemas for all registered enums' do
         introspect[:enums].each_key do |enum_name|
-          schema_name = Apiwork::Transform::Case.string(enum_name, :camelize_upper)
+          schema_name = enum_name.to_s.camelize(:upper)
           # Should have TypeScript type declarations
           expect(output).to include("export type #{schema_name} =")
           expect(output).to include("export type #{schema_name}Filter =")
@@ -248,7 +248,7 @@ RSpec.describe Apiwork::Generator::Zod do
 
       # Helper to get schema index in declaration order
       def schema_index(type_name)
-        schema_name = Apiwork::Transform::Case.string(type_name, :camelize_upper)
+        schema_name = type_name.to_s.camelize(:upper)
         schema_order.index(schema_name)
       end
 
@@ -319,7 +319,7 @@ RSpec.describe Apiwork::Generator::Zod do
         expect(recursive_types).not_to be_empty, 'Should have recursive types to test'
 
         recursive_types.each do |type_name, type_def|
-          schema_name = Apiwork::Transform::Case.string(type_name, :camelize_upper)
+          schema_name = type_name.to_s.camelize(:upper)
 
           # Verify recursive types use z.lazy()
           expect(output).to include("export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.lazy"),
