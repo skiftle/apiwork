@@ -96,7 +96,7 @@ class Api::V1::ShiftSchema < Apiwork::Schema::Base
     with_options writable: true do
       attribute :starts_at
       attribute :ends_at
-      attribute :note, null_to_empty: true
+      attribute :note, empty: true
       attribute :service_id
       attribute :site_id
     end

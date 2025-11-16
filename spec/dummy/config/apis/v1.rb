@@ -91,6 +91,6 @@ Apiwork::API.draw '/api/v1' do
   # Camelized account resource for testing enum validation with key transformation
   resources :camelized_accounts, only: [:show]
 
-  # User resource for testing null_to_empty and other attribute transformations
+  # User resource for testing empty and other attribute transformations
   resources :users
 end

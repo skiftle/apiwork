@@ -211,11 +211,11 @@ attribute :tags, deserialize: ->(value) { value.map(&:downcase) }
 Built-in transformers:
 
 ```ruby
-attribute :bio, null_to_empty: true
+attribute :bio, empty: true
 # Converts nil → '' on serialize, '' → nil on deserialize
 ```
 
-The `null_to_empty` option only works on string/text attributes.
+The `empty` option only works on string/text attributes.
 
 ## Common patterns
 

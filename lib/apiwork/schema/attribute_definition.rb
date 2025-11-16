@@ -3,7 +3,7 @@
 module Apiwork
   module Schema
     class AttributeDefinition
-      attr_reader :name, :type, :enum, :required, :null_to_empty, :min, :max
+      attr_reader :name, :type, :enum, :required, :empty, :min, :max
 
       def initialize(name, schema_class:, **options)
         @name = name
@@ -41,7 +41,7 @@ module Apiwork
                     end
         @serialize = options[:serialize]
         @deserialize = options[:deserialize]
-        @null_to_empty = options[:null_to_empty]
+        @empty = options[:empty]
         @nullable = options[:nullable] # Explicit nullable option (overrides DB detection)
         @required = options[:required] || false
         @type = options[:type]
@@ -49,9 +49,9 @@ module Apiwork
         @min = options[:min]
         @max = options[:max]
 
-        validate_null_to_empty!
+        validate_empty!
         validate_min_max_range!
-        apply_null_to_empty_transformers! if @null_to_empty
+        apply_empty_transformers! if @empty
       end
 
       # Validate that this attribute exists (lazy - called explicitly, not during class loading)
@@ -72,8 +72,8 @@ module Apiwork
       end
 
       def nullable?
-        # null_to_empty always overrides to false
-        return false if @null_to_empty
+        # empty always overrides to false
+        return false if @empty
 
         @nullable
       end
@@ -110,7 +110,7 @@ module Apiwork
           writable: false,
           serialize: nil,
           deserialize: nil,
-          null_to_empty: false,
+          empty: false,
           nullable: false,
           required: false,
           type: nil,
@@ -145,15 +145,15 @@ module Apiwork
         )
       end
 
-      def validate_null_to_empty!
-        return unless @null_to_empty
+      def validate_empty!
+        return unless @empty
         return if %i[string text].include?(@type)
 
-        detail = 'null_to_empty option can only be used on string/text attributes, ' \
+        detail = 'empty option can only be used on string/text attributes, ' \
                  "not #{@type} for '#{@name}' in #{@klass.name}"
 
         raise ConfigurationError.new(
-          code: :invalid_null_to_empty,
+          code: :invalid_empty,
           detail: detail,
           path: [@name]
         )
@@ -173,7 +173,7 @@ module Apiwork
         raise ContractError, [issue]
       end
 
-      def apply_null_to_empty_transformers!
+      def apply_empty_transformers!
         @serialize = Array(@serialize).unshift(:nil_to_empty).uniq
         @deserialize = Array(@deserialize).push(:blank_to_nil).uniq
       end

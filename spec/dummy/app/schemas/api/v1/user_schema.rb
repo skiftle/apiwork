@@ -7,7 +7,7 @@ module Api
     class UserSchema < BaseSchema
       attribute :id, filterable: true, sortable: true
       attribute :email, writable: true, filterable: true, sortable: true, nullable: true
-      attribute :name, writable: true, filterable: true, sortable: true, null_to_empty: true
+      attribute :name, writable: true, filterable: true, sortable: true, empty: true
       attribute :created_at, filterable: true, sortable: true
       attribute :updated_at, filterable: true, sortable: true
     end

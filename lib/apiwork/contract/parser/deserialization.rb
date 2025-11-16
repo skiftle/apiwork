@@ -12,7 +12,7 @@ module Apiwork
       # - Only applies to params with attribute_definition reference
       #
       # Example:
-      #   attribute :name, null_to_empty: true
+      #   attribute :name, empty: true
       #   # Adds deserialize: [:blank_to_nil] which converts "" → nil
       #
       module Deserialization
