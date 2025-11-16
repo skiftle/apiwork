@@ -280,7 +280,7 @@ module Apiwork
         when nil
           'z.never()'
         else
-          enum_or_type_reference?(type) ? schema_reference(type) : map_primitive(type)
+          enum_or_type_reference?(type) ? schema_reference(type) : map_primitive(definition)
         end
       end
 
@@ -313,7 +313,8 @@ module Apiwork
           items_schema = map_type_definition(items_type, action_name)
           "z.array(#{items_schema})"
         else
-          primitive = map_primitive(items_type)
+          # items_type is a primitive type symbol - construct minimal definition
+          primitive = map_primitive({ type: items_type })
           "z.array(#{primitive})"
         end
       end
@@ -685,8 +686,17 @@ module Apiwork
         end
       end
 
-      def map_primitive(type)
-        TYPE_MAP[type.to_sym] || 'z.string()'
+      def map_primitive(definition)
+        type = definition[:type]
+        base_type = TYPE_MAP[type.to_sym] || 'z.string()'
+
+        # Add min/max constraints for numeric types
+        if numeric_type?(type)
+          base_type += ".min(#{definition[:min]})" if definition[:min]
+          base_type += ".max(#{definition[:max]})" if definition[:max]
+        end
+
+        base_type
       end
 
       def enum_or_type_reference?(symbol)
@@ -735,6 +745,11 @@ module Apiwork
         raise ArgumentError,
               "Invalid version for zod: #{version.inspect}. " \
               "Valid versions: #{VALID_VERSIONS.join(', ')}"
+      end
+
+      # Check if a type is numeric
+      def numeric_type?(type)
+        [:integer, :float, :decimal, :number].include?(type&.to_sym)
       end
     end
   end

@@ -3,7 +3,7 @@
 module Apiwork
   module Schema
     class AttributeDefinition
-      attr_reader :name, :type, :enum, :required, :null_to_empty
+      attr_reader :name, :type, :enum, :required, :null_to_empty, :min, :max
 
       def initialize(name, schema_class:, **options)
         @name = name
@@ -46,8 +46,11 @@ module Apiwork
         @required = options[:required] || false
         @type = options[:type]
         @enum = options[:enum]
+        @min = options[:min]
+        @max = options[:max]
 
         validate_null_to_empty!
+        validate_min_max_range!
         apply_null_to_empty_transformers! if @null_to_empty
       end
 
@@ -233,6 +236,16 @@ module Apiwork
 
       def column_for(name)
         @model_class.columns_hash[name.to_s]
+      end
+
+      # Validate that min <= max if both are set
+      def validate_min_max_range!
+        return unless @min && @max
+
+        return unless @min > @max
+
+        raise ConfigurationError,
+              "Attribute #{@name}: min (#{@min}) cannot be greater than max (#{@max})"
       end
     end
   end

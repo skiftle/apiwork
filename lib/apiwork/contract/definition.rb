@@ -262,6 +262,12 @@ module Apiwork
         type_error = validate_type(name, value, param_options[:type], field_path)
         return { issues: [type_error], value_set: false } if type_error
 
+        # Validate numeric range (min/max) for numeric types
+        if numeric_type?(param_options[:type])
+          range_error = validate_numeric_range(name, value, param_options, field_path)
+          return { issues: [range_error], value_set: false } if range_error
+        end
+
         # Validate custom types (registered type references)
         custom_type_result = validate_custom_type(value, param_options[:type], field_path, max_depth, current_depth)
         return custom_type_result if custom_type_result
@@ -795,6 +801,40 @@ module Apiwork
           raise ArgumentError,
                 "Enum :#{enum} not found. Define it using `enum :#{enum}, %w[...]` in contract or definition scope."
         end
+      end
+
+      # Validate numeric range constraints (min/max)
+      # Returns Issue if value is out of range, nil otherwise
+      def validate_numeric_range(name, value, param_options, field_path)
+        return nil unless value.is_a?(Numeric)
+
+        min_value = param_options[:min]
+        max_value = param_options[:max]
+
+        if min_value && value < min_value
+          return Issue.new(
+            code: :invalid_value,
+            message: "Value must be >= #{min_value}",
+            path: field_path,
+            meta: { field: name, actual: value, minimum: min_value }
+          )
+        end
+
+        if max_value && value > max_value
+          return Issue.new(
+            code: :invalid_value,
+            message: "Value must be <= #{max_value}",
+            path: field_path,
+            meta: { field: name, actual: value, maximum: max_value }
+          )
+        end
+
+        nil
+      end
+
+      # Check if a type is numeric
+      def numeric_type?(type)
+        [:integer, :float, :decimal, :number].include?(type&.to_sym)
       end
     end
   end

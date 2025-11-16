@@ -131,6 +131,8 @@ module Apiwork
 
           # Add optional metadata (only if meaningfully set)
           result[:default] = options[:default] if options.key?(:default) && !options[:default].nil?
+          result[:min] = options[:min] if options[:min]
+          result[:max] = options[:max] if options[:max]
 
           # Handle enum - differentiate between reference (hash with :ref) and inline (array)
           if options[:enum]
