@@ -3,103 +3,183 @@
 require 'rails_helper'
 
 RSpec.describe 'Descriptors Integration', type: :request do
-  # Test API-level descriptors defined in config/apis/v1.rb
-  # These should be available to all contracts in the API
+  # Test descriptor features using ONLY public APIs
+  # The public API is: Apiwork.introspect(path)
 
   # Force reload of API configuration before tests
-  # This ensures descriptors are registered even if registries were cleared
   before(:all) do
     load Rails.root.join('config/apis/v1.rb')
   end
 
-  describe 'API-level descriptors' do
-    it 'makes global types available via public introspect API' do
-      # This is the public API that users will call
+  describe 'Public introspection API' do
+    it 'returns descriptor information for an API' do
+      result = Apiwork.introspect('/api/v1')
+
+      expect(result).to be_a(Hash)
+      expect(result).to have_key(:types)
+      expect(result).to have_key(:enums)
+      expect(result).to have_key(:resources)
+    end
+
+    it 'returns nil for non-existent API' do
+      result = Apiwork.introspect('/api/nonexistent')
+      expect(result).to be_nil
+    end
+  end
+
+  describe 'API-level descriptors (global to API)' do
+    it 'includes global types defined in descriptors block' do
       introspection = Apiwork.introspect('/api/v1')
 
-      # Global types should be present
+      # error_detail type from config/apis/v1.rb
       expect(introspection[:types]).to have_key(:error_detail)
-      expect(introspection[:types][:error_detail]).to include(
+      expect(introspection[:types][:error_detail]).to eq(
         code: { type: :string, required: false, nullable: false },
         message: { type: :string, required: false, nullable: false },
         field: { type: :string, required: false, nullable: false }
       )
 
+      # pagination_params type from config/apis/v1.rb
       expect(introspection[:types]).to have_key(:pagination_params)
-      expect(introspection[:types][:pagination_params]).to include(
+      expect(introspection[:types][:pagination_params]).to eq(
         page: { type: :integer, required: false, nullable: false },
         per_page: { type: :integer, required: false, nullable: false }
       )
     end
 
-    it 'makes global types available in introspection' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
-
-      # Global types should be present
-      expect(introspection[:types]).to have_key(:error_detail)
-      expect(introspection[:types][:error_detail]).to include(
-        code: { type: :string, required: false, nullable: false },
-        message: { type: :string, required: false, nullable: false },
-        field: { type: :string, required: false, nullable: false }
-      )
-
-      expect(introspection[:types]).to have_key(:pagination_params)
-      expect(introspection[:types][:pagination_params]).to include(
-        page: { type: :integer, required: false, nullable: false },
-        per_page: { type: :integer, required: false, nullable: false }
-      )
-    end
-
-    it 'makes global enums available via public introspect API' do
-      # This is the public API that users will call
+    it 'includes global enums defined in descriptors block' do
       introspection = Apiwork.introspect('/api/v1')
 
+      # sort_direction enum from config/apis/v1.rb
       expect(introspection[:enums]).to have_key(:sort_direction)
       expect(introspection[:enums][:sort_direction]).to match_array(%w[asc desc])
 
+      # post_status enum from config/apis/v1.rb
       expect(introspection[:enums]).to have_key(:post_status)
       expect(introspection[:enums][:post_status]).to match_array(%i[draft published archived])
     end
 
-    it 'makes global enums available in introspection' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+    it 'auto-generates filter types for global enums' do
+      introspection = Apiwork.introspect('/api/v1')
 
-      expect(introspection[:enums]).to have_key(:sort_direction)
-      expect(introspection[:enums][:sort_direction]).to match_array(%w[asc desc])
-
-      expect(introspection[:enums]).to have_key(:post_status)
-      expect(introspection[:enums][:post_status]).to match_array(%i[draft published archived])
-    end
-
-    it 'auto-generates enum filter types for global enums' do
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
-
-      # Filter types should be auto-generated
+      # Auto-generated filter for sort_direction
       expect(introspection[:types]).to have_key(:sort_direction_filter)
-      expect(introspection[:types]).to have_key(:post_status_filter)
+      filter_type = introspection[:types][:sort_direction_filter]
+      expect(filter_type[:type]).to eq(:union)
+      expect(filter_type[:variants]).to be_an(Array)
+      expect(filter_type[:variants].size).to eq(2)
 
-      # Verify it's a union type
-      expect(introspection[:types][:sort_direction_filter][:type]).to eq(:union)
-      expect(introspection[:types][:sort_direction_filter][:variants]).to be_an(Array)
-      expect(introspection[:types][:sort_direction_filter][:variants].size).to eq(2)
+      # Auto-generated filter for post_status
+      expect(introspection[:types]).to have_key(:post_status_filter)
+    end
+  end
+
+  describe 'Schema-based types and enums' do
+    it 'includes enums from ActiveRecord models via schemas' do
+      introspection = Apiwork.introspect('/api/v1')
+
+      # Account model has status enum
+      expect(introspection[:enums]).to have_key(:account_status)
+      expect(introspection[:enums][:account_status]).to match_array(%w[active inactive archived])
+
+      # Account model has first_day_of_week enum
+      expect(introspection[:enums]).to have_key(:account_first_day_of_week)
+      expect(introspection[:enums][:account_first_day_of_week]).to match_array(
+        %w[monday tuesday wednesday thursday friday saturday sunday]
+      )
+    end
+
+    it 'auto-generates filter types for schema enums' do
+      introspection = Apiwork.introspect('/api/v1')
+
+      # Filter for account_status
+      expect(introspection[:types]).to have_key(:account_status_filter)
+      filter = introspection[:types][:account_status_filter]
+      expect(filter[:type]).to eq(:union)
+      expect(filter[:variants].size).to eq(2)
+    end
+
+    it 'includes schema attribute types in resource actions' do
+      introspection = Apiwork.introspect('/api/v1')
+
+      # Verify accounts resource exists
+      expect(introspection[:resources]).to have_key(:accounts)
+      accounts = introspection[:resources][:accounts]
+
+      # Should have actions
+      expect(accounts[:actions]).to have_key(:show)
+    end
+  end
+
+  describe 'API isolation' do
+    before(:all) do
+      # Create a second API for isolation testing
+      @second_api = Apiwork::API.draw '/api/v2' do
+        descriptors do
+          type :v2_specific_type do
+            param :v2_field, type: :string
+          end
+
+          enum :v2_status, %i[pending approved rejected]
+        end
+      end
+    end
+
+    after(:all) do
+      # Clean up
+      Apiwork::API::Registry.instance_variable_get(:@apis).delete('/api/v2')
+    end
+
+    it 'keeps descriptors isolated between APIs' do
+      v1_introspection = Apiwork.introspect('/api/v1')
+      v2_introspection = Apiwork.introspect('/api/v2')
+
+      # V1 should NOT have V2 descriptors
+      expect(v1_introspection[:types]).not_to have_key(:v2_specific_type)
+      expect(v1_introspection[:enums]).not_to have_key(:v2_status)
+
+      # V2 should NOT have V1 descriptors
+      expect(v2_introspection[:types]).not_to have_key(:error_detail)
+      expect(v2_introspection[:types]).not_to have_key(:pagination_params)
+      expect(v2_introspection[:enums]).not_to have_key(:sort_direction)
+      expect(v2_introspection[:enums]).not_to have_key(:post_status)
+
+      # V2 should HAVE its own descriptors
+      expect(v2_introspection[:types]).to have_key(:v2_specific_type)
+      expect(v2_introspection[:enums]).to have_key(:v2_status)
+      expect(v2_introspection[:enums][:v2_status]).to match_array(%i[pending approved rejected])
+    end
+
+    it 'includes schema types only in the API they belong to' do
+      v1_introspection = Apiwork.introspect('/api/v1')
+      v2_introspection = Apiwork.introspect('/api/v2')
+
+      # V1 has account schema enums
+      expect(v1_introspection[:enums]).to have_key(:account_status)
+
+      # V2 does NOT have account schema enums (no resources defined)
+      expect(v2_introspection[:enums]).not_to have_key(:account_status)
     end
   end
 
   describe 'Contract-scoped descriptors' do
-    let(:contract_class) do
-      Class.new(Apiwork::Contract::Base) do
-        identifier :descriptor_test
+    before(:all) do
+      # Create an API with contract-scoped descriptors
+      @contract_api = Apiwork::API.draw '/api/contracts' do
+        # No resources, just contracts for testing
+      end
+
+      # Create a contract with scoped descriptors
+      @test_contract = Class.new(Apiwork::Contract::Base) do
+        identifier :test_contract
 
         class << self
           def name
-            'DescriptorTestContract'
+            'TestContract'
           end
 
           def api_class
-            Apiwork::API.find('/api/v1')
+            Apiwork::API.find('/api/contracts')
           end
 
           def resource_class
@@ -107,14 +187,14 @@ RSpec.describe 'Descriptors Integration', type: :request do
           end
         end
 
-        # Contract-scoped custom type
+        # Contract-scoped type
         type :metadata do
           param :author, type: :string
-          param :tags, type: :array, of: :string
+          param :version, type: :integer
         end
 
         # Contract-scoped enum
-        enum :priority, %i[low medium high]
+        enum :priority, %i[low medium high critical]
 
         # Contract-scoped union
         union :filter_value do
@@ -125,7 +205,7 @@ RSpec.describe 'Descriptors Integration', type: :request do
           end
         end
 
-        action :create do
+        action :process do
           input do
             param :metadata, type: :metadata
             param :priority, type: :priority
@@ -135,311 +215,102 @@ RSpec.describe 'Descriptors Integration', type: :request do
       end
     end
 
-    it 'registers contract-scoped types with proper qualification' do
-      contract_class # Trigger class definition
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+    after(:all) do
+      Apiwork::API::Registry.instance_variable_get(:@apis).delete('/api/contracts')
+    end
 
-      # Contract-scoped types should be prefixed with contract identifier
-      expect(introspection[:types]).to have_key(:descriptor_test_metadata)
-      expect(introspection[:types][:descriptor_test_metadata]).to include(
+    it 'includes contract-scoped types with proper qualification' do
+      introspection = Apiwork.introspect('/api/contracts')
+
+      # Should be qualified with contract identifier
+      expect(introspection[:types]).to have_key(:test_contract_metadata)
+      expect(introspection[:types][:test_contract_metadata]).to eq(
         author: { type: :string, required: false, nullable: false },
-        tags: { type: :array, of: :string, required: false, nullable: false }
+        version: { type: :integer, required: false, nullable: false }
       )
     end
 
-    it 'registers contract-scoped enums with proper qualification' do
-      contract_class # Trigger class definition
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+    it 'includes contract-scoped enums with proper qualification' do
+      introspection = Apiwork.introspect('/api/contracts')
 
-      expect(introspection[:enums]).to have_key(:descriptor_test_priority)
-      expect(introspection[:enums][:descriptor_test_priority]).to match_array(%i[low medium high])
+      expect(introspection[:enums]).to have_key(:test_contract_priority)
+      expect(introspection[:enums][:test_contract_priority]).to match_array(%i[low medium high critical])
     end
 
-    it 'registers contract-scoped unions with proper qualification' do
-      contract_class # Trigger class definition
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
+    it 'includes contract-scoped unions with proper qualification' do
+      introspection = Apiwork.introspect('/api/contracts')
 
-      expect(introspection[:types]).to have_key(:descriptor_test_filter_value)
-      expect(introspection[:types][:descriptor_test_filter_value][:type]).to eq(:union)
-      expect(introspection[:types][:descriptor_test_filter_value][:variants].size).to eq(2)
+      expect(introspection[:types]).to have_key(:test_contract_filter_value)
+      filter = introspection[:types][:test_contract_filter_value]
+      expect(filter[:type]).to eq(:union)
+      expect(filter[:variants].size).to eq(2)
     end
 
-    it 'validates input against contract-scoped types' do
-      action_definition = contract_class.action_definition(:create)
+    it 'auto-generates filter types for contract-scoped enums' do
+      introspection = Apiwork.introspect('/api/contracts')
 
-      # Valid input matching the custom type
-      valid_input = {
-        metadata: {
-          author: 'John Doe',
-          tags: %w[ruby rails]
-        },
-        priority: 'high',
-        filter: 'simple string'
-      }
-
-      result = action_definition.input_definition.validate(valid_input)
-      expect(result[:issues]).to be_empty
-    end
-
-    it 'validates input against contract-scoped enums' do
-      action_definition = contract_class.action_definition(:create)
-
-      # Valid enum value
-      valid_input = {
-        metadata: { author: 'Test' },
-        priority: 'low', # Valid priority value
-        filter: 'test'
-      }
-
-      result = action_definition.input_definition.validate(valid_input)
-      expect(result[:issues]).to be_empty
-      expect(result[:params][:priority]).to eq('low')
-    end
-
-    it 'validates input against contract-scoped union types' do
-      action_definition = contract_class.action_definition(:create)
-
-      # Valid union variant 1: string
-      input_string = {
-        metadata: { author: 'Test' },
-        priority: 'low',
-        filter: 'string value'
-      }
-
-      result = action_definition.input_definition.validate(input_string)
-      expect(result[:issues]).to be_empty
-      expect(result[:params][:filter]).to eq('string value')
-
-      # Valid union variant 2: object
-      input_object = {
-        metadata: { author: 'Test' },
-        priority: 'low',
-        filter: {
-          operator: 'equals',
-          value: 'test'
-        }
-      }
-
-      result = action_definition.input_definition.validate(input_object)
-      expect(result[:issues]).to be_empty
-      expect(result[:params][:filter]).to be_a(Hash)
-      expect(result[:params][:filter][:operator]).to eq('equals')
+      # Should have auto-generated filter
+      expect(introspection[:types]).to have_key(:test_contract_priority_filter)
+      filter = introspection[:types][:test_contract_priority_filter]
+      expect(filter[:type]).to eq(:union)
+      expect(filter[:variants].size).to eq(2)
     end
   end
 
-  describe 'Mixed global and contract-scoped descriptors' do
-    let(:contract_class) do
-      Class.new(Apiwork::Contract::Base) do
-        identifier :mixed
+  describe 'Mixed descriptor sources' do
+    it 'combines global, schema, and contract-scoped descriptors in one API' do
+      introspection = Apiwork.introspect('/api/v1')
 
-        class << self
-          def name
-            'MixedContract'
-          end
+      # Should have ALL three types
+      # 1. Global from descriptors block
+      expect(introspection[:types]).to have_key(:error_detail)
+      expect(introspection[:enums]).to have_key(:sort_direction)
 
-          def api_class
-            Apiwork::API.find('/api/v1')
-          end
+      # 2. Schema-based enums
+      expect(introspection[:enums]).to have_key(:account_status)
 
-          def resource_class
-            nil
-          end
-        end
-
-        # Use global enum from API-level descriptors
-        # Use contract-scoped type
-        type :search_options do
-          param :direction, type: :sort_direction # Global enum
-          param :limit, type: :integer
-        end
-
-        action :search do
-          input do
-            param :options, type: :search_options
-          end
-        end
-      end
+      # 3. Auto-generated filters for both global and schema enums
+      expect(introspection[:types]).to have_key(:sort_direction_filter)
+      expect(introspection[:types]).to have_key(:account_status_filter)
     end
 
-    it 'allows using global enums in contract-scoped types' do
-      action_definition = contract_class.action_definition(:search)
+    it 'properly qualifies types from different scopes' do
+      introspection = Apiwork.introspect('/api/v1')
 
-      valid_input = {
-        options: {
-          direction: 'asc', # Using global sort_direction enum
-          limit: 10
-        }
-      }
+      # Global types are unqualified
+      expect(introspection[:types][:error_detail]).to be_present
 
-      result = action_definition.input_definition.validate(valid_input)
-      expect(result[:issues]).to be_empty
-    end
-
-    it 'uses global enum in nested type' do
-      action_definition = contract_class.action_definition(:search)
-
-      # Test with 'desc' direction
-      input_desc = {
-        options: {
-          direction: 'desc', # Valid global enum value
-          limit: 20
-        }
-      }
-
-      result = action_definition.input_definition.validate(input_desc)
-      expect(result[:issues]).to be_empty
-      expect(result[:params][:options][:direction]).to eq('desc')
+      # Schema enums use schema/model name prefix
+      expect(introspection[:enums][:account_status]).to be_present
+      expect(introspection[:enums][:account_first_day_of_week]).to be_present
     end
   end
 
-  describe 'Enum filter auto-generation' do
-    let(:contract_class) do
-      Class.new(Apiwork::Contract::Base) do
-        identifier :filter_test
+  describe 'Complete introspection structure' do
+    it 'returns complete API introspection with all descriptor types' do
+      introspection = Apiwork.introspect('/api/v1')
 
-        class << self
-          def name
-            'FilterTestContract'
-          end
+      # Top-level structure
+      expect(introspection).to have_key(:path)
+      expect(introspection).to have_key(:metadata)
+      expect(introspection).to have_key(:types)
+      expect(introspection).to have_key(:enums)
+      expect(introspection).to have_key(:resources)
 
-          def api_class
-            Apiwork::API.find('/api/v1')
-          end
+      # Path is correct
+      expect(introspection[:path]).to eq('/api/v1')
 
-          def resource_class
-            nil
-          end
-        end
+      # Metadata includes doc info
+      expect(introspection[:metadata][:title]).to eq('Test API')
 
-        enum :status, %i[active inactive pending]
+      # Types hash is not empty (has global + schema + filters)
+      expect(introspection[:types]).not_to be_empty
 
-        action :index do
-          input do
-            param :status_filter, type: :filter_test_status_filter
-          end
-        end
-      end
-    end
+      # Enums hash is not empty (has global + schema)
+      expect(introspection[:enums]).not_to be_empty
 
-    it 'auto-generates filter type for contract-scoped enum' do
-      contract_class # Trigger class definition
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
-
-      # Auto-generated filter should exist
-      expect(introspection[:types]).to have_key(:filter_test_status_filter)
-      filter_type = introspection[:types][:filter_test_status_filter]
-
-      expect(filter_type[:type]).to eq(:union)
-      expect(filter_type[:variants].size).to eq(2)
-    end
-
-    it 'validates enum value variant in filter' do
-      action_definition = contract_class.action_definition(:index)
-
-      # Direct enum value
-      result = action_definition.input_definition.validate({ status_filter: 'active' })
-      expect(result[:issues]).to be_empty
-    end
-
-    it 'validates object variant in filter' do
-      action_definition = contract_class.action_definition(:index)
-
-      # Object with eq field
-      result = action_definition.input_definition.validate({
-                                                             status_filter: { eq: 'active' }
-                                                           })
-      expect(result[:issues]).to be_empty
-
-      # Object with in field (array)
-      result = action_definition.input_definition.validate({
-                                                             status_filter: { in: %w[active pending] }
-                                                           })
-      expect(result[:issues]).to be_empty
-    end
-  end
-
-  describe 'Type resolution across contracts' do
-    let(:shared_contract_class) do
-      Class.new(Apiwork::Contract::Base) do
-        identifier :shared_type
-
-        class << self
-          def name
-            'SharedTypeContract'
-          end
-
-          def api_class
-            Apiwork::API.find('/api/v1')
-          end
-
-          def resource_class
-            nil
-          end
-        end
-
-        type :address do
-          param :street, type: :string
-          param :city, type: :string
-        end
-
-        action :create do
-          input do
-            param :address, type: :address
-          end
-        end
-      end
-    end
-
-    let(:using_contract_class) do
-      Class.new(Apiwork::Contract::Base) do
-        identifier :using_shared_type
-
-        class << self
-          def name
-            'UsingSharedTypeContract'
-          end
-
-          def api_class
-            Apiwork::API.find('/api/v1')
-          end
-
-          def resource_class
-            nil
-          end
-        end
-
-        action :update do
-          input do
-            # Try to use the address type from SharedTypeContract
-            # This should NOT work - types are scoped to their contract
-            # It would need to reference :shared_type_address (qualified name)
-            param :location, type: :address
-          end
-        end
-      end
-    end
-
-    it 'scopes types to their defining contract' do
-      # SharedTypeContract should have access to :address
-      action_def1 = shared_contract_class.action_definition(:create)
-      result = action_def1.input_definition.validate({ address: { street: 'Main St', city: 'NYC' } })
-      expect(result[:issues]).to be_empty
-      expect(result[:params][:address][:street]).to eq('Main St')
-
-      # Verify the type is registered with proper scoping
-      api = Apiwork::API.find('/api/v1')
-      introspection = api.introspect
-
-      # Should have shared_type_address (qualified), not just address
-      expect(introspection[:types]).to have_key(:shared_type_address)
-      expect(introspection[:types][:shared_type_address]).to include(
-        street: { type: :string, required: false, nullable: false },
-        city: { type: :string, required: false, nullable: false }
-      )
+      # Resources hash is not empty
+      expect(introspection[:resources]).not_to be_empty
     end
   end
 end
