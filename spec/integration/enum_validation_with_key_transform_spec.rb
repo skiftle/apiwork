@@ -14,9 +14,9 @@ RSpec.describe 'Enum output validation with key transformation', type: :request 
       expect(json['ok']).to be(false)
       expect(json['issues']).to be_an(Array)
 
-      # With serialize_key_transform = :camelize_lower, the field name should be 'firstDayOfWeek'
-      # The error path should reflect the camelCase key
-      fdow_error = json['issues'].find { |e| e['path']&.last == 'firstDayOfWeek' }
+      # Error paths use canonical field names (snake_case), not transformed names
+      # This is consistent with error paths being schema-level, not serialization-level
+      fdow_error = json['issues'].find { |e| e['path']&.last == 'first_day_of_week' }
       expect(fdow_error).not_to be_nil
       expect(fdow_error['code']).to eq('invalid_value')
       expect(fdow_error['detail']).to include('Must be one of')

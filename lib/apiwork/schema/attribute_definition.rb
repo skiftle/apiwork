@@ -85,6 +85,9 @@ module Apiwork
       end
 
       def serialize(value)
+        # Validate enum values before serialization
+        validate_enum(value) if enum && !value.nil?
+
         apply_transformers(value, @serialize)
       end
 
@@ -148,6 +151,20 @@ module Apiwork
           detail: detail,
           path: [@name]
         )
+      end
+
+      def validate_enum(value)
+        enum_values = enum.is_a?(Hash) ? enum.values : enum
+        value_str = value.to_s
+
+        return if enum_values.map(&:to_s).include?(value_str)
+
+        issue = Issue.new(
+          code: :invalid_value,
+          message: "Must be one of #{enum_values.join(', ')}",
+          path: [name]
+        )
+        raise ContractError, [issue]
       end
 
       def apply_null_to_empty_transformers!
