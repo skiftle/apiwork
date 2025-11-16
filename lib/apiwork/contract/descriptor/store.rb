@@ -7,26 +7,35 @@ module Apiwork
         class << self
           def register(name, payload, scope: nil, metadata: {}, api_class: nil)
             if scope
-              # Scoped registration (contract-level, gets prefix)
-              storage = api_class ? api_local_storage(api_class) : local_storage
-              storage[scope] ||= {}
-              storage[scope][name] = {
-                short_name: name,
-                qualified_name: qualified_name(scope, name),
-                payload: payload
-              }.merge(metadata)
+              register_scoped(name, payload, scope, metadata, api_class)
             else
-              # Shared registration (no prefix)
-              storage = api_class ? api_storage(api_class) : global_storage
-
-              if storage.key?(name)
-                scope_desc = api_class ? "for API #{api_class}" : 'shared'
-                raise ArgumentError, "#{storage_name.to_s.singularize.capitalize} :#{name} already registered #{scope_desc}"
-              end
-
-              storage[name] = payload
+              register_shared(name, payload, api_class)
             end
           end
+
+          private
+
+          def register_scoped(name, payload, scope, metadata, api_class)
+            # Scoped registration (contract-level, gets prefix)
+            storage = api_class ? api_local_storage(api_class) : local_storage
+            storage[scope] ||= {}
+            storage[scope][name] = {
+              short_name: name,
+              qualified_name: qualified_name(scope, name),
+              payload: payload
+            }.merge(metadata)
+          end
+
+          def register_shared(name, payload, api_class)
+            # Shared registration (no prefix)
+            storage = api_class ? api_storage(api_class) : global_storage
+
+            # Allow idempotent re-registration for Rails reloading
+            # Simply overwrite - if code reloads with different definition, that's intentional
+            storage[name] = payload
+          end
+
+          public
 
           # Unified resolve implementation for both types and enums
           # Subclasses specify what key to extract from metadata (:definition or :values)
@@ -180,7 +189,7 @@ module Apiwork
             all_api_storages = instance_variable_get("@api_#{storage_name}") ||
                                instance_variable_set("@api_#{storage_name}", {})
             # Use API path as key instead of API instance to survive code reloading
-            api_key = api_class.respond_to?(:path) ? api_class.path : api_class
+            api_key = api_class.respond_to?(:mount_path) ? api_class.mount_path : api_class
             all_api_storages[api_key] ||= {}
           end
 
@@ -188,7 +197,7 @@ module Apiwork
             all_api_local_storages = instance_variable_get("@api_local_#{storage_name}") ||
                                      instance_variable_set("@api_local_#{storage_name}", {})
             # Use API path as key instead of API instance to survive code reloading
-            api_key = api_class.respond_to?(:path) ? api_class.path : api_class
+            api_key = api_class.respond_to?(:mount_path) ? api_class.mount_path : api_class
             all_api_local_storages[api_key] ||= {}
           end
         end
