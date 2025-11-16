@@ -51,7 +51,12 @@
       "Bash(cat:*)",
       "Bash(git -C /Users/joakim/GitHub/apiwork log --oneline --all -20)",
       "Bash(xargs:*)",
-      "Bash(/tmp/backup_null_to_empty.rb:*)"
+      "Bash(/tmp/backup_null_to_empty.rb:*)",
+      "Bash(RAILS_ENV=test BUNDLE_GEMFILE=../../Gemfile bundle exec rails:*)",
+      "Bash(RAILS_ENV=test bundle exec bin/rails db:migrate:*)",
+      "Bash(RAILS_ENV=test BUNDLE_GEMFILE=spec/dummy/Gemfile bundle exec rails db:migrate:*)",
+      "Bash(RAILS_ENV=test bundle exec bin/rails:*)",
+      "Bash(RAILS_ENV=test bundle exec ruby:*)"
     ],
     "deny": [],
     "ask": []
