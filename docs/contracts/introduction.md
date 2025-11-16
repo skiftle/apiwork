@@ -117,7 +117,7 @@ Apiwork generates complete contracts for **all 5 CRUD actions** (index, show, cr
 **Query params are generated from schema flags:**
 - `filterable: true` → Generates filter params with type-specific operators
 - `sortable: true` → Generates sort params with asc/desc options
-- `serializable: true` → Generates include params for eager loading
+- `include: :always` → Generates include params for eager loading
 - Pagination params always included for index routes
 
 **You write zero contract code.** Apiwork creates it all from your schema + database.

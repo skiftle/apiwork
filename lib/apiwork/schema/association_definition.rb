@@ -15,7 +15,7 @@ module Apiwork
         @schema_class = options[:schema]
         @filterable = options.fetch(:filterable, false)
         @sortable = options.fetch(:sortable, false)
-        @serializable = options.fetch(:serializable, false)
+        @include = options.fetch(:include, :optional)
         writable_value = options.fetch(:writable, false)
         @writable = case writable_value
                     when true then { on: %i[create update] }
@@ -25,6 +25,9 @@ module Apiwork
                     end
         @allow_destroy = options[:allow_destroy]
         @nullable = options[:nullable] # Explicit nullable flag, auto-detected if nil
+
+        # Validate include option
+        validate_include_option!
 
         # Validate against ActiveRecord
         validate_association_exists!
@@ -39,8 +42,12 @@ module Apiwork
         @sortable
       end
 
-      def serializable?
-        @serializable
+      def always_included?
+        @include == :always
+      end
+
+      def optional_included?
+        @include == :optional
       end
 
       def writable?
@@ -91,15 +98,57 @@ module Apiwork
         reflection&.foreign_key || "#{@name}_id"
       end
 
+      def validate_include_option!
+        valid_options = %i[always optional]
+        return if valid_options.include?(@include)
+
+        detail = "Invalid include option ':#{@include}' for association '#{@name}'. " \
+                 'Must be :always or :optional'
+        error = ConfigurationError.new(
+          code: :invalid_include_option,
+          detail: detail,
+          path: [@name]
+        )
+
+        raise error
+      end
+
       def validate_association_exists!
         return if @klass.abstract_class || @model_class.nil? || @schema_class
 
         reflection = @model_class.reflect_on_association(@name)
-        return if reflection
+        unless reflection
+          detail = "Undefined resource association '#{@name}' in #{@klass.name}: no association on model"
+          error = ConfigurationError.new(
+            code: :invalid_association,
+            detail: detail,
+            path: [@name]
+          )
 
-        detail = "Undefined resource association '#{@name}' in #{@klass.name}: no association on model"
+          raise error
+        end
+
+        # Validate that polymorphic and through associations cannot be :always
+        return unless @include == :always
+
+        if reflection.polymorphic?
+          detail = "Polymorphic association '#{@name}' cannot use include: :always. " \
+                   'Use include: :optional instead'
+          error = ConfigurationError.new(
+            code: :invalid_always_include,
+            detail: detail,
+            path: [@name]
+          )
+
+          raise error
+        end
+
+        return unless reflection.through_reflection
+
+        detail = "Through association '#{@name}' cannot use include: :always. " \
+                 'Use include: :optional instead'
         error = ConfigurationError.new(
-          code: :invalid_association,
+          code: :invalid_always_include,
           detail: detail,
           path: [@name]
         )

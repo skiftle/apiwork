@@ -6,7 +6,7 @@ Schemas can include related resources. Just like your ActiveRecord associations.
 
 By default, associations are **not** serialized in responses. You must either:
 
-1. Mark them `serializable: true` to include them automatically
+1. Mark them `include: :always` to include them automatically
 2. Request them explicitly with `include` param
 
 ```ruby
@@ -20,7 +20,7 @@ class PostSchema < Apiwork::Schema::Base
   belongs_to :author, schema: Api::V1::UserSchema
 
   # Included by default
-  has_many :comments, schema: Api::V1::CommentSchema, serializable: true
+  has_many :comments, schema: Api::V1::CommentSchema, include: :always
 end
 ```
 
@@ -34,7 +34,7 @@ Default response (without `include`):
     "comments": [
       { "id": 10, "body": "Great post!" }
     ]
-    // No "author" - not serializable by default
+    // No "author" - include: :optional by default
   }
 }
 ```
@@ -76,11 +76,11 @@ class PostSchema < Apiwork::Schema::Base
   belongs_to :author, schema: Api::V1::UserSchema
 
   # OR make it always included
-  belongs_to :author, schema: Api::V1::UserSchema, serializable: true
+  belongs_to :author, schema: Api::V1::UserSchema, include: :always
 end
 ```
 
-With `serializable: true`, author always appears:
+With `include: :always`, author always appears:
 
 ```json
 {
@@ -96,7 +96,7 @@ With `serializable: true`, author always appears:
 }
 ```
 
-Without `serializable: true`, use include param:
+Without `include: :always`, use include param:
 
 ```
 GET /api/v1/posts/1?include[author]=true
@@ -110,13 +110,13 @@ GET /api/v1/posts/1?include[author]=true
 belongs_to :author, schema: Api::V1::UserSchema
 ```
 
-**serializable** - Include by default (without include param):
+**include** - Control association inclusion in responses:
 
 ```ruby
-belongs_to :author, schema: Api::V1::UserSchema, serializable: true
+belongs_to :author, schema: Api::V1::UserSchema, include: :always
 ```
 
-Default: `false`. Clients must request with `include[author]=true`.
+Default: `:optional`. Clients must request with `include[author]=true`.
 
 **filterable** - Allow filtering by association:
 
@@ -192,11 +192,11 @@ class PostSchema < Apiwork::Schema::Base
   has_many :comments, schema: Api::V1::CommentSchema
 
   # OR make it always included
-  has_many :comments, schema: Api::V1::CommentSchema, serializable: true
+  has_many :comments, schema: Api::V1::CommentSchema, include: :always
 end
 ```
 
-With `serializable: true`, comments array always appears:
+With `include: :always`, comments array always appears:
 
 ```json
 {
@@ -211,7 +211,7 @@ With `serializable: true`, comments array always appears:
 }
 ```
 
-Without `serializable: true`, use include param:
+Without `include: :always`, use include param:
 
 ```
 GET /api/v1/posts/1?include[comments]=true
@@ -225,13 +225,13 @@ GET /api/v1/posts/1?include[comments]=true
 has_many :comments, schema: Api::V1::CommentSchema
 ```
 
-**serializable** - Include by default:
+**include** - Control association inclusion in responses:
 
 ```ruby
-has_many :comments, schema: Api::V1::CommentSchema, serializable: true
+has_many :comments, schema: Api::V1::CommentSchema, include: :always
 ```
 
-Default: `false`. Clients must request with `include[comments]=true`.
+Default: `:optional`. Clients must request with `include[comments]=true`.
 
 **filterable** - Filter by associated records:
 
@@ -328,11 +328,11 @@ class UserSchema < Apiwork::Schema::Base
   has_one :profile, schema: Api::V1::ProfileSchema
 
   # OR make it always included
-  has_one :profile, schema: Api::V1::ProfileSchema, serializable: true
+  has_one :profile, schema: Api::V1::ProfileSchema, include: :always
 end
 ```
 
-With `serializable: true`:
+With `include: :always`:
 
 ```json
 {
@@ -358,7 +358,7 @@ GET /api/v1/users/1?include[profile]=true
 
 Same as `has_many`:
 - `schema` (required)
-- `serializable` (default: false)
+- `include` (default: false)
 - `filterable`
 - `sortable`
 - `writable`
@@ -383,10 +383,10 @@ This only works for associations declared in the schema. You can't include arbit
 
 ## Eager loading
 
-Apiwork automatically eager loads associations when they're included (either via `serializable: true` or `include` param):
+Apiwork automatically eager loads associations when they're included (either via `include: :always` or `include` param):
 
 ```ruby
-has_many :comments, schema: Api::V1::CommentSchema, serializable: true
+has_many :comments, schema: Api::V1::CommentSchema, include: :always
 ```
 
 When serializing posts, Apiwork runs:
@@ -398,11 +398,11 @@ For nested associations:
 
 ```ruby
 class PostSchema < Apiwork::Schema::Base
-  has_many :comments, schema: Api::V1::CommentSchema, serializable: true
+  has_many :comments, schema: Api::V1::CommentSchema, include: :always
 end
 
 class CommentSchema < Apiwork::Schema::Base
-  belongs_to :author, schema: Api::V1::UserSchema, serializable: true
+  belongs_to :author, schema: Api::V1::UserSchema, include: :always
 end
 ```
 
@@ -442,14 +442,14 @@ GET /api/v1/posts?filter[comments][approved]=true
 
 Apiwork generates the SQL joins automatically.
 
-Note: `filterable` is independent of `serializable`. You can filter by associations that aren't included in the response.
+Note: `filterable` is independent of `include`. You can filter by associations that aren't included in the response.
 
 ## Association serialization
 
 You can customize how associations are serialized by defining a method:
 
 ```ruby
-has_many :comments, schema: Api::V1::CommentSchema, serializable: true
+has_many :comments, schema: Api::V1::CommentSchema, include: :always
 
 def comments
   # Custom logic - return last 5 comments, newest first
@@ -460,7 +460,7 @@ end
 Or computed associations:
 
 ```ruby
-has_many :recent_comments, schema: Api::V1::CommentSchema, serializable: true
+has_many :recent_comments, schema: Api::V1::CommentSchema, include: :always
 
 def recent_comments
   object.comments.where('created_at > ?', 7.days.ago)
@@ -469,14 +469,14 @@ end
 
 ## Zod schemas and optional associations
 
-When generating Zod schemas for TypeScript, associations without `serializable: true` become optional/undefined:
+When generating Zod schemas for TypeScript, associations without `include: :always` become optional/undefined:
 
 ```ruby
 class PostSchema < Apiwork::Schema::Base
   attribute :title
 
-  belongs_to :author, schema: Api::V1::UserSchema  # NOT serializable
-  has_many :comments, schema: Api::V1::CommentSchema, serializable: true
+  belongs_to :author, schema: Api::V1::UserSchema  # include: :optional (default)
+  has_many :comments, schema: Api::V1::CommentSchema, include: :always
 end
 ```
 
@@ -492,7 +492,7 @@ export const PostSchema = z.object({
 
 This is because we don't know if the client requested `include[author]=true` or not. The association might or might not be there.
 
-If `serializable: true`, it's always present (not optional).
+If `include: :always`, it's always present (not optional).
 
 ## Nested schemas
 
@@ -500,16 +500,16 @@ Associations can be deeply nested:
 
 ```ruby
 class PostSchema < Apiwork::Schema::Base
-  has_many :comments, schema: Api::V1::CommentSchema, serializable: true
+  has_many :comments, schema: Api::V1::CommentSchema, include: :always
 end
 
 class CommentSchema < Apiwork::Schema::Base
-  belongs_to :author, schema: Api::V1::UserSchema, serializable: true
+  belongs_to :author, schema: Api::V1::UserSchema, include: :always
   has_many :replies, schema: Api::V1::CommentSchema  # Self-reference
 end
 ```
 
-Response (with all serializable associations):
+Response (with all include: :always associations):
 
 ```json
 {
@@ -544,11 +544,11 @@ Be careful with deep nesting - it can impact performance.
 ### Always include small associations
 
 ```ruby
-belongs_to :author, schema: Api::V1::UserSchema, serializable: true
-has_one :profile, schema: Api::V1::ProfileSchema, serializable: true
+belongs_to :author, schema: Api::V1::UserSchema, include: :always
+has_one :profile, schema: Api::V1::ProfileSchema, include: :always
 ```
 
-Use `serializable: true` for associations that:
+Use `include: :always` for associations that:
 - Are small (few fields)
 - Are almost always needed
 - Don't cause performance issues
@@ -556,21 +556,21 @@ Use `serializable: true` for associations that:
 ### Opt-in for large associations
 
 ```ruby
-has_many :comments, schema: Api::V1::CommentSchema  # No serializable
+has_many :comments, schema: Api::V1::CommentSchema  # include: :optional (default)
 ```
 
-Don't use `serializable: true` for associations that:
+Don't use `include: :always` for associations that:
 - Have many records
 - Might cause N+1 queries
 - Are only sometimes needed
 
 Let clients request with `include[comments]=true`.
 
-### Filterable without serializable
+### Filterable without include: :always
 
 ```ruby
 belongs_to :author, schema: Api::V1::UserSchema, filterable: true
-# No serializable: true
+# No include: :always
 ```
 
 Clients can filter by author without always including author data:

@@ -245,9 +245,9 @@ module Apiwork
                 # For circular references, just allow boolean (can't nest further)
                 # This allows includes like { comments: { post: true } } where post→comments and comments→post
                 if visited.include?(association_resource)
-                  # Circular ref: only allow boolean for non-serializable
-                  # Serializable associations don't need params (always included)
-                  param name, type: :boolean, required: false unless association_definition.serializable?
+                  # Circular ref: only allow boolean for :optional associations
+                  # :always associations don't need params (always included)
+                  param name, type: :boolean, required: false unless association_definition.always_included?
                 else
                   # Try to auto-import the association's contract and reuse its include type
                   import_alias = TypeRegistry.auto_import_association_contract(
@@ -269,12 +269,17 @@ module Apiwork
                                                )
                                              end
 
-                  # Allow boolean OR nested includes for all associations
-                  # Serializable: Boolean is redundant (always included) but accepted for flexibility
-                  # Non-serializable: Boolean true or nested include hash both supported
-                  param name, type: :union, required: false do
-                    variant type: :boolean
-                    variant type: association_include_type
+                  # For :always associations: only nested includes (no boolean)
+                  # For :optional associations: boolean OR nested includes
+                  if association_definition.always_included?
+                    # Only nested hash, no boolean variant
+                    param name, type: association_include_type, required: false
+                  else
+                    # Boolean or nested hash
+                    param name, type: :union, required: false do
+                      variant type: :boolean
+                      variant type: association_include_type
+                    end
                   end
                 end
               end

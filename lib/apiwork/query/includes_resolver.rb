@@ -10,15 +10,15 @@ module Apiwork
       end
 
       # Build includes hash from all sources
-      # For collections: serializable + filter + sort + explicit includes
-      # For single resources: serializable + explicit includes only
+      # For collections: always included + filter + sort + explicit includes
+      # For single resources: always included + explicit includes only
       def build(params: {}, for_collection: true)
         return {} if schema.association_definitions.empty?
 
         combined = {}
 
-        # 1. Start with serializable: true associations
-        combined.deep_merge!(build_serializable_associations)
+        # 1. Start with include: :always associations
+        combined.deep_merge!(build_always_included_associations)
 
         # 2. Add associations from filter/sort (collections only)
         if for_collection
@@ -26,7 +26,7 @@ module Apiwork
           combined.deep_merge!(extract_from_sort(params[:sort]))
         end
 
-        # 3. Apply explicit include params (can override with false)
+        # 3. Apply explicit include params (cannot disable :always associations)
         apply_explicit_includes(combined, params[:include])
 
         combined
@@ -34,15 +34,15 @@ module Apiwork
 
       private
 
-      # Build includes hash from serializable: true associations only
-      def build_serializable_associations(visited = Set.new)
+      # Build includes hash from include: :always associations only
+      def build_always_included_associations(visited = Set.new)
         return {} if visited.include?(schema.name)
 
         visited = visited.dup.add(schema.name)
         result = {}
 
         schema.association_definitions.each do |name, definition|
-          next unless definition.serializable?
+          next unless definition.always_included?
 
           association = schema.model_class.reflect_on_association(name)
           next if association&.polymorphic?
@@ -52,7 +52,7 @@ module Apiwork
 
           if nested_schema.respond_to?(:new)
             builder = self.class.new(schema: nested_schema)
-            nested = builder.send(:build_serializable_associations, visited)
+            nested = builder.send(:build_always_included_associations, visited)
             result[name] = nested.any? ? nested : {}
           else
             result[name] = {}
@@ -76,21 +76,30 @@ module Apiwork
         AssociationExtractor.new(schema: schema).extract_from_sort(sort_hash)
       end
 
-      # Apply explicit include params, respecting false to exclude
-      # For serializable associations, merge nested includes rather than replace
+      # Apply explicit include params
+      # Cannot disable :always associations, can only add nested includes
+      # Can disable :optional associations with false
       def apply_explicit_includes(combined, include_params)
         return if include_params.blank?
 
         include_params.each do |key, value|
           key_name_sym = key.to_sym
+          association_definition = schema.association_definitions[key_name_sym]
 
           if explicitly_false?(value)
+            # Only allow deletion for :optional associations
+            # :always associations cannot be disabled
+            next if association_definition&.always_included?
+
+            # Ignore false for :always - keep it in combined
+
             combined.delete(key_name_sym)
+
           elsif value.is_a?(Hash)
-            # Nested include - deep merge with existing (for serializable associations)
+            # Nested include - deep merge with existing (for :always associations)
             normalized = normalize_nested_includes(value)
             combined[key_name_sym] = if combined.key?(key_name_sym) && combined[key_name_sym].is_a?(Hash)
-                                       # Association already exists (likely serializable) - deep merge nested includes
+                                       # Association already exists (likely :always) - deep merge nested includes
                                        deep_merge_includes(combined[key_name_sym], normalized)
                                      else
                                        # New association - set directly

@@ -86,7 +86,7 @@ class PostSchema < Apiwork::Schema::Base
   attribute :published, filterable: true, sortable: true
   attribute :created_at, filterable: true, sortable: true
 
-  has_many :comments, schema: CommentSchema, serializable: true
+  has_many :comments, schema: CommentSchema, include: :always
 end
 ```
 
@@ -122,7 +122,7 @@ class PostSchema < Apiwork::Schema::Base
   attribute :user_id, filterable: true
   attribute :updated_at, filterable: true, sortable: true
 
-  has_many :tags, schema: TagSchema, serializable: true
+  has_many :tags, schema: TagSchema, include: :always
 end
 ```
 
