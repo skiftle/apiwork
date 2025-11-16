@@ -137,22 +137,27 @@ attribute :created_at  # Not writable
 
 Users can see these fields in responses but can't set them.
 
-### serializable (for associations)
+### include (for associations)
 
-Controls whether an association can be included in responses:
+Controls how an association appears in responses:
 
 ```ruby
-has_many :comments, schema: CommentSchema, serializable: true
+# Always included in responses (cannot be excluded)
+has_many :comments, schema: CommentSchema, include: :always
+
+# Only included when explicitly requested (default)
+has_many :tags, schema: TagSchema, include: :optional
+has_many :tags, schema: TagSchema  # Same as include: :optional
 ```
 
-Enables:
+**`:always`** - Association is always serialized in responses. Clients cannot exclude it with `?include` parameters. Useful for critical related data that should always be present.
+
+**`:optional`** (default) - Association is only included when explicitly requested via `?include` parameter:
 ```
-GET /api/v1/posts?include[comments]=true
+GET /api/v1/posts?include[tags]=true
 ```
 
-Without `serializable: true`, the association won't appear in responses even if requested. This prevents exposing internal or sensitive associations.
-
-See [Querying: Includes](../querying/includes.md) for details on eager loading.
+See [Querying: Includes](../querying/includes.md) for details on eager loading and nested includes.
 
 ### Combining flags
 
@@ -248,20 +253,20 @@ class PostSchema < Apiwork::Schema::Base
   attribute :title
   attribute :body
 
-  # Author - can filter and sort by, and include in response
+  # Author - can filter and sort by, and always included in response
   belongs_to :author,
     schema: Api::V1::UserSchema,
     filterable: true,
     sortable: true,
-    serializable: true
+    include: :always
 
-  # Comments - can filter, sort, write, and include
+  # Comments - can filter, sort, write, and optionally include
   has_many :comments,
     schema: Api::V1::CommentSchema,
     filterable: true,
     sortable: true,
     writable: true,
-    serializable: true
+    include: :optional
 end
 ```
 
@@ -269,7 +274,8 @@ end
 - `filterable: true` - Filter posts by association fields: `?filter[author][name]=Alice`
 - `sortable: true` - Sort posts by association fields: `?sort[comments][created_at]=desc`
 - `writable: true` - Create/update nested records (requires `accepts_nested_attributes_for`)
-- `serializable: true` - Include in responses: `?include[comments]=true`
+- `include: :always` - Always included in responses (cannot be excluded)
+- `include: :optional` - Only included when requested: `?include[comments]=true` (default)
 
 Now you can:
 
@@ -482,4 +488,4 @@ But often, you don't need explicit validation. `schema PostSchema` auto-generate
 - **[Querying Introduction](../querying/introduction.md)** - How query flags drive the query system
 - **[Filtering](../querying/filtering.md)** - Use `filterable: true` attributes
 - **[Sorting](../querying/sorting.md)** - Use `sortable: true` attributes
-- **[Includes](../querying/includes.md)** - Use `serializable: true` associations
+- **[Includes](../querying/includes.md)** - Use `include: :always` associations

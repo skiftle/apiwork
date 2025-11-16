@@ -18,7 +18,7 @@ RSpec.describe 'Includes API', type: :request do
 
   describe 'GET /api/v1/posts with includes' do
     context 'without include parameter' do
-      it 'does not include comments when serializable: false' do
+      it 'does not include comments when include: :optional' do
         get '/api/v1/posts'
 
         expect(response).to have_http_status(:ok)
@@ -60,8 +60,8 @@ RSpec.describe 'Includes API', type: :request do
 
   describe 'nested includes' do
     before do
-      # For nested includes test, we need post association on comments to be serializable: false
-      Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@serializable, false)
+      # For nested includes test, we need post association on comments to be include: :optional
+      Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@include, :optional)
 
       # Clear PostContract and CommentContract cache
       if defined?(Api::V1::PostContract)
@@ -85,7 +85,7 @@ RSpec.describe 'Includes API', type: :request do
 
     after do
       # Restore
-      Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@serializable, true)
+      Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@include, :optional)
 
       # Clear cache
       if defined?(Api::V1::PostContract)
@@ -129,14 +129,14 @@ RSpec.describe 'Includes API', type: :request do
     end
   end
 
-  describe 'contract validation for serializable associations' do
-    context 'when association has serializable: true' do
+  describe 'contract validation for always included associations' do
+    context 'when association has include: :always' do
       before do
-        # Ensure CommentSchema.post is NOT serializable (to avoid circular serialization)
-        Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@serializable, false)
+        # Ensure CommentSchema.post is NOT always included (to avoid circular serialization)
+        Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@include, :optional)
 
-        # Temporarily set comments to serializable: true
-        Api::V1::PostSchema.association_definitions[:comments].instance_variable_set(:@serializable, true)
+        # Temporarily set comments to include: :always
+        Api::V1::PostSchema.association_definitions[:comments].instance_variable_set(:@include, :always)
 
         # Clear contract cache to pick up the change
         if defined?(Api::V1::PostContract)
@@ -159,9 +159,9 @@ RSpec.describe 'Includes API', type: :request do
       end
 
       after do
-        # Restore to serializable: false
-        Api::V1::PostSchema.association_definitions[:comments].instance_variable_set(:@serializable, false)
-        Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@serializable, false)
+        # Restore to include: :optional
+        Api::V1::PostSchema.association_definitions[:comments].instance_variable_set(:@include, :optional)
+        Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@include, :optional)
 
         # Clear contract cache
         if defined?(Api::V1::PostContract)
@@ -183,28 +183,14 @@ RSpec.describe 'Includes API', type: :request do
         end
       end
 
-      it 'accepts but ignores top-level boolean for serializable: true association' do
-        get '/api/v1/posts', params: { include: { comments: true } }
-
-        # Contract allows it (comments: true is valid shorthand for comments: {})
-        # but it's redundant since comments is already auto-included via serializable: true
-        expect(response).to have_http_status(:ok)
-        json = JSON.parse(response.body)
-        expect(json['ok']).to be(true)
-
-        # Comments should be included (would be included anyway due to serializable: true)
-        first_post = json['posts'].first
-        expect(first_post['comments']).to be_present
-      end
-
-      it 'allows nested includes under serializable: true association' do
+      it 'allows nested includes under include: :always association' do
         get '/api/v1/posts', params: { include: { comments: { post: true } } }
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
         expect(json['ok']).to be(true)
 
-        # Comments should be automatically included (serializable: true)
+        # Comments should be automatically included (include: :always)
         first_post = json['posts'].first
         expect(first_post['comments']).to be_present
 
@@ -214,24 +200,35 @@ RSpec.describe 'Includes API', type: :request do
         expect(first_comment['post']['title']).to be_present
       end
 
-      it 'automatically includes serializable association without nested params' do
+      it 'automatically includes :always association without params' do
         get '/api/v1/posts'
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
         expect(json['ok']).to be(true)
 
-        # Comments should be automatically included (serializable: true)
+        # Comments should be automatically included (include: :always)
         first_post = json['posts'].first
         expect(first_post['comments']).to be_present
 
-        # But nested post should NOT be included (serializable: false, not requested)
+        # But nested post should NOT be included (include: :optional, not requested)
         first_comment = first_post['comments'].first
         expect(first_comment.keys).not_to include('post')
       end
+
+      it 'contract rejects boolean false for :always associations' do
+        get '/api/v1/posts', params: { include: { comments: false } }
+
+        # Contract validation should reject false for :always associations
+        # because the IncludeType only has nested hash, no boolean variant
+        expect(response).to have_http_status(:bad_request)
+        json = JSON.parse(response.body)
+        expect(json['ok']).to be(false)
+        expect(json['issues']).to be_present
+      end
     end
 
-    context 'when association has serializable: false (default)' do
+    context 'when association has include: :optional (default)' do
       it 'allows including the association via include parameter' do
         get '/api/v1/posts', params: { include: { comments: true } }
 

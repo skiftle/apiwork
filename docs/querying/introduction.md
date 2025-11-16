@@ -2,7 +2,7 @@
 
 Apiwork provides automatic filtering, sorting, pagination, and eager loading for your index routes. You don't implement these features - you just mark which fields are queryable in your schema, and Apiwork handles the rest.
 
-**The key insight:** Queries are separate from schemas, but schemas define what's possible through flags like `filterable`, `sortable`, and `serializable`.
+**The key insight:** Queries are separate from schemas, but schemas define what's possible through flags like `filterable`, `sortable`, and `include`.
 
 ## How it works
 
@@ -22,7 +22,7 @@ class PostSchema < Apiwork::Schema::Base
     schema: CommentSchema,
     filterable: true,  # Filter posts by comment fields
     sortable: true,    # Sort posts by comment fields
-    serializable: true # Include comments in response
+    include: :always # Include comments in response
 end
 ```
 
@@ -143,7 +143,7 @@ class PostSchema < Apiwork::Schema::Base
     schema: CommentSchema,
     filterable: true,
     sortable: true,
-    serializable: true
+    include: :always
 end
 
 class CommentSchema < Apiwork::Schema::Base
@@ -188,7 +188,7 @@ WHERE posts.published = true
 **Schemas** answer: "What data exists and what operations are allowed?"
 - `filterable: true` → "This field can be used in WHERE clauses"
 - `sortable: true` → "This field can be used in ORDER BY"
-- `serializable: true` → "This association can be included in responses"
+- `include: :always` → "This association can be included in responses"
 
 **Queries** answer: "How do I actually execute those operations?"
 - Builds WHERE conditions with Arel
@@ -269,7 +269,7 @@ See [Pagination](pagination.md) for details.
 
 ### N+1 prevention
 
-When you mark associations as `serializable: true` and include them:
+When you mark associations as `include: :always` and include them:
 
 ```bash
 GET /posts?include[comments]=true

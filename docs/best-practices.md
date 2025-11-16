@@ -106,7 +106,7 @@ class Api::V1::ShiftSchema < Apiwork::Schema::Base
   with_options filterable: true, sortable: true do
     has_one :series_occurrence,
       schema: Api::V1::SeriesOccurrenceSchema,
-      serializable: true
+      include: :always
   end
 end
 ```
@@ -158,16 +158,16 @@ class Api::V1::PostSchema < Apiwork::Schema::Base
   # Don't do this for belongs_to
   belongs_to :author,
     schema: Api::V1::UserSchema,
-    serializable: true  # ← Bad: breaks caching, no nested writes anyway
+    include: :always  # ← Bad: breaks caching, no nested writes anyway
 
   belongs_to :category,
     schema: Api::V1::CategorySchema,
-    serializable: true  # ← Bad: category changes don't touch post
+    include: :always  # ← Bad: category changes don't touch post
 
   # Only include if you're updating them together
   has_many :comments,
     schema: Api::V1::CommentSchema,
-    serializable: true  # ← Only if accepts_nested_attributes_for :comments
+    include: :always  # ← Only if accepts_nested_attributes_for :comments
 end
 ```
 
@@ -245,7 +245,7 @@ class Api::V1::PostSchema < Apiwork::Schema::Base
   # Not serialized by default
   has_many :comments,
     schema: Api::V1::CommentSchema,
-    serializable: false  # Default
+    include: :optional  # Default
 end
 ```
 
@@ -286,7 +286,7 @@ end
 2. **Be explicit by default** - Spell out `filterable`, `sortable`, `writable`
 3. **Use `with_options` carefully** - Group logically, don't over-nest
 4. **Keep responses flat** - Aggregate in client, not server
-5. **Only nest what you write together** - Use `serializable: true` only for `accepts_nested_attributes_for`
+5. **Only nest what you write together** - Use `include: :always` only for `accepts_nested_attributes_for`
 6. **Always use caching** - `stale?` or `fresh_when` in every action
 7. **Computed attributes in schema class** - With explicit types
 

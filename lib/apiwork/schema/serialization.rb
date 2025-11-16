@@ -70,13 +70,13 @@ module Apiwork
         end
       end
 
-      # Smart logic: serializable: true → always include, cannot be excluded
-      # serializable: false → only include if explicitly in includes parameter
+      # Smart logic: include: :always → always include, cannot be excluded
+      # include: :optional → only include if explicitly in includes parameter
       def should_include_association?(name, definition)
-        # serializable: true → ALWAYS include, ignore includes parameter
-        return true if definition.serializable?
+        # include: :always → ALWAYS include, ignore includes parameter
+        return true if definition.always_included?
 
-        # serializable: false → only include if explicitly requested
+        # include: :optional → only include if explicitly requested
         explicitly_included?(name)
       end
 

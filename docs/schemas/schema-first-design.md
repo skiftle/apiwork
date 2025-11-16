@@ -98,7 +98,7 @@ You **don't need** a contract for:
 
 - ✓ Standard CRUD actions (index, show, create, update, destroy)
 - ✓ Basic filtering and sorting
-- ✓ Simple nested associations (writable or serializable)
+- ✓ Simple nested associations (writable or with include policy)
 - ✓ Standard query parameters
 
 ### Development Workflow

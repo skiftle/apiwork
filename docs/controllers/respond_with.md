@@ -288,7 +288,7 @@ class Api::V1::PostSchema < Apiwork::Schema::Base
   # Association available for optional inclusion
   has_many :comments,
     schema: Api::V1::CommentSchema,
-    serializable: false  # Not included by default
+    include: :optional  # Not included by default
 end
 ```
 

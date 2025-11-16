@@ -2,11 +2,11 @@
 
 Apiwork **automatically prevents N+1 queries**. You don't need to think about eager loading - the system figures out what associations to load based on:
 
-1. **`include: :always` associations** - Always included in responses
+1. **`serializable: true` associations** - Always included in responses
 2. **Filter/sort params** - Associations used in queries
 3. **Explicit `include` params** - Manual control when needed
 
-Mark associations as `include: :always` to include them in responses, and Apiwork handles the rest.
+Mark associations as `serializable: true` to include them in responses, and Apiwork handles the rest.
 
 ## The N+1 problem
 
@@ -41,11 +41,11 @@ For 100 posts, that's **101 queries**. This kills performance.
 
 Apiwork **automatically** eager loads associations in three scenarios:
 
-### 1. `include: :always` associations (always)
+### 1. `serializable: true` associations (always)
 
 ```ruby
 class PostSchema < Apiwork::Schema::Base
-  has_many :comments, schema: CommentSchema, include: :always
+  has_many :comments, schema: CommentSchema, serializable: true
 end
 ```
 
@@ -65,14 +65,14 @@ SELECT * FROM comments WHERE post_id IN (...)  -- Auto-included!
 
 ```ruby
 class PostSchema < Apiwork::Schema::Base
-  has_many :tags, schema: TagSchema, filterable: true  # include: :optional
+  has_many :tags, schema: TagSchema, filterable: true  # serializable: false
 end
 ```
 
 ```bash
 GET /posts?filter[tags][name]=ruby
 # → Auto eager-loads tags (used in filter JOIN)
-# → No N+1 even though include: :optional!
+# → No N+1 even though serializable: false!
 ```
 
 **SQL**:
@@ -93,7 +93,7 @@ GET /posts?sort[tags][name]=asc
 
 ```bash
 GET /posts?include[author]=true
-# → Include author even if include: :optional
+# → Include author even if serializable: false
 ```
 
 ## Smart eager loading in action
@@ -103,7 +103,7 @@ GET /posts?include[author]=true
 ```ruby
 # Schema
 class PostSchema < Apiwork::Schema::Base
-  has_many :comments, include: :always   # Always in response
+  has_many :comments, serializable: true   # Always in response
   has_many :tags, filterable: true         # Not in response by default
   belongs_to :author                        # Not in response by default
 end
@@ -113,14 +113,14 @@ end
 ```bash
 GET /posts
 # Auto eager-loads: { comments: {} }
-# Only comments in response (include: :always)
+# Only comments in response (serializable: true)
 ```
 
-**Example 2: Filter on non-included association**
+**Example 2: Filter on non-serializable**
 ```bash
 GET /posts?filter[tags][name]=ruby
 # Auto eager-loads: { comments: {}, tags: {} }
-# Comments in response (include: :always)
+# Comments in response (serializable: true)
 # Tags NOT in response but eager-loaded (prevents N+1 from JOIN)
 ```
 
@@ -131,23 +131,23 @@ GET /posts?include[author]=true
 # Both comments and author in response
 ```
 
-**Example 4: include: :always cannot be disabled**
+**Example 4: Opt-out with false**
 ```bash
 GET /posts?include[comments]=false
-# Contract validation error - :always associations cannot be excluded
-# :always means truly always - no opt-out possible
+# Auto eager-loads: {}
+# Skip comments even though serializable: true
 ```
 
-## Controlling association inclusion
+## Marking associations as serializable
 
-`include: :always` means "this association is part of the default response":
+`serializable: true` means "this association is part of the default response":
 
 ```ruby
 class PostSchema < Apiwork::Schema::Base
   model Post
 
   # Always in response + auto eager-loaded
-  has_many :comments, schema: CommentSchema, include: :always
+  has_many :comments, schema: CommentSchema, serializable: true
 
   # Not in response unless include[tags]=true
   # But still eager-loaded if used in filter/sort!
@@ -196,8 +196,8 @@ GET /posts?include[comments]=true&include[tags]=true
 **Schema**:
 ```ruby
 class PostSchema < Apiwork::Schema::Base
-  has_many :comments, schema: CommentSchema, include: :always
-  has_many :tags, schema: TagSchema, include: :always
+  has_many :comments, schema: CommentSchema, serializable: true
+  has_many :tags, schema: TagSchema, serializable: true
 end
 ```
 
@@ -221,23 +221,23 @@ end
 
 ## Nested includes
 
-Nested `include: :always` associations are **automatically** eager-loaded:
+Nested `serializable: true` associations are **automatically** eager-loaded:
 
 **Schema setup**:
 ```ruby
 class PostSchema < Apiwork::Schema::Base
-  has_many :comments, schema: CommentSchema, include: :always
+  has_many :comments, schema: CommentSchema, serializable: true
 end
 
 class CommentSchema < Apiwork::Schema::Base
-  belongs_to :user, schema: UserSchema, include: :always
+  belongs_to :user, schema: UserSchema, serializable: true
 end
 ```
 
 ```bash
 GET /posts
 # → Auto eager-loads: { comments: { user: {} } }
-# → Comments AND users both auto-included (nested :always)
+# → Comments AND users both auto-included (nested serializable)
 ```
 
 **Generated SQL**:
@@ -288,7 +288,7 @@ GET /posts?include[comments][user][posts]=true
 
 Works with any depth for any association defined in the schema (has_many, has_one, belongs_to).
 
-**Note**: Associations with `include: :always` are **automatically** included at all nesting levels without needing explicit include params. Associations with `include: :optional` (the default) can still be included but require explicit include params.
+**Note**: Associations with `serializable: true` are **automatically** included at all nesting levels without needing explicit include params. Associations with `serializable: false` (the default) can still be included but require explicit include params.
 
 **Warning**: Deep nesting loads a lot of data. Use sparingly.
 
@@ -302,7 +302,7 @@ GET /posts?include[user]=true
 **Schema**:
 ```ruby
 class PostSchema < Apiwork::Schema::Base
-  belongs_to :user, schema: UserSchema, include: :always
+  belongs_to :user, schema: UserSchema, serializable: true
 end
 ```
 
@@ -333,7 +333,7 @@ GET /posts?include[featured_image]=true
 **Schema**:
 ```ruby
 class PostSchema < Apiwork::Schema::Base
-  has_one :featured_image, schema: ImageSchema, include: :always
+  has_one :featured_image, schema: ImageSchema, serializable: true
 end
 ```
 
@@ -343,17 +343,17 @@ Works the same as `belongs_to` and `has_many`.
 
 Use `include[association]=false` to opt-out of automatic includes:
 
-### Skip `include: :always` associations
+### Skip `serializable: true` associations
 
 ```ruby
 class PostSchema < Apiwork::Schema::Base
-  has_many :comments, include: :always  # Auto-included by default
+  has_many :comments, serializable: true  # Auto-included by default
 end
 ```
 
 ```bash
 GET /posts?include[comments]=false
-# → Skips comments (even though include: :always)
+# → Skips comments (even though serializable: true)
 # → Performance optimization when you don't need them
 ```
 
@@ -363,7 +363,7 @@ GET /posts?include[comments]=false
 GET /posts?filter[tags][name]=ruby&include[tags]=false
 # → Uses tags for filtering (JOIN)
 # → But doesn't eager-load them
-# → Useful when tags aren't included by default anyway
+# → Useful when tags aren't serializable anyway
 ```
 
 **When to use `false`:**
@@ -372,9 +372,9 @@ GET /posts?filter[tags][name]=ruby&include[tags]=false
 - Reduce response payload size
 
 **Default behavior without `false`:**
-- `include: :always` → Always eager-loaded and in response
-- `include: :optional` + used in filter/sort → Eager-loaded but NOT in response
-- `include: :optional` + not used → Not eager-loaded
+- `serializable: true` → Always eager-loaded and in response
+- `serializable: false` + used in filter/sort → Eager-loaded but NOT in response
+- `serializable: false` + not used → Not eager-loaded
 
 ## Combining with filters
 
@@ -510,11 +510,11 @@ Apiwork detects circular dependencies and prevents infinite loops:
 
 ```ruby
 class PostSchema < Apiwork::Schema::Base
-  has_many :comments, schema: CommentSchema, include: :always
+  has_many :comments, schema: CommentSchema, serializable: true
 end
 
 class CommentSchema < Apiwork::Schema::Base
-  belongs_to :post, schema: PostSchema, include: :always
+  belongs_to :post, schema: PostSchema, serializable: true
 end
 ```
 
@@ -621,15 +621,15 @@ Different endpoints can request different levels of detail based on need.
 
 ## Security
 
-Includes respect your schema's `include` flag:
+Includes respect your schema's `serializable` flag:
 
 ```ruby
 class PostSchema < Apiwork::Schema::Base
   # Public association
-  has_many :comments, schema: CommentSchema, include: :always
+  has_many :comments, schema: CommentSchema, serializable: true
 
   # Private association - never appears in responses
-  has_many :edit_logs, schema: EditLogSchema, include: :optional
+  has_many :edit_logs, schema: EditLogSchema, serializable: false
 end
 ```
 
@@ -637,7 +637,7 @@ end
 # Allowed
 GET /posts?include[comments]=true
 
-# Ignored - edit_logs not defined in schema
+# Ignored - edit_logs not serializable
 GET /posts?include[edit_logs]=true
 ```
 
@@ -662,9 +662,9 @@ Users can only see comments for their own posts.
 
 Apiwork automatically prevents N+1 queries by eager-loading associations from **three sources**:
 
-### 1. `include: :always` → Always eager-loaded
+### 1. `serializable: true` → Always eager-loaded
 ```ruby
-has_many :comments, include: :always
+has_many :comments, serializable: true
 # GET /posts → Auto eager-loads comments
 ```
 
@@ -690,7 +690,7 @@ GET /posts?include[comments]=false
 
 ## Best practices
 
-1. **Mark response associations as `include: :always`** - They'll auto eager-load
+1. **Mark response associations as `serializable: true`** - They'll auto eager-load
 2. **Mark query associations as `filterable`/`sortable`** - They'll auto eager-load when used
 3. **Use `include[foo]=false` sparingly** - Only for performance optimization
 4. **Add database indexes** - Index foreign keys and filtered/sorted columns

@@ -166,7 +166,7 @@ Integrate Apiwork into your controllers:
 
 ### Querying
 
-Enable powerful queries through URL parameters. Mark attributes as `filterable`, `sortable`, or `serializable` in your schema, and Apiwork auto-generates query params and handles the SQL:
+Enable powerful queries through URL parameters. Mark attributes as `filterable`, `sortable`, or `include` in your schema, and Apiwork auto-generates query params and handles the SQL:
 
 - [Introduction](./querying/introduction.md) - How the query system works
 - [Filtering](./querying/filtering.md) - Filter with type-specific operators
