@@ -4,9 +4,9 @@ require 'rails_helper'
 
 RSpec.describe 'Contract Imports' do
   after do
-    # Only clear local types/enums, not global ones (like :sort_direction)
-    Apiwork::Contract::Descriptor::TypeStore.clear_local!
-    Apiwork::Contract::Descriptor::EnumStore.clear_local!
+    # Clear all types/enums (including global ones)
+    Apiwork::Contract::Descriptor::TypeStore.clear!
+    Apiwork::Contract::Descriptor::EnumStore.clear!
   end
 
   describe 'basic import functionality' do

@@ -17,11 +17,6 @@ module Apiwork
       Generator::Registry[type].generate(path: path, **options)
     end
 
-    def register_descriptors(api_class: nil, &block)
-      builder = Contract::Descriptor::Builder.new(api_class: api_class, scope: nil)
-      builder.instance_eval(&block)
-    end
-
     def introspect(path)
       API.find(path)&.introspect
     end
@@ -29,10 +24,13 @@ module Apiwork
     # Reset all registries
     # Useful for testing when you need to reload API configurations
     # Core descriptors will be registered per-API when APIs are configured
+    # Note: Generator::Registry is NOT cleared here as generators are statically
+    # registered at gem load time and don't need to be reset during API reloading
     def reset_registries!
-      Contract::Descriptor::Registry.clear!
       API::Registry.clear!
-      Contract::Descriptor::Core.reset!
+      Contract::SchemaRegistry.clear!
+      Contract::Descriptor::Registry.clear!
+      Contract::Descriptor::Core.clear!
     end
   end
 end

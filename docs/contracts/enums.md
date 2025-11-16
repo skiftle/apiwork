@@ -101,25 +101,18 @@ param :sort_direction, type: :string, enum: :sort_direction
 # Allows: 'asc' or 'desc'
 ```
 
-You can register your own global enums:
-
-```ruby
-# In an initializer or config
-Apiwork.register_descriptors do
-  enum :http_method, %w[get post put patch delete]
-  enum :content_type, %w[json xml csv]
-end
-
 # Now available in all contracts
+
 class Api::V1::RequestContract < Apiwork::Contract::Base
-  action :proxy do
-    input do
-      param :method, type: :string, enum: :http_method
-      param :accept, type: :string, enum: :content_type
-    end
-  end
+action :proxy do
+input do
+param :method, type: :string, enum: :http_method
+param :accept, type: :string, enum: :content_type
 end
-```
+end
+end
+
+````
 
 ## Enums with arrays
 
@@ -134,7 +127,7 @@ action :update do
     param :tags, type: :array, of: :string, enum: :tag_values
   end
 end
-```
+````
 
 This validates that every item in the `tags` array is one of the allowed values.
 

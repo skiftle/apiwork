@@ -5,7 +5,7 @@ module Apiwork
     module Descriptor
       module Core
         class << self
-          def reset!
+          def clear!
             @api_registered_filter_descriptors = {}
             @api_sort_descriptor_registered = {}
           end
@@ -239,7 +239,7 @@ module Apiwork
           end
         end
 
-        reset!
+        clear!
       end
     end
   end

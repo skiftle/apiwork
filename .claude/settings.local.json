@@ -48,7 +48,8 @@
       "Bash(bundle exec bin/rails server:*)",
       "Bash(bundle exec rails server:*)",
       "Bash(BUNDLE_GEMFILE=spec/dummy/Gemfile bundle exec rails runner:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(git -C /Users/joakim/GitHub/apiwork log --oneline --all -20)"
     ],
     "deny": [],
     "ask": []
