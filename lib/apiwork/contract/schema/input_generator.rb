@@ -59,7 +59,7 @@ module Apiwork
             payload_type_name = :"#{context}_payload"
 
             # Check if already registered
-            unless Descriptor::Registry.resolve(payload_type_name, contract_class: contract_class)
+            unless Descriptor::Registry.resolve_type(payload_type_name, contract_class: contract_class)
               Descriptor::Registry.register_type(payload_type_name, scope: contract_class, api_class: contract_class.api_class) do
                 InputGenerator.generate_writable_params(self, schema_class, context)
               end

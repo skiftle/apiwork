@@ -94,7 +94,7 @@ module Apiwork
                   definition.contract_class.resolve_custom_type(custom_type_name)
               # Determine scope for qualification
               scope = determine_scope_for_type(definition, custom_type_name)
-              custom_type_name = Descriptor::Registry.qualified_name(scope, custom_type_name)
+              custom_type_name = Descriptor::Registry.scoped_name(scope, custom_type_name)
             end
 
             result = {
@@ -116,7 +116,7 @@ module Apiwork
               # Custom type - use qualified name
               # Determine scope for qualification
               scope = determine_scope_for_type(definition, type_value)
-              type_value = Descriptor::Registry.qualified_name(scope, type_value)
+              type_value = Descriptor::Registry.scoped_name(scope, type_value)
             end
           end
 
@@ -138,7 +138,7 @@ module Apiwork
               # Enum reference - output the qualified reference symbol for code generators
               # Use qualified name with correct scope for hierarchical naming
               scope = determine_scope_for_enum(definition, options[:enum][:ref])
-              qualified_enum_name = Descriptor::EnumStore.qualified_name(scope, options[:enum][:ref])
+              qualified_enum_name = Descriptor::EnumStore.scoped_name(scope, options[:enum][:ref])
               result[:enum] = qualified_enum_name
             else
               # Inline enum - output the values array
@@ -159,7 +159,7 @@ module Apiwork
                     definition.contract_class.schema_class
                 # Custom type - use qualified name (e.g., service_filter instead of filter)
                 scope = determine_scope_for_type(definition, options[:of])
-                result[:of] = Descriptor::Registry.qualified_name(scope, options[:of])
+                result[:of] = Descriptor::Registry.scoped_name(scope, options[:of])
               else
                 result[:of] = options[:of]
               end
@@ -199,7 +199,7 @@ module Apiwork
             elsif parent_definition.contract_class.respond_to?(:schema_class) &&
                   parent_definition.contract_class.schema_class
               scope = determine_scope_for_type(parent_definition, variant_type)
-              qualified_type_name = Descriptor::Registry.qualified_name(scope, variant_type)
+              qualified_type_name = Descriptor::Registry.scoped_name(scope, variant_type)
               result = { type: qualified_type_name }
             else
               result = { type: variant_type }
@@ -224,7 +224,7 @@ module Apiwork
                     parent_definition.contract_class.schema_class
                 # Custom type - use qualified name (e.g., service_filter instead of filter)
                 scope = determine_scope_for_type(parent_definition, variant_def[:of])
-                result[:of] = Descriptor::Registry.qualified_name(scope, variant_def[:of])
+                result[:of] = Descriptor::Registry.scoped_name(scope, variant_def[:of])
               else
                 result[:of] = variant_def[:of]
               end
@@ -241,7 +241,7 @@ module Apiwork
               if parent_definition.contract_class.respond_to?(:schema_class) &&
                  parent_definition.contract_class.schema_class
                 scope = determine_scope_for_enum(parent_definition, variant_def[:enum])
-                result[:enum] = Descriptor::EnumStore.qualified_name(scope, variant_def[:enum])
+                result[:enum] = Descriptor::EnumStore.scoped_name(scope, variant_def[:enum])
               else
                 result[:enum] = variant_def[:enum]
               end

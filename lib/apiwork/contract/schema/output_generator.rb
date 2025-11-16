@@ -16,10 +16,10 @@ module Apiwork
             # Register the resource type with Descriptor::Registry
             # Use nil for registration - Descriptor::Registry will use just the prefix (e.g., "locale", "post")
             # Get the qualified name for reference
-            resource_type_name = Descriptor::Registry.qualified_name(contract_class, nil)
+            resource_type_name = Descriptor::Registry.scoped_name(contract_class, nil)
 
             # Check if already registered
-            unless Descriptor::Registry.resolve(resource_type_name, contract_class: contract_class)
+            unless Descriptor::Registry.resolve_type(resource_type_name, contract_class: contract_class)
               register_resource_type(contract_class, schema_class, root_key)
             end
 
@@ -52,10 +52,10 @@ module Apiwork
             # Register the resource type with Descriptor::Registry (same as single output)
             # Use nil for registration - Descriptor::Registry will use just the prefix
             # Get the qualified name for reference
-            resource_type_name = Descriptor::Registry.qualified_name(contract_class, nil)
+            resource_type_name = Descriptor::Registry.scoped_name(contract_class, nil)
 
             # Check if already registered
-            unless Descriptor::Registry.resolve(resource_type_name, contract_class: contract_class)
+            unless Descriptor::Registry.resolve_type(resource_type_name, contract_class: contract_class)
               register_resource_type(contract_class, schema_class, root_key)
             end
 

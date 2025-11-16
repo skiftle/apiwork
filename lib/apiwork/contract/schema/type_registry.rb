@@ -50,7 +50,7 @@ module Apiwork
             type_name = build_type_name(schema_class, :filter, depth)
 
             # Check if already registered with Descriptor::Registry
-            existing = Descriptor::Registry.resolve(type_name, contract_class: contract_class)
+            existing = Descriptor::Registry.resolve_type(type_name, contract_class: contract_class)
             return type_name if existing
 
             # Pre-register type name to prevent infinite recursion
@@ -133,7 +133,7 @@ module Apiwork
             type_name = build_type_name(schema_class, :sort, depth)
 
             # Check if already registered with Descriptor::Registry
-            existing = Descriptor::Registry.resolve(type_name, contract_class: contract_class)
+            existing = Descriptor::Registry.resolve_type(type_name, contract_class: contract_class)
             return type_name if existing
 
             # Pre-register type name to prevent infinite recursion
@@ -228,7 +228,7 @@ module Apiwork
             type_name = build_type_name(schema_class, :include, depth)
 
             # Check if already registered with Descriptor::Registry
-            existing = Descriptor::Registry.resolve(type_name, contract_class: contract_class)
+            existing = Descriptor::Registry.resolve_type(type_name, contract_class: contract_class)
             return type_name if existing
             return type_name if depth >= MAX_RECURSION_DEPTH
 
@@ -311,7 +311,7 @@ module Apiwork
             resource_type_name = nil
 
             # Check if already registered
-            unless Descriptor::Registry.resolve(resource_type_name, contract_class: association_contract_class)
+            unless Descriptor::Registry.resolve_type(resource_type_name, contract_class: association_contract_class)
               Descriptor::Registry.register_type(resource_type_name, scope: association_contract_class,
                                                                      api_class: association_contract_class.api_class) do
                 # All resource attributes
@@ -342,7 +342,7 @@ module Apiwork
             end
 
             # Return the qualified type name for reference
-            Descriptor::Registry.qualified_name(association_contract_class, resource_type_name)
+            Descriptor::Registry.scoped_name(association_contract_class, resource_type_name)
           end
 
           def auto_import_association_contract(parent_contract, association_schema, visited)

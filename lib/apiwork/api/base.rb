@@ -67,13 +67,13 @@ module Apiwork
         # Serialize all types from Descriptor::Registry
         # Returns all global types + all local types from all contracts in a single hash
         def serialize_all_types
-          Contract::Descriptor::Registry.serialize_all_types_for_api(self)
+          Contract::Descriptor::Registry.types(self)
         end
 
         # Serialize all enums from Descriptor::Registry
         # Returns all global enums + all local enums from all scopes in a single hash
         def serialize_all_enums
-          Contract::Descriptor::Registry.serialize_all_enums_for_api(self)
+          Contract::Descriptor::Registry.enums(self)
         end
 
         # Serialize a single resource with all its actions and metadata

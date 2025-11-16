@@ -100,7 +100,7 @@ module Apiwork
         end
 
         def resolve_custom_type(type_name)
-          Descriptor::Registry.resolve(type_name, contract_class: self, api_class: api_class)
+          Descriptor::Registry.resolve_type(type_name, contract_class: self, api_class: api_class)
         end
 
         def action_definition(action_name)
