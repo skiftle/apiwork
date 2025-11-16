@@ -4,7 +4,7 @@ module Apiwork
   module Generator
     # Options parsing and validation for generators
     class Options
-      VALID_KEY_TRANSFORMS = %i[camelize_lower camelize_upper underscore dasherize none].freeze
+      VALID_KEY_TRANSFORMS = %i[camelize_lower camelize_upper underscore dasherize keep].freeze
 
       def self.build(key_transform: nil, version: nil, **_ignored)
         {

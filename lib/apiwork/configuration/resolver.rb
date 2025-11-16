@@ -7,8 +7,8 @@ module Apiwork
     module Resolver
       # Configuration settings with their default values
       DEFAULTS = {
-        serialize_key_transform: :none,
-        deserialize_key_transform: :none,
+        output_key_format: :keep,
+        input_key_format: :keep,
         default_sort: { id: :asc },
         default_page_size: 20,
         maximum_page_size: 200,

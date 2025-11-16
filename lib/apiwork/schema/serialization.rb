@@ -34,7 +34,7 @@ module Apiwork
           serialized_attributes[association] = serialize_association(association, definition)
         end
 
-        Transform::Case.hash(serialized_attributes, self.class.serialize_key_transform)
+        Transform::Case.hash(serialized_attributes, self.class.output_key_format)
       end
 
       private

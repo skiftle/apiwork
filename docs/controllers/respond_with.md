@@ -358,7 +358,7 @@ Response keys are transformed based on your schema configuration:
 
 ```ruby
 class Api::V1::PostSchema < Apiwork::Schema::Base
-  serialize_key_transform :camel  # snake_case → camelCase
+  output_key_format :camel  # snake_case → camelCase
 
   model Post
 

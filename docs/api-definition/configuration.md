@@ -283,8 +283,8 @@ Configure Apiwork globally in `config/initializers/apiwork.rb`:
 ```ruby
 Apiwork.configure do |config|
   # Key transformation
-  config.serialize_key_transform = :camel      # camelCase in JSON
-  config.deserialize_key_transform = :snake    # snake_case in Rails
+  config.output_key_format = :camel      # camelCase in JSON
+  config.input_key_format = :snake    # snake_case in Rails
 
   # Pagination
   config.default_page_size = 20

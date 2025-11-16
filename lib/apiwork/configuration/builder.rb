@@ -7,24 +7,24 @@ module Apiwork
     class Builder
       # Configuration settings with validation
       VALIDATED_SETTINGS = {
-        serialize_key_transform: -> { Transform::Case.valid_strategies },
-        deserialize_key_transform: -> { Transform::Case.valid_strategies }
+        output_key_format: -> { Transform::Case.valid_strategies },
+        input_key_format: -> { Transform::Case.valid_strategies }
       }.freeze
 
       def initialize(storage)
         @storage = storage
       end
 
-      # Set serialize key transform strategy
-      def serialize_key_transform(value)
-        validate_setting!(:serialize_key_transform, value)
-        @storage[:serialize_key_transform] = value
+      # Set output key format strategy
+      def output_key_format(value)
+        validate_setting!(:output_key_format, value)
+        @storage[:output_key_format] = value
       end
 
-      # Set deserialize key transform strategy
-      def deserialize_key_transform(value)
-        validate_setting!(:deserialize_key_transform, value)
-        @storage[:deserialize_key_transform] = value
+      # Set input key format strategy
+      def input_key_format(value)
+        validate_setting!(:input_key_format, value)
+        @storage[:input_key_format] = value
       end
 
       # Set default sort order

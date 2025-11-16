@@ -6,7 +6,7 @@ module Api
       model Account
 
       configure do
-        serialize_key_transform :camelize_lower
+        output_key_format :camelize_lower
       end
 
       attribute :id

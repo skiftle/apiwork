@@ -59,9 +59,9 @@ module Apiwork
         coerced_data = @coerce ? coerce(data) : data
 
         # Step 1.5: For output, reverse key transformation before validation
-        # Output data is already serialized with serialize_key_transform applied,
+        # Output data is already serialized with output_key_format applied,
         # but validation must happen against snake_case definition keys
-        data_for_validation = if @direction == :output && schema_class&.serialize_key_transform
+        data_for_validation = if @direction == :output && schema_class&.output_key_format
                                 Transform::Case.hash(coerced_data, :underscore)
                               else
                                 coerced_data
@@ -73,8 +73,8 @@ module Apiwork
         # Step 2.5: For output, transform error paths back to serialized key format
         # Validation happened against snake_case keys, but errors should reference
         # the actual serialized key format (e.g., camelCase)
-        if validated[:issues].any? && @direction == :output && schema_class&.serialize_key_transform
-          validated[:issues] = transform_issue_paths(validated[:issues], schema_class.serialize_key_transform)
+        if validated[:issues].any? && @direction == :output && schema_class&.output_key_format
+          validated[:issues] = transform_issue_paths(validated[:issues], schema_class.output_key_format)
         end
 
         # Step 3: Handle errors based on direction

@@ -20,7 +20,6 @@ module Apiwork
       Apiwork.register_generator(:zod, Apiwork::Generator::Zod)
       Apiwork.register_generator(:typescript, Apiwork::Generator::Typescript)
 
-      # Load API definitions (core descriptors registered per-API in configure_from_path)
       if Rails.root.join('config/apis').exist?
         Dir[Rails.root.join('config/apis/**/*.rb')].sort.each do |file|
           load file
