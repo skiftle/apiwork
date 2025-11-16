@@ -3,10 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe 'Abstract Contract' do
-  describe 'abstract_class behavior' do
+  describe 'abstract behavior' do
     let(:abstract_contract) do
       Class.new(Apiwork::Contract::Base) do
-        self.abstract_class = true
+        abstract
       end
     end
 
@@ -16,31 +16,20 @@ RSpec.describe 'Abstract Contract' do
       end
     end
 
-    it 'allows setting abstract_class to true' do
-      expect(abstract_contract.abstract_class).to be true
+    it 'allows marking class as abstract' do
+      expect(abstract_contract.abstract?).to be true
     end
 
-    it 'provides abstract_class? helper' do
-      expect(abstract_contract.abstract_class?).to be true
+    it 'does not inherit abstract flag to subclasses' do
+      expect(concrete_contract.abstract?).to be false
     end
 
-    it 'does not inherit abstract_class flag to subclasses' do
-      expect(concrete_contract.abstract_class).to be false
-    end
-
-    it 'subclass can explicitly set abstract_class again' do
+    it 'subclass can explicitly be marked as abstract again' do
       another_abstract = Class.new(concrete_contract) do
-        self.abstract_class = true
+        abstract
       end
 
-      expect(another_abstract.abstract_class).to be true
-      expect(another_abstract.abstract_class?).to be true
-    end
-
-    it 'uses underscore-prefixed internal attribute' do
-      # Verify internal implementation uses _abstract_class
-      expect(abstract_contract).to respond_to(:_abstract_class)
-      expect(abstract_contract._abstract_class).to be true
+      expect(another_abstract.abstract?).to be true
     end
   end
 
@@ -49,7 +38,7 @@ RSpec.describe 'Abstract Contract' do
       # Define abstract base contract for testing
       module TestNamespace
         class BaseContract < Apiwork::Contract::Base
-          self.abstract_class = true
+          abstract
         end
 
         class ConcreteContract < BaseContract
@@ -70,12 +59,12 @@ RSpec.describe 'Abstract Contract' do
     end
 
     it 'BaseContract is abstract' do
-      expect(TestNamespace::BaseContract.abstract_class).to be true
+      expect(TestNamespace::BaseContract.abstract?).to be true
     end
 
     it 'ConcreteContract inherits from BaseContract but is not abstract' do
       expect(TestNamespace::ConcreteContract.superclass).to eq(TestNamespace::BaseContract)
-      expect(TestNamespace::ConcreteContract.abstract_class).to be false
+      expect(TestNamespace::ConcreteContract.abstract?).to be false
     end
 
     it 'ConcreteContract can define actions normally' do

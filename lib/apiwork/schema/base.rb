@@ -53,7 +53,7 @@ module Apiwork
 
         def auto_detect_model
           return if _model_class.present?
-          return if abstract_class? || name.nil?
+          return if abstract? || name.nil?
 
           schema_name = name.demodulize
           model_name = schema_name.sub(/Schema$/, '')
@@ -73,7 +73,7 @@ module Apiwork
             code: :model_not_found,
             detail: "Could not find model '#{model_name}' for #{name}. " \
                     "Either create the model, declare it explicitly with 'model YourModel', " \
-                    "or mark this schema as abstract with 'self.abstract_class = true'",
+                    "or mark this schema as abstract with 'abstract'",
             path: []
           )
 
@@ -139,19 +139,11 @@ module Apiwork
         end
 
         def output_key_format
-          Configuration::Resolver.resolve(
-            :output_key_format,
-            schema_class: self,
-            api_class: api_class
-          )
+          Configuration::Resolver.resolve(:output_key_format, schema_class: self)
         end
 
         def input_key_format
-          Configuration::Resolver.resolve(
-            :input_key_format,
-            schema_class: self,
-            api_class: api_class
-          )
+          Configuration::Resolver.resolve(:input_key_format, schema_class: self)
         end
 
         def output_key_format=(value)
@@ -213,27 +205,15 @@ module Apiwork
         end
 
         def default_sort
-          Configuration::Resolver.resolve(
-            :default_sort,
-            schema_class: self,
-            api_class: api_class
-          )
+          Configuration::Resolver.resolve(:default_sort, schema_class: self)
         end
 
         def default_page_size
-          Configuration::Resolver.resolve(
-            :default_page_size,
-            schema_class: self,
-            api_class: api_class
-          )
+          Configuration::Resolver.resolve(:default_page_size, schema_class: self)
         end
 
         def max_page_size
-          Configuration::Resolver.resolve(
-            :max_page_size,
-            schema_class: self,
-            api_class: api_class
-          )
+          Configuration::Resolver.resolve(:max_page_size, schema_class: self)
         end
 
         # Validate all attribute definitions (call explicitly in tests after database setup)

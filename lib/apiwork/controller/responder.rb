@@ -116,7 +116,7 @@ module Apiwork
       def build_includes_hash_for_eager_loading(includes_param)
         return {} if includes_param.blank?
 
-        IncludesBuilder.new(schema: schema_class).build(
+        Query::IncludesResolver.new(schema: schema_class).build(
           params: { include: includes_param },
           for_collection: false
         )

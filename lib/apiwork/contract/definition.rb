@@ -13,6 +13,10 @@ module Apiwork
         @params = {}
       end
 
+      def configuration(key)
+        Configuration::Resolver.resolve(key, contract_class: @contract_class)
+      end
+
       def introspect
         Serialization.serialize_definition(self)
       end
@@ -413,9 +417,7 @@ module Apiwork
         # Check max items
         max_items = param_options[:max_items] || Configuration::Resolver.resolve(
           :max_array_items,
-          contract_class: @contract_class,
-          schema_class: @contract_class.schema_class,
-          api_class: @contract_class.api_class
+          contract_class: @contract_class
         )
         if array.length > max_items
           issues << Issue.new(

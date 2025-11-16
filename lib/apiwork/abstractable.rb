@@ -5,26 +5,21 @@ module Apiwork
     extend ActiveSupport::Concern
 
     included do
-      class_attribute :_abstract_class, default: false
+      class_attribute :abstract_class, instance_predicate: false, default: false
     end
 
     class_methods do
-      def abstract_class=(value)
-        self._abstract_class = value
+      def abstract
+        self.abstract_class = true
       end
 
-      def abstract_class
-        _abstract_class
-      end
-
-      def abstract_class?
-        _abstract_class
+      def abstract?
+        abstract_class
       end
 
       def inherited(subclass)
         super
-        # Reset abstract flag so subclass doesn't inherit it
-        subclass._abstract_class = false
+        subclass.abstract_class = false
       end
     end
   end

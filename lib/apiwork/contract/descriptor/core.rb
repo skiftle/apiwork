@@ -15,7 +15,7 @@ module Apiwork
             builder.instance_eval do
               type :page do
                 param :number, type: :integer, required: false, min: 1
-                param :size, type: :integer, required: false, min: 1, max: 200
+                param :size, type: :integer, required: false, min: 1, max: configuration(:max_page_size)
               end
 
               type :pagination do

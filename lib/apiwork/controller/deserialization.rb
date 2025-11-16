@@ -36,12 +36,7 @@ module Apiwork
       end
 
       def key_transform
-        Configuration::Resolver.resolve(
-          :input_key_format,
-          contract_class: current_contract,
-          schema_class: current_contract.schema_class,
-          api_class: current_contract.api_class
-        )
+        Configuration::Resolver.resolve(:input_key_format, contract_class: current_contract)
       end
 
       def transform_input_keys(hash, strategy)
