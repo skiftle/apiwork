@@ -90,8 +90,8 @@ module Apiwork
           root_key = determine_root_key(resource)
           resp = { ok: true, root_key => json_data }
         else
-          # No schema: contract determines format
-          resp = json_data
+          # No schema: always add ok: true wrapper
+          resp = { ok: true }.merge(json_data)
         end
 
         resp[:meta] = meta if meta.present?
