@@ -38,6 +38,10 @@ module Apiwork
           # This ensures enums are available even if actions are cached
           Schema::TypeRegistry.register_contract_enums(self, ref)
 
+          # Register nested_payload union if schema has writable associations
+          # This ensures the union type is available even if no actions are defined
+          Schema::TypeRegistry.register_nested_payload_union(self, ref)
+
           prepend Schema::Extension unless ancestors.include?(Schema::Extension)
         end
 

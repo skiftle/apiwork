@@ -61,7 +61,22 @@ module Apiwork
             # Check if already registered
             unless Descriptor::Registry.resolve_type(payload_type_name, contract_class: contract_class)
               Descriptor::Registry.register_type(payload_type_name, scope: contract_class, api_class: contract_class.api_class) do
-                InputGenerator.generate_writable_params(self, schema_class, context)
+                InputGenerator.generate_writable_params(self, schema_class, context, nested: false)
+              end
+            end
+
+            # Register nested payload type (discriminated union) if schema has writable associations
+            if schema_class.association_definitions.any? { |_, ad| ad.writable? }
+              nested_payload_type_name = :nested_payload
+              unless Descriptor::Registry.resolve_type(nested_payload_type_name, contract_class: contract_class)
+                # Create union definition
+                union_def = UnionDefinition.new(contract_class, discriminator: :_type)
+                InputGenerator.populate_nested_payload_union(union_def, schema_class, contract_class)
+                union_data = union_def.serialize
+
+                # Register as top-level union
+                Descriptor::Registry.register_union(nested_payload_type_name, union_data,
+                                                    scope: contract_class, api_class: contract_class.api_class)
               end
             end
 
@@ -70,8 +85,31 @@ module Apiwork
             definition.param root_key, type: payload_type_name, required: true
           end
 
+          # Populate union definition with create and update variants
+          def populate_nested_payload_union(union_def, schema_class, contract_class)
+            # Create variant
+            union_def.variant type: :object, tag: 'create' do
+              param :_type, type: :literal, value: 'create'
+              InputGenerator.generate_writable_params(self, schema_class, :create, nested: true)
+              # Add _destroy if any association has allow_destroy
+              if schema_class.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
+                param :_destroy, type: :boolean, required: false
+              end
+            end
+
+            # Update variant
+            union_def.variant type: :object, tag: 'update' do
+              param :_type, type: :literal, value: 'update'
+              InputGenerator.generate_writable_params(self, schema_class, :update, nested: true)
+              # Add _destroy if any association has allow_destroy
+              if schema_class.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
+                param :_destroy, type: :boolean, required: false
+              end
+            end
+          end
+
           # Generate writable parameters from schema attributes and associations
-          def generate_writable_params(definition, schema_class, context)
+          def generate_writable_params(definition, schema_class, context, nested: false)
             # Generate from writable attributes
             schema_class.attribute_definitions.each do |name, attribute_definition|
               next unless attribute_definition.writable_for?(context)
@@ -99,11 +137,11 @@ module Apiwork
               next unless association_definition.writable_for?(context)
 
               # Try to get the association's schema for typed payloads
-              # Only use typed payloads when allow_destroy is false (typed payloads don't include _destroy)
               association_schema = TypeRegistry.resolve_association_resource(association_definition)
               association_payload_type = nil
 
-              if association_schema && !association_definition.allow_destroy
+              association_contract = nil
+              if association_schema
                 # Try to auto-import the association's contract and reuse its payload type
                 import_alias = TypeRegistry.auto_import_association_contract(
                   definition.contract_class,
@@ -112,8 +150,12 @@ module Apiwork
                 )
 
                 if import_alias
-                  # Reference imported payload type: e.g., :comment_create_payload
-                  association_payload_type = :"#{import_alias}_#{context}_payload"
+                  # Always use nested_payload type for nested associations (discriminated union)
+                  association_payload_type = :"#{import_alias}_nested_payload"
+
+                  # Get the association's contract for nested type resolution
+                  # This is needed for deep nesting transformations
+                  association_contract = SchemaRegistry.contract_for_schema(association_schema)
                 end
               end
 
@@ -122,6 +164,9 @@ module Apiwork
                 nullable: association_definition.nullable?,
                 as: "#{name}_attributes".to_sym # Transform for Rails accepts_nested_attributes_for
               }
+
+              # Store the contract that owns the nested_payload type for later resolution
+              param_options[:type_contract_class] = association_contract if association_contract
 
               # Set type based on whether we have a typed payload and whether it's a collection
               if association_payload_type
@@ -132,7 +177,7 @@ module Apiwork
                   param_options[:type] = association_payload_type
                 end
               else
-                # Fall back to generic types (either because allow_destroy or no schema)
+                # Fall back to generic types when no schema exists
                 param_options[:type] = association_definition.collection? ? :array : :object
               end
 
