@@ -11,7 +11,7 @@ module Apiwork
           end
 
           def register_core_descriptors(api_class)
-            builder = GlobalBuilder.new(api_class: api_class)
+            builder = Builder.new(api_class: api_class)
             builder.instance_eval do
               type :page do
                 param :number, type: :integer, required: false
@@ -87,7 +87,7 @@ module Apiwork
 
             @api_sort_descriptor_registered[api_class] = true
 
-            builder = GlobalBuilder.new(api_class: api_class)
+            builder = Builder.new(api_class: api_class)
             builder.instance_eval do
               enum :sort_direction, %w[asc desc]
             end
@@ -107,7 +107,7 @@ module Apiwork
           end
 
           def register_string_filter(api_class:)
-            builder = GlobalBuilder.new(api_class: api_class)
+            builder = Builder.new(api_class: api_class)
             builder.instance_eval do
               type :string_filter do
                 param :eq, type: :string, required: false
@@ -120,7 +120,7 @@ module Apiwork
           end
 
           def register_integer_filter_between(api_class:)
-            builder = GlobalBuilder.new(api_class: api_class)
+            builder = Builder.new(api_class: api_class)
             builder.instance_eval do
               type :integer_filter_between do
                 param :from, type: :integer, required: false
@@ -130,7 +130,7 @@ module Apiwork
           end
 
           def register_integer_filter(api_class:)
-            builder = GlobalBuilder.new(api_class: api_class)
+            builder = Builder.new(api_class: api_class)
             builder.instance_eval do
               type :integer_filter do
                 param :eq, type: :integer, required: false
@@ -145,7 +145,7 @@ module Apiwork
           end
 
           def register_decimal_filter_between(api_class:)
-            builder = GlobalBuilder.new(api_class: api_class)
+            builder = Builder.new(api_class: api_class)
             builder.instance_eval do
               type :decimal_filter_between do
                 param :from, type: :decimal, required: false
@@ -155,7 +155,7 @@ module Apiwork
           end
 
           def register_decimal_filter(api_class:)
-            builder = GlobalBuilder.new(api_class: api_class)
+            builder = Builder.new(api_class: api_class)
             builder.instance_eval do
               type :decimal_filter do
                 param :eq, type: :decimal, required: false
@@ -170,7 +170,7 @@ module Apiwork
           end
 
           def register_boolean_filter(api_class:)
-            builder = GlobalBuilder.new(api_class: api_class)
+            builder = Builder.new(api_class: api_class)
             builder.instance_eval do
               type :boolean_filter do
                 param :eq, type: :boolean, required: false
@@ -179,7 +179,7 @@ module Apiwork
           end
 
           def register_date_filter_between(api_class:)
-            builder = GlobalBuilder.new(api_class: api_class)
+            builder = Builder.new(api_class: api_class)
             builder.instance_eval do
               type :date_filter_between do
                 param :from, type: :date, required: false
@@ -189,7 +189,7 @@ module Apiwork
           end
 
           def register_date_filter(api_class:)
-            builder = GlobalBuilder.new(api_class: api_class)
+            builder = Builder.new(api_class: api_class)
             builder.instance_eval do
               type :date_filter do
                 param :eq, type: :date, required: false
@@ -204,7 +204,7 @@ module Apiwork
           end
 
           def register_datetime_filter_between(api_class:)
-            builder = GlobalBuilder.new(api_class: api_class)
+            builder = Builder.new(api_class: api_class)
             builder.instance_eval do
               type :datetime_filter_between do
                 param :from, type: :datetime, required: false
@@ -214,7 +214,7 @@ module Apiwork
           end
 
           def register_datetime_filter(api_class:)
-            builder = GlobalBuilder.new(api_class: api_class)
+            builder = Builder.new(api_class: api_class)
             builder.instance_eval do
               type :datetime_filter do
                 param :eq, type: :datetime, required: false
@@ -229,7 +229,7 @@ module Apiwork
           end
 
           def register_uuid_filter(api_class:)
-            builder = GlobalBuilder.new(api_class: api_class)
+            builder = Builder.new(api_class: api_class)
             builder.instance_eval do
               type :uuid_filter do
                 param :eq, type: :uuid, required: false
