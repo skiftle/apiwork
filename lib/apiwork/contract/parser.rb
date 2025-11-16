@@ -10,7 +10,7 @@ module Apiwork
     # Combines validation and transformation in a single step (Zod-like API):
     # 1. Coerces types (string → Integer, Date, etc)
     # 2. Validates data against contract's definition (input_definition or output_definition)
-    # 3. Applies deserialization transformers (e.g., blank_to_nil for null_to_empty attributes)
+    # 3. Applies deserialization transformers (e.g., blank_to_nil for empty attributes)
     # 4. Transforms validated data (nested attributes, etc.)
     #
     # Usage:
@@ -84,7 +84,7 @@ module Apiwork
 
         # Step 5: Apply deserialization transformers (only for input, after validation)
         # Validates "" (which is valid), then transforms to nil for database
-        # This allows null_to_empty to reject null input while accepting empty strings
+        # This allows empty to reject null input while accepting empty strings
         deserialized_data = if @direction == :input
                               apply_deserialize_transformers(validated[:params])
                             else

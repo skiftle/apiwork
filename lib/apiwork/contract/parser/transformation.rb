@@ -72,10 +72,41 @@ module Apiwork
               transformed[name] = value.map do |item|
                 item.is_a?(Hash) ? apply_transformations(item, param_def[:shape]) : item
               end
+            elsif param_def[:type] == :array && param_def[:of] && value.is_a?(Array)
+              # Handle arrays with custom types (of: :custom_type)
+              # Resolve the custom type to get its shape for transformation
+              shape = resolve_custom_type_shape(param_def[:of], definition)
+              if shape
+                transformed[name] = value.map do |item|
+                  item.is_a?(Hash) ? apply_transformations(item, shape) : item
+                end
+              end
             end
           end
 
           transformed
+        end
+
+        # Resolve a custom type to its shape definition for transformation
+        # This allows recursive transformation of arrays with custom types (of: :custom_type)
+        def resolve_custom_type_shape(type_name, definition)
+          return nil unless definition&.contract_class
+
+          # Try to resolve the custom type from the contract
+          custom_type_block = definition.contract_class.resolve_custom_type(type_name)
+          return nil unless custom_type_block
+
+          # Create a temporary definition and expand the custom type
+          temp_definition = Apiwork::Contract::Definition.new(
+            type: definition.type,
+            contract_class: definition.contract_class,
+            action_name: definition.action_name
+          )
+
+          # Expand the custom type to get its shape
+          temp_definition.instance_eval(&custom_type_block)
+
+          temp_definition
         end
       end
     end

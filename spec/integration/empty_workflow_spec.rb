@@ -2,14 +2,14 @@
 
 require 'rails_helper'
 
-# null_to_empty attribute option provides bidirectional transformation:
+# empty attribute option provides bidirectional transformation:
 # - Serialize (output): nil → "" (frontend always gets string, never null)
 # - Deserialize (input): "" → nil (database stores nil for empty strings)
 #
 # This allows frontend to work with strings (no nullable types needed),
 # while backend normalizes empty values to nil in the database.
 
-RSpec.describe 'null_to_empty workflow', type: :request do
+RSpec.describe 'empty workflow', type: :request do
   describe 'POST /api/v1/users' do
     context 'when name is empty string' do
       it 'converts empty string to nil in database' do
@@ -182,7 +182,7 @@ RSpec.describe 'null_to_empty workflow', type: :request do
   end
 
   describe 'attribute specificity' do
-    context 'when null_to_empty only applies to name attribute' do
+    context 'when empty only applies to name attribute' do
       let!(:user) { User.create!(email: nil, name: nil) }
 
       it 'transforms name but not email' do
@@ -190,10 +190,10 @@ RSpec.describe 'null_to_empty workflow', type: :request do
 
         json = JSON.parse(response.body)
 
-        # name has null_to_empty → returns ""
+        # name has empty → returns ""
         expect(json.dig('user', 'name')).to eq('')
 
-        # email does NOT have null_to_empty → returns nil
+        # email does NOT have empty → returns nil
         expect(json.dig('user', 'email')).to be_nil
       end
     end
