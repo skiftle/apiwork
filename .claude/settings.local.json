@@ -50,7 +50,8 @@
       "Bash(BUNDLE_GEMFILE=spec/dummy/Gemfile bundle exec rails runner:*)",
       "Bash(cat:*)",
       "Bash(git -C /Users/joakim/GitHub/apiwork log --oneline --all -20)",
-      "Bash(xargs:*)"
+      "Bash(xargs:*)",
+      "Bash(/tmp/backup_null_to_empty.rb:*)"
     ],
     "deny": [],
     "ask": []
