@@ -55,9 +55,17 @@ module Apiwork
 
         variant_schemas = variants.map { |variant| map_type_definition(variant, nil) }
 
-        # Format with line breaks for readability
-        variants_str = variant_schemas.map { |v| "  #{v}" }.join(",\n")
-        "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.union([\n#{variants_str}\n]);"
+        # Use discriminatedUnion if discriminator is present
+        if type_shape[:discriminator]
+          discriminator_key = transform_key(type_shape[:discriminator])
+          # Format with line breaks for readability
+          variants_str = variant_schemas.map { |v| "  #{v}" }.join(",\n")
+          "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.discriminatedUnion('#{discriminator_key}', [\n#{variants_str}\n]);"
+        else
+          # Format with line breaks for readability
+          variants_str = variant_schemas.map { |v| "  #{v}" }.join(",\n")
+          "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.union([\n#{variants_str}\n]);"
+        end
       end
 
       # Build Zod schema for action input

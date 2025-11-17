@@ -16,7 +16,7 @@ module Apiwork
     end
 
     def self.all
-      Registry.all_classes
+      Registry.all
     end
   end
 end

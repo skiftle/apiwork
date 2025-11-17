@@ -9,7 +9,7 @@ module Apiwork
           # Eager load API classes if in Rails
           eager_load_apis if defined?(::Rails)
 
-          api_classes = Registry.all_classes
+          api_classes = Registry.all
           builder_instance = self
 
           set = ActionDispatch::Routing::RouteSet.new

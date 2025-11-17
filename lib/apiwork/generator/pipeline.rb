@@ -81,12 +81,12 @@ module Apiwork
       # @return [Class] API class
       # @raise [ArgumentError] If API not found
       def self.find_api(api_path)
-        api_class = API::Registry.all_classes.find do |klass|
+        api_class = API::Registry.all.find do |klass|
           klass.metadata&.path == api_path
         end
 
         unless api_class
-          available = API::Registry.all_classes.map { |k| k.metadata&.path }.compact
+          available = API::Registry.all.map { |k| k.metadata&.path }.compact
           raise ArgumentError,
                 "API not found: #{api_path}. Available APIs: #{available.join(', ')}"
         end
@@ -99,7 +99,7 @@ module Apiwork
       #
       # @return [Array<Class>] API classes with metadata
       def self.find_all_apis
-        API::Registry.all_classes.select(&:metadata)
+        API::Registry.all.select(&:metadata)
       end
       private_class_method :find_all_apis
 

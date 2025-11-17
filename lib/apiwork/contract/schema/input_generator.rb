@@ -73,29 +73,6 @@ module Apiwork
             definition.param root_key, type: payload_type_name, required: true
           end
 
-          # Populate union definition with create and update variants
-          def populate_nested_payload_union(union_def, schema_class, contract_class)
-            # Create variant
-            union_def.variant type: :object, tag: 'create' do
-              param :_type, type: :literal, value: 'create'
-              InputGenerator.generate_writable_params(self, schema_class, :create, nested: true)
-              # Add _destroy if any association has allow_destroy
-              if schema_class.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
-                param :_destroy, type: :boolean, required: false
-              end
-            end
-
-            # Update variant
-            union_def.variant type: :object, tag: 'update' do
-              param :_type, type: :literal, value: 'update'
-              InputGenerator.generate_writable_params(self, schema_class, :update, nested: true)
-              # Add _destroy if any association has allow_destroy
-              if schema_class.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
-                param :_destroy, type: :boolean, required: false
-              end
-            end
-          end
-
           # Generate writable parameters from schema attributes and associations
           def generate_writable_params(definition, schema_class, context, nested: false)
             # Generate from writable attributes

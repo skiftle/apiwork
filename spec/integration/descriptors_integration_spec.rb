@@ -127,7 +127,7 @@ RSpec.describe 'Descriptors Integration', type: :request do
 
     after(:all) do
       # Clean up
-      Apiwork::API::Registry.instance_variable_get(:@apis).delete('/api/v2')
+      Apiwork::API::Registry.unregister('/api/v2')
     end
 
     it 'keeps descriptors isolated between APIs' do
@@ -216,7 +216,7 @@ RSpec.describe 'Descriptors Integration', type: :request do
     end
 
     after(:all) do
-      Apiwork::API::Registry.instance_variable_get(:@apis).delete('/api/contracts')
+      Apiwork::API::Registry.unregister('/api/contracts')
     end
 
     it 'includes contract-scoped types with proper qualification' do
