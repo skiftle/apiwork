@@ -10,7 +10,8 @@ RSpec.describe 'Zod Generation for Associations', type: :integration do
 
   let(:path) { '/api/v1' }
   let(:generator) { Apiwork::Generator::Zod.new(path) }
-  let(:output) { generator.generate }
+  # Use let! to generate output once and share across all tests in this group
+  let!(:output) { generator.generate }
 
   describe 'Post output schema with has_many :comments association' do
     it 'generates comment association as CommentSchema array, not z.string()' do

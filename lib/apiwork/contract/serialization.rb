@@ -299,16 +299,25 @@ module Apiwork
         def is_imported_type?(type_name, definition)
           return false unless definition.contract_class.respond_to?(:imports)
 
+          # Use cached lookup set for fast O(1) checks instead of iterating
+          import_prefixes = import_prefix_cache(definition.contract_class)
+
           # Direct import match (e.g., :address)
-          return true if definition.contract_class.imports.key?(type_name)
+          return true if import_prefixes[:direct].include?(type_name)
 
           # Check for prefixed import types (e.g., :address_sort → :address import)
-          definition.contract_class.imports.each_key do |import_alias|
-            prefix = "#{import_alias}_"
-            return true if type_name.to_s.start_with?(prefix)
-          end
+          type_name_str = type_name.to_s
+          import_prefixes[:prefixes].any? { |prefix| type_name_str.start_with?(prefix) }
+        end
 
-          false
+        # Cache import prefixes per contract class to avoid repeated iterations
+        def import_prefix_cache(contract_class)
+          @import_prefix_cache ||= {}
+          @import_prefix_cache[contract_class] ||= begin
+            direct = Set.new(contract_class.imports.keys)
+            prefixes = contract_class.imports.keys.map { |alias_name| "#{alias_name}_" }
+            { direct: direct, prefixes: prefixes }
+          end
         end
       end
     end

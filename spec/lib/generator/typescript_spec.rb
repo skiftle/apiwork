@@ -60,7 +60,8 @@ RSpec.describe Apiwork::Generator::Typescript do
   end
 
   describe '#generate' do
-    let(:output) { generator.generate }
+    # Use let! to generate output once and share across all tests
+    let!(:output) { generator.generate }
 
     it 'generates valid TypeScript code' do
       expect(output).to be_a(String)
