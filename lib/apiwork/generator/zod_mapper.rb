@@ -62,9 +62,9 @@ module Apiwork
         # Use discriminatedUnion if discriminator is present
         if type_shape[:discriminator]
           discriminator_key = transform_key(type_shape[:discriminator])
-          "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.discriminatedUnion('#{discriminator_key}', [\n#{variants_str}\n]);"
+          "export const #{schema_name}Schema = z.discriminatedUnion('#{discriminator_key}', [\n#{variants_str}\n]);"
         else
-          "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.union([\n#{variants_str}\n]);"
+          "export const #{schema_name}Schema = z.union([\n#{variants_str}\n]);"
         end
       end
 
@@ -105,7 +105,7 @@ module Apiwork
       def map_field_definition(definition, action_name = nil)
         return 'z.string()' unless definition.is_a?(Hash)
 
-        if definition[:type].is_a?(Symbol) && types.key?(definition[:type])
+        if definition[:type].is_a?(Symbol) && (types.key?(definition[:type]) || enums.key?(definition[:type]))
           schema_name = pascal_case(definition[:type])
           type = "#{schema_name}Schema"
           return apply_modifiers(type, definition, action_name)

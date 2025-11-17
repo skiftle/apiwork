@@ -74,7 +74,7 @@ module Apiwork
         enums.map do |enum_name, enum_values|
           schema_name = zod_mapper.pascal_case(enum_name)
           values_str = enum_values.sort.map { |v| "'#{v}'" }.join(', ')
-          "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.enum([#{values_str}]);"
+          "export const #{schema_name}Schema = z.enum([#{values_str}]);"
         end.join("\n\n")
       end
 
