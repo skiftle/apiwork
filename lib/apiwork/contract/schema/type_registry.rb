@@ -34,6 +34,19 @@ module Apiwork
             end
           end
 
+          # Unified method to determine filter type for any attribute (enum or primitive)
+          def filter_type_for(attribute_definition, contract_class)
+            return enum_filter_type(attribute_definition, contract_class) if attribute_definition.enum
+
+            determine_filter_type(attribute_definition.type)
+          end
+
+          # Get filter type for enum attributes
+          def enum_filter_type(attribute_definition, contract_class)
+            scoped_enum_name = Descriptor::EnumStore.scoped_name(contract_class, attribute_definition.name)
+            :"#{scoped_enum_name}_filter"
+          end
+
           def register_resource_filter_type(contract_class, schema_class, visited: Set.new, depth: 0)
             # Circular reference and depth protection
             return nil if visited.include?(schema_class)
@@ -66,15 +79,8 @@ module Apiwork
               schema_class.attribute_definitions.each do |name, attribute_definition|
                 next unless attribute_definition.filterable?
 
-                # For enum attributes, use scoped enum-specific filter
-                # For primitive types, use type-based filter
-                filter_type = if attribute_definition.enum
-                                # Get the scoped enum name (e.g., :kind → :client_kind)
-                                scoped_enum_name = Descriptor::EnumStore.scoped_name(contract_class, name)
-                                :"#{scoped_enum_name}_filter"
-                              else
-                                TypeRegistry.determine_filter_type(attribute_definition.type)
-                              end
+                # Determine filter type (enum-specific or primitive)
+                filter_type = TypeRegistry.filter_type_for(attribute_definition, contract_class)
 
                 # Support shorthand: allow primitive value OR filter object
                 param name, type: :union, required: false do
@@ -407,10 +413,6 @@ module Apiwork
 
               # Register at contract level (with filter type generation)
               Descriptor::Registry.register_enum(name, attribute_definition.enum, scope: contract_class, api_class: api_class)
-
-              # Also register at schema level (raw storage only, no filter type)
-              # This provides fallback lookup when different contract instances exist (anonymous vs explicit)
-              Descriptor::EnumStore.register_enum(name, attribute_definition.enum, scope: schema_class, api_class: api_class)
             end
           end
 
