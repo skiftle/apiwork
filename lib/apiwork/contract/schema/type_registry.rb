@@ -197,6 +197,31 @@ module Apiwork
             type_name
           end
 
+          def register_resource_page_type(contract_class, schema_class)
+            # Resolve max_page_size through full inheritance chain (contract → schema → api)
+            resolved_max_page_size = Configuration::Resolver.resolve(:max_page_size, contract_class: contract_class, schema_class: schema_class,
+                                                                                     api_class: contract_class.api_class)
+            api_max_page_size = Configuration::Resolver.resolve(:max_page_size, api_class: contract_class.api_class)
+
+            # If resolved max is same as API default, use global :page type
+            return :page if resolved_max_page_size == api_max_page_size
+
+            # Generate schema-specific page type name using same logic as filter/sort
+            type_name = build_type_name(schema_class, :page, 1)
+
+            # Check if already registered
+            existing = Descriptor::Registry.resolve_type(type_name, contract_class: contract_class)
+            return type_name if existing
+
+            # Register new page type with resolved max (global scope, no contract prefix)
+            Descriptor::Registry.register_type(type_name, api_class: contract_class.api_class) do
+              param :number, type: :integer, required: false, min: 1
+              param :size, type: :integer, required: false, min: 1, max: resolved_max_page_size
+            end
+
+            type_name
+          end
+
           def resolve_association_resource(association_definition)
             # If schema_class is explicitly set, use it
             if association_definition.schema_class
