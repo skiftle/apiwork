@@ -35,6 +35,22 @@ module Apiwork
 
             store = storage(api_class)
 
+            # 0. Check if name matches an import alias directly (e.g., :post from import PostContract, as: :post)
+            if contract.respond_to?(:imports) && contract.imports.key?(name)
+              # Resolve in the imported contract's context
+              imported_contract = contract.imports[name]
+              # Use the imported contract's own scoped name for the alias
+              # e.g., :post in CommentContract → resolve :post in PostContract context
+              result = resolve(
+                name,
+                contract_class: imported_contract,
+                api_class: api_class,
+                scope: nil,
+                visited_contracts: visited_contracts
+              )
+              return result if result
+            end
+
             # 1. Try scoped name (with contract prefix)
             if contract
               scoped_name_value = scoped_name(contract, name)

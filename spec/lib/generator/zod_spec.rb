@@ -276,13 +276,23 @@ RSpec.describe Apiwork::Generator::Zod do
             dep_idx = schema_index(dep)
             next unless dep_idx # Skip if dependency not in output
 
-            # Check if this is a circular dependency (both types depend on each other)
+            # Check if this is a circular dependency (both types depend on each other directly or indirectly)
             dep_def = introspect[:types][dep]
             dep_dependencies = dep_def ? extract_type_references(dep_def).reject { |d| d == dep } : []
-            is_circular = dep_dependencies.include?(type_name)
+            is_direct_circular = dep_dependencies.include?(type_name)
+
+            # Also check for indirect circularity (e.g., Article → Comment → Post → Comment)
+            # If dependency's dependencies also depend back on us (directly or through chain), skip
+            is_indirect_circular = dep_dependencies.any? do |transitive_dep|
+              transitive_def = introspect[:types][transitive_dep]
+              next false unless transitive_def
+
+              transitive_deps = extract_type_references(transitive_def).reject { |d| d == transitive_dep }
+              transitive_deps.include?(type_name) || transitive_deps.include?(dep)
+            end
 
             # For circular dependencies, order doesn't matter (both use z.lazy())
-            next if is_circular
+            next if is_direct_circular || is_indirect_circular
 
             expect(dep_idx).to be < schema_idx,
                                "#{dep} (##{dep_idx + 1}) should come before #{type_name} (##{schema_idx + 1})"
