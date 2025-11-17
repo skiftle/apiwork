@@ -36,6 +36,8 @@ module Apiwork
           # Auto-generate filter type for an enum
           # Creates a union type: enum value OR object with eq and in fields
           def register_enum_filter_type(enum_name:, scope:, api_class: nil)
+            # Get the scoped enum name (e.g., :kind → :client_kind)
+            scoped_enum_name = EnumStore.scoped_name(scope, enum_name)
             filter_name = :"#{enum_name}_filter"
 
             # Create union definition programmatically
@@ -43,13 +45,13 @@ module Apiwork
             contract_class = scope || Class.new(Apiwork::Contract::Base)
             union_def = Apiwork::Contract::UnionDefinition.new(contract_class)
 
-            # Add variant 1: the enum itself
-            union_def.variant(type: enum_name)
+            # Add variant 1: the enum itself (use scoped name)
+            union_def.variant(type: scoped_enum_name)
 
             # Add variant 2: partial object with eq and in fields (all fields optional via .partial())
             union_def.variant(type: :object, partial: true) do
-              param :eq, type: enum_name
-              param :in, type: :array, of: enum_name
+              param :eq, type: scoped_enum_name
+              param :in, type: :array, of: scoped_enum_name
             end
 
             # Serialize the union definition

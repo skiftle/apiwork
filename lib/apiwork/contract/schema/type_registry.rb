@@ -66,7 +66,15 @@ module Apiwork
               schema_class.attribute_definitions.each do |name, attribute_definition|
                 next unless attribute_definition.filterable?
 
-                filter_type = TypeRegistry.determine_filter_type(attribute_definition.type)
+                # For enum attributes, use scoped enum-specific filter
+                # For primitive types, use type-based filter
+                filter_type = if attribute_definition.enum
+                                # Get the scoped enum name (e.g., :kind → :client_kind)
+                                scoped_enum_name = Descriptor::EnumStore.scoped_name(contract_class, name)
+                                :"#{scoped_enum_name}_filter"
+                              else
+                                TypeRegistry.determine_filter_type(attribute_definition.type)
+                              end
 
                 # Support shorthand: allow primitive value OR filter object
                 param name, type: :union, required: false do

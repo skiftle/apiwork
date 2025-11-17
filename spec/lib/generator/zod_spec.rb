@@ -235,6 +235,25 @@ RSpec.describe Apiwork::Generator::Zod do
           expect(output).to include("export const #{schema_name}FilterSchema = z.union")
         end
       end
+
+      it 'generates enum filter schemas with correct enum schema references' do
+        # AccountStatusFilterSchema should reference AccountStatusSchema, not z.string()
+        expect(output).to include('export const AccountStatusFilterSchema = z.union([')
+
+        # Extract the AccountStatusFilterSchema definition
+        filter_match = output.match(/export const AccountStatusFilterSchema = z\.union\(\[.*?\]\);/m)
+        expect(filter_match).not_to be_nil, 'AccountStatusFilterSchema not found'
+        filter_schema = filter_match[0]
+
+        # First variant should be the enum schema itself
+        expect(filter_schema).to include('AccountStatusSchema')
+        # Second variant should be an object with eq and in fields that reference the enum schema
+        expect(filter_schema).to match(/eq:\s*AccountStatusSchema/)
+        expect(filter_schema).to match(/in:\s*z\.array\(AccountStatusSchema\)/)
+        # Should NOT use z.string() for enum references
+        expect(filter_schema).not_to match(/eq:\s*z\.string\(\)/)
+        expect(filter_schema).not_to match(/in:\s*z\.array\(z\.string\(\)\)/)
+      end
     end
 
     describe 'type mappings' do

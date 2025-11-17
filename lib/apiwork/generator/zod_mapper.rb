@@ -145,7 +145,21 @@ module Apiwork
         when nil
           'z.never()'
         else
-          enum_or_type_reference?(type) ? schema_reference(type) : map_primitive(definition)
+          result = enum_or_type_reference?(type) ? schema_reference(type) : map_primitive(definition)
+
+          # Check for enum field (important for union variants with enum)
+          if definition[:enum]
+            enum_ref = resolve_enum(definition[:enum])
+            if enum_ref.is_a?(Symbol) && enums.key?(enum_ref)
+              enum_name = pascal_case(enum_ref)
+              result = "#{enum_name}Schema"
+            elsif enum_ref.is_a?(Array)
+              values_str = enum_ref.map { |v| "'#{v}'" }.join(', ')
+              result = "z.enum([#{values_str}])"
+            end
+          end
+
+          result
         end
       end
 
