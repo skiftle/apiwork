@@ -97,6 +97,19 @@ RSpec.describe 'Descriptors Integration', type: :request do
       filter = introspection[:types][:account_status_filter]
       expect(filter[:type]).to eq(:union)
       expect(filter[:variants].size).to eq(2)
+
+      # Verify that enum filter uses scoped enum name (not unscoped)
+      # Variant 1: the enum itself
+      enum_variant = filter[:variants][0]
+      expect(enum_variant[:type]).to eq(:account_status), 'First variant should reference scoped enum'
+
+      # Variant 2: filter object with eq and in fields
+      object_variant = filter[:variants][1]
+      expect(object_variant[:type]).to eq(:object)
+      expect(object_variant[:shape][:eq][:type]).to eq(:account_status),
+                                                    'eq field should reference scoped enum'
+      expect(object_variant[:shape][:in][:of]).to eq(:account_status),
+                                                  'in array should reference scoped enum'
     end
 
     it 'includes schema attribute types in resource actions' do
