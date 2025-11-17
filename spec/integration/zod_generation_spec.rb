@@ -106,5 +106,46 @@ RSpec.describe 'Zod Generation for Associations', type: :integration do
       expect(update_pos).to be < union_pos,
                             "Update payload should come before union (update: #{update_pos}, union: #{union_pos})"
     end
+
+    it 'generates _type discriminator field as required (not optional)' do
+      # Extract the create payload schema
+      create_match = output.match(/export const CommentNestedCreatePayloadSchema.*?z\.object\(\{.*?\}\);/m)
+      expect(create_match).not_to be_nil, 'CommentNestedCreatePayloadSchema not found'
+      create_schema = create_match[0]
+
+      # Extract the update payload schema
+      update_match = output.match(/export const CommentNestedUpdatePayloadSchema.*?z\.object\(\{.*?\}\);/m)
+      expect(update_match).not_to be_nil, 'CommentNestedUpdatePayloadSchema not found'
+      update_schema = update_match[0]
+
+      # _type should be z.literal('create') without .optional() in create schema
+      expect(create_schema).to match(/_type:\s*z\.literal\('create'\)[,\s}]/)
+      expect(create_schema).not_to match(/_type:\s*z\.literal\('create'\)\.optional\(\)/)
+
+      # _type should be z.literal('update') without .optional() in update schema
+      expect(update_schema).to match(/_type:\s*z\.literal\('update'\)[,\s}]/)
+      expect(update_schema).not_to match(/_type:\s*z\.literal\('update'\)\.optional\(\)/)
+    end
+
+    it 'generates nested_payload variants without z.ZodType annotation for discriminated union compatibility' do
+      # Extract the create payload schema (full line up to =)
+      create_match = output.match(/export const CommentNestedCreatePayloadSchema[^=]*=/m)
+      expect(create_match).not_to be_nil, 'CommentNestedCreatePayloadSchema declaration not found'
+      create_declaration = create_match[0]
+
+      # Extract the update payload schema (full line up to =)
+      update_match = output.match(/export const CommentNestedUpdatePayloadSchema[^=]*=/m)
+      expect(update_match).not_to be_nil, 'CommentNestedUpdatePayloadSchema declaration not found'
+      update_declaration = update_match[0]
+
+      # Variant schemas should NOT have z.ZodType annotation
+      # This allows TypeScript to properly infer types for discriminated unions
+      expect(create_declaration).not_to match(/z\.ZodType</)
+      expect(update_declaration).not_to match(/z\.ZodType</)
+
+      # Should just be: export const ...Schema = (without type annotation)
+      expect(create_declaration).to match(/export const CommentNestedCreatePayloadSchema =/)
+      expect(update_declaration).to match(/export const CommentNestedUpdatePayloadSchema =/)
+    end
   end
 end

@@ -421,7 +421,7 @@ module Apiwork
             create_type_name = :nested_create_payload
             unless Descriptor::Registry.resolve_type(create_type_name, contract_class: contract_class)
               Descriptor::Registry.register_type(create_type_name, scope: contract_class, api_class: api_class) do
-                param :_type, type: :literal, value: 'create'
+                param :_type, type: :literal, value: 'create', required: true
                 InputGenerator.generate_writable_params(self, schema_class, :create, nested: true)
                 # Add _destroy if any association has allow_destroy
                 if schema_class.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
@@ -434,7 +434,7 @@ module Apiwork
             update_type_name = :nested_update_payload
             unless Descriptor::Registry.resolve_type(update_type_name, contract_class: contract_class)
               Descriptor::Registry.register_type(update_type_name, scope: contract_class, api_class: api_class) do
-                param :_type, type: :literal, value: 'update'
+                param :_type, type: :literal, value: 'update', required: true
                 InputGenerator.generate_writable_params(self, schema_class, :update, nested: true)
                 # Add _destroy if any association has allow_destroy
                 if schema_class.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }

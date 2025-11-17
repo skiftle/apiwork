@@ -158,6 +158,9 @@ RSpec.describe Apiwork::Generator::Zod do
           # Check if this is a union type (has :type => :union at root level)
           is_union = type_def.is_a?(Hash) && type_def[:type] == :union
 
+          # Check if this is a discriminated union variant (these skip type annotations)
+          is_union_variant = type_name.to_s.match?(/_nested_(create|update)_payload$/)
+
           # Detect if type is recursive by checking if it references itself
           is_recursive = !is_union && detect_recursive_type(type_name, type_def)
 
@@ -176,9 +179,16 @@ RSpec.describe Apiwork::Generator::Zod do
             expect(output).to match(/export (interface|type) #{schema_name}( =|(\s*\{))/),
                               "Missing interface or type declaration for #{type_name}"
 
-            # All types should have a Zod schema with z.ZodType annotation
-            expect(output).to include("export const #{schema_name}Schema: z.ZodType<#{schema_name}>"),
-                              "Missing schema for #{type_name}"
+            # Most types should have z.ZodType annotation, except discriminated union variants
+            if is_union_variant
+              # Union variants skip type annotation for TypeScript inference
+              expect(output).to include("export const #{schema_name}Schema ="),
+                                "Missing schema declaration for union variant #{type_name}"
+            else
+              # All other types should have a Zod schema with z.ZodType annotation
+              expect(output).to include("export const #{schema_name}Schema: z.ZodType<#{schema_name}>"),
+                                "Missing schema for #{type_name}"
+            end
 
             if is_recursive
               # Recursive types use z.lazy()

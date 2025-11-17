@@ -30,7 +30,7 @@ module Apiwork
       end
 
       # Build Zod object schema
-      def build_object_schema(type_name, type_shape, action_name = nil, recursive: false)
+      def build_object_schema(type_name, type_shape, action_name = nil, recursive: false, skip_type_annotation: false)
         schema_name = pascal_case(type_name)
 
         properties = type_shape.sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
@@ -39,12 +39,14 @@ module Apiwork
           "  #{key}: #{zod_type}"
         end.join(",\n")
 
+        type_annotation = skip_type_annotation ? '' : ": z.ZodType<#{schema_name}>"
+
         if recursive
           # Recursive types use z.lazy() with TypeScript type annotation
-          "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.lazy(() => z.object({\n#{properties}\n}));"
+          "export const #{schema_name}Schema#{type_annotation} = z.lazy(() => z.object({\n#{properties}\n}));"
         else
           # Non-recursive types use z.object() with TypeScript type annotation
-          "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.object({\n#{properties}\n});"
+          "export const #{schema_name}Schema#{type_annotation} = z.object({\n#{properties}\n});"
         end
       end
 
@@ -286,8 +288,11 @@ module Apiwork
 
         type += '.nullable()' if definition[:nullable]
 
-        if is_update
-          # Update actions: all fields optional
+        # Discriminator fields (required literals) should never be optional
+        is_discriminator = definition[:type] == :literal && definition[:required]
+
+        if is_update && !is_discriminator
+          # Update actions: all fields optional (except discriminators)
           type += '.optional()' unless type.include?('.optional()')
         elsif !definition[:required]
           # Regular fields: optional if not required
