@@ -236,7 +236,6 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
         }
 
         post '/api/v1/posts', params: post_params, as: :json
-        puts "DEBUG test: response.status=#{response.status}, body=#{response.body[0..500]}"
 
         expect(Post.count).to eq(1)
         expect(Comment.count).to eq(2)
@@ -329,9 +328,13 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
       it 'destroys replies with _destroy flag' do
         post_params = {
           post: {
+            title: 'Keep title',
             comments: [
               {
                 id: comment.id,
+                content: 'Comment',
+                author: 'Author',
+                post_id: post_record.id,
                 replies: [
                   { id: reply.id, _destroy: true }
                 ]
