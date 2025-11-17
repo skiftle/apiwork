@@ -65,4 +65,45 @@ RSpec.describe 'Zod Generation for Associations', type: :integration do
       expect(comment_schema).not_to match(/replies:.*z\.string\(\)/)
     end
   end
+
+  describe 'nested_payload types for writable associations' do
+    it 'generates separate create and update payload schemas' do
+      # Comment has writable replies association, so it should have nested payload types
+      expect(output).to include('export const CommentNestedCreatePayloadSchema')
+      expect(output).to include('export const CommentNestedUpdatePayloadSchema')
+      expect(output).to include('export const CommentNestedPayloadSchema')
+    end
+
+    it 'generates nested_payload union that references create and update schemas' do
+      # Extract the union definition
+      union_match = output.match(/export const CommentNestedPayloadSchema.*?;/m)
+      expect(union_match).not_to be_nil, 'CommentNestedPayloadSchema union not found'
+      union_def = union_match[0]
+
+      # Should reference the separate create/update schemas, not z.string()
+      expect(union_def).to match(/CommentNestedCreatePayloadSchema/)
+      expect(union_def).to match(/CommentNestedUpdatePayloadSchema/)
+      expect(union_def).not_to match(/z\.string\(\)/)
+
+      # Should use z.discriminatedUnion with '_type' discriminator field
+      expect(union_def).to match(/z\.discriminatedUnion\('_type', \[/)
+    end
+
+    it 'generates nested_payload types in correct order (create, update, then union)' do
+      # Find positions of each schema in the output
+      create_pos = output.index('export const CommentNestedCreatePayloadSchema')
+      update_pos = output.index('export const CommentNestedUpdatePayloadSchema')
+      union_pos = output.index('export const CommentNestedPayloadSchema')
+
+      expect(create_pos).not_to be_nil, 'CommentNestedCreatePayloadSchema not found'
+      expect(update_pos).not_to be_nil, 'CommentNestedUpdatePayloadSchema not found'
+      expect(union_pos).not_to be_nil, 'CommentNestedPayloadSchema not found'
+
+      # Verify order: create < update < union
+      expect(create_pos).to be < update_pos,
+                            "Create payload should come before update payload (create: #{create_pos}, update: #{update_pos})"
+      expect(update_pos).to be < union_pos,
+                            "Update payload should come before union (update: #{update_pos}, union: #{union_pos})"
+    end
+  end
 end

@@ -32,7 +32,7 @@ RSpec.describe 'Configuration Integration', type: :request do
     end
 
     after do
-      Apiwork::API::Registry.instance_variable_get(:@apis).delete('/api/config_test')
+      Apiwork::API::Registry.unregister('/api/config_test')
     end
 
     it 'applies API configuration to schema methods' do
@@ -83,7 +83,7 @@ RSpec.describe 'Configuration Integration', type: :request do
     end
 
     after do
-      Apiwork::API::Registry.instance_variable_get(:@apis).delete('/api/schema_override')
+      Apiwork::API::Registry.unregister('/api/schema_override')
     end
 
     it 'schema configuration overrides API configuration' do
@@ -152,7 +152,7 @@ RSpec.describe 'Configuration Integration', type: :request do
     end
 
     after do
-      Apiwork::API::Registry.instance_variable_get(:@apis).delete('/api/inheritance')
+      Apiwork::API::Registry.unregister('/api/inheritance')
     end
 
     it 'contract configuration overrides schema and API configuration' do
@@ -211,7 +211,7 @@ RSpec.describe 'Configuration Integration', type: :request do
     end
 
     after do
-      Apiwork::API::Registry.instance_variable_get(:@apis).delete('/api/deep_merge')
+      Apiwork::API::Registry.unregister('/api/deep_merge')
     end
 
     it 'deep merges hash configuration values' do

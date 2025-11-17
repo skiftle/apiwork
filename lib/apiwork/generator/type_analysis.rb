@@ -57,6 +57,20 @@ module Apiwork
         def extract_type_references(definition, filter: :custom_only)
           referenced_types = []
 
+          # Handle top-level union variants (for union types themselves)
+          if definition[:variants].is_a?(Array)
+            definition[:variants].each do |variant|
+              next unless variant.is_a?(Hash)
+
+              add_type_if_matches(referenced_types, variant[:type], filter)
+              add_type_if_matches(referenced_types, variant[:of], filter)
+
+              # Recursively check nested shape in variants
+              referenced_types.concat(extract_type_references(variant[:shape], filter: filter)) if variant[:shape].is_a?(Hash)
+            end
+          end
+
+          # Handle nested params (for object types, etc.)
           definition.each_value do |param|
             next unless param.is_a?(Hash)
 
@@ -66,7 +80,7 @@ module Apiwork
             # Array 'of' reference
             add_type_if_matches(referenced_types, param[:of], filter)
 
-            # Union variant references
+            # Union variant references (for nested unions)
             if param[:variants].is_a?(Array)
               param[:variants].each do |variant|
                 next unless variant.is_a?(Hash)

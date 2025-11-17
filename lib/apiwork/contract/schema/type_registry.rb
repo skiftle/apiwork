@@ -408,6 +408,7 @@ module Apiwork
 
           # Register nested_payload union for schemas used as writable associations
           # This is called lazily when a schema is auto-imported as a writable association
+          # Creates three types: nested_create_payload, nested_update_payload, and nested_payload (union)
           def register_nested_payload_union(contract_class, schema_class)
             # Only register if schema has writable attributes or writable associations
             # This ensures schemas can be used as nested payloads in writable associations
@@ -415,14 +416,44 @@ module Apiwork
                           schema_class.association_definitions.any? { |_, ad| ad.writable? }
 
             api_class = contract_class.api_class
-            nested_payload_type_name = :nested_payload
 
-            # Check if already registered (idempotent)
+            # Register nested_create_payload as separate object type
+            create_type_name = :nested_create_payload
+            unless Descriptor::Registry.resolve_type(create_type_name, contract_class: contract_class)
+              Descriptor::Registry.register_type(create_type_name, scope: contract_class, api_class: api_class) do
+                param :_type, type: :literal, value: 'create'
+                InputGenerator.generate_writable_params(self, schema_class, :create, nested: true)
+                # Add _destroy if any association has allow_destroy
+                if schema_class.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
+                  param :_destroy, type: :boolean, required: false
+                end
+              end
+            end
+
+            # Register nested_update_payload as separate object type
+            update_type_name = :nested_update_payload
+            unless Descriptor::Registry.resolve_type(update_type_name, contract_class: contract_class)
+              Descriptor::Registry.register_type(update_type_name, scope: contract_class, api_class: api_class) do
+                param :_type, type: :literal, value: 'update'
+                InputGenerator.generate_writable_params(self, schema_class, :update, nested: true)
+                # Add _destroy if any association has allow_destroy
+                if schema_class.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
+                  param :_destroy, type: :boolean, required: false
+                end
+              end
+            end
+
+            # Create union that references the two separate types
+            nested_payload_type_name = :nested_payload
             return if Descriptor::Registry.resolve_type(nested_payload_type_name, contract_class: contract_class)
 
-            # Create union definition using InputGenerator logic
+            # Get qualified names for variant references to match introspection storage
+            create_qualified_name = Descriptor::Registry.scoped_name(contract_class, create_type_name)
+            update_qualified_name = Descriptor::Registry.scoped_name(contract_class, update_type_name)
+
             union_def = UnionDefinition.new(contract_class, discriminator: :_type)
-            InputGenerator.populate_nested_payload_union(union_def, schema_class, contract_class)
+            union_def.variant(type: create_qualified_name, tag: 'create')
+            union_def.variant(type: update_qualified_name, tag: 'update')
             union_data = union_def.serialize
 
             # Register as top-level union

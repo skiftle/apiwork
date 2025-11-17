@@ -164,9 +164,11 @@ RSpec.describe Apiwork::Generator::Zod do
             # Union types should have TypeScript type alias (not interface)
             expect(output).to include("export type #{schema_name} ="),
                               "Missing type alias for union type #{type_name}"
-            # Union types should use z.union()
-            expect(output).to include("export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.union"),
-                              "Union type #{type_name} should use z.union"
+            # Union types should use z.union() or z.discriminatedUnion()
+            union_or_discriminated = output.include?("export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.union") ||
+                                     output.include?("export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.discriminatedUnion")
+            expect(union_or_discriminated).to be(true),
+                                              "Union type #{type_name} should use z.union or z.discriminatedUnion"
           else
             # Object types should have either interface or type declaration
             # Empty objects use type alias, non-empty use interface

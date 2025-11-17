@@ -31,25 +31,42 @@ RSpec.describe 'Introspection for association-only schemas', type: :request do
     it 'includes nested_payload union for schemas with writable associations' do
       introspection = Apiwork.introspect('/api/v1')
 
-      # Comment has writable replies association, so it should have nested_payload
+      # Comment has writable replies association, so it should have nested_payload types
+      expect(introspection[:types]).to have_key(:comment_nested_create_payload)
+      expect(introspection[:types]).to have_key(:comment_nested_update_payload)
       expect(introspection[:types]).to have_key(:comment_nested_payload)
 
-      # The nested payload should be a union with create and update variants
+      # The nested_payload should be a discriminated union
       nested_payload = introspection[:types][:comment_nested_payload]
       expect(nested_payload).to be_a(Hash)
       expect(nested_payload).to have_key(:discriminator)
       expect(nested_payload[:discriminator]).to eq(:_type)
+
+      # The union should have two variants that reference the separate types
+      expect(nested_payload[:variants]).to be_an(Array)
+      expect(nested_payload[:variants].size).to eq(2)
+
+      # Variants should reference the separate create/update types (using qualified names)
+      create_variant = nested_payload[:variants].find { |v| v[:tag] == 'create' }
+      update_variant = nested_payload[:variants].find { |v| v[:tag] == 'update' }
+
+      expect(create_variant[:type]).to eq(:comment_nested_create_payload)
+      expect(update_variant[:type]).to eq(:comment_nested_update_payload)
     end
 
     it 'includes nested_payload for schemas USED as writable associations' do
       introspection = Apiwork.introspect('/api/v1')
 
       # Comment is used as writable association in Post
-      # Comment has writable attributes/associations → gets nested_payload
+      # Should have all three types: create, update, and union
+      expect(introspection[:types]).to have_key(:comment_nested_create_payload)
+      expect(introspection[:types]).to have_key(:comment_nested_update_payload)
       expect(introspection[:types]).to have_key(:comment_nested_payload)
 
       # Reply is used as writable association in Comment
-      # Reply has writable attributes → gets nested_payload
+      # Should have all three types: create, update, and union
+      expect(introspection[:types]).to have_key(:reply_nested_create_payload)
+      expect(introspection[:types]).to have_key(:reply_nested_update_payload)
       expect(introspection[:types]).to have_key(:reply_nested_payload)
     end
 
@@ -57,12 +74,19 @@ RSpec.describe 'Introspection for association-only schemas', type: :request do
       introspection = Apiwork.introspect('/api/v1')
 
       # User has writable attributes but is not used as writable association
+      # Should not have any of the three nested_payload types
+      expect(introspection[:types]).not_to have_key(:user_nested_create_payload)
+      expect(introspection[:types]).not_to have_key(:user_nested_update_payload)
       expect(introspection[:types]).not_to have_key(:user_nested_payload)
 
       # Article has associations but none are writable, not used as nested
+      expect(introspection[:types]).not_to have_key(:article_nested_create_payload)
+      expect(introspection[:types]).not_to have_key(:article_nested_update_payload)
       expect(introspection[:types]).not_to have_key(:article_nested_payload)
 
       # Author has no writable attributes or associations, not used as nested
+      expect(introspection[:types]).not_to have_key(:author_nested_create_payload)
+      expect(introspection[:types]).not_to have_key(:author_nested_update_payload)
       expect(introspection[:types]).not_to have_key(:author_nested_payload)
     end
   end
