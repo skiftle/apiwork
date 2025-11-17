@@ -65,20 +65,8 @@ module Apiwork
               end
             end
 
-            # Register nested payload type (discriminated union) if schema has writable associations
-            if schema_class.association_definitions.any? { |_, ad| ad.writable? }
-              nested_payload_type_name = :nested_payload
-              unless Descriptor::Registry.resolve_type(nested_payload_type_name, contract_class: contract_class)
-                # Create union definition
-                union_def = UnionDefinition.new(contract_class, discriminator: :_type)
-                InputGenerator.populate_nested_payload_union(union_def, schema_class, contract_class)
-                union_data = union_def.serialize
-
-                # Register as top-level union
-                Descriptor::Registry.register_union(nested_payload_type_name, union_data,
-                                                    scope: contract_class, api_class: contract_class.api_class)
-              end
-            end
+            # nested_payload union is registered lazily via auto_import_association_contract
+            # when a schema is used as a writable association, not eagerly here
 
             # Create nested param with root key - REQUIRED (no flat format allowed)
             # Use the registered type
