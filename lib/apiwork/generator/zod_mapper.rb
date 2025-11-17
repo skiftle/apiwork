@@ -30,7 +30,7 @@ module Apiwork
       end
 
       # Build Zod object schema
-      def build_object_schema(type_name, type_shape, action_name = nil, recursive: false, skip_type_annotation: false)
+      def build_object_schema(type_name, type_shape, action_name = nil, recursive: false)
         schema_name = pascal_case(type_name)
 
         properties = type_shape.sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
@@ -39,13 +39,14 @@ module Apiwork
           "  #{key}: #{zod_type}"
         end.join(",\n")
 
-        type_annotation = skip_type_annotation ? '' : ": z.ZodType<#{schema_name}>"
+        # Type annotation only needed for recursive types (z.lazy requires it)
+        type_annotation = recursive ? ": z.ZodType<#{schema_name}>" : ''
 
         if recursive
-          # Recursive types use z.lazy() with TypeScript type annotation
+          # Recursive types use z.lazy() with explicit type annotation (required)
           "export const #{schema_name}Schema#{type_annotation} = z.lazy(() => z.object({\n#{properties}\n}));"
         else
-          # Non-recursive types use z.object() with TypeScript type annotation
+          # Non-recursive types use z.object() without type annotation (better inference)
           "export const #{schema_name}Schema#{type_annotation} = z.object({\n#{properties}\n});"
         end
       end
