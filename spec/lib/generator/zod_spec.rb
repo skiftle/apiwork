@@ -119,17 +119,17 @@ RSpec.describe Apiwork::Generator::Zod do
 
       it 'includes StringFilterSchema from introspect types' do
         expect(output).to include('export interface StringFilter')
-        expect(output).to include('export const StringFilterSchema: z.ZodType<StringFilter> = z.object')
+        expect(output).to include('export const StringFilterSchema = z.object')
       end
 
       it 'includes IntegerFilterSchema from introspect types' do
         expect(output).to include('export interface IntegerFilter')
-        expect(output).to include('export const IntegerFilterSchema: z.ZodType<IntegerFilter> = z.object')
+        expect(output).to include('export const IntegerFilterSchema = z.object')
       end
 
       it 'includes DatetimeFilterSchema from introspect types' do
         expect(output).to include('export interface DatetimeFilter')
-        expect(output).to include('export const DatetimeFilterSchema: z.ZodType<DatetimeFilter> = z.object')
+        expect(output).to include('export const DatetimeFilterSchema = z.object')
       end
 
       # DateFilter and UuidFilter are not included because no schema uses date or uuid types
@@ -137,12 +137,12 @@ RSpec.describe Apiwork::Generator::Zod do
 
       it 'includes BooleanFilterSchema from introspect types' do
         expect(output).to include('export interface BooleanFilter')
-        expect(output).to include('export const BooleanFilterSchema: z.ZodType<BooleanFilter> = z.object')
+        expect(output).to include('export const BooleanFilterSchema = z.object')
       end
 
       it 'includes PageSchema (pagination) from introspect types' do
         expect(output).to include('export interface Page')
-        expect(output).to include('export const PageSchema: z.ZodType<Page> = z.object')
+        expect(output).to include('export const PageSchema = z.object')
       end
     end
 
@@ -157,9 +157,6 @@ RSpec.describe Apiwork::Generator::Zod do
 
           # Check if this is a union type (has :type => :union at root level)
           is_union = type_def.is_a?(Hash) && type_def[:type] == :union
-
-          # Check if this is a discriminated union variant (these skip type annotations)
-          is_union_variant = type_name.to_s.match?(/_nested_(create|update)_payload$/)
 
           # Detect if type is recursive by checking if it references itself
           is_recursive = !is_union && detect_recursive_type(type_name, type_def)
@@ -179,15 +176,17 @@ RSpec.describe Apiwork::Generator::Zod do
             expect(output).to match(/export (interface|type) #{schema_name}( =|(\s*\{))/),
                               "Missing interface or type declaration for #{type_name}"
 
-            # Most types should have z.ZodType annotation, except discriminated union variants
-            if is_union_variant
-              # Union variants skip type annotation for TypeScript inference
-              expect(output).to include("export const #{schema_name}Schema ="),
-                                "Missing schema declaration for union variant #{type_name}"
-            else
-              # All other types should have a Zod schema with z.ZodType annotation
+            # Type annotation only for recursive types (z.lazy requires it)
+            if is_recursive
+              # Recursive types need explicit type annotation
               expect(output).to include("export const #{schema_name}Schema: z.ZodType<#{schema_name}>"),
-                                "Missing schema for #{type_name}"
+                                "Recursive type #{type_name} should have z.ZodType annotation"
+            else
+              # Non-recursive types should NOT have type annotation (better inference)
+              expect(output).to include("export const #{schema_name}Schema ="),
+                                "Missing schema declaration for #{type_name}"
+              expect(output).not_to include("export const #{schema_name}Schema: z.ZodType<#{schema_name}>"),
+                                    "Non-recursive type #{type_name} should not have z.ZodType annotation"
             end
 
             if is_recursive
@@ -256,7 +255,7 @@ RSpec.describe Apiwork::Generator::Zod do
     describe 'topological sorting and type ordering' do
       # Extract schema declarations in order from the generated output
       let(:schema_order) do
-        output.scan(/export const (\w+)Schema: z\.ZodType/).flatten
+        output.scan(/export const (\w+)Schema\b/).flatten
       end
 
       # Helper to get schema index in declaration order

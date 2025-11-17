@@ -19,7 +19,7 @@ RSpec.describe 'Zod Generation for Associations', type: :integration do
       expect(output).to include('export const PostSchema')
 
       # Extract just the PostSchema definition
-      post_schema_match = output.match(/export const PostSchema:.*?\n\}\);/m)
+      post_schema_match = output.match(/export const PostSchema\b.*?\n\}\);/m)
       expect(post_schema_match).not_to be_nil, 'PostSchema definition not found'
       post_schema = post_schema_match[0]
 
@@ -34,7 +34,7 @@ RSpec.describe 'Zod Generation for Associations', type: :integration do
       expect(output).to include('export const CommentSchema')
 
       # Extract just the CommentSchema definition
-      comment_schema_match = output.match(/export const CommentSchema:.*?\n\}\);/m)
+      comment_schema_match = output.match(/export const CommentSchema\b.*?\n\}\);/m)
       expect(comment_schema_match).not_to be_nil, 'CommentSchema definition not found'
       comment_schema = comment_schema_match[0]
 
@@ -57,7 +57,7 @@ RSpec.describe 'Zod Generation for Associations', type: :integration do
       expect(output).to include('export const CommentSchema')
 
       # Extract just the CommentSchema definition
-      comment_schema_match = output.match(/export const CommentSchema:.*?\n\}\);/m)
+      comment_schema_match = output.match(/export const CommentSchema\b.*?\n\}\);/m)
       expect(comment_schema_match).not_to be_nil, 'CommentSchema definition not found'
       comment_schema = comment_schema_match[0]
 
@@ -127,7 +127,7 @@ RSpec.describe 'Zod Generation for Associations', type: :integration do
       expect(update_schema).not_to match(/_type:\s*z\.literal\('update'\)\.optional\(\)/)
     end
 
-    it 'generates nested_payload variants without z.ZodType annotation for discriminated union compatibility' do
+    it 'generates non-recursive schemas without z.ZodType annotation for better type inference' do
       # Extract the create payload schema (full line up to =)
       create_match = output.match(/export const CommentNestedCreatePayloadSchema[^=]*=/m)
       expect(create_match).not_to be_nil, 'CommentNestedCreatePayloadSchema declaration not found'
@@ -138,8 +138,8 @@ RSpec.describe 'Zod Generation for Associations', type: :integration do
       expect(update_match).not_to be_nil, 'CommentNestedUpdatePayloadSchema declaration not found'
       update_declaration = update_match[0]
 
-      # Variant schemas should NOT have z.ZodType annotation
-      # This allows TypeScript to properly infer types for discriminated unions
+      # Non-recursive schemas should NOT have z.ZodType annotation
+      # Type annotation only needed for z.lazy (recursive types)
       expect(create_declaration).not_to match(/z\.ZodType</)
       expect(update_declaration).not_to match(/z\.ZodType</)
 

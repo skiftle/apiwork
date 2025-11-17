@@ -90,14 +90,7 @@ module Apiwork
             # Regular object type
             action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
             recursive = TypeAnalysis.circular_reference?(type_name, type_shape, filter: :custom_only)
-
-            # Skip type annotation for discriminated union variants
-            # These need inferred types for z.discriminatedUnion to work
-            is_union_variant = type_name.to_s.match?(/_nested_(create|update)_payload$/)
-
-            zod_mapper.build_object_schema(type_name, type_shape, action_name,
-                                           recursive: recursive,
-                                           skip_type_annotation: is_union_variant)
+            zod_mapper.build_object_schema(type_name, type_shape, action_name, recursive: recursive)
           end
         end
 
