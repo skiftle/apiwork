@@ -18,7 +18,15 @@ module Apiwork
             sort_type = TypeRegistry.register_resource_sort_type(contract_class, schema_class)
 
             # Generate nested filter parameter with resource-specific filters
-            definition.param :filter, type: filter_type, required: false if filter_type
+            # Supports both object form and array form (implicit OR logic)
+            if filter_type
+              definition.param :filter, type: :union, required: false do
+                # Allow single filter object
+                variant type: filter_type
+                # Allow array of filter objects for implicit OR logic
+                variant type: :array, of: filter_type
+              end
+            end
 
             # Generate nested sort parameter
             if sort_type
