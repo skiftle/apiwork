@@ -89,7 +89,7 @@ module Apiwork
           else
             # Regular object type
             action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
-            recursive = TypeAnalysis.detect_circular_references(type_name, type_shape, filter: :custom_only)
+            recursive = TypeAnalysis.circular_reference?(type_name, type_shape, filter: :custom_only)
             zod_mapper.build_object_schema(type_name, type_shape, action_name, recursive: recursive)
           end
         end
@@ -131,7 +131,7 @@ module Apiwork
                    typescript_mapper.build_union_type(type_name, type_shape)
                  else
                    action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
-                   recursive = TypeAnalysis.detect_circular_references(type_name, type_shape, filter: :custom_only)
+                   recursive = TypeAnalysis.circular_reference?(type_name, type_shape, filter: :custom_only)
                    typescript_mapper.build_interface(type_name, type_shape, action_name, recursive: recursive)
                  end
           all_types << { name: type_name_pascal, code: code }
