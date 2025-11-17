@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Apiwork
-  # JSON Pointer (RFC 6901) implementation
   module JSONPointer
     def self.build(*path)
       return '' if path.empty?
