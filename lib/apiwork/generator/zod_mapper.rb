@@ -80,7 +80,7 @@ module Apiwork
           "  #{key}: #{zod_type}"
         end.join(",\n")
 
-        "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.object({\n#{properties}\n});"
+        "export const #{schema_name}Schema = z.object({\n#{properties}\n});"
       end
 
       # Build Zod schema for action output
@@ -91,7 +91,7 @@ module Apiwork
         # Don't pass action_name - output fields should follow their own required flags
         zod_schema = map_type_definition(output_def, nil)
 
-        "export const #{schema_name}Schema: z.ZodType<#{schema_name}> = #{zod_schema};"
+        "export const #{schema_name}Schema = #{zod_schema};"
       end
 
       # Generate action schema name (e.g., PostCreateInput)
@@ -112,17 +112,7 @@ module Apiwork
         end
 
         type = map_type_definition(definition, action_name)
-
-        if definition[:enum]
-          enum_ref = resolve_enum(definition[:enum])
-          if enum_ref.is_a?(Symbol) && enums.key?(enum_ref)
-            enum_name = pascal_case(enum_ref)
-            type = "#{enum_name}Schema"
-          elsif enum_ref.is_a?(Array)
-            values_str = enum_ref.map { |v| "'#{v}'" }.join(', ')
-            type = "z.enum([#{values_str}])"
-          end
-        end
+        type = resolve_enum_schema(definition) || type
 
         apply_modifiers(type, definition, action_name)
       end
@@ -146,20 +136,7 @@ module Apiwork
           'z.never()'
         else
           result = enum_or_type_reference?(type) ? schema_reference(type) : map_primitive(definition)
-
-          # Check for enum field (important for union variants with enum)
-          if definition[:enum]
-            enum_ref = resolve_enum(definition[:enum])
-            if enum_ref.is_a?(Symbol) && enums.key?(enum_ref)
-              enum_name = pascal_case(enum_ref)
-              result = "#{enum_name}Schema"
-            elsif enum_ref.is_a?(Array)
-              values_str = enum_ref.map { |v| "'#{v}'" }.join(', ')
-              result = "z.enum([#{values_str}])"
-            end
-          end
-
-          result
+          resolve_enum_schema(definition) || result
         end
       end
 
@@ -279,6 +256,19 @@ module Apiwork
       # Resolve enum reference (identity function for now)
       def resolve_enum(enum_ref)
         enum_ref
+      end
+
+      # Resolve enum to Zod schema reference or inline enum
+      def resolve_enum_schema(definition)
+        return nil unless definition[:enum]
+
+        enum_ref = resolve_enum(definition[:enum])
+        if enum_ref.is_a?(Symbol) && enums.key?(enum_ref)
+          "#{pascal_case(enum_ref)}Schema"
+        elsif enum_ref.is_a?(Array)
+          values_str = enum_ref.map { |v| "'#{v}'" }.join(', ')
+          "z.enum([#{values_str}])"
+        end
       end
 
       # Extract parent resource names from path

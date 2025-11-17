@@ -6,7 +6,7 @@ module Apiwork
       return unless block
 
       Class.new(Base).tap do |klass|
-        klass.configure_from_path(path)
+        klass.mount(path)
         klass.class_eval(&block)
       end
     end

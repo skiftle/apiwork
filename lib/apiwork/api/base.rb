@@ -9,7 +9,7 @@ module Apiwork
       class << self
         attr_reader :metadata, :recorder, :mount_path, :namespaces_parts, :specs
 
-        def configure_from_path(path)
+        def mount(path)
           @mount_path = path
           @specs = {}
 
@@ -28,10 +28,6 @@ module Apiwork
 
           # Initialize configuration hash
           @configuration = {}
-        end
-
-        def mount_at(path)
-          @mount_path = path
         end
 
         def spec(type, path: nil)
