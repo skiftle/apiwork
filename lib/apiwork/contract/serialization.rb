@@ -299,7 +299,16 @@ module Apiwork
         def is_imported_type?(type_name, definition)
           return false unless definition.contract_class.respond_to?(:imports)
 
-          definition.contract_class.imports.key?(type_name)
+          # Direct import match (e.g., :address)
+          return true if definition.contract_class.imports.key?(type_name)
+
+          # Check for prefixed import types (e.g., :address_sort → :address import)
+          definition.contract_class.imports.each_key do |import_alias|
+            prefix = "#{import_alias}_"
+            return true if type_name.to_s.start_with?(prefix)
+          end
+
+          false
         end
       end
     end
