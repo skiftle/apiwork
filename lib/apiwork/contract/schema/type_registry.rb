@@ -409,8 +409,9 @@ module Apiwork
           # Register nested_payload union for schemas with writable associations
           # This is called when contract is defined to ensure the union type is always available
           def register_nested_payload_union(contract_class, schema_class)
-            # Only register if schema has writable associations
-            return unless schema_class.association_definitions.any? { |_, ad| ad.writable? }
+            # Only register if schema has writable attributes or writable associations
+            return unless schema_class.attribute_definitions.any? { |_, ad| ad.writable? } ||
+                          schema_class.association_definitions.any? { |_, ad| ad.writable? }
 
             api_class = contract_class.api_class
             nested_payload_type_name = :nested_payload
