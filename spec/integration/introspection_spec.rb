@@ -40,5 +40,30 @@ RSpec.describe 'Introspection for association-only schemas', type: :request do
       expect(nested_payload).to have_key(:discriminator)
       expect(nested_payload[:discriminator]).to eq(:_type)
     end
+
+    it 'includes nested_payload for schemas USED as writable associations' do
+      introspection = Apiwork.introspect('/api/v1')
+
+      # Comment is used as writable association in Post
+      # Comment has writable attributes/associations → gets nested_payload
+      expect(introspection[:types]).to have_key(:comment_nested_payload)
+
+      # Reply is used as writable association in Comment
+      # Reply has writable attributes → gets nested_payload
+      expect(introspection[:types]).to have_key(:reply_nested_payload)
+    end
+
+    it 'does NOT include nested_payload for schemas NOT used as writable associations' do
+      introspection = Apiwork.introspect('/api/v1')
+
+      # User has writable attributes but is not used as writable association
+      expect(introspection[:types]).not_to have_key(:user_nested_payload)
+
+      # Article has associations but none are writable, not used as nested
+      expect(introspection[:types]).not_to have_key(:article_nested_payload)
+
+      # Author has no writable attributes or associations, not used as nested
+      expect(introspection[:types]).not_to have_key(:author_nested_payload)
+    end
   end
 end
