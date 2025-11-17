@@ -3,6 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :request do
+  # Clear Descriptor::Registry before this test suite to ensure clean state
+  # This is needed because other tests may register types that interfere
+  before(:all) do
+    Apiwork::Contract::Descriptor::Registry.clear!
+  end
+
   describe 'Creating with nested has_many' do
     it 'creates a post with nested comments' do
       post_params = {
@@ -18,7 +24,6 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
       }
 
       post '/api/v1/posts', params: post_params, as: :json
-      puts "DEBUG single-level: status=#{response.status}, body=#{response.body[0..500]}" if response.status != 201
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
