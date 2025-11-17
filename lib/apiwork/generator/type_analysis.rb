@@ -13,48 +13,45 @@ module Apiwork
           reverse_deps = Hash.new { |h, k| h[k] = [] }
 
           all_types.each do |type_name, type_shape|
-            referenced_types = extract_type_references(type_shape, filter: all_types.keys)
+            referenced_types = type_references(type_shape, filter: all_types.keys)
 
-            referenced_types.each do |ref|
-              next if ref == type_name # Skip self-references (recursive types)
+            referenced_types.each do |referenced_type|
+              next if referenced_type == type_name # Skip self-references (recursive types)
 
-              reverse_deps[ref] << type_name
+              reverse_deps[referenced_type] << type_name
             end
           end
 
           # Topological sort using Kahn's algorithm
           sorted = []
-          in_degree = Hash.new(0)
+          dependency_count = Hash.new(0)
 
-          # Calculate in-degrees (how many types depend on me)
           reverse_deps.each_value do |dependents|
-            dependents.each { |dependent| in_degree[dependent] += 1 }
+            dependents.each { |dependent| dependency_count[dependent] += 1 }
           end
 
-          # Start with types that have no dependencies (in_degree = 0)
-          queue = all_types.keys.select { |type| in_degree[type].zero? }
+          queue = all_types.keys.select { |type| dependency_count[type].zero? }
 
           while queue.any?
             current = queue.shift
             sorted << current
 
-            # Remove edges: types that depend on current can now be processed
             reverse_deps[current].each do |dependent|
-              in_degree[dependent] -= 1
-              queue << dependent if in_degree[dependent].zero?
+              dependency_count[dependent] -= 1
+              queue << dependent if dependency_count[dependent].zero?
             end
           end
 
-          if sorted.size != all_types.size
+          if sorted.size == all_types.size
+            sorted.map { |type_name| [type_name, all_types[type_name]] }
+          else
             unsorted_types = all_types.keys - sorted
             (sorted + unsorted_types).map { |type_name| [type_name, all_types[type_name]] }
-          else
-            sorted.map { |type_name| [type_name, all_types[type_name]] }
           end
         end
 
         # Extract all type references from a definition
-        def extract_type_references(definition, filter: :custom_only)
+        def type_references(definition, filter: :custom_only)
           referenced_types = []
 
           # Handle top-level union variants (for union types themselves)
@@ -66,7 +63,7 @@ module Apiwork
               add_type_if_matches(referenced_types, variant[:of], filter)
 
               # Recursively check nested shape in variants
-              referenced_types.concat(extract_type_references(variant[:shape], filter: filter)) if variant[:shape].is_a?(Hash)
+              referenced_types.concat(type_references(variant[:shape], filter: filter)) if variant[:shape].is_a?(Hash)
             end
           end
 
@@ -89,21 +86,21 @@ module Apiwork
                 add_type_if_matches(referenced_types, variant[:of], filter)
 
                 # Recursively check nested shape in variants
-                referenced_types.concat(extract_type_references(variant[:shape], filter: filter)) if variant[:shape].is_a?(Hash)
+                referenced_types.concat(type_references(variant[:shape], filter: filter)) if variant[:shape].is_a?(Hash)
               end
             end
 
             # Recursively check nested shapes
-            referenced_types.concat(extract_type_references(param[:shape], filter: filter)) if param[:shape].is_a?(Hash)
+            referenced_types.concat(type_references(param[:shape], filter: filter)) if param[:shape].is_a?(Hash)
           end
 
           referenced_types.uniq
         end
 
         # Detect if a type has circular references to itself
-        def detect_circular_references(type_name, type_def, filter: :custom_only)
-          referenced_types = extract_type_references(type_def, filter: filter)
-          referenced_types.include?(type_name)
+        def circular_reference?(type_name, type_def, filter: :custom_only)
+          refs = type_references(type_def, filter: filter)
+          refs.include?(type_name)
         end
 
         # Check if type is a primitive
