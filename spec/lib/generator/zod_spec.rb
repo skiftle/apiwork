@@ -140,9 +140,12 @@ RSpec.describe Apiwork::Generator::Zod do
         expect(output).to include('export const BooleanFilterSchema = z.object')
       end
 
-      it 'includes PageSchema (pagination) from introspect types' do
-        expect(output).to include('export interface Page')
-        expect(output).to include('export const PageSchema = z.object')
+      it 'includes schema-specific page schemas' do
+        # Schema-specific page types like UserPage, PostPage, etc.
+        expect(output).to include('export interface UserPage')
+        expect(output).to include('export const UserPageSchema = z.object')
+        expect(output).to include('export interface PostPage')
+        expect(output).to include('export const PostPageSchema = z.object')
       end
     end
 

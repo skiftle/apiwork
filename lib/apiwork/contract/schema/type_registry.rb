@@ -201,12 +201,8 @@ module Apiwork
             # Resolve max_page_size through full inheritance chain (contract → schema → api)
             resolved_max_page_size = Configuration::Resolver.resolve(:max_page_size, contract_class: contract_class, schema_class: schema_class,
                                                                                      api_class: contract_class.api_class)
-            api_max_page_size = Configuration::Resolver.resolve(:max_page_size, api_class: contract_class.api_class)
 
-            # If resolved max is same as API default, use global :page type
-            return :page if resolved_max_page_size == api_max_page_size
-
-            # Generate schema-specific page type name using same logic as filter/sort
+            # Always generate schema-specific page type (no fallback to global :page)
             type_name = build_type_name(schema_class, :page, 1)
 
             # Check if already registered
