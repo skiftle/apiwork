@@ -13,11 +13,6 @@ module Apiwork
           def register_core_descriptors(api_class)
             builder = Builder.new(api_class: api_class)
             builder.instance_eval do
-              type :page do
-                param :number, type: :integer, required: false, min: 1
-                param :size, type: :integer, required: false, min: 1, max: configuration(:max_page_size)
-              end
-
               type :pagination do
                 param :current, type: :integer, required: true
                 param :next, type: :integer, nullable: true
