@@ -58,7 +58,8 @@
       "Bash(RAILS_ENV=test bundle exec bin/rails:*)",
       "Bash(RAILS_ENV=test bundle exec ruby:*)",
       "Bash(RAILS_ENV=test BUNDLE_GEMFILE=spec/dummy/Gemfile bundle exec rails runner:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(bundle update:*)"
     ],
     "deny": [],
     "ask": []
