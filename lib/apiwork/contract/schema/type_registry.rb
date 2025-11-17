@@ -303,8 +303,9 @@ module Apiwork
             if import_alias
               # Ensure the base resource output type is registered for the imported contract
               # This is necessary for schemas that don't have their own routes
+              # We pass a new visited set following the same pattern as filter/sort type registration
               association_contract = SchemaRegistry.contract_for_schema(association_schema)
-              register_resource_output_type(association_contract, association_schema, visited: visited) if association_contract
+              register_resource_output_type(association_contract, association_schema, visited: Set.new) if association_contract
 
               # Reference imported type: e.g., :comment
               # The base resource type is the same as the import alias
@@ -372,6 +373,9 @@ module Apiwork
               register_resource_sort_type(association_contract, association_schema, visited: Set.new, depth: 0)
               register_resource_include_type(association_contract, association_schema, visited: Set.new, depth: 0)
               register_nested_payload_union(association_contract, association_schema)
+              # Also register base resource output type for introspection
+              # This ensures schemas without routes still appear in introspection
+              register_resource_output_type(association_contract, association_schema, visited: Set.new)
             end
 
             # Use schema's root_key.singular as alias (convention)
@@ -435,27 +439,26 @@ module Apiwork
             # Check if already registered (idempotent)
             return if Descriptor::Registry.resolve_type(resource_type_name, contract_class: contract_class)
 
-            # PRE-REGISTER: Register all association types BEFORE defining the resource type
-            assoc_type_map = {}
-            schema_class.association_definitions.each do |name, association_definition|
-              assoc_type_map[name] = register_association_type(contract_class, association_definition, visited: visited)
-            end
-
-            # PRE-REGISTER: Register all enum types BEFORE defining the resource type
-            schema_class.attribute_definitions.each do |name, attribute_definition|
-              next unless attribute_definition.enum
-
-              enum_values = attribute_definition.enum
-              Descriptor::Registry.register_enum(name, enum_values, scope: contract_class,
-                                                                    api_class: contract_class.api_class)
-            end
-
-            # NOW register the resource type
+            # Register the resource type immediately to prevent infinite recursion
+            # Then populate it with attributes and associations inside the block
             Descriptor::Registry.register_type(root_key, scope: contract_class, api_class: contract_class.api_class) do
-              # All resource attributes
-              schema_class.attribute_definitions.each do |name, attribute_definition|
-                enum_option = attribute_definition.enum ? { enum: name } : {}
+              # PRE-REGISTER: Register all association types inside the block
+              assoc_type_map = {}
+              schema_class.association_definitions.each do |name, association_definition|
+                assoc_type_map[name] = TypeRegistry.register_association_type(contract_class, association_definition, visited: visited)
+              end
 
+              # PRE-REGISTER: Register all enum types and add all resource attributes
+              schema_class.attribute_definitions.each do |name, attribute_definition|
+                # Register enum if present
+                if attribute_definition.enum
+                  enum_values = attribute_definition.enum
+                  Descriptor::Registry.register_enum(name, enum_values, scope: contract_class,
+                                                                        api_class: contract_class.api_class)
+                end
+
+                # Add attribute to type
+                enum_option = attribute_definition.enum ? { enum: name } : {}
                 param name,
                       type: Generator.map_type(attribute_definition.type),
                       required: false,
