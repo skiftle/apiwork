@@ -559,14 +559,16 @@ RSpec.describe Apiwork::Generator::Zod do
       expect(output).to match(/export type \w+Output =/)
     end
 
-    it 'generates Zod schemas with z.ZodType annotation for inputs' do
-      # Check for Zod schema with z.ZodType<TypeName> annotation
-      expect(output).to match(/export const \w+InputSchema: z\.ZodType<\w+Input> = z\.object/)
+    it 'generates Zod schemas without type annotations for inputs (better inference)' do
+      # Check for Zod schema without z.ZodType annotation (non-recursive)
+      expect(output).to match(/export const \w+InputSchema = z\.object/)
+      expect(output).not_to match(/export const \w+InputSchema: z\.ZodType/)
     end
 
-    it 'generates Zod schemas with z.ZodType annotation for outputs' do
-      # Check for Zod schema with z.ZodType<TypeName> annotation
-      expect(output).to match(/export const \w+OutputSchema: z\.ZodType<\w+Output> =/)
+    it 'generates Zod schemas without type annotations for outputs (better inference)' do
+      # Check for Zod schema without z.ZodType annotation (non-recursive)
+      expect(output).to match(/export const \w+OutputSchema =/)
+      expect(output).not_to match(/export const \w+OutputSchema: z\.ZodType/)
     end
 
     it 'uses discriminated unions for success/error responses' do
@@ -586,12 +588,12 @@ RSpec.describe Apiwork::Generator::Zod do
       expect(schema_positions.min).to be < type_positions.min
     end
 
-    it 'follows same pattern as introspect types (z.ZodType annotation, not z.infer)' do
+    it 'uses direct schema definitions without z.infer (explicit types)' do
       # Action schemas should NOT use z.infer
       expect(output).not_to match(/z\.infer<typeof \w+(?:Input|Output)Schema>/)
 
-      # Action schemas SHOULD use z.ZodType<TypeName> annotation (same as StringFilter, etc.)
-      expect(output).to match(/: z\.ZodType<\w+(?:Input|Output)>/)
+      # Action schemas should NOT have z.ZodType annotation (non-recursive, better inference)
+      expect(output).not_to match(/: z\.ZodType<\w+(?:Input|Output)>/)
     end
   end
 end
