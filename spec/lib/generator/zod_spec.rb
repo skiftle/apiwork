@@ -113,7 +113,7 @@ RSpec.describe Apiwork::Generator::Zod do
     describe 'filter and utility schemas from introspect' do
       it 'includes SortDirectionSchema from introspect enums' do
         expect(output).to include("export type SortDirection = 'asc' | 'desc'")
-        expect(output).to include('export const SortDirectionSchema: z.ZodType<SortDirection> = z.enum')
+        expect(output).to include('export const SortDirectionSchema = z.enum')
         expect(output).to match(/SortDirectionSchema.*asc.*desc/m)
       end
 
@@ -165,9 +165,9 @@ RSpec.describe Apiwork::Generator::Zod do
             # Union types should have TypeScript type alias (not interface)
             expect(output).to include("export type #{schema_name} ="),
                               "Missing type alias for union type #{type_name}"
-            # Union types should use z.union() or z.discriminatedUnion()
-            union_or_discriminated = output.include?("export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.union") ||
-                                     output.include?("export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.discriminatedUnion")
+            # Union types should use z.union() or z.discriminatedUnion() without type annotation
+            union_or_discriminated = output.include?("export const #{schema_name}Schema = z.union") ||
+                                     output.include?("export const #{schema_name}Schema = z.discriminatedUnion")
             expect(union_or_discriminated).to be(true),
                                               "Union type #{type_name} should use z.union or z.discriminatedUnion"
           else
@@ -230,9 +230,9 @@ RSpec.describe Apiwork::Generator::Zod do
           # Should have TypeScript type declarations
           expect(output).to include("export type #{schema_name} =")
           expect(output).to include("export type #{schema_name}Filter =")
-          # Should have Zod schemas with type annotations
-          expect(output).to include("export const #{schema_name}Schema: z.ZodType<#{schema_name}> = z.enum")
-          expect(output).to include("export const #{schema_name}FilterSchema: z.ZodType<#{schema_name}Filter> = z.union")
+          # Should have Zod schemas without type annotations (non-recursive)
+          expect(output).to include("export const #{schema_name}Schema = z.enum")
+          expect(output).to include("export const #{schema_name}FilterSchema = z.union")
         end
       end
     end
