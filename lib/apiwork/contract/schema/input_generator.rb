@@ -38,8 +38,9 @@ module Apiwork
               end
             end
 
-            # Generate nested page parameter (uses global built-in type)
-            definition.param :page, type: :page, required: false
+            # Generate nested page parameter (schema-specific if max_page_size differs from default)
+            page_type = TypeRegistry.register_resource_page_type(contract_class, schema_class)
+            definition.param :page, type: page_type, required: false
 
             # Generate nested include parameter with strict validation
             # Type includes ALL associations - contract validates structure
