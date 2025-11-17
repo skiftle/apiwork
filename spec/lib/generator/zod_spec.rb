@@ -254,6 +254,109 @@ RSpec.describe Apiwork::Generator::Zod do
         expect(filter_schema).not_to match(/eq:\s*z\.string\(\)/)
         expect(filter_schema).not_to match(/in:\s*z\.array\(z\.string\(\)\)/)
       end
+
+      it 'generates enum schemas without type annotations (non-recursive)' do
+        # Enum schemas are never recursive, so they should not have type annotations
+        introspect[:enums].each_key do |enum_name|
+          schema_name = enum_name.to_s.camelize(:upper)
+          # Should NOT have type annotation
+          expect(output).not_to include("export const #{schema_name}Schema: z.ZodType<#{schema_name}>"),
+                                "Enum schema #{enum_name} should not have z.ZodType annotation"
+          # Should have simple declaration
+          expect(output).to include("export const #{schema_name}Schema = z.enum")
+        end
+      end
+
+      it 'generates enum filter schemas without type annotations (non-recursive)' do
+        # Enum filter schemas (union of enum + filter object) are not recursive
+        introspect[:enums].each_key do |enum_name|
+          schema_name = "#{enum_name.to_s.camelize(:upper)}Filter"
+          # Should NOT have type annotation
+          expect(output).not_to include("export const #{schema_name}Schema: z.ZodType<#{schema_name}>"),
+                                "Enum filter schema #{enum_name}_filter should not have z.ZodType annotation"
+          # Should have simple union declaration
+          expect(output).to include("export const #{schema_name}Schema = z.union")
+        end
+      end
+
+      it 'generates AccountStatusFilterSchema as union of enum and filter object' do
+        expect(output).to include('export const AccountStatusFilterSchema = z.union([')
+
+        # Extract the filter schema definition
+        filter_match = output.match(/export const AccountStatusFilterSchema = z\.union\(\[(.*?)\]\);/m)
+        expect(filter_match).not_to be_nil
+        filter_def = filter_match[1]
+
+        # First variant: AccountStatusSchema (the enum itself)
+        lines = filter_def.split("\n")
+        first_variant = lines.detect { |line| line.strip.start_with?('AccountStatusSchema') }
+        expect(first_variant).to be_present, 'First variant should be AccountStatusSchema'
+
+        # Second variant should be z.object with eq and in
+        expect(filter_def).to match(/z\.object\(\s*\{/)
+        expect(filter_def).to match(/eq:\s*AccountStatusSchema/)
+        expect(filter_def).to match(/in:\s*z\.array\(AccountStatusSchema\)/)
+      end
+
+      it 'does NOT generate z.string() for enum filter variants' do
+        # Critical: enum filter variants should reference enum schemas, not z.string()
+        filter_match = output.match(/export const AccountStatusFilterSchema = z\.union\(\[(.*?)\]\);/m)
+        expect(filter_match).not_to be_nil
+        filter_def = filter_match[1]
+
+        # Should NOT contain z.string() anywhere in the filter definition
+        expect(filter_def).not_to include('z.string()')
+      end
+
+      it 'maintains topological order: enum schemas before filter schemas' do
+        # Enum schemas must come before their filter schemas in the output
+        introspect[:enums].each_key do |enum_name|
+          enum_schema_name = enum_name.to_s.camelize(:upper)
+          filter_schema_name = "#{enum_schema_name}Filter"
+
+          enum_pos = output.index("export const #{enum_schema_name}Schema")
+          filter_pos = output.index("export const #{filter_schema_name}Schema")
+
+          next unless enum_pos && filter_pos # Skip if either not in output
+
+          expect(enum_pos).to be < filter_pos,
+                              "#{enum_schema_name}Schema should come before #{filter_schema_name}Schema"
+        end
+      end
+    end
+
+    describe 'union variants with enum field' do
+      it 'generates enum schema reference for union variants with enum type' do
+        # This tests the critical fix: { type: "string", enum: "account_status" }
+        # Should generate AccountStatusSchema not z.string()
+
+        introspect[:types].each do |type_name, type_def|
+          next unless type_def[:type] == :union
+
+          type_def[:variants].each do |variant|
+            next unless variant.is_a?(Hash)
+            next unless variant[:enum]
+
+            # When a variant has an enum field, it should reference the enum schema
+            variant_enum = variant[:enum].to_s.camelize(:upper)
+            expect(output).to include("#{variant_enum}Schema"),
+                              "Variant with enum field should reference #{variant_enum}Schema"
+
+            # The variant should NOT be z.string() even if type is :string
+            # Check in the context of the union that contains this variant
+            schema_name = type_name.to_s.camelize(:upper)
+            next unless output.include?("export const #{schema_name}Schema")
+
+            # This variant in the union should use the enum schema, not z.string()
+            union_match = output.match(/export const #{schema_name}Schema = z\.union\(\[(.*?)\]\);/m)
+            next unless union_match
+
+            union_def = union_match[1]
+            # If this union has the enum variant, it should reference the schema
+            expect(union_def).to include("#{variant_enum}Schema") if union_def.include?(variant_enum.underscore)
+          end
+        end
+      end
     end
 
     describe 'type mappings' do

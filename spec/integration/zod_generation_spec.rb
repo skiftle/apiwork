@@ -148,4 +148,177 @@ RSpec.describe 'Zod Generation for Associations', type: :integration do
       expect(update_declaration).to match(/export const CommentNestedUpdatePayloadSchema =/)
     end
   end
+
+  describe 'Enum filter Zod generation (end-to-end)' do
+    let(:introspection) { Apiwork.introspect(path) }
+
+    it 'generates complete enum filter chain: enum → filter type → Zod schema' do
+      # AccountSchema has status attribute (enum)
+      # -> account_status enum is generated
+      # -> account_status_filter type is auto-generated
+      # -> AccountStatusFilterSchema is generated in Zod
+
+      # 1. Enum exists in introspection
+      expect(introspection[:enums]).to have_key(:account_status)
+      expect(introspection[:enums][:account_status]).to match_array(%w[active inactive archived])
+
+      # 2. Filter type exists in introspection
+      expect(introspection[:types]).to have_key(:account_status_filter)
+      filter_type = introspection[:types][:account_status_filter]
+      expect(filter_type[:type]).to eq(:union)
+      expect(filter_type[:variants].size).to eq(2)
+
+      # 3. Zod schemas are generated correctly
+      expect(output).to include('export const AccountStatusSchema')
+      expect(output).to include('export const AccountStatusFilterSchema')
+
+      # 4. Verify the filter schema uses enum schema references
+      filter_schema_match = output.match(/export const AccountStatusFilterSchema = z\.union\(\[.*?\]\);/m)
+      expect(filter_schema_match).not_to be_nil, 'AccountStatusFilterSchema not found in output'
+      expect(filter_schema_match[0]).to include('AccountStatusSchema')
+    end
+
+    it 'generates correct Zod for enum filter object variant fields' do
+      # The eq and in fields should reference the enum schema
+      expect(output).to match(/eq:\s*AccountStatusSchema/)
+      expect(output).to match(/in:\s*z\.array\(AccountStatusSchema\)/)
+    end
+
+    it 'does NOT generate primitive filter types for enum attributes' do
+      # If account_status is an enum, should NOT generate StringFilterSchema for it
+
+      # The output should have AccountStatusFilterSchema (enum-specific)
+      expect(output).to include('export const AccountStatusFilterSchema')
+
+      # But should NOT have a StringFilterSchema being used for account_status
+      # (StringFilterSchema is for primitive string fields, not enum fields)
+
+      # Check that the account_status filter is the enum-specific one
+      filter_match = output.match(/export const AccountStatusFilterSchema = z\.union\(\[(.*?)\]\);/m)
+      expect(filter_match).not_to be_nil
+      filter_def = filter_match[1]
+
+      # Should reference AccountStatusSchema, not z.string()
+      expect(filter_def).to include('AccountStatusSchema')
+      expect(filter_def).not_to include('z.string()')
+    end
+
+    it 'handles both global and schema-scoped enum filters' do
+      # Global enums (post_status)
+      expect(output).to include('export const PostStatusSchema')
+      expect(output).to include('export const PostStatusFilterSchema')
+
+      # Schema-scoped enums (account_status)
+      expect(output).to include('export const AccountStatusSchema')
+      expect(output).to include('export const AccountStatusFilterSchema')
+
+      # Both should be properly generated as union types with enum references
+      %w[PostStatus AccountStatus].each do |enum_name|
+        filter_schema_match = output.match(/export const #{enum_name}FilterSchema = z\.union\(\[.*?\]\);/m)
+        expect(filter_schema_match).not_to be_nil, "#{enum_name}FilterSchema not properly generated"
+      end
+    end
+
+    it 'maintains correct topological order: enum schemas before filter schemas' do
+      # Enum schemas must come before their filter schemas in the output
+      post_status_pos = output.index('export const PostStatusSchema')
+      post_status_filter_pos = output.index('export const PostStatusFilterSchema')
+
+      account_status_pos = output.index('export const AccountStatusSchema')
+      account_status_filter_pos = output.index('export const AccountStatusFilterSchema')
+
+      expect(post_status_pos).to be < post_status_filter_pos,
+                                 'PostStatusSchema should come before PostStatusFilterSchema'
+      expect(account_status_pos).to be < account_status_filter_pos,
+                                    'AccountStatusSchema should come before AccountStatusFilterSchema'
+    end
+
+    it 'generates filter variant with correct schema reference types' do
+      # Extract AccountStatusFilterSchema definition
+      filter_match = output.match(/export const AccountStatusFilterSchema = z\.union\(\[(.*?)\]\);/m)
+      expect(filter_match).not_to be_nil
+      filter_def = filter_match[1]
+
+      # First variant: AccountStatusSchema (the enum itself)
+      lines = filter_def.split("\n")
+      first_variant = lines.detect do |line|
+        line.include?('AccountStatusSchema') && !line.include?('eq:') && !line.include?('in:')
+      end
+      expect(first_variant).to be_present, 'First variant should be AccountStatusSchema'
+
+      # Second variant should be z.object with eq and in
+      expect(filter_def).to match(/z\.object\(\s*\{/)
+      expect(filter_def).to match(/eq:\s*AccountStatusSchema/)
+      expect(filter_def).to match(/in:\s*z\.array\(AccountStatusSchema\)/)
+    end
+
+    it 'generates enum filter schemas without type annotations (non-recursive)' do
+      # Enum and enum filter schemas are not recursive, so no type annotations
+
+      # Extract AccountStatusSchema declaration
+      enum_match = output.match(/export const AccountStatusSchema[^=]*=/m)
+      expect(enum_match).not_to be_nil, 'AccountStatusSchema declaration not found'
+      enum_declaration = enum_match[0]
+
+      # Extract AccountStatusFilterSchema declaration
+      filter_match = output.match(/export const AccountStatusFilterSchema[^=]*=/m)
+      expect(filter_match).not_to be_nil, 'AccountStatusFilterSchema declaration not found'
+      filter_declaration = filter_match[0]
+
+      # Neither should have z.ZodType annotation
+      expect(enum_declaration).not_to match(/z\.ZodType</)
+      expect(filter_declaration).not_to match(/z\.ZodType</)
+
+      # Should just be: export const ...Schema = (without type annotation)
+      # Check that z.enum or z.union appears in the output (may be on next line)
+      expect(output).to include('export const AccountStatusSchema = z.enum')
+      expect(output).to include('export const AccountStatusFilterSchema = z.union')
+    end
+
+    it 'uses enum schema references in union variants with enum field' do
+      # Critical test: union variants with { type: "string", enum: "account_status" }
+      # should generate AccountStatusSchema, not z.string()
+
+      # Find all filter types that might have enum variants
+      introspection[:types].each do |type_name, type_def|
+        next unless type_def[:type] == :union
+        next unless type_def[:variants].any? { |v| v.is_a?(Hash) && v[:enum] }
+
+        # Check that the Zod output references enum schemas, not z.string()
+        schema_name = type_name.to_s.camelize(:upper)
+        next unless output.include?("export const #{schema_name}Schema")
+
+        union_match = output.match(/export const #{schema_name}Schema = z\.union\(\[(.*?)\]\);/m)
+        next unless union_match
+
+        union_def = union_match[1]
+
+        # Any variant with enum should reference the enum schema
+        type_def[:variants].each do |variant|
+          next unless variant.is_a?(Hash) && variant[:enum]
+
+          enum_schema_name = variant[:enum].to_s.camelize(:upper)
+          expect(union_def).to include("#{enum_schema_name}Schema"),
+                               "Union #{type_name} should reference #{enum_schema_name}Schema for enum variant"
+          expect(union_def).not_to include('z.string()'),
+                                   "Union #{type_name} should not use z.string() for enum variants"
+        end
+      end
+    end
+
+    it 'verifies AccountStatusFilterSchema first variant is NOT z.string()' do
+      # This is the most critical test - the bug we fixed
+      # The first variant should be AccountStatusSchema, not z.string()
+
+      filter_match = output.match(/export const AccountStatusFilterSchema = z\.union\(\[\s*(.*?)\s*,/m)
+      expect(filter_match).not_to be_nil, 'Could not extract first variant'
+      first_variant = filter_match[1].strip
+
+      # First variant should be the enum schema reference
+      expect(first_variant).to eq('AccountStatusSchema'),
+                               "First variant should be 'AccountStatusSchema', got '#{first_variant}'"
+      expect(first_variant).not_to eq('z.string()'),
+                                   'First variant should NOT be z.string()'
+    end
+  end
 end
