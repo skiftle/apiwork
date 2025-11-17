@@ -74,32 +74,60 @@ module Apiwork
               end
             elsif param_def[:type] == :array && param_def[:of] && value.is_a?(Array)
               # Handle arrays with custom types (of: :custom_type)
-              # Resolve the custom type to get its shape for transformation
-              shape = resolve_custom_type_shape(param_def[:of], definition)
-              if shape
-                transformed[name] = value.map do |item|
-                  item.is_a?(Hash) ? apply_transformations(item, shape) : item
-                end
-              end
+              transformed_array = transform_custom_type_array(value, param_def, definition)
+              transformed[name] = transformed_array if transformed_array
             end
           end
 
           transformed
         end
 
+        # Transform array of custom types (regular types or union types)
+        def transform_custom_type_array(value, param_def, definition)
+          # Try to resolve as regular custom type
+          shape = resolve_custom_type_shape(param_def[:of], definition, param_def[:type_contract_class])
+
+          return value.map { |item| item.is_a?(Hash) ? apply_transformations(item, shape) : item } if shape
+
+          # Try union type (nested_payload) transformation
+          transform_union_type_array(value, param_def, definition)
+        end
+
+        # Transform array of union types (nested_payload)
+        def transform_union_type_array(value, param_def, definition)
+          return nil unless param_def[:type_contract_class]
+
+          nested_contract = param_def[:type_contract_class]
+          action_name = definition.action_name || :create
+          nested_definition = nested_contract.action_definition(action_name)&.input_definition
+
+          return nil unless nested_definition
+
+          # The input definition has a root key wrapper (e.g., {comment: {...}})
+          # Get the shape definition inside the root key for transformation
+          root_param = nested_definition.params.values.first
+          nested_shape = root_param[:shape] if root_param
+
+          return nil unless nested_shape
+
+          value.map { |item| item.is_a?(Hash) ? apply_transformations(item, nested_shape) : item }
+        end
+
         # Resolve a custom type to its shape definition for transformation
         # This allows recursive transformation of arrays with custom types (of: :custom_type)
-        def resolve_custom_type_shape(type_name, definition)
-          return nil unless definition&.contract_class
+        def resolve_custom_type_shape(type_name, definition, type_contract_class = nil)
+          # Use type_contract_class if provided, otherwise fall back to definition.contract_class
+          contract_class = type_contract_class || definition&.contract_class
+          return nil unless contract_class
 
           # Try to resolve the custom type from the contract
-          custom_type_block = definition.contract_class.resolve_custom_type(type_name)
+          custom_type_block = contract_class.resolve_custom_type(type_name)
           return nil unless custom_type_block
 
           # Create a temporary definition and expand the custom type
           temp_definition = Apiwork::Contract::Definition.new(
             type: definition.type,
-            contract_class: definition.contract_class,
+            contract_class: contract_class,
             action_name: definition.action_name
           )
 

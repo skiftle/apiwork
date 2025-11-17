@@ -447,7 +447,9 @@ module Apiwork
             end
           elsif param_options[:of]
             # Check if 'of' is a custom type (with scope resolution)
-            custom_type_block = @contract_class.resolve_custom_type(param_options[:of])
+            # Use type_contract_class if provided, otherwise fall back to @contract_class
+            contract_class_for_custom_type = param_options[:type_contract_class] || @contract_class
+            custom_type_block = contract_class_for_custom_type.resolve_custom_type(param_options[:of])
             if custom_type_block
               # Array of custom type - must be a hash
               unless item.is_a?(Hash)
@@ -461,7 +463,7 @@ module Apiwork
               end
 
               # Validate as shape object
-              custom_def = Definition.new(type: @type, contract_class: @contract_class, action_name: @action_name)
+              custom_def = Definition.new(type: @type, contract_class: contract_class_for_custom_type, action_name: @action_name)
               custom_def.instance_eval(&custom_type_block)
 
               shape_result = custom_def.validate(
