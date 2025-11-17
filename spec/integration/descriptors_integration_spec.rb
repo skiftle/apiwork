@@ -112,6 +112,59 @@ RSpec.describe 'Descriptors Integration', type: :request do
                                                   'in array should reference scoped enum'
     end
 
+    it 'generates enum filters with correct scoped enum references in both variants' do
+      introspection = Apiwork.introspect('/api/v1')
+
+      filter = introspection[:types][:account_status_filter]
+
+      # Variant 1: The enum itself (scoped name)
+      enum_variant = filter[:variants][0]
+      expect(enum_variant[:type]).to eq(:account_status)
+      expect(enum_variant).not_to include(:shape) # No shape for enum variant
+
+      # Variant 2: Filter object with eq and in
+      object_variant = filter[:variants][1]
+      expect(object_variant[:type]).to eq(:object)
+      expect(object_variant[:shape]).to have_key(:eq)
+      expect(object_variant[:shape]).to have_key(:in)
+
+      # Both fields must reference the SCOPED enum name
+      expect(object_variant[:shape][:eq][:type]).to eq(:account_status)
+      expect(object_variant[:shape][:in][:of]).to eq(:account_status)
+      expect(object_variant[:shape][:in][:type]).to eq(:array)
+    end
+
+    it 'generates enum schema reference for union variants with enum field' do
+      introspection = Apiwork.introspect('/api/v1')
+
+      # Find enum filter union type
+      filter_type = introspection[:types][:account_status_filter]
+
+      # First variant should have type reference (not inline enum)
+      enum_variant = filter_type[:variants][0]
+      expect(enum_variant[:type]).to eq(:account_status)
+      expect(enum_variant).not_to have_key(:enum) # Type reference, not enum attribute
+
+      # Object variant eq field should also be type reference
+      eq_field = filter_type[:variants][1][:shape][:eq]
+      expect(eq_field[:type]).to eq(:account_status)
+      expect(eq_field).not_to have_key(:enum) # Type reference, not enum attribute
+    end
+
+    it 'does NOT use primitive filter types for enum attributes' do
+      introspection = Apiwork.introspect('/api/v1')
+
+      # Enum filters should exist
+      expect(introspection[:types]).to have_key(:account_status_filter)
+
+      # The filter union should NOT reference string_filter
+      filter = introspection[:types][:account_status_filter]
+      filter[:variants].each do |variant|
+        # No variant should reference :string_filter
+        expect(variant[:type]).not_to eq(:string_filter)
+      end
+    end
+
     it 'includes schema attribute types in resource actions' do
       introspection = Apiwork.introspect('/api/v1')
 
