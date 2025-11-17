@@ -19,24 +19,25 @@ module Apiwork
             # Serialize from unified storage
             if api
               storage(api).to_a.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
-                result[qualified_name] = if metadata[:payload].is_a?(Hash)
-                                           # Union or already expanded data
-                                           metadata[:payload]
-                                         elsif metadata[:payload].is_a?(Proc)
-                                           # Block definition - expand it
-                                           expand_type_definition(
-                                             metadata[:payload],
-                                             contract_class: metadata[:scope],
-                                             type_name: metadata[:name]
-                                           )
-                                         else
-                                           # Fallback - use metadata[:definition] if available
-                                           expand_type_definition(
-                                             metadata[:definition] || metadata[:payload],
-                                             contract_class: metadata[:scope],
-                                             type_name: metadata[:name]
-                                           )
-                                         end
+                # Cache the expanded payload to avoid re-expanding on every serialize call
+                result[qualified_name] = metadata[:expanded_payload] ||= if metadata[:payload].is_a?(Hash)
+                                                                           # Union or already expanded data
+                                                                           metadata[:payload]
+                                                                         elsif metadata[:payload].is_a?(Proc)
+                                                                           # Block definition - expand it once and cache
+                                                                           expand_type_definition(
+                                                                             metadata[:payload],
+                                                                             contract_class: metadata[:scope],
+                                                                             type_name: metadata[:name]
+                                                                           )
+                                                                         else
+                                                                           # Fallback - use metadata[:definition] if available
+                                                                           expand_type_definition(
+                                                                             metadata[:definition] || metadata[:payload],
+                                                                             contract_class: metadata[:scope],
+                                                                             type_name: metadata[:name]
+                                                                           )
+                                                                         end
               end
             end
 
