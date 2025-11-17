@@ -74,7 +74,7 @@ module Apiwork
           }
         end
 
-        def serialize_param(_name, options, definition, visited: Set.new)
+        def serialize_param(name, options, definition, visited: Set.new)
           # Handle union types
           if options[:type] == :union
             result = serialize_union(options[:union], definition, visited: visited)
@@ -89,6 +89,8 @@ module Apiwork
             custom_type_name = options[:custom_type]
             if is_global_type?(custom_type_name, definition)
               # Global type: keep as-is, don't qualify
+            elsif is_imported_type?(custom_type_name, definition)
+              # Imported type: keep as import alias, don't qualify
             elsif definition.contract_class.respond_to?(:schema_class) &&
                   definition.contract_class.schema_class &&
                   definition.contract_class.resolve_custom_type(custom_type_name)
@@ -111,6 +113,8 @@ module Apiwork
           if type_value && definition.contract_class.resolve_custom_type(type_value)
             if is_global_type?(type_value, definition)
               # Global type: keep as-is, don't qualify
+            elsif is_imported_type?(type_value, definition)
+              # Imported type: keep as import alias, don't qualify
             elsif definition.contract_class.respond_to?(:schema_class) &&
                   definition.contract_class.schema_class
               # Custom type - use qualified name
@@ -157,6 +161,9 @@ module Apiwork
               if is_global_type?(options[:of], definition)
                 # Global type: keep as-is, don't qualify
                 result[:of] = options[:of]
+              elsif is_imported_type?(options[:of], definition)
+                # Imported type: keep as import alias, don't qualify
+                result[:of] = options[:of]
               elsif definition.contract_class.respond_to?(:schema_class) &&
                     definition.contract_class.schema_class
                 # Custom type - use qualified name (e.g., service_filter instead of filter)
@@ -197,6 +204,9 @@ module Apiwork
             # BUT: Don't qualify global types - they're registered at API level without contract prefix
             if is_global_type?(variant_type, parent_definition)
               # Global type: keep as-is, don't qualify
+              result = { type: variant_type }
+            elsif is_imported_type?(variant_type, parent_definition)
+              # Imported type: keep as import alias, don't qualify
               result = { type: variant_type }
             elsif parent_definition.contract_class.respond_to?(:schema_class) &&
                   parent_definition.contract_class.schema_class
@@ -282,6 +292,14 @@ module Apiwork
 
           # Type is global if it has no scope (scope: nil)
           metadata[:scope].nil?
+        end
+
+        # Check if a type is imported from another contract
+        # Imported types should keep their import alias, not be scoped
+        def is_imported_type?(type_name, definition)
+          return false unless definition.contract_class.respond_to?(:imports)
+
+          definition.contract_class.imports.key?(type_name)
         end
       end
     end

@@ -294,11 +294,13 @@ module Apiwork
             return nil unless association_schema
             return nil if visited.include?(association_schema)
 
-            # Add to visited set
-            visited = visited.dup.add(association_schema)
-
             # Try to auto-import the association's contract and reuse its resource type
+            # Pass the current visited set (before adding this schema) so that auto_import
+            # can import the contract and register its types
             import_alias = auto_import_association_contract(contract_class, association_schema, visited)
+
+            # Add to visited set AFTER auto-import to allow bidirectional associations
+            visited = visited.dup.add(association_schema)
 
             if import_alias
               # Ensure the base resource output type is registered for the imported contract
@@ -364,6 +366,14 @@ module Apiwork
             association_contract = SchemaRegistry.contract_for_schema(association_schema)
             return nil unless association_contract
 
+            # Use schema's root_key.singular as alias (convention)
+            # Convert to symbol since root_key.singular returns a String
+            alias_name = association_schema.root_key.singular.to_sym
+
+            # Import FIRST, before registering types, so that when the type definition blocks
+            # are evaluated later (during serialization), the imports are already in place
+            parent_contract.import(association_contract, as: alias_name) unless parent_contract.imports.key?(alias_name)
+
             # Ensure the association contract has generated its types
             # This is necessary so that when we reference :comment_filter from PostContract,
             # CommentContract already has :filter registered locally
@@ -377,13 +387,6 @@ module Apiwork
               # This ensures schemas without routes still appear in introspection
               register_resource_output_type(association_contract, association_schema, visited: Set.new)
             end
-
-            # Use schema's root_key.singular as alias (convention)
-            # Convert to symbol since root_key.singular returns a String
-            alias_name = association_schema.root_key.singular.to_sym
-
-            # Import if not already done (idempotent)
-            parent_contract.import(association_contract, as: alias_name) unless parent_contract.imports.key?(alias_name)
 
             alias_name
           end
@@ -431,7 +434,7 @@ module Apiwork
             # Circular reference protection
             return if visited.include?(schema_class)
 
-            visited = visited.dup.add(schema_class)
+            visited.dup.add(schema_class)
 
             root_key = schema_class.root_key.singular.to_sym
             resource_type_name = Descriptor::Registry.scoped_name(contract_class, nil)
@@ -443,9 +446,12 @@ module Apiwork
             # Then populate it with attributes and associations inside the block
             Descriptor::Registry.register_type(root_key, scope: contract_class, api_class: contract_class.api_class) do
               # PRE-REGISTER: Register all association types inside the block
+              # Use a fresh visited set to avoid false circular reference detection
+              # (same pattern as filter/sort type registration)
               assoc_type_map = {}
               schema_class.association_definitions.each do |name, association_definition|
-                assoc_type_map[name] = TypeRegistry.register_association_type(contract_class, association_definition, visited: visited)
+                result = TypeRegistry.register_association_type(contract_class, association_definition, visited: Set.new)
+                assoc_type_map[name] = result
               end
 
               # PRE-REGISTER: Register all enum types and add all resource attributes
@@ -480,7 +486,7 @@ module Apiwork
                 elsif association_definition.singular?
                   param name, type: :object, required: is_required, nullable: association_definition.nullable?
                 elsif association_definition.collection?
-                  param name, type: :array, required: is_required, nullable: association_definition.nullable?
+                  param name, type: :array, of: :object, required: is_required, nullable: association_definition.nullable?
                 end
               end
             end
