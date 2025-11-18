@@ -60,7 +60,9 @@
       "Bash(RAILS_ENV=test BUNDLE_GEMFILE=spec/dummy/Gemfile bundle exec rails runner:*)",
       "Bash(grep:*)",
       "Bash(bundle update:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(bundle exec rails db:migrate:status:*)",
+      "Bash(sqlite3:*)"
     ],
     "deny": [],
     "ask": []
