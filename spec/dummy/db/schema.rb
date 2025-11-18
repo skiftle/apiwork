@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_14_000001) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_16_000001) do
   create_table "accounts", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "first_day_of_week", default: 1
     t.string "name"
     t.integer "status", default: 0, null: false
-    t.integer "first_day_of_week", default: 1
-    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
@@ -44,6 +44,15 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_14_000001) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "replies", force: :cascade do |t|
+    t.string "author", null: false
+    t.integer "comment_id", null: false
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["comment_id"], name: "index_replies_on_comment_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email"
@@ -52,4 +61,5 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_14_000001) do
   end
 
   add_foreign_key "comments", "posts"
+  add_foreign_key "replies", "comments"
 end
