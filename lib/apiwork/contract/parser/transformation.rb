@@ -16,7 +16,7 @@ module Apiwork
         def transform_meta_keys(meta)
           raise ArgumentError, 'transform_meta_keys only available for output direction' unless @direction == :output
 
-          return meta unless meta.present? && @schema_class
+          return meta if meta.blank? || @schema_class.nil?
 
           case @schema_class.output_key_format
           when :camel

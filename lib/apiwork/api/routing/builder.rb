@@ -16,7 +16,7 @@ module Apiwork
 
           set.draw do
             api_classes.each do |api_class|
-              next unless api_class.mount_path && api_class.metadata
+              next if api_class.mount_path.blank? || api_class.metadata.blank?
 
               # Draw spec endpoints first (outside module namespace)
               if api_class.specs?

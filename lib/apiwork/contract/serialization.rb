@@ -95,7 +95,7 @@ module Apiwork
                   definition.contract_class.schema_class &&
                   definition.contract_class.resolve_custom_type(custom_type_name)
               # Determine scope for qualification
-              scope = determine_scope_for_type(definition, custom_type_name)
+              scope = scope_for_type(definition, custom_type_name)
               custom_type_name = Descriptor::Registry.scoped_name(scope, custom_type_name)
             end
 
@@ -119,7 +119,7 @@ module Apiwork
                   definition.contract_class.schema_class
               # Custom type - use qualified name
               # Determine scope for qualification
-              scope = determine_scope_for_type(definition, type_value)
+              scope = scope_for_type(definition, type_value)
               type_value = Descriptor::Registry.scoped_name(scope, type_value)
             end
           end
@@ -167,7 +167,7 @@ module Apiwork
               elsif definition.contract_class.respond_to?(:schema_class) &&
                     definition.contract_class.schema_class
                 # Custom type - use qualified name (e.g., service_filter instead of filter)
-                scope = determine_scope_for_type(definition, options[:of])
+                scope = scope_for_type(definition, options[:of])
                 result[:of] = Descriptor::Registry.scoped_name(scope, options[:of])
               else
                 result[:of] = options[:of]
@@ -210,7 +210,7 @@ module Apiwork
               result = { type: variant_type }
             elsif parent_definition.contract_class.respond_to?(:schema_class) &&
                   parent_definition.contract_class.schema_class
-              scope = determine_scope_for_type(parent_definition, variant_type)
+              scope = scope_for_type(parent_definition, variant_type)
               qualified_type_name = Descriptor::Registry.scoped_name(scope, variant_type)
               result = { type: qualified_type_name }
             else
@@ -235,7 +235,7 @@ module Apiwork
               elsif parent_definition.contract_class.respond_to?(:schema_class) &&
                     parent_definition.contract_class.schema_class
                 # Custom type - use qualified name (e.g., service_filter instead of filter)
-                scope = determine_scope_for_type(parent_definition, variant_def[:of])
+                scope = scope_for_type(parent_definition, variant_def[:of])
                 result[:of] = Descriptor::Registry.scoped_name(scope, variant_def[:of])
               else
                 result[:of] = variant_def[:of]
@@ -269,7 +269,7 @@ module Apiwork
           result
         end
 
-        def determine_scope_for_type(definition, type_name)
+        def scope_for_type(definition, type_name)
           definition.contract_class
         end
 

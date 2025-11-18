@@ -18,7 +18,7 @@ module Apiwork
         combined = {}
 
         # 1. Start with include: :always associations
-        combined.deep_merge!(build_always_included_associations)
+        combined.deep_merge!(always_included)
 
         # 2. Add associations from filter/sort (collections only)
         if for_collection
@@ -35,7 +35,7 @@ module Apiwork
       private
 
       # Build includes hash from include: :always associations only
-      def build_always_included_associations(visited = Set.new)
+      def always_included(visited = Set.new)
         return {} if visited.include?(schema.name)
 
         visited = visited.dup.add(schema.name)
@@ -52,7 +52,7 @@ module Apiwork
 
           if nested_schema.respond_to?(:new)
             builder = self.class.new(schema: nested_schema)
-            nested = builder.send(:build_always_included_associations, visited)
+            nested = builder.send(:always_included, visited)
             result[name] = nested.any? ? nested : {}
           else
             result[name] = {}
@@ -86,7 +86,7 @@ module Apiwork
           key_name_sym = key.to_sym
           association_definition = schema.association_definitions[key_name_sym]
 
-          if explicitly_false?(value)
+          if false?(value)
             # Only allow deletion for :optional associations
             # :always associations cannot be disabled
             next if association_definition&.always_included?
@@ -105,7 +105,7 @@ module Apiwork
                                        # New association - set directly
                                        normalized
                                      end
-          elsif explicitly_true?(value)
+          elsif true?(value)
             combined[key_name_sym] ||= {}
           end
         end
@@ -137,9 +137,9 @@ module Apiwork
         hash.each do |key, value|
           key_name_sym = key.to_sym
 
-          next if explicitly_false?(value)
+          next if false?(value)
 
-          result[key_name_sym] = if explicitly_true?(value)
+          result[key_name_sym] = if true?(value)
                                    {}
                                  elsif value.is_a?(Hash)
                                    normalize_nested_includes(value)
@@ -151,11 +151,11 @@ module Apiwork
         result
       end
 
-      def explicitly_true?(value)
+      def true?(value)
         [true, 'true'].include?(value)
       end
 
-      def explicitly_false?(value)
+      def false?(value)
         [false, 'false'].include?(value)
       end
 

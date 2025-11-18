@@ -20,7 +20,7 @@ module Apiwork
           parser = Contract::Parser.new(current_contract, :input, action_name, coerce: true)
 
           data = request.query_parameters.merge(request.request_parameters).deep_symbolize_keys
-          data = transform_input_keys(data, key_transform)
+          data = transform_keys(data, key_transform)
           data = ParamsNormalizer.call(data)
 
           parser.perform(data)
@@ -39,7 +39,7 @@ module Apiwork
         Configuration::Resolver.resolve(:input_key_format, contract_class: current_contract)
       end
 
-      def transform_input_keys(hash, strategy)
+      def transform_keys(hash, strategy)
         case strategy
         when :camel
           hash.deep_transform_keys { |key| key.to_s.camelize(:lower).to_sym }

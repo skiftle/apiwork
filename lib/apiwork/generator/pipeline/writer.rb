@@ -28,7 +28,7 @@ module Apiwork
           if file_path?(output)
             write_file(content, output)
           else
-            raise ArgumentError, 'api_path and format required when output is a directory' unless api_path && format
+            raise ArgumentError, 'api_path and format required when output is a directory' if api_path.blank? || format.blank?
 
             file_path = build_file_path(output, api_path, format, extension)
             write_file(content, file_path)
