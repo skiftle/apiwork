@@ -299,7 +299,7 @@ module Apiwork
         if is_update && !is_discriminator
           # Update actions: all fields optional (except discriminators)
           type += '.optional()' unless type.include?('.optional()')
-        elsif !definition[:required]
+        elsif definition[:required] == false
           # Regular fields: optional if not required
           type += '.optional()'
         end

@@ -48,11 +48,11 @@ module Apiwork
         }
 
         {
-          pagination: transform_pagination_keys(page)
+          pagination: transform_keys(page)
         }
       end
 
-      def transform_pagination_keys(hash)
+      def transform_keys(hash)
         case schema.output_key_format
         when :camel
           hash.deep_transform_keys { |key| key.to_s.camelize(:lower).to_sym }

@@ -76,7 +76,7 @@ module Apiwork
         # Validation happened against snake_case keys, but errors should reference
         # the actual serialized key format (e.g., camelCase)
         if validated[:issues].any? && @direction == :output && schema_class&.output_key_format
-          validated[:issues] = transform_issue_paths(validated[:issues], schema_class.output_key_format)
+          validated[:issues] = transform_paths(validated[:issues], schema_class.output_key_format)
         end
 
         # Step 4: Handle errors based on direction
@@ -125,7 +125,7 @@ module Apiwork
       # Transform issue paths to match serialized key format
       # When validating output, we validate against snake_case keys but errors
       # should reference the actual serialized format (e.g., camelCase)
-      def transform_issue_paths(issues, key_transform)
+      def transform_paths(issues, key_transform)
         issues.map do |issue|
           transformed_path = issue.path.map do |segment|
             # Keep numeric indices as-is, only transform string/symbol keys

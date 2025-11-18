@@ -49,7 +49,7 @@ module Apiwork
         @min = options[:min]
         @max = options[:max]
 
-        validate_empty!
+        # validate_empty! FIXME
         validate_min_max_range!
         apply_empty_transformers! if @empty
       end
@@ -240,7 +240,7 @@ module Apiwork
 
       # Validate that min <= max if both are set
       def validate_min_max_range!
-        return unless @min && @max
+        return if @min.nil? || @max.nil?
 
         return unless @min > @max
 
