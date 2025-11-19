@@ -275,6 +275,12 @@ module Apiwork
         type_error = validate_type(name, value, param_options[:type], field_path)
         return { issues: [type_error], value_set: false } if type_error
 
+        # Validate string length (min/max) for string types
+        if param_options[:type] == :string
+          length_error = validate_string_length(name, value, param_options, field_path)
+          return { issues: [length_error], value_set: false } if length_error
+        end
+
         # Validate numeric range (min/max) for numeric types
         if numeric_type?(param_options[:type])
           range_error = validate_numeric_range(name, value, param_options, field_path)
@@ -839,6 +845,38 @@ module Apiwork
             message: "Value must be <= #{max_value}",
             path: field_path,
             meta: { field: name, actual: value, maximum: max_value }
+          )
+        end
+
+        nil
+      end
+
+      # Validate string length constraints (min/max)
+      # Returns Issue if string length is out of range, nil otherwise
+      def validate_string_length(name, value, param_options, field_path)
+        return nil unless value.is_a?(String)
+
+        # Skip validation for empty strings (they may be transformed via empty: true)
+        return nil if value.empty?
+
+        min_length = param_options[:min]
+        max_length = param_options[:max]
+
+        if min_length && value.length < min_length
+          return Issue.new(
+            code: :string_too_short,
+            message: "String must be at least #{min_length} characters",
+            path: field_path,
+            meta: { field: name, actual_length: value.length, min_length: }
+          )
+        end
+
+        if max_length && value.length > max_length
+          return Issue.new(
+            code: :string_too_long,
+            message: "String must be at most #{max_length} characters",
+            path: field_path,
+            meta: { field: name, actual_length: value.length, max_length: }
           )
         end
 
