@@ -9,25 +9,32 @@ module Apiwork
           @scope = scope # nil = global, ContractClass = contract-scoped
         end
 
-        def type(name, &block)
+        def type(name, description: nil, example: nil, format: nil, deprecated: false, &block)
           raise ArgumentError, 'Block required for type definition' unless block_given?
 
           Registry.register_type(
             name,
             scope: @scope,
             api_class: @api_class,
+            description: description,
+            example: example,
+            format: format,
+            deprecated: deprecated,
             &block
           )
         end
 
-        def enum(name, values)
+        def enum(name, values, description: nil, example: nil, deprecated: false)
           raise ArgumentError, 'Values array required for enum definition' unless values.is_a?(Array)
 
           Registry.register_enum(
             name,
             values,
             scope: @scope,
-            api_class: @api_class
+            api_class: @api_class,
+            description: description,
+            example: example,
+            deprecated: deprecated
           )
         end
 

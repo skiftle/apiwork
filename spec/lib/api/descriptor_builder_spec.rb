@@ -40,7 +40,7 @@ RSpec.describe 'API Descriptor Builder' do
     enums = Apiwork::Contract::Descriptor::Registry.enums(api)
 
     expect(enums).to have_key(:sort_direction)
-    expect(enums[:sort_direction]).to eq(%i[asc desc])
+    expect(enums[:sort_direction][:values]).to eq(%i[asc desc])
   end
 
   it 'auto-generates enum filter types for enums defined via descriptors' do

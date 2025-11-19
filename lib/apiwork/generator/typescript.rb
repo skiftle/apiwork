@@ -40,8 +40,9 @@ module Apiwork
         all_types = []
 
         # Collect enum types
-        enums.each do |enum_name, enum_values|
+        enums.each do |enum_name, enum_data|
           type_name = mapper.pascal_case(enum_name)
+          enum_values = enum_data[:values]
           values_str = enum_values.sort.map { |v| "'#{v}'" }.join(' | ')
           all_types << { name: type_name, code: "export type #{type_name} = #{values_str};" }
         end

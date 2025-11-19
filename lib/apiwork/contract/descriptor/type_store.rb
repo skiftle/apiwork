@@ -5,8 +5,20 @@ module Apiwork
     module Descriptor
       class TypeStore < Store
         class << self
-          def register_type(name, scope: nil, api_class: nil, &block)
-            register(name, block, scope: scope, metadata: { definition: block }, api_class: api_class)
+          def register_type(name, scope: nil, api_class: nil, description: nil, example: nil, format: nil, deprecated: false, &block)
+            register(
+              name,
+              block,
+              scope: scope,
+              metadata: {
+                definition: block,
+                description: description,
+                example: example,
+                format: format,
+                deprecated: deprecated
+              },
+              api_class: api_class
+            )
           end
 
           def register_union(name, data, scope: nil, api_class: nil)
@@ -20,24 +32,32 @@ module Apiwork
             if api
               storage(api).each_pair.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
                 # Cache the expanded payload to avoid re-expanding on every serialize call
-                result[qualified_name] = metadata[:expanded_payload] ||= if metadata[:payload].is_a?(Hash)
-                                                                           # Union or already expanded data
-                                                                           metadata[:payload]
-                                                                         elsif metadata[:payload].is_a?(Proc)
-                                                                           # Block definition - expand it once and cache
-                                                                           expand_type_definition(
-                                                                             metadata[:payload],
-                                                                             contract_class: metadata[:scope],
-                                                                             type_name: metadata[:name]
-                                                                           )
-                                                                         else
-                                                                           # Fallback - use metadata[:definition] if available
-                                                                           expand_type_definition(
-                                                                             metadata[:definition] || metadata[:payload],
-                                                                             contract_class: metadata[:scope],
-                                                                             type_name: metadata[:name]
-                                                                           )
-                                                                         end
+                expanded = metadata[:expanded_payload] ||= if metadata[:payload].is_a?(Hash)
+                                                             # Union or already expanded data
+                                                             metadata[:payload]
+                                                           elsif metadata[:payload].is_a?(Proc)
+                                                             # Block definition - expand it once and cache
+                                                             expand_type_definition(
+                                                               metadata[:payload],
+                                                               contract_class: metadata[:scope],
+                                                               type_name: metadata[:name]
+                                                             )
+                                                           else
+                                                             # Fallback - use metadata[:definition] if available
+                                                             expand_type_definition(
+                                                               metadata[:definition] || metadata[:payload],
+                                                               contract_class: metadata[:scope],
+                                                               type_name: metadata[:name]
+                                                             )
+                                                           end
+
+                # Add type-level metadata if present
+                expanded[:description] = metadata[:description] if metadata[:description]
+                expanded[:example] = metadata[:example] if metadata[:example]
+                expanded[:format] = metadata[:format] if metadata[:format]
+                expanded[:deprecated] = metadata[:deprecated] if metadata[:deprecated]
+
+                result[qualified_name] = expanded
               end
             end
 

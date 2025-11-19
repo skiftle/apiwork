@@ -5,12 +5,29 @@ module Apiwork
     module Descriptor
       class Registry
         class << self
-          def register_type(name, scope: nil, api_class: nil, &block)
-            TypeStore.register_type(name, scope: scope, api_class: api_class, &block)
+          def register_type(name, scope: nil, api_class: nil, description: nil, example: nil, format: nil, deprecated: false, &block)
+            TypeStore.register_type(
+              name,
+              scope: scope,
+              api_class: api_class,
+              description: description,
+              example: example,
+              format: format,
+              deprecated: deprecated,
+              &block
+            )
           end
 
-          def register_enum(name, values, scope: nil, api_class: nil)
-            EnumStore.register_enum(name, values, scope: scope, api_class: api_class)
+          def register_enum(name, values, scope: nil, api_class: nil, description: nil, example: nil, deprecated: false)
+            EnumStore.register_enum(
+              name,
+              values,
+              scope: scope,
+              api_class: api_class,
+              description: description,
+              example: example,
+              deprecated: deprecated
+            )
             # Auto-generate enum filter type
             register_enum_filter_type(enum_name: name, scope: scope, api_class: api_class)
           end
