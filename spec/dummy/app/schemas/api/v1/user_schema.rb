@@ -6,7 +6,13 @@ module Api
     # Inherits from BaseSchema (abstract) and should auto-detect User model
     class UserSchema < BaseSchema
       attribute :id, filterable: true, sortable: true
-      attribute :email, writable: true, filterable: true, sortable: true, nullable: true
+      attribute :email,
+                writable: true,
+                filterable: true,
+                sortable: true,
+                nullable: true,
+                serialize: ->(value) { value&.downcase },
+                deserialize: ->(value) { value&.upcase }
       attribute :name, writable: true, filterable: true, sortable: true, empty: true
       attribute :created_at, filterable: true, sortable: true
       attribute :updated_at, filterable: true, sortable: true
