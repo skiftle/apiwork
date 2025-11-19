@@ -4,9 +4,6 @@ require 'concurrent/map'
 
 module Apiwork
   module API
-    # Registry for managing API class instances
-    #
-    # Thread-safety: Lock-free using Concurrent::Map (atomic operations)
     class Registry
       class << self
         def register(api_class)

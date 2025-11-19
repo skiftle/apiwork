@@ -3,22 +3,19 @@
 module Apiwork
   module API
     class Base
-      extend Info      # Adds: info
-      extend Routing   # Adds: resources, resource, concern, with_options
-
       class << self
-        attr_reader :metadata, :recorder, :mount_path, :namespaces_parts, :specs
+        attr_reader :metadata, :recorder, :mount_path, :namespaces, :specs
 
         def mount(path)
           @mount_path = path
           @specs = {}
 
           # Parse path to namespaces array
-          @namespaces_parts = path == '/' ? [:root] : path.split('/').reject(&:empty?).map(&:to_sym)
+          @namespaces = path == '/' ? [:root] : path.split('/').reject(&:empty?).map(&:to_sym)
 
           # Create metadata with path as source
           @metadata = Metadata.new(path)
-          @recorder = Recorder.new(@metadata, @namespaces_parts)
+          @recorder = Recorder.new(@metadata, @namespaces)
 
           # Register in Registry
           Registry.register(self)
@@ -77,6 +74,30 @@ module Apiwork
 
           builder = Contract::Descriptor::Builder.new(api_class: self, scope: nil)
           builder.instance_eval(&block)
+        end
+
+        # Info DSL - allows defining API metadata
+        def info(&block)
+          builder = Info::Builder.new
+          builder.instance_eval(&block)
+          @metadata.info = builder.info
+        end
+
+        # Routing DSL - allows defining resources
+        def resources(name, **options, &block)
+          @recorder.resources(name, **options, &block)
+        end
+
+        def resource(name, **options, &block)
+          @recorder.resource(name, **options, &block)
+        end
+
+        def concern(name, &block)
+          @recorder.concern(name, &block)
+        end
+
+        def with_options(options = {}, &block)
+          @recorder.with_options(options, &block)
         end
 
         def introspect

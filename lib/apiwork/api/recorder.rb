@@ -14,9 +14,9 @@ module Apiwork
 
       attr_reader :metadata
 
-      def initialize(metadata, namespaces_parts)
+      def initialize(metadata, namespaces)
         @metadata = metadata
-        @namespaces = namespaces_parts
+        @namespaces = namespaces
         @resource_stack = []
         @current_options = nil
         @in_member_block = false
