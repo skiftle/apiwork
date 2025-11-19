@@ -12,7 +12,7 @@ module Apiwork
     # Thread-safety: Optimistic lazy creation (harmless races)
     class SchemaRegistry
       class << self
-        def contract_for_schema(schema_class)
+        def find(schema_class)
           @registry[schema_class] ||= find_or_create_contract(schema_class)
         end
 
@@ -73,7 +73,7 @@ module Apiwork
           end
 
           # Register enums for anonymous contracts
-          Schema::TypeRegistry.register_contract_enums(contract, schema_class)
+          Schema::TypeBuilder.build_contract_enums(contract, schema_class)
 
           contract
         end

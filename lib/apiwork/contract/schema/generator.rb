@@ -22,7 +22,7 @@ module Apiwork
               define_singleton_method(:api_class) { api_class_for_schema }
             end
 
-            TypeRegistry.register_contract_enums(contract_class, schema_class)
+            TypeBuilder.build_contract_enums(contract_class, schema_class)
 
             action_definition = Apiwork::Contract::ActionDefinition.new(action_name: action, contract_class: contract_class)
 

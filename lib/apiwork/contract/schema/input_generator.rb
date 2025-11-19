@@ -14,8 +14,8 @@ module Apiwork
 
             # Register resource-specific filter and sort types with Descriptor::Registry
             # This pre-registers all types before usage, eliminating circular recursion
-            filter_type = TypeRegistry.register_resource_filter_type(contract_class, schema_class)
-            sort_type = TypeRegistry.register_resource_sort_type(contract_class, schema_class)
+            filter_type = TypeBuilder.build_filter_type(contract_class, schema_class)
+            sort_type = TypeBuilder.build_sort_type(contract_class, schema_class)
 
             # Generate nested filter parameter with resource-specific filters
             # Supports both object form and array form (implicit OR logic)
@@ -39,12 +39,12 @@ module Apiwork
             end
 
             # Generate nested page parameter (schema-specific if max_page_size differs from default)
-            page_type = TypeRegistry.register_resource_page_type(contract_class, schema_class)
+            page_type = TypeBuilder.build_page_type(contract_class, schema_class)
             definition.param :page, type: page_type, required: false
 
             # Generate nested include parameter with strict validation
             # Type includes ALL associations - contract validates structure
-            include_type = TypeRegistry.register_resource_include_type(contract_class, schema_class)
+            include_type = TypeBuilder.build_include_type(contract_class, schema_class)
             definition.param :include, type: include_type, required: false
           end
 
@@ -104,13 +104,13 @@ module Apiwork
               next unless association_definition.writable_for?(context)
 
               # Try to get the association's schema for typed payloads
-              association_schema = TypeRegistry.resolve_association_resource(association_definition)
+              association_schema = TypeBuilder.resolve_association_resource(association_definition)
               association_payload_type = nil
 
               association_contract = nil
               if association_schema
                 # Try to auto-import the association's contract and reuse its payload type
-                import_alias = TypeRegistry.auto_import_association_contract(
+                import_alias = TypeBuilder.auto_import_association_contract(
                   definition.contract_class,
                   association_schema,
                   Set.new
@@ -122,7 +122,7 @@ module Apiwork
 
                   # Get the association's contract for nested type resolution
                   # This is needed for deep nesting transformations
-                  association_contract = SchemaRegistry.contract_for_schema(association_schema)
+                  association_contract = SchemaRegistry.find(association_schema)
                 end
               end
 

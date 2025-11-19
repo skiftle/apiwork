@@ -26,7 +26,7 @@ module Apiwork
       # @return [String, Hash] Generated content
       def self.generate(api_path:, format:, **options)
         opts = Options.build(**options)
-        generator_class = Registry[format]
+        generator_class = Registry.find(format)
         generator_class.generate(path: api_path, **opts)
       end
 
@@ -122,7 +122,7 @@ module Apiwork
         Rails.logger.debug "  ✓ #{api_path} → #{format}#{opts_str}"
 
         content = generate(api_path: api_path, format: format, **options)
-        generator_class = Registry[format]
+        generator_class = Registry.find(format)
         extension = generator_class.file_extension
 
         file_path = Writer.write(

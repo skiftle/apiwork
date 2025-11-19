@@ -46,7 +46,7 @@ RSpec.describe Apiwork::Generator::Openapi do
     end
 
     it 'can be retrieved from the registry' do
-      expect(Apiwork::Generator::Registry[:openapi]).to eq(described_class)
+      expect(Apiwork::Generator::Registry.find(:openapi)).to eq(described_class)
     end
   end
 end

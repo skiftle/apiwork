@@ -88,7 +88,7 @@ module Apiwork
             # This prevents "can't add a new key into hash during iteration" errors
             assoc_type_map = {}
             schema_class.association_definitions.each do |name, association_definition|
-              assoc_type_map[name] = TypeRegistry.register_association_type(contract_class, association_definition)
+              assoc_type_map[name] = TypeBuilder.build_association_type(contract_class, association_definition)
             end
 
             # PRE-REGISTER: Register all enum types BEFORE defining the resource type

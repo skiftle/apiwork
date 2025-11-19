@@ -95,7 +95,7 @@ module Apiwork
             schema_class.attribute_definitions.each_value do |attribute_definition|
               next unless attribute_definition.filterable?
 
-              filter_type = Schema::TypeRegistry.determine_filter_type(attribute_definition.type)
+              filter_type = Schema::TypeBuilder.determine_filter_type(attribute_definition.type)
               descriptors.add(filter_type)
             end
             descriptors

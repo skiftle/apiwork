@@ -24,7 +24,7 @@ module Apiwork
       )
 
       # Render with appropriate content type
-      generator_class = ::Apiwork::Generator::Registry[params[:spec_type].to_sym]
+      generator_class = ::Apiwork::Generator::Registry.find(params[:spec_type].to_sym)
       render_spec(spec, generator_class.content_type)
     rescue ::Apiwork::Generator::Registry::GeneratorNotFound => e
       render json: { error: e.message }, status: :bad_request

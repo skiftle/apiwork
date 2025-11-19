@@ -6,7 +6,7 @@ module Apiwork
     #
     # Usage:
     #   Registry.register(:zod, Generator::Zod)
-    #   generator_class = Registry[:zod]
+    #   generator_class = Registry.find(:zod)
     #
     class Registry
       class GeneratorNotFound < StandardError; end
@@ -22,7 +22,7 @@ module Apiwork
           generators[name.to_sym] = generator_class
         end
 
-        def [](name)
+        def find(name)
           generators[name.to_sym] or raise GeneratorNotFound, "Generator :#{name} not registered. " \
                                                                "Available generators: #{all.join(', ')}"
         end

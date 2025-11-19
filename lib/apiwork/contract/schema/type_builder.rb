@@ -3,9 +3,9 @@
 module Apiwork
   module Contract
     module Schema
-      # Handles type registration and resolution for schemas
-      # Manages filter, sort, include, and association types with circular reference protection
-      class TypeRegistry
+      # Builds type definitions for schemas including filters, sorts, includes, and associations
+      # Manages circular reference protection during type generation
+      class TypeBuilder
         # Maximum recursion depth for nested type generation
         # Prevents excessive nesting in deeply nested associations
         MAX_RECURSION_DEPTH = 3
@@ -47,7 +47,7 @@ module Apiwork
             :"#{scoped_enum_name}_filter"
           end
 
-          def register_resource_filter_type(contract_class, schema_class, visited: Set.new, depth: 0)
+          def build_filter_type(contract_class, schema_class, visited: Set.new, depth: 0)
             # Circular reference and depth protection
             return nil if visited.include?(schema_class)
             return nil if depth >= MAX_RECURSION_DEPTH
@@ -80,7 +80,7 @@ module Apiwork
                 next unless attribute_definition.filterable?
 
                 # Determine filter type (enum-specific or primitive)
-                filter_type = TypeRegistry.filter_type_for(attribute_definition, contract_class)
+                filter_type = TypeBuilder.filter_type_for(attribute_definition, contract_class)
 
                 # Support shorthand: allow primitive value OR filter object
                 param name, type: :union, required: false do
@@ -99,12 +99,12 @@ module Apiwork
                 # Skip non-filterable associations
                 next unless association_definition.filterable?
 
-                association_resource = TypeRegistry.resolve_association_resource(association_definition)
+                association_resource = TypeBuilder.resolve_association_resource(association_definition)
                 next unless association_resource
                 next if visited.include?(association_resource)
 
                 # Try to auto-import the association's contract and reuse its filter type
-                import_alias = TypeRegistry.auto_import_association_contract(
+                import_alias = TypeBuilder.auto_import_association_contract(
                   contract_class,
                   association_resource,
                   visited
@@ -115,7 +115,7 @@ module Apiwork
                                             :"#{import_alias}_filter"
                                           else
                                             # Fall back to creating type in this contract
-                                            TypeRegistry.register_resource_filter_type(
+                                            TypeBuilder.build_filter_type(
                                               contract_class,
                                               association_resource,
                                               visited: visited,
@@ -131,7 +131,7 @@ module Apiwork
             type_name
           end
 
-          def register_resource_sort_type(contract_class, schema_class, visited: Set.new, depth: 0)
+          def build_sort_type(contract_class, schema_class, visited: Set.new, depth: 0)
             # Circular reference and depth protection
             return nil if visited.include?(schema_class)
             return nil if depth >= MAX_RECURSION_DEPTH
@@ -165,12 +165,12 @@ module Apiwork
                 # Skip non-sortable associations
                 next unless association_definition.sortable?
 
-                association_resource = TypeRegistry.resolve_association_resource(association_definition)
+                association_resource = TypeBuilder.resolve_association_resource(association_definition)
                 next unless association_resource
                 next if visited.include?(association_resource)
 
                 # Try to auto-import the association's contract and reuse its sort type
-                import_alias = TypeRegistry.auto_import_association_contract(
+                import_alias = TypeBuilder.auto_import_association_contract(
                   contract_class,
                   association_resource,
                   visited
@@ -181,7 +181,7 @@ module Apiwork
                                           :"#{import_alias}_sort"
                                         else
                                           # Fall back to creating type in this contract
-                                          TypeRegistry.register_resource_sort_type(
+                                          TypeBuilder.build_sort_type(
                                             contract_class,
                                             association_resource,
                                             visited: visited,
@@ -197,7 +197,7 @@ module Apiwork
             type_name
           end
 
-          def register_resource_page_type(contract_class, schema_class)
+          def build_page_type(contract_class, schema_class)
             # Resolve max_page_size through full inheritance chain (contract → schema → api)
             resolved_max_page_size = Configuration::Resolver.resolve(:max_page_size, contract_class: contract_class, schema_class: schema_class,
                                                                                      api_class: contract_class.api_class)
@@ -257,7 +257,7 @@ module Apiwork
             end
           end
 
-          def register_resource_include_type(contract_class, schema_class, visited: Set.new, depth: 0)
+          def build_include_type(contract_class, schema_class, visited: Set.new, depth: 0)
             # Use schema-specific type name to avoid collisions when including nested associations
             # For the root schema (depth 0), use :include. For associated schemas, include schema name
             type_name = build_type_name(schema_class, :include, depth)
@@ -274,7 +274,7 @@ module Apiwork
             # Contract validates structure, Resource applies validated includes
             Descriptor::Registry.register_type(type_name, scope: contract_class, api_class: contract_class.api_class) do
               schema_class.association_definitions.each do |name, association_definition|
-                association_resource = TypeRegistry.resolve_association_resource(association_definition)
+                association_resource = TypeBuilder.resolve_association_resource(association_definition)
                 next unless association_resource
 
                 # For circular references, just allow boolean (can't nest further)
@@ -285,7 +285,7 @@ module Apiwork
                   param name, type: :boolean, required: false unless association_definition.always_included?
                 else
                   # Try to auto-import the association's contract and reuse its include type
-                  import_alias = TypeRegistry.auto_import_association_contract(
+                  import_alias = TypeBuilder.auto_import_association_contract(
                     contract_class,
                     association_resource,
                     visited
@@ -296,7 +296,7 @@ module Apiwork
                                                :"#{import_alias}_include"
                                              else
                                                # Fall back to creating type in this contract
-                                               TypeRegistry.register_resource_include_type(
+                                               TypeBuilder.build_include_type(
                                                  contract_class,
                                                  association_resource,
                                                  visited: visited,
@@ -323,7 +323,7 @@ module Apiwork
             type_name
           end
 
-          def register_association_type(contract_class, association_definition, visited: Set.new)
+          def build_association_type(contract_class, association_definition, visited: Set.new)
             # Resolve the associated resource schema
             association_schema = resolve_association_resource(association_definition)
             return nil unless association_schema
@@ -341,8 +341,8 @@ module Apiwork
               # Ensure the base resource output type is registered for the imported contract
               # This is necessary for schemas that don't have their own routes
               # We pass a new visited set following the same pattern as filter/sort type registration
-              association_contract = SchemaRegistry.contract_for_schema(association_schema)
-              register_resource_output_type(association_contract, association_schema, visited: Set.new) if association_contract
+              association_contract = SchemaRegistry.find(association_schema)
+              build_output_type(association_contract, association_schema, visited: Set.new) if association_contract
 
               # Reference imported type: e.g., :comment
               # The base resource type is the same as the import alias
@@ -369,8 +369,8 @@ module Apiwork
 
                 # Add nested associations recursively
                 association_schema.association_definitions.each do |name, nested_association_definition|
-                  nested_type = TypeRegistry.register_association_type(association_contract_class,
-                                                                       nested_association_definition, visited: visited)
+                  nested_type = TypeBuilder.build_association_type(association_contract_class,
+                                                                   nested_association_definition, visited: visited)
 
                   if nested_type
                     if nested_association_definition.singular?
@@ -398,7 +398,7 @@ module Apiwork
             return nil if visited.include?(association_schema)
 
             # Find contract via registry
-            association_contract = SchemaRegistry.contract_for_schema(association_schema)
+            association_contract = SchemaRegistry.find(association_schema)
             return nil unless association_contract
 
             # Use schema's root_key.singular as alias (convention)
@@ -414,19 +414,19 @@ module Apiwork
             # CommentContract already has :filter registered locally
             # We pass a new visited set to avoid false circular reference detection
             if association_contract.schema?
-              register_resource_filter_type(association_contract, association_schema, visited: Set.new, depth: 0)
-              register_resource_sort_type(association_contract, association_schema, visited: Set.new, depth: 0)
-              register_resource_include_type(association_contract, association_schema, visited: Set.new, depth: 0)
-              register_nested_payload_union(association_contract, association_schema)
+              build_filter_type(association_contract, association_schema, visited: Set.new, depth: 0)
+              build_sort_type(association_contract, association_schema, visited: Set.new, depth: 0)
+              build_include_type(association_contract, association_schema, visited: Set.new, depth: 0)
+              build_nested_payload_union(association_contract, association_schema)
               # Also register base resource output type for introspection
               # This ensures schemas without routes still appear in introspection
-              register_resource_output_type(association_contract, association_schema, visited: Set.new)
+              build_output_type(association_contract, association_schema, visited: Set.new)
             end
 
             alias_name
           end
 
-          def register_contract_enums(contract_class, schema_class)
+          def build_contract_enums(contract_class, schema_class)
             api_class = contract_class.api_class
 
             schema_class.attribute_definitions.each do |name, attribute_definition|
@@ -440,7 +440,7 @@ module Apiwork
           # Register nested_payload union for schemas used as writable associations
           # This is called lazily when a schema is auto-imported as a writable association
           # Creates three types: nested_create_payload, nested_update_payload, and nested_payload (union)
-          def register_nested_payload_union(contract_class, schema_class)
+          def build_nested_payload_union(contract_class, schema_class)
             # Only register if schema has writable attributes or writable associations
             # This ensures schemas can be used as nested payloads in writable associations
             return unless schema_class.attribute_definitions.any? { |_, ad| ad.writable? } ||
@@ -494,7 +494,7 @@ module Apiwork
 
           # Register base resource output type for schemas (even those without routes)
           # This ensures the type is available for introspection and validation
-          def register_resource_output_type(contract_class, schema_class, visited: Set.new)
+          def build_output_type(contract_class, schema_class, visited: Set.new)
             # Circular reference protection
             return if visited.include?(schema_class)
 
@@ -514,7 +514,7 @@ module Apiwork
               # (same pattern as filter/sort type registration)
               assoc_type_map = {}
               schema_class.association_definitions.each do |name, association_definition|
-                result = TypeRegistry.register_association_type(contract_class, association_definition, visited: Set.new)
+                result = TypeBuilder.build_association_type(contract_class, association_definition, visited: Set.new)
                 assoc_type_map[name] = result
               end
 

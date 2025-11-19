@@ -4,7 +4,7 @@ module Apiwork
   module Generator
     class << self
       def generate(type, path, **options)
-        Generator::Registry[type].generate(path: path, **options)
+        Generator::Registry.find(type).generate(path: path, **options)
       end
 
       def register(name, generator_class)
