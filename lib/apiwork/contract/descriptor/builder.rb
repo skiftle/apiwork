@@ -34,9 +34,9 @@ module Apiwork
         def union(name, &block)
           raise ArgumentError, 'Union type requires a block' unless block_given?
 
-          union_def = UnionDefinition.new(@scope)
-          union_def.instance_eval(&block)
-          union_data = union_def.serialize
+          union_definition = UnionDefinition.new(@scope)
+          union_definition.instance_eval(&block)
+          union_data = union_definition.serialize
 
           Registry.register_union(
             name,

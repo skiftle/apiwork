@@ -24,12 +24,6 @@ module Apiwork
         @namespaces.map(&:to_s).map(&:camelize).join('::')
       end
 
-      # Derive namespace path for URLs: [:api, :v1] -> 'api/v1'
-      # Removes leading slash from stored path
-      def namespaces_path
-        @path.sub(%r{^/}, '')
-      end
-
       def add_resource(name, singular:, schema_class:, controller_class_name: nil, contract_class_name: nil,
                        parent: nil, doc: nil, **options)
         # Add to structured tree

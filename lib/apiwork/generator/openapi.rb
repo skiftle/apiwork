@@ -225,10 +225,10 @@ module Apiwork
         properties = {}
         required_fields = []
 
-        params_hash.each do |param_name, param_def|
+        params_hash.each do |param_name, param_definition|
           transformed_key = transform_key(param_name)
-          properties[transformed_key] = map_field_definition(param_def, action_name)
-          required_fields << transformed_key if param_def.is_a?(Hash) && param_def[:required] && is_create_action
+          properties[transformed_key] = map_field_definition(param_definition, action_name)
+          required_fields << transformed_key if param_definition.is_a?(Hash) && param_definition[:required] && is_create_action
         end
 
         result = { type: 'object', properties: }

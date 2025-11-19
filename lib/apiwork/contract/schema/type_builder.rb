@@ -482,10 +482,10 @@ module Apiwork
             create_qualified_name = Descriptor::Registry.scoped_name(contract_class, create_type_name)
             update_qualified_name = Descriptor::Registry.scoped_name(contract_class, update_type_name)
 
-            union_def = UnionDefinition.new(contract_class, discriminator: :_type)
-            union_def.variant(type: create_qualified_name, tag: 'create')
-            union_def.variant(type: update_qualified_name, tag: 'update')
-            union_data = union_def.serialize
+            union_definition = UnionDefinition.new(contract_class, discriminator: :_type)
+            union_definition.variant(type: create_qualified_name, tag: 'create')
+            union_definition.variant(type: update_qualified_name, tag: 'update')
+            union_data = union_definition.serialize
 
             # Register as top-level union
             Descriptor::Registry.register_union(nested_payload_type_name, union_data,

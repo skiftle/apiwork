@@ -57,8 +57,7 @@ module Apiwork
         valid_values = validator.call
         return if valid_values.include?(value)
 
-        raise ConfigurationError,
-              "Invalid #{name}: #{value}. Must be one of #{valid_values.join(', ')}"
+        raise ConfigurationError, "Invalid #{name}: #{value}. Must be one of #{valid_values.join(', ')}"
       end
     end
   end

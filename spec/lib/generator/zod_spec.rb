@@ -354,9 +354,9 @@ RSpec.describe Apiwork::Generator::Zod do
             union_match = output.match(/export const #{schema_name}Schema = z\.union\(\[(.*?)\]\);/m)
             next unless union_match
 
-            union_def = union_match[1]
+            union_definition = union_match[1]
             # If this union has the enum variant, it should reference the schema
-            expect(union_def).to include("#{variant_enum}Schema") if union_def.include?(variant_enum.underscore)
+            expect(union_definition).to include("#{variant_enum}Schema") if union_definition.include?(variant_enum.underscore)
           end
         end
       end

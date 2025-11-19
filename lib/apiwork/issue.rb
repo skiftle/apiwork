@@ -15,10 +15,6 @@ module Apiwork
       @pointer ||= JSONPointer.build(*path)
     end
 
-    def dot_path
-      @dot_path ||= path.map(&:to_s).join('.')
-    end
-
     def to_h
       filtered_meta = meta.is_a?(Hash) ? meta.slice(:attribute, :in, :minimum, :maximum, :count, :is, :too_short, :too_long) : meta
 
@@ -31,15 +27,6 @@ module Apiwork
 
       result[:options] = filtered_meta if filtered_meta && (filtered_meta.respond_to?(:empty?) ? filtered_meta.present? : true)
       result
-    end
-
-    def pretty
-      <<~TXT
-        - code:    #{code}
-          path:    #{dot_path}
-          pointer: #{pointer}
-          detail:  #{message}
-      TXT
     end
   end
 end

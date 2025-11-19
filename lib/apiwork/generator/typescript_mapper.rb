@@ -49,10 +49,10 @@ module Apiwork
       def build_action_input_type(resource_name, action_name, input_params, parent_path = nil)
         type_name = action_type_name(resource_name, action_name, 'Input', parent_path)
 
-        properties = input_params.sort_by { |k, _| k.to_s }.map do |param_name, param_def|
+        properties = input_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
           key = transform_key(param_name)
-          ts_type = map_field(param_def, action_name)
-          is_required = param_def[:required]
+          ts_type = map_field(param_definition, action_name)
+          is_required = param_definition[:required]
           optional_marker = is_required ? '' : '?'
           "  #{key}#{optional_marker}: #{ts_type};"
         end.join("\n")
