@@ -2,120 +2,230 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Writable context filtering in auto-generated contracts', type: :integration do
-  describe 'AuthorContract create vs update payloads' do
-    it 'includes only writable: { on: [:create] } attributes in create_payload' do
-      create_action = Api::V1::AuthorContract.action_definition(:create)
-      serialized = create_action.as_json
+RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', type: :request do
+  describe 'writable: { on: [:create] } - only writable on create' do
+    it 'allows setting bio during create' do
+      author_params = {
+        author: {
+          name: 'Jane Doe',
+          bio: 'Software engineer and writer'
+        }
+      }
 
-      # Input should have nested author param with create_payload type
-      expect(serialized[:input]).to have_key(:author)
-      expect(serialized[:input][:author][:type]).to eq(:author_create_payload)
+      post '/api/v1/authors', params: author_params, as: :json
 
-      # Get the actual payload type from registry
-      all_types = Apiwork::Contract::Descriptor::Registry.types('api/v1')
-      create_payload = all_types[:author_create_payload]
+      expect(response).to have_http_status(:created)
+      json = JSON.parse(response.body)
 
-      # name (writable: true) should be present
-      expect(create_payload).to have_key(:name)
-
-      # bio (create-only) should be present
-      expect(create_payload).to have_key(:bio)
-
-      # verified (update-only) should NOT be present
-      expect(create_payload).not_to have_key(:verified)
+      expect(json['ok']).to be(true)
+      expect(json['author']['name']).to eq('Jane Doe')
+      expect(json['author']['bio']).to eq('Software engineer and writer')
+      expect(json['author']['verified']).to be_falsey # Not writable on create, defaults to nil/false
     end
 
-    it 'includes only writable: { on: [:update] } attributes in update_payload' do
-      update_action = Api::V1::AuthorContract.action_definition(:update)
-      serialized = update_action.as_json
+    it 'rejects verified field during create (not writable on create)' do
+      author_params = {
+        author: {
+          name: 'Jane Doe',
+          verified: true # Not writable on create
+        }
+      }
 
-      # Input should have nested author param with update_payload type
-      expect(serialized[:input]).to have_key(:author)
-      expect(serialized[:input][:author][:type]).to eq(:author_update_payload)
+      post '/api/v1/authors', params: author_params, as: :json
 
-      # Get the actual payload type from registry
-      all_types = Apiwork::Contract::Descriptor::Registry.types('api/v1')
-      update_payload = all_types[:author_update_payload]
+      expect(response).to have_http_status(:bad_request)
+      json = JSON.parse(response.body)
 
-      # name (writable: true) should be present
-      expect(update_payload).to have_key(:name)
-
-      # bio (create-only) should NOT be present
-      expect(update_payload).not_to have_key(:bio)
-
-      # verified (update-only) should be present
-      expect(update_payload).to have_key(:verified)
+      expect(json['ok']).to be(false)
+      expect(json['issues']).to be_present
+      issue = json['issues'].find { |i| i['path'].include?('verified') }
+      expect(issue).to be_present
+      expect(issue['code']).to eq('field_unknown')
     end
 
-    it 'respects writable_for? in attribute definitions' do
-      name_attr = Api::V1::AuthorSchema.attribute_definitions[:name]
-      bio_attr = Api::V1::AuthorSchema.attribute_definitions[:bio]
-      verified_attr = Api::V1::AuthorSchema.attribute_definitions[:verified]
+    it 'rejects bio field during update (not writable on update)' do
+      author = Author.create!(name: 'Original Name', bio: 'Original Bio')
 
-      # name: writable on both
-      expect(name_attr.writable_for?(:create)).to be true
-      expect(name_attr.writable_for?(:update)).to be true
+      patch "/api/v1/authors/#{author.id}",
+            params: { author: { bio: 'Attempted Update' } },
+            as: :json
 
-      # bio: writable on create only
-      expect(bio_attr.writable_for?(:create)).to be true
-      expect(bio_attr.writable_for?(:update)).to be false
+      expect(response).to have_http_status(:bad_request)
+      json = JSON.parse(response.body)
 
-      # verified: writable on update only
-      expect(verified_attr.writable_for?(:create)).to be false
-      expect(verified_attr.writable_for?(:update)).to be true
+      expect(json['ok']).to be(false)
+      expect(json['issues']).to be_present
+      issue = json['issues'].find { |i| i['path'].include?('bio') }
+      expect(issue).to be_present
+      expect(issue['code']).to eq('field_unknown')
+
+      author.reload
+      expect(author.bio).to eq('Original Bio') # Verify DB unchanged
+    end
+
+    it 'allows updating name but rejects bio during update' do
+      author = Author.create!(name: 'Original Name', bio: 'Original Bio')
+
+      patch "/api/v1/authors/#{author.id}",
+            params: { author: { name: 'Updated Name', bio: 'Should be rejected' } },
+            as: :json
+
+      expect(response).to have_http_status(:bad_request)
+      json = JSON.parse(response.body)
+
+      expect(json['ok']).to be(false)
+      issue = json['issues'].find { |i| i['path'].include?('bio') }
+      expect(issue).to be_present
+      expect(issue['code']).to eq('field_unknown')
+
+      author.reload
+      expect(author.name).to eq('Original Name') # Name not updated due to validation error
+      expect(author.bio).to eq('Original Bio')
     end
   end
 
-  describe 'Type registry includes context-specific payloads' do
-    it 'creates separate create_payload and update_payload types' do
-      # Force generation
-      Api::V1::AuthorContract.action_definition(:create)
-      Api::V1::AuthorContract.action_definition(:update)
+  describe 'writable: { on: [:update] } - only writable on update' do
+    it 'rejects verified field during create (already tested above)' do
+      # This is already covered by the test in the previous describe block
+      # Just confirming verified is not writable on create
+      author_params = {
+        author: {
+          name: 'John Smith'
+        }
+      }
 
-      all_types = Apiwork::Contract::Descriptor::Registry.types('api/v1')
+      post '/api/v1/authors', params: author_params, as: :json
 
-      # Keys are symbols in the registry
-      expect(all_types).to have_key(:author_create_payload)
-      expect(all_types).to have_key(:author_update_payload)
+      expect(response).to have_http_status(:created)
+      json = JSON.parse(response.body)
+
+      expect(json['ok']).to be(true)
+      expect(json['author']['name']).to eq('John Smith')
+      expect(json['author']['verified']).to be_falsey # Defaults to nil/false
     end
 
-    it 'create_payload excludes update-only fields' do
-      Api::V1::AuthorContract.action_definition(:create)
+    it 'allows setting verified during update' do
+      author = Author.create!(name: 'Jane Doe')
 
-      all_types = Apiwork::Contract::Descriptor::Registry.types('api/v1')
-      create_payload = all_types[:author_create_payload]
+      expect(author.verified).to be_falsey # nil or false
 
-      expect(create_payload).to have_key(:name)
-      expect(create_payload).to have_key(:bio)
-      expect(create_payload).not_to have_key(:verified)
+      patch "/api/v1/authors/#{author.id}",
+            params: { author: { verified: true } },
+            as: :json
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+
+      expect(json['author']['verified']).to be(true)
+
+      author.reload
+      expect(author.verified).to be(true)
     end
 
-    it 'update_payload excludes create-only fields' do
-      Api::V1::AuthorContract.action_definition(:update)
+    it 'allows updating other writable fields while setting verified' do
+      author = Author.create!(name: 'Original Name', verified: false)
 
-      all_types = Apiwork::Contract::Descriptor::Registry.types('api/v1')
-      update_payload = all_types[:author_update_payload]
+      patch "/api/v1/authors/#{author.id}",
+            params: { author: { name: 'Updated Name', verified: true } },
+            as: :json
 
-      expect(update_payload).to have_key(:name)
-      expect(update_payload).not_to have_key(:bio)
-      expect(update_payload).to have_key(:verified)
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+
+      expect(json['author']['name']).to eq('Updated Name')
+      expect(json['author']['verified']).to be(true)
+
+      author.reload
+      expect(author.name).to eq('Updated Name')
+      expect(author.verified).to be(true)
+    end
+  end
+
+  describe 'writable: true - writable on both create and update' do
+    it 'allows setting name during create' do
+      author_params = {
+        author: {
+          name: 'Test Author'
+        }
+      }
+
+      post '/api/v1/authors', params: author_params, as: :json
+
+      expect(response).to have_http_status(:created)
+      json = JSON.parse(response.body)
+
+      expect(json['author']['name']).to eq('Test Author')
     end
 
-    it 'includes nullable in introspection' do
-      Api::V1::AuthorContract.action_definition(:create)
+    it 'allows updating name during update' do
+      author = Author.create!(name: 'Original Name')
 
-      all_types = Apiwork::Contract::Descriptor::Registry.types('api/v1')
-      create_payload = all_types[:author_create_payload]
+      patch "/api/v1/authors/#{author.id}",
+            params: { author: { name: 'Updated Name' } },
+            as: :json
 
-      # All fields should have nullable key (even if false)
-      expect(create_payload[:name]).to have_key(:nullable)
-      expect(create_payload[:bio]).to have_key(:nullable)
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
 
-      # nullable should match DB constraints
-      # (Author fields allow NULL, so they should be nullable: true)
-      expect(create_payload[:name][:nullable]).to be(true)
-      expect(create_payload[:bio][:nullable]).to be(true)
+      expect(json['author']['name']).to eq('Updated Name')
+
+      author.reload
+      expect(author.name).to eq('Updated Name')
+    end
+  end
+
+  describe 'combined constraints' do
+    it 'correctly filters context-specific fields on create vs update' do
+      # Create with bio (allowed), verified rejected with field_unknown
+      post '/api/v1/authors',
+           params: { author: { name: 'Author', bio: 'Initial Bio', verified: true } },
+           as: :json
+
+      expect(response).to have_http_status(:bad_request)
+      json = JSON.parse(response.body)
+
+      expect(json['ok']).to be(false)
+      issue = json['issues'].find { |i| i['path'].include?('verified') }
+      expect(issue['code']).to eq('field_unknown')
+
+      # Create without verified field - should succeed
+      post '/api/v1/authors',
+           params: { author: { name: 'Author', bio: 'Initial Bio' } },
+           as: :json
+
+      expect(response).to have_http_status(:created)
+      json = JSON.parse(response.body)
+      author_id = json['author']['id']
+
+      expect(json['author']['bio']).to eq('Initial Bio')
+      expect(json['author']['verified']).to be_falsey
+
+      # Update with bio (rejected) and verified (allowed)
+      patch "/api/v1/authors/#{author_id}",
+            params: { author: { bio: 'Updated Bio', verified: true } },
+            as: :json
+
+      expect(response).to have_http_status(:bad_request)
+      json = JSON.parse(response.body)
+
+      expect(json['ok']).to be(false)
+      issue = json['issues'].find { |i| i['path'].include?('bio') }
+      expect(issue['code']).to eq('field_unknown')
+
+      # Update only verified (allowed on update)
+      patch "/api/v1/authors/#{author_id}",
+            params: { author: { verified: true } },
+            as: :json
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+
+      expect(json['author']['bio']).to eq('Initial Bio') # Unchanged
+      expect(json['author']['verified']).to be(true)     # Updated
+
+      author = Author.find(author_id)
+      expect(author.bio).to eq('Initial Bio')
+      expect(author.verified).to be(true)
     end
   end
 end

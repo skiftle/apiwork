@@ -93,4 +93,7 @@ Apiwork::API.draw '/api/v1' do
 
   # User resource for testing empty and other attribute transformations
   resources :users
+
+  # Author resource for testing writable context filtering (on: [:create], on: [:update])
+  resources :authors
 end
