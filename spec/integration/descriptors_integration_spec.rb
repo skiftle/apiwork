@@ -34,16 +34,16 @@ RSpec.describe 'Descriptors Integration', type: :request do
       # error_detail type from config/apis/v1.rb
       expect(introspection[:types]).to have_key(:error_detail)
       expect(introspection[:types][:error_detail]).to eq(
-        code: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false },
-        message: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false },
-        field: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false }
+        code: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil, max: nil },
+        message: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil, max: nil },
+        field: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil, max: nil }
       )
 
       # pagination_params type from config/apis/v1.rb
       expect(introspection[:types]).to have_key(:pagination_params)
       expect(introspection[:types][:pagination_params]).to eq(
-        page: { type: :integer, required: false, nullable: false },
-        per_page: { type: :integer, required: false, nullable: false }
+        page: { type: :integer, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil, max: nil },
+        per_page: { type: :integer, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil, max: nil }
       )
     end
 
@@ -291,8 +291,8 @@ RSpec.describe 'Descriptors Integration', type: :request do
       # Should be qualified with contract identifier
       expect(introspection[:types]).to have_key(:test_contract_metadata)
       expect(introspection[:types][:test_contract_metadata]).to eq(
-        author: { type: :string, required: false, nullable: false },
-        version: { type: :integer, required: false, nullable: false }
+        author: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil, max: nil },
+        version: { type: :integer, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil, max: nil }
       )
     end
 

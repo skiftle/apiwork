@@ -107,8 +107,8 @@ module Apiwork
             resources: resources
           }
 
-          # Add global error codes at root level if defined
-          result[:error_codes] = metadata.error_codes if metadata.error_codes&.any?
+          # Add global error codes at root level (always present, empty array if not defined)
+          result[:error_codes] = metadata.error_codes || []
 
           result
         end
@@ -244,7 +244,7 @@ module Apiwork
           contract_json = action_definition.as_json
           actions[name][:input] = contract_json[:input] || {}
           actions[name][:output] = contract_json[:output] || {}
-          actions[name][:error_codes] = contract_json[:error_codes] if contract_json[:error_codes]
+          actions[name][:error_codes] = contract_json[:error_codes] || []
         end
 
         # Build relative path for a resource
