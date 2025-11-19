@@ -33,17 +33,29 @@ RSpec.describe 'Descriptors Integration', type: :request do
 
       # error_detail type from config/apis/v1.rb
       expect(introspection[:types]).to have_key(:error_detail)
-      expect(introspection[:types][:error_detail]).to eq(
+      expect(introspection[:types][:error_detail]).to include(
         code: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil, max: nil },
-        message: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil, max: nil },
-        field: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil, max: nil }
+        message: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
+                   max: nil },
+        field: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
+                 max: nil },
+        description: nil,
+        example: nil,
+        format: nil,
+        deprecated: false
       )
 
       # pagination_params type from config/apis/v1.rb
       expect(introspection[:types]).to have_key(:pagination_params)
-      expect(introspection[:types][:pagination_params]).to eq(
-        page: { type: :integer, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil, max: nil },
-        per_page: { type: :integer, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil, max: nil }
+      expect(introspection[:types][:pagination_params]).to include(
+        page: { type: :integer, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
+                max: nil },
+        per_page: { type: :integer, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
+                    max: nil },
+        description: nil,
+        example: nil,
+        format: nil,
+        deprecated: false
       )
     end
 
@@ -290,9 +302,15 @@ RSpec.describe 'Descriptors Integration', type: :request do
 
       # Should be qualified with contract identifier
       expect(introspection[:types]).to have_key(:test_contract_metadata)
-      expect(introspection[:types][:test_contract_metadata]).to eq(
-        author: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil, max: nil },
-        version: { type: :integer, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil, max: nil }
+      expect(introspection[:types][:test_contract_metadata]).to include(
+        author: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
+                  max: nil },
+        version: { type: :integer, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
+                   max: nil },
+        description: nil,
+        example: nil,
+        format: nil,
+        deprecated: false
       )
     end
 
@@ -377,6 +395,83 @@ RSpec.describe 'Descriptors Integration', type: :request do
 
       # Resources hash is not empty
       expect(introspection[:resources]).not_to be_empty
+    end
+  end
+
+  describe 'Custom type and enum metadata in introspection' do
+    before(:all) do
+      @metadata_api = Apiwork::API.draw '/api/metadata_test' do
+        descriptors do
+          type :documented_type,
+               description: 'A well-documented type',
+               example: { value: 'example' },
+               format: 'custom' do
+            param :value, type: :string
+          end
+
+          enum :status_with_metadata,
+               %w[active inactive],
+               description: 'Status values with description',
+               example: 'active',
+               deprecated: false
+        end
+      end
+    end
+
+    after(:all) do
+      Apiwork::API::Registry.unregister('/api/metadata_test')
+    end
+
+    it 'includes type metadata in introspection' do
+      introspection = Apiwork::API.introspect('/api/metadata_test')
+
+      expect(introspection[:types][:documented_type]).to include(
+        description: 'A well-documented type',
+        example: { value: 'example' },
+        format: 'custom'
+      )
+    end
+
+    it 'includes enum metadata in introspection' do
+      introspection = Apiwork::API.introspect('/api/metadata_test')
+
+      expect(introspection[:enums][:status_with_metadata]).to eq(
+        values: %w[active inactive],
+        description: 'Status values with description',
+        example: 'active',
+        deprecated: false
+      )
+    end
+
+    it 'verifies enum structure is hash with metadata keys' do
+      introspection = Apiwork::API.introspect('/api/metadata_test')
+
+      enum_data = introspection[:enums][:status_with_metadata]
+
+      expect(enum_data).to be_a(Hash)
+      expect(enum_data).to have_key(:values)
+      expect(enum_data).to have_key(:description)
+      expect(enum_data).to have_key(:example)
+      expect(enum_data).to have_key(:deprecated)
+    end
+
+    it 'shows deprecated: false explicitly when set' do
+      introspection = Apiwork::API.introspect('/api/metadata_test')
+
+      # deprecated: false should appear explicitly, not be omitted
+      expect(introspection[:enums][:status_with_metadata][:deprecated]).to be false
+    end
+
+    it 'does not affect auto-generated filter types' do
+      introspection = Apiwork::API.introspect('/api/metadata_test')
+
+      # Filter type should be auto-generated
+      expect(introspection[:types]).to have_key(:status_with_metadata_filter)
+
+      # Filter type should be a union
+      filter = introspection[:types][:status_with_metadata_filter]
+      expect(filter[:type]).to eq(:union)
+      expect(filter[:variants].size).to eq(2)
     end
   end
 end

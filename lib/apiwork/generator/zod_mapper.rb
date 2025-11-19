@@ -33,7 +33,11 @@ module Apiwork
       def build_object_schema(type_name, type_shape, action_name = nil, recursive: false)
         schema_name = pascal_case(type_name)
 
-        properties = type_shape.sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
+        # Filter out type-level metadata keys
+        metadata_keys = %i[description example format deprecated]
+        fields = type_shape.reject { |key, _| metadata_keys.include?(key) }
+
+        properties = fields.sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
           key = transform_key(property_name)
           zod_type = map_field_definition(property_def, action_name)
           "  #{key}: #{zod_type}"
