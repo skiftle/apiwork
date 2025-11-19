@@ -7,15 +7,10 @@ module Apiwork
       module Resources
         # Intercept resources call (plural)
         def resources(name, **options, &block)
-          # Get pending info before processing
-          info = @pending_info
-          @pending_info = nil
-
           # Capture metadata
           capture_resource_metadata(
             name,
             singular: false,
-            info: info,
             options: options
           )
 
@@ -29,14 +24,9 @@ module Apiwork
 
         # Intercept resource call (singular)
         def resource(name, **options, &block)
-          # Get pending info before processing
-          info = @pending_info
-          @pending_info = nil
-
           capture_resource_metadata(
             name,
             singular: true,
-            info: info,
             options: options
           )
 
@@ -61,7 +51,7 @@ module Apiwork
 
         private
 
-        def capture_resource_metadata(name, singular:, options:, info: nil)
+        def capture_resource_metadata(name, singular:, options:)
           # Merge current options (from with_options) with resource-specific options
           merged_options = (@current_options || {}).merge(options)
 
@@ -98,7 +88,6 @@ module Apiwork
             controller_class_name: controller_class_name,
             contract_class_name: contract_class_name,
             parent: parent,
-            info: info,
             **merged_options
           )
         end

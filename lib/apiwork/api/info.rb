@@ -7,7 +7,7 @@ module Apiwork
     # Provides: info
     module Info
       def info(&block)
-        builder = Info::Builder.new(level: :api)
+        builder = Info::Builder.new
         builder.instance_eval(&block)
         @metadata.info = builder.info
       end
