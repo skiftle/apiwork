@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'concurrent/map'
+
 module Apiwork
   module Generator
     # Registry for managing available generators
@@ -8,12 +10,13 @@ module Apiwork
     #   Registry.register(:zod, Generator::Zod)
     #   generator_class = Registry.find(:zod)
     #
+    # Thread-safety: Lock-free using Concurrent::Map (atomic operations)
     class Registry
       class GeneratorNotFound < StandardError; end
 
       class << self
         def generators
-          @generators ||= {}
+          @generators ||= Concurrent::Map.new
         end
 
         def register(name, generator_class)
@@ -36,7 +39,7 @@ module Apiwork
         end
 
         def clear!
-          @generators = {}
+          @generators = Concurrent::Map.new
         end
       end
     end

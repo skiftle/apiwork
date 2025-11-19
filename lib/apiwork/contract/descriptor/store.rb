@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
+require 'concurrent/map'
+
 module Apiwork
   module Contract
     module Descriptor
+      # Thread-safety: Lock-free using Concurrent::Map (atomic operations)
       class Store
         class << self
           def register(name, payload, scope: nil, metadata: {}, api_class: nil)
@@ -105,7 +108,7 @@ module Apiwork
           end
 
           def clear!
-            @storage = {}
+            @storage = Concurrent::Map.new
           end
 
           def serialize(api)
@@ -146,11 +149,11 @@ module Apiwork
             raise NotImplementedError, 'Subclasses must implement storage_name'
           end
 
-          # Unified storage: single hash with scope metadata
+          # Unified storage: nested Concurrent::Maps with scope metadata
           def storage(api_class)
-            @storage ||= {}
+            @storage ||= Concurrent::Map.new
             api_key = api_class.respond_to?(:mount_path) ? api_class.mount_path : api_class
-            @storage[api_key] ||= {}
+            @storage.fetch_or_store(api_key) { Concurrent::Map.new }
           end
         end
       end

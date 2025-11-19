@@ -18,7 +18,7 @@ module Apiwork
 
             # Serialize from unified storage
             if api
-              storage(api).to_a.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
+              storage(api).each_pair.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
                 # Cache the expanded payload to avoid re-expanding on every serialize call
                 result[qualified_name] = metadata[:expanded_payload] ||= if metadata[:payload].is_a?(Hash)
                                                                            # Union or already expanded data
