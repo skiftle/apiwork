@@ -13,7 +13,7 @@ module Api
                 nullable: true,
                 serialize: ->(value) { value&.downcase },
                 deserialize: ->(value) { value&.upcase }
-      attribute :name, writable: true, filterable: true, sortable: true, empty: true
+      attribute :name, writable: true, filterable: true, sortable: true, empty: true, min: 2, max: 50
       attribute :created_at, filterable: true, sortable: true
       attribute :updated_at, filterable: true, sortable: true
     end
