@@ -4,6 +4,8 @@ module Apiwork
   module Contract
     module Descriptor
       module Core
+        MUTEX = Mutex.new
+
         class << self
           def clear!
             @api_registered_filter_descriptors = {}
@@ -36,24 +38,52 @@ module Apiwork
           end
 
           def ensure_sort_descriptor_registered(schema_class, api_class:)
-            @api_sort_descriptor_registered ||= {}
-            return if @api_sort_descriptor_registered[api_class]
+            MUTEX.synchronize do
+              @api_sort_descriptor_registered ||= {}
+              return if @api_sort_descriptor_registered[api_class]
 
-            has_attributes_sortable = schema_class.attribute_definitions.values.any?(&:sortable?)
-            has_associations_sortable = schema_class.association_definitions.values.any?(&:sortable?)
+              has_attributes_sortable = schema_class.attribute_definitions.values.any?(&:sortable?)
+              has_associations_sortable = schema_class.association_definitions.values.any?(&:sortable?)
 
-            has_sortable = has_attributes_sortable || has_associations_sortable
+              has_sortable = has_attributes_sortable || has_associations_sortable
 
-            register_sort_descriptor(api_class: api_class) if has_sortable
+              register_sort_descriptor_unsynchronized(api_class: api_class) if has_sortable
+            end
           end
 
           def register_filter_descriptor(type_name, api_class:)
-            @api_registered_filter_descriptors ||= {}
-            @api_registered_filter_descriptors[api_class] ||= Set.new
-            return if @api_registered_filter_descriptors[api_class].include?(type_name)
+            MUTEX.synchronize do
+              @api_registered_filter_descriptors ||= {}
+              @api_registered_filter_descriptors[api_class] ||= Set.new
+              return if @api_registered_filter_descriptors[api_class].include?(type_name)
 
-            @api_registered_filter_descriptors[api_class].add(type_name)
+              @api_registered_filter_descriptors[api_class].add(type_name)
 
+              register_filter_descriptor_unsynchronized(type_name, api_class: api_class)
+            end
+          end
+
+          def register_sort_descriptor(api_class:)
+            MUTEX.synchronize do
+              @api_sort_descriptor_registered ||= {}
+              return if @api_sort_descriptor_registered[api_class]
+
+              register_sort_descriptor_unsynchronized(api_class: api_class)
+            end
+          end
+
+          private
+
+          def register_sort_descriptor_unsynchronized(api_class:)
+            @api_sort_descriptor_registered[api_class] = true
+
+            builder = Builder.new(api_class: api_class)
+            builder.instance_eval do
+              enum :sort_direction, %w[asc desc]
+            end
+          end
+
+          def register_filter_descriptor_unsynchronized(type_name, api_class:)
             case type_name
             when :string_filter
               register_string_filter(api_class: api_class)
@@ -75,20 +105,6 @@ module Apiwork
               register_uuid_filter(api_class: api_class)
             end
           end
-
-          def register_sort_descriptor(api_class:)
-            @api_sort_descriptor_registered ||= {}
-            return if @api_sort_descriptor_registered[api_class]
-
-            @api_sort_descriptor_registered[api_class] = true
-
-            builder = Builder.new(api_class: api_class)
-            builder.instance_eval do
-              enum :sort_direction, %w[asc desc]
-            end
-          end
-
-          private
 
           def determine_needed_filter_descriptors(schema_class)
             descriptors = Set.new
