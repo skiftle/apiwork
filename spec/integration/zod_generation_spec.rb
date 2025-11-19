@@ -160,7 +160,7 @@ RSpec.describe 'Zod Generation for Associations', type: :integration do
 
       # 1. Enum exists in introspection
       expect(introspection[:enums]).to have_key(:account_status)
-      expect(introspection[:enums][:account_status]).to match_array(%w[active inactive archived])
+      expect(introspection[:enums][:account_status][:values]).to match_array(%w[active inactive archived])
 
       # 2. Filter type exists in introspection
       expect(introspection[:types]).to have_key(:account_status_filter)

@@ -52,11 +52,11 @@ RSpec.describe 'Descriptors Integration', type: :request do
 
       # sort_direction enum from config/apis/v1.rb
       expect(introspection[:enums]).to have_key(:sort_direction)
-      expect(introspection[:enums][:sort_direction]).to match_array(%w[asc desc])
+      expect(introspection[:enums][:sort_direction][:values]).to match_array(%w[asc desc])
 
       # post_status enum from config/apis/v1.rb
       expect(introspection[:enums]).to have_key(:post_status)
-      expect(introspection[:enums][:post_status]).to match_array(%i[draft published archived])
+      expect(introspection[:enums][:post_status][:values]).to match_array(%i[draft published archived])
     end
 
     it 'auto-generates filter types for global enums' do
@@ -80,11 +80,11 @@ RSpec.describe 'Descriptors Integration', type: :request do
 
       # Account model has status enum
       expect(introspection[:enums]).to have_key(:account_status)
-      expect(introspection[:enums][:account_status]).to match_array(%w[active inactive archived])
+      expect(introspection[:enums][:account_status][:values]).to match_array(%w[active inactive archived])
 
       # Account model has first_day_of_week enum
       expect(introspection[:enums]).to have_key(:account_first_day_of_week)
-      expect(introspection[:enums][:account_first_day_of_week]).to match_array(
+      expect(introspection[:enums][:account_first_day_of_week][:values]).to match_array(
         %w[monday tuesday wednesday thursday friday saturday sunday]
       )
     end
@@ -213,7 +213,7 @@ RSpec.describe 'Descriptors Integration', type: :request do
       # V2 should HAVE its own descriptors
       expect(v2_introspection[:types]).to have_key(:v2_specific_type)
       expect(v2_introspection[:enums]).to have_key(:v2_status)
-      expect(v2_introspection[:enums][:v2_status]).to match_array(%i[pending approved rejected])
+      expect(v2_introspection[:enums][:v2_status][:values]).to match_array(%i[pending approved rejected])
     end
 
     it 'includes schema types only in the API they belong to' do
@@ -300,7 +300,7 @@ RSpec.describe 'Descriptors Integration', type: :request do
       introspection = Apiwork::API.introspect('/api/contracts')
 
       expect(introspection[:enums]).to have_key(:test_contract_priority)
-      expect(introspection[:enums][:test_contract_priority]).to match_array(%i[low medium high critical])
+      expect(introspection[:enums][:test_contract_priority][:values]).to match_array(%i[low medium high critical])
     end
 
     it 'includes contract-scoped unions with proper qualification' do

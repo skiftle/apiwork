@@ -71,8 +71,9 @@ module Apiwork
 
         # Enum filter schemas are now auto-generated as union types in introspect[:types]
         # No need for manual generation here
-        enums.map do |enum_name, enum_values|
+        enums.map do |enum_name, enum_data|
           schema_name = zod_mapper.pascal_case(enum_name)
+          enum_values = enum_data[:values]
           values_str = enum_values.sort.map { |v| "'#{v}'" }.join(', ')
           "export const #{schema_name}Schema = z.enum([#{values_str}]);"
         end.join("\n\n")
@@ -118,8 +119,9 @@ module Apiwork
         all_types = []
 
         # Collect enum types
-        enums.each do |enum_name, enum_values|
+        enums.each do |enum_name, enum_data|
           type_name = typescript_mapper.pascal_case(enum_name)
+          enum_values = enum_data[:values]
           values_str = enum_values.sort.map { |v| "'#{v}'" }.join(' | ')
           all_types << { name: type_name, code: "export type #{type_name} = #{values_str};" }
         end

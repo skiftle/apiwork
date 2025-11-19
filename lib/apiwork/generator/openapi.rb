@@ -441,7 +441,7 @@ module Apiwork
 
       def resolve_enum(enum_ref_or_array)
         if enum_ref_or_array.is_a?(Symbol) && enums.key?(enum_ref_or_array)
-          enums[enum_ref_or_array]
+          enums[enum_ref_or_array][:values]
         else
           enum_ref_or_array
         end
