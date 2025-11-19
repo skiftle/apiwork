@@ -67,8 +67,16 @@ module Apiwork
             end
           end
 
+          # For object types, fields are now under :shape key
+          # For other structures, iterate over all values
+          fields_to_check = if definition[:type] == :object && definition[:shape].is_a?(Hash)
+                              definition[:shape]
+                            else
+                              definition
+                            end
+
           # Handle nested params (for object types, etc.)
-          definition.each_value do |param|
+          fields_to_check.each_value do |param|
             next unless param.is_a?(Hash)
 
             # Direct type reference

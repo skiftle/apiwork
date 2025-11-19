@@ -166,7 +166,7 @@ RSpec.describe 'Min and Max validation on params', type: :request do
       issue = json['issues'].find { |i| i['path'].include?('name') }
 
       expect(issue['code']).to eq('string_too_short')
-      expect(issue['path']).to eq(['user', 'name'])
+      expect(issue['path']).to eq(%w[user name])
     end
 
     it 'provides clear error message for max violation' do
@@ -176,7 +176,7 @@ RSpec.describe 'Min and Max validation on params', type: :request do
       issue = json['issues'].find { |i| i['path'].include?('name') }
 
       expect(issue['code']).to eq('string_too_long')
-      expect(issue['path']).to eq(['user', 'name'])
+      expect(issue['path']).to eq(%w[user name])
     end
   end
 end

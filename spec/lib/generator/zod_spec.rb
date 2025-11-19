@@ -70,27 +70,64 @@ RSpec.describe Apiwork::Generator::Zod do
   def extract_type_references(definition)
     refs = []
 
-    definition.each_value do |param|
-      next unless param.is_a?(Hash)
+    # Handle the new structure: for object types, fields are under :shape
+    # For union types, structure is { type: :union, variants: [...] }
+    if definition[:type] == :object && definition[:shape].is_a?(Hash)
+      # Object type - iterate over fields in :shape
+      definition[:shape].each_value do |param|
+        next unless param.is_a?(Hash)
 
-      refs << param[:type] if param[:type].is_a?(Symbol) && !primitive_type?(param[:type])
-      refs << param[:of] if param[:of].is_a?(Symbol) && !primitive_type?(param[:of])
+        refs << param[:type] if param[:type].is_a?(Symbol) && !primitive_type?(param[:type])
+        refs << param[:of] if param[:of].is_a?(Symbol) && !primitive_type?(param[:of])
 
-      # Union variant references
-      if param[:variants].is_a?(Array)
-        param[:variants].each do |variant|
-          next unless variant.is_a?(Hash)
+        # Union variant references
+        if param[:variants].is_a?(Array)
+          param[:variants].each do |variant|
+            next unless variant.is_a?(Hash)
 
-          refs << variant[:type] if variant[:type].is_a?(Symbol) && !primitive_type?(variant[:type])
-          refs << variant[:of] if variant[:of].is_a?(Symbol) && !primitive_type?(variant[:of])
+            refs << variant[:type] if variant[:type].is_a?(Symbol) && !primitive_type?(variant[:type])
+            refs << variant[:of] if variant[:of].is_a?(Symbol) && !primitive_type?(variant[:of])
 
-          # Recursively check nested shape in variants
-          refs.concat(extract_type_references(variant[:shape])) if variant[:shape].is_a?(Hash)
+            # Recursively check nested shape in variants
+            refs.concat(extract_type_references(variant)) if variant[:shape].is_a?(Hash)
+          end
         end
-      end
 
-      # Recursively check nested shapes
-      refs.concat(extract_type_references(param[:shape])) if param[:shape].is_a?(Hash)
+        # Recursively check nested shapes
+        refs.concat(extract_type_references(param)) if param[:shape].is_a?(Hash)
+      end
+    elsif definition[:type] == :union && definition[:variants].is_a?(Array)
+      # Union type - check variants
+      definition[:variants].each do |variant|
+        next unless variant.is_a?(Hash)
+
+        refs << variant[:type] if variant[:type].is_a?(Symbol) && !primitive_type?(variant[:type])
+        refs << variant[:of] if variant[:of].is_a?(Symbol) && !primitive_type?(variant[:of])
+
+        # Recursively check nested definitions
+        refs.concat(extract_type_references(variant)) if variant[:shape].is_a?(Hash) || variant[:variants].is_a?(Array)
+      end
+    else
+      # Fallback: old behavior for other structures
+      definition.each_value do |param|
+        next unless param.is_a?(Hash)
+
+        refs << param[:type] if param[:type].is_a?(Symbol) && !primitive_type?(param[:type])
+        refs << param[:of] if param[:of].is_a?(Symbol) && !primitive_type?(param[:of])
+
+        if param[:variants].is_a?(Array)
+          param[:variants].each do |variant|
+            next unless variant.is_a?(Hash)
+
+            refs << variant[:type] if variant[:type].is_a?(Symbol) && !primitive_type?(variant[:type])
+            refs << variant[:of] if variant[:of].is_a?(Symbol) && !primitive_type?(variant[:of])
+
+            refs.concat(extract_type_references(variant)) if variant[:shape].is_a?(Hash)
+          end
+        end
+
+        refs.concat(extract_type_references(param)) if param[:shape].is_a?(Hash)
+      end
     end
 
     refs.uniq

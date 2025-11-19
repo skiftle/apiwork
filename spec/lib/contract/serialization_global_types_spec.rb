@@ -18,7 +18,7 @@ RSpec.describe Apiwork::Contract::Serialization do
       expect(post_filter).to be_present
 
       # Check title field has union with string and string_filter variants
-      title_field = post_filter[:title]
+      title_field = post_filter[:shape][:title]
       expect(title_field).to be_present
       expect(title_field[:type]).to eq(:union)
       expect(title_field[:variants]).to be_an(Array)
@@ -49,7 +49,7 @@ RSpec.describe Apiwork::Contract::Serialization do
       introspect = api.introspect
 
       post_filter = introspect[:types][:post_filter]
-      updated_at_field = post_filter[:updated_at]
+      updated_at_field = post_filter[:shape][:updated_at]
 
       expect(updated_at_field).to be_present
       variant_types = updated_at_field[:variants].map { |v| v[:type] }

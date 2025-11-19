@@ -25,8 +25,12 @@ RSpec.describe 'API Descriptor Builder' do
 
     expect(types).to have_key(:error)
     expect(types[:error]).to include(
-      error: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil, max: nil },
-      code: { type: :integer, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil, max: nil },
+      type: :object,
+      shape: {
+        error: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
+                 max: nil },
+        code: { type: :integer, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil, max: nil }
+      },
       description: nil,
       example: nil,
       format: nil,
