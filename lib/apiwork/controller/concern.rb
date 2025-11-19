@@ -15,15 +15,15 @@ module Apiwork
         wrap_parameters false
 
         rescue_from Apiwork::QueryError do |error|
-          render json: { ok: false, issues: error.to_array }, status: :bad_request
+          render json: { ok: false, issues: error.issues }, status: :bad_request
         end
 
         rescue_from Apiwork::ContractError do |error|
-          render json: { ok: false, issues: error.to_array }, status: :bad_request
+          render json: { ok: false, issues: error.issues }, status: :bad_request
         end
 
         rescue_from Apiwork::ValidationError do |error|
-          render json: { ok: false, issues: error.to_array }, status: :unprocessable_entity
+          render json: { ok: false, issues: error.issues }, status: :unprocessable_entity
         end
       end
     end

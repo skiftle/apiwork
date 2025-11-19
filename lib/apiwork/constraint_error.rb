@@ -8,9 +8,5 @@ module Apiwork
       @issues = Array(issues)
       super(@issues.map(&:message).join('; '))
     end
-
-    def to_array
-      @issues.map(&:to_h)
-    end
   end
 end
