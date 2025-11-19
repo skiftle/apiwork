@@ -267,7 +267,10 @@ module Apiwork
           return nil unless resource_metadata[:contract_class_name]
 
           # Try to constantize the contract class name
-          resource_metadata[:contract_class_name].constantize
+          klass = resource_metadata[:contract_class_name].constantize
+
+          # Validate that it's actually a Contract class
+          klass < Contract::Base ? klass : nil
         rescue NameError
           # Contract class doesn't exist
           nil

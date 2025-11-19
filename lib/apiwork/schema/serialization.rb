@@ -89,7 +89,8 @@ module Apiwork
         when Array
           @includes.map(&:to_sym).include?(name)
         when Hash
-          @includes.key?(name) || @includes.key?(name.to_s) || @includes.key?(name.to_sym)
+          name_sym = name.to_sym
+          @includes.key?(name_sym) || @includes.key?(name_sym.to_s)
         else
           false
         end

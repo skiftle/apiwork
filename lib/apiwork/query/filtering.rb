@@ -337,7 +337,7 @@ module Apiwork
             path: [:filter, key],
             meta: { field: key, value_type: value.class.name }
           )
-          return column.eq(nil)
+          return nil
         end
 
         value.map do |operator, compare|
@@ -411,9 +411,11 @@ module Apiwork
 
               column.eq(nil)
             elsif operator == :between && compare.is_a?(Hash)
-              from_date = parse_date(compare[:from] || compare['from'], key, issues).beginning_of_day
-              to_date = parse_date(compare[:to] || compare['to'], key, issues).end_of_day
-              column.gteq(from_date).and(column.lteq(to_date))
+              from_date = parse_date(compare[:from] || compare['from'], key, issues)
+              to_date = parse_date(compare[:to] || compare['to'], key, issues)
+              next unless from_date && to_date
+
+              column.gteq(from_date.beginning_of_day).and(column.lteq(to_date.end_of_day))
             else
               date = parse_date(compare, key, issues)
               case operator
@@ -477,13 +479,19 @@ module Apiwork
               if compare.is_a?(Hash)
                 from_num = parse_numeric(compare[:from] || compare['from'], key, issues)
                 to_num = parse_numeric(compare[:to] || compare['to'], key, issues)
+                next unless from_num && to_num
+
                 column.between(from_num..to_num)
               else
                 number = parse_numeric(compare, key, issues)
+                next unless number
+
                 column.between(number..number)
               end
             when :in
-              numbers = Array(compare).map { |v| parse_numeric(v, key, issues) }
+              numbers = Array(compare).map { |v| parse_numeric(v, key, issues) }.compact
+              next if numbers.empty?
+
               column.in(numbers)
             end
           end.compact.reduce(:and)
@@ -546,7 +554,7 @@ module Apiwork
           path: [:filter, field],
           meta: { field: field, value: value }
         )
-        DateTime.now
+        nil
       end
 
       def parse_numeric(value, field, issues = [])
@@ -560,7 +568,7 @@ module Apiwork
             path: [:filter, field],
             meta: { field: field, value: value }
           )
-          0
+          nil
         end
       rescue ArgumentError
         issues << Issue.new(
@@ -569,7 +577,7 @@ module Apiwork
           path: [:filter, field],
           meta: { field: field, value: value }
         )
-        0
+        nil
       end
     end
   end
