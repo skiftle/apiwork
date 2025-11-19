@@ -32,10 +32,6 @@ RSpec.describe Apiwork::Schema::Operators do
                                                                  ends_with
                                                                ])
     end
-
-    it 'defines LOGICAL_OPERATORS' do
-      expect(described_class::LOGICAL_OPERATORS).to eq(%i[_or _and _not])
-    end
   end
 
   describe 'TYPE-SPECIFIC OPERATOR SETS' do

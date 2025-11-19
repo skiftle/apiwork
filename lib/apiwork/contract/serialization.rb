@@ -184,17 +184,17 @@ module Apiwork
           result
         end
 
-        def serialize_union(union_def, definition, visited: Set.new)
+        def serialize_union(union_definition, definition, visited: Set.new)
           result = {
             type: :union,
-            variants: union_def.variants.map { |variant| serialize_variant(variant, definition, visited: visited) }
+            variants: union_definition.variants.map { |variant| serialize_variant(variant, definition, visited: visited) }
           }
-          result[:discriminator] = union_def.discriminator if union_def.discriminator
+          result[:discriminator] = union_definition.discriminator if union_definition.discriminator
           result
         end
 
-        def serialize_variant(variant_def, parent_definition, visited: Set.new)
-          variant_type = variant_def[:type]
+        def serialize_variant(variant_definition, parent_definition, visited: Set.new)
+          variant_type = variant_definition[:type]
 
           # Check if variant type is a custom type - if so, just return a reference
           custom_type_block = parent_definition.contract_class.resolve_custom_type(variant_type)
@@ -216,55 +216,55 @@ module Apiwork
             else
               result = { type: variant_type }
             end
-            result[:tag] = variant_def[:tag] if variant_def[:tag]
+            result[:tag] = variant_definition[:tag] if variant_definition[:tag]
             return result
           end
 
           result = { type: variant_type }
 
           # Add tag for discriminated unions
-          result[:tag] = variant_def[:tag] if variant_def[:tag]
+          result[:tag] = variant_definition[:tag] if variant_definition[:tag]
 
           # Handle 'of' - qualify custom types but don't expand them (only for contracts with schema_class)
-          if variant_def[:of]
+          if variant_definition[:of]
             # Check if it's a custom type that needs qualification
-            if parent_definition.contract_class.resolve_custom_type(variant_def[:of])
-              if is_global_type?(variant_def[:of], parent_definition)
+            if parent_definition.contract_class.resolve_custom_type(variant_definition[:of])
+              if is_global_type?(variant_definition[:of], parent_definition)
                 # Global type: keep as-is, don't qualify
-                result[:of] = variant_def[:of]
+                result[:of] = variant_definition[:of]
               elsif parent_definition.contract_class.respond_to?(:schema_class) &&
                     parent_definition.contract_class.schema_class
                 # Custom type - use qualified name (e.g., service_filter instead of filter)
-                scope = scope_for_type(parent_definition, variant_def[:of])
-                result[:of] = Descriptor::Registry.scoped_name(scope, variant_def[:of])
+                scope = scope_for_type(parent_definition, variant_definition[:of])
+                result[:of] = Descriptor::Registry.scoped_name(scope, variant_definition[:of])
               else
-                result[:of] = variant_def[:of]
+                result[:of] = variant_definition[:of]
               end
             else
               # Primitive type - keep as-is
-              result[:of] = variant_def[:of]
+              result[:of] = variant_definition[:of]
             end
           end
 
           # Handle enum - qualify if it's a reference (only for contracts with schema_class)
-          if variant_def[:enum]
-            if variant_def[:enum].is_a?(Symbol)
+          if variant_definition[:enum]
+            if variant_definition[:enum].is_a?(Symbol)
               # Enum reference - use qualified name with correct scope for hierarchical naming
               if parent_definition.contract_class.respond_to?(:schema_class) &&
                  parent_definition.contract_class.schema_class
-                scope = determine_scope_for_enum(parent_definition, variant_def[:enum])
-                result[:enum] = Descriptor::EnumStore.scoped_name(scope, variant_def[:enum])
+                scope = determine_scope_for_enum(parent_definition, variant_definition[:enum])
+                result[:enum] = Descriptor::EnumStore.scoped_name(scope, variant_definition[:enum])
               else
-                result[:enum] = variant_def[:enum]
+                result[:enum] = variant_definition[:enum]
               end
             else
               # Inline enum array - keep as-is
-              result[:enum] = variant_def[:enum]
+              result[:enum] = variant_definition[:enum]
             end
           end
 
           # Handle shape in variant (for object or array of object)
-          result[:shape] = serialize_definition(variant_def[:shape], visited: visited) if variant_def[:shape]
+          result[:shape] = serialize_definition(variant_definition[:shape], visited: visited) if variant_definition[:shape]
 
           result
         end

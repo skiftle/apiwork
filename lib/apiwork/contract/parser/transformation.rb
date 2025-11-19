@@ -52,29 +52,29 @@ module Apiwork
 
           transformed = params.dup
 
-          definition.params.each do |name, param_def|
+          definition.params.each do |name, param_definition|
             next unless transformed.key?(name)
 
             value = transformed[name]
 
             # If param has 'as:', rename the key
-            if param_def[:as]
-              transformed[param_def[:as]] = transformed.delete(name)
-              name = param_def[:as] # Update name for nested processing
+            if param_definition[:as]
+              transformed[param_definition[:as]] = transformed.delete(name)
+              name = param_definition[:as] # Update name for nested processing
               value = transformed[name]
             end
 
             # Recursively transform shape params
-            if param_def[:shape] && value.is_a?(Hash)
-              transformed[name] = apply_transformations(value, param_def[:shape])
-            elsif param_def[:shape] && value.is_a?(Array)
+            if param_definition[:shape] && value.is_a?(Hash)
+              transformed[name] = apply_transformations(value, param_definition[:shape])
+            elsif param_definition[:shape] && value.is_a?(Array)
               # For arrays, transform each element
               transformed[name] = value.map do |item|
-                item.is_a?(Hash) ? apply_transformations(item, param_def[:shape]) : item
+                item.is_a?(Hash) ? apply_transformations(item, param_definition[:shape]) : item
               end
-            elsif param_def[:type] == :array && param_def[:of] && value.is_a?(Array)
+            elsif param_definition[:type] == :array && param_definition[:of] && value.is_a?(Array)
               # Handle arrays with custom types (of: :custom_type)
-              transformed_array = transform_custom_type_array(value, param_def, definition)
+              transformed_array = transform_custom_type_array(value, param_definition, definition)
               transformed[name] = transformed_array if transformed_array
             end
           end
@@ -83,21 +83,21 @@ module Apiwork
         end
 
         # Transform array of custom types (regular types or union types)
-        def transform_custom_type_array(value, param_def, definition)
+        def transform_custom_type_array(value, param_definition, definition)
           # Try to resolve as regular custom type
-          shape = resolve_custom_type_shape(param_def[:of], definition, param_def[:type_contract_class])
+          shape = resolve_custom_type_shape(param_definition[:of], definition, param_definition[:type_contract_class])
 
           return value.map { |item| item.is_a?(Hash) ? apply_transformations(item, shape) : item } if shape
 
           # Try union type (nested_payload) transformation
-          transform_union_type_array(value, param_def, definition)
+          transform_union_type_array(value, param_definition, definition)
         end
 
         # Transform array of union types (nested_payload)
-        def transform_union_type_array(value, param_def, definition)
-          return nil unless param_def[:type_contract_class]
+        def transform_union_type_array(value, param_definition, definition)
+          return nil unless param_definition[:type_contract_class]
 
-          nested_contract = param_def[:type_contract_class]
+          nested_contract = param_definition[:type_contract_class]
           action_name = definition.action_name || :create
           nested_definition = nested_contract.action_definition(action_name)&.input_definition
 

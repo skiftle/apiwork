@@ -43,19 +43,19 @@ module Apiwork
             # Create union definition programmatically
             # We need to pass a contract class for type resolution in variant blocks
             contract_class = scope || Class.new(Apiwork::Contract::Base)
-            union_def = Apiwork::Contract::UnionDefinition.new(contract_class)
+            union_definition = Apiwork::Contract::UnionDefinition.new(contract_class)
 
             # Add variant 1: the enum itself (use scoped name)
-            union_def.variant(type: scoped_enum_name)
+            union_definition.variant(type: scoped_enum_name)
 
             # Add variant 2: partial object with eq and in fields (all fields optional via .partial())
-            union_def.variant(type: :object, partial: true) do
+            union_definition.variant(type: :object, partial: true) do
               param :eq, type: scoped_enum_name
               param :in, type: :array, of: scoped_enum_name
             end
 
             # Serialize the union definition
-            union_data = union_def.serialize
+            union_data = union_definition.serialize
 
             TypeStore.register_union(filter_name, union_data, scope: scope, api_class: api_class)
           end

@@ -79,15 +79,15 @@ RSpec.describe 'Zod Generation for Associations', type: :integration do
       # Extract the union definition
       union_match = output.match(/export const CommentNestedPayloadSchema.*?;/m)
       expect(union_match).not_to be_nil, 'CommentNestedPayloadSchema union not found'
-      union_def = union_match[0]
+      union_definition = union_match[0]
 
       # Should reference the separate create/update schemas, not z.string()
-      expect(union_def).to match(/CommentNestedCreatePayloadSchema/)
-      expect(union_def).to match(/CommentNestedUpdatePayloadSchema/)
-      expect(union_def).not_to match(/z\.string\(\)/)
+      expect(union_definition).to match(/CommentNestedCreatePayloadSchema/)
+      expect(union_definition).to match(/CommentNestedUpdatePayloadSchema/)
+      expect(union_definition).not_to match(/z\.string\(\)/)
 
       # Should use z.discriminatedUnion with '_type' discriminator field
-      expect(union_def).to match(/z\.discriminatedUnion\('_type', \[/)
+      expect(union_definition).to match(/z\.discriminatedUnion\('_type', \[/)
     end
 
     it 'generates nested_payload types in correct order (create, update, then union)' do
@@ -291,17 +291,17 @@ RSpec.describe 'Zod Generation for Associations', type: :integration do
         union_match = output.match(/export const #{schema_name}Schema = z\.union\(\[(.*?)\]\);/m)
         next unless union_match
 
-        union_def = union_match[1]
+        union_definition = union_match[1]
 
         # Any variant with enum should reference the enum schema
         type_def[:variants].each do |variant|
           next unless variant.is_a?(Hash) && variant[:enum]
 
           enum_schema_name = variant[:enum].to_s.camelize(:upper)
-          expect(union_def).to include("#{enum_schema_name}Schema"),
-                               "Union #{type_name} should reference #{enum_schema_name}Schema for enum variant"
-          expect(union_def).not_to include('z.string()'),
-                                   "Union #{type_name} should not use z.string() for enum variants"
+          expect(union_definition).to include("#{enum_schema_name}Schema"),
+                                      "Union #{type_name} should reference #{enum_schema_name}Schema for enum variant"
+          expect(union_definition).not_to include('z.string()'),
+                                          "Union #{type_name} should not use z.string() for enum variants"
         end
       end
     end

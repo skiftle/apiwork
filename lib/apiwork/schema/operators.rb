@@ -32,10 +32,6 @@ module Apiwork
         ends_with
       ].freeze
 
-      # Logical operators - for combining and negating filters
-      # These work at the top level of filter expressions and support recursion
-      LOGICAL_OPERATORS = %i[_or _and _not].freeze
-
       # ============================================================
       # TYPE-SPECIFIC OPERATOR SETS
       # ============================================================

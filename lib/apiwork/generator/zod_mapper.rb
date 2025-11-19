@@ -74,9 +74,9 @@ module Apiwork
 
         # Build Zod object schema
         # Don't pass action_name - input fields should follow their own required flags
-        properties = input_params.sort_by { |k, _| k.to_s }.map do |param_name, param_def|
+        properties = input_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
           key = transform_key(param_name)
-          zod_type = map_field_definition(param_def, nil)
+          zod_type = map_field_definition(param_definition, nil)
           "  #{key}: #{zod_type}"
         end.join(",\n")
 

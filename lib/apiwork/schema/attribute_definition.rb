@@ -145,20 +145,6 @@ module Apiwork
         )
       end
 
-      def validate_empty!
-        return unless @empty
-        return if %i[string text].include?(@type)
-
-        detail = 'empty option can only be used on string/text attributes, ' \
-                 "not #{@type} for '#{@name}' in #{@klass.name}"
-
-        raise ConfigurationError.new(
-          code: :invalid_empty,
-          detail: detail,
-          path: [@name]
-        )
-      end
-
       def validate_enum(value)
         enum_values = enum.is_a?(Hash) ? enum.values : enum
         value_str = value.to_s

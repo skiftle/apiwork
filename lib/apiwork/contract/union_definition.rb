@@ -19,23 +19,23 @@ module Apiwork
 
         raise ArgumentError, 'tag is required for all variants when union has a discriminator' if @discriminator && tag.nil?
 
-        variant_def = {
+        variant_definition = {
           type: type,
           of: of
         }
 
-        variant_def[:enum] = enum if enum
-        variant_def[:tag] = tag if tag
-        variant_def[:partial] = partial.nil? ? false : partial
+        variant_definition[:enum] = enum if enum
+        variant_definition[:tag] = tag if tag
+        variant_definition[:partial] = partial.nil? ? false : partial
 
         # Handle shape block (for :object or :array with :object items)
         if block_given?
-          shape_def = Definition.new(type: :input, contract_class: @contract_class)
-          shape_def.instance_eval(&block)
-          variant_def[:shape] = shape_def
+          shape_definition = Definition.new(type: :input, contract_class: @contract_class)
+          shape_definition.instance_eval(&block)
+          variant_definition[:shape] = shape_definition
         end
 
-        @variants << variant_def
+        @variants << variant_definition
       end
 
       def serialize

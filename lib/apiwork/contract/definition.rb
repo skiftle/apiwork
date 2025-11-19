@@ -370,8 +370,8 @@ module Apiwork
       end
 
       # Validate shape object
-      def validate_shape_object(value, shape_def, field_path, max_depth, current_depth)
-        shape_result = shape_def.validate(
+      def validate_shape_object(value, shape_definition, field_path, max_depth, current_depth)
+        shape_result = shape_definition.validate(
           value,
           max_depth: max_depth,
           current_depth: current_depth + 1,
@@ -472,10 +472,10 @@ module Apiwork
               end
 
               # Validate as shape object
-              custom_def = Definition.new(type: @type, contract_class: contract_class_for_custom_type, action_name: @action_name)
-              custom_def.instance_eval(&custom_type_block)
+              custom_definition = Definition.new(type: @type, contract_class: contract_class_for_custom_type, action_name: @action_name)
+              custom_definition.instance_eval(&custom_type_block)
 
-              shape_result = custom_def.validate(
+              shape_result = custom_definition.validate(
                 item,
                 max_depth: max_depth,
                 current_depth: current_depth + 1,
@@ -562,14 +562,14 @@ module Apiwork
         variant_errors = []
         most_specific_error = nil
 
-        variants.each do |variant_def|
-          variant_type = variant_def[:type]
+        variants.each do |variant_definition|
+          variant_type = variant_definition[:type]
 
           # Try validating against this variant
           error, validated_value = validate_variant(
             name,
             value,
-            variant_def,
+            variant_definition,
             path,
             max_depth: max_depth,
             current_depth: current_depth
@@ -688,17 +688,17 @@ module Apiwork
 
       # Validate a single variant of a union
       # Returns [error, value] tuple
-      def validate_variant(name, value, variant_def, path, max_depth:, current_depth:)
-        variant_type = variant_def[:type]
-        variant_of = variant_def[:of]
-        variant_shape = variant_def[:shape]
+      def validate_variant(name, value, variant_definition, path, max_depth:, current_depth:)
+        variant_type = variant_definition[:type]
+        variant_of = variant_definition[:of]
+        variant_shape = variant_definition[:shape]
 
         # Handle custom types (with scope resolution)
         custom_type_block = @contract_class.resolve_custom_type(variant_type)
         if custom_type_block
           # Custom type variant
-          custom_def = Definition.new(type: @type, contract_class: @contract_class, action_name: @action_name)
-          custom_def.instance_eval(&custom_type_block)
+          custom_definition = Definition.new(type: @type, contract_class: @contract_class, action_name: @action_name)
+          custom_definition.instance_eval(&custom_type_block)
 
           # Must be a hash for custom type
           unless value.is_a?(Hash)
@@ -711,7 +711,7 @@ module Apiwork
             return [type_error, nil]
           end
 
-          result = custom_def.validate(
+          result = custom_definition.validate(
             value,
             max_depth: max_depth,
             current_depth: current_depth + 1,
@@ -784,12 +784,12 @@ module Apiwork
         return [type_error, nil] if type_error
 
         # Validate enum if present
-        if variant_def[:enum]&.exclude?(value)
+        if variant_definition[:enum]&.exclude?(value)
           enum_error = Issue.new(
             code: :invalid_value,
-            message: "Invalid value. Must be one of: #{variant_def[:enum].join(', ')}",
+            message: "Invalid value. Must be one of: #{variant_definition[:enum].join(', ')}",
             path: path,
-            meta: { field: name, expected: variant_def[:enum], actual: value }
+            meta: { field: name, expected: variant_definition[:enum], actual: value }
           )
           return [enum_error, nil]
         end

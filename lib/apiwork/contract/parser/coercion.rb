@@ -76,9 +76,9 @@ module Apiwork
               # Resolve custom type and coerce each element
               custom_type_block = definition.contract_class.resolve_custom_type(param_options[:of])
               if custom_type_block
-                custom_def = Definition.new(type: @direction, contract_class: definition.contract_class)
-                custom_def.instance_eval(&custom_type_block)
-                coerce_hash(item, custom_def)
+                custom_definition = Definition.new(type: @direction, contract_class: definition.contract_class)
+                custom_definition.instance_eval(&custom_type_block)
+                coerce_hash(item, custom_definition)
               else
                 item
               end
@@ -107,12 +107,12 @@ module Apiwork
               custom_type_block = definition.contract_class.resolve_custom_type(variant_of)
               if custom_type_block
                 # Build custom type definition for array elements
-                custom_def = Definition.new(type: @direction, contract_class: definition.contract_class)
-                custom_def.instance_eval(&custom_type_block)
+                custom_definition = Definition.new(type: @direction, contract_class: definition.contract_class)
+                custom_definition.instance_eval(&custom_type_block)
 
                 # Coerce each element
                 coerced_array = value.map do |item|
-                  item.is_a?(Hash) ? coerce_hash(item, custom_def) : item
+                  item.is_a?(Hash) ? coerce_hash(item, custom_definition) : item
                 end
                 return coerced_array
               end
@@ -123,12 +123,12 @@ module Apiwork
             next unless custom_type_block
 
             # Build custom type definition
-            custom_def = Definition.new(type: @direction, contract_class: definition.contract_class)
-            custom_def.instance_eval(&custom_type_block)
+            custom_definition = Definition.new(type: @direction, contract_class: definition.contract_class)
+            custom_definition.instance_eval(&custom_type_block)
 
             # Try coercing with this custom type
             if value.is_a?(Hash)
-              coerced = coerce_hash(value, custom_def)
+              coerced = coerce_hash(value, custom_definition)
               return coerced
             end
           end
