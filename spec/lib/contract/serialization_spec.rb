@@ -25,7 +25,9 @@ RSpec.describe 'Contract Serialization' do
                              description: nil,
                              example: nil,
                              format: nil,
-                             deprecated: false
+                             deprecated: false,
+                             min: nil,
+                             max: nil
                            },
                            published: {
                              default: false,
@@ -35,7 +37,9 @@ RSpec.describe 'Contract Serialization' do
                              description: nil,
                              example: nil,
                              format: nil,
-                             deprecated: false
+                             deprecated: false,
+                             min: nil,
+                             max: nil
                            }
                          })
     end
@@ -63,15 +67,33 @@ RSpec.describe 'Contract Serialization' do
                                title: {
                                  nullable: false,
                                  required: true,
-                                 type: :string
+                                 type: :string,
+                                 description: nil,
+                                 example: nil,
+                                 format: nil,
+                                 deprecated: false,
+                                 min: nil,
+                                 max: nil
                                },
                                body: {
                                  nullable: false,
                                  required: false,
-                                 type: :string
+                                 type: :string,
+                                 description: nil,
+                                 example: nil,
+                                 format: nil,
+                                 deprecated: false,
+                                 min: nil,
+                                 max: nil
                                }
                              },
-                             type: :object
+                             type: :object,
+                             description: nil,
+                             example: nil,
+                             format: nil,
+                             deprecated: false,
+                             min: nil,
+                             max: nil
                            }
                          })
     end
@@ -93,7 +115,13 @@ RSpec.describe 'Contract Serialization' do
                              nullable: false,
                              of: :string,
                              required: false,
-                             type: :array
+                             type: :array,
+                             description: nil,
+                             example: nil,
+                             format: nil,
+                             deprecated: false,
+                             min: nil,
+                             max: nil
                            }
                          })
     end
@@ -115,7 +143,13 @@ RSpec.describe 'Contract Serialization' do
                              enum: %w[draft published archived],
                              nullable: false,
                              required: true,
-                             type: :string
+                             type: :string,
+                             description: nil,
+                             example: nil,
+                             format: nil,
+                             deprecated: false,
+                             min: nil,
+                             max: nil
                            }
                          })
     end
@@ -137,7 +171,13 @@ RSpec.describe 'Contract Serialization' do
                              as: :comments_attributes,
                              nullable: false,
                              required: false,
-                             type: :array
+                             type: :array,
+                             description: nil,
+                             example: nil,
+                             format: nil,
+                             deprecated: false,
+                             min: nil,
+                             max: nil
                            }
                          })
     end
@@ -307,19 +347,37 @@ RSpec.describe 'Contract Serialization' do
                              title: {
                                nullable: false,
                                required: true,
-                               type: :string
+                               type: :string,
+                               description: nil,
+                               example: nil,
+                               format: nil,
+                               deprecated: false,
+                               min: nil,
+                               max: nil
                              }
                            },
                            output: {
                              id: {
                                nullable: false,
                                required: true,
-                               type: :integer
+                               type: :integer,
+                               description: nil,
+                               example: nil,
+                               format: nil,
+                               deprecated: false,
+                               min: nil,
+                               max: nil
                              },
                              title: {
                                nullable: false,
                                required: true,
-                               type: :string
+                               type: :string,
+                               description: nil,
+                               example: nil,
+                               format: nil,
+                               deprecated: false,
+                               min: nil,
+                               max: nil
                              }
                            },
                            error_codes: []
@@ -397,7 +455,13 @@ RSpec.describe 'Contract Serialization' do
                              title: {
                                nullable: false,
                                required: true,
-                               type: :string
+                               type: :string,
+                               description: nil,
+                               example: nil,
+                               format: nil,
+                               deprecated: false,
+                               min: nil,
+                               max: nil
                              }
                            },
                            output: nil,
