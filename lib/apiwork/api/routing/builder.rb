@@ -42,7 +42,7 @@ module Apiwork
         end
 
         def controller_path(api_class)
-          api_class.namespaces_parts.map(&:to_s).join('/').underscore
+          api_class.namespaces.map(&:to_s).join('/').underscore
         end
 
         def draw_resources_in_context(context, resources_hash)

@@ -332,9 +332,7 @@ RSpec.describe Apiwork::Generator::Typescript do
       @metadata_output = Apiwork::Generator.generate(:typescript, '/api/ts_metadata_test')
     end
 
-    def metadata_output
-      @metadata_output
-    end
+    attr_reader :metadata_output
 
     after(:all) do
       Apiwork::API::Registry.unregister('/api/ts_metadata_test')
