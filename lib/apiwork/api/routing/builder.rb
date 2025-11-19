@@ -6,8 +6,8 @@ module Apiwork
       # Builds ActionDispatch::RouteSet from registered APIs
       class Builder
         def build
-          # Eager load API classes if in Rails
-          eager_load_apis if defined?(::Rails)
+          # APIs are already loaded by Engine.to_prepare
+          # Don't reload them here to avoid duplicate loading issues
 
           api_classes = Registry.all
           builder_instance = self
@@ -88,16 +88,6 @@ module Apiwork
             .split('::').last
             .sub(/Controller$/, '')
             .underscore
-        end
-
-        def eager_load_apis
-          # Load all API definitions from config/apis
-          apis_path = ::Rails.root.join('config/apis')
-          return unless apis_path.exist?
-
-          Dir[apis_path.join('**', '*.rb')].sort.each do |file|
-            load file
-          end
         end
       end
     end

@@ -9,11 +9,22 @@ module Apiwork
     # 1. Explicit contract (e.g., PostContract) if exists
     # 2. Anonymous contract (generated) if no explicit contract
     #
-    # Thread-safety: Optimistic lazy creation (harmless races)
+    # Thread-safety: Synchronized contract creation to prevent duplicate anonymous contracts
     class SchemaRegistry
+      MUTEX = Mutex.new
+
       class << self
         def find(schema_class)
-          @registry[schema_class] ||= find_or_create_contract(schema_class)
+          # Fast path: return if already registered
+          return @registry[schema_class] if @registry.key?(schema_class)
+
+          # Slow path: synchronize creation
+          MUTEX.synchronize do
+            # Double-check after acquiring lock
+            return @registry[schema_class] if @registry.key?(schema_class)
+
+            @registry[schema_class] = find_or_create_contract(schema_class)
+          end
         end
 
         def register(schema_class, contract_class)

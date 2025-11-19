@@ -199,7 +199,15 @@ module Apiwork
         validate_enum_values!(key, value, target_klass, issues) if target_klass.defined_enums.key?(key.to_s)
 
         column_type = target_klass.type_for_attribute(key).type
-        return Arel.sql('1=1') if column_type.nil?
+        if column_type.nil?
+          issues << Issue.new(
+            code: :unknown_column_type,
+            field: key.to_s,
+            detail: "Cannot determine type for attribute '#{key}' on #{target_klass.name}",
+            path: [key.to_s]
+          )
+          return nil
+        end
 
         case column_type
         when :uuid
