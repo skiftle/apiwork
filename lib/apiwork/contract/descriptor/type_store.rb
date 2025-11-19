@@ -32,32 +32,47 @@ module Apiwork
             if api
               storage(api).each_pair.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
                 # Cache the expanded payload to avoid re-expanding on every serialize call
-                expanded = metadata[:expanded_payload] ||= if metadata[:payload].is_a?(Hash)
-                                                             # Union or already expanded data
-                                                             metadata[:payload]
-                                                           elsif metadata[:payload].is_a?(Proc)
-                                                             # Block definition - expand it once and cache
-                                                             expand_type_definition(
-                                                               metadata[:payload],
-                                                               contract_class: metadata[:scope],
-                                                               type_name: metadata[:name]
-                                                             )
-                                                           else
-                                                             # Fallback - use metadata[:definition] if available
-                                                             expand_type_definition(
-                                                               metadata[:definition] || metadata[:payload],
-                                                               contract_class: metadata[:scope],
-                                                               type_name: metadata[:name]
-                                                             )
-                                                           end
+                expanded_shape = metadata[:expanded_payload] ||= if metadata[:payload].is_a?(Hash)
+                                                                   # Union or already expanded data
+                                                                   metadata[:payload]
+                                                                 elsif metadata[:payload].is_a?(Proc)
+                                                                   # Block definition - expand it once and cache
+                                                                   expand_type_definition(
+                                                                     metadata[:payload],
+                                                                     contract_class: metadata[:scope],
+                                                                     type_name: metadata[:name]
+                                                                   )
+                                                                 else
+                                                                   # Fallback - use metadata[:definition] if available
+                                                                   expand_type_definition(
+                                                                     metadata[:definition] || metadata[:payload],
+                                                                     contract_class: metadata[:scope],
+                                                                     type_name: metadata[:name]
+                                                                   )
+                                                                 end
 
-                # Add type-level metadata (always include all fields)
-                expanded[:description] = metadata[:description]
-                expanded[:example] = metadata[:example]
-                expanded[:format] = metadata[:format]
-                expanded[:deprecated] = metadata[:deprecated] || false
-
-                result[qualified_name] = expanded
+                # Build result with shape and metadata separated
+                # For union types, expanded_shape already has type: :union, variants: [...]
+                # For object types, expanded_shape is a hash of fields
+                result[qualified_name] = if expanded_shape.is_a?(Hash) && expanded_shape[:type] == :union
+                                           # Union type - merge metadata into the existing structure
+                                           expanded_shape.merge(
+                                             description: metadata[:description],
+                                             example: metadata[:example],
+                                             format: metadata[:format],
+                                             deprecated: metadata[:deprecated] || false
+                                           )
+                                         else
+                                           # Object type - wrap fields under :shape
+                                           {
+                                             type: :object,
+                                             shape: expanded_shape,
+                                             description: metadata[:description],
+                                             example: metadata[:example],
+                                             format: metadata[:format],
+                                             deprecated: metadata[:deprecated] || false
+                                           }
+                                         end
               end
             end
 

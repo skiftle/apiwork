@@ -34,11 +34,15 @@ RSpec.describe 'Descriptors Integration', type: :request do
       # error_detail type from config/apis/v1.rb
       expect(introspection[:types]).to have_key(:error_detail)
       expect(introspection[:types][:error_detail]).to include(
-        code: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil, max: nil },
-        message: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
-                   max: nil },
-        field: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
-                 max: nil },
+        type: :object,
+        shape: {
+          code: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
+                  max: nil },
+          message: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
+                     max: nil },
+          field: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
+                   max: nil }
+        },
         description: nil,
         example: nil,
         format: nil,
@@ -48,10 +52,13 @@ RSpec.describe 'Descriptors Integration', type: :request do
       # pagination_params type from config/apis/v1.rb
       expect(introspection[:types]).to have_key(:pagination_params)
       expect(introspection[:types][:pagination_params]).to include(
-        page: { type: :integer, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
-                max: nil },
-        per_page: { type: :integer, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
-                    max: nil },
+        type: :object,
+        shape: {
+          page: { type: :integer, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
+                  max: nil },
+          per_page: { type: :integer, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
+                      max: nil }
+        },
         description: nil,
         example: nil,
         format: nil,
@@ -303,10 +310,13 @@ RSpec.describe 'Descriptors Integration', type: :request do
       # Should be qualified with contract identifier
       expect(introspection[:types]).to have_key(:test_contract_metadata)
       expect(introspection[:types][:test_contract_metadata]).to include(
-        author: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
-                  max: nil },
-        version: { type: :integer, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
-                   max: nil },
+        type: :object,
+        shape: {
+          author: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
+                    max: nil },
+          version: { type: :integer, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
+                     max: nil }
+        },
         description: nil,
         example: nil,
         format: nil,

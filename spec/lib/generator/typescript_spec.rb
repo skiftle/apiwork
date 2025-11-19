@@ -320,7 +320,7 @@ RSpec.describe Apiwork::Generator::Typescript do
 
   describe 'metadata support' do
     before(:all) do
-      @metadata_api = Apiwork::API.draw '/api/ts_metadata_test' do
+      Apiwork::API.draw '/api/ts_metadata_test' do
         descriptors do
           type :documented_type, description: 'Type with description' do
             param :value, type: :string
@@ -332,31 +332,35 @@ RSpec.describe Apiwork::Generator::Typescript do
       @metadata_output = Apiwork::Generator.generate(:typescript, '/api/ts_metadata_test')
     end
 
+    def metadata_output
+      @metadata_output
+    end
+
     after(:all) do
       Apiwork::API::Registry.unregister('/api/ts_metadata_test')
     end
 
     it 'generates type correctly even with metadata' do
       # Metadata doesn't break type generation
-      expect(@metadata_output).to include('export interface DocumentedType')
-      expect(@metadata_output).to match(/export interface DocumentedType \{[\s\S]*?\}/)
+      expect(metadata_output).to include('export interface DocumentedType')
+      expect(metadata_output).to match(/export interface DocumentedType \{[\s\S]*?\}/)
     end
 
     it 'generates enum correctly from hash format with values key' do
       # Enum should be generated from enum_data[:values]
-      expect(@metadata_output).to include("export type Status = 'active' | 'inactive'")
+      expect(metadata_output).to include("export type Status = 'active' | 'inactive'")
     end
 
     it 'does not include metadata fields in TypeScript output' do
       # TypeScript generator doesn't output JSDoc comments from metadata
       # (Could be a future enhancement, but not required now)
-      expect(@metadata_output).not_to include('Type with description')
-      expect(@metadata_output).not_to include('Status enum')
+      expect(metadata_output).not_to include('Type with description')
+      expect(metadata_output).not_to include('Status enum')
     end
 
     it 'handles deprecated flag without errors' do
       # deprecated metadata should not cause issues
-      expect(@metadata_output).to include('export type Status')
+      expect(metadata_output).to include('export type Status')
     end
 
     it 'generates correct output for type with all metadata fields' do
@@ -392,7 +396,7 @@ RSpec.describe Apiwork::Generator::Typescript do
 
     it 'maintains enum value sorting with metadata present' do
       # Enum values should still be sorted alphabetically
-      expect(@metadata_output).to include("'active' | 'inactive'")
+      expect(metadata_output).to include("'active' | 'inactive'")
     end
   end
 end
