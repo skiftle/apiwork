@@ -52,7 +52,7 @@ module Apiwork
             resource_method = metadata[:singular] ? :resource : :resources
 
             context.instance_eval do
-              send(resource_method, name, only: metadata[:actions], controller: controller_option) do
+              send(resource_method, name, only: metadata[:only], controller: controller_option) do
                 # Draw member actions
                 if metadata[:members].any?
                   member do

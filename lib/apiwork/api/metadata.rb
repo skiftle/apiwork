@@ -42,13 +42,24 @@ module Apiwork
           schema_class: schema_class,
           controller_class_name: controller_class_name,
           contract_class_name: contract_class_name,
-          actions: determine_actions(singular, options),
+          actions: {},
+          only: determine_actions(singular, options),
           members: {},
           collections: {},
           resources: {},
           parent: parent,
           options: options,
           metadata: {}
+        }
+      end
+
+      def add_crud_action(resource_name, action, method:, metadata: {})
+        resource = find_resource(resource_name)
+        return unless resource
+
+        resource[:actions][action] = {
+          method: method,
+          metadata: metadata
         }
       end
 

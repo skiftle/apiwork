@@ -358,7 +358,7 @@ RSpec.describe 'Descriptors Integration', type: :request do
 
       # Top-level structure
       expect(introspection).to have_key(:path)
-      expect(introspection).to have_key(:metadata)
+      expect(introspection).to have_key(:info)
       expect(introspection).to have_key(:types)
       expect(introspection).to have_key(:enums)
       expect(introspection).to have_key(:resources)
@@ -366,8 +366,8 @@ RSpec.describe 'Descriptors Integration', type: :request do
       # Path is correct
       expect(introspection[:path]).to eq('/api/v1')
 
-      # Metadata includes doc info
-      expect(introspection[:metadata][:title]).to eq('Test API')
+      # Info includes doc info
+      expect(introspection[:info][:title]).to eq('Test API')
 
       # Types hash is not empty (has global + schema + filters)
       expect(introspection[:types]).not_to be_empty

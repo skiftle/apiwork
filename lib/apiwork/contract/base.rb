@@ -214,7 +214,7 @@ module Apiwork
           metadata = resource_metadata
           return [] unless metadata
 
-          actions = metadata[:actions] || []
+          actions = metadata[:actions]&.keys || []
           actions += metadata[:members]&.keys || []
           actions += metadata[:collections]&.keys || []
           actions

@@ -35,12 +35,12 @@ module Apiwork
       private
 
       def build_info
-        meta = metadata || {}
+        info_data = metadata&.dig(:info) || {}
 
         {
-          title: meta[:title] || "#{path} API",
-          version: meta[:version] || '1.0.0',
-          description: meta[:description]
+          title: info_data[:title] || "#{path} API",
+          version: info_data[:version] || '1.0.0',
+          description: info_data[:description]
         }.compact
       end
 
@@ -67,21 +67,32 @@ module Apiwork
             resource_data[:path],
             action_name,
             action_data,
+            resource_data,
             parent_paths
           )
         end
       end
 
-      def build_operation(resource_name, resource_path, action_name, action_data, parent_paths = [])
+      def build_operation(resource_name, resource_path, action_name, action_data, resource_metadata, parent_paths = [])
         operation = {
-          operationId: operation_id(resource_name, resource_path, action_name, parent_paths),
-          tags: [resource_name.to_s.singularize.camelize],
+          operationId: action_data[:operation_id] || operation_id(resource_name, resource_path, action_name, parent_paths),
+          summary: action_data[:summary],
+          description: action_data[:description],
+          tags: build_tags(resource_metadata[:tags], action_data[:tags]),
+          deprecated: action_data[:deprecated] == true ? true : nil,
           responses: build_responses(action_name, action_data[:output], action_data[:error_codes] || [])
         }
 
         operation[:requestBody] = build_request_body(action_data[:input], action_name) if action_data[:input]
 
         operation.compact
+      end
+
+      def build_tags(resource_tags, action_tags)
+        tags = []
+        tags.concat(Array(resource_tags)) if resource_tags&.any?
+        tags.concat(Array(action_tags)) if action_tags&.any?
+        tags.any? ? tags : nil
       end
 
       def operation_id(_resource_name, resource_path, action_name, parent_paths = [])
