@@ -72,6 +72,9 @@ module Apiwork
           # Resolve contract path to full class name if provided
           contract_class_name = contract_path ? resolve_contract_path(contract_path) : nil
 
+          # Extract action metadata
+          action_metadata = extract_action_metadata(action, current_resource)
+
           if @in_member_block || options[:on] == :member
             # Member action - add to members hash
             @metadata.add_member_action(
@@ -79,7 +82,8 @@ module Apiwork
               action,
               method: method,
               options: options,
-              contract_class_name: contract_class_name
+              contract_class_name: contract_class_name,
+              metadata: action_metadata
             )
           elsif @in_collection_block || options[:on] == :collection
             # Collection action - add to collections hash
@@ -88,7 +92,8 @@ module Apiwork
               action,
               method: method,
               options: options,
-              contract_class_name: contract_class_name
+              contract_class_name: contract_class_name,
+              metadata: action_metadata
             )
           else
             # Action declared without member/collection context - this is an error
@@ -100,6 +105,39 @@ module Apiwork
                   "  #{method} :#{action}, on: :member\n" \
                   "  collection { #{method} :#{action} }\n" \
                   "  #{method} :#{action}, on: :collection"
+          end
+        end
+
+        def extract_action_metadata(action, resource_name)
+          # Get pending metadata for this action, or apply defaults
+          action_meta = @pending_metadata[:actions]&.delete(action) || {}
+
+          action_type = if @in_member_block || @in_collection_block
+                          @in_member_block ? :member : :collection
+                        else
+                          :member # Default assumption
+                        end
+
+          action_meta[:summary] ||= default_action_summary(action, action_type, resource_name)
+          action_meta
+        end
+
+        def default_action_summary(action, type, resource_name)
+          resource_singular = resource_name.to_s.singularize
+          resource_plural = resource_name.to_s
+
+          case action.to_sym
+          when :index then "List #{resource_plural}"
+          when :show then "Get #{resource_singular}"
+          when :create then "Create #{resource_singular}"
+          when :update then "Update #{resource_singular}"
+          when :destroy then "Delete #{resource_singular}"
+          else
+            if type == :member
+              "#{action.to_s.titleize} #{resource_singular}"
+            else
+              "#{action.to_s.titleize} #{resource_plural}"
+            end
           end
         end
       end

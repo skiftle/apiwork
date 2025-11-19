@@ -145,7 +145,8 @@ module Apiwork
 
           result = {
             path: resource_path, # Resource-level relative path
-            actions: {}
+            actions: {},
+            metadata: resource_metadata[:metadata] || {}
           }
 
           # Get contract class for this resource
@@ -164,7 +165,8 @@ module Apiwork
           if resource_metadata[:members]&.any?
             resource_metadata[:members].each do |action_name, action_metadata|
               path = build_action_path(action_name, :member)
-              add_action_with_contract(result[:actions], action_name, action_metadata[:method], path, contract_class)
+              add_action_with_contract(result[:actions], action_name, action_metadata[:method], path, contract_class,
+                                       metadata: action_metadata[:metadata])
             end
           end
 
@@ -172,7 +174,8 @@ module Apiwork
           if resource_metadata[:collections]&.any?
             resource_metadata[:collections].each do |action_name, action_metadata|
               path = build_action_path(action_name, :collection)
-              add_action_with_contract(result[:actions], action_name, action_metadata[:method], path, contract_class)
+              add_action_with_contract(result[:actions], action_name, action_metadata[:method], path, contract_class,
+                                       metadata: action_metadata[:metadata])
             end
           end
 
@@ -226,8 +229,8 @@ module Apiwork
         end
 
         # Add action with method, path, and contract input/output
-        def add_action_with_contract(actions, name, method, path, contract_class)
-          actions[name] = { method:, path: }
+        def add_action_with_contract(actions, name, method, path, contract_class, metadata: {})
+          actions[name] = { method:, path:, metadata: metadata }
 
           return unless contract_class
 

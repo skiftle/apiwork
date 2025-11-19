@@ -47,29 +47,32 @@ module Apiwork
           collections: {},
           resources: {},
           parent: parent,
-          options: options
+          options: options,
+          metadata: {}
         }
       end
 
-      def add_member_action(resource_name, action, method:, options:, contract_class_name: nil)
+      def add_member_action(resource_name, action, method:, options:, contract_class_name: nil, metadata: {})
         resource = find_resource(resource_name)
         return unless resource
 
         resource[:members][action] = {
           method: method,
           options: options,
-          contract_class_name: contract_class_name
+          contract_class_name: contract_class_name,
+          metadata: metadata
         }
       end
 
-      def add_collection_action(resource_name, action, method:, options:, contract_class_name: nil)
+      def add_collection_action(resource_name, action, method:, options:, contract_class_name: nil, metadata: {})
         resource = find_resource(resource_name)
         return unless resource
 
         resource[:collections][action] = {
           method: method,
           options: options,
-          contract_class_name: contract_class_name
+          contract_class_name: contract_class_name,
+          metadata: metadata
         }
       end
 
