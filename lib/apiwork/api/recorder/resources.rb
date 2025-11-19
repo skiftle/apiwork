@@ -145,7 +145,7 @@ module Apiwork
 
           # Extract override options (Rails-style paths)
           contract_path = merged_options[:contract]
-          controller_path = merged_options[:controller]
+          controller_option = merged_options[:controller]
 
           # Always infer resource class from name (no override)
           resource_class = infer_resource_class(name)
@@ -157,40 +157,16 @@ module Apiwork
                                   infer_contract_class(name)&.name
                                 end
 
-          # Resolve controller: use explicit path or infer from name
-          controller_class_name = if controller_path
-                                    # Rails handles controller: path natively, convert to class name for metadata
-                                    resolve_controller_path(controller_path)
-                                  else
-                                    infer_controller_class(name)&.name
-                                  end
-
           # Add to metadata
           @metadata.add_resource(
             name,
             singular: singular,
             schema_class: resource_class,
-            controller_class_name: controller_class_name,
+            controller: controller_option,
             contract_class_name: contract_class_name,
             parent: parent,
             **merged_options
           )
-        end
-
-        def resolve_controller_path(path)
-          parts = if path.start_with?('/')
-                    # Absolute path: '/admin/posts' → 'Admin::PostsController'
-                    path[1..].split('/')
-                  else
-                    # Relative path: 'admin/posts' → 'Api::V1::Admin::PostsController'
-                    @namespaces + path.split('/')
-                  end
-
-          # Camelize all parts (keep plural for controller)
-          parts = parts.map { |part| part.to_s.camelize }
-
-          # Join and append 'Controller'
-          "#{parts.join('::')}Controller"
         end
       end
     end

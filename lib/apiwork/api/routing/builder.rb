@@ -3,7 +3,6 @@
 module Apiwork
   module API
     module Routing
-      # Builds ActionDispatch::RouteSet from registered APIs
       class Builder
         def build
           # APIs are already loaded by Engine.to_prepare
@@ -48,11 +47,12 @@ module Apiwork
         def draw_resources_in_context(context, resources_hash)
           resources_hash.each do |name, metadata|
             builder_instance = self
-            controller_option = extract_controller_option(metadata)
             resource_method = metadata[:singular] ? :resource : :resources
 
+            options = metadata[:options].slice(:only, :except, :controller).compact
+
             context.instance_eval do
-              send(resource_method, name, only: metadata[:only], controller: controller_option) do
+              send(resource_method, name, **options) do
                 # Draw member actions
                 if metadata[:members].any?
                   member do
@@ -76,18 +76,6 @@ module Apiwork
               end
             end
           end
-        end
-
-        private
-
-        def extract_controller_option(metadata)
-          return nil unless metadata[:controller_class_name]
-
-          # Convert 'Api::V1::ArticlesController' → 'articles'
-          metadata[:controller_class_name]
-            .split('::').last
-            .sub(/Controller$/, '')
-            .underscore
         end
       end
     end
