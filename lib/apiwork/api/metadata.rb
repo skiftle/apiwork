@@ -4,7 +4,7 @@ module Apiwork
   module API
     class Metadata
       attr_reader :path, :namespaces, :resources, :concerns
-      attr_accessor :doc, :error_codes
+      attr_accessor :info, :error_codes
 
       def initialize(path)
         # Store path as source of truth
@@ -15,7 +15,7 @@ module Apiwork
 
         @resources = {} # Structured tree, not flat array
         @concerns = {}
-        @doc = nil
+        @info = nil
         @error_codes = [] # Global error codes for all endpoints in this API
       end
 
@@ -25,7 +25,7 @@ module Apiwork
       end
 
       def add_resource(name, singular:, schema_class:, controller_class_name: nil, contract_class_name: nil,
-                       parent: nil, doc: nil, **options)
+                       parent: nil, info: nil, **options)
         # Add to structured tree
         target = if parent
                    # Find or create nested resources hash
@@ -48,7 +48,7 @@ module Apiwork
           resources: {},
           parent: parent,
           options: options,
-          doc: doc
+          info: info
         }
       end
 

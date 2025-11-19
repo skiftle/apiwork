@@ -17,7 +17,7 @@ module Apiwork
         @metadata = metadata
         @namespaces = namespaces_parts
         @resource_stack = []
-        @pending_doc = nil
+        @pending_info = nil
         @current_options = nil
         @in_member_block = false
         @in_collection_block = false
@@ -28,22 +28,22 @@ module Apiwork
         metadata.namespaces_string
       end
 
-      # Add doc method for documentation blocks
-      def doc(&block)
+      # Add info method for info blocks
+      def info(&block)
         return unless block
 
         # Determine level based on context
         level = @resource_stack.empty? ? :api : :resource
 
-        builder = DocumentationBuilder.new(level: level)
+        builder = Info::Builder.new(level: level)
         builder.instance_eval(&block)
 
         if level == :api
-          # Store API-level doc immediately
-          @metadata.doc = builder.documentation
+          # Store API-level info immediately
+          @metadata.info = builder.info
         else
-          # Store resource-level doc as pending
-          @pending_doc = builder.documentation
+          # Store resource-level info as pending
+          @pending_info = builder.info
         end
       end
     end

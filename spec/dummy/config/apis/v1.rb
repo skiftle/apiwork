@@ -8,7 +8,7 @@ Apiwork::API.draw '/api/v1' do
   # Global error codes for all endpoints
   error_codes 400, 500
 
-  doc do
+  info do
     title 'Test API'
     version '1.0.0'
     description 'Dummy API for the Apiwork gem'
