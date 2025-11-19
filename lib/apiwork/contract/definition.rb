@@ -33,10 +33,13 @@ module Apiwork
       # Define a parameter
       # rubocop:disable Metrics/ParameterLists
       def param(name, type: :string, required: false, default: nil, enum: nil, of: nil, as: nil,
-                discriminator: nil, value: nil, **options, &block)
+                discriminator: nil, value: nil, visited_types: nil, **options, &block)
         # rubocop:enable Metrics/ParameterLists
         # Validate discriminator usage
         raise ArgumentError, 'discriminator can only be used with type: :union' if discriminator && type != :union
+
+        # Use instance variable if set (from nested calls), otherwise use parameter or create new Set
+        visited_types = visited_types || @visited_types || Set.new
 
         # Resolve enum reference if it's a symbol
         resolved_enum = resolve_enum_value(enum)
@@ -50,7 +53,8 @@ module Apiwork
                                    required: required, default: default, as: as, options: options, &block)
         else
           define_regular_param(name, type: type, resolved_enum: resolved_enum,
-                                     required: required, default: default, of: of, as: as, options: options, &block)
+                                     required: required, default: default, of: of, as: as,
+                                     visited_types: visited_types, options: options, &block)
         end
       end
 
@@ -96,23 +100,25 @@ module Apiwork
       end
 
       # Define a regular or custom type parameter
-      def define_regular_param(name, type:, resolved_enum:, required:, default:, of:, as:, options:, &block)
+      # rubocop:disable Metrics/ParameterLists
+      def define_regular_param(name, type:, resolved_enum:, required:, default:, of:, as:, visited_types:, options:, &block)
+        # rubocop:enable Metrics/ParameterLists
         # Check if type is a custom type
         custom_type_block = @contract_class.resolve_custom_type(type)
 
         # Check if we're already expanding this type (prevent infinite recursion)
         if custom_type_block
           expansion_key = [@contract_class.object_id, type]
-          expanding_types = Thread.current[:apiwork_expanding_custom_types] ||= Set.new
 
           # If already expanding this type, treat it as a reference instead of expanding
-          custom_type_block = nil if expanding_types.include?(expansion_key)
+          custom_type_block = nil if visited_types.include?(expansion_key)
         end
 
         if custom_type_block
           define_custom_type_param(name, type: type, custom_type_block: custom_type_block,
                                          resolved_enum: resolved_enum, required: required,
-                                         default: default, of: of, as: as, options: options, &block)
+                                         default: default, of: of, as: as, visited_types: visited_types,
+                                         options: options, &block)
         else
           define_standard_param(name, type: type, resolved_enum: resolved_enum,
                                       required: required, default: default, of: of, as: as, options: options, &block)
@@ -121,34 +127,40 @@ module Apiwork
 
       # Define a custom type parameter with recursion protection
       # rubocop:disable Metrics/ParameterLists
-      def define_custom_type_param(name, type:, custom_type_block:, resolved_enum:, required:, default:, of:, as:, options:, &block)
+      def define_custom_type_param(name, type:, custom_type_block:, resolved_enum:, required:, default:, of:, as:,
+                                   visited_types:, options:, &block)
         # rubocop:enable Metrics/ParameterLists
         expansion_key = [@contract_class.object_id, type]
-        expanding_types = Thread.current[:apiwork_expanding_custom_types] ||= Set.new
-        expanding_types.add(expansion_key)
 
-        begin
-          shape_definition = Definition.new(type: @type, contract_class: @contract_class, action_name: @action_name)
-          shape_definition.instance_eval(&custom_type_block)
+        # Create new visited set with current type for downstream calls
+        visited_with_current = visited_types.dup.add(expansion_key)
 
-          # Apply additional block if provided (can extend custom type)
-          shape_definition.instance_eval(&block) if block_given?
+        shape_definition = Definition.new(type: @type, contract_class: @contract_class, action_name: @action_name)
 
-          @params[name] = {
-            name: name,
-            type: :object, # Custom types are objects internally
-            required: required,
-            default: default,
-            enum: resolved_enum, # Store resolved enum (values or reference)
-            of: of,
-            as: as,
-            custom_type: type, # Track original custom type name
-            shape: shape_definition,
-            **options
-          }
-        ensure
-          expanding_types.delete(expansion_key)
+        # Pass visited_types to nested param calls
+        # This requires modifying instance_eval to pass visited context
+        # We'll handle this by storing visited_types on the Definition instance
+        shape_definition.instance_variable_set(:@visited_types, visited_with_current)
+        shape_definition.instance_eval(&custom_type_block)
+
+        # Apply additional block if provided (can extend custom type)
+        if block_given?
+          shape_definition.instance_variable_set(:@visited_types, visited_with_current)
+          shape_definition.instance_eval(&block)
         end
+
+        @params[name] = {
+          name: name,
+          type: :object, # Custom types are objects internally
+          required: required,
+          default: default,
+          enum: resolved_enum, # Store resolved enum (values or reference)
+          of: of,
+          as: as,
+          custom_type: type, # Track original custom type name
+          shape: shape_definition,
+          **options
+        }
       end
 
       # Define a standard (non-custom) type parameter
