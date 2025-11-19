@@ -65,10 +65,6 @@ module Apiwork
           @configuration ||= {}
         end
 
-        def controller_namespace
-          metadata.namespaces_string
-        end
-
         def descriptors(&block)
           return unless block
 

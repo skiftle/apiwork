@@ -29,17 +29,6 @@ module Apiwork
           nil
         end
 
-        # Auto-discover the Controller class based on namespaces and resource name
-        def infer_controller_class(name)
-          # Build class name from namespaces array: [:api, :v1] + :posts -> 'Api::V1::PostsController'
-          controller_name = name.to_s.pluralize.camelize
-          class_name = "#{namespaces_string}::#{controller_name}Controller"
-
-          class_name.constantize
-        rescue NameError
-          nil
-        end
-
         def resolve_contract_path(path)
           parts = if path.start_with?('/')
                     # Absolute path: '/admin/post' → 'Admin::PostContract'
