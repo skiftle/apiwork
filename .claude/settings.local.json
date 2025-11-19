@@ -62,7 +62,8 @@
       "Bash(bundle update:*)",
       "Bash(rm:*)",
       "Bash(bundle exec rails db:migrate:status:*)",
-      "Bash(sqlite3:*)"
+      "Bash(sqlite3:*)",
+      "Bash(RAILS_ENV=test BUNDLE_GEMFILE=spec/dummy/Gemfile bundle exec ruby:*)"
     ],
     "deny": [],
     "ask": []

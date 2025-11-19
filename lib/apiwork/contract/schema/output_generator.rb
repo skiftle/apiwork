@@ -130,16 +130,40 @@ module Apiwork
                 if assoc_type
                   # Use the registered type
                   if association_definition.singular?
-                    param name, type: assoc_type, required: is_required, nullable: association_definition.nullable?
+                    param name,
+                          type: assoc_type,
+                          required: is_required,
+                          nullable: association_definition.nullable?,
+                          description: association_definition.description,
+                          example: association_definition.example,
+                          deprecated: association_definition.deprecated
                   elsif association_definition.collection?
-                    param name, type: :array, of: assoc_type, required: is_required,
-                                nullable: association_definition.nullable?
+                    param name,
+                          type: :array,
+                          of: assoc_type,
+                          required: is_required,
+                          nullable: association_definition.nullable?,
+                          description: association_definition.description,
+                          example: association_definition.example,
+                          deprecated: association_definition.deprecated
                   end
                 elsif association_definition.singular?
                   # Fallback to generic types if no schema
-                  param name, type: :object, required: is_required, nullable: association_definition.nullable?
+                  param name,
+                        type: :object,
+                        required: is_required,
+                        nullable: association_definition.nullable?,
+                        description: association_definition.description,
+                        example: association_definition.example,
+                        deprecated: association_definition.deprecated
                 elsif association_definition.collection?
-                  param name, type: :array, required: is_required, nullable: association_definition.nullable?
+                  param name,
+                        type: :array,
+                        required: is_required,
+                        nullable: association_definition.nullable?,
+                        description: association_definition.description,
+                        example: association_definition.example,
+                        deprecated: association_definition.deprecated
                 end
               end
             end

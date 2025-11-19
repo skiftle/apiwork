@@ -202,6 +202,12 @@ RSpec.describe 'Contract Serialization' do
                              type: :union,
                              required: true,
                              nullable: false,
+                             description: nil,
+                             example: nil,
+                             format: nil,
+                             deprecated: false,
+                             min: nil,
+                             max: nil,
                              variants: [
                                { type: :string },
                                { type: :integer }
@@ -234,9 +240,15 @@ RSpec.describe 'Contract Serialization' do
       # Note: For non-schema contracts, types are not qualified
       expect(json).to eq({
                            shipping_address: {
-                             nullable: false,
+                             type: :address,
                              required: true,
-                             type: :address
+                             nullable: false,
+                             description: nil,
+                             example: nil,
+                             format: nil,
+                             deprecated: false,
+                             min: nil,
+                             max: nil
                            }
                          })
     end
@@ -270,6 +282,12 @@ RSpec.describe 'Contract Serialization' do
                              type: :union,
                              required: false,
                              nullable: false,
+                             description: nil,
+                             example: nil,
+                             format: nil,
+                             deprecated: false,
+                             min: nil,
+                             max: nil,
                              variants: [
                                {
                                  type: :test_union_filter_a # Type reference, not expanded
@@ -310,6 +328,12 @@ RSpec.describe 'Contract Serialization' do
                              type: :union,
                              required: false,
                              nullable: false,
+                             description: nil,
+                             example: nil,
+                             format: nil,
+                             deprecated: false,
+                             min: nil,
+                             max: nil,
                              variants: [
                                {
                                  type: :test_union_filter_b # Type reference
