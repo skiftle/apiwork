@@ -24,8 +24,8 @@ module Apiwork
         @namespaces.map(&:to_s).map(&:camelize).join('::')
       end
 
-      def add_resource(name, singular:, schema_class:, controller_class_name: nil, contract_class_name: nil,
-                       parent: nil, **options)
+      def add_resource(name, singular:, schema_class:, controller: nil, contract_class_name: nil, parent: nil,
+                       **options)
         # Add to structured tree
         target = if parent
                    # Find or create nested resources hash
@@ -40,7 +40,7 @@ module Apiwork
         target[name] = {
           singular: singular,
           schema_class: schema_class,
-          controller_class_name: controller_class_name,
+          controller: controller,
           contract_class_name: contract_class_name,
           actions: {},
           only: determine_actions(singular, options),
