@@ -2,21 +2,27 @@
 
 module Apiwork
   module API
-    def self.draw(path, &block)
-      return unless block
+    class << self
+      def draw(path, &block)
+        return unless block
 
-      Class.new(Base).tap do |klass|
-        klass.mount(path)
-        klass.class_eval(&block)
+        Class.new(Base).tap do |klass|
+          klass.mount(path)
+          klass.class_eval(&block)
+        end
       end
-    end
 
-    def self.find(path)
-      Registry.find(path)
-    end
+      def find(path)
+        Registry.find(path)
+      end
 
-    def self.all
-      Registry.all
+      def all
+        Registry.all
+      end
+
+      def introspect(path)
+        find(path)&.introspect
+      end
     end
   end
 end

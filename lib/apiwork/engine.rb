@@ -16,10 +16,9 @@ module Apiwork
       Apiwork::API::Registry.clear!
       Apiwork::Contract::Descriptor::Registry.clear!
 
-      # Register generators
-      Apiwork.register_generator(:openapi, Apiwork::Generator::Openapi)
-      Apiwork.register_generator(:zod, Apiwork::Generator::Zod)
-      Apiwork.register_generator(:typescript, Apiwork::Generator::Typescript)
+      Apiwork::Generator.register(:openapi, Apiwork::Generator::Openapi)
+      Apiwork::Generator.register(:zod, Apiwork::Generator::Zod)
+      Apiwork::Generator.register(:typescript, Apiwork::Generator::Typescript)
 
       if Rails.root.join('config/apis').exist?
         Dir[Rails.root.join('config/apis/**/*.rb')].sort.each do |file|

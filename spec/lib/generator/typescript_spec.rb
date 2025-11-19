@@ -299,8 +299,8 @@ RSpec.describe Apiwork::Generator::Typescript do
       expect(Apiwork::Generator::Registry[:typescript]).to eq(described_class)
     end
 
-    it 'can be used via Apiwork.generate_spec' do
-      output = Apiwork.generate_spec(:typescript, path)
+    it 'can be used via Apiwork::Generator.generate' do
+      output = Apiwork::Generator.generate(:typescript, path)
       expect(output).to be_a(String)
       expect(output).to include('export type')
     end

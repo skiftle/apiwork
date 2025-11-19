@@ -2,10 +2,6 @@
 
 module Apiwork
   module API
-    # Rack application for mounting Apiwork APIs
-    #
-    # Usage:
-    #   mount Apiwork.rack_app => '/'
     class RackApp
       def call(env)
         route_set.call(env)
