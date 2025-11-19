@@ -14,16 +14,8 @@ module Apiwork
         # Apiwork contracts define explicit parameter structures
         wrap_parameters false
 
-        rescue_from Apiwork::QueryError do |error|
-          render json: { ok: false, issues: error.issues }, status: :bad_request
-        end
-
-        rescue_from Apiwork::ContractError do |error|
-          render json: { ok: false, issues: error.issues }, status: :bad_request
-        end
-
-        rescue_from Apiwork::ValidationError do |error|
-          render json: { ok: false, issues: error.issues }, status: :unprocessable_entity
+        rescue_from Apiwork::ConstraintError do |error|
+          render json: { ok: false, issues: error.issues }, status: error.http_status
         end
       end
     end
