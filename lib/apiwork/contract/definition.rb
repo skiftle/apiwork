@@ -137,17 +137,14 @@ module Apiwork
 
         shape_definition = Definition.new(type: @type, contract_class: @contract_class, action_name: @action_name)
 
-        # Pass visited_types to nested param calls
-        # This requires modifying instance_eval to pass visited context
-        # We'll handle this by storing visited_types on the Definition instance
+        # Pass visited_types to nested param calls by storing on the Definition instance
         shape_definition.instance_variable_set(:@visited_types, visited_with_current)
+
+        # Evaluate custom type block
         shape_definition.instance_eval(&custom_type_block)
 
         # Apply additional block if provided (can extend custom type)
-        if block_given?
-          shape_definition.instance_variable_set(:@visited_types, visited_with_current)
-          shape_definition.instance_eval(&block)
-        end
+        shape_definition.instance_eval(&block) if block_given?
 
         @params[name] = {
           name: name,
