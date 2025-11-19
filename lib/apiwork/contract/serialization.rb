@@ -106,7 +106,11 @@ module Apiwork
           result = {
             type: type_value,
             required: options[:required] || false,
-            nullable: options[:nullable] || false
+            nullable: options[:nullable] || false,
+            description: options[:description],
+            example: options[:example],
+            format: options[:format],
+            deprecated: options[:deprecated] || false
           }
 
           # Add literal value for literal types

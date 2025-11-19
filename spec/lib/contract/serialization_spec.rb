@@ -21,13 +21,21 @@ RSpec.describe 'Contract Serialization' do
                            title: {
                              nullable: false,
                              required: true,
-                             type: :string
+                             type: :string,
+                             description: nil,
+                             example: nil,
+                             format: nil,
+                             deprecated: false
                            },
                            published: {
                              default: false,
                              nullable: false,
                              required: false,
-                             type: :boolean
+                             type: :boolean,
+                             description: nil,
+                             example: nil,
+                             format: nil,
+                             deprecated: false
                            }
                          })
     end

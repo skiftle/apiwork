@@ -258,6 +258,14 @@ module Apiwork
 
         schema = map_type_definition(definition, action_name)
 
+        # Add metadata
+        schema[:description] = definition[:description] if definition[:description]
+        schema[:example] = definition[:example] if definition[:example]
+        schema[:deprecated] = definition[:deprecated] if definition[:deprecated]
+
+        # Override format if explicitly set
+        schema[:format] = definition[:format].to_s if definition[:format]
+
         schema[:enum] = resolve_enum(definition[:enum]) if definition[:enum]
 
         apply_nullable(schema, definition[:nullable])

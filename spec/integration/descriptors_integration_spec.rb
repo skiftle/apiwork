@@ -34,9 +34,9 @@ RSpec.describe 'Descriptors Integration', type: :request do
       # error_detail type from config/apis/v1.rb
       expect(introspection[:types]).to have_key(:error_detail)
       expect(introspection[:types][:error_detail]).to eq(
-        code: { type: :string, required: false, nullable: false },
-        message: { type: :string, required: false, nullable: false },
-        field: { type: :string, required: false, nullable: false }
+        code: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false },
+        message: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false },
+        field: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false }
       )
 
       # pagination_params type from config/apis/v1.rb

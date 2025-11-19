@@ -113,6 +113,10 @@ module Apiwork
                 param name,
                       type: Generator.map_type(attribute_definition.type),
                       required: false,
+                      description: attribute_definition.description,
+                      example: attribute_definition.example,
+                      format: attribute_definition.format,
+                      deprecated: attribute_definition.deprecated,
                       **enum_option
               end
 
