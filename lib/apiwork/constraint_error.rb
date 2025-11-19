@@ -12,13 +12,5 @@ module Apiwork
     def to_array
       @issues.map(&:to_h)
     end
-
-    def empty?
-      @issues.empty?
-    end
-
-    def any?
-      @issues.any?
-    end
   end
 end

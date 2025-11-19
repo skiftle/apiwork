@@ -5,7 +5,7 @@ module Apiwork
     # Represents the contract definition for a single action
     # Handles input/output definitions, merging with schema, and serialization
     class ActionDefinition
-      attr_reader :action_name, :contract_class, :parent_scope
+      attr_reader :action_name, :contract_class
 
       def schema_class
         contract_class.schema_class
