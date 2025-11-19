@@ -28,5 +28,9 @@ module Apiwork
       result[:options] = filtered_meta if filtered_meta && (filtered_meta.respond_to?(:empty?) ? filtered_meta.present? : true)
       result
     end
+
+    def as_json
+      to_h
+    end
   end
 end
