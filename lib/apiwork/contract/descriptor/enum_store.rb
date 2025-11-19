@@ -14,7 +14,7 @@ module Apiwork
 
             # Serialize from unified storage
             if api
-              storage(api).to_a.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
+              storage(api).each_pair.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
                 result[qualified_name] = metadata[:payload]
               end
             end

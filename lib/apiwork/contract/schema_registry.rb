@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'concurrent/map'
+
 module Apiwork
   module Contract
     # Registry maintaining Schema → Contract relationships
@@ -9,36 +11,27 @@ module Apiwork
     # 1. Explicit contract (e.g., PostContract) if exists
     # 2. Anonymous contract (generated) if no explicit contract
     #
-    # Thread-safety: Synchronized contract creation to prevent duplicate anonymous contracts
+    # Thread-safety: Lock-free using Concurrent::Map (atomic operations)
     class SchemaRegistry
-      MUTEX = Mutex.new
-
       class << self
         def find(schema_class)
-          # Fast path: return if already registered
-          return @registry[schema_class] if @registry.key?(schema_class)
-
-          # Slow path: synchronize creation
-          MUTEX.synchronize do
-            # Double-check after acquiring lock
-            return @registry[schema_class] if @registry.key?(schema_class)
-
-            @registry[schema_class] = find_or_create_contract(schema_class)
+          registry.fetch_or_store(schema_class) do
+            find_or_create_contract(schema_class)
           end
         end
 
         def register(schema_class, contract_class)
-          @registry[schema_class] = contract_class
+          registry[schema_class] = contract_class
         end
 
         # Clear registry (for development reload)
         def clear!
-          @registry = {}
+          @registry = Concurrent::Map.new
         end
 
         # For debugging/introspection
         def all
-          @registry.dup
+          registry.each_pair.to_h
         end
 
         private
@@ -102,7 +95,7 @@ module Apiwork
         end
 
         def registry
-          @registry ||= {}
+          @registry ||= Concurrent::Map.new
         end
       end
 

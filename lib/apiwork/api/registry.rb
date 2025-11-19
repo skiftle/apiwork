@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
+require 'concurrent/map'
+
 module Apiwork
   module API
+    # Registry for managing API class instances
+    #
+    # Thread-safety: Lock-free using Concurrent::Map (atomic operations)
     class Registry
       class << self
         def register(api_class)
@@ -30,7 +35,7 @@ module Apiwork
         end
 
         def clear!
-          apis.clear
+          @apis = Concurrent::Map.new
         end
 
         private
@@ -42,7 +47,7 @@ module Apiwork
         end
 
         def apis
-          @apis ||= {}
+          @apis ||= Concurrent::Map.new
         end
       end
     end
