@@ -29,7 +29,7 @@ RSpec.describe 'API Introspection' do
     it 'returns complete API structure' do
       expect(json).to be_a(Hash)
       expect(json).to have_key(:path)
-      expect(json).to have_key(:metadata)
+      expect(json).to have_key(:info)
       expect(json).to have_key(:resources)
     end
 
@@ -38,10 +38,10 @@ RSpec.describe 'API Introspection' do
     end
 
     it 'includes documentation metadata' do
-      expect(json[:metadata]).to be_a(Hash)
-      expect(json[:metadata][:title]).to eq('Test API')
-      expect(json[:metadata][:version]).to eq('1.0.0')
-      expect(json[:metadata][:description]).to eq('Dummy API for the Apiwork gem')
+      expect(json[:info]).to be_a(Hash)
+      expect(json[:info][:title]).to eq('Test API')
+      expect(json[:info][:version]).to eq('1.0.0')
+      expect(json[:info][:description]).to eq('Dummy API for the Apiwork gem')
     end
 
     describe 'resources' do

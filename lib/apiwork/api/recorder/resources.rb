@@ -15,17 +15,20 @@ module Apiwork
           )
 
           # Handle nested block with context
-          return unless block
+          if block
+            # Clear pending metadata before block
+            @pending_metadata = {}
 
-          # Clear pending metadata before block
-          @pending_metadata = {}
+            @resource_stack.push(name)
+            instance_eval(&block)
+            @resource_stack.pop
+          end
 
-          @resource_stack.push(name)
-          instance_eval(&block)
-          @resource_stack.pop
-
-          # Apply pending resource metadata after block
+          # Apply pending resource metadata after block (or immediately if no block)
           apply_resource_metadata(name)
+
+          # Generate and store CRUD action metadata
+          apply_crud_action_metadata(name)
         end
 
         # Intercept resource call (singular)
@@ -37,17 +40,20 @@ module Apiwork
           )
 
           # Handle nested block with context
-          return unless block
+          if block
+            # Clear pending metadata before block
+            @pending_metadata = {}
 
-          # Clear pending metadata before block
-          @pending_metadata = {}
+            @resource_stack.push(name)
+            instance_eval(&block)
+            @resource_stack.pop
+          end
 
-          @resource_stack.push(name)
-          instance_eval(&block)
-          @resource_stack.pop
-
-          # Apply pending resource metadata after block
+          # Apply pending resource metadata after block (or immediately if no block)
           apply_resource_metadata(name)
+
+          # Generate and store CRUD action metadata
+          apply_crud_action_metadata(name)
         end
 
         # Support for with_options pattern
@@ -80,6 +86,54 @@ module Apiwork
 
         def default_description(name)
           "Operations for managing #{name}."
+        end
+
+        def apply_crud_action_metadata(name)
+          resource = @metadata.find_resource(name)
+          return unless resource
+
+          # Get CRUD actions list for this resource
+          crud_actions = resource[:only] || []
+
+          # Generate metadata for each CRUD action
+          crud_actions.each do |action_name|
+            action_meta = @pending_metadata[:actions]&.delete(action_name) || {}
+
+            # Apply default summary if not provided
+            action_meta[:summary] ||= default_crud_action_summary(action_name, name)
+
+            # Add CRUD action with metadata to metadata store
+            @metadata.add_crud_action(
+              name,
+              action_name,
+              method: crud_action_method(action_name),
+              metadata: action_meta
+            )
+          end
+        end
+
+        def default_crud_action_summary(action, resource_name)
+          resource_singular = resource_name.to_s.singularize
+          resource_plural = resource_name.to_s
+
+          case action.to_sym
+          when :index then "List #{resource_plural}"
+          when :show then "Get #{resource_singular}"
+          when :create then "Create #{resource_singular}"
+          when :update then "Update #{resource_singular}"
+          when :destroy then "Delete #{resource_singular}"
+          end
+        end
+
+        def crud_action_method(action_name)
+          case action_name.to_sym
+          when :index then :get
+          when :show then :get
+          when :create then :post
+          when :update then :patch
+          when :destroy then :delete
+          else :get
+          end
         end
 
         def capture_resource_metadata(name, singular:, options:)

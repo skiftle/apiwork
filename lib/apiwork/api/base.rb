@@ -101,7 +101,7 @@ module Apiwork
           # Now collect all types and enums (after contract classes have been created)
           result = {
             path: mount_path,
-            metadata: serialize_info,
+            info: serialize_info,
             types: types,
             enums: enums,
             resources: resources
@@ -143,10 +143,15 @@ module Apiwork
           resource_path = build_resource_path(resource_name, resource_metadata, parent_path,
                                               parent_resource_name: parent_resource_name)
 
+          # Extract metadata fields
+          meta = resource_metadata[:metadata] || {}
+
           result = {
             path: resource_path, # Resource-level relative path
-            actions: {},
-            metadata: resource_metadata[:metadata] || {}
+            summary: meta[:summary],
+            description: meta[:description],
+            tags: meta[:tags],
+            actions: {}
           }
 
           # Get contract class for this resource
@@ -155,10 +160,12 @@ module Apiwork
                            schema_based_contract_class(resource_metadata)
 
           # Serialize CRUD actions
-          (resource_metadata[:actions] || []).each do |action_name|
-            method = crud_action_method(action_name)
-            path = build_action_path(action_name, action_name.to_sym)
-            add_action_with_contract(result[:actions], action_name, method, path, contract_class)
+          if resource_metadata[:actions]&.any?
+            resource_metadata[:actions].each do |action_name, action_data|
+              path = build_action_path(action_name, action_name.to_sym)
+              add_action_with_contract(result[:actions], action_name, action_data[:method], path, contract_class,
+                                       metadata: action_data[:metadata])
+            end
           end
 
           # Serialize member actions
@@ -195,18 +202,6 @@ module Apiwork
           result
         end
 
-        # Map CRUD action names to HTTP methods
-        def crud_action_method(action_name)
-          case action_name.to_sym
-          when :index then :get
-          when :show then :get
-          when :create then :post
-          when :update then :patch
-          when :destroy then :delete
-          else :get
-          end
-        end
-
         # Build relative path for any action type
         # Returns only the action-specific segment with generic :id
         # index/create: "/"
@@ -230,7 +225,16 @@ module Apiwork
 
         # Add action with method, path, and contract input/output
         def add_action_with_contract(actions, name, method, path, contract_class, metadata: {})
-          actions[name] = { method:, path:, metadata: metadata }
+          # Flatten metadata fields directly onto action
+          actions[name] = {
+            method:,
+            path:,
+            summary: metadata[:summary],
+            description: metadata[:description],
+            tags: metadata[:tags],
+            deprecated: metadata[:deprecated],
+            operation_id: metadata[:operation_id]
+          }
 
           return unless contract_class
 
