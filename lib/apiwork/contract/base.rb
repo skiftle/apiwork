@@ -36,7 +36,7 @@ module Apiwork
 
           # Register enums from schema when contract is defined/reloaded
           # This ensures enums are available even if actions are cached
-          Schema::TypeRegistry.register_contract_enums(self, ref)
+          Schema::TypeBuilder.build_contract_enums(self, ref)
 
           # nested_payload union is registered lazily via auto_import_association_contract
           # when a schema is used as a writable association, not eagerly here
