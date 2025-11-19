@@ -80,6 +80,12 @@ module Apiwork
             result = serialize_union(options[:union], definition, visited: visited)
             result[:required] = options[:required] || false
             result[:nullable] = options[:nullable] || false
+            result[:description] = options[:description]
+            result[:example] = options[:example]
+            result[:format] = options[:format]
+            result[:deprecated] = options[:deprecated] || false
+            result[:min] = options[:min]
+            result[:max] = options[:max]
             return result
           end
 
@@ -93,8 +99,14 @@ module Apiwork
             result = {
               type: custom_type_name,
               required: options[:required] || false,
-              nullable: options[:nullable] || false
+              nullable: options[:nullable] || false,
+              description: options[:description],
+              example: options[:example],
+              format: options[:format],
+              deprecated: options[:deprecated] || false
             }
+            result[:min] = options[:min]
+            result[:max] = options[:max]
             result[:as] = options[:as] if options[:as]
             return result
           end

@@ -133,7 +133,10 @@ module Apiwork
               param_options = {
                 required: false, # Associations are optional by default for input
                 nullable: association_definition.nullable?,
-                as: "#{name}_attributes".to_sym # Transform for Rails accepts_nested_attributes_for
+                as: "#{name}_attributes".to_sym, # Transform for Rails accepts_nested_attributes_for
+                description: association_definition.description,
+                example: association_definition.example,
+                deprecated: association_definition.deprecated
               }
 
               # Store the contract that owns the nested_payload type for later resolution
