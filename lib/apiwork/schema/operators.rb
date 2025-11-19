@@ -93,10 +93,6 @@ module Apiwork
       def self.for_type(type)
         OPERATORS_BY_TYPE[type] || EQUALITY_OPERATORS
       end
-
-      def self.valid?(operator, type)
-        for_type(type).include?(operator)
-      end
     end
   end
 end

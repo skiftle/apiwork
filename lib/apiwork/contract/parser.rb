@@ -34,7 +34,7 @@ module Apiwork
       include Transformation
       include Validation
 
-      attr_reader :contract_class, :action, :direction, :context
+      attr_reader :contract_class, :action, :direction
 
       def initialize(contract_class, direction, action, **options)
         @contract_class = contract_class

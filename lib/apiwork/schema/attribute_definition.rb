@@ -49,7 +49,6 @@ module Apiwork
         @min = options[:min]
         @max = options[:max]
 
-        # validate_empty! FIXME
         validate_min_max_range!
         apply_empty_transformers! if @empty
       end

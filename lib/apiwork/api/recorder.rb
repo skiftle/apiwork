@@ -15,6 +15,7 @@ module Apiwork
 
       def initialize(metadata, namespaces_parts)
         @metadata = metadata
+        @namespaces = namespaces_parts
         @resource_stack = []
         @pending_doc = nil
         @current_options = nil

@@ -3,11 +3,11 @@
 module Apiwork
   module Contract
     class Definition
-      attr_reader :type, :params, :contract_class, :action_name, :direction
+      attr_reader :type, :params, :contract_class, :action_name
 
       def initialize(type:, contract_class:, action_name: nil)
         @type = type # :input or :output
-        @direction = type # Alias for type (used by Descriptor::Registry.qualified_enum_name)
+        @direction = type # Alias for type (used internally by Parser)
         @contract_class = contract_class
         @action_name = action_name
         @params = {}
