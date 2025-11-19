@@ -6,10 +6,11 @@ module Apiwork
     #
     # Coordinates recording by delegating to specialized modules
     class Recorder
-      include Recorder::Resources # Handles resources/resource calls
+      include Recorder::Resources    # Handles resources/resource calls
       include Recorder::Actions      # Handles member/collection actions
       include Recorder::Concerns     # Handles concern definitions
       include Recorder::Inference    # Handles class inference
+      include Recorder::Description  # Handles description DSL
 
       attr_reader :metadata
 
@@ -20,6 +21,7 @@ module Apiwork
         @current_options = nil
         @in_member_block = false
         @in_collection_block = false
+        @pending_metadata = {}
       end
 
       # Delegate to metadata

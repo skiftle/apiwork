@@ -17,9 +17,15 @@ module Apiwork
           # Handle nested block with context
           return unless block
 
+          # Clear pending metadata before block
+          @pending_metadata = {}
+
           @resource_stack.push(name)
           instance_eval(&block)
           @resource_stack.pop
+
+          # Apply pending resource metadata after block
+          apply_resource_metadata(name)
         end
 
         # Intercept resource call (singular)
@@ -33,9 +39,15 @@ module Apiwork
           # Handle nested block with context
           return unless block
 
+          # Clear pending metadata before block
+          @pending_metadata = {}
+
           @resource_stack.push(name)
           instance_eval(&block)
           @resource_stack.pop
+
+          # Apply pending resource metadata after block
+          apply_resource_metadata(name)
         end
 
         # Support for with_options pattern
@@ -50,6 +62,25 @@ module Apiwork
         end
 
         private
+
+        def apply_resource_metadata(name)
+          resource = @metadata.find_resource(name)
+          return unless resource
+
+          resource[:metadata] = {
+            summary: @pending_metadata[:summary] || default_summary(name),
+            description: @pending_metadata[:description] || default_description(name),
+            tags: @pending_metadata[:tags] || [name.to_s.camelize]
+          }
+        end
+
+        def default_summary(name)
+          name.to_s.titleize
+        end
+
+        def default_description(name)
+          "Operations for managing #{name}."
+        end
 
         def capture_resource_metadata(name, singular:, options:)
           # Merge current options (from with_options) with resource-specific options
