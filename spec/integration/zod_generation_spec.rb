@@ -150,7 +150,7 @@ RSpec.describe 'Zod Generation for Associations', type: :integration do
   end
 
   describe 'Enum filter Zod generation (end-to-end)' do
-    let(:introspection) { Apiwork.introspect(path) }
+    let(:introspection) { Apiwork::API.introspect(path) }
 
     it 'generates complete enum filter chain: enum → filter type → Zod schema' do
       # AccountSchema has status attribute (enum)

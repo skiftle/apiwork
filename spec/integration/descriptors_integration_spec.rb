@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Descriptors Integration', type: :request do
   # Test descriptor features using ONLY public APIs
-  # The public API is: Apiwork.introspect(path)
+  # The public API is: Apiwork::API.introspect(path)
 
   # Force reload of API configuration before tests
   before(:all) do
@@ -13,7 +13,7 @@ RSpec.describe 'Descriptors Integration', type: :request do
 
   describe 'Public introspection API' do
     it 'returns descriptor information for an API' do
-      result = Apiwork.introspect('/api/v1')
+      result = Apiwork::API.introspect('/api/v1')
 
       expect(result).to be_a(Hash)
       expect(result).to have_key(:types)
@@ -22,14 +22,14 @@ RSpec.describe 'Descriptors Integration', type: :request do
     end
 
     it 'returns nil for non-existent API' do
-      result = Apiwork.introspect('/api/nonexistent')
+      result = Apiwork::API.introspect('/api/nonexistent')
       expect(result).to be_nil
     end
   end
 
   describe 'API-level descriptors (global to API)' do
     it 'includes global types defined in descriptors block' do
-      introspection = Apiwork.introspect('/api/v1')
+      introspection = Apiwork::API.introspect('/api/v1')
 
       # error_detail type from config/apis/v1.rb
       expect(introspection[:types]).to have_key(:error_detail)
@@ -48,7 +48,7 @@ RSpec.describe 'Descriptors Integration', type: :request do
     end
 
     it 'includes global enums defined in descriptors block' do
-      introspection = Apiwork.introspect('/api/v1')
+      introspection = Apiwork::API.introspect('/api/v1')
 
       # sort_direction enum from config/apis/v1.rb
       expect(introspection[:enums]).to have_key(:sort_direction)
@@ -60,7 +60,7 @@ RSpec.describe 'Descriptors Integration', type: :request do
     end
 
     it 'auto-generates filter types for global enums' do
-      introspection = Apiwork.introspect('/api/v1')
+      introspection = Apiwork::API.introspect('/api/v1')
 
       # Auto-generated filter for sort_direction
       expect(introspection[:types]).to have_key(:sort_direction_filter)
@@ -76,7 +76,7 @@ RSpec.describe 'Descriptors Integration', type: :request do
 
   describe 'Schema-based types and enums' do
     it 'includes enums from ActiveRecord models via schemas' do
-      introspection = Apiwork.introspect('/api/v1')
+      introspection = Apiwork::API.introspect('/api/v1')
 
       # Account model has status enum
       expect(introspection[:enums]).to have_key(:account_status)
@@ -90,7 +90,7 @@ RSpec.describe 'Descriptors Integration', type: :request do
     end
 
     it 'auto-generates filter types for schema enums' do
-      introspection = Apiwork.introspect('/api/v1')
+      introspection = Apiwork::API.introspect('/api/v1')
 
       # Filter for account_status
       expect(introspection[:types]).to have_key(:account_status_filter)
@@ -113,7 +113,7 @@ RSpec.describe 'Descriptors Integration', type: :request do
     end
 
     it 'generates enum filters with correct scoped enum references in both variants' do
-      introspection = Apiwork.introspect('/api/v1')
+      introspection = Apiwork::API.introspect('/api/v1')
 
       filter = introspection[:types][:account_status_filter]
 
@@ -135,7 +135,7 @@ RSpec.describe 'Descriptors Integration', type: :request do
     end
 
     it 'generates enum schema reference for union variants with enum field' do
-      introspection = Apiwork.introspect('/api/v1')
+      introspection = Apiwork::API.introspect('/api/v1')
 
       # Find enum filter union type
       filter_type = introspection[:types][:account_status_filter]
@@ -152,7 +152,7 @@ RSpec.describe 'Descriptors Integration', type: :request do
     end
 
     it 'does NOT use primitive filter types for enum attributes' do
-      introspection = Apiwork.introspect('/api/v1')
+      introspection = Apiwork::API.introspect('/api/v1')
 
       # Enum filters should exist
       expect(introspection[:types]).to have_key(:account_status_filter)
@@ -166,7 +166,7 @@ RSpec.describe 'Descriptors Integration', type: :request do
     end
 
     it 'includes schema attribute types in resource actions' do
-      introspection = Apiwork.introspect('/api/v1')
+      introspection = Apiwork::API.introspect('/api/v1')
 
       # Verify accounts resource exists
       expect(introspection[:resources]).to have_key(:accounts)
@@ -197,8 +197,8 @@ RSpec.describe 'Descriptors Integration', type: :request do
     end
 
     it 'keeps descriptors isolated between APIs' do
-      v1_introspection = Apiwork.introspect('/api/v1')
-      v2_introspection = Apiwork.introspect('/api/v2')
+      v1_introspection = Apiwork::API.introspect('/api/v1')
+      v2_introspection = Apiwork::API.introspect('/api/v2')
 
       # V1 should NOT have V2 descriptors
       expect(v1_introspection[:types]).not_to have_key(:v2_specific_type)
@@ -217,8 +217,8 @@ RSpec.describe 'Descriptors Integration', type: :request do
     end
 
     it 'includes schema types only in the API they belong to' do
-      v1_introspection = Apiwork.introspect('/api/v1')
-      v2_introspection = Apiwork.introspect('/api/v2')
+      v1_introspection = Apiwork::API.introspect('/api/v1')
+      v2_introspection = Apiwork::API.introspect('/api/v2')
 
       # V1 has account schema enums
       expect(v1_introspection[:enums]).to have_key(:account_status)
@@ -286,7 +286,7 @@ RSpec.describe 'Descriptors Integration', type: :request do
     end
 
     it 'includes contract-scoped types with proper qualification' do
-      introspection = Apiwork.introspect('/api/contracts')
+      introspection = Apiwork::API.introspect('/api/contracts')
 
       # Should be qualified with contract identifier
       expect(introspection[:types]).to have_key(:test_contract_metadata)
@@ -297,14 +297,14 @@ RSpec.describe 'Descriptors Integration', type: :request do
     end
 
     it 'includes contract-scoped enums with proper qualification' do
-      introspection = Apiwork.introspect('/api/contracts')
+      introspection = Apiwork::API.introspect('/api/contracts')
 
       expect(introspection[:enums]).to have_key(:test_contract_priority)
       expect(introspection[:enums][:test_contract_priority]).to match_array(%i[low medium high critical])
     end
 
     it 'includes contract-scoped unions with proper qualification' do
-      introspection = Apiwork.introspect('/api/contracts')
+      introspection = Apiwork::API.introspect('/api/contracts')
 
       expect(introspection[:types]).to have_key(:test_contract_filter_value)
       filter = introspection[:types][:test_contract_filter_value]
@@ -313,7 +313,7 @@ RSpec.describe 'Descriptors Integration', type: :request do
     end
 
     it 'auto-generates filter types for contract-scoped enums' do
-      introspection = Apiwork.introspect('/api/contracts')
+      introspection = Apiwork::API.introspect('/api/contracts')
 
       # Should have auto-generated filter
       expect(introspection[:types]).to have_key(:test_contract_priority_filter)
@@ -325,7 +325,7 @@ RSpec.describe 'Descriptors Integration', type: :request do
 
   describe 'Mixed descriptor sources' do
     it 'combines global, schema, and contract-scoped descriptors in one API' do
-      introspection = Apiwork.introspect('/api/v1')
+      introspection = Apiwork::API.introspect('/api/v1')
 
       # Should have ALL three types
       # 1. Global from descriptors block
@@ -341,7 +341,7 @@ RSpec.describe 'Descriptors Integration', type: :request do
     end
 
     it 'properly qualifies types from different scopes' do
-      introspection = Apiwork.introspect('/api/v1')
+      introspection = Apiwork::API.introspect('/api/v1')
 
       # Global types are unqualified
       expect(introspection[:types][:error_detail]).to be_present
@@ -354,7 +354,7 @@ RSpec.describe 'Descriptors Integration', type: :request do
 
   describe 'Complete introspection structure' do
     it 'returns complete API introspection with all descriptor types' do
-      introspection = Apiwork.introspect('/api/v1')
+      introspection = Apiwork::API.introspect('/api/v1')
 
       # Top-level structure
       expect(introspection).to have_key(:path)

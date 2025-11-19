@@ -29,7 +29,6 @@ module Apiwork
           apis.delete(normalized_path)
         end
 
-        # Clear all registered APIs (useful for testing)
         def clear!
           apis.clear
         end

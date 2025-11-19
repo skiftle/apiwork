@@ -10,7 +10,7 @@ RSpec.describe 'Introspection for association-only schemas', type: :request do
 
   describe 'Base types for association-only schemas' do
     it 'includes base types for schemas that exist only as associations' do
-      introspection = Apiwork.introspect('/api/v1')
+      introspection = Apiwork::API.introspect('/api/v1')
 
       # Reply schema exists only as nested association (no standalone route)
       # It should still have its base type in introspection
@@ -29,7 +29,7 @@ RSpec.describe 'Introspection for association-only schemas', type: :request do
     end
 
     it 'includes nested_payload union for schemas with writable associations' do
-      introspection = Apiwork.introspect('/api/v1')
+      introspection = Apiwork::API.introspect('/api/v1')
 
       # Comment has writable replies association, so it should have nested_payload types
       expect(introspection[:types]).to have_key(:comment_nested_create_payload)
@@ -55,7 +55,7 @@ RSpec.describe 'Introspection for association-only schemas', type: :request do
     end
 
     it 'includes nested_payload for schemas USED as writable associations' do
-      introspection = Apiwork.introspect('/api/v1')
+      introspection = Apiwork::API.introspect('/api/v1')
 
       # Comment is used as writable association in Post
       # Should have all three types: create, update, and union
@@ -71,7 +71,7 @@ RSpec.describe 'Introspection for association-only schemas', type: :request do
     end
 
     it 'does NOT include nested_payload for schemas NOT used as writable associations' do
-      introspection = Apiwork.introspect('/api/v1')
+      introspection = Apiwork::API.introspect('/api/v1')
 
       # User has writable attributes but is not used as writable association
       # Should not have any of the three nested_payload types
