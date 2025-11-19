@@ -17,7 +17,6 @@ module Apiwork
         @metadata = metadata
         @namespaces = namespaces_parts
         @resource_stack = []
-        @pending_info = nil
         @current_options = nil
         @in_member_block = false
         @in_collection_block = false
@@ -26,25 +25,6 @@ module Apiwork
       # Delegate to metadata
       def namespaces_string
         metadata.namespaces_string
-      end
-
-      # Add info method for info blocks
-      def info(&block)
-        return unless block
-
-        # Determine level based on context
-        level = @resource_stack.empty? ? :api : :resource
-
-        builder = Info::Builder.new(level: level)
-        builder.instance_eval(&block)
-
-        if level == :api
-          # Store API-level info immediately
-          @metadata.info = builder.info
-        else
-          # Store resource-level info as pending
-          @pending_info = builder.info
-        end
       end
     end
   end

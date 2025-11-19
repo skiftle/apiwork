@@ -25,7 +25,7 @@ module Apiwork
       end
 
       def add_resource(name, singular:, schema_class:, controller_class_name: nil, contract_class_name: nil,
-                       parent: nil, info: nil, **options)
+                       parent: nil, **options)
         # Add to structured tree
         target = if parent
                    # Find or create nested resources hash
@@ -47,8 +47,7 @@ module Apiwork
           collections: {},
           resources: {},
           parent: parent,
-          options: options,
-          info: info
+          options: options
         }
       end
 
