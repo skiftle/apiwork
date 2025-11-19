@@ -299,15 +299,19 @@ module Apiwork
           properties: {}
         }
 
-        definition[:shape]&.each do |property_name, property_def|
+        # Filter out type-level metadata keys before iterating
+        metadata_keys = %i[description example format deprecated]
+        shape_fields = definition[:shape]&.reject { |key, _| metadata_keys.include?(key) } || {}
+
+        shape_fields.each do |property_name, property_def|
           transformed_key = transform_key(property_name)
           result[:properties][transformed_key] = map_field_definition(property_def, action_name)
         end
 
         # Collect required fields from shape (skip for update actions)
         is_create_action = action_name.to_s != 'update'
-        if definition[:shape] && is_create_action
-          required_keys = definition[:shape].select { |_name, prop_def| prop_def[:required] }.keys
+        if shape_fields.any? && is_create_action
+          required_keys = shape_fields.select { |_name, prop_def| prop_def[:required] }.keys
           required_fields = required_keys.map { |k| transform_key(k) }
           result[:required] = required_fields if required_fields.any?
         end

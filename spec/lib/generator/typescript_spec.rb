@@ -317,4 +317,82 @@ RSpec.describe Apiwork::Generator::Typescript do
       expect(described_class.content_type).to eq('text/plain; charset=utf-8')
     end
   end
+
+  describe 'metadata support' do
+    before(:all) do
+      @metadata_api = Apiwork::API.draw '/api/ts_metadata_test' do
+        descriptors do
+          type :documented_type, description: 'Type with description' do
+            param :value, type: :string
+          end
+
+          enum :status, %w[active inactive], description: 'Status enum', deprecated: true
+        end
+      end
+      @metadata_output = Apiwork::Generator.generate(:typescript, '/api/ts_metadata_test')
+    end
+
+    after(:all) do
+      Apiwork::API::Registry.unregister('/api/ts_metadata_test')
+    end
+
+    it 'generates type correctly even with metadata' do
+      # Metadata doesn't break type generation
+      expect(@metadata_output).to include('export interface DocumentedType')
+      expect(@metadata_output).to match(/export interface DocumentedType \{[\s\S]*?\}/)
+    end
+
+    it 'generates enum correctly from hash format with values key' do
+      # Enum should be generated from enum_data[:values]
+      expect(@metadata_output).to include("export type Status = 'active' | 'inactive'")
+    end
+
+    it 'does not include metadata fields in TypeScript output' do
+      # TypeScript generator doesn't output JSDoc comments from metadata
+      # (Could be a future enhancement, but not required now)
+      expect(@metadata_output).not_to include('Type with description')
+      expect(@metadata_output).not_to include('Status enum')
+    end
+
+    it 'handles deprecated flag without errors' do
+      # deprecated metadata should not cause issues
+      expect(@metadata_output).to include('export type Status')
+    end
+
+    it 'generates correct output for type with all metadata fields' do
+      Apiwork::API.draw '/api/ts_full_metadata' do
+        descriptors do
+          type :full_meta, description: 'desc', example: { x: 1 }, format: 'fmt', deprecated: false do
+            param :x, type: :integer
+          end
+        end
+      end
+
+      output = Apiwork::Generator.generate(:typescript, '/api/ts_full_metadata')
+
+      expect(output).to include('export interface FullMeta')
+      expect(output).to include('x?: number')
+
+      Apiwork::API::Registry.unregister('/api/ts_full_metadata')
+    end
+
+    it 'generates correct output for enum with all metadata fields' do
+      Apiwork::API.draw '/api/ts_enum_meta' do
+        descriptors do
+          enum :color, %w[red green blue], description: 'desc', example: 'red', deprecated: false
+        end
+      end
+
+      output = Apiwork::Generator.generate(:typescript, '/api/ts_enum_meta')
+
+      expect(output).to include("export type Color = 'blue' | 'green' | 'red'")
+
+      Apiwork::API::Registry.unregister('/api/ts_enum_meta')
+    end
+
+    it 'maintains enum value sorting with metadata present' do
+      # Enum values should still be sorted alphabetically
+      expect(@metadata_output).to include("'active' | 'inactive'")
+    end
+  end
 end

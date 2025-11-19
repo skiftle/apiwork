@@ -51,11 +51,11 @@ module Apiwork
                                                              )
                                                            end
 
-                # Add type-level metadata if present
-                expanded[:description] = metadata[:description] if metadata[:description]
-                expanded[:example] = metadata[:example] if metadata[:example]
-                expanded[:format] = metadata[:format] if metadata[:format]
-                expanded[:deprecated] = metadata[:deprecated] if metadata[:deprecated]
+                # Add type-level metadata (always include all fields)
+                expanded[:description] = metadata[:description]
+                expanded[:example] = metadata[:example]
+                expanded[:format] = metadata[:format]
+                expanded[:deprecated] = metadata[:deprecated] || false
 
                 result[qualified_name] = expanded
               end

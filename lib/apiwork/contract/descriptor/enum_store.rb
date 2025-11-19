@@ -26,10 +26,13 @@ module Apiwork
             # Serialize from unified storage
             if api
               storage(api).each_pair.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
-                enum_data = { values: metadata[:payload] }
-                enum_data[:description] = metadata[:description] if metadata[:description]
-                enum_data[:example] = metadata[:example] if metadata[:example]
-                enum_data[:deprecated] = metadata[:deprecated] if metadata[:deprecated]
+                # Always include all metadata fields
+                enum_data = {
+                  values: metadata[:payload],
+                  description: metadata[:description],
+                  example: metadata[:example],
+                  deprecated: metadata[:deprecated] || false
+                }
                 result[qualified_name] = enum_data
               end
             end

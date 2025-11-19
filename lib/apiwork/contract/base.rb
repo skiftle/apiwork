@@ -54,14 +54,14 @@ module Apiwork
           @_schema_class.present?
         end
 
-        def type(name, &block)
+        def type(name, description: nil, example: nil, format: nil, deprecated: false, &block)
           builder = Descriptor::Builder.new(api_class: api_class, scope: self)
-          builder.type(name, &block)
+          builder.type(name, description: description, example: example, format: format, deprecated: deprecated, &block)
         end
 
-        def enum(name, values)
+        def enum(name, values, description: nil, example: nil, deprecated: false)
           builder = Descriptor::Builder.new(api_class: api_class, scope: self)
-          builder.enum(name, values)
+          builder.enum(name, values, description: description, example: example, deprecated: deprecated)
         end
 
         def union(name, &block)
