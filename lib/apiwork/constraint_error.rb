@@ -8,5 +8,9 @@ module Apiwork
       @issues = Array(issues)
       super(@issues.map(&:message).join('; '))
     end
+
+    def http_status
+      :bad_request
+    end
   end
 end
