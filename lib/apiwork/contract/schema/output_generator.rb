@@ -125,45 +125,24 @@ module Apiwork
               # :always associations are required, :optional are not
               schema_class.association_definitions.each do |name, association_definition|
                 assoc_type = assoc_type_map[name]
-                is_required = association_definition.always_included?
 
-                if assoc_type
-                  # Use the registered type
-                  if association_definition.singular?
-                    param name,
-                          type: assoc_type,
-                          required: is_required,
-                          nullable: association_definition.nullable?,
-                          description: association_definition.description,
-                          example: association_definition.example,
-                          deprecated: association_definition.deprecated
-                  elsif association_definition.collection?
-                    param name,
-                          type: :array,
-                          of: assoc_type,
-                          required: is_required,
-                          nullable: association_definition.nullable?,
-                          description: association_definition.description,
-                          example: association_definition.example,
-                          deprecated: association_definition.deprecated
-                  end
-                elsif association_definition.singular?
-                  # Fallback to generic types if no schema
-                  param name,
-                        type: :object,
-                        required: is_required,
-                        nullable: association_definition.nullable?,
-                        description: association_definition.description,
-                        example: association_definition.example,
-                        deprecated: association_definition.deprecated
+                # Common options for all associations
+                base_options = {
+                  required: association_definition.always_included?,
+                  nullable: association_definition.nullable?,
+                  description: association_definition.description,
+                  example: association_definition.example,
+                  deprecated: association_definition.deprecated
+                }
+
+                if association_definition.singular?
+                  param name, type: assoc_type || :object, **base_options
                 elsif association_definition.collection?
-                  param name,
-                        type: :array,
-                        required: is_required,
-                        nullable: association_definition.nullable?,
-                        description: association_definition.description,
-                        example: association_definition.example,
-                        deprecated: association_definition.deprecated
+                  if assoc_type
+                    param name, type: :array, of: assoc_type, **base_options
+                  else
+                    param name, type: :array, **base_options
+                  end
                 end
               end
             end

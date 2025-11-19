@@ -80,12 +80,7 @@ module Apiwork
             result = serialize_union(options[:union], definition, visited: visited)
             result[:required] = options[:required] || false
             result[:nullable] = options[:nullable] || false
-            result[:description] = options[:description]
-            result[:example] = options[:example]
-            result[:format] = options[:format]
-            result[:deprecated] = options[:deprecated] || false
-            result[:min] = options[:min]
-            result[:max] = options[:max]
+            apply_metadata_fields(result, options)
             return result
           end
 
@@ -99,14 +94,9 @@ module Apiwork
             result = {
               type: custom_type_name,
               required: options[:required] || false,
-              nullable: options[:nullable] || false,
-              description: options[:description],
-              example: options[:example],
-              format: options[:format],
-              deprecated: options[:deprecated] || false
+              nullable: options[:nullable] || false
             }
-            result[:min] = options[:min]
-            result[:max] = options[:max]
+            apply_metadata_fields(result, options)
             result[:as] = options[:as] if options[:as]
             return result
           end
@@ -118,20 +108,15 @@ module Apiwork
           result = {
             type: type_value,
             required: options[:required] || false,
-            nullable: options[:nullable] || false,
-            description: options[:description],
-            example: options[:example],
-            format: options[:format],
-            deprecated: options[:deprecated] || false
+            nullable: options[:nullable] || false
           }
+          apply_metadata_fields(result, options)
 
           # Add literal value for literal types
           result[:value] = options[:value] if options[:type] == :literal
 
           # Add optional metadata (only if meaningfully set)
           result[:default] = options[:default] if options.key?(:default) && !options[:default].nil?
-          result[:min] = options[:min]
-          result[:max] = options[:max]
 
           # Handle enum - differentiate between reference (hash with :ref) and inline (array)
           if options[:enum]
@@ -290,6 +275,16 @@ module Apiwork
 
           scope = scope_for_type(definition, type_name)
           Descriptor::Registry.scoped_name(scope, type_name)
+        end
+
+        # Apply standard metadata fields to result hash
+        def apply_metadata_fields(result, options)
+          result[:description] = options[:description]
+          result[:example] = options[:example]
+          result[:format] = options[:format]
+          result[:deprecated] = options[:deprecated] || false
+          result[:min] = options[:min]
+          result[:max] = options[:max]
         end
       end
     end

@@ -4,6 +4,18 @@ require 'rails_helper'
 
 RSpec.describe 'Contract Serialization' do
   describe 'Definition#as_json' do
+    # Shared metadata fields that are always present
+    let(:default_metadata) do
+      {
+        description: nil,
+        example: nil,
+        format: nil,
+        deprecated: false,
+        min: nil,
+        max: nil
+      }
+    end
+
     it 'serializes simple params' do
       contract_class = Class.new(Apiwork::Contract::Base) do
         action :create do
@@ -22,24 +34,14 @@ RSpec.describe 'Contract Serialization' do
                              nullable: false,
                              required: true,
                              type: :string,
-                             description: nil,
-                             example: nil,
-                             format: nil,
-                             deprecated: false,
-                             min: nil,
-                             max: nil
+                             **default_metadata
                            },
                            published: {
                              default: false,
                              nullable: false,
                              required: false,
                              type: :boolean,
-                             description: nil,
-                             example: nil,
-                             format: nil,
-                             deprecated: false,
-                             min: nil,
-                             max: nil
+                             **default_metadata
                            }
                          })
     end
@@ -202,12 +204,7 @@ RSpec.describe 'Contract Serialization' do
                              type: :union,
                              required: true,
                              nullable: false,
-                             description: nil,
-                             example: nil,
-                             format: nil,
-                             deprecated: false,
-                             min: nil,
-                             max: nil,
+                             **default_metadata,
                              variants: [
                                { type: :string },
                                { type: :integer }
@@ -240,15 +237,10 @@ RSpec.describe 'Contract Serialization' do
       # Note: For non-schema contracts, types are not qualified
       expect(json).to eq({
                            shipping_address: {
-                             type: :address,
                              required: true,
                              nullable: false,
-                             description: nil,
-                             example: nil,
-                             format: nil,
-                             deprecated: false,
-                             min: nil,
-                             max: nil
+                             type: :address,
+                             **default_metadata
                            }
                          })
     end
@@ -282,12 +274,7 @@ RSpec.describe 'Contract Serialization' do
                              type: :union,
                              required: false,
                              nullable: false,
-                             description: nil,
-                             example: nil,
-                             format: nil,
-                             deprecated: false,
-                             min: nil,
-                             max: nil,
+                             **default_metadata,
                              variants: [
                                {
                                  type: :test_union_filter_a # Type reference, not expanded
@@ -328,12 +315,7 @@ RSpec.describe 'Contract Serialization' do
                              type: :union,
                              required: false,
                              nullable: false,
-                             description: nil,
-                             example: nil,
-                             format: nil,
-                             deprecated: false,
-                             min: nil,
-                             max: nil,
+                             **default_metadata,
                              variants: [
                                {
                                  type: :test_union_filter_b # Type reference
