@@ -85,19 +85,10 @@ module Apiwork
 
           # Handle custom types - return type reference instead of expanding
           if options[:custom_type]
-            # Qualify custom type name (only for contracts with schema_class)
             custom_type_name = options[:custom_type]
-            if is_global_type?(custom_type_name, definition)
-              # Global type: keep as-is, don't qualify
-            elsif is_imported_type?(custom_type_name, definition)
-              # Imported type: keep as import alias, don't qualify
-            elsif definition.contract_class.respond_to?(:schema_class) &&
-                  definition.contract_class.schema_class &&
-                  definition.contract_class.resolve_custom_type(custom_type_name)
-              # Determine scope for qualification
-              scope = scope_for_type(definition, custom_type_name)
-              custom_type_name = Descriptor::Registry.scoped_name(scope, custom_type_name)
-            end
+
+            # Only qualify if it's actually a custom type
+            custom_type_name = qualified_type_name(custom_type_name, definition) if definition.contract_class.resolve_custom_type(custom_type_name)
 
             result = {
               type: custom_type_name,
@@ -110,19 +101,7 @@ module Apiwork
 
           # Qualify custom type names in 'type' parameter (only for contracts with schema_class)
           type_value = options[:type]
-          if type_value && definition.contract_class.resolve_custom_type(type_value)
-            if is_global_type?(type_value, definition)
-              # Global type: keep as-is, don't qualify
-            elsif is_imported_type?(type_value, definition)
-              # Imported type: keep as import alias, don't qualify
-            elsif definition.contract_class.respond_to?(:schema_class) &&
-                  definition.contract_class.schema_class
-              # Custom type - use qualified name
-              # Determine scope for qualification
-              scope = scope_for_type(definition, type_value)
-              type_value = Descriptor::Registry.scoped_name(scope, type_value)
-            end
-          end
+          type_value = qualified_type_name(type_value, definition) if type_value && definition.contract_class.resolve_custom_type(type_value)
 
           result = {
             type: type_value,
@@ -157,25 +136,12 @@ module Apiwork
           # Handle 'of' parameter - qualify custom types (only for contracts with schema_class)
           if options[:of]
             # Check if it's a custom type that needs qualification
-            if definition.contract_class.resolve_custom_type(options[:of])
-              if is_global_type?(options[:of], definition)
-                # Global type: keep as-is, don't qualify
-                result[:of] = options[:of]
-              elsif is_imported_type?(options[:of], definition)
-                # Imported type: keep as import alias, don't qualify
-                result[:of] = options[:of]
-              elsif definition.contract_class.respond_to?(:schema_class) &&
-                    definition.contract_class.schema_class
-                # Custom type - use qualified name (e.g., service_filter instead of filter)
-                scope = scope_for_type(definition, options[:of])
-                result[:of] = Descriptor::Registry.scoped_name(scope, options[:of])
-              else
-                result[:of] = options[:of]
-              end
-            else
-              # Primitive type - keep as-is
-              result[:of] = options[:of]
-            end
+            result[:of] = if definition.contract_class.resolve_custom_type(options[:of])
+                            qualified_type_name(options[:of], definition)
+                          else
+                            # Primitive type - keep as-is
+                            options[:of]
+                          end
           end
 
           # Handle shape (nested objects) - only for non-custom types
@@ -199,23 +165,9 @@ module Apiwork
           # Check if variant type is a custom type - if so, just return a reference
           custom_type_block = parent_definition.contract_class.resolve_custom_type(variant_type)
           if custom_type_block
-            # Return type reference (qualified only for schema-based contracts)
-            # The type definition will be in the types hash at API level
-            # BUT: Don't qualify global types - they're registered at API level without contract prefix
-            if is_global_type?(variant_type, parent_definition)
-              # Global type: keep as-is, don't qualify
-              result = { type: variant_type }
-            elsif is_imported_type?(variant_type, parent_definition)
-              # Imported type: keep as import alias, don't qualify
-              result = { type: variant_type }
-            elsif parent_definition.contract_class.respond_to?(:schema_class) &&
-                  parent_definition.contract_class.schema_class
-              scope = scope_for_type(parent_definition, variant_type)
-              qualified_type_name = Descriptor::Registry.scoped_name(scope, variant_type)
-              result = { type: qualified_type_name }
-            else
-              result = { type: variant_type }
-            end
+            # Custom type - return reference with qualified name
+            qualified_variant_type = qualified_type_name(variant_type, parent_definition)
+            result = { type: qualified_variant_type }
             result[:tag] = variant_definition[:tag] if variant_definition[:tag]
             return result
           end
@@ -228,22 +180,12 @@ module Apiwork
           # Handle 'of' - qualify custom types but don't expand them (only for contracts with schema_class)
           if variant_definition[:of]
             # Check if it's a custom type that needs qualification
-            if parent_definition.contract_class.resolve_custom_type(variant_definition[:of])
-              if is_global_type?(variant_definition[:of], parent_definition)
-                # Global type: keep as-is, don't qualify
-                result[:of] = variant_definition[:of]
-              elsif parent_definition.contract_class.respond_to?(:schema_class) &&
-                    parent_definition.contract_class.schema_class
-                # Custom type - use qualified name (e.g., service_filter instead of filter)
-                scope = scope_for_type(parent_definition, variant_definition[:of])
-                result[:of] = Descriptor::Registry.scoped_name(scope, variant_definition[:of])
-              else
-                result[:of] = variant_definition[:of]
-              end
-            else
-              # Primitive type - keep as-is
-              result[:of] = variant_definition[:of]
-            end
+            result[:of] = if parent_definition.contract_class.resolve_custom_type(variant_definition[:of])
+                            qualified_type_name(variant_definition[:of], parent_definition)
+                          else
+                            # Primitive type - keep as-is
+                            variant_definition[:of]
+                          end
           end
 
           # Handle enum - qualify if it's a reference (only for contracts with schema_class)
@@ -318,6 +260,20 @@ module Apiwork
             prefixes = contract_class.imports.keys.map { |alias_name| "#{alias_name}_" }
             { direct: direct, prefixes: prefixes }
           end
+        end
+
+        # Qualifies a type name based on scope rules:
+        # - Global types (scope: nil) → keep as-is
+        # - Imported types → keep import alias as-is
+        # - Contract-scoped types → prefix with contract name
+        def qualified_type_name(type_name, definition)
+          return type_name if is_global_type?(type_name, definition)
+          return type_name if is_imported_type?(type_name, definition)
+          return type_name unless definition.contract_class.respond_to?(:schema_class)
+          return type_name unless definition.contract_class.schema_class
+
+          scope = scope_for_type(definition, type_name)
+          Descriptor::Registry.scoped_name(scope, type_name)
         end
       end
     end
