@@ -17,13 +17,10 @@ RSpec.describe 'Min and Max validation on params', type: :request do
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      puts "Response: #{json.inspect}" if response.status != 400
-
       expect(json['ok']).to be(false)
       expect(json['issues']).to be_present
-      puts "All issues: #{json['issues'].inspect}"
       issue = json['issues'].find { |i| i['path'].include?('name') }
-      expect(issue).to be_present, "Expected to find issue with 'name' in path"
+      expect(issue).to be_present
       expect(issue['code']).to eq('string_too_short')
     end
 
