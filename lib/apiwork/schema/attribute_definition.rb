@@ -3,7 +3,8 @@
 module Apiwork
   module Schema
     class AttributeDefinition
-      attr_reader :name, :type, :enum, :required, :empty, :min, :max
+      attr_reader :name, :type, :enum, :required, :empty, :min, :max,
+                  :description, :example, :format, :deprecated
 
       def initialize(name, schema_class:, **options)
         @name = name
@@ -48,6 +49,12 @@ module Apiwork
         @enum = options[:enum]
         @min = options[:min]
         @max = options[:max]
+
+        # Metadata fields
+        @description = options[:description]
+        @example = options[:example]
+        @format = options[:format]
+        @deprecated = options[:deprecated] || false
 
         validate_min_max_range!
         apply_empty_transformers! if @empty
@@ -113,7 +120,11 @@ module Apiwork
           nullable: false,
           required: false,
           type: nil,
-          enum: nil
+          enum: nil,
+          description: nil,
+          example: nil,
+          format: nil,
+          deprecated: false
         }
 
         defaults.merge(options)

@@ -5,7 +5,8 @@ module Apiwork
     # AssociationDefinition - Model-specific association definition for ActiveRecord
     # This class provides ActiveRecord reflection, validation, and auto-detection
     class AssociationDefinition
-      attr_reader :name, :type, :schema_class, :allow_destroy, :model_class
+      attr_reader :name, :type, :schema_class, :allow_destroy, :model_class,
+                  :description, :example, :deprecated
 
       def initialize(name, type:, schema_class:, **options)
         @name = name
@@ -25,6 +26,11 @@ module Apiwork
                     end
         @allow_destroy = options[:allow_destroy]
         @nullable = options[:nullable] # Explicit nullable flag, auto-detected if nil
+
+        # Metadata fields
+        @description = options[:description]
+        @example = options[:example]
+        @deprecated = options[:deprecated] || false
 
         # Validate include option
         validate_include_option!

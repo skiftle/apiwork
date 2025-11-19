@@ -85,6 +85,10 @@ module Apiwork
                 type: Generator.map_type(attribute_definition.type),
                 required: attribute_definition.required?, # Auto-detected from DB schema and model validations
                 nullable: attribute_definition.nullable?, # Auto-detected from DB schema or explicit config
+                description: attribute_definition.description,
+                example: attribute_definition.example,
+                format: attribute_definition.format,
+                deprecated: attribute_definition.deprecated,
                 attribute_definition: attribute_definition # Reference for deserialization transformers
               }
 
