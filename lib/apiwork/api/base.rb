@@ -3,8 +3,8 @@
 module Apiwork
   module API
     class Base
-      extend Documentation   # Adds: doc
-      extend Routing         # Adds: resources, resource, concern, with_options
+      extend Info      # Adds: info
+      extend Routing   # Adds: resources, resource, concern, with_options
 
       class << self
         attr_reader :metadata, :recorder, :mount_path, :namespaces_parts, :specs
@@ -101,7 +101,7 @@ module Apiwork
           # Now collect all types and enums (after contract classes have been created)
           result = {
             path: mount_path,
-            metadata: serialize_doc,
+            metadata: serialize_info,
             types: types,
             enums: enums,
             resources: resources
@@ -113,14 +113,14 @@ module Apiwork
           result
         end
 
-        # Serialize documentation metadata
-        def serialize_doc
+        # Serialize info metadata
+        def serialize_info
           result = {}
 
-          if metadata.doc
-            result[:title] = metadata.doc[:title]
-            result[:version] = metadata.doc[:version]
-            result[:description] = metadata.doc[:description]
+          if metadata.info
+            result[:title] = metadata.info[:title]
+            result[:version] = metadata.info[:version]
+            result[:description] = metadata.info[:description]
           end
 
           result
