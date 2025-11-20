@@ -202,8 +202,10 @@ module Apiwork
           'boolean'
         when :json
           'Record<string, any>'
+        when :unknown
+          'unknown'
         else
-          'string'
+          'unknown'
         end
       end
 

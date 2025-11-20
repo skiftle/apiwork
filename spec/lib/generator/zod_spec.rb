@@ -636,4 +636,18 @@ RSpec.describe Apiwork::Generator::Zod do
       expect(output).not_to match(/: z\.ZodType<\w+(?:Input|Output)>/)
     end
   end
+
+  describe 'unknown type mapping' do
+    let(:mapper) { Apiwork::Generator::ZodMapper.new(introspection: introspect) }
+
+    it 'maps :unknown to z.unknown()' do
+      result = mapper.send(:map_primitive, { type: :unknown })
+      expect(result).to eq('z.unknown()')
+    end
+
+    it 'uses z.unknown() as fallback for unmapped types' do
+      result = mapper.send(:map_primitive, { type: :some_unmapped_type })
+      expect(result).to eq('z.unknown()')
+    end
+  end
 end
