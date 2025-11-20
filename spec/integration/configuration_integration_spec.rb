@@ -139,7 +139,7 @@ RSpec.describe 'Configuration Integration', type: :request do
         action :create do
           input do
             param :title, type: :string
-            param :tags, type: [:string]
+            param :tags, type: :array, of: :string
           end
         end
       end
