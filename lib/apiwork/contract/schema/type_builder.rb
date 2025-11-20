@@ -11,6 +11,12 @@ module Apiwork
         MAX_RECURSION_DEPTH = 3
 
         class << self
+          # Check if schema is an STI base schema
+          # Returns true if schema has discriminator and variants (and is not itself a variant)
+          def sti_base_schema?(schema_class)
+            schema_class.respond_to?(:sti_base?) && schema_class.sti_base?
+          end
+
           # Determine which filter type to use based on attribute type
           # Returns global built-in filter types from Descriptor::Registry
           def determine_filter_type(attr_type)
@@ -455,31 +461,33 @@ module Apiwork
             union_type_name
           end
 
-          def build_sti_association_type(contract_class, association_definition, schema_class, visited: Set.new)
-            # Build discriminated union for STI association
+          # Unified STI union builder - consolidates three duplicate methods
+          # Builds a discriminated union type from STI schema variants
+          def build_sti_union(contract_class, schema_class, union_type_name:, visited: Set.new, &variant_builder)
+            # Eager load variants to ensure they're registered
+            ensure_variants_loaded(schema_class)
+
             variants = schema_class.variants
             return nil unless variants&.any?
-
-            # Build union type name from association name
-            union_type_name = :"#{association_definition.name}_sti"
 
             # Check if already registered
             existing = Descriptor::Registry.resolve_type(union_type_name, contract_class: contract_class)
             return existing if existing
 
-            # Build variants from STI variants hash
+            # Build discriminated union
             discriminator_name = schema_class.discriminator_name
             union_definition = UnionDefinition.new(contract_class, discriminator: discriminator_name)
 
+            # Build each variant using provided block
             variants.each do |tag, variant_data|
               variant_schema = variant_data[:schema]
 
-              # Auto-import each variant schema's contract and get the import alias
-              import_alias = auto_import_association_contract(contract_class, variant_schema, visited)
-              next unless import_alias
+              # Call block to get variant type name (allows different strategies)
+              variant_type = yield(contract_class, variant_schema, tag, visited)
+              next unless variant_type
 
-              # Use the import alias as the variant type
-              union_definition.variant(type: import_alias, tag: tag.to_s)
+              # Add variant to union
+              union_definition.variant(type: variant_type, tag: tag.to_s)
             end
 
             # Serialize and register union
@@ -491,43 +499,24 @@ module Apiwork
             union_type_name
           end
 
+          # Build STI association type (uses auto-import for variant types)
+          def build_sti_association_type(contract_class, association_definition, schema_class, visited: Set.new)
+            union_type_name = :"#{association_definition.name}_sti"
+
+            build_sti_union(contract_class, schema_class, union_type_name: union_type_name,
+                                                          visited: visited) do |contract, variant_schema, _tag, visit_set|
+              auto_import_association_contract(contract, variant_schema, visit_set)
+            end
+          end
+
+          # Build STI output union type (uses auto-import for variant types)
           def build_sti_output_union_type(contract_class, schema_class, visited: Set.new)
-            # Build discriminated union for STI output (top-level resource)
-            # Eager load variants to ensure they're registered
-            ensure_variants_loaded(schema_class)
-
-            variants = schema_class.variants
-            return nil unless variants&.any?
-
-            # Use root_key as union type name (e.g., :client)
             union_type_name = schema_class.root_key.singular.to_sym
 
-            # Check if already registered
-            existing = Descriptor::Registry.resolve_type(union_type_name, contract_class: contract_class)
-            return existing if existing
-
-            # Build variants from STI variants hash
-            discriminator_name = schema_class.discriminator_name
-            union_definition = UnionDefinition.new(contract_class, discriminator: discriminator_name)
-
-            variants.each do |tag, variant_data|
-              variant_schema = variant_data[:schema]
-
-              # Auto-import each variant schema's contract
-              import_alias = auto_import_association_contract(contract_class, variant_schema, visited)
-              next unless import_alias
-
-              # Use the import alias as the variant type
-              union_definition.variant(type: import_alias, tag: tag.to_s)
+            build_sti_union(contract_class, schema_class, union_type_name: union_type_name,
+                                                          visited: visited) do |contract, variant_schema, _tag, visit_set|
+              auto_import_association_contract(contract, variant_schema, visit_set)
             end
-
-            # Serialize and register union
-            union_data = union_definition.serialize
-
-            Descriptor::Registry.register_union(union_type_name, union_data,
-                                                scope: contract_class, api_class: contract_class.api_class)
-
-            union_type_name
           end
 
           def ensure_variants_loaded(schema_class)
@@ -545,10 +534,10 @@ module Apiwork
             # First, discover STI model descendants by querying the database for distinct types
             # This avoids Zeitwerk loading issues where .descendants returns [] until classes are loaded
             inheritance_column = model_class.inheritance_column
-            distinct_types = model_class.unscoped.distinct.pluck(inheritance_column).compact
+            distinct_type_values = model_class.unscoped.distinct.pluck(inheritance_column).compact
 
             # Load each STI model and its corresponding schema
-            distinct_types.each do |type_value|
+            distinct_type_values.each do |type_value|
               # Constantize the model to trigger loading (e.g., "PersonClient".constantize)
               descendant_model = type_value.constantize
 
@@ -672,7 +661,7 @@ module Apiwork
             visited.dup.add(schema_class)
 
             # Skip STI base schemas - they should be registered as unions via build_sti_output_union_type
-            return if schema_class.respond_to?(:sti_base?) && schema_class.sti_base?
+            return if sti_base_schema?(schema_class)
 
             root_key = schema_class.root_key.singular.to_sym
             resource_type_name = Descriptor::Registry.scoped_name(contract_class, nil)

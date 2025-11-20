@@ -56,7 +56,7 @@ module Apiwork
             contract_class = definition.contract_class
 
             # For STI base schemas, generate discriminated union of variant payloads
-            if schema_class.respond_to?(:sti_base?) && schema_class.sti_base?
+            if TypeBuilder.sti_base_schema?(schema_class)
               payload_type_name = generate_sti_input_union(contract_class, schema_class, context)
             else
               # Register the writable payload type with Descriptor::Registry
@@ -168,33 +168,18 @@ module Apiwork
           # Generate discriminated union for STI base input (create/update)
           # Returns union type name
           def generate_sti_input_union(contract_class, schema_class, context)
-            # Eager load variants to ensure they're registered
-            TypeBuilder.ensure_variants_loaded(schema_class)
-
-            variants = schema_class.variants
-            return nil unless variants&.any?
-
-            # Use context-specific union name (e.g., :create_payload, :update_payload)
             union_type_name = :"#{context}_payload"
-
-            # Check if already registered
-            existing = Descriptor::Registry.resolve_type(union_type_name, contract_class: contract_class)
-            return existing if existing
-
-            # Build discriminated union with variant payloads
             discriminator_name = schema_class.discriminator_name
-            union_definition = UnionDefinition.new(contract_class, discriminator: discriminator_name)
 
-            variants.each do |tag, variant_data|
-              variant_schema = variant_data[:schema]
+            TypeBuilder.build_sti_union(contract_class, schema_class, union_type_name: union_type_name) do |contract, variant_schema, tag, _visited|
+              # Build variant payload type name (e.g., :person_client_create_payload)
+              variant_schema_name = variant_schema.name.demodulize.underscore.gsub(/_schema$/, '')
+              variant_type_name = :"#{variant_schema_name}_#{context}_payload"
 
-              # Register variant payload type (e.g., :person_client_create_payload)
-              variant_type_name = :"#{variant_schema.name.demodulize.underscore.gsub(/_schema$/, '')}_#{context}_payload"
-
-              # Check if already registered
-              unless Descriptor::Registry.resolve_type(variant_type_name, contract_class: contract_class)
-                Descriptor::Registry.register_type(variant_type_name, scope: contract_class,
-                                                                      api_class: contract_class.api_class) do
+              # Register variant payload type if not already registered
+              unless Descriptor::Registry.resolve_type(variant_type_name, contract_class: contract)
+                Descriptor::Registry.register_type(variant_type_name, scope: contract,
+                                                                      api_class: contract.api_class) do
                   # Add discriminator as literal FIRST
                   param discriminator_name, type: :literal, value: tag.to_s, required: true
 
@@ -203,18 +188,9 @@ module Apiwork
                 end
               end
 
-              # Add variant to union
-              qualified_name = Descriptor::Registry.scoped_name(contract_class, variant_type_name)
-              union_definition.variant(type: qualified_name, tag: tag.to_s)
+              # Return qualified name for union variant
+              Descriptor::Registry.scoped_name(contract, variant_type_name)
             end
-
-            # Serialize and register union
-            union_data = union_definition.serialize
-
-            Descriptor::Registry.register_union(union_type_name, union_data,
-                                                scope: contract_class, api_class: contract_class.api_class)
-
-            union_type_name
           end
         end
       end

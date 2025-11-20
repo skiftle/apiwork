@@ -15,9 +15,9 @@ module Apiwork
 
       def variant(type:, of: nil, enum: nil, tag: nil, partial: nil, &block)
         # Validate tag usage with discriminator
-        raise ArgumentError, 'tag can only be used when union has a discriminator' if tag && @discriminator.nil?
+        raise ArgumentError, 'tag can only be used when union has a discriminator' if tag.present? && @discriminator.blank?
 
-        raise ArgumentError, 'tag is required for all variants when union has a discriminator' if @discriminator && tag.nil?
+        raise ArgumentError, 'tag is required for all variants when union has a discriminator' if @discriminator.present? && tag.blank?
 
         variant_definition = {
           type: type,
@@ -26,7 +26,7 @@ module Apiwork
 
         variant_definition[:enum] = enum if enum
         variant_definition[:tag] = tag if tag
-        variant_definition[:partial] = partial.nil? ? false : partial
+        variant_definition[:partial] = partial ? true : false
 
         # Handle shape block (for :object or :array with :object items)
         if block_given?
