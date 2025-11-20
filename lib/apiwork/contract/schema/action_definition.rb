@@ -136,16 +136,28 @@ module Apiwork
           when :index
             virtual_def.instance_eval { InputGenerator.generate_query_params(self, schema_class) }
           when :show
-            # Empty input
+            add_include_param_if_needed(virtual_def, schema_class)
           when :create
             virtual_def.instance_eval { InputGenerator.generate_writable_input(self, schema_class, :create) }
+            add_include_param_if_needed(virtual_def, schema_class)
           when :update
             virtual_def.instance_eval { InputGenerator.generate_writable_input(self, schema_class, :update) }
+            add_include_param_if_needed(virtual_def, schema_class)
           when :destroy
             # No input
+          else
+            # Custom actions: add include param for member actions
+            add_include_param_if_needed(virtual_def, schema_class) if member_action?
           end
 
           virtual_def
+        end
+
+        def add_include_param_if_needed(virtual_def, schema_class)
+          return unless schema_class.association_definitions.any?
+
+          include_type = TypeBuilder.build_include_type(contract_class, schema_class)
+          virtual_def.param :include, type: include_type, required: false
         end
 
         def build_virtual_output_definition
@@ -194,6 +206,24 @@ module Apiwork
             next unless resource_uses_contract?(resource_metadata, contract_class)
 
             true if resource_metadata[:collections]&.key?(action_name.to_sym)
+          end || false
+        end
+
+        # Check if this action is a member action (operates on single resource)
+        # CRUD actions :show, :create, :update are always members
+        # Custom actions are checked from API metadata (member do ... end)
+        def member_action?
+          return true if %i[show create update].include?(action_name.to_sym)
+
+          # For custom actions, check API metadata
+          api = find_api_for_contract
+          return false unless api&.metadata
+
+          # Check if action is defined under member in any resource using this contract
+          api.metadata.search_resources do |resource_metadata|
+            next unless resource_uses_contract?(resource_metadata, contract_class)
+
+            true if resource_metadata[:members]&.key?(action_name.to_sym)
           end || false
         end
 

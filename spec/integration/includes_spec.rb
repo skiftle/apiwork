@@ -248,4 +248,105 @@ RSpec.describe 'Includes API', type: :request do
       end
     end
   end
+
+  describe 'GET /api/v1/posts/:id with include' do
+    it 'includes associations on show action' do
+      get "/api/v1/posts/#{post1.id}", params: { include: { comments: true } }
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json['ok']).to be(true)
+      expect(json['post']['comments']).to be_present
+      expect(json['post']['comments'].length).to eq(2)
+      expect(json['post']['comments'].first.keys).to include('content', 'author')
+    end
+
+    it 'does not include associations when not requested' do
+      get "/api/v1/posts/#{post1.id}"
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json['ok']).to be(true)
+      expect(json['post'].keys).not_to include('comments')
+    end
+  end
+
+  describe 'POST /api/v1/posts with include' do
+    it 'includes associations on create action' do
+      post '/api/v1/posts', params: {
+        post: { title: 'New Post', body: 'Content', published: true },
+        include: { comments: true }
+      }, as: :json
+
+      expect(response).to have_http_status(:created)
+      json = JSON.parse(response.body)
+      expect(json['ok']).to be(true)
+      expect(json['post']).to have_key('comments')
+      expect(json['post']['comments']).to eq([]) # No comments yet, but field is present
+    end
+
+    it 'does not include associations when not requested' do
+      post '/api/v1/posts', params: {
+        post: { title: 'Another Post', body: 'More content', published: false }
+      }, as: :json
+
+      expect(response).to have_http_status(:created)
+      json = JSON.parse(response.body)
+      expect(json['ok']).to be(true)
+      expect(json['post'].keys).not_to include('comments')
+    end
+  end
+
+  describe 'PATCH /api/v1/posts/:id with include' do
+    it 'includes associations on update action' do
+      patch "/api/v1/posts/#{post1.id}", params: {
+        post: { title: 'Updated Title' },
+        include: { comments: true }
+      }, as: :json
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json['ok']).to be(true)
+      expect(json['post']['title']).to eq('Updated Title')
+      expect(json['post']['comments']).to be_present
+      expect(json['post']['comments'].length).to eq(2)
+    end
+
+    it 'does not include associations when not requested' do
+      patch "/api/v1/posts/#{post2.id}", params: {
+        post: { title: 'Updated Second Post' }
+      }, as: :json
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json['ok']).to be(true)
+      expect(json['post']['title']).to eq('Updated Second Post')
+      expect(json['post'].keys).not_to include('comments')
+    end
+  end
+
+  describe 'PATCH /api/v1/posts/:id/archive with include (custom member action)' do
+    it 'includes associations on custom member action' do
+      patch "/api/v1/posts/#{post1.id}/archive", params: {
+        include: { comments: true }
+      }, as: :json
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json['ok']).to be(true)
+      expect(json['post']['published']).to be(false) # Archive sets published to false
+      expect(json['post']['comments']).to be_present
+      expect(json['post']['comments'].length).to eq(2)
+    end
+
+    it 'does not include associations when not requested' do
+      patch "/api/v1/posts/#{post2.id}/archive", as: :json
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json['ok']).to be(true)
+      expect(json['post']['published']).to be(false)
+      expect(json['post'].keys).not_to include('comments')
+    end
+  end
 end
