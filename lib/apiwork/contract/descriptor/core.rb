@@ -87,7 +87,7 @@ module Apiwork
             sort_descriptor_registered.fetch_or_store(api_class) do
               builder = Builder.new(api_class: api_class)
               builder.instance_eval do
-                enum :sort_direction, %w[asc desc]
+                enum :sort_direction, values: %w[asc desc]
               end
               true
             end
