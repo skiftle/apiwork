@@ -219,6 +219,9 @@ module Apiwork
           end
 
           def resolve_association_resource(association_definition)
+            # Handle polymorphic associations - return :polymorphic marker
+            return :polymorphic if association_definition.polymorphic?
+
             # If schema_class is explicitly set, use it
             if association_definition.schema_class
               return association_definition.schema_class if association_definition.schema_class.is_a?(Class)
@@ -324,6 +327,9 @@ module Apiwork
           end
 
           def build_association_type(contract_class, association_definition, visited: Set.new)
+            # Handle polymorphic associations
+            return build_polymorphic_association_type(contract_class, association_definition, visited: visited) if association_definition.polymorphic?
+
             # Resolve the associated resource schema
             association_schema = resolve_association_resource(association_definition)
             return nil unless association_schema
@@ -391,6 +397,39 @@ module Apiwork
 
             # Return the qualified type name for reference
             Descriptor::Registry.scoped_name(association_contract_class, resource_type_name)
+          end
+
+          def build_polymorphic_association_type(contract_class, association_definition, visited: Set.new)
+            # Build discriminated union for polymorphic association
+            polymorphic_types = association_definition.polymorphic_types
+            return nil unless polymorphic_types&.any?
+
+            # Build union type name from association name
+            union_type_name = :"#{association_definition.name}_polymorphic"
+
+            # Check if already registered
+            existing = Descriptor::Registry.resolve_type(union_type_name, contract_class: contract_class)
+            return existing if existing
+
+            # Build variants from polymorphic types hash
+            union_definition = UnionDefinition.new(contract_class, discriminator: association_definition.discriminator)
+
+            polymorphic_types.each do |tag, schema_class|
+              # Auto-import each schema's contract and get the import alias
+              import_alias = auto_import_association_contract(contract_class, schema_class, visited)
+              next unless import_alias
+
+              # Use the import alias as the variant type
+              union_definition.variant(type: import_alias, tag: tag.to_s)
+            end
+
+            # Serialize and register union
+            union_data = union_definition.serialize
+
+            Descriptor::Registry.register_union(union_type_name, union_data,
+                                                scope: contract_class, api_class: contract_class.api_class)
+
+            union_type_name
           end
 
           def auto_import_association_contract(parent_contract, association_schema, visited)

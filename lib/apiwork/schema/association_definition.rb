@@ -6,7 +6,7 @@ module Apiwork
     # This class provides ActiveRecord reflection, validation, and auto-detection
     class AssociationDefinition
       attr_reader :name, :type, :schema_class, :allow_destroy, :model_class,
-                  :description, :example, :deprecated
+                  :description, :example, :deprecated, :polymorphic_types, :discriminator
 
       def initialize(name, type:, schema_class:, **options)
         @name = name
@@ -14,6 +14,7 @@ module Apiwork
         @klass = schema_class
         @model_class = schema_class.model_class
         @schema_class = options[:schema]
+        @polymorphic_types = options[:polymorphic] if options[:polymorphic].is_a?(Hash)
         @filterable = options.fetch(:filterable, false)
         @sortable = options.fetch(:sortable, false)
         @include = options.fetch(:include, :optional)
@@ -32,11 +33,15 @@ module Apiwork
         @example = options[:example]
         @deprecated = options[:deprecated] || false
 
+        # Auto-detect discriminator from reflection for polymorphic associations
+        detect_polymorphic_discriminator! if @polymorphic_types
+
         # Validate include option
         validate_include_option!
 
         # Validate against ActiveRecord
         validate_association_exists!
+        validate_polymorphic!
         validate_nested_attributes!
       end
 
@@ -77,6 +82,10 @@ module Apiwork
         %i[has_one belongs_to].include?(@type)
       end
 
+      def polymorphic?
+        @polymorphic_types.present?
+      end
+
       # Override: Auto-detect nullable from foreign key column
       def nullable?
         # If explicitly set, use that
@@ -102,6 +111,41 @@ module Apiwork
       def detect_foreign_key
         reflection = @model_class.reflect_on_association(@name)
         reflection&.foreign_key || "#{@name}_id"
+      end
+
+      def detect_polymorphic_discriminator!
+        return unless @model_class
+
+        reflection = @model_class.reflect_on_association(@name)
+        return unless reflection
+
+        # Get discriminator field from reflection
+        @discriminator = reflection.foreign_type&.to_sym
+      end
+
+      def validate_polymorphic!
+        return unless polymorphic?
+
+        # Polymorphic associations cannot be filterable or sortable
+        if @filterable
+          detail = "Polymorphic association '#{@name}' cannot use filterable: true"
+          error = ConfigurationError.new(
+            code: :invalid_polymorphic_option,
+            detail: detail,
+            path: [@name]
+          )
+          raise error
+        end
+
+        return unless @sortable
+
+        detail = "Polymorphic association '#{@name}' cannot use sortable: true"
+        error = ConfigurationError.new(
+          code: :invalid_polymorphic_option,
+          detail: detail,
+          path: [@name]
+        )
+        raise error
       end
 
       def validate_include_option!
