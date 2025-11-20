@@ -405,4 +405,19 @@ RSpec.describe Apiwork::Generator::Typescript do
       expect(metadata_output).to include("'active' | 'inactive'")
     end
   end
+
+  describe 'unknown type mapping' do
+    let(:introspection) { Apiwork::API.introspect('/api/v1') }
+    let(:mapper) { Apiwork::Generator::TypescriptMapper.new(introspection: introspection) }
+
+    it 'maps :unknown to unknown' do
+      result = mapper.send(:map_primitive, :unknown)
+      expect(result).to eq('unknown')
+    end
+
+    it 'uses unknown as fallback for unmapped types' do
+      result = mapper.send(:map_primitive, :some_unmapped_type)
+      expect(result).to eq('unknown')
+    end
+  end
 end

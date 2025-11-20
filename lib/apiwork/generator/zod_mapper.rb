@@ -19,7 +19,8 @@ module Apiwork
         datetime: 'z.iso.datetime()',
         time: 'z.iso.time()',
         json: 'z.record(z.string(), z.any())',
-        binary: 'z.string()'
+        binary: 'z.string()',
+        unknown: 'z.unknown()'
       }.freeze
 
       attr_reader :introspection, :key_transform_strategy
@@ -220,7 +221,7 @@ module Apiwork
       # Map primitive type to Zod primitive schema
       def map_primitive(definition)
         type = definition[:type]
-        base_type = TYPE_MAP[type.to_sym] || 'z.string()'
+        base_type = TYPE_MAP[type.to_sym] || 'z.unknown()'
 
         # Add min/max constraints for numeric types
         if numeric_type?(type)

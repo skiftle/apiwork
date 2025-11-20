@@ -116,6 +116,7 @@ module Apiwork
           %i[
             string integer boolean datetime date uuid object array
             decimal float literal union enum text binary json number time
+            unknown
           ].include?(type)
         end
 

@@ -388,7 +388,15 @@ module Apiwork
       end
 
       def map_primitive(definition)
-        result = { type: openapi_type(definition[:type]) }
+        # :unknown type becomes empty schema in OpenAPI
+        return {} if definition[:type] == :unknown
+
+        type_value = openapi_type(definition[:type])
+
+        # Handle nil or unmapped types as empty schema
+        return {} if type_value.nil?
+
+        result = { type: type_value }
 
         # Add numeric constraints for OpenAPI 3.1
         if numeric_type?(definition[:type])
@@ -400,7 +408,7 @@ module Apiwork
       end
 
       def openapi_type(type)
-        return 'string' unless type # Default for nil
+        return nil unless type # Return nil for nil type
 
         case type.to_sym
         when :string, :text then 'string'
@@ -410,7 +418,8 @@ module Apiwork
         when :date, :datetime, :time, :uuid then 'string'
         when :json then 'object'
         when :binary then 'string'
-        else 'string' # Default fallback
+        when :unknown then nil # Return nil to trigger empty schema
+        else nil # Return nil for unmapped types (will become empty schema)
         end
       end
 

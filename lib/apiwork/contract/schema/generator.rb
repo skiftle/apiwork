@@ -83,7 +83,8 @@ module Apiwork
             when :object then :object
             when :array then :array
             when :json, :jsonb then :object
-            else :string
+            when :unknown then :unknown
+            else :unknown
             end
           end
 

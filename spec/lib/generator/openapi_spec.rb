@@ -49,4 +49,23 @@ RSpec.describe Apiwork::Generator::Openapi do
       expect(Apiwork::Generator::Registry.find(:openapi)).to eq(described_class)
     end
   end
+
+  describe 'unknown type mapping' do
+    let(:generator) { described_class.new(path) }
+
+    it 'maps :unknown to empty schema {}' do
+      result = generator.send(:map_primitive, { type: :unknown })
+      expect(result).to eq({})
+    end
+
+    it 'uses empty schema {} as fallback for unmapped types' do
+      result = generator.send(:map_primitive, { type: :some_unmapped_type })
+      expect(result).to eq({})
+    end
+
+    it 'returns nil for :unknown in openapi_type method' do
+      result = generator.send(:openapi_type, :unknown)
+      expect(result).to be_nil
+    end
+  end
 end
