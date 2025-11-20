@@ -24,7 +24,7 @@ module Apiwork
         @namespaces.map(&:to_s).map(&:camelize).join('::')
       end
 
-      def add_resource(name, singular:, schema_class:, controller: nil, contract_class_name: nil, parent: nil,
+      def add_resource(name, singular:, schema_class:, controller: nil, contract_class: nil, parent: nil,
                        **options)
         # Add to structured tree
         target = if parent
@@ -41,7 +41,7 @@ module Apiwork
           singular: singular,
           schema_class: schema_class,
           controller: controller,
-          contract_class_name: contract_class_name,
+          contract_class: contract_class,
           actions: {},
           only: determine_actions(singular, options),
           members: {},
@@ -63,26 +63,26 @@ module Apiwork
         }
       end
 
-      def add_member_action(resource_name, action, method:, options:, contract_class_name: nil, metadata: {})
+      def add_member_action(resource_name, action, method:, options:, contract_class: nil, metadata: {})
         resource = find_resource(resource_name)
         return unless resource
 
         resource[:members][action] = {
           method: method,
           options: options,
-          contract_class_name: contract_class_name,
+          contract_class: contract_class,
           metadata: metadata
         }
       end
 
-      def add_collection_action(resource_name, action, method:, options:, contract_class_name: nil, metadata: {})
+      def add_collection_action(resource_name, action, method:, options:, contract_class: nil, metadata: {})
         resource = find_resource(resource_name)
         return unless resource
 
         resource[:collections][action] = {
           method: method,
           options: options,
-          contract_class_name: contract_class_name,
+          contract_class: contract_class,
           metadata: metadata
         }
       end

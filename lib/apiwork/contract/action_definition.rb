@@ -184,11 +184,10 @@ module Apiwork
       end
 
       def matches_explicit_contract?(resource_metadata, contract)
-        contract_class_name = resource_metadata[:contract_class_name]
-        return false unless contract_class_name
+        contract_class = resource_metadata[:contract_class]
+        return false unless contract_class
 
-        resource_contract = constantize_contract_safe(contract_class_name)
-        resource_contract == contract
+        contract_class == contract
       end
 
       def matches_schema_contract?(resource_metadata, contract)
@@ -197,16 +196,6 @@ module Apiwork
         return false unless contract.schema_class
 
         schema_class == contract.schema_class
-      end
-
-      def constantize_contract_safe(contract_class_name)
-        contract_class_name.constantize
-      rescue NameError => e
-        if defined?(Rails)
-          Rails.logger&.debug("ActionDefinition: Failed to constantize contract '#{contract_class_name}' " \
-                              "for action '#{action_name}' on contract '#{contract_class.name}': #{e.message}")
-        end
-        nil
       end
     end
   end

@@ -29,7 +29,7 @@ module Apiwork
           nil
         end
 
-        def resolve_contract_path(path)
+        def constantize_contract_path(path)
           parts = if path.start_with?('/')
                     # Absolute path: '/admin/post' → 'Admin::PostContract'
                     path[1..].split('/')
@@ -42,8 +42,11 @@ module Apiwork
           parts = parts.map { |part| part.to_s.camelize }
           parts[-1] = parts[-1].singularize
 
-          # Join and append 'Contract'
-          "#{parts.join('::')}Contract"
+          # Join, append 'Contract', and constantize
+          class_name = "#{parts.join('::')}Contract"
+          class_name.constantize
+        rescue NameError
+          nil
         end
       end
     end
