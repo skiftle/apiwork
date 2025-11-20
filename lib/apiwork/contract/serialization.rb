@@ -212,7 +212,7 @@ module Apiwork
           result
         end
 
-        def scope_for_type(definition, type_name)
+        def scope_for_type(definition)
           definition.contract_class
         end
 
@@ -258,8 +258,7 @@ module Apiwork
           @import_prefix_cache ||= {}
           @import_prefix_cache[contract_class] ||= begin
             direct = Set.new(contract_class.imports.keys)
-            prefixes = contract_class.imports.keys.map { |alias_name| "#{alias_name}_" }
-            { direct: direct, prefixes: prefixes }
+            { direct: direct, prefixes: contract_class.imports.keys.map { |alias_name| "#{alias_name}_" } }
           end
         end
 
@@ -273,7 +272,7 @@ module Apiwork
           return type_name unless definition.contract_class.respond_to?(:schema_class)
           return type_name unless definition.contract_class.schema_class
 
-          scope = scope_for_type(definition, type_name)
+          scope = scope_for_type(definition)
           Descriptor::Registry.scoped_name(scope, type_name)
         end
 
