@@ -4,7 +4,7 @@ module Apiwork
   module API
     class Recorder
       # Handles recording of concern definitions
-      module Concerns
+      module Concern
         # Support for concerns
         def concern(name, &block)
           # Store concern definition for later use

@@ -4,7 +4,7 @@ module Apiwork
   module API
     class Recorder
       # Handles recording of resources/resource calls
-      module Resources
+      module Resource
         # Intercept resources call (plural)
         def resources(name, **options, &block)
           # Capture metadata
