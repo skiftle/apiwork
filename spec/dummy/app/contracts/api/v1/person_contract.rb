@@ -3,7 +3,7 @@
 module Api
   module V1
     class PersonContract < Apiwork::Contract::Base
-      schema Api::V1::PersonSchema
+      schema PersonSchema
     end
   end
 end
