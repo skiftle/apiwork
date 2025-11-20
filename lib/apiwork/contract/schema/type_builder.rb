@@ -401,8 +401,8 @@ module Apiwork
 
           def build_polymorphic_association_type(contract_class, association_definition, visited: Set.new)
             # Build discriminated union for polymorphic association
-            polymorphic_types = association_definition.polymorphic_types
-            return nil unless polymorphic_types&.any?
+            polymorphic = association_definition.polymorphic
+            return nil unless polymorphic&.any?
 
             # Build union type name from association name
             union_type_name = :"#{association_definition.name}_polymorphic"
@@ -414,7 +414,7 @@ module Apiwork
             # Build variants from polymorphic types hash
             union_definition = UnionDefinition.new(contract_class, discriminator: association_definition.discriminator)
 
-            polymorphic_types.each do |tag, schema_class|
+            polymorphic.each do |tag, schema_class|
               # Auto-import each schema's contract and get the import alias
               import_alias = auto_import_association_contract(contract_class, schema_class, visited)
               next unless import_alias

@@ -6,7 +6,7 @@ module Apiwork
     # This class provides ActiveRecord reflection, validation, and auto-detection
     class AssociationDefinition
       attr_reader :name, :type, :schema_class, :allow_destroy, :model_class,
-                  :description, :example, :deprecated, :polymorphic_types, :discriminator
+                  :description, :example, :deprecated, :polymorphic, :discriminator
 
       def initialize(name, type:, schema_class:, **options)
         @name = name
@@ -14,7 +14,7 @@ module Apiwork
         @klass = schema_class
         @model_class = schema_class.model_class
         @schema_class = options[:schema]
-        @polymorphic_types = options[:polymorphic] if options[:polymorphic].is_a?(Hash)
+        @polymorphic = options[:polymorphic] if options[:polymorphic].is_a?(Hash)
         @filterable = options.fetch(:filterable, false)
         @sortable = options.fetch(:sortable, false)
         @include = options.fetch(:include, :optional)
@@ -34,7 +34,7 @@ module Apiwork
         @deprecated = options[:deprecated] || false
 
         # Auto-detect discriminator from reflection for polymorphic associations
-        detect_polymorphic_discriminator! if @polymorphic_types
+        detect_polymorphic_discriminator! if @polymorphic
 
         # Validate include option
         validate_include_option!
@@ -83,7 +83,7 @@ module Apiwork
       end
 
       def polymorphic?
-        @polymorphic_types.present?
+        @polymorphic.present?
       end
 
       # Override: Auto-detect nullable from foreign key column
@@ -137,9 +137,20 @@ module Apiwork
           raise error
         end
 
-        return unless @sortable
+        if @sortable
+          detail = "Polymorphic association '#{@name}' cannot use sortable: true"
+          error = ConfigurationError.new(
+            code: :invalid_polymorphic_option,
+            detail: detail,
+            path: [@name]
+          )
+          raise error
+        end
 
-        detail = "Polymorphic association '#{@name}' cannot use sortable: true"
+        return unless @writable[:on].any?
+
+        detail = "Polymorphic association '#{@name}' cannot use writable: true. " \
+                 'Rails does not support accepts_nested_attributes_for on polymorphic associations'
         error = ConfigurationError.new(
           code: :invalid_polymorphic_option,
           detail: detail,
