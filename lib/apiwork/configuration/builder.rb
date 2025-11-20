@@ -2,62 +2,37 @@
 
 module Apiwork
   module Configuration
-    # Configuration builder for DSL blocks
-    # Used in API, Schema, and Contract configure blocks
     class Builder
-      # Configuration settings with validation
-      # DSL only allows three key formats: underscore, camel, keep
       VALIDATED_SETTINGS = {
-        output_key_format: -> { %i[underscore camel keep] },
-        input_key_format: -> { %i[underscore camel keep] }
+        output_key_format: %i[underscore camel keep],
+        input_key_format: %i[underscore camel keep]
       }.freeze
 
       def initialize(storage)
         @storage = storage
       end
 
-      # Set output key format strategy
-      def output_key_format(value)
-        validate_setting!(:output_key_format, value)
-        @storage[:output_key_format] = value
+      VALIDATED_SETTINGS.each_key do |name|
+        define_method(name) do |value|
+          validate!(name, value)
+          @storage[name] = value
+        end
       end
 
-      # Set input key format strategy
-      def input_key_format(value)
-        validate_setting!(:input_key_format, value)
-        @storage[:input_key_format] = value
-      end
-
-      # Set default sort order
-      def default_sort(value)
-        @storage[:default_sort] = value
-      end
-
-      # Set default page size
-      def default_page_size(value)
-        @storage[:default_page_size] = value
-      end
-
-      # Set maximum page size
-      def max_page_size(value)
-        @storage[:max_page_size] = value
-      end
-
-      # Set maximum array items
-      def max_array_items(value)
-        @storage[:max_array_items] = value
+      %i[default_sort default_page_size max_page_size max_array_items].each do |name|
+        define_method(name) do |value|
+          @storage[name] = value
+        end
       end
 
       private
 
-      def validate_setting!(name, value)
-        validator = VALIDATED_SETTINGS[name]
-        return unless validator
+      def validate!(name, value)
+        allowed = VALIDATED_SETTINGS[name]
+        return unless allowed
+        return if allowed.include?(value)
 
-        valid_values = validator.call
-        return if valid_values.include?(value)
-
-        raise ConfigurationError, "Invalid #{name}: #{value}. Must be one of #{valid_values.join(', ')}"
+        raise ConfigurationError, "Invalid #{name}: #{value}. Allowed: #{allowed.join(', ')}"
       end
     end
   end

@@ -5,11 +5,7 @@ require 'concurrent/map'
 module Apiwork
   module Contract
     # Registry maintaining Schema → Contract relationships
-    # Stores anonymous contracts and explicit contracts for fast lookup
-    #
-    # Priority:
-    # 1. Explicit contract (e.g., PostContract) if exists
-    # 2. Anonymous contract (generated) if no explicit contract
+    # Stores explicit contracts for fast lookup
     #
     # Thread-safety: Lock-free using Concurrent::Map (atomic operations)
     class SchemaRegistry
@@ -37,12 +33,12 @@ module Apiwork
         private
 
         def find_or_create_contract(schema_class)
-          # FIRST: Try to find explicit contract class
+          # Try to find explicit contract class
           explicit = find_explicit_contract(schema_class)
           return explicit if explicit
 
-          # ONLY IF NOT FOUND: Create anonymous
-          create_anonymous_contract(schema_class)
+          # No contract found - raise helpful error
+          raise_missing_contract_error(schema_class)
         end
 
         def find_explicit_contract(schema_class)
@@ -53,45 +49,16 @@ module Apiwork
           nil
         end
 
-        def create_anonymous_contract(schema_class)
-          # Create anonymous contract ONLY when no explicit contract exists
-          # Derive API class from schema namespace
-          api_class_for_schema = derive_api_class_from_schema(schema_class)
+        def raise_missing_contract_error(schema_class)
+          contract_name = schema_class.name.gsub(/Schema$/, 'Contract')
+          schema_name = schema_class.name.demodulize
 
-          contract = Class.new(Base) do
-            @_schema_class = schema_class
-            prepend Schema::Extension
-
-            define_singleton_method(:name) do
-              "#{schema_class.name.gsub(/Schema$/, 'Contract')}(Generated)"
-            end
-
-            define_singleton_method(:inspect) do
-              name
-            end
-
-            # Override api_class to use schema's namespace
-            define_singleton_method(:api_class) do
-              api_class_for_schema
-            end
-          end
-
-          # Register enums for anonymous contracts
-          Schema::TypeBuilder.build_contract_enums(contract, schema_class)
-
-          contract
-        end
-
-        # Derive API class from schema class namespace
-        # Example: Api::V1::AccountSchema → /api/v1 → finds API class
-        def derive_api_class_from_schema(schema_class)
-          return nil unless schema_class.name
-
-          namespace_parts = schema_class.name.deconstantize.split('::')
-          return nil if namespace_parts.empty?
-
-          api_path = "/#{namespace_parts.map(&:underscore).join('/')}"
-          Apiwork::API.find(api_path)
+          raise ConfigurationError,
+                "No contract found for #{schema_class.name}.\n" \
+                "Please create #{contract_name} with:\n\n" \
+                "  class #{contract_name} < Apiwork::Contract::Base\n" \
+                "    schema #{schema_name}\n" \
+                '  end'
         end
 
         def registry
