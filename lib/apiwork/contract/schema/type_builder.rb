@@ -11,10 +11,14 @@ module Apiwork
         MAX_RECURSION_DEPTH = 3
 
         class << self
-          # Check if schema is an STI base schema
-          # Returns true if schema has discriminator and variants (and is not itself a variant)
+          # Check if schema is an STI base schema with registered variants
+          # Returns true if schema has discriminator and at least one variant (and is not itself a variant)
+          # This ensures we don't treat a base schema as STI until variants are actually loaded
           def sti_base_schema?(schema_class)
-            schema_class.respond_to?(:sti_base?) && schema_class.sti_base?
+            return false unless schema_class.respond_to?(:sti_base?) && schema_class.sti_base?
+
+            # Must have at least one registered variant to be treated as STI base
+            schema_class.respond_to?(:variants) && schema_class.variants&.any?
           end
 
           # Determine which filter type to use based on attribute type
@@ -470,11 +474,9 @@ module Apiwork
             variants = schema_class.variants
             return nil unless variants&.any?
 
-            # Check if already registered
-            existing = Descriptor::Registry.resolve_type(union_type_name, contract_class: contract_class)
-            return existing if existing
-
             # Build discriminated union
+            # Note: We always rebuild STI unions to ensure discriminator and variants are current
+            # STI unions depend on runtime schema state that may not be fully initialized on first build
             discriminator_name = schema_class.discriminator_name
             union_definition = UnionDefinition.new(contract_class, discriminator: discriminator_name)
 
@@ -520,36 +522,58 @@ module Apiwork
           end
 
           def ensure_variants_loaded(schema_class)
-            # Use ActiveRecord model's STI structure to discover and load variant schemas
+            # TODO: This method is unreliable and needs refactoring
+            # Current issues:
+            # - Dual strategy (eager_load + filesystem scan) is complex and fragile
+            # - Doesn't guarantee variants are loaded before introspection caching
+            # - Forces test workarounds (see spec/integration/sti_spec.rb)
+            # Possible solutions:
+            # - Make introspection cache-aware of variant loading state
+            # - Use explicit variant registration instead of auto-discovery
+            # - Invalidate/rebuild cache when variants change
+
+            # Discover and load STI variant schemas
+            # Strategy: Use both model descendants AND filesystem scanning for maximum reliability
             return unless schema_class.respond_to?(:model_class)
 
             model_class = schema_class.model_class
             return unless model_class
-            return unless model_class.table_exists? # Skip if no table (abstract model)
 
             # Get schema namespace (e.g., "Api::V1")
             schema_namespace = schema_class.name.deconstantize
             return if schema_namespace.blank?
 
-            # First, discover STI model descendants by querying the database for distinct types
-            # This avoids Zeitwerk loading issues where .descendants returns [] until classes are loaded
-            inheritance_column = model_class.inheritance_column
-            distinct_type_values = model_class.unscoped.distinct.pluck(inheritance_column).compact
+            # Strategy 1: Try ActiveRecord descendants first (works if models are already loaded)
+            # Eager load Rails application to populate descendants
+            Rails.application.eager_load! if defined?(Rails) && Rails.respond_to?(:application)
 
-            # Load each STI model and its corresponding schema
-            distinct_type_values.each do |type_value|
-              # Constantize the model to trigger loading (e.g., "PersonClient".constantize)
-              descendant_model = type_value.constantize
+            model_class.descendants.each do |descendant_model|
+              next if descendant_model.respond_to?(:abstract_class?) && descendant_model.abstract_class?
 
-              # Derive schema class name from model name
-              # Example: PersonClient => Api::V1::PersonClientSchema
               schema_class_name = "#{schema_namespace}::#{descendant_model.name}Schema"
+              begin
+                schema_class_name.constantize
+              rescue NameError
+                # Schema doesn't exist - that's ok
+              end
+            end
 
-              # Trigger Zeitwerk autoloading for the variant schema
-              schema_class_name.constantize
-            rescue NameError
-              # Schema or model doesn't exist - that's ok
-              next
+            # Strategy 2: Filesystem scanning as fallback (works even if models aren't loaded yet)
+            schema_dir = Rails.root.join('app', 'schemas', schema_namespace.underscore) if defined?(Rails)
+            return unless schema_dir && Dir.exist?(schema_dir)
+
+            Dir.glob(schema_dir.join('*_schema.rb')).each do |schema_file|
+              basename = File.basename(schema_file, '.rb')
+              schema_class_name = "#{schema_namespace}::#{basename.camelize}"
+
+              begin
+                loaded_schema = schema_class_name.constantize
+                # Only count it if it's actually a variant of our base
+                next unless loaded_schema < schema_class
+                next unless loaded_schema.respond_to?(:sti_variant?) && loaded_schema.sti_variant?
+              rescue NameError, LoadError
+                # Schema doesn't exist - that's ok
+              end
             end
           end
 

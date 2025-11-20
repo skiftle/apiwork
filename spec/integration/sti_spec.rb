@@ -6,7 +6,18 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
   # Ensure variant schemas are loaded before tests
   # This triggers Zeitwerk autoloading by referencing the schema classes
   before(:all) do
-    Api::V1::CompanyClientSchema
+    # Force load both variant schemas to register them with the base schema
+    # Using .name to actually use the constant (avoids Ruby void context warning)
+    Api::V1::PersonClientSchema.name
+    Api::V1::CompanyClientSchema.name
+
+    # HACK: Clear introspection cache to force rebuild with loaded variants
+    # This is necessary because other test files may have triggered introspection
+    # before the variant schemas were loaded, causing stale cached results.
+    # TODO: Refactor to eliminate this hack - introspection caching should be smarter
+    # or ensure_variants_loaded should be more reliable in all contexts.
+    api = Apiwork::API.find('/api/v1')
+    api&.instance_variable_set(:@introspect, nil)
   end
 
   let!(:person_client) do
@@ -123,9 +134,6 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
   describe 'GET /api/v1/clients' do
     it 'returns all clients with correct discriminator values' do
       get '/api/v1/clients'
-
-      puts "Response status: #{response.status}"
-      puts "Response body: #{response.body}" if response.status != 200
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
