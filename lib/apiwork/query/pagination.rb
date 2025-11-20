@@ -36,7 +36,11 @@ module Apiwork
       private
 
       def build_meta_for_scope(scope, page_number, page_size)
-        items = scope.except(:limit, :offset).count
+        items = if scope.joins_values.any?
+                  scope.except(:limit, :offset).distinct.count(:all)
+                else
+                  scope.except(:limit, :offset).count
+                end
         total = (items.to_f / page_size).ceil
 
         page = {

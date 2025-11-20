@@ -13,7 +13,7 @@ module Apiwork
             @sort_descriptor_registered = Concurrent::Map.new
           end
 
-          def register_core_descriptors(api_class)
+          def register(api_class)
             builder = Builder.new(api_class: api_class)
             builder.instance_eval do
               type :pagination do
