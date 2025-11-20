@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Apiwork::Schema::Operators do
+RSpec.describe Apiwork::Schema::Operator do
   describe 'BASE OPERATOR SETS' do
     it 'defines EQUALITY_OPERATORS' do
       expect(described_class::EQUALITY_OPERATORS).to eq(%i[eq])
