@@ -3,7 +3,7 @@
 module Apiwork
   class Query
     module Filtering
-      include Apiwork::Schema::Operators
+      include Apiwork::Schema::Operator
 
       def apply_filter(scope, params, issues = [])
         return scope if params.blank?

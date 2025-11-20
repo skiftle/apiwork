@@ -2,7 +2,7 @@
 
 module Apiwork
   module Schema
-    module Operators
+    module Operator
       # ============================================================
       # BASE OPERATOR SETS
       # ============================================================
