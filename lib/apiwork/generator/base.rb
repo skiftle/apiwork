@@ -93,13 +93,14 @@ module Apiwork
       end
 
       def transform_string(string, strategy)
+        string_value = string.to_s
         case strategy
         when :camel
-          string.to_s.camelize(:lower)
+          string_value.camelize(:lower)
         when :underscore
-          string.to_s.underscore
+          string_value.underscore
         else
-          string.to_s
+          string_value
         end
       end
 
