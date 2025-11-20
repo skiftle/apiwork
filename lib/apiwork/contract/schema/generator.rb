@@ -73,7 +73,7 @@ module Apiwork
           # Map resource type to contract type
           def map_type(resource_type)
             case resource_type
-            when :string then :string
+            when :string, :text then :string
             when :integer then :integer
             when :boolean then :boolean
             when :datetime then :datetime
