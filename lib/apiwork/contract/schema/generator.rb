@@ -78,6 +78,7 @@ module Apiwork
             when :boolean then :boolean
             when :datetime then :datetime
             when :date then :date
+            when :time then :time
             when :uuid then :uuid
             when :decimal, :float then :decimal
             when :object then :object
