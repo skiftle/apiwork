@@ -7,26 +7,31 @@ module Apiwork
       # Handles single resource and collection responses with unwrapped discriminated unions
       class OutputGenerator
         class << self
+          # Resolve resource type name for output (handles both STI and regular schemas)
+          def resolve_resource_type_name(contract_class, schema_class)
+            # For STI base schemas, build discriminated union type
+            if TypeBuilder.sti_base_schema?(schema_class)
+              TypeBuilder.build_sti_output_union_type(contract_class, schema_class)
+            else
+              # For regular schemas, register resource type
+              root_key = schema_class.root_key.singular.to_sym
+              resource_type_name = Descriptor::Registry.scoped_name(contract_class, nil)
+
+              # Register if not already registered
+              unless Descriptor::Registry.resolve_type(resource_type_name, contract_class: contract_class)
+                register_resource_type(contract_class, schema_class, root_key)
+              end
+
+              resource_type_name
+            end
+          end
+
           # Generate output for single resource actions (show, create, update)
           # Returns unwrapped discriminated union with ok field
           def generate_single_output(definition, schema_class)
             root_key = schema_class.root_key.singular.to_sym
             contract_class = definition.contract_class
-
-            # For STI base schemas, use discriminated union type
-            if schema_class.respond_to?(:sti_base?) && schema_class.sti_base?
-              resource_type_name = TypeBuilder.build_sti_output_union_type(contract_class, schema_class)
-            else
-              # Register the resource type with Descriptor::Registry
-              # Use nil for registration - Descriptor::Registry will use just the prefix (e.g., "locale", "post")
-              # Get the qualified name for reference
-              resource_type_name = Descriptor::Registry.scoped_name(contract_class, nil)
-
-              # Check if already registered
-              unless Descriptor::Registry.resolve_type(resource_type_name, contract_class: contract_class)
-                register_resource_type(contract_class, schema_class, root_key)
-              end
-            end
+            resource_type_name = resolve_resource_type_name(contract_class, schema_class)
 
             # Output is a discriminated union based on 'ok' field (literal values)
             # The union is "unwrapped" - fields are at top level, not under a wrapper key
@@ -50,24 +55,9 @@ module Apiwork
           # Generate output for collection actions (index)
           # Returns unwrapped discriminated union with ok field and pagination
           def generate_collection_output(definition, schema_class)
-            root_key = schema_class.root_key.singular.to_sym
             root_key_plural = schema_class.root_key.plural.to_sym
             contract_class = definition.contract_class
-
-            # For STI base schemas, use discriminated union type
-            if schema_class.respond_to?(:sti_base?) && schema_class.sti_base?
-              resource_type_name = TypeBuilder.build_sti_output_union_type(contract_class, schema_class)
-            else
-              # Register the resource type with Descriptor::Registry (same as single output)
-              # Use nil for registration - Descriptor::Registry will use just the prefix
-              # Get the qualified name for reference
-              resource_type_name = Descriptor::Registry.scoped_name(contract_class, nil)
-
-              # Check if already registered
-              unless Descriptor::Registry.resolve_type(resource_type_name, contract_class: contract_class)
-                register_resource_type(contract_class, schema_class, root_key)
-              end
-            end
+            resource_type_name = resolve_resource_type_name(contract_class, schema_class)
 
             # Output is a discriminated union based on 'ok' field (literal values)
             # The union is "unwrapped" - fields are at top level, not under a wrapper key

@@ -203,16 +203,16 @@ module Apiwork
           )
         end
 
-        # Declare STI base schema
-        # @param name [Symbol, nil] Optional custom API field name (defaults to Rails column name)
+        # Declare STI base schema with optional custom API field name
+        # @param as [Symbol, nil] Optional custom API field name (defaults to Rails column name)
         # @example
-        #   discriminator         # Uses Rails inheritance_column as-is
-        #   discriminator :kind   # Maps Rails 'type' column to API 'kind' field
-        def discriminator(name = nil)
+        #   discriminator           # Uses Rails inheritance_column as-is
+        #   discriminator as: :kind # Maps Rails 'type' column to API 'kind' field
+        def discriminator(as: nil)
           ensure_auto_detection_complete
           column = model_class.inheritance_column.to_sym
           self._discriminator_column = column
-          self._discriminator_name = name || column
+          self._discriminator_name = as || column
           self
         end
 
@@ -223,9 +223,9 @@ module Apiwork
         #   variant as: "person"   # Custom API tag
         def variant(as: nil)
           ensure_auto_detection_complete
-          tag = as || model_class.sti_name
+          variant_tag = as || model_class.sti_name
 
-          self._variant_tag = tag.to_sym
+          self._variant_tag = variant_tag.to_sym
           self._sti_type = model_class.sti_name
 
           # Register with parent schema
@@ -262,8 +262,11 @@ module Apiwork
         end
 
         # Check if this is an STI base schema
+        # A schema is a base if it has discriminator and variants, but is not itself a variant
         def sti_base?
-          _discriminator_column.present? && _variants.any? && !sti_variant?
+          return false if sti_variant?
+
+          _discriminator_column.present? && _variants.any?
         end
 
         # Check if this is an STI variant schema
