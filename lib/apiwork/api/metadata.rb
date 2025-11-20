@@ -91,22 +91,6 @@ module Apiwork
         @concerns[name] = block
       end
 
-      def merge(other_metadata)
-        # Deep merge resources from multiple api blocks
-        other_metadata.resources.each do |name, other_resource|
-          if @resources[name]
-            # Resource exists, merge nested resources
-            merge_nested_resources(@resources[name], other_resource)
-          else
-            # New resource, add it
-            @resources[name] = other_resource
-          end
-        end
-
-        # Merge concerns
-        @concerns.merge!(other_metadata.concerns)
-      end
-
       def find_resource(resource_name)
         return resources[resource_name] if resources[resource_name]
 
@@ -152,26 +136,6 @@ module Apiwork
         end
 
         nil
-      end
-
-      def merge_nested_resources(target, source)
-        # Merge members
-        target[:members].merge!(source[:members]) if source[:members]
-
-        # Merge collections
-        target[:collections].merge!(source[:collections]) if source[:collections]
-
-        # Recursively merge nested resources
-        return unless source[:resources]
-
-        target[:resources] ||= {}
-        source[:resources].each do |name, nested_resource|
-          if target[:resources][name]
-            merge_nested_resources(target[:resources][name], nested_resource)
-          else
-            target[:resources][name] = nested_resource
-          end
-        end
       end
 
       def determine_actions(singular, options)
