@@ -45,7 +45,6 @@ module Apiwork
           next unless definition.always_included?
 
           association = schema.model_class.reflect_on_association(name)
-          next if association&.polymorphic?
 
           nested_schema = resolve_schema_class(definition, association)
           next unless nested_schema
