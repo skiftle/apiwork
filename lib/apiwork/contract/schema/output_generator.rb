@@ -13,14 +13,19 @@ module Apiwork
             root_key = schema_class.root_key.singular.to_sym
             contract_class = definition.contract_class
 
-            # Register the resource type with Descriptor::Registry
-            # Use nil for registration - Descriptor::Registry will use just the prefix (e.g., "locale", "post")
-            # Get the qualified name for reference
-            resource_type_name = Descriptor::Registry.scoped_name(contract_class, nil)
+            # For STI base schemas, use discriminated union type
+            if schema_class.respond_to?(:sti_base?) && schema_class.sti_base?
+              resource_type_name = TypeBuilder.build_sti_output_union_type(contract_class, schema_class)
+            else
+              # Register the resource type with Descriptor::Registry
+              # Use nil for registration - Descriptor::Registry will use just the prefix (e.g., "locale", "post")
+              # Get the qualified name for reference
+              resource_type_name = Descriptor::Registry.scoped_name(contract_class, nil)
 
-            # Check if already registered
-            unless Descriptor::Registry.resolve_type(resource_type_name, contract_class: contract_class)
-              register_resource_type(contract_class, schema_class, root_key)
+              # Check if already registered
+              unless Descriptor::Registry.resolve_type(resource_type_name, contract_class: contract_class)
+                register_resource_type(contract_class, schema_class, root_key)
+              end
             end
 
             # Output is a discriminated union based on 'ok' field (literal values)
@@ -49,14 +54,19 @@ module Apiwork
             root_key_plural = schema_class.root_key.plural.to_sym
             contract_class = definition.contract_class
 
-            # Register the resource type with Descriptor::Registry (same as single output)
-            # Use nil for registration - Descriptor::Registry will use just the prefix
-            # Get the qualified name for reference
-            resource_type_name = Descriptor::Registry.scoped_name(contract_class, nil)
+            # For STI base schemas, use discriminated union type
+            if schema_class.respond_to?(:sti_base?) && schema_class.sti_base?
+              resource_type_name = TypeBuilder.build_sti_output_union_type(contract_class, schema_class)
+            else
+              # Register the resource type with Descriptor::Registry (same as single output)
+              # Use nil for registration - Descriptor::Registry will use just the prefix
+              # Get the qualified name for reference
+              resource_type_name = Descriptor::Registry.scoped_name(contract_class, nil)
 
-            # Check if already registered
-            unless Descriptor::Registry.resolve_type(resource_type_name, contract_class: contract_class)
-              register_resource_type(contract_class, schema_class, root_key)
+              # Check if already registered
+              unless Descriptor::Registry.resolve_type(resource_type_name, contract_class: contract_class)
+                register_resource_type(contract_class, schema_class, root_key)
+              end
             end
 
             # Output is a discriminated union based on 'ok' field (literal values)

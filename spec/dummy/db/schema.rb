@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_20_100002) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_20_100004) do
   create_table "accounts", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "first_day_of_week", default: 1
@@ -25,6 +25,18 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_20_100002) do
     t.string "name"
     t.datetime "updated_at", null: false
     t.boolean "verified"
+  end
+
+  create_table "clients", force: :cascade do |t|
+    t.date "birth_date"
+    t.datetime "created_at", null: false
+    t.string "email"
+    t.string "industry"
+    t.string "name", null: false
+    t.string "registration_number"
+    t.string "type", null: false
+    t.datetime "updated_at", null: false
+    t.index ["type"], name: "index_clients_on_type"
   end
 
   create_table "comments", force: :cascade do |t|
@@ -52,6 +64,15 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_20_100002) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["comment_id"], name: "index_replies_on_comment_id"
+  end
+
+  create_table "services", force: :cascade do |t|
+    t.integer "client_id", null: false
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.index ["client_id"], name: "index_services_on_client_id"
   end
 
   create_table "taggings", force: :cascade do |t|
@@ -82,5 +103,6 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_20_100002) do
 
   add_foreign_key "comments", "posts"
   add_foreign_key "replies", "comments"
+  add_foreign_key "services", "clients"
   add_foreign_key "taggings", "tags"
 end

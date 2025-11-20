@@ -55,15 +55,21 @@ module Apiwork
             root_key = schema_class.root_key.singular.to_sym
             contract_class = definition.contract_class
 
-            # Register the writable payload type with Descriptor::Registry
-            # Use short name - Descriptor::Registry will add prefix via qualified_name
-            # Example: :create_payload, :update_payload
-            payload_type_name = :"#{context}_payload"
+            # For STI base schemas, generate discriminated union of variant payloads
+            if schema_class.respond_to?(:sti_base?) && schema_class.sti_base?
+              payload_type_name = generate_sti_input_union(contract_class, schema_class, context)
+            else
+              # Register the writable payload type with Descriptor::Registry
+              # Use short name - Descriptor::Registry will add prefix via qualified_name
+              # Example: :create_payload, :update_payload
+              payload_type_name = :"#{context}_payload"
 
-            # Check if already registered
-            unless Descriptor::Registry.resolve_type(payload_type_name, contract_class: contract_class)
-              Descriptor::Registry.register_type(payload_type_name, scope: contract_class, api_class: contract_class.api_class) do
-                InputGenerator.generate_writable_params(self, schema_class, context, nested: false)
+              # Check if already registered
+              unless Descriptor::Registry.resolve_type(payload_type_name, contract_class: contract_class)
+                Descriptor::Registry.register_type(payload_type_name, scope: contract_class,
+                                                                      api_class: contract_class.api_class) do
+                  InputGenerator.generate_writable_params(self, schema_class, context, nested: false)
+                end
               end
             end
 
@@ -157,6 +163,58 @@ module Apiwork
 
               definition.param name, **param_options
             end
+          end
+
+          # Generate discriminated union for STI base input (create/update)
+          # Returns union type name
+          def generate_sti_input_union(contract_class, schema_class, context)
+            # Eager load variants to ensure they're registered
+            TypeBuilder.ensure_variants_loaded(schema_class)
+
+            variants = schema_class.variants
+            return nil unless variants&.any?
+
+            # Use context-specific union name (e.g., :create_payload, :update_payload)
+            union_type_name = :"#{context}_payload"
+
+            # Check if already registered
+            existing = Descriptor::Registry.resolve_type(union_type_name, contract_class: contract_class)
+            return existing if existing
+
+            # Build discriminated union with variant payloads
+            discriminator_name = schema_class.discriminator_name
+            union_definition = UnionDefinition.new(contract_class, discriminator: discriminator_name)
+
+            variants.each do |tag, variant_data|
+              variant_schema = variant_data[:schema]
+
+              # Register variant payload type (e.g., :person_client_create_payload)
+              variant_type_name = :"#{variant_schema.name.demodulize.underscore.gsub(/_schema$/, '')}_#{context}_payload"
+
+              # Check if already registered
+              unless Descriptor::Registry.resolve_type(variant_type_name, contract_class: contract_class)
+                Descriptor::Registry.register_type(variant_type_name, scope: contract_class,
+                                                                      api_class: contract_class.api_class) do
+                  # Add discriminator as literal FIRST
+                  param discriminator_name, type: :literal, value: tag.to_s, required: true
+
+                  # Add writable params for this variant
+                  InputGenerator.generate_writable_params(self, variant_schema, context, nested: false)
+                end
+              end
+
+              # Add variant to union
+              qualified_name = Descriptor::Registry.scoped_name(contract_class, variant_type_name)
+              union_definition.variant(type: qualified_name, tag: tag.to_s)
+            end
+
+            # Serialize and register union
+            union_data = union_definition.serialize
+
+            Descriptor::Registry.register_union(union_type_name, union_data,
+                                                scope: contract_class, api_class: contract_class.api_class)
+
+            union_type_name
           end
         end
       end
