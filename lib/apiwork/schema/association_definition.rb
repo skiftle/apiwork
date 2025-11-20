@@ -178,38 +178,11 @@ module Apiwork
         return if @klass.abstract_class || @model_class.nil? || @schema_class
 
         reflection = @model_class.reflect_on_association(@name)
-        unless reflection
-          detail = "Undefined resource association '#{@name}' in #{@klass.name}: no association on model"
-          error = ConfigurationError.new(
-            code: :invalid_association,
-            detail: detail,
-            path: [@name]
-          )
+        return if reflection
 
-          raise error
-        end
-
-        # Validate that polymorphic and through associations cannot be :always
-        return unless @include == :always
-
-        if reflection.polymorphic?
-          detail = "Polymorphic association '#{@name}' cannot use include: :always. " \
-                   'Use include: :optional instead'
-          error = ConfigurationError.new(
-            code: :invalid_always_include,
-            detail: detail,
-            path: [@name]
-          )
-
-          raise error
-        end
-
-        return unless reflection.through_reflection
-
-        detail = "Through association '#{@name}' cannot use include: :always. " \
-                 'Use include: :optional instead'
+        detail = "Undefined resource association '#{@name}' in #{@klass.name}: no association on model"
         error = ConfigurationError.new(
-          code: :invalid_always_include,
+          code: :invalid_association,
           detail: detail,
           path: [@name]
         )
