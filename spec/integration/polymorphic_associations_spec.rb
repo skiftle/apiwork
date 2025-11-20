@@ -13,7 +13,7 @@ RSpec.describe 'Polymorphic associations', type: :integration do
 
       association_def = schema.association_definitions[:commentable]
       expect(association_def.polymorphic?).to be true
-      expect(association_def.polymorphic_types).to eq({ post: 'Api::V1::PostSchema', video: 'Api::V1::VideoSchema' })
+      expect(association_def.polymorphic).to eq({ post: 'Api::V1::PostSchema', video: 'Api::V1::VideoSchema' })
     end
 
     it 'auto-detects discriminator from reflection' do
@@ -88,6 +88,18 @@ RSpec.describe 'Polymorphic associations', type: :integration do
                      include: :optional
         end
       end.not_to raise_error
+    end
+
+    it 'rejects writable with polymorphic' do
+      expect do
+        Class.new(Apiwork::Schema::Base) do
+          abstract
+
+          belongs_to :commentable,
+                     polymorphic: { post: 'Api::V1::PostSchema' },
+                     writable: true
+        end
+      end.to raise_error(Apiwork::ConfigurationError, /cannot use writable: true/)
     end
   end
 
