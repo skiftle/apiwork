@@ -321,4 +321,25 @@ RSpec.describe 'Zod Generation for Associations', type: :integration do
                                    'First variant should NOT be z.string()'
     end
   end
+
+  describe 'JSON column Zod schema generation' do
+    it 'generates z.object({}) for :json columns' do
+      # Find the PostSchema definition
+      post_schema_match = output.match(/export const PostSchema\b.*?\n\}\);/m)
+      expect(post_schema_match).not_to be_nil, 'PostSchema definition not found'
+      post_schema = post_schema_match[0]
+
+      # metadata field should use z.object({}) for JSON columns (mapped through :object type)
+      expect(post_schema).to match(/metadata: z\.object\(\{\}\)/)
+    end
+
+    it 'makes JSON columns optional by default' do
+      post_schema_match = output.match(/export const PostSchema\b.*?\n\}\);/m)
+      expect(post_schema_match).not_to be_nil
+      post_schema = post_schema_match[0]
+
+      # JSON columns are nullable by default, should be .optional()
+      expect(post_schema).to match(/metadata:.*\.optional\(\)/)
+    end
+  end
 end

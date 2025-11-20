@@ -226,6 +226,14 @@ RSpec.describe Apiwork::Generator::Typescript do
       end
     end
 
+    describe 'JSON column type mapping' do
+      it 'generates object type for :json columns' do
+        # Post has metadata :json column, which maps to :object type
+        # :object without shape generates: metadata?: object
+        expect(output).to match(/metadata\?: object/)
+      end
+    end
+
     describe 'nullable types' do
       it 'generates union with null for nullable fields' do
         # If there are any nullable fields in the test data, verify they have | null

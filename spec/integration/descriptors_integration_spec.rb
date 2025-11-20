@@ -196,6 +196,21 @@ RSpec.describe 'Descriptors Integration', type: :request do
     end
   end
 
+  describe 'JSON/JSONB column type inference' do
+    it 'detects :json column type as :object in introspection' do
+      introspection = Apiwork::API.introspect('/api/v1')
+
+      # Post schema should include metadata attribute
+      post_type = introspection[:types][:post]
+      expect(post_type).to be_present
+      expect(post_type[:shape]).to have_key(:metadata)
+
+      # metadata should be inferred as :object type (from :json column)
+      metadata_field = post_type[:shape][:metadata]
+      expect(metadata_field[:type]).to eq(:object)
+    end
+  end
+
   describe 'API isolation' do
     before(:all) do
       # Create a second API for isolation testing

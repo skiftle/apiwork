@@ -14,6 +14,7 @@ module Api
           attribute :title
           attribute :body
           attribute :published
+          attribute :metadata
         end
       end
 

@@ -137,7 +137,7 @@ RSpec.describe 'Resource override and selective serialization', type: :request d
       expect(article_json['article']).not_to have_key('published')
 
       # Different attribute counts
-      expect(post_json['post'].keys.length).to eq(6) # id, title, body, published, created_at, updated_at
+      expect(post_json['post'].keys.length).to eq(7) # id, title, body, published, metadata, created_at, updated_at
       expect(article_json['article'].keys.length).to eq(2) # id, title only
     end
   end
