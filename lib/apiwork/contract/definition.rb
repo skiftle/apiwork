@@ -7,7 +7,6 @@ module Apiwork
 
       def initialize(type:, contract_class:, action_name: nil)
         @type = type # :input or :output
-        @direction = type # Alias for type (used internally by Parser)
         @contract_class = contract_class
         @action_name = action_name
         @params = {}

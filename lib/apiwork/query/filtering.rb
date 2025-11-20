@@ -233,9 +233,7 @@ module Apiwork
 
       def validate_enum_values!(key, value, target_klass, issues = [])
         enum_values = target_klass.defined_enums[key.to_s].keys
-
-        values_to_check = extract_values_from_filter(value)
-        invalid_values = values_to_check - enum_values
+        invalid_values = extract_values_from_filter(value) - enum_values
 
         return if invalid_values.empty?
 
@@ -300,10 +298,7 @@ module Apiwork
         nested_conditions, nested_joins = nested_query.send(:build_where_conditions, value,
                                                             association_reflection.klass, issues)
 
-        join_conditions = {}
-        join_conditions[key] = nested_joins.any? ? nested_joins : {}
-
-        [nested_conditions, join_conditions]
+        [nested_conditions, { key => (nested_joins.any? ? nested_joins : {}) }]
       end
 
       def build_uuid_where_clause(key, value, target_klass, issues = [])

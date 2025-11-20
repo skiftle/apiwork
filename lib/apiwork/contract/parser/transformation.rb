@@ -97,9 +97,8 @@ module Apiwork
         def transform_union_type_array(value, param_definition, definition)
           return nil unless param_definition[:type_contract_class]
 
-          nested_contract = param_definition[:type_contract_class]
           action_name = definition.action_name || :create
-          nested_definition = nested_contract.action_definition(action_name)&.input_definition
+          nested_definition = param_definition[:type_contract_class].action_definition(action_name)&.input_definition
 
           return nil unless nested_definition
 
