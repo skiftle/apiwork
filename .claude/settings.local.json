@@ -63,7 +63,9 @@
       "Bash(rm:*)",
       "Bash(bundle exec rails db:migrate:status:*)",
       "Bash(sqlite3:*)",
-      "Bash(RAILS_ENV=test BUNDLE_GEMFILE=spec/dummy/Gemfile bundle exec ruby:*)"
+      "Bash(RAILS_ENV=test BUNDLE_GEMFILE=spec/dummy/Gemfile bundle exec ruby:*)",
+      "Bash(RAILS_ENV=test bin/rails runner:*)",
+      "Bash(git -C /Users/joakim/GitHub/apiwork checkout spec/integration/sti_spec.rb)"
     ],
     "deny": [],
     "ask": []

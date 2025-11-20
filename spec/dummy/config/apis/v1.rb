@@ -96,4 +96,10 @@ Apiwork::API.draw '/api/v1' do
 
   # Author resource for testing writable context filtering (on: [:create], on: [:update])
   resources :authors
+
+  # Client resource for testing STI (Single Table Inheritance)
+  resources :clients
+
+  # Service resource for testing associations with STI
+  resources :services
 end

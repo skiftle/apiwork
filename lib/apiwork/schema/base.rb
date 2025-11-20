@@ -14,6 +14,11 @@ module Apiwork
       class_attribute :_root, default: nil
       class_attribute :_auto_detection_complete, default: false
       class_attribute :_configuration, default: {}
+      class_attribute :_discriminator_column, default: nil
+      class_attribute :_discriminator_name, default: nil
+      class_attribute :_variant_tag, default: nil
+      class_attribute :_sti_type, default: nil
+      class_attribute :_variants, default: {}
 
       attr_reader :object, :context, :includes
 
@@ -196,6 +201,74 @@ module Apiwork
           self.association_definitions = association_definitions.merge(
             name => AssociationDefinition.new(name, type: :belongs_to, schema_class: self, **options)
           )
+        end
+
+        # Declare STI base schema
+        # @param name [Symbol, nil] Optional custom API field name (defaults to Rails column name)
+        # @example
+        #   discriminator         # Uses Rails inheritance_column as-is
+        #   discriminator :kind   # Maps Rails 'type' column to API 'kind' field
+        def discriminator(name = nil)
+          ensure_auto_detection_complete
+          column = model_class.inheritance_column.to_sym
+          self._discriminator_column = column
+          self._discriminator_name = name || column
+          self
+        end
+
+        # Declare STI variant schema
+        # @param as [String, Symbol, nil] API discriminator value (defaults to Rails sti_name)
+        # @example
+        #   variant                # Uses Rails sti_name as API tag (e.g., "PersonClient")
+        #   variant as: "person"   # Custom API tag
+        def variant(as: nil)
+          ensure_auto_detection_complete
+          tag = as || model_class.sti_name
+
+          self._variant_tag = tag.to_sym
+          self._sti_type = model_class.sti_name
+
+          # Register with parent schema
+          superclass.register_variant(tag: _variant_tag, schema: self, sti_type: _sti_type) if superclass.respond_to?(:register_variant)
+
+          self
+        end
+
+        # Internal: Register variant from child schema
+        def register_variant(tag:, schema:, sti_type:)
+          self._variants = _variants.merge(tag => { schema: schema, sti_type: sti_type })
+          self.abstract_class = true # Auto-mark as abstract
+        end
+
+        # Accessors for STI metadata
+        def discriminator_column
+          _discriminator_column
+        end
+
+        def discriminator_name
+          _discriminator_name
+        end
+
+        def variant_tag
+          _variant_tag
+        end
+
+        def sti_type
+          _sti_type
+        end
+
+        def variants
+          _variants
+        end
+
+        # Check if this is an STI base schema
+        def sti_base?
+          _discriminator_column.present? && _variants.any? && !sti_variant?
+        end
+
+        # Check if this is an STI variant schema
+        def sti_variant?
+          _variant_tag.present?
         end
 
         attr_writer :type, :default_sort, :default_page_size, :max_page_size

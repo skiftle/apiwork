@@ -9,18 +9,44 @@ module Apiwork
         def serialize(object_or_collection, context: {}, includes: nil)
           # Collections (including ActiveRecord::Relation) are handled via .each
           if object_or_collection.respond_to?(:each)
-            object_or_collection.map { |obj| new(obj, context: context, includes: includes).as_json }
+            object_or_collection.map { |obj| serialize_single(obj, context: context, includes: includes) }
           else
-            new(object_or_collection, context: context, includes: includes).as_json
+            serialize_single(object_or_collection, context: context, includes: includes)
           end
         rescue StandardError => e
           schema_name = respond_to?(:name) ? name : 'Schema'
           raise Apiwork::SchemaError, "Serialization error for #{schema_name}: #{e.message}"
         end
+
+        def serialize_single(obj, context: {}, includes: nil)
+          # If this is an STI base schema, route to the correct variant schema
+          if respond_to?(:sti_base?) && sti_base?
+            variant_schema = resolve_sti_variant_for_object(obj)
+            return variant_schema.new(obj, context: context, includes: includes).as_json if variant_schema
+          end
+
+          # Default: serialize with this schema
+          new(obj, context: context, includes: includes).as_json
+        end
+
+        def resolve_sti_variant_for_object(obj)
+          # Get the STI type value from the object
+          discriminator_column = self.discriminator_column
+          sti_type = obj.public_send(discriminator_column)
+
+          # Find the variant that matches this sti_type
+          variant = variants.find { |_tag, data| data[:sti_type] == sti_type }
+          return nil unless variant
+
+          variant.last[:schema]
+        end
       end
 
       def as_json
         serialized_attributes = {}
+
+        # Add discriminator field for STI variants
+        add_discriminator_field(serialized_attributes) if self.class.respond_to?(:sti_variant?) && self.class.sti_variant?
 
         self.class.attribute_definitions.each do |attribute, definition|
           value = respond_to?(attribute) ? public_send(attribute) : object.public_send(attribute)
@@ -38,6 +64,17 @@ module Apiwork
       end
 
       private
+
+      def add_discriminator_field(serialized_attributes)
+        # Get discriminator metadata from parent schema
+        parent_schema = self.class.superclass
+        return unless parent_schema.respond_to?(:discriminator_name)
+
+        discriminator_name = parent_schema.discriminator_name
+        variant_tag = self.class.variant_tag
+
+        serialized_attributes[discriminator_name] = variant_tag.to_s
+      end
 
       def transform_keys(hash)
         case self.class.output_key_format
@@ -64,10 +101,34 @@ module Apiwork
         nested_includes = build_nested_includes(name)
 
         if definition.collection?
-          associated.map { |item| resource_class.new(item, context: context, includes: nested_includes).as_json }
+          associated.map { |item| serialize_sti_aware(item, resource_class, nested_includes) }
         else
-          resource_class.new(associated, context: context, includes: nested_includes).as_json
+          serialize_sti_aware(associated, resource_class, nested_includes)
         end
+      end
+
+      def serialize_sti_aware(item, resource_class, nested_includes)
+        # Check if resource_class is an STI base schema
+        if resource_class.respond_to?(:sti_base?) && resource_class.sti_base?
+          # Resolve to the correct variant schema based on the item's type
+          variant_schema = resolve_sti_variant_schema(item, resource_class)
+          return variant_schema.new(item, context: context, includes: nested_includes).as_json if variant_schema
+        end
+
+        # Default: use the resource_class as-is
+        resource_class.new(item, context: context, includes: nested_includes).as_json
+      end
+
+      def resolve_sti_variant_schema(item, base_schema)
+        # Get the STI type value from the item
+        discriminator_column = base_schema.discriminator_column
+        sti_type = item.public_send(discriminator_column)
+
+        # Find the variant that matches this sti_type
+        variant = base_schema.variants.find { |_tag, data| data[:sti_type] == sti_type }
+        return nil unless variant
+
+        variant.last[:schema]
       end
 
       # Smart logic: include: :always → always include, cannot be excluded
