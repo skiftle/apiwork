@@ -7,8 +7,6 @@ module Apiwork
       # Delegates to specialized generators for input, output, and type registration
       class Generator
         class << self
-          # Generate action definition for a CRUD action
-          # Delegates to InputGenerator and OutputGenerator
           def generate_action(schema_class, action, contract_class: nil)
             return nil unless schema_class
 
@@ -71,8 +69,8 @@ module Apiwork
           end
 
           # Map resource type to contract type
-          def map_type(resource_type)
-            case resource_type
+          def map_type(type)
+            case type
             when :string, :text then :string
             when :integer then :integer
             when :boolean then :boolean
