@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_16_000001) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_20_090807) do
   create_table "accounts", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "first_day_of_week", default: 1
@@ -39,6 +39,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_16_000001) do
   create_table "posts", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
+    t.json "metadata"
     t.boolean "published", default: false
     t.string "title", null: false
     t.datetime "updated_at", null: false

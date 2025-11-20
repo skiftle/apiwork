@@ -91,6 +91,124 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
     end
   end
 
+  describe 'JSON column support' do
+    it 'accepts JSON data for :json columns on create' do
+      post_params = {
+        post: {
+          title: 'Post with Metadata',
+          body: 'Body text',
+          published: false,
+          metadata: {
+            tags: %w[ruby rails],
+            author_notes: 'Draft version',
+            version: 1
+          }
+        }
+      }
+
+      expect do
+        post '/api/v1/posts', params: post_params, as: :json
+      end.to change(Post, :count).by(1)
+
+      expect(response).to have_http_status(:created)
+      json = JSON.parse(response.body)
+      expect(json['ok']).to be(true)
+      # Keys inside JSON objects are transformed to camelCase in API output
+      expect(json['post']['metadata']).to eq({
+                                               'tags' => %w[ruby rails],
+                                               'authorNotes' => 'Draft version',
+                                               'version' => 1
+                                             })
+
+      # Verify database storage (keys stored as-is in database)
+      created_post = Post.last
+      expect(created_post.metadata).to eq({
+                                            'tags' => %w[ruby rails],
+                                            'author_notes' => 'Draft version',
+                                            'version' => 1
+                                          })
+    end
+
+    it 'returns JSON data when reading records with :json columns' do
+      post_record = Post.create!(
+        title: 'Post with Metadata',
+        body: 'Body',
+        metadata: {
+          'tags' => %w[api test],
+          'priority' => 'high'
+        }
+      )
+
+      get "/api/v1/posts/#{post_record.id}"
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json['post']['metadata']).to eq({
+                                               'tags' => %w[api test],
+                                               'priority' => 'high'
+                                             })
+    end
+
+    it 'updates JSON columns with partial data' do
+      post_record = Post.create!(
+        title: 'Original',
+        body: 'Body',
+        published: false,
+        metadata: { 'version' => 1 }
+      )
+
+      patch "/api/v1/posts/#{post_record.id}",
+            params: {
+              post: {
+                title: 'Original',
+                body: 'Body',
+                published: false,
+                metadata: { 'version' => 2, 'updated' => true }
+              }
+            },
+            as: :json
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json['post']['metadata']).to eq({
+                                               'version' => 2,
+                                               'updated' => true
+                                             })
+    end
+
+    it 'accepts null for optional JSON columns' do
+      post_params = {
+        post: {
+          title: 'Post without Metadata',
+          body: 'Body',
+          metadata: nil
+        }
+      }
+
+      post '/api/v1/posts', params: post_params, as: :json
+
+      expect(response).to have_http_status(:created)
+      json = JSON.parse(response.body)
+      expect(json['post']['metadata']).to be_nil
+    end
+
+    it 'handles empty object for JSON columns' do
+      post_params = {
+        post: {
+          title: 'Post with Empty Metadata',
+          body: 'Body',
+          metadata: {}
+        }
+      }
+
+      post '/api/v1/posts', params: post_params, as: :json
+
+      expect(response).to have_http_status(:created)
+      json = JSON.parse(response.body)
+      expect(json['post']['metadata']).to eq({})
+    end
+  end
+
   describe 'PATCH /api/v1/posts/:id' do
     it 'handles partial updates through contract' do
       post_record = Post.create!(title: 'Original Title', body: 'Original body', published: false)

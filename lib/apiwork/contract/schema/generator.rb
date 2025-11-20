@@ -82,6 +82,7 @@ module Apiwork
             when :decimal, :float then :decimal
             when :object then :object
             when :array then :array
+            when :json, :jsonb then :object
             else :string
             end
           end
