@@ -69,8 +69,8 @@ module Apiwork
           # Extract contract path (Rails-style)
           contract_path = options[:contract]
 
-          # Resolve contract path to full class name if provided
-          contract_class_name = contract_path ? resolve_contract_path(contract_path) : nil
+          # Resolve contract path to full class if provided
+          contract_class = contract_path ? constantize_contract_path(contract_path) : nil
 
           # Extract action metadata
           action_metadata = extract_action_metadata(action, current_resource)
@@ -82,7 +82,7 @@ module Apiwork
               action,
               method: method,
               options: options,
-              contract_class_name: contract_class_name,
+              contract_class: contract_class,
               metadata: action_metadata
             )
           elsif @in_collection_block || options[:on] == :collection
@@ -92,7 +92,7 @@ module Apiwork
               action,
               method: method,
               options: options,
-              contract_class_name: contract_class_name,
+              contract_class: contract_class,
               metadata: action_metadata
             )
           else

@@ -288,16 +288,11 @@ module Apiwork
         # Resolve contract class from resource metadata
         # Only returns explicit contract classes (not schema-based)
         def resolve_contract_class(resource_metadata)
-          return nil unless resource_metadata[:contract_class_name]
-
-          # Try to constantize the contract class name
-          klass = resource_metadata[:contract_class_name].constantize
+          contract_class = resource_metadata[:contract_class]
+          return nil unless contract_class
 
           # Validate that it's actually a Contract class
-          klass < Contract::Base ? klass : nil
-        rescue NameError
-          # Contract class doesn't exist
-          nil
+          contract_class < Contract::Base ? contract_class : nil
         end
 
         # Get or create schema-based contract class for a resource

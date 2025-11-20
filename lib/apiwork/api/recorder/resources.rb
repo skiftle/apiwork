@@ -151,11 +151,11 @@ module Apiwork
           resource_class = infer_resource_class(name)
 
           # Resolve contract: use explicit path or infer from name
-          contract_class_name = if contract_path
-                                  resolve_contract_path(contract_path)
-                                else
-                                  infer_contract_class(name)&.name
-                                end
+          contract_class = if contract_path
+                             constantize_contract_path(contract_path)
+                           else
+                             infer_contract_class(name)
+                           end
 
           # Add to metadata
           @metadata.add_resource(
@@ -163,7 +163,7 @@ module Apiwork
             singular: singular,
             schema_class: resource_class,
             controller: controller_option,
-            contract_class_name: contract_class_name,
+            contract_class: contract_class,
             parent: parent,
             **merged_options
           )
