@@ -7,18 +7,9 @@ module Apiwork
       # Delegates to specialized generators for input, output, and type registration
       class Generator
         class << self
-          def generate_action(schema_class, action, contract_class: nil)
+          def generate_action(schema_class, action, contract_class:)
             return nil unless schema_class
-
-            # Derive API class from schema namespace for anonymous contracts
-            api_class_for_schema = derive_api_class_from_schema(schema_class)
-
-            contract_class ||= Class.new(Base) do
-              schema schema_class
-
-              # Override api_class for anonymous contracts to use schema's namespace
-              define_singleton_method(:api_class) { api_class_for_schema }
-            end
+            raise ArgumentError, 'contract_class is required' unless contract_class
 
             TypeBuilder.build_contract_enums(contract_class, schema_class)
 
@@ -85,20 +76,6 @@ module Apiwork
             when :unknown then :unknown
             else :unknown
             end
-          end
-
-          private
-
-          # Derive API class from schema class namespace
-          # Example: Api::V1::AccountSchema → /api/v1 → finds API class
-          def derive_api_class_from_schema(schema_class)
-            return nil unless schema_class.name
-
-            namespace_parts = schema_class.name.deconstantize.split('::')
-            return nil if namespace_parts.empty?
-
-            api_path = "/#{namespace_parts.map(&:underscore).join('/')}"
-            Apiwork::API.find(api_path)
           end
         end
       end
