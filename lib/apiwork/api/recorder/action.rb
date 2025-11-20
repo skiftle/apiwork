@@ -4,7 +4,7 @@ module Apiwork
   module API
     class Recorder
       # Handles recording of member/collection actions
-      module Actions
+      module Action
         # Member block context
         def member(&block)
           @in_member_block = true
