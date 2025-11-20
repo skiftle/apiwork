@@ -6,6 +6,14 @@ module Apiwork
       attr_reader :name, :type, :enum, :required, :empty, :min, :max,
                   :description, :example, :format, :deprecated
 
+      ALLOWED_FORMATS = {
+        string: %i[email uuid uri url date date_time ipv4 ipv6 password hostname],
+        integer: %i[int32 int64],
+        float: %i[float double],
+        decimal: %i[float double],
+        number: %i[float double]
+      }.freeze
+
       def initialize(name, schema_class:, **options)
         @name = name
         @klass = schema_class
@@ -57,6 +65,7 @@ module Apiwork
         @deprecated = options[:deprecated] || false
 
         validate_min_max_range!
+        validate_format!
         apply_empty_transformers! if @empty
       end
 
@@ -242,6 +251,27 @@ module Apiwork
 
         raise ConfigurationError,
               "Attribute #{@name}: min (#{@min}) cannot be greater than max (#{@max})"
+      end
+
+      # Validate that format is appropriate for the type
+      def validate_format!
+        return if @format.nil?
+
+        allowed_formats = ALLOWED_FORMATS[@type]
+        format_sym = @format.to_sym
+
+        # If type doesn't support any formats
+        unless allowed_formats
+          raise ConfigurationError,
+                "Attribute #{@name}: format option is not supported for type :#{@type}"
+        end
+
+        # If format is not in allowed list
+        return if allowed_formats.include?(format_sym)
+
+        raise ConfigurationError,
+              "Attribute #{@name}: format :#{@format} is not valid for type :#{@type}. " \
+              "Allowed formats: #{allowed_formats.join(', ')}"
       end
     end
   end

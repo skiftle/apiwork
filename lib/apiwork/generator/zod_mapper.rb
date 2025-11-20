@@ -221,7 +221,14 @@ module Apiwork
       # Map primitive type to Zod primitive schema
       def map_primitive(definition)
         type = definition[:type]
-        base_type = TYPE_MAP[type.to_sym] || 'z.unknown()'
+        format = definition[:format]&.to_sym
+
+        # Format overrides type mapping for Zod v4 (but not TypeScript!)
+        base_type = if format
+                      map_format_to_zod(format)
+                    else
+                      TYPE_MAP[type.to_sym] || 'z.unknown()'
+                    end
 
         # Add min/max constraints for numeric types
         if numeric_type?(type)
@@ -230,6 +237,23 @@ module Apiwork
         end
 
         base_type
+      end
+
+      # Map format to Zod v4 format functions
+      def map_format_to_zod(format)
+        case format
+        when :email then 'z.email()'
+        when :uuid then 'z.uuid()'
+        when :uri, :url then 'z.url()'
+        when :ipv4 then 'z.ipv4()'
+        when :ipv6 then 'z.ipv6()'
+        when :date then 'z.iso.date()'
+        when :date_time then 'z.iso.datetime()'
+        when :password, :hostname then 'z.string()'
+        when :int32, :int64 then 'z.number().int()'
+        when :float, :double then 'z.number()'
+        else 'z.string()'
+        end
       end
 
       # Convert symbol to Zod schema reference
