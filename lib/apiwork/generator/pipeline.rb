@@ -17,14 +17,16 @@ module Apiwork
     #   # Clean generated files
     #   Pipeline.clean(output: 'generated/')
     #
-    class Pipeline
+    module Pipeline
+      module_function
+
       # Generate artifact in memory
       #
       # @param api_path [String] API path to generate for
       # @param format [Symbol] Generator format (:zod, :typescript, :openapi)
       # @param options [Hash] Generator options (key_transform, version, etc.)
       # @return [String, Hash] Generated content
-      def self.generate(api_path:, format:, **options)
+      def generate(api_path:, format:, **options)
         opts = Options.build(**options)
         generator_class = Registry.find(format)
         generator_class.generate(path: api_path, **opts)
@@ -37,7 +39,7 @@ module Apiwork
       # @param format [Symbol, nil] Specific format (nil for all registered formats)
       # @param options [Hash] Generator options
       # @return [Integer] Number of files generated
-      def self.write(output:, api_path: nil, format: nil, **options)
+      def write(output:, api_path: nil, format: nil, **options)
         raise ArgumentError, 'output path required' unless output
         raise ArgumentError, 'api_path and format required when output is a file' if Writer.file_path?(output) && (api_path.nil? || format.nil?)
 
@@ -69,7 +71,7 @@ module Apiwork
       # Clean generated artifacts from filesystem
       #
       # @param output [String] Output path to clean
-      def self.clean(output:)
+      def clean(output:)
         raise ArgumentError, 'output path required' unless output
 
         Writer.clean(output: output)
@@ -80,7 +82,7 @@ module Apiwork
       # @param api_path [String] API path
       # @return [Class] API class
       # @raise [ArgumentError] If API not found
-      def self.find_api(api_path)
+      def find_api(api_path)
         api_class = API::Registry.all.find do |klass|
           klass.metadata&.path == api_path
         end
@@ -93,15 +95,15 @@ module Apiwork
 
         api_class
       end
-      private_class_method :find_api
+      private :find_api
 
       # Find all registered API classes
       #
       # @return [Array<Class>] API classes with metadata
-      def self.find_all_apis
+      def find_all_apis
         API::Registry.all.select(&:metadata)
       end
-      private_class_method :find_all_apis
+      private :find_all_apis
 
       # Generate and write a single file
       #
@@ -110,7 +112,7 @@ module Apiwork
       # @param output [String] Output path
       # @param options [Hash] Generator options
       # @return [Integer] 1 if successful, 0 if skipped/failed
-      def self.generate_file(api_class:, format:, output:, options:)
+      def generate_file(api_class:, format:, output:, options:)
         api_path = api_class.metadata.path
 
         unless api_class.specs&.key?(format)
@@ -139,7 +141,7 @@ module Apiwork
         Rails.logger.debug "  ✗ #{api_path} → #{format} (error: #{e.message})"
         0
       end
-      private_class_method :generate_file
+      private :generate_file
     end
   end
 end

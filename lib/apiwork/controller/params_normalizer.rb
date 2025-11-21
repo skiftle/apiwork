@@ -14,13 +14,15 @@ module Apiwork
     #   ParamsNormalizer.call(params)
     #
     module ParamsNormalizer
+      module_function
+
       # Normalize params by converting indexed hashes to arrays
-      def self.call(params)
+      def call(params)
         normalize_indexed_hashes(params)
       end
 
       # Recursively normalize hashes with numeric string keys to arrays
-      def self.normalize_indexed_hashes(params)
+      def normalize_indexed_hashes(params)
         return params unless params.is_a?(Hash)
 
         params.transform_values do |value|
@@ -29,7 +31,7 @@ module Apiwork
       end
 
       # Normalize a single value (recursive)
-      def self.normalize_indexed_value(value)
+      def normalize_indexed_value(value)
         return value unless value.is_a?(Hash) || value.is_a?(Array)
         return value.map { |v| normalize_indexed_value(v) } if value.is_a?(Array)
 
@@ -40,19 +42,19 @@ module Apiwork
       end
 
       # Convert indexed hash to array, preserving numeric order
-      def self.convert_indexed_hash_to_array(hash)
+      def convert_indexed_hash_to_array(hash)
         hash.keys.sort_by { |k| k.to_s.to_i }.map { |key| normalize_indexed_value(hash[key]) }
       end
 
       # Check if hash has only numeric string keys
-      def self.indexed_hash?(hash)
+      def indexed_hash?(hash)
         return false if hash.empty?
 
         hash.keys.all? { |k| k.to_s =~ /^\d+$/ }
       end
 
-      private_class_method :normalize_indexed_hashes, :normalize_indexed_value,
-                           :convert_indexed_hash_to_array, :indexed_hash?
+      private :normalize_indexed_hashes, :normalize_indexed_value,
+              :convert_indexed_hash_to_array, :indexed_hash?
     end
   end
 end
