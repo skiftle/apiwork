@@ -91,19 +91,24 @@ module Apiwork
               # Add filters for each filterable attribute
               schema_class.attribute_definitions.each do |name, attribute_definition|
                 next unless attribute_definition.filterable?
+                next if attribute_definition.type == :unknown # Skip unknown types - not filterable
 
                 # Determine filter type (enum-specific or primitive)
                 filter_type = TypeBuilder.filter_type_for(attribute_definition, contract_class)
 
-                # Support shorthand: allow primitive value OR filter object
-                param name, type: :union, required: false do
-                  # Primitive value variant (shorthand)
-                  # Reference enum by attribute name (registered at contract level)
-                  variant type: Generator.map_type(attribute_definition.type),
-                          **(attribute_definition.enum ? { enum: name } : {})
-                  # Filter object variant (eq, in, contains, etc.)
-                  # Don't include enum here - filter_type is already the correct object type
-                  variant type: filter_type
+                # Enum filters already include shorthand variant, primitives need union
+                if attribute_definition.enum
+                  # Enum filter already contains: EnumValue | { eq, in }
+                  # No need for additional union wrapper
+                  param name, type: filter_type, required: false
+                else
+                  # Primitive filters: support shorthand (primitive value OR filter object)
+                  param name, type: :union, required: false do
+                    # Primitive value variant (shorthand)
+                    variant type: Generator.map_type(attribute_definition.type)
+                    # Filter object variant (eq, in, contains, etc.)
+                    variant type: filter_type
+                  end
                 end
               end
 
