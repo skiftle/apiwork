@@ -15,10 +15,14 @@ module Apiwork
         @model_class = schema_class.model_class
         @schema_class = options[:schema]
         @polymorphic = options[:polymorphic] if options[:polymorphic].is_a?(Hash)
-        @filterable = options.fetch(:filterable, false)
-        @sortable = options.fetch(:sortable, false)
-        @include = options.fetch(:include, :optional)
-        writable_value = options.fetch(:writable, false)
+
+        # Apply defaults to ensure consistent values
+        options = apply_defaults(options)
+
+        @filterable = options[:filterable]
+        @sortable = options[:sortable]
+        @include = options[:include]
+        writable_value = options[:writable]
         @writable = case writable_value
                     when true then { on: %i[create update] }
                     when false then { on: [] }
@@ -31,7 +35,7 @@ module Apiwork
         # Metadata fields
         @description = options[:description]
         @example = options[:example]
-        @deprecated = options[:deprecated] || false
+        @deprecated = options[:deprecated]
 
         # Auto-detect discriminator from reflection for polymorphic associations
         detect_polymorphic_discriminator! if @polymorphic
@@ -106,6 +110,20 @@ module Apiwork
 
       def column_for(name)
         @model_class.columns_hash[name.to_s]
+      end
+
+      def apply_defaults(options)
+        {
+          filterable: false,
+          sortable: false,
+          include: :optional,
+          writable: false,
+          allow_destroy: false,
+          nullable: nil, # nil = auto-detect from DB, true/false = explicit override
+          description: nil,
+          example: nil,
+          deprecated: false
+        }.merge(options)
       end
 
       def detect_foreign_key
