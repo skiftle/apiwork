@@ -59,6 +59,21 @@ module Apiwork
 
       private
 
+      # Apply defaults to param hash to ensure consistent values
+      def apply_param_defaults(param_hash)
+        {
+          required: false,
+          nullable: nil, # nil = allow null (permissive), false = forbid null (explicit)
+          default: nil,
+          as: nil,
+          enum: nil,
+          of: nil,
+          shape: nil
+          # NOTE: name, type always provided by caller
+          # Note: value, union, custom_type, discriminator only for specific types
+        }.merge(param_hash)
+      end
+
       # Define a literal type parameter
       def define_literal_param(name, value:, required:, default:, as:, options:)
         # value can be false (boolean), so check if it was provided (not nil)
@@ -67,15 +82,15 @@ module Apiwork
         # Use value from named parameter or from options hash
         literal_value = value.nil? ? options[:value] : value
 
-        @params[name] = {
-          name: name,
-          type: :literal,
-          value: literal_value,
-          required: required,
-          default: default,
-          as: as,
-          **options.except(:value) # Remove :value from options to avoid duplication
-        }
+        @params[name] = apply_param_defaults({
+                                               name: name,
+                                               type: :literal,
+                                               value: literal_value,
+                                               required: required,
+                                               default: default,
+                                               as: as,
+                                               **options.except(:value) # Remove :value from options to avoid duplication
+                                             })
       end
 
       # Define a union type parameter
@@ -85,17 +100,17 @@ module Apiwork
         union_definition = UnionDefinition.new(@contract_class, discriminator: discriminator)
         union_definition.instance_eval(&block)
 
-        @params[name] = {
-          name: name,
-          type: :union,
-          required: required,
-          default: default,
-          as: as,
-          union: union_definition,
-          discriminator: discriminator,
-          enum: resolved_enum, # Store resolved enum (values or reference)
-          **options
-        }
+        @params[name] = apply_param_defaults({
+                                               name: name,
+                                               type: :union,
+                                               required: required,
+                                               default: default,
+                                               as: as,
+                                               union: union_definition,
+                                               discriminator: discriminator,
+                                               enum: resolved_enum, # Store resolved enum (values or reference)
+                                               **options
+                                             })
       end
 
       # Define a regular or custom type parameter
@@ -145,32 +160,32 @@ module Apiwork
         # Apply additional block if provided (can extend custom type)
         shape_definition.instance_eval(&block) if block_given?
 
-        @params[name] = {
-          name: name,
-          type: :object, # Custom types are objects internally
-          required: required,
-          default: default,
-          enum: resolved_enum, # Store resolved enum (values or reference)
-          of: of,
-          as: as,
-          custom_type: type, # Track original custom type name
-          shape: shape_definition,
-          **options
-        }
+        @params[name] = apply_param_defaults({
+                                               name: name,
+                                               type: :object, # Custom types are objects internally
+                                               required: required,
+                                               default: default,
+                                               enum: resolved_enum, # Store resolved enum (values or reference)
+                                               of: of,
+                                               as: as,
+                                               custom_type: type, # Track original custom type name
+                                               shape: shape_definition,
+                                               **options
+                                             })
       end
 
       # Define a standard (non-custom) type parameter
       def define_standard_param(name, type:, resolved_enum:, required:, default:, of:, as:, options:, &block)
-        @params[name] = {
-          name: name,
-          type: type,
-          required: required,
-          default: default,
-          enum: resolved_enum, # Store resolved enum (values or reference)
-          of: of,
-          as: as,
-          **options
-        }
+        @params[name] = apply_param_defaults({
+                                               name: name,
+                                               type: type,
+                                               required: required,
+                                               default: default,
+                                               enum: resolved_enum, # Store resolved enum (values or reference)
+                                               of: of,
+                                               as: as,
+                                               **options
+                                             })
 
         # Handle shape param with do block
         return unless block_given?
