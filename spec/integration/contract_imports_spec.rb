@@ -12,10 +12,6 @@ RSpec.describe 'Contract Imports' do
   describe 'basic import functionality' do
     let(:user_contract) do
       Class.new(Apiwork::Contract::Base) do
-        def self.name
-          'UserContract'
-        end
-
         type :address do
           param :street, type: :string, required: true
           param :city, type: :string, required: true
@@ -28,10 +24,6 @@ RSpec.describe 'Contract Imports' do
 
     let(:order_contract) do
       Class.new(Apiwork::Contract::Base) do
-        def self.name
-          'OrderContract'
-        end
-
         type :order_item do
           param :product_id, type: :uuid, required: true
           param :quantity, type: :integer, required: true
@@ -133,8 +125,6 @@ RSpec.describe 'Contract Imports' do
 
       # Register a type on it
       user_contract.class_eval do
-        def self.name = 'TestUserContract'
-
         type :address do
           param :street, type: :string
         end
@@ -143,8 +133,6 @@ RSpec.describe 'Contract Imports' do
       # Import from the dynamically created contract
       uc = user_contract
       order_contract = Class.new(Apiwork::Contract::Base) do
-        def self.name = 'TestOrderContract'
-
         import uc, as: :user
 
         action :create do
@@ -162,17 +150,9 @@ RSpec.describe 'Contract Imports' do
 
   describe 'circular import detection' do
     it 'allows mutual imports between contracts' do
-      contract_a = Class.new(Apiwork::Contract::Base) do
-        def self.name
-          'ContractA'
-        end
-      end
+      contract_a = Class.new(Apiwork::Contract::Base)
 
-      contract_b = Class.new(Apiwork::Contract::Base) do
-        def self.name
-          'ContractB'
-        end
-      end
+      contract_b = Class.new(Apiwork::Contract::Base)
 
       # Create mutual imports (both contracts import each other)
       a = contract_a
@@ -203,23 +183,11 @@ RSpec.describe 'Contract Imports' do
       # This test verifies the visited_contracts Set prevents infinite loops
       # The circular check triggers when we visit the same contract twice in one resolution chain
 
-      contract_a = Class.new(Apiwork::Contract::Base) do
-        def self.name
-          'ContractA'
-        end
-      end
+      contract_a = Class.new(Apiwork::Contract::Base)
 
-      contract_b = Class.new(Apiwork::Contract::Base) do
-        def self.name
-          'ContractB'
-        end
-      end
+      contract_b = Class.new(Apiwork::Contract::Base)
 
-      contract_c = Class.new(Apiwork::Contract::Base) do
-        def self.name
-          'ContractC'
-        end
-      end
+      contract_c = Class.new(Apiwork::Contract::Base)
 
       a = contract_a
       b = contract_b
@@ -249,10 +217,6 @@ RSpec.describe 'Contract Imports' do
   describe 'serialization with imports' do
     let(:user_contract) do
       Class.new(Apiwork::Contract::Base) do
-        def self.name
-          'UserContract'
-        end
-
         type :address do
           param :street, type: :string, required: true
           param :city, type: :string, required: true
@@ -284,10 +248,6 @@ RSpec.describe 'Contract Imports' do
   describe 'type resolution priority' do
     let(:base_contract) do
       Class.new(Apiwork::Contract::Base) do
-        def self.name
-          'BaseContract'
-        end
-
         type :metadata do
           param :version, type: :integer
         end
@@ -297,8 +257,6 @@ RSpec.describe 'Contract Imports' do
     it 'prefers local types over imported types with same name' do
       bc = base_contract
       importing_contract = Class.new(Apiwork::Contract::Base) do
-        def self.name = 'TestImportingContract'
-
         import bc, as: :base
 
         # Define local type with same base name
