@@ -10,8 +10,6 @@ module Apiwork
           @info = {}
         end
 
-        # === API-LEVEL FIELDS ===
-
         def title(text)
           @info[:title] = text
         end
@@ -41,8 +39,6 @@ module Apiwork
           @info[:servers] << { url: url, description: description }.compact
         end
 
-        # === COMMON FIELDS ===
-
         def summary(text)
           @info[:summary] = text
         end
@@ -62,8 +58,6 @@ module Apiwork
         def internal(value = true)
           @info[:internal] = value
         end
-
-        # === NESTED BUILDER CLASSES ===
 
         class ContactBuilder
           attr_reader :data

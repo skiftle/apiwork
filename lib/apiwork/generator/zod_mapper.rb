@@ -2,9 +2,6 @@
 
 module Apiwork
   module Generator
-    # Pure Zod schema mapping service
-    # Converts introspection data to Zod schema strings
-    # No side effects, no file I/O, just pure string generation
     class ZodMapper
       TYPE_MAP = {
         string: 'z.string()',
@@ -30,11 +27,9 @@ module Apiwork
         @key_transform_strategy = key_transform
       end
 
-      # Build Zod object schema
       def build_object_schema(type_name, type_shape, action_name = nil, recursive: false)
         schema_name = pascal_case(type_name)
 
-        # Get fields from :shape key
         fields = type_shape[:shape] || {}
 
         properties = fields.sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
@@ -43,19 +38,15 @@ module Apiwork
           "  #{key}: #{zod_type}"
         end.join(",\n")
 
-        # Type annotation only needed for recursive types (z.lazy requires it)
         type_annotation = recursive ? ": z.ZodType<#{schema_name}>" : ''
 
         if recursive
-          # Recursive types use z.lazy() with explicit type annotation (required)
           "export const #{schema_name}Schema#{type_annotation} = z.lazy(() => z.object({\n#{properties}\n}));"
         else
-          # Non-recursive types use z.object() without type annotation (better inference)
           "export const #{schema_name}Schema#{type_annotation} = z.object({\n#{properties}\n});"
         end
       end
 
-      # Build Zod union schema
       def build_union_schema(type_name, type_shape)
         schema_name = pascal_case(type_name)
         variants = type_shape[:variants]
@@ -63,7 +54,6 @@ module Apiwork
         variant_schemas = variants.map { |variant| map_type_definition(variant, nil) }
         variants_str = variant_schemas.map { |v| "  #{v}" }.join(",\n")
 
-        # Use discriminatedUnion if discriminator is present
         if type_shape[:discriminator]
           discriminator_key = transform_key(type_shape[:discriminator])
           "export const #{schema_name}Schema = z.discriminatedUnion('#{discriminator_key}', [\n#{variants_str}\n]);"
@@ -72,12 +62,9 @@ module Apiwork
         end
       end
 
-      # Build Zod schema for action input
       def build_action_input_schema(resource_name, action_name, input_params, parent_path = nil)
         schema_name = action_schema_name(resource_name, action_name, 'Input', parent_path)
 
-        # Build Zod object schema
-        # Don't pass action_name - input fields should follow their own required flags
         properties = input_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
           key = transform_key(param_name)
           zod_type = map_field_definition(param_definition, nil)
@@ -87,25 +74,20 @@ module Apiwork
         "export const #{schema_name}Schema = z.object({\n#{properties}\n});"
       end
 
-      # Build Zod schema for action output
       def build_action_output_schema(resource_name, action_name, output_def, parent_path = nil)
         schema_name = action_schema_name(resource_name, action_name, 'Output', parent_path)
 
-        # Map the output definition (handles unions, objects, etc.)
-        # Don't pass action_name - output fields should follow their own required flags
         zod_schema = map_type_definition(output_def, nil)
 
         "export const #{schema_name}Schema = #{zod_schema};"
       end
 
-      # Generate action schema name (e.g., PostCreateInput)
       def action_schema_name(resource_name, action_name, suffix, parent_path = nil)
         parent_names = extract_parent_resource_names(parent_path)
         parts = parent_names + [resource_name.to_s, action_name.to_s, suffix]
         pascal_case(parts.join('_'))
       end
 
-      # Map a field definition to Zod schema
       def map_field_definition(definition, action_name = nil)
         return 'z.string()' unless definition.is_a?(Hash)
 
@@ -121,7 +103,6 @@ module Apiwork
         apply_modifiers(type, definition, action_name)
       end
 
-      # Map a type definition to Zod schema
       def map_type_definition(definition, action_name = nil)
         return 'z.never()' unless definition.is_a?(Hash)
 
@@ -144,7 +125,6 @@ module Apiwork
         end
       end
 
-      # Map object type to Zod inline object schema
       def map_object_type(definition, action_name = nil)
         return 'z.object({})' unless definition[:shape]
 
@@ -164,7 +144,6 @@ module Apiwork
         is_partial ? "#{base_object}.partial()" : base_object
       end
 
-      # Map array type to Zod array schema
       def map_array_type(definition, action_name = nil)
         items_type = definition[:of]
         return 'z.array(z.string())' unless items_type
@@ -175,13 +154,11 @@ module Apiwork
           items_schema = map_type_definition(items_type, action_name)
           "z.array(#{items_schema})"
         else
-          # items_type is a primitive type symbol - construct minimal definition
           primitive = map_primitive({ type: items_type })
           "z.array(#{primitive})"
         end
       end
 
-      # Map union type to Zod union or discriminated union
       def map_union_type(definition, action_name = nil)
         if definition[:discriminator]
           map_discriminated_union(definition, action_name)
@@ -191,7 +168,6 @@ module Apiwork
         end
       end
 
-      # Map discriminated union to Zod discriminated union
       def map_discriminated_union(definition, action_name = nil)
         discriminator_field = transform_key(definition[:discriminator])
         variants = definition[:variants]
@@ -201,7 +177,6 @@ module Apiwork
         "z.discriminatedUnion('#{discriminator_field}', [#{variant_schemas.join(', ')}])"
       end
 
-      # Map literal value to Zod literal schema
       def map_literal_type(definition)
         value = definition[:value]
         case value
@@ -218,19 +193,16 @@ module Apiwork
         end
       end
 
-      # Map primitive type to Zod primitive schema
       def map_primitive(definition)
         type = definition[:type]
         format = definition[:format]&.to_sym
 
-        # Format overrides type mapping for Zod v4 (but not TypeScript!)
         base_type = if format
                       map_format_to_zod(format)
                     else
                       TYPE_MAP[type.to_sym] || 'z.unknown()'
                     end
 
-        # Add min/max constraints for numeric types
         if numeric_type?(type)
           base_type += ".min(#{definition[:min]})" if definition[:min]
           base_type += ".max(#{definition[:max]})" if definition[:max]
@@ -239,7 +211,6 @@ module Apiwork
         base_type
       end
 
-      # Map format to Zod v4 format functions
       def map_format_to_zod(format)
         case format
         when :email then 'z.email()'
@@ -256,12 +227,10 @@ module Apiwork
         end
       end
 
-      # Convert symbol to Zod schema reference
       def schema_reference(symbol)
         "#{pascal_case(symbol)}Schema"
       end
 
-      # Convert name to PascalCase for Zod schemas
       def pascal_case(name)
         name.to_s.camelize(:upper)
       end
@@ -276,17 +245,14 @@ module Apiwork
         introspection[:enums] || {}
       end
 
-      # Check if symbol is a custom type or enum reference
       def enum_or_type_reference?(symbol)
         types.key?(symbol) || enums.key?(symbol)
       end
 
-      # Resolve enum reference (identity function for now)
       def resolve_enum(enum_ref)
         enum_ref
       end
 
-      # Resolve enum to Zod schema reference or inline enum
       def resolve_enum_schema(definition)
         return nil unless definition[:enum]
 
@@ -299,7 +265,6 @@ module Apiwork
         end
       end
 
-      # Extract parent resource names from path
       def extract_parent_resource_names(parent_path)
         return [] unless parent_path
 
@@ -315,36 +280,29 @@ module Apiwork
         parent_names
       end
 
-      # Apply Zod modifiers (nullable, optional) to a schema
       def apply_modifiers(type, definition, action_name)
         is_update = action_name.to_s == 'update'
 
         type += '.nullable()' if definition[:nullable]
 
-        # Discriminator fields (required literals) should never be optional
         is_discriminator = definition[:type] == :literal && definition[:required]
 
         if is_update && !is_discriminator
-          # Update actions: all fields optional (except discriminators)
           type += '.optional()' unless type.include?('.optional()')
         elsif definition[:required] == false
-          # Regular fields: optional if not required
           type += '.optional()'
         end
 
         type
       end
 
-      # Check if a type is numeric
       def numeric_type?(type)
         [:integer, :float, :decimal, :number].include?(type&.to_sym)
       end
 
-      # Transform key according to strategy
       def transform_key(key)
         key_str = key.to_s
 
-        # Preserve leading underscores (e.g., _and, _or, _not)
         leading_underscore = key_str.start_with?('_')
         base = leading_underscore ? key_str[1..] : key_str
 

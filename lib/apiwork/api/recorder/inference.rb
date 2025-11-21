@@ -3,13 +3,10 @@
 module Apiwork
   module API
     class Recorder
-      # Handles inferring resource/contract/controller class names
       module Inference
         private
 
-        # Auto-discover the Schema class based on namespaces and resource name
         def infer_resource_class(name)
-          # Build class name from namespaces array: [:api, :v1] -> 'Api::V1::AccountSchema'
           resource_name = name.to_s.singularize.camelize
           class_name = "#{namespaces_string}::#{resource_name}Schema"
 
@@ -18,9 +15,7 @@ module Apiwork
           nil
         end
 
-        # Infer the Contract class based on namespaces and resource name
         def infer_contract_class(name)
-          # Build class name from namespaces array: [:api, :v1] + :posts -> 'Api::V1::PostContract'
           contract_name = name.to_s.singularize.camelize
           class_name = "#{namespaces_string}::#{contract_name}Contract"
 
@@ -31,18 +26,14 @@ module Apiwork
 
         def constantize_contract_path(path)
           parts = if path.start_with?('/')
-                    # Absolute path: '/admin/post' → 'Admin::PostContract'
                     path[1..].split('/')
                   else
-                    # Relative path: 'admin/post' → 'Api::V1::Admin::PostContract'
                     @namespaces + path.split('/')
                   end
 
-          # Camelize all parts and singularize the last part
           parts = parts.map { |part| part.to_s.camelize }
           parts[-1] = parts[-1].singularize
 
-          # Join, append 'Contract', and constantize
           class_name = "#{parts.join('::')}Contract"
           class_name.constantize
         rescue NameError

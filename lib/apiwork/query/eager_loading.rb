@@ -3,7 +3,6 @@
 module Apiwork
   class Query
     module EagerLoading
-      # Apply eager loading to scope using IncludesResolver
       def apply_includes(scope, params = {})
         return scope if schema.association_definitions.empty?
 

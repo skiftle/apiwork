@@ -10,25 +10,21 @@ module Apiwork
 
         case params
         when Hash
-          # Separate logical operators from regular attributes
           logical_ops = params.slice(:_and, :_or, :_not)
           regular_attrs = params.except(:_and, :_or, :_not)
 
-          # Apply regular attributes first (if any)
           if regular_attrs.present?
             conditions, joins = build_where_conditions(regular_attrs, schema.model_class, issues)
             result = scope.joins(joins).where(conditions.reduce(:and))
             scope = joins.present? ? result.distinct : result
           end
 
-          # Then apply logical operators (if any)
           scope = apply_not(scope, logical_ops[:_not], issues) if logical_ops.key?(:_not)
           scope = apply_or(scope, logical_ops[:_or], issues) if logical_ops.key?(:_or)
           scope = apply_and(scope, logical_ops[:_and], issues) if logical_ops.key?(:_and)
 
           scope
         when Array
-          # Array format = OR logic (existing functionality)
           individual_conditions = params.map do |filter_hash|
             conditions, _joins = build_where_conditions(filter_hash, schema.model_class, issues)
             conditions.compact.reduce(:and) if conditions.any?
@@ -46,10 +42,7 @@ module Apiwork
 
       private
 
-      # Apply NOT operator - negates the entire filter expression
-      # Recursively processes the filter and negates the result
       def apply_not(scope, filter_params, issues = [])
-        # Use build_conditions_recursive to handle nested logical operators
         condition, joins = build_conditions_recursive(filter_params, issues)
 
         return scope if condition.nil?
@@ -59,9 +52,6 @@ module Apiwork
         joins.present? ? result.distinct : result
       end
 
-      # Apply OR operator - combines multiple filter expressions with OR
-      # Each element in the array is recursively processed
-      # Handles both regular filters and nested logical operators
       def apply_or(scope, conditions_array, issues = [])
         return scope if conditions_array.blank?
 
@@ -69,7 +59,6 @@ module Apiwork
         all_joins = {}
 
         conditions_array.each do |filter_hash|
-          # Build conditions recursively (handles nested logical operators)
           conditions, joins = build_conditions_recursive(filter_hash, issues)
           or_conditions << conditions if conditions
           all_joins = all_joins.deep_merge(joins)
@@ -83,8 +72,6 @@ module Apiwork
         all_joins.present? ? result.distinct : result
       end
 
-      # Apply AND operator - combines multiple filter expressions with AND
-      # Each element is recursively processed and chained
       def apply_and(scope, conditions_array, issues = [])
         return scope if conditions_array.blank?
 
@@ -93,53 +80,44 @@ module Apiwork
         end
       end
 
-      # Build Arel conditions recursively, handling logical operators
-      # Returns [condition, joins] where condition is an Arel node
       def build_conditions_recursive(filter_params, issues = [])
         return [nil, {}] if filter_params.blank?
         return [nil, {}] unless filter_params.is_a?(Hash)
 
-        # Separate logical operators from regular attributes
         logical_ops = filter_params.slice(:_and, :_or, :_not)
         regular_attrs = filter_params.except(:_and, :_or, :_not)
 
         conditions = []
         all_joins = {}
 
-        # Build conditions for regular attributes
         if regular_attrs.present?
           attr_conditions, joins = build_where_conditions(regular_attrs, schema.model_class, issues)
           conditions << attr_conditions.reduce(:and) if attr_conditions.any?
           all_joins = all_joins.deep_merge(joins)
         end
 
-        # Handle _and operator
         if logical_ops.key?(:_and)
           cond, joins = process_logical_operator(logical_ops[:_and], :and, issues)
           conditions << cond if cond
           all_joins = all_joins.deep_merge(joins)
         end
 
-        # Handle _or operator
         if logical_ops.key?(:_or)
           cond, joins = process_logical_operator(logical_ops[:_or], :or, issues)
           conditions << cond if cond
           all_joins = all_joins.deep_merge(joins)
         end
 
-        # Handle _not operator
         if logical_ops.key?(:_not)
           not_cond, joins = build_conditions_recursive(logical_ops[:_not], issues)
           conditions << not_cond.not if not_cond
           all_joins = all_joins.deep_merge(joins)
         end
 
-        # Combine all conditions with AND
         final_condition = conditions.compact.reduce(:and)
         [final_condition, all_joins]
       end
 
-      # Process logical operators (_and, _or) by recursively building conditions
       def process_logical_operator(filters, combinator, issues = [])
         collected_conditions = []
         all_joins = {}
@@ -293,7 +271,6 @@ module Apiwork
           return [[], {}]
         end
 
-        # Use Query class for nested filtering
         nested_query = Apiwork::Query.new(association_reflection.klass.all, schema: assoc_resource)
         nested_conditions, nested_joins = nested_query.send(:build_where_conditions, value,
                                                             association_reflection.klass, issues)
@@ -304,7 +281,6 @@ module Apiwork
       def build_uuid_where_clause(key, value, target_klass, issues = [])
         column = target_klass.arel_table[key]
 
-        # Normalize string/array to operator hash
         normalizer = lambda do |val|
           case val
           when String
@@ -360,14 +336,12 @@ module Apiwork
         column = target_klass.arel_table[key]
         allow_nil = target_klass.columns_hash[key.to_s].null
 
-        # Handle simple string/nil values
         if value.is_a?(String) || value.nil?
           return handle_date_nil_value(column, key, allow_nil, issues) if value.blank?
 
           return column.eq(parse_date(value, key, issues))
         end
 
-        # Handle hash operators
         normalizer = ->(val) { val }
 
         builder = FilterBuilder.new(
@@ -471,7 +445,6 @@ module Apiwork
       def build_boolean_where_clause(key, value, target_klass, issues = [])
         column = target_klass.arel_table[key]
 
-        # Normalize boolean primitives to operator hash
         normalizer = lambda do |val|
           if [true, false, nil].include?(val) || ['true', 'false', '1', '0', 1, 0].include?(val)
             { eq: normalize_boolean(val) }

@@ -3,21 +3,15 @@
 module Apiwork
   module Contract
     module Schema
-      # Generates output schemas for CRUD actions
-      # Handles single resource and collection responses with unwrapped discriminated unions
       class OutputGenerator
         class << self
-          # Resolve resource type name for output (handles both STI and regular schemas)
           def resolve_resource_type_name(contract_class, schema_class)
-            # For STI base schemas, build discriminated union type
             if TypeBuilder.sti_base_schema?(schema_class)
               TypeBuilder.build_sti_output_union_type(contract_class, schema_class)
             else
-              # For regular schemas, register resource type
               root_key = schema_class.root_key.singular.to_sym
               resource_type_name = Descriptor::Registry.scoped_name(contract_class, nil)
 
-              # Register if not already registered
               unless Descriptor::Registry.resolve_type(resource_type_name, contract_class: contract_class)
                 register_resource_type(contract_class, schema_class, root_key)
               end
@@ -26,73 +20,46 @@ module Apiwork
             end
           end
 
-          # Generate output for single resource actions (show, create, update)
-          # Returns unwrapped discriminated union with ok field
           def generate_single_output(definition, schema_class)
             root_key = schema_class.root_key.singular.to_sym
             contract_class = definition.contract_class
             resource_type_name = resolve_resource_type_name(contract_class, schema_class)
 
-            # Output is a discriminated union based on 'ok' field (literal values)
-            # The union is "unwrapped" - fields are at top level, not under a wrapper key
-            # Variant 1: ok: true (literal) with resource and optional meta
-            # Variant 2: ok: false (literal) with errors array
-
-            # Mark this definition as an unwrapped union for special serialization
             definition.instance_variable_set(:@unwrapped_union, true)
             definition.instance_variable_set(:@unwrapped_union_discriminator, :ok)
 
-            # Define all possible fields from both variants
-            # Success fields (ok: true variant)
             definition.param :ok, type: :boolean, required: true
             definition.param root_key, type: resource_type_name, required: false
             definition.param :meta, type: :object, required: false
 
-            # Error fields (ok: false variant)
             definition.param :issues, type: :array, of: :issue, required: false
           end
 
-          # Generate output for collection actions (index)
-          # Returns unwrapped discriminated union with ok field and pagination
           def generate_collection_output(definition, schema_class)
             root_key_plural = schema_class.root_key.plural.to_sym
             contract_class = definition.contract_class
             resource_type_name = resolve_resource_type_name(contract_class, schema_class)
 
-            # Output is a discriminated union based on 'ok' field (literal values)
-            # The union is "unwrapped" - fields are at top level, not under a wrapper key
-            # Variant 1: ok: true (literal) with resources array and meta with pagination
-            # Variant 2: ok: false (literal) with errors array
-
-            # Mark this definition as an unwrapped union for special serialization
             definition.instance_variable_set(:@unwrapped_union, true)
             definition.instance_variable_set(:@unwrapped_union_discriminator, :ok)
 
-            # Define all possible fields from both variants
-            # Success fields (ok: true variant)
             definition.param :ok, type: :boolean, required: true
             definition.param root_key_plural, type: :array, of: resource_type_name, required: false
             definition.param :meta, type: :object, required: false do
               param :pagination, type: :pagination, required: true
             end
 
-            # Error fields (ok: false variant)
             definition.param :issues, type: :array, of: :issue, required: false
           end
 
           private
 
-          # Register resource type with all attributes and associations
           def register_resource_type(contract_class, schema_class, type_name)
-            # PRE-REGISTER: Register all association types BEFORE defining the resource type
-            # This prevents "can't add a new key into hash during iteration" errors
             assoc_type_map = {}
             schema_class.association_definitions.each do |name, association_definition|
               assoc_type_map[name] = TypeBuilder.build_association_type(contract_class, association_definition)
             end
 
-            # PRE-REGISTER: Register all enum types BEFORE defining the resource type
-            # This allows param to resolve enum references and auto-generates filter types
             schema_class.attribute_definitions.each do |name, attribute_definition|
               next unless attribute_definition.enum
 
@@ -101,13 +68,8 @@ module Apiwork
                                                                     api_class: contract_class.api_class)
             end
 
-            # NOW register the resource type with the root key as the name
-            # This ensures the type can be resolved later using the same name
             Descriptor::Registry.register_type(type_name, scope: contract_class, api_class: contract_class.api_class) do
-              # All resource attributes
-              # Keep snake_case for introspect consistency (transformation happens during serialization)
               schema_class.attribute_definitions.each do |name, attribute_definition|
-                # Build enum option - use symbol reference to pre-registered enum
                 enum_option = attribute_definition.enum ? { enum: name } : {}
 
                 param name,
@@ -120,13 +82,9 @@ module Apiwork
                       **enum_option
               end
 
-              # Add associations using pre-registered types
-              # Keep snake_case for introspect consistency
-              # :always associations are required, :optional are not
               schema_class.association_definitions.each do |name, association_definition|
                 assoc_type = assoc_type_map[name]
 
-                # Common options for all associations
                 base_options = {
                   required: association_definition.always_included?,
                   nullable: association_definition.nullable?,

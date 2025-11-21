@@ -5,9 +5,6 @@ module Apiwork
     module Routing
       class Builder
         def build
-          # APIs are already loaded by Engine.to_prepare
-          # Don't reload them here to avoid duplicate loading issues
-
           api_classes = Registry.all
           builder_instance = self
 
@@ -17,7 +14,6 @@ module Apiwork
             api_classes.each do |api_class|
               next if api_class.mount_path.blank? || api_class.metadata.blank?
 
-              # Draw spec endpoints first (outside module namespace)
               if api_class.specs?
                 scope path: api_class.mount_path do
                   api_class.specs.each do |spec_type, spec_path|
@@ -29,9 +25,7 @@ module Apiwork
                 end
               end
 
-              # Draw resource routes (inside module namespace)
               scope path: api_class.mount_path, module: builder_instance.controller_path(api_class) do
-                # Draw resources recursively
                 builder_instance.draw_resources_in_context(self, api_class.metadata.resources)
               end
             end
@@ -53,7 +47,6 @@ module Apiwork
 
             context.instance_eval do
               send(resource_method, name, **options) do
-                # Draw member actions
                 if metadata[:members].any?
                   member do
                     metadata[:members].each do |action, action_metadata|
@@ -62,7 +55,6 @@ module Apiwork
                   end
                 end
 
-                # Draw collection actions
                 if metadata[:collections].any?
                   collection do
                     metadata[:collections].each do |action, action_metadata|
@@ -71,7 +63,6 @@ module Apiwork
                   end
                 end
 
-                # Draw nested resources INSIDE this block
                 builder_instance.draw_resources_in_context(self, metadata[:resources]) if metadata[:resources].any?
               end
             end

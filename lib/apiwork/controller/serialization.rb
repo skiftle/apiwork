@@ -17,8 +17,6 @@ module Apiwork
 
         response = responder.perform(resource_or_collection, query_params: action_input.data)
 
-        # Skip output validation for DELETE actions with schema
-        # (they return { ok: true, meta: {} } without resource data to validate)
         skip_validation = request.delete? && output_parser.schema_class.present?
         unless skip_validation
           result = output_parser.perform(response)

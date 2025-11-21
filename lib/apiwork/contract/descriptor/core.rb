@@ -5,7 +5,6 @@ require 'concurrent/map'
 module Apiwork
   module Contract
     module Descriptor
-      # Thread-safety: Lock-free using Concurrent::Map (atomic operations)
       module Core
         class << self
           def clear!
@@ -266,11 +265,6 @@ module Apiwork
               end
             end
           end
-
-          # ============================================================
-          # NULLABLE FILTER TYPES
-          # ============================================================
-          # These include all base operators plus the :null operator
 
           def register_nullable_string_filter(api_class:)
             builder = Builder.new(api_class: api_class)

@@ -5,27 +5,10 @@ require 'tempfile'
 
 module Apiwork
   module Generator
-    class Pipeline
-      # Writer handles filesystem I/O for generated artifacts
-      #
-      # Provides atomic writes using tempfiles and automatic directory creation.
-      # Supports both single-file and directory-based output.
-      #
-      # Usage:
-      #   Writer.write(content: '...', output: 'path/to/file.ts', extension: '.ts')
-      #   Writer.clean(output: 'generated/')
-      #
+    module Pipeline
       module Writer
         module_function
 
-        # Write content to filesystem
-        #
-        # @param content [String, Hash] Content to write (Hash auto-converts to JSON)
-        # @param output [String] Output path (file or directory)
-        # @param extension [String] File extension (e.g., '.ts', '.json')
-        # @param api_path [String, nil] API path (required for directory output)
-        # @param format [Symbol, nil] Generator format (required for directory output)
-        # @return [String] Path to written file
         def write(content:, output:, extension:, api_path: nil, format: nil)
           if file_path?(output)
             write_file(content, output)
@@ -37,9 +20,6 @@ module Apiwork
           end
         end
 
-        # Clean generated files/directories
-        #
-        # @param output [String] Path to clean
         def clean(output:)
           if File.exist?(output)
             if File.directory?(output)
@@ -54,33 +34,15 @@ module Apiwork
           end
         end
 
-        # Check if path is a file (has extension)
-        #
-        # @param path [String] Path to check
-        # @return [Boolean] true if path has extension
         def file_path?(path)
           File.extname(path) != ''
         end
 
-        # Build file path from components
-        #
-        # Constructs nested path: output/api/path/parts/format.extension
-        #
-        # @param output [String] Base output directory
-        # @param api_path [String] API path (e.g., '/api/v1')
-        # @param format [Symbol] Generator format
-        # @param extension [String] File extension
-        # @return [String] Complete file path
         def build_file_path(output, api_path, format, extension)
           path_parts = api_path.split('/').reject(&:empty?)
           File.join(output, *path_parts, "#{format}#{extension}")
         end
 
-        # Write content to file atomically using tempfile
-        #
-        # @param content [String, Hash] Content to write
-        # @param file_path [String] Target file path
-        # @return [String] Path to written file
         def write_file(content, file_path)
           FileUtils.mkdir_p(File.dirname(file_path))
 

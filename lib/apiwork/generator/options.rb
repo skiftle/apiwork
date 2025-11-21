@@ -2,8 +2,6 @@
 
 module Apiwork
   module Generator
-    # Options parsing and validation for generators
-    # DSL only allows three key formats: underscore, camel, keep
     module Options
       module_function
 

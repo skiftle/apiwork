@@ -9,24 +9,18 @@ module Apiwork
         @schema = schema
       end
 
-      # Build includes hash from all sources
-      # For collections: always included + filter + sort + explicit includes
-      # For single resources: always included + explicit includes only
       def build(params: {}, for_collection: true)
         return {} if schema.association_definitions.empty?
 
         combined = {}
 
-        # 1. Start with include: :always associations
         combined.deep_merge!(always_included)
 
-        # 2. Add associations from filter/sort (collections only)
         if for_collection
           combined.deep_merge!(extract_from_filter(params[:filter]))
           combined.deep_merge!(extract_from_sort(params[:sort]))
         end
 
-        # 3. Apply explicit include params (cannot disable :always associations)
         apply_explicit_includes(combined, params[:include])
 
         combined
@@ -34,7 +28,6 @@ module Apiwork
 
       private
 
-      # Build includes hash from include: :always associations only
       def always_included(visited = Set.new)
         return {} if visited.include?(schema.name)
 
@@ -61,23 +54,18 @@ module Apiwork
         result
       end
 
-      # Extract associations from filter params
       def extract_from_filter(filter_hash)
         return {} if filter_hash.blank?
 
         AssociationExtractor.new(schema: schema).extract_from_filter(filter_hash)
       end
 
-      # Extract associations from sort params
       def extract_from_sort(sort_hash)
         return {} if sort_hash.blank?
 
         AssociationExtractor.new(schema: schema).extract_from_sort(sort_hash)
       end
 
-      # Apply explicit include params
-      # Cannot disable :always associations, can only add nested includes
-      # Can disable :optional associations with false
       def apply_explicit_includes(combined, include_params)
         return if include_params.blank?
 
@@ -86,22 +74,15 @@ module Apiwork
           association_definition = schema.association_definitions[key_name_sym]
 
           if false?(value)
-            # Only allow deletion for :optional associations
-            # :always associations cannot be disabled
             next if association_definition&.always_included?
-
-            # Ignore false for :always - keep it in combined
 
             combined.delete(key_name_sym)
 
           elsif value.is_a?(Hash)
-            # Nested include - deep merge with existing (for :always associations)
             normalized = normalize_nested_includes(value)
             combined[key_name_sym] = if combined.key?(key_name_sym) && combined[key_name_sym].is_a?(Hash)
-                                       # Association already exists (likely :always) - deep merge nested includes
                                        deep_merge_includes(combined[key_name_sym], normalized)
                                      else
-                                       # New association - set directly
                                        normalized
                                      end
           elsif true?(value)
@@ -110,8 +91,6 @@ module Apiwork
         end
       end
 
-      # Deep merge two include hashes
-      # Recursively merges nested hashes, preserving both automatic and explicit includes
       def deep_merge_includes(base, override)
         self.class.deep_merge_includes(base, override)
       end
@@ -129,8 +108,6 @@ module Apiwork
         result
       end
 
-      # Normalize nested include params by converting true → {}
-      # Rails .includes() expects { comments: { post: {} } }, not { comments: { post: true } }
       def normalize_nested_includes(hash)
         result = {}
         hash.each do |key, value|
@@ -143,7 +120,6 @@ module Apiwork
                                  elsif value.is_a?(Hash)
                                    normalize_nested_includes(value)
                                  else
-                                   # Unknown value type - default to empty hash
                                    {}
                                  end
         end
@@ -158,11 +134,9 @@ module Apiwork
         [false, 'false'].include?(value)
       end
 
-      # Resolve schema class from definition or association
       def resolve_schema_class(definition, association)
         schema_class = definition.schema_class || Apiwork::Schema::Resolver.from_association(association, schema)
 
-        # Handle string class names
         schema_class = constantize_safe(schema_class) if schema_class.is_a?(String)
 
         schema_class
@@ -178,7 +152,6 @@ module Apiwork
         nil
       end
 
-      # Helper class to extract associations from filter/sort params
       class AssociationExtractor
         attr_reader :schema
 
@@ -193,7 +166,6 @@ module Apiwork
           visited = visited.dup.add(schema.name)
           result = {}
 
-          # Handle array format (OR logic)
           if filter_hash.is_a?(Array)
             filter_hash.each do |filter_item|
               extracted = extract_from_filter(filter_item, visited)
@@ -205,7 +177,6 @@ module Apiwork
           filter_hash.each do |key, value|
             key_name_sym = key.to_sym
 
-            # Handle logical operators - recursively extract from their values
             if %i[_or _and].include?(key_name_sym) && value.is_a?(Array)
               value.each do |filter_item|
                 extracted = extract_from_filter(filter_item, visited)
@@ -222,10 +193,8 @@ module Apiwork
 
             next unless association_definition
 
-            # Found association in filter - must include it
             result[key_name_sym] = {}
 
-            # Check if there are nested associations to extract
             next unless value.is_a?(Hash)
 
             nested_schema = resolve_nested_schema(association_definition)
@@ -258,10 +227,8 @@ module Apiwork
 
               next unless association_definition
 
-              # Found association in sort - must include it
               result[key_name_sym] = {}
 
-              # Check if there are nested associations to extract
               next unless value.is_a?(Hash)
 
               nested_schema = resolve_nested_schema(association_definition)
@@ -282,7 +249,6 @@ module Apiwork
         def resolve_nested_schema(association_definition)
           nested_schema = association_definition.schema_class
 
-          # Handle string class names
           nested_schema = IncludesResolver.constantize_safe(nested_schema) if nested_schema.is_a?(String)
 
           nested_schema

@@ -2,25 +2,6 @@
 
 module Apiwork
   module Generator
-    # Base class for all generators
-    #
-    # Provides common functionality for loading API data and transforming keys.
-    # Subclasses must implement #generate and .file_extension.
-    #
-    # Usage:
-    #   class MyGenerator < Generator::Base
-    #     generator_name :my_format
-    #     content_type 'text/plain'
-    #
-    #     def self.file_extension
-    #       '.txt'
-    #     end
-    #
-    #     def generate
-    #       # Return generated content
-    #     end
-    #   end
-    #
     class Base
       attr_reader :path, :data, :options
 
@@ -76,12 +57,10 @@ module Apiwork
         @options[:version]
       end
 
-      # Preserves leading underscores for special fields like _and, _or, _not
       def transform_key(key, strategy = nil)
         key_str = key.to_s
         transform_strategy = strategy || key_transform
 
-        # Preserve leading underscores (e.g., _and, _or, _not)
         if key_str.start_with?('_')
           underscore_prefix = key_str.match(/^_+/)[0]
           key_without_prefix = key_str[underscore_prefix.length..]

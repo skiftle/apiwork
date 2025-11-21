@@ -2,43 +2,15 @@
 
 module Apiwork
   module Generator
-    # Pipeline orchestrates the generation and writing of API artifacts
-    #
-    # Supports both in-memory generation (for HTTP responses) and
-    # filesystem generation (for build-time artifact creation).
-    #
-    # Usage:
-    #   # Generate in memory (returns content)
-    #   Pipeline.generate(api_path: '/api/v1', format: :zod, key_transform: :camel)
-    #
-    #   # Write to filesystem
-    #   Pipeline.write(output: 'generated/', format: :zod)
-    #
-    #   # Clean generated files
-    #   Pipeline.clean(output: 'generated/')
-    #
     module Pipeline
       module_function
 
-      # Generate artifact in memory
-      #
-      # @param api_path [String] API path to generate for
-      # @param format [Symbol] Generator format (:zod, :typescript, :openapi)
-      # @param options [Hash] Generator options (key_transform, version, etc.)
-      # @return [String, Hash] Generated content
       def generate(api_path:, format:, **options)
         opts = Options.build(**options)
         generator_class = Registry.find(format)
         generator_class.generate(path: api_path, **opts)
       end
 
-      # Write artifacts to filesystem
-      #
-      # @param output [String] Output path (file or directory)
-      # @param api_path [String, nil] Specific API path (nil for all APIs)
-      # @param format [Symbol, nil] Specific format (nil for all registered formats)
-      # @param options [Hash] Generator options
-      # @return [Integer] Number of files generated
       def write(output:, api_path: nil, format: nil, **options)
         raise ArgumentError, 'output path required' unless output
         raise ArgumentError, 'api_path and format required when output is a file' if Writer.file_path?(output) && (api_path.nil? || format.nil?)
@@ -68,20 +40,12 @@ module Apiwork
         count
       end
 
-      # Clean generated artifacts from filesystem
-      #
-      # @param output [String] Output path to clean
       def clean(output:)
         raise ArgumentError, 'output path required' unless output
 
         Writer.clean(output: output)
       end
 
-      # Find API class by path
-      #
-      # @param api_path [String] API path
-      # @return [Class] API class
-      # @raise [ArgumentError] If API not found
       def find_api(api_path)
         api_class = API::Registry.all.find do |klass|
           klass.metadata&.path == api_path
@@ -97,21 +61,11 @@ module Apiwork
       end
       private :find_api
 
-      # Find all registered API classes
-      #
-      # @return [Array<Class>] API classes with metadata
       def find_all_apis
         API::Registry.all.select(&:metadata)
       end
       private :find_all_apis
 
-      # Generate and write a single file
-      #
-      # @param api_class [Class] API class
-      # @param format [Symbol] Generator format
-      # @param output [String] Output path
-      # @param options [Hash] Generator options
-      # @return [Integer] 1 if successful, 0 if skipped/failed
       def generate_file(api_class:, format:, output:, options:)
         api_path = api_class.metadata.path
 
