@@ -30,7 +30,7 @@ module Apiwork
 
         def deserialize_value(value, param_options)
           transformed_value = if param_options[:attribute_definition]
-                                param_options[:attribute_definition].deserialize(value)
+                                param_options[:attribute_definition].decode(value)
                               else
                                 value
                               end

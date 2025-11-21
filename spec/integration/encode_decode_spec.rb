@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Serialize and Deserialize attribute options', type: :request do
-  describe 'deserialize: on attribute' do
+RSpec.describe 'Encode and Decode attribute options', type: :request do
+  describe 'decode: on attribute' do
     it 'transforms input value before storing in database' do
       user_params = {
         user: {
@@ -21,7 +21,7 @@ RSpec.describe 'Serialize and Deserialize attribute options', type: :request do
       expect(created_user.email).to eq('JOHN.DOE@EXAMPLE.COM')
     end
 
-    it 'applies deserialization on update operations' do
+    it 'applies decoding on update operations' do
       user_record = User.create!(email: 'ORIGINAL@EXAMPLE.COM', name: 'Jane')
 
       patch_params = {
@@ -39,7 +39,7 @@ RSpec.describe 'Serialize and Deserialize attribute options', type: :request do
       expect(user_record.email).to eq('UPDATED@EXAMPLE.COM')
     end
 
-    it 'handles nil values in deserialization' do
+    it 'handles nil values in decoding' do
       user_params = {
         user: {
           email: nil,
@@ -57,7 +57,7 @@ RSpec.describe 'Serialize and Deserialize attribute options', type: :request do
     end
   end
 
-  describe 'serialize: on attribute' do
+  describe 'encode: on attribute' do
     it 'transforms output value when reading from database' do
       User.create!(email: 'STORED@UPPERCASE.COM', name: 'John')
 
@@ -70,7 +70,7 @@ RSpec.describe 'Serialize and Deserialize attribute options', type: :request do
       expect(json['users'].first['email']).to eq('stored@uppercase.com')
     end
 
-    it 'applies serialization on show endpoint' do
+    it 'applies encoding on show endpoint' do
       user_record = User.create!(email: 'DATABASE@VALUE.COM', name: 'Jane')
 
       get "/api/v1/users/#{user_record.id}"

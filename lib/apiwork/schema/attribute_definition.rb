@@ -43,8 +43,8 @@ module Apiwork
                     when Hash then { on: Array(options[:writable][:on] || %i[create update]) }
                     else { on: [] }
                     end
-        @serialize = options[:serialize]
-        @deserialize = options[:deserialize]
+        @encode = options[:encode]
+        @decode = options[:decode]
         @empty = options[:empty]
         @nullable = options[:nullable] # Explicit nullable option (overrides DB detection)
         @required = options[:required] || false
@@ -97,14 +97,14 @@ module Apiwork
         @writable[:on]
       end
 
-      def serialize(value)
+      def encode(value)
         validate_enum(value) if enum && !value.nil?
 
-        apply_transformers(value, @serialize)
+        apply_transformers(value, @encode)
       end
 
-      def deserialize(value)
-        apply_transformers(value, @deserialize)
+      def decode(value)
+        apply_transformers(value, @decode)
       end
 
       private
@@ -114,8 +114,8 @@ module Apiwork
           filterable: false,
           sortable: false,
           writable: false,
-          serialize: nil,
-          deserialize: nil,
+          encode: nil,
+          decode: nil,
           empty: false,
           nullable: false,
           required: false,
@@ -167,8 +167,8 @@ module Apiwork
       end
 
       def apply_empty_transformers!
-        @serialize = Array(@serialize).unshift(:nil_to_empty).uniq
-        @deserialize = Array(@deserialize).push(:blank_to_nil).uniq
+        @encode = Array(@encode).unshift(:nil_to_empty).uniq
+        @decode = Array(@decode).push(:blank_to_nil).uniq
       end
 
       def apply_transformers(value, transformers)
