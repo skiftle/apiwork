@@ -172,7 +172,7 @@ module Apiwork
 
         issue = Issue.new(
           code: :invalid_value,
-          message: "Must be one of #{enum_values.join(', ')}",
+          detail: "Must be one of #{enum_values.join(', ')}",
           path: [name]
         )
         raise ContractError, [issue]

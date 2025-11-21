@@ -144,7 +144,7 @@ module Apiwork
           # Create new Issue with transformed path
           Issue.new(
             code: issue.code,
-            message: issue.message,
+            detail: issue.detail,
             path: transformed_path,
             meta: issue.meta
           )

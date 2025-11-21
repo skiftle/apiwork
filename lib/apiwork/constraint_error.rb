@@ -6,7 +6,7 @@ module Apiwork
 
     def initialize(issues)
       @issues = Array(issues)
-      super(@issues.map(&:message).join('; '))
+      super(@issues.map(&:detail).join('; '))
     end
 
     def http_status

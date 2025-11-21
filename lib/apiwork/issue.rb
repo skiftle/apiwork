@@ -2,13 +2,13 @@
 
 module Apiwork
   class Issue
-    attr_reader :code, :path, :meta, :message
+    attr_reader :code, :path, :detail, :meta
 
-    def initialize(code:, message:, path: [], meta: {})
+    def initialize(code:, detail:, path: [], meta: {})
       @code = code
+      @detail = detail
       @path = Array(path).map { |element| element.is_a?(Integer) ? element : element.to_sym }
       @meta = meta
-      @message = message
     end
 
     def pointer
@@ -16,15 +16,13 @@ module Apiwork
     end
 
     def to_h
-      result = {
+      {
         code: code,
+        detail: detail,
         path: path.map(&:to_s),
         pointer: pointer,
-        detail: message
+        meta: meta
       }
-
-      result[:options] = meta if meta.present?
-      result
     end
 
     def as_json
