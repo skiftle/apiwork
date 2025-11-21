@@ -66,7 +66,9 @@
       "Bash(RAILS_ENV=test BUNDLE_GEMFILE=spec/dummy/Gemfile bundle exec ruby:*)",
       "Bash(RAILS_ENV=test bin/rails runner:*)",
       "Bash(git -C /Users/joakim/GitHub/apiwork checkout spec/integration/sti_spec.rb)",
-      "Bash(sed:*)"
+      "Bash(sed:*)",
+      "Bash(comm:*)",
+      "Bash(RAILS_ENV=test bin/rails db:reset:*)"
     ],
     "deny": [],
     "ask": []

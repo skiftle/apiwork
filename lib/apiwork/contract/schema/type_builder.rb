@@ -23,32 +23,35 @@ module Apiwork
 
           # Determine which filter type to use based on attribute type
           # Returns global built-in filter types from Descriptor::Registry
-          def determine_filter_type(attr_type)
-            case attr_type
-            when :string
-              :string_filter
-            when :date
-              :date_filter
-            when :datetime
-              :datetime_filter
-            when :integer
-              :integer_filter
-            when :decimal, :float
-              :decimal_filter
-            when :uuid
-              :uuid_filter
-            when :boolean
-              :boolean_filter
-            else
-              :string_filter # Default fallback
-            end
+          # If nullable is true, returns nullable variant (e.g., :nullable_string_filter)
+          def determine_filter_type(attr_type, nullable: false)
+            base_type = case attr_type
+                        when :string
+                          :string_filter
+                        when :date
+                          :date_filter
+                        when :datetime
+                          :datetime_filter
+                        when :integer
+                          :integer_filter
+                        when :decimal, :float
+                          :decimal_filter
+                        when :uuid
+                          :uuid_filter
+                        when :boolean
+                          :boolean_filter
+                        else
+                          :string_filter # Default fallback
+                        end
+
+            nullable ? :"nullable_#{base_type}" : base_type
           end
 
           # Unified method to determine filter type for any attribute (enum or primitive)
           def filter_type_for(attribute_definition, contract_class)
             return enum_filter_type(attribute_definition, contract_class) if attribute_definition.enum
 
-            determine_filter_type(attribute_definition.type)
+            determine_filter_type(attribute_definition.type, nullable: attribute_definition.nullable?)
           end
 
           # Get filter type for enum attributes

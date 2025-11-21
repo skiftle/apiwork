@@ -80,6 +80,24 @@ module Apiwork
               register_datetime_filter(api_class: api_class)
             when :uuid_filter
               register_uuid_filter(api_class: api_class)
+            when :nullable_string_filter
+              register_nullable_string_filter(api_class: api_class)
+            when :nullable_integer_filter
+              register_integer_filter_between(api_class: api_class)
+              register_nullable_integer_filter(api_class: api_class)
+            when :nullable_decimal_filter
+              register_decimal_filter_between(api_class: api_class)
+              register_nullable_decimal_filter(api_class: api_class)
+            when :nullable_boolean_filter
+              register_nullable_boolean_filter(api_class: api_class)
+            when :nullable_date_filter
+              register_date_filter_between(api_class: api_class)
+              register_nullable_date_filter(api_class: api_class)
+            when :nullable_datetime_filter
+              register_datetime_filter_between(api_class: api_class)
+              register_nullable_datetime_filter(api_class: api_class)
+            when :nullable_uuid_filter
+              register_nullable_uuid_filter(api_class: api_class)
             end
           end
 
@@ -108,7 +126,10 @@ module Apiwork
             schema_class.attribute_definitions.each_value do |attribute_definition|
               next unless attribute_definition.filterable?
 
-              filter_type = Schema::TypeBuilder.determine_filter_type(attribute_definition.type)
+              filter_type = Schema::TypeBuilder.determine_filter_type(
+                attribute_definition.type,
+                nullable: attribute_definition.nullable?
+              )
               descriptors.add(filter_type)
             end
             descriptors
@@ -242,6 +263,114 @@ module Apiwork
               type :uuid_filter do
                 param :eq, type: :uuid, required: false
                 param :in, type: :array, of: :uuid, required: false
+              end
+            end
+          end
+
+          # ============================================================
+          # NULLABLE FILTER TYPES
+          # ============================================================
+          # These include all base operators plus the :null operator
+
+          def register_nullable_string_filter(api_class:)
+            builder = Builder.new(api_class: api_class)
+            builder.instance_eval do
+              type :nullable_string_filter do
+                param :eq, type: :string, required: false
+                param :in, type: :array, of: :string, required: false
+                param :contains, type: :string, required: false
+                param :starts_with, type: :string, required: false
+                param :ends_with, type: :string, required: false
+                param :null, type: :boolean, required: false
+              end
+            end
+          end
+
+          def register_nullable_integer_filter(api_class:)
+            register_integer_filter_between(api_class: api_class)
+            builder = Builder.new(api_class: api_class)
+            builder.instance_eval do
+              type :nullable_integer_filter do
+                param :eq, type: :integer, required: false
+                param :gt, type: :integer, required: false
+                param :gte, type: :integer, required: false
+                param :lt, type: :integer, required: false
+                param :lte, type: :integer, required: false
+                param :in, type: :array, of: :integer, required: false
+                param :between, type: :integer_filter_between, required: false
+                param :null, type: :boolean, required: false
+              end
+            end
+          end
+
+          def register_nullable_decimal_filter(api_class:)
+            register_decimal_filter_between(api_class: api_class)
+            builder = Builder.new(api_class: api_class)
+            builder.instance_eval do
+              type :nullable_decimal_filter do
+                param :eq, type: :decimal, required: false
+                param :gt, type: :decimal, required: false
+                param :gte, type: :decimal, required: false
+                param :lt, type: :decimal, required: false
+                param :lte, type: :decimal, required: false
+                param :in, type: :array, of: :decimal, required: false
+                param :between, type: :decimal_filter_between, required: false
+                param :null, type: :boolean, required: false
+              end
+            end
+          end
+
+          def register_nullable_date_filter(api_class:)
+            register_date_filter_between(api_class: api_class)
+            builder = Builder.new(api_class: api_class)
+            builder.instance_eval do
+              type :nullable_date_filter do
+                param :eq, type: :date, required: false
+                param :gt, type: :date, required: false
+                param :gte, type: :date, required: false
+                param :lt, type: :date, required: false
+                param :lte, type: :date, required: false
+                param :between, type: :date_filter_between, required: false
+                param :in, type: :array, of: :date, required: false
+                param :null, type: :boolean, required: false
+              end
+            end
+          end
+
+          def register_nullable_datetime_filter(api_class:)
+            register_datetime_filter_between(api_class: api_class)
+            builder = Builder.new(api_class: api_class)
+            builder.instance_eval do
+              type :nullable_datetime_filter do
+                param :eq, type: :datetime, required: false
+                param :gt, type: :datetime, required: false
+                param :gte, type: :datetime, required: false
+                param :lt, type: :datetime, required: false
+                param :lte, type: :datetime, required: false
+                param :between, type: :datetime_filter_between, required: false
+                param :in, type: :array, of: :datetime, required: false
+                param :null, type: :boolean, required: false
+              end
+            end
+          end
+
+          def register_nullable_uuid_filter(api_class:)
+            builder = Builder.new(api_class: api_class)
+            builder.instance_eval do
+              type :nullable_uuid_filter do
+                param :eq, type: :uuid, required: false
+                param :in, type: :array, of: :uuid, required: false
+                param :null, type: :boolean, required: false
+              end
+            end
+          end
+
+          def register_nullable_boolean_filter(api_class:)
+            builder = Builder.new(api_class: api_class)
+            builder.instance_eval do
+              type :nullable_boolean_filter do
+                param :eq, type: :boolean, required: false
+                param :null, type: :boolean, required: false
               end
             end
           end

@@ -172,9 +172,9 @@ RSpec.describe Apiwork::Generator::Zod do
       # DateFilter and UuidFilter are not included because no schema uses date or uuid types
       # Only types actually used by schemas are registered with lazy loading
 
-      it 'includes BooleanFilterSchema from introspect types' do
-        expect(output).to include('export interface BooleanFilter')
-        expect(output).to include('export const BooleanFilterSchema = z.object')
+      it 'includes NullableBooleanFilterSchema from introspect types' do
+        expect(output).to include('export interface NullableBooleanFilter')
+        expect(output).to include('export const NullableBooleanFilterSchema = z.object')
       end
 
       it 'includes schema-specific page schemas' do
@@ -488,7 +488,7 @@ RSpec.describe Apiwork::Generator::Zod do
       end
 
       it 'places all primitive filters before post_filter' do
-        primitive_filters = %i[string_filter integer_filter boolean_filter datetime_filter]
+        primitive_filters = %i[string_filter integer_filter nullable_boolean_filter datetime_filter]
 
         primitive_filters.each do |filter|
           expect_before(filter, :post_filter,
