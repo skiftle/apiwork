@@ -44,6 +44,30 @@ module Apiwork
           prepend Schema::Extension unless ancestors.include?(Schema::Extension)
         end
 
+        # Explicitly register STI variant schemas for this contract's base schema
+        # This ensures variant schemas are loaded before type generation, preventing
+        # test isolation issues where variants aren't discovered in time.
+        #
+        # Example:
+        #   class ClientContract < Apiwork::Contract::Base
+        #     schema ClientSchema
+        #     register_sti_variants PersonClientSchema, CompanyClientSchema
+        #   end
+        def register_sti_variants(*variant_schema_classes)
+          variant_schema_classes.each do |variant_class|
+            unless variant_class.is_a?(Class) && variant_class < Apiwork::Schema::Base
+              raise ArgumentError,
+                    "Expected Schema class, got #{variant_class.inspect}. " \
+                    'Use: register_sti_variants PersonSchema, CompanySchema'
+            end
+
+            # Force load the variant schema class by accessing its name
+            # This triggers Zeitwerk autoloading and causes the variant's
+            # `variant` DSL to execute, registering it with the base schema
+            variant_class.name
+          end
+        end
+
         # Get schema class
         def schema_class
           @_schema_class

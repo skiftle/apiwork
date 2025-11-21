@@ -3,37 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
-  # Ensure contracts and variant schemas are loaded before tests
-  # This triggers Zeitwerk autoloading by referencing the classes
-  before(:all) do
-    # Force load contracts for all resources used in these tests
-    # This is necessary because we removed anonymous contract creation
-    Api::V1::ClientContract.name
-    Api::V1::ServiceContract.name
-    Api::V1::PersonClientContract.name
-    Api::V1::CompanyClientContract.name
-
-    # Force load both variant schemas to register them with the base schema
-    # Using .name to actually use the constant (avoids Ruby void context warning)
-    Api::V1::PersonClientSchema.name
-    Api::V1::CompanyClientSchema.name
-
-    # HACK: Clear caches to force rebuild with loaded contracts/variants
-    # This is necessary because other test files may have triggered introspection
-    # before the contracts/variants were loaded, causing stale cached results.
-    # TODO: Refactor to eliminate this hack - caching should be smarter
-    # or contracts should be loaded more reliably in all contexts.
-
-    # Clear API introspection cache
-    api = Apiwork::API.find('/api/v1')
-    api&.instance_variable_set(:@introspect, nil)
-
-    # Clear SchemaRegistry cache (schema → contract mappings)
-    Apiwork::Contract::SchemaRegistry.clear!
-
-    # Clear Descriptor Registry (types/enums cache) - critical for STI unions
-    Apiwork::Contract::Descriptor::Registry.clear!
-  end
+  # No special setup needed - STI variants are registered via ClientContract.register_sti_variants
 
   let!(:person_client) do
     PersonClient.create!(
@@ -249,12 +219,7 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
   end
 
   describe 'Type generation' do
-    it 'generates discriminated union for STI associations',
-       skip: 'Fails in full suite due to cache isolation issue - passes in isolation' do
-      # TODO: This test fails when running full suite due to cache isolation issue
-      # The :client STI union type is not in introspection when running all specs,
-      # but the test passes when run in isolation. This is a pre-existing caching
-      # issue with STI type generation that needs deeper investigation.
+    it 'generates discriminated union for STI associations' do
       introspection = Apiwork::API.introspect('/api/v1')
 
       # Should have a union type for the client STI resource (uses root_key as name)
