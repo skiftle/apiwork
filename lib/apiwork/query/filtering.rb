@@ -323,26 +323,16 @@ module Apiwork
       def build_string_where_clause(key, value, target_klass, issues = [])
         column = target_klass.arel_table[key]
 
-        value = { eq: value } if value.is_a?(String) || value.nil?
+        normalizer = ->(val) { val.is_a?(String) || val.nil? ? { eq: val } : val }
 
-        unless value.is_a?(Hash)
-          issues << Issue.new(
-            code: :invalid_string_filter_type,
-            message: 'Expected Hash for string filter',
-            path: [:filter, key],
-            meta: { field: key, value_type: value.class.name }
-          )
-          return nil
-        end
-
-        builder = FilterOperatorBuilder.new(
+        builder = FilterBuilder.new(
           column: column,
           field_name: key,
-          valid_operators: STRING_OPERATORS,
-          issues: issues
+          issues: issues,
+          allowed_types: [Hash]
         )
 
-        builder.build(value) do |operator, compare|
+        builder.build(value, valid_operators: STRING_OPERATORS, normalizer: normalizer) do |operator, compare|
           case operator
           when :eq then column.eq(compare)
           when :contains then column.matches("%#{compare}%")
@@ -357,132 +347,107 @@ module Apiwork
         column = target_klass.arel_table[key]
         allow_nil = target_klass.columns_hash[key.to_s].null
 
-        case value
-        when String, nil
-          if value.blank?
-            unless allow_nil
-              issues << Issue.new(
-                code: :null_not_allowed,
-                message: "#{key} cannot be null",
-                path: [:filter, key],
-                meta: { field: key }
-              )
-              return column.eq(nil)
-            end
+        # Handle simple string/nil values
+        if value.is_a?(String) || value.nil?
+          return handle_date_nil_value(column, key, allow_nil, issues) if value.blank?
 
-            column.eq(nil)
-          else
-            column.eq(parse_date(value, key, issues))
-          end
-        when Hash
-          builder = FilterOperatorBuilder.new(
-            column: column,
-            field_name: key,
-            valid_operators: DATE_OPERATORS,
-            issues: issues
-          )
-
-          builder.build(value) do |operator, compare|
-            if compare.blank?
-              unless allow_nil
-                issues << Issue.new(
-                  code: :null_not_allowed,
-                  message: "#{key} cannot be null",
-                  path: [:filter, key],
-                  meta: { field: key }
-                )
-                next
-              end
-
-              column.eq(nil)
-            elsif operator == :between && compare.is_a?(Hash)
-              from_date = parse_date(compare[:from] || compare['from'], key, issues)
-              to_date = parse_date(compare[:to] || compare['to'], key, issues)
-              next unless from_date && to_date
-
-              column.gteq(from_date.beginning_of_day).and(column.lteq(to_date.end_of_day))
-            else
-              date = parse_date(compare, key, issues)
-              case operator
-              when :eq then column.eq(date)
-              when :gt then column.gt(date)
-              when :gte then column.gteq(date)
-              when :lt then column.lt(date)
-              when :lte then column.lteq(date)
-              when :in then column.in(Array(date))
-              end
-            end
-          end
-        else
-          issues << Issue.new(
-            code: :invalid_date_value_type,
-            message: 'Date value must be String, Hash, or nil',
-            path: [:filter, key],
-            meta: { field: key, value_type: value.class.name }
-          )
-          nil
+          return column.eq(parse_date(value, key, issues))
         end
+
+        # Handle hash operators
+        normalizer = ->(val) { val }
+
+        builder = FilterBuilder.new(
+          column: column,
+          field_name: key,
+          issues: issues,
+          allowed_types: [Hash]
+        )
+
+        builder.build(value, valid_operators: DATE_OPERATORS, normalizer: normalizer) do |operator, compare|
+          if compare.blank?
+            handle_date_nil_value(column, key, allow_nil, issues)
+          elsif operator == :between && compare.is_a?(Hash)
+            from_date = parse_date(compare[:from] || compare['from'], key, issues)
+            to_date = parse_date(compare[:to] || compare['to'], key, issues)
+            next unless from_date && to_date
+
+            column.gteq(from_date.beginning_of_day).and(column.lteq(to_date.end_of_day))
+          else
+            date = parse_date(compare, key, issues)
+            case operator
+            when :eq then column.eq(date)
+            when :gt then column.gt(date)
+            when :gte then column.gteq(date)
+            when :lt then column.lt(date)
+            when :lte then column.lteq(date)
+            when :in then column.in(Array(date))
+            end
+          end
+        end
+      end
+
+      def handle_date_nil_value(column, key, allow_nil, issues)
+        unless allow_nil
+          issues << Issue.new(
+            code: :null_not_allowed,
+            message: "#{key} cannot be null",
+            path: [:filter, key],
+            meta: { field: key }
+          )
+        end
+
+        column.eq(nil)
       end
 
       def build_numeric_where_clause(key, value, target_klass, issues = [])
         column = target_klass.arel_table[key]
 
-        case value
-        when String, Numeric, nil
-          column.eq(parse_numeric(value, key, issues))
-        when Hash
-          builder = FilterOperatorBuilder.new(
-            column: column,
-            field_name: key,
-            valid_operators: NUMERIC_OPERATORS,
-            issues: issues
-          )
+        normalizer = ->(val) { [String, Numeric, NilClass].any? { |t| val.is_a?(t) } ? { eq: val } : val }
 
-          builder.build(value) do |operator, compare|
-            case operator
-            when :eq
-              number = parse_numeric(compare, key, issues)
-              column.eq(number)
-            when :gt
-              number = parse_numeric(compare, key, issues)
-              column.gt(number)
-            when :gte
-              number = parse_numeric(compare, key, issues)
-              column.gteq(number)
-            when :lt
-              number = parse_numeric(compare, key, issues)
-              column.lt(number)
-            when :lte
-              number = parse_numeric(compare, key, issues)
-              column.lteq(number)
-            when :between
-              if compare.is_a?(Hash)
-                from_num = parse_numeric(compare[:from] || compare['from'], key, issues)
-                to_num = parse_numeric(compare[:to] || compare['to'], key, issues)
-                next unless from_num && to_num
+        builder = FilterBuilder.new(
+          column: column,
+          field_name: key,
+          issues: issues,
+          allowed_types: [Hash]
+        )
 
-                column.between(from_num..to_num)
-              else
-                number = parse_numeric(compare, key, issues)
-                next unless number
+        builder.build(value, valid_operators: NUMERIC_OPERATORS, normalizer: normalizer) do |operator, compare|
+          case operator
+          when :eq
+            number = parse_numeric(compare, key, issues)
+            column.eq(number)
+          when :gt
+            number = parse_numeric(compare, key, issues)
+            column.gt(number)
+          when :gte
+            number = parse_numeric(compare, key, issues)
+            column.gteq(number)
+          when :lt
+            number = parse_numeric(compare, key, issues)
+            column.lt(number)
+          when :lte
+            number = parse_numeric(compare, key, issues)
+            column.lteq(number)
+          when :between
+            if compare.is_a?(Hash)
+              from_num = parse_numeric(compare[:from] || compare['from'], key, issues)
+              to_num = parse_numeric(compare[:to] || compare['to'], key, issues)
+              next unless from_num && to_num
 
-                column.between(number..number)
-              end
-            when :in
-              numbers = Array(compare).map { |v| parse_numeric(v, key, issues) }.compact
-              next if numbers.empty?
+              column.between(from_num..to_num)
+            else
+              number = parse_numeric(compare, key, issues)
+              next unless number
 
-              column.in(numbers)
+              column.between(number..number)
             end
+          when :in
+            numbers = Array(compare).map { |v| parse_numeric(v, key, issues) }.compact
+            next if numbers.empty?
+
+            column.in(numbers)
           end
-        else
-          issues << Issue.new(
-            code: :invalid_numeric_value_type,
-            message: 'Numeric value must be String, Numeric, Hash, or nil',
-            path: [:filter, key],
-            meta: { field: key, value_type: value.class.name }
-          )
-          nil
         end
       end
 

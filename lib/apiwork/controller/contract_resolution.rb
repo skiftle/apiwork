@@ -27,7 +27,6 @@ module Apiwork
       end
 
       def infer_schema_class
-        # Api::V1::ArticlesController → Api::V1::ArticleSchema
         schema_name = "#{self.class.name.sub(/Controller$/, '').singularize}Schema"
         schema_name.constantize
       rescue NameError
@@ -35,7 +34,6 @@ module Apiwork
       end
 
       def infer_contract_class
-        # Api::V1::ArticlesController → Api::V1::ArticleContract
         contract_name = "#{self.class.name.sub(/Controller$/, '').singularize}Contract"
         contract_name.constantize
       rescue NameError
