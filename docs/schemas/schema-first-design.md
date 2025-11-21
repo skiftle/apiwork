@@ -34,7 +34,13 @@ end
 ✓ **Type safety** via TypeScript generation
 ✓ **Auto-generated OpenAPI** documentation
 
-No contract needed - Apiwork derives everything from your schema automatically.
+You must create a minimal contract class for each schema. For basic CRUD operations, this is a simple one-liner:
+
+```ruby
+class PostContract < Apiwork::Contract::Base
+  schema PostSchema
+end
+```
 
 ## How It Works
 
@@ -42,8 +48,7 @@ When a controller action is invoked, Apiwork resolves a contract in this order:
 
 1. **Explicit contract** from routing metadata (`contract: CustomContract`)
 2. **Named convention** (UsersController → UserContract)
-3. **Schema-based** (UsersController → UserSchema → auto-generated contract) ← **NEW**
-4. Error if none found
+3. Error if none found
 
 ### What Gets Auto-Generated
 
@@ -92,20 +97,24 @@ Same as create, but attributes are not required by default.
 #### `:show` & `:destroy`
 Simple single-resource output, no input validation needed.
 
-## When Contracts Are Optional
+## When Explicit Contract Definitions Are Optional
 
-You **don't need** a contract for:
+You **don't need** explicit action definitions in your contract for:
 
 - ✓ Standard CRUD actions (index, show, create, update, destroy)
 - ✓ Basic filtering and sorting
 - ✓ Simple nested associations (writable or with include policy)
 - ✓ Standard query parameters
 
+These are automatically derived from your schema. You only need to add explicit `action` blocks when you have custom actions beyond CRUD.
+
 ### Development Workflow
 
-**Step 1:** Create schema, define your API
-```bash
-# No contract needed!
+**Step 1:** Create schema and minimal contract
+```ruby
+class PostContract < Apiwork::Contract::Base
+  schema PostSchema
+end
 ```
 
 **Step 2:** Test your API
@@ -262,7 +271,10 @@ class UserSchema < Schema::Base
   attribute :name, writable: true, required: true
 end
 
-# No contract needed for CRUD
+# Minimal contract for CRUD
+class UserContract < Apiwork::Contract::Base
+  schema UserSchema
+end
 ```
 
 **Bad:**

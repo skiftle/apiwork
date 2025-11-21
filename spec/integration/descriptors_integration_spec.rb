@@ -271,11 +271,9 @@ RSpec.describe 'Descriptors Integration', type: :request do
 
       # Create a contract with scoped descriptors
       @test_contract = Class.new(Apiwork::Contract::Base) do
-        identifier :test_contract
-
         class << self
           def name
-            'TestContract'
+            'TestScopedContract'
           end
 
           def api_class
@@ -323,8 +321,8 @@ RSpec.describe 'Descriptors Integration', type: :request do
       introspection = Apiwork::API.introspect('/api/contracts')
 
       # Should be qualified with contract identifier
-      expect(introspection[:types]).to have_key(:test_contract_metadata)
-      expect(introspection[:types][:test_contract_metadata]).to include(
+      expect(introspection[:types]).to have_key(:test_scoped_metadata)
+      expect(introspection[:types][:test_scoped_metadata]).to include(
         type: :object,
         shape: {
           author: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
@@ -342,15 +340,15 @@ RSpec.describe 'Descriptors Integration', type: :request do
     it 'includes contract-scoped enums with proper qualification' do
       introspection = Apiwork::API.introspect('/api/contracts')
 
-      expect(introspection[:enums]).to have_key(:test_contract_priority)
-      expect(introspection[:enums][:test_contract_priority][:values]).to match_array(%i[low medium high critical])
+      expect(introspection[:enums]).to have_key(:test_scoped_priority)
+      expect(introspection[:enums][:test_scoped_priority][:values]).to match_array(%i[low medium high critical])
     end
 
     it 'includes contract-scoped unions with proper qualification' do
       introspection = Apiwork::API.introspect('/api/contracts')
 
-      expect(introspection[:types]).to have_key(:test_contract_filter_value)
-      filter = introspection[:types][:test_contract_filter_value]
+      expect(introspection[:types]).to have_key(:test_scoped_filter_value)
+      filter = introspection[:types][:test_scoped_filter_value]
       expect(filter[:type]).to eq(:union)
       expect(filter[:variants].size).to eq(2)
     end
@@ -359,8 +357,8 @@ RSpec.describe 'Descriptors Integration', type: :request do
       introspection = Apiwork::API.introspect('/api/contracts')
 
       # Should have auto-generated filter
-      expect(introspection[:types]).to have_key(:test_contract_priority_filter)
-      filter = introspection[:types][:test_contract_priority_filter]
+      expect(introspection[:types]).to have_key(:test_scoped_priority_filter)
+      filter = introspection[:types][:test_scoped_priority_filter]
       expect(filter[:type]).to eq(:union)
       expect(filter[:variants].size).to eq(2)
     end

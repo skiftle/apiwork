@@ -91,13 +91,10 @@ module Apiwork
             # Handle contract class scope (both Class and instances with contract_class)
             contract_class = scope.is_a?(Class) ? scope : scope.contract_class
 
-            begin
-              contract_prefix = scope_prefix(contract_class)
-            rescue ConfigurationError
-              # Anonymous contract without schema/identifier - can't create prefix
-              # This is OK for resolve (we'll just try unprefixed), but error for register
-              return name
-            end
+            contract_prefix = scope_prefix(contract_class)
+
+            # If prefix couldn't be determined (no schema or name), return unscoped name
+            return name unless contract_prefix
 
             return contract_prefix.to_sym if name.nil? || name.to_s.empty?
 
@@ -125,24 +122,18 @@ module Apiwork
           end
 
           def scope_prefix(contract_class)
-            # 1. Explicit identifier (highest priority - developer choice)
-            return contract_class._identifier if contract_class.respond_to?(:_identifier) && contract_class._identifier
-
-            # 2. Schema root_key (fallback if no identifier)
-            return contract_class.schema_class.root_key.singular if contract_class.respond_to?(:schema_class) && contract_class.schema_class
-
-            # 3. Class name
-            if contract_class.name
-              return contract_class.name
-                                   .demodulize
-                                   .underscore
-                                   .gsub(/_(contract|schema)$/, '')
+            # 1. Schema root_key (preferred)
+            if contract_class.respond_to?(:schema_class) && contract_class.schema_class
+              return contract_class.schema_class.root_key.singular
             end
 
-            # 4. Error - require explicit naming
-            raise ConfigurationError,
-                  'Anonymous contract must have a schema or explicit identifier. ' \
-                  "Use: identifier 'resource_name' or schema YourSchema"
+            # 2. Class name (fallback for non-schema contracts)
+            return nil unless contract_class.name
+
+            contract_class.name
+                          .demodulize
+                          .underscore
+                          .gsub(/_(contract|schema)$/, '')
           end
 
           def storage_name

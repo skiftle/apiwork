@@ -179,11 +179,12 @@ module Apiwork
       end
 
       def resource_uses_contract?(resource_metadata, contract)
-        matches_explicit_contract?(resource_metadata, contract) ||
+        matches_contract_option?(resource_metadata, contract) ||
           matches_schema_contract?(resource_metadata, contract)
       end
 
-      def matches_explicit_contract?(resource_metadata, contract)
+      # Check if resource explicitly specifies this contract via contract: option
+      def matches_contract_option?(resource_metadata, contract)
         contract_class = resource_metadata[:contract_class]
         return false unless contract_class
 

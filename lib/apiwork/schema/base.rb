@@ -58,7 +58,7 @@ module Apiwork
 
         def auto_detect_model
           return if _model_class.present?
-          return if abstract? || name.nil?
+          return if abstract?
 
           schema_name = name.demodulize
           model_name = schema_name.sub(/Schema$/, '')
@@ -135,7 +135,7 @@ module Apiwork
         # Derive API path from schema class namespace
         # Example: Api::V1::PostSchema → /api/v1
         def api_path
-          return nil unless name # Anonymous classes don't have a name
+          return nil unless name
 
           namespace_parts = name.deconstantize.split('::')
           return nil if namespace_parts.empty?

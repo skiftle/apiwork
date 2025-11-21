@@ -18,7 +18,7 @@ module Apiwork
           nil
         end
 
-        # Auto-discover the Contract class based on namespaces and resource name
+        # Infer the Contract class based on namespaces and resource name
         def infer_contract_class(name)
           # Build class name from namespaces array: [:api, :v1] + :posts -> 'Api::V1::PostContract'
           contract_name = name.to_s.singularize.camelize

@@ -364,11 +364,11 @@ RSpec.describe 'Descriptor Metadata' do
       end
 
       Class.new(Apiwork::Contract::Base) do
-        identifier :test_contract
+        def self.name; 'TestTest_contractContract' end
 
         class << self
           def name
-            'TestContract'
+            'TestScopedContract'
           end
 
           def api_class
@@ -388,7 +388,7 @@ RSpec.describe 'Descriptor Metadata' do
       types = Apiwork::Contract::Descriptor::Registry.types(api)
 
       # Should be qualified with contract identifier
-      expect(types[:test_contract_scoped_type]).to include(
+      expect(types[:test_scoped_scoped_type]).to include(
         description: 'Contract-scoped type with metadata'
       )
 
@@ -402,11 +402,11 @@ RSpec.describe 'Descriptor Metadata' do
       end
 
       Class.new(Apiwork::Contract::Base) do
-        identifier :test_contract
+        def self.name; 'TestTest_contractContract' end
 
         class << self
           def name
-            'TestContract'
+            'TestScopedContract'
           end
 
           def api_class
@@ -424,7 +424,7 @@ RSpec.describe 'Descriptor Metadata' do
       enums = Apiwork::Contract::Descriptor::Registry.enums(api)
 
       # Should be qualified with contract identifier
-      expect(enums[:test_contract_scoped_enum]).to include(
+      expect(enums[:test_scoped_scoped_enum]).to include(
         description: 'Contract-scoped enum with metadata'
       )
 
