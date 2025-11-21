@@ -126,24 +126,24 @@ RSpec.describe 'Contract Imports' do
     end
   end
 
-  describe 'with anonymous schema-based contracts' do
-    it 'allows importing from anonymous contracts' do
-      # Create an anonymous contract
+  describe 'with dynamically created contracts' do
+    it 'allows importing from dynamically created contracts' do
+      # Create a dynamically created contract
       user_contract = Class.new(Apiwork::Contract::Base)
 
       # Register a type on it
       user_contract.class_eval do
-        identifier :user
+        def self.name; 'TestUserContract' end
 
         type :address do
           param :street, type: :string
         end
       end
 
-      # Import from the anonymous contract
+      # Import from the dynamically created contract
       uc = user_contract
       order_contract = Class.new(Apiwork::Contract::Base) do
-        identifier :order
+        def self.name; 'TestOrderContract' end
 
         import uc, as: :user
 
@@ -297,7 +297,7 @@ RSpec.describe 'Contract Imports' do
     it 'prefers local types over imported types with same name' do
       bc = base_contract
       importing_contract = Class.new(Apiwork::Contract::Base) do
-        identifier :importing
+        def self.name; 'TestImportingContract' end
 
         import bc, as: :base
 

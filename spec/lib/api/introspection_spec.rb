@@ -240,8 +240,8 @@ RSpec.describe 'API Introspection' do
           expect(restricted_posts[:actions].keys).to contain_exactly(:index, :show)
         end
 
-        it 'has schema-based contracts generated' do
-          # Resources without explicit contract files now have schema-based contracts
+        it 'has schema-based contracts' do
+          # Schema-based contracts derive action definitions from the schema
           expect(restricted_posts[:actions]).to be_a(Hash)
           expect(restricted_posts[:actions]).not_to be_empty
           expect(restricted_posts[:actions][:index]).to be_present
@@ -260,8 +260,8 @@ RSpec.describe 'API Introspection' do
           expect(safe_comments[:actions].keys).to contain_exactly(:index, :show, :create, :update)
         end
 
-        it 'has schema-based contracts generated' do
-          # Resources without explicit contract files now have schema-based contracts
+        it 'has schema-based contracts' do
+          # Schema-based contracts derive action definitions from the schema
           expect(safe_comments[:actions]).to be_a(Hash)
           expect(safe_comments[:actions]).not_to be_empty
           expect(safe_comments[:actions][:index]).to be_present

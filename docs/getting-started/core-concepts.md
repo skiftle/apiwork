@@ -429,7 +429,7 @@ class Api::V1::PostContract < Apiwork::Contract::Base
 end
 ```
 
-**Note:** In most cases, you don't need to create the contract file at all! Apiwork automatically creates it from your schema. Only create an explicit contract when you need custom actions or want to override default behavior.
+**Note:** You must create a contract class for each schema. The contract defines the actions available for that resource. For basic CRUD operations, a minimal contract with just `schema YourSchema` is sufficient. Add custom actions when you need additional endpoints beyond the standard CRUD operations.
 
 See [Schema-First Design](../schemas/schema-first-design.md) for more details.
 

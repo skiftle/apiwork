@@ -3,7 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types' do
-  let(:contract_class) { Class.new(Apiwork::Contract::Base) }
+  let(:contract_class) do
+    Class.new(Apiwork::Contract::Base) do
+      def self.name
+        'TestContract'
+      end
+    end
+  end
   let(:definition) { described_class.new(type: :input, contract_class: contract_class) }
 
   describe 'datetime type validation' do

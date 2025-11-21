@@ -7,7 +7,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
     it 'validates enum values in nested custom types' do
       # Define a custom type with enum
       contract_class = Class.new(Apiwork::Contract::Base) do
-        identifier :nested_enum_test
+        def self.name; 'TestNested_enum_testContract' end
 
         # Register custom type for account
         type :account do
@@ -75,7 +75,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
 
     it 'validates type errors in nested custom types without coercion' do
       contract_class = Class.new(Apiwork::Contract::Base) do
-        identifier :type_error_test
+        def self.name; 'TestType_error_testContract' end
 
         type :account do
           param :id, type: :integer, required: true
@@ -108,7 +108,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
 
     it 'validates deeply nested custom types' do
       contract_class = Class.new(Apiwork::Contract::Base) do
-        identifier :deep_nested_test
+        def self.name; 'TestDeep_nested_testContract' end
 
         # Nested custom type
         type :address do

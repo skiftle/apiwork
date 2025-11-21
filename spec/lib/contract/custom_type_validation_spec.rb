@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Contract custom type unknown field validation' do
   let(:contract_class) do
     Class.new(Apiwork::Contract::Base) do
-      identifier :custom_type_test
+      def self.name; 'TestCustom_type_testContract' end
 
       class << self
         def resource_class

@@ -2,13 +2,20 @@
 
 Contracts are the heart of Apiwork. They define the exact shape your API data must have - what types are allowed, what's required, what's optional. Every input is validated against a contract before reaching your controller. Every output is validated before being sent to the client (in development).
 
-**But here's the key:** you almost never write contracts manually.
+**But here's the key:** you rarely write detailed contract definitions.
 
-Instead, Apiwork generates them automatically from [Schemas](../schemas/introduction.md), which in turn read type information directly from your Rails models and database. You define what attributes to expose, and Apiwork figures out the rest - types from database columns, required fields from `null: false` constraints, defaults from the database, enums from Rails enums.
+Apiwork derives contract behavior from [Schemas](../schemas/introduction.md), which read type information directly from your Rails models and database. You define what attributes to expose, and Apiwork figures out the rest - types from database columns, required fields from `null: false` constraints, defaults from the database, enums from Rails enums.
 
-> **In 90%+ of cases, you never create a contract file.** Just define a schema, and Apiwork generates complete contracts for all CRUD actions automatically.
+> **In 90%+ of cases, a minimal one-line contract is all you need:** `schema YourSchema`. CRUD action definitions are generated automatically from the schema.
 
-Only create an explicit contract when you need:
+You must create a contract class for each schema, but it's typically just:
+```ruby
+class PostContract < Apiwork::Contract::Base
+  schema PostSchema
+end
+```
+
+Add explicit action definitions when you need:
 - Custom actions beyond CRUD (like `publish`, `archive`, `bulk_create`)
 - Override auto-generated validation with custom logic
 - Complex input transformations

@@ -12,7 +12,7 @@ module Apiwork
       class << self
         def find(schema_class)
           registry.fetch_or_store(schema_class) do
-            find_or_create_contract(schema_class)
+            find_contract(schema_class)
           end
         end
 
@@ -32,21 +32,13 @@ module Apiwork
 
         private
 
-        def find_or_create_contract(schema_class)
-          # Try to find explicit contract class
-          explicit = find_explicit_contract(schema_class)
-          return explicit if explicit
-
-          # No contract found - raise helpful error
-          raise_missing_contract_error(schema_class)
-        end
-
-        def find_explicit_contract(schema_class)
+        def find_contract(schema_class)
           # Try naming convention: PostSchema → PostContract
           contract_name = schema_class.name.gsub(/Schema$/, 'Contract')
           contract_name.constantize
         rescue NameError
-          nil
+          # No contract found - raise helpful error
+          raise_missing_contract_error(schema_class)
         end
 
         def raise_missing_contract_error(schema_class)
@@ -55,7 +47,8 @@ module Apiwork
 
           raise ConfigurationError,
                 "No contract found for #{schema_class.name}.\n" \
-                "Please create #{contract_name} with:\n\n" \
+                "Apiwork requires an explicit contract class for every schema.\n\n" \
+                "Create #{contract_name}:\n\n" \
                 "  class #{contract_name} < Apiwork::Contract::Base\n" \
                 "    schema #{schema_name}\n" \
                 '  end'

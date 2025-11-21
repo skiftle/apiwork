@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Contract union type unknown field validation' do
   let(:contract_class) do
     Class.new(Apiwork::Contract::Base) do
-      identifier :union_type_test
+      def self.name; 'TestUnion_type_testContract' end
 
       class << self
         def resource_class

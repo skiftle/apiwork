@@ -3,7 +3,7 @@
 module Apiwork
   module Contract
     # Serialization module for converting Contract definitions to JSON
-    # Used for debugging auto-generated contracts and route introspection
+    # Used for debugging and route introspection
     module Serialization
       class << self
         def serialize_definition(definition, visited: Set.new)

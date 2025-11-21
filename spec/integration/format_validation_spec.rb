@@ -18,7 +18,7 @@ RSpec.describe 'Format validation', type: :integration do
 
   describe 'valid formats' do
     it 'accepts valid string formats' do
-      schema = Class.new(Apiwork::Schema::Base)
+      schema = Class.new(Apiwork::Schema::Base) { def self.name; "TestFormatSchema" end; abstract }
 
       %i[email uuid uri url date date_time ipv4 ipv6 password hostname].each do |format|
         expect do
@@ -30,7 +30,7 @@ RSpec.describe 'Format validation', type: :integration do
     end
 
     it 'accepts valid integer formats' do
-      schema = Class.new(Apiwork::Schema::Base)
+      schema = Class.new(Apiwork::Schema::Base) { def self.name; "TestFormatSchema" end; abstract }
 
       %i[int32 int64].each do |format|
         expect do
@@ -42,7 +42,7 @@ RSpec.describe 'Format validation', type: :integration do
     end
 
     it 'accepts valid number formats' do
-      schema = Class.new(Apiwork::Schema::Base)
+      schema = Class.new(Apiwork::Schema::Base) { def self.name; "TestFormatSchema" end; abstract }
 
       %i[float double].each do |format|
         expect do
@@ -54,7 +54,7 @@ RSpec.describe 'Format validation', type: :integration do
     end
 
     it 'accepts nil format' do
-      schema = Class.new(Apiwork::Schema::Base)
+      schema = Class.new(Apiwork::Schema::Base) { def self.name; "TestFormatSchema" end; abstract }
 
       expect do
         schema.class_eval do
@@ -66,7 +66,7 @@ RSpec.describe 'Format validation', type: :integration do
 
   describe 'invalid formats' do
     it 'rejects invalid format for string type' do
-      schema = Class.new(Apiwork::Schema::Base)
+      schema = Class.new(Apiwork::Schema::Base) { def self.name; "TestFormatSchema" end; abstract }
 
       expect do
         schema.class_eval do
@@ -76,7 +76,7 @@ RSpec.describe 'Format validation', type: :integration do
     end
 
     it 'rejects invalid format for integer type' do
-      schema = Class.new(Apiwork::Schema::Base)
+      schema = Class.new(Apiwork::Schema::Base) { def self.name; "TestFormatSchema" end; abstract }
 
       expect do
         schema.class_eval do
@@ -86,7 +86,7 @@ RSpec.describe 'Format validation', type: :integration do
     end
 
     it 'rejects format for unsupported types' do
-      schema = Class.new(Apiwork::Schema::Base)
+      schema = Class.new(Apiwork::Schema::Base) { def self.name; "TestFormatSchema" end; abstract }
 
       expect do
         schema.class_eval do
@@ -96,7 +96,7 @@ RSpec.describe 'Format validation', type: :integration do
     end
 
     it 'includes allowed formats in error message' do
-      schema = Class.new(Apiwork::Schema::Base)
+      schema = Class.new(Apiwork::Schema::Base) { def self.name; "TestFormatSchema" end; abstract }
 
       expect do
         schema.class_eval do

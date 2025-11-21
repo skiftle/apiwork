@@ -6,19 +6,13 @@ module Apiwork
       include Abstractable
 
       class << self
-        attr_accessor :_schema_class, :_identifier
+        attr_accessor :_schema_class
 
         def inherited(subclass)
           super
           subclass.instance_variable_set(:@action_definitions, {})
           subclass.instance_variable_set(:@imports, {})
           subclass.instance_variable_set(:@configuration, {})
-        end
-
-        def identifier(value = nil)
-          return @_identifier if value.nil?
-
-          @_identifier = value.to_s
         end
 
         def schema(ref)
@@ -31,7 +25,6 @@ module Apiwork
           @_schema_class = ref
 
           # Register this explicit contract in the registry
-          # This ensures schema.contract returns this class, not an anonymous one
           SchemaRegistry.register(ref, self)
 
           # Register enums from schema when contract is defined/reloaded
@@ -206,7 +199,7 @@ module Apiwork
         end
 
         def api_path
-          return nil unless name # Anonymous classes don't have a name
+          return nil unless name
 
           namespace_parts = name.deconstantize.split('::')
           return nil if namespace_parts.empty?
@@ -222,7 +215,7 @@ module Apiwork
         end
 
         def resource_name
-          return nil unless name # Anonymous classes don't have a name
+          return nil unless name
 
           name.demodulize.sub(/Contract$/, '').underscore.pluralize.to_sym
         end
