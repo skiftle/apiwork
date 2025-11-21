@@ -323,9 +323,9 @@ module Apiwork
         builder.build(value, valid_operators: Apiwork::Schema::Operator::NULLABLE_STRING_OPERATORS, normalizer: normalizer) do |operator, compare|
           case operator
           when :eq then column.eq(compare)
-          when :contains then column.matches("%#{compare}%")
-          when :starts_with then column.matches("#{compare}%")
-          when :ends_with then column.matches("%#{compare}")
+          when :contains then case_sensitive_pattern_match(column, "%#{compare}%")
+          when :starts_with then case_sensitive_pattern_match(column, "#{compare}%")
+          when :ends_with then case_sensitive_pattern_match(column, "%#{compare}")
           when :in then column.in(compare)
           when :null then handle_null_operator(column, compare)
           end
@@ -510,6 +510,19 @@ module Apiwork
           meta: { field: field, value: value }
         )
         nil
+      end
+
+      def sqlite_adapter?
+        @sqlite_adapter ||= schema.model_class.connection.adapter_name == 'SQLite'
+      end
+
+      def case_sensitive_pattern_match(column, pattern)
+        if sqlite_adapter?
+          glob_pattern = pattern.tr('%', '*')
+          Arel::Nodes::InfixOperation.new('GLOB', column, Arel::Nodes.build_quoted(glob_pattern))
+        else
+          column.matches(pattern)
+        end
       end
     end
   end

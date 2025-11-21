@@ -113,14 +113,13 @@ RSpec.describe 'Filter Operators' do
     let!(:mixed_post) { Post.create!(title: 'Test MixedCase') }
 
     describe 'contains operator' do
-      it 'performs case-insensitive search' do
+      it 'performs case-sensitive search' do
         get '/api/v1/posts', params: { filter: { title: { contains: 'test' } } }
 
         json = JSON.parse(response.body)
         titles = json['posts'].map { |p| p['title'] }
 
-        # SQLite LIKE is case-insensitive by default
-        expect(titles).to include('test lowercase', 'TEST UPPERCASE', 'Test MixedCase')
+        expect(titles).to eq(['test lowercase'])
       end
     end
 
