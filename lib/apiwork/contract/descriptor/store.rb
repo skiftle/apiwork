@@ -123,9 +123,7 @@ module Apiwork
 
           def scope_prefix(contract_class)
             # 1. Schema root_key (preferred)
-            if contract_class.respond_to?(:schema_class) && contract_class.schema_class
-              return contract_class.schema_class.root_key.singular
-            end
+            return contract_class.schema_class.root_key.singular if contract_class.respond_to?(:schema_class) && contract_class.schema_class
 
             # 2. Class name (fallback for non-schema contracts)
             return nil unless contract_class.name
