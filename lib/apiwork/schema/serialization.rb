@@ -44,7 +44,7 @@ module Apiwork
 
         self.class.attribute_definitions.each do |attribute, definition|
           value = respond_to?(attribute) ? public_send(attribute) : object.public_send(attribute)
-          value = definition.serialize(value)
+          value = definition.encode(value)
           serialized_attributes[attribute] = value
         end
 

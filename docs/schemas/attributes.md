@@ -199,20 +199,20 @@ attribute :status, filterable: true, writable: true
 # Automatically gets enum: ['draft', 'published', 'archived']
 ```
 
-### serialize / deserialize
+### encode / decode
 
-Custom serialization/deserialization transformers:
+Custom encoding/decoding transformers:
 
 ```ruby
-attribute :title, serialize: ->(value) { value.upcase }
-attribute :tags, deserialize: ->(value) { value.map(&:downcase) }
+attribute :title, encode: ->(value) { value.upcase }
+attribute :tags, decode: ->(value) { value.map(&:downcase) }
 ```
 
 Built-in transformers:
 
 ```ruby
 attribute :bio, empty: true
-# Converts nil → '' on serialize, '' → nil on deserialize
+# Converts nil → '' on encode, '' → nil on decode
 ```
 
 The `empty` option only works on string/text attributes.

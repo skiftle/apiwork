@@ -71,7 +71,8 @@
       "Bash(RAILS_ENV=test bin/rails db:reset:*)",
       "Bash(git -C /Users/joakim/GitHub/apiwork diff --name-only)",
       "Bash(git -C /Users/joakim/GitHub/apiwork stash:*)",
-      "Bash(/Users/joakim/GitHub/apiwork/spec/lib/contract/parser/numeric_range_spec.rb)"
+      "Bash(/Users/joakim/GitHub/apiwork/spec/lib/contract/parser/numeric_range_spec.rb)",
+      "Bash(git -C /Users/joakim/GitHub/apiwork mv spec/integration/serialize_deserialize_spec.rb spec/integration/encode_decode_spec.rb)"
     ],
     "deny": [],
     "ask": []

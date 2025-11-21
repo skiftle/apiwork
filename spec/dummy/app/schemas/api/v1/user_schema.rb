@@ -11,8 +11,8 @@ module Api
                 filterable: true,
                 sortable: true,
                 nullable: true,
-                serialize: ->(value) { value&.downcase },
-                deserialize: ->(value) { value&.upcase }
+                encode: ->(value) { value&.downcase },
+                decode: ->(value) { value&.upcase }
       attribute :name, writable: true, filterable: true, sortable: true, empty: true, min: 2, max: 50
       attribute :created_at, filterable: true, sortable: true
       attribute :updated_at, filterable: true, sortable: true
