@@ -8,24 +8,6 @@ RSpec.describe 'Descriptors Integration', type: :request do
 
   # Force reload of API configuration before tests
   before(:all) do
-    # Clear all caches first
-    Apiwork::Contract::SchemaRegistry.clear!
-    Apiwork::Contract::Descriptor::Registry.clear!
-    api = Apiwork::API.find('/api/v1')
-    api&.instance_variable_set(:@introspect, nil)
-
-    # Load all contracts explicitly before reloading API config
-    # This ensures they're available when SchemaRegistry tries to find them
-    # (We removed anonymous contract creation, so contracts must exist)
-    Dir.glob(Rails.root.join('app/contracts/api/v1/*_contract.rb')).each do |contract_file|
-      load contract_file
-    end
-
-    # Load all schemas including STI variants to register them
-    Dir.glob(Rails.root.join('app/schemas/api/v1/*_schema.rb')).each do |schema_file|
-      load schema_file
-    end
-
     load Rails.root.join('config/apis/v1.rb')
   end
 

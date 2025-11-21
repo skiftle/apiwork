@@ -79,6 +79,20 @@ module Apiwork
             result
           end
 
+          def clear!
+            # Clear expanded_payload cache before clearing storage
+            # This ensures types get re-expanded on next serialize, preventing
+            # stale cached types when variants are loaded after initial type generation
+            @storage&.each_value do |api_storage|
+              api_storage.each_value do |metadata|
+                metadata.delete(:expanded_payload)
+              end
+            end
+
+            # Call parent to clear storage
+            super
+          end
+
           protected
 
           def storage_name

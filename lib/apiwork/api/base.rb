@@ -99,7 +99,13 @@ module Apiwork
         def introspect
           return nil unless metadata
 
-          @introspect ||= build_introspection_result
+          @introspect ||= begin
+            # Phase 1: Ensure all STI variants are loaded before type generation
+            prepare_all_sti_schemas
+
+            # Phase 2: Build introspection result
+            build_introspection_result
+          end
         end
 
         def as_json
@@ -107,6 +113,21 @@ module Apiwork
         end
 
         private
+
+        # Prepare STI schemas by ensuring all variants are loaded before type generation
+        # This prevents test isolation issues where variants aren't discovered in time
+        def prepare_all_sti_schemas
+          metadata.resources.each_value do |resource_metadata|
+            schema_class = resource_metadata[:schema_class]
+            next unless schema_class
+
+            # For STI base schemas (those with a discriminator), ensure variants are loaded
+            next unless schema_class.respond_to?(:discriminator_column) && schema_class.discriminator_column.present?
+
+            # Use TypeBuilder's ensure_variants_loaded to discover and load variants
+            Contract::Schema::TypeBuilder.ensure_variants_loaded(schema_class)
+          end
+        end
 
         def build_introspection_result
           # Build resources first - this creates contract classes and registers types/enums
