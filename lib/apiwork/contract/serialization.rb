@@ -14,8 +14,7 @@ module Apiwork
 
           result = {}
 
-          sorted_params = definition.params.sort_by { |name, _| name.to_s }
-          sorted_params.each do |name, param_options|
+          definition.params.sort_by { |name, _| name.to_s }.each do |name, param_options|
             result[name] = serialize_param(name, param_options, definition, visited: visited)
           end
 
