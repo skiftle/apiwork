@@ -167,7 +167,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
       expect(json['posts'][0]['title']).to eq('Advanced Filter Test Ruby Basics')
     end
 
-    it 'is case sensitive', skip: 'SQLite LIKE is case-insensitive - works correctly in PostgreSQL production' do
+    it 'is case sensitive' do
       get '/api/v1/posts', params: {
         filter: { title: { starts_with: 'advanced filter test ruby' } }
       }
