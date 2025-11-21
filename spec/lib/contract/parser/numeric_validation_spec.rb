@@ -11,7 +11,7 @@ RSpec.describe 'Numeric min/max validation' do
   before do
     definition.param :age, type: :integer, required: false, min: 18, max: 150
     definition.param :rating, type: :float, required: false, min: 0.0, max: 5.0
-    definition.param :price, type: :decimal, required: false, min: 0.01, max: 99999.99
+    definition.param :price, type: :decimal, required: false, min: 0.01, max: 99_999.99
   end
 
   describe 'integer validation' do
