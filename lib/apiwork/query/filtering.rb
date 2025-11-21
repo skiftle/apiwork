@@ -189,7 +189,7 @@ module Apiwork
 
         issues << Issue.new(
           code: :field_not_filterable,
-          message: "#{key} is not a filterable attribute on #{target_klass.name}. Available: #{available.join(', ')}",
+          detail: "#{key} is not a filterable attribute on #{target_klass.name}. Available: #{available.join(', ')}",
           path: [:filter, key],
           meta: { field: key, class: target_klass.name, available: available }
         )
@@ -223,7 +223,7 @@ module Apiwork
         else
           issues << Issue.new(
             code: :unsupported_column_type,
-            message: "Unsupported column type: #{column_type}",
+            detail: "Unsupported column type: #{column_type}",
             path: [:filter, key],
             meta: { field: key, type: column_type }
           )
@@ -239,7 +239,7 @@ module Apiwork
 
         issues << Issue.new(
           code: :invalid_enum_value,
-          message: "Invalid #{key} value(s): #{invalid_values.join(', ')}. Valid values: #{enum_values.join(', ')}",
+          detail: "Invalid #{key} value(s): #{invalid_values.join(', ')}. Valid values: #{enum_values.join(', ')}",
           path: [:filter, key],
           meta: { field: key, invalid: invalid_values, valid: enum_values }
         )
@@ -275,7 +275,7 @@ module Apiwork
         unless assoc_resource
           issues << Issue.new(
             code: :association_resource_not_found,
-            message: "Cannot find resource for association #{key}",
+            detail: "Cannot find resource for association #{key}",
             path: [:filter, key],
             meta: { association: key }
           )
@@ -286,7 +286,7 @@ module Apiwork
         unless association_reflection
           issues << Issue.new(
             code: :association_not_found,
-            message: "Association #{key} not found on #{schema.model_class.name}",
+            detail: "Association #{key} not found on #{schema.model_class.name}",
             path: [:filter, key],
             meta: { association: key, class: schema.model_class.name }
           )
@@ -406,7 +406,7 @@ module Apiwork
         unless allow_nil
           issues << Issue.new(
             code: :null_not_allowed,
-            message: "#{key} cannot be null",
+            detail: "#{key} cannot be null",
             path: [:filter, key],
             meta: { field: key }
           )
@@ -509,7 +509,7 @@ module Apiwork
       rescue ArgumentError
         issues << Issue.new(
           code: :invalid_date_format,
-          message: "'#{value}' is not a valid date",
+          detail: "'#{value}' is not a valid date",
           path: [:filter, field],
           meta: { field: field, value: value }
         )
@@ -523,7 +523,7 @@ module Apiwork
         else
           issues << Issue.new(
             code: :invalid_numeric_format,
-            message: "'#{value}' is not a valid number",
+            detail: "'#{value}' is not a valid number",
             path: [:filter, field],
             meta: { field: field, value: value }
           )
@@ -532,7 +532,7 @@ module Apiwork
       rescue ArgumentError
         issues << Issue.new(
           code: :invalid_numeric_format,
-          message: "'#{value}' is not a valid number",
+          detail: "'#{value}' is not a valid number",
           path: [:filter, field],
           meta: { field: field, value: value }
         )

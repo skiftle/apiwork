@@ -236,7 +236,7 @@ module Apiwork
       def max_depth_error(current_depth, max_depth, path)
         issues = [Issue.new(
           code: :max_depth_exceeded,
-          message: 'Max depth exceeded',
+          detail: 'Max depth exceeded',
           path: path,
           meta: { depth: current_depth, max_depth: max_depth }
         )]
@@ -271,7 +271,7 @@ module Apiwork
           unless value == expected
             error = Issue.new(
               code: :invalid_value,
-              message: "Value must be exactly #{expected.inspect}",
+              detail: "Value must be exactly #{expected.inspect}",
               path: field_path,
               meta: { field: name, expected: expected, actual: value }
             )
@@ -327,12 +327,12 @@ module Apiwork
 
           Issue.new(
             code: :invalid_value,
-            message: "Invalid value. Must be one of: #{EnumValue.format(param_options[:enum])}",
+            detail: "Invalid value. Must be one of: #{EnumValue.format(param_options[:enum])}",
             path: field_path,
             meta: { field: name, expected: enum_values, actual: value }
           )
         else
-          Issue.new(code: :field_missing, message: 'Field required', path: field_path, meta: { field: name })
+          Issue.new(code: :field_missing, detail: 'Field required', path: field_path, meta: { field: name })
         end
       end
 
@@ -349,7 +349,7 @@ module Apiwork
 
         Issue.new(
           code: :value_null,
-          message: 'Value cannot be null',
+          detail: 'Value cannot be null',
           path: field_path,
           meta: { field: name }
         )
@@ -361,7 +361,7 @@ module Apiwork
 
         Issue.new(
           code: :invalid_value,
-          message: "Invalid value. Must be one of: #{EnumValue.format(enum)}",
+          detail: "Invalid value. Must be one of: #{EnumValue.format(enum)}",
           path: field_path,
           meta: { field: name, expected: EnumValue.values(enum), actual: value }
         )
@@ -432,7 +432,7 @@ module Apiwork
         extra_keys.map do |key|
           Issue.new(
             code: :field_unknown,
-            message: 'Unknown field',
+            detail: 'Unknown field',
             path: path + [key],
             meta: { field: key, allowed: @params.keys }
           )
@@ -457,7 +457,7 @@ module Apiwork
         if array.length > max_items
           issues << Issue.new(
             code: :array_too_large,
-            message: 'Value too large',
+            detail: 'Value too large',
             path: field_path,
             meta: { max_size: max_items, actual: array.length }
           )
@@ -490,7 +490,7 @@ module Apiwork
               unless item.is_a?(Hash)
                 issues << Issue.new(
                   code: :invalid_type,
-                  message: 'Invalid type',
+                  detail: 'Invalid type',
                   path: item_path,
                   meta: { field: index, expected: param_options[:of], actual: item.class.name.underscore.to_sym }
                 )
@@ -566,7 +566,7 @@ module Apiwork
 
         Issue.new(
           code: :invalid_type,
-          message: 'Invalid type',
+          detail: 'Invalid type',
           path: path,
           meta: { field: name, expected: expected_type, actual: value.class.name.underscore.to_sym }
         )
@@ -625,7 +625,7 @@ module Apiwork
         expected_types = variants.map { |v| v[:type] }
         error = Issue.new(
           code: :invalid_type,
-          message: 'Invalid type',
+          detail: 'Invalid type',
           path: path,
           meta: { field: name, expected: expected_types.join(' | '), actual: value.class.name.underscore.to_sym }
         )
@@ -643,7 +643,7 @@ module Apiwork
         unless value.is_a?(Hash)
           error = Issue.new(
             code: :invalid_type,
-            message: 'Invalid type',
+            detail: 'Invalid type',
             path: path,
             meta: { field: name, expected: :object, actual: value.class.name.underscore.to_sym }
           )
@@ -654,7 +654,7 @@ module Apiwork
         unless value.key?(discriminator)
           error = Issue.new(
             code: :field_missing,
-            message: "Discriminator field '#{discriminator}' is required",
+            detail: "Discriminator field '#{discriminator}' is required",
             path: path + [discriminator],
             meta: { field: discriminator }
           )
@@ -674,7 +674,7 @@ module Apiwork
           valid_tags = variants.map { |v| v[:tag] }.compact
           error = Issue.new(
             code: :invalid_value,
-            message: "Invalid discriminator value. Must be one of: #{valid_tags.join(', ')}",
+            detail: "Invalid discriminator value. Must be one of: #{valid_tags.join(', ')}",
             path: path + [discriminator],
             meta: { field: discriminator, expected: valid_tags, actual: discriminator_value }
           )
@@ -730,7 +730,7 @@ module Apiwork
           unless value.is_a?(Hash)
             type_error = Issue.new(
               code: :invalid_type,
-              message: 'Invalid type',
+              detail: 'Invalid type',
               path: path,
               meta: { field: name, expected: variant_type, actual: value.class.name.underscore.to_sym }
             )
@@ -754,7 +754,7 @@ module Apiwork
           unless value.is_a?(Array)
             type_error = Issue.new(
               code: :invalid_type,
-              message: 'Invalid type',
+              detail: 'Invalid type',
               path: path,
               meta: { field: name, expected: :array, actual: value.class.name.underscore.to_sym }
             )
@@ -786,7 +786,7 @@ module Apiwork
           unless value.is_a?(Hash)
             type_error = Issue.new(
               code: :invalid_type,
-              message: 'Invalid type',
+              detail: 'Invalid type',
               path: path,
               meta: { field: name, expected: :object, actual: value.class.name.underscore.to_sym }
             )
@@ -813,7 +813,7 @@ module Apiwork
         if variant_definition[:enum]&.exclude?(value)
           enum_error = Issue.new(
             code: :invalid_value,
-            message: "Invalid value. Must be one of: #{variant_definition[:enum].join(', ')}",
+            detail: "Invalid value. Must be one of: #{variant_definition[:enum].join(', ')}",
             path: path,
             meta: { field: name, expected: variant_definition[:enum], actual: value }
           )
@@ -853,7 +853,7 @@ module Apiwork
         if min_value && value < min_value
           return Issue.new(
             code: :invalid_value,
-            message: "Value must be >= #{min_value}",
+            detail: "Value must be >= #{min_value}",
             path: field_path,
             meta: { field: name, actual: value, minimum: min_value }
           )
@@ -862,7 +862,7 @@ module Apiwork
         if max_value && value > max_value
           return Issue.new(
             code: :invalid_value,
-            message: "Value must be <= #{max_value}",
+            detail: "Value must be <= #{max_value}",
             path: field_path,
             meta: { field: name, actual: value, maximum: max_value }
           )
@@ -885,7 +885,7 @@ module Apiwork
         if min_length && value.length < min_length
           return Issue.new(
             code: :string_too_short,
-            message: "String must be at least #{min_length} characters",
+            detail: "String must be at least #{min_length} characters",
             path: field_path,
             meta: { field: name, actual_length: value.length, min_length: }
           )
@@ -894,7 +894,7 @@ module Apiwork
         if max_length && value.length > max_length
           return Issue.new(
             code: :string_too_long,
-            message: "String must be at most #{max_length} characters",
+            detail: "String must be at most #{max_length} characters",
             path: field_path,
             meta: { field: name, actual_length: value.length, max_length: }
           )

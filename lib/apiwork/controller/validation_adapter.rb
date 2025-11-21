@@ -135,7 +135,7 @@ module Apiwork
 
         Issue.new(
           code: rails_error.type,
-          message: rails_error.message,
+          detail: rails_error.message,
           path: path,
           meta: meta
         )

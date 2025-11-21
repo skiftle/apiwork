@@ -51,7 +51,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
       result = parser.perform(invalid_status)
       expect(result.invalid?).to be(true)
       expect(result.issues.first.code).to eq(:invalid_value)
-      expect(result.issues.first.message).to include('Must be one of')
+      expect(result.issues.first.detail).to include('Must be one of')
       expect(result.issues.first.path).to eq([:account, :status])
 
       # Invalid first_day_of_week enum should fail
@@ -67,7 +67,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
       result = parser.perform(invalid_fdow)
       expect(result.invalid?).to be(true)
       expect(result.issues.first.code).to eq(:invalid_value)
-      expect(result.issues.first.message).to include('Must be one of')
+      expect(result.issues.first.detail).to include('Must be one of')
       expect(result.issues.first.path).to eq([:account, :first_day_of_week])
     end
 

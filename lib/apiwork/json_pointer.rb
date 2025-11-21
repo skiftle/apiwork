@@ -2,13 +2,15 @@
 
 module Apiwork
   module JSONPointer
-    def self.build(*path)
+    module_function
+
+    def build(*path)
       return '' if path.empty?
 
       "/#{path.map { |component| escape_component(component.to_s) }.join('/')}"
     end
 
-    def self.escape_component(component)
+    def escape_component(component)
       component.gsub('~', '~0').gsub('/', '~1')
     end
   end

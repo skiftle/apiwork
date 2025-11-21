@@ -16,7 +16,7 @@ module Apiwork
         unless params.is_a?(Hash)
           issues << Issue.new(
             code: :invalid_sort_params_type,
-            message: 'sort must be a Hash or Array of Hashes',
+            detail: 'sort must be a Hash or Array of Hashes',
             path: [:sort],
             meta: { params_type: params.class.name }
           )
@@ -48,7 +48,7 @@ module Apiwork
 
               issues << Issue.new(
                 code: :field_not_sortable,
-                message: "#{key} is not sortable on #{target_klass.name}. Sortable: #{available.join(', ')}",
+                detail: "#{key} is not sortable on #{target_klass.name}. Sortable: #{available.join(', ')}",
                 path: [:sort, key],
                 meta: { field: key, class: target_klass.name, available: available }
               )
@@ -64,7 +64,7 @@ module Apiwork
                       else
                         issues << Issue.new(
                           code: :invalid_sort_direction,
-                          message: "Invalid direction '#{direction}'. Use 'asc' or 'desc'",
+                          detail: "Invalid direction '#{direction}'. Use 'asc' or 'desc'",
                           path: [:sort, key],
                           meta: { field: key, direction: direction, valid_directions: [:asc, :desc] }
                         )
@@ -77,7 +77,7 @@ module Apiwork
             if association.nil?
               issues << Issue.new(
                 code: :invalid_association,
-                message: "#{key} is not a valid association on #{target_klass.name}",
+                detail: "#{key} is not a valid association on #{target_klass.name}",
                 path: [:sort, key],
                 meta: { field: key, class: target_klass.name }
               )
@@ -87,7 +87,7 @@ module Apiwork
             unless schema.association_definitions[key]&.sortable?
               issues << Issue.new(
                 code: :association_not_sortable,
-                message: "Association #{key} is not sortable",
+                detail: "Association #{key} is not sortable",
                 path: [:sort, key],
                 meta: { association: key }
               )
@@ -99,7 +99,7 @@ module Apiwork
             if association_resource.nil?
               issues << Issue.new(
                 code: :association_resource_not_found,
-                message: "Cannot find resource for association #{key}",
+                detail: "Cannot find resource for association #{key}",
                 path: [:sort, key],
                 meta: { association: key }
               )
@@ -117,7 +117,7 @@ module Apiwork
           else
             issues << Issue.new(
               code: :invalid_sort_value_type,
-              message: "Sort value must be 'asc', 'desc', or Hash for associations",
+              detail: "Sort value must be 'asc', 'desc', or Hash for associations",
               path: [:sort, key],
               meta: { field: key, value_type: value.class.name }
             )
