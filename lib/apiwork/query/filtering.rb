@@ -335,19 +335,14 @@ module Apiwork
           return nil
         end
 
-        value.map do |operator, compare|
-          operator = operator.to_sym
+        builder = FilterOperatorBuilder.new(
+          column: column,
+          field_name: key,
+          valid_operators: STRING_OPERATORS,
+          issues: issues
+        )
 
-          if STRING_OPERATORS.exclude?(operator)
-            issues << Issue.new(
-              code: :invalid_string_operator,
-              message: "Invalid operator '#{operator}' for string. Valid: #{STRING_OPERATORS.join(', ')}",
-              path: [:filter, key, operator],
-              meta: { field: key, operator: operator, valid_operators: STRING_OPERATORS }
-            )
-            next
-          end
-
+        builder.build(value) do |operator, compare|
           case operator
           when :eq then column.eq(compare)
           when :contains then column.matches("%#{compare}%")
@@ -355,7 +350,7 @@ module Apiwork
           when :ends_with then column.matches("%#{compare}")
           when :in then column.in(compare)
           end
-        end.reduce(:and)
+        end
       end
 
       def build_date_where_clause(key, value, target_klass, issues = [])
@@ -380,19 +375,14 @@ module Apiwork
             column.eq(parse_date(value, key, issues))
           end
         when Hash
-          value.map do |operator, compare|
-            operator = operator.to_sym
+          builder = FilterOperatorBuilder.new(
+            column: column,
+            field_name: key,
+            valid_operators: DATE_OPERATORS,
+            issues: issues
+          )
 
-            if DATE_OPERATORS.exclude?(operator)
-              issues << Issue.new(
-                code: :invalid_date_operator,
-                message: "Invalid operator '#{operator}' for date. Valid: #{DATE_OPERATORS.join(', ')}",
-                path: [:filter, key, operator],
-                meta: { field: key, operator: operator, valid_operators: DATE_OPERATORS }
-              )
-              next
-            end
-
+          builder.build(value) do |operator, compare|
             if compare.blank?
               unless allow_nil
                 issues << Issue.new(
@@ -422,7 +412,7 @@ module Apiwork
               when :in then column.in(Array(date))
               end
             end
-          end.compact.reduce(:and)
+          end
         else
           issues << Issue.new(
             code: :invalid_date_value_type,
@@ -441,19 +431,14 @@ module Apiwork
         when String, Numeric, nil
           column.eq(parse_numeric(value, key, issues))
         when Hash
-          value.map do |operator, compare|
-            operator = operator.to_sym
+          builder = FilterOperatorBuilder.new(
+            column: column,
+            field_name: key,
+            valid_operators: NUMERIC_OPERATORS,
+            issues: issues
+          )
 
-            if NUMERIC_OPERATORS.exclude?(operator)
-              issues << Issue.new(
-                code: :invalid_numeric_operator,
-                message: "Invalid operator '#{operator}' for numeric. Valid: #{NUMERIC_OPERATORS.join(', ')}",
-                path: [:filter, key, operator],
-                meta: { field: key, operator: operator, valid_operators: NUMERIC_OPERATORS }
-              )
-              next
-            end
-
+          builder.build(value) do |operator, compare|
             case operator
             when :eq
               number = parse_numeric(compare, key, issues)
@@ -489,7 +474,7 @@ module Apiwork
 
               column.in(numbers)
             end
-          end.compact.reduce(:and)
+          end
         else
           issues << Issue.new(
             code: :invalid_numeric_value_type,
