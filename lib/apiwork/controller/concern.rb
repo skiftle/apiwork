@@ -10,8 +10,6 @@ module Apiwork
       include Serialization
 
       included do
-        # Disable Rails parameter wrapping
-        # Apiwork contracts define explicit parameter structures
         wrap_parameters false
 
         rescue_from Apiwork::ConstraintError do |error|
