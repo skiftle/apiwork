@@ -128,7 +128,7 @@ module Apiwork
           empty: false,
           nullable: false,
           required: false,
-          type: nil,
+          type: :unknown,
           enum: nil,
           description: nil,
           example: nil,
