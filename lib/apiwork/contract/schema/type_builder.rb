@@ -468,9 +468,7 @@ module Apiwork
           # Unified STI union builder - consolidates three duplicate methods
           # Builds a discriminated union type from STI schema variants
           def build_sti_union(contract_class, schema_class, union_type_name:, visited: Set.new, &variant_builder)
-            # Eager load variants to ensure they're registered
-            ensure_variants_loaded(schema_class)
-
+            # Variants are loaded via explicit register_sti_variants in contract classes
             variants = schema_class.variants
             return nil unless variants&.any?
 
@@ -518,62 +516,6 @@ module Apiwork
             build_sti_union(contract_class, schema_class, union_type_name: union_type_name,
                                                           visited: visited) do |contract, variant_schema, _tag, visit_set|
               auto_import_association_contract(contract, variant_schema, visit_set)
-            end
-          end
-
-          def ensure_variants_loaded(schema_class)
-            # TODO: This method is unreliable and needs refactoring
-            # Current issues:
-            # - Dual strategy (eager_load + filesystem scan) is complex and fragile
-            # - Doesn't guarantee variants are loaded before introspection caching
-            # - Forces test workarounds (see spec/integration/sti_spec.rb)
-            # Possible solutions:
-            # - Make introspection cache-aware of variant loading state
-            # - Use explicit variant registration instead of auto-discovery
-            # - Invalidate/rebuild cache when variants change
-
-            # Discover and load STI variant schemas
-            # Strategy: Use both model descendants AND filesystem scanning for maximum reliability
-            return unless schema_class.respond_to?(:model_class)
-
-            model_class = schema_class.model_class
-            return unless model_class
-
-            # Get schema namespace (e.g., "Api::V1")
-            schema_namespace = schema_class.name.deconstantize
-            return if schema_namespace.blank?
-
-            # Strategy 1: Try ActiveRecord descendants first (works if models are already loaded)
-            # Eager load Rails application to populate descendants
-            Rails.application.eager_load! if defined?(Rails) && Rails.respond_to?(:application)
-
-            model_class.descendants.each do |descendant_model|
-              next if descendant_model.respond_to?(:abstract_class?) && descendant_model.abstract_class?
-
-              schema_class_name = "#{schema_namespace}::#{descendant_model.name}Schema"
-              begin
-                schema_class_name.constantize
-              rescue NameError
-                # Schema doesn't exist - that's ok
-              end
-            end
-
-            # Strategy 2: Filesystem scanning as fallback (works even if models aren't loaded yet)
-            schema_dir = Rails.root.join('app', 'schemas', schema_namespace.underscore) if defined?(Rails)
-            return unless schema_dir && Dir.exist?(schema_dir)
-
-            Dir.glob(schema_dir.join('*_schema.rb')).each do |schema_file|
-              basename = File.basename(schema_file, '.rb')
-              schema_class_name = "#{schema_namespace}::#{basename.camelize}"
-
-              begin
-                loaded_schema = schema_class_name.constantize
-                # Only count it if it's actually a variant of our base
-                next unless loaded_schema < schema_class
-                next unless loaded_schema.respond_to?(:sti_variant?) && loaded_schema.sti_variant?
-              rescue NameError, LoadError
-                # Schema doesn't exist - that's ok
-              end
             end
           end
 
