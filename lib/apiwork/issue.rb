@@ -16,8 +16,6 @@ module Apiwork
     end
 
     def to_h
-      filtered_meta = meta.is_a?(Hash) ? meta.slice(:attribute, :in, :minimum, :maximum, :count, :is, :too_short, :too_long) : meta
-
       result = {
         code: code,
         path: path.map(&:to_s),
@@ -25,7 +23,7 @@ module Apiwork
         detail: message
       }
 
-      result[:options] = filtered_meta if filtered_meta.present?
+      result[:options] = meta if meta.present?
       result
     end
 
