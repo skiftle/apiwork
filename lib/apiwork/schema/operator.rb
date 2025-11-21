@@ -32,6 +32,9 @@ module Apiwork
         ends_with
       ].freeze
 
+      # Null operators - for nullable fields only
+      NULL_OPERATORS = %i[null].freeze
+
       # ============================================================
       # TYPE-SPECIFIC OPERATOR SETS
       # ============================================================
@@ -71,6 +74,17 @@ module Apiwork
 
       # Boolean fields only support equality
       BOOLEAN_OPERATORS = EQUALITY_OPERATORS.freeze
+
+      # ============================================================
+      # NULLABLE VARIANTS
+      # ============================================================
+      # Operator sets for nullable fields include the null operator
+
+      NULLABLE_STRING_OPERATORS = (STRING_OPERATORS + NULL_OPERATORS).freeze
+      NULLABLE_DATE_OPERATORS = (DATE_OPERATORS + NULL_OPERATORS).freeze
+      NULLABLE_NUMERIC_OPERATORS = (NUMERIC_OPERATORS + NULL_OPERATORS).freeze
+      NULLABLE_UUID_OPERATORS = (UUID_OPERATORS + NULL_OPERATORS).freeze
+      NULLABLE_BOOLEAN_OPERATORS = (BOOLEAN_OPERATORS + NULL_OPERATORS).freeze
 
       # ============================================================
       # OPERATOR METADATA

@@ -304,19 +304,31 @@ module Apiwork
       def build_uuid_where_clause(key, value, target_klass, issues = [])
         column = target_klass.arel_table[key]
 
-        case value
-        when String
-          value.include?(',') ? column.in(value.split(',')) : column.eq(value)
-        when Array
-          column.in(value)
-        else
-          issues << Issue.new(
-            code: :invalid_uuid_value_type,
-            message: 'UUID value must be String or Array',
-            path: [:filter, key],
-            meta: { field: key, value_type: value.class.name }
-          )
-          nil
+        # Normalize string/array to operator hash
+        normalizer = lambda do |val|
+          case val
+          when String
+            val.include?(',') ? { in: val.split(',') } : { eq: val }
+          when Array
+            { in: val }
+          else
+            val
+          end
+        end
+
+        builder = FilterBuilder.new(
+          column: column,
+          field_name: key,
+          issues: issues,
+          allowed_types: [Hash]
+        )
+
+        builder.build(value, valid_operators: Apiwork::Schema::Operator::NULLABLE_UUID_OPERATORS, normalizer: normalizer) do |operator, compare|
+          case operator
+          when :eq then column.eq(compare)
+          when :in then column.in(compare)
+          when :null then handle_null_operator(column, compare)
+          end
         end
       end
 
@@ -332,13 +344,14 @@ module Apiwork
           allowed_types: [Hash]
         )
 
-        builder.build(value, valid_operators: STRING_OPERATORS, normalizer: normalizer) do |operator, compare|
+        builder.build(value, valid_operators: Apiwork::Schema::Operator::NULLABLE_STRING_OPERATORS, normalizer: normalizer) do |operator, compare|
           case operator
           when :eq then column.eq(compare)
           when :contains then column.matches("%#{compare}%")
           when :starts_with then column.matches("#{compare}%")
           when :ends_with then column.matches("%#{compare}")
           when :in then column.in(compare)
+          when :null then handle_null_operator(column, compare)
           end
         end
       end
@@ -364,8 +377,10 @@ module Apiwork
           allowed_types: [Hash]
         )
 
-        builder.build(value, valid_operators: DATE_OPERATORS, normalizer: normalizer) do |operator, compare|
-          if compare.blank?
+        builder.build(value, valid_operators: Apiwork::Schema::Operator::NULLABLE_DATE_OPERATORS, normalizer: normalizer) do |operator, compare|
+          if operator == :null
+            handle_null_operator(column, compare)
+          elsif compare.blank?
             handle_date_nil_value(column, key, allow_nil, issues)
           elsif operator == :between && compare.is_a?(Hash)
             from_date = parse_date(compare[:from] || compare['from'], key, issues)
@@ -412,7 +427,7 @@ module Apiwork
           allowed_types: [Hash]
         )
 
-        builder.build(value, valid_operators: NUMERIC_OPERATORS, normalizer: normalizer) do |operator, compare|
+        builder.build(value, valid_operators: Apiwork::Schema::Operator::NULLABLE_NUMERIC_OPERATORS, normalizer: normalizer) do |operator, compare|
           case operator
           when :eq
             number = parse_numeric(compare, key, issues)
@@ -447,6 +462,8 @@ module Apiwork
             next if numbers.empty?
 
             column.in(numbers)
+          when :null
+            handle_null_operator(column, compare)
           end
         end
       end
@@ -454,33 +471,30 @@ module Apiwork
       def build_boolean_where_clause(key, value, target_klass, issues = [])
         column = target_klass.arel_table[key]
 
-        if value.is_a?(Hash)
-          operator, operand = value.first
-          bool_value = normalize_boolean(operand)
-
-          case operator.to_sym
-          when :eq
-            column.eq(bool_value)
+        # Normalize boolean primitives to operator hash
+        normalizer = lambda do |val|
+          if [true, false, nil].include?(val) || ['true', 'false', '1', '0', 1, 0].include?(val)
+            { eq: normalize_boolean(val) }
           else
-            issues << Issue.new(
-              code: :unsupported_boolean_operator,
-              message: "Unsupported boolean operator: #{operator}. Only 'eq' is supported.",
-              path: [:filter, key, operator],
-              meta: { field: key, operator: operator }
-            )
-            nil
+            val
           end
-        elsif [true, false, nil].include?(value) || ['true', 'false', '1', '0', 1, 0].include?(value)
-          bool_value = normalize_boolean(value)
-          column.eq(bool_value)
-        else
-          issues << Issue.new(
-            code: :invalid_boolean_value,
-            message: 'Boolean value must be true, false, or nil',
-            path: [:filter, key],
-            meta: { field: key, value: value }
-          )
-          nil
+        end
+
+        builder = FilterBuilder.new(
+          column: column,
+          field_name: key,
+          issues: issues,
+          allowed_types: [Hash]
+        )
+
+        builder.build(value, valid_operators: Apiwork::Schema::Operator::NULLABLE_BOOLEAN_OPERATORS, normalizer: normalizer) do |operator, compare|
+          case operator
+          when :eq
+            bool_value = normalize_boolean(compare)
+            column.eq(bool_value)
+          when :null
+            handle_null_operator(column, compare)
+          end
         end
       end
 
