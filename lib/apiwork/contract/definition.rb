@@ -240,10 +240,8 @@ module Apiwork
         value = param_options[:default] if value.nil? && param_options[:default]
 
         # Check nullable constraint
-        if data.key?(name) && value.nil? && null_value_forbidden?(param_options)
-          return { issues: [Issue.new(code: :value_null, message: 'Value cannot be null', path: field_path, meta: { field: name })],
-                   value_set: false }
-        end
+        nullable_error = validate_nullable(name, value, param_options, data, field_path)
+        return { issues: [nullable_error], value_set: false } if nullable_error
 
         # Skip validation if value is nil and not required
         return { issues: [], value_set: false } if value.nil?
@@ -310,12 +308,11 @@ module Apiwork
 
         # For enum fields, return invalid_value error to show allowed values immediately
         if param_options[:enum].present?
-          # Extract values array from enum (handle both inline arrays and resolved hashes)
-          enum_values = param_options[:enum].is_a?(Hash) ? param_options[:enum][:values] : param_options[:enum]
+          enum_values = EnumValue.values(param_options[:enum])
 
           Issue.new(
             code: :invalid_value,
-            message: "Invalid value. Must be one of: #{enum_values.join(', ')}",
+            message: "Invalid value. Must be one of: #{EnumValue.format(param_options[:enum])}",
             path: field_path,
             meta: { field: name, expected: enum_values, actual: value }
           )
@@ -329,20 +326,29 @@ module Apiwork
         param_options[:nullable] == false # Explicit false check needed to distinguish from nil
       end
 
+      # Validate nullable constraint
+      def validate_nullable(name, value, param_options, data, field_path)
+        return nil unless data.key?(name)
+        return nil unless value.nil?
+        return nil unless null_value_forbidden?(param_options)
+
+        Issue.new(
+          code: :value_null,
+          message: 'Value cannot be null',
+          path: field_path,
+          meta: { field: name }
+        )
+      end
+
       # Validate enum value
       def validate_enum_value(name, value, enum, field_path)
-        return nil if enum.nil?
-
-        # Extract values array from enum (handle both inline arrays and resolved hashes)
-        param_enum_values = enum.is_a?(Hash) ? enum[:values] : enum
-
-        return nil if param_enum_values&.include?(value)
+        return nil if EnumValue.valid?(value, enum)
 
         Issue.new(
           code: :invalid_value,
-          message: "Invalid value. Must be one of: #{param_enum_values.join(', ')}",
+          message: "Invalid value. Must be one of: #{EnumValue.format(enum)}",
           path: field_path,
-          meta: { field: name, expected: param_enum_values, actual: value }
+          meta: { field: name, expected: EnumValue.values(enum), actual: value }
         )
       end
 
