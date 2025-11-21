@@ -6,7 +6,13 @@ module Apiwork
       include Abstractable
 
       class << self
-        attr_accessor :_schema_class
+        attr_accessor :_schema_class, :_identifier
+
+        def identifier(value = nil)
+          return @_identifier if value.nil?
+
+          @_identifier = value.to_s
+        end
 
         def inherited(subclass)
           super

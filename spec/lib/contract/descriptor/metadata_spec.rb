@@ -364,13 +364,9 @@ RSpec.describe 'Descriptor Metadata' do
       end
 
       Class.new(Apiwork::Contract::Base) do
-        def self.name = 'TestTest_contractContract'
+        identifier :test_scoped
 
         class << self
-          def name
-            'TestScopedContract'
-          end
-
           def api_class
             Apiwork::API.find('/api/test')
           end
@@ -402,13 +398,9 @@ RSpec.describe 'Descriptor Metadata' do
       end
 
       Class.new(Apiwork::Contract::Base) do
-        def self.name = 'TestTest_contractContract'
+        identifier :test_scoped
 
         class << self
-          def name
-            'TestScopedContract'
-          end
-
           def api_class
             Apiwork::API.find('/api/test')
           end

@@ -271,11 +271,9 @@ RSpec.describe 'Descriptors Integration', type: :request do
 
       # Create a contract with scoped descriptors
       @test_contract = Class.new(Apiwork::Contract::Base) do
-        class << self
-          def name
-            'TestScopedContract'
-          end
+        identifier :test_scoped
 
+        class << self
           def api_class
             Apiwork::API.find('/api/contracts')
           end

@@ -5,14 +5,6 @@ require 'rails_helper'
 RSpec.describe 'Contract union type unknown field validation' do
   let(:contract_class) do
     Class.new(Apiwork::Contract::Base) do
-      def self.name = 'TestUnion_type_testContract'
-
-      class << self
-        def resource_class
-          nil # No resource for this test
-        end
-      end
-
       # Define a custom type with specific fields
       type :nested_type do
         param :valid_field, type: :boolean, required: false
