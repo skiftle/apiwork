@@ -15,7 +15,9 @@ module Apiwork
       #   Writer.write(content: '...', output: 'path/to/file.ts', extension: '.ts')
       #   Writer.clean(output: 'generated/')
       #
-      class Writer
+      module Writer
+        module_function
+
         # Write content to filesystem
         #
         # @param content [String, Hash] Content to write (Hash auto-converts to JSON)
@@ -24,7 +26,7 @@ module Apiwork
         # @param api_path [String, nil] API path (required for directory output)
         # @param format [Symbol, nil] Generator format (required for directory output)
         # @return [String] Path to written file
-        def self.write(content:, output:, extension:, api_path: nil, format: nil)
+        def write(content:, output:, extension:, api_path: nil, format: nil)
           if file_path?(output)
             write_file(content, output)
           else
@@ -38,7 +40,7 @@ module Apiwork
         # Clean generated files/directories
         #
         # @param output [String] Path to clean
-        def self.clean(output:)
+        def clean(output:)
           if File.exist?(output)
             if File.directory?(output)
               FileUtils.rm_rf(output)
@@ -56,7 +58,7 @@ module Apiwork
         #
         # @param path [String] Path to check
         # @return [Boolean] true if path has extension
-        def self.file_path?(path)
+        def file_path?(path)
           File.extname(path) != ''
         end
 
@@ -69,18 +71,17 @@ module Apiwork
         # @param format [Symbol] Generator format
         # @param extension [String] File extension
         # @return [String] Complete file path
-        def self.build_file_path(output, api_path, format, extension)
+        def build_file_path(output, api_path, format, extension)
           path_parts = api_path.split('/').reject(&:empty?)
           File.join(output, *path_parts, "#{format}#{extension}")
         end
-        private_class_method :build_file_path
 
         # Write content to file atomically using tempfile
         #
         # @param content [String, Hash] Content to write
         # @param file_path [String] Target file path
         # @return [String] Path to written file
-        def self.write_file(content, file_path)
+        def write_file(content, file_path)
           FileUtils.mkdir_p(File.dirname(file_path))
 
           content_string = if content.is_a?(Hash)
@@ -101,7 +102,8 @@ module Apiwork
 
           file_path
         end
-        private_class_method :write_file
+
+        private :build_file_path, :write_file
       end
     end
   end

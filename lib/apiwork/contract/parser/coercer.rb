@@ -5,7 +5,9 @@ module Apiwork
     class Parser
       # Type coercion for primitive types
       # Converts string inputs to appropriate Ruby types
-      class Coercer
+      module Coercer
+        module_function
+
         COERCERS = {
           integer: lambda { |val|
             return nil if val.nil?
@@ -66,21 +68,19 @@ module Apiwork
           }
         }.freeze
 
-        class << self
-          def perform(value, type)
-            coercer = COERCERS[type]
-            return value unless coercer
+        def perform(value, type)
+          coercer = COERCERS[type]
+          return value unless coercer
 
-            begin
-              coercer.call(value)
-            rescue ArgumentError, TypeError
-              nil # Coercion failed - will be caught by type validation
-            end
+          begin
+            coercer.call(value)
+          rescue ArgumentError, TypeError
+            nil # Coercion failed - will be caught by type validation
           end
+        end
 
-          def performable?(type)
-            COERCERS.key?(type)
-          end
+        def performable?(type)
+          COERCERS.key?(type)
         end
       end
     end
