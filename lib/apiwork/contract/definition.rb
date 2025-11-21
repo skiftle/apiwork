@@ -24,26 +24,20 @@ module Apiwork
         introspect
       end
 
-      # Check if this definition represents an unwrapped union
       def unwrapped_union?
         @unwrapped_union
       end
 
-      # Define a parameter
       # rubocop:disable Metrics/ParameterLists
       def param(name, type: :string, required: false, default: nil, enum: nil, of: nil, as: nil,
                 discriminator: nil, value: nil, visited_types: nil, **options, &block)
         # rubocop:enable Metrics/ParameterLists
-        # Validate discriminator usage
         raise ArgumentError, 'discriminator can only be used with type: :union' if discriminator && type != :union
 
-        # Use instance variable if set (from nested calls), otherwise use parameter or create new Set
         visited_types = visited_types || @visited_types || Set.new
 
-        # Resolve enum reference if it's a symbol
         resolved_enum = resolve_enum_value(enum)
 
-        # Dispatch to appropriate handler based on type
         case type
         when :literal
           define_literal_param(name, value: value, required: required, default: default, as: as, options: options)
@@ -59,7 +53,6 @@ module Apiwork
 
       private
 
-      # Apply defaults to param hash to ensure consistent values
       def apply_param_defaults(param_hash)
         {
           required: false,
@@ -69,17 +62,12 @@ module Apiwork
           enum: nil,
           of: nil,
           shape: nil
-          # NOTE: name, type always provided by caller
-          # Note: value, union, custom_type, discriminator only for specific types
         }.merge(param_hash)
       end
 
-      # Define a literal type parameter
       def define_literal_param(name, value:, required:, default:, as:, options:)
-        # value can be false (boolean), so check if it was provided (not nil)
         raise ArgumentError, 'Literal type requires a value parameter' if value.nil? && !options.key?(:value)
 
-        # Use value from named parameter or from options hash
         literal_value = value.nil? ? options[:value] : value
 
         @params[name] = apply_param_defaults({
@@ -93,7 +81,6 @@ module Apiwork
                                              })
       end
 
-      # Define a union type parameter
       def define_union_param(name, discriminator:, resolved_enum:, required:, default:, as:, options:, &block)
         raise ArgumentError, 'Union type requires a block with variant definitions' unless block_given?
 
@@ -113,18 +100,14 @@ module Apiwork
                                              })
       end
 
-      # Define a regular or custom type parameter
       # rubocop:disable Metrics/ParameterLists
       def define_regular_param(name, type:, resolved_enum:, required:, default:, of:, as:, visited_types:, options:, &block)
         # rubocop:enable Metrics/ParameterLists
-        # Check if type is a custom type
         custom_type_block = @contract_class.resolve_custom_type(type)
 
-        # Check if we're already expanding this type (prevent infinite recursion)
         if custom_type_block
           expansion_key = [@contract_class.object_id, type]
 
-          # If already expanding this type, treat it as a reference instead of expanding
           custom_type_block = nil if visited_types.include?(expansion_key)
         end
 
@@ -139,25 +122,20 @@ module Apiwork
         end
       end
 
-      # Define a custom type parameter with recursion protection
       # rubocop:disable Metrics/ParameterLists
       def define_custom_type_param(name, type:, custom_type_block:, resolved_enum:, required:, default:, of:, as:,
                                    visited_types:, options:, &block)
         # rubocop:enable Metrics/ParameterLists
         expansion_key = [@contract_class.object_id, type]
 
-        # Create new visited set with current type for downstream calls
         visited_with_current = visited_types.dup.add(expansion_key)
 
         shape_definition = Definition.new(type: @type, contract_class: @contract_class, action_name: @action_name)
 
-        # Pass visited_types to nested param calls by storing on the Definition instance
         shape_definition.instance_variable_set(:@visited_types, visited_with_current)
 
-        # Evaluate custom type block
         shape_definition.instance_eval(&custom_type_block)
 
-        # Apply additional block if provided (can extend custom type)
         shape_definition.instance_eval(&block) if block_given?
 
         @params[name] = apply_param_defaults({
@@ -174,7 +152,6 @@ module Apiwork
                                              })
       end
 
-      # Define a standard (non-custom) type parameter
       def define_standard_param(name, type:, resolved_enum:, required:, default:, of:, as:, options:, &block)
         @params[name] = apply_param_defaults({
                                                name: name,
@@ -187,7 +164,6 @@ module Apiwork
                                                **options
                                              })
 
-        # Handle shape param with do block
         return unless block_given?
 
         shape_definition = Definition.new(type: @type, contract_class: @contract_class, action_name: @action_name)
@@ -206,10 +182,8 @@ module Apiwork
         params = {}
         data = data.deep_symbolize_keys if data.respond_to?(:deep_symbolize_keys)
 
-        # Check max depth
         return max_depth_error(current_depth, max_depth, path) if current_depth > max_depth
 
-        # Validate each param
         @params.each do |name, param_options|
           param_result = validate_param(
             name,
@@ -224,7 +198,6 @@ module Apiwork
           params[name] = param_result[:value] if param_result[:value_set]
         end
 
-        # Check for unknown params
         issues.concat(check_unknown_params(data, path))
 
         { issues: issues, params: params }
@@ -232,7 +205,6 @@ module Apiwork
 
       private
 
-      # Return max depth error
       def max_depth_error(current_depth, max_depth, path)
         issues = [Issue.new(
           code: :max_depth_exceeded,
@@ -243,29 +215,22 @@ module Apiwork
         { issues: issues, params: {} }
       end
 
-      # Validate a single parameter
       def validate_param(name, value, param_options, data, path, max_depth:, current_depth:)
         field_path = path + [name]
 
-        # Check required
         required_error = validate_required(name, value, param_options, field_path)
         return { issues: [required_error], value_set: false } if required_error
 
-        # Apply default if value is nil
         value = param_options[:default] if value.nil? && param_options[:default]
 
-        # Check nullable constraint
         nullable_error = validate_nullable(name, value, param_options, data, field_path)
         return { issues: [nullable_error], value_set: false } if nullable_error
 
-        # Skip validation if value is nil and not required
         return { issues: [], value_set: false } if value.nil?
 
-        # Validate enum
         enum_error = validate_enum_value(name, value, param_options[:enum], field_path)
         return { issues: [enum_error], value_set: false } if enum_error
 
-        # Handle literal type validation
         if param_options[:type] == :literal
           expected = param_options[:value]
           unless value == expected
@@ -280,39 +245,30 @@ module Apiwork
           return { issues: [], value: value, value_set: true }
         end
 
-        # Handle union type validation
         return validate_union_param(name, value, param_options, field_path, max_depth, current_depth) if param_options[:type] == :union
 
-        # Validate type
         type_error = validate_type(name, value, param_options[:type], field_path)
         return { issues: [type_error], value_set: false } if type_error
 
-        # Validate string length (min/max) for string types
         if param_options[:type] == :string
           length_error = validate_string_length(name, value, param_options, field_path)
           return { issues: [length_error], value_set: false } if length_error
         end
 
-        # Validate numeric range (min/max) for numeric types
         if numeric_type?(param_options[:type])
           range_error = validate_numeric_range(name, value, param_options, field_path)
           return { issues: [range_error], value_set: false } if range_error
         end
 
-        # Validate custom types (registered type references)
         custom_type_result = validate_custom_type(value, param_options[:type], field_path, max_depth, current_depth)
         return custom_type_result if custom_type_result
 
-        # Validate shape structures
         validate_shape_or_array(value, param_options, field_path, max_depth, current_depth)
       end
 
-      # Check if required field is missing
       def validate_required(name, value, param_options, field_path)
         return nil unless param_options[:required]
 
-        # Check if missing (matches Rails params.require behavior)
-        # Special case: false is NOT blank for boolean fields
         is_missing = if param_options[:type] == :boolean
                        value.nil?
                      else
@@ -321,7 +277,6 @@ module Apiwork
 
         return nil unless is_missing
 
-        # For enum fields, return invalid_value error to show allowed values immediately
         if param_options[:enum].present?
           enum_values = EnumValue.values(param_options[:enum])
 
@@ -336,12 +291,10 @@ module Apiwork
         end
       end
 
-      # Check if null values are explicitly forbidden (nullable: false)
       def null_value_forbidden?(param_options)
         param_options[:nullable] == false # Explicit false check needed to distinguish from nil
       end
 
-      # Validate nullable constraint
       def validate_nullable(name, value, param_options, data, field_path)
         return nil unless data.key?(name)
         return nil unless value.nil?
@@ -355,7 +308,6 @@ module Apiwork
         )
       end
 
-      # Validate enum value
       def validate_enum_value(name, value, enum, field_path)
         return nil if EnumValue.valid?(value, enum)
 
@@ -367,7 +319,6 @@ module Apiwork
         )
       end
 
-      # Validate union type parameter
       def validate_union_param(name, value, param_options, field_path, max_depth, current_depth)
         union_error, union_value = validate_union(
           name,
@@ -384,7 +335,6 @@ module Apiwork
         end
       end
 
-      # Validate shape object or array
       def validate_shape_or_array(value, param_options, field_path, max_depth, current_depth)
         if param_options[:shape] && value.is_a?(Hash)
           validate_shape_object(value, param_options[:shape], field_path, max_depth, current_depth)
@@ -395,7 +345,6 @@ module Apiwork
         end
       end
 
-      # Validate shape object
       def validate_shape_object(value, shape_definition, field_path, max_depth, current_depth)
         shape_result = shape_definition.validate(
           value,
@@ -410,7 +359,6 @@ module Apiwork
         end
       end
 
-      # Validate array parameter
       def validate_array_param(value, param_options, field_path, max_depth, current_depth)
         array_validation_options = {
           param_options: param_options,
@@ -426,7 +374,6 @@ module Apiwork
         end
       end
 
-      # Check for unknown parameters
       def check_unknown_params(data, path)
         extra_keys = data.keys - @params.keys
         extra_keys.map do |key|
@@ -439,7 +386,6 @@ module Apiwork
         end
       end
 
-      # Validate array elements
       def validate_array(array, options)
         param_options = options[:param_options]
         field_path = options[:field_path]
@@ -449,7 +395,6 @@ module Apiwork
         issues = []
         values = []
 
-        # Check max items
         max_items = param_options[:max_items] || Configuration::Resolver.resolve(
           :max_array_items,
           contract_class: @contract_class
@@ -468,7 +413,6 @@ module Apiwork
           item_path = field_path + [index]
 
           if param_options[:shape]
-            # Shape object in array
             shape_result = param_options[:shape].validate(
               item,
               max_depth: max_depth,
@@ -481,12 +425,9 @@ module Apiwork
               values << shape_result[:params]
             end
           elsif param_options[:of]
-            # Check if 'of' is a custom type (with scope resolution)
-            # Use type_contract_class if provided, otherwise fall back to @contract_class
             contract_class_for_custom_type = param_options[:type_contract_class] || @contract_class
             custom_type_block = contract_class_for_custom_type.resolve_custom_type(param_options[:of])
             if custom_type_block
-              # Array of custom type - must be a hash
               unless item.is_a?(Hash)
                 issues << Issue.new(
                   code: :invalid_type,
@@ -497,7 +438,6 @@ module Apiwork
                 next
               end
 
-              # Validate as shape object
               custom_definition = Definition.new(type: @type, contract_class: contract_class_for_custom_type, action_name: @action_name)
               custom_definition.instance_eval(&custom_type_block)
 
@@ -513,7 +453,6 @@ module Apiwork
                 values << shape_result[:params]
               end
             else
-              # Simple type array (e.g., array of strings)
               type_error = validate_type(index, item, param_options[:of], item_path)
               if type_error
                 issues << type_error
@@ -522,7 +461,6 @@ module Apiwork
               end
             end
           else
-            # Untyped array
             values << item
           end
         end
@@ -531,24 +469,19 @@ module Apiwork
       end
 
       def validate_custom_type(value, type_name, field_path, max_depth, current_depth)
-        # Return nil if not a custom type (let normal validation continue)
         return nil unless type_name.is_a?(Symbol)
 
-        # Try to resolve custom type from registry
         type_definition = Descriptor::Registry.resolve_type(type_name, contract_class: @contract_class, scope: self)
 
         return nil unless type_definition # Not a registered custom type
 
-        # Validate value against custom type definition
         type_definition.validate(value, max_depth: max_depth, current_depth: current_depth + 1, field_path: field_path)
       rescue NameError, ArgumentError => e
-        # If resolution fails due to missing constant or invalid arguments, treat as non-custom type
         Rails.logger.debug("Custom type resolution failed for :#{type_name}: #{e.message}") if defined?(Rails)
         nil
       end
 
       def validate_type(name, value, expected_type, path)
-        # Check if value matches expected type
         valid = case expected_type
                 when :string then value.is_a?(String)
                 when :integer then value.is_a?(Integer)
@@ -572,26 +505,21 @@ module Apiwork
         )
       end
 
-      # Validate union type - tries each variant in order
-      # Returns [error, value] tuple
       def validate_union(name, value, union_def, path, max_depth:, current_depth:)
         variants = union_def.variants
 
-        # Discriminated union - use discriminator field to select variant
         if union_def.discriminator
           return validate_discriminated_union(
             name, value, union_def, path, max_depth: max_depth, current_depth: current_depth
           )
         end
 
-        # Non-discriminated union - try each variant
         variant_errors = []
         most_specific_error = nil
 
         variants.each do |variant_definition|
           variant_type = variant_definition[:type]
 
-          # Try validating against this variant
           error, validated_value = validate_variant(
             name,
             value,
@@ -601,16 +529,10 @@ module Apiwork
             current_depth: current_depth
           )
 
-          # Success! Return the validated value
           return [nil, validated_value] if error.nil?
 
-          # This variant failed
           variant_errors << { type: variant_type, error: error }
 
-          # Prioritize specific errors over generic type errors:
-          # 1. field_unknown (unknown fields in nested objects)
-          # 2. invalid_value (enum validation failures)
-          # These are more helpful than generic "wrong type" errors
           if error.code == :field_unknown
             most_specific_error = error
           elsif error.code == :invalid_value && (most_specific_error.nil? || most_specific_error.code != :field_unknown)
@@ -618,10 +540,8 @@ module Apiwork
           end
         end
 
-        # If we have a specific error (like field_unknown or enum validation), return it
         return [most_specific_error, nil] if most_specific_error
 
-        # All variants failed - return error listing all expected types
         expected_types = variants.map { |v| v[:type] }
         error = Issue.new(
           code: :invalid_type,
@@ -633,13 +553,10 @@ module Apiwork
         [error, nil]
       end
 
-      # Validate discriminated union - uses discriminator field to select variant
-      # Returns [error, value] tuple
       def validate_discriminated_union(name, value, union_def, path, max_depth:, current_depth:)
         discriminator = union_def.discriminator
         variants = union_def.variants
 
-        # Value must be a hash for discriminated unions
         unless value.is_a?(Hash)
           error = Issue.new(
             code: :invalid_type,
@@ -650,7 +567,6 @@ module Apiwork
           return [error, nil]
         end
 
-        # Check if discriminator field exists (use key? to handle false values)
         unless value.key?(discriminator)
           error = Issue.new(
             code: :field_missing,
@@ -663,8 +579,6 @@ module Apiwork
 
         discriminator_value = value[discriminator]
 
-        # Find variant matching the discriminator value
-        # Normalize for comparison: boolean true/false should match string 'true'/'false'
         normalized_discriminator = normalize_discriminator_value(discriminator_value)
         matching_variant = variants.find do |v|
           normalize_discriminator_value(v[:tag]) == normalized_discriminator
@@ -681,11 +595,8 @@ module Apiwork
           return [error, nil]
         end
 
-        # Remove discriminator field from value before validating the variant
-        # The discriminator is already validated and used, variants should only see their own fields
         value_without_discriminator = value.reject { |k, _v| k == discriminator }
 
-        # Validate against the matching variant
         error, validated_value = validate_variant(
           name,
           value_without_discriminator,
@@ -695,15 +606,11 @@ module Apiwork
           current_depth: current_depth
         )
 
-        # Add discriminator back to validated value
         validated_value = validated_value.merge(discriminator => discriminator_value) if validated_value.is_a?(Hash)
 
         [error, validated_value]
       end
 
-      # Normalize discriminator values for comparison
-      # Booleans true/false are converted to strings 'true'/'false'
-      # This allows boolean discriminator values to match string tags
       def normalize_discriminator_value(value)
         case value
         when true then 'true'
@@ -712,21 +619,16 @@ module Apiwork
         end
       end
 
-      # Validate a single variant of a union
-      # Returns [error, value] tuple
       def validate_variant(name, value, variant_definition, path, max_depth:, current_depth:)
         variant_type = variant_definition[:type]
         variant_of = variant_definition[:of]
         variant_shape = variant_definition[:shape]
 
-        # Handle custom types (with scope resolution)
         custom_type_block = @contract_class.resolve_custom_type(variant_type)
         if custom_type_block
-          # Custom type variant
           custom_definition = Definition.new(type: @type, contract_class: @contract_class, action_name: @action_name)
           custom_definition.instance_eval(&custom_type_block)
 
-          # Must be a hash for custom type
           unless value.is_a?(Hash)
             type_error = Issue.new(
               code: :invalid_type,
@@ -749,7 +651,6 @@ module Apiwork
           return [nil, result[:params]]
         end
 
-        # Handle array type
         if variant_type == :array
           unless value.is_a?(Array)
             type_error = Issue.new(
@@ -761,7 +662,6 @@ module Apiwork
             return [type_error, nil]
           end
 
-          # Validate array items
           if variant_shape || variant_of
             array_issues, array_values = validate_array(
               value,
@@ -781,7 +681,6 @@ module Apiwork
           return [nil, value]
         end
 
-        # Handle object type with shape definition
         if variant_type == :object && variant_shape
           unless value.is_a?(Hash)
             type_error = Issue.new(
@@ -805,11 +704,9 @@ module Apiwork
           return [nil, result[:params]]
         end
 
-        # Handle primitive types
         type_error = validate_type(name, value, variant_type, path)
         return [type_error, nil] if type_error
 
-        # Validate enum if present
         if variant_definition[:enum]&.exclude?(value)
           enum_error = Issue.new(
             code: :invalid_value,
@@ -827,14 +724,11 @@ module Apiwork
         return nil if enum.nil?
         return enum if enum.is_a?(Array) # Inline enum - keep as-is
 
-        # Enum is a symbol - resolve from Descriptor::Registry with lexical scoping
         raise ArgumentError, "enum must be a Symbol (reference) or Array (inline values), got #{enum.class}" unless enum.is_a?(Symbol)
 
         values = Descriptor::Registry.resolve_enum(enum, scope: self, api_class: contract_class.api_class)
 
         if values
-          # Return hash with both reference and resolved values
-          # This allows serialization to use the reference and validation to use the values
           { ref: enum, values: values }
         else
           raise ArgumentError,
@@ -842,8 +736,6 @@ module Apiwork
         end
       end
 
-      # Validate numeric range constraints (min/max)
-      # Returns Issue if value is out of range, nil otherwise
       def validate_numeric_range(name, value, param_options, field_path)
         return nil unless value.is_a?(Numeric)
 
@@ -871,12 +763,9 @@ module Apiwork
         nil
       end
 
-      # Validate string length constraints (min/max)
-      # Returns Issue if string length is out of range, nil otherwise
       def validate_string_length(name, value, param_options, field_path)
         return nil unless value.is_a?(String)
 
-        # Skip validation for empty strings (they may be transformed via empty: true)
         return nil if value.empty?
 
         min_length = param_options[:min]
@@ -903,7 +792,6 @@ module Apiwork
         nil
       end
 
-      # Check if a type is numeric
       def numeric_type?(type)
         [:integer, :float, :decimal, :number].include?(type&.to_sym)
       end

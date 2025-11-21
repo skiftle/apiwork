@@ -4,13 +4,6 @@ require 'concurrent/map'
 
 module Apiwork
   module Generator
-    # Registry for managing available generators
-    #
-    # Usage:
-    #   Registry.register(:zod, Generator::Zod)
-    #   generator_class = Registry.find(:zod)
-    #
-    # Thread-safety: Lock-free using Concurrent::Map (atomic operations)
     class Registry
       class GeneratorNotFound < StandardError; end
 

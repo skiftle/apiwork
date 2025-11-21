@@ -27,19 +27,13 @@ module Apiwork
 
       private
 
-      # TypescriptMapper instance for pure type mapping logic
       def mapper
         @mapper ||= TypescriptMapper.new(introspection: @data, key_transform: key_transform)
       end
 
-      # Collects and generates all TypeScript types:
-      # - Enums
-      # - Regular types
-      # - Action input/output types
       def build_all_typescript_types
         all_types = []
 
-        # Collect enum types
         enums.each do |enum_name, enum_data|
           type_name = mapper.pascal_case(enum_name)
           enum_values = enum_data[:values]
@@ -47,7 +41,6 @@ module Apiwork
           all_types << { name: type_name, code: "export type #{type_name} = #{values_str};" }
         end
 
-        # Collect regular types (topologically sorted to avoid forward references)
         sorted_types = TypeAnalysis.topological_sort_types(types)
         sorted_types.each do |type_name, type_shape|
           type_name_pascal = mapper.pascal_case(type_name)
@@ -61,7 +54,6 @@ module Apiwork
           all_types << { name: type_name_pascal, code: code }
         end
 
-        # Collect action types (input/output for each action)
         each_resource do |resource_name, resource_data, parent_path|
           each_action(resource_data) do |action_name, action_data|
             if action_data[:input]&.any?
@@ -78,11 +70,9 @@ module Apiwork
           end
         end
 
-        # Sort all types alphabetically by name and return
         all_types.sort_by { |t| t[:name] }.map { |t| t[:code] }.join("\n\n")
       end
 
-      # Validate version option
       def validate_version!
         return if version.nil?
 

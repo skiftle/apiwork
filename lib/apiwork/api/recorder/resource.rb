@@ -3,20 +3,15 @@
 module Apiwork
   module API
     class Recorder
-      # Handles recording of resources/resource calls
       module Resource
-        # Intercept resources call (plural)
         def resources(name, **options, &block)
-          # Capture metadata
           capture_resource_metadata(
             name,
             singular: false,
             options: options
           )
 
-          # Handle nested block with context
           if block
-            # Clear pending metadata before block
             @pending_metadata = {}
 
             @resource_stack.push(name)
@@ -24,14 +19,11 @@ module Apiwork
             @resource_stack.pop
           end
 
-          # Apply pending resource metadata after block (or immediately if no block)
           apply_resource_metadata(name)
 
-          # Generate and store CRUD action metadata
           apply_crud_action_metadata(name)
         end
 
-        # Intercept resource call (singular)
         def resource(name, **options, &block)
           capture_resource_metadata(
             name,
@@ -39,9 +31,7 @@ module Apiwork
             options: options
           )
 
-          # Handle nested block with context
           if block
-            # Clear pending metadata before block
             @pending_metadata = {}
 
             @resource_stack.push(name)
@@ -49,16 +39,12 @@ module Apiwork
             @resource_stack.pop
           end
 
-          # Apply pending resource metadata after block (or immediately if no block)
           apply_resource_metadata(name)
 
-          # Generate and store CRUD action metadata
           apply_crud_action_metadata(name)
         end
 
-        # Support for with_options pattern
         def with_options(options = {}, &block)
-          # Store current options for merging
           old_options = @current_options
           @current_options = (@current_options || {}).merge(options)
 
@@ -92,17 +78,13 @@ module Apiwork
           resource = @metadata.find_resource(name)
           return unless resource
 
-          # Get CRUD actions list for this resource
           crud_actions = resource[:only] || []
 
-          # Generate metadata for each CRUD action
           crud_actions.each do |action_name|
             action_meta = @pending_metadata[:actions]&.delete(action_name) || {}
 
-            # Apply default summary if not provided
             action_meta[:summary] ||= default_crud_action_summary(action_name, name)
 
-            # Add CRUD action with metadata to metadata store
             @metadata.add_crud_action(
               name,
               action_name,
@@ -137,27 +119,21 @@ module Apiwork
         end
 
         def capture_resource_metadata(name, singular:, options:)
-          # Merge current options (from with_options) with resource-specific options
           merged_options = (@current_options || {}).merge(options)
 
-          # Determine parent from resource stack
           parent = @resource_stack.last
 
-          # Extract override options (Rails-style paths)
           contract_path = merged_options[:contract]
           controller_option = merged_options[:controller]
 
-          # Always infer resource class from name (no override)
           resource_class = infer_resource_class(name)
 
-          # Resolve contract: use explicit path or infer from name
           contract_class = if contract_path
                              constantize_contract_path(contract_path)
                            else
                              infer_contract_class(name)
                            end
 
-          # Add to metadata
           @metadata.add_resource(
             name,
             singular: singular,

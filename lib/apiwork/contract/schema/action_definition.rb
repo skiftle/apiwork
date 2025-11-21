@@ -3,8 +3,6 @@
 module Apiwork
   module Contract
     module Schema
-      # Schema-specific methods for ActionDefinition
-      # Prepended when an action's contract has a schema
       module ActionDefinition
         def merges_input?
           return false if resets_input?
@@ -19,10 +17,8 @@ module Apiwork
         end
 
         def input(replace: false, &block)
-          # Auto-generate first if needed (before custom block)
           auto_generate_input_if_needed
 
-          # Set reset flag if replace is true
           @reset_input = replace if replace
 
           @input_definition ||= Definition.new(
@@ -33,13 +29,11 @@ module Apiwork
 
           if block
             if should_auto_wrap_input?
-              # Automatically wrap in root_key for reset writable actions
               root_key = contract_class.schema_class.root_key.singular.to_sym
               @input_definition.param root_key, type: :object, required: true do
                 instance_eval(&block)
               end
             else
-              # Normal behavior: evaluate block directly
               @input_definition.instance_eval(&block)
             end
           end
@@ -54,10 +48,7 @@ module Apiwork
           return input_definition if virtual_def.nil?
           return virtual_def if input_definition.nil?
 
-          # Merge by adding virtual params to the existing input_definition
-          # This preserves enum/type registrations that are keyed by the Definition instance
           virtual_def.params.each do |name, param_options|
-            # Only add if not already defined (explicit params override virtual ones)
             input_definition.params[name] ||= param_options
           end
 
@@ -73,8 +64,6 @@ module Apiwork
           return output_definition if virtual_def.nil?
           return virtual_def if output_definition.nil?
 
-          # Copy unwrapped union metadata from virtual to output_definition if present
-          # This ensures the merged output is still recognized as a discriminated union
           if virtual_def.instance_variable_get(:@unwrapped_union)
             output_definition.instance_variable_set(:@unwrapped_union, true)
             output_definition.instance_variable_set(
@@ -83,29 +72,21 @@ module Apiwork
             )
           end
 
-          # Merge by adding virtual params to the existing output_definition
-          # This preserves enum/type registrations that are keyed by the Definition instance
           virtual_def.params.each do |name, param_options|
-            # ok parameter cannot be overridden - always use virtual definition
-            # Required for discriminated union pattern used by type generators
             if name == :ok
               output_definition.params[name] = param_options
             else
-              # Virtual params are added first, custom params override them
               output_definition.params[name] = param_options unless output_definition.params.key?(name)
             end
           end
 
-          # NOTE: We modify output_definition in-place to preserve enum/type registrations
           output_definition
         end
 
-        # Check if this is a destroy action
         def is_destroy_action?
           action_name.to_sym == :destroy
         end
 
-        # Check if output definition has unwrapped union structure
         def has_unwrapped_union?
           return false unless output_definition
 
@@ -144,9 +125,8 @@ module Apiwork
             virtual_def.instance_eval { InputGenerator.generate_writable_input(self, schema_class, :update) }
             add_include_param_if_needed(virtual_def, schema_class)
           when :destroy
-            # No input
+            # Destroy actions intentionally have no input params beyond standard routing params
           else
-            # Custom actions: add include param for member actions
             add_include_param_if_needed(virtual_def, schema_class) if member_action?
           end
 
@@ -168,19 +148,16 @@ module Apiwork
             action_name: action_name
           )
 
-          # Generate output based on action type
           case action_name.to_sym
           when :index
             virtual_def.instance_eval { OutputGenerator.generate_collection_output(self, schema_class) }
           when :show, :create, :update
             virtual_def.instance_eval { OutputGenerator.generate_single_output(self, schema_class) }
           when :destroy
-            # Destroy has empty output
+            # Destroy actions return no output body by convention (HTTP 204)
           else
-            # Custom actions: only generate wrapper if there's an explicit output definition
             return nil unless output_definition
 
-            # Generate wrapper based on whether it's a collection or member action
             if collection_action?
               virtual_def.instance_eval { OutputGenerator.generate_collection_output(self, schema_class) }
             else
@@ -191,17 +168,12 @@ module Apiwork
           virtual_def
         end
 
-        # Check if this action is a collection action (returns array of resources)
-        # CRUD action :index is always collection
-        # Custom actions are checked from API metadata (collection do ... end)
         def collection_action?
           return true if action_name.to_sym == :index
 
-          # For custom actions, check API metadata
           api = find_api_for_contract
           return false unless api&.metadata
 
-          # Check if action is defined under collection in any resource using this contract
           api.metadata.search_resources do |resource_metadata|
             next unless resource_uses_contract?(resource_metadata, contract_class)
 
@@ -209,17 +181,12 @@ module Apiwork
           end || false
         end
 
-        # Check if this action is a member action (operates on single resource)
-        # CRUD actions :show, :create, :update are always members
-        # Custom actions are checked from API metadata (member do ... end)
         def member_action?
           return true if %i[show create update].include?(action_name.to_sym)
 
-          # For custom actions, check API metadata
           api = find_api_for_contract
           return false unless api&.metadata
 
-          # Check if action is defined under member in any resource using this contract
           api.metadata.search_resources do |resource_metadata|
             next unless resource_uses_contract?(resource_metadata, contract_class)
 
@@ -241,20 +208,18 @@ module Apiwork
           when :index
             @input_definition.instance_eval { InputGenerator.generate_query_params(self, schema_class) }
           when :show
-            # Empty input - strict mode will reject any query params
+            # Show actions only need route params, include params added via merge if associations exist
           when :create
             @input_definition.instance_eval { InputGenerator.generate_writable_input(self, schema_class, :create) }
           when :update
             @input_definition.instance_eval { InputGenerator.generate_writable_input(self, schema_class, :update) }
           when :destroy
-            # No input by default
+            # Destroy actions have no input params beyond route params
           else
-            # Custom actions get empty input
-            # Input params MUST be defined explicitly in the action block
+            # Custom actions don't auto-generate input
           end
         end
 
-        # Schema-dependent: Auto-generate output definition for CRUD and custom actions
         def auto_generate_output_if_needed
           schema_class = contract_class.schema_class
           @output_definition = Definition.new(
@@ -269,15 +234,12 @@ module Apiwork
           when :show, :create, :update
             @output_definition.instance_eval { OutputGenerator.generate_single_output(self, schema_class) }
           when :destroy
-            # Destroy returns empty response (just 200 OK)
-            # Leave @output_definition empty
+            # Destroy actions return no output body by convention
           else
-            # Custom actions must define their own output
-            # Leave @output_definition empty
+            # Custom actions don't auto-generate output
           end
         end
 
-        # Schema-dependent: Check if input should be automatically wrapped in root_key
         def should_auto_wrap_input?
           return false unless @reset_input # Only when reset_input! is used
           return false unless %i[create update].include?(action_name.to_sym)

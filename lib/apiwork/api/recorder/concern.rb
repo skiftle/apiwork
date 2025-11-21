@@ -3,11 +3,8 @@
 module Apiwork
   module API
     class Recorder
-      # Handles recording of concern definitions
       module Concern
-        # Support for concerns
         def concern(name, &block)
-          # Store concern definition for later use
           @metadata.add_concern(name, block)
         end
 
@@ -20,7 +17,6 @@ module Apiwork
             concern_block = @metadata.concerns[concern_name]
             next unless concern_block
 
-            # Execute concern block in current context
             instance_eval(&concern_block)
           end
         end

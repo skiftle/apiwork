@@ -28,22 +28,17 @@ module Apiwork
           def serialize(api)
             result = {}
 
-            # Serialize from unified storage
             if api
               storage(api).each_pair.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
-                # Cache the expanded payload to avoid re-expanding on every serialize call
                 expanded_shape = metadata[:expanded_payload] ||= if metadata[:payload].is_a?(Hash)
-                                                                   # Union or already expanded data
                                                                    metadata[:payload]
                                                                  elsif metadata[:payload].is_a?(Proc)
-                                                                   # Block definition - expand it once and cache
                                                                    expand_type_definition(
                                                                      metadata[:payload],
                                                                      contract_class: metadata[:scope],
                                                                      type_name: metadata[:name]
                                                                    )
                                                                  else
-                                                                   # Fallback - use metadata[:definition] if available
                                                                    expand_type_definition(
                                                                      metadata[:definition] || metadata[:payload],
                                                                      contract_class: metadata[:scope],
@@ -51,11 +46,7 @@ module Apiwork
                                                                    )
                                                                  end
 
-                # Build result with shape and metadata separated
-                # For union types, expanded_shape already has type: :union, variants: [...]
-                # For object types, expanded_shape is a hash of fields
                 result[qualified_name] = if expanded_shape.is_a?(Hash) && expanded_shape[:type] == :union
-                                           # Union type - merge metadata into the existing structure
                                            expanded_shape.merge(
                                              description: metadata[:description],
                                              example: metadata[:example],
@@ -63,7 +54,6 @@ module Apiwork
                                              deprecated: metadata[:deprecated] || false
                                            )
                                          else
-                                           # Object type - wrap fields under :shape
                                            {
                                              type: :object,
                                              shape: expanded_shape,
@@ -80,16 +70,12 @@ module Apiwork
           end
 
           def clear!
-            # Clear expanded_payload cache before clearing storage
-            # This ensures types get re-expanded on next serialize, preventing
-            # stale cached types when variants are loaded after initial type generation
             @storage&.each_value do |api_storage|
               api_storage.each_value do |metadata|
                 metadata.delete(:expanded_payload)
               end
             end
 
-            # Call parent to clear storage
             super
           end
 

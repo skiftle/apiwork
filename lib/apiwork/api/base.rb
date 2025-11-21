@@ -10,25 +10,19 @@ module Apiwork
           @mount_path = path
           @specs = {}
 
-          # Parse path to namespaces array
           @namespaces = path == '/' ? [:root] : path.split('/').reject(&:empty?).map(&:to_sym)
 
-          # Create metadata with path as source
           @metadata = Metadata.new(path)
           @recorder = Recorder.new(@metadata, @namespaces)
 
-          # Register in Registry
           Registry.register(self)
 
-          # Register core descriptors for this API (idempotent - allows re-registration on Rails reload)
           Contract::Descriptor::Core.register(self)
 
-          # Initialize configuration hash
           @configuration = {}
         end
 
         def spec(type, path: nil)
-          # Validate that type is registered
           unless Generator::Registry.registered?(type)
             available = Generator::Registry.all.join(', ')
             raise ConfigurationError,
@@ -36,13 +30,10 @@ module Apiwork
                   "Available generators: #{available}"
           end
 
-          # Initialize specs hash if needed
           @specs ||= {}
 
-          # Default path if not specified
           path ||= "/.spec/#{type}"
 
-          # Add to specs hash
           @specs[type] = path
         end
 
@@ -72,14 +63,12 @@ module Apiwork
           builder.instance_eval(&block)
         end
 
-        # Info DSL - allows defining API metadata
         def info(&block)
           builder = Info::Builder.new
           builder.instance_eval(&block)
           @metadata.info = builder.info
         end
 
-        # Routing DSL - allows defining resources
         def resources(name, **options, &block)
           @recorder.resources(name, **options, &block)
         end
@@ -109,13 +98,11 @@ module Apiwork
         private
 
         def build_introspection_result
-          # Build resources first - this creates contract classes and registers types/enums
           resources = {}
           metadata.resources.each do |resource_name, resource_metadata|
             resources[resource_name] = serialize_resource(resource_name, resource_metadata)
           end
 
-          # Now collect all types and enums (after contract classes have been created)
           result = {
             path: mount_path,
             info: serialize_info,
@@ -124,13 +111,11 @@ module Apiwork
             resources: resources
           }
 
-          # Add global error codes at root level (always present, empty array if not defined)
           result[:error_codes] = metadata.error_codes || []
 
           result
         end
 
-        # Serialize info metadata
         def serialize_info
           result = {}
 
@@ -143,24 +128,18 @@ module Apiwork
           result
         end
 
-        # All types from Descriptor::Registry
-        # Returns all global types + all local types from all contracts in a single hash
         def types
           Contract::Descriptor::Registry.types(self)
         end
 
-        # All enums from Descriptor::Registry
-        # Returns all global enums + all local enums from all scopes in a single hash
         def enums
           Contract::Descriptor::Registry.enums(self)
         end
 
-        # Serialize a single resource with all its actions and metadata
         def serialize_resource(resource_name, resource_metadata, parent_path: nil, parent_resource_name: nil)
           resource_path = build_resource_path(resource_name, resource_metadata, parent_path,
                                               parent_resource_name: parent_resource_name)
 
-          # Extract metadata fields
           meta = resource_metadata[:metadata] || {}
 
           result = {
@@ -171,12 +150,9 @@ module Apiwork
             actions: {}
           }
 
-          # Get contract class for this resource
-          # Try explicit contract first, fall back to schema-based contract
           contract_class = resolve_contract_class(resource_metadata) ||
                            schema_based_contract_class(resource_metadata)
 
-          # Serialize CRUD actions
           if resource_metadata[:actions]&.any?
             resource_metadata[:actions].each do |action_name, action_data|
               path = build_action_path(action_name, action_name.to_sym)
@@ -185,7 +161,6 @@ module Apiwork
             end
           end
 
-          # Serialize member actions
           if resource_metadata[:members]&.any?
             resource_metadata[:members].each do |action_name, action_metadata|
               path = build_action_path(action_name, :member)
@@ -194,7 +169,6 @@ module Apiwork
             end
           end
 
-          # Serialize collection actions
           if resource_metadata[:collections]&.any?
             resource_metadata[:collections].each do |action_name, action_metadata|
               path = build_action_path(action_name, :collection)
@@ -203,7 +177,6 @@ module Apiwork
             end
           end
 
-          # Serialize nested resources
           if resource_metadata[:resources]&.any?
             result[:resources] = {}
             resource_metadata[:resources].each do |nested_name, nested_metadata|
@@ -219,12 +192,6 @@ module Apiwork
           result
         end
 
-        # Build relative path for any action type
-        # Returns only the action-specific segment with generic :id
-        # index/create: "/"
-        # show/update/destroy: "/:id"
-        # member: "/:id/action_name"
-        # collection: "/action_name"
         def build_action_path(action_name, action_type)
           case action_type
           when :index, :create
@@ -240,9 +207,7 @@ module Apiwork
           end
         end
 
-        # Add action with method, path, and contract input/output
         def add_action_with_contract(actions, name, method, path, contract_class, metadata: {})
-          # Flatten metadata fields directly onto action
           actions[name] = {
             method:,
             path:,
@@ -264,10 +229,6 @@ module Apiwork
           actions[name][:error_codes] = contract_json[:error_codes] || []
         end
 
-        # Build relative path for a resource
-        # Returns only the local segment, not the full absolute path
-        # Top-level: "posts"
-        # Nested: ":post_id/comments"
         def build_resource_path(resource_name, resource_metadata, parent_path, parent_resource_name: nil)
           resource_segment = if resource_metadata[:singular]
                                resource_name.to_s.singularize
@@ -276,27 +237,20 @@ module Apiwork
                              end
 
           if parent_path
-            # Nested: use parent resource name for ID parameter
             parent_id_param = ":#{parent_resource_name.to_s.singularize}_id"
             "#{parent_id_param}/#{resource_segment}"
           else
-            # Top-level: just the resource segment
             resource_segment
           end
         end
 
-        # Resolve contract class from resource metadata
-        # Only returns explicit contract classes (not schema-based)
         def resolve_contract_class(resource_metadata)
           contract_class = resource_metadata[:contract_class]
           return nil unless contract_class
 
-          # Validate that it's actually a Contract class
           contract_class < Contract::Base ? contract_class : nil
         end
 
-        # Get or create schema-based contract class for a resource
-        # Uses SchemaRegistry for consistent contract instances
         def schema_based_contract_class(resource_metadata)
           schema_class = resource_metadata[:schema_class]
           schema_class&.contract

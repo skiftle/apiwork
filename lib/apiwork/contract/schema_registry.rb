@@ -4,10 +4,6 @@ require 'concurrent/map'
 
 module Apiwork
   module Contract
-    # Registry maintaining Schema → Contract relationships
-    # Stores explicit contracts for fast lookup
-    #
-    # Thread-safety: Lock-free using Concurrent::Map (atomic operations)
     class SchemaRegistry
       class << self
         def find(schema_class)
@@ -20,12 +16,10 @@ module Apiwork
           registry[schema_class] = contract_class
         end
 
-        # Clear registry (for development reload)
         def clear!
           @registry = Concurrent::Map.new
         end
 
-        # For debugging/introspection
         def all
           registry.each_pair.to_h
         end
@@ -33,11 +27,9 @@ module Apiwork
         private
 
         def find_contract(schema_class)
-          # Try naming convention: PostSchema → PostContract
           contract_name = schema_class.name.gsub(/Schema$/, 'Contract')
           contract_name.constantize
         rescue NameError
-          # No contract found - raise helpful error
           raise_missing_contract_error(schema_class)
         end
 
@@ -59,7 +51,6 @@ module Apiwork
         end
       end
 
-      # Initialize
       clear!
     end
   end

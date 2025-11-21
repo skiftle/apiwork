@@ -6,11 +6,9 @@ module Apiwork
       def apply_sort(scope, params, issues = [])
         return scope if params.blank?
 
-        # Use default sort if no params
         params = default_sort if params.blank?
         return scope if params.blank?
 
-        # Convert array of hashes to single hash
         params = params.reduce({}) { |acc, hash| acc.merge(hash) } if params.is_a?(Array)
 
         unless params.is_a?(Hash)
@@ -108,7 +106,6 @@ module Apiwork
 
             association_resource = association_resource.constantize if association_resource.is_a?(String)
 
-            # Use Query class for nested sorting
             nested_query = Apiwork::Query.new(association.klass.all, schema: association_resource)
             nested_orders, nested_joins = nested_query.send(:build_order_clauses, value, association.klass, issues)
             orders.concat(nested_orders)

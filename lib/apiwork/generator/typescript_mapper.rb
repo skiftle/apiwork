@@ -2,9 +2,6 @@
 
 module Apiwork
   module Generator
-    # Pure TypeScript type mapping service
-    # Converts introspection data to TypeScript type strings
-    # No side effects, no file I/O, just pure string generation
     class TypescriptMapper
       attr_reader :introspection, :key_transform_strategy
 
@@ -13,11 +10,9 @@ module Apiwork
         @key_transform_strategy = key_transform
       end
 
-      # Build complete TypeScript interface from type definition
       def build_interface(type_name, type_shape, action_name = nil, recursive: false)
         type_name_pascal = pascal_case(type_name)
 
-        # Get fields from :shape key
         fields = type_shape[:shape] || {}
 
         properties = fields.sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
@@ -30,7 +25,6 @@ module Apiwork
           "  #{key}#{optional_marker}: #{ts_type};"
         end.join("\n")
 
-        # Empty objects become type aliases to object
         if properties.empty?
           "export type #{type_name_pascal} = object;"
         else
@@ -38,7 +32,6 @@ module Apiwork
         end
       end
 
-      # Build TypeScript union type
       def build_union_type(type_name, type_shape)
         type_name_pascal = pascal_case(type_name)
         variants = type_shape[:variants]
@@ -48,7 +41,6 @@ module Apiwork
         "export type #{type_name_pascal} = #{variant_types.join(' | ')};"
       end
 
-      # Build TypeScript interface for action input
       def build_action_input_type(resource_name, action_name, input_params, parent_path = nil)
         type_name = action_type_name(resource_name, action_name, 'Input', parent_path)
 
@@ -63,21 +55,18 @@ module Apiwork
         "export interface #{type_name} {\n#{properties}\n}"
       end
 
-      # Build TypeScript type alias for action output
       def build_action_output_type(resource_name, action_name, output_def, parent_path = nil)
         type_name = action_type_name(resource_name, action_name, 'Output', parent_path)
         ts_type = map_type_definition(output_def, action_name)
         "export type #{type_name} = #{ts_type};"
       end
 
-      # Generate action type name (e.g., PostCreateInput)
       def action_type_name(resource_name, action_name, suffix, parent_path = nil)
         parent_names = extract_parent_resource_names(parent_path)
         parts = parent_names + [resource_name.to_s, action_name.to_s, suffix]
         pascal_case(parts.join('_'))
       end
 
-      # Map a field definition to TypeScript type
       def map_field(definition, action_name = nil)
         return 'string' unless definition.is_a?(Hash)
 
@@ -106,7 +95,6 @@ module Apiwork
         base_type
       end
 
-      # Map a type definition to TypeScript type
       def map_type_definition(definition, action_name = nil)
         return 'never' unless definition.is_a?(Hash)
 
@@ -128,7 +116,6 @@ module Apiwork
         end
       end
 
-      # Map object type to TypeScript inline object type
       def map_object_type(definition, action_name = nil)
         return 'object' unless definition[:shape]
 
@@ -145,7 +132,6 @@ module Apiwork
         "{ #{properties} }"
       end
 
-      # Map array type to TypeScript array type
       def map_array_type(definition, action_name = nil)
         items_type = definition[:of]
         return 'string[]' unless items_type
@@ -158,7 +144,6 @@ module Apiwork
                          map_primitive(items_type)
                        end
 
-        # Use bracket notation for arrays
         if element_type.include?(' | ') || element_type.include?(' & ')
           "(#{element_type})[]"
         else
@@ -166,7 +151,6 @@ module Apiwork
         end
       end
 
-      # Map union type to TypeScript union
       def map_union_type(definition, action_name = nil)
         variants = definition[:variants].map do |variant|
           map_type_definition(variant, action_name)
@@ -174,7 +158,6 @@ module Apiwork
         variants.sort.join(' | ')
       end
 
-      # Map literal value to TypeScript literal type
       def map_literal_type(definition)
         value = definition[:value]
         case value
@@ -191,7 +174,6 @@ module Apiwork
         end
       end
 
-      # Map primitive type to TypeScript primitive
       def map_primitive(type)
         case type.to_sym
         when :string, :text, :uuid, :date, :datetime, :time, :binary
@@ -209,12 +191,10 @@ module Apiwork
         end
       end
 
-      # Convert symbol to TypeScript type reference
       def type_reference(symbol)
         pascal_case(symbol)
       end
 
-      # Convert name to PascalCase for TypeScript
       def pascal_case(name)
         name.to_s.camelize(:upper)
       end
@@ -229,17 +209,14 @@ module Apiwork
         introspection[:enums] || {}
       end
 
-      # Check if symbol is a custom type or enum reference
       def enum_or_type_reference?(symbol)
         types.key?(symbol) || enums.key?(symbol)
       end
 
-      # Resolve enum reference (identity function for now)
       def resolve_enum(enum_ref)
         enum_ref
       end
 
-      # Extract parent resource names from path
       def extract_parent_resource_names(parent_path)
         return [] unless parent_path
 
@@ -255,11 +232,9 @@ module Apiwork
         parent_names
       end
 
-      # Transform key according to strategy
       def transform_key(key)
         key_str = key.to_s
 
-        # Preserve leading underscores (e.g., _and, _or, _not)
         leading_underscore = key_str.start_with?('_')
         base = leading_underscore ? key_str[1..] : key_str
 

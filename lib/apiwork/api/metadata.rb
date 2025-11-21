@@ -7,10 +7,8 @@ module Apiwork
       attr_accessor :info, :error_codes
 
       def initialize(path)
-        # Store path as source of truth
         @path = path
 
-        # Derive namespaces from path
         @namespaces = path == '/' ? [:root] : path.split('/').reject(&:empty?).map(&:to_sym)
 
         @resources = {} # Structured tree, not flat array
@@ -19,16 +17,13 @@ module Apiwork
         @error_codes = [] # Global error codes for all endpoints in this API
       end
 
-      # Derive namespace string for class names: [:api, :v1] -> 'Api::V1'
       def namespaces_string
         @namespaces.map(&:to_s).map(&:camelize).join('::')
       end
 
       def add_resource(name, singular:, schema_class:, controller: nil, contract_class: nil, parent: nil,
                        **options)
-        # Add to structured tree
         target = if parent
-                   # Find or create nested resources hash
                    parent_resource = find_resource(parent)
                    return unless parent_resource
 
@@ -125,11 +120,9 @@ module Apiwork
       end
 
       def search_in_resource_tree(resource_metadata, &block)
-        # Check current resource
         result = yield(resource_metadata)
         return result if result
 
-        # Search nested resources
         resource_metadata[:resources]&.each_value do |nested_metadata|
           result = search_in_resource_tree(nested_metadata, &block)
           return result if result
@@ -145,14 +138,12 @@ module Apiwork
         if only
           Array(only).map(&:to_sym)
         else
-          # Determine default actions based on resource type
           default_actions = if singular
                               [:show, :create, :update, :destroy] # No :index for singular
                             else
                               [:index, :show, :create, :update, :destroy]
                             end
 
-          # Apply except filter if present
           if except
             default_actions - Array(except).map(&:to_sym)
           else

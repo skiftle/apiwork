@@ -3,15 +3,8 @@
 module Apiwork
   module Schema
     module Operator
-      # ============================================================
-      # BASE OPERATOR SETS
-      # ============================================================
-      # These are shared across multiple data types
-
-      # Equality operators - supported by all types
       EQUALITY_OPERATORS = %i[eq].freeze
 
-      # Comparison operators - for ordered types (dates, numbers)
       COMPARISON_OPERATORS = %i[
         gt
         gte
@@ -19,36 +12,24 @@ module Apiwork
         lte
       ].freeze
 
-      # Range operators - for types that support ranges
       RANGE_OPERATORS = %i[between].freeze
 
-      # Collection operators - for checking membership
       COLLECTION_OPERATORS = %i[in].freeze
 
-      # String-specific operators
       STRING_SPECIFIC_OPERATORS = %i[
         contains
         starts_with
         ends_with
       ].freeze
 
-      # Null operators - for nullable fields only
       NULL_OPERATORS = %i[null].freeze
 
-      # ============================================================
-      # TYPE-SPECIFIC OPERATOR SETS
-      # ============================================================
-
-      # Valid operators for string/text fields
-      # Includes: equality, collection, and string-specific
       STRING_OPERATORS = (
         EQUALITY_OPERATORS +
         COLLECTION_OPERATORS +
         STRING_SPECIFIC_OPERATORS
       ).freeze
 
-      # Valid operators for date/datetime fields
-      # Includes: equality, comparison, range, and collection
       DATE_OPERATORS = (
         EQUALITY_OPERATORS +
         COMPARISON_OPERATORS +
@@ -56,8 +37,6 @@ module Apiwork
         COLLECTION_OPERATORS
       ).freeze
 
-      # Valid operators for numeric fields (integer, float, decimal)
-      # Includes: equality, comparison, range, and collection
       NUMERIC_OPERATORS = (
         EQUALITY_OPERATORS +
         COMPARISON_OPERATORS +
@@ -65,20 +44,12 @@ module Apiwork
         COLLECTION_OPERATORS
       ).freeze
 
-      # Valid operators for UUID fields
-      # Only equality and collection operators
       UUID_OPERATORS = (
         EQUALITY_OPERATORS +
         COLLECTION_OPERATORS
       ).freeze
 
-      # Boolean fields only support equality
       BOOLEAN_OPERATORS = EQUALITY_OPERATORS.freeze
-
-      # ============================================================
-      # NULLABLE VARIANTS
-      # ============================================================
-      # Operator sets for nullable fields include the null operator
 
       NULLABLE_STRING_OPERATORS = (STRING_OPERATORS + NULL_OPERATORS).freeze
       NULLABLE_DATE_OPERATORS = (DATE_OPERATORS + NULL_OPERATORS).freeze
@@ -86,12 +57,6 @@ module Apiwork
       NULLABLE_UUID_OPERATORS = (UUID_OPERATORS + NULL_OPERATORS).freeze
       NULLABLE_BOOLEAN_OPERATORS = (BOOLEAN_OPERATORS + NULL_OPERATORS).freeze
 
-      # ============================================================
-      # OPERATOR METADATA
-      # ============================================================
-
-      # Map of data types to their valid operators
-      # Useful for introspection and documentation
       OPERATORS_BY_TYPE = {
         string: STRING_OPERATORS,
         text: STRING_OPERATORS,

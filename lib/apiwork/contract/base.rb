@@ -22,7 +22,6 @@ module Apiwork
         end
 
         def schema(ref)
-          # Validate that ref is a Class constant
           unless ref.is_a?(Class)
             raise ArgumentError, "schema must be a Class constant, got #{ref.class}. " \
                                  "Use: schema PostSchema (not 'PostSchema' or :post_schema)"
@@ -30,28 +29,13 @@ module Apiwork
 
           @_schema_class = ref
 
-          # Register this explicit contract in the registry
           SchemaRegistry.register(ref, self)
 
-          # Register enums from schema when contract is defined/reloaded
-          # This ensures enums are available even if actions are cached
           Schema::TypeBuilder.build_contract_enums(self, ref)
-
-          # nested_payload union is registered lazily via auto_import_association_contract
-          # when a schema is used as a writable association, not eagerly here
 
           prepend Schema::Extension unless ancestors.include?(Schema::Extension)
         end
 
-        # Explicitly register STI variant schemas for this contract's base schema
-        # This ensures variant schemas are loaded before type generation, preventing
-        # test isolation issues where variants aren't discovered in time.
-        #
-        # Example:
-        #   class ClientContract < Apiwork::Contract::Base
-        #     schema ClientSchema
-        #     register_sti_variants PersonClientSchema, CompanyClientSchema
-        #   end
         def register_sti_variants(*variant_schema_classes)
           variant_schema_classes.each do |variant_class|
             unless variant_class.is_a?(Class) && variant_class < Apiwork::Schema::Base
@@ -60,19 +44,14 @@ module Apiwork
                     'Use: register_sti_variants PersonSchema, CompanySchema'
             end
 
-            # Force load the variant schema class by accessing its name
-            # This triggers Zeitwerk autoloading and causes the variant's
-            # `variant` DSL to execute, registering it with the base schema
             variant_class.name
           end
         end
 
-        # Get schema class
         def schema_class
           @_schema_class
         end
 
-        # Check if this contract uses a schema
         def schema?
           @_schema_class.present?
         end
@@ -92,12 +71,6 @@ module Apiwork
           builder.union(name, &block)
         end
 
-        # Configure contract-level settings
-        #
-        # @example
-        #   configure do
-        #     max_array_items 500
-        #   end
         def configure(&block)
           return unless block
 
@@ -106,26 +79,21 @@ module Apiwork
           builder.instance_eval(&block)
         end
 
-        # Access configuration hash
-        # @return [Hash] Contract configuration settings
         def configuration
           @configuration ||= {}
         end
 
         def import(contract_class, as:)
-          # Validate contract_class is a Class
           unless contract_class.is_a?(Class)
             raise ArgumentError, "import must be a Class constant, got #{contract_class.class}. " \
                                  "Use: import UserContract, as: :user (not 'UserContract' or :user_contract)"
           end
 
-          # Validate contract_class is a Contract
           unless contract_class < Apiwork::Contract::Base
             raise ArgumentError, 'import must be a Contract class (subclass of Apiwork::Contract::Base), ' \
                                  "got #{contract_class}"
           end
 
-          # Validate alias is a symbol
           unless as.is_a?(Symbol)
             raise ArgumentError, "import alias must be a Symbol, got #{as.class}. " \
                                  'Use: import UserContract, as: :user'
@@ -157,10 +125,8 @@ module Apiwork
           @action_definitions ||= {}
           action_name_sym = action_name.to_sym
 
-          # Return existing definition if present
           return @action_definitions[action_name_sym] if @action_definitions.key?(action_name_sym)
 
-          # Auto-generate action if we have a schema (for any action, not just CRUD)
           if schema_class
             auto_generate_and_store_action(action_name_sym)
             return @action_definitions[action_name_sym]
@@ -175,22 +141,17 @@ module Apiwork
 
         def introspect(action = nil)
           if action
-            # Specific action introspection
             action_def = action_definition(action)
             return nil unless action_def
 
             action_def.as_json
           else
-            # Full contract introspection
             result = { actions: {} }
 
-            # Get available actions from API routing configuration
             actions = available_actions
 
-            # If no API definition found, fall back to all explicit action definitions
             actions = action_definitions.keys if actions.empty?
 
-            # Serialize only available actions
             actions.each do |action_name|
               action_def = action_definition(action_name)
               result[:actions][action_name] = action_def.as_json if action_def

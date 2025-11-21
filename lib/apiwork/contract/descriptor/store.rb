@@ -5,18 +5,12 @@ require 'concurrent/map'
 module Apiwork
   module Contract
     module Descriptor
-      # Thread-safety: Lock-free using Concurrent::Map (atomic operations)
       class Store
         class << self
           def register(name, payload, scope: nil, metadata: {}, api_class: nil)
-            # Unified storage: all types/enums in one place with scope metadata
-            # scope: nil → unprefixed (API-global like :page, :string_filter)
-            # scope: ContractClass → prefixed (contract-scoped like :post_status)
-
             store = storage(api_class)
             scoped_name_value = scope ? scoped_name(scope, name) : name
 
-            # Allow idempotent re-registration for Rails reloading
             store[scoped_name_value] = {
               name: name,
               scoped_name: scoped_name_value,
@@ -25,25 +19,17 @@ module Apiwork
             }.merge(metadata)
           end
 
-          # Unified resolve implementation for both types and enums
-          # Simplified: 2 steps instead of 6
           def resolve(name, contract_class: nil, api_class: nil, scope: nil, visited_contracts: Set.new)
-            # Get contract from scope if available
             contract = scope&.contract_class || contract_class
 
-            # Check for circular imports
             raise ConfigurationError, "Circular import detected while resolving :#{name}" if contract && visited_contracts.include?(contract)
 
             visited_contracts = visited_contracts.dup.add(contract) if contract
 
             store = storage(api_class)
 
-            # 0. Check if name matches an import alias directly (e.g., :post from import PostContract, as: :post)
             if contract.respond_to?(:imports) && contract.imports.key?(name)
-              # Resolve in the imported contract's context
               imported_contract = contract.imports[name]
-              # Use the imported contract's own scoped name for the alias
-              # e.g., :post in CommentContract → resolve :post in PostContract context
               result = resolve(
                 name,
                 contract_class: imported_contract,
@@ -54,13 +40,11 @@ module Apiwork
               return result if result
             end
 
-            # 1. Try scoped name (with contract prefix)
             if contract
               scoped_name_value = scoped_name(contract, name)
               return resolved_value(store[scoped_name_value]) if store.key?(scoped_name_value)
             end
 
-            # 2. Check imports for prefixed types (e.g., :user_address → UserContract)
             if contract.respond_to?(:imports)
               contract.imports.each do |import_alias, imported_contract|
                 prefix = "#{import_alias}_"
@@ -78,27 +62,22 @@ module Apiwork
               end
             end
 
-            # 3. Try unprefixed (API-global like :page, :string_filter)
             return resolved_value(store[name]) if store.key?(name)
 
-            # Type/enum not found
             nil
           end
 
           def scoped_name(scope, name)
             return name unless scope
 
-            # Handle contract class scope (both Class and instances with contract_class)
             contract_class = scope.is_a?(Class) ? scope : scope.contract_class
 
             contract_prefix = scope_prefix(contract_class)
 
-            # If prefix couldn't be determined (no schema or name), return unscoped name
             return name unless contract_prefix
 
             return contract_prefix.to_sym if name.nil? || name.to_s.empty?
 
-            # If name already equals the prefix, don't duplicate
             return name.to_sym if name.to_s == contract_prefix
 
             :"#{contract_prefix}_#{name}"
@@ -114,21 +93,15 @@ module Apiwork
 
           protected
 
-          # Subclasses implement this to return the resolved value for this store type
-          # TypeStore returns metadata[:definition]
-          # EnumStore returns metadata[:values]
           def resolved_value(metadata)
             raise NotImplementedError, 'Subclasses must implement resolved_value'
           end
 
           def scope_prefix(contract_class)
-            # 1. Explicit identifier (highest priority - developer choice)
             return contract_class._identifier if contract_class.respond_to?(:_identifier) && contract_class._identifier
 
-            # 2. Schema root_key (fallback if no identifier)
             return contract_class.schema_class.root_key.singular if contract_class.respond_to?(:schema_class) && contract_class.schema_class
 
-            # 3. Class name (fallback for non-schema contracts)
             return nil unless contract_class.name
 
             contract_class.name
@@ -141,7 +114,6 @@ module Apiwork
             raise NotImplementedError, 'Subclasses must implement storage_name'
           end
 
-          # Unified storage: nested Concurrent::Maps with scope metadata
           def storage(api_class)
             @storage ||= Concurrent::Map.new
             api_key = api_class.respond_to?(:mount_path) ? api_class.mount_path : api_class

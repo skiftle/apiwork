@@ -7,7 +7,6 @@ module Apiwork
 
       class_methods do
         def serialize(object_or_collection, context: {}, includes: nil)
-          # Collections (including ActiveRecord::Relation) are handled via .each
           if object_or_collection.respond_to?(:each)
             object_or_collection.map { |obj| serialize_single(obj, context: context, includes: includes) }
           else
@@ -19,22 +18,18 @@ module Apiwork
         end
 
         def serialize_single(obj, context: {}, includes: nil)
-          # If this is an STI base schema, route to the correct variant schema
           if respond_to?(:sti_base?) && sti_base?
             variant_schema = resolve_sti_variant_for_object(obj)
             return variant_schema.new(obj, context: context, includes: includes).as_json if variant_schema
           end
 
-          # Default: serialize with this schema
           new(obj, context: context, includes: includes).as_json
         end
 
         def resolve_sti_variant_for_object(obj)
-          # Get the STI type value from the object
           discriminator_column = self.discriminator_column
           sti_type = obj.public_send(discriminator_column)
 
-          # Find the variant that matches this sti_type
           variant = variants.find { |_tag, data| data[:sti_type] == sti_type }
           return nil unless variant
 
@@ -45,7 +40,6 @@ module Apiwork
       def as_json
         serialized_attributes = {}
 
-        # Add discriminator field for STI variants
         add_discriminator_field(serialized_attributes) if self.class.respond_to?(:sti_variant?) && self.class.sti_variant?
 
         self.class.attribute_definitions.each do |attribute, definition|
@@ -66,7 +60,6 @@ module Apiwork
       private
 
       def add_discriminator_field(serialized_attributes)
-        # Get discriminator metadata from parent schema
         parent_schema = self.class.superclass
         return unless parent_schema.respond_to?(:discriminator_name)
 
@@ -94,10 +87,8 @@ module Apiwork
         resource_class = definition.schema_class || detect_association_resource(name)
         return nil unless resource_class
 
-        # Constantize if string
         resource_class = resource_class.constantize if resource_class.is_a?(String)
 
-        # Build nested includes for this association
         nested_includes = build_nested_includes(name)
 
         if definition.collection?
@@ -108,36 +99,27 @@ module Apiwork
       end
 
       def serialize_sti_aware(item, resource_class, nested_includes)
-        # Check if resource_class is an STI base schema
         if resource_class.respond_to?(:sti_base?) && resource_class.sti_base?
-          # Resolve to the correct variant schema based on the item's type
           variant_schema = resolve_sti_variant_schema(item, resource_class)
           return variant_schema.new(item, context: context, includes: nested_includes).as_json if variant_schema
         end
 
-        # Default: use the resource_class as-is
         resource_class.new(item, context: context, includes: nested_includes).as_json
       end
 
       def resolve_sti_variant_schema(item, base_schema)
-        # Get the STI type value from the item
         discriminator_column = base_schema.discriminator_column
         sti_type = item.public_send(discriminator_column)
 
-        # Find the variant that matches this sti_type
         variant = base_schema.variants.find { |_tag, data| data[:sti_type] == sti_type }
         return nil unless variant
 
         variant.last[:schema]
       end
 
-      # Smart logic: include: :always → always include, cannot be excluded
-      # include: :optional → only include if explicitly in includes parameter
       def should_include_association?(name, definition)
-        # include: :always → ALWAYS include, ignore includes parameter
         return true if definition.always_included?
 
-        # include: :optional → only include if explicitly requested
         explicitly_included?(name)
       end
 

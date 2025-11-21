@@ -91,7 +91,7 @@ module Apiwork
             begin
               return full_name.constantize
             rescue NameError
-              # continue to try without namespace
+              # Try without namespace prefix as fallback
             end
           end
 
@@ -123,8 +123,6 @@ module Apiwork
           self._root = { singular: singular_str, plural: plural_str }
         end
 
-        # Resolve API class from schema namespace
-        # Example: Api::V1::PostSchema → /api/v1
         def api_class
           path = api_path
           return nil unless path
@@ -132,8 +130,6 @@ module Apiwork
           Apiwork::API.find(path)
         end
 
-        # Derive API path from schema class namespace
-        # Example: Api::V1::PostSchema → /api/v1
         def api_path
           return nil unless name
 
@@ -159,13 +155,6 @@ module Apiwork
           self._input_key_format = value
         end
 
-        # Configure schema-level settings
-        #
-        # @example
-        #   configure do
-        #     default_page_size 50
-        #     max_page_size 200
-        #   end
         def configure(&block)
           return unless block
 
@@ -173,8 +162,6 @@ module Apiwork
           builder.instance_eval(&block)
         end
 
-        # Access configuration hash
-        # @return [Hash] Schema configuration settings
         def configuration
           _configuration
         end
@@ -203,11 +190,6 @@ module Apiwork
           )
         end
 
-        # Declare STI base schema with optional custom API field name
-        # @param as [Symbol, nil] Optional custom API field name (defaults to Rails column name)
-        # @example
-        #   discriminator           # Uses Rails inheritance_column as-is
-        #   discriminator as: :kind # Maps Rails 'type' column to API 'kind' field
         def discriminator(as: nil)
           ensure_auto_detection_complete
           column = model_class.inheritance_column.to_sym
@@ -216,11 +198,6 @@ module Apiwork
           self
         end
 
-        # Declare STI variant schema
-        # @param as [String, Symbol, nil] API discriminator value (defaults to Rails sti_name)
-        # @example
-        #   variant                # Uses Rails sti_name as API tag (e.g., "PersonClient")
-        #   variant as: "person"   # Custom API tag
         def variant(as: nil)
           ensure_auto_detection_complete
           variant_tag = as || model_class.sti_name
@@ -228,19 +205,16 @@ module Apiwork
           self._variant_tag = variant_tag.to_sym
           self._sti_type = model_class.sti_name
 
-          # Register with parent schema
           superclass.register_variant(tag: _variant_tag, schema: self, sti_type: _sti_type) if superclass.respond_to?(:register_variant)
 
           self
         end
 
-        # Internal: Register variant from child schema
         def register_variant(tag:, schema:, sti_type:)
           self._variants = _variants.merge(tag => { schema: schema, sti_type: sti_type })
           self.abstract_class = true # Auto-mark as abstract
         end
 
-        # Accessors for STI metadata
         def discriminator_column
           _discriminator_column
         end
@@ -261,15 +235,12 @@ module Apiwork
           _variants
         end
 
-        # Check if this is an STI base schema
-        # A schema is a base if it has discriminator and variants, but is not itself a variant
         def sti_base?
           return false if sti_variant?
 
           _discriminator_column.present? && _variants.any?
         end
 
-        # Check if this is an STI variant schema
         def sti_variant?
           _variant_tag.present?
         end
@@ -292,7 +263,6 @@ module Apiwork
           Configuration::Resolver.resolve(:max_page_size, schema_class: self)
         end
 
-        # Validate all attribute definitions (call explicitly in tests after database setup)
         def validate!
           attribute_definitions.each_value(&:validate!)
         end

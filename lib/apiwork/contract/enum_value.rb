@@ -2,26 +2,15 @@
 
 module Apiwork
   module Contract
-    # Helper module for enum value extraction and validation
     module EnumValue
       module_function
 
-      # Extract values array from enum definition
-      # Handles both inline arrays and resolved hashes from Registry
-      #
-      # @param enum [Array, Hash, nil] The enum definition
-      # @return [Array, nil] The array of valid enum values, or nil if enum is nil
       def values(enum)
         return nil if enum.nil?
 
         enum.is_a?(Hash) ? enum[:values] : enum
       end
 
-      # Check if value is valid for the given enum
-      #
-      # @param value [Object] The value to validate
-      # @param enum [Array, Hash, nil] The enum definition
-      # @return [Boolean] true if valid, false otherwise
       def valid?(value, enum)
         enum_values = values(enum)
         return true if enum_values.nil?
@@ -29,10 +18,6 @@ module Apiwork
         enum_values.include?(value)
       end
 
-      # Format enum values for error messages
-      #
-      # @param enum [Array, Hash, nil] The enum definition
-      # @return [String] Comma-separated list of values
       def format(enum)
         enum_values = values(enum)
         return '' if enum_values.blank?

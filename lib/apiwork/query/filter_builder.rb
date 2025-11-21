@@ -2,8 +2,6 @@
 
 module Apiwork
   class Query
-    # Unified filter builder that eliminates duplication across type-specific builders
-    # Handles value normalization, type validation, and operator mapping
     class FilterBuilder
       attr_reader :column, :field_name, :issues, :allowed_types
 
@@ -14,16 +12,11 @@ module Apiwork
         @allowed_types = Array(allowed_types)
       end
 
-      # Build filter conditions with normalization and validation
-      # Accepts a block that maps operators to Arel conditions
       def build(value, valid_operators:, normalizer: nil, &block)
-        # Normalize simple values to operator hash
         value = normalize_value(value, normalizer) if normalizer
 
-        # Validate value type
         return nil unless validate_value_type(value)
 
-        # Build conditions using FilterOperatorBuilder
         builder = FilterOperatorBuilder.new(
           column: column,
           field_name: field_name,

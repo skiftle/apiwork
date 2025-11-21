@@ -10,7 +10,6 @@ module Apiwork
     end
 
     config.to_prepare do
-      # Clear all registries on code reload (development mode)
       Apiwork::Generator::Registry.clear!
       Apiwork::Contract::SchemaRegistry.clear!
       Apiwork::API::Registry.clear!

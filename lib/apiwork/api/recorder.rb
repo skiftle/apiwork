@@ -2,9 +2,6 @@
 
 module Apiwork
   module API
-    # Records API definitions and builds metadata
-    #
-    # Coordinates recording by delegating to specialized modules
     class Recorder
       include Recorder::Resource     # Handles resources/resource calls
       include Recorder::Action       # Handles member/collection actions
@@ -24,7 +21,6 @@ module Apiwork
         @pending_metadata = {}
       end
 
-      # Delegate to metadata
       def namespaces_string
         metadata.namespaces_string
       end

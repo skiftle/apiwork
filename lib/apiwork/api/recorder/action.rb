@@ -3,26 +3,19 @@
 module Apiwork
   module API
     class Recorder
-      # Handles recording of member/collection actions
       module Action
-        # Member block context
         def member(&block)
           @in_member_block = true
           instance_eval(&block)
           @in_member_block = false
         end
 
-        # Collection block context
         def collection(&block)
           @in_collection_block = true
           instance_eval(&block)
           @in_collection_block = false
         end
 
-        # HTTP verbs - capture method and action(s)
-        # Supports both single action and array of actions:
-        #   patch :archive, on: :member
-        #   patch %i[archive unarchive], on: :member
         def patch(actions, **options)
           capture_actions(actions, method: :patch, options: options)
         end
@@ -45,12 +38,9 @@ module Apiwork
 
         private
 
-        # Handle both single action and array of actions
         def capture_actions(actions, method:, options:)
-          # Convert to array if single action provided
           actions_array = Array(actions)
 
-          # Capture each action separately
           actions_array.each do |action|
             capture_action(action, method: method, options: options)
           end
@@ -60,23 +50,18 @@ module Apiwork
           current_resource = @resource_stack.last
           return unless current_resource
 
-          # Validate :on parameter if provided
           if options[:on] && [:member, :collection].exclude?(options[:on])
             raise Apiwork::ConfigurationError,
                   ":on option must be either :member or :collection, got #{options[:on].inspect}"
           end
 
-          # Extract contract path (Rails-style)
           contract_path = options[:contract]
 
-          # Resolve contract path to full class if provided
           contract_class = contract_path ? constantize_contract_path(contract_path) : nil
 
-          # Extract action metadata
           action_metadata = extract_action_metadata(action, current_resource)
 
           if @in_member_block || options[:on] == :member
-            # Member action - add to members hash
             @metadata.add_member_action(
               current_resource,
               action,
@@ -86,7 +71,6 @@ module Apiwork
               metadata: action_metadata
             )
           elsif @in_collection_block || options[:on] == :collection
-            # Collection action - add to collections hash
             @metadata.add_collection_action(
               current_resource,
               action,
@@ -96,7 +80,6 @@ module Apiwork
               metadata: action_metadata
             )
           else
-            # Action declared without member/collection context - this is an error
             raise Apiwork::ConfigurationError,
                   "Action '#{action}' on resource '#{current_resource}' must be declared " \
                   "within a member or collection block, or use the :on parameter.\n" \
@@ -109,7 +92,6 @@ module Apiwork
         end
 
         def extract_action_metadata(action, resource_name)
-          # Get pending metadata for this action, or apply defaults
           action_meta = @pending_metadata[:actions]&.delete(action) || {}
 
           action_type = if @in_member_block || @in_collection_block

@@ -103,7 +103,6 @@ module Apiwork
 
         parts << action_name.to_s
 
-        # Join all parts with underscore
         joined = parts.join('_')
 
         if key_transform == :keep
@@ -124,7 +123,6 @@ module Apiwork
             match = segment.match(/:(\w+)_id/)
             parent_paths << match[1].pluralize if match
           elsif segment.match?(/:/).nil?
-            # Regular path segment (not a parameter)
             parent_paths << segment
           end
         end
@@ -146,7 +144,6 @@ module Apiwork
       def build_responses(_action_name, output_params, action_error_codes = [])
         responses = {}
 
-        # Success response
         if output_params
           responses[:'200'] = {
             description: 'Successful response',
@@ -162,7 +159,6 @@ module Apiwork
           }
         end
 
-        # Error responses from global + action-level error codes
         combined_error_codes = (error_codes + action_error_codes).uniq.sort
         combined_error_codes.each do |code|
           responses[code.to_s.to_sym] = build_error_response(code)
@@ -218,7 +214,6 @@ module Apiwork
           schemas[component_name] = if type_shape.is_a?(Hash) && type_shape[:type] == :union
                                       map_union(type_shape)
                                     else
-                                      # Regular object type - wrap as object
                                       map_object({ shape: type_shape })
                                     end
         end
@@ -248,7 +243,6 @@ module Apiwork
       end
 
       def map_field_definition(definition, action_name = nil)
-        # Ensure definition is a Hash
         return { type: 'string' } unless definition.is_a?(Hash)
 
         if definition[:type].is_a?(Symbol) && types.key?(definition[:type])
@@ -258,12 +252,10 @@ module Apiwork
 
         schema = map_type_definition(definition, action_name)
 
-        # Add metadata
         schema[:description] = definition[:description] if definition[:description]
         schema[:example] = definition[:example] if definition[:example]
         schema[:deprecated] = definition[:deprecated] if definition[:deprecated]
 
-        # Override format if explicitly set
         schema[:format] = definition[:format].to_s if definition[:format]
 
         schema[:enum] = resolve_enum(definition[:enum]) if definition[:enum]
@@ -284,7 +276,6 @@ module Apiwork
         when :literal
           map_literal(definition)
         else
-          # Primitive or custom type reference
           if types.key?(type)
             { '$ref': "#/components/schemas/#{schema_name(type)}" }
           else
@@ -299,7 +290,6 @@ module Apiwork
           properties: {}
         }
 
-        # Get fields from :shape key
         shape_fields = definition[:shape] || {}
 
         shape_fields.each do |property_name, property_def|
@@ -307,7 +297,6 @@ module Apiwork
           result[:properties][transformed_key] = map_field_definition(property_def, action_name)
         end
 
-        # Collect required fields from shape (skip for update actions)
         is_create_action = action_name.to_s != 'update'
         if shape_fields.any? && is_create_action
           required_keys = shape_fields.select { |_name, prop_def| prop_def.is_a?(Hash) && prop_def[:required] }.keys
@@ -326,10 +315,8 @@ module Apiwork
         items_schema = if items_type.is_a?(Symbol) && types.key?(items_type)
                          { '$ref': "#/components/schemas/#{schema_name(items_type)}" }
                        elsif items_type.is_a?(Hash)
-                         # Nested inline type
                          map_type_definition(items_type, action_name)
                        else
-                         # Primitive type
                          { type: openapi_type(items_type) }
                        end
 
@@ -371,7 +358,6 @@ module Apiwork
                                      mapping:
                                    }
                                  else
-                                   # No mapping, just propertyName
                                    {
                                      propertyName: discriminator_field.to_s
                                    }
@@ -388,17 +374,14 @@ module Apiwork
       end
 
       def map_primitive(definition)
-        # :unknown type becomes empty schema in OpenAPI
         return {} if definition[:type] == :unknown
 
         type_value = openapi_type(definition[:type])
 
-        # Handle nil or unmapped types as empty schema
         return {} if type_value.nil?
 
         result = { type: type_value }
 
-        # Add numeric constraints for OpenAPI 3.1
         if numeric_type?(definition[:type])
           result[:minimum] = definition[:min] if definition[:min]
           result[:maximum] = definition[:max] if definition[:max]
@@ -433,7 +416,6 @@ module Apiwork
         end
       end
 
-      # OpenAPI 3.1: use type array ['string', 'null']
       def apply_nullable(schema, nullable)
         return schema unless nullable
 
@@ -463,7 +445,6 @@ module Apiwork
         transform_key(name, key_transform)
       end
 
-      # Validate version option
       def validate_version!
         return if version.nil?
 
@@ -474,7 +455,6 @@ module Apiwork
               "Valid versions: #{VALID_VERSIONS.join(', ')}"
       end
 
-      # Check if a type is numeric
       def numeric_type?(type)
         [:integer, :float, :decimal, :number].include?(type&.to_sym)
       end

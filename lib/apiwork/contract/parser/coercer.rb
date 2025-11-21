@@ -3,8 +3,6 @@
 module Apiwork
   module Contract
     class Parser
-      # Type coercion for primitive types
-      # Converts string inputs to appropriate Ruby types
       module Coercer
         module_function
 

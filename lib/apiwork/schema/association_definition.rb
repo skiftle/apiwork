@@ -2,8 +2,6 @@
 
 module Apiwork
   module Schema
-    # AssociationDefinition - Model-specific association definition for ActiveRecord
-    # This class provides ActiveRecord reflection, validation, and auto-detection
     class AssociationDefinition
       attr_reader :name, :type, :schema_class, :allow_destroy, :model_class,
                   :description, :example, :deprecated, :polymorphic, :discriminator
@@ -16,7 +14,6 @@ module Apiwork
         @schema_class = options[:schema]
         @polymorphic = options[:polymorphic] if options[:polymorphic].is_a?(Hash)
 
-        # Apply defaults to ensure consistent values
         options = apply_defaults(options)
 
         @filterable = options[:filterable]
@@ -32,18 +29,14 @@ module Apiwork
         @allow_destroy = options[:allow_destroy]
         @nullable = options[:nullable] # Explicit nullable flag, auto-detected if nil
 
-        # Metadata fields
         @description = options[:description]
         @example = options[:example]
         @deprecated = options[:deprecated]
 
-        # Auto-detect discriminator from reflection for polymorphic associations
         detect_polymorphic_discriminator! if @polymorphic
 
-        # Validate include option
         validate_include_option!
 
-        # Validate against ActiveRecord
         validate_association_exists!
         validate_polymorphic!
         validate_nested_attributes!
@@ -77,7 +70,6 @@ module Apiwork
         @writable[:on]
       end
 
-      # Type checks
       def collection?
         @type == :has_many
       end
@@ -90,19 +82,15 @@ module Apiwork
         @polymorphic.present?
       end
 
-      # Override: Auto-detect nullable from foreign key column
       def nullable?
-        # If explicitly set, use that
         return @nullable unless @nullable.nil?
 
-        # Auto-detect for belongs_to from foreign key constraint
         if @type == :belongs_to && @model_class
           foreign_key = detect_foreign_key
           column = column_for(foreign_key)
           return column.null if column
         end
 
-        # Default: not nullable (false)
         false
       end
 
@@ -137,14 +125,12 @@ module Apiwork
         reflection = @model_class.reflect_on_association(@name)
         return unless reflection
 
-        # Get discriminator field from reflection
         @discriminator = reflection.foreign_type&.to_sym
       end
 
       def validate_polymorphic!
         return unless polymorphic?
 
-        # Polymorphic associations cannot be filterable or sortable
         if @filterable
           detail = "Polymorphic association '#{@name}' cannot use filterable: true"
           error = ConfigurationError.new(

@@ -2,8 +2,6 @@
 
 module Apiwork
   class Query
-    # Builds Arel filter conditions with operator validation
-    # Eliminates duplication across string/date/numeric filter builders
     class FilterOperatorBuilder
       attr_reader :column, :field_name, :valid_operators, :issues
 
@@ -14,8 +12,6 @@ module Apiwork
         @issues = issues
       end
 
-      # Build conditions from operator hash
-      # Returns Arel node or nil
       def build(operator_hash)
         operator_hash.map do |operator, compare_value|
           operator_sym = operator.to_sym

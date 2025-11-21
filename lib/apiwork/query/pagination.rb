@@ -4,24 +4,18 @@ module Apiwork
   class Query
     module Pagination
       def apply_pagination(scope, params)
-        # Validation handled by contract layer via min/max constraints
-        # See lib/apiwork/contract/descriptor/core.rb for page type definition
         page_number = params.fetch(:number, 1).to_i
         page_size = params.fetch(:size, default_page_size).to_i
         offset = (page_number - 1) * page_size
 
-        # Build metadata immediately
         @meta = build_meta_for_scope(scope, page_number, page_size)
 
         scope.limit(page_size).offset(offset)
       end
 
       def build_meta(collection)
-        # Return existing meta if pagination was applied
         return @meta if @meta.present?
 
-        # No pagination params provided - build default pagination meta
-        # Treat as page 1 with default page size
         build_meta_for_scope(collection, 1, default_page_size)
       end
 

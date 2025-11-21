@@ -3,8 +3,6 @@
 module Apiwork
   module Contract
     module Schema
-      # Main entry point for contract schema generation
-      # Delegates to specialized generators for input, output, and type registration
       class Generator
         class << self
           def generate_action(schema_class, action, contract_class:)
@@ -25,7 +23,6 @@ module Apiwork
               end
             when :show
               action_definition.input do
-                # Empty
               end
               action_definition.output do
                 OutputGenerator.generate_single_output(self, schema_class)
@@ -46,20 +43,15 @@ module Apiwork
               end
             when :destroy
               action_definition.output do
-                # Empty
               end
             else
-              # Custom actions get empty output by default
-              # Must define explicit output if needed
               action_definition.output do
-                # Empty
               end
             end
 
             action_definition
           end
 
-          # Map resource type to contract type
           def map_type(type)
             case type
             when :string, :text then :string

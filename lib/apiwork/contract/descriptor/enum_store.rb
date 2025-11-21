@@ -23,10 +23,8 @@ module Apiwork
           def serialize(api)
             result = {}
 
-            # Serialize from unified storage
             if api
               storage(api).each_pair.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
-                # Always include all metadata fields
                 enum_data = {
                   values: metadata[:payload],
                   description: metadata[:description],
