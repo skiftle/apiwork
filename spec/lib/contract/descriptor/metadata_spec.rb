@@ -364,7 +364,7 @@ RSpec.describe 'Descriptor Metadata' do
       end
 
       Class.new(Apiwork::Contract::Base) do
-        def self.name; 'TestTest_contractContract' end
+        def self.name = 'TestTest_contractContract'
 
         class << self
           def name
@@ -402,7 +402,7 @@ RSpec.describe 'Descriptor Metadata' do
       end
 
       Class.new(Apiwork::Contract::Base) do
-        def self.name; 'TestTest_contractContract' end
+        def self.name = 'TestTest_contractContract'
 
         class << self
           def name

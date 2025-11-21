@@ -215,7 +215,7 @@ RSpec.describe 'Contract Serialization' do
 
     it 'serializes custom types' do
       contract_class = Class.new(Apiwork::Contract::Base) do
-        def self.name; 'TestShippingContract' end
+        def self.name = 'TestShippingContract'
 
         type :address do
           param :street, type: :string, required: true
@@ -247,7 +247,7 @@ RSpec.describe 'Contract Serialization' do
 
     it 'returns type references for custom types in unions' do
       contract_class = Class.new(Apiwork::Contract::Base) do
-        def self.name; 'TestTest_unionContract' end
+        def self.name = 'TestTest_unionContract'
 
         type :test_union_filter_a do
           param :equal, type: :string, required: false
@@ -289,7 +289,7 @@ RSpec.describe 'Contract Serialization' do
 
     it 'returns type references for array of custom types in unions' do
       contract_class = Class.new(Apiwork::Contract::Base) do
-        def self.name; 'TestTest_array_unionContract' end
+        def self.name = 'TestTest_array_unionContract'
 
         type :test_union_filter_b do
           param :equal, type: :string, required: false

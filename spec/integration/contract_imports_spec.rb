@@ -133,7 +133,7 @@ RSpec.describe 'Contract Imports' do
 
       # Register a type on it
       user_contract.class_eval do
-        def self.name; 'TestUserContract' end
+        def self.name = 'TestUserContract'
 
         type :address do
           param :street, type: :string
@@ -143,7 +143,7 @@ RSpec.describe 'Contract Imports' do
       # Import from the dynamically created contract
       uc = user_contract
       order_contract = Class.new(Apiwork::Contract::Base) do
-        def self.name; 'TestOrderContract' end
+        def self.name = 'TestOrderContract'
 
         import uc, as: :user
 
@@ -297,7 +297,7 @@ RSpec.describe 'Contract Imports' do
     it 'prefers local types over imported types with same name' do
       bc = base_contract
       importing_contract = Class.new(Apiwork::Contract::Base) do
-        def self.name; 'TestImportingContract' end
+        def self.name = 'TestImportingContract'
 
         import bc, as: :base
 
