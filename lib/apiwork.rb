@@ -9,14 +9,6 @@ module Apiwork
     def routes
       @routes ||= API::RackApp.new
     end
-
-    # DOCUMENTATION
-    def reset_registries!
-      API::Registry.clear!
-      Contract::SchemaRegistry.clear!
-      Contract::Descriptor::Registry.clear!
-      Contract::Descriptor::Core.clear!
-    end
   end
 end
 

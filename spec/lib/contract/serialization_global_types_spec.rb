@@ -4,7 +4,8 @@ require 'rails_helper'
 
 RSpec.describe Apiwork::Contract::Serialization do
   before do
-    Apiwork.reset_registries!
+    Apiwork::API.reset!
+    Apiwork::Contract.reset!
     load File.expand_path('../../dummy/config/apis/v1.rb', __dir__)
   end
 

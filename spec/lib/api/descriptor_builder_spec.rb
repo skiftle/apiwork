@@ -4,11 +4,13 @@ require 'rails_helper'
 
 RSpec.describe 'API Descriptor Builder' do
   before do
-    Apiwork.reset_registries!
+    Apiwork::API.reset!
+    Apiwork::Contract.reset!
   end
 
   after do
-    Apiwork.reset_registries!
+    Apiwork::API.reset!
+    Apiwork::Contract.reset!
   end
 
   it 'allows defining types via descriptors block' do

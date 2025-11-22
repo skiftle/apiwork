@@ -4,10 +4,9 @@ require 'rails_helper'
 
 RSpec.describe 'API Introspection' do
   before do
-    # Reset registries to prevent accumulation
-    Apiwork.reset_registries!
+    Apiwork::API.reset!
+    Apiwork::Contract.reset!
 
-    # Reload API configuration first (this loads the Rails app and defines constants)
     load File.expand_path('../../dummy/config/apis/v1.rb', __dir__)
 
     # Clear and reload contract definitions to prevent test pollution

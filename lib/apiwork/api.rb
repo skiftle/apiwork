@@ -25,6 +25,11 @@ module Apiwork
       def introspect(path)
         find(path)&.introspect
       end
+
+      # DOCUMENTATION
+      def reset!
+        Registry.clear!
+      end
     end
   end
 end

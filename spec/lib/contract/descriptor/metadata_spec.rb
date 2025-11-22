@@ -4,11 +4,13 @@ require 'rails_helper'
 
 RSpec.describe 'Descriptor Metadata' do
   before do
-    Apiwork.reset_registries!
+    Apiwork::API.reset!
+    Apiwork::Contract.reset!
   end
 
   after do
-    Apiwork.reset_registries!
+    Apiwork::API.reset!
+    Apiwork::Contract.reset!
   end
 
   describe 'Type metadata' do
