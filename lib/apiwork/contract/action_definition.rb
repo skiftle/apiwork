@@ -19,7 +19,7 @@ module Apiwork
         @reset_output = replace
         @input_definition = nil
         @output_definition = nil
-        @error_codes = [] # Action-specific error codes
+        @error_codes = []
 
         return unless contract_class.schema?
 

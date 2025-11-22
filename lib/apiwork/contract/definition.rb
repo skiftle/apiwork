@@ -59,7 +59,7 @@ module Apiwork
       def apply_param_defaults(param_hash)
         {
           required: false,
-          nullable: nil, # nil = allow null (permissive), false = forbid null (explicit)
+          nullable: nil,
           default: nil,
           as: nil,
           enum: nil,
