@@ -42,10 +42,6 @@ module Apiwork
           TypeStore.scoped_name(contract_class, name)
         end
 
-        def types(api)
-          TypeStore.serialize(normalize_api(api))
-        end
-
         private
 
         def register_enum_filter_type(enum_name:, scope:, api_class: nil)
@@ -73,8 +69,12 @@ module Apiwork
           EnumStore.resolve(name, scope: scope, api_class: api_class)
         end
 
+        def types(api)
+          Apiwork::Introspection.types(normalize_api(api))
+        end
+
         def enums(api)
-          EnumStore.serialize(normalize_api(api))
+          Apiwork::Introspection.enums(normalize_api(api))
         end
 
         def clear!

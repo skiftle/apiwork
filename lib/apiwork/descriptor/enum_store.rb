@@ -19,24 +19,6 @@ module Apiwork
           )
         end
 
-        def serialize(api)
-          result = {}
-
-          if api
-            storage(api).each_pair.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
-              enum_data = {
-                values: metadata[:payload],
-                description: metadata[:description],
-                example: metadata[:example],
-                deprecated: metadata[:deprecated] || false
-              }
-              result[qualified_name] = enum_data
-            end
-          end
-
-          result
-        end
-
         protected
 
         def storage_name
