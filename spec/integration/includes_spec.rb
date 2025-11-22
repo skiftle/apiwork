@@ -78,9 +78,7 @@ RSpec.describe 'Includes API', type: :request do
       end
 
       # Clear descriptor registry cache for the include type
-      if Apiwork::Contract::Descriptor::Registry.instance_variable_defined?(:@types)
-        Apiwork::Contract::Descriptor::Registry.instance_variable_set(:@types, {})
-      end
+      Apiwork::Descriptor::Registry.instance_variable_set(:@types, {}) if Apiwork::Descriptor::Registry.instance_variable_defined?(:@types)
     end
 
     after do
@@ -102,9 +100,7 @@ RSpec.describe 'Includes API', type: :request do
       end
 
       # Clear descriptor registry cache
-      if Apiwork::Contract::Descriptor::Registry.instance_variable_defined?(:@types)
-        Apiwork::Contract::Descriptor::Registry.instance_variable_set(:@types, {})
-      end
+      Apiwork::Descriptor::Registry.instance_variable_set(:@types, {}) if Apiwork::Descriptor::Registry.instance_variable_defined?(:@types)
     end
 
     it 'supports nested includes' do
@@ -153,9 +149,7 @@ RSpec.describe 'Includes API', type: :request do
         end
 
         # Clear descriptor registry cache for the include type
-        if Apiwork::Contract::Descriptor::Registry.instance_variable_defined?(:@types)
-          Apiwork::Contract::Descriptor::Registry.instance_variable_set(:@types, {})
-        end
+        Apiwork::Descriptor::Registry.instance_variable_set(:@types, {}) if Apiwork::Descriptor::Registry.instance_variable_defined?(:@types)
       end
 
       after do
@@ -178,9 +172,7 @@ RSpec.describe 'Includes API', type: :request do
         end
 
         # Clear descriptor registry cache
-        if Apiwork::Contract::Descriptor::Registry.instance_variable_defined?(:@types)
-          Apiwork::Contract::Descriptor::Registry.instance_variable_set(:@types, {})
-        end
+        Apiwork::Descriptor::Registry.instance_variable_set(:@types, {}) if Apiwork::Descriptor::Registry.instance_variable_defined?(:@types)
       end
 
       it 'allows nested includes under include: :always association' do
