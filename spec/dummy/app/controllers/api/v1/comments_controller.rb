@@ -22,16 +22,16 @@ module Api
       def create
         # Merge post_id from route params if present (nested route)
         params_with_post = if params[:post_id]
-          action_input[:comment].merge(post_id: params[:post_id])
+          action_request[:comment].merge(post_id: params[:post_id])
         else
-          action_input[:comment]
+          action_request[:comment]
         end
         comment = Comment.create(params_with_post)
         respond_with comment
       end
 
       def update
-        comment.update(action_input[:comment])
+        comment.update(action_request[:comment])
         respond_with comment
       end
 

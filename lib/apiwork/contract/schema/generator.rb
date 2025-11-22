@@ -15,37 +15,37 @@ module Apiwork
 
             case action.to_sym
             when :index
-              action_definition.input do
-                InputGenerator.generate_query_params(self, schema_class)
+              action_definition.request do
+                query { RequestGenerator.generate_query_params(self, schema_class) }
               end
-              action_definition.output do
-                OutputGenerator.generate_collection_output(self, schema_class)
+              action_definition.response do
+                body { ResponseGenerator.generate_collection_output(self, schema_class) }
               end
             when :show
-              action_definition.input do
+              action_definition.request do
               end
-              action_definition.output do
-                OutputGenerator.generate_single_output(self, schema_class)
+              action_definition.response do
+                body { ResponseGenerator.generate_single_output(self, schema_class) }
               end
             when :create
-              action_definition.input do
-                InputGenerator.generate_writable_input(self, schema_class, :create)
+              action_definition.request do
+                body { RequestGenerator.generate_writable_input(self, schema_class, :create) }
               end
-              action_definition.output do
-                OutputGenerator.generate_single_output(self, schema_class)
+              action_definition.response do
+                body { ResponseGenerator.generate_single_output(self, schema_class) }
               end
             when :update
-              action_definition.input do
-                InputGenerator.generate_writable_input(self, schema_class, :update)
+              action_definition.request do
+                body { RequestGenerator.generate_writable_input(self, schema_class, :update) }
               end
-              action_definition.output do
-                OutputGenerator.generate_single_output(self, schema_class)
+              action_definition.response do
+                body { ResponseGenerator.generate_single_output(self, schema_class) }
               end
             when :destroy
-              action_definition.output do
+              action_definition.response do
               end
             else
-              action_definition.output do
+              action_definition.response do
               end
             end
 

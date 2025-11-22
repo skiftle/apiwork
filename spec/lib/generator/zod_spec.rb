@@ -584,41 +584,56 @@ RSpec.describe Apiwork::Generator::Zod do
     end
   end
 
-  describe 'action input/output schemas' do
+  describe 'action request/response schemas' do
     # Use let! to generate output once and share across all tests
     let!(:output) { generator.generate }
 
-    it 'generates TypeScript types for action inputs' do
-      # Check for TypeScript interface/type declarations (e.g., PostsCreateInput)
-      expect(output).to match(/export (interface|type) \w+Input/)
+    it 'generates TypeScript types for action requests' do
+      # Check for TypeScript interface/type declarations (e.g., PostsCreateRequest)
+      expect(output).to match(/export interface \w+Request \{/)
     end
 
-    it 'generates TypeScript types for action outputs' do
-      # Check for TypeScript type declarations (e.g., PostsCreateOutput)
-      expect(output).to match(/export type \w+Output =/)
+    it 'generates TypeScript types for action responses' do
+      # Check for TypeScript type declarations (e.g., PostsCreateResponse)
+      expect(output).to match(/export interface \w+Response \{/)
     end
 
-    it 'generates Zod schemas without type annotations for inputs (better inference)' do
-      # Check for Zod schema without z.ZodType annotation (non-recursive)
-      expect(output).to match(/export const \w+InputSchema = z\.object/)
-      expect(output).not_to match(/export const \w+InputSchema: z\.ZodType/)
+    it 'generates separate RequestQuery schemas' do
+      # Check for separate query schemas (e.g., PostsIndexRequestQuerySchema)
+      expect(output).to match(/export const \w+RequestQuerySchema = z\.object/)
+      expect(output).not_to match(/export const \w+RequestQuerySchema: z\.ZodType/)
     end
 
-    it 'generates Zod schemas without type annotations for outputs (better inference)' do
-      # Check for Zod schema without z.ZodType annotation (non-recursive)
-      expect(output).to match(/export const \w+OutputSchema =/)
-      expect(output).not_to match(/export const \w+OutputSchema: z\.ZodType/)
+    it 'generates separate RequestBody schemas' do
+      # Check for separate body schemas (e.g., PostsCreateRequestBodySchema)
+      expect(output).to match(/export const \w+RequestBodySchema = z\.object/)
+      expect(output).not_to match(/export const \w+RequestBodySchema: z\.ZodType/)
+    end
+
+    it 'generates combined Request schemas that reference query/body' do
+      # Combined request schemas should reference the separate parts
+      expect(output).to match(/export const \w+RequestSchema = z\.object\(\{\n  query: \w+RequestQuerySchema/)
+    end
+
+    it 'generates separate ResponseBody schemas' do
+      # Check for separate response body schemas (e.g., PostsIndexResponseBodySchema)
+      expect(output).to match(/export const \w+ResponseBodySchema = z\.discriminatedUnion/)
+    end
+
+    it 'generates combined Response schemas that wrap body' do
+      # Combined response schemas should wrap the body
+      expect(output).to match(/export const \w+ResponseSchema = z\.object\(\{\n  body: \w+ResponseBodySchema/)
     end
 
     it 'uses discriminated unions for success/error responses' do
-      # Output schemas should use discriminated unions with 'ok' field
+      # ResponseBody schemas should use discriminated unions with 'ok' field
       expect(output).to match(/z\.discriminatedUnion\('ok'/)
     end
 
     it 'generates schemas before types (correct order)' do
       # Zod schemas should come before TypeScript types
-      type_positions = output.enum_for(:scan, /export (interface|type) \w+(?:Input|Output)/).map { Regexp.last_match.begin(0) }
-      schema_positions = output.enum_for(:scan, /export const \w+(?:Input|Output)Schema/).map { Regexp.last_match.begin(0) }
+      type_positions = output.enum_for(:scan, /export (interface|type) \w+(?:Request|Response) /).map { Regexp.last_match.begin(0) }
+      schema_positions = output.enum_for(:scan, /export const \w+(?:Request|Response)Schema =/).map { Regexp.last_match.begin(0) }
 
       expect(type_positions).not_to be_empty
       expect(schema_positions).not_to be_empty
@@ -629,10 +644,10 @@ RSpec.describe Apiwork::Generator::Zod do
 
     it 'uses direct schema definitions without z.infer (explicit types)' do
       # Action schemas should NOT use z.infer
-      expect(output).not_to match(/z\.infer<typeof \w+(?:Input|Output)Schema>/)
+      expect(output).not_to match(/z\.infer<typeof \w+(?:Request|Response)Schema>/)
 
       # Action schemas should NOT have z.ZodType annotation (non-recursive, better inference)
-      expect(output).not_to match(/: z\.ZodType<\w+(?:Input|Output)>/)
+      expect(output).not_to match(/: z\.ZodType<\w+(?:Request|Response)>/)
     end
   end
 

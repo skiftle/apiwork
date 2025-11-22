@@ -42,10 +42,10 @@ module Apiwork
         "export type #{type_name_pascal} = #{variant_types.join(' | ')};"
       end
 
-      def build_action_input_type(resource_name, action_name, input_params, parent_path = nil)
-        type_name = action_type_name(resource_name, action_name, 'Input', parent_path)
+      def build_action_request_query_type(resource_name, action_name, query_params, parent_path = nil)
+        type_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_path)
 
-        properties = input_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
+        properties = query_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
           key = transform_key(param_name)
           ts_type = map_field(param_definition, action_name)
           is_required = param_definition[:required]
@@ -56,16 +56,56 @@ module Apiwork
         "export interface #{type_name} {\n#{properties}\n}"
       end
 
-      def build_action_output_type(resource_name, action_name, output_def, parent_path = nil)
-        type_name = action_type_name(resource_name, action_name, 'Output', parent_path)
-        ts_type = map_type_definition(output_def, action_name)
+      def build_action_request_body_type(resource_name, action_name, body_params, parent_path = nil)
+        type_name = action_type_name(resource_name, action_name, 'RequestBody', parent_path)
+
+        properties = body_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
+          key = transform_key(param_name)
+          ts_type = map_field(param_definition, action_name)
+          is_required = param_definition[:required]
+          optional_marker = is_required ? '' : '?'
+          "  #{key}#{optional_marker}: #{ts_type};"
+        end.join("\n")
+
+        "export interface #{type_name} {\n#{properties}\n}"
+      end
+
+      def build_action_request_type(resource_name, action_name, request_data, parent_path = nil)
+        type_name = action_type_name(resource_name, action_name, 'Request', parent_path)
+
+        nested_properties = []
+
+        if request_data[:query]&.any?
+          query_type_name = action_type_name(resource_name, action_name, 'RequestQuery', parent_path)
+          nested_properties << "  query: #{query_type_name};"
+        end
+
+        if request_data[:body]&.any?
+          body_type_name = action_type_name(resource_name, action_name, 'RequestBody', parent_path)
+          nested_properties << "  body: #{body_type_name};"
+        end
+
+        "export interface #{type_name} {\n#{nested_properties.join("\n")}\n}"
+      end
+
+      def build_action_response_body_type(resource_name, action_name, response_body_def, parent_path = nil)
+        type_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_path)
+        ts_type = map_type_definition(response_body_def, action_name)
         "export type #{type_name} = #{ts_type};"
+      end
+
+      def build_action_response_type(resource_name, action_name, response_data, parent_path = nil)
+        type_name = action_type_name(resource_name, action_name, 'Response', parent_path)
+        body_type_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_path)
+        "export interface #{type_name} {\n  body: #{body_type_name};\n}"
       end
 
       def action_type_name(resource_name, action_name, suffix, parent_path = nil)
         parent_names = extract_parent_resource_names(parent_path)
-        parts = parent_names + [resource_name.to_s, action_name.to_s, suffix]
-        pascal_case(parts.join('_'))
+        base_parts = parent_names + [resource_name.to_s, action_name.to_s]
+        base_name = pascal_case(base_parts.join('_'))
+        suffix_pascal = suffix.split(/(?=[A-Z])/).map(&:capitalize).join
+        "#{base_name}#{suffix_pascal}"
       end
 
       def map_field(definition, action_name = nil)

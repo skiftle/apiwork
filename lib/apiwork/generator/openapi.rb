@@ -79,11 +79,17 @@ module Apiwork
           summary: action_data[:summary],
           description: action_data[:description],
           tags: build_tags(resource_metadata[:tags], action_data[:tags]),
-          deprecated: action_data[:deprecated] == true ? true : nil,
-          responses: build_responses(action_name, action_data[:output], action_data[:error_codes] || [])
+          deprecated: action_data[:deprecated] == true ? true : nil
         }
 
-        operation[:requestBody] = build_request_body(action_data[:input], action_name) if action_data[:input]
+        request_data = action_data[:request]
+        if request_data
+          operation[:parameters] = build_query_parameters(request_data[:query]) if request_data[:query]&.any?
+          operation[:requestBody] = build_request_body(request_data[:body], action_name) if request_data[:body]&.any?
+        end
+
+        response_data = action_data[:response]
+        operation[:responses] = build_responses(action_name, response_data&.dig(:body), action_data[:error_codes] || [])
 
         operation.compact
       end
@@ -128,6 +134,31 @@ module Apiwork
         end
 
         parent_paths
+      end
+
+      def build_query_parameters(query_params)
+        return [] unless query_params&.any?
+
+        query_params.map do |param_name, param_definition|
+          {
+            in: 'query',
+            name: transform_key(param_name),
+            required: param_definition.is_a?(Hash) ? (param_definition[:required] || false) : false,
+            schema: build_parameter_schema(param_definition)
+          }.tap do |param|
+            param[:description] = param_definition[:description] if param_definition.is_a?(Hash) && param_definition[:description]
+          end
+        end
+      end
+
+      def build_parameter_schema(param_definition)
+        return { type: 'string' } unless param_definition.is_a?(Hash)
+
+        if param_definition[:type].is_a?(Symbol) && types.key?(param_definition[:type])
+          return { '$ref': "#/components/schemas/#{schema_name(param_definition[:type])}" }
+        end
+
+        map_type_definition(param_definition, nil)
       end
 
       def build_request_body(input_params, action_name)

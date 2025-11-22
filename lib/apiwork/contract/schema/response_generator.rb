@@ -3,7 +3,7 @@
 module Apiwork
   module Contract
     module Schema
-      class OutputGenerator
+      class ResponseGenerator
         class << self
           def resolve_resource_type_name(contract_class, schema_class)
             if TypeBuilder.sti_base_schema?(schema_class)

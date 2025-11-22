@@ -300,10 +300,12 @@ RSpec.describe 'Descriptors Integration', type: :request do
         end
 
         action :process do
-          input do
-            param :metadata, type: :metadata
-            param :priority, type: :priority
-            param :filter, type: :filter_value
+          request do
+            body do
+              param :metadata, type: :metadata
+              param :priority, type: :priority
+              param :filter, type: :filter_value
+            end
           end
         end
       end

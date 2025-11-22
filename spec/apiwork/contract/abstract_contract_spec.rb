@@ -45,8 +45,10 @@ RSpec.describe 'Abstract Contract' do
           schema Api::V1::PostSchema
 
           action :create do
-            input do
-              param :title, type: :string
+            request do
+              body do
+                param :title, type: :string
+              end
             end
           end
         end

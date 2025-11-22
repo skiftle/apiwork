@@ -10,11 +10,11 @@ module Apiwork
       def serialize
         result = {}
 
-        input_def = @action_definition.merged_input_definition
-        result[:input] = input_def ? DefinitionSerializer.new(input_def).serialize : nil
+        request_def = @action_definition.request_definition
+        result[:request] = serialize_request(request_def) if request_def
 
-        output_def = @action_definition.merged_output_definition
-        result[:output] = output_def ? DefinitionSerializer.new(output_def).serialize : nil
+        response_def = @action_definition.response_definition
+        result[:response] = serialize_response(response_def) if response_def
 
         result[:error_codes] = error_codes
 
@@ -22,6 +22,27 @@ module Apiwork
       end
 
       private
+
+      def serialize_request(request_def)
+        result = {}
+
+        query_def = request_def.query_definition
+        result[:query] = DefinitionSerializer.new(query_def).serialize if query_def
+
+        body_def = request_def.body_definition
+        result[:body] = DefinitionSerializer.new(body_def).serialize if body_def
+
+        result.presence
+      end
+
+      def serialize_response(response_def)
+        result = {}
+
+        body_def = response_def.body_definition
+        result[:body] = DefinitionSerializer.new(body_def).serialize if body_def
+
+        result.presence
+      end
 
       def error_codes
         action_codes = @action_definition.instance_variable_get(:@error_codes) || []

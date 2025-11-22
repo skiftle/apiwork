@@ -14,12 +14,12 @@ module Api
       end
 
       def create
-        user = User.create(action_input[:user])
+        user = User.create(action_request[:user])
         respond_with user
       end
 
       def update
-        user.update(action_input[:user])
+        user.update(action_request[:user])
         respond_with user
       end
 

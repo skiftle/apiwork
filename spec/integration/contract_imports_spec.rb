@@ -37,8 +37,10 @@ RSpec.describe 'Contract Imports' do
         import uc, as: :user
 
         action :create do
-          input do
-            param :shipping_address, type: :user_address, required: true
+          request do
+            body do
+              param :shipping_address, type: :user_address, required: true
+            end
           end
         end
       end
@@ -54,8 +56,10 @@ RSpec.describe 'Contract Imports' do
         import uc, as: :user
 
         action :create do
-          input do
-            param :account_status, type: :string, enum: :user_status
+          request do
+            body do
+              param :account_status, type: :string, enum: :user_status
+            end
           end
         end
       end
@@ -76,9 +80,11 @@ RSpec.describe 'Contract Imports' do
         import oc, as: :order
 
         action :create do
-          input do
-            param :shipping_address, type: :user_address
-            param :items, type: :array, of: :order_order_item
+          request do
+            body do
+              param :shipping_address, type: :user_address
+              param :items, type: :array, of: :order_order_item
+            end
           end
         end
       end
@@ -136,8 +142,10 @@ RSpec.describe 'Contract Imports' do
         import uc, as: :user
 
         action :create do
-          input do
-            param :shipping_address, type: :user_address
+          request do
+            body do
+              param :shipping_address, type: :user_address
+            end
           end
         end
       end
@@ -230,8 +238,10 @@ RSpec.describe 'Contract Imports' do
         import uc, as: :user
 
         action :create do
-          input do
-            param :shipping_address, type: :user_address, required: true
+          request do
+            body do
+              param :shipping_address, type: :user_address, required: true
+            end
           end
         end
       end
@@ -239,9 +249,9 @@ RSpec.describe 'Contract Imports' do
       action_def = order_contract.action_definition(:create)
       serialized = action_def.as_json
 
-      # The input should reference the imported type
-      expect(serialized[:input][:shipping_address][:type]).to eq(:user_address)
-      expect(serialized[:input][:shipping_address][:required]).to be true
+      # The request body should reference the imported type
+      expect(serialized[:request][:body][:shipping_address][:type]).to eq(:user_address)
+      expect(serialized[:request][:body][:shipping_address][:required]).to be true
     end
   end
 
@@ -265,9 +275,11 @@ RSpec.describe 'Contract Imports' do
         end
 
         action :create do
-          input do
-            param :local_meta, type: :metadata # Should use local
-            param :imported_meta, type: :base_metadata # Should use imported
+          request do
+            body do
+              param :local_meta, type: :metadata # Should use local
+              param :imported_meta, type: :base_metadata # Should use imported
+            end
           end
         end
       end

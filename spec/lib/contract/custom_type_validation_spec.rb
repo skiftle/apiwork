@@ -12,8 +12,10 @@ RSpec.describe 'Contract custom type unknown field validation' do
       end
 
       action :index do
-        input do
-          param :custom, type: :my_custom_type, required: false
+        request do
+          body do
+            param :custom, type: :my_custom_type, required: false
+          end
         end
       end
     end
@@ -23,11 +25,11 @@ RSpec.describe 'Contract custom type unknown field validation' do
   let(:action_definition) { contract_class.action_definition(:index) }
 
   it 'catches unknown fields in custom types' do
-    result = action_definition.input_definition.validate({
-                                                           custom: {
-                                                             invalid_field: true # This should be caught as unknown
-                                                           }
-                                                         })
+    result = action_definition.request_definition.body_definition.validate({
+                                                                             custom: {
+                                                                               invalid_field: true # This should be caught as unknown
+                                                                             }
+                                                                           })
 
     expect(result[:issues]).not_to be_empty
     error = result[:issues].first
@@ -36,12 +38,12 @@ RSpec.describe 'Contract custom type unknown field validation' do
   end
 
   it 'allows known fields in custom types' do
-    result = action_definition.input_definition.validate({
-                                                           custom: {
-                                                             valid_field: true,
-                                                             another_field: 'test'
-                                                           }
-                                                         })
+    result = action_definition.request_definition.body_definition.validate({
+                                                                             custom: {
+                                                                               valid_field: true,
+                                                                               another_field: 'test'
+                                                                             }
+                                                                           })
 
     expect(result[:issues]).to be_empty
     expect(result[:params][:custom][:valid_field]).to be(true)

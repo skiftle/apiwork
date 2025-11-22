@@ -9,7 +9,7 @@ module Apiwork
                   :type
 
       def initialize(type:, contract_class:, action_name: nil)
-        @type = type # :input or :output
+        @type = type # :query, :body, or :response_body
         @contract_class = contract_class
         @action_name = action_name
         @params = {}

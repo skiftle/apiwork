@@ -86,14 +86,14 @@ RSpec.describe 'API Introspection' do
           expect(posts[:actions][:destroy][:path]).to eq('/:id')
         end
 
-        it 'includes input/output definitions for CRUD actions' do
-          # Index should have input and output
-          expect(posts[:actions][:index]).to have_key(:input)
-          expect(posts[:actions][:index]).to have_key(:output)
+        it 'includes request/response definitions for CRUD actions' do
+          # Index should have request and response
+          expect(posts[:actions][:index]).to have_key(:request)
+          expect(posts[:actions][:index]).to have_key(:response)
 
-          # Create should have input and output
-          expect(posts[:actions][:create]).to have_key(:input)
-          expect(posts[:actions][:create]).to have_key(:output)
+          # Create should have request and response
+          expect(posts[:actions][:create]).to have_key(:request)
+          expect(posts[:actions][:create]).to have_key(:response)
         end
 
         describe 'member actions' do
@@ -106,62 +106,62 @@ RSpec.describe 'API Introspection' do
             expect(posts[:actions][:publish][:path]).to eq('/:id/publish')
           end
 
-          it 'includes input/output for member actions' do
-            expect(posts[:actions][:archive]).to have_key(:input)
-            expect(posts[:actions][:archive]).to have_key(:output)
+          it 'includes request/response for member actions' do
+            expect(posts[:actions][:archive]).to have_key(:request)
+            expect(posts[:actions][:archive]).to have_key(:response)
           end
 
-          it 'uses unwrapped union structure for member action output' do
+          it 'uses unwrapped union structure for member action response body' do
             archive = posts[:actions][:archive]
-            expect(archive).to have_key(:output)
-            output = archive[:output]
+            expect(archive).to have_key(:response)
+            response_body = archive[:response][:body]
 
             # Should be a discriminated union
-            expect(output[:type]).to eq(:union)
-            expect(output[:discriminator]).to eq(:ok)
-            expect(output[:variants]).to be_an(Array)
-            expect(output[:variants].length).to eq(2)
+            expect(response_body[:type]).to eq(:union)
+            expect(response_body[:discriminator]).to eq(:ok)
+            expect(response_body[:variants]).to be_an(Array)
+            expect(response_body[:variants].length).to eq(2)
 
             # Success variant should have post field
-            success_variant = output[:variants].find { |v| v[:tag] == true }
+            success_variant = response_body[:variants].find { |v| v[:tag] == true }
             expect(success_variant[:shape].keys).to include(:post)
 
             # Error variant should have errors field
-            error_variant = output[:variants].find { |v| v[:tag] == false }
+            error_variant = response_body[:variants].find { |v| v[:tag] == false }
             expect(error_variant[:shape].keys).to include(:issues)
           end
 
-          it 'merges custom output params with discriminated union at top level' do
+          it 'merges custom response params with discriminated union at top level' do
             archive = posts[:actions][:archive]
-            output = archive[:output]
+            response_body = archive[:response][:body]
 
             # Should still be a discriminated union
-            expect(output[:type]).to eq(:union)
-            expect(output[:discriminator]).to eq(:ok)
+            expect(response_body[:type]).to eq(:union)
+            expect(response_body[:discriminator]).to eq(:ok)
 
             # Success variant should have BOTH schema-generated AND custom fields at top level
-            success_variant = output[:variants].find { |v| v[:tag] == true }
+            success_variant = response_body[:variants].find { |v| v[:tag] == true }
             shape_keys = success_variant[:shape].keys
 
             # Schema-generated fields (from discriminated union)
             expect(shape_keys).to include(:ok, :post, :meta)
 
-            # Custom output params (defined in PostContract#archive)
+            # Custom response params (defined in PostContract#archive response body)
             expect(shape_keys).to include(:archived_at, :archive_note)
           end
 
-          it 'replaces output completely when output replace: true is used' do
+          it 'replaces response body completely when response replace: true is used' do
             destroy = posts[:actions][:destroy]
-            expect(destroy).to have_key(:output)
-            output = destroy[:output]
+            expect(destroy).to have_key(:response)
+            response_body = destroy[:response][:body]
 
-            # Should NOT have discriminated union (output replace: true disables merging)
-            expect(output[:type]).not_to eq(:union)
+            # Should NOT have discriminated union (response replace: true disables merging)
+            expect(response_body[:type]).not_to eq(:union)
 
             # Should only have custom-defined fields
-            expect(output.keys).to eq([:deleted_id])
-            expect(output[:deleted_id][:type]).to eq(:uuid)
-            expect(output[:deleted_id][:required]).to be(true)
+            expect(response_body.keys).to eq([:deleted_id])
+            expect(response_body[:deleted_id][:type]).to eq(:uuid)
+            expect(response_body[:deleted_id][:required]).to be(true)
           end
         end
 
@@ -175,27 +175,27 @@ RSpec.describe 'API Introspection' do
             expect(posts[:actions][:search][:path]).to eq('/search')
           end
 
-          it 'includes input/output for collection actions' do
-            expect(posts[:actions][:search]).to have_key(:input)
-            expect(posts[:actions][:search]).to have_key(:output)
+          it 'includes request/response for collection actions' do
+            expect(posts[:actions][:search]).to have_key(:request)
+            expect(posts[:actions][:search]).to have_key(:response)
           end
 
-          it 'merges custom output params with collection wrapper at top level' do
+          it 'merges custom response params with collection wrapper at top level' do
             search = posts[:actions][:search]
-            output = search[:output]
+            response_body = search[:response][:body]
 
             # Should still be a discriminated union (collection wrapper)
-            expect(output[:type]).to eq(:union)
-            expect(output[:discriminator]).to eq(:ok)
+            expect(response_body[:type]).to eq(:union)
+            expect(response_body[:discriminator]).to eq(:ok)
 
             # Success variant should have BOTH collection wrapper AND custom fields at top level
-            success_variant = output[:variants].find { |v| v[:tag] == true }
+            success_variant = response_body[:variants].find { |v| v[:tag] == true }
             shape_keys = success_variant[:shape].keys
 
             # Schema-generated fields (from collection wrapper)
             expect(shape_keys).to include(:ok, :posts, :meta)
 
-            # Custom output params (defined in PostContract#search)
+            # Custom response params (defined in PostContract#search response body)
             expect(shape_keys).to include(:search_query, :result_count)
           end
         end

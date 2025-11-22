@@ -7,15 +7,17 @@ RSpec.describe 'Literal and Discriminated Union Features' do
     let(:contract_class) do
       Class.new(Apiwork::Contract::Base) do
         action :test do
-          input do
-            param :status, type: :literal, value: 'archived'
-            param :name, type: :string
+          request do
+            body do
+              param :status, type: :literal, value: 'archived'
+              param :name, type: :string
+            end
           end
         end
       end
     end
 
-    let(:definition) { contract_class.action_definition(:test).merged_input_definition }
+    let(:definition) { contract_class.action_definition(:test).request_definition.body_definition }
 
     it 'accepts the exact literal value' do
       result = definition.validate({ status: 'archived', name: 'Test' })
@@ -40,8 +42,10 @@ RSpec.describe 'Literal and Discriminated Union Features' do
       expect do
         Class.new(Apiwork::Contract::Base) do
           action :test do
-            input do
-              param :status, type: :literal
+            request do
+              body do
+                param :status, type: :literal
+              end
             end
           end
         end
@@ -58,13 +62,15 @@ RSpec.describe 'Literal and Discriminated Union Features' do
         end
 
         action :test do
-          input do
-            param :filter, type: :union, discriminator: :kind do
-              variant tag: 'string', type: :string_filter
+          request do
+            body do
+              param :filter, type: :union, discriminator: :kind do
+                variant tag: 'string', type: :string_filter
 
-              variant tag: 'range', type: :object do
-                param :gte, type: :integer
-                param :lte, type: :integer, required: false
+                variant tag: 'range', type: :object do
+                  param :gte, type: :integer
+                  param :lte, type: :integer, required: false
+                end
               end
             end
           end
@@ -72,7 +78,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
       end
     end
 
-    let(:definition) { contract_class.action_definition(:test).merged_input_definition }
+    let(:definition) { contract_class.action_definition(:test).request_definition.body_definition }
 
     it 'validates string variant with correct discriminator' do
       result = definition.validate({ filter: { kind: 'string', value: 'test' } })
@@ -122,8 +128,10 @@ RSpec.describe 'Literal and Discriminated Union Features' do
       expect do
         Class.new(Apiwork::Contract::Base) do
           action :test do
-            input do
-              param :status, type: :string, discriminator: :kind
+            request do
+              body do
+                param :status, type: :string, discriminator: :kind
+              end
             end
           end
         end
@@ -134,9 +142,11 @@ RSpec.describe 'Literal and Discriminated Union Features' do
       expect do
         Class.new(Apiwork::Contract::Base) do
           action :test do
-            input do
-              param :filter, type: :union do
-                variant tag: 'string', type: :string
+            request do
+              body do
+                param :filter, type: :union do
+                  variant tag: 'string', type: :string
+                end
               end
             end
           end
@@ -148,9 +158,11 @@ RSpec.describe 'Literal and Discriminated Union Features' do
       expect do
         Class.new(Apiwork::Contract::Base) do
           action :test do
-            input do
-              param :filter, type: :union, discriminator: :kind do
-                variant type: :string # Missing tag!
+            request do
+              body do
+                param :filter, type: :union, discriminator: :kind do
+                  variant type: :string # Missing tag!
+                end
               end
             end
           end

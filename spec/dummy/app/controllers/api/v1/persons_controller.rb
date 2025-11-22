@@ -17,14 +17,14 @@ module Api
       end
 
       def create
-        person = Post.new(action_input[:person])
+        person = Post.new(action_request[:person])
         person.save
         respond_with person
       end
 
       def update
         person = Post.find(params[:id])
-        person.update(action_input[:person])
+        person.update(action_request[:person])
         respond_with person
       end
 
