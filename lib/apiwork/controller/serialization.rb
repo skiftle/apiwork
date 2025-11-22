@@ -6,20 +6,22 @@ module Apiwork
       extend ActiveSupport::Concern
 
       def respond_with(resource_or_collection, meta: {}, status: nil)
-        output_parser = Contract::Parser.new(current_contract, :output, action_name.to_sym, coerce: false, context: context)
+        action_definition = current_contract.action_definition(action_name)
+        schema_class = action_definition&.schema_class
+        formatted_meta = current_contract.format_keys(meta, :output)
 
         responder = Responder.new(
           controller: self,
-          action_definition: output_parser.action_definition,
-          schema_class: output_parser.schema_class,
-          meta: output_parser.transform_meta_keys(meta)
+          action_definition: action_definition,
+          schema_class: schema_class,
+          meta: formatted_meta
         )
 
         response = responder.perform(resource_or_collection, query_params: action_input.data)
 
-        skip_validation = request.delete? && output_parser.schema_class.present?
+        skip_validation = request.delete? && action_definition&.schema_class.present?
         unless skip_validation
-          result = output_parser.perform(response)
+          result = current_contract.parse(response, :output, action_name, coerce: false, context: context)
           raise ContractError, result.issues if result.invalid?
         end
 
