@@ -53,7 +53,7 @@ module Apiwork
 
             visited = visited.dup.add(schema_class)
 
-            Contract::Descriptor::Core.ensure_filter_descriptors_registered(schema_class, api_class: contract_class.api_class)
+            Descriptor::Core.ensure_filter_descriptors_registered(schema_class, api_class: contract_class.api_class)
 
             type_name = build_type_name(schema_class, :filter, depth)
 
@@ -118,7 +118,7 @@ module Apiwork
 
             visited = visited.dup.add(schema_class)
 
-            Contract::Descriptor::Core.ensure_sort_descriptor_registered(schema_class, api_class: contract_class.api_class)
+            Descriptor::Core.ensure_sort_descriptor_registered(schema_class, api_class: contract_class.api_class)
 
             type_name = build_type_name(schema_class, :sort, depth)
 

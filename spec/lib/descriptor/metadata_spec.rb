@@ -16,90 +16,78 @@ RSpec.describe 'Descriptor Metadata' do
   describe 'Type metadata' do
     it 'stores and serializes type with description' do
       api = Apiwork::API.draw '/api/test' do
-        descriptors do
-          type :user_status, description: 'Current status of user account' do
-            param :active, type: :boolean
-          end
+        type :user_status, description: 'Current status of user account' do
+          param :active, type: :boolean
         end
       end
 
-      types = Apiwork::Contract::Descriptor::Registry.types(api)
+      types = Apiwork::Descriptor::Registry.types(api)
 
       expect(types[:user_status]).to include(description: 'Current status of user account')
     end
 
     it 'stores and serializes type with example' do
       api = Apiwork::API.draw '/api/test' do
-        descriptors do
-          type :address, example: { street: '123 Main St', city: 'NYC' } do
-            param :street, type: :string
-            param :city, type: :string
-          end
+        type :address, example: { street: '123 Main St', city: 'NYC' } do
+          param :street, type: :string
+          param :city, type: :string
         end
       end
 
-      types = Apiwork::Contract::Descriptor::Registry.types(api)
+      types = Apiwork::Descriptor::Registry.types(api)
 
       expect(types[:address]).to include(example: { street: '123 Main St', city: 'NYC' })
     end
 
     it 'stores and serializes type with format' do
       api = Apiwork::API.draw '/api/test' do
-        descriptors do
-          type :email_field, format: 'email' do
-            param :value, type: :string
-          end
+        type :email_field, format: 'email' do
+          param :value, type: :string
         end
       end
 
-      types = Apiwork::Contract::Descriptor::Registry.types(api)
+      types = Apiwork::Descriptor::Registry.types(api)
 
       expect(types[:email_field]).to include(format: 'email')
     end
 
     it 'stores and serializes type with deprecated: true' do
       api = Apiwork::API.draw '/api/test' do
-        descriptors do
-          type :legacy_response, deprecated: true do
-            param :old_field, type: :string
-          end
+        type :legacy_response, deprecated: true do
+          param :old_field, type: :string
         end
       end
 
-      types = Apiwork::Contract::Descriptor::Registry.types(api)
+      types = Apiwork::Descriptor::Registry.types(api)
 
       expect(types[:legacy_response]).to include(deprecated: true)
     end
 
     it 'stores and serializes type with deprecated: false explicitly' do
       api = Apiwork::API.draw '/api/test' do
-        descriptors do
-          type :current_response, deprecated: false do
-            param :field, type: :string
-          end
+        type :current_response, deprecated: false do
+          param :field, type: :string
         end
       end
 
-      types = Apiwork::Contract::Descriptor::Registry.types(api)
+      types = Apiwork::Descriptor::Registry.types(api)
 
       expect(types[:current_response]).to include(deprecated: false)
     end
 
     it 'stores and serializes type with all metadata fields' do
       api = Apiwork::API.draw '/api/test' do
-        descriptors do
-          type :payment_info,
-               description: 'Payment information structure',
-               example: { amount: 100, currency: 'USD' },
-               format: 'payment',
-               deprecated: false do
-            param :amount, type: :integer
-            param :currency, type: :string
-          end
+        type :payment_info,
+             description: 'Payment information structure',
+             example: { amount: 100, currency: 'USD' },
+             format: 'payment',
+             deprecated: false do
+          param :amount, type: :integer
+          param :currency, type: :string
         end
       end
 
-      types = Apiwork::Contract::Descriptor::Registry.types(api)
+      types = Apiwork::Descriptor::Registry.types(api)
 
       expect(types[:payment_info]).to include(
         description: 'Payment information structure',
@@ -111,14 +99,12 @@ RSpec.describe 'Descriptor Metadata' do
 
     it 'includes all metadata fields even when nil' do
       api = Apiwork::API.draw '/api/test' do
-        descriptors do
-          type :simple_type do
-            param :field, type: :string
-          end
+        type :simple_type do
+          param :field, type: :string
         end
       end
 
-      types = Apiwork::Contract::Descriptor::Registry.types(api)
+      types = Apiwork::Descriptor::Registry.types(api)
 
       # All metadata fields should always be present
       expect(types[:simple_type]).to have_key(:description)
@@ -135,14 +121,12 @@ RSpec.describe 'Descriptor Metadata' do
 
     it 'includes deprecated: false explicitly even when false' do
       api = Apiwork::API.draw '/api/test' do
-        descriptors do
-          type :normal_type, deprecated: false do
-            param :field, type: :string
-          end
+        type :normal_type, deprecated: false do
+          param :field, type: :string
         end
       end
 
-      types = Apiwork::Contract::Descriptor::Registry.types(api)
+      types = Apiwork::Descriptor::Registry.types(api)
 
       # deprecated should appear as false, not be omitted
       expect(types[:normal_type]).to have_key(:deprecated)
@@ -151,14 +135,12 @@ RSpec.describe 'Descriptor Metadata' do
 
     it 'preserves empty string description' do
       api = Apiwork::API.draw '/api/test' do
-        descriptors do
-          type :empty_desc_type, description: '' do
-            param :field, type: :string
-          end
+        type :empty_desc_type, description: '' do
+          param :field, type: :string
         end
       end
 
-      types = Apiwork::Contract::Descriptor::Registry.types(api)
+      types = Apiwork::Descriptor::Registry.types(api)
 
       # Empty string is different from nil - should appear
       expect(types[:empty_desc_type]).to have_key(:description)
@@ -169,48 +151,40 @@ RSpec.describe 'Descriptor Metadata' do
   describe 'Enum metadata' do
     it 'stores and serializes enum with description' do
       api = Apiwork::API.draw '/api/test' do
-        descriptors do
-          enum :role, values: %w[admin user guest], description: 'User role in the system'
-        end
+        enum :role, values: %w[admin user guest], description: 'User role in the system'
       end
 
-      enums = Apiwork::Contract::Descriptor::Registry.enums(api)
+      enums = Apiwork::Descriptor::Registry.enums(api)
 
       expect(enums[:role][:description]).to eq('User role in the system')
     end
 
     it 'stores and serializes enum with example' do
       api = Apiwork::API.draw '/api/test' do
-        descriptors do
-          enum :priority, values: %i[low medium high], example: :medium
-        end
+        enum :priority, values: %i[low medium high], example: :medium
       end
 
-      enums = Apiwork::Contract::Descriptor::Registry.enums(api)
+      enums = Apiwork::Descriptor::Registry.enums(api)
 
       expect(enums[:priority][:example]).to eq(:medium)
     end
 
     it 'stores and serializes enum with deprecated: true' do
       api = Apiwork::API.draw '/api/test' do
-        descriptors do
-          enum :old_status, values: %w[active inactive], deprecated: true
-        end
+        enum :old_status, values: %w[active inactive], deprecated: true
       end
 
-      enums = Apiwork::Contract::Descriptor::Registry.enums(api)
+      enums = Apiwork::Descriptor::Registry.enums(api)
 
       expect(enums[:old_status][:deprecated]).to be true
     end
 
     it 'stores and serializes enum with deprecated: false explicitly' do
       api = Apiwork::API.draw '/api/test' do
-        descriptors do
-          enum :current_status, values: %w[active inactive], deprecated: false
-        end
+        enum :current_status, values: %w[active inactive], deprecated: false
       end
 
-      enums = Apiwork::Contract::Descriptor::Registry.enums(api)
+      enums = Apiwork::Descriptor::Registry.enums(api)
 
       # deprecated should appear as false, not be omitted
       expect(enums[:current_status]).to have_key(:deprecated)
@@ -219,16 +193,14 @@ RSpec.describe 'Descriptor Metadata' do
 
     it 'stores and serializes enum with all metadata fields' do
       api = Apiwork::API.draw '/api/test' do
-        descriptors do
-          enum :color,
-               values: %w[red green blue],
-               description: 'Available color options',
-               example: 'red',
-               deprecated: false
-        end
+        enum :color,
+             values: %w[red green blue],
+             description: 'Available color options',
+             example: 'red',
+             deprecated: false
       end
 
-      enums = Apiwork::Contract::Descriptor::Registry.enums(api)
+      enums = Apiwork::Descriptor::Registry.enums(api)
 
       expect(enums[:color]).to eq(
         values: %w[red green blue],
@@ -240,12 +212,10 @@ RSpec.describe 'Descriptor Metadata' do
 
     it 'serializes enum as hash with values key' do
       api = Apiwork::API.draw '/api/test' do
-        descriptors do
-          enum :simple_enum, values: %i[a b c]
-        end
+        enum :simple_enum, values: %i[a b c]
       end
 
-      enums = Apiwork::Contract::Descriptor::Registry.enums(api)
+      enums = Apiwork::Descriptor::Registry.enums(api)
 
       # Enum should be a hash with :values key
       expect(enums[:simple_enum]).to be_a(Hash)
@@ -255,12 +225,10 @@ RSpec.describe 'Descriptor Metadata' do
 
     it 'includes all metadata fields even when nil' do
       api = Apiwork::API.draw '/api/test' do
-        descriptors do
-          enum :minimal_enum, values: %i[x y z]
-        end
+        enum :minimal_enum, values: %i[x y z]
       end
 
-      enums = Apiwork::Contract::Descriptor::Registry.enums(api)
+      enums = Apiwork::Descriptor::Registry.enums(api)
 
       # All metadata fields should always be present
       expect(enums[:minimal_enum]).to have_key(:values)
@@ -277,12 +245,10 @@ RSpec.describe 'Descriptor Metadata' do
 
     it 'includes deprecated: false explicitly when set' do
       api = Apiwork::API.draw '/api/test' do
-        descriptors do
-          enum :normal_enum, values: %i[a b], deprecated: false
-        end
+        enum :normal_enum, values: %i[a b], deprecated: false
       end
 
-      enums = Apiwork::Contract::Descriptor::Registry.enums(api)
+      enums = Apiwork::Descriptor::Registry.enums(api)
 
       # deprecated should appear as false when explicitly set
       expect(enums[:normal_enum]).to have_key(:deprecated)
@@ -291,12 +257,10 @@ RSpec.describe 'Descriptor Metadata' do
 
     it 'preserves empty string description' do
       api = Apiwork::API.draw '/api/test' do
-        descriptors do
-          enum :empty_desc_enum, values: %i[a b], description: ''
-        end
+        enum :empty_desc_enum, values: %i[a b], description: ''
       end
 
-      enums = Apiwork::Contract::Descriptor::Registry.enums(api)
+      enums = Apiwork::Descriptor::Registry.enums(api)
 
       # Empty string is different from nil - should appear
       expect(enums[:empty_desc_enum]).to have_key(:description)
@@ -307,23 +271,19 @@ RSpec.describe 'Descriptor Metadata' do
   describe 'Metadata isolation and scoping' do
     it 'keeps type metadata isolated between different APIs' do
       api1 = Apiwork::API.draw '/api/v1' do
-        descriptors do
-          type :shared_name, description: 'API v1 version' do
-            param :field, type: :string
-          end
+        type :shared_name, description: 'API v1 version' do
+          param :field, type: :string
         end
       end
 
       api2 = Apiwork::API.draw '/api/v2' do
-        descriptors do
-          type :shared_name, description: 'API v2 version' do
-            param :field, type: :integer
-          end
+        type :shared_name, description: 'API v2 version' do
+          param :field, type: :integer
         end
       end
 
-      types_v1 = Apiwork::Contract::Descriptor::Registry.types(api1)
-      types_v2 = Apiwork::Contract::Descriptor::Registry.types(api2)
+      types_v1 = Apiwork::Descriptor::Registry.types(api1)
+      types_v2 = Apiwork::Descriptor::Registry.types(api2)
 
       expect(types_v1[:shared_name][:description]).to eq('API v1 version')
       expect(types_v2[:shared_name][:description]).to eq('API v2 version')
@@ -335,19 +295,15 @@ RSpec.describe 'Descriptor Metadata' do
 
     it 'keeps enum metadata isolated between different APIs' do
       api1 = Apiwork::API.draw '/api/v1' do
-        descriptors do
-          enum :status, values: %w[active inactive], description: 'V1 status'
-        end
+        enum :status, values: %w[active inactive], description: 'V1 status'
       end
 
       api2 = Apiwork::API.draw '/api/v2' do
-        descriptors do
-          enum :status, values: %w[pending approved], description: 'V2 status'
-        end
+        enum :status, values: %w[pending approved], description: 'V2 status'
       end
 
-      enums_v1 = Apiwork::Contract::Descriptor::Registry.enums(api1)
-      enums_v2 = Apiwork::Contract::Descriptor::Registry.enums(api2)
+      enums_v1 = Apiwork::Descriptor::Registry.enums(api1)
+      enums_v2 = Apiwork::Descriptor::Registry.enums(api2)
 
       expect(enums_v1[:status][:description]).to eq('V1 status')
       expect(enums_v1[:status][:values]).to eq(%w[active inactive])
@@ -383,7 +339,7 @@ RSpec.describe 'Descriptor Metadata' do
         end
       end
 
-      types = Apiwork::Contract::Descriptor::Registry.types(api)
+      types = Apiwork::Descriptor::Registry.types(api)
 
       # Should be qualified with contract identifier
       expect(types[:test_scoped_scoped_type]).to include(
@@ -415,7 +371,7 @@ RSpec.describe 'Descriptor Metadata' do
         enum :scoped_enum, values: %i[a b c], description: 'Contract-scoped enum with metadata'
       end
 
-      enums = Apiwork::Contract::Descriptor::Registry.enums(api)
+      enums = Apiwork::Descriptor::Registry.enums(api)
 
       # Should be qualified with contract identifier
       expect(enums[:test_scoped_scoped_enum]).to include(
@@ -430,14 +386,12 @@ RSpec.describe 'Descriptor Metadata' do
   describe 'Edge cases' do
     it 'handles example value that does not match type schema' do
       api = Apiwork::API.draw '/api/test' do
-        descriptors do
-          type :user, example: 'not_a_hash' do
-            param :name, type: :string
-          end
+        type :user, example: 'not_a_hash' do
+          param :name, type: :string
         end
       end
 
-      types = Apiwork::Contract::Descriptor::Registry.types(api)
+      types = Apiwork::Descriptor::Registry.types(api)
 
       # Example should still be stored even if it doesn't match the schema
       expect(types[:user][:example]).to eq('not_a_hash')
@@ -445,12 +399,10 @@ RSpec.describe 'Descriptor Metadata' do
 
     it 'handles enum example that is not in values list' do
       api = Apiwork::API.draw '/api/test' do
-        descriptors do
-          enum :status, values: %w[active inactive], example: 'pending'
-        end
+        enum :status, values: %w[active inactive], example: 'pending'
       end
 
-      enums = Apiwork::Contract::Descriptor::Registry.enums(api)
+      enums = Apiwork::Descriptor::Registry.enums(api)
 
       # Example should still be stored even if it's not in the values
       expect(enums[:status][:example]).to eq('pending')
@@ -458,14 +410,12 @@ RSpec.describe 'Descriptor Metadata' do
 
     it 'handles format on non-string type gracefully' do
       api = Apiwork::API.draw '/api/test' do
-        descriptors do
-          type :weird_format, format: 'email' do
-            param :count, type: :integer
-          end
+        type :weird_format, format: 'email' do
+          param :count, type: :integer
         end
       end
 
-      types = Apiwork::Contract::Descriptor::Registry.types(api)
+      types = Apiwork::Descriptor::Registry.types(api)
 
       # Format should be stored regardless of field types
       expect(types[:weird_format][:format]).to eq('email')

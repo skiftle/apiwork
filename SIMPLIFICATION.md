@@ -40,7 +40,7 @@ We had three separate builders for descriptors:
 
 ```ruby
 # One builder, all contexts
-class Contract::Descriptor::Builder
+class Descriptor::Builder
   def initialize(api_class: nil, scope: nil)
     @api_class = api_class
     @scope = scope  # nil = global, ContractClass = contract-scoped

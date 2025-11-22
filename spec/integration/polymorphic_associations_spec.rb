@@ -117,7 +117,7 @@ RSpec.describe 'Polymorphic associations', type: :integration do
 
   describe 'Polymorphic type discrimination with real data' do
     before(:all) do
-      Apiwork::Contract::Descriptor::Registry.clear!
+      Apiwork::Descriptor::Registry.clear!
     end
 
     # Create test tags

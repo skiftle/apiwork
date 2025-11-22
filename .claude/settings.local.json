@@ -78,7 +78,14 @@
       "Bash(do cat \"$file\")",
       "Bash(git -C /Users/joakim/GitHub/apiwork checkout spec/lib/api/descriptor_builder_spec.rb spec/integration/descriptors_integration_spec.rb spec/lib/contract/descriptor/metadata_spec.rb examples/descriptors_dsl.rb spec/lib/generator/typescript_spec.rb)",
       "Bash(git -C /Users/joakim/GitHub/apiwork diff --stat)",
-      "Bash(git -C /Users/joakim/GitHub/apiwork checkout spec/integration/descriptors_integration_spec.rb spec/lib/contract/descriptor/metadata_spec.rb examples/descriptors_dsl.rb spec/lib/generator/typescript_spec.rb)"
+      "Bash(git -C /Users/joakim/GitHub/apiwork checkout spec/integration/descriptors_integration_spec.rb spec/lib/contract/descriptor/metadata_spec.rb examples/descriptors_dsl.rb spec/lib/generator/typescript_spec.rb)",
+      "Bash(kill:*)",
+      "Bash(git -C /Users/joakim/GitHub/apiwork mv:*)",
+      "Bash(for file in lib/apiwork/descriptor/{type_store,enum_store,core,store}.rb)",
+      "Bash(do)",
+      "Bash(git -C /Users/joakim/GitHub/apiwork checkout lib/apiwork/descriptor/type_store.rb lib/apiwork/descriptor/enum_store.rb lib/apiwork/descriptor/core.rb lib/apiwork/descriptor/store.rb)",
+      "Bash(git -C /Users/joakim/GitHub/apiwork checkout spec/)",
+      "Bash(git -C /Users/joakim/GitHub/apiwork status --short)"
     ],
     "deny": [],
     "ask": []

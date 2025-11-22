@@ -215,13 +215,11 @@ RSpec.describe 'Descriptors Integration', type: :request do
     before(:all) do
       # Create a second API for isolation testing
       @second_api = Apiwork::API.draw '/api/v2' do
-        descriptors do
-          type :v2_specific_type do
-            param :v2_field, type: :string
-          end
-
-          enum :v2_status, values: %i[pending approved rejected]
+        type :v2_specific_type do
+          param :v2_field, type: :string
         end
+
+        enum :v2_status, values: %i[pending approved rejected]
       end
     end
 
@@ -422,20 +420,18 @@ RSpec.describe 'Descriptors Integration', type: :request do
   describe 'Custom type and enum metadata in introspection' do
     before(:all) do
       @metadata_api = Apiwork::API.draw '/api/metadata_test' do
-        descriptors do
-          type :documented_type,
-               description: 'A well-documented type',
-               example: { value: 'example' },
-               format: 'custom' do
-            param :value, type: :string
-          end
-
-          enum :status_with_metadata,
-               values: %w[active inactive],
-               description: 'Status values with description',
-               example: 'active',
-               deprecated: false
+        type :documented_type,
+             description: 'A well-documented type',
+             example: { value: 'example' },
+             format: 'custom' do
+          param :value, type: :string
         end
+
+        enum :status_with_metadata,
+             values: %w[active inactive],
+             description: 'Status values with description',
+             example: 'active',
+             deprecated: false
       end
     end
 

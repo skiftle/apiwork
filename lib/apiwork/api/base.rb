@@ -21,7 +21,7 @@ module Apiwork
 
           Registry.register(self)
 
-          Contract::Descriptor::Core.register(self)
+          Descriptor::Core.register(self)
 
           @configuration = {}
         end
@@ -61,7 +61,7 @@ module Apiwork
         end
 
         def type(name, description: nil, example: nil, format: nil, deprecated: false, &block)
-          Contract::Descriptor::Builder.define_type(
+          Descriptor::Builder.define_type(
             api_class: self,
             name: name,
             description: description,
@@ -73,7 +73,7 @@ module Apiwork
         end
 
         def enum(name, values:, description: nil, example: nil, deprecated: false)
-          Contract::Descriptor::Builder.define_enum(
+          Descriptor::Builder.define_enum(
             api_class: self,
             name: name,
             values: values,
@@ -84,7 +84,7 @@ module Apiwork
         end
 
         def union(name, &block)
-          Contract::Descriptor::Builder.define_union(api_class: self, name: name, &block)
+          Descriptor::Builder.define_union(api_class: self, name: name, &block)
         end
 
         def info(&block)
@@ -153,11 +153,11 @@ module Apiwork
         end
 
         def types
-          Contract::Descriptor::Registry.types(self)
+          Descriptor::Registry.types(self)
         end
 
         def enums
-          Contract::Descriptor::Registry.enums(self)
+          Descriptor::Registry.enums(self)
         end
 
         def serialize_resource(resource_name, resource_metadata, parent_path: nil, parent_resource_name: nil)

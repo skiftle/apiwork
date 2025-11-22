@@ -13,7 +13,7 @@ module Apiwork
       Apiwork::Generator::Registry.clear!
       Apiwork::Contract::SchemaRegistry.clear!
       Apiwork::API::Registry.clear!
-      Apiwork::Contract::Descriptor::Registry.clear!
+      Apiwork::Descriptor::Registry.clear!
 
       Apiwork::Generator.register(:openapi, Apiwork::Generator::Openapi)
       Apiwork::Generator.register(:zod, Apiwork::Generator::Zod)
