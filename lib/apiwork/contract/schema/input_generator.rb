@@ -41,9 +41,9 @@ module Apiwork
             else
               payload_type_name = :"#{context}_payload"
 
-              unless Descriptor::Registry.resolve_type(payload_type_name, contract_class: contract_class)
-                Descriptor::Registry.register_type(payload_type_name, scope: contract_class,
-                                                                      api_class: contract_class.api_class) do
+              unless Descriptor.resolve_type(payload_type_name, contract_class: contract_class)
+                Descriptor.register_type(payload_type_name, scope: contract_class,
+                                                            api_class: contract_class.api_class) do
                   InputGenerator.generate_writable_params(self, schema_class, context, nested: false)
                 end
               end
@@ -130,16 +130,16 @@ module Apiwork
               variant_schema_name = variant_schema.name.demodulize.underscore.gsub(/_schema$/, '')
               variant_type_name = :"#{variant_schema_name}_#{context}_payload"
 
-              unless Descriptor::Registry.resolve_type(variant_type_name, contract_class: contract)
-                Descriptor::Registry.register_type(variant_type_name, scope: contract,
-                                                                      api_class: contract.api_class) do
+              unless Descriptor.resolve_type(variant_type_name, contract_class: contract)
+                Descriptor.register_type(variant_type_name, scope: contract,
+                                                            api_class: contract.api_class) do
                   param discriminator_name, type: :literal, value: tag.to_s, required: true
 
                   InputGenerator.generate_writable_params(self, variant_schema, context, nested: false)
                 end
               end
 
-              Descriptor::Registry.scoped_name(contract, variant_type_name)
+              Descriptor.scoped_type_name(contract, variant_type_name)
             end
           end
         end

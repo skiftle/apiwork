@@ -104,7 +104,7 @@ module Apiwork
           if options[:enum]
             if options[:enum].is_a?(Hash) && options[:enum][:ref]
               scope = determine_scope_for_enum(definition, options[:enum][:ref])
-              qualified_enum_name = Descriptor::EnumStore.scoped_name(scope, options[:enum][:ref])
+              qualified_enum_name = Descriptor.scoped_enum_name(scope, options[:enum][:ref])
               result[:enum] = qualified_enum_name
             else
               result[:enum] = options[:enum]
@@ -163,7 +163,7 @@ module Apiwork
               if parent_definition.contract_class.respond_to?(:schema_class) &&
                  parent_definition.contract_class.schema_class
                 scope = determine_scope_for_enum(parent_definition, variant_definition[:enum])
-                result[:enum] = Descriptor::EnumStore.scoped_name(scope, variant_definition[:enum])
+                result[:enum] = Descriptor.scoped_enum_name(scope, variant_definition[:enum])
               else
                 result[:enum] = variant_definition[:enum]
               end
@@ -191,11 +191,7 @@ module Apiwork
           api_class = definition.contract_class.api_class
           return false unless api_class
 
-          store = Descriptor::TypeStore.send(:storage, api_class)
-          metadata = store[type_name]
-          return false unless metadata
-
-          metadata[:scope].nil?
+          Descriptor.type_global?(type_name, api_class: api_class)
         end
 
         def is_imported_type?(type_name, definition)
@@ -224,7 +220,7 @@ module Apiwork
           return type_name unless definition.contract_class.schema_class
 
           scope = scope_for_type(definition)
-          Descriptor::Registry.scoped_name(scope, type_name)
+          Descriptor.scoped_type_name(scope, type_name)
         end
 
         def apply_metadata_fields(result, options)

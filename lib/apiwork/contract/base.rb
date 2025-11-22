@@ -58,10 +58,10 @@ module Apiwork
         end
 
         def type(name, description: nil, example: nil, format: nil, deprecated: false, &block)
-          Descriptor::Builder.define_type(
+          Descriptor.define_type(
+            name,
             api_class: api_class,
             scope: self,
-            name: name,
             description: description,
             example: example,
             format: format,
@@ -71,11 +71,11 @@ module Apiwork
         end
 
         def enum(name, values:, description: nil, example: nil, deprecated: false)
-          Descriptor::Builder.define_enum(
+          Descriptor.define_enum(
+            name,
+            values: values,
             api_class: api_class,
             scope: self,
-            name: name,
-            values: values,
             description: description,
             example: example,
             deprecated: deprecated
@@ -83,7 +83,7 @@ module Apiwork
         end
 
         def union(name, &block)
-          Descriptor::Builder.define_union(api_class: api_class, scope: self, name: name, &block)
+          Descriptor.define_union(name, api_class: api_class, scope: self, &block)
         end
 
         def configure(&block)
@@ -133,7 +133,7 @@ module Apiwork
         end
 
         def resolve_custom_type(type_name)
-          Descriptor::Registry.resolve_type(type_name, contract_class: self, api_class: api_class)
+          Descriptor.resolve_type(type_name, contract_class: self, api_class: api_class)
         end
 
         def action_definition(action_name)

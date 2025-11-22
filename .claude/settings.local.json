@@ -85,7 +85,8 @@
       "Bash(do)",
       "Bash(git -C /Users/joakim/GitHub/apiwork checkout lib/apiwork/descriptor/type_store.rb lib/apiwork/descriptor/enum_store.rb lib/apiwork/descriptor/core.rb lib/apiwork/descriptor/store.rb)",
       "Bash(git -C /Users/joakim/GitHub/apiwork checkout spec/)",
-      "Bash(git -C /Users/joakim/GitHub/apiwork status --short)"
+      "Bash(git -C /Users/joakim/GitHub/apiwork status --short)",
+      "Bash(tee:*)"
     ],
     "deny": [],
     "ask": []
