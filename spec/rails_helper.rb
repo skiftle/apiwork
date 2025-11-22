@@ -27,9 +27,12 @@ RSpec.configure do |config|
   # Filter Rails gems from backtraces
   config.filter_rails_from_backtrace!
 
-  # Clear schema registry before each test
-  # This ensures tests don't interfere with each other
-  config.before do
-    Apiwork::Contract::SchemaRegistry.clear!
+  # Clear registries before each test, but skip integration tests
+  # Integration tests use before(:all) to load API config once for performance
+  config.before do |example|
+    unless [:request, :integration].include?(example.metadata[:type])
+      Apiwork::Contract.reset!
+      Apiwork::Descriptor.reset!
+    end
   end
 end
