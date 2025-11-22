@@ -25,6 +25,8 @@ loader.inflector.inflect(
   'api' => 'API',
   'json_pointer' => 'JSONPointer'
 )
+loader.ignore("#{__dir__}/rubocop")
+
 loader.setup
 
 require_relative 'apiwork/engine' if defined?(Rails::Engine)

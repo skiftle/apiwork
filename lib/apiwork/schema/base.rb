@@ -20,7 +20,9 @@ module Apiwork
       class_attribute :_sti_type, default: nil
       class_attribute :_variants, default: {}
 
-      attr_reader :object, :context, :includes
+      attr_reader :context,
+                  :includes,
+                  :object
 
       def initialize(object, context: {}, includes: nil)
         @object = object
@@ -245,7 +247,10 @@ module Apiwork
           _variant_tag.present?
         end
 
-        attr_writer :type, :default_sort, :default_page_size, :max_page_size
+        attr_writer :default_page_size,
+                    :default_sort,
+                    :max_page_size,
+                    :type
 
         def type
           @type || model_class&.model_name&.element

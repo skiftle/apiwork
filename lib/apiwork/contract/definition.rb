@@ -3,7 +3,10 @@
 module Apiwork
   module Contract
     class Definition
-      attr_reader :type, :params, :contract_class, :action_name
+      attr_reader :action_name,
+                  :contract_class,
+                  :params,
+                  :type
 
       def initialize(type:, contract_class:, action_name: nil)
         @type = type # :input or :output

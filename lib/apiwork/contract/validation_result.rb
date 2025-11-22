@@ -3,7 +3,9 @@
 module Apiwork
   module Contract
     class ValidationResult
-      attr_reader :issues, :value, :value_set
+      attr_reader :issues,
+                  :value,
+                  :value_set
 
       def initialize(issues: [], value: nil, value_set: false)
         @issues = Array(issues)

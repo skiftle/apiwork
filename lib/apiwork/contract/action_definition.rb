@@ -3,7 +3,10 @@
 module Apiwork
   module Contract
     class ActionDefinition
-      attr_reader :action_name, :contract_class, :input_definition, :output_definition
+      attr_reader :action_name,
+                  :contract_class,
+                  :input_definition,
+                  :output_definition
 
       def schema_class
         contract_class.schema_class

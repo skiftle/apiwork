@@ -4,7 +4,11 @@ module Apiwork
   module API
     class Base
       class << self
-        attr_reader :metadata, :recorder, :mount_path, :namespaces, :specs
+        attr_reader :metadata,
+                    :mount_path,
+                    :namespaces,
+                    :recorder,
+                    :specs
 
         def mount(path)
           @mount_path = path

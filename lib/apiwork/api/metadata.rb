@@ -3,18 +3,23 @@
 module Apiwork
   module API
     class Metadata
-      attr_reader :path, :namespaces, :resources, :concerns
-      attr_accessor :info, :error_codes
+      attr_reader :concerns,
+                  :namespaces,
+                  :path,
+                  :resources
+
+      attr_accessor :error_codes,
+                    :info
 
       def initialize(path)
         @path = path
 
         @namespaces = path == '/' ? [:root] : path.split('/').reject(&:empty?).map(&:to_sym)
 
-        @resources = {} # Structured tree, not flat array
+        @resources = {}
         @concerns = {}
         @info = nil
-        @error_codes = [] # Global error codes for all endpoints in this API
+        @error_codes = []
       end
 
       def namespaces_string
@@ -139,7 +144,7 @@ module Apiwork
           Array(only).map(&:to_sym)
         else
           default_actions = if singular
-                              [:show, :create, :update, :destroy] # No :index for singular
+                              [:show, :create, :update, :destroy]
                             else
                               [:index, :show, :create, :update, :destroy]
                             end

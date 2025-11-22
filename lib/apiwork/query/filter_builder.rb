@@ -3,7 +3,10 @@
 module Apiwork
   class Query
     class FilterBuilder
-      attr_reader :column, :field_name, :issues, :allowed_types
+      attr_reader :allowed_types,
+                  :column,
+                  :field_name,
+                  :issues
 
       def initialize(column:, field_name:, issues:, allowed_types:)
         @column = column

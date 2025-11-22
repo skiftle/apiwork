@@ -2,7 +2,10 @@
 
 module Apiwork
   class Issue
-    attr_reader :code, :path, :detail, :meta
+    attr_reader :code,
+                :detail,
+                :meta,
+                :path
 
     def initialize(code:, detail:, path: [], meta: {})
       @code = code

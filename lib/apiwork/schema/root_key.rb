@@ -3,7 +3,8 @@
 module Apiwork
   module Schema
     class RootKey
-      attr_reader :singular, :plural
+      attr_reader :plural,
+                  :singular
 
       def initialize(singular, plural = nil)
         @singular = singular

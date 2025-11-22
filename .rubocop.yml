@@ -3,6 +3,12 @@ plugins:
   - rubocop-rspec
   - rubocop-performance
 
+require:
+  - ./lib/rubocop/cop/apiwork/sort_attr_arguments.rb
+
+Apiwork/SortAttrArguments:
+  Enabled: true
+
 AllCops:
   TargetRubyVersion: 3.2
   NewCops: disable
