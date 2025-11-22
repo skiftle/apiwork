@@ -24,8 +24,14 @@ module Apiwork
           )
         end
 
-        def enum(name, values, description: nil, example: nil, deprecated: false)
-          raise ArgumentError, 'Values array required for enum definition' unless values.is_a?(Array)
+        def enum(name, *args, values: nil, description: nil, example: nil, deprecated: false)
+          unless args.empty?
+            raise ArgumentError,
+                  "Invalid enum syntax. Use 'enum :#{name}, values: #{args.first.inspect}' " \
+                  '(values must be a keyword argument)'
+          end
+
+          raise ArgumentError, 'Values array required for enum definition' if values.nil? || !values.is_a?(Array)
 
           Registry.register_enum(
             name,

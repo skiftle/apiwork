@@ -43,7 +43,7 @@ RSpec.describe 'API Descriptor Builder' do
   it 'allows defining enums via descriptors block' do
     api = Apiwork::API.draw '/api/test' do
       descriptors do
-        enum :sort_direction, %i[asc desc]
+        enum :sort_direction, values: %i[asc desc]
       end
     end
 
@@ -56,7 +56,7 @@ RSpec.describe 'API Descriptor Builder' do
   it 'auto-generates enum filter types for enums defined via descriptors' do
     api = Apiwork::API.draw '/api/test' do
       descriptors do
-        enum :status, %i[active inactive pending]
+        enum :status, values: %i[active inactive pending]
       end
     end
 
@@ -92,7 +92,7 @@ RSpec.describe 'API Descriptor Builder' do
       end
 
       descriptors do
-        enum :priority, %i[low medium high]
+        enum :priority, values: %i[low medium high]
       end
     end
 
@@ -186,7 +186,7 @@ RSpec.describe 'API Descriptor Builder' do
     it 'allows defining enum with description' do
       api = Apiwork::API.draw '/api/test' do
         descriptors do
-          enum :documented_enum, %i[a b c], description: 'An enum with description'
+          enum :documented_enum, values: %i[a b c], description: 'An enum with description'
         end
       end
 
@@ -198,7 +198,7 @@ RSpec.describe 'API Descriptor Builder' do
     it 'allows defining enum with example' do
       api = Apiwork::API.draw '/api/test' do
         descriptors do
-          enum :example_enum, %i[red green blue], example: :red
+          enum :example_enum, values: %i[red green blue], example: :red
         end
       end
 
@@ -210,7 +210,7 @@ RSpec.describe 'API Descriptor Builder' do
     it 'allows defining enum with deprecated: true' do
       api = Apiwork::API.draw '/api/test' do
         descriptors do
-          enum :legacy_enum, %i[old new], deprecated: true
+          enum :legacy_enum, values: %i[old new], deprecated: true
         end
       end
 
@@ -223,7 +223,7 @@ RSpec.describe 'API Descriptor Builder' do
       api = Apiwork::API.draw '/api/test' do
         descriptors do
           enum :full_metadata_enum,
-               %w[option1 option2],
+               values: %w[option1 option2],
                description: 'Complete enum metadata',
                example: 'option1',
                deprecated: false
@@ -248,7 +248,7 @@ RSpec.describe 'API Descriptor Builder' do
             param :value, type: :string
           end
 
-          enum :chained_enum, %i[x y], description: 'Enum metadata flows through'
+          enum :chained_enum, values: %i[x y], description: 'Enum metadata flows through'
         end
       end
 
@@ -258,6 +258,21 @@ RSpec.describe 'API Descriptor Builder' do
       # Verify metadata is preserved through the chain
       expect(types[:chained_type][:description]).to eq('Metadata flows through')
       expect(enums[:chained_enum][:description]).to eq('Enum metadata flows through')
+    end
+  end
+
+  describe 'Error handling' do
+    it 'provides helpful error message for old enum syntax' do
+      expect do
+        Apiwork::API.draw '/api/test' do
+          descriptors do
+            enum :colors, [:green, :blue, :yellow]
+          end
+        end
+      end.to raise_error(
+        ArgumentError,
+        "Invalid enum syntax. Use 'enum :colors, values: [:green, :blue, :yellow]' (values must be a keyword argument)"
+      )
     end
   end
 end

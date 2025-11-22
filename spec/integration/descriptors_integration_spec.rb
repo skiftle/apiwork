@@ -220,7 +220,7 @@ RSpec.describe 'Descriptors Integration', type: :request do
             param :v2_field, type: :string
           end
 
-          enum :v2_status, %i[pending approved rejected]
+          enum :v2_status, values: %i[pending approved rejected]
         end
       end
     end
@@ -290,7 +290,7 @@ RSpec.describe 'Descriptors Integration', type: :request do
         end
 
         # Contract-scoped enum
-        enum :priority, %i[low medium high critical]
+        enum :priority, values: %i[low medium high critical]
 
         # Contract-scoped union
         union :filter_value do
@@ -431,7 +431,7 @@ RSpec.describe 'Descriptors Integration', type: :request do
           end
 
           enum :status_with_metadata,
-               %w[active inactive],
+               values: %w[active inactive],
                description: 'Status values with description',
                example: 'active',
                deprecated: false

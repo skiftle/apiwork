@@ -170,7 +170,7 @@ RSpec.describe 'Descriptor Metadata' do
     it 'stores and serializes enum with description' do
       api = Apiwork::API.draw '/api/test' do
         descriptors do
-          enum :role, %w[admin user guest], description: 'User role in the system'
+          enum :role, values: %w[admin user guest], description: 'User role in the system'
         end
       end
 
@@ -182,7 +182,7 @@ RSpec.describe 'Descriptor Metadata' do
     it 'stores and serializes enum with example' do
       api = Apiwork::API.draw '/api/test' do
         descriptors do
-          enum :priority, %i[low medium high], example: :medium
+          enum :priority, values: %i[low medium high], example: :medium
         end
       end
 
@@ -194,7 +194,7 @@ RSpec.describe 'Descriptor Metadata' do
     it 'stores and serializes enum with deprecated: true' do
       api = Apiwork::API.draw '/api/test' do
         descriptors do
-          enum :old_status, %w[active inactive], deprecated: true
+          enum :old_status, values: %w[active inactive], deprecated: true
         end
       end
 
@@ -206,7 +206,7 @@ RSpec.describe 'Descriptor Metadata' do
     it 'stores and serializes enum with deprecated: false explicitly' do
       api = Apiwork::API.draw '/api/test' do
         descriptors do
-          enum :current_status, %w[active inactive], deprecated: false
+          enum :current_status, values: %w[active inactive], deprecated: false
         end
       end
 
@@ -221,7 +221,7 @@ RSpec.describe 'Descriptor Metadata' do
       api = Apiwork::API.draw '/api/test' do
         descriptors do
           enum :color,
-               %w[red green blue],
+               values: %w[red green blue],
                description: 'Available color options',
                example: 'red',
                deprecated: false
@@ -241,7 +241,7 @@ RSpec.describe 'Descriptor Metadata' do
     it 'serializes enum as hash with values key' do
       api = Apiwork::API.draw '/api/test' do
         descriptors do
-          enum :simple_enum, %i[a b c]
+          enum :simple_enum, values: %i[a b c]
         end
       end
 
@@ -256,7 +256,7 @@ RSpec.describe 'Descriptor Metadata' do
     it 'includes all metadata fields even when nil' do
       api = Apiwork::API.draw '/api/test' do
         descriptors do
-          enum :minimal_enum, %i[x y z]
+          enum :minimal_enum, values: %i[x y z]
         end
       end
 
@@ -278,7 +278,7 @@ RSpec.describe 'Descriptor Metadata' do
     it 'includes deprecated: false explicitly when set' do
       api = Apiwork::API.draw '/api/test' do
         descriptors do
-          enum :normal_enum, %i[a b], deprecated: false
+          enum :normal_enum, values: %i[a b], deprecated: false
         end
       end
 
@@ -292,7 +292,7 @@ RSpec.describe 'Descriptor Metadata' do
     it 'preserves empty string description' do
       api = Apiwork::API.draw '/api/test' do
         descriptors do
-          enum :empty_desc_enum, %i[a b], description: ''
+          enum :empty_desc_enum, values: %i[a b], description: ''
         end
       end
 
@@ -336,13 +336,13 @@ RSpec.describe 'Descriptor Metadata' do
     it 'keeps enum metadata isolated between different APIs' do
       api1 = Apiwork::API.draw '/api/v1' do
         descriptors do
-          enum :status, %w[active inactive], description: 'V1 status'
+          enum :status, values: %w[active inactive], description: 'V1 status'
         end
       end
 
       api2 = Apiwork::API.draw '/api/v2' do
         descriptors do
-          enum :status, %w[pending approved], description: 'V2 status'
+          enum :status, values: %w[pending approved], description: 'V2 status'
         end
       end
 
@@ -412,7 +412,7 @@ RSpec.describe 'Descriptor Metadata' do
           end
         end
 
-        enum :scoped_enum, %i[a b c], description: 'Contract-scoped enum with metadata'
+        enum :scoped_enum, values: %i[a b c], description: 'Contract-scoped enum with metadata'
       end
 
       enums = Apiwork::Contract::Descriptor::Registry.enums(api)
@@ -446,7 +446,7 @@ RSpec.describe 'Descriptor Metadata' do
     it 'handles enum example that is not in values list' do
       api = Apiwork::API.draw '/api/test' do
         descriptors do
-          enum :status, %w[active inactive], example: 'pending'
+          enum :status, values: %w[active inactive], example: 'pending'
         end
       end
 
