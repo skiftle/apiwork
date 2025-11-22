@@ -4,7 +4,8 @@ module Apiwork
   module Contract
     class Parser
       class Result
-        attr_reader :data, :issues
+        attr_reader :data,
+                    :issues
 
         def initialize(data, issues)
           @data = data

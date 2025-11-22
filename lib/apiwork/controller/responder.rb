@@ -3,7 +3,10 @@
 module Apiwork
   module Controller
     class Responder
-      attr_reader :controller, :action_definition, :schema_class, :meta
+      attr_reader :action_definition,
+                  :controller,
+                  :meta,
+                  :schema_class
 
       def initialize(controller:, action_definition:, schema_class:, meta: {})
         @controller = controller

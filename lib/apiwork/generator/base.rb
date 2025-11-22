@@ -3,7 +3,9 @@
 module Apiwork
   module Generator
     class Base
-      attr_reader :path, :data, :options
+      attr_reader :data,
+                  :options,
+                  :path
 
       class << self
         def generate(path:, **options)

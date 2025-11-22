@@ -3,7 +3,9 @@
 module Apiwork
   module Contract
     class UnionDefinition
-      attr_reader :variants, :contract_class, :discriminator
+      attr_reader :contract_class,
+                  :discriminator,
+                  :variants
 
       def initialize(contract_class, discriminator: nil)
         @contract_class = contract_class

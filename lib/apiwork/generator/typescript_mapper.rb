@@ -3,7 +3,8 @@
 module Apiwork
   module Generator
     class TypescriptMapper
-      attr_reader :introspection, :key_transform_strategy
+      attr_reader :introspection,
+                  :key_transform_strategy
 
       def initialize(introspection:, key_transform: :keep)
         @introspection = introspection

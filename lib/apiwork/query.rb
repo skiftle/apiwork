@@ -7,7 +7,11 @@ module Apiwork
     include Pagination
     include EagerLoading
 
-    attr_reader :scope, :schema, :params, :result, :meta
+    attr_reader :meta,
+                :params,
+                :result,
+                :schema,
+                :scope
 
     def initialize(scope, schema:)
       @scope = scope
