@@ -9,6 +9,14 @@ module Apiwork
     def routes
       @routes ||= API::RackApp.new
     end
+
+    # DOCUMENTATION
+    def reset!
+      Generator.reset!
+      Contract.reset!
+      API.reset!
+      Descriptor.reset!
+    end
   end
 end
 
