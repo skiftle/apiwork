@@ -18,7 +18,7 @@ RSpec.describe 'Contract Imports' do
           param :country, type: :string, required: true
         end
 
-        enum :status, %w[active inactive suspended]
+        enum :status, values: %w[active inactive suspended]
       end
     end
 

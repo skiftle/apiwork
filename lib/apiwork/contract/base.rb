@@ -62,9 +62,15 @@ module Apiwork
           builder.type(name, description: description, example: example, format: format, deprecated: deprecated, &block)
         end
 
-        def enum(name, values, description: nil, example: nil, deprecated: false)
+        def enum(name, *args, values: nil, description: nil, example: nil, deprecated: false)
+          unless args.empty?
+            raise ArgumentError,
+                  "Invalid enum syntax. Use 'enum :#{name}, values: #{args.first.inspect}' " \
+                  '(values must be a keyword argument)'
+          end
+
           builder = Descriptor::Builder.new(api_class: api_class, scope: self)
-          builder.enum(name, values, description: description, example: example, deprecated: deprecated)
+          builder.enum(name, values: values, description: description, example: example, deprecated: deprecated)
         end
 
         def union(name, &block)

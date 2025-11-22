@@ -34,8 +34,8 @@ Apiwork::API.draw '/api/v1' do
     end
 
     # Sorting enums
-    enum :sort_direction, %i[asc desc]
-    enum :post_status, %i[draft published archived]
+    enum :sort_direction, values: %i[asc desc]
+    enum :post_status, values: %i[draft published archived]
 
     # Pagination type
     type :pagination_params do

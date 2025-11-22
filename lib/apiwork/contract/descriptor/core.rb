@@ -46,7 +46,7 @@ module Apiwork
               if has_sortable
                 builder = Builder.new(api_class: api_class)
                 builder.instance_eval do
-                  enum :sort_direction, %w[asc desc]
+                  enum :sort_direction, values: %w[asc desc]
                 end
               end
 

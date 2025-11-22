@@ -13,7 +13,7 @@ Apiwork::API.draw '/api/v1' do
     end
 
     # Define a global sort direction enum
-    enum :sort_direction, %i[asc desc]
+    enum :sort_direction, values: %i[asc desc]
 
     # Define a global pagination type
     type :page do
@@ -23,7 +23,7 @@ Apiwork::API.draw '/api/v1' do
     end
 
     # Define a global status enum
-    enum :status, %i[active inactive pending]
+    enum :status, values: %i[active inactive pending]
   end
 
   # These descriptors are now available to all contracts in this API

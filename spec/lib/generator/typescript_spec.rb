@@ -333,7 +333,7 @@ RSpec.describe Apiwork::Generator::Typescript do
             param :value, type: :string
           end
 
-          enum :status, %w[active inactive], description: 'Status enum', deprecated: true
+          enum :status, values: %w[active inactive], description: 'Status enum', deprecated: true
         end
       end
       @metadata_output = Apiwork::Generator.generate(:typescript, '/api/ts_metadata_test')
@@ -388,7 +388,7 @@ RSpec.describe Apiwork::Generator::Typescript do
     it 'generates correct output for enum with all metadata fields' do
       Apiwork::API.draw '/api/ts_enum_meta' do
         descriptors do
-          enum :color, %w[red green blue], description: 'desc', example: 'red', deprecated: false
+          enum :color, values: %w[red green blue], description: 'desc', example: 'red', deprecated: false
         end
       end
 
