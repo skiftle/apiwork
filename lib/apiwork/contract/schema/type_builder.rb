@@ -43,7 +43,7 @@ module Apiwork
           end
 
           def enum_filter_type(attribute_definition, contract_class)
-            scoped_enum_name = Descriptor::EnumStore.scoped_name(contract_class, attribute_definition.name)
+            scoped_enum_name = Descriptor.scoped_enum_name(contract_class, attribute_definition.name)
             :"#{scoped_enum_name}_filter"
           end
 
@@ -53,14 +53,14 @@ module Apiwork
 
             visited = visited.dup.add(schema_class)
 
-            Descriptor::Core.ensure_filter_descriptors_registered(schema_class, api_class: contract_class.api_class)
+            Descriptor.ensure_filter_descriptors(schema_class, api_class: contract_class.api_class)
 
             type_name = build_type_name(schema_class, :filter, depth)
 
-            existing = Descriptor::Registry.resolve_type(type_name, contract_class: contract_class)
+            existing = Descriptor.resolve_type(type_name, contract_class: contract_class)
             return type_name if existing
 
-            Descriptor::Registry.register_type(type_name, scope: contract_class, api_class: contract_class.api_class) do
+            Descriptor.register_type(type_name, scope: contract_class, api_class: contract_class.api_class) do
               param :_and, type: :array, of: type_name, required: false
               param :_or, type: :array, of: type_name, required: false
               param :_not, type: type_name, required: false
@@ -118,14 +118,14 @@ module Apiwork
 
             visited = visited.dup.add(schema_class)
 
-            Descriptor::Core.ensure_sort_descriptor_registered(schema_class, api_class: contract_class.api_class)
+            Descriptor.ensure_sort_descriptor(schema_class, api_class: contract_class.api_class)
 
             type_name = build_type_name(schema_class, :sort, depth)
 
-            existing = Descriptor::Registry.resolve_type(type_name, contract_class: contract_class)
+            existing = Descriptor.resolve_type(type_name, contract_class: contract_class)
             return type_name if existing
 
-            Descriptor::Registry.register_type(type_name, scope: contract_class, api_class: contract_class.api_class) do
+            Descriptor.register_type(type_name, scope: contract_class, api_class: contract_class.api_class) do
               schema_class.attribute_definitions.each do |name, attribute_definition|
                 next unless attribute_definition.sortable?
 
@@ -169,10 +169,10 @@ module Apiwork
 
             type_name = build_type_name(schema_class, :page, 1)
 
-            existing = Descriptor::Registry.resolve_type(type_name, contract_class: contract_class)
+            existing = Descriptor.resolve_type(type_name, contract_class: contract_class)
             return type_name if existing
 
-            Descriptor::Registry.register_type(type_name, api_class: contract_class.api_class) do
+            Descriptor.register_type(type_name, api_class: contract_class.api_class) do
               param :number, type: :integer, required: false, min: 1
               param :size, type: :integer, required: false, min: 1, max: resolved_max_page_size
             end
@@ -227,13 +227,13 @@ module Apiwork
           def build_include_type(contract_class, schema_class, visited: Set.new, depth: 0)
             type_name = build_type_name(schema_class, :include, depth)
 
-            existing = Descriptor::Registry.resolve_type(type_name, contract_class: contract_class)
+            existing = Descriptor.resolve_type(type_name, contract_class: contract_class)
             return type_name if existing
             return type_name if depth >= MAX_RECURSION_DEPTH
 
             visited = visited.dup.add(schema_class)
 
-            Descriptor::Registry.register_type(type_name, scope: contract_class, api_class: contract_class.api_class) do
+            Descriptor.register_type(type_name, scope: contract_class, api_class: contract_class.api_class) do
               schema_class.association_definitions.each do |name, association_definition|
                 association_resource = TypeBuilder.resolve_association_resource(association_definition)
                 next unless association_resource
@@ -306,9 +306,9 @@ module Apiwork
 
             resource_type_name = nil
 
-            unless Descriptor::Registry.resolve_type(resource_type_name, contract_class: association_contract_class)
-              Descriptor::Registry.register_type(resource_type_name, scope: association_contract_class,
-                                                                     api_class: association_contract_class.api_class) do
+            unless Descriptor.resolve_type(resource_type_name, contract_class: association_contract_class)
+              Descriptor.register_type(resource_type_name, scope: association_contract_class,
+                                                           api_class: association_contract_class.api_class) do
                 association_schema.attribute_definitions.each do |name, attribute_definition|
                   param name, type: Generator.map_type(attribute_definition.type), required: false
                 end
@@ -333,7 +333,7 @@ module Apiwork
               end
             end
 
-            Descriptor::Registry.scoped_name(association_contract_class, resource_type_name)
+            Descriptor.scoped_type_name(association_contract_class, resource_type_name)
           end
 
           def build_polymorphic_association_type(contract_class, association_definition, visited: Set.new)
@@ -342,7 +342,7 @@ module Apiwork
 
             union_type_name = :"#{association_definition.name}_polymorphic"
 
-            existing = Descriptor::Registry.resolve_type(union_type_name, contract_class: contract_class)
+            existing = Descriptor.resolve_type(union_type_name, contract_class: contract_class)
             return existing if existing
 
             union_definition = UnionDefinition.new(contract_class, discriminator: association_definition.discriminator)
@@ -356,8 +356,8 @@ module Apiwork
 
             union_data = union_definition.serialize
 
-            Descriptor::Registry.register_union(union_type_name, union_data,
-                                                scope: contract_class, api_class: contract_class.api_class)
+            Descriptor.register_union(union_type_name, union_data,
+                                      scope: contract_class, api_class: contract_class.api_class)
 
             union_type_name
           end
@@ -380,8 +380,8 @@ module Apiwork
 
             union_data = union_definition.serialize
 
-            Descriptor::Registry.register_union(union_type_name, union_data,
-                                                scope: contract_class, api_class: contract_class.api_class)
+            Descriptor.register_union(union_type_name, union_data,
+                                      scope: contract_class, api_class: contract_class.api_class)
 
             union_type_name
           end
@@ -431,7 +431,7 @@ module Apiwork
             schema_class.attribute_definitions.each do |name, attribute_definition|
               next unless attribute_definition.enum&.any?
 
-              Descriptor::Registry.register_enum(name, attribute_definition.enum, scope: contract_class, api_class: api_class)
+              Descriptor.register_enum(name, attribute_definition.enum, scope: contract_class, api_class: api_class)
             end
           end
 
@@ -442,8 +442,8 @@ module Apiwork
             api_class = contract_class.api_class
 
             create_type_name = :nested_create_payload
-            unless Descriptor::Registry.resolve_type(create_type_name, contract_class: contract_class)
-              Descriptor::Registry.register_type(create_type_name, scope: contract_class, api_class: api_class) do
+            unless Descriptor.resolve_type(create_type_name, contract_class: contract_class)
+              Descriptor.register_type(create_type_name, scope: contract_class, api_class: api_class) do
                 param :_type, type: :literal, value: 'create', required: true
                 InputGenerator.generate_writable_params(self, schema_class, :create, nested: true)
                 if schema_class.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
@@ -453,8 +453,8 @@ module Apiwork
             end
 
             update_type_name = :nested_update_payload
-            unless Descriptor::Registry.resolve_type(update_type_name, contract_class: contract_class)
-              Descriptor::Registry.register_type(update_type_name, scope: contract_class, api_class: api_class) do
+            unless Descriptor.resolve_type(update_type_name, contract_class: contract_class)
+              Descriptor.register_type(update_type_name, scope: contract_class, api_class: api_class) do
                 param :_type, type: :literal, value: 'update', required: true
                 InputGenerator.generate_writable_params(self, schema_class, :update, nested: true)
                 if schema_class.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
@@ -464,18 +464,18 @@ module Apiwork
             end
 
             nested_payload_type_name = :nested_payload
-            return if Descriptor::Registry.resolve_type(nested_payload_type_name, contract_class: contract_class)
+            return if Descriptor.resolve_type(nested_payload_type_name, contract_class: contract_class)
 
-            create_qualified_name = Descriptor::Registry.scoped_name(contract_class, create_type_name)
-            update_qualified_name = Descriptor::Registry.scoped_name(contract_class, update_type_name)
+            create_qualified_name = Descriptor.scoped_type_name(contract_class, create_type_name)
+            update_qualified_name = Descriptor.scoped_type_name(contract_class, update_type_name)
 
             union_definition = UnionDefinition.new(contract_class, discriminator: :_type)
             union_definition.variant(type: create_qualified_name, tag: 'create')
             union_definition.variant(type: update_qualified_name, tag: 'update')
             union_data = union_definition.serialize
 
-            Descriptor::Registry.register_union(nested_payload_type_name, union_data,
-                                                scope: contract_class, api_class: api_class)
+            Descriptor.register_union(nested_payload_type_name, union_data,
+                                      scope: contract_class, api_class: api_class)
           end
 
           def build_output_type(contract_class, schema_class, visited: Set.new)
@@ -486,11 +486,11 @@ module Apiwork
             return if sti_base_schema?(schema_class)
 
             root_key = schema_class.root_key.singular.to_sym
-            resource_type_name = Descriptor::Registry.scoped_name(contract_class, nil)
+            resource_type_name = Descriptor.scoped_type_name(contract_class, nil)
 
-            return if Descriptor::Registry.resolve_type(resource_type_name, contract_class: contract_class)
+            return if Descriptor.resolve_type(resource_type_name, contract_class: contract_class)
 
-            Descriptor::Registry.register_type(root_key, scope: contract_class, api_class: contract_class.api_class) do
+            Descriptor.register_type(root_key, scope: contract_class, api_class: contract_class.api_class) do
               if schema_class.respond_to?(:sti_variant?) && schema_class.sti_variant?
                 parent_schema = schema_class.superclass
                 discriminator_name = parent_schema.discriminator_name
@@ -508,8 +508,8 @@ module Apiwork
               schema_class.attribute_definitions.each do |name, attribute_definition|
                 if attribute_definition.enum
                   enum_values = attribute_definition.enum
-                  Descriptor::Registry.register_enum(name, enum_values, scope: contract_class,
-                                                                        api_class: contract_class.api_class)
+                  Descriptor.register_enum(name, enum_values, scope: contract_class,
+                                                              api_class: contract_class.api_class)
                 end
 
                 enum_option = attribute_definition.enum ? { enum: name } : {}

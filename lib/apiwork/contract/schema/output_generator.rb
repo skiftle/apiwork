@@ -10,9 +10,9 @@ module Apiwork
               TypeBuilder.build_sti_output_union_type(contract_class, schema_class)
             else
               root_key = schema_class.root_key.singular.to_sym
-              resource_type_name = Descriptor::Registry.scoped_name(contract_class, nil)
+              resource_type_name = Descriptor.scoped_type_name(contract_class, nil)
 
-              unless Descriptor::Registry.resolve_type(resource_type_name, contract_class: contract_class)
+              unless Descriptor.resolve_type(resource_type_name, contract_class: contract_class)
                 register_resource_type(contract_class, schema_class, root_key)
               end
 
@@ -64,11 +64,11 @@ module Apiwork
               next unless attribute_definition.enum
 
               enum_values = attribute_definition.enum
-              Descriptor::Registry.register_enum(name, enum_values, scope: contract_class,
-                                                                    api_class: contract_class.api_class)
+              Descriptor.register_enum(name, enum_values, scope: contract_class,
+                                                          api_class: contract_class.api_class)
             end
 
-            Descriptor::Registry.register_type(type_name, scope: contract_class, api_class: contract_class.api_class) do
+            Descriptor.register_type(type_name, scope: contract_class, api_class: contract_class.api_class) do
               schema_class.attribute_definitions.each do |name, attribute_definition|
                 enum_option = attribute_definition.enum ? { enum: name } : {}
 

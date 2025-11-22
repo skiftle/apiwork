@@ -6,8 +6,7 @@ module Apiwork
       # DOCUMENTATION
       def reset!
         SchemaRegistry.clear!
-        Descriptor::Registry.clear!
-        Descriptor::Core.clear!
+        Descriptor.clear!
       end
     end
   end
