@@ -260,19 +260,4 @@ RSpec.describe 'API Descriptor Builder' do
       expect(enums[:chained_enum][:description]).to eq('Enum metadata flows through')
     end
   end
-
-  describe 'Error handling' do
-    it 'provides helpful error message for old enum syntax' do
-      expect do
-        Apiwork::API.draw '/api/test' do
-          descriptors do
-            enum :colors, [:green, :blue, :yellow]
-          end
-        end
-      end.to raise_error(
-        ArgumentError,
-        "Invalid enum syntax. Use 'enum :colors, values: [:green, :blue, :yellow]' (values must be a keyword argument)"
-      )
-    end
-  end
 end

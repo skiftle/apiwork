@@ -60,11 +60,31 @@ module Apiwork
           @configuration ||= {}
         end
 
-        def descriptors(&block)
-          return unless block
+        def type(name, description: nil, example: nil, format: nil, deprecated: false, &block)
+          Contract::Descriptor::Builder.define_type(
+            api_class: self,
+            name: name,
+            description: description,
+            example: example,
+            format: format,
+            deprecated: deprecated,
+            &block
+          )
+        end
 
-          builder = Contract::Descriptor::Builder.new(api_class: self, scope: nil)
-          builder.instance_eval(&block)
+        def enum(name, values:, description: nil, example: nil, deprecated: false)
+          Contract::Descriptor::Builder.define_enum(
+            api_class: self,
+            name: name,
+            values: values,
+            description: description,
+            example: example,
+            deprecated: deprecated
+          )
+        end
+
+        def union(name, &block)
+          Contract::Descriptor::Builder.define_union(api_class: self, name: name, &block)
         end
 
         def info(&block)

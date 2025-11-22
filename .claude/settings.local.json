@@ -72,7 +72,13 @@
       "Bash(git -C /Users/joakim/GitHub/apiwork diff --name-only)",
       "Bash(git -C /Users/joakim/GitHub/apiwork stash:*)",
       "Bash(/Users/joakim/GitHub/apiwork/spec/lib/contract/parser/numeric_range_spec.rb)",
-      "Bash(git -C /Users/joakim/GitHub/apiwork mv spec/integration/serialize_deserialize_spec.rb spec/integration/encode_decode_spec.rb)"
+      "Bash(git -C /Users/joakim/GitHub/apiwork mv spec/integration/serialize_deserialize_spec.rb spec/integration/encode_decode_spec.rb)",
+      "Bash(git -C /Users/joakim/GitHub/apiwork checkout lib/apiwork/api/base.rb)",
+      "Bash(for file in spec/integration/descriptors_integration_spec.rb spec/lib/contract/descriptor/metadata_spec.rb examples/descriptors_dsl.rb spec/lib/generator/typescript_spec.rb)",
+      "Bash(do cat \"$file\")",
+      "Bash(git -C /Users/joakim/GitHub/apiwork checkout spec/lib/api/descriptor_builder_spec.rb spec/integration/descriptors_integration_spec.rb spec/lib/contract/descriptor/metadata_spec.rb examples/descriptors_dsl.rb spec/lib/generator/typescript_spec.rb)",
+      "Bash(git -C /Users/joakim/GitHub/apiwork diff --stat)",
+      "Bash(git -C /Users/joakim/GitHub/apiwork checkout spec/integration/descriptors_integration_spec.rb spec/lib/contract/descriptor/metadata_spec.rb examples/descriptors_dsl.rb spec/lib/generator/typescript_spec.rb)"
     ],
     "deny": [],
     "ask": []

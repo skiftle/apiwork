@@ -25,23 +25,21 @@ Apiwork::API.draw '/api/v1' do
   end
 
   # API-level descriptors - available to all contracts in this API
-  descriptors do
-    # Error response type
-    type :error_detail do
-      param :code, type: :string
-      param :message, type: :string
-      param :field, type: :string
-    end
+  # Error response type
+  type :error_detail do
+    param :code, type: :string
+    param :message, type: :string
+    param :field, type: :string
+  end
 
-    # Sorting enums
-    enum :sort_direction, values: %i[asc desc]
-    enum :post_status, values: %i[draft published archived]
+  # Sorting enums
+  enum :sort_direction, values: %i[asc desc]
+  enum :post_status, values: %i[draft published archived]
 
-    # Pagination type
-    type :pagination_params do
-      param :page, type: :integer
-      param :per_page, type: :integer
-    end
+  # Pagination type
+  type :pagination_params do
+    param :page, type: :integer
+    param :per_page, type: :integer
   end
 
   resources :posts do
