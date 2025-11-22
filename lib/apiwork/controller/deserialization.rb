@@ -21,7 +21,7 @@ module Apiwork
           data = transform_keys(data, key_transform)
           data = ParamsNormalizer.call(data)
 
-          Contract.parse(current_contract, :input, action_name, data, coerce: true)
+          current_contract.parse(data, :input, action_name, coerce: true)
         end
       end
 

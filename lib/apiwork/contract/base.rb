@@ -9,6 +9,7 @@ module Apiwork
         attr_accessor :_identifier,
                       :_schema_class
 
+        # DOCUMENTATION
         def identifier(value = nil)
           return @_identifier if value.nil?
 
@@ -22,6 +23,7 @@ module Apiwork
           subclass.instance_variable_set(:@configuration, {})
         end
 
+        # DOCUMENTATION
         def schema(ref)
           unless ref.is_a?(Class)
             raise ArgumentError, "schema must be a Class constant, got #{ref.class}. " \
@@ -53,10 +55,12 @@ module Apiwork
           @_schema_class
         end
 
+        # DOCUMENTATION
         def schema?
           @_schema_class.present?
         end
 
+        # DOCUMENTATION
         def type(name, description: nil, example: nil, format: nil, deprecated: false, &block)
           Descriptor.define_type(
             name,
@@ -70,6 +74,7 @@ module Apiwork
           )
         end
 
+        # DOCUMENTATION
         def enum(name, values:, description: nil, example: nil, deprecated: false)
           Descriptor.define_enum(
             name,
@@ -82,10 +87,12 @@ module Apiwork
           )
         end
 
+        # DOCUMENTATION
         def union(name, &block)
           Descriptor.define_union(name, api_class: api_class, scope: self, &block)
         end
 
+        # DOCUMENTATION
         def configure(&block)
           return unless block
 
@@ -98,6 +105,7 @@ module Apiwork
           @configuration ||= {}
         end
 
+        # DOCUMENTATION
         def import(contract_class, as:)
           unless contract_class.is_a?(Class)
             raise ArgumentError, "import must be a Class constant, got #{contract_class.class}. " \
@@ -122,6 +130,7 @@ module Apiwork
           @imports || {}
         end
 
+        # DOCUMENTATION
         def action(action_name, replace: false, &block)
           @action_definitions ||= {}
           action_name_sym = action_name.to_sym
@@ -154,6 +163,7 @@ module Apiwork
           @action_definitions || {}
         end
 
+        # DOCUMENTATION
         def introspect(action = nil)
           if action
             action_def = action_definition(action)
@@ -223,8 +233,28 @@ module Apiwork
           resource_metadata&.dig(:singular) || false
         end
 
+        # DOCUMENTATION
         def parse(data, direction, action, **options)
           Parser.new(self, direction, action, **options).perform(data)
+        end
+
+        # DOCUMENTATION
+        def format_keys(data, direction)
+          return data if data.blank?
+
+          setting = direction == :output ? :output_key_format : :input_key_format
+          key_format = Configuration::Resolver.resolve(setting, contract_class: self)
+
+          return data unless key_format
+
+          case key_format
+          when :camel
+            data.deep_transform_keys { |key| key.to_s.camelize(:lower).to_sym }
+          when :underscore
+            data.deep_transform_keys { |key| key.to_s.underscore.to_sym }
+          else
+            data
+          end
         end
       end
     end
