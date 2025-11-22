@@ -4,9 +4,8 @@ require 'rails_helper'
 
 RSpec.describe Apiwork::Generator::Typescript do
   before do
-    # Reset registries to prevent accumulation
-    Apiwork.reset_registries!
-    # Load test API
+    Apiwork::API.reset!
+    Apiwork::Contract.reset!
     load File.expand_path('../../dummy/config/apis/v1.rb', __dir__)
   end
 
