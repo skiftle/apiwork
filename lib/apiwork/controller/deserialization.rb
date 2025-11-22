@@ -17,13 +17,11 @@ module Apiwork
 
       def action_input
         @action_input ||= begin
-          parser = Contract::Parser.new(current_contract, :input, action_name, coerce: true)
-
           data = request.query_parameters.merge(request.request_parameters).deep_symbolize_keys
           data = transform_keys(data, key_transform)
           data = ParamsNormalizer.call(data)
 
-          parser.perform(data)
+          Contract.parse(current_contract, :input, action_name, data, coerce: true)
         end
       end
 

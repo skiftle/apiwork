@@ -5,8 +5,7 @@ module Apiwork
     class << self
       # DOCUMENTATION
       def parse(contract_class, direction, action, data, **options)
-        parser = Parser.new(contract_class, direction, action, **options)
-        parser.perform(data)
+        Parser.new(contract_class, direction, action, **options).perform(data)
       end
 
       # DOCUMENTATION
