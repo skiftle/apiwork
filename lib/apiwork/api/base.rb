@@ -116,20 +116,6 @@ module Apiwork
         def as_json
           introspect
         end
-
-        private
-
-        def resolve_contract_class(resource_metadata)
-          contract_class = resource_metadata[:contract_class]
-          return nil unless contract_class
-
-          contract_class < Contract::Base ? contract_class : nil
-        end
-
-        def schema_based_contract_class(resource_metadata)
-          schema_class = resource_metadata[:schema_class]
-          schema_class&.contract
-        end
       end
     end
   end

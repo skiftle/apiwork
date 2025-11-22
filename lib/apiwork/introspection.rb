@@ -14,8 +14,8 @@ module Apiwork
         result = {
           path: api_class.mount_path,
           info: info(api_class.metadata.info),
-          types: Descriptor.types(api_class),
-          enums: Descriptor.enums(api_class),
+          types: types(api_class),
+          enums: enums(api_class),
           resources: resources
         }
 
@@ -28,7 +28,7 @@ module Apiwork
         result = {}
         result[:input] = action_definition.merged_input_definition&.as_json
         result[:output] = action_definition.merged_output_definition&.as_json
-        result[:error_codes] = action_definition.send(:all_error_codes)
+        result[:error_codes] = all_error_codes(action_definition)
         result
       end
 
@@ -240,7 +240,15 @@ module Apiwork
         api_class = definition.contract_class.api_class
         return false unless api_class
 
-        Descriptor.type_global?(type_name, api_class: api_class)
+        type_global?(type_name, api_class: api_class)
+      end
+
+      def type_global?(type_name, api_class:)
+        store = Descriptor::TypeStore.send(:storage, api_class)
+        metadata = store[type_name]
+        return false unless metadata
+
+        metadata[:scope].nil?
       end
 
       def is_imported_type?(type_name, definition)
@@ -309,8 +317,8 @@ module Apiwork
           actions: {}
         }
 
-        contract_class = api_class.send(:resolve_contract_class, resource_metadata) ||
-                         api_class.send(:schema_based_contract_class, resource_metadata)
+        contract_class = resolve_contract_class(resource_metadata) ||
+                         schema_based_contract_class(resource_metadata)
 
         if resource_metadata[:actions]&.any?
           resource_metadata[:actions].each do |action_name, action_data|
@@ -402,6 +410,169 @@ module Apiwork
         else
           resource_segment
         end
+      end
+
+      def all_error_codes(action_definition)
+        action_codes = action_definition.instance_variable_get(:@error_codes) || []
+        auto_codes = auto_writable_error_codes(action_definition)
+
+        (action_codes + auto_codes).uniq.sort
+      end
+
+      def auto_writable_error_codes(action_definition)
+        return [] unless action_definition.contract_class.schema?
+
+        action_name_sym = action_definition.action_name.to_sym
+        return [422] if [:create, :update].include?(action_name_sym)
+
+        return [] if [:index, :show, :destroy].include?(action_name_sym)
+
+        http_method = find_http_method_from_api_metadata(action_definition)
+        return [] unless http_method
+
+        [:post, :patch, :put].include?(http_method) ? [422] : []
+      end
+
+      def find_http_method_from_api_metadata(action_definition)
+        search_in_api_metadata(action_definition) do |resource_metadata|
+          next unless matches_contract?(resource_metadata, action_definition.contract_class)
+
+          action_name_sym = action_definition.action_name.to_sym
+          return resource_metadata[:members][action_name_sym][:method] if resource_metadata[:members]&.key?(action_name_sym)
+
+          resource_metadata[:collections][action_name_sym][:method] if resource_metadata[:collections]&.key?(action_name_sym)
+        end
+      end
+
+      def find_api_for_contract(contract_class)
+        Apiwork::API.all.find do |api_class|
+          next unless api_class.metadata
+
+          search_in_metadata(api_class.metadata) { |resource| matches_contract?(resource, contract_class) }
+        end
+      end
+
+      def search_in_api_metadata(action_definition, &block)
+        api = find_api_for_contract(action_definition.contract_class)
+        return nil unless api&.metadata
+
+        search_in_metadata(api.metadata, &block)
+      end
+
+      def search_in_metadata(metadata, &block)
+        metadata.search_resources(&block)
+      end
+
+      def matches_contract?(resource_metadata, contract_class)
+        resource_uses_contract?(resource_metadata, contract_class)
+      end
+
+      def resource_uses_contract?(resource_metadata, contract)
+        matches_contract_option?(resource_metadata, contract) ||
+          matches_schema_contract?(resource_metadata, contract)
+      end
+
+      def matches_contract_option?(resource_metadata, contract)
+        contract_class = resource_metadata[:contract_class]
+        return false unless contract_class
+
+        contract_class == contract
+      end
+
+      def matches_schema_contract?(resource_metadata, contract)
+        schema_class = resource_metadata[:schema_class]
+        return false unless schema_class
+        return false unless contract.schema_class
+
+        schema_class == contract.schema_class
+      end
+
+      def resolve_contract_class(resource_metadata)
+        contract_class = resource_metadata[:contract_class]
+        return nil unless contract_class
+
+        contract_class < Contract::Base ? contract_class : nil
+      end
+
+      def schema_based_contract_class(resource_metadata)
+        schema_class = resource_metadata[:schema_class]
+        schema_class&.contract
+      end
+
+      def types(api)
+        result = {}
+
+        return result unless api
+
+        type_storage = Descriptor::TypeStore.send(:storage, api)
+        type_storage.each_pair.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
+          expanded_shape = metadata[:expanded_payload] ||= if metadata[:payload].is_a?(Hash)
+                                                             metadata[:payload]
+                                                           elsif metadata[:payload].is_a?(Proc)
+                                                             expand_type(
+                                                               metadata[:payload],
+                                                               contract_class: metadata[:scope],
+                                                               type_name: metadata[:name]
+                                                             )
+                                                           else
+                                                             expand_type(
+                                                               metadata[:definition] || metadata[:payload],
+                                                               contract_class: metadata[:scope],
+                                                               type_name: metadata[:name]
+                                                             )
+                                                           end
+
+          result[qualified_name] = if expanded_shape.is_a?(Hash) && expanded_shape[:type] == :union
+                                     expanded_shape.merge(
+                                       description: metadata[:description],
+                                       example: metadata[:example],
+                                       format: metadata[:format],
+                                       deprecated: metadata[:deprecated] || false
+                                     )
+                                   else
+                                     {
+                                       type: :object,
+                                       shape: expanded_shape,
+                                       description: metadata[:description],
+                                       example: metadata[:example],
+                                       format: metadata[:format],
+                                       deprecated: metadata[:deprecated] || false
+                                     }
+                                   end
+        end
+
+        result
+      end
+
+      def enums(api)
+        result = {}
+
+        return result unless api
+
+        enum_storage = Descriptor::EnumStore.send(:storage, api)
+        enum_storage.each_pair.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
+          enum_data = {
+            values: metadata[:payload],
+            description: metadata[:description],
+            example: metadata[:example],
+            deprecated: metadata[:deprecated] || false
+          }
+          result[qualified_name] = enum_data
+        end
+
+        result
+      end
+
+      def expand_type(definition, contract_class: nil, type_name: nil)
+        temp_contract = contract_class || Class.new(Apiwork::Contract::Base)
+
+        temp_definition = Apiwork::Contract::Definition.new(
+          type: :input,
+          contract_class: temp_contract
+        )
+
+        temp_definition.instance_eval(&definition)
+        temp_definition.as_json
       end
     end
   end

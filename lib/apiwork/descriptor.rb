@@ -99,22 +99,6 @@ module Apiwork
       def scoped_enum_name(scope, name)
         EnumStore.scoped_name(scope, name)
       end
-
-      def types(api)
-        Registry.types(api)
-      end
-
-      def enums(api)
-        Registry.enums(api)
-      end
-
-      def type_global?(type_name, api_class:)
-        store = TypeStore.send(:storage, api_class)
-        metadata = store[type_name]
-        return false unless metadata
-
-        metadata[:scope].nil?
-      end
     end
   end
 end

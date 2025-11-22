@@ -90,49 +90,12 @@ module Apiwork
 
       private
 
-      def all_error_codes
-        action_codes = @error_codes || []
-        auto_codes = auto_writable_error_codes
-
-        (action_codes + auto_codes).uniq.sort
-      end
-
-      def auto_writable_error_codes
-        return [] unless contract_class.schema?
-
-        return [422] if [:create, :update].include?(action_name.to_sym)
-
-        return [] if [:index, :show, :destroy].include?(action_name.to_sym)
-
-        http_method = find_http_method_from_api_metadata
-        return [] unless http_method
-
-        [:post, :patch, :put].include?(http_method) ? [422] : []
-      end
-
-      def find_http_method_from_api_metadata
-        search_in_api_metadata do |resource_metadata|
-          next unless matches_contract?(resource_metadata)
-
-          return resource_metadata[:members][action_name.to_sym][:method] if resource_metadata[:members]&.key?(action_name.to_sym)
-
-          resource_metadata[:collections][action_name.to_sym][:method] if resource_metadata[:collections]&.key?(action_name.to_sym)
-        end
-      end
-
       def find_api_for_contract
         Apiwork::API.all.find do |api_class|
           next unless api_class.metadata
 
           search_in_metadata(api_class.metadata) { |resource| matches_contract?(resource) }
         end
-      end
-
-      def search_in_api_metadata(&block)
-        api = find_api_for_contract
-        return nil unless api&.metadata
-
-        search_in_metadata(api.metadata, &block)
       end
 
       def search_in_metadata(metadata, &block)
