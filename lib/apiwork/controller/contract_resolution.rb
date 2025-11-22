@@ -12,25 +12,38 @@ module Apiwork
       private
 
       def set_current_contract
-        @current_contract = infer_schema_contract || infer_contract_class || raise_no_contract_class_error
+        @current_contract = resolve_contract_from_metadata || infer_contract_class || raise_no_contract_class_error
       end
 
       def current_contract
         @current_contract
       end
 
-      def infer_schema_contract
-        schema_class = infer_schema_class
-        return nil unless schema_class
+      def resolve_contract_from_metadata
+        api_path = extract_api_path_from_request
+        return nil unless api_path
 
-        Contract::Base.find_contract_for_schema(schema_class)
+        api = Apiwork::API.find(api_path)
+        return nil unless api
+
+        resource_name = extract_resource_name_from_controller
+        resource_metadata = api.metadata.resources[resource_name]
+        return nil unless resource_metadata
+
+        resource_metadata[:contract_class]
       end
 
-      def infer_schema_class
-        schema_name = "#{self.class.name.sub(/Controller$/, '').singularize}Schema"
-        schema_name.constantize
-      rescue NameError
-        nil
+      def extract_api_path_from_request
+        path_parts = request.path.split('/').reject(&:blank?)
+        return '/' if path_parts.empty?
+
+        "/#{path_parts[0..1].join('/')}"
+      end
+
+      def extract_resource_name_from_controller
+        controller_path = self.class.name.underscore.gsub('_controller', '')
+        parts = controller_path.split('/')
+        parts.last.pluralize.to_sym
       end
 
       def infer_contract_class
@@ -41,11 +54,10 @@ module Apiwork
       end
 
       def raise_no_contract_class_error
-        schema_class_name = "#{self.class.name.sub(/Controller$/, '').singularize}Schema"
         contract_class_name = "#{self.class.name.sub(/Controller$/, '').singularize}Contract"
 
-        raise ConfigurationError, "No schema or contract found for #{self.class.name}. " \
-                                  "Expected #{schema_class_name} or #{contract_class_name} to be defined."
+        raise ConfigurationError, "No contract found for #{self.class.name}. " \
+                                  "Expected #{contract_class_name} to be defined."
       end
     end
   end
