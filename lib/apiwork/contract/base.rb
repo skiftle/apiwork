@@ -5,22 +5,25 @@ module Apiwork
     class Base
       include Abstractable
 
+      class_attribute :action_definitions, instance_accessor: false
+      class_attribute :imports, instance_accessor: false
+      class_attribute :configuration, instance_accessor: false
+      class_attribute :_identifier
+      class_attribute :_schema_class
+
       class << self
-        attr_accessor :_identifier,
-                      :_schema_class
+        def inherited(subclass)
+          super
+          subclass.action_definitions = {}
+          subclass.imports = {}
+          subclass.configuration = {}
+        end
 
         # DOCUMENTATION
         def identifier(value = nil)
-          return @_identifier if value.nil?
+          return _identifier if value.nil?
 
-          @_identifier = value.to_s
-        end
-
-        def inherited(subclass)
-          super
-          subclass.instance_variable_set(:@action_definitions, {})
-          subclass.instance_variable_set(:@imports, {})
-          subclass.instance_variable_set(:@configuration, {})
+          self._identifier = value.to_s
         end
 
         # DOCUMENTATION
@@ -30,7 +33,7 @@ module Apiwork
                                  "Use: schema PostSchema (not 'PostSchema' or :post_schema)"
           end
 
-          @_schema_class = ref
+          self._schema_class = ref
 
           SchemaRegistry.register(ref, self)
 
@@ -52,12 +55,12 @@ module Apiwork
         end
 
         def schema_class
-          @_schema_class
+          _schema_class
         end
 
         # DOCUMENTATION
         def schema?
-          @_schema_class.present?
+          _schema_class.present?
         end
 
         # DOCUMENTATION
@@ -96,13 +99,8 @@ module Apiwork
         def configure(&block)
           return unless block
 
-          @configuration ||= {}
-          builder = Configuration::Builder.new(@configuration)
+          builder = Configuration::Builder.new(configuration)
           builder.instance_eval(&block)
-        end
-
-        def configuration
-          @configuration ||= {}
         end
 
         # DOCUMENTATION
@@ -122,23 +120,17 @@ module Apiwork
                                  'Use: import UserContract, as: :user'
           end
 
-          @imports ||= {}
-          @imports[as] = contract_class
-        end
-
-        def imports
-          @imports || {}
+          imports[as] = contract_class
         end
 
         # DOCUMENTATION
         def action(action_name, replace: false, &block)
-          @action_definitions ||= {}
           action_name_sym = action_name.to_sym
 
           action_definition = ActionDefinition.new(action_name: action_name_sym, contract_class: self, replace: replace)
           action_definition.instance_eval(&block) if block_given?
 
-          @action_definitions[action_name_sym] = action_definition
+          action_definitions[action_name_sym] = action_definition
         end
 
         def resolve_custom_type(type_name)
@@ -146,21 +138,16 @@ module Apiwork
         end
 
         def action_definition(action_name)
-          @action_definitions ||= {}
           action_name_sym = action_name.to_sym
 
-          return @action_definitions[action_name_sym] if @action_definitions.key?(action_name_sym)
+          return action_definitions[action_name_sym] if action_definitions.key?(action_name_sym)
 
           if schema_class
             auto_generate_and_store_action(action_name_sym)
-            return @action_definitions[action_name_sym]
+            return action_definitions[action_name_sym]
           end
 
           nil
-        end
-
-        def action_definitions
-          @action_definitions || {}
         end
 
         # DOCUMENTATION
