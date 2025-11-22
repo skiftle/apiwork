@@ -3,6 +3,10 @@
 module Apiwork
   module Generator
     class << self
+      def reset!
+        Registry.clear!
+      end
+
       def generate(type, path, **options)
         Generator::Registry.find(type).generate(path: path, **options)
       end

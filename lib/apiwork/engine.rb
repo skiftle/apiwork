@@ -10,10 +10,7 @@ module Apiwork
     end
 
     config.to_prepare do
-      Apiwork::Generator::Registry.clear!
-      Apiwork::Contract::SchemaRegistry.clear!
-      Apiwork::API::Registry.clear!
-      Apiwork::Descriptor.reset!
+      Apiwork.reset!
 
       Apiwork::Generator.register(:openapi, Apiwork::Generator::Openapi)
       Apiwork::Generator.register(:zod, Apiwork::Generator::Zod)
