@@ -92,7 +92,7 @@ module Apiwork
                 if import_alias
                   association_payload_type = :"#{import_alias}_nested_payload"
 
-                  association_contract = SchemaRegistry.find(association_schema)
+                  association_contract = Base.find_contract_for_schema(association_schema)
                 end
               end
 

@@ -23,7 +23,7 @@ module Apiwork
         schema_class = infer_schema_class
         return nil unless schema_class
 
-        schema_class.contract
+        Contract::Base.find_contract_for_schema(schema_class)
       end
 
       def infer_schema_class

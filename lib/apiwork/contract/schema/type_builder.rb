@@ -294,7 +294,7 @@ module Apiwork
             visited = visited.dup.add(association_schema)
 
             if import_alias
-              association_contract = SchemaRegistry.find(association_schema)
+              association_contract = Base.find_contract_for_schema(association_schema)
               build_output_type(association_contract, association_schema, visited: Set.new) if association_contract
 
               return import_alias
@@ -407,7 +407,7 @@ module Apiwork
           def auto_import_association_contract(parent_contract, association_schema, visited)
             return nil if visited.include?(association_schema)
 
-            association_contract = SchemaRegistry.find(association_schema)
+            association_contract = Base.find_contract_for_schema(association_schema)
             return nil unless association_contract
 
             alias_name = association_schema.root_key.singular.to_sym

@@ -5,13 +5,11 @@ require 'rails_helper'
 RSpec.describe 'API Descriptor Builder' do
   before do
     Apiwork::API.reset!
-    Apiwork::Contract.reset!
     Apiwork::Descriptor.reset!
   end
 
   after do
     Apiwork::API.reset!
-    Apiwork::Contract.reset!
     Apiwork::Descriptor.reset!
   end
 
