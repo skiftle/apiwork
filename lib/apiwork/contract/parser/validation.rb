@@ -9,12 +9,12 @@ module Apiwork
         private
 
         def validate(data)
-          if @direction == :output
+          if @direction == :response_body
             return { params: data, issues: [] } unless definition
             return { params: data, issues: [] } if definition.params.empty?
           end
 
-          return { params: {}, issues: [] } if (@direction == :input) && definition.nil? && data.blank?
+          return { params: {}, issues: [] } if request_direction? && definition.nil? && data.blank?
 
           return { params: data, issues: [] } unless definition
 
@@ -23,9 +23,9 @@ module Apiwork
 
         def handle_validation_errors(original_data, errors)
           case @direction
-          when :input
+          when :query, :body
             build_result({}, errors)
-          when :output
+          when :response_body
             build_result(original_data, errors)
           end
         end

@@ -119,8 +119,8 @@ module Apiwork
         return unless action_definition
 
         contract_json = ActionSerializer.new(action_definition).serialize
-        actions[name][:input] = contract_json[:input] || {}
-        actions[name][:output] = contract_json[:output] || {}
+        actions[name][:request] = contract_json[:request] if contract_json[:request]
+        actions[name][:response] = contract_json[:response] if contract_json[:response]
         actions[name][:error_codes] = contract_json[:error_codes] || []
       end
 

@@ -10,14 +10,14 @@ module Apiwork
 
         response = serializer.perform(
           resource_or_collection,
-          input: action_input,
+          input: action_request,
           meta: meta,
           context: context
         )
 
         skip_validation = request.delete? && serializer.schema_class.present?
         unless skip_validation
-          result = current_contract.parse(response, :output, action_name, coerce: false, context: context)
+          result = current_contract.parse(response, :response_body, action_name, coerce: false, context: context)
           raise ContractError, result.issues if result.invalid?
         end
 

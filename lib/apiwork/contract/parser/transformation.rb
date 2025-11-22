@@ -7,7 +7,7 @@ module Apiwork
         extend ActiveSupport::Concern
 
         def transform_meta_keys(meta)
-          raise ArgumentError, 'transform_meta_keys only available for output direction' unless @direction == :output
+          raise ArgumentError, 'transform_meta_keys only available for response_body direction' unless @direction == :response_body
 
           return meta if meta.blank? || @schema_class.nil?
 
@@ -27,9 +27,9 @@ module Apiwork
           return data unless definition
 
           case @direction
-          when :input
+          when :query, :body
             apply_transformations(data, definition)
-          when :output
+          when :response_body
             data
           end
         end
@@ -78,7 +78,8 @@ module Apiwork
           return nil unless param_definition[:type_contract_class]
 
           action_name = definition.action_name || :create
-          nested_definition = param_definition[:type_contract_class].action_definition(action_name)&.input_definition
+          nested_request_def = param_definition[:type_contract_class].action_definition(action_name)&.request_definition
+          nested_definition = nested_request_def&.body_definition
 
           return nil unless nested_definition
 

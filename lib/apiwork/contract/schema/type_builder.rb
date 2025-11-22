@@ -445,7 +445,7 @@ module Apiwork
             unless Descriptor.resolve_type(create_type_name, contract_class: contract_class)
               Descriptor.register_type(create_type_name, scope: contract_class, api_class: api_class) do
                 param :_type, type: :literal, value: 'create', required: true
-                InputGenerator.generate_writable_params(self, schema_class, :create, nested: true)
+                RequestGenerator.generate_writable_params(self, schema_class, :create, nested: true)
                 if schema_class.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
                   param :_destroy, type: :boolean, required: false
                 end
@@ -456,7 +456,7 @@ module Apiwork
             unless Descriptor.resolve_type(update_type_name, contract_class: contract_class)
               Descriptor.register_type(update_type_name, scope: contract_class, api_class: api_class) do
                 param :_type, type: :literal, value: 'update', required: true
-                InputGenerator.generate_writable_params(self, schema_class, :update, nested: true)
+                RequestGenerator.generate_writable_params(self, schema_class, :update, nested: true)
                 if schema_class.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
                   param :_destroy, type: :boolean, required: false
                 end

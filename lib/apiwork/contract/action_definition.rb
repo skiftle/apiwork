@@ -5,8 +5,8 @@ module Apiwork
     class ActionDefinition
       attr_reader :action_name,
                   :contract_class,
-                  :input_definition,
-                  :output_definition
+                  :request_definition,
+                  :response_definition
 
       def schema_class
         contract_class.schema_class
@@ -15,10 +15,10 @@ module Apiwork
       def initialize(action_name:, contract_class:, replace: false)
         @action_name = action_name
         @contract_class = contract_class
-        @reset_input = replace
-        @reset_output = replace
-        @input_definition = nil
-        @output_definition = nil
+        @reset_request = replace
+        @reset_response = replace
+        @request_definition = nil
+        @response_definition = nil
         @error_codes = []
 
         return unless contract_class.schema?
@@ -28,12 +28,12 @@ module Apiwork
         singleton_class.prepend(Schema::ActionDefinition)
       end
 
-      def resets_input?
-        @reset_input
+      def resets_request?
+        @reset_request
       end
 
-      def resets_output?
-        @reset_output
+      def resets_response?
+        @reset_response
       end
 
       def introspect
@@ -48,40 +48,30 @@ module Apiwork
         @error_codes = codes.flatten.map(&:to_i)
       end
 
-      def input(replace: false, &block)
-        @reset_input = replace if replace
+      def request(replace: false, &block)
+        @reset_request = replace if replace
 
-        @input_definition ||= Definition.new(
-          type: :input,
+        @request_definition ||= RequestDefinition.new(
           contract_class: contract_class,
           action_name: action_name
         )
 
-        @input_definition.instance_eval(&block) if block
+        @request_definition.instance_eval(&block) if block
 
-        @input_definition
+        @request_definition
       end
 
-      def output(replace: false, &block)
-        @reset_output = replace if replace
+      def response(replace: false, &block)
+        @reset_response = replace if replace
 
-        @output_definition ||= Definition.new(
-          type: :output,
+        @response_definition ||= ResponseDefinition.new(
           contract_class: contract_class,
           action_name: action_name
         )
 
-        @output_definition.instance_eval(&block) if block
+        @response_definition.instance_eval(&block) if block
 
-        @output_definition
-      end
-
-      def merged_input_definition
-        input_definition
-      end
-
-      def merged_output_definition
-        output_definition
+        @response_definition
       end
 
       def serialize_data(data, context: {}, includes: nil)

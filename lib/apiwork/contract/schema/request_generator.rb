@@ -3,7 +3,7 @@
 module Apiwork
   module Contract
     module Schema
-      class InputGenerator
+      class RequestGenerator
         class << self
           def generate_query_params(definition, schema_class)
             contract_class = definition.contract_class
@@ -44,7 +44,7 @@ module Apiwork
               unless Descriptor.resolve_type(payload_type_name, contract_class: contract_class)
                 Descriptor.register_type(payload_type_name, scope: contract_class,
                                                             api_class: contract_class.api_class) do
-                  InputGenerator.generate_writable_params(self, schema_class, context, nested: false)
+                  RequestGenerator.generate_writable_params(self, schema_class, context, nested: false)
                 end
               end
             end
@@ -135,7 +135,7 @@ module Apiwork
                                                             api_class: contract.api_class) do
                   param discriminator_name, type: :literal, value: tag.to_s, required: true
 
-                  InputGenerator.generate_writable_params(self, variant_schema, context, nested: false)
+                  RequestGenerator.generate_writable_params(self, variant_schema, context, nested: false)
                 end
               end
 

@@ -12,11 +12,13 @@ RSpec.describe 'Contract union type unknown field validation' do
       end
 
       action :index do
-        input do
-          # Union type that accepts either boolean true or nested object
-          param :custom, type: :union, required: false do
-            variant type: :boolean
-            variant type: :nested_type
+        request do
+          body do
+            # Union type that accepts either boolean true or nested object
+            param :custom, type: :union, required: false do
+              variant type: :boolean
+              variant type: :nested_type
+            end
           end
         end
       end
@@ -27,11 +29,11 @@ RSpec.describe 'Contract union type unknown field validation' do
   let(:action_definition) { contract_class.action_definition(:index) }
 
   it 'catches unknown fields in union variant (custom type)' do
-    result = action_definition.input_definition.validate({
-                                                           custom: {
-                                                             invalid_field: true # This should be caught as unknown
-                                                           }
-                                                         })
+    result = action_definition.request_definition.body_definition.validate({
+                                                                             custom: {
+                                                                               invalid_field: true # This should be caught as unknown
+                                                                             }
+                                                                           })
 
     expect(result[:issues]).not_to be_empty
     error = result[:issues].first
@@ -40,12 +42,12 @@ RSpec.describe 'Contract union type unknown field validation' do
   end
 
   it 'allows known fields in union variant (custom type)' do
-    result = action_definition.input_definition.validate({
-                                                           custom: {
-                                                             valid_field: true,
-                                                             another_field: 'test'
-                                                           }
-                                                         })
+    result = action_definition.request_definition.body_definition.validate({
+                                                                             custom: {
+                                                                               valid_field: true,
+                                                                               another_field: 'test'
+                                                                             }
+                                                                           })
 
     expect(result[:issues]).to be_empty
     expect(result[:params][:custom][:valid_field]).to be(true)
@@ -53,9 +55,9 @@ RSpec.describe 'Contract union type unknown field validation' do
   end
 
   it 'allows boolean variant' do
-    result = action_definition.input_definition.validate({
-                                                           custom: true
-                                                         })
+    result = action_definition.request_definition.body_definition.validate({
+                                                                             custom: true
+                                                                           })
 
     expect(result[:issues]).to be_empty
     expect(result[:params][:custom]).to be(true)

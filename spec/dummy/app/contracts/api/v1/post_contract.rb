@@ -12,63 +12,83 @@ module Api
       action :create do
         error_codes 422 # Validation error
 
-        input do
-          param :title, type: :string
-          param :body, type: :string, required: false
-          param :published, type: :boolean, default: false
+        request do
+          body do
+            param :post, type: :object, required: true do
+              param :title, type: :string
+              param :body, type: :string, required: false
+              param :published, type: :boolean, default: false
+            end
+          end
         end
       end
 
       action :update do
         error_codes 404, 422 # Not found, validation error
 
-        input do
-          param :title, type: :string, required: false
-          param :body, type: :string, required: false
-          param :published, type: :boolean, required: false
+        request do
+          body do
+            param :post, type: :object, required: true do
+              param :title, type: :string, required: false
+              param :body, type: :string, required: false
+              param :published, type: :boolean, required: false
+            end
+          end
         end
       end
 
       # Custom member action - archive post (test deep merge with discriminated union)
       action :archive do
-        input do
-          param :reason, type: :string, required: false
-          param :notify_users, type: :boolean, required: false, default: true
+        request do
+          body do
+            param :reason, type: :string, required: false
+            param :notify_users, type: :boolean, required: false, default: true
+          end
         end
 
-        output do
-          param :archived_at, type: :datetime, required: false
-          param :archive_note, type: :string, required: false
+        response do
+          body do
+            param :archived_at, type: :datetime, required: false
+            param :archive_note, type: :string, required: false
+          end
         end
       end
 
       # Custom collection action - search posts (test deep merge with collection wrapper)
       action :search do
-        input do
-          param :q, type: :string
+        request do
+          query do
+            param :q, type: :string
+          end
         end
 
-        output do
-          param :search_query, type: :string, required: false
-          param :result_count, type: :integer, required: false
+        response do
+          body do
+            param :search_query, type: :string, required: false
+            param :result_count, type: :integer, required: false
+          end
         end
       end
 
       # Custom collection action - bulk create posts
       action :bulk_create do
-        input do
-          param :posts, type: :array do
-            param :title, type: :string
-            param :body, type: :string
-            param :published, type: :boolean
+        request do
+          body do
+            param :posts, type: :array, required: false, default: [] do
+              param :title, type: :string
+              param :body, type: :string
+              param :published, type: :boolean
+            end
           end
         end
       end
 
-      # Test replace: true for output (completely replaces schema output)
+      # Test replace: true for response (completely replaces schema response)
       action :destroy do
-        output replace: true do
-          param :deleted_id, type: :uuid, required: true
+        response replace: true do
+          body do
+            param :deleted_id, type: :uuid, required: true
+          end
         end
       end
     end

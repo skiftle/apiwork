@@ -19,7 +19,7 @@ module Api
       end
 
       def create
-        article = Post.new(action_input[:article])
+        article = Post.new(action_request[:article])
         # Create full Post model but only expose id + title in response
         article.body = "Auto-generated body"
         article.published = false
@@ -29,7 +29,7 @@ module Api
 
       def update
         article = Post.find(params[:id])
-        article.update(action_input[:article])
+        article.update(action_request[:article])
         respond_with article
       end
 

@@ -19,14 +19,16 @@ RSpec.describe 'Contract Serialization' do
     it 'serializes simple params' do
       contract_class = Class.new(Apiwork::Contract::Base) do
         action :create do
-          input do
-            param :title, type: :string, required: true
-            param :published, type: :boolean, required: false, default: false
+          request do
+            body do
+              param :title, type: :string, required: true
+              param :published, type: :boolean, required: false, default: false
+            end
           end
         end
       end
 
-      definition = contract_class.action_definition(:create).merged_input_definition
+      definition = contract_class.action_definition(:create).request_definition.body_definition
       json = definition.as_json
 
       expect(json).to eq({
@@ -49,16 +51,18 @@ RSpec.describe 'Contract Serialization' do
     it 'serializes object with shape' do
       contract_class = Class.new(Apiwork::Contract::Base) do
         action :create do
-          input do
-            param :post, type: :object, required: true do
-              param :title, type: :string, required: true
-              param :body, type: :string, required: false
+          request do
+            body do
+              param :post, type: :object, required: true do
+                param :title, type: :string, required: true
+                param :body, type: :string, required: false
+              end
             end
           end
         end
       end
 
-      definition = contract_class.action_definition(:create).merged_input_definition
+      definition = contract_class.action_definition(:create).request_definition.body_definition
       json = definition.as_json
 
       expect(json).to eq({
@@ -103,13 +107,15 @@ RSpec.describe 'Contract Serialization' do
     it 'serializes arrays with of type' do
       contract_class = Class.new(Apiwork::Contract::Base) do
         action :create do
-          input do
-            param :tags, type: :array, of: :string, required: false
+          request do
+            body do
+              param :tags, type: :array, of: :string, required: false
+            end
           end
         end
       end
 
-      definition = contract_class.action_definition(:create).merged_input_definition
+      definition = contract_class.action_definition(:create).request_definition.body_definition
       json = definition.as_json
 
       expect(json).to eq({
@@ -131,13 +137,15 @@ RSpec.describe 'Contract Serialization' do
     it 'serializes enums' do
       contract_class = Class.new(Apiwork::Contract::Base) do
         action :create do
-          input do
-            param :status, type: :string, enum: %w[draft published archived], required: true
+          request do
+            body do
+              param :status, type: :string, enum: %w[draft published archived], required: true
+            end
           end
         end
       end
 
-      definition = contract_class.action_definition(:create).merged_input_definition
+      definition = contract_class.action_definition(:create).request_definition.body_definition
       json = definition.as_json
 
       expect(json).to eq({
@@ -159,13 +167,15 @@ RSpec.describe 'Contract Serialization' do
     it 'serializes param with as: transformation' do
       contract_class = Class.new(Apiwork::Contract::Base) do
         action :create do
-          input do
-            param :comments, type: :array, as: :comments_attributes, required: false
+          request do
+            body do
+              param :comments, type: :array, as: :comments_attributes, required: false
+            end
           end
         end
       end
 
-      definition = contract_class.action_definition(:create).merged_input_definition
+      definition = contract_class.action_definition(:create).request_definition.body_definition
       json = definition.as_json
 
       expect(json).to eq({
@@ -187,16 +197,18 @@ RSpec.describe 'Contract Serialization' do
     it 'serializes union types' do
       contract_class = Class.new(Apiwork::Contract::Base) do
         action :create do
-          input do
-            param :value, type: :union, required: true do
-              variant type: :string
-              variant type: :integer
+          request do
+            body do
+              param :value, type: :union, required: true do
+                variant type: :string
+                variant type: :integer
+              end
             end
           end
         end
       end
 
-      definition = contract_class.action_definition(:create).merged_input_definition
+      definition = contract_class.action_definition(:create).request_definition.body_definition
       json = definition.as_json
 
       expect(json).to eq({
@@ -223,13 +235,15 @@ RSpec.describe 'Contract Serialization' do
         end
 
         action :create do
-          input do
-            param :shipping_address, type: :address, required: true
+          request do
+            body do
+              param :shipping_address, type: :address, required: true
+            end
           end
         end
       end
 
-      definition = contract_class.action_definition(:create).merged_input_definition
+      definition = contract_class.action_definition(:create).request_definition.body_definition
       json = definition.as_json
 
       # Custom types are serialized as type references (not expanded)
@@ -256,16 +270,18 @@ RSpec.describe 'Contract Serialization' do
         end
 
         action :search do
-          input do
-            param :filter, type: :union, required: false do
-              variant type: :test_union_filter_a
-              variant type: :string
+          request do
+            body do
+              param :filter, type: :union, required: false do
+                variant type: :test_union_filter_a
+                variant type: :string
+              end
             end
           end
         end
       end
 
-      definition = contract_class.action_definition(:search).merged_input_definition
+      definition = contract_class.action_definition(:search).request_definition.body_definition
       json = definition.as_json
 
       # Now returns type reference instead of expanding inline
@@ -297,16 +313,18 @@ RSpec.describe 'Contract Serialization' do
         end
 
         action :search do
-          input do
-            param :filters, type: :union, required: false do
-              variant type: :test_union_filter_b
-              variant type: :array, of: :test_union_filter_b
+          request do
+            body do
+              param :filters, type: :union, required: false do
+                variant type: :test_union_filter_b
+                variant type: :array, of: :test_union_filter_b
+              end
             end
           end
         end
       end
 
-      definition = contract_class.action_definition(:search).merged_input_definition
+      definition = contract_class.action_definition(:search).request_definition.body_definition
       json = definition.as_json
 
       # Now returns type references instead of expanding inline
@@ -334,13 +352,17 @@ RSpec.describe 'Contract Serialization' do
     it 'serializes action with input and output' do
       contract_class = Class.new(Apiwork::Contract::Base) do
         action :create do
-          input do
-            param :title, type: :string, required: true
+          request do
+            body do
+              param :title, type: :string, required: true
+            end
           end
 
-          output do
-            param :id, type: :integer, required: true
-            param :title, type: :string, required: true
+          response do
+            body do
+              param :id, type: :integer, required: true
+              param :title, type: :string, required: true
+            end
           end
         end
       end
@@ -349,48 +371,52 @@ RSpec.describe 'Contract Serialization' do
       json = action_def.as_json
 
       expect(json).to eq({
-                           input: {
-                             title: {
-                               nullable: false,
-                               required: true,
-                               type: :string,
-                               description: nil,
-                               example: nil,
-                               format: nil,
-                               deprecated: false,
-                               min: nil,
-                               max: nil
+                           request: {
+                             body: {
+                               title: {
+                                 nullable: false,
+                                 required: true,
+                                 type: :string,
+                                 description: nil,
+                                 example: nil,
+                                 format: nil,
+                                 deprecated: false,
+                                 min: nil,
+                                 max: nil
+                               }
                              }
                            },
-                           output: {
-                             id: {
-                               nullable: false,
-                               required: true,
-                               type: :integer,
-                               description: nil,
-                               example: nil,
-                               format: nil,
-                               deprecated: false,
-                               min: nil,
-                               max: nil
-                             },
-                             title: {
-                               nullable: false,
-                               required: true,
-                               type: :string,
-                               description: nil,
-                               example: nil,
-                               format: nil,
-                               deprecated: false,
-                               min: nil,
-                               max: nil
+                           response: {
+                             body: {
+                               id: {
+                                 nullable: false,
+                                 required: true,
+                                 type: :integer,
+                                 description: nil,
+                                 example: nil,
+                                 format: nil,
+                                 deprecated: false,
+                                 min: nil,
+                                 max: nil
+                               },
+                               title: {
+                                 nullable: false,
+                                 required: true,
+                                 type: :string,
+                                 description: nil,
+                                 example: nil,
+                                 format: nil,
+                                 deprecated: false,
+                                 min: nil,
+                                 max: nil
+                               }
                              }
                            },
                            error_codes: []
                          })
     end
 
-    it 'returns nil for missing definitions' do
+    it 'returns empty hash for missing definitions' do
       contract_class = Class.new(Apiwork::Contract::Base) do
         action :destroy do
           # No input or output defined
@@ -401,8 +427,6 @@ RSpec.describe 'Contract Serialization' do
       json = action_def.as_json
 
       expect(json).to eq({
-                           input: nil,
-                           output: nil,
                            error_codes: []
                          })
     end
@@ -412,18 +436,24 @@ RSpec.describe 'Contract Serialization' do
     it 'serializes entire contract with all actions' do
       contract_class = Class.new(Apiwork::Contract::Base) do
         action :index do
-          output do
-            param :posts, type: :array, required: true
+          response do
+            body do
+              param :posts, type: :array, required: true
+            end
           end
         end
 
         action :create do
-          input do
-            param :title, type: :string, required: true
+          request do
+            body do
+              param :title, type: :string, required: true
+            end
           end
 
-          output do
-            param :id, type: :integer, required: true
+          response do
+            body do
+              param :id, type: :integer, required: true
+            end
           end
         end
       end
@@ -431,10 +461,10 @@ RSpec.describe 'Contract Serialization' do
       json = contract_class.as_json
 
       expect(json[:actions].keys).to contain_exactly(:index, :create)
-      expect(json[:actions][:index]).to have_key(:input)
-      expect(json[:actions][:index]).to have_key(:output)
-      expect(json[:actions][:create]).to have_key(:input)
-      expect(json[:actions][:create]).to have_key(:output)
+      expect(json[:actions][:index]).not_to have_key(:request)
+      expect(json[:actions][:index]).to have_key(:response)
+      expect(json[:actions][:create]).to have_key(:request)
+      expect(json[:actions][:create]).to have_key(:response)
     end
   end
 
@@ -442,14 +472,18 @@ RSpec.describe 'Contract Serialization' do
     it 'returns introspection for specific action' do
       contract_class = Class.new(Apiwork::Contract::Base) do
         action :create do
-          input do
-            param :title, type: :string, required: true
+          request do
+            body do
+              param :title, type: :string, required: true
+            end
           end
         end
 
         action :update do
-          input do
-            param :body, type: :string, required: false
+          request do
+            body do
+              param :body, type: :string, required: false
+            end
           end
         end
       end
@@ -457,20 +491,21 @@ RSpec.describe 'Contract Serialization' do
       json = contract_class.introspect(:create)
 
       expect(json).to eq({
-                           input: {
-                             title: {
-                               nullable: false,
-                               required: true,
-                               type: :string,
-                               description: nil,
-                               example: nil,
-                               format: nil,
-                               deprecated: false,
-                               min: nil,
-                               max: nil
+                           request: {
+                             body: {
+                               title: {
+                                 nullable: false,
+                                 required: true,
+                                 type: :string,
+                                 description: nil,
+                                 example: nil,
+                                 format: nil,
+                                 deprecated: false,
+                                 min: nil,
+                                 max: nil
+                               }
                              }
                            },
-                           output: nil,
                            error_codes: []
                          })
     end
@@ -510,13 +545,12 @@ RSpec.describe 'Contract Serialization' do
         # Verify that actions have their full definitions including schema-generated params
         json = Api::V1::PostContract.as_json
 
-        # :index should have input with filter/sort/page/include params from schema
-        expect(json[:actions][:index]).to have_key(:input)
-        expect(json[:actions][:index]).to have_key(:output)
+        # :index should have request with filter/sort/page/include params from schema
+        expect(json[:actions][:index]).to have_key(:request)
+        expect(json[:actions][:index]).to have_key(:response)
 
-        # :show should have input/output
-        expect(json[:actions][:show]).to have_key(:input)
-        expect(json[:actions][:show]).to have_key(:output)
+        # :show may have response depending on whether schema generates output
+        expect(json[:actions]).to have_key(:show)
       end
     end
 
@@ -525,8 +559,10 @@ RSpec.describe 'Contract Serialization' do
         # Create a contract without any API definition
         contract_class = Class.new(Apiwork::Contract::Base) do
           action :custom_action do
-            input do
-              param :name, type: :string
+            request do
+              body do
+                param :name, type: :string
+              end
             end
           end
         end

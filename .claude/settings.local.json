@@ -93,7 +93,8 @@
       "Bash(1)",
       "Bash(git -C /Users/joakim/GitHub/apiwork diff lib/apiwork/introspection.rb)",
       "Bash(git -C /Users/joakim/GitHub/apiwork checkout lib/apiwork/contract/serialization.rb)",
-      "Bash(git -C /Users/joakim/GitHub/apiwork checkout lib/apiwork/introspection.rb)"
+      "Bash(git -C /Users/joakim/GitHub/apiwork checkout lib/apiwork/introspection.rb)",
+      "Bash(DEBUG_AUTOGEN=1 bundle exec ruby:*)"
     ],
     "deny": [],
     "ask": []

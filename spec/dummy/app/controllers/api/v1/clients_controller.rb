@@ -14,12 +14,12 @@ module Api
       end
 
       def create
-        client = Client.create(action_input[:client])
+        client = Client.create(action_request[:client])
         respond_with client
       end
 
       def update
-        client.update(action_input[:client])
+        client.update(action_request[:client])
         respond_with client
       end
 

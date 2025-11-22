@@ -249,10 +249,9 @@ RSpec.describe 'Includes API', type: :request do
 
   describe 'POST /api/v1/posts with include' do
     it 'includes associations on create action' do
-      post '/api/v1/posts', params: {
-        post: { title: 'New Post', body: 'Content', published: true },
-        include: { comments: true }
-      }, as: :json
+      post '/api/v1/posts?include[comments]=true',
+           params: { post: { title: 'New Post', body: 'Content', published: true } }.to_json,
+           headers: { 'CONTENT_TYPE' => 'application/json' }
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
@@ -275,10 +274,9 @@ RSpec.describe 'Includes API', type: :request do
 
   describe 'PATCH /api/v1/posts/:id with include' do
     it 'includes associations on update action' do
-      patch "/api/v1/posts/#{post1.id}", params: {
-        post: { title: 'Updated Title' },
-        include: { comments: true }
-      }, as: :json
+      patch "/api/v1/posts/#{post1.id}?include[comments]=true",
+            params: { post: { title: 'Updated Title' } }.to_json,
+            headers: { 'CONTENT_TYPE' => 'application/json' }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)

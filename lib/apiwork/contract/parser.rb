@@ -33,7 +33,7 @@ module Apiwork
       def perform(data)
         coerced_data = @coerce ? coerce(data) : data
 
-        data_for_validation = if @direction == :output && schema_class&.output_key_format
+        data_for_validation = if response_direction? && schema_class&.output_key_format
                                 coerced_data.deep_transform_keys { |key| key.to_s.underscore.to_sym }
                               else
                                 coerced_data
@@ -41,13 +41,13 @@ module Apiwork
 
         validated = validate(data_for_validation)
 
-        if validated[:issues].any? && @direction == :output && schema_class&.output_key_format
+        if validated[:issues].any? && response_direction? && schema_class&.output_key_format
           validated[:issues] = transform_paths(validated[:issues], schema_class.output_key_format)
         end
 
         return handle_validation_errors(data, validated[:issues]) if validated[:issues].any?
 
-        deserialized_data = if @direction == :input
+        deserialized_data = if request_direction?
                               apply_deserialize_transformers(validated[:params])
                             else
                               validated[:params]
@@ -60,18 +60,28 @@ module Apiwork
 
       private
 
-      def validate_direction!
-        return if %i[input output].include?(@direction)
+      def request_direction?
+        %i[query body].include?(@direction)
+      end
 
-        raise ArgumentError, "direction must be :input or :output, got #{@direction.inspect}"
+      def response_direction?
+        @direction == :response_body
+      end
+
+      def validate_direction!
+        return if %i[query body response_body].include?(@direction)
+
+        raise ArgumentError, "direction must be :query, :body, or :response_body, got #{@direction.inspect}"
       end
 
       def definition
         @definition ||= case direction
-                        when :input
-                          action_definition&.merged_input_definition
-                        when :output
-                          action_definition&.merged_output_definition
+                        when :query
+                          action_definition&.request_definition&.query_definition
+                        when :body
+                          action_definition&.request_definition&.body_definition
+                        when :response_body
+                          action_definition&.response_definition&.body_definition
                         end
       end
 

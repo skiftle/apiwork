@@ -63,10 +63,10 @@ module Apiwork
         end
       end
 
-      def build_action_input_schema(resource_name, action_name, input_params, parent_path = nil)
-        schema_name = action_schema_name(resource_name, action_name, 'Input', parent_path)
+      def build_action_request_query_schema(resource_name, action_name, query_params, parent_path = nil)
+        schema_name = action_schema_name(resource_name, action_name, 'RequestQuery', parent_path)
 
-        properties = input_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
+        properties = query_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
           key = transform_key(param_name)
           zod_type = map_field_definition(param_definition, nil)
           "  #{key}: #{zod_type}"
@@ -75,18 +75,57 @@ module Apiwork
         "export const #{schema_name}Schema = z.object({\n#{properties}\n});"
       end
 
-      def build_action_output_schema(resource_name, action_name, output_def, parent_path = nil)
-        schema_name = action_schema_name(resource_name, action_name, 'Output', parent_path)
+      def build_action_request_body_schema(resource_name, action_name, body_params, parent_path = nil)
+        schema_name = action_schema_name(resource_name, action_name, 'RequestBody', parent_path)
 
-        zod_schema = map_type_definition(output_def, nil)
+        properties = body_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
+          key = transform_key(param_name)
+          zod_type = map_field_definition(param_definition, nil)
+          "  #{key}: #{zod_type}"
+        end.join(",\n")
+
+        "export const #{schema_name}Schema = z.object({\n#{properties}\n});"
+      end
+
+      def build_action_request_schema(resource_name, action_name, request_data, parent_path = nil)
+        schema_name = action_schema_name(resource_name, action_name, 'Request', parent_path)
+
+        nested_properties = []
+
+        if request_data[:query]&.any?
+          query_schema_name = action_schema_name(resource_name, action_name, 'RequestQuery', parent_path)
+          nested_properties << "  query: #{query_schema_name}Schema"
+        end
+
+        if request_data[:body]&.any?
+          body_schema_name = action_schema_name(resource_name, action_name, 'RequestBody', parent_path)
+          nested_properties << "  body: #{body_schema_name}Schema"
+        end
+
+        "export const #{schema_name}Schema = z.object({\n#{nested_properties.join(",\n")}\n});"
+      end
+
+      def build_action_response_body_schema(resource_name, action_name, response_body_def, parent_path = nil)
+        schema_name = action_schema_name(resource_name, action_name, 'ResponseBody', parent_path)
+
+        zod_schema = map_type_definition(response_body_def, nil)
 
         "export const #{schema_name}Schema = #{zod_schema};"
       end
 
+      def build_action_response_schema(resource_name, action_name, response_data, parent_path = nil)
+        schema_name = action_schema_name(resource_name, action_name, 'Response', parent_path)
+        body_schema_name = action_schema_name(resource_name, action_name, 'ResponseBody', parent_path)
+
+        "export const #{schema_name}Schema = z.object({\n  body: #{body_schema_name}Schema\n});"
+      end
+
       def action_schema_name(resource_name, action_name, suffix, parent_path = nil)
         parent_names = extract_parent_resource_names(parent_path)
-        parts = parent_names + [resource_name.to_s, action_name.to_s, suffix]
-        pascal_case(parts.join('_'))
+        base_parts = parent_names + [resource_name.to_s, action_name.to_s]
+        base_name = pascal_case(base_parts.join('_'))
+        suffix_pascal = suffix.split(/(?=[A-Z])/).map(&:capitalize).join
+        "#{base_name}#{suffix_pascal}"
       end
 
       def map_field_definition(definition, action_name = nil)

@@ -14,12 +14,12 @@ module Api
       end
 
       def create
-        author = Author.create(action_input[:author])
+        author = Author.create(action_request[:author])
         respond_with author
       end
 
       def update
-        author.update(action_input[:author])
+        author.update(action_request[:author])
         respond_with author
       end
 

@@ -16,14 +16,16 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
         end
 
         action :show do
-          output do
-            param :ok, type: :boolean, required: true
-            param :account, type: :account, required: true
+          response do
+            body do
+              param :ok, type: :boolean, required: true
+              param :account, type: :account, required: true
+            end
           end
         end
       end
 
-      parser = Apiwork::Contract::Parser.new(contract_class, :output, :show, coerce: false)
+      parser = Apiwork::Contract::Parser.new(contract_class, :response_body, :show, coerce: false)
 
       # Valid nested enum values should pass
       valid_output = {
@@ -79,14 +81,16 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
         end
 
         action :show do
-          output do
-            param :ok, type: :boolean, required: true
-            param :account, type: :account, required: true
+          response do
+            body do
+              param :ok, type: :boolean, required: true
+              param :account, type: :account, required: true
+            end
           end
         end
       end
 
-      parser = Apiwork::Contract::Parser.new(contract_class, :output, :show, coerce: false)
+      parser = Apiwork::Contract::Parser.new(contract_class, :response_body, :show, coerce: false)
 
       # Wrong type (number instead of string) should fail WITHOUT coercion
       invalid_output = {
@@ -116,14 +120,16 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
         end
 
         action :show do
-          output do
-            param :ok, type: :boolean, required: true
-            param :account, type: :account, required: true
+          response do
+            body do
+              param :ok, type: :boolean, required: true
+              param :account, type: :account, required: true
+            end
           end
         end
       end
 
-      parser = Apiwork::Contract::Parser.new(contract_class, :output, :show, coerce: false)
+      parser = Apiwork::Contract::Parser.new(contract_class, :response_body, :show, coerce: false)
 
       # Invalid enum in deeply nested object
       invalid_output = {
