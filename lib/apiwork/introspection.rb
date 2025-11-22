@@ -41,7 +41,7 @@ module Apiwork
         else
           result = { actions: {} }
 
-          actions = contract_class.available_actions
+          actions = available_actions(contract_class)
           actions = contract_class.action_definitions.keys if actions.empty?
 
           actions.each do |action_name|
@@ -496,7 +496,9 @@ module Apiwork
 
       def schema_based_contract_class(resource_metadata)
         schema_class = resource_metadata[:schema_class]
-        schema_class&.contract
+        return nil unless schema_class
+
+        Contract::Base.find_contract_for_schema(schema_class)
       end
 
       def types(api)
@@ -573,6 +575,29 @@ module Apiwork
 
         temp_definition.instance_eval(&definition)
         temp_definition.as_json
+      end
+
+      def available_actions(contract_class)
+        metadata = resource_metadata(contract_class)
+        return [] unless metadata
+
+        actions = metadata[:actions]&.keys || []
+        actions += metadata[:members]&.keys || []
+        actions += metadata[:collections]&.keys || []
+        actions
+      end
+
+      def resource_metadata(contract_class)
+        api = contract_class.api_class
+        return nil unless api&.metadata
+
+        api.metadata.find_resource(resource_name(contract_class))
+      end
+
+      def resource_name(contract_class)
+        return nil unless contract_class.name
+
+        contract_class.name.demodulize.sub(/Contract$/, '').underscore.pluralize.to_sym
       end
     end
   end

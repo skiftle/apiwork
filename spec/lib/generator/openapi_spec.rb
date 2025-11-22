@@ -5,7 +5,6 @@ require 'rails_helper'
 RSpec.describe Apiwork::Generator::Openapi do
   before do
     Apiwork::API.reset!
-    Apiwork::Contract.reset!
     Apiwork::Descriptor.reset!
     load File.expand_path('../../dummy/config/apis/v1.rb', __dir__)
   end

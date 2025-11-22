@@ -35,11 +35,18 @@ module Apiwork
 
           self._schema_class = ref
 
-          SchemaRegistry.register(ref, self)
-
           Schema::TypeBuilder.build_contract_enums(self, ref)
 
           prepend Schema::Extension unless ancestors.include?(Schema::Extension)
+        end
+
+        def find_contract_for_schema(schema_class)
+          return nil unless schema_class
+
+          contract_name = schema_class.name.gsub(/Schema$/, 'Contract')
+          contract_name.constantize
+        rescue NameError
+          nil
         end
 
         def register_sti_variants(*variant_schema_classes)
@@ -173,33 +180,6 @@ module Apiwork
           return nil unless path
 
           Apiwork::API.find(path)
-        end
-
-        def resource_name
-          return nil unless name
-
-          name.demodulize.sub(/Contract$/, '').underscore.pluralize.to_sym
-        end
-
-        def resource_metadata
-          api = api_class
-          return nil unless api&.metadata
-
-          api.metadata.find_resource(resource_name)
-        end
-
-        def available_actions
-          metadata = resource_metadata
-          return [] unless metadata
-
-          actions = metadata[:actions]&.keys || []
-          actions += metadata[:members]&.keys || []
-          actions += metadata[:collections]&.keys || []
-          actions
-        end
-
-        def singular_resource?
-          resource_metadata&.dig(:singular) || false
         end
 
         # DOCUMENTATION

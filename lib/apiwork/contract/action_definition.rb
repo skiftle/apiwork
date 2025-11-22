@@ -87,44 +87,6 @@ module Apiwork
       def serialize_data(data, context: {}, includes: nil)
         data
       end
-
-      private
-
-      def find_api_for_contract
-        Apiwork::API.all.find do |api_class|
-          next unless api_class.metadata
-
-          search_in_metadata(api_class.metadata) { |resource| matches_contract?(resource) }
-        end
-      end
-
-      def search_in_metadata(metadata, &block)
-        metadata.search_resources(&block)
-      end
-
-      def matches_contract?(resource_metadata)
-        resource_uses_contract?(resource_metadata, contract_class)
-      end
-
-      def resource_uses_contract?(resource_metadata, contract)
-        matches_contract_option?(resource_metadata, contract) ||
-          matches_schema_contract?(resource_metadata, contract)
-      end
-
-      def matches_contract_option?(resource_metadata, contract)
-        contract_class = resource_metadata[:contract_class]
-        return false unless contract_class
-
-        contract_class == contract
-      end
-
-      def matches_schema_contract?(resource_metadata, contract)
-        schema_class = resource_metadata[:schema_class]
-        return false unless schema_class
-        return false unless contract.schema_class
-
-        schema_class == contract.schema_class
-      end
     end
   end
 end

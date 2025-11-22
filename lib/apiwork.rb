@@ -13,7 +13,6 @@ module Apiwork
     # DOCUMENTATION
     def reset!
       Generator.reset!
-      Contract.reset!
       API.reset!
       Descriptor.reset!
     end

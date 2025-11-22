@@ -41,10 +41,6 @@ module Apiwork
       end
 
       class << self
-        def contract
-          Contract::SchemaRegistry.find(self)
-        end
-
         def model(value = nil)
           if value
             unless value.is_a?(Class)
