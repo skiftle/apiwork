@@ -23,7 +23,7 @@ module Apiwork
           actions: {}
         }
 
-        contract_class = resolve_contract_class || schema_based_contract_class
+        contract_class = resolve_contract_class
 
         add_standard_actions(result[:actions], contract_class) if @resource_metadata[:actions]&.any?
         add_member_actions(result[:actions], contract_class) if @resource_metadata[:members]&.any?
@@ -131,12 +131,7 @@ module Apiwork
         contract_class < Contract::Base ? contract_class : nil
       end
 
-      def schema_based_contract_class
-        schema_class = @resource_metadata[:schema_class]
-        return nil unless schema_class
 
-        Contract::Base.find_contract_for_schema(schema_class)
-      end
     end
   end
 end
