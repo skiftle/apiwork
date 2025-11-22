@@ -6,11 +6,13 @@ RSpec.describe 'Descriptor Metadata' do
   before do
     Apiwork::API.reset!
     Apiwork::Contract.reset!
+    Apiwork::Descriptor.reset!
   end
 
   after do
     Apiwork::API.reset!
     Apiwork::Contract.reset!
+    Apiwork::Descriptor.reset!
   end
 
   describe 'Type metadata' do

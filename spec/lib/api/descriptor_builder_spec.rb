@@ -6,11 +6,13 @@ RSpec.describe 'API Descriptor Builder' do
   before do
     Apiwork::API.reset!
     Apiwork::Contract.reset!
+    Apiwork::Descriptor.reset!
   end
 
   after do
     Apiwork::API.reset!
     Apiwork::Contract.reset!
+    Apiwork::Descriptor.reset!
   end
 
   it 'allows defining types via descriptors block' do

@@ -3,7 +3,7 @@
 module Apiwork
   module Descriptor
     class << self
-      def clear!
+      def reset!
         Registry.clear!
         Core.clear!
       end
