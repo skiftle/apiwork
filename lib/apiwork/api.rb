@@ -3,6 +3,7 @@
 module Apiwork
   module API
     class << self
+      # DOCUMENTATION
       def draw(path, &block)
         return unless block
 
@@ -20,6 +21,7 @@ module Apiwork
         Registry.all
       end
 
+      # DOCUMENTATION
       def introspect(path)
         find(path)&.introspect
       end
