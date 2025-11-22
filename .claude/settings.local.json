@@ -86,7 +86,10 @@
       "Bash(git -C /Users/joakim/GitHub/apiwork checkout lib/apiwork/descriptor/type_store.rb lib/apiwork/descriptor/enum_store.rb lib/apiwork/descriptor/core.rb lib/apiwork/descriptor/store.rb)",
       "Bash(git -C /Users/joakim/GitHub/apiwork checkout spec/)",
       "Bash(git -C /Users/joakim/GitHub/apiwork status --short)",
-      "Bash(tee:*)"
+      "Bash(tee:*)",
+      "Bash(git -C /Users/joakim/GitHub/apiwork status)",
+      "Bash(git -C /Users/joakim/GitHub/apiwork diff lib/apiwork/contract/base.rb)",
+      "Bash(git -C /Users/joakim/GitHub/apiwork checkout lib/apiwork/controller/output_serializer.rb)"
     ],
     "deny": [],
     "ask": []

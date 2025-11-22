@@ -13,11 +13,11 @@ RSpec.describe 'API Introspection' do
     # Clear and reload contract definitions to prevent test pollution
     # This ensures error_codes and other action metadata are fresh
     if defined?(Api::V1::PostContract)
-      Api::V1::PostContract.instance_variable_set(:@action_definitions, nil)
+      Api::V1::PostContract.action_definitions = {}
       load File.expand_path('../../dummy/app/contracts/api/v1/post_contract.rb', __dir__)
     end
     if defined?(Api::V1::ArticleContract)
-      Api::V1::ArticleContract.instance_variable_set(:@action_definitions, nil)
+      Api::V1::ArticleContract.action_definitions = {}
       load File.expand_path('../../dummy/app/contracts/api/v1/article_contract.rb', __dir__)
     end
   end

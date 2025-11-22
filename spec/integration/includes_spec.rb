@@ -66,15 +66,11 @@ RSpec.describe 'Includes API', type: :request do
       # Clear PostContract and CommentContract cache
       if defined?(Api::V1::PostContract)
         Api::V1::PostContract.instance_variable_set(:@custom_types, {}) if Api::V1::PostContract.instance_variable_defined?(:@custom_types)
-        if Api::V1::PostContract.instance_variable_defined?(:@action_definitions)
-          Api::V1::PostContract.instance_variable_set(:@action_definitions, {})
-        end
+        Api::V1::PostContract.action_definitions = {}
       end
       if defined?(Api::V1::CommentContract)
         Api::V1::CommentContract.instance_variable_set(:@custom_types, {}) if Api::V1::CommentContract.instance_variable_defined?(:@custom_types)
-        if Api::V1::CommentContract.instance_variable_defined?(:@action_definitions)
-          Api::V1::CommentContract.instance_variable_set(:@action_definitions, {})
-        end
+        Api::V1::CommentContract.action_definitions = {}
       end
 
       # Clear descriptor registry cache for the include type
@@ -88,15 +84,11 @@ RSpec.describe 'Includes API', type: :request do
       # Clear cache
       if defined?(Api::V1::PostContract)
         Api::V1::PostContract.instance_variable_set(:@custom_types, {}) if Api::V1::PostContract.instance_variable_defined?(:@custom_types)
-        if Api::V1::PostContract.instance_variable_defined?(:@action_definitions)
-          Api::V1::PostContract.instance_variable_set(:@action_definitions, {})
-        end
+        Api::V1::PostContract.action_definitions = {}
       end
       if defined?(Api::V1::CommentContract)
         Api::V1::CommentContract.instance_variable_set(:@custom_types, {}) if Api::V1::CommentContract.instance_variable_defined?(:@custom_types)
-        if Api::V1::CommentContract.instance_variable_defined?(:@action_definitions)
-          Api::V1::CommentContract.instance_variable_set(:@action_definitions, {})
-        end
+        Api::V1::CommentContract.action_definitions = {}
       end
 
       # Clear descriptor registry cache
@@ -137,15 +129,11 @@ RSpec.describe 'Includes API', type: :request do
         # Clear contract cache to pick up the change
         if defined?(Api::V1::PostContract)
           Api::V1::PostContract.instance_variable_set(:@custom_types, {}) if Api::V1::PostContract.instance_variable_defined?(:@custom_types)
-          if Api::V1::PostContract.instance_variable_defined?(:@action_definitions)
-            Api::V1::PostContract.instance_variable_set(:@action_definitions, {})
-          end
+          Api::V1::PostContract.action_definitions = {}
         end
         if defined?(Api::V1::CommentContract)
           Api::V1::CommentContract.instance_variable_set(:@custom_types, {}) if Api::V1::CommentContract.instance_variable_defined?(:@custom_types)
-          if Api::V1::CommentContract.instance_variable_defined?(:@action_definitions)
-            Api::V1::CommentContract.instance_variable_set(:@action_definitions, {})
-          end
+          Api::V1::CommentContract.action_definitions = {}
         end
 
         # Clear descriptor registry cache for the include type
@@ -160,15 +148,11 @@ RSpec.describe 'Includes API', type: :request do
         # Clear contract cache
         if defined?(Api::V1::PostContract)
           Api::V1::PostContract.instance_variable_set(:@custom_types, {}) if Api::V1::PostContract.instance_variable_defined?(:@custom_types)
-          if Api::V1::PostContract.instance_variable_defined?(:@action_definitions)
-            Api::V1::PostContract.instance_variable_set(:@action_definitions, {})
-          end
+          Api::V1::PostContract.action_definitions = {}
         end
         if defined?(Api::V1::CommentContract)
           Api::V1::CommentContract.instance_variable_set(:@custom_types, {}) if Api::V1::CommentContract.instance_variable_defined?(:@custom_types)
-          if Api::V1::CommentContract.instance_variable_defined?(:@action_definitions)
-            Api::V1::CommentContract.instance_variable_set(:@action_definitions, {})
-          end
+          Api::V1::CommentContract.action_definitions = {}
         end
 
         # Clear descriptor registry cache

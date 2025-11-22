@@ -19,7 +19,7 @@ module Apiwork
         @context = context
         @input = input
 
-        return build_collection_response(resource_or_collection) if resource_or_collection.is_a?(Enumerable)
+        return collection_response(resource_or_collection) if resource_or_collection.is_a?(Enumerable)
 
         if resource_or_collection.respond_to?(:errors) && resource_or_collection.errors.any?
           adapter = ValidationAdapter.new(resource_or_collection, schema_class: schema_class)
@@ -27,68 +27,62 @@ module Apiwork
           raise ValidationError, issues
         end
 
-        build_single_resource_response(resource_or_collection)
+        resource_response(resource_or_collection)
       end
 
-      def build_collection_response(collection)
-        includes_param = extract_includes_param
+      def collection_response(collection)
+        includes_param = @input.data[:include]
 
-        query_obj = nil
+        query_result = nil
         if @action == :index && collection.is_a?(ActiveRecord::Relation) && schema_class.present?
-          query_obj = Apiwork::Query.new(collection, schema: schema_class).perform(@input.data)
-          collection = query_obj.result
+          query_result = Apiwork::Query.new(collection, schema: schema_class).perform(@input.data)
+          filtered_collection = query_result.result
+        else
+          filtered_collection = collection
         end
 
-        json_data = action_definition.serialize_data(collection, context: @context,
-                                                                 includes: includes_param)
+        serialized_data = action_definition.serialize_data(filtered_collection,
+                                                           context: @context,
+                                                           includes: includes_param)
 
         if schema_class
-          root_key = determine_root_key(collection)
-          pagination_meta = @action == :index ? (query_obj&.meta || {}) : {}
+          root_key_value = root_key(filtered_collection)
+          pagination_meta = @action == :index ? (query_result&.meta || {}) : {}
           combined_meta = pagination_meta.merge(@meta)
-          resp = { ok: true, root_key => json_data }
-          resp[:meta] = combined_meta if combined_meta.present?
-          resp
+          response = { ok: true, root_key_value => serialized_data }
+          response[:meta] = combined_meta if combined_meta.present?
+          response
         else
-          { ok: true }.merge(json_data).merge(meta: @meta)
+          { ok: true }.merge(serialized_data).merge(meta: @meta)
         end
       end
 
-      def build_single_resource_response(resource)
-        includes_param = extract_includes_param
+      def resource_response(resource)
+        includes_param = @input.data[:include]
 
         if resource.is_a?(ActiveRecord::Base) && resource.persisted? && schema_class.present?
-          includes_hash = build_includes_hash_for_eager_loading(includes_param)
-          resource = reload_with_includes(resource, includes_hash) if includes_hash.any?
+          includes_hash_value = includes_hash(includes_param)
+          resource = reload_with_includes(resource, includes_hash_value) if includes_hash_value.any?
         end
 
-        json_data = action_definition.serialize_data(resource, context: @context, includes: includes_param)
+        serialized_data = action_definition.serialize_data(resource, context: @context, includes: includes_param)
 
-        if action_definition.schema_class
+        if schema_class
           return { ok: true, meta: @meta.presence || {} } if @method == :delete
 
-          root_key = determine_root_key(resource)
-          resp = { ok: true, root_key => json_data }
+          root_key_value = root_key(resource)
+          response = { ok: true, root_key_value => serialized_data }
         else
-          resp = { ok: true }.merge(json_data)
+          response = { ok: true }.merge(serialized_data)
         end
 
-        resp[:meta] = @meta if @meta.present?
-        resp
+        response[:meta] = @meta if @meta.present?
+        response
       end
 
       private
 
-      def extract_includes_param
-        includes = @input.data[:include]
-        return nil if includes.blank?
-
-        includes = includes.permit!.to_h if includes.is_a?(ActionController::Parameters)
-        includes = includes.to_h if includes.respond_to?(:to_h)
-        includes.deep_symbolize_keys if includes.respond_to?(:deep_symbolize_keys)
-      end
-
-      def build_includes_hash_for_eager_loading(includes_param)
+      def includes_hash(includes_param)
         return {} if includes_param.blank?
 
         Query::IncludesResolver.new(schema: schema_class).build(
@@ -97,13 +91,13 @@ module Apiwork
         )
       end
 
-      def reload_with_includes(resource, includes_hash)
-        resource.class.includes(includes_hash).find(resource.id)
+      def reload_with_includes(resource, includes_hash_value)
+        resource.class.includes(includes_hash_value).find(resource.id)
       end
 
-      def determine_root_key(resource_or_collection)
-        root_key = schema_class.root_key
-        resource_or_collection.is_a?(Enumerable) ? root_key.plural : root_key.singular
+      def root_key(resource_or_collection)
+        root_key_object = schema_class.root_key
+        resource_or_collection.is_a?(Enumerable) ? root_key_object.plural : root_key_object.singular
       end
     end
   end
