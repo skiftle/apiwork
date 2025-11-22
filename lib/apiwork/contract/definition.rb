@@ -20,7 +20,7 @@ module Apiwork
       end
 
       def introspect
-        Serialization.serialize_definition(self)
+        Apiwork::Introspection.definition(self)
       end
 
       def as_json

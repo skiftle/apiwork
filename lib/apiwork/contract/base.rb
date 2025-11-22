@@ -152,25 +152,7 @@ module Apiwork
 
         # DOCUMENTATION
         def introspect(action = nil)
-          if action
-            action_def = action_definition(action)
-            return nil unless action_def
-
-            action_def.as_json
-          else
-            result = { actions: {} }
-
-            actions = available_actions
-
-            actions = action_definitions.keys if actions.empty?
-
-            actions.each do |action_name|
-              action_def = action_definition(action_name)
-              result[:actions][action_name] = action_def.as_json if action_def
-            end
-
-            result
-          end
+          Apiwork::Introspection.contract(self, action: action)
         end
 
         def as_json

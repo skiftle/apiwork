@@ -89,7 +89,11 @@
       "Bash(tee:*)",
       "Bash(git -C /Users/joakim/GitHub/apiwork status)",
       "Bash(git -C /Users/joakim/GitHub/apiwork diff lib/apiwork/contract/base.rb)",
-      "Bash(git -C /Users/joakim/GitHub/apiwork checkout lib/apiwork/controller/output_serializer.rb)"
+      "Bash(git -C /Users/joakim/GitHub/apiwork checkout lib/apiwork/controller/output_serializer.rb)",
+      "Bash(1)",
+      "Bash(git -C /Users/joakim/GitHub/apiwork diff lib/apiwork/introspection.rb)",
+      "Bash(git -C /Users/joakim/GitHub/apiwork checkout lib/apiwork/contract/serialization.rb)",
+      "Bash(git -C /Users/joakim/GitHub/apiwork checkout lib/apiwork/introspection.rb)"
     ],
     "deny": [],
     "ask": []
