@@ -2,12 +2,12 @@
 
 require 'rails_helper'
 
-RSpec.describe Apiwork::Contract::Serialization do
+RSpec.describe Apiwork::Introspection do
   before do
     Apiwork::API.reset!
     Apiwork::Contract.reset!
     Apiwork::Descriptor.reset!
-    load File.expand_path('../../dummy/config/apis/v1.rb', __dir__)
+    load File.expand_path('../dummy/config/apis/v1.rb', __dir__)
   end
 
   describe 'global type qualification' do

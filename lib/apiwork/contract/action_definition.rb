@@ -37,13 +37,7 @@ module Apiwork
       end
 
       def introspect
-        result = {}
-        result[:input] = merged_input_definition&.as_json
-        result[:output] = merged_output_definition&.as_json
-
-        result[:error_codes] = all_error_codes
-
-        result
+        Apiwork::Introspection.action_definition(self)
       end
 
       def as_json
