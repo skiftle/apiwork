@@ -434,57 +434,23 @@ module Apiwork
       end
 
       def find_http_method_from_api_metadata(action_definition)
-        search_in_api_metadata(action_definition) do |resource_metadata|
-          next unless matches_contract?(resource_metadata, action_definition.contract_class)
+        return nil unless action_definition.respond_to?(:find_api_for_contract, true)
 
-          action_name_sym = action_definition.action_name.to_sym
+        api = action_definition.send(:find_api_for_contract)
+        return nil unless api&.metadata
+
+        action_name_sym = action_definition.action_name.to_sym
+        api.metadata.search_resources do |resource_metadata|
+          next unless action_definition.send(:resource_uses_contract?, resource_metadata, action_definition.contract_class)
+
           return resource_metadata[:members][action_name_sym][:method] if resource_metadata[:members]&.key?(action_name_sym)
 
           resource_metadata[:collections][action_name_sym][:method] if resource_metadata[:collections]&.key?(action_name_sym)
         end
       end
 
-      def find_api_for_contract(contract_class)
-        Apiwork::API.all.find do |api_class|
-          next unless api_class.metadata
-
-          search_in_metadata(api_class.metadata) { |resource| matches_contract?(resource, contract_class) }
-        end
-      end
-
-      def search_in_api_metadata(action_definition, &block)
-        api = find_api_for_contract(action_definition.contract_class)
-        return nil unless api&.metadata
-
-        search_in_metadata(api.metadata, &block)
-      end
-
       def search_in_metadata(metadata, &block)
         metadata.search_resources(&block)
-      end
-
-      def matches_contract?(resource_metadata, contract_class)
-        resource_uses_contract?(resource_metadata, contract_class)
-      end
-
-      def resource_uses_contract?(resource_metadata, contract)
-        matches_contract_option?(resource_metadata, contract) ||
-          matches_schema_contract?(resource_metadata, contract)
-      end
-
-      def matches_contract_option?(resource_metadata, contract)
-        contract_class = resource_metadata[:contract_class]
-        return false unless contract_class
-
-        contract_class == contract
-      end
-
-      def matches_schema_contract?(resource_metadata, contract)
-        schema_class = resource_metadata[:schema_class]
-        return false unless schema_class
-        return false unless contract.schema_class
-
-        schema_class == contract.schema_class
       end
 
       def resolve_contract_class(resource_metadata)
