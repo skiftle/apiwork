@@ -7,16 +7,12 @@ module Apiwork
         ApiSerializer.new(api_class).serialize
       end
 
-      def action_definition(action_definition)
-        ActionSerializer.new(action_definition).serialize
-      end
-
       def contract(contract_class, action: nil)
         ContractSerializer.new(contract_class, action: action).serialize
       end
 
-      def definition(definition)
-        DefinitionSerializer.new(definition).serialize
+      def action_definition(action_definition)
+        ActionSerializer.new(action_definition).serialize
       end
 
       def types(api)
@@ -26,6 +22,12 @@ module Apiwork
       def enums(api)
         TypeSerializer.new(api).serialize_enums
       end
+
+      def definition(definition)
+        DefinitionSerializer.new(definition).serialize
+      end
+
+
     end
   end
 end
