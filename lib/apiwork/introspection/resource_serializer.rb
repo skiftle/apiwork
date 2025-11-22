@@ -130,8 +130,6 @@ module Apiwork
 
         contract_class < Contract::Base ? contract_class : nil
       end
-
-
     end
   end
 end

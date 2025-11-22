@@ -26,8 +26,6 @@ module Apiwork
       def definition(definition)
         DefinitionSerializer.new(definition).serialize
       end
-
-
     end
   end
 end
