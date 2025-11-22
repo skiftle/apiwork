@@ -2,24 +2,24 @@
 
 module Apiwork
   module Controller
-    class Responder
+    class OutputSerializer
       attr_reader :action_definition,
-                  :controller,
-                  :meta,
                   :schema_class
 
-      def initialize(controller:, action_definition:, schema_class:, meta: {})
-        @controller = controller
-        @action_definition = action_definition
-        @schema_class = schema_class
-        @meta = meta
+      def initialize(contract_class, action, method)
+        @contract_class = contract_class
+        @action = action.to_sym
+        @method = method.to_sym
+        @action_definition = contract_class.action_definition(action)
+        @schema_class = @action_definition&.schema_class
       end
 
-      def perform(resource_or_collection, query_params: {})
-        if resource_or_collection.is_a?(Enumerable)
-          return build_collection_response(resource_or_collection,
-                                           query_params)
-        end
+      def perform(resource_or_collection, input:, meta: {}, context: {})
+        @meta = @contract_class.format_keys(meta, :output)
+        @context = context
+        @input = input
+
+        return build_collection_response(resource_or_collection) if resource_or_collection.is_a?(Enumerable)
 
         if resource_or_collection.respond_to?(:errors) && resource_or_collection.errors.any?
           adapter = ValidationAdapter.new(resource_or_collection, schema_class: schema_class)
@@ -27,45 +27,45 @@ module Apiwork
           raise ValidationError, issues
         end
 
-        build_single_resource_response(resource_or_collection, query_params)
+        build_single_resource_response(resource_or_collection)
       end
 
-      def build_collection_response(collection, query_params)
-        includes_param = extract_includes_param(query_params)
+      def build_collection_response(collection)
+        includes_param = extract_includes_param
 
         query_obj = nil
-        if controller.action_name.to_s == 'index' && collection.is_a?(ActiveRecord::Relation) && schema_class.present?
-          query_obj = Apiwork::Query.new(collection, schema: schema_class).perform(query_params)
+        if @action == :index && collection.is_a?(ActiveRecord::Relation) && schema_class.present?
+          query_obj = Apiwork::Query.new(collection, schema: schema_class).perform(@input.data)
           collection = query_obj.result
         end
 
-        json_data = action_definition.serialize_data(collection, context: build_schema_context,
+        json_data = action_definition.serialize_data(collection, context: @context,
                                                                  includes: includes_param)
 
         if schema_class
           root_key = determine_root_key(collection)
-          pagination_meta = controller.action_name.to_s == 'index' ? (query_obj&.meta || {}) : {}
-          combined_meta = pagination_meta.merge(meta)
+          pagination_meta = @action == :index ? (query_obj&.meta || {}) : {}
+          combined_meta = pagination_meta.merge(@meta)
           resp = { ok: true, root_key => json_data }
           resp[:meta] = combined_meta if combined_meta.present?
           resp
         else
-          { ok: true }.merge(json_data).merge(meta: meta)
+          { ok: true }.merge(json_data).merge(meta: @meta)
         end
       end
 
-      def build_single_resource_response(resource, query_params = {})
-        includes_param = extract_includes_param(query_params)
+      def build_single_resource_response(resource)
+        includes_param = extract_includes_param
 
         if resource.is_a?(ActiveRecord::Base) && resource.persisted? && schema_class.present?
           includes_hash = build_includes_hash_for_eager_loading(includes_param)
           resource = reload_with_includes(resource, includes_hash) if includes_hash.any?
         end
 
-        json_data = action_definition.serialize_data(resource, context: build_schema_context, includes: includes_param)
+        json_data = action_definition.serialize_data(resource, context: @context, includes: includes_param)
 
         if action_definition.schema_class
-          return { ok: true, meta: meta.presence || {} } if controller.request.delete?
+          return { ok: true, meta: @meta.presence || {} } if @method == :delete
 
           root_key = determine_root_key(resource)
           resp = { ok: true, root_key => json_data }
@@ -73,14 +73,14 @@ module Apiwork
           resp = { ok: true }.merge(json_data)
         end
 
-        resp[:meta] = meta if meta.present?
+        resp[:meta] = @meta if @meta.present?
         resp
       end
 
       private
 
-      def extract_includes_param(query_params)
-        includes = query_params[:include] || controller.params[:include]
+      def extract_includes_param
+        includes = @input.data[:include]
         return nil if includes.blank?
 
         includes = includes.permit!.to_h if includes.is_a?(ActionController::Parameters)
@@ -99,10 +99,6 @@ module Apiwork
 
       def reload_with_includes(resource, includes_hash)
         resource.class.includes(includes_hash).find(resource.id)
-      end
-
-      def build_schema_context
-        controller.respond_to?(:build_schema_context, true) ? controller.send(:build_schema_context) : {}
       end
 
       def determine_root_key(resource_or_collection)
