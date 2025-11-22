@@ -5,13 +5,14 @@ require 'rails_helper'
 RSpec.describe 'Zod Generation for Associations', type: :integration do
   # Force reload of API configuration before tests
   before(:all) do
+    Apiwork::API.reset!
+    Apiwork::Descriptor.reset!
     load Rails.root.join('config/apis/v1.rb')
   end
 
   let(:path) { '/api/v1' }
   let(:generator) { Apiwork::Generator::Zod.new(path) }
-  # Use let! to generate output once and share across all tests in this group
-  let!(:output) { generator.generate }
+  let(:output) { generator.generate }
 
   describe 'Post output schema with has_many :comments association' do
     it 'generates comment association as CommentSchema array, not z.string()' do

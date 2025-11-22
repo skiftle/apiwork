@@ -24,6 +24,9 @@ module Apiwork
         }
 
         contract_class = resolve_contract_class
+        schema_class = @resource_metadata[:schema_class]
+
+        result[:schema] = serialize_resource_schema(schema_class) if schema_class
 
         add_standard_actions(result[:actions], contract_class) if @resource_metadata[:actions]&.any?
         add_member_actions(result[:actions], contract_class) if @resource_metadata[:members]&.any?
@@ -129,6 +132,32 @@ module Apiwork
         return nil unless contract_class
 
         contract_class < Contract::Base ? contract_class : nil
+      end
+
+      def serialize_resource_schema(schema_class)
+        return nil unless schema_class.respond_to?(:attribute_definitions)
+
+        attributes = {}
+        schema_class.attribute_definitions.each do |attr_name, attr_def|
+          attributes[attr_name] = {
+            type: attr_def.type,
+            nullable: attr_def.nullable?,
+            required: attr_def.required?,
+            format: attr_def.format,
+            example: attr_def.example,
+            description: attr_def.description,
+            deprecated: attr_def.deprecated
+          }.compact
+        end
+
+        {
+          type: :object,
+          shape: attributes,
+          description: nil,
+          example: nil,
+          format: nil,
+          deprecated: false
+        }
       end
     end
   end

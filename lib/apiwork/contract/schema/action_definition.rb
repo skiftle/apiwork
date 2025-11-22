@@ -70,6 +70,7 @@ module Apiwork
 
         def auto_generate_request_if_needed
           return if @auto_generated_request
+          return if @reset_request
 
           @auto_generated_request = true
 
@@ -106,6 +107,7 @@ module Apiwork
 
         def auto_generate_response_if_needed
           return if @auto_generated_response
+          return if @reset_response
 
           @auto_generated_response = true
 

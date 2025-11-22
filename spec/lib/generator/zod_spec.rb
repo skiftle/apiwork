@@ -138,8 +138,8 @@ RSpec.describe Apiwork::Generator::Zod do
   end
 
   describe '#generate' do
-    # Use let! to generate output once and share across all tests
-    let!(:output) { generator.generate }
+    # Generate output lazily on first access (cached within each test)
+    let(:output) { generator.generate }
 
     it 'generates valid TypeScript code' do
       expect(output).to be_a(String)
@@ -585,8 +585,8 @@ RSpec.describe Apiwork::Generator::Zod do
   end
 
   describe 'action request/response schemas' do
-    # Use let! to generate output once and share across all tests
-    let!(:output) { generator.generate }
+    # Generate output lazily on first access (cached within each test)
+    let(:output) { generator.generate }
 
     it 'generates TypeScript types for action requests' do
       # Check for TypeScript interface/type declarations (e.g., PostsCreateRequest)
