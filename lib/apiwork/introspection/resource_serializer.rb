@@ -1,0 +1,142 @@
+# frozen_string_literal: true
+
+module Apiwork
+  module Introspection
+    class ResourceSerializer
+      def initialize(api_class, resource_name, resource_metadata, parent_path: nil, parent_resource_name: nil)
+        @api_class = api_class
+        @resource_name = resource_name
+        @resource_metadata = resource_metadata
+        @parent_path = parent_path
+        @parent_resource_name = parent_resource_name
+      end
+
+      def serialize
+        resource_path = build_resource_path
+        metadata = @resource_metadata[:metadata] || {}
+
+        result = {
+          path: resource_path,
+          summary: metadata[:summary],
+          description: metadata[:description],
+          tags: metadata[:tags],
+          actions: {}
+        }
+
+        contract_class = resolve_contract_class || schema_based_contract_class
+
+        add_standard_actions(result[:actions], contract_class) if @resource_metadata[:actions]&.any?
+        add_member_actions(result[:actions], contract_class) if @resource_metadata[:members]&.any?
+        add_collection_actions(result[:actions], contract_class) if @resource_metadata[:collections]&.any?
+        add_nested_resources(result, resource_path) if @resource_metadata[:resources]&.any?
+
+        result
+      end
+
+      private
+
+      def build_resource_path
+        resource_segment = if @resource_metadata[:singular]
+                             @resource_name.to_s.singularize
+                           else
+                             @resource_name.to_s
+                           end
+
+        if @parent_path
+          parent_id_param = ":#{@parent_resource_name.to_s.singularize}_id"
+          "#{parent_id_param}/#{resource_segment}"
+        else
+          resource_segment
+        end
+      end
+
+      def add_standard_actions(actions, contract_class)
+        @resource_metadata[:actions].each do |action_name, action_data|
+          path = action_path(action_name, action_name.to_sym)
+          add_action(actions, action_name, action_data[:method], path, contract_class,
+                     metadata: action_data[:metadata])
+        end
+      end
+
+      def add_member_actions(actions, contract_class)
+        @resource_metadata[:members].each do |action_name, action_metadata|
+          path = action_path(action_name, :member)
+          add_action(actions, action_name, action_metadata[:method], path, contract_class,
+                     metadata: action_metadata[:metadata])
+        end
+      end
+
+      def add_collection_actions(actions, contract_class)
+        @resource_metadata[:collections].each do |action_name, action_metadata|
+          path = action_path(action_name, :collection)
+          add_action(actions, action_name, action_metadata[:method], path, contract_class,
+                     metadata: action_metadata[:metadata])
+        end
+      end
+
+      def add_nested_resources(result, resource_path)
+        result[:resources] = {}
+        @resource_metadata[:resources].each do |nested_name, nested_metadata|
+          result[:resources][nested_name] = ResourceSerializer.new(
+            @api_class,
+            nested_name,
+            nested_metadata,
+            parent_path: resource_path,
+            parent_resource_name: @resource_name
+          ).serialize
+        end
+      end
+
+      def action_path(action_name, action_type)
+        case action_type
+        when :index, :create
+          '/'
+        when :show, :update, :destroy
+          '/:id'
+        when :member
+          "/:id/#{action_name}"
+        when :collection
+          "/#{action_name}"
+        else
+          '/'
+        end
+      end
+
+      def add_action(actions, name, method, path, contract_class, metadata: {})
+        actions[name] = {
+          method: method,
+          path: path,
+          summary: metadata[:summary],
+          description: metadata[:description],
+          tags: metadata[:tags],
+          deprecated: metadata[:deprecated],
+          operation_id: metadata[:operation_id]
+        }
+
+        return unless contract_class
+
+        action_definition = contract_class.action_definition(name)
+        return unless action_definition
+
+        contract_json = ActionSerializer.new(action_definition).serialize
+        actions[name][:input] = contract_json[:input] || {}
+        actions[name][:output] = contract_json[:output] || {}
+        actions[name][:error_codes] = contract_json[:error_codes] || []
+      end
+
+      def resolve_contract_class
+        contract_class = @resource_metadata[:contract_class]
+        return nil unless contract_class
+
+        contract_class < Contract::Base ? contract_class : nil
+      end
+
+      def schema_based_contract_class
+        schema_class = @resource_metadata[:schema_class]
+        return nil unless schema_class
+
+        Contract::Base.find_contract_for_schema(schema_class)
+      end
+    end
+  end
+end
