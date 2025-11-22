@@ -4,13 +4,13 @@ module Apiwork
   module Generator
     class << self
       # DOCUMENTATION
-      def generate(type, path, **options)
-        Generator::Registry.find(type).generate(path: path, **options)
+      def generate(name, path, **options)
+        Registry.find(name)&.generate(path: path, **options)
       end
 
       # DOCUMENTATION
       def register(name, generator_class)
-        Generator::Registry.register(name, generator_class)
+        Registry.register(name, generator_class)
       end
 
       # DOCUMENTATION

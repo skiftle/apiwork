@@ -38,6 +38,12 @@ module Apiwork
           parts << ''
         end
 
+        resource_schemas = build_resource_schemas
+        if resource_schemas.present?
+          parts << resource_schemas
+          parts << ''
+        end
+
         action_schemas = build_action_schemas
         if action_schemas.present?
           parts << action_schemas
@@ -85,6 +91,23 @@ module Apiwork
             recursive = TypeAnalysis.circular_reference?(type_name, type_shape, filter: :custom_only)
             zod_mapper.build_object_schema(type_name, type_shape, action_name, recursive: recursive)
           end
+        end
+
+        schemas.join("\n\n")
+      end
+
+      def build_resource_schemas
+        schemas = []
+
+        each_resource do |resource_name, resource_data, parent_path|
+          next unless resource_data[:schema]
+
+          singular_name = resource_name.to_s.singularize
+          type_name = zod_mapper.pascal_case(singular_name)
+          schema_name_sym = singular_name.to_sym
+
+          schema = zod_mapper.build_object_schema(schema_name_sym, resource_data[:schema], nil, recursive: false)
+          schemas << schema
         end
 
         schemas.join("\n\n")
@@ -139,6 +162,17 @@ module Apiwork
                    typescript_mapper.build_interface(type_name, type_shape, action_name, recursive: recursive)
                  end
           all_types << { name: type_name_pascal, code: code }
+        end
+
+        each_resource do |resource_name, resource_data, parent_path|
+          next unless resource_data[:schema]
+
+          singular_name = resource_name.to_s.singularize
+          type_name = typescript_mapper.pascal_case(singular_name)
+          type_name_sym = singular_name.to_sym
+
+          code = typescript_mapper.build_interface(type_name_sym, resource_data[:schema], nil, recursive: false)
+          all_types << { name: type_name, code: code }
         end
 
         each_resource do |resource_name, resource_data, parent_path|
