@@ -191,7 +191,8 @@ module Apiwork
         def format_keys(data, direction)
           return data if data.blank?
 
-          setting = direction == :output ? :output_key_format : :input_key_format
+          response_directions = %i[response response_body]
+          setting = response_directions.include?(direction) ? :output_key_format : :input_key_format
           key_format = Configuration::Resolver.resolve(setting, contract_class: self)
 
           return data unless key_format

@@ -73,7 +73,7 @@ module Apiwork
         temp_contract = contract_class || Class.new(Apiwork::Contract::Base)
 
         temp_definition = Apiwork::Contract::Definition.new(
-          type: :input,
+          type: :body,
           contract_class: temp_contract
         )
 

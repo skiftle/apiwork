@@ -161,26 +161,26 @@ module Apiwork
         map_type_definition(param_definition, nil)
       end
 
-      def build_request_body(input_params, action_name)
+      def build_request_body(request_params, action_name)
         {
           required: true,
           content: {
             'application/json': {
-              schema: build_params_object(input_params, action_name)
+              schema: build_params_object(request_params, action_name)
             }
           }
         }
       end
 
-      def build_responses(_action_name, output_params, action_error_codes = [])
+      def build_responses(_action_name, response_params, action_error_codes = [])
         responses = {}
 
-        if output_params
+        if response_params
           responses[:'200'] = {
             description: 'Successful response',
             content: {
               'application/json': {
-                schema: build_params_object(output_params)
+                schema: build_params_object(response_params)
               }
             }
           }

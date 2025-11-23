@@ -2,7 +2,7 @@
 
 module Apiwork
   module Controller
-    class OutputSerializer
+    class ResponseSerializer
       attr_reader :action_definition,
                   :schema_class
 
@@ -15,7 +15,7 @@ module Apiwork
       end
 
       def perform(resource_or_collection, input:, meta: {}, context: {})
-        @meta = @contract_class.format_keys(meta, :output)
+        @meta = @contract_class.format_keys(meta, :response)
         @context = context
         @input = input
 
