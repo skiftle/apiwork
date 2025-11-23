@@ -60,6 +60,13 @@ module Apiwork
           @configuration ||= {}
         end
 
+        def adapter
+          @adapter ||= begin
+            adapter_name = configuration[:adapter] || :standard
+            Adapter.resolve(adapter_name).new
+          end
+        end
+
         def type(name, description: nil, example: nil, format: nil, deprecated: false, &block)
           Descriptor.define_type(
             name,

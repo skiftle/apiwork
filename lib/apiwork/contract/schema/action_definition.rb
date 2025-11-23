@@ -80,22 +80,9 @@ module Apiwork
             action_name: action_name
           )
 
-          case action_name.to_sym
-          when :index
-            @request_definition.query { RequestGenerator.generate_query_params(self, schema_class) }
-          when :show
-            add_include_query_param_if_needed(@request_definition, schema_class)
-          when :create
-            @request_definition.body { RequestGenerator.generate_writable_request(self, schema_class, :create) }
-            add_include_query_param_if_needed(@request_definition, schema_class)
-          when :update
-            @request_definition.body { RequestGenerator.generate_writable_request(self, schema_class, :update) }
-            add_include_query_param_if_needed(@request_definition, schema_class)
-          when :destroy
-            # Destroy actions have no request params beyond routing params
-          else
-            add_include_query_param_if_needed(@request_definition, schema_class) if member_action?
-          end
+          schema_data = Adapter::SchemaData.new(schema_class)
+          api_class = contract_class.api_class
+          api_class.adapter.build_action_request(self, @request_definition, action_name, schema_data)
         end
 
         def add_include_query_param_if_needed(request_def, schema_class)
@@ -117,20 +104,9 @@ module Apiwork
             action_name: action_name
           )
 
-          case action_name.to_sym
-          when :index
-            @response_definition.body { ResponseGenerator.generate_collection_response(self, schema_class) }
-          when :show, :create, :update
-            @response_definition.body { ResponseGenerator.generate_single_response(self, schema_class) }
-          when :destroy
-            # Destroy actions return no response body (HTTP 204)
-          else
-            if collection_action?
-              @response_definition.body { ResponseGenerator.generate_collection_response(self, schema_class) }
-            elsif member_action?
-              @response_definition.body { ResponseGenerator.generate_single_response(self, schema_class) }
-            end
-          end
+          schema_data = Adapter::SchemaData.new(schema_class)
+          api_class = contract_class.api_class
+          api_class.adapter.build_action_response(self, @response_definition, action_name, schema_data)
         end
 
         def collection_action?

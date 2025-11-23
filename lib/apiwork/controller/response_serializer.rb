@@ -22,8 +22,8 @@ module Apiwork
         return collection_response(resource_or_collection) if resource_or_collection.is_a?(Enumerable)
 
         if resource_or_collection.respond_to?(:errors) && resource_or_collection.errors.any?
-          adapter = ValidationAdapter.new(resource_or_collection, schema_class: schema_class)
-          issues = adapter.convert
+          validation_adapter = ValidationAdapter.new(resource_or_collection, schema_class: schema_class)
+          issues = validation_adapter.convert
           raise ValidationError, issues
         end
 
@@ -32,11 +32,24 @@ module Apiwork
 
       def collection_response(collection)
         includes_param = @request.data[:include]
+        adapter_instance = adapter
+        render_meta = render_metadata
 
         query_result = nil
-        if @action == :index && collection.is_a?(ActiveRecord::Relation) && schema_class.present?
-          query_result = Apiwork::Query.new(collection, schema: schema_class).perform(@request.data)
-          filtered_collection = query_result.result
+        if schema_class.present?
+          scoped_collection = adapter_instance.collection_scope(
+            collection,
+            schema_data,
+            @request.data,
+            render_meta
+          )
+
+          if scoped_collection.respond_to?(:result) && scoped_collection.respond_to?(:meta)
+            query_result = scoped_collection
+            filtered_collection = query_result.result
+          else
+            filtered_collection = scoped_collection
+          end
         else
           filtered_collection = collection
         end
@@ -46,12 +59,9 @@ module Apiwork
                                                            includes: includes_param)
 
         if schema_class
-          root_key_value = root_key(filtered_collection)
-          pagination_meta = @action == :index ? (query_result&.meta || {}) : {}
+          pagination_meta = query_result&.meta || {}
           combined_meta = pagination_meta.merge(@meta)
-          response = { ok: true, root_key_value => serialized_data }
-          response[:meta] = combined_meta if combined_meta.present?
-          response
+          adapter_instance.render_collection(serialized_data, combined_meta, @request.data, render_meta)
         else
           { ok: true }.merge(serialized_data).merge(meta: @meta)
         end
@@ -59,45 +69,48 @@ module Apiwork
 
       def resource_response(resource)
         includes_param = @request.data[:include]
+        adapter_instance = adapter
+        render_meta = render_metadata
 
-        if resource.is_a?(ActiveRecord::Base) && resource.persisted? && schema_class.present?
-          includes_hash_value = includes_hash(includes_param)
-          resource = reload_with_includes(resource, includes_hash_value) if includes_hash_value.any?
-        end
+        scoped_resource = if schema_class.present?
+                            adapter_instance.record_scope(
+                              resource,
+                              schema_data,
+                              @request.data,
+                              render_meta
+                            )
+                          else
+                            resource
+                          end
 
-        serialized_data = action_definition.serialize_data(resource, context: @context, includes: includes_param)
+        serialized_data = action_definition.serialize_data(scoped_resource, context: @context, includes: includes_param)
 
         if schema_class
-          return { ok: true, meta: @meta.presence || {} } if @method == :delete
-
-          root_key_value = root_key(resource)
-          response = { ok: true, root_key_value => serialized_data }
+          adapter_instance.render_record(serialized_data, @meta, @request.data, render_meta)
         else
           response = { ok: true }.merge(serialized_data)
+          response[:meta] = @meta if @meta.present?
+          response
         end
-
-        response[:meta] = @meta if @meta.present?
-        response
       end
 
       private
 
-      def includes_hash(includes_param)
-        return {} if includes_param.blank?
+      def adapter
+        @adapter ||= @contract_class.api_class.adapter
+      end
 
-        Query::IncludesResolver.new(schema: schema_class).build(
-          params: { include: includes_param },
-          for_collection: false
+      def schema_data
+        @schema_data ||= Adapter::SchemaData.new(schema_class)
+      end
+
+      def render_metadata
+        @render_metadata ||= Adapter::RenderMetadata.new(
+          action_name: @action,
+          http_method: @method,
+          schema_data: schema_data,
+          contract_class: @contract_class
         )
-      end
-
-      def reload_with_includes(resource, includes_hash_value)
-        resource.class.includes(includes_hash_value).find(resource.id)
-      end
-
-      def root_key(resource_or_collection)
-        root_key_object = schema_class.root_key
-        resource_or_collection.is_a?(Enumerable) ? root_key_object.plural : root_key_object.singular
       end
     end
   end

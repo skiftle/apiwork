@@ -19,7 +19,7 @@ module Apiwork
         end
       end
 
-      %i[default_sort default_page_size max_page_size max_array_items].each do |name|
+      %i[default_sort default_page_size max_page_size max_array_items adapter].each do |name|
         define_method(name) do |value|
           @storage[name] = value
         end
