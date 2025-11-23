@@ -32,4 +32,23 @@ RSpec.configure do |config|
   config.before do |example|
     Apiwork::Descriptor.reset! unless [:request, :integration].include?(example.metadata[:type])
   end
+
+  # Ensure APIs are loaded for request/integration specs
+  # These spec types don't reset between tests, so they rely on APIs being loaded once
+  # If another spec called API.reset! before them, we need to reload
+  config.before(:each, type: :request) do
+    if Apiwork::API::Registry.all.empty? && Rails.root.join('config/apis').exist?
+      Dir[Rails.root.join('config/apis/**/*.rb')].sort.each do |file|
+        load file
+      end
+    end
+  end
+
+  config.before(:each, type: :integration) do
+    if Apiwork::API::Registry.all.empty? && Rails.root.join('config/apis').exist?
+      Dir[Rails.root.join('config/apis/**/*.rb')].sort.each do |file|
+        load file
+      end
+    end
+  end
 end

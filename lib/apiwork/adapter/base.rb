@@ -7,24 +7,8 @@ module Apiwork
         raise NotImplementedError, "#{self.class}#build_global_descriptors must be implemented"
       end
 
-      def build_contract(contract_class, schema_data)
+      def build_contract(contract_class, actions, schema_data, metadata, api_class)
         raise NotImplementedError, "#{self.class}#build_contract must be implemented"
-      end
-
-      def build_action(action_definition, action_name, schema_data)
-        raise NotImplementedError, "#{self.class}#build_action must be implemented"
-      end
-
-      def build_action_request(action_definition, request_definition, action_name, schema_data)
-        raise NotImplementedError, "#{self.class}#build_action_request must be implemented"
-      end
-
-      def build_action_response(action_definition, response_definition, action_name, schema_data)
-        raise NotImplementedError, "#{self.class}#build_action_response must be implemented"
-      end
-
-      def build_nested_writable_params(definition, schema_class, context, nested:)
-        raise NotImplementedError, "#{self.class}#build_nested_writable_params must be implemented"
       end
 
       def collection_scope(collection, schema_data, query, metadata)

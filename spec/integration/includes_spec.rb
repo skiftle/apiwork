@@ -75,6 +75,9 @@ RSpec.describe 'Includes API', type: :request do
 
       # Clear descriptor registry cache for the include type
       Apiwork::Descriptor::Registry.instance_variable_set(:@types, {}) if Apiwork::Descriptor::Registry.instance_variable_defined?(:@types)
+
+      # Rebuild actions after clearing (eager loading requires explicit rebuild)
+      Apiwork::API.find('/api/v1')&.build_contracts
     end
 
     after do
@@ -93,6 +96,9 @@ RSpec.describe 'Includes API', type: :request do
 
       # Clear descriptor registry cache
       Apiwork::Descriptor::Registry.instance_variable_set(:@types, {}) if Apiwork::Descriptor::Registry.instance_variable_defined?(:@types)
+
+      # Rebuild actions after clearing (eager loading requires explicit rebuild)
+      Apiwork::API.find('/api/v1')&.build_contracts
     end
 
     it 'supports nested includes' do
@@ -138,6 +144,9 @@ RSpec.describe 'Includes API', type: :request do
 
         # Clear descriptor registry cache for the include type
         Apiwork::Descriptor::Registry.instance_variable_set(:@types, {}) if Apiwork::Descriptor::Registry.instance_variable_defined?(:@types)
+
+        # Rebuild actions after clearing (eager loading requires explicit rebuild)
+        Apiwork::API.find('/api/v1')&.build_contracts
       end
 
       after do
@@ -157,6 +166,9 @@ RSpec.describe 'Includes API', type: :request do
 
         # Clear descriptor registry cache
         Apiwork::Descriptor::Registry.instance_variable_set(:@types, {}) if Apiwork::Descriptor::Registry.instance_variable_defined?(:@types)
+
+        # Rebuild actions after clearing (eager loading requires explicit rebuild)
+        Apiwork::API.find('/api/v1')&.build_contracts
       end
 
       it 'allows nested includes under include: :always association' do

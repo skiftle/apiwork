@@ -35,8 +35,6 @@ module Apiwork
 
           self._schema_class = ref
 
-          Schema::TypeBuilder.build_contract_enums(self, ref)
-
           prepend Schema::Extension unless ancestors.include?(Schema::Extension)
         end
 
@@ -146,15 +144,7 @@ module Apiwork
 
         def action_definition(action_name)
           action_name_sym = action_name.to_sym
-
-          return action_definitions[action_name_sym] if action_definitions.key?(action_name_sym)
-
-          if schema_class
-            auto_generate_and_store_action(action_name_sym)
-            return action_definitions[action_name_sym]
-          end
-
-          nil
+          action_definitions[action_name_sym]
         end
 
         # DOCUMENTATION

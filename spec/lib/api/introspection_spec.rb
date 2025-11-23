@@ -7,18 +7,12 @@ RSpec.describe 'API Introspection' do
     Apiwork::API.reset!
     Apiwork::Descriptor.reset!
 
-    load File.expand_path('../../dummy/config/apis/v1.rb', __dir__)
+    # Reload contract files to ensure action_definitions with custom params are recreated
+    # API.reset! clears action_definitions, so we need to reload contracts to get custom actions back
+    load File.expand_path('../../dummy/app/contracts/api/v1/post_contract.rb', __dir__) if defined?(Api::V1::PostContract)
+    load File.expand_path('../../dummy/app/contracts/api/v1/article_contract.rb', __dir__) if defined?(Api::V1::ArticleContract)
 
-    # Clear and reload contract definitions to prevent test pollution
-    # This ensures error_codes and other action metadata are fresh
-    if defined?(Api::V1::PostContract)
-      Api::V1::PostContract.action_definitions = {}
-      load File.expand_path('../../dummy/app/contracts/api/v1/post_contract.rb', __dir__)
-    end
-    if defined?(Api::V1::ArticleContract)
-      Api::V1::ArticleContract.action_definitions = {}
-      load File.expand_path('../../dummy/app/contracts/api/v1/article_contract.rb', __dir__)
-    end
+    load File.expand_path('../../dummy/config/apis/v1.rb', __dir__)
   end
 
   describe 'API.as_json' do

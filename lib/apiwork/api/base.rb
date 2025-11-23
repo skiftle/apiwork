@@ -123,6 +123,64 @@ module Apiwork
         def as_json
           introspect
         end
+
+        def build_contracts
+          return unless @metadata
+
+          @metadata.resources.each_value do |resource_data|
+            build_contracts_for_resource(resource_data)
+          end
+        end
+
+        private
+
+        def build_contracts_for_resource(resource_data)
+          contract_class = resource_data[:contract_class]
+          schema_class = resource_data[:schema_class]
+
+          if contract_class && schema_class
+            schema_data = Adapter::SchemaData.new(schema_class)
+            actions = extract_actions_from_resource(resource_data)
+
+            adapter.build_contract(contract_class, actions, schema_data, @metadata, self)
+          end
+
+          resource_data[:resources]&.each_value do |nested_resource|
+            build_contracts_for_resource(nested_resource)
+          end
+        end
+
+        def extract_actions_from_resource(resource_data)
+          actions = {}
+
+          resource_data[:only]&.each do |action_name|
+            type = %i[index].include?(action_name) ? :collection : :member
+            method = action_method_for(action_name)
+
+            actions[action_name] = { type: type, method: method }
+          end
+
+          resource_data[:members]&.each do |action_name, action_data|
+            actions[action_name] = { type: :member, method: action_data[:method] }
+          end
+
+          resource_data[:collections]&.each do |action_name, action_data|
+            actions[action_name] = { type: :collection, method: action_data[:method] }
+          end
+
+          actions
+        end
+
+        def action_method_for(action_name)
+          case action_name.to_sym
+          when :index then :get
+          when :show then :get
+          when :create then :post
+          when :update then :patch
+          when :destroy then :delete
+          else :get
+          end
+        end
       end
     end
   end

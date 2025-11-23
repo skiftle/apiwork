@@ -212,6 +212,7 @@ module Apiwork
             end
             return nil unless association_model_class
 
+            # FIXME: Hardcoded assumption about schema class naming convention!!!
             schema_class_name = "Api::V1::#{association_model_class.name.demodulize}Schema"
             resolved_schema = begin
               schema_class_name.constantize

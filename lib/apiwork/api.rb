@@ -10,6 +10,7 @@ module Apiwork
         Class.new(Base).tap do |klass|
           klass.mount(path)
           klass.class_eval(&block)
+          klass.build_contracts
         end
       end
 
