@@ -28,7 +28,7 @@ module Apiwork
         variant_definition[:partial] = partial ? true : false
 
         if block_given?
-          shape_definition = Definition.new(type: :input, contract_class: @contract_class)
+          shape_definition = Definition.new(type: :body, contract_class: @contract_class)
           shape_definition.instance_eval(&block)
           variant_definition[:shape] = shape_definition
         end

@@ -6,7 +6,7 @@ module Apiwork
       extend ActiveSupport::Concern
 
       def respond_with(resource_or_collection, meta: {}, status: nil)
-        serializer = OutputSerializer.new(current_contract, action_name, request.method_symbol)
+        serializer = ResponseSerializer.new(current_contract, action_name, request.method_symbol)
 
         response = serializer.perform(
           resource_or_collection,
