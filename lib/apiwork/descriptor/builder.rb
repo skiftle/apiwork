@@ -3,6 +3,8 @@
 module Apiwork
   module Descriptor
     class Builder
+      attr_reader :api_class
+
       def initialize(api_class: nil, scope: nil)
         @api_class = api_class
         @scope = scope # nil = global, ContractClass = contract-scoped

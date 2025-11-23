@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Contract
-    module Schema
-      module ActionDefinition
+  module Adapter
+    class Standard < Base
+      module ActionDefinitionExtension
         def request_definition
           @request_definition
         end
@@ -27,7 +27,7 @@ module Apiwork
         def request(replace: false, &block)
           @reset_request = replace if replace
 
-          @request_definition ||= RequestDefinition.new(
+          @request_definition ||= Contract::RequestDefinition.new(
             contract_class: contract_class,
             action_name: action_name
           )
@@ -40,7 +40,7 @@ module Apiwork
         def response(replace: false, &block)
           @reset_response = replace if replace
 
-          @response_definition ||= ResponseDefinition.new(
+          @response_definition ||= Contract::ResponseDefinition.new(
             contract_class: contract_class,
             action_name: action_name
           )

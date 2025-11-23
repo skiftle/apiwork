@@ -6,11 +6,7 @@ module Apiwork
       # DOCUMENTATION
       def reset!
         Registry.clear!
-        Core.clear!
-      end
-
-      def register_core(api_class)
-        Core.register(api_class)
+        Adapter::Standard::DescriptorBuilder.clear!
       end
 
       def define_type(name, api_class:, scope: nil, description: nil, example: nil, format: nil, deprecated: false, &block)
@@ -77,11 +73,11 @@ module Apiwork
       end
 
       def ensure_filter_descriptors(schema_class, api_class:)
-        Core.ensure_filter_descriptors_registered(schema_class, api_class: api_class)
+        Adapter::Standard::DescriptorBuilder.ensure_filter_descriptors(schema_class, api_class: api_class)
       end
 
       def ensure_sort_descriptor(schema_class, api_class:)
-        Core.ensure_sort_descriptor_registered(schema_class, api_class: api_class)
+        Adapter::Standard::DescriptorBuilder.ensure_sort_descriptor(schema_class, api_class: api_class)
       end
 
       def resolve_type(name, contract_class:, api_class: nil, scope: nil)

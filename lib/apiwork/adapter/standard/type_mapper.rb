@@ -1,18 +1,11 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Contract
-    module Schema
-      class Generator
+  module Adapter
+    class Standard < Base
+      module TypeMapper
         class << self
-          def generate_action(schema_class, action, contract_class:)
-            return nil unless schema_class
-            raise ArgumentError, 'contract_class is required' unless contract_class
-
-            Apiwork::Contract::ActionDefinition.new(action_name: action, contract_class: contract_class)
-          end
-
-          def map_type(type)
+          def map(type)
             case type
             when :string, :text then :string
             when :integer then :integer

@@ -34,8 +34,6 @@ module Apiwork
           end
 
           self._schema_class = ref
-
-          prepend Schema::Extension unless ancestors.include?(Schema::Extension)
         end
 
         def find_contract_for_schema(schema_class)

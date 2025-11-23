@@ -4,8 +4,7 @@ module Apiwork
   module Adapter
     class Standard < Base
       def build_global_descriptors(builder)
-        # No global descriptors needed for Standard adapter
-        # All types are registered per-contract
+        DescriptorBuilder.register(builder.api_class)
       end
 
       def build_contract(contract_class, actions, schema_data, metadata, api_class)
@@ -153,7 +152,7 @@ module Apiwork
 
         action_definition.request do
           query do
-            include_type = Contract::Schema::TypeBuilder.build_include_type(contract_class, schema_class)
+            include_type = Standard::TypeBuilder.build_include_type(contract_class, schema_class)
             param :include, type: include_type, required: false
           end
         end

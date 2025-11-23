@@ -1,18 +1,12 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Contract
-    module Schema
-      class TypeBuilder
+  module Adapter
+    class Standard
+      module TypeBuilder
         MAX_RECURSION_DEPTH = 3
 
         class << self
-          def sti_base_schema?(schema_class)
-            return false unless schema_class.respond_to?(:sti_base?) && schema_class.sti_base?
-
-            schema_class.respond_to?(:variants) && schema_class.variants&.any?
-          end
-
           def determine_filter_type(attr_type, nullable: false)
             base_type = case attr_type
                         when :string
@@ -30,7 +24,7 @@ module Apiwork
                         when :boolean
                           :boolean_filter
                         else
-                          :string_filter # Default fallback
+                          :string_filter
                         end
 
             nullable ? :"nullable_#{base_type}" : base_type
@@ -53,9 +47,9 @@ module Apiwork
 
             visited = visited.dup.add(schema_class)
 
-            Descriptor.ensure_filter_descriptors(schema_class, api_class: contract_class.api_class)
+            DescriptorBuilder.ensure_filter_descriptors(schema_class, api_class: contract_class.api_class)
 
-            type_name = build_type_name(schema_class, :filter, depth)
+            type_name = Helpers.build_type_name(schema_class, :filter, depth)
 
             existing = Descriptor.resolve_type(type_name, contract_class: contract_class)
             return type_name if existing
@@ -67,7 +61,7 @@ module Apiwork
 
               schema_class.attribute_definitions.each do |name, attribute_definition|
                 next unless attribute_definition.filterable?
-                next if attribute_definition.type == :unknown # Skip unknown types - not filterable
+                next if attribute_definition.type == :unknown
 
                 filter_type = TypeBuilder.filter_type_for(attribute_definition, contract_class)
 
@@ -75,7 +69,7 @@ module Apiwork
                   param name, type: filter_type, required: false
                 else
                   param name, type: :union, required: false do
-                    variant type: Generator.map_type(attribute_definition.type)
+                    variant type: TypeMapper.map(attribute_definition.type)
                     variant type: filter_type
                   end
                 end
@@ -84,11 +78,11 @@ module Apiwork
               schema_class.association_definitions.each do |name, association_definition|
                 next unless association_definition.filterable?
 
-                association_resource = TypeBuilder.resolve_association_resource(association_definition)
+                association_resource = Helpers.resolve_association_resource(association_definition)
                 next unless association_resource
                 next if visited.include?(association_resource)
 
-                import_alias = TypeBuilder.auto_import_association_contract(
+                import_alias = Helpers.auto_import_association_contract(
                   contract_class,
                   association_resource,
                   visited
@@ -118,9 +112,9 @@ module Apiwork
 
             visited = visited.dup.add(schema_class)
 
-            Descriptor.ensure_sort_descriptor(schema_class, api_class: contract_class.api_class)
+            DescriptorBuilder.ensure_sort_descriptor(schema_class, api_class: contract_class.api_class)
 
-            type_name = build_type_name(schema_class, :sort, depth)
+            type_name = Helpers.build_type_name(schema_class, :sort, depth)
 
             existing = Descriptor.resolve_type(type_name, contract_class: contract_class)
             return type_name if existing
@@ -135,11 +129,11 @@ module Apiwork
               schema_class.association_definitions.each do |name, association_definition|
                 next unless association_definition.sortable?
 
-                association_resource = TypeBuilder.resolve_association_resource(association_definition)
+                association_resource = Helpers.resolve_association_resource(association_definition)
                 next unless association_resource
                 next if visited.include?(association_resource)
 
-                import_alias = TypeBuilder.auto_import_association_contract(
+                import_alias = Helpers.auto_import_association_contract(
                   contract_class,
                   association_resource,
                   visited
@@ -167,7 +161,7 @@ module Apiwork
             resolved_max_page_size = Configuration::Resolver.resolve(:max_page_size, contract_class: contract_class, schema_class: schema_class,
                                                                                      api_class: contract_class.api_class)
 
-            type_name = build_type_name(schema_class, :page, 1)
+            type_name = Helpers.build_type_name(schema_class, :page, 1)
 
             existing = Descriptor.resolve_type(type_name, contract_class: contract_class)
             return type_name if existing
@@ -180,53 +174,8 @@ module Apiwork
             type_name
           end
 
-          def resolve_association_resource(association_definition)
-            return :polymorphic if association_definition.polymorphic?
-
-            if association_definition.schema_class
-              resolved_schema = if association_definition.schema_class.is_a?(Class)
-                                  association_definition.schema_class
-                                else
-                                  begin
-                                    association_definition.schema_class.constantize
-                                  rescue NameError
-                                    nil
-                                  end
-                                end
-
-              return { sti: true, schema: resolved_schema } if resolved_schema.respond_to?(:sti_base?) && resolved_schema.sti_base?
-
-              return resolved_schema
-            end
-
-            model_class = association_definition.model_class
-            return nil unless model_class
-
-            reflection = model_class.reflect_on_association(association_definition.name)
-            return nil unless reflection
-
-            association_model_class = begin
-              reflection.klass
-            rescue ActiveRecord::AssociationNotFoundError, NameError
-              nil
-            end
-            return nil unless association_model_class
-
-            # FIXME: Hardcoded assumption about schema class naming convention!!!
-            schema_class_name = "Api::V1::#{association_model_class.name.demodulize}Schema"
-            resolved_schema = begin
-              schema_class_name.constantize
-            rescue NameError
-              nil
-            end
-
-            return { sti: true, schema: resolved_schema } if resolved_schema.respond_to?(:sti_base?) && resolved_schema.sti_base?
-
-            resolved_schema
-          end
-
           def build_include_type(contract_class, schema_class, visited: Set.new, depth: 0)
-            type_name = build_type_name(schema_class, :include, depth)
+            type_name = Helpers.build_type_name(schema_class, :include, depth)
 
             existing = Descriptor.resolve_type(type_name, contract_class: contract_class)
             return type_name if existing
@@ -236,7 +185,7 @@ module Apiwork
 
             Descriptor.register_type(type_name, scope: contract_class, api_class: contract_class.api_class) do
               schema_class.association_definitions.each do |name, association_definition|
-                association_resource = TypeBuilder.resolve_association_resource(association_definition)
+                association_resource = Helpers.resolve_association_resource(association_definition)
                 next unless association_resource
 
                 is_sti = association_resource.is_a?(Hash) && association_resource[:sti]
@@ -245,7 +194,7 @@ module Apiwork
                 if visited.include?(actual_schema)
                   param name, type: :boolean, required: false unless association_definition.always_included?
                 else
-                  import_alias = TypeBuilder.auto_import_association_contract(
+                  import_alias = Helpers.auto_import_association_contract(
                     contract_class,
                     actual_schema,
                     visited
@@ -280,7 +229,7 @@ module Apiwork
           def build_association_type(contract_class, association_definition, visited: Set.new)
             return build_polymorphic_association_type(contract_class, association_definition, visited: visited) if association_definition.polymorphic?
 
-            association_schema = resolve_association_resource(association_definition)
+            association_schema = Helpers.resolve_association_resource(association_definition)
             return nil unless association_schema
 
             if association_schema.is_a?(Hash) && association_schema[:sti]
@@ -290,18 +239,18 @@ module Apiwork
 
             return nil if visited.include?(association_schema)
 
-            import_alias = auto_import_association_contract(contract_class, association_schema, visited)
+            import_alias = Helpers.auto_import_association_contract(contract_class, association_schema, visited)
 
             visited = visited.dup.add(association_schema)
 
             if import_alias
-              association_contract = Base.find_contract_for_schema(association_schema)
+              association_contract = Contract::Base.find_contract_for_schema(association_schema)
               build_response_type(association_contract, association_schema, visited: Set.new) if association_contract
 
               return import_alias
             end
 
-            association_contract_class = Class.new(Base) do
+            association_contract_class = Class.new(Contract::Base) do
               schema association_schema
             end
 
@@ -311,7 +260,7 @@ module Apiwork
               Descriptor.register_type(resource_type_name, scope: association_contract_class,
                                                            api_class: association_contract_class.api_class) do
                 association_schema.attribute_definitions.each do |name, attribute_definition|
-                  param name, type: Generator.map_type(attribute_definition.type), required: false
+                  param name, type: TypeMapper.map(attribute_definition.type), required: false
                 end
 
                 association_schema.association_definitions.each do |name, nested_association_definition|
@@ -346,10 +295,10 @@ module Apiwork
             existing = Descriptor.resolve_type(union_type_name, contract_class: contract_class)
             return existing if existing
 
-            union_definition = UnionDefinition.new(contract_class, discriminator: association_definition.discriminator)
+            union_definition = Contract::UnionDefinition.new(contract_class, discriminator: association_definition.discriminator)
 
             polymorphic.each do |tag, schema_class|
-              import_alias = auto_import_association_contract(contract_class, schema_class, visited)
+              import_alias = Helpers.auto_import_association_contract(contract_class, schema_class, visited)
               next unless import_alias
 
               union_definition.variant(type: import_alias, tag: tag.to_s)
@@ -368,7 +317,7 @@ module Apiwork
             return nil unless variants&.any?
 
             discriminator_name = schema_class.discriminator_name
-            union_definition = UnionDefinition.new(contract_class, discriminator: discriminator_name)
+            union_definition = Contract::UnionDefinition.new(contract_class, discriminator: discriminator_name)
 
             variants.each do |tag, variant_data|
               variant_schema = variant_data[:schema]
@@ -392,7 +341,7 @@ module Apiwork
 
             build_sti_union(contract_class, schema_class, union_type_name: union_type_name,
                                                           visited: visited) do |contract, variant_schema, _tag, visit_set|
-              auto_import_association_contract(contract, variant_schema, visit_set)
+              Helpers.auto_import_association_contract(contract, variant_schema, visit_set)
             end
           end
 
@@ -401,38 +350,7 @@ module Apiwork
 
             build_sti_union(contract_class, schema_class, union_type_name: union_type_name,
                                                           visited: visited) do |contract, variant_schema, _tag, visit_set|
-              auto_import_association_contract(contract, variant_schema, visit_set)
-            end
-          end
-
-          def auto_import_association_contract(parent_contract, association_schema, visited)
-            return nil if visited.include?(association_schema)
-
-            association_contract = Base.find_contract_for_schema(association_schema)
-            return nil unless association_contract
-
-            alias_name = association_schema.root_key.singular.to_sym
-
-            parent_contract.import(association_contract, as: alias_name) unless parent_contract.imports.key?(alias_name)
-
-            if association_contract.schema?
-              build_filter_type(association_contract, association_schema, visited: Set.new, depth: 0)
-              build_sort_type(association_contract, association_schema, visited: Set.new, depth: 0)
-              build_include_type(association_contract, association_schema, visited: Set.new, depth: 0)
-              build_nested_payload_union(association_contract, association_schema)
-              build_response_type(association_contract, association_schema, visited: Set.new)
-            end
-
-            alias_name
-          end
-
-          def build_contract_enums(contract_class, schema_class)
-            api_class = contract_class.api_class
-
-            schema_class.attribute_definitions.each do |name, attribute_definition|
-              next unless attribute_definition.enum&.any?
-
-              Descriptor.register_enum(name, attribute_definition.enum, scope: contract_class, api_class: api_class)
+              Helpers.auto_import_association_contract(contract, variant_schema, visit_set)
             end
           end
 
@@ -472,7 +390,7 @@ module Apiwork
             create_qualified_name = Descriptor.scoped_type_name(contract_class, create_type_name)
             update_qualified_name = Descriptor.scoped_type_name(contract_class, update_type_name)
 
-            union_definition = UnionDefinition.new(contract_class, discriminator: :_type)
+            union_definition = Contract::UnionDefinition.new(contract_class, discriminator: :_type)
             union_definition.variant(type: create_qualified_name, tag: 'create')
             union_definition.variant(type: update_qualified_name, tag: 'update')
             union_data = union_definition.serialize
@@ -486,7 +404,7 @@ module Apiwork
 
             visited.dup.add(schema_class)
 
-            return if sti_base_schema?(schema_class)
+            return if Helpers.sti_base_schema?(schema_class)
 
             root_key = schema_class.root_key.singular.to_sym
             resource_type_name = Descriptor.scoped_type_name(contract_class, nil)
@@ -517,7 +435,7 @@ module Apiwork
 
                 enum_option = attribute_definition.enum ? { enum: name } : {}
                 param name,
-                      type: Generator.map_type(attribute_definition.type),
+                      type: TypeMapper.map(attribute_definition.type),
                       required: false,
                       description: attribute_definition.description,
                       example: attribute_definition.example,
@@ -544,15 +462,6 @@ module Apiwork
                 end
               end
             end
-          end
-
-          private
-
-          def build_type_name(schema_class, base_name, depth)
-            return base_name if depth.zero?
-
-            schema_name = schema_class.name.demodulize.underscore.gsub(/_schema$/, '')
-            :"#{schema_name}_#{base_name}"
           end
         end
       end

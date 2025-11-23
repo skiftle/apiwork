@@ -8,8 +8,8 @@ module Apiwork
           def generate_query_params(definition, schema_class)
             contract_class = definition.contract_class
 
-            filter_type = Contract::Schema::TypeBuilder.build_filter_type(contract_class, schema_class)
-            sort_type = Contract::Schema::TypeBuilder.build_sort_type(contract_class, schema_class)
+            filter_type = TypeBuilder.build_filter_type(contract_class, schema_class)
+            sort_type = TypeBuilder.build_sort_type(contract_class, schema_class)
 
             if filter_type
               definition.param :filter, type: :union, required: false do
@@ -25,10 +25,10 @@ module Apiwork
               end
             end
 
-            page_type = Contract::Schema::TypeBuilder.build_page_type(contract_class, schema_class)
+            page_type = TypeBuilder.build_page_type(contract_class, schema_class)
             definition.param :page, type: page_type, required: false
 
-            include_type = Contract::Schema::TypeBuilder.build_include_type(contract_class, schema_class)
+            include_type = TypeBuilder.build_include_type(contract_class, schema_class)
             definition.param :include, type: include_type, required: false
           end
 
@@ -36,7 +36,7 @@ module Apiwork
             root_key = schema_class.root_key.singular.to_sym
             contract_class = definition.contract_class
 
-            if Contract::Schema::TypeBuilder.sti_base_schema?(schema_class)
+            if Helpers.sti_base_schema?(schema_class)
               payload_type_name = generate_sti_request_union(contract_class, schema_class, context)
             else
               payload_type_name = :"#{context}_payload"
@@ -57,7 +57,7 @@ module Apiwork
               next unless attribute_definition.writable_for?(context)
 
               param_options = {
-                type: Contract::Schema::Generator.map_type(attribute_definition.type),
+                type: TypeMapper.map(attribute_definition.type),
                 required: attribute_definition.required?,
                 nullable: attribute_definition.nullable?,
                 description: attribute_definition.description,
@@ -78,12 +78,12 @@ module Apiwork
             schema_class.association_definitions.each do |name, association_definition|
               next unless association_definition.writable_for?(context)
 
-              association_schema = Contract::Schema::TypeBuilder.resolve_association_resource(association_definition)
+              association_schema = Helpers.resolve_association_resource(association_definition)
               association_payload_type = nil
 
               association_contract = nil
               if association_schema
-                import_alias = Contract::Schema::TypeBuilder.auto_import_association_contract(
+                import_alias = Helpers.auto_import_association_contract(
                   definition.contract_class,
                   association_schema,
                   Set.new
@@ -126,8 +126,8 @@ module Apiwork
             union_type_name = :"#{context}_payload"
             discriminator_name = schema_class.discriminator_name
 
-            Contract::Schema::TypeBuilder.build_sti_union(contract_class, schema_class,
-                                                          union_type_name: union_type_name) do |contract, variant_schema, tag, _visited|
+            TypeBuilder.build_sti_union(contract_class, schema_class,
+                                        union_type_name: union_type_name) do |contract, variant_schema, tag, _visited|
               variant_schema_name = variant_schema.name.demodulize.underscore.gsub(/_schema$/, '')
               variant_type_name = :"#{variant_schema_name}_#{context}_payload"
 
@@ -177,8 +177,8 @@ module Apiwork
           end
 
           def resolve_resource_type_name(contract_class, schema_class)
-            if Contract::Schema::TypeBuilder.sti_base_schema?(schema_class)
-              Contract::Schema::TypeBuilder.build_sti_response_union_type(contract_class, schema_class)
+            if Helpers.sti_base_schema?(schema_class)
+              TypeBuilder.build_sti_response_union_type(contract_class, schema_class)
             else
               root_key = schema_class.root_key.singular.to_sym
               resource_type_name = Descriptor.scoped_type_name(contract_class, nil)
@@ -194,7 +194,7 @@ module Apiwork
           def register_resource_type(contract_class, schema_class, type_name)
             assoc_type_map = {}
             schema_class.association_definitions.each do |name, association_definition|
-              assoc_type_map[name] = Contract::Schema::TypeBuilder.build_association_type(contract_class, association_definition)
+              assoc_type_map[name] = TypeBuilder.build_association_type(contract_class, association_definition)
             end
 
             schema_class.attribute_definitions.each do |name, attribute_definition|
@@ -210,7 +210,7 @@ module Apiwork
                 enum_option = attribute_definition.enum ? { enum: name } : {}
 
                 param name,
-                      type: Contract::Schema::Generator.map_type(attribute_definition.type),
+                      type: TypeMapper.map(attribute_definition.type),
                       required: false,
                       description: attribute_definition.description,
                       example: attribute_definition.example,

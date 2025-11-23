@@ -21,7 +21,7 @@ module Apiwork
 
           Registry.register(self)
 
-          Descriptor.register_core(self)
+          adapter.build_global_descriptors(Descriptor::Builder.new(api_class: self))
 
           @configuration = {}
         end

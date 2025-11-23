@@ -23,9 +23,9 @@ module Apiwork
 
         return unless contract_class.schema?
 
-        return if singleton_class.ancestors.include?(Schema::ActionDefinition)
+        return if singleton_class.ancestors.include?(Adapter::Standard::ActionDefinitionExtension)
 
-        singleton_class.prepend(Schema::ActionDefinition)
+        singleton_class.prepend(Adapter::Standard::ActionDefinitionExtension)
       end
 
       def resets_request?
