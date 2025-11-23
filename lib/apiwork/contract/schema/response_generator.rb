@@ -7,7 +7,7 @@ module Apiwork
         class << self
           def resolve_resource_type_name(contract_class, schema_class)
             if TypeBuilder.sti_base_schema?(schema_class)
-              TypeBuilder.build_sti_output_union_type(contract_class, schema_class)
+              TypeBuilder.build_sti_response_union_type(contract_class, schema_class)
             else
               root_key = schema_class.root_key.singular.to_sym
               resource_type_name = Descriptor.scoped_type_name(contract_class, nil)
@@ -20,7 +20,7 @@ module Apiwork
             end
           end
 
-          def generate_single_output(definition, schema_class)
+          def generate_single_response(definition, schema_class)
             root_key = schema_class.root_key.singular.to_sym
             contract_class = definition.contract_class
             resource_type_name = resolve_resource_type_name(contract_class, schema_class)
@@ -35,7 +35,7 @@ module Apiwork
             definition.param :issues, type: :array, of: :issue, required: false
           end
 
-          def generate_collection_output(definition, schema_class)
+          def generate_collection_response(definition, schema_class)
             root_key_plural = schema_class.root_key.plural.to_sym
             contract_class = definition.contract_class
             resource_type_name = resolve_resource_type_name(contract_class, schema_class)

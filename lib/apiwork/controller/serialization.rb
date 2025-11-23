@@ -10,7 +10,7 @@ module Apiwork
 
         response = serializer.perform(
           resource_or_collection,
-          input: action_request,
+          request: action_request,
           meta: meta,
           context: context
         )

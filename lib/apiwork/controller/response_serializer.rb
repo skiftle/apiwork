@@ -14,10 +14,10 @@ module Apiwork
         @schema_class = @action_definition&.schema_class
       end
 
-      def perform(resource_or_collection, input:, meta: {}, context: {})
+      def perform(resource_or_collection, request:, meta: {}, context: {})
         @meta = @contract_class.format_keys(meta, :response)
         @context = context
-        @input = input
+        @request = request
 
         return collection_response(resource_or_collection) if resource_or_collection.is_a?(Enumerable)
 
@@ -31,11 +31,11 @@ module Apiwork
       end
 
       def collection_response(collection)
-        includes_param = @input.data[:include]
+        includes_param = @request.data[:include]
 
         query_result = nil
         if @action == :index && collection.is_a?(ActiveRecord::Relation) && schema_class.present?
-          query_result = Apiwork::Query.new(collection, schema: schema_class).perform(@input.data)
+          query_result = Apiwork::Query.new(collection, schema: schema_class).perform(@request.data)
           filtered_collection = query_result.result
         else
           filtered_collection = collection
@@ -58,7 +58,7 @@ module Apiwork
       end
 
       def resource_response(resource)
-        includes_param = @input.data[:include]
+        includes_param = @request.data[:include]
 
         if resource.is_a?(ActiveRecord::Base) && resource.persisted? && schema_class.present?
           includes_hash_value = includes_hash(includes_param)

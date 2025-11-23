@@ -295,7 +295,7 @@ module Apiwork
 
             if import_alias
               association_contract = Base.find_contract_for_schema(association_schema)
-              build_output_type(association_contract, association_schema, visited: Set.new) if association_contract
+              build_response_type(association_contract, association_schema, visited: Set.new) if association_contract
 
               return import_alias
             end
@@ -395,7 +395,7 @@ module Apiwork
             end
           end
 
-          def build_sti_output_union_type(contract_class, schema_class, visited: Set.new)
+          def build_sti_response_union_type(contract_class, schema_class, visited: Set.new)
             union_type_name = schema_class.root_key.singular.to_sym
 
             build_sti_union(contract_class, schema_class, union_type_name: union_type_name,
@@ -419,7 +419,7 @@ module Apiwork
               build_sort_type(association_contract, association_schema, visited: Set.new, depth: 0)
               build_include_type(association_contract, association_schema, visited: Set.new, depth: 0)
               build_nested_payload_union(association_contract, association_schema)
-              build_output_type(association_contract, association_schema, visited: Set.new)
+              build_response_type(association_contract, association_schema, visited: Set.new)
             end
 
             alias_name
@@ -478,7 +478,7 @@ module Apiwork
                                       scope: contract_class, api_class: api_class)
           end
 
-          def build_output_type(contract_class, schema_class, visited: Set.new)
+          def build_response_type(contract_class, schema_class, visited: Set.new)
             return if visited.include?(schema_class)
 
             visited.dup.add(schema_class)

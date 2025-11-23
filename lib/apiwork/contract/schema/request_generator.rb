@@ -32,12 +32,12 @@ module Apiwork
             definition.param :include, type: include_type, required: false
           end
 
-          def generate_writable_input(definition, schema_class, context)
+          def generate_writable_request(definition, schema_class, context)
             root_key = schema_class.root_key.singular.to_sym
             contract_class = definition.contract_class
 
             if TypeBuilder.sti_base_schema?(schema_class)
-              payload_type_name = generate_sti_input_union(contract_class, schema_class, context)
+              payload_type_name = generate_sti_request_union(contract_class, schema_class, context)
             else
               payload_type_name = :"#{context}_payload"
 
@@ -122,7 +122,7 @@ module Apiwork
             end
           end
 
-          def generate_sti_input_union(contract_class, schema_class, context)
+          def generate_sti_request_union(contract_class, schema_class, context)
             union_type_name = :"#{context}_payload"
             discriminator_name = schema_class.discriminator_name
 

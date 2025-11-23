@@ -86,10 +86,10 @@ module Apiwork
           when :show
             add_include_query_param_if_needed(@request_definition, schema_class)
           when :create
-            @request_definition.body { RequestGenerator.generate_writable_input(self, schema_class, :create) }
+            @request_definition.body { RequestGenerator.generate_writable_request(self, schema_class, :create) }
             add_include_query_param_if_needed(@request_definition, schema_class)
           when :update
-            @request_definition.body { RequestGenerator.generate_writable_input(self, schema_class, :update) }
+            @request_definition.body { RequestGenerator.generate_writable_request(self, schema_class, :update) }
             add_include_query_param_if_needed(@request_definition, schema_class)
           when :destroy
             # Destroy actions have no request params beyond routing params
@@ -119,16 +119,16 @@ module Apiwork
 
           case action_name.to_sym
           when :index
-            @response_definition.body { ResponseGenerator.generate_collection_output(self, schema_class) }
+            @response_definition.body { ResponseGenerator.generate_collection_response(self, schema_class) }
           when :show, :create, :update
-            @response_definition.body { ResponseGenerator.generate_single_output(self, schema_class) }
+            @response_definition.body { ResponseGenerator.generate_single_response(self, schema_class) }
           when :destroy
             # Destroy actions return no response body (HTTP 204)
           else
             if collection_action?
-              @response_definition.body { ResponseGenerator.generate_collection_output(self, schema_class) }
+              @response_definition.body { ResponseGenerator.generate_collection_response(self, schema_class) }
             elsif member_action?
-              @response_definition.body { ResponseGenerator.generate_single_output(self, schema_class) }
+              @response_definition.body { ResponseGenerator.generate_single_response(self, schema_class) }
             end
           end
         end

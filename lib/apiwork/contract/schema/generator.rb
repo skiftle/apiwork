@@ -19,27 +19,27 @@ module Apiwork
                 query { RequestGenerator.generate_query_params(self, schema_class) }
               end
               action_definition.response do
-                body { ResponseGenerator.generate_collection_output(self, schema_class) }
+                body { ResponseGenerator.generate_collection_response(self, schema_class) }
               end
             when :show
               action_definition.request do
               end
               action_definition.response do
-                body { ResponseGenerator.generate_single_output(self, schema_class) }
+                body { ResponseGenerator.generate_single_response(self, schema_class) }
               end
             when :create
               action_definition.request do
-                body { RequestGenerator.generate_writable_input(self, schema_class, :create) }
+                body { RequestGenerator.generate_writable_request(self, schema_class, :create) }
               end
               action_definition.response do
-                body { ResponseGenerator.generate_single_output(self, schema_class) }
+                body { ResponseGenerator.generate_single_response(self, schema_class) }
               end
             when :update
               action_definition.request do
-                body { RequestGenerator.generate_writable_input(self, schema_class, :update) }
+                body { RequestGenerator.generate_writable_request(self, schema_class, :update) }
               end
               action_definition.response do
-                body { ResponseGenerator.generate_single_output(self, schema_class) }
+                body { ResponseGenerator.generate_single_response(self, schema_class) }
               end
             when :destroy
               action_definition.response do
