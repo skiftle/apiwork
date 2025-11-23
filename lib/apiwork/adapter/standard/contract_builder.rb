@@ -197,13 +197,7 @@ module Apiwork
               assoc_type_map[name] = TypeBuilder.build_association_type(contract_class, association_definition)
             end
 
-            schema_class.attribute_definitions.each do |name, attribute_definition|
-              next unless attribute_definition.enum
-
-              enum_values = attribute_definition.enum
-              Descriptor.register_enum(name, enum_values, scope: contract_class,
-                                                          api_class: contract_class.api_class)
-            end
+            TypeBuilder.build_enums(contract_class, schema_class)
 
             Descriptor.register_type(type_name, scope: contract_class, api_class: contract_class.api_class) do
               schema_class.attribute_definitions.each do |name, attribute_definition|

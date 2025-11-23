@@ -17,6 +17,7 @@ module Apiwork
 
       def reset!
         @registry = nil
+        Standard::DescriptorBuilder.clear!
       end
     end
   end

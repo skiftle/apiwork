@@ -32,6 +32,8 @@ module Apiwork
             end
           end
 
+          private
+
           def ensure_filter_descriptors(schema_class, api_class:)
             needed = determine_needed_filter_descriptors(schema_class)
             needed.each { |type| register_filter_descriptor(type, api_class: api_class) }
@@ -99,18 +101,6 @@ module Apiwork
               register_nullable_uuid_filter(api_class: api_class)
             end
           end
-
-          def register_sort_descriptor(api_class:)
-            sort_descriptor_registered.fetch_or_store(api_class) do
-              builder = Descriptor::Builder.new(api_class: api_class)
-              builder.instance_eval do
-                enum :sort_direction, values: %w[asc desc]
-              end
-              true
-            end
-          end
-
-          private
 
           def registered_filter_descriptors
             @registered_filter_descriptors ||= Concurrent::Map.new

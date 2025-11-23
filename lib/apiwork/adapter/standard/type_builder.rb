@@ -7,6 +7,16 @@ module Apiwork
         MAX_RECURSION_DEPTH = 3
 
         class << self
+          def build_enums(contract_class, schema_class)
+            schema_class.attribute_definitions.each do |name, attribute_definition|
+              next unless attribute_definition.enum
+
+              enum_values = attribute_definition.enum
+              Descriptor.register_enum(name, enum_values, scope: contract_class,
+                                                          api_class: contract_class.api_class)
+            end
+          end
+
           def determine_filter_type(attr_type, nullable: false)
             base_type = case attr_type
                         when :string
@@ -47,7 +57,7 @@ module Apiwork
 
             visited = visited.dup.add(schema_class)
 
-            DescriptorBuilder.ensure_filter_descriptors(schema_class, api_class: contract_class.api_class)
+            DescriptorBuilder.send(:ensure_filter_descriptors, schema_class, api_class: contract_class.api_class)
 
             type_name = Helpers.build_type_name(schema_class, :filter, depth)
 
@@ -112,7 +122,7 @@ module Apiwork
 
             visited = visited.dup.add(schema_class)
 
-            DescriptorBuilder.ensure_sort_descriptor(schema_class, api_class: contract_class.api_class)
+            DescriptorBuilder.send(:ensure_sort_descriptor, schema_class, api_class: contract_class.api_class)
 
             type_name = Helpers.build_type_name(schema_class, :sort, depth)
 
@@ -411,6 +421,8 @@ module Apiwork
 
             return if Descriptor.resolve_type(resource_type_name, contract_class: contract_class)
 
+            build_enums(contract_class, schema_class)
+
             Descriptor.register_type(root_key, scope: contract_class, api_class: contract_class.api_class) do
               if schema_class.respond_to?(:sti_variant?) && schema_class.sti_variant?
                 parent_schema = schema_class.superclass
@@ -427,12 +439,6 @@ module Apiwork
               end
 
               schema_class.attribute_definitions.each do |name, attribute_definition|
-                if attribute_definition.enum
-                  enum_values = attribute_definition.enum
-                  Descriptor.register_enum(name, enum_values, scope: contract_class,
-                                                              api_class: contract_class.api_class)
-                end
-
                 enum_option = attribute_definition.enum ? { enum: name } : {}
                 param name,
                       type: TypeMapper.map(attribute_definition.type),

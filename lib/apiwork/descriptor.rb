@@ -6,7 +6,6 @@ module Apiwork
       # DOCUMENTATION
       def reset!
         Registry.clear!
-        Adapter::Standard::DescriptorBuilder.clear!
       end
 
       def define_type(name, api_class:, scope: nil, description: nil, example: nil, format: nil, deprecated: false, &block)
@@ -70,14 +69,6 @@ module Apiwork
 
       def register_union(name, data, scope: nil, api_class: nil)
         Registry.register_union(name, data, scope: scope, api_class: api_class)
-      end
-
-      def ensure_filter_descriptors(schema_class, api_class:)
-        Adapter::Standard::DescriptorBuilder.ensure_filter_descriptors(schema_class, api_class: api_class)
-      end
-
-      def ensure_sort_descriptor(schema_class, api_class:)
-        Adapter::Standard::DescriptorBuilder.ensure_sort_descriptor(schema_class, api_class: api_class)
       end
 
       def resolve_type(name, contract_class:, api_class: nil, scope: nil)
