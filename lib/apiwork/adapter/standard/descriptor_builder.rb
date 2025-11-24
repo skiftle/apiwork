@@ -9,8 +9,8 @@ module Apiwork
           @schema_data = schema_data
 
           register_base_types
-          register_global_filter_types if @schema_data.filterable_types.any?
-          register_sort_direction if @schema_data.sortable?
+          register_global_filter_types if schema_data.filterable_types.any?
+          register_sort_direction if schema_data.sortable?
         end
 
         private
@@ -98,6 +98,9 @@ module Apiwork
             register_nullable_datetime_filter
           when :nullable_uuid_filter
             register_nullable_uuid_filter
+          else
+            # TODO Switch to adapter-specific error class
+            raise ConfigurationError, "Unknown global filter type: #{type_name.inspect}"
           end
         end
 

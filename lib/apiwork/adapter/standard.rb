@@ -58,7 +58,7 @@ module Apiwork
       end
 
       def build_nested_writable_params(definition, schema_class, context, nested:)
-        ContractBuilder.generate_writable_params(definition, schema_class, context, nested: nested)
+        ContractBuilder.new(definition, schema_class).writable_params(context, nested: nested)
       end
 
       private
@@ -82,18 +82,18 @@ module Apiwork
         case action_name.to_sym
         when :index
           action_definition.request do
-            query { ContractBuilder.generate_query_params(self, schema_class) }
+            query { ContractBuilder.new(self, schema_class).query_params }
           end
         when :show
           add_include_query_param_if_needed(action_definition, schema_class)
         when :create
           action_definition.request do
-            body { ContractBuilder.generate_writable_request(self, schema_class, :create) }
+            body { ContractBuilder.new(self, schema_class).writable_request(:create) }
           end
           add_include_query_param_if_needed(action_definition, schema_class)
         when :update
           action_definition.request do
-            body { ContractBuilder.generate_writable_request(self, schema_class, :update) }
+            body { ContractBuilder.new(self, schema_class).writable_request(:update) }
           end
           add_include_query_param_if_needed(action_definition, schema_class)
         when :destroy
@@ -112,11 +112,11 @@ module Apiwork
         case action_name.to_sym
         when :index
           action_definition.response do
-            body { ContractBuilder.generate_collection_response(self, schema_class) }
+            body { ContractBuilder.new(self, schema_class).collection_response }
           end
         when :show, :create, :update
           action_definition.response do
-            body { ContractBuilder.generate_single_response(self, schema_class) }
+            body { ContractBuilder.new(self, schema_class).single_response }
           end
         when :destroy
           action_definition.response do
@@ -125,11 +125,11 @@ module Apiwork
         else
           if action_info[:type] == :collection
             action_definition.response do
-              body { ContractBuilder.generate_collection_response(self, schema_class) }
+              body { ContractBuilder.new(self, schema_class).collection_response }
             end
           elsif action_info[:type] == :member
             action_definition.response do
-              body { ContractBuilder.generate_single_response(self, schema_class) }
+              body { ContractBuilder.new(self, schema_class).single_response }
             end
           end
         end
