@@ -34,18 +34,13 @@ module Apiwork
           end
 
           self._schema_class = ref
+          SchemaRegistry.register(schema_class: ref, contract_class: self)
         end
 
         def find_contract_for_schema(schema_class)
           return nil unless schema_class
 
-          contract_name = schema_class.name.gsub(/Schema$/, 'Contract')
-          contract_name.constantize
-        rescue NameError
-          raise ArgumentError,
-                "No contract found for #{schema_class.name}. " \
-                "Expected to find #{contract_name}. " \
-                'All schemas must have a corresponding contract class.'
+          SchemaRegistry.find(schema_class)
         end
 
         def register_sti_variants(*variant_schema_classes)

@@ -16,6 +16,12 @@ module Apiwork
       Apiwork::Generator.register(:zod, Apiwork::Generator::Zod)
       Apiwork::Generator.register(:typescript, Apiwork::Generator::Typescript)
 
+      if Rails.root.join('app/contracts').exist?
+        Dir[Rails.root.join('app/contracts/**/*.rb')].sort.each do |file|
+          load file
+        end
+      end
+
       if Rails.root.join('config/apis').exist?
         Dir[Rails.root.join('config/apis/**/*.rb')].sort.each do |file|
           load file

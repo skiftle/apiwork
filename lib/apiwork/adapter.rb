@@ -18,6 +18,7 @@ module Apiwork
       def reset!
         @registry = nil
         Standard::DescriptorBuilder.clear!
+        Contract::SchemaRegistry.clear!
       end
     end
   end
