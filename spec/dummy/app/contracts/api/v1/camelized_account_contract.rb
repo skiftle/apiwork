@@ -3,7 +3,7 @@
 module Api
   module V1
     class CamelizedAccountContract < Apiwork::Contract::Base
-      schema CamelizedAccountSchema
+      schema!
     end
   end
 end

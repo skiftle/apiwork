@@ -3,7 +3,7 @@
 module Api
   module V1
     class ReplyContract < Apiwork::Contract::Base
-      schema ReplySchema
+      schema!
     end
   end
 end

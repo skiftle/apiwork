@@ -110,41 +110,45 @@ RSpec.describe 'Configuration Integration', type: :request do
         resources :posts
       end
     end
-
     let(:inheritance_schema) do
-      Class.new(Apiwork::Schema::Base) do
-        def self.name
-          'Api::Inheritance::PostSchema'
-        end
-
-        configure do
-          default_page_size 50
-        end
-      end
+      Api::Inheritance::PostSchema
+    end
+    let(:inheritance_contract) do
+      Api::Inheritance::PostContract
     end
 
-    let(:inheritance_contract) do
-      schema_class = inheritance_schema # Capture for closure
-      Class.new(Apiwork::Contract::Base) do
-        def self.name
-          'Api::Inheritance::PostContract'
-        end
+    before(:all) do
+      module Api
+        module Inheritance
+          class PostSchema < Apiwork::Schema::Base
+            configure do
+              default_page_size 50
+            end
+          end
 
-        schema schema_class
+          class PostContract < Apiwork::Contract::Base
+            schema!
 
-        configure do
-          max_array_items 500
-        end
+            configure do
+              max_array_items 500
+            end
 
-        action :create do
-          request do
-            body do
-              param :title, type: :string
-              param :tags, type: :array, of: :string
+            action :create do
+              request do
+                body do
+                  param :title, type: :string
+                  param :tags, type: :array, of: :string
+                end
+              end
             end
           end
         end
       end
+    end
+
+    after(:all) do
+      Api::Inheritance.send(:remove_const, :PostSchema) if defined?(Api::Inheritance::PostSchema)
+      Api::Inheritance.send(:remove_const, :PostContract) if defined?(Api::Inheritance::PostContract)
     end
 
     before do

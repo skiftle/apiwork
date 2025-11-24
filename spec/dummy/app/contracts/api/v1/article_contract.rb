@@ -6,7 +6,7 @@ module Api
     # Demonstrates how contracts can define minimal request requirements
     # while the underlying model may have additional fields
     class ArticleContract < Apiwork::Contract::Base
-      schema ArticleSchema
+      schema!
 
       # Standard CRUD actions - only require title
       # When using replace: true, we must manually wrap in root key

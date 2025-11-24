@@ -3,7 +3,7 @@
 module Api
   module V1
     class ServiceContract < Apiwork::Contract::Base
-      schema ServiceSchema
+      schema!
     end
   end
 end

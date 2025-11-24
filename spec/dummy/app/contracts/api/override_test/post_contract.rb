@@ -3,7 +3,7 @@
 module Api
   module OverrideTest
     class PostContract < Apiwork::Contract::Base
-      schema PostSchema
+      schema!
     end
   end
 end

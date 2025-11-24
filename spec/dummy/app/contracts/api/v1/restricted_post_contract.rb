@@ -3,7 +3,7 @@
 module Api
   module V1
     class RestrictedPostContract < Apiwork::Contract::Base
-      schema RestrictedPostSchema
+      schema!
     end
   end
 end

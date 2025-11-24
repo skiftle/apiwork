@@ -3,7 +3,7 @@
 module Api
   module V1
     class TagContract < Apiwork::Contract::Base
-      schema TagSchema
+      schema!
     end
   end
 end

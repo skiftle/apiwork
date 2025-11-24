@@ -37,12 +37,15 @@ RSpec.describe 'Abstract Contract' do
     before(:all) do
       # Define abstract base contract for testing
       module TestNamespace
+        class PostSchema < Apiwork::Schema::Base
+        end
+
         class BaseContract < Apiwork::Contract::Base
           abstract
         end
 
-        class ConcreteContract < BaseContract
-          schema Api::V1::PostSchema
+        class PostContract < BaseContract
+          schema!
 
           action :create do
             request do
@@ -56,21 +59,22 @@ RSpec.describe 'Abstract Contract' do
     end
 
     after(:all) do
+      TestNamespace.send(:remove_const, :PostSchema)
       TestNamespace.send(:remove_const, :BaseContract)
-      TestNamespace.send(:remove_const, :ConcreteContract)
+      TestNamespace.send(:remove_const, :PostContract)
     end
 
     it 'BaseContract is abstract' do
       expect(TestNamespace::BaseContract.abstract?).to be true
     end
 
-    it 'ConcreteContract inherits from BaseContract but is not abstract' do
-      expect(TestNamespace::ConcreteContract.superclass).to eq(TestNamespace::BaseContract)
-      expect(TestNamespace::ConcreteContract.abstract?).to be false
+    it 'PostContract inherits from BaseContract but is not abstract' do
+      expect(TestNamespace::PostContract.superclass).to eq(TestNamespace::BaseContract)
+      expect(TestNamespace::PostContract.abstract?).to be false
     end
 
-    it 'ConcreteContract can define actions normally' do
-      action_definition = TestNamespace::ConcreteContract.action_definition(:create)
+    it 'PostContract can define actions normally' do
+      action_definition = TestNamespace::PostContract.action_definition(:create)
       expect(action_definition).not_to be_nil
       expect(action_definition.action_name).to eq(:create)
     end

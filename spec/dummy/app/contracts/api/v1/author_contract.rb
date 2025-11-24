@@ -5,7 +5,7 @@ module Api
     # AuthorContract - Test contract for writable context filtering
     # Uses auto-generated inputs from AuthorSchema
     class AuthorContract < Apiwork::Contract::Base
-      schema AuthorSchema
+      schema!
     end
   end
 end

@@ -27,14 +27,20 @@ module Apiwork
         end
 
         # DOCUMENTATION
-        def schema(ref)
-          unless ref.is_a?(Class)
-            raise ArgumentError, "schema must be a Class constant, got #{ref.class}. " \
-                                 "Use: schema PostSchema (not 'PostSchema' or :post_schema)"
-          end
+        def schema!
+          return _schema_class if _schema_class
 
-          self._schema_class = ref
-          SchemaRegistry.register(schema_class: ref, contract_class: self)
+          schema_name = name.sub(/Contract$/, 'Schema')
+          schema_class = schema_name.constantize
+
+          self._schema_class = schema_class
+          SchemaRegistry.register(schema_class: schema_class, contract_class: self)
+
+          schema_class
+        rescue NameError
+          raise ArgumentError,
+                "Expected to find #{schema_name} for #{name}. " \
+                'Contract and Schema names must follow convention: XContract ↔ XSchema'
         end
 
         def find_contract_for_schema(schema_class)

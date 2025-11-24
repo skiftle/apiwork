@@ -3,7 +3,7 @@
 module Api
   module V1
     class PostContract < Apiwork::Contract::Base
-      schema PostSchema
+      schema!
 
       action :show do
         error_codes 404, 403 # Not found, forbidden

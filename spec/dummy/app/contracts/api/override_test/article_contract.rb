@@ -3,7 +3,7 @@
 module Api
   module OverrideTest
     class ArticleContract < Apiwork::Contract::Base
-      schema ArticleSchema
+      schema!
     end
   end
 end

@@ -3,7 +3,7 @@
 module Api
   module V1
     class AccountContract < Apiwork::Contract::Base
-      schema AccountSchema
+      schema!
 
       action :show
     end

@@ -3,7 +3,7 @@
 module Api
   module V1
     class UserContract < Apiwork::Contract::Base
-      schema UserSchema
+      schema!
 
       action :index
       action :show
