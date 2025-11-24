@@ -3,7 +3,7 @@
 module Apiwork
   module Adapter
     class Standard < Base
-      class Query
+      class CollectionLoader
         module EagerLoading
           def apply_includes(scope, params = {})
             return scope if schema_class.association_definitions.empty?

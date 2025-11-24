@@ -3,7 +3,7 @@
 module Apiwork
   module Adapter
     class Standard < Base
-      class Query
+      class CollectionLoader
         module Sorting
           def apply_sort(scope, params, issues = [])
             return scope if params.blank?
@@ -108,7 +108,7 @@ module Apiwork
 
                 association_resource = association_resource.constantize if association_resource.is_a?(String)
 
-                nested_query = Query.new(association.klass.all, association_resource)
+                nested_query = CollectionLoader.new(association.klass.all, association_resource, {}, nil)
                 nested_orders, nested_joins = nested_query.send(:build_order_clauses, value, association.klass, issues)
                 orders.concat(nested_orders)
 

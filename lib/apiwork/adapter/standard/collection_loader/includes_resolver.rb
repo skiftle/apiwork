@@ -3,7 +3,7 @@
 module Apiwork
   module Adapter
     class Standard < Base
-      class Query
+      class CollectionLoader
         class IncludesResolver
           attr_reader :schema
 

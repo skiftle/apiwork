@@ -3,7 +3,7 @@
 module Apiwork
   module Adapter
     class Standard < Base
-      class Query
+      class CollectionLoader
         class FilterBuilder
           attr_reader :allowed_types,
                       :column,

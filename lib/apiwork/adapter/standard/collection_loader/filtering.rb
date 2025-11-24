@@ -3,7 +3,7 @@
 module Apiwork
   module Adapter
     class Standard < Base
-      class Query
+      class CollectionLoader
         module Filtering
           include Apiwork::Schema::Operator
 
@@ -273,7 +273,7 @@ module Apiwork
               return [[], {}]
             end
 
-            nested_query = Query.new(association_reflection.klass.all, assoc_resource)
+            nested_query = CollectionLoader.new(association_reflection.klass.all, assoc_resource, {}, nil)
             nested_conditions, nested_joins = nested_query.send(:build_where_conditions, value,
                                                                 association_reflection.klass, issues)
 

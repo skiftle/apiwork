@@ -3,20 +3,20 @@
 module Apiwork
   module Adapter
     class Standard < Base
-      class Query
+      class CollectionLoader
         module Pagination
           def apply_pagination(scope, params)
             page_number = params.fetch(:number, 1).to_i
             page_size = params.fetch(:size, default_page_size).to_i
             offset = (page_number - 1) * page_size
 
-            @meta = build_meta_for_scope(scope, page_number, page_size)
+            @metadata = build_meta_for_scope(scope, page_number, page_size)
 
             scope.limit(page_size).offset(offset)
           end
 
           def build_meta(collection)
-            return @meta if @meta.present?
+            return @metadata if @metadata.present?
 
             build_meta_for_scope(collection, 1, default_page_size)
           end

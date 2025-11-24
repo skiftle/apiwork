@@ -11,19 +11,19 @@ module Apiwork
         raise NotImplementedError
       end
 
-      def collection_scope(collection, schema_class, query, context)
+      def load_collection(collection, schema_class, query, context)
         raise NotImplementedError
       end
 
-      def record_scope(record, schema_class, query, context)
+      def load_record(record, schema_class, query, context)
         raise NotImplementedError
       end
 
-      def render_collection(scope_result, user_meta, query, schema_class, context)
+      def render_collection(load_result, user_meta, query, schema_class, context)
         raise NotImplementedError
       end
 
-      def render_record(scope_result, user_meta, query, schema_class, context)
+      def render_record(load_result, user_meta, query, schema_class, context)
         raise NotImplementedError
       end
 

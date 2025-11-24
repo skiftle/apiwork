@@ -35,22 +35,22 @@ module Apiwork
         adapter_instance = adapter
         context = adapter_context
 
-        scope_result = if schema_class.present?
-                         adapter_instance.collection_scope(
+        load_result = if schema_class.present?
+                         adapter_instance.load_collection(
                            collection,
                            schema_class,
                            @request.data,
                            context
                          )
                        else
-                         Adapter::ScopeResult.new(collection)
+                         Adapter::LoadResult.new(collection)
                        end
 
-        serialized_data = action_definition.serialize_data(scope_result.data,
+        serialized_data = action_definition.serialize_data(load_result.data,
                                                            context: @context,
                                                            includes: includes_param)
 
-        serialized_scope_result = Adapter::ScopeResult.new(serialized_data, scope_result.metadata)
+        serialized_scope_result = Adapter::LoadResult.new(serialized_data, load_result.metadata)
 
         if schema_class
           adapter_instance.render_collection(serialized_scope_result, @meta, @request.data, schema_class, context)
@@ -64,20 +64,20 @@ module Apiwork
         adapter_instance = adapter
         context = adapter_context
 
-        scope_result = if schema_class.present?
-                         adapter_instance.record_scope(
+        load_result = if schema_class.present?
+                         adapter_instance.load_record(
                            resource,
                            schema_class,
                            @request.data,
                            context
                          )
                        else
-                         Adapter::ScopeResult.new(resource)
+                         Adapter::LoadResult.new(resource)
                        end
 
-        serialized_data = action_definition.serialize_data(scope_result.data, context: @context, includes: includes_param)
+        serialized_data = action_definition.serialize_data(load_result.data, context: @context, includes: includes_param)
 
-        serialized_scope_result = Adapter::ScopeResult.new(serialized_data, scope_result.metadata)
+        serialized_scope_result = Adapter::LoadResult.new(serialized_data, load_result.metadata)
 
         if schema_class
           adapter_instance.render_record(serialized_scope_result, @meta, @request.data, schema_class, context)

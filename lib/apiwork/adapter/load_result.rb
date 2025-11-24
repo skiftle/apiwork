@@ -2,7 +2,7 @@
 
 module Apiwork
   module Adapter
-    class ScopeResult
+    class LoadResult
       attr_reader :data,
                   :metadata
 
