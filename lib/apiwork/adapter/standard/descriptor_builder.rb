@@ -15,7 +15,8 @@ module Apiwork
 
         private
 
-        attr_reader :builder, :schema_data
+        attr_reader :builder,
+                    :schema_data
 
         def register_base_types
           builder.instance_eval do
@@ -41,17 +42,40 @@ module Apiwork
 
           # Register non-nullable variants for all filterable types
           schema_data.filterable_types.each do |type|
-            filter_type = TypeBuilder.determine_filter_type(type, nullable: false)
+            filter_type = determine_filter_type(type, nullable: false)
             filter_types_to_register.add(filter_type)
           end
 
           # Register nullable variants ONLY for types that have nullable attributes
           schema_data.nullable_filterable_types.each do |type|
-            nullable_filter_type = TypeBuilder.determine_filter_type(type, nullable: true)
+            nullable_filter_type = determine_filter_type(type, nullable: true)
             filter_types_to_register.add(nullable_filter_type)
           end
 
           filter_types_to_register.each { |type| register_filter_descriptor(type) }
+        end
+
+        def determine_filter_type(attr_type, nullable: false)
+          base_type = case attr_type
+                      when :string
+                        :string_filter
+                      when :date
+                        :date_filter
+                      when :datetime
+                        :datetime_filter
+                      when :integer
+                        :integer_filter
+                      when :decimal, :float
+                        :decimal_filter
+                      when :uuid
+                        :uuid_filter
+                      when :boolean
+                        :boolean_filter
+                      else
+                        :string_filter
+                      end
+
+          nullable ? :"nullable_#{base_type}" : base_type
         end
 
         def register_sort_direction
@@ -99,7 +123,7 @@ module Apiwork
           when :nullable_uuid_filter
             register_nullable_uuid_filter
           else
-            # TODO Switch to adapter-specific error class
+            # TODO: Switch to adapter-specific error class
             raise ConfigurationError, "Unknown global filter type: #{type_name.inspect}"
           end
         end

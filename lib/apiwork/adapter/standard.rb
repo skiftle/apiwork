@@ -53,10 +53,6 @@ module Apiwork
         { ok: false, issues: issues.map(&:to_h) }
       end
 
-      def build_nested_writable_params(definition, schema_class, context_symbol, nested:)
-        ContractBuilder.writable_params_for(definition, schema_class, context_symbol, nested: nested)
-      end
-
       private
 
       def build_includes_hash(schema_class, includes_param)

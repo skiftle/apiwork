@@ -4,6 +4,8 @@ module Apiwork
   module Adapter
     class Standard < Base
       class ContractBuilder
+        MAX_RECURSION_DEPTH = 3
+
         def initialize(contract_class, schema_class, context)
           @contract_class = contract_class
           @schema_class = schema_class
@@ -13,14 +15,6 @@ module Apiwork
           build_actions
         end
 
-        def self.writable_params_for(definition, schema_class, context_symbol, nested:)
-          instance = allocate
-          instance.instance_variable_set(:@contract_class, definition.contract_class)
-          instance.instance_variable_set(:@schema_class, schema_class)
-          instance.instance_variable_set(:@context, nil)
-          instance.send(:writable_params, definition, context_symbol, nested: nested)
-        end
-
         private
 
         attr_reader :context,
@@ -28,8 +22,8 @@ module Apiwork
                     :schema_class
 
         def query_params(definition)
-          filter_type = TypeBuilder.build_filter_type(contract_class, schema_class)
-          sort_type = TypeBuilder.build_sort_type(contract_class, schema_class)
+          filter_type = build_filter_type
+          sort_type = build_sort_type
 
           if filter_type
             definition.param :filter, type: :union, required: false do
@@ -45,10 +39,10 @@ module Apiwork
             end
           end
 
-          page_type = TypeBuilder.build_page_type(contract_class, schema_class)
+          page_type = build_page_type
           definition.param :page, type: page_type, required: false
 
-          include_type = TypeBuilder.build_include_type(contract_class, schema_class)
+          include_type = build_include_type
           definition.param :include, type: include_type, required: false
         end
 
@@ -56,15 +50,13 @@ module Apiwork
           root_key = schema_class.root_key.singular.to_sym
           builder = self
 
-          if Helpers.sti_base_schema?(schema_class)
+          if sti_base_schema?
             payload_type_name = sti_request_union(context_symbol)
           else
             payload_type_name = :"#{context_symbol}_payload"
 
             unless contract_class.resolve_type(payload_type_name)
               contract_class.register_type(payload_type_name) do
-                # Inside register_type block, self is the type definition
-                # We need to pass it as the definition parameter
                 builder.send(:writable_params, self, context_symbol, nested: false)
               end
             end
@@ -99,16 +91,12 @@ module Apiwork
           schema_class.association_definitions.each do |name, association_definition|
             next unless association_definition.writable_for?(context_symbol)
 
-            association_schema = Helpers.resolve_association_resource(association_definition, schema_class)
+            association_schema = resolve_association_resource(association_definition)
             association_payload_type = nil
 
             association_contract = nil
             if association_schema
-              import_alias = Helpers.auto_import_association_contract(
-                contract_class,
-                association_schema,
-                Set.new
-              )
+              import_alias = import_association_contract(association_schema, Set.new)
 
               if import_alias
                 association_payload_type = :"#{import_alias}_nested_payload"
@@ -258,11 +246,12 @@ module Apiwork
         def add_include_query_param_if_needed(action_definition)
           return unless schema_class.association_definitions.any?
 
-          schema_class_local = schema_class
+          schema_class
+          builder = self
 
           action_definition.request do
             query do
-              include_type = Standard::TypeBuilder.build_include_type(contract_class, schema_class_local)
+              include_type = builder.send(:build_include_type)
               param :include, type: include_type, required: false
             end
           end
@@ -273,8 +262,7 @@ module Apiwork
           discriminator_name = schema_class.discriminator_name
           builder = self
 
-          TypeBuilder.build_sti_union(contract_class, schema_class,
-                                      union_type_name: union_type_name) do |contract, variant_schema, tag, _visited|
+          build_sti_union(union_type_name: union_type_name) do |contract, variant_schema, tag, _visited|
             variant_schema_name = variant_schema.name.demodulize.underscore.gsub(/_schema$/, '')
             variant_type_name = :"#{variant_schema_name}_#{context_symbol}_payload"
 
@@ -291,8 +279,8 @@ module Apiwork
         end
 
         def resource_type_name_for_response
-          if Helpers.sti_base_schema?(schema_class)
-            TypeBuilder.build_sti_response_union_type(contract_class, schema_class)
+          if sti_base_schema?
+            build_sti_response_union_type
           else
             root_key = schema_class.root_key.singular.to_sym
             resource_type_name = contract_class.scoped_type_name(nil)
@@ -306,10 +294,10 @@ module Apiwork
         def register_resource_type(type_name)
           assoc_type_map = {}
           schema_class.association_definitions.each do |name, association_definition|
-            assoc_type_map[name] = TypeBuilder.build_association_type(contract_class, schema_class, association_definition)
+            assoc_type_map[name] = build_association_type(association_definition)
           end
 
-          TypeBuilder.build_enums(contract_class, schema_class)
+          build_enums
 
           schema_class_local = schema_class
           contract_class.register_type(type_name) do
@@ -348,6 +336,495 @@ module Apiwork
               end
             end
           end
+        end
+
+        def build_filter_type(visited: Set.new, depth: 0)
+          return nil if visited.include?(schema_class)
+          return nil if depth >= MAX_RECURSION_DEPTH
+
+          visited = visited.dup.add(schema_class)
+
+          type_name = type_name(:filter, depth)
+
+          existing = contract_class.resolve_type(type_name)
+          return type_name if existing
+
+          builder = self
+          schema_class_local = schema_class
+
+          contract_class.register_type(type_name) do
+            param :_and, type: :array, of: type_name, required: false
+            param :_or, type: :array, of: type_name, required: false
+            param :_not, type: type_name, required: false
+
+            schema_class_local.attribute_definitions.each do |name, attribute_definition|
+              next unless attribute_definition.filterable?
+              next if attribute_definition.type == :unknown
+
+              filter_type = builder.send(:filter_type_for, attribute_definition)
+
+              if attribute_definition.enum
+                param name, type: filter_type, required: false
+              else
+                param name, type: :union, required: false do
+                  variant type: TypeMapper.map(attribute_definition.type)
+                  variant type: filter_type
+                end
+              end
+            end
+
+            schema_class_local.association_definitions.each do |name, association_definition|
+              next unless association_definition.filterable?
+
+              association_resource = builder.send(:resolve_association_resource, association_definition)
+              next unless association_resource
+              next if visited.include?(association_resource)
+
+              import_alias = builder.send(:import_association_contract, association_resource, visited)
+
+              association_filter_type = if import_alias
+                                          :"#{import_alias}_filter"
+                                        else
+                                          builder.send(:build_filter_type_for_schema,
+                                                       association_resource,
+                                                       visited: visited,
+                                                       depth: depth + 1)
+                                        end
+
+              param name, type: association_filter_type, required: false if association_filter_type
+            end
+          end
+
+          type_name
+        end
+
+        def build_filter_type_for_schema(assoc_schema, visited:, depth:)
+          temp_builder = self.class.allocate
+          temp_builder.instance_variable_set(:@contract_class, contract_class)
+          temp_builder.instance_variable_set(:@schema_class, assoc_schema)
+          temp_builder.instance_variable_set(:@context, nil)
+          temp_builder.send(:build_filter_type, visited: visited, depth: depth)
+        end
+
+        def build_sort_type(visited: Set.new, depth: 0)
+          return nil if visited.include?(schema_class)
+          return nil if depth >= MAX_RECURSION_DEPTH
+
+          visited = visited.dup.add(schema_class)
+
+          type_name = type_name(:sort, depth)
+
+          existing = contract_class.resolve_type(type_name)
+          return type_name if existing
+
+          builder = self
+          schema_class_local = schema_class
+
+          contract_class.register_type(type_name) do
+            schema_class_local.attribute_definitions.each do |name, attribute_definition|
+              next unless attribute_definition.sortable?
+
+              param name, type: :sort_direction, required: false
+            end
+
+            schema_class_local.association_definitions.each do |name, association_definition|
+              next unless association_definition.sortable?
+
+              association_resource = builder.send(:resolve_association_resource, association_definition)
+              next unless association_resource
+              next if visited.include?(association_resource)
+
+              import_alias = builder.send(:import_association_contract, association_resource, visited)
+
+              association_sort_type = if import_alias
+                                        :"#{import_alias}_sort"
+                                      else
+                                        builder.send(:build_sort_type_for_schema,
+                                                     association_resource,
+                                                     visited: visited,
+                                                     depth: depth + 1)
+                                      end
+
+              param name, type: association_sort_type, required: false if association_sort_type
+            end
+          end
+
+          type_name
+        end
+
+        def build_sort_type_for_schema(assoc_schema, visited:, depth:)
+          temp_builder = self.class.allocate
+          temp_builder.instance_variable_set(:@contract_class, contract_class)
+          temp_builder.instance_variable_set(:@schema_class, assoc_schema)
+          temp_builder.instance_variable_set(:@context, nil)
+          temp_builder.send(:build_sort_type, visited: visited, depth: depth)
+        end
+
+        def build_page_type
+          resolved_max_page_size = Configuration::Resolver.resolve(:max_page_size,
+                                                                   contract_class: contract_class,
+                                                                   schema_class: schema_class,
+                                                                   api_class: contract_class.api_class)
+
+          type_name = type_name(:page, 1)
+
+          existing = contract_class.resolve_type(type_name)
+          return type_name if existing
+
+          contract_class.register_global_type(type_name) do
+            param :number, type: :integer, required: false, min: 1
+            param :size, type: :integer, required: false, min: 1, max: resolved_max_page_size
+          end
+
+          type_name
+        end
+
+        def build_include_type(visited: Set.new, depth: 0)
+          type_name = type_name(:include, depth)
+
+          existing = contract_class.resolve_type(type_name)
+          return type_name if existing
+          return type_name if depth >= MAX_RECURSION_DEPTH
+
+          visited = visited.dup.add(schema_class)
+
+          builder = self
+          schema_class_local = schema_class
+
+          contract_class.register_type(type_name) do
+            schema_class_local.association_definitions.each do |name, association_definition|
+              association_resource = builder.send(:resolve_association_resource, association_definition)
+              next unless association_resource
+
+              is_sti = association_resource.is_a?(Hash) && association_resource[:sti]
+              actual_schema = is_sti ? association_resource[:schema] : association_resource
+
+              if visited.include?(actual_schema)
+                param name, type: :boolean, required: false unless association_definition.always_included?
+              else
+                import_alias = builder.send(:import_association_contract, actual_schema, visited)
+
+                association_include_type = if import_alias
+                                             :"#{import_alias}_include"
+                                           else
+                                             builder.send(:build_include_type_for_schema,
+                                                          actual_schema,
+                                                          visited: visited,
+                                                          depth: depth + 1)
+                                           end
+
+                if association_definition.always_included?
+                  param name, type: association_include_type, required: false
+                else
+                  param name, type: :union, required: false do
+                    variant type: :boolean
+                    variant type: association_include_type
+                  end
+                end
+              end
+            end
+          end
+
+          type_name
+        end
+
+        def build_include_type_for_schema(assoc_schema, visited:, depth:)
+          temp_builder = self.class.allocate
+          temp_builder.instance_variable_set(:@contract_class, contract_class)
+          temp_builder.instance_variable_set(:@schema_class, assoc_schema)
+          temp_builder.instance_variable_set(:@context, nil)
+          temp_builder.send(:build_include_type, visited: visited, depth: depth)
+        end
+
+        def build_nested_payload_union
+          return unless schema_class.attribute_definitions.any? { |_, ad| ad.writable? } ||
+                        schema_class.association_definitions.any? { |_, ad| ad.writable? }
+
+          create_type_name = :nested_create_payload
+          builder = self
+          schema = schema_class
+
+          unless contract_class.resolve_type(create_type_name)
+            contract_class.register_type(create_type_name) do
+              param :_type, type: :literal, value: 'create', required: true
+              builder.send(:writable_params, self, :create, nested: true)
+              param :_destroy, type: :boolean, required: false if schema.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
+            end
+          end
+
+          update_type_name = :nested_update_payload
+          unless contract_class.resolve_type(update_type_name)
+            contract_class.register_type(update_type_name) do
+              param :_type, type: :literal, value: 'update', required: true
+              builder.send(:writable_params, self, :update, nested: true)
+              param :_destroy, type: :boolean, required: false if schema.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
+            end
+          end
+
+          nested_payload_type_name = :nested_payload
+          return if contract_class.resolve_type(nested_payload_type_name)
+
+          create_qualified_name = contract_class.scoped_type_name(create_type_name)
+          update_qualified_name = contract_class.scoped_type_name(update_type_name)
+
+          contract_class.build_union(nested_payload_type_name, discriminator: :_type) do |union|
+            union.variant(type: create_qualified_name, tag: 'create')
+            union.variant(type: update_qualified_name, tag: 'update')
+          end
+        end
+
+        def build_response_type(visited: Set.new)
+          return if visited.include?(schema_class)
+
+          visited = visited.dup.add(schema_class)
+
+          return if sti_base_schema?
+
+          root_key = schema_class.root_key.singular.to_sym
+          resource_type_name = contract_class.scoped_type_name(nil)
+
+          return if contract_class.resolve_type(resource_type_name)
+
+          build_enums
+
+          builder = self
+          schema_class_local = schema_class
+
+          contract_class.register_type(root_key) do
+            if schema_class_local.respond_to?(:sti_variant?) && schema_class_local.sti_variant?
+              parent_schema = schema_class_local.superclass
+              discriminator_name = parent_schema.discriminator_name
+              variant_tag = schema_class_local.variant_tag.to_s
+
+              param discriminator_name, type: :literal, value: variant_tag, required: true
+            end
+
+            assoc_type_map = {}
+            schema_class_local.association_definitions.each do |name, association_definition|
+              result = builder.send(:build_association_type, association_definition, visited: visited)
+              assoc_type_map[name] = result
+            end
+
+            schema_class_local.attribute_definitions.each do |name, attribute_definition|
+              enum_option = attribute_definition.enum ? { enum: name } : {}
+              param name,
+                    type: TypeMapper.map(attribute_definition.type),
+                    required: false,
+                    description: attribute_definition.description,
+                    example: attribute_definition.example,
+                    format: attribute_definition.format,
+                    deprecated: attribute_definition.deprecated,
+                    **enum_option
+            end
+
+            schema_class_local.association_definitions.each do |name, association_definition|
+              assoc_type = assoc_type_map[name]
+              is_required = association_definition.always_included?
+
+              if assoc_type
+                if association_definition.singular?
+                  param name, type: assoc_type, required: is_required, nullable: association_definition.nullable?
+                elsif association_definition.collection?
+                  param name, type: :array, of: assoc_type, required: is_required,
+                              nullable: association_definition.nullable?
+                end
+              elsif association_definition.singular?
+                param name, type: :object, required: is_required, nullable: association_definition.nullable?
+              elsif association_definition.collection?
+                param name, type: :array, of: :object, required: is_required, nullable: association_definition.nullable?
+              end
+            end
+          end
+        end
+
+        def build_association_type(association_definition, visited: Set.new)
+          return build_polymorphic_association_type(association_definition, visited: visited) if association_definition.polymorphic?
+
+          association_schema = resolve_association_resource(association_definition)
+          return nil unless association_schema
+
+          if association_schema.is_a?(Hash) && association_schema[:sti]
+            return build_sti_association_type(association_definition, association_schema[:schema], visited: visited)
+          end
+
+          return nil if visited.include?(association_schema)
+
+          import_alias = import_association_contract(association_schema, visited)
+          return import_alias if import_alias
+
+          nil
+        end
+
+        def build_polymorphic_association_type(association_definition, visited: Set.new)
+          polymorphic = association_definition.polymorphic
+          return nil unless polymorphic&.any?
+
+          union_type_name = :"#{association_definition.name}_polymorphic"
+
+          existing = contract_class.resolve_type(union_type_name)
+          return existing if existing
+
+          builder = self
+
+          contract_class.build_union(union_type_name, discriminator: association_definition.discriminator) do |union|
+            polymorphic.each do |tag, schema_class|
+              import_alias = builder.send(:import_association_contract, schema_class, visited)
+              next unless import_alias
+
+              union.variant(type: import_alias, tag: tag.to_s)
+            end
+          end
+        end
+
+        def build_sti_union(union_type_name:, visited: Set.new, &variant_builder)
+          variants = schema_class.variants
+          return nil unless variants&.any?
+
+          discriminator_name = schema_class.discriminator_name
+
+          contract_class.build_union(union_type_name, discriminator: discriminator_name) do |union|
+            variants.each do |tag, variant_data|
+              variant_schema = variant_data[:schema]
+
+              variant_type = yield(contract_class, variant_schema, tag, visited)
+              next unless variant_type
+
+              union.variant(type: variant_type, tag: tag.to_s)
+            end
+          end
+        end
+
+        def build_sti_association_type(association_definition, schema_class_arg, visited: Set.new)
+          union_type_name = :"#{association_definition.name}_sti"
+
+          temp_builder = self.class.allocate
+          temp_builder.instance_variable_set(:@contract_class, contract_class)
+          temp_builder.instance_variable_set(:@schema_class, schema_class_arg)
+          temp_builder.instance_variable_set(:@context, nil)
+
+          temp_builder.send(:build_sti_union, union_type_name: union_type_name,
+                                              visited: visited) do |_contract, variant_schema, _tag, visit_set|
+            temp_builder.send(:import_association_contract, variant_schema, visit_set)
+          end
+        end
+
+        def build_sti_response_union_type(visited: Set.new)
+          union_type_name = schema_class.root_key.singular.to_sym
+
+          builder = self
+
+          build_sti_union(union_type_name: union_type_name, visited: visited) do |_contract, variant_schema, _tag, visit_set|
+            builder.send(:import_association_contract, variant_schema, visit_set)
+          end
+        end
+
+        def determine_filter_type(attr_type, nullable: false)
+          base_type = case attr_type
+                      when :string
+                        :string_filter
+                      when :date
+                        :date_filter
+                      when :datetime
+                        :datetime_filter
+                      when :integer
+                        :integer_filter
+                      when :decimal, :float
+                        :decimal_filter
+                      when :uuid
+                        :uuid_filter
+                      when :boolean
+                        :boolean_filter
+                      else
+                        :string_filter
+                      end
+
+          nullable ? :"nullable_#{base_type}" : base_type
+        end
+
+        def filter_type_for(attribute_definition)
+          return enum_filter_type(attribute_definition) if attribute_definition.enum
+
+          determine_filter_type(attribute_definition.type, nullable: attribute_definition.nullable?)
+        end
+
+        def enum_filter_type(attribute_definition)
+          scoped_enum_name = contract_class.scoped_enum_name(attribute_definition.name)
+          :"#{scoped_enum_name}_filter"
+        end
+
+        def sti_base_schema?
+          return false unless schema_class.respond_to?(:sti_base?) && schema_class.sti_base?
+
+          schema_class.respond_to?(:variants) && schema_class.variants&.any?
+        end
+
+        def resolve_association_resource(association_definition)
+          return :polymorphic if association_definition.polymorphic?
+
+          if association_definition.schema_class
+            resolved_schema = if association_definition.schema_class.is_a?(Class)
+                                association_definition.schema_class
+                              else
+                                begin
+                                  association_definition.schema_class.constantize
+                                rescue NameError
+                                  nil
+                                end
+                              end
+
+            return { sti: true, schema: resolved_schema } if resolved_schema.respond_to?(:sti_base?) && resolved_schema.sti_base?
+
+            return resolved_schema
+          end
+
+          model_class = association_definition.model_class
+          return nil unless model_class
+
+          reflection = model_class.reflect_on_association(association_definition.name)
+          return nil unless reflection
+
+          resolved_schema = Schema::Resolver.from_association(reflection, schema_class)
+          return nil unless resolved_schema
+
+          return { sti: true, schema: resolved_schema } if resolved_schema.respond_to?(:sti_base?) && resolved_schema.sti_base?
+
+          resolved_schema
+        end
+
+        def import_association_contract(association_schema, visited)
+          return nil if visited.include?(association_schema)
+
+          association_contract = contract_class.find_contract_for_schema(association_schema)
+          return nil unless association_contract
+
+          alias_name = association_schema.root_key.singular.to_sym
+
+          contract_class.import(association_contract, as: alias_name) unless contract_class.imports.key?(alias_name)
+
+          if association_contract.schema?
+            temp_builder = self.class.allocate
+            temp_builder.instance_variable_set(:@contract_class, association_contract)
+            temp_builder.instance_variable_set(:@schema_class, association_schema)
+            temp_builder.instance_variable_set(:@context, nil)
+
+            temp_builder.send(:build_filter_type, visited: visited, depth: 0)
+            temp_builder.send(:build_sort_type, visited: visited, depth: 0)
+            temp_builder.send(:build_include_type, visited: visited, depth: 0)
+            temp_builder.send(:build_nested_payload_union)
+
+            # Build response type - this has an internal check to avoid rebuilding if it already exists
+            # This is needed for association-only schemas that don't have their types built during initialization
+            temp_builder.send(:build_response_type, visited: Set.new)
+          end
+
+          alias_name
+        end
+
+        def type_name(base_name, depth)
+          return base_name if depth.zero?
+
+          schema_name = schema_class.name.demodulize.underscore.gsub(/_schema$/, '')
+          :"#{schema_name}_#{base_name}"
         end
       end
     end
