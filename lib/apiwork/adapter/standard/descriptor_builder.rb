@@ -4,6 +4,10 @@ module Apiwork
   module Adapter
     class Standard < Base
       class DescriptorBuilder
+        def self.build(builder, schema_data)
+          new(builder, schema_data)
+        end
+
         def initialize(builder, schema_data)
           @builder = builder
           @schema_data = schema_data

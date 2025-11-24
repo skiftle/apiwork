@@ -6,6 +6,10 @@ module Apiwork
       class ContractBuilder
         MAX_RECURSION_DEPTH = 3
 
+        def self.build(contract_class, schema_class, context)
+          new(contract_class, schema_class, context)
+        end
+
         def initialize(contract_class, schema_class, context)
           @contract_class = contract_class
           @schema_class = schema_class
