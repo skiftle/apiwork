@@ -72,20 +72,10 @@ module Apiwork
       end
 
       def build_action_definition(contract_class, schema_class, action_name, action_info)
-        existing_action = contract_class.action_definitions[action_name]
+        action_definition = contract_class.define_action(action_name)
 
-        if existing_action
-          action_definition = existing_action
-        else
-          action_definition = Contract::ActionDefinition.new(
-            action_name: action_name,
-            contract_class: contract_class
-          )
-          contract_class.action_definitions[action_name] = action_definition
-        end
-
-        build_request_for_action(action_definition, schema_class, action_name, action_info) unless existing_action&.resets_request?
-        build_response_for_action(action_definition, schema_class, action_name, action_info) unless existing_action&.resets_response?
+        build_request_for_action(action_definition, schema_class, action_name, action_info) unless action_definition.resets_request?
+        build_response_for_action(action_definition, schema_class, action_name, action_info) unless action_definition.resets_response?
       end
 
       def build_request_for_action(action_definition, schema_class, action_name, action_info)

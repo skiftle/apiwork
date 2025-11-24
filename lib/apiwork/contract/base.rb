@@ -204,6 +204,18 @@ module Apiwork
           Descriptor.scoped_enum_name(self, enum_name)
         end
 
+        def define_action(action_name, &block)
+          action_name_sym = action_name.to_sym
+
+          action_definition = action_definitions[action_name_sym] ||= ActionDefinition.new(
+            action_name: action_name_sym,
+            contract_class: self
+          )
+
+          action_definition.instance_eval(&block) if block_given?
+          action_definition
+        end
+
         # DOCUMENTATION
         def format_keys(data, direction)
           return data if data.blank?
