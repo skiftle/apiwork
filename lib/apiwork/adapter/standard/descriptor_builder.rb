@@ -13,8 +13,6 @@ module Apiwork
           end
 
           def register(builder, schema_data)
-            api_class = builder.api_class
-
             builder.instance_eval do
               type :pagination do
                 param :current, type: :integer, required: true
@@ -32,13 +30,13 @@ module Apiwork
               end
             end
 
-            register_global_filter_types(schema_data, api_class: api_class) if schema_data.filterable_types.any?
-            register_sort_direction(api_class: api_class) if schema_data.sortable?
+            register_global_filter_types(schema_data, builder: builder) if schema_data.filterable_types.any?
+            register_sort_direction(builder: builder) if schema_data.sortable?
           end
 
           private
 
-          def register_global_filter_types(schema_data, api_class:)
+          def register_global_filter_types(schema_data, builder:)
             filter_types_to_register = Set.new
 
             # Register non-nullable variants for all filterable types
@@ -53,12 +51,11 @@ module Apiwork
               filter_types_to_register.add(nullable_filter_type)
             end
 
-            filter_types_to_register.each { |type| register_filter_descriptor(type, api_class: api_class) }
+            filter_types_to_register.each { |type| register_filter_descriptor(type, builder: builder) }
           end
 
-          def register_sort_direction(api_class:)
-            sort_descriptor_registered.fetch_or_store(api_class) do
-              builder = Descriptor::Builder.new(api_class: api_class)
+          def register_sort_direction(builder:)
+            sort_descriptor_registered.fetch_or_store(builder.api_class) do
               builder.instance_eval do
                 enum :sort_direction, values: %w[asc desc]
               end
@@ -67,8 +64,9 @@ module Apiwork
           end
 
           def ensure_filter_descriptors(schema_class, api_class:)
+            builder = Descriptor::Builder.new(api_class: api_class)
             needed = determine_needed_filter_descriptors(schema_class)
-            needed.each { |type| register_filter_descriptor(type, api_class: api_class) }
+            needed.each { |type| register_filter_descriptor(type, builder: builder) }
           end
 
           def ensure_sort_descriptor(schema_class, api_class:)
@@ -88,7 +86,8 @@ module Apiwork
             end
           end
 
-          def register_filter_descriptor(type_name, api_class:)
+          def register_filter_descriptor(type_name, builder:)
+            api_class = builder.api_class
             api_filters = registered_filter_descriptors.fetch_or_store(api_class) { Set.new }
             return if api_filters.include?(type_name)
 
@@ -96,41 +95,41 @@ module Apiwork
 
             case type_name
             when :string_filter
-              register_string_filter(api_class: api_class)
+              register_string_filter(builder: builder)
             when :integer_filter
-              register_integer_filter_between(api_class: api_class)
-              register_integer_filter(api_class: api_class)
+              register_integer_filter_between(builder: builder)
+              register_integer_filter(builder: builder)
             when :decimal_filter
-              register_decimal_filter_between(api_class: api_class)
-              register_decimal_filter(api_class: api_class)
+              register_decimal_filter_between(builder: builder)
+              register_decimal_filter(builder: builder)
             when :boolean_filter
-              register_boolean_filter(api_class: api_class)
+              register_boolean_filter(builder: builder)
             when :date_filter
-              register_date_filter_between(api_class: api_class)
-              register_date_filter(api_class: api_class)
+              register_date_filter_between(builder: builder)
+              register_date_filter(builder: builder)
             when :datetime_filter
-              register_datetime_filter_between(api_class: api_class)
-              register_datetime_filter(api_class: api_class)
+              register_datetime_filter_between(builder: builder)
+              register_datetime_filter(builder: builder)
             when :uuid_filter
-              register_uuid_filter(api_class: api_class)
+              register_uuid_filter(builder: builder)
             when :nullable_string_filter
-              register_nullable_string_filter(api_class: api_class)
+              register_nullable_string_filter(builder: builder)
             when :nullable_integer_filter
-              register_integer_filter_between(api_class: api_class)
-              register_nullable_integer_filter(api_class: api_class)
+              register_integer_filter_between(builder: builder)
+              register_nullable_integer_filter(builder: builder)
             when :nullable_decimal_filter
-              register_decimal_filter_between(api_class: api_class)
-              register_nullable_decimal_filter(api_class: api_class)
+              register_decimal_filter_between(builder: builder)
+              register_nullable_decimal_filter(builder: builder)
             when :nullable_boolean_filter
-              register_nullable_boolean_filter(api_class: api_class)
+              register_nullable_boolean_filter(builder: builder)
             when :nullable_date_filter
-              register_date_filter_between(api_class: api_class)
-              register_nullable_date_filter(api_class: api_class)
+              register_date_filter_between(builder: builder)
+              register_nullable_date_filter(builder: builder)
             when :nullable_datetime_filter
-              register_datetime_filter_between(api_class: api_class)
-              register_nullable_datetime_filter(api_class: api_class)
+              register_datetime_filter_between(builder: builder)
+              register_nullable_datetime_filter(builder: builder)
             when :nullable_uuid_filter
-              register_nullable_uuid_filter(api_class: api_class)
+              register_nullable_uuid_filter(builder: builder)
             end
           end
 
@@ -156,8 +155,7 @@ module Apiwork
             descriptors
           end
 
-          def register_string_filter(api_class:)
-            builder = Descriptor::Builder.new(api_class: api_class)
+          def register_string_filter(builder:)
             builder.instance_eval do
               type :string_filter do
                 param :eq, type: :string, required: false
@@ -169,8 +167,7 @@ module Apiwork
             end
           end
 
-          def register_integer_filter_between(api_class:)
-            builder = Descriptor::Builder.new(api_class: api_class)
+          def register_integer_filter_between(builder:)
             builder.instance_eval do
               type :integer_filter_between do
                 param :from, type: :integer, required: false
@@ -179,8 +176,7 @@ module Apiwork
             end
           end
 
-          def register_integer_filter(api_class:)
-            builder = Descriptor::Builder.new(api_class: api_class)
+          def register_integer_filter(builder:)
             builder.instance_eval do
               type :integer_filter do
                 param :eq, type: :integer, required: false
@@ -194,8 +190,7 @@ module Apiwork
             end
           end
 
-          def register_decimal_filter_between(api_class:)
-            builder = Descriptor::Builder.new(api_class: api_class)
+          def register_decimal_filter_between(builder:)
             builder.instance_eval do
               type :decimal_filter_between do
                 param :from, type: :decimal, required: false
@@ -204,8 +199,7 @@ module Apiwork
             end
           end
 
-          def register_decimal_filter(api_class:)
-            builder = Descriptor::Builder.new(api_class: api_class)
+          def register_decimal_filter(builder:)
             builder.instance_eval do
               type :decimal_filter do
                 param :eq, type: :decimal, required: false
@@ -219,8 +213,7 @@ module Apiwork
             end
           end
 
-          def register_boolean_filter(api_class:)
-            builder = Descriptor::Builder.new(api_class: api_class)
+          def register_boolean_filter(builder:)
             builder.instance_eval do
               type :boolean_filter do
                 param :eq, type: :boolean, required: false
@@ -228,8 +221,7 @@ module Apiwork
             end
           end
 
-          def register_date_filter_between(api_class:)
-            builder = Descriptor::Builder.new(api_class: api_class)
+          def register_date_filter_between(builder:)
             builder.instance_eval do
               type :date_filter_between do
                 param :from, type: :date, required: false
@@ -238,8 +230,7 @@ module Apiwork
             end
           end
 
-          def register_date_filter(api_class:)
-            builder = Descriptor::Builder.new(api_class: api_class)
+          def register_date_filter(builder:)
             builder.instance_eval do
               type :date_filter do
                 param :eq, type: :date, required: false
@@ -253,8 +244,7 @@ module Apiwork
             end
           end
 
-          def register_datetime_filter_between(api_class:)
-            builder = Descriptor::Builder.new(api_class: api_class)
+          def register_datetime_filter_between(builder:)
             builder.instance_eval do
               type :datetime_filter_between do
                 param :from, type: :datetime, required: false
@@ -263,8 +253,7 @@ module Apiwork
             end
           end
 
-          def register_datetime_filter(api_class:)
-            builder = Descriptor::Builder.new(api_class: api_class)
+          def register_datetime_filter(builder:)
             builder.instance_eval do
               type :datetime_filter do
                 param :eq, type: :datetime, required: false
@@ -278,8 +267,7 @@ module Apiwork
             end
           end
 
-          def register_uuid_filter(api_class:)
-            builder = Descriptor::Builder.new(api_class: api_class)
+          def register_uuid_filter(builder:)
             builder.instance_eval do
               type :uuid_filter do
                 param :eq, type: :uuid, required: false
@@ -288,8 +276,7 @@ module Apiwork
             end
           end
 
-          def register_nullable_string_filter(api_class:)
-            builder = Descriptor::Builder.new(api_class: api_class)
+          def register_nullable_string_filter(builder:)
             builder.instance_eval do
               type :nullable_string_filter do
                 param :eq, type: :string, required: false
@@ -302,9 +289,8 @@ module Apiwork
             end
           end
 
-          def register_nullable_integer_filter(api_class:)
-            register_integer_filter_between(api_class: api_class)
-            builder = Descriptor::Builder.new(api_class: api_class)
+          def register_nullable_integer_filter(builder:)
+            register_integer_filter_between(builder: builder)
             builder.instance_eval do
               type :nullable_integer_filter do
                 param :eq, type: :integer, required: false
@@ -319,9 +305,8 @@ module Apiwork
             end
           end
 
-          def register_nullable_decimal_filter(api_class:)
-            register_decimal_filter_between(api_class: api_class)
-            builder = Descriptor::Builder.new(api_class: api_class)
+          def register_nullable_decimal_filter(builder:)
+            register_decimal_filter_between(builder: builder)
             builder.instance_eval do
               type :nullable_decimal_filter do
                 param :eq, type: :decimal, required: false
@@ -336,9 +321,8 @@ module Apiwork
             end
           end
 
-          def register_nullable_date_filter(api_class:)
-            register_date_filter_between(api_class: api_class)
-            builder = Descriptor::Builder.new(api_class: api_class)
+          def register_nullable_date_filter(builder:)
+            register_date_filter_between(builder: builder)
             builder.instance_eval do
               type :nullable_date_filter do
                 param :eq, type: :date, required: false
@@ -353,9 +337,8 @@ module Apiwork
             end
           end
 
-          def register_nullable_datetime_filter(api_class:)
-            register_datetime_filter_between(api_class: api_class)
-            builder = Descriptor::Builder.new(api_class: api_class)
+          def register_nullable_datetime_filter(builder:)
+            register_datetime_filter_between(builder: builder)
             builder.instance_eval do
               type :nullable_datetime_filter do
                 param :eq, type: :datetime, required: false
@@ -370,8 +353,7 @@ module Apiwork
             end
           end
 
-          def register_nullable_uuid_filter(api_class:)
-            builder = Descriptor::Builder.new(api_class: api_class)
+          def register_nullable_uuid_filter(builder:)
             builder.instance_eval do
               type :nullable_uuid_filter do
                 param :eq, type: :uuid, required: false
@@ -381,8 +363,7 @@ module Apiwork
             end
           end
 
-          def register_nullable_boolean_filter(api_class:)
-            builder = Descriptor::Builder.new(api_class: api_class)
+          def register_nullable_boolean_filter(builder:)
             builder.instance_eval do
               type :nullable_boolean_filter do
                 param :eq, type: :boolean, required: false
