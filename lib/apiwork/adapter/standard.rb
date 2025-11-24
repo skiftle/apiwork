@@ -12,40 +12,44 @@ module Apiwork
       end
 
       def collection_scope(collection, schema_class, query, context)
-        return collection unless context.index?
-        return collection unless collection.is_a?(ActiveRecord::Relation)
+        return ScopeResult.new(collection) unless context.index?
+        return ScopeResult.new(collection) unless collection.is_a?(ActiveRecord::Relation)
 
-        Query.new(collection, schema_class).perform(query)
+        query_result = Query.new(collection, schema_class).perform(query)
+        ScopeResult.new(query_result.result, query_result.meta)
       end
 
       def record_scope(record, schema_class, query, context)
-        return record unless record.is_a?(ActiveRecord::Base)
+        return ScopeResult.new(record) unless record.is_a?(ActiveRecord::Base)
 
         includes_param = query[:include]
-        return record if includes_param.blank?
+        return ScopeResult.new(record) if includes_param.blank?
 
         includes_hash_value = build_includes_hash(schema_class, includes_param)
-        return record if includes_hash_value.empty?
+        return ScopeResult.new(record) if includes_hash_value.empty?
 
         ActiveRecord::Associations::Preloader.new(records: [record], associations: includes_hash_value).call
-        record
+        ScopeResult.new(record)
       end
 
-      def render_collection(collection, meta, query, schema_class, context)
+      def render_collection(scope_result, user_meta, query, schema_class, context)
         root_key = schema_class.root_key.plural
+        collection = scope_result.data
 
         response = { root_key => collection }
-        response[:meta] = meta if meta.present?
+        response[:pagination] = scope_result.metadata[:pagination] if scope_result.metadata[:pagination]
+        response[:meta] = user_meta if user_meta.present?
         response
       end
 
-      def render_record(record, meta, query, schema_class, context)
-        return { meta: meta.presence || {} } if context.delete?
+      def render_record(scope_result, user_meta, query, schema_class, context)
+        return { meta: user_meta.presence || {} } if context.delete?
 
         root_key = schema_class.root_key.singular
+        record = scope_result.data
 
         response = { root_key => record }
-        response[:meta] = meta if meta.present?
+        response[:meta] = user_meta if user_meta.present?
         response
       end
 

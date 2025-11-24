@@ -42,7 +42,7 @@ module Apiwork
             end
           else
             serialized = serialize_param(name, param_options)
-            serialized[:required] = true unless name == :meta
+            serialized[:required] = param_options.fetch(:required, true)
             success_params[name] = serialized
           end
         end

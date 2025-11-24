@@ -137,7 +137,7 @@ module Apiwork
 
           definition.instance_variable_set(:@unwrapped_union, true)
 
-          definition.param root_key, type: resource_type_name, required: false
+          definition.param root_key, type: resource_type_name, required: true
           definition.param :meta, type: :object, required: false
 
           definition.param :issues, type: :array, of: :issue, required: false
@@ -150,9 +150,8 @@ module Apiwork
           definition.instance_variable_set(:@unwrapped_union, true)
 
           definition.param root_key_plural, type: :array, of: resource_type_name, required: false
-          definition.param :meta, type: :object, required: false do
-            param :pagination, type: :pagination, required: true
-          end
+          definition.param :pagination, type: :pagination, required: false
+          definition.param :meta, type: :object, required: false
 
           definition.param :issues, type: :array, of: :issue, required: false
         end

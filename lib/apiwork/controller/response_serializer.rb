@@ -35,33 +35,25 @@ module Apiwork
         adapter_instance = adapter
         context = adapter_context
 
-        query_result = nil
-        if schema_class.present?
-          scoped_collection = adapter_instance.collection_scope(
-            collection,
-            schema_class,
-            @request.data,
-            context
-          )
+        scope_result = if schema_class.present?
+                         adapter_instance.collection_scope(
+                           collection,
+                           schema_class,
+                           @request.data,
+                           context
+                         )
+                       else
+                         Adapter::ScopeResult.new(collection)
+                       end
 
-          if scoped_collection.respond_to?(:result) && scoped_collection.respond_to?(:meta)
-            query_result = scoped_collection
-            filtered_collection = query_result.result
-          else
-            filtered_collection = scoped_collection
-          end
-        else
-          filtered_collection = collection
-        end
-
-        serialized_data = action_definition.serialize_data(filtered_collection,
+        serialized_data = action_definition.serialize_data(scope_result.data,
                                                            context: @context,
                                                            includes: includes_param)
 
+        serialized_scope_result = Adapter::ScopeResult.new(serialized_data, scope_result.metadata)
+
         if schema_class
-          pagination_meta = query_result&.meta || {}
-          combined_meta = pagination_meta.merge(@meta)
-          adapter_instance.render_collection(serialized_data, combined_meta, @request.data, schema_class, context)
+          adapter_instance.render_collection(serialized_scope_result, @meta, @request.data, schema_class, context)
         else
           serialized_data.merge(meta: @meta)
         end
@@ -72,21 +64,23 @@ module Apiwork
         adapter_instance = adapter
         context = adapter_context
 
-        scoped_resource = if schema_class.present?
-                            adapter_instance.record_scope(
-                              resource,
-                              schema_class,
-                              @request.data,
-                              context
-                            )
-                          else
-                            resource
-                          end
+        scope_result = if schema_class.present?
+                         adapter_instance.record_scope(
+                           resource,
+                           schema_class,
+                           @request.data,
+                           context
+                         )
+                       else
+                         Adapter::ScopeResult.new(resource)
+                       end
 
-        serialized_data = action_definition.serialize_data(scoped_resource, context: @context, includes: includes_param)
+        serialized_data = action_definition.serialize_data(scope_result.data, context: @context, includes: includes_param)
+
+        serialized_scope_result = Adapter::ScopeResult.new(serialized_data, scope_result.metadata)
 
         if schema_class
-          adapter_instance.render_record(serialized_data, @meta, @request.data, schema_class, context)
+          adapter_instance.render_record(serialized_scope_result, @meta, @request.data, schema_class, context)
         else
           response = serialized_data
           response[:meta] = @meta if @meta.present?
