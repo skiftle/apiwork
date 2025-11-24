@@ -172,27 +172,47 @@ module Apiwork
         }
       end
 
-      def build_responses(_action_name, response_params, action_error_codes = [])
+      def build_responses(action_name, response_params, action_error_codes = [])
         responses = {}
 
         if response_params
-          responses[:'200'] = {
-            description: 'Successful response',
-            content: {
-              'application/json': {
-                schema: build_params_object(response_params)
+          # Detect unwrapped union and separate success/error variants
+          if response_params[:type] == :union && !response_params[:discriminator]
+            success_variant = response_params[:variants][0]
+            error_variant = response_params[:variants][1]
+
+            responses[:'200'] = {
+              description: 'Successful response',
+              content: {
+                'application/json': {
+                  schema: map_type_definition(success_variant, action_name)
+                }
               }
             }
-          }
+
+            combined_error_codes = (error_codes + action_error_codes).uniq.sort
+            combined_error_codes.each do |code|
+              responses[code.to_s.to_sym] = build_union_error_response(code, error_variant)
+            end
+          else
+            responses[:'200'] = {
+              description: 'Successful response',
+              content: {
+                'application/json': {
+                  schema: build_params_object(response_params)
+                }
+              }
+            }
+
+            combined_error_codes = (error_codes + action_error_codes).uniq.sort
+            combined_error_codes.each do |code|
+              responses[code.to_s.to_sym] = build_error_response(code)
+            end
+          end
         else
           responses[:'204'] = {
             description: 'No content'
           }
-        end
-
-        combined_error_codes = (error_codes + action_error_codes).uniq.sort
-        combined_error_codes.each do |code|
-          responses[code.to_s.to_sym] = build_error_response(code)
         end
 
         responses
@@ -206,10 +226,6 @@ module Apiwork
               schema: {
                 type: 'object',
                 properties: {
-                  ok: {
-                    type: 'boolean',
-                    const: false
-                  },
                   issues: {
                     type: 'array',
                     items: {
@@ -217,8 +233,19 @@ module Apiwork
                     }
                   }
                 },
-                required: %w[ok issues]
+                required: ['issues']
               }
+            }
+          }
+        }
+      end
+
+      def build_union_error_response(code, error_variant)
+        {
+          description: error_description(code),
+          content: {
+            'application/json': {
+              schema: map_type_definition(error_variant, nil)
             }
           }
         }
