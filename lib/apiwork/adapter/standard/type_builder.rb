@@ -249,47 +249,12 @@ module Apiwork
             return nil if visited.include?(association_schema)
 
             import_alias = Helpers.auto_import_association_contract(contract_class, association_schema, visited)
+            return import_alias if import_alias
 
-            visited = visited.dup.add(association_schema)
+            association_contract = contract_class.find_contract_for_schema(association_schema)
+            build_response_type(association_contract, association_schema, visited: visited.dup.add(association_schema)) if association_contract
 
-            if import_alias
-              association_contract = contract_class.find_contract_for_schema(association_schema)
-              build_response_type(association_contract, association_schema, visited: visited) if association_contract
-
-              return import_alias
-            end
-
-            association_contract_class = contract_class.create_temporary_contract(schema: association_schema)
-
-            resource_type_name = association_schema.root_key.singular.to_sym
-
-            unless association_contract_class.resolve_type(resource_type_name)
-              association_contract_class.register_type(resource_type_name) do
-                association_schema.attribute_definitions.each do |name, attribute_definition|
-                  param name, type: TypeMapper.map(attribute_definition.type), required: false
-                end
-
-                association_schema.association_definitions.each do |name, nested_association_definition|
-                  nested_type = TypeBuilder.build_association_type(association_contract_class,
-                                                                   nested_association_definition, visited: visited)
-
-                  if nested_type
-                    if nested_association_definition.singular?
-                      param name, type: nested_type, required: false, nullable: nested_association_definition.nullable?
-                    elsif nested_association_definition.collection?
-                      param name, type: :array, of: nested_type, required: false,
-                                  nullable: nested_association_definition.nullable?
-                    end
-                  elsif nested_association_definition.singular?
-                    param name, type: :object, required: false, nullable: nested_association_definition.nullable?
-                  elsif nested_association_definition.collection?
-                    param name, type: :array, required: false, nullable: nested_association_definition.nullable?
-                  end
-                end
-              end
-            end
-
-            association_contract_class.scoped_type_name(resource_type_name)
+            import_alias
           end
 
           def build_polymorphic_association_type(contract_class, association_definition, visited: Set.new)

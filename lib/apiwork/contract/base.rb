@@ -42,7 +42,10 @@ module Apiwork
           contract_name = schema_class.name.gsub(/Schema$/, 'Contract')
           contract_name.constantize
         rescue NameError
-          nil
+          raise ArgumentError,
+                "No contract found for #{schema_class.name}. " \
+                "Expected to find #{contract_name}. " \
+                'All schemas must have a corresponding contract class.'
         end
 
         def register_sti_variants(*variant_schema_classes)
@@ -222,12 +225,6 @@ module Apiwork
           union_data = union_definition.serialize
           register_union(name, union_data)
           name
-        end
-
-        def create_temporary_contract(schema:)
-          Class.new(Contract::Base) do
-            schema schema
-          end
         end
 
         # DOCUMENTATION
