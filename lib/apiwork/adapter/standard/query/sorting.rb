@@ -23,26 +23,26 @@ module Apiwork
               return scope
             end
 
-            orders, joins = build_order_clauses(params, schema.model_class, issues)
+            orders, joins = build_order_clauses(params, schema_class.model_class, issues)
             scope = scope.joins(joins).order(orders)
             scope = scope.distinct if joins.present?
             scope
           end
 
           def default_sort
-            schema.default_sort
+            schema_class.default_sort
           end
 
           private
 
-          def build_order_clauses(params, target_klass = schema.model_class, issues = [])
+          def build_order_clauses(params, target_klass = schema_class.model_class, issues = [])
             params.each_with_object([[], []]) do |(key, value), (orders, joins)|
               key = key.to_sym
 
               if value.is_a?(String) || value.is_a?(Symbol)
-                attribute_definition = schema.attribute_definitions[key]
+                attribute_definition = schema_class.attribute_definitions[key]
                 unless attribute_definition&.sortable?
-                  available = schema.attribute_definitions
+                  available = schema_class.attribute_definitions
                                     .select { |_, definition| definition.sortable? }
                                     .keys
 
@@ -84,7 +84,7 @@ module Apiwork
                   next
                 end
 
-                unless schema.association_definitions[key]&.sortable?
+                unless schema_class.association_definitions[key]&.sortable?
                   issues << Issue.new(
                     code: :association_not_sortable,
                     detail: "Association #{key} is not sortable",
@@ -94,7 +94,7 @@ module Apiwork
                   next
                 end
 
-                association_resource = schema.association_definitions[key].schema_class || schema.detect_association_resource(key)
+                association_resource = schema_class.association_definitions[key].schema_class || schema.detect_association_resource(key)
 
                 if association_resource.nil?
                   issues << Issue.new(
@@ -108,7 +108,7 @@ module Apiwork
 
                 association_resource = association_resource.constantize if association_resource.is_a?(String)
 
-                nested_query = Query.new(association.klass.all, schema: association_resource)
+                nested_query = Query.new(association.klass.all, association_resource)
                 nested_orders, nested_joins = nested_query.send(:build_order_clauses, value, association.klass, issues)
                 orders.concat(nested_orders)
 

@@ -12,12 +12,12 @@ module Apiwork
         attr_reader :meta,
                     :params,
                     :result,
-                    :schema,
+                    :schema_class,
                     :scope
 
-        def initialize(scope, schema:)
+        def initialize(scope, schema_class)
           @scope = scope
-          @schema = schema
+          @schema_class = schema_class
           @result = scope
           @meta = {}
         end

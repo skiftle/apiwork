@@ -22,11 +22,11 @@ module Apiwork
           end
 
           def default_page_size
-            schema.default_page_size
+            schema_class.default_page_size
           end
 
           def max_page_size
-            schema.max_page_size
+            schema_class.max_page_size
           end
 
           private
@@ -53,7 +53,7 @@ module Apiwork
           end
 
           def transform_keys(hash)
-            case schema.output_key_format
+            case schema_class.output_key_format
             when :camel
               hash.deep_transform_keys { |key| key.to_s.camelize(:lower).to_sym }
             when :underscore

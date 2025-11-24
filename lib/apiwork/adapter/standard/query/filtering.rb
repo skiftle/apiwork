@@ -16,7 +16,7 @@ module Apiwork
               regular_attrs = params.except(:_and, :_or, :_not)
 
               if regular_attrs.present?
-                conditions, joins = build_where_conditions(regular_attrs, schema.model_class, issues)
+                conditions, joins = build_where_conditions(regular_attrs, schema_class.model_class, issues)
                 result = scope.joins(joins).where(conditions.reduce(:and))
                 scope = joins.present? ? result.distinct : result
               end
@@ -28,12 +28,12 @@ module Apiwork
               scope
             when Array
               individual_conditions = params.map do |filter_hash|
-                conditions, _joins = build_where_conditions(filter_hash, schema.model_class, issues)
+                conditions, _joins = build_where_conditions(filter_hash, schema_class.model_class, issues)
                 conditions.compact.reduce(:and) if conditions.any?
               end.compact
 
               or_condition = individual_conditions.reduce(:or) if individual_conditions.any?
-              all_joins = params.map { |p| build_where_conditions(p, schema.model_class, issues)[1] }.reduce({}) { |acc, j| acc.deep_merge(j) }
+              all_joins = params.map { |p| build_where_conditions(p, schema_class.model_class, issues)[1] }.reduce({}) { |acc, j| acc.deep_merge(j) }
 
               result = scope
               result = result.joins(all_joins) if all_joins.present?
@@ -93,7 +93,7 @@ module Apiwork
             all_joins = {}
 
             if regular_attrs.present?
-              attr_conditions, joins = build_where_conditions(regular_attrs, schema.model_class, issues)
+              attr_conditions, joins = build_where_conditions(regular_attrs, schema_class.model_class, issues)
               conditions << attr_conditions.reduce(:and) if attr_conditions.any?
               all_joins = all_joins.deep_merge(joins)
             end
@@ -134,11 +134,11 @@ module Apiwork
             [combined, all_joins]
           end
 
-          def build_where_conditions(filter, target_klass = schema.model_class, issues = [])
+          def build_where_conditions(filter, target_klass = schema_class.model_class, issues = [])
             filter.each_with_object([[], {}]) do |(key, value), (conditions, joins)|
               key = key.to_sym
 
-              if (attribute_definition = schema.attribute_definitions[key])&.filterable?
+              if (attribute_definition = schema_class.attribute_definitions[key])&.filterable?
                 next unless filterable_for_context?(attribute_definition)
 
                 condition_result = build_column_condition(key, value, target_klass, issues)
@@ -159,11 +159,11 @@ module Apiwork
             filterable = attribute_definition.filterable?
             return true unless filterable.is_a?(Proc)
 
-            schema.new(nil, {}).instance_eval(&filterable)
+            schema_class.new(nil, {}).instance_eval(&filterable)
           end
 
           def collect_filterable_error(key, target_klass, issues)
-            available = schema.attribute_definitions
+            available = schema_class.attribute_definitions
                               .select { |_, definition| definition.filterable? }
                               .keys
 
@@ -239,7 +239,7 @@ module Apiwork
           end
 
           def find_filterable_association(key)
-            association = schema.association_definitions[key]
+            association = schema_class.association_definitions[key]
             return unless association
             return unless association.filterable?
 
@@ -247,7 +247,7 @@ module Apiwork
           end
 
           def build_join_conditions(key, value, association, issues = [])
-            reflection = schema.model_class.reflect_on_association(key)
+            reflection = schema_class.model_class.reflect_on_association(key)
             assoc_resource = association.schema_class || Apiwork::Schema::Resolver.from_association(reflection, schema)
 
             assoc_resource = assoc_resource.constantize if assoc_resource.is_a?(String)
@@ -262,18 +262,18 @@ module Apiwork
               return [[], {}]
             end
 
-            association_reflection = schema.model_class.reflect_on_association(key)
+            association_reflection = schema_class.model_class.reflect_on_association(key)
             unless association_reflection
               issues << Issue.new(
                 code: :association_not_found,
-                detail: "Association #{key} not found on #{schema.model_class.name}",
+                detail: "Association #{key} not found on #{schema_class.model_class.name}",
                 path: [:filter, key],
-                meta: { association: key, class: schema.model_class.name }
+                meta: { association: key, class: schema_class.model_class.name }
               )
               return [[], {}]
             end
 
-            nested_query = Query.new(association_reflection.klass.all, schema: assoc_resource)
+            nested_query = Query.new(association_reflection.klass.all, assoc_resource)
             nested_conditions, nested_joins = nested_query.send(:build_where_conditions, value,
                                                                 association_reflection.klass, issues)
 
@@ -517,7 +517,7 @@ module Apiwork
           end
 
           def sqlite_adapter?
-            @sqlite_adapter ||= schema.model_class.connection.adapter_name == 'SQLite'
+            @sqlite_adapter ||= schema_class.model_class.connection.adapter_name == 'SQLite'
           end
 
           def case_sensitive_pattern_match(column, pattern)
