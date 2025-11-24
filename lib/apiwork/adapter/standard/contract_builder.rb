@@ -70,7 +70,7 @@ module Apiwork
             next unless attribute_definition.writable_for?(context_symbol)
 
             param_options = {
-              type: TypeMapper.map(attribute_definition.type),
+              type: map_type(attribute_definition.type),
               required: attribute_definition.required?,
               nullable: attribute_definition.nullable?,
               description: attribute_definition.description,
@@ -300,12 +300,13 @@ module Apiwork
           build_enums
 
           schema_class_local = schema_class
+          builder = self
           contract_class.register_type(type_name) do
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
               enum_option = attribute_definition.enum ? { enum: name } : {}
 
               param name,
-                    type: TypeMapper.map(attribute_definition.type),
+                    type: builder.send(:map_type, attribute_definition.type),
                     required: false,
                     description: attribute_definition.description,
                     example: attribute_definition.example,
@@ -367,7 +368,7 @@ module Apiwork
                 param name, type: filter_type, required: false
               else
                 param name, type: :union, required: false do
-                  variant type: TypeMapper.map(attribute_definition.type)
+                  variant type: builder.send(:map_type, attribute_definition.type)
                   variant type: filter_type
                 end
               end
@@ -608,7 +609,7 @@ module Apiwork
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
               enum_option = attribute_definition.enum ? { enum: name } : {}
               param name,
-                    type: TypeMapper.map(attribute_definition.type),
+                    type: builder.send(:map_type, attribute_definition.type),
                     required: false,
                     description: attribute_definition.description,
                     example: attribute_definition.example,
@@ -825,6 +826,24 @@ module Apiwork
 
           schema_name = schema_class.name.demodulize.underscore.gsub(/_schema$/, '')
           :"#{schema_name}_#{base_name}"
+        end
+
+        def map_type(type)
+          case type
+          when :string, :text then :string
+          when :integer then :integer
+          when :boolean then :boolean
+          when :datetime then :datetime
+          when :date then :date
+          when :time then :time
+          when :uuid then :uuid
+          when :decimal, :float then :decimal
+          when :object then :object
+          when :array then :array
+          when :json, :jsonb then :object
+          when :unknown then :unknown
+          else :unknown
+          end
         end
       end
     end
