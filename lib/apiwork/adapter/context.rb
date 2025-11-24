@@ -2,17 +2,15 @@
 
 module Apiwork
   module Adapter
-    class RenderMetadata
+    class Context
       attr_reader :action_name,
-                  :http_method,
-                  :schema_data,
-                  :contract_class
+                  :method,
+                  :actions
 
-      def initialize(action_name:, http_method:, schema_data:, contract_class:)
+      def initialize(action_name:, method:, actions:)
         @action_name = action_name.to_sym
-        @http_method = http_method.to_sym
-        @schema_data = schema_data
-        @contract_class = contract_class
+        @method = method.to_sym
+        @actions = actions
       end
 
       def index?
@@ -36,23 +34,23 @@ module Apiwork
       end
 
       def get?
-        http_method == :get
+        method == :get
       end
 
       def post?
-        http_method == :post
+        method == :post
       end
 
       def patch?
-        http_method == :patch
+        method == :patch
       end
 
       def put?
-        http_method == :put
+        method == :put
       end
 
       def delete?
-        http_method == :delete
+        method == :delete
       end
     end
   end

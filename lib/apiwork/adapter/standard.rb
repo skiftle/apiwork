@@ -7,55 +7,53 @@ module Apiwork
         DescriptorBuilder.register(builder.api_class)
       end
 
-      def build_contract(contract_class, actions, schema_data, metadata, api_class)
-        schema_class = schema_data.schema_class
+      def build_contract(contract_class, schema_class, context)
+        build_enums(contract_class, schema_class)
 
-        build_enums(contract_class, schema_class, api_class)
-
-        actions.each do |action_name, action_info|
+        context.actions.each do |action_name, action_info|
           build_action_definition(contract_class, schema_class, action_name, action_info)
         end
       end
 
-      def collection_scope(collection, schema_data, query, metadata)
-        return collection unless metadata.index?
+      def collection_scope(collection, schema_class, query, context)
+        return collection unless context.index?
         return collection unless collection.is_a?(ActiveRecord::Relation)
 
-        Query.new(collection, schema: schema_data.schema_class).perform(query)
+        Query.new(collection, schema: schema_class).perform(query)
       end
 
-      def record_scope(record, schema_data, query, metadata)
+      def record_scope(record, schema_class, query, context)
         return record unless record.is_a?(ActiveRecord::Base)
 
         includes_param = query[:include]
         return record if includes_param.blank?
 
-        includes_hash_value = build_includes_hash(schema_data, includes_param)
+        includes_hash_value = build_includes_hash(schema_class, includes_param)
         return record if includes_hash_value.empty?
 
         ActiveRecord::Associations::Preloader.new(records: [record], associations: includes_hash_value).call
         record
       end
 
-      def render_collection(collection, meta, query, metadata)
-        root_key = metadata.schema_data.root_key.plural
+      def render_collection(collection, meta, query, schema_class, context)
+        root_key = schema_class.root_key.plural
 
         response = { ok: true, root_key => collection }
         response[:meta] = meta if meta.present?
         response
       end
 
-      def render_record(record, meta, query, metadata)
-        return { ok: true, meta: meta.presence || {} } if metadata.delete?
+      def render_record(record, meta, query, schema_class, context)
+        return { ok: true, meta: meta.presence || {} } if context.delete?
 
-        root_key = metadata.schema_data.root_key.singular
+        root_key = schema_class.root_key.singular
 
         response = { ok: true, root_key => record }
         response[:meta] = meta if meta.present?
         response
       end
 
-      def render_errors(issues, metadata)
+      def render_error(issues, context)
         { ok: false, issues: issues.map(&:to_h) }
       end
 
@@ -65,11 +63,11 @@ module Apiwork
 
       private
 
-      def build_enums(contract_class, schema_class, api_class)
+      def build_enums(contract_class, schema_class)
         schema_class.attribute_definitions.each do |name, attribute_definition|
           next unless attribute_definition.enum&.any?
 
-          Descriptor.register_enum(name, attribute_definition.enum, scope: contract_class, api_class: api_class)
+          contract_class.register_enum(name, attribute_definition.enum)
         end
       end
 
@@ -158,8 +156,8 @@ module Apiwork
         end
       end
 
-      def build_includes_hash(schema_data, includes_param)
-        Query::IncludesResolver.new(schema: schema_data.schema_class).build(
+      def build_includes_hash(schema_class, includes_param)
+        Query::IncludesResolver.new(schema: schema_class).build(
           params: { include: includes_param },
           for_collection: false
         )

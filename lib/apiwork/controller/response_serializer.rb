@@ -33,15 +33,15 @@ module Apiwork
       def collection_response(collection)
         includes_param = @request.data[:include]
         adapter_instance = adapter
-        render_meta = render_metadata
+        context = adapter_context
 
         query_result = nil
         if schema_class.present?
           scoped_collection = adapter_instance.collection_scope(
             collection,
-            schema_data,
+            schema_class,
             @request.data,
-            render_meta
+            context
           )
 
           if scoped_collection.respond_to?(:result) && scoped_collection.respond_to?(:meta)
@@ -61,7 +61,7 @@ module Apiwork
         if schema_class
           pagination_meta = query_result&.meta || {}
           combined_meta = pagination_meta.merge(@meta)
-          adapter_instance.render_collection(serialized_data, combined_meta, @request.data, render_meta)
+          adapter_instance.render_collection(serialized_data, combined_meta, @request.data, schema_class, context)
         else
           { ok: true }.merge(serialized_data).merge(meta: @meta)
         end
@@ -70,14 +70,14 @@ module Apiwork
       def resource_response(resource)
         includes_param = @request.data[:include]
         adapter_instance = adapter
-        render_meta = render_metadata
+        context = adapter_context
 
         scoped_resource = if schema_class.present?
                             adapter_instance.record_scope(
                               resource,
-                              schema_data,
+                              schema_class,
                               @request.data,
-                              render_meta
+                              context
                             )
                           else
                             resource
@@ -86,7 +86,7 @@ module Apiwork
         serialized_data = action_definition.serialize_data(scoped_resource, context: @context, includes: includes_param)
 
         if schema_class
-          adapter_instance.render_record(serialized_data, @meta, @request.data, render_meta)
+          adapter_instance.render_record(serialized_data, @meta, @request.data, schema_class, context)
         else
           response = { ok: true }.merge(serialized_data)
           response[:meta] = @meta if @meta.present?
@@ -100,16 +100,11 @@ module Apiwork
         @adapter ||= @contract_class.api_class.adapter
       end
 
-      def schema_data
-        @schema_data ||= Adapter::SchemaData.new(schema_class)
-      end
-
-      def render_metadata
-        @render_metadata ||= Adapter::RenderMetadata.new(
+      def adapter_context
+        @adapter_context ||= Adapter::Context.new(
           action_name: @action,
-          http_method: @method,
-          schema_data: schema_data,
-          contract_class: @contract_class
+          method: @method,
+          actions: {}
         )
       end
     end

@@ -175,6 +175,35 @@ module Apiwork
           Parser.new(self, direction, action, **options).perform(data)
         end
 
+        # Descriptor API - scopat till denna contract
+        def register_enum(name, values)
+          Descriptor.register_enum(name, values, scope: self, api_class: api_class)
+        end
+
+        def register_type(name, &block)
+          Descriptor.register_type(name, scope: self, api_class: api_class, &block)
+        end
+
+        def register_union(name, data)
+          Descriptor.register_union(name, data, scope: self, api_class: api_class)
+        end
+
+        def register_global_type(name, &block)
+          Descriptor.register_type(name, scope: nil, api_class: api_class, &block)
+        end
+
+        def resolve_type(name)
+          Descriptor.resolve_type(name, contract_class: self)
+        end
+
+        def scoped_type_name(type_name)
+          Descriptor.scoped_type_name(self, type_name)
+        end
+
+        def scoped_enum_name(enum_name)
+          Descriptor.scoped_enum_name(self, enum_name)
+        end
+
         # DOCUMENTATION
         def format_keys(data, direction)
           return data if data.blank?

@@ -7,28 +7,28 @@ module Apiwork
         raise NotImplementedError, "#{self.class}#build_global_descriptors must be implemented"
       end
 
-      def build_contract(contract_class, actions, schema_data, metadata, api_class)
+      def build_contract(contract_class, schema_class, context)
         raise NotImplementedError, "#{self.class}#build_contract must be implemented"
       end
 
-      def collection_scope(collection, schema_data, query, metadata)
+      def collection_scope(collection, schema_class, query, context)
         raise NotImplementedError, "#{self.class}#collection_scope must be implemented"
       end
 
-      def record_scope(record, schema_data, query, metadata)
+      def record_scope(record, schema_class, query, context)
         raise NotImplementedError, "#{self.class}#record_scope must be implemented"
       end
 
-      def render_collection(collection, meta, query, metadata)
+      def render_collection(collection, meta, query, schema_class, context)
         raise NotImplementedError, "#{self.class}#render_collection must be implemented"
       end
 
-      def render_record(record, meta, query, metadata)
+      def render_record(record, meta, query, schema_class, context)
         raise NotImplementedError, "#{self.class}#render_record must be implemented"
       end
 
-      def render_errors(issues, metadata)
-        raise NotImplementedError, "#{self.class}#render_errors must be implemented"
+      def render_error(issues, context)
+        raise NotImplementedError, "#{self.class}#render_error must be implemented"
       end
     end
   end

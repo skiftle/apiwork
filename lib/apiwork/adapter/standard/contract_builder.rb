@@ -41,9 +41,8 @@ module Apiwork
             else
               payload_type_name = :"#{context}_payload"
 
-              unless Descriptor.resolve_type(payload_type_name, contract_class: contract_class)
-                Descriptor.register_type(payload_type_name, scope: contract_class,
-                                                            api_class: contract_class.api_class) do
+              unless contract_class.resolve_type(payload_type_name)
+                contract_class.register_type(payload_type_name) do
                   ContractBuilder.generate_writable_params(self, schema_class, context, nested: false)
                 end
               end
@@ -131,16 +130,15 @@ module Apiwork
               variant_schema_name = variant_schema.name.demodulize.underscore.gsub(/_schema$/, '')
               variant_type_name = :"#{variant_schema_name}_#{context}_payload"
 
-              unless Descriptor.resolve_type(variant_type_name, contract_class: contract)
-                Descriptor.register_type(variant_type_name, scope: contract,
-                                                            api_class: contract.api_class) do
+              unless contract.resolve_type(variant_type_name)
+                contract.register_type(variant_type_name) do
                   param discriminator_name, type: :literal, value: tag.to_s, required: true
 
                   ContractBuilder.generate_writable_params(self, variant_schema, context, nested: false)
                 end
               end
 
-              Descriptor.scoped_type_name(contract, variant_type_name)
+              contract.scoped_type_name(variant_type_name)
             end
           end
 
@@ -181,11 +179,9 @@ module Apiwork
               TypeBuilder.build_sti_response_union_type(contract_class, schema_class)
             else
               root_key = schema_class.root_key.singular.to_sym
-              resource_type_name = Descriptor.scoped_type_name(contract_class, nil)
+              resource_type_name = contract_class.scoped_type_name(nil)
 
-              unless Descriptor.resolve_type(resource_type_name, contract_class: contract_class)
-                register_resource_type(contract_class, schema_class, root_key)
-              end
+              register_resource_type(contract_class, schema_class, root_key) unless contract_class.resolve_type(resource_type_name)
 
               resource_type_name
             end
@@ -199,7 +195,7 @@ module Apiwork
 
             TypeBuilder.build_enums(contract_class, schema_class)
 
-            Descriptor.register_type(type_name, scope: contract_class, api_class: contract_class.api_class) do
+            contract_class.register_type(type_name) do
               schema_class.attribute_definitions.each do |name, attribute_definition|
                 enum_option = attribute_definition.enum ? { enum: name } : {}
 
