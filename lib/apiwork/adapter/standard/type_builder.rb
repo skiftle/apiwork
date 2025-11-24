@@ -303,20 +303,14 @@ module Apiwork
             existing = contract_class.resolve_type(union_type_name)
             return existing if existing
 
-            union_definition = Contract::UnionDefinition.new(contract_class, discriminator: association_definition.discriminator)
+            contract_class.build_union(union_type_name, discriminator: association_definition.discriminator) do |union|
+              polymorphic.each do |tag, schema_class|
+                import_alias = Helpers.auto_import_association_contract(contract_class, schema_class, visited)
+                next unless import_alias
 
-            polymorphic.each do |tag, schema_class|
-              import_alias = Helpers.auto_import_association_contract(contract_class, schema_class, visited)
-              next unless import_alias
-
-              union_definition.variant(type: import_alias, tag: tag.to_s)
+                union.variant(type: import_alias, tag: tag.to_s)
+              end
             end
-
-            union_data = union_definition.serialize
-
-            contract_class.register_union(union_type_name, union_data)
-
-            union_type_name
           end
 
           def build_sti_union(contract_class, schema_class, union_type_name:, visited: Set.new, &variant_builder)
@@ -324,22 +318,17 @@ module Apiwork
             return nil unless variants&.any?
 
             discriminator_name = schema_class.discriminator_name
-            union_definition = Contract::UnionDefinition.new(contract_class, discriminator: discriminator_name)
 
-            variants.each do |tag, variant_data|
-              variant_schema = variant_data[:schema]
+            contract_class.build_union(union_type_name, discriminator: discriminator_name) do |union|
+              variants.each do |tag, variant_data|
+                variant_schema = variant_data[:schema]
 
-              variant_type = yield(contract_class, variant_schema, tag, visited)
-              next unless variant_type
+                variant_type = yield(contract_class, variant_schema, tag, visited)
+                next unless variant_type
 
-              union_definition.variant(type: variant_type, tag: tag.to_s)
+                union.variant(type: variant_type, tag: tag.to_s)
+              end
             end
-
-            union_data = union_definition.serialize
-
-            contract_class.register_union(union_type_name, union_data)
-
-            union_type_name
           end
 
           def build_sti_association_type(contract_class, association_definition, schema_class, visited: Set.new)
@@ -396,12 +385,10 @@ module Apiwork
             create_qualified_name = contract_class.scoped_type_name(create_type_name)
             update_qualified_name = contract_class.scoped_type_name(update_type_name)
 
-            union_definition = Contract::UnionDefinition.new(contract_class, discriminator: :_type)
-            union_definition.variant(type: create_qualified_name, tag: 'create')
-            union_definition.variant(type: update_qualified_name, tag: 'update')
-            union_data = union_definition.serialize
-
-            contract_class.register_union(nested_payload_type_name, union_data)
+            contract_class.build_union(nested_payload_type_name, discriminator: :_type) do |union|
+              union.variant(type: create_qualified_name, tag: 'create')
+              union.variant(type: update_qualified_name, tag: 'update')
+            end
           end
 
           def build_response_type(contract_class, schema_class, visited: Set.new)

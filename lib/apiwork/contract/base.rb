@@ -216,6 +216,14 @@ module Apiwork
           action_definition
         end
 
+        def build_union(name, discriminator: nil)
+          union_definition = Contract::UnionDefinition.new(self, discriminator: discriminator)
+          yield(union_definition) if block_given?
+          union_data = union_definition.serialize
+          register_union(name, union_data)
+          name
+        end
+
         # DOCUMENTATION
         def format_keys(data, direction)
           return data if data.blank?
