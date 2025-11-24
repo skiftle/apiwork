@@ -54,7 +54,7 @@ module Apiwork
           def auto_import_association_contract(parent_contract, association_schema, visited)
             return nil if visited.include?(association_schema)
 
-            association_contract = Contract::Base.find_contract_for_schema(association_schema)
+            association_contract = parent_contract.find_contract_for_schema(association_schema)
             return nil unless association_contract
 
             alias_name = association_schema.root_key.singular.to_sym

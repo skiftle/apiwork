@@ -224,6 +224,12 @@ module Apiwork
           name
         end
 
+        def create_temporary_contract(schema:)
+          Class.new(Contract::Base) do
+            schema schema
+          end
+        end
+
         # DOCUMENTATION
         def format_keys(data, direction)
           return data if data.blank?

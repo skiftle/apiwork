@@ -253,15 +253,13 @@ module Apiwork
             visited = visited.dup.add(association_schema)
 
             if import_alias
-              association_contract = Contract::Base.find_contract_for_schema(association_schema)
+              association_contract = contract_class.find_contract_for_schema(association_schema)
               build_response_type(association_contract, association_schema, visited: visited) if association_contract
 
               return import_alias
             end
 
-            association_contract_class = Class.new(Contract::Base) do
-              schema association_schema
-            end
+            association_contract_class = contract_class.create_temporary_contract(schema: association_schema)
 
             resource_type_name = association_schema.root_key.singular.to_sym
 
