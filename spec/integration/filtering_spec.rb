@@ -13,7 +13,6 @@ RSpec.describe 'Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(1)
       expect(json['posts'][0]['title']).to eq('First Post')
     end
@@ -23,7 +22,6 @@ RSpec.describe 'Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(2)
       titles = json['posts'].map { |p| p['title'] }
       expect(titles).to include('First Post', 'Third Post')
@@ -34,7 +32,6 @@ RSpec.describe 'Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(2)
       json['posts'].each do |post|
         expect(post['published']).to be(true)
@@ -46,7 +43,6 @@ RSpec.describe 'Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(1)
       expect(json['posts'][0]['title']).to eq('Third Post')
     end
@@ -56,7 +52,6 @@ RSpec.describe 'Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(2)
       titles = json['posts'].map { |p| p['title'] }
       expect(titles).to include('First Post', 'Second Post')
@@ -67,7 +62,6 @@ RSpec.describe 'Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(2)
       ids = json['posts'].map { |p| p['id'] }
       expect(ids).to contain_exactly(post1.id, post3.id)
@@ -78,7 +72,6 @@ RSpec.describe 'Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(2)
       titles = json['posts'].map { |p| p['title'] }
       expect(titles).to include('Second Post', 'Third Post')
@@ -95,7 +88,6 @@ RSpec.describe 'Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(2)
       json['posts'].each do |post|
         expect(post['published']).to be(true)
@@ -108,7 +100,6 @@ RSpec.describe 'Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts']).to eq([])
     end
 
@@ -117,7 +108,6 @@ RSpec.describe 'Filtering API', type: :request do
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(false)
       expect(json['issues']).to be_present
     end
 
@@ -126,7 +116,6 @@ RSpec.describe 'Filtering API', type: :request do
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(false)
       expect(json['issues']).to be_present
     end
   end

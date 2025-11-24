@@ -105,43 +105,42 @@ RSpec.describe 'API Introspection' do
             expect(posts[:actions][:archive]).to have_key(:response)
           end
 
-          it 'uses unwrapped union structure for member action response body' do
+          it 'has both success and error fields in response body' do
             archive = posts[:actions][:archive]
             expect(archive).to have_key(:response)
             response_body = archive[:response][:body]
 
-            # Should be a discriminated union
+            # Should be a union with success and error variants
+            expect(response_body).to be_a(Hash)
             expect(response_body[:type]).to eq(:union)
-            expect(response_body[:discriminator]).to eq(:ok)
             expect(response_body[:variants]).to be_an(Array)
             expect(response_body[:variants].length).to eq(2)
 
-            # Success variant should have post field
-            success_variant = response_body[:variants].find { |v| v[:tag] == true }
+            success_variant = response_body[:variants][0]
             expect(success_variant[:shape].keys).to include(:post)
+            expect(success_variant[:shape][:post][:required]).to be(true)
 
-            # Error variant should have errors field
-            error_variant = response_body[:variants].find { |v| v[:tag] == false }
+            error_variant = response_body[:variants][1]
             expect(error_variant[:shape].keys).to include(:issues)
+            expect(error_variant[:shape][:issues][:required]).to be(true)
           end
 
-          it 'merges custom response params with discriminated union at top level' do
+          it 'merges custom response params at top level' do
             archive = posts[:actions][:archive]
             response_body = archive[:response][:body]
 
-            # Should still be a discriminated union
+            # Should be a union with success and error variants
+            expect(response_body).to be_a(Hash)
             expect(response_body[:type]).to eq(:union)
-            expect(response_body[:discriminator]).to eq(:ok)
 
-            # Success variant should have BOTH schema-generated AND custom fields at top level
-            success_variant = response_body[:variants].find { |v| v[:tag] == true }
-            shape_keys = success_variant[:shape].keys
-
-            # Schema-generated fields (from discriminated union)
-            expect(shape_keys).to include(:ok, :post, :meta)
-
+            success_variant = response_body[:variants][0]
+            # Schema-generated fields
+            expect(success_variant[:shape].keys).to include(:post, :meta)
             # Custom response params (defined in PostContract#archive response body)
-            expect(shape_keys).to include(:archived_at, :archive_note)
+            expect(success_variant[:shape].keys).to include(:archived_at, :archive_note)
+
+            error_variant = response_body[:variants][1]
+            expect(error_variant[:shape].keys).to include(:issues)
           end
 
           it 'replaces response body completely when response replace: true is used' do
@@ -149,13 +148,15 @@ RSpec.describe 'API Introspection' do
             expect(destroy).to have_key(:response)
             response_body = destroy[:response][:body]
 
-            # Should NOT have discriminated union (response replace: true disables merging)
-            expect(response_body[:type]).not_to eq(:union)
+            # Should be a simple object (response replace: true disables merging)
+            expect(response_body).to be_a(Hash)
+            expect(response_body[:type]).to eq(:object)
+            expect(response_body[:shape]).to be_a(Hash)
 
             # Should only have custom-defined fields
-            expect(response_body.keys).to eq([:deleted_id])
-            expect(response_body[:deleted_id][:type]).to eq(:uuid)
-            expect(response_body[:deleted_id][:required]).to be(true)
+            expect(response_body[:shape].keys).to eq([:deleted_id])
+            expect(response_body[:shape][:deleted_id][:type]).to eq(:uuid)
+            expect(response_body[:shape][:deleted_id][:required]).to be(true)
           end
         end
 
@@ -178,19 +179,18 @@ RSpec.describe 'API Introspection' do
             search = posts[:actions][:search]
             response_body = search[:response][:body]
 
-            # Should still be a discriminated union (collection wrapper)
+            # Should be a union with success and error variants
+            expect(response_body).to be_a(Hash)
             expect(response_body[:type]).to eq(:union)
-            expect(response_body[:discriminator]).to eq(:ok)
 
-            # Success variant should have BOTH collection wrapper AND custom fields at top level
-            success_variant = response_body[:variants].find { |v| v[:tag] == true }
-            shape_keys = success_variant[:shape].keys
-
+            success_variant = response_body[:variants][0]
             # Schema-generated fields (from collection wrapper)
-            expect(shape_keys).to include(:ok, :posts, :meta)
-
+            expect(success_variant[:shape].keys).to include(:posts, :meta)
             # Custom response params (defined in PostContract#search response body)
-            expect(shape_keys).to include(:search_query, :result_count)
+            expect(success_variant[:shape].keys).to include(:search_query, :result_count)
+
+            error_variant = response_body[:variants][1]
+            expect(error_variant[:shape].keys).to include(:issues)
           end
         end
 

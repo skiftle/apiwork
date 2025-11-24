@@ -17,7 +17,6 @@ RSpec.describe 'Min and Max validation on params', type: :request do
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      expect(json['ok']).to be(false)
       expect(json['issues']).to be_present
       issue = json['issues'].find { |i| i['path'].include?('name') }
       expect(issue).to be_present
@@ -35,8 +34,7 @@ RSpec.describe 'Min and Max validation on params', type: :request do
       post '/api/v1/users', params: user_params, as: :json
 
       expect(response).to have_http_status(:created)
-      json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
+      JSON.parse(response.body)
     end
 
     it 'accepts strings longer than min but within max' do
@@ -51,7 +49,6 @@ RSpec.describe 'Min and Max validation on params', type: :request do
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['user']['name']).to eq('John Doe')
     end
   end
@@ -70,7 +67,6 @@ RSpec.describe 'Min and Max validation on params', type: :request do
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      expect(json['ok']).to be(false)
       expect(json['issues']).to be_present
       issue = json['issues'].find { |i| i['path'].include?('name') }
       expect(issue['code']).to eq('string_too_long')
@@ -87,8 +83,7 @@ RSpec.describe 'Min and Max validation on params', type: :request do
       post '/api/v1/users', params: user_params, as: :json
 
       expect(response).to have_http_status(:created)
-      json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
+      JSON.parse(response.body)
     end
 
     it 'accepts strings shorter than max' do
@@ -102,8 +97,7 @@ RSpec.describe 'Min and Max validation on params', type: :request do
       post '/api/v1/users', params: user_params, as: :json
 
       expect(response).to have_http_status(:created)
-      json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
+      JSON.parse(response.body)
     end
   end
 

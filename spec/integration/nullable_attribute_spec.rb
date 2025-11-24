@@ -17,7 +17,6 @@ RSpec.describe 'Nullable attribute option', type: :request do
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
 
-      expect(json['ok']).to be(true)
       expect(json['user']['email']).to be_nil
 
       user = User.last
@@ -86,7 +85,6 @@ RSpec.describe 'Nullable attribute option', type: :request do
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      expect(json['ok']).to be(false)
       expect(json['issues']).to be_present
       issue = json['issues'].find { |i| i['path'].include?('name') }
       expect(issue).to be_present
@@ -103,7 +101,6 @@ RSpec.describe 'Nullable attribute option', type: :request do
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      expect(json['ok']).to be(false)
       issue = json['issues'].find { |i| i['path'].include?('name') }
       expect(issue['code']).to eq('value_null')
 

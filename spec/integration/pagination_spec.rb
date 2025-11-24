@@ -21,7 +21,6 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(10)
       expect(json['meta']['pagination']['current']).to eq(1)
       expect(json['meta']['pagination']['total']).to eq(3)
@@ -33,7 +32,6 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(10)
       expect(json['meta']['pagination']['current']).to eq(2)
     end
@@ -43,7 +41,6 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(5)
       expect(json['meta']['pagination']['current']).to eq(3)
       expect(json['meta']['pagination']['total']).to eq(3)
@@ -54,7 +51,6 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(5)
       expect(json['meta']['pagination']['total']).to eq(5)
     end
@@ -64,7 +60,6 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts']).to eq([])
       expect(json['meta']['pagination']['current']).to eq(100)
     end
@@ -74,7 +69,6 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['meta']['pagination']['current']).to eq(1)
     end
 
@@ -83,7 +77,6 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       # Default page size should be 20 or similar
       expect(json['posts'].length).to be <= 25
       expect(json['meta']['pagination']).to be_present
@@ -97,7 +90,6 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(5)
       json['posts'].each do |post|
         expect(post['published']).to be(true)
@@ -114,7 +106,6 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(5)
 
       titles = json['posts'].map { |p| p['title'] }
@@ -131,7 +122,6 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(3)
 
       json['posts'].each do |post|
@@ -147,7 +137,6 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(false)
       expect(json['issues']).to be_an(Array)
       expect(json['issues'].first['code']).to eq('invalid_value')
       expect(json['issues'].first['pointer']).to eq('/page/number')
@@ -158,7 +147,6 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(false)
       expect(json['issues']).to be_an(Array)
       expect(json['issues'].first['code']).to eq('invalid_value')
       expect(json['issues'].first['pointer']).to eq('/page/size')
@@ -169,7 +157,6 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(false)
       expect(json['issues']).to be_an(Array)
       expect(json['issues'].first['code']).to eq('invalid_value')
       expect(json['issues'].first['pointer']).to eq('/page/size')

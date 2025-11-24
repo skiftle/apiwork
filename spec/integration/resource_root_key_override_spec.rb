@@ -11,7 +11,6 @@ RSpec.describe 'Resource override and selective serialization', type: :request d
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json).to have_key('articles')
       expect(json).not_to have_key('posts')
     end
@@ -48,7 +47,6 @@ RSpec.describe 'Resource override and selective serialization', type: :request d
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json).to have_key('article')
       expect(json['article']['id']).to eq(post.id)
       expect(json['article']['title']).to eq('Test Post')
@@ -71,7 +69,6 @@ RSpec.describe 'Resource override and selective serialization', type: :request d
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['article']['title']).to eq('New Article')
       expect(json['article']).not_to have_key('body')
 
@@ -151,8 +148,7 @@ RSpec.describe 'Resource override and selective serialization', type: :request d
       end.to change(Post, :count).by(-1)
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
+      JSON.parse(response.body)
     end
   end
 end

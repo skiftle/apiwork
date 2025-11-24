@@ -23,7 +23,6 @@ RSpec.describe 'Includes API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(true)
         expect(json['posts'].first.keys).not_to include('comments')
       end
     end
@@ -34,7 +33,6 @@ RSpec.describe 'Includes API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(true)
 
         first_post = json['posts'].find { |p| p['title'] == 'First Post' }
         expect(first_post['comments']).to be_present
@@ -51,7 +49,6 @@ RSpec.describe 'Includes API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(true)
         expect(json['posts'].length).to eq(1)
         expect(json['posts'].first['comments']).to be_present
       end
@@ -112,7 +109,6 @@ RSpec.describe 'Includes API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
 
       first_post = json['posts'].first
       expect(first_post['comments']).to be_present
@@ -176,7 +172,6 @@ RSpec.describe 'Includes API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(true)
 
         # Comments should be automatically included (include: :always)
         first_post = json['posts'].first
@@ -193,7 +188,6 @@ RSpec.describe 'Includes API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(true)
 
         # Comments should be automatically included (include: :always)
         first_post = json['posts'].first
@@ -211,7 +205,6 @@ RSpec.describe 'Includes API', type: :request do
         # because the IncludeType only has nested hash, no boolean variant
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(false)
         expect(json['issues']).to be_present
       end
     end
@@ -222,7 +215,6 @@ RSpec.describe 'Includes API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(true)
         expect(json['posts'].first['comments']).to be_present
       end
 
@@ -231,7 +223,6 @@ RSpec.describe 'Includes API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(true)
         expect(json['posts'].first.keys).not_to include('comments')
       end
     end
@@ -243,7 +234,6 @@ RSpec.describe 'Includes API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['post']['comments']).to be_present
       expect(json['post']['comments'].length).to eq(2)
       expect(json['post']['comments'].first.keys).to include('content', 'author')
@@ -254,7 +244,6 @@ RSpec.describe 'Includes API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['post'].keys).not_to include('comments')
     end
   end
@@ -267,7 +256,6 @@ RSpec.describe 'Includes API', type: :request do
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['post']).to have_key('comments')
       expect(json['post']['comments']).to eq([]) # No comments yet, but field is present
     end
@@ -279,7 +267,6 @@ RSpec.describe 'Includes API', type: :request do
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['post'].keys).not_to include('comments')
     end
   end
@@ -292,7 +279,6 @@ RSpec.describe 'Includes API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['post']['title']).to eq('Updated Title')
       expect(json['post']['comments']).to be_present
       expect(json['post']['comments'].length).to eq(2)
@@ -305,7 +291,6 @@ RSpec.describe 'Includes API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['post']['title']).to eq('Updated Second Post')
       expect(json['post'].keys).not_to include('comments')
     end
@@ -319,7 +304,6 @@ RSpec.describe 'Includes API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['post']['published']).to be(false) # Archive sets published to false
       expect(json['post']['comments']).to be_present
       expect(json['post']['comments'].length).to eq(2)
@@ -330,7 +314,6 @@ RSpec.describe 'Includes API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['post']['published']).to be(false)
       expect(json['post'].keys).not_to include('comments')
     end

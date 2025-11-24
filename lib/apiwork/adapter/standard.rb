@@ -34,23 +34,23 @@ module Apiwork
       def render_collection(collection, meta, query, schema_class, context)
         root_key = schema_class.root_key.plural
 
-        response = { ok: true, root_key => collection }
+        response = { root_key => collection }
         response[:meta] = meta if meta.present?
         response
       end
 
       def render_record(record, meta, query, schema_class, context)
-        return { ok: true, meta: meta.presence || {} } if context.delete?
+        return { meta: meta.presence || {} } if context.delete?
 
         root_key = schema_class.root_key.singular
 
-        response = { ok: true, root_key => record }
+        response = { root_key => record }
         response[:meta] = meta if meta.present?
         response
       end
 
       def render_error(issues, context)
-        { ok: false, issues: issues.map(&:to_h) }
+        { issues: issues.map(&:to_h) }
       end
 
       private

@@ -11,7 +11,6 @@ RSpec.describe 'Enum output validation', type: :request do
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(false)
       expect(json['issues']).to be_an(Array)
 
       # Check that we have an error for first_day_of_week enum

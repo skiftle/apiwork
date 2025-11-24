@@ -31,7 +31,6 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(2)
       titles = json['posts'].map { |p| p['title'] }
       expect(titles).to contain_exactly('Advanced Filter Test Ruby Basics', 'Advanced Filter Test Rails Basics')
@@ -43,7 +42,6 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(3)
       titles = json['posts'].map { |p| p['title'] }
       expect(titles).to contain_exactly('Advanced Filter Test Ruby Basics', 'Advanced Filter Test Advanced Ruby',
@@ -61,7 +59,6 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(3)
       titles = json['posts'].map { |p| p['title'] }
       expect(titles.first).to eq('Advanced Filter Test Advanced Ruby')
@@ -79,7 +76,6 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(2)
       titles = json['posts'].map { |p| p['title'] }
       expect(titles).to contain_exactly('Advanced Filter Test Rails Basics', 'Advanced Filter Test JavaScript Guide')
@@ -95,7 +91,6 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts']).to eq([])
     end
   end
@@ -110,7 +105,6 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(2)
       ids = json['posts'].map { |p| p['id'] }
       expect(ids).to contain_exactly(post2.id, post4.id)
@@ -123,7 +117,6 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(4)
     end
   end
@@ -136,7 +129,6 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(2)
       titles = json['posts'].map { |p| p['title'] }
       expect(titles).to contain_exactly('Advanced Filter Test Rails Basics', 'Advanced Filter Test JavaScript Guide')
@@ -149,7 +141,6 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(4)
     end
   end
@@ -162,7 +153,6 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(1)
       expect(json['posts'][0]['title']).to eq('Advanced Filter Test Ruby Basics')
     end
@@ -174,7 +164,6 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts']).to eq([])
     end
   end
@@ -187,7 +176,6 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(2)
       titles = json['posts'].map { |p| p['title'] }
       expect(titles).to contain_exactly('Advanced Filter Test Ruby Basics', 'Advanced Filter Test Rails Basics')
@@ -200,7 +188,6 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts']).to eq([])
     end
   end
@@ -216,7 +203,6 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(2)
       titles = json['posts'].map { |p| p['title'] }
       expect(titles).to contain_exactly('Advanced Filter Test Ruby Basics', 'Advanced Filter Test Advanced Ruby')
@@ -235,7 +221,6 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(1)
       expect(json['posts'][0]['title']).to eq('Advanced Filter Test Ruby Basics')
     end
@@ -257,7 +242,6 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       # Should return Ruby Basics and Advanced Ruby (both published)
       # Rails Basics is not published, so it's excluded
       expect(json['posts'].length).to eq(2)
@@ -280,7 +264,6 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(true)
         expect(json['posts'].length).to eq(2)
         titles = json['posts'].map { |p| p['title'] }
         expect(titles).to contain_exactly('Advanced Filter Test Ruby Basics', 'Advanced Filter Test Rails Basics')
@@ -300,7 +283,6 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(true)
         # Should return Ruby Basics, Advanced Ruby, and JavaScript Guide (all published)
         expect(json['posts'].length).to eq(3)
         titles = json['posts'].map { |p| p['title'] }
@@ -322,7 +304,6 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(true)
         expect(json['posts'].length).to eq(2)
         titles = json['posts'].map { |p| p['title'] }
         expect(titles).to contain_exactly('Advanced Filter Test Ruby Basics', 'Advanced Filter Test Advanced Ruby')
@@ -341,7 +322,6 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(true)
         expect(json['posts'].length).to eq(1)
         expect(json['posts'][0]['title']).to eq('Advanced Filter Test Ruby Basics')
       end
@@ -357,7 +337,6 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(true)
         expect(json['posts'].length).to eq(1)
         expect(json['posts'][0]['title']).to eq('Advanced Filter Test Rails Basics')
       end
@@ -373,7 +352,6 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(true)
         expect(json['posts'].length).to eq(2)
         titles = json['posts'].map { |p| p['title'] }
         expect(titles).to contain_exactly('Advanced Filter Test Ruby Basics', 'Advanced Filter Test Advanced Ruby')
@@ -393,7 +371,6 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(true)
         # Should return: Rails Basics (not published), JavaScript Guide (doesn't contain Ruby)
         expect(json['posts'].length).to eq(2)
         titles = json['posts'].map { |p| p['title'] }
@@ -420,7 +397,6 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(true)
         # Rails Basics is not published, so it's excluded
         expect(json['posts'].length).to eq(2)
         titles = json['posts'].map { |p| p['title'] }
@@ -437,7 +413,6 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(true)
         # Should return: Rails Basics (not published), JavaScript Guide (contains JavaScript)
         expect(json['posts'].length).to eq(2)
         titles = json['posts'].map { |p| p['title'] }
@@ -456,7 +431,6 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(true)
         # Should return: Rails Basics (not published, contains Rails but fails the AND),
         #                JavaScript Guide (published but doesn't contain Ruby/Rails)
 

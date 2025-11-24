@@ -13,7 +13,6 @@ RSpec.describe 'Custom Actions API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(true)
         expect(json['post']['id']).to eq(post.id)
         expect(json['post']['published']).to be(true)
 
@@ -47,7 +46,6 @@ RSpec.describe 'Custom Actions API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(true)
         expect(json['post']['id']).to eq(post.id)
         expect(json['post']['published']).to be(false)
 
@@ -78,7 +76,6 @@ RSpec.describe 'Custom Actions API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(true)
         expect(json['post']).to be_present
         expect(json['post']['id']).to eq(post.id)
         expect(json['post']['title']).to eq('Test Post')
@@ -122,7 +119,6 @@ RSpec.describe 'Custom Actions API', type: :request do
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(true)
         expect(json['posts'].length).to eq(1)
         expect(json['posts'][0]['title']).to eq('Ruby Tutorial')
       end
@@ -155,7 +151,6 @@ RSpec.describe 'Custom Actions API', type: :request do
         get '/api/v1/posts/search', params: { q: 'NonExistent' }
 
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(true)
         expect(json['posts']).to eq([])
       end
 
@@ -183,7 +178,6 @@ RSpec.describe 'Custom Actions API', type: :request do
 
         expect(response).to have_http_status(:created)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(true)
         expect(json['posts'].length).to eq(3)
 
         titles = json['posts'].map { |p| p['title'] }.sort
@@ -280,7 +274,6 @@ RSpec.describe 'Custom Actions API', type: :request do
 
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(false)
 
         notify_issue = json['issues'].find { |issue| issue['pointer']&.include?('notify_users') }
         expect(notify_issue).to be_present

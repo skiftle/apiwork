@@ -133,7 +133,7 @@ module Apiwork
 
         visited_with_current = visited_types.dup.add(expansion_key)
 
-        shape_definition = Definition.new(type: @type, contract_class: @contract_class, action_name: @action_name)
+        shape_definition = Definition.new(type: nil, contract_class: @contract_class, action_name: @action_name)
 
         shape_definition.instance_variable_set(:@visited_types, visited_with_current)
 
@@ -169,7 +169,7 @@ module Apiwork
 
         return unless block_given?
 
-        shape_definition = Definition.new(type: @type, contract_class: @contract_class, action_name: @action_name)
+        shape_definition = Definition.new(type: nil, contract_class: @contract_class, action_name: @action_name)
         shape_definition.instance_eval(&block)
         @params[name][:shape] = shape_definition
       end

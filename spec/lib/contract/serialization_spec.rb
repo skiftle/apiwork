@@ -388,27 +388,30 @@ RSpec.describe 'Contract Serialization' do
                            },
                            response: {
                              body: {
-                               id: {
-                                 nullable: false,
-                                 required: true,
-                                 type: :integer,
-                                 description: nil,
-                                 example: nil,
-                                 format: nil,
-                                 deprecated: false,
-                                 min: nil,
-                                 max: nil
-                               },
-                               title: {
-                                 nullable: false,
-                                 required: true,
-                                 type: :string,
-                                 description: nil,
-                                 example: nil,
-                                 format: nil,
-                                 deprecated: false,
-                                 min: nil,
-                                 max: nil
+                               type: :object,
+                               shape: {
+                                 id: {
+                                   nullable: false,
+                                   required: true,
+                                   type: :integer,
+                                   description: nil,
+                                   example: nil,
+                                   format: nil,
+                                   deprecated: false,
+                                   min: nil,
+                                   max: nil
+                                 },
+                                 title: {
+                                   nullable: false,
+                                   required: true,
+                                   type: :string,
+                                   description: nil,
+                                   example: nil,
+                                   format: nil,
+                                   deprecated: false,
+                                   min: nil,
+                                   max: nil
+                                 }
                                }
                              }
                            },

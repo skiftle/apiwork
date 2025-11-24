@@ -136,9 +136,7 @@ module Apiwork
           resource_type_name = resource_type_name_for_response
 
           definition.instance_variable_set(:@unwrapped_union, true)
-          definition.instance_variable_set(:@unwrapped_union_discriminator, :ok)
 
-          definition.param :ok, type: :boolean, required: true
           definition.param root_key, type: resource_type_name, required: false
           definition.param :meta, type: :object, required: false
 
@@ -150,9 +148,7 @@ module Apiwork
           resource_type_name = resource_type_name_for_response
 
           definition.instance_variable_set(:@unwrapped_union, true)
-          definition.instance_variable_set(:@unwrapped_union_discriminator, :ok)
 
-          definition.param :ok, type: :boolean, required: true
           definition.param root_key_plural, type: :array, of: resource_type_name, required: false
           definition.param :meta, type: :object, required: false do
             param :pagination, type: :pagination, required: true

@@ -164,8 +164,7 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
       patch "/api/v1/posts/#{post_record.id}", params: post_params, as: :json
 
       expect(response).to have_http_status(:unprocessable_content)
-      json = JSON.parse(response.body)
-      expect(json['ok']).to be false
+      JSON.parse(response.body)
     end
   end
 
@@ -379,8 +378,7 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
         post '/api/v1/posts', params: post_params, as: :json
 
         expect(response).to have_http_status(:unprocessable_content)
-        json = JSON.parse(response.body)
-        expect(json['ok']).to be false
+        JSON.parse(response.body)
       end
     end
 

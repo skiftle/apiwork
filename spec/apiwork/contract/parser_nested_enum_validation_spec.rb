@@ -18,7 +18,6 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
         action :show do
           response do
             body do
-              param :ok, type: :boolean, required: true
               param :account, type: :account, required: true
             end
           end
@@ -29,7 +28,6 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
 
       # Valid nested enum values should pass
       valid_output = {
-        ok: true,
         account: {
           id: 1,
           name: 'Test Account',
@@ -42,7 +40,6 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
 
       # Invalid status enum should fail
       invalid_status = {
-        ok: true,
         account: {
           id: 1,
           name: 'Test Account',
@@ -58,7 +55,6 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
 
       # Invalid first_day_of_week enum should fail
       invalid_fdow = {
-        ok: true,
         account: {
           id: 1,
           name: 'Test Account',
@@ -83,7 +79,6 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
         action :show do
           response do
             body do
-              param :ok, type: :boolean, required: true
               param :account, type: :account, required: true
             end
           end
@@ -94,7 +89,6 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
 
       # Wrong type (number instead of string) should fail WITHOUT coercion
       invalid_output = {
-        ok: true,
         account: {
           id: 1,
           name: 42 # Should be string
@@ -122,7 +116,6 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
         action :show do
           response do
             body do
-              param :ok, type: :boolean, required: true
               param :account, type: :account, required: true
             end
           end
@@ -133,7 +126,6 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
 
       # Invalid enum in deeply nested object
       invalid_output = {
-        ok: true,
         account: {
           id: 1,
           address: {

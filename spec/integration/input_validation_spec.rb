@@ -10,7 +10,6 @@ RSpec.describe 'Input Validation' do
 
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(false)
         expect(json['issues']).to be_an(Array)
         expect(json['issues']).not_to be_empty
       end
@@ -22,7 +21,6 @@ RSpec.describe 'Input Validation' do
 
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(false)
 
         title_issue = json['issues'].find { |issue| issue['pointer'] == '/post/title' }
         expect(title_issue).to be_present
@@ -54,7 +52,6 @@ RSpec.describe 'Input Validation' do
 
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(false)
         expect(json['issues'].length).to be >= 2
 
         pointers = json['issues'].map { |issue| issue['pointer'] }
@@ -75,7 +72,6 @@ RSpec.describe 'Input Validation' do
 
         expect(response).to have_http_status(:created)
         json = JSON.parse(response.body)
-        expect(json['ok']).to be(true)
         expect(json['post']['title']).to eq('Valid Title')
       end
 
@@ -146,9 +142,7 @@ RSpec.describe 'Input Validation' do
       post '/api/v1/posts', params: { post: { title: nil } }, as: :json
       missing_error = JSON.parse(response.body)
 
-      expect(missing_error).to have_key('ok')
       expect(missing_error).to have_key('issues')
-      expect(missing_error['ok']).to be(false)
       expect(missing_error['issues']).to be_an(Array)
       expect(missing_error['issues'].first).to have_key('code')
       expect(missing_error['issues'].first).to have_key('pointer')
@@ -158,9 +152,7 @@ RSpec.describe 'Input Validation' do
       post '/api/v1/posts', params: { post: { title: 'Test', published: 'invalid' } }, as: :json
       type_error = JSON.parse(response.body)
 
-      expect(type_error).to have_key('ok')
       expect(type_error).to have_key('issues')
-      expect(type_error['ok']).to be(false)
       expect(type_error['issues']).to be_an(Array)
       expect(type_error['issues'].first).to have_key('code')
       expect(type_error['issues'].first).to have_key('pointer')

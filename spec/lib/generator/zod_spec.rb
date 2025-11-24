@@ -615,19 +615,15 @@ RSpec.describe Apiwork::Generator::Zod do
       expect(output).to match(/export const \w+RequestSchema = z\.object\(\{\n  query: \w+RequestQuerySchema/)
     end
 
-    it 'generates separate ResponseBody schemas' do
+    it 'generates separate ResponseBody schemas as unions' do
       # Check for separate response body schemas (e.g., PostsIndexResponseBodySchema)
-      expect(output).to match(/export const \w+ResponseBodySchema = z\.discriminatedUnion/)
+      # ResponseBody schemas should use unions with success and error variants
+      expect(output).to match(/export const \w+ResponseBodySchema = z\.union/)
     end
 
     it 'generates combined Response schemas that wrap body' do
       # Combined response schemas should wrap the body
       expect(output).to match(/export const \w+ResponseSchema = z\.object\(\{\n  body: \w+ResponseBodySchema/)
-    end
-
-    it 'uses discriminated unions for success/error responses' do
-      # ResponseBody schemas should use discriminated unions with 'ok' field
-      expect(output).to match(/z\.discriminatedUnion\('ok'/)
     end
 
     it 'generates schemas before types (correct order)' do

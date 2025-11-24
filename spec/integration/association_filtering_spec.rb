@@ -32,7 +32,6 @@ RSpec.describe 'Association Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(2)
       titles = json['posts'].map { |p| p['title'] }
       expect(titles).to contain_exactly('Ruby Tutorial', 'Rails Guide')
@@ -43,7 +42,6 @@ RSpec.describe 'Association Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(1)
       expect(json['posts'][0]['title']).to eq('Ruby Tutorial')
     end
@@ -55,7 +53,6 @@ RSpec.describe 'Association Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(3)
     end
 
@@ -69,7 +66,6 @@ RSpec.describe 'Association Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(1)
       expect(json['posts'][0]['title']).to eq('Ruby Tutorial')
     end
@@ -86,7 +82,6 @@ RSpec.describe 'Association Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(1)
       expect(json['posts'][0]['title']).to eq('Ruby Tutorial')
     end
@@ -96,7 +91,6 @@ RSpec.describe 'Association Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts']).to eq([])
     end
   end
@@ -107,7 +101,6 @@ RSpec.describe 'Association Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['comments'].length).to eq(2)
       authors = json['comments'].map { |c| c['author'] }
       expect(authors).to match_array(%w[Alice Bob])
@@ -118,7 +111,6 @@ RSpec.describe 'Association Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['comments'].length).to eq(3)
     end
 
@@ -129,7 +121,6 @@ RSpec.describe 'Association Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['comments'].length).to eq(2)
     end
 
@@ -143,7 +134,6 @@ RSpec.describe 'Association Filtering API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['comments'].length).to eq(1)
       expect(json['comments'][0]['content']).to eq('Great tutorial!')
     end
@@ -155,7 +145,6 @@ RSpec.describe 'Association Filtering API', type: :request do
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(false)
       expect(json['issues']).to be_present
     end
   end

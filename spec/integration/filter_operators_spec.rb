@@ -79,8 +79,7 @@ RSpec.describe 'Filter Operators' do
 
       # Empty array in filter is invalid - should error
       expect(response).to have_http_status(:bad_request)
-      json = JSON.parse(response.body)
-      expect(json['ok']).to be(false)
+      JSON.parse(response.body)
     end
   end
 

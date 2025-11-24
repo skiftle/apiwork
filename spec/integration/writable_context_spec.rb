@@ -17,7 +17,6 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
 
-      expect(json['ok']).to be(true)
       expect(json['author']['name']).to eq('Jane Doe')
       expect(json['author']['bio']).to eq('Software engineer and writer')
       expect(json['author']['verified']).to be_falsey # Not writable on create, defaults to nil/false
@@ -36,7 +35,6 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      expect(json['ok']).to be(false)
       expect(json['issues']).to be_present
       issue = json['issues'].find { |i| i['path'].include?('verified') }
       expect(issue).to be_present
@@ -53,7 +51,6 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      expect(json['ok']).to be(false)
       expect(json['issues']).to be_present
       issue = json['issues'].find { |i| i['path'].include?('bio') }
       expect(issue).to be_present
@@ -73,7 +70,6 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      expect(json['ok']).to be(false)
       issue = json['issues'].find { |i| i['path'].include?('bio') }
       expect(issue).to be_present
       expect(issue['code']).to eq('field_unknown')
@@ -99,7 +95,6 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
 
-      expect(json['ok']).to be(true)
       expect(json['author']['name']).to eq('John Smith')
       expect(json['author']['verified']).to be_falsey # Defaults to nil/false
     end
@@ -184,7 +179,6 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      expect(json['ok']).to be(false)
       issue = json['issues'].find { |i| i['path'].include?('verified') }
       expect(issue['code']).to eq('field_unknown')
 
@@ -208,7 +202,6 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      expect(json['ok']).to be(false)
       issue = json['issues'].find { |i| i['path'].include?('bio') }
       expect(issue['code']).to eq('field_unknown')
 

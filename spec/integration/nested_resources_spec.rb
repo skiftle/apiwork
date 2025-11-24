@@ -106,8 +106,7 @@ RSpec.describe 'Nested Resources Routing', type: :request do
       # Contract validation happens first (400), model validation happens later (422)
       # Empty string passes contract but fails model validation
       expect(response.status).to be_in([400, 422])
-      json = JSON.parse(response.body)
-      expect(json['ok']).to be false
+      JSON.parse(response.body)
     end
   end
 

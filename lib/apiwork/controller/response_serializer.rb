@@ -63,7 +63,7 @@ module Apiwork
           combined_meta = pagination_meta.merge(@meta)
           adapter_instance.render_collection(serialized_data, combined_meta, @request.data, schema_class, context)
         else
-          { ok: true }.merge(serialized_data).merge(meta: @meta)
+          serialized_data.merge(meta: @meta)
         end
       end
 
@@ -88,7 +88,7 @@ module Apiwork
         if schema_class
           adapter_instance.render_record(serialized_data, @meta, @request.data, schema_class, context)
         else
-          response = { ok: true }.merge(serialized_data)
+          response = serialized_data
           response[:meta] = @meta if @meta.present?
           response
         end

@@ -164,8 +164,8 @@ module Apiwork
 
           def collect_filterable_error(key, target_klass, issues)
             available = schema_class.attribute_definitions
-                              .select { |_, definition| definition.filterable? }
-                              .keys
+                                    .select { |_, definition| definition.filterable? }
+                                    .keys
 
             issues << Issue.new(
               code: :field_not_filterable,

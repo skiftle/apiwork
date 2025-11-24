@@ -9,7 +9,6 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts']).to eq([])
     end
 
@@ -21,7 +20,6 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['posts'].length).to eq(2)
       titles = json['posts'].map { |p| p['title'] }
       expect(titles).to contain_exactly(post1.title, post2.title)
@@ -36,7 +34,6 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['post']['id']).to eq(post.id)
       expect(json['post']['title']).to eq('Test Post')
       expect(json['post']['body']).to eq('Test body')
@@ -66,7 +63,6 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['post']['title']).to eq('New Post')
       expect(json['post']['body']).to eq('New body')
       expect(json['post']['published']).to be(true)
@@ -86,7 +82,6 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(false)
       expect(json['issues']).to be_present
     end
   end
@@ -112,7 +107,6 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       # Keys inside JSON objects are transformed to camelCase in API output
       expect(json['post']['metadata']).to eq({
                                                'tags' => %w[ruby rails],
@@ -219,7 +213,6 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['post']['title']).to eq('Updated Title')
       expect(json['post']['published']).to be(true)
 
@@ -244,8 +237,7 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
       end.to change(Post, :count).by(-1)
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
+      JSON.parse(response.body)
     end
 
     it 'returns 404 when deleting missing resource' do

@@ -122,7 +122,6 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['clients'].length).to eq(2)
 
       person = json['clients'].find { |c| c['kind'] == 'person' }
@@ -156,7 +155,6 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['client']['kind']).to eq('person')
       expect(json['client']['name']).to eq('Alice Smith')
       expect(json['client']['birthDate']).to be_present
@@ -167,7 +165,6 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['client']['kind']).to eq('company')
       expect(json['client']['name']).to eq('Acme Corp')
       expect(json['client']['industry']).to eq('Technology')
@@ -180,7 +177,6 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
 
       personal_service = json['services'].find { |s| s['name'] == 'Personal Consulting' }
       expect(personal_service['client']).to be_present
@@ -200,7 +196,6 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['service']['client']).to be_present
       expect(json['service']['client']['kind']).to eq('person')
       expect(json['service']['client']['birthDate']).to be_present
@@ -211,7 +206,6 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(true)
       expect(json['service']['client']).to be_present
       expect(json['service']['client']['kind']).to eq('company')
       expect(json['service']['client']['industry']).to eq('Technology')

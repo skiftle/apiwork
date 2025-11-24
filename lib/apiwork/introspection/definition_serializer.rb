@@ -20,21 +20,22 @@ module Apiwork
           result[name] = serialize_param(name, param_options)
         end
 
-        result
+        # Response bodies are always objects (unless they're unions handled above)
+        if @definition.type == :response_body
+          { type: :object, shape: result }
+        else
+          result
+        end
       end
 
       private
 
       def serialize_unwrapped_union
-        discriminator = @definition.instance_variable_get(:@unwrapped_union_discriminator)
-
         success_params = {}
         issue_params = {}
 
         @definition.params.sort_by { |name, _| name.to_s }.each do |name, param_options|
           case name
-          when :ok
-            next # We'll add this manually to each variant
           when :issues
             issue_params[name] = serialize_param(name, param_options).tap do |serialized|
               serialized[:required] = true
@@ -48,23 +49,14 @@ module Apiwork
 
         {
           type: :union,
-          discriminator: discriminator,
           variants: [
             {
-              tag: true,
               type: :object,
-              shape: {
-                ok: { type: :literal, value: true, required: true },
-                **success_params
-              }
+              shape: success_params
             },
             {
-              tag: false,
               type: :object,
-              shape: {
-                ok: { type: :literal, value: false, required: true },
-                **issue_params
-              }
+              shape: issue_params
             }
           ]
         }

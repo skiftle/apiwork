@@ -6,7 +6,7 @@ module Api
       include Apiwork::Controller::Concern
 
       rescue_from ActiveRecord::RecordNotFound do |error|
-        render json: { ok: false, errors: [{ code: 'not_found', detail: error.message }] }, status: :not_found
+        render json: { errors: [{ code: 'not_found', detail: error.message }] }, status: :not_found
       end
     end
   end

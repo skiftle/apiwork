@@ -11,7 +11,6 @@ RSpec.describe 'Enum output validation with key transformation', type: :request 
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
-      expect(json['ok']).to be(false)
       expect(json['issues']).to be_an(Array)
 
       # Error paths use canonical field names (snake_case), not transformed names
