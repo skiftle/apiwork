@@ -43,12 +43,8 @@ module Apiwork
             end
             return nil unless association_model_class
 
-            schema_class_name = "Api::V1::#{association_model_class.name.demodulize}Schema"
-            resolved_schema = begin
-              schema_class_name.constantize
-            rescue NameError
-              nil
-            end
+            model_name = association_model_class.name.demodulize
+            resolved_schema = try_resolve_schema_class(model_name)
 
             return { sti: true, schema: resolved_schema } if resolved_schema.respond_to?(:sti_base?) && resolved_schema.sti_base?
 
@@ -66,14 +62,30 @@ module Apiwork
             parent_contract.import(association_contract, as: alias_name) unless parent_contract.imports.key?(alias_name)
 
             if association_contract.schema?
-              TypeBuilder.build_filter_type(association_contract, association_schema, visited: Set.new, depth: 0)
-              TypeBuilder.build_sort_type(association_contract, association_schema, visited: Set.new, depth: 0)
-              TypeBuilder.build_include_type(association_contract, association_schema, visited: Set.new, depth: 0)
+              TypeBuilder.build_filter_type(association_contract, association_schema, visited: visited, depth: 0)
+              TypeBuilder.build_sort_type(association_contract, association_schema, visited: visited, depth: 0)
+              TypeBuilder.build_include_type(association_contract, association_schema, visited: visited, depth: 0)
               TypeBuilder.build_nested_payload_union(association_contract, association_schema)
-              TypeBuilder.build_response_type(association_contract, association_schema, visited: Set.new)
+              TypeBuilder.build_response_type(association_contract, association_schema, visited: visited)
             end
 
             alias_name
+          end
+
+          def try_resolve_schema_class(model_name)
+            schema_patterns = [
+              "#{model_name}Schema",
+              "Api::V1::#{model_name}Schema",
+              "Api::#{model_name}Schema"
+            ]
+
+            schema_patterns.each do |pattern|
+              return pattern.constantize
+            rescue NameError
+              next
+            end
+
+            nil
           end
 
           def build_type_name(schema_class, base_name, depth)

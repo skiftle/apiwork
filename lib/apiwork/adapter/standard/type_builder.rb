@@ -255,7 +255,7 @@ module Apiwork
 
             if import_alias
               association_contract = Contract::Base.find_contract_for_schema(association_schema)
-              build_response_type(association_contract, association_schema, visited: Set.new) if association_contract
+              build_response_type(association_contract, association_schema, visited: visited) if association_contract
 
               return import_alias
             end
@@ -264,7 +264,7 @@ module Apiwork
               schema association_schema
             end
 
-            resource_type_name = nil
+            resource_type_name = association_schema.root_key.singular.to_sym
 
             unless Descriptor.resolve_type(resource_type_name, contract_class: association_contract_class)
               Descriptor.register_type(resource_type_name, scope: association_contract_class,
@@ -434,7 +434,7 @@ module Apiwork
 
               assoc_type_map = {}
               schema_class.association_definitions.each do |name, association_definition|
-                result = TypeBuilder.build_association_type(contract_class, association_definition, visited: Set.new)
+                result = TypeBuilder.build_association_type(contract_class, association_definition, visited: visited)
                 assoc_type_map[name] = result
               end
 
