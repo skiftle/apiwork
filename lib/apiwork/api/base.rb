@@ -21,10 +21,6 @@ module Apiwork
 
           Registry.register(self)
 
-          schemas = @metadata.resources.values.map { |r| r[:schema_class] }.compact
-          schema_data = Adapter::SchemaData.new(schemas)
-          adapter.build_global_descriptors(Descriptor::Builder.new(api_class: self), schema_data)
-
           @configuration = {}
         end
 
@@ -132,6 +128,10 @@ module Apiwork
           @metadata.resources.each_value do |resource_data|
             build_contracts_for_resource(resource_data)
           end
+
+          schemas = @metadata.resources.values.map { |r| r[:schema_class] }.compact
+          schema_data = Adapter::SchemaData.new(schemas)
+          adapter.build_global_descriptors(Descriptor::Builder.new(api_class: self), schema_data)
         end
 
         private

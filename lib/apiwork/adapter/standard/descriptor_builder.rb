@@ -7,11 +7,6 @@ module Apiwork
     class Standard < Base
       module DescriptorBuilder
         class << self
-          def clear!
-            @registered_filter_descriptors = Concurrent::Map.new
-            @sort_descriptor_registered = Concurrent::Map.new
-          end
-
           def register(builder, schema_data)
             builder.instance_eval do
               type :pagination do
@@ -55,44 +50,12 @@ module Apiwork
           end
 
           def register_sort_direction(builder:)
-            sort_descriptor_registered.fetch_or_store(builder.api_class) do
-              builder.instance_eval do
-                enum :sort_direction, values: %w[asc desc]
-              end
-              true
-            end
-          end
-
-          def ensure_filter_descriptors(schema_class, api_class:)
-            builder = Descriptor::Builder.new(api_class: api_class)
-            needed = determine_needed_filter_descriptors(schema_class)
-            needed.each { |type| register_filter_descriptor(type, builder: builder) }
-          end
-
-          def ensure_sort_descriptor(schema_class, api_class:)
-            sort_descriptor_registered.fetch_or_store(api_class) do
-              has_attributes_sortable = schema_class.attribute_definitions.values.any?(&:sortable?)
-              has_associations_sortable = schema_class.association_definitions.values.any?(&:sortable?)
-              has_sortable = has_attributes_sortable || has_associations_sortable
-
-              if has_sortable
-                builder = Descriptor::Builder.new(api_class: api_class)
-                builder.instance_eval do
-                  enum :sort_direction, values: %w[asc desc]
-                end
-              end
-
-              true
+            builder.instance_eval do
+              enum :sort_direction, values: %w[asc desc]
             end
           end
 
           def register_filter_descriptor(type_name, builder:)
-            api_class = builder.api_class
-            api_filters = registered_filter_descriptors.fetch_or_store(api_class) { Set.new }
-            return if api_filters.include?(type_name)
-
-            api_filters.add(type_name)
-
             case type_name
             when :string_filter
               register_string_filter(builder: builder)
@@ -131,28 +94,6 @@ module Apiwork
             when :nullable_uuid_filter
               register_nullable_uuid_filter(builder: builder)
             end
-          end
-
-          def registered_filter_descriptors
-            @registered_filter_descriptors ||= Concurrent::Map.new
-          end
-
-          def sort_descriptor_registered
-            @sort_descriptor_registered ||= Concurrent::Map.new
-          end
-
-          def determine_needed_filter_descriptors(schema_class)
-            descriptors = Set.new
-            schema_class.attribute_definitions.each_value do |attribute_definition|
-              next unless attribute_definition.filterable?
-
-              filter_type = TypeBuilder.determine_filter_type(
-                attribute_definition.type,
-                nullable: attribute_definition.nullable?
-              )
-              descriptors.add(filter_type)
-            end
-            descriptors
           end
 
           def register_string_filter(builder:)
@@ -372,8 +313,6 @@ module Apiwork
             end
           end
         end
-
-        clear!
       end
     end
   end

@@ -56,8 +56,6 @@ module Apiwork
 
             visited = visited.dup.add(schema_class)
 
-            DescriptorBuilder.send(:ensure_filter_descriptors, schema_class, api_class: contract_class.api_class)
-
             type_name = Helpers.build_type_name(schema_class, :filter, depth)
 
             existing = contract_class.resolve_type(type_name)
@@ -120,8 +118,6 @@ module Apiwork
             return nil if depth >= MAX_RECURSION_DEPTH
 
             visited = visited.dup.add(schema_class)
-
-            DescriptorBuilder.send(:ensure_sort_descriptor, schema_class, api_class: contract_class.api_class)
 
             type_name = Helpers.build_type_name(schema_class, :sort, depth)
 
