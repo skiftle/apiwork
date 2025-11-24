@@ -12,8 +12,9 @@ module Apiwork
             @sort_descriptor_registered = Concurrent::Map.new
           end
 
-          def register(api_class)
-            builder = Descriptor::Builder.new(api_class: api_class)
+          def register(builder, schema_data)
+            api_class = builder.api_class
+
             builder.instance_eval do
               type :pagination do
                 param :current, type: :integer, required: true
@@ -30,9 +31,40 @@ module Apiwork
                 param :path, type: :array, of: :string, required: true
               end
             end
+
+            register_global_filter_types(schema_data, api_class: api_class) if schema_data.filterable_types.any?
+            register_sort_direction(api_class: api_class) if schema_data.sortable?
           end
 
           private
+
+          def register_global_filter_types(schema_data, api_class:)
+            filter_types_to_register = Set.new
+
+            # Register non-nullable variants for all filterable types
+            schema_data.filterable_types.each do |type|
+              filter_type = TypeBuilder.determine_filter_type(type, nullable: false)
+              filter_types_to_register.add(filter_type)
+            end
+
+            # Register nullable variants ONLY for types that have nullable attributes
+            schema_data.nullable_filterable_types.each do |type|
+              nullable_filter_type = TypeBuilder.determine_filter_type(type, nullable: true)
+              filter_types_to_register.add(nullable_filter_type)
+            end
+
+            filter_types_to_register.each { |type| register_filter_descriptor(type, api_class: api_class) }
+          end
+
+          def register_sort_direction(api_class:)
+            sort_descriptor_registered.fetch_or_store(api_class) do
+              builder = Descriptor::Builder.new(api_class: api_class)
+              builder.instance_eval do
+                enum :sort_direction, values: %w[asc desc]
+              end
+              true
+            end
+          end
 
           def ensure_filter_descriptors(schema_class, api_class:)
             needed = determine_needed_filter_descriptors(schema_class)

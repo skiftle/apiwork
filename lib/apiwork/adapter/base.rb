@@ -3,7 +3,7 @@
 module Apiwork
   module Adapter
     class Base
-      def build_global_descriptors(builder)
+      def build_global_descriptors(builder, schema_data)
         raise NotImplementedError
       end
 

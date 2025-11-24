@@ -21,7 +21,9 @@ module Apiwork
 
           Registry.register(self)
 
-          adapter.build_global_descriptors(Descriptor::Builder.new(api_class: self))
+          schemas = @metadata.resources.values.map { |r| r[:schema_class] }.compact
+          schema_data = Adapter::SchemaData.new(schemas)
+          adapter.build_global_descriptors(Descriptor::Builder.new(api_class: self), schema_data)
 
           @configuration = {}
         end

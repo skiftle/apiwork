@@ -3,8 +3,8 @@
 module Apiwork
   module Adapter
     class Standard < Base
-      def build_global_descriptors(builder)
-        DescriptorBuilder.register(builder.api_class)
+      def build_global_descriptors(builder, schema_data)
+        DescriptorBuilder.register(builder, schema_data)
       end
 
       def build_contract(contract_class, schema_class, context)
