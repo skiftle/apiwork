@@ -77,7 +77,7 @@ module Apiwork
             schema_class.association_definitions.each do |name, association_definition|
               next unless association_definition.writable_for?(context)
 
-              association_schema = Helpers.resolve_association_resource(association_definition)
+              association_schema = Helpers.resolve_association_resource(association_definition, schema_class)
               association_payload_type = nil
 
               association_contract = nil
@@ -190,7 +190,7 @@ module Apiwork
           def register_resource_type(contract_class, schema_class, type_name)
             assoc_type_map = {}
             schema_class.association_definitions.each do |name, association_definition|
-              assoc_type_map[name] = TypeBuilder.build_association_type(contract_class, association_definition)
+              assoc_type_map[name] = TypeBuilder.build_association_type(contract_class, schema_class, association_definition)
             end
 
             TypeBuilder.build_enums(contract_class, schema_class)

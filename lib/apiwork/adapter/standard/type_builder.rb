@@ -87,7 +87,7 @@ module Apiwork
               schema_class.association_definitions.each do |name, association_definition|
                 next unless association_definition.filterable?
 
-                association_resource = Helpers.resolve_association_resource(association_definition)
+                association_resource = Helpers.resolve_association_resource(association_definition, schema_class)
                 next unless association_resource
                 next if visited.include?(association_resource)
 
@@ -138,7 +138,7 @@ module Apiwork
               schema_class.association_definitions.each do |name, association_definition|
                 next unless association_definition.sortable?
 
-                association_resource = Helpers.resolve_association_resource(association_definition)
+                association_resource = Helpers.resolve_association_resource(association_definition, schema_class)
                 next unless association_resource
                 next if visited.include?(association_resource)
 
@@ -194,7 +194,7 @@ module Apiwork
 
             contract_class.register_type(type_name) do
               schema_class.association_definitions.each do |name, association_definition|
-                association_resource = Helpers.resolve_association_resource(association_definition)
+                association_resource = Helpers.resolve_association_resource(association_definition, schema_class)
                 next unless association_resource
 
                 is_sti = association_resource.is_a?(Hash) && association_resource[:sti]
@@ -235,10 +235,10 @@ module Apiwork
             type_name
           end
 
-          def build_association_type(contract_class, association_definition, visited: Set.new)
+          def build_association_type(contract_class, schema_class, association_definition, visited: Set.new)
             return build_polymorphic_association_type(contract_class, association_definition, visited: visited) if association_definition.polymorphic?
 
-            association_schema = Helpers.resolve_association_resource(association_definition)
+            association_schema = Helpers.resolve_association_resource(association_definition, schema_class)
             return nil unless association_schema
 
             if association_schema.is_a?(Hash) && association_schema[:sti]
@@ -379,7 +379,7 @@ module Apiwork
 
               assoc_type_map = {}
               schema_class.association_definitions.each do |name, association_definition|
-                result = TypeBuilder.build_association_type(contract_class, association_definition, visited: visited)
+                result = TypeBuilder.build_association_type(contract_class, schema_class, association_definition, visited: visited)
                 assoc_type_map[name] = result
               end
 
