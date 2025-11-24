@@ -4,13 +4,13 @@ module Apiwork
   module Adapter
     class Standard < Base
       class CollectionResponse
-        def self.render(load_result, user_meta, query, schema_class, context)
-          new(load_result, user_meta, query, schema_class, context).render
+        def self.render(load_result, meta, query, schema_class, context)
+          new(load_result, meta, query, schema_class, context).render
         end
 
-        def initialize(load_result, user_meta, query, schema_class, context)
+        def initialize(load_result, meta, query, schema_class, context)
           @load_result = load_result
-          @user_meta = user_meta
+          @meta = meta
           @query = query
           @schema_class = schema_class
           @context = context
@@ -22,7 +22,7 @@ module Apiwork
 
           response = { root_key => collection }
           response[:pagination] = @load_result.metadata[:pagination] if @load_result.metadata[:pagination]
-          response[:meta] = @user_meta if @user_meta.present?
+          response[:meta] = @meta if @meta.present?
           response
         end
       end

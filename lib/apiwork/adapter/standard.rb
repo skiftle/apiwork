@@ -19,16 +19,16 @@ module Apiwork
         RecordLoader.load(record, schema_class, query)
       end
 
-      def render_collection(load_result, user_meta, query, schema_class, context)
-        CollectionResponse.render(load_result, user_meta, query, schema_class, context)
+      def render_collection(load_result, meta, query, schema_class, context)
+        CollectionResponse.render(load_result, meta, query, schema_class, context)
       end
 
-      def render_record(load_result, user_meta, query, schema_class, context)
-        RecordResponse.render(load_result, user_meta, query, schema_class, context)
+      def render_record(load_result, meta, query, schema_class, context)
+        RecordResponse.render(load_result, meta, query, schema_class, context)
       end
 
       def render_error(issues, context)
-        ErrorResponse.render(issues, context, nil, nil, nil)
+        ErrorResponse.render(issues, context)
       end
     end
   end
