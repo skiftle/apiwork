@@ -577,4 +577,93 @@ RSpec.describe 'Contract Serialization' do
       end
     end
   end
+
+  describe 'Definition#meta' do
+    let(:contract_class) do
+      Class.new(Apiwork::Contract::Base) do
+        def self.name
+          'TestContract'
+        end
+      end
+    end
+
+    it 'creates meta param if not exists' do
+      definition = Apiwork::Contract::Definition.new(
+        type: :response_body,
+        contract_class: contract_class,
+        action_name: :test
+      )
+
+      definition.meta do
+        param :custom, type: :string
+      end
+
+      expect(definition.params[:meta]).to be_present
+      expect(definition.params[:meta][:type]).to eq(:object)
+      expect(definition.params[:meta][:required]).to be(false)
+      expect(definition.params[:meta][:shape]).to be_a(Apiwork::Contract::Definition)
+      expect(definition.params[:meta][:shape].params[:custom]).to be_present
+      expect(definition.params[:meta][:shape].params[:custom][:type]).to eq(:string)
+    end
+
+    it 'extends existing meta from adapter' do
+      definition = Apiwork::Contract::Definition.new(
+        type: :response_body,
+        contract_class: contract_class,
+        action_name: :test
+      )
+
+      # Simulate adapter defining meta with pagination
+      definition.param :meta, type: :object do
+        param :pagination, type: :pagination
+      end
+
+      # User extends with custom fields
+      definition.meta do
+        param :total, type: :integer
+        param :custom_field, type: :string
+      end
+
+      meta_shape = definition.params[:meta][:shape]
+      expect(meta_shape.params[:pagination]).to be_present
+      expect(meta_shape.params[:total]).to be_present
+      expect(meta_shape.params[:custom_field]).to be_present
+    end
+
+    it 'works in response body context' do
+      contract_class_with_meta = Class.new(Apiwork::Contract::Base) do
+        action :test do
+          response do
+            body do
+              meta do
+                param :total_count, type: :integer
+                param :processing_time, type: :integer
+              end
+            end
+          end
+        end
+      end
+
+      action_def = contract_class_with_meta.action_definition(:test)
+      response_def = action_def.response_definition
+      body_def = response_def.body_definition
+
+      expect(body_def.params[:meta]).to be_present
+      meta_shape = body_def.params[:meta][:shape]
+      expect(meta_shape.params[:total_count]).to be_present
+      expect(meta_shape.params[:processing_time]).to be_present
+    end
+
+    it 'does nothing without a block' do
+      definition = Apiwork::Contract::Definition.new(
+        type: :response_body,
+        contract_class: contract_class,
+        action_name: :test
+      )
+
+      definition.meta
+
+      expect(definition.params[:meta]).to be_nil
+    end
+  end
 end

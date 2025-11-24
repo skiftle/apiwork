@@ -54,6 +54,20 @@ module Apiwork
         end
       end
 
+      def meta(&block)
+        return unless block
+
+        existing_meta = @params[:meta]
+
+        if existing_meta && existing_meta[:shape]
+          # Meta already exists (from adapter) - extend its shape
+          existing_meta[:shape].instance_eval(&block)
+        else
+          # First definition of meta - create it
+          param :meta, type: :object, required: false, &block
+        end
+      end
+
       private
 
       def apply_param_defaults(param_hash)
