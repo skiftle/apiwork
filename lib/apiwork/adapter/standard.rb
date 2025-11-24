@@ -20,28 +20,15 @@ module Apiwork
       end
 
       def render_collection(load_result, user_meta, query, schema_class, context)
-        root_key = schema_class.root_key.plural
-        collection = load_result.data
-
-        response = { root_key => collection }
-        response[:pagination] = load_result.metadata[:pagination] if load_result.metadata[:pagination]
-        response[:meta] = user_meta if user_meta.present?
-        response
+        CollectionResponse.render(load_result, user_meta, query, schema_class, context)
       end
 
       def render_record(load_result, user_meta, query, schema_class, context)
-        return { meta: user_meta.presence || {} } if context.delete?
-
-        root_key = schema_class.root_key.singular
-        record = load_result.data
-
-        response = { root_key => record }
-        response[:meta] = user_meta if user_meta.present?
-        response
+        RecordResponse.render(load_result, user_meta, query, schema_class, context)
       end
 
       def render_error(issues, context)
-        { issues: issues.map(&:to_h) }
+        ErrorResponse.render(issues, context, nil, nil, nil)
       end
     end
   end
