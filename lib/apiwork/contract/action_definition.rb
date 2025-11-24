@@ -20,12 +20,6 @@ module Apiwork
         @request_definition = nil
         @response_definition = nil
         @error_codes = []
-
-        return unless contract_class.schema?
-
-        return if singleton_class.ancestors.include?(Adapter::Standard::ActionDefinitionExtension)
-
-        singleton_class.prepend(Adapter::Standard::ActionDefinitionExtension)
       end
 
       def resets_request?
@@ -75,7 +69,15 @@ module Apiwork
       end
 
       def serialize_data(data, context: {}, includes: nil)
-        data
+        needs_serialization = if data.is_a?(Hash)
+                                false
+                              elsif data.is_a?(Array)
+                                data.empty? || data.first.class != Hash
+                              else
+                                true
+                              end
+
+        needs_serialization ? schema_class.serialize(data, context: context, includes: includes) : data
       end
     end
   end
