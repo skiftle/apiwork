@@ -36,15 +36,15 @@ module Apiwork
         context = adapter_context
 
         load_result = if schema_class.present?
-                         adapter_instance.load_collection(
-                           collection,
-                           schema_class,
-                           @request.data,
-                           context
-                         )
-                       else
-                         Adapter::LoadResult.new(collection)
-                       end
+                        adapter_instance.load_collection(
+                          collection,
+                          schema_class,
+                          @request.data,
+                          context
+                        )
+                      else
+                        Adapter::LoadResult.new(collection)
+                      end
 
         serialized_data = action_definition.serialize_data(load_result.data,
                                                            context: @context,
@@ -65,15 +65,15 @@ module Apiwork
         context = adapter_context
 
         load_result = if schema_class.present?
-                         adapter_instance.load_record(
-                           resource,
-                           schema_class,
-                           @request.data,
-                           context
-                         )
-                       else
-                         Adapter::LoadResult.new(resource)
-                       end
+                        adapter_instance.load_record(
+                          resource,
+                          schema_class,
+                          @request.data,
+                          context
+                        )
+                      else
+                        Adapter::LoadResult.new(resource)
+                      end
 
         serialized_data = action_definition.serialize_data(load_result.data, context: @context, includes: includes_param)
 
