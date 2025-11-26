@@ -315,7 +315,7 @@ module Apiwork
               end
             end
 
-            builder = FilterBuilder.new(
+            builder = Builder.new(
               column: column,
               field_name: key,
               issues: @issues,
@@ -336,7 +336,7 @@ module Apiwork
 
             normalizer = ->(val) { val.is_a?(String) || val.nil? ? { eq: val } : val }
 
-            builder = FilterBuilder.new(
+            builder = Builder.new(
               column: column,
               field_name: key,
               issues: @issues,
@@ -367,7 +367,7 @@ module Apiwork
 
             normalizer = ->(val) { val }
 
-            builder = FilterBuilder.new(
+            builder = Builder.new(
               column: column,
               field_name: key,
               issues: @issues,
@@ -417,7 +417,7 @@ module Apiwork
 
             normalizer = ->(val) { [String, Numeric, NilClass].any? { |t| val.is_a?(t) } ? { eq: val } : val }
 
-            builder = FilterBuilder.new(
+            builder = Builder.new(
               column: column,
               field_name: key,
               issues: @issues,
@@ -477,7 +477,7 @@ module Apiwork
               end
             end
 
-            builder = FilterBuilder.new(
+            builder = Builder.new(
               column: column,
               field_name: key,
               issues: @issues,
