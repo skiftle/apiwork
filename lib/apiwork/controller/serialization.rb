@@ -15,13 +15,13 @@ module Apiwork
                      render_record_response(resource_or_collection, schema_class, meta)
                    end
 
-        response = adapter.transform_response(response, current_contract.api_class)
-
         skip_validation = request.delete? && schema_class.present?
         unless skip_validation
           result = current_contract.parse(response, :response_body, action_name, coerce: false, context: context)
           raise ContractError, result.issues if result.invalid?
         end
+
+        response = adapter.transform_response(response, current_contract.api_class)
 
         render json: response, status: status || (action_name.to_sym == :create ? :created : :ok)
       end
