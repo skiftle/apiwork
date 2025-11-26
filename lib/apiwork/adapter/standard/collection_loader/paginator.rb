@@ -4,21 +4,27 @@ module Apiwork
   module Adapter
     class Standard < Base
       class CollectionLoader
-        module Pagination
-          def apply_pagination(scope, params)
+        class Paginator
+          attr_reader :schema_class
+
+          def self.perform(relation, schema_class, page_params)
+            new(relation, schema_class).perform(page_params)
+          end
+
+          def initialize(relation, schema_class)
+            @relation = relation
+            @schema_class = schema_class
+          end
+
+          def perform(params)
             page_number = params.fetch(:number, 1).to_i
             page_size = params.fetch(:size, default_page_size).to_i
             offset = (page_number - 1) * page_size
 
-            @metadata = build_meta_for_scope(scope, page_number, page_size)
+            metadata = build_metadata(@relation, page_number, page_size)
+            paginated_relation = @relation.limit(page_size).offset(offset)
 
-            scope.limit(page_size).offset(offset)
-          end
-
-          def build_meta(collection)
-            return @metadata if @metadata.present?
-
-            build_meta_for_scope(collection, 1, default_page_size)
+            [paginated_relation, metadata]
           end
 
           def default_page_size
@@ -31,7 +37,7 @@ module Apiwork
 
           private
 
-          def build_meta_for_scope(scope, page_number, page_size)
+          def build_metadata(scope, page_number, page_size)
             items = if scope.joins_values.any?
                       scope.except(:limit, :offset).distinct.count(:all)
                     else

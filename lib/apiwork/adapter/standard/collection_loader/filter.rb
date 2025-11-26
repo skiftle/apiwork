@@ -4,48 +4,70 @@ module Apiwork
   module Adapter
     class Standard < Base
       class CollectionLoader
-        module Filtering
+        class Filter
           include Apiwork::Schema::Operator
 
-          def apply_filter(scope, params, issues = [])
-            return scope if params.blank?
+          attr_reader :schema_class
+
+          def self.perform(relation, schema_class, filter_params, issues)
+            new(relation, schema_class, issues).perform(filter_params)
+          end
+
+          def initialize(relation, schema_class, issues)
+            @relation = relation
+            @schema_class = schema_class
+            @issues = issues
+          end
+
+          def perform(params)
+            return @relation if params.blank?
 
             case params
             when Hash
-              logical_ops = params.slice(:_and, :_or, :_not)
-              regular_attrs = params.except(:_and, :_or, :_not)
-
-              if regular_attrs.present?
-                conditions, joins = build_where_conditions(regular_attrs, schema_class.model_class, issues)
-                result = scope.joins(joins).where(conditions.reduce(:and))
-                scope = joins.present? ? result.distinct : result
-              end
-
-              scope = apply_not(scope, logical_ops[:_not], issues) if logical_ops.key?(:_not)
-              scope = apply_or(scope, logical_ops[:_or], issues) if logical_ops.key?(:_or)
-              scope = apply_and(scope, logical_ops[:_and], issues) if logical_ops.key?(:_and)
-
-              scope
+              apply_hash_filter(params)
             when Array
-              individual_conditions = params.map do |filter_hash|
-                conditions, _joins = build_where_conditions(filter_hash, schema_class.model_class, issues)
-                conditions.compact.reduce(:and) if conditions.any?
-              end.compact
-
-              or_condition = individual_conditions.reduce(:or) if individual_conditions.any?
-              all_joins = params.map { |p| build_where_conditions(p, schema_class.model_class, issues)[1] }.reduce({}) { |acc, j| acc.deep_merge(j) }
-
-              result = scope
-              result = result.joins(all_joins) if all_joins.present?
-              result = result.where(or_condition) if or_condition
-              all_joins.present? ? result.distinct : result
+              apply_array_filter(params)
             end
           end
 
           private
 
-          def apply_not(scope, filter_params, issues = [])
-            condition, joins = build_conditions_recursive(filter_params, issues)
+          def apply_hash_filter(params)
+            logical_ops = params.slice(:_and, :_or, :_not)
+            regular_attrs = params.except(:_and, :_or, :_not)
+
+            scope = @relation
+
+            if regular_attrs.present?
+              conditions, joins = build_where_conditions(regular_attrs, schema_class.model_class)
+              result = scope.joins(joins).where(conditions.reduce(:and))
+              scope = joins.present? ? result.distinct : result
+            end
+
+            scope = apply_not(scope, logical_ops[:_not]) if logical_ops.key?(:_not)
+            scope = apply_or(scope, logical_ops[:_or]) if logical_ops.key?(:_or)
+            scope = apply_and(scope, logical_ops[:_and]) if logical_ops.key?(:_and)
+
+            scope
+          end
+
+          def apply_array_filter(params)
+            individual_conditions = params.map do |filter_hash|
+              conditions, _joins = build_where_conditions(filter_hash, schema_class.model_class)
+              conditions.compact.reduce(:and) if conditions.any?
+            end.compact
+
+            or_condition = individual_conditions.reduce(:or) if individual_conditions.any?
+            all_joins = params.map { |p| build_where_conditions(p, schema_class.model_class)[1] }.reduce({}) { |acc, j| acc.deep_merge(j) }
+
+            result = @relation
+            result = result.joins(all_joins) if all_joins.present?
+            result = result.where(or_condition) if or_condition
+            all_joins.present? ? result.distinct : result
+          end
+
+          def apply_not(scope, filter_params)
+            condition, joins = build_conditions_recursive(filter_params)
 
             return scope if condition.nil?
 
@@ -54,14 +76,14 @@ module Apiwork
             joins.present? ? result.distinct : result
           end
 
-          def apply_or(scope, conditions_array, issues = [])
+          def apply_or(scope, conditions_array)
             return scope if conditions_array.blank?
 
             or_conditions = []
             all_joins = {}
 
             conditions_array.each do |filter_hash|
-              conditions, joins = build_conditions_recursive(filter_hash, issues)
+              conditions, joins = build_conditions_recursive(filter_hash)
               or_conditions << conditions if conditions
               all_joins = all_joins.deep_merge(joins)
             end
@@ -74,15 +96,15 @@ module Apiwork
             all_joins.present? ? result.distinct : result
           end
 
-          def apply_and(scope, conditions_array, issues = [])
+          def apply_and(scope, conditions_array)
             return scope if conditions_array.blank?
 
             conditions_array.reduce(scope) do |current_scope, filter_hash|
-              apply_filter(current_scope, filter_hash, issues)
+              Filter.perform(current_scope, schema_class, filter_hash, @issues)
             end
           end
 
-          def build_conditions_recursive(filter_params, issues = [])
+          def build_conditions_recursive(filter_params)
             return [nil, {}] if filter_params.blank?
             return [nil, {}] unless filter_params.is_a?(Hash)
 
@@ -93,25 +115,25 @@ module Apiwork
             all_joins = {}
 
             if regular_attrs.present?
-              attr_conditions, joins = build_where_conditions(regular_attrs, schema_class.model_class, issues)
+              attr_conditions, joins = build_where_conditions(regular_attrs, schema_class.model_class)
               conditions << attr_conditions.reduce(:and) if attr_conditions.any?
               all_joins = all_joins.deep_merge(joins)
             end
 
             if logical_ops.key?(:_and)
-              cond, joins = process_logical_operator(logical_ops[:_and], :and, issues)
+              cond, joins = process_logical_operator(logical_ops[:_and], :and)
               conditions << cond if cond
               all_joins = all_joins.deep_merge(joins)
             end
 
             if logical_ops.key?(:_or)
-              cond, joins = process_logical_operator(logical_ops[:_or], :or, issues)
+              cond, joins = process_logical_operator(logical_ops[:_or], :or)
               conditions << cond if cond
               all_joins = all_joins.deep_merge(joins)
             end
 
             if logical_ops.key?(:_not)
-              not_cond, joins = build_conditions_recursive(logical_ops[:_not], issues)
+              not_cond, joins = build_conditions_recursive(logical_ops[:_not])
               conditions << not_cond.not if not_cond
               all_joins = all_joins.deep_merge(joins)
             end
@@ -120,12 +142,12 @@ module Apiwork
             [final_condition, all_joins]
           end
 
-          def process_logical_operator(filters, combinator, issues = [])
+          def process_logical_operator(filters, combinator)
             collected_conditions = []
             all_joins = {}
 
             filters.each do |filter_hash|
-              cond, joins = build_conditions_recursive(filter_hash, issues)
+              cond, joins = build_conditions_recursive(filter_hash)
               collected_conditions << cond if cond
               all_joins = all_joins.deep_merge(joins)
             end
@@ -134,23 +156,23 @@ module Apiwork
             [combined, all_joins]
           end
 
-          def build_where_conditions(filter, target_klass = schema_class.model_class, issues = [])
+          def build_where_conditions(filter, target_klass = schema_class.model_class)
             filter.each_with_object([[], {}]) do |(key, value), (conditions, joins)|
               key = key.to_sym
 
               if (attribute_definition = schema_class.attribute_definitions[key])&.filterable?
                 next unless filterable_for_context?(attribute_definition)
 
-                condition_result = build_column_condition(key, value, target_klass, issues)
+                condition_result = build_column_condition(key, value, target_klass)
                 conditions << condition_result if condition_result
 
               elsif (association = find_filterable_association(key))
-                association_conditions, association_joins = build_join_conditions(key, value, association, issues)
+                association_conditions, association_joins = build_join_conditions(key, value, association)
                 conditions.concat(association_conditions)
                 joins.deep_merge!(association_joins)
 
               else
-                collect_filterable_error(key, target_klass, issues)
+                collect_filterable_error(key, target_klass)
               end
             end
           end
@@ -162,12 +184,12 @@ module Apiwork
             schema_class.new(nil, {}).instance_eval(&filterable)
           end
 
-          def collect_filterable_error(key, target_klass, issues)
+          def collect_filterable_error(key, target_klass)
             available = schema_class.attribute_definitions
                                     .select { |_, definition| definition.filterable? }
                                     .keys
 
-            issues << Issue.new(
+            @issues << Issue.new(
               code: :field_not_filterable,
               detail: "#{key} is not a filterable attribute on #{target_klass.name}. Available: #{available.join(', ')}",
               path: [:filter, key],
@@ -175,12 +197,12 @@ module Apiwork
             )
           end
 
-          def build_column_condition(key, value, target_klass, issues = [])
-            validate_enum_values!(key, value, target_klass, issues) if target_klass.defined_enums.key?(key.to_s)
+          def build_column_condition(key, value, target_klass)
+            validate_enum_values!(key, value, target_klass) if target_klass.defined_enums.key?(key.to_s)
 
             column_type = target_klass.type_for_attribute(key).type
             if column_type.nil?
-              issues << Issue.new(
+              @issues << Issue.new(
                 code: :unknown_column_type,
                 field: key.to_s,
                 detail: "Cannot determine type for attribute '#{key}' on #{target_klass.name}",
@@ -191,17 +213,17 @@ module Apiwork
 
             case column_type
             when :uuid
-              build_uuid_where_clause(key, value, target_klass, issues)
+              build_uuid_where_clause(key, value, target_klass)
             when :string, :text
-              build_string_where_clause(key, value, target_klass, issues)
+              build_string_where_clause(key, value, target_klass)
             when :date, :datetime
-              build_date_where_clause(key, value, target_klass, issues)
+              build_date_where_clause(key, value, target_klass)
             when :decimal, :integer, :float
-              build_numeric_where_clause(key, value, target_klass, issues)
+              build_numeric_where_clause(key, value, target_klass)
             when :boolean
-              build_boolean_where_clause(key, value, target_klass, issues)
+              build_boolean_where_clause(key, value, target_klass)
             else
-              issues << Issue.new(
+              @issues << Issue.new(
                 code: :unsupported_column_type,
                 detail: "Unsupported column type: #{column_type}",
                 path: [:filter, key],
@@ -211,13 +233,13 @@ module Apiwork
             end
           end
 
-          def validate_enum_values!(key, value, target_klass, issues = [])
+          def validate_enum_values!(key, value, target_klass)
             enum_values = target_klass.defined_enums[key.to_s].keys
             invalid_values = extract_values_from_filter(value) - enum_values
 
             return if invalid_values.empty?
 
-            issues << Issue.new(
+            @issues << Issue.new(
               code: :invalid_enum_value,
               detail: "Invalid #{key} value(s): #{invalid_values.join(', ')}. Valid values: #{enum_values.join(', ')}",
               path: [:filter, key],
@@ -246,14 +268,14 @@ module Apiwork
             association
           end
 
-          def build_join_conditions(key, value, association, issues = [])
+          def build_join_conditions(key, value, association)
             reflection = schema_class.model_class.reflect_on_association(key)
             assoc_resource = association.schema_class || Apiwork::Schema::Resolver.from_association(reflection, schema)
 
             assoc_resource = assoc_resource.constantize if assoc_resource.is_a?(String)
 
             unless assoc_resource
-              issues << Issue.new(
+              @issues << Issue.new(
                 code: :association_resource_not_found,
                 detail: "Cannot find resource for association #{key}",
                 path: [:filter, key],
@@ -264,7 +286,7 @@ module Apiwork
 
             association_reflection = schema_class.model_class.reflect_on_association(key)
             unless association_reflection
-              issues << Issue.new(
+              @issues << Issue.new(
                 code: :association_not_found,
                 detail: "Association #{key} not found on #{schema_class.model_class.name}",
                 path: [:filter, key],
@@ -273,14 +295,13 @@ module Apiwork
               return [[], {}]
             end
 
-            nested_query = CollectionLoader.new(association_reflection.klass.all, assoc_resource, {}, nil)
-            nested_conditions, nested_joins = nested_query.send(:build_where_conditions, value,
-                                                                association_reflection.klass, issues)
+            nested_query = Filter.new(association_reflection.klass.all, assoc_resource, @issues)
+            nested_conditions, nested_joins = nested_query.send(:build_where_conditions, value, association_reflection.klass)
 
             [nested_conditions, { key => (nested_joins.any? ? nested_joins : {}) }]
           end
 
-          def build_uuid_where_clause(key, value, target_klass, issues = [])
+          def build_uuid_where_clause(key, value, target_klass)
             column = target_klass.arel_table[key]
 
             normalizer = lambda do |val|
@@ -297,7 +318,7 @@ module Apiwork
             builder = FilterBuilder.new(
               column: column,
               field_name: key,
-              issues: issues,
+              issues: @issues,
               allowed_types: [Hash]
             )
 
@@ -310,7 +331,7 @@ module Apiwork
             end
           end
 
-          def build_string_where_clause(key, value, target_klass, issues = [])
+          def build_string_where_clause(key, value, target_klass)
             column = target_klass.arel_table[key]
 
             normalizer = ->(val) { val.is_a?(String) || val.nil? ? { eq: val } : val }
@@ -318,7 +339,7 @@ module Apiwork
             builder = FilterBuilder.new(
               column: column,
               field_name: key,
-              issues: issues,
+              issues: @issues,
               allowed_types: [Hash]
             )
 
@@ -334,14 +355,14 @@ module Apiwork
             end
           end
 
-          def build_date_where_clause(key, value, target_klass, issues = [])
+          def build_date_where_clause(key, value, target_klass)
             column = target_klass.arel_table[key]
             allow_nil = target_klass.columns_hash[key.to_s].null
 
             if value.is_a?(String) || value.nil?
-              return handle_date_nil_value(column, key, allow_nil, issues) if value.blank?
+              return handle_date_nil_value(column, key, allow_nil) if value.blank?
 
-              return column.eq(parse_date(value, key, issues))
+              return column.eq(parse_date(value, key))
             end
 
             normalizer = ->(val) { val }
@@ -349,7 +370,7 @@ module Apiwork
             builder = FilterBuilder.new(
               column: column,
               field_name: key,
-              issues: issues,
+              issues: @issues,
               allowed_types: [Hash]
             )
 
@@ -357,15 +378,15 @@ module Apiwork
               if operator == :null
                 handle_null_operator(column, compare)
               elsif compare.blank?
-                handle_date_nil_value(column, key, allow_nil, issues)
+                handle_date_nil_value(column, key, allow_nil)
               elsif operator == :between && compare.is_a?(Hash)
-                from_date = parse_date(compare[:from] || compare['from'], key, issues)
-                to_date = parse_date(compare[:to] || compare['to'], key, issues)
+                from_date = parse_date(compare[:from] || compare['from'], key)
+                to_date = parse_date(compare[:to] || compare['to'], key)
                 next unless from_date && to_date
 
                 column.gteq(from_date.beginning_of_day).and(column.lteq(to_date.end_of_day))
               else
-                date = parse_date(compare, key, issues)
+                date = parse_date(compare, key)
                 case operator
                 when :eq then column.eq(date)
                 when :gt then column.gt(date)
@@ -378,9 +399,9 @@ module Apiwork
             end
           end
 
-          def handle_date_nil_value(column, key, allow_nil, issues)
+          def handle_date_nil_value(column, key, allow_nil)
             unless allow_nil
-              issues << Issue.new(
+              @issues << Issue.new(
                 code: :null_not_allowed,
                 detail: "#{key} cannot be null",
                 path: [:filter, key],
@@ -391,7 +412,7 @@ module Apiwork
             column.eq(nil)
           end
 
-          def build_numeric_where_clause(key, value, target_klass, issues = [])
+          def build_numeric_where_clause(key, value, target_klass)
             column = target_klass.arel_table[key]
 
             normalizer = ->(val) { [String, Numeric, NilClass].any? { |t| val.is_a?(t) } ? { eq: val } : val }
@@ -399,7 +420,7 @@ module Apiwork
             builder = FilterBuilder.new(
               column: column,
               field_name: key,
-              issues: issues,
+              issues: @issues,
               allowed_types: [Hash]
             )
 
@@ -407,35 +428,35 @@ module Apiwork
                                  normalizer: normalizer) do |operator, compare|
               case operator
               when :eq
-                number = parse_numeric(compare, key, issues)
+                number = parse_numeric(compare, key)
                 column.eq(number)
               when :gt
-                number = parse_numeric(compare, key, issues)
+                number = parse_numeric(compare, key)
                 column.gt(number)
               when :gte
-                number = parse_numeric(compare, key, issues)
+                number = parse_numeric(compare, key)
                 column.gteq(number)
               when :lt
-                number = parse_numeric(compare, key, issues)
+                number = parse_numeric(compare, key)
                 column.lt(number)
               when :lte
-                number = parse_numeric(compare, key, issues)
+                number = parse_numeric(compare, key)
                 column.lteq(number)
               when :between
                 if compare.is_a?(Hash)
-                  from_num = parse_numeric(compare[:from] || compare['from'], key, issues)
-                  to_num = parse_numeric(compare[:to] || compare['to'], key, issues)
+                  from_num = parse_numeric(compare[:from] || compare['from'], key)
+                  to_num = parse_numeric(compare[:to] || compare['to'], key)
                   next unless from_num && to_num
 
                   column.between(from_num..to_num)
                 else
-                  number = parse_numeric(compare, key, issues)
+                  number = parse_numeric(compare, key)
                   next unless number
 
                   column.between(number..number)
                 end
               when :in
-                numbers = Array(compare).map { |v| parse_numeric(v, key, issues) }.compact
+                numbers = Array(compare).map { |v| parse_numeric(v, key) }.compact
                 next if numbers.empty?
 
                 column.in(numbers)
@@ -445,7 +466,7 @@ module Apiwork
             end
           end
 
-          def build_boolean_where_clause(key, value, target_klass, issues = [])
+          def build_boolean_where_clause(key, value, target_klass)
             column = target_klass.arel_table[key]
 
             normalizer = lambda do |val|
@@ -459,7 +480,7 @@ module Apiwork
             builder = FilterBuilder.new(
               column: column,
               field_name: key,
-              issues: issues,
+              issues: @issues,
               allowed_types: [Hash]
             )
 
@@ -475,16 +496,24 @@ module Apiwork
             end
           end
 
+          def handle_null_operator(column, compare)
+            if [true, 'true', 1, '1'].include?(compare)
+              column.eq(nil)
+            else
+              column.not_eq(nil)
+            end
+          end
+
           def normalize_boolean(value)
             return nil if value.nil?
 
             [true, 'true', 1, '1'].include?(value)
           end
 
-          def parse_date(value, field, issues = [])
+          def parse_date(value, field)
             DateTime.parse(value.to_s)
           rescue ArgumentError
-            issues << Issue.new(
+            @issues << Issue.new(
               code: :invalid_date_format,
               detail: "'#{value}' is not a valid date",
               path: [:filter, field],
@@ -493,12 +522,12 @@ module Apiwork
             nil
           end
 
-          def parse_numeric(value, field, issues = [])
+          def parse_numeric(value, field)
             case value
             when Numeric then value
             when String then Float(value)
             else
-              issues << Issue.new(
+              @issues << Issue.new(
                 code: :invalid_numeric_format,
                 detail: "'#{value}' is not a valid number",
                 path: [:filter, field],
@@ -507,7 +536,7 @@ module Apiwork
               nil
             end
           rescue ArgumentError
-            issues << Issue.new(
+            @issues << Issue.new(
               code: :invalid_numeric_format,
               detail: "'#{value}' is not a valid number",
               path: [:filter, field],
