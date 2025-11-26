@@ -31,7 +31,7 @@ module Apiwork
       end
 
       def collection_response(collection)
-        includes_param = @request.data[:include]
+        @request.data[:include]
         adapter_instance = adapter
         context = adapter_context
 
@@ -46,9 +46,7 @@ module Apiwork
                         Adapter::LoadResult.new(collection)
                       end
 
-        serialized_data = action_definition.serialize_data(load_result.data,
-                                                           context: @context,
-                                                           includes: includes_param)
+        serialized_data = adapter_instance.serialize_collection(load_result, @context, @request.data, schema_class)
 
         serialized_scope_result = Adapter::LoadResult.new(serialized_data, load_result.metadata)
 
@@ -60,7 +58,7 @@ module Apiwork
       end
 
       def resource_response(resource)
-        includes_param = @request.data[:include]
+        @request.data[:include]
         adapter_instance = adapter
         context = adapter_context
 
@@ -75,7 +73,7 @@ module Apiwork
                         Adapter::LoadResult.new(resource)
                       end
 
-        serialized_data = action_definition.serialize_data(load_result.data, context: @context, includes: includes_param)
+        serialized_data = adapter_instance.serialize_record(load_result, @context, @request.data, schema_class)
 
         serialized_scope_result = Adapter::LoadResult.new(serialized_data, load_result.metadata)
 

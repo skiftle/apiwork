@@ -19,6 +19,14 @@ module Apiwork
         RecordLoader.load(record, schema_class, query)
       end
 
+      def serialize_collection(load_result, context, query, schema_class)
+        CollectionSerializer.serialize(load_result, context, query, schema_class)
+      end
+
+      def serialize_record(load_result, context, query, schema_class)
+        RecordSerializer.serialize(load_result, context, query, schema_class)
+      end
+
       def render_collection(load_result, meta, query, schema_class, context)
         CollectionResponse.render(load_result, meta, query, schema_class, context)
       end

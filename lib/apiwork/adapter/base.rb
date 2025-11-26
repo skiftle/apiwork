@@ -19,6 +19,14 @@ module Apiwork
         raise NotImplementedError
       end
 
+      def serialize_collection(load_result, context, query, schema_class)
+        raise NotImplementedError
+      end
+
+      def serialize_record(load_result, context, query, schema_class)
+        raise NotImplementedError
+      end
+
       def render_collection(load_result, meta, query, schema_class, context)
         raise NotImplementedError
       end
