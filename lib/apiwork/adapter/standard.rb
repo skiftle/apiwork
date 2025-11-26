@@ -12,34 +12,26 @@ module Apiwork
       end
 
       def render_collection(collection, schema_class, query, meta, context)
-        # Load
-        data, metadata = CollectionLoader.load(collection, schema_class, query, context).values_at(:data, :metadata)
-
-        # Serialize
+        CollectionLoader.load(collection, schema_class, query, context) => { data:, metadata: }
         serialized = schema_class.serialize(data, context: meta, includes: query[:include])
 
-        # Render
-        root_key = schema_class.root_key.plural
-        response = { root_key => serialized }
-        response[:pagination] = metadata[:pagination] if metadata[:pagination]
-        response[:meta] = meta if meta.present?
-        response
+        {
+          schema_class.root_key.plural => serialized,
+          pagination: metadata[:pagination],
+          meta: meta.presence
+        }.compact
       end
 
       def render_record(record, schema_class, query, meta, context)
         return { meta: meta.presence || {} } if context.delete?
 
-        # Load
-        data, = RecordLoader.load(record, schema_class, query).values_at(:data, :metadata)
-
-        # Serialize
+        data = RecordLoader.load(record, schema_class, query)
         serialized = schema_class.serialize(data, context: meta, includes: query[:include])
 
-        # Render
-        root_key = schema_class.root_key.singular
-        response = { root_key => serialized }
-        response[:meta] = meta if meta.present?
-        response
+        {
+          schema_class.root_key.singular => serialized,
+          meta: meta.presence
+        }.compact
       end
 
       def render_error(issues, context)

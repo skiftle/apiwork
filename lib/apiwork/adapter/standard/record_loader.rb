@@ -17,16 +17,16 @@ module Apiwork
         end
 
         def load
-          return { data: @record, metadata: {} } unless @record.is_a?(ActiveRecord::Base)
+          return @record unless @record.is_a?(ActiveRecord::Base)
 
           includes_param = @query[:include]
-          return { data: @record, metadata: {} } if includes_param.blank?
+          return @record if includes_param.blank?
 
           includes_hash_value = build_includes_hash(includes_param)
-          return { data: @record, metadata: {} } if includes_hash_value.empty?
+          return @record if includes_hash_value.empty?
 
           ActiveRecord::Associations::Preloader.new(records: [@record], associations: includes_hash_value).call
-          { data: @record, metadata: {} }
+          @record
         end
 
         private
