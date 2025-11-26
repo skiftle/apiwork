@@ -31,62 +31,30 @@ module Apiwork
       end
 
       def collection_response(collection)
-        @request.data[:include]
-        adapter_instance = adapter
-        context = adapter_context
+        return collection_without_schema(collection) unless schema_class
 
-        load_result = if schema_class.present?
-                        adapter_instance.load_collection(
-                          collection,
-                          schema_class,
-                          @request.data,
-                          context
-                        )
-                      else
-                        Adapter::LoadResult.new(collection)
-                      end
-
-        serialized_data = adapter_instance.serialize_collection(load_result, @context, @request.data, schema_class)
-
-        serialized_scope_result = Adapter::LoadResult.new(serialized_data, load_result.metadata)
-
-        if schema_class
-          adapter_instance.render_collection(serialized_scope_result, @meta, @request.data, schema_class, context)
-        else
-          serialized_data.merge(meta: @meta)
-        end
+        adapter.render_collection(collection, schema_class, @request.data, @meta, adapter_context)
       end
 
       def resource_response(resource)
-        @request.data[:include]
-        adapter_instance = adapter
-        context = adapter_context
+        return resource_without_schema(resource) unless schema_class
 
-        load_result = if schema_class.present?
-                        adapter_instance.load_record(
-                          resource,
-                          schema_class,
-                          @request.data,
-                          context
-                        )
-                      else
-                        Adapter::LoadResult.new(resource)
-                      end
-
-        serialized_data = adapter_instance.serialize_record(load_result, @context, @request.data, schema_class)
-
-        serialized_scope_result = Adapter::LoadResult.new(serialized_data, load_result.metadata)
-
-        if schema_class
-          adapter_instance.render_record(serialized_scope_result, @meta, @request.data, schema_class, context)
-        else
-          response = serialized_data
-          response[:meta] = @meta if @meta.present?
-          response
-        end
+        adapter.render_record(resource, schema_class, @request.data, @meta, adapter_context)
       end
 
       private
+
+      def collection_without_schema(collection)
+        response = { data: collection }
+        response[:meta] = @meta if @meta.present?
+        response
+      end
+
+      def resource_without_schema(resource)
+        response = { data: resource }
+        response[:meta] = @meta if @meta.present?
+        response
+      end
 
       def adapter
         @adapter ||= @contract_class.api_class.adapter

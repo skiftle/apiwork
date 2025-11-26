@@ -11,32 +11,39 @@ module Apiwork
         ContractBuilder.build(contract_class, schema_class, context)
       end
 
-      def load_collection(collection, schema_class, query, context)
-        CollectionLoader.load(collection, schema_class, query, context)
+      def render_collection(collection, schema_class, query, meta, context)
+        # Load
+        load_result = CollectionLoader.load(collection, schema_class, query, context)
+
+        # Serialize
+        serialized = schema_class.serialize(load_result.data, context: meta, includes: query[:include])
+
+        # Render
+        root_key = schema_class.root_key.plural
+        response = { root_key => serialized }
+        response[:pagination] = load_result.metadata[:pagination] if load_result.metadata[:pagination]
+        response[:meta] = meta if meta.present?
+        response
       end
 
-      def load_record(record, schema_class, query, context)
-        RecordLoader.load(record, schema_class, query)
-      end
+      def render_record(record, schema_class, query, meta, context)
+        return { meta: meta.presence || {} } if context.delete?
 
-      def serialize_collection(load_result, context, query, schema_class)
-        CollectionSerializer.serialize(load_result, context, query, schema_class)
-      end
+        # Load
+        load_result = RecordLoader.load(record, schema_class, query)
 
-      def serialize_record(load_result, context, query, schema_class)
-        RecordSerializer.serialize(load_result, context, query, schema_class)
-      end
+        # Serialize
+        serialized = schema_class.serialize(load_result.data, context: meta, includes: query[:include])
 
-      def render_collection(load_result, meta, query, schema_class, context)
-        CollectionResponse.render(load_result, meta, query, schema_class, context)
-      end
-
-      def render_record(load_result, meta, query, schema_class, context)
-        RecordResponse.render(load_result, meta, query, schema_class, context)
+        # Render
+        root_key = schema_class.root_key.singular
+        response = { root_key => serialized }
+        response[:meta] = meta if meta.present?
+        response
       end
 
       def render_error(issues, context)
-        ErrorResponse.render(issues, context)
+        { issues: issues.map(&:to_h) }
       end
     end
   end
