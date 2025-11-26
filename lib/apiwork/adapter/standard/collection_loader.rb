@@ -26,8 +26,8 @@ module Apiwork
         end
 
         def load
-          return LoadResult.new(@collection) unless @context.index?
-          return LoadResult.new(@collection) unless @collection.is_a?(ActiveRecord::Relation)
+          return { data: @collection, metadata: {} } unless @context.index?
+          return { data: @collection, metadata: {} } unless @collection.is_a?(ActiveRecord::Relation)
 
           @params = @query.slice(:filter, :sort, :page, :include)
 
@@ -45,7 +45,7 @@ module Apiwork
 
           @metadata = build_meta(@data)
 
-          LoadResult.new(@data, @metadata)
+          { data: @data, metadata: @metadata }
         end
       end
     end

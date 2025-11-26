@@ -6,22 +6,23 @@ module Apiwork
       extend ActiveSupport::Concern
 
       def respond_with(resource_or_collection, meta: {}, status: nil)
-        serializer = ResponseSerializer.new(current_contract, action_name, request.method_symbol)
+        action_definition = current_contract.action_definition(action_name)
+        schema_class = action_definition&.schema_class
+        meta = current_contract.format_keys(meta, :response)
 
-        response = serializer.perform(
-          resource_or_collection,
-          request: action_request,
-          meta: meta,
-          context: context
-        )
+        response = if resource_or_collection.is_a?(Enumerable)
+                     render_collection_response(resource_or_collection, schema_class, meta)
+                   else
+                     render_record_response(resource_or_collection, schema_class, meta)
+                   end
 
-        skip_validation = request.delete? && serializer.schema_class.present?
+        skip_validation = request.delete? && schema_class.present?
         unless skip_validation
           result = current_contract.parse(response, :response_body, action_name, coerce: false, context: context)
           raise ContractError, result.issues if result.invalid?
         end
 
-        render json: response, status: status || action_name.to_sym == :create ? :created : :ok
+        render json: response, status: status || (action_name.to_sym == :create ? :created : :ok)
       end
 
       def render_error(issues, status: :bad_request)
@@ -31,6 +32,35 @@ module Apiwork
       end
 
       private
+
+      def render_collection_response(collection, schema_class, meta)
+        return collection_without_schema(collection, meta) unless schema_class
+
+        adapter.render_collection(collection, schema_class, action_request.data, meta, adapter_context)
+      end
+
+      def render_record_response(record, schema_class, meta)
+        if record.respond_to?(:errors) && record.errors.any?
+          validation_adapter = ValidationAdapter.new(record, schema_class: schema_class)
+          raise ValidationError, validation_adapter.convert
+        end
+
+        return record_without_schema(record, meta) unless schema_class
+
+        adapter.render_record(record, schema_class, action_request.data, meta, adapter_context)
+      end
+
+      def collection_without_schema(collection, meta)
+        response = { data: collection }
+        response[:meta] = meta if meta.present?
+        response
+      end
+
+      def record_without_schema(record, meta)
+        response = { data: record }
+        response[:meta] = meta if meta.present?
+        response
+      end
 
       def adapter
         @adapter ||= current_contract.api_class.adapter
