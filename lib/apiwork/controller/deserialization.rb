@@ -21,7 +21,6 @@ module Apiwork
         @action_query ||= begin
           data = request.query_parameters.deep_symbolize_keys
           data = adapter.transform_request(data, current_contract.api_class)
-          data = ParamsNormalizer.call(data)
 
           current_contract.parse(data, :query, action_name, coerce: true)
         end
@@ -31,7 +30,6 @@ module Apiwork
         @action_body ||= begin
           data = request.request_parameters.deep_symbolize_keys
           data = adapter.transform_request(data, current_contract.api_class)
-          data = ParamsNormalizer.call(data)
 
           current_contract.parse(data, :body, action_name, coerce: true)
         end

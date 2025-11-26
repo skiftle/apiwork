@@ -40,7 +40,8 @@ module Apiwork
 
       def transform_request(hash, api_class)
         format = Configuration::Resolver.resolve(:key_format, api_class: api_class)
-        transform_request_keys(hash, format)
+        transformed = transform_request_keys(hash, format)
+        ParamsNormalizer.call(transformed)
       end
 
       def transform_response(hash, api_class)

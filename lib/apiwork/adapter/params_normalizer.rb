@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Controller
+  module Adapter
     module ParamsNormalizer
       module_function
 
