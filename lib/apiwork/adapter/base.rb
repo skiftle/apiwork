@@ -22,6 +22,14 @@ module Apiwork
       def render_error(issues, action_data)
         raise NotImplementedError
       end
+
+      def transform_request(hash, api_class)
+        hash
+      end
+
+      def transform_response(hash, api_class)
+        hash
+      end
     end
   end
 end

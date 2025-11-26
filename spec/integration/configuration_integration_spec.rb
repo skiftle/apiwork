@@ -15,8 +15,7 @@ RSpec.describe 'Configuration Integration', type: :request do
     let(:config_test_api) do
       Apiwork::API.draw '/api/config_test' do
         configure do
-          output_key_format :camel
-          input_key_format :underscore
+          key_format :camel
           default_page_size 25
           max_page_size 100
           default_sort title: :asc
@@ -43,8 +42,6 @@ RSpec.describe 'Configuration Integration', type: :request do
       end
 
       # Should use API configuration
-      expect(schema_class.output_key_format).to eq(:camel)
-      expect(schema_class.input_key_format).to eq(:underscore)
       expect(schema_class.default_page_size).to eq(25)
       expect(schema_class.max_page_size).to eq(100)
       expect(schema_class.default_sort).to eq(title: :asc)
@@ -100,7 +97,7 @@ RSpec.describe 'Configuration Integration', type: :request do
     let(:inheritance_api) do
       Apiwork::API.draw '/api/inheritance' do
         configure do
-          output_key_format :camel
+          key_format :camel
           default_page_size 20
           max_page_size 200
           default_sort id: :asc
@@ -180,7 +177,7 @@ RSpec.describe 'Configuration Integration', type: :request do
 
       # API value when no overrides
       expect(Apiwork::Configuration::Resolver.resolve(
-               :output_key_format,
+               :key_format,
                contract_class: inheritance_contract,
                schema_class: inheritance_schema,
                api_class: inheritance_api
@@ -236,24 +233,14 @@ RSpec.describe 'Configuration Integration', type: :request do
   end
 
   describe 'Validation' do
-    it 'validates output_key_format values' do
+    it 'validates key_format values' do
       expect do
         Apiwork::API.draw '/api/invalid_transform' do
           configure do
-            output_key_format :invalid_strategy
+            key_format :invalid_strategy
           end
         end
-      end.to raise_error(Apiwork::ConfigurationError, /Invalid output_key_format/)
-    end
-
-    it 'validates input_key_format values' do
-      expect do
-        Apiwork::API.draw '/api/invalid_deserialize' do
-          configure do
-            input_key_format :invalid_strategy
-          end
-        end
-      end.to raise_error(Apiwork::ConfigurationError, /Invalid input_key_format/)
+      end.to raise_error(Apiwork::ConfigurationError, /Invalid key_format/)
     end
   end
 end

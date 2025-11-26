@@ -87,15 +87,15 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
     describe 'variant-specific attributes' do
       it 'serializes person-specific attributes' do
         serialized = Api::V1::PersonClientSchema.serialize(person_client)
-        expect(serialized[:birthDate]).to be_present
-        expect(serialized.keys).not_to include(:industry, :registrationNumber)
+        expect(serialized[:birth_date]).to be_present
+        expect(serialized.keys).not_to include(:industry, :registration_number)
       end
 
       it 'serializes company-specific attributes' do
         serialized = Api::V1::CompanyClientSchema.serialize(company_client)
         expect(serialized[:industry]).to eq('Technology')
-        expect(serialized[:registrationNumber]).to eq('ABC123')
-        expect(serialized.keys).not_to include(:birthDate)
+        expect(serialized[:registration_number]).to eq('ABC123')
+        expect(serialized.keys).not_to include(:birth_date)
       end
     end
 
@@ -104,7 +104,7 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
         serialized = Api::V1::ServiceSchema.serialize(service_for_person, include: { client: true })
         expect(serialized[:client]).to be_present
         expect(serialized[:client][:kind]).to eq('person')
-        expect(serialized[:client][:birthDate]).to be_present
+        expect(serialized[:client][:birth_date]).to be_present
       end
 
       it 'routes company client to CompanyClientSchema' do
@@ -129,7 +129,7 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
 
       expect(person).to be_present
       expect(person['name']).to eq('Alice Smith')
-      expect(person['birthDate']).to be_present
+      expect(person['birth_date']).to be_present
 
       expect(company).to be_present
       expect(company['name']).to eq('Acme Corp')
@@ -157,7 +157,7 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
       json = JSON.parse(response.body)
       expect(json['client']['kind']).to eq('person')
       expect(json['client']['name']).to eq('Alice Smith')
-      expect(json['client']['birthDate']).to be_present
+      expect(json['client']['birth_date']).to be_present
     end
 
     it 'returns company client with discriminator' do
@@ -181,7 +181,7 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
       personal_service = json['services'].find { |s| s['name'] == 'Personal Consulting' }
       expect(personal_service['client']).to be_present
       expect(personal_service['client']['kind']).to eq('person')
-      expect(personal_service['client']['birthDate']).to be_present
+      expect(personal_service['client']['birth_date']).to be_present
 
       enterprise_service = json['services'].find { |s| s['name'] == 'Enterprise Support' }
       expect(enterprise_service['client']).to be_present
@@ -198,7 +198,7 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
       json = JSON.parse(response.body)
       expect(json['service']['client']).to be_present
       expect(json['service']['client']['kind']).to eq('person')
-      expect(json['service']['client']['birthDate']).to be_present
+      expect(json['service']['client']['birth_date']).to be_present
     end
 
     it 'includes company client when requested' do

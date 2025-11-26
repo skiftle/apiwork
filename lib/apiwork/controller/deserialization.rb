@@ -20,7 +20,7 @@ module Apiwork
       def action_query
         @action_query ||= begin
           data = request.query_parameters.deep_symbolize_keys
-          data = transform_keys(data, key_transform)
+          data = adapter.transform_request(data, current_contract.api_class)
           data = ParamsNormalizer.call(data)
 
           current_contract.parse(data, :query, action_name, coerce: true)
@@ -30,7 +30,7 @@ module Apiwork
       def action_body
         @action_body ||= begin
           data = request.request_parameters.deep_symbolize_keys
-          data = transform_keys(data, key_transform)
+          data = adapter.transform_request(data, current_contract.api_class)
           data = ParamsNormalizer.call(data)
 
           current_contract.parse(data, :body, action_name, coerce: true)
@@ -57,19 +57,8 @@ module Apiwork
         raise ContractError, action_request.issues
       end
 
-      def key_transform
-        Configuration::Resolver.resolve(:input_key_format, contract_class: current_contract)
-      end
-
-      def transform_keys(hash, strategy)
-        case strategy
-        when :camel
-          hash.deep_transform_keys { |key| key.to_s.camelize(:lower).to_sym }
-        when :underscore
-          hash.deep_transform_keys { |key| key.to_s.underscore.to_sym }
-        else
-          hash
-        end
+      def adapter
+        @adapter ||= current_contract.api_class.adapter
       end
     end
   end

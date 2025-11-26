@@ -16,8 +16,7 @@ Apiwork::API.draw '/api/v1' do
 
   # API-level configuration
   configure do
-    output_key_format :keep
-    input_key_format :keep
+    key_format :keep
     default_sort id: :asc
     default_page_size 20
     max_page_size 200

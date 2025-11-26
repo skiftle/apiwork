@@ -107,10 +107,10 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
-      # Keys inside JSON objects are transformed to camelCase in API output
+      # Keys inside JSON objects remain as-is with output_key_format :keep
       expect(json['post']['metadata']).to eq({
                                                'tags' => %w[ruby rails],
-                                               'authorNotes' => 'Draft version',
+                                               'author_notes' => 'Draft version',
                                                'version' => 1
                                              })
 

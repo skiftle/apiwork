@@ -6,21 +6,6 @@ module Apiwork
       module Transformation
         extend ActiveSupport::Concern
 
-        def transform_meta_keys(meta)
-          raise ArgumentError, 'transform_meta_keys only available for response_body direction' unless @direction == :response_body
-
-          return meta if meta.blank? || @schema_class.nil?
-
-          case @schema_class.output_key_format
-          when :camel
-            meta.deep_transform_keys { |key| key.to_s.camelize(:lower).to_sym }
-          when :underscore
-            meta.deep_transform_keys { |key| key.to_s.underscore.to_sym }
-          else
-            meta
-          end
-        end
-
         private
 
         def transform(data)

@@ -37,6 +37,40 @@ module Apiwork
       def render_error(issues, action_data)
         { issues: issues.map(&:to_h) }
       end
+
+      def transform_request(hash, api_class)
+        format = Configuration::Resolver.resolve(:key_format, api_class: api_class)
+        transform_request_keys(hash, format)
+      end
+
+      def transform_response(hash, api_class)
+        format = Configuration::Resolver.resolve(:key_format, api_class: api_class)
+        transform_response_keys(hash, format)
+      end
+
+      private
+
+      def transform_request_keys(hash, format)
+        case format
+        when :camel
+          hash.deep_transform_keys { |key| key.to_s.underscore.to_sym }
+        when :underscore
+          hash
+        else
+          hash
+        end
+      end
+
+      def transform_response_keys(hash, format)
+        case format
+        when :camel
+          hash.deep_transform_keys { |key| key.to_s.camelize(:lower).to_sym }
+        when :underscore
+          hash
+        else
+          hash
+        end
+      end
     end
   end
 end

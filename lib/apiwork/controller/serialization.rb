@@ -8,13 +8,14 @@ module Apiwork
       def respond_with(resource_or_collection, meta: {}, status: nil)
         action_definition = current_contract.action_definition(action_name)
         schema_class = action_definition&.schema_class
-        meta = current_contract.format_keys(meta, :response)
 
         response = if resource_or_collection.is_a?(Enumerable)
                      render_collection_response(resource_or_collection, schema_class, meta)
                    else
                      render_record_response(resource_or_collection, schema_class, meta)
                    end
+
+        response = adapter.transform_response(response, current_contract.api_class)
 
         skip_validation = request.delete? && schema_class.present?
         unless skip_validation

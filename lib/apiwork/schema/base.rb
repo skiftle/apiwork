@@ -9,8 +9,6 @@ module Apiwork
       class_attribute :_model_class
       class_attribute :attribute_definitions, default: {}
       class_attribute :association_definitions, default: {}
-      class_attribute :_output_key_format, default: nil
-      class_attribute :_input_key_format, default: nil
       class_attribute :_root, default: nil
       class_attribute :_auto_detection_complete, default: false
       class_attribute :_configuration, default: {}
@@ -135,22 +133,6 @@ module Apiwork
           return nil if namespace_parts.empty?
 
           "/#{namespace_parts.map(&:underscore).join('/')}"
-        end
-
-        def output_key_format
-          Configuration::Resolver.resolve(:output_key_format, schema_class: self)
-        end
-
-        def input_key_format
-          Configuration::Resolver.resolve(:input_key_format, schema_class: self)
-        end
-
-        def output_key_format=(value)
-          self._output_key_format = value
-        end
-
-        def input_key_format=(value)
-          self._input_key_format = value
         end
 
         def configure(&block)

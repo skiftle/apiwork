@@ -4,8 +4,7 @@ module Apiwork
   module Configuration
     class Builder
       VALIDATED_SETTINGS = {
-        output_key_format: %i[underscore camel keep],
-        input_key_format: %i[underscore camel keep]
+        key_format: %i[underscore camel keep]
       }.freeze
 
       def initialize(storage)

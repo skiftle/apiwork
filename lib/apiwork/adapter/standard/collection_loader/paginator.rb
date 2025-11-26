@@ -54,19 +54,8 @@ module Apiwork
             }
 
             {
-              pagination: transform_keys(page)
+              pagination: page
             }
-          end
-
-          def transform_keys(hash)
-            case schema_class.output_key_format
-            when :camel
-              hash.deep_transform_keys { |key| key.to_s.camelize(:lower).to_sym }
-            when :underscore
-              hash.deep_transform_keys { |key| key.to_s.underscore.to_sym }
-            else
-              hash
-            end
           end
         end
       end

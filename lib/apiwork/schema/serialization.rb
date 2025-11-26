@@ -54,7 +54,7 @@ module Apiwork
           serialized_attributes[association] = serialize_association(association, definition)
         end
 
-        transform_keys(serialized_attributes)
+        serialized_attributes
       end
 
       private
@@ -67,17 +67,6 @@ module Apiwork
         variant_tag = self.class.variant_tag
 
         serialized_attributes[discriminator_name] = variant_tag.to_s
-      end
-
-      def transform_keys(hash)
-        case self.class.output_key_format
-        when :camel
-          hash.deep_transform_keys { |key| key.to_s.camelize(:lower).to_sym }
-        when :underscore
-          hash.deep_transform_keys { |key| key.to_s.underscore.to_sym }
-        else
-          hash
-        end
       end
 
       def serialize_association(name, definition)

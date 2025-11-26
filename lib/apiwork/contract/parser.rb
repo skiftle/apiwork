@@ -33,17 +33,7 @@ module Apiwork
       def perform(data)
         coerced_data = @coerce ? coerce(data) : data
 
-        data_for_validation = if response_direction? && schema_class&.output_key_format
-                                coerced_data.deep_transform_keys { |key| key.to_s.underscore.to_sym }
-                              else
-                                coerced_data
-                              end
-
-        validated = validate(data_for_validation)
-
-        if validated[:issues].any? && response_direction? && schema_class&.output_key_format
-          validated[:issues] = transform_paths(validated[:issues], schema_class.output_key_format)
-        end
+        validated = validate(coerced_data)
 
         return handle_validation_errors(data, validated[:issues]) if validated[:issues].any?
 

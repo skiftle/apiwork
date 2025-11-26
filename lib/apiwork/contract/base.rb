@@ -227,26 +227,6 @@ module Apiwork
           register_union(name, union_data)
           name
         end
-
-        # DOCUMENTATION
-        def format_keys(data, direction)
-          return data if data.blank?
-
-          response_directions = %i[response response_body]
-          setting = response_directions.include?(direction) ? :output_key_format : :input_key_format
-          key_format = Configuration::Resolver.resolve(setting, contract_class: self)
-
-          return data unless key_format
-
-          case key_format
-          when :camel
-            data.deep_transform_keys { |key| key.to_s.camelize(:lower).to_sym }
-          when :underscore
-            data.deep_transform_keys { |key| key.to_s.underscore.to_sym }
-          else
-            data
-          end
-        end
       end
     end
   end

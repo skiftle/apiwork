@@ -4,8 +4,7 @@ module Apiwork
   module Configuration
     module Resolver
       DEFAULTS = {
-        output_key_format: :keep,
-        input_key_format: :keep,
+        key_format: :keep,
         default_sort: { id: :asc },
         default_page_size: 20,
         max_page_size: 200,
@@ -13,6 +12,7 @@ module Apiwork
       }.freeze
 
       MERGEABLE_SETTINGS = [:default_sort].freeze
+      API_ONLY_SETTINGS = [:key_format].freeze
 
       module_function
 
@@ -28,14 +28,16 @@ module Apiwork
       end
 
       def collected_values(name, contract_class, schema_class, api_class)
-        [
-          contract_class,
-          schema_class,
-          api_class
-        ].compact
-          .map(&:configuration)
-          .select { |configuration| configuration.key?(name) }
-          .map { |configuration| configuration[name] }
+        sources = if API_ONLY_SETTINGS.include?(name)
+                    [api_class]
+                  else
+                    [contract_class, schema_class, api_class]
+                  end
+
+        sources.compact
+               .map(&:configuration)
+               .select { |configuration| configuration.key?(name) }
+               .map { |configuration| configuration[name] }
       end
     end
   end
