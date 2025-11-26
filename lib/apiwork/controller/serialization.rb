@@ -27,7 +27,7 @@ module Apiwork
 
       def render_error(issues, status: :bad_request)
         issues_array = Array(issues)
-        response = adapter.render_error(issues_array, adapter_context)
+        response = adapter.render_error(issues_array, invocation)
         render json: response, status: status
       end
 
@@ -36,7 +36,7 @@ module Apiwork
       def render_collection_response(collection, schema_class, meta)
         return collection_without_schema(collection, meta) unless schema_class
 
-        adapter.render_collection(collection, schema_class, action_request.data, meta, adapter_context)
+        adapter.render_collection(collection, schema_class, action_request.data, meta, invocation)
       end
 
       def render_record_response(record, schema_class, meta)
@@ -47,7 +47,7 @@ module Apiwork
 
         return record_without_schema(record, meta) unless schema_class
 
-        adapter.render_record(record, schema_class, action_request.data, meta, adapter_context)
+        adapter.render_record(record, schema_class, action_request.data, meta, invocation)
       end
 
       def collection_without_schema(collection, meta)
@@ -66,11 +66,11 @@ module Apiwork
         @adapter ||= current_contract.api_class.adapter
       end
 
-      def adapter_context
-        @adapter_context ||= Adapter::Context.new(
+      def invocation
+        @invocation ||= Adapter::Invocation.new(
           action_name: action_name,
           method: request.method_symbol,
-          actions: {}
+          context: context
         )
       end
 

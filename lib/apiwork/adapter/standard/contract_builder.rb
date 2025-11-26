@@ -6,14 +6,14 @@ module Apiwork
       class ContractBuilder
         MAX_RECURSION_DEPTH = 3
 
-        def self.build(contract_class, schema_class, context)
-          new(contract_class, schema_class, context)
+        def self.build(contract_class, schema_class, actions)
+          new(contract_class, schema_class, actions)
         end
 
-        def initialize(contract_class, schema_class, context)
+        def initialize(contract_class, schema_class, actions)
           @contract_class = contract_class
           @schema_class = schema_class
-          @context = context
+          @actions = actions
 
           build_enums
           build_actions
@@ -21,7 +21,7 @@ module Apiwork
 
         private
 
-        attr_reader :context,
+        attr_reader :actions,
                     :contract_class,
                     :schema_class
 
@@ -169,7 +169,7 @@ module Apiwork
         end
 
         def build_actions
-          context.actions.each do |action_name, action_info|
+          actions.each do |action_name, action_info|
             build_action_definition(action_name, action_info)
           end
         end

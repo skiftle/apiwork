@@ -142,9 +142,8 @@ module Apiwork
 
           if contract_class && schema_class
             actions = extract_actions_from_resource(resource_data)
-            context = Adapter::Context.new(action_name: :index, method: :get, actions: actions)
 
-            adapter.build_contract(contract_class, schema_class, context)
+            adapter.build_contract(contract_class, schema_class, actions: actions)
           end
 
           resource_data[:resources]&.each_value do |nested_resource|

@@ -2,15 +2,15 @@
 
 module Apiwork
   module Adapter
-    class Context
+    class Invocation
       attr_reader :action_name,
                   :method,
-                  :actions
+                  :context
 
-      def initialize(action_name:, method:, actions:)
+      def initialize(action_name:, method:, context: {})
         @action_name = action_name.to_sym
         @method = method.to_sym
-        @actions = actions
+        @context = context
       end
 
       def index?
