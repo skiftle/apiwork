@@ -2,7 +2,7 @@
 
 module Apiwork
   module Adapter
-    class Standard < Base
+    class Apiwork < Base
       class DescriptorBuilder
         def self.build(builder, schema_data)
           new(builder, schema_data)

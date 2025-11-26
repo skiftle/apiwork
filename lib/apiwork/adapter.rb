@@ -12,7 +12,7 @@ module Apiwork
       end
 
       def registry
-        @registry ||= { standard: Adapter::Standard }
+        @registry ||= { apiwork: Adapter::Apiwork }
       end
 
       def reset!

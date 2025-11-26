@@ -2,10 +2,10 @@
 
 module Apiwork
   module Adapter
-    class Standard < Base
+    class Apiwork < Base
       class CollectionLoader
         class Filter
-          include Apiwork::Schema::Operator
+          include ::Apiwork::Schema::Operator
 
           attr_reader :schema_class
 
@@ -270,7 +270,7 @@ module Apiwork
 
           def build_join_conditions(key, value, association)
             reflection = schema_class.model_class.reflect_on_association(key)
-            assoc_resource = association.schema_class || Apiwork::Schema::Resolver.from_association(reflection, schema)
+            assoc_resource = association.schema_class || ::Apiwork::Schema::Resolver.from_association(reflection, schema)
 
             assoc_resource = assoc_resource.constantize if assoc_resource.is_a?(String)
 
@@ -322,7 +322,7 @@ module Apiwork
               allowed_types: [Hash]
             )
 
-            builder.build(value, valid_operators: Apiwork::Schema::Operator::NULLABLE_UUID_OPERATORS, normalizer: normalizer) do |operator, compare|
+            builder.build(value, valid_operators: ::Apiwork::Schema::Operator::NULLABLE_UUID_OPERATORS, normalizer: normalizer) do |operator, compare|
               case operator
               when :eq then column.eq(compare)
               when :in then column.in(compare)
@@ -343,7 +343,8 @@ module Apiwork
               allowed_types: [Hash]
             )
 
-            builder.build(value, valid_operators: Apiwork::Schema::Operator::NULLABLE_STRING_OPERATORS, normalizer: normalizer) do |operator, compare|
+            builder.build(value, valid_operators: ::Apiwork::Schema::Operator::NULLABLE_STRING_OPERATORS,
+                                 normalizer: normalizer) do |operator, compare|
               case operator
               when :eq then column.eq(compare)
               when :contains then case_sensitive_pattern_match(column, "%#{compare}%")
@@ -374,7 +375,7 @@ module Apiwork
               allowed_types: [Hash]
             )
 
-            builder.build(value, valid_operators: Apiwork::Schema::Operator::NULLABLE_DATE_OPERATORS, normalizer: normalizer) do |operator, compare|
+            builder.build(value, valid_operators: ::Apiwork::Schema::Operator::NULLABLE_DATE_OPERATORS, normalizer: normalizer) do |operator, compare|
               if operator == :null
                 handle_null_operator(column, compare)
               elsif compare.blank?
@@ -424,7 +425,7 @@ module Apiwork
               allowed_types: [Hash]
             )
 
-            builder.build(value, valid_operators: Apiwork::Schema::Operator::NULLABLE_NUMERIC_OPERATORS,
+            builder.build(value, valid_operators: ::Apiwork::Schema::Operator::NULLABLE_NUMERIC_OPERATORS,
                                  normalizer: normalizer) do |operator, compare|
               case operator
               when :eq
@@ -484,7 +485,7 @@ module Apiwork
               allowed_types: [Hash]
             )
 
-            builder.build(value, valid_operators: Apiwork::Schema::Operator::NULLABLE_BOOLEAN_OPERATORS,
+            builder.build(value, valid_operators: ::Apiwork::Schema::Operator::NULLABLE_BOOLEAN_OPERATORS,
                                  normalizer: normalizer) do |operator, compare|
               case operator
               when :eq

@@ -2,7 +2,7 @@
 
 module Apiwork
   module Adapter
-    class Standard < Base
+    class Apiwork < Base
       class IncludesResolver
         attr_reader :schema
 
@@ -136,7 +136,7 @@ module Apiwork
         end
 
         def resolve_schema_class(definition, association)
-          schema_class = definition.schema_class || Apiwork::Schema::Resolver.from_association(association, schema)
+          schema_class = definition.schema_class || ::Apiwork::Schema::Resolver.from_association(association, schema)
 
           schema_class = constantize_safe(schema_class) if schema_class.is_a?(String)
 

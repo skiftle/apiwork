@@ -2,7 +2,7 @@
 
 module Apiwork
   module Adapter
-    class Standard < Base
+    class Apiwork < Base
       class CollectionLoader
         class Filter
           class Builder

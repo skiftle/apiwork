@@ -2,7 +2,7 @@
 
 module Apiwork
   module Adapter
-    class Standard < Base
+    class Apiwork < Base
       def build_global_descriptors(builder, schema_data)
         DescriptorBuilder.build(builder, schema_data)
       end

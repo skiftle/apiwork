@@ -60,7 +60,7 @@ module Apiwork
 
         def adapter
           @adapter ||= begin
-            adapter_name = configuration[:adapter] || :standard
+            adapter_name = configuration[:adapter] || :apiwork
             Adapter.resolve(adapter_name).new
           end
         end
