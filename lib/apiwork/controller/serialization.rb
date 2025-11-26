@@ -24,7 +24,25 @@ module Apiwork
         render json: response, status: status || action_name.to_sym == :create ? :created : :ok
       end
 
+      def render_error(issues, status: :bad_request)
+        issues_array = Array(issues)
+        response = adapter.render_error(issues_array, adapter_context)
+        render json: response, status: status
+      end
+
       private
+
+      def adapter
+        @adapter ||= current_contract.api_class.adapter
+      end
+
+      def adapter_context
+        @adapter_context ||= Adapter::Context.new(
+          action_name: action_name,
+          method: request.method_symbol,
+          actions: {}
+        )
+      end
 
       def context
         {}

@@ -13,7 +13,7 @@ module Apiwork
         wrap_parameters false
 
         rescue_from Apiwork::ConstraintError do |error|
-          render json: { issues: error.issues }, status: error.http_status
+          render_error error.issues, status: error.http_status
         end
       end
     end
