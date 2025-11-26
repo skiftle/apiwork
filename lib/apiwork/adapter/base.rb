@@ -11,15 +11,15 @@ module Apiwork
         raise NotImplementedError
       end
 
-      def render_collection(collection, schema_class, query, meta, invocation)
+      def render_collection(collection, schema_class, action_data)
         raise NotImplementedError
       end
 
-      def render_record(record, schema_class, query, meta, invocation)
+      def render_record(record, schema_class, action_data)
         raise NotImplementedError
       end
 
-      def render_error(issues, invocation)
+      def render_error(issues, action_data)
         raise NotImplementedError
       end
     end

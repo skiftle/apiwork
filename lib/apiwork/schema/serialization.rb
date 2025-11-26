@@ -6,24 +6,24 @@ module Apiwork
       extend ActiveSupport::Concern
 
       class_methods do
-        def serialize(object_or_collection, context: {}, includes: nil)
+        def serialize(object_or_collection, context: {}, include: nil)
           if object_or_collection.respond_to?(:each)
-            object_or_collection.map { |obj| serialize_single(obj, context: context, includes: includes) }
+            object_or_collection.map { |obj| serialize_single(obj, context: context, include: include) }
           else
-            serialize_single(object_or_collection, context: context, includes: includes)
+            serialize_single(object_or_collection, context: context, include: include)
           end
         rescue StandardError => e
           schema_name = respond_to?(:name) ? name : 'Schema'
           raise Apiwork::SchemaError, "Serialization error for #{schema_name}: #{e.message}"
         end
 
-        def serialize_single(obj, context: {}, includes: nil)
+        def serialize_single(obj, context: {}, include: nil)
           if respond_to?(:sti_base?) && sti_base?
             variant_schema = resolve_sti_variant_for_object(obj)
-            return variant_schema.new(obj, context: context, includes: includes).as_json if variant_schema
+            return variant_schema.new(obj, context: context, include: include).as_json if variant_schema
           end
 
-          new(obj, context: context, includes: includes).as_json
+          new(obj, context: context, include: include).as_json
         end
 
         def resolve_sti_variant_for_object(obj)
@@ -101,10 +101,10 @@ module Apiwork
       def serialize_sti_aware(item, resource_class, nested_includes)
         if resource_class.respond_to?(:sti_base?) && resource_class.sti_base?
           variant_schema = resolve_sti_variant_schema(item, resource_class)
-          return variant_schema.new(item, context: context, includes: nested_includes).as_json if variant_schema
+          return variant_schema.new(item, context: context, include: nested_includes).as_json if variant_schema
         end
 
-        resource_class.new(item, context: context, includes: nested_includes).as_json
+        resource_class.new(item, context: context, include: nested_includes).as_json
       end
 
       def resolve_sti_variant_schema(item, base_schema)
@@ -124,25 +124,25 @@ module Apiwork
       end
 
       def explicitly_included?(name)
-        return false if @includes.nil?
+        return false if @include.nil?
 
-        case @includes
+        case @include
         when Symbol, String
-          @includes.to_sym == name
+          @include.to_sym == name
         when Array
-          @includes.map(&:to_sym).include?(name)
+          @include.map(&:to_sym).include?(name)
         when Hash
           name_sym = name.to_sym
-          @includes.key?(name_sym) || @includes.key?(name_sym.to_s)
+          @include.key?(name_sym) || @include.key?(name_sym.to_s)
         else
           false
         end
       end
 
       def build_nested_includes(association_name)
-        return nil unless @includes.is_a?(Hash)
+        return nil unless @include.is_a?(Hash)
 
-        @includes[association_name] || @includes[association_name.to_s] || @includes[association_name.to_sym]
+        @include[association_name] || @include[association_name.to_s] || @include[association_name.to_sym]
       end
     end
   end

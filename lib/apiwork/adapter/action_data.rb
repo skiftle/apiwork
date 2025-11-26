@@ -2,35 +2,39 @@
 
 module Apiwork
   module Adapter
-    class Invocation
-      attr_reader :action_name,
+    class ActionData
+      attr_reader :name,
                   :method,
-                  :context
+                  :context,
+                  :query,
+                  :meta
 
-      def initialize(action_name:, method:, context: {})
-        @action_name = action_name.to_sym
+      def initialize(name:, method:, context: {}, query: {}, meta: {})
+        @name = name.to_sym
         @method = method.to_sym
         @context = context
+        @query = query
+        @meta = meta
       end
 
       def index?
-        action_name == :index
+        name == :index
       end
 
       def show?
-        action_name == :show
+        name == :show
       end
 
       def create?
-        action_name == :create
+        name == :create
       end
 
       def update?
-        action_name == :update
+        name == :update
       end
 
       def destroy?
-        action_name == :destroy
+        name == :destroy
       end
 
       def get?

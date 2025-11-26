@@ -68,7 +68,7 @@ module Apiwork
         @response_definition
       end
 
-      def serialize_data(data, context: {}, includes: nil)
+      def serialize_data(data, context: {}, include: nil)
         needs_serialization = if data.is_a?(Hash)
                                 false
                               elsif data.is_a?(Array)
@@ -77,7 +77,7 @@ module Apiwork
                                 true
                               end
 
-        needs_serialization ? schema_class.serialize(data, context: context, includes: includes) : data
+        needs_serialization ? schema_class.serialize(data, context: context, include: include) : data
       end
     end
   end

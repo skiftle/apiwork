@@ -101,14 +101,14 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
 
     describe 'STI association serialization' do
       it 'routes person client to PersonClientSchema' do
-        serialized = Api::V1::ServiceSchema.serialize(service_for_person, includes: { client: true })
+        serialized = Api::V1::ServiceSchema.serialize(service_for_person, include: { client: true })
         expect(serialized[:client]).to be_present
         expect(serialized[:client][:kind]).to eq('person')
         expect(serialized[:client][:birthDate]).to be_present
       end
 
       it 'routes company client to CompanyClientSchema' do
-        serialized = Api::V1::ServiceSchema.serialize(service_for_company, includes: { client: true })
+        serialized = Api::V1::ServiceSchema.serialize(service_for_company, include: { client: true })
         expect(serialized[:client]).to be_present
         expect(serialized[:client][:kind]).to eq('company')
         expect(serialized[:client][:industry]).to eq('Technology')

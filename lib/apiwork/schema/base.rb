@@ -21,13 +21,13 @@ module Apiwork
       class_attribute :_variants, default: {}
 
       attr_reader :context,
-                  :includes,
+                  :include,
                   :object
 
-      def initialize(object, context: {}, includes: nil)
+      def initialize(object, context: {}, include: nil)
         @object = object
         @context = context
-        @includes = includes
+        @include = include
       end
 
       def detect_association_resource(association_name)

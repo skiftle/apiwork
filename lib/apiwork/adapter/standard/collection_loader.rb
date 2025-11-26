@@ -11,21 +11,21 @@ module Apiwork
 
         attr_reader :schema_class
 
-        def self.load(collection, schema_class, query, invocation)
-          new(collection, schema_class, query, invocation).load
+        def self.load(collection, schema_class, query, action_data)
+          new(collection, schema_class, query, action_data).load
         end
 
-        def initialize(collection, schema_class, query, invocation)
+        def initialize(collection, schema_class, query, action_data)
           @collection = collection
           @schema_class = schema_class
           @query = query
-          @invocation = invocation
+          @action_data = action_data
           @data = collection
           @metadata = {}
         end
 
         def load
-          return { data: @collection, metadata: {} } unless @invocation.index?
+          return { data: @collection, metadata: {} } unless @action_data.index?
           return { data: @collection, metadata: {} } unless @collection.is_a?(ActiveRecord::Relation)
 
           params = @query.slice(:filter, :sort, :page, :include)
