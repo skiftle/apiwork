@@ -3,12 +3,20 @@
 module Apiwork
   module Schema
     class AssociationDefinition
-      attr_reader :name, :type, :schema_class, :allow_destroy, :model_class,
-                  :description, :example, :deprecated, :polymorphic, :discriminator
+      attr_reader :name,
+                  :type,
+                  :schema_class,
+                  :allow_destroy,
+                  :model_class,
+                  :description,
+                  :example,
+                  :deprecated,
+                  :polymorphic,
+                  :discriminator
 
       def initialize(name, type:, schema_class:, **options)
         @name = name
-        @type = type # :has_one, :has_many, :belongs_to
+        @type = type
         @klass = schema_class
         @model_class = schema_class.model_class
         @schema_class = options[:schema]
@@ -27,7 +35,7 @@ module Apiwork
                     else { on: [] }
                     end
         @allow_destroy = options[:allow_destroy]
-        @nullable = options[:nullable] # Explicit nullable flag, auto-detected if nil
+        @nullable = options[:nullable]
 
         @description = options[:description]
         @example = options[:example]
@@ -36,7 +44,6 @@ module Apiwork
         detect_polymorphic_discriminator! if @polymorphic
 
         validate_include_option!
-
         validate_association_exists!
         validate_polymorphic!
         validate_nested_attributes!
