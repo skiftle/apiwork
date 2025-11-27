@@ -10,13 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_20_100004) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_27_000001) do
   create_table "accounts", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "first_day_of_week", default: 1
     t.string "name"
     t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "activities", force: :cascade do |t|
+    t.string "action", null: false
+    t.datetime "created_at", null: false
+    t.boolean "read", default: false
+    t.integer "target_id"
+    t.string "target_type"
+    t.datetime "updated_at", null: false
+    t.index ["action"], name: "index_activities_on_action"
+    t.index ["read"], name: "index_activities_on_read"
   end
 
   create_table "authors", force: :cascade do |t|

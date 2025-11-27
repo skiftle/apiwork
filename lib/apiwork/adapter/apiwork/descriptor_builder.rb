@@ -24,12 +24,17 @@ module Apiwork
 
         def register_base_types
           builder.instance_eval do
-            type :pagination do
+            type :page_pagination do
               param :current, type: :integer, required: true
               param :next, type: :integer, nullable: true
               param :prev, type: :integer, nullable: true
               param :total, type: :integer, required: true
               param :items, type: :integer, required: true
+            end
+
+            type :cursor_pagination do
+              param :next_cursor, type: :string, nullable: true
+              param :prev_cursor, type: :string, nullable: true
             end
 
             type :issue do

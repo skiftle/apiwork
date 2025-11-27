@@ -150,11 +150,12 @@ module Apiwork
         def collection_response(definition)
           root_key_plural = schema_class.root_key.plural.to_sym
           resource_type_name = resource_type_name_for_response
+          pagination_type = build_pagination_type
 
           definition.instance_variable_set(:@unwrapped_union, true)
 
           definition.param root_key_plural, type: :array, of: resource_type_name, required: false
-          definition.param :pagination, type: :pagination, required: false
+          definition.param :pagination, type: pagination_type, required: false
           definition.param :meta, type: :object, required: false
 
           definition.param :issues, type: :array, of: :issue, required: false
@@ -461,6 +462,7 @@ module Apiwork
         end
 
         def build_page_type
+          strategy = schema_class.resolve_option(:pagination)
           resolved_max_page_size = schema_class.resolve_option(:max_page_size)
 
           type_name = type_name(:page, 1)
@@ -468,12 +470,25 @@ module Apiwork
           existing = contract_class.resolve_type(type_name)
           return type_name if existing
 
-          contract_class.register_global_type(type_name) do
-            param :number, type: :integer, required: false, min: 1
-            param :size, type: :integer, required: false, min: 1, max: resolved_max_page_size
+          if strategy == :cursor
+            contract_class.register_global_type(type_name) do
+              param :after, type: :string, required: false
+              param :before, type: :string, required: false
+              param :size, type: :integer, required: false, min: 1, max: resolved_max_page_size
+            end
+          else
+            contract_class.register_global_type(type_name) do
+              param :number, type: :integer, required: false, min: 1
+              param :size, type: :integer, required: false, min: 1, max: resolved_max_page_size
+            end
           end
 
           type_name
+        end
+
+        def build_pagination_type
+          strategy = schema_class.resolve_option(:pagination)
+          strategy == :cursor ? :cursor_pagination : :page_pagination
         end
 
         def build_include_type(visited: Set.new, depth: 0)

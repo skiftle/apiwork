@@ -99,4 +99,7 @@ Apiwork::API.draw '/api/v1' do
 
   # Service resource for testing associations with STI
   resources :services
+
+  # Activity resource for testing cursor-based pagination
+  resources :activities
 end
