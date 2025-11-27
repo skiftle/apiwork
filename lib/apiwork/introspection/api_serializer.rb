@@ -40,13 +40,13 @@ module Apiwork
       end
 
       def serialize_info
-        metadata_info = @api_class.metadata.info
+        info = @api_class.metadata.info
         result = {}
 
-        if metadata_info
-          result[:title] = metadata_info[:title]
-          result[:version] = metadata_info[:version]
-          result[:description] = metadata_info[:description]
+        if info
+          result[:title] = info[:title]
+          result[:version] = info[:version]
+          result[:description] = info[:description]
         end
 
         result
