@@ -203,14 +203,9 @@ module Apiwork
             end
             add_include_query_param_if_needed(action_definition)
           when :destroy
-            # Destroy has no request params
+            nil
           else
-            if action_info[:type] == :collection
-              # Custom collection action - might need query params
-            elsif action_info[:type] == :member
-              # Custom member action
-              add_include_query_param_if_needed(action_definition)
-            end
+            add_include_query_param_if_needed(action_definition) if action_info[:type] == :member
           end
         end
 
@@ -227,9 +222,7 @@ module Apiwork
               body { builder.send(:single_response, self) }
             end
           when :destroy
-            action_definition.response do
-              # Empty response for destroy
-            end
+            action_definition.response {}
           else
             if action_info[:type] == :collection
               action_definition.response do
@@ -824,8 +817,6 @@ module Apiwork
             temp_builder.send(:build_include_type, visited: visited, depth: 0)
             temp_builder.send(:build_nested_payload_union)
 
-            # Build response type - this has an internal check to avoid rebuilding if it already exists
-            # This is needed for association-only schemas that don't have their types built during initialization
             temp_builder.send(:build_response_type, visited: Set.new)
           end
 

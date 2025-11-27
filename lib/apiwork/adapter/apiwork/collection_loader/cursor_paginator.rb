@@ -57,9 +57,7 @@ module Apiwork
             return @primary_key if defined?(@primary_key)
 
             pk = @relation.klass.primary_key
-            if pk.is_a?(Array)
-              raise NotImplementedError, 'Cursor pagination does not support composite primary keys'
-            end
+            raise NotImplementedError, 'Cursor pagination does not support composite primary keys' if pk.is_a?(Array)
 
             @primary_key = pk.to_sym
           end

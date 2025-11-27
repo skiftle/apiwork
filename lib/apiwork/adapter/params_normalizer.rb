@@ -35,9 +35,6 @@ module Apiwork
 
         hash.keys.all? { |k| k.to_s =~ /^\d+$/ }
       end
-
-      private :normalize_indexed_hashes, :normalize_indexed_value,
-              :convert_indexed_hash_to_array, :indexed_hash?
     end
   end
 end

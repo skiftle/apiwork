@@ -18,9 +18,8 @@ module Apiwork
           end
 
           def perform(params)
-            return @relation if params.blank?
-
-            params = default_sort if params.blank?
+            validate = params.present?
+            params = params.presence || default_sort
             return @relation if params.blank?
 
             params = params.reduce({}) { |acc, hash| acc.merge(hash) } if params.is_a?(Array)
@@ -35,7 +34,7 @@ module Apiwork
               return @relation
             end
 
-            orders, joins = build_order_clauses(params, schema_class.model_class)
+            orders, joins = build_order_clauses(params, schema_class.model_class, validate:)
             scope = @relation.joins(joins).order(orders)
             scope = scope.distinct if joins.present?
             scope
@@ -47,24 +46,26 @@ module Apiwork
 
           private
 
-          def build_order_clauses(params, target_klass = schema_class.model_class)
+          def build_order_clauses(params, target_klass = schema_class.model_class, validate: true)
             params.each_with_object([[], []]) do |(key, value), (orders, joins)|
               key = key.to_sym
 
               if value.is_a?(String) || value.is_a?(Symbol)
-                attribute_definition = schema_class.attribute_definitions[key]
-                unless attribute_definition&.sortable?
-                  available = schema_class.attribute_definitions
-                                          .select { |_, definition| definition.sortable? }
-                                          .keys
+                if validate
+                  attribute_definition = schema_class.attribute_definitions[key]
+                  unless attribute_definition&.sortable?
+                    available = schema_class.attribute_definitions
+                                            .select { |_, definition| definition.sortable? }
+                                            .keys
 
-                  @issues << Issue.new(
-                    code: :field_not_sortable,
-                    detail: "#{key} is not sortable on #{target_klass.name}. Sortable: #{available.join(', ')}",
-                    path: [:sort, key],
-                    meta: { field: key, class: target_klass.name, available: available }
-                  )
-                  next
+                    @issues << Issue.new(
+                      code: :field_not_sortable,
+                      detail: "#{key} is not sortable on #{target_klass.name}. Sortable: #{available.join(', ')}",
+                      path: [:sort, key],
+                      meta: { field: key, class: target_klass.name, available: available }
+                    )
+                    next
+                  end
                 end
 
                 column = target_klass.arel_table[key]
@@ -96,7 +97,7 @@ module Apiwork
                   next
                 end
 
-                unless schema_class.association_definitions[key]&.sortable?
+                if validate && !schema_class.association_definitions[key]&.sortable?
                   @issues << Issue.new(
                     code: :association_not_sortable,
                     detail: "Association #{key} is not sortable",
@@ -106,7 +107,7 @@ module Apiwork
                   next
                 end
 
-                association_resource = schema_class.association_definitions[key].schema_class
+                association_resource = schema_class.association_definitions[key]&.schema_class
 
                 if association_resource.nil?
                   @issues << Issue.new(
@@ -121,7 +122,8 @@ module Apiwork
                 association_resource = association_resource.constantize if association_resource.is_a?(String)
 
                 nested_query = Sorter.new(association.klass.all, association_resource, @issues)
-                nested_orders, nested_joins = nested_query.send(:build_order_clauses, value, association.klass)
+                nested_orders, nested_joins = nested_query.send(:build_order_clauses, value, association.klass,
+                                                                validate: validate)
                 orders.concat(nested_orders)
 
                 joins << (nested_joins.any? ? { key => nested_joins } : key)

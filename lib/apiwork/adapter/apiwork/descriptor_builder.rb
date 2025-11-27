@@ -49,16 +49,12 @@ module Apiwork
         def register_global_filter_types
           filter_types_to_register = Set.new
 
-          # Register non-nullable variants for all filterable types
           schema_data.filterable_types.each do |type|
-            filter_type = determine_filter_type(type, nullable: false)
-            filter_types_to_register.add(filter_type)
+            filter_types_to_register.add(determine_filter_type(type, nullable: false))
           end
 
-          # Register nullable variants ONLY for types that have nullable attributes
           schema_data.nullable_filterable_types.each do |type|
-            nullable_filter_type = determine_filter_type(type, nullable: true)
-            filter_types_to_register.add(nullable_filter_type)
+            filter_types_to_register.add(determine_filter_type(type, nullable: true))
           end
 
           filter_types_to_register.each { |type| register_filter_descriptor(type) }
@@ -132,7 +128,6 @@ module Apiwork
           when :nullable_uuid_filter
             register_nullable_uuid_filter
           else
-            # TODO: Switch to adapter-specific error class
             raise ConfigurationError, "Unknown global filter type: #{type_name.inspect}"
           end
         end
