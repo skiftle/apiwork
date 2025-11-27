@@ -20,7 +20,6 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
             default_size 25
             max_size 100
           end
-          max_array_items 500
         end
 
         resources :posts
@@ -45,7 +44,7 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
       # Should use API configuration via resolve_option
       expect(schema_class.resolve_option(:pagination, :default_size)).to eq(25)
       expect(schema_class.resolve_option(:pagination, :max_size)).to eq(100)
-      expect(schema_class.resolve_option(:max_array_items)).to eq(500)
+      expect(schema_class.resolve_option(:key_format)).to eq(:camel)
     end
   end
 
@@ -53,11 +52,11 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
     let(:schema_override_api) do
       Apiwork::API.draw '/api/schema_override' do
         adapter do
+          key_format :camel
           pagination do
             default_size 20
             max_size 200
           end
-          max_array_items 500
         end
 
         resources :posts
@@ -94,7 +93,7 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
       expect(schema_with_config.resolve_option(:pagination, :max_size)).to eq(150)
 
       # Non-overridden values should inherit from API
-      expect(schema_with_config.resolve_option(:max_array_items)).to eq(500)
+      expect(schema_with_config.resolve_option(:key_format)).to eq(:camel)
     end
   end
 
@@ -150,7 +149,7 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
       expect(schema.resolve_option(:pagination, :max_size)).to eq(200)
 
       # Adapter default when not in API or schema
-      expect(schema.resolve_option(:max_array_items)).to eq(1000)
+      expect(schema.resolve_option(:pagination, :strategy)).to eq(:page)
     end
   end
 

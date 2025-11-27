@@ -491,4 +491,175 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
       end
     end
   end
+
+  describe 'array length validation with max and min' do
+    context 'with max constraint' do
+      let(:definition) do
+        described_class.new(type: :body, contract_class: contract_class).tap do |d|
+          d.param :tags, type: :array, of: :string, max: 3
+        end
+      end
+
+      it 'accepts array within max limit' do
+        result = definition.validate({ tags: %w[ruby rails api] })
+
+        expect(result[:issues]).to be_empty
+        expect(result[:params][:tags]).to eq(%w[ruby rails api])
+      end
+
+      it 'accepts array at exactly max limit' do
+        result = definition.validate({ tags: %w[a b c] })
+
+        expect(result[:issues]).to be_empty
+        expect(result[:params][:tags]).to eq(%w[a b c])
+      end
+
+      it 'rejects array exceeding max limit' do
+        result = definition.validate({ tags: %w[a b c d] })
+
+        expect(result[:issues]).not_to be_empty
+        error = result[:issues].first
+        expect(error.code).to eq(:array_too_large)
+        expect(error.detail).to eq('Array exceeds maximum length')
+        expect(error.meta[:max]).to eq(3)
+        expect(error.meta[:actual]).to eq(4)
+      end
+
+      it 'accepts empty array' do
+        result = definition.validate({ tags: [] })
+
+        expect(result[:issues]).to be_empty
+        expect(result[:params][:tags]).to eq([])
+      end
+    end
+
+    context 'with min constraint' do
+      let(:definition) do
+        described_class.new(type: :body, contract_class: contract_class).tap do |d|
+          d.param :tags, type: :array, of: :string, min: 2
+        end
+      end
+
+      it 'accepts array above min limit' do
+        result = definition.validate({ tags: %w[ruby rails api] })
+
+        expect(result[:issues]).to be_empty
+        expect(result[:params][:tags]).to eq(%w[ruby rails api])
+      end
+
+      it 'accepts array at exactly min limit' do
+        result = definition.validate({ tags: %w[a b] })
+
+        expect(result[:issues]).to be_empty
+        expect(result[:params][:tags]).to eq(%w[a b])
+      end
+
+      it 'rejects array below min limit' do
+        result = definition.validate({ tags: %w[only_one] })
+
+        expect(result[:issues]).not_to be_empty
+        error = result[:issues].first
+        expect(error.code).to eq(:array_too_small)
+        expect(error.detail).to eq('Array below minimum length')
+        expect(error.meta[:min]).to eq(2)
+        expect(error.meta[:actual]).to eq(1)
+      end
+
+      it 'rejects empty array when min is set' do
+        result = definition.validate({ tags: [] })
+
+        expect(result[:issues]).not_to be_empty
+        error = result[:issues].first
+        expect(error.code).to eq(:array_too_small)
+        expect(error.meta[:min]).to eq(2)
+        expect(error.meta[:actual]).to eq(0)
+      end
+    end
+
+    context 'with both min and max constraints' do
+      let(:definition) do
+        described_class.new(type: :body, contract_class: contract_class).tap do |d|
+          d.param :tags, type: :array, of: :string, min: 1, max: 5
+        end
+      end
+
+      it 'accepts array within range' do
+        result = definition.validate({ tags: %w[a b c] })
+
+        expect(result[:issues]).to be_empty
+        expect(result[:params][:tags]).to eq(%w[a b c])
+      end
+
+      it 'accepts array at min boundary' do
+        result = definition.validate({ tags: %w[single] })
+
+        expect(result[:issues]).to be_empty
+      end
+
+      it 'accepts array at max boundary' do
+        result = definition.validate({ tags: %w[a b c d e] })
+
+        expect(result[:issues]).to be_empty
+      end
+
+      it 'rejects array below min' do
+        result = definition.validate({ tags: [] })
+
+        expect(result[:issues]).not_to be_empty
+        expect(result[:issues].first.code).to eq(:array_too_small)
+      end
+
+      it 'rejects array above max' do
+        result = definition.validate({ tags: %w[a b c d e f] })
+
+        expect(result[:issues]).not_to be_empty
+        expect(result[:issues].first.code).to eq(:array_too_large)
+      end
+    end
+
+    context 'without length constraints' do
+      let(:definition) do
+        described_class.new(type: :body, contract_class: contract_class).tap do |d|
+          d.param :tags, type: :array, of: :string
+        end
+      end
+
+      it 'accepts empty array' do
+        result = definition.validate({ tags: [] })
+
+        expect(result[:issues]).to be_empty
+      end
+
+      it 'accepts large array' do
+        large_array = (1..100).map(&:to_s)
+        result = definition.validate({ tags: large_array })
+
+        expect(result[:issues]).to be_empty
+        expect(result[:params][:tags].length).to eq(100)
+      end
+    end
+
+    context 'with nested object arrays' do
+      let(:definition) do
+        described_class.new(type: :body, contract_class: contract_class).tap do |d|
+          d.param :comments, type: :array, of: :object, min: 1, max: 10
+        end
+      end
+
+      it 'validates length for object arrays' do
+        result = definition.validate({ comments: [{ text: 'hello' }, { text: 'world' }] })
+
+        expect(result[:issues]).to be_empty
+        expect(result[:params][:comments].length).to eq(2)
+      end
+
+      it 'rejects object array exceeding max' do
+        comments = (1..11).map { |i| { text: "comment #{i}" } }
+        result = definition.validate({ comments: })
+
+        expect(result[:issues]).not_to be_empty
+        expect(result[:issues].first.code).to eq(:array_too_large)
+      end
+    end
+  end
 end

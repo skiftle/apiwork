@@ -4,7 +4,6 @@ module Apiwork
   module Adapter
     class Apiwork < Base
       option :key_format, type: :symbol, default: :keep, enum: %i[keep camel underscore]
-      option :max_array_items, type: :integer, default: 1000
 
       option :pagination, type: :hash do
         option :strategy, type: :symbol, default: :page, enum: %i[page cursor]

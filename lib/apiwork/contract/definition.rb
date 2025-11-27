@@ -421,13 +421,25 @@ module Apiwork
         issues = []
         values = []
 
-        max_items = param_options[:max_items] || resolve_option(:max_array_items)
-        if array.length > max_items
+        max = param_options[:max]
+        min = param_options[:min]
+
+        if max && array.length > max
           issues << Issue.new(
             code: :array_too_large,
-            detail: 'Value too large',
+            detail: 'Array exceeds maximum length',
             path: field_path,
-            meta: { max_size: max_items, actual: array.length }
+            meta: { max:, actual: array.length }
+          )
+          return [issues, []]
+        end
+
+        if min && array.length < min
+          issues << Issue.new(
+            code: :array_too_small,
+            detail: 'Array below minimum length',
+            path: field_path,
+            meta: { min:, actual: array.length }
           )
           return [issues, []]
         end
