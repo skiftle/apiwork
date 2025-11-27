@@ -11,7 +11,6 @@ module Apiwork
 
       def reset!
         Registry.clear!
-        Contract::SchemaRegistry.clear!
       end
     end
   end

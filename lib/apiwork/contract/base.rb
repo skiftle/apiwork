@@ -32,19 +32,21 @@ module Apiwork
           schema_class = schema_name.constantize
 
           self._schema_class = schema_class
-          SchemaRegistry.register(schema_class: schema_class, contract_class: self)
 
           schema_class
         rescue NameError
           raise ArgumentError,
-                "Expected to find #{schema_name} for #{name}. " \
-                'Contract and Schema names must follow convention: XContract ↔ XSchema'
+                "Expected to find #{schema_name} in app/schemas/. " \
+                'Contract and Schema must follow convention: XContract ↔ XSchema'
         end
 
         def find_contract_for_schema(schema_class)
           return nil unless schema_class
 
-          SchemaRegistry.find(schema_class)
+          contract_name = schema_class.name.sub(/Schema$/, 'Contract')
+          contract_name.constantize
+        rescue NameError
+          nil
         end
 
         def register_sti_variants(*variant_schema_classes)
