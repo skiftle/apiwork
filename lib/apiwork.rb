@@ -12,10 +12,9 @@ module Apiwork
 
     # DOCUMENTATION
     def reset!
-      Adapter.reset!
-      Spec.reset!
       API.reset!
       Descriptor.reset!
+      Schema.reset!
     end
   end
 end

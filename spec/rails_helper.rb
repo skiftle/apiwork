@@ -24,15 +24,8 @@ RSpec.configure do |config|
   # Filter Rails gems from backtraces
   config.filter_rails_from_backtrace!
 
-  # Clear registries before each test, but skip integration tests
-  # Integration tests use before(:all) to load API config once for performance
   config.before do |example|
-    unless [:request, :integration].include?(example.metadata[:type])
-      Apiwork::Descriptor.reset!
-      Apiwork::API::Registry.all.each do |api_class| # rubocop:disable Rails/FindEach
-        api_class.instance_variable_set(:@contracts_built_for, Set.new)
-      end
-    end
+    Apiwork.reset! unless [:request, :integration].include?(example.metadata[:type])
   end
 
   # Ensure APIs are loaded for request/integration specs
