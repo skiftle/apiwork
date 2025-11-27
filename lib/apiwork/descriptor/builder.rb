@@ -10,19 +10,19 @@ module Apiwork
         @scope = scope # nil = global, ContractClass = contract-scoped
       end
 
-      def self.define_type(api_class:, name:, scope: nil, description: nil, example: nil, format: nil, deprecated: false, &block)
+      def self.define_type(name, api_class:, scope: nil, description: nil, example: nil, format: nil, deprecated: false, &block)
         raise ArgumentError, 'Block required for type definition' unless block_given?
 
         builder = new(api_class: api_class, scope: scope)
         builder.type(name, description: description, example: example, format: format, deprecated: deprecated, &block)
       end
 
-      def self.define_enum(api_class:, name:, values:, scope: nil, description: nil, example: nil, deprecated: false)
+      def self.define_enum(name, values:, api_class:, scope: nil, description: nil, example: nil, deprecated: false)
         builder = new(api_class: api_class, scope: scope)
         builder.enum(name, values: values, description: description, example: example, deprecated: deprecated)
       end
 
-      def self.define_union(api_class:, name:, scope: nil, &block)
+      def self.define_union(name, api_class:, scope: nil, &block)
         raise ArgumentError, 'Union type requires a block' unless block_given?
 
         builder = new(api_class: api_class, scope: scope)
