@@ -13,7 +13,7 @@ module Apiwork
     # DOCUMENTATION
     def reset!
       Adapter.reset!
-      Generator.reset!
+      Spec.reset!
       API.reset!
       Descriptor.reset!
     end

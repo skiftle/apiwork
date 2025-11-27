@@ -4,7 +4,7 @@ require 'fileutils'
 require 'tempfile'
 
 module Apiwork
-  module Generator
+  module Spec
     module Pipeline
       module Writer
         module_function

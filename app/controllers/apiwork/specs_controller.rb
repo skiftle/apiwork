@@ -17,16 +17,16 @@ module Apiwork
     # Returns spec for the current API
     def show
       # Use unified Pipeline.generate
-      spec = ::Apiwork::Generator::Pipeline.generate(
+      spec = ::Apiwork::Spec::Pipeline.generate(
         api_path: params[:api_path],
         format: params[:spec_type].to_sym,
         key_transform: params[:key_transform]
       )
 
       # Render with appropriate content type
-      generator_class = ::Apiwork::Generator::Registry.find(params[:spec_type].to_sym)
+      generator_class = ::Apiwork::Spec::Registry.find(params[:spec_type].to_sym)
       render_spec(spec, generator_class.content_type)
-    rescue ::Apiwork::Generator::Registry::GeneratorNotFound => e
+    rescue KeyError => e
       render json: { error: e.message }, status: :bad_request
     rescue ArgumentError => e
       render json: { error: e.message }, status: :bad_request

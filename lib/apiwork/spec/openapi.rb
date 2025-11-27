@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Generator
+  module Spec
     class Openapi < Base
       identifier :openapi
       content_type 'application/json'

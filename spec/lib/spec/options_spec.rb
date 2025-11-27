@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Apiwork::Generator::Options do
+RSpec.describe Apiwork::Spec::Options do
   describe '.build' do
     context 'with no options' do
       it 'returns empty hash' do

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Generator
+  module Spec
     class Registry
       class << self
         def store
@@ -9,15 +9,15 @@ module Apiwork
         end
 
         def register(generator_class)
-          raise ArgumentError, 'Generator must inherit from Apiwork::Generator::Base' unless generator_class < Base
-          raise ArgumentError, "Generator #{generator_class} must define an identifier" unless generator_class.identifier
+          raise ArgumentError, 'Spec must inherit from Apiwork::Spec::Base' unless generator_class < Base
+          raise ArgumentError, "Spec #{generator_class} must define an identifier" unless generator_class.identifier
 
           store[generator_class.identifier] = generator_class
         end
 
         def find(name)
           key = name.to_sym
-          store.fetch(key) { raise KeyError.new("Generator :#{key} not found. Available: #{all.join(', ')}", key:, receiver: store) }
+          store.fetch(key) { raise KeyError.new("Spec :#{key} not found. Available: #{all.join(', ')}", key:, receiver: store) }
         end
 
         def registered?(name)

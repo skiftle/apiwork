@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Generator
+  module Spec
     class TypescriptMapper
       attr_reader :introspection,
                   :key_transform_strategy

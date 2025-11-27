@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Apiwork::Generator::Openapi do
+RSpec.describe Apiwork::Spec::Openapi do
   before do
     Apiwork::API.reset!
     Apiwork::Descriptor.reset!
@@ -41,11 +41,11 @@ RSpec.describe Apiwork::Generator::Openapi do
 
   describe 'generator registration' do
     it 'is registered in the registry' do
-      expect(Apiwork::Generator::Registry.registered?(:openapi)).to be true
+      expect(Apiwork::Spec::Registry.registered?(:openapi)).to be true
     end
 
     it 'can be retrieved from the registry' do
-      expect(Apiwork::Generator::Registry.find(:openapi)).to eq(described_class)
+      expect(Apiwork::Spec::Registry.find(:openapi)).to eq(described_class)
     end
   end
 

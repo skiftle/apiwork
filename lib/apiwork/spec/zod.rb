@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Generator
+  module Spec
     class Zod < Base
       identifier :zod
       content_type 'text/plain; charset=utf-8'

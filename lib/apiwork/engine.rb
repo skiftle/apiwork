@@ -14,15 +14,9 @@ module Apiwork
 
       Apiwork::Adapter.register(Apiwork::Adapter::Apiwork)
 
-      Apiwork::Generator.register(Apiwork::Generator::Openapi)
-      Apiwork::Generator.register(Apiwork::Generator::Zod)
-      Apiwork::Generator.register(Apiwork::Generator::Typescript)
-
-      if Rails.root.join('app/contracts').exist?
-        Dir[Rails.root.join('app/contracts/**/*.rb')].sort.each do |file|
-          load file
-        end
-      end
+      Apiwork::Spec.register(Apiwork::Spec::Openapi)
+      Apiwork::Spec.register(Apiwork::Spec::Zod)
+      Apiwork::Spec.register(Apiwork::Spec::Typescript)
 
       if Rails.root.join('config/apis').exist?
         Dir[Rails.root.join('config/apis/**/*.rb')].sort.each do |file|

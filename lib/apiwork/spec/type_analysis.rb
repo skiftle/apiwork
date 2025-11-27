@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Generator
+  module Spec
     class TypeAnalysis
       class << self
         def topological_sort_types(all_types)

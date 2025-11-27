@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Apiwork::Generator::Typescript do
+RSpec.describe Apiwork::Spec::Typescript do
   before do
     Apiwork::API.reset!
     Apiwork::Descriptor.reset!
@@ -299,15 +299,15 @@ RSpec.describe Apiwork::Generator::Typescript do
 
   describe 'generator registration' do
     it 'is registered in the registry' do
-      expect(Apiwork::Generator::Registry.registered?(:typescript)).to be true
+      expect(Apiwork::Spec::Registry.registered?(:typescript)).to be true
     end
 
     it 'can be retrieved from the registry' do
-      expect(Apiwork::Generator::Registry.find(:typescript)).to eq(described_class)
+      expect(Apiwork::Spec::Registry.find(:typescript)).to eq(described_class)
     end
 
-    it 'can be used via Apiwork::Generator.generate' do
-      output = Apiwork::Generator.generate(:typescript, path)
+    it 'can be used via Apiwork::Spec.generate' do
+      output = Apiwork::Spec.generate(:typescript, path)
       expect(output).to be_a(String)
       expect(output).to include('export type')
     end
@@ -334,7 +334,7 @@ RSpec.describe Apiwork::Generator::Typescript do
 
         enum :status, values: %w[active inactive], description: 'Status enum', deprecated: true
       end
-      @metadata_output = Apiwork::Generator.generate(:typescript, '/api/ts_metadata_test')
+      @metadata_output = Apiwork::Spec.generate(:typescript, '/api/ts_metadata_test')
     end
 
     attr_reader :metadata_output
@@ -373,7 +373,7 @@ RSpec.describe Apiwork::Generator::Typescript do
         end
       end
 
-      output = Apiwork::Generator.generate(:typescript, '/api/ts_full_metadata')
+      output = Apiwork::Spec.generate(:typescript, '/api/ts_full_metadata')
 
       expect(output).to include('export interface FullMeta')
       expect(output).to include('x?: number')
@@ -386,7 +386,7 @@ RSpec.describe Apiwork::Generator::Typescript do
         enum :color, values: %w[red green blue], description: 'desc', example: 'red', deprecated: false
       end
 
-      output = Apiwork::Generator.generate(:typescript, '/api/ts_enum_meta')
+      output = Apiwork::Spec.generate(:typescript, '/api/ts_enum_meta')
 
       expect(output).to include("export type Color = 'blue' | 'green' | 'red'")
 
@@ -401,7 +401,7 @@ RSpec.describe Apiwork::Generator::Typescript do
 
   describe 'unknown type mapping' do
     let(:introspection) { Apiwork::API.introspect('/api/v1') }
-    let(:mapper) { Apiwork::Generator::TypescriptMapper.new(introspection: introspection) }
+    let(:mapper) { Apiwork::Spec::TypescriptMapper.new(introspection: introspection) }
 
     it 'maps :unknown to unknown' do
       result = mapper.send(:map_primitive, :unknown)

@@ -31,11 +31,11 @@ module Apiwork
         end
 
         def spec(type, path: nil)
-          unless Generator::Registry.registered?(type)
-            available = Generator::Registry.all.join(', ')
+          unless Spec::Registry.registered?(type)
+            available = Spec::Registry.all.join(', ')
             raise ConfigurationError,
-                  "Unknown spec generator: :#{type}. " \
-                  "Available generators: #{available}"
+                  "Unknown spec: :#{type}. " \
+                  "Available: #{available}"
           end
 
           @specs ||= {}

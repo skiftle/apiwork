@@ -33,7 +33,7 @@ RSpec.describe Apiwork::Introspection do
     end
 
     it 'does not qualify global filter types in Zod output' do
-      generator = Apiwork::Generator::Zod.new('/api/v1')
+      generator = Apiwork::Spec::Zod.new('/api/v1')
       output = generator.generate
 
       # Should reference StringFilterSchema, not PostStringFilterSchema

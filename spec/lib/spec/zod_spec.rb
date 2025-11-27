@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Apiwork::Generator::Zod do
+RSpec.describe Apiwork::Spec::Zod do
   before do
     Apiwork::API.reset!
     Apiwork::Descriptor.reset!
@@ -648,7 +648,7 @@ RSpec.describe Apiwork::Generator::Zod do
   end
 
   describe 'unknown type mapping' do
-    let(:mapper) { Apiwork::Generator::ZodMapper.new(introspection: introspect) }
+    let(:mapper) { Apiwork::Spec::ZodMapper.new(introspection: introspect) }
 
     it 'maps :unknown to z.unknown()' do
       result = mapper.send(:map_primitive, { type: :unknown })
@@ -662,7 +662,7 @@ RSpec.describe Apiwork::Generator::Zod do
   end
 
   describe 'Zod v4 format mapping' do
-    let(:mapper) { Apiwork::Generator::ZodMapper.new(introspection: introspect) }
+    let(:mapper) { Apiwork::Spec::ZodMapper.new(introspection: introspect) }
 
     describe 'string formats' do
       it 'maps email format to z.email()' do

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Apiwork
-  module Generator
+  module Spec
     class ZodMapper
       TYPE_MAP = {
         string: 'z.string()',
