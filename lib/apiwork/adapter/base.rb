@@ -38,11 +38,11 @@ module Apiwork
         raise NotImplementedError
       end
 
-      def transform_request(hash, api_class)
+      def transform_request(hash, schema_class)
         hash
       end
 
-      def transform_response(hash, api_class)
+      def transform_response(hash, schema_class)
         hash
       end
     end

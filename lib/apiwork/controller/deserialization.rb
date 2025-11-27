@@ -20,7 +20,7 @@ module Apiwork
       def action_query
         @action_query ||= begin
           data = request.query_parameters.deep_symbolize_keys
-          data = adapter.transform_request(data, current_contract.api_class)
+          data = adapter.transform_request(data, action_schema_class) if action_schema_class
 
           current_contract.parse(data, :query, action_name, coerce: true)
         end
@@ -29,9 +29,16 @@ module Apiwork
       def action_body
         @action_body ||= begin
           data = request.request_parameters.deep_symbolize_keys
-          data = adapter.transform_request(data, current_contract.api_class)
+          data = adapter.transform_request(data, action_schema_class) if action_schema_class
 
           current_contract.parse(data, :body, action_name, coerce: true)
+        end
+      end
+
+      def action_schema_class
+        @action_schema_class ||= begin
+          action_definition = current_contract.action_definition(action_name)
+          action_definition&.schema_class
         end
       end
 

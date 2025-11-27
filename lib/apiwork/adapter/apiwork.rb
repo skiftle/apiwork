@@ -44,26 +44,18 @@ module Apiwork
         { issues: issues.map(&:to_h) }
       end
 
-      def transform_request(hash, api_class)
-        format = resolve_api_option(:key_format, api_class)
+      def transform_request(hash, schema_class)
+        format = schema_class.resolve_option(:key_format)
         transformed = transform_request_keys(hash, format)
         ParamsNormalizer.call(transformed)
       end
 
-      def transform_response(hash, api_class)
-        format = resolve_api_option(:key_format, api_class)
+      def transform_response(hash, schema_class)
+        format = schema_class.resolve_option(:key_format)
         transform_response_keys(hash, format)
       end
 
       private
-
-      def resolve_api_option(name, api_class)
-        opt = self.class.options[name]
-        return nil unless opt
-
-        value = api_class&.adapter_config&.[](name)
-        value.nil? ? opt.default : value
-      end
 
       def transform_request_keys(hash, format)
         case format

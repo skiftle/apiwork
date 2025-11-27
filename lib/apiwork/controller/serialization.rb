@@ -21,7 +21,7 @@ module Apiwork
           raise ContractError, result.issues if result.invalid?
         end
 
-        response = adapter.transform_response(response, current_contract.api_class)
+        response = adapter.transform_response(response, schema_class) if schema_class
 
         render json: response, status: status || (action_name.to_sym == :create ? :created : :ok)
       end
