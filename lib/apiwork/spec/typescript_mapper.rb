@@ -120,7 +120,7 @@ module Apiwork
                     end
 
         if definition[:enum]
-          enum_ref = resolve_enum(definition[:enum])
+          enum_ref = definition[:enum]
           if enum_ref.is_a?(Symbol) && enums.key?(enum_ref)
             base_type = pascal_case(enum_ref)
           elsif enum_ref.is_a?(Array)
@@ -252,10 +252,6 @@ module Apiwork
 
       def enum_or_type_reference?(symbol)
         types.key?(symbol) || enums.key?(symbol)
-      end
-
-      def resolve_enum(enum_ref)
-        enum_ref
       end
 
       def extract_parent_resource_names(parent_path)

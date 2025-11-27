@@ -289,14 +289,10 @@ module Apiwork
         types.key?(symbol) || enums.key?(symbol)
       end
 
-      def resolve_enum(enum_ref)
-        enum_ref
-      end
-
       def resolve_enum_schema(definition)
         return nil unless definition[:enum]
 
-        enum_ref = resolve_enum(definition[:enum])
+        enum_ref = definition[:enum]
         if enum_ref.is_a?(Symbol) && enums.key?(enum_ref)
           "#{pascal_case(enum_ref)}Schema"
         elsif enum_ref.is_a?(Array)

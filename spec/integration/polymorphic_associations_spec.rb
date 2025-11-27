@@ -17,20 +17,16 @@ RSpec.describe 'Polymorphic associations', type: :integration do
     end
 
     it 'auto-detects discriminator from reflection' do
-      # Mock model with polymorphic association
+      reflection = double(
+        'ActiveRecord::Reflection',
+        name: :commentable,
+        foreign_type: 'commentable_type',
+        polymorphic?: true
+      )
+
       model_class = Class.new(ApplicationRecord) do
         def self.name
           'TestModel'
-        end
-
-        def self.reflect_on_association(name)
-          return nil unless name == :commentable
-
-          OpenStruct.new(
-            name: :commentable,
-            foreign_type: 'commentable_type',
-            polymorphic?: true
-          )
         end
 
         def self.model_name
@@ -41,6 +37,8 @@ RSpec.describe 'Polymorphic associations', type: :integration do
           {}
         end
       end
+
+      allow(model_class).to receive(:reflect_on_association).with(:commentable).and_return(reflection)
 
       schema = Class.new(Apiwork::Schema::Base) do
         model model_class

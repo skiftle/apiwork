@@ -15,9 +15,6 @@ ActiveRecord::Migration.maintain_test_schema!
 
 # Configure RSpec
 RSpec.configure do |config|
-  # Include ApiworkHelpers for specs tagged with type: :apiwork
-  config.include ApiworkHelpers, type: :apiwork
-
   # Use transactional fixtures
   config.use_transactional_fixtures = true
 

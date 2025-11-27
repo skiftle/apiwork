@@ -57,7 +57,7 @@ module Apiwork
 
           contract_path = options[:contract]
 
-          contract_class = contract_path ? constantize_contract_path(contract_path) : nil
+          contract_class = contract_path ? contract_path_to_class_name(contract_path) : nil
 
           action_metadata = extract_action_metadata(action, current_resource)
 

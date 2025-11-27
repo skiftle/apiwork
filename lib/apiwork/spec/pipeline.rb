@@ -6,9 +6,8 @@ module Apiwork
       module_function
 
       def generate(api_path:, format:, **options)
-        opts = Options.build(**options)
         generator_class = Registry.find(format)
-        generator_class.generate(path: api_path, **opts)
+        generator_class.generate(path: api_path, **options.compact)
       end
 
       def write(output:, api_path: nil, format: nil, **options)
