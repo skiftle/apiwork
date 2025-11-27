@@ -18,9 +18,11 @@ Apiwork::API.draw '/api/v1' do
   adapter do
     key_format :keep
     default_sort id: :asc
-    default_page_size 20
-    max_page_size 200
     max_array_items 1000
+    pagination do
+      default_size 20
+      max_size 200
+    end
   end
 
   # API-level descriptors - available to all contracts in this API

@@ -455,8 +455,8 @@ module Apiwork
         end
 
         def build_page_type
-          strategy = schema_class.resolve_option(:pagination)
-          resolved_max_page_size = schema_class.resolve_option(:max_page_size)
+          strategy = schema_class.resolve_option(:pagination, :strategy)
+          max_size = schema_class.resolve_option(:pagination, :max_size)
 
           type_name = type_name(:page, 1)
 
@@ -467,12 +467,12 @@ module Apiwork
             contract_class.register_global_type(type_name) do
               param :after, type: :string, required: false
               param :before, type: :string, required: false
-              param :size, type: :integer, required: false, min: 1, max: resolved_max_page_size
+              param :size, type: :integer, required: false, min: 1, max: max_size
             end
           else
             contract_class.register_global_type(type_name) do
               param :number, type: :integer, required: false, min: 1
-              param :size, type: :integer, required: false, min: 1, max: resolved_max_page_size
+              param :size, type: :integer, required: false, min: 1, max: max_size
             end
           end
 
@@ -480,7 +480,7 @@ module Apiwork
         end
 
         def build_pagination_type
-          strategy = schema_class.resolve_option(:pagination)
+          strategy = schema_class.resolve_option(:pagination, :strategy)
           strategy == :cursor ? :cursor_pagination : :page_pagination
         end
 

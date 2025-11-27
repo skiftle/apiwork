@@ -13,8 +13,8 @@ module Apiwork
           subclass.instance_variable_set(:@options, options.dup)
         end
 
-        def option(name, type:, default:, enum: nil)
-          options[name] = Option.new(name, type: type, default: default, enum: enum)
+        def option(name, type:, default: nil, enum: nil, &block)
+          options[name] = Option.new(name, type:, default:, enum:, &block)
         end
       end
 

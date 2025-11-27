@@ -33,7 +33,7 @@ module Apiwork
           end
 
           def default_page_size
-            @schema_class.resolve_option(:default_page_size)
+            @schema_class.resolve_option(:pagination, :default_size)
           end
 
           def build_metadata(page_number, page_size)

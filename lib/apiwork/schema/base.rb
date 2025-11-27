@@ -144,14 +144,20 @@ module Apiwork
           builder.instance_eval(&block)
         end
 
-        def resolve_option(name)
+        def resolve_option(name, subkey = nil)
           adapter_class = api_class&.adapter&.class || Adapter::Apiwork
           opt = adapter_class.options[name]
           return nil unless opt
 
-          value = _adapter_config[name]
-          value = api_class&.adapter_config&.[](name) if value.nil?
-          value.nil? ? opt.default : value
+          if opt.nested? && subkey
+            value = _adapter_config.dig(name, subkey)
+            value = api_class&.adapter_config&.dig(name, subkey) if value.nil?
+            value.nil? ? opt.children[subkey]&.default : value
+          else
+            value = _adapter_config[name]
+            value = api_class&.adapter_config&.[](name) if value.nil?
+            value.nil? ? opt.resolved_default : value
+          end
         end
 
         def attribute(name, **options)

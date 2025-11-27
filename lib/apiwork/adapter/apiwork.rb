@@ -4,11 +4,14 @@ module Apiwork
   module Adapter
     class Apiwork < Base
       option :key_format, type: :symbol, default: :keep, enum: %i[keep camel underscore]
-      option :pagination, type: :symbol, default: :page, enum: %i[page cursor]
       option :default_sort, type: :hash, default: { id: :asc }
-      option :default_page_size, type: :integer, default: 20
-      option :max_page_size, type: :integer, default: 200
       option :max_array_items, type: :integer, default: 1000
+
+      option :pagination, type: :hash do
+        option :strategy, type: :symbol, default: :page, enum: %i[page cursor]
+        option :default_size, type: :integer, default: 20
+        option :max_size, type: :integer, default: 100
+      end
 
       def build_global_descriptors(builder, schema_data)
         DescriptorBuilder.build(builder, schema_data)

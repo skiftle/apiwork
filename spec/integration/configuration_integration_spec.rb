@@ -16,8 +16,10 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
       Apiwork::API.draw '/api/config_test' do
         adapter do
           key_format :camel
-          default_page_size 25
-          max_page_size 100
+          pagination do
+            default_size 25
+            max_size 100
+          end
           default_sort title: :asc
           max_array_items 500
         end
@@ -42,8 +44,8 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
       end
 
       # Should use API configuration via resolve_option
-      expect(schema_class.resolve_option(:default_page_size)).to eq(25)
-      expect(schema_class.resolve_option(:max_page_size)).to eq(100)
+      expect(schema_class.resolve_option(:pagination, :default_size)).to eq(25)
+      expect(schema_class.resolve_option(:pagination, :max_size)).to eq(100)
       expect(schema_class.resolve_option(:default_sort)).to eq(title: :asc)
     end
   end
@@ -52,8 +54,10 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
     let(:schema_override_api) do
       Apiwork::API.draw '/api/schema_override' do
         adapter do
-          default_page_size 20
-          max_page_size 200
+          pagination do
+            default_size 20
+            max_size 200
+          end
           default_sort id: :asc
         end
 
@@ -68,8 +72,10 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
         end
 
         adapter do
-          default_page_size 50
-          max_page_size 150
+          pagination do
+            default_size 50
+            max_size 150
+          end
         end
       end
     end
@@ -85,8 +91,8 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
 
     it 'schema adapter configuration overrides API adapter configuration' do
       # Schema overrides should win
-      expect(schema_with_config.resolve_option(:default_page_size)).to eq(50)
-      expect(schema_with_config.resolve_option(:max_page_size)).to eq(150)
+      expect(schema_with_config.resolve_option(:pagination, :default_size)).to eq(50)
+      expect(schema_with_config.resolve_option(:pagination, :max_size)).to eq(150)
 
       # Non-overridden values should inherit from API
       expect(schema_with_config.resolve_option(:default_sort)).to eq(id: :asc)
@@ -98,8 +104,10 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
       Apiwork::API.draw '/api/resolution' do
         adapter do
           key_format :camel
-          default_page_size 20
-          max_page_size 200
+          pagination do
+            default_size 20
+            max_size 200
+          end
         end
 
         resources :posts
@@ -111,7 +119,9 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
         module Resolution
           class PostSchema < Apiwork::Schema::Base
             adapter do
-              default_page_size 50
+              pagination do
+                default_size 50
+              end
             end
           end
         end
@@ -134,11 +144,11 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
       schema = Api::Resolution::PostSchema
 
       # Schema override wins over API
-      expect(schema.resolve_option(:default_page_size)).to eq(50)
+      expect(schema.resolve_option(:pagination, :default_size)).to eq(50)
 
       # API value when not in schema
       expect(schema.resolve_option(:key_format)).to eq(:camel)
-      expect(schema.resolve_option(:max_page_size)).to eq(200)
+      expect(schema.resolve_option(:pagination, :max_size)).to eq(200)
 
       # Adapter default when not in API or schema
       expect(schema.resolve_option(:max_array_items)).to eq(1000)
@@ -202,7 +212,9 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
       expect do
         Apiwork::API.draw '/api/invalid_type' do
           adapter do
-            default_page_size 'not_an_integer'
+            pagination do
+              default_size 'not_an_integer'
+            end
           end
         end
       end.to raise_error(Apiwork::AdapterError, /must be integer/)

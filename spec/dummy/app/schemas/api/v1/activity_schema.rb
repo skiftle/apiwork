@@ -4,7 +4,9 @@ module Api
   module V1
     class ActivitySchema < Apiwork::Schema::Base
       adapter do
-        pagination :cursor
+        pagination do
+          strategy :cursor
+        end
       end
 
       with_options filterable: true, sortable: true do

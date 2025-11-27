@@ -6,7 +6,7 @@ module Apiwork
       class CollectionLoader
         class Paginator
           def self.perform(relation, schema_class, page_params)
-            strategy = schema_class.resolve_option(:pagination)
+            strategy = schema_class.resolve_option(:pagination, :strategy)
 
             case strategy
             when :cursor

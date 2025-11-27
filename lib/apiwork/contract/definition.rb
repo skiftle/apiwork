@@ -15,10 +15,17 @@ module Apiwork
         @params = {}
       end
 
-      def resolve_option(key)
-        return @contract_class.schema_class.resolve_option(key) if @contract_class.schema_class
+      def resolve_option(name, subkey = nil)
+        return @contract_class.schema_class.resolve_option(name, subkey) if @contract_class.schema_class
 
-        Adapter::Apiwork.options[key]&.default
+        opt = Adapter::Apiwork.options[name]
+        return nil unless opt
+
+        if opt.nested? && subkey
+          opt.children[subkey]&.default
+        else
+          opt.resolved_default
+        end
       end
 
       def introspect
