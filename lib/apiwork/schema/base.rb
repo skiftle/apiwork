@@ -11,7 +11,7 @@ module Apiwork
       class_attribute :association_definitions, default: {}
       class_attribute :_root, default: nil
       class_attribute :_auto_detection_complete, default: false
-      class_attribute :_configuration, default: {}
+      class_attribute :_adapter_config, default: {}
       class_attribute :_discriminator_column, default: nil
       class_attribute :_discriminator_name, default: nil
       class_attribute :_variant_tag, default: nil
@@ -135,15 +135,23 @@ module Apiwork
           "/#{namespace_parts.map(&:underscore).join('/')}"
         end
 
-        def configure(&block)
+        def adapter(&block)
           return unless block
 
-          builder = Configuration::Builder.new(_configuration)
+          self._adapter_config = _adapter_config.dup
+          api_adapter_class = api_class&.adapter&.class || Adapter::Apiwork
+          builder = Adapter::Configuration.new(api_adapter_class, _adapter_config)
           builder.instance_eval(&block)
         end
 
-        def configuration
-          _configuration
+        def resolve_option(name)
+          adapter_class = api_class&.adapter&.class || Adapter::Apiwork
+          opt = adapter_class.options[name]
+          return nil unless opt
+
+          value = _adapter_config[name]
+          value = api_class&.adapter_config&.[](name) if value.nil?
+          value.nil? ? opt.default : value
         end
 
         def attribute(name, **options)
@@ -225,25 +233,10 @@ module Apiwork
           _variant_tag.present?
         end
 
-        attr_writer :default_page_size,
-                    :default_sort,
-                    :max_page_size,
-                    :type
+        attr_writer :type
 
         def type
           @type || model_class&.model_name&.element
-        end
-
-        def default_sort
-          Configuration::Resolver.resolve(:default_sort, schema_class: self)
-        end
-
-        def default_page_size
-          Configuration::Resolver.resolve(:default_page_size, schema_class: self)
-        end
-
-        def max_page_size
-          Configuration::Resolver.resolve(:max_page_size, schema_class: self)
         end
 
         def validate!

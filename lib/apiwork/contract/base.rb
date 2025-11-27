@@ -7,7 +7,6 @@ module Apiwork
 
       class_attribute :action_definitions, instance_accessor: false
       class_attribute :imports, instance_accessor: false
-      class_attribute :configuration, instance_accessor: false
       class_attribute :_identifier
       class_attribute :_schema_class
 
@@ -16,7 +15,6 @@ module Apiwork
           super
           subclass.action_definitions = {}
           subclass.imports = {}
-          subclass.configuration = {}
         end
 
         # DOCUMENTATION
@@ -100,14 +98,6 @@ module Apiwork
         # DOCUMENTATION
         def union(name, &block)
           Descriptor.define_union(name, api_class: api_class, scope: self, &block)
-        end
-
-        # DOCUMENTATION
-        def configure(&block)
-          return unless block
-
-          builder = Configuration::Builder.new(configuration)
-          builder.instance_eval(&block)
         end
 
         # DOCUMENTATION

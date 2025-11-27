@@ -3,6 +3,12 @@
 module Apiwork
   module Adapter
     class Apiwork < Base
+      option :key_format, type: :symbol, default: :keep, enum: %i[keep camel underscore]
+      option :default_sort, type: :hash, default: { id: :asc }
+      option :default_page_size, type: :integer, default: 20
+      option :max_page_size, type: :integer, default: 200
+      option :max_array_items, type: :integer, default: 1000
+
       def build_global_descriptors(builder, schema_data)
         DescriptorBuilder.build(builder, schema_data)
       end
@@ -39,17 +45,25 @@ module Apiwork
       end
 
       def transform_request(hash, api_class)
-        format = Configuration::Resolver.resolve(:key_format, api_class: api_class)
+        format = resolve_api_option(:key_format, api_class)
         transformed = transform_request_keys(hash, format)
         ParamsNormalizer.call(transformed)
       end
 
       def transform_response(hash, api_class)
-        format = Configuration::Resolver.resolve(:key_format, api_class: api_class)
+        format = resolve_api_option(:key_format, api_class)
         transform_response_keys(hash, format)
       end
 
       private
+
+      def resolve_api_option(name, api_class)
+        opt = self.class.options[name]
+        return nil unless opt
+
+        value = api_class&.adapter_config&.[](name)
+        value.nil? ? opt.default : value
+      end
 
       def transform_request_keys(hash, format)
         case format

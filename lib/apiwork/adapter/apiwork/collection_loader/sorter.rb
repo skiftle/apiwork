@@ -42,7 +42,7 @@ module Apiwork
           end
 
           def default_sort
-            schema_class.default_sort
+            schema_class.resolve_option(:default_sort)
           end
 
           private

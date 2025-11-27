@@ -461,10 +461,7 @@ module Apiwork
         end
 
         def build_page_type
-          resolved_max_page_size = Configuration::Resolver.resolve(:max_page_size,
-                                                                   contract_class: contract_class,
-                                                                   schema_class: schema_class,
-                                                                   api_class: contract_class.api_class)
+          resolved_max_page_size = schema_class.resolve_option(:max_page_size)
 
           type_name = type_name(:page, 1)
 

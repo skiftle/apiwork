@@ -14,8 +14,8 @@ Apiwork::API.draw '/api/v1' do
     description 'Dummy API for the Apiwork gem'
   end
 
-  # API-level configuration
-  configure do
+  # API-level adapter configuration
+  adapter do
     key_format :keep
     default_sort id: :asc
     default_page_size 20

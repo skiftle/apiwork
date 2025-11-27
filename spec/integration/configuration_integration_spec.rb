@@ -2,19 +2,19 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Configuration Integration', type: :request do
-  # Test configuration features using ONLY public APIs and runtime behavior
-  # The public API is: configure blocks in API, Schema, Contract
+RSpec.describe 'Adapter Configuration Integration', type: :request do
+  # Test adapter configuration features using ONLY public APIs and runtime behavior
+  # The public API is: adapter blocks in API and Schema with resolve_option
 
   # Force reload of API configuration before tests
   before(:all) do
     load Rails.root.join('config/apis/v1.rb')
   end
 
-  describe 'API-level configuration' do
+  describe 'API-level adapter configuration' do
     let(:config_test_api) do
       Apiwork::API.draw '/api/config_test' do
-        configure do
+        adapter do
           key_format :camel
           default_page_size 25
           max_page_size 100
@@ -34,24 +34,24 @@ RSpec.describe 'Configuration Integration', type: :request do
       Apiwork::API::Registry.unregister('/api/config_test')
     end
 
-    it 'applies API configuration to schema methods' do
+    it 'applies API configuration via schema resolve_option' do
       schema_class = Class.new(Apiwork::Schema::Base) do
         def self.name
           'Api::ConfigTest::PostSchema'
         end
       end
 
-      # Should use API configuration
-      expect(schema_class.default_page_size).to eq(25)
-      expect(schema_class.max_page_size).to eq(100)
-      expect(schema_class.default_sort).to eq(title: :asc)
+      # Should use API configuration via resolve_option
+      expect(schema_class.resolve_option(:default_page_size)).to eq(25)
+      expect(schema_class.resolve_option(:max_page_size)).to eq(100)
+      expect(schema_class.resolve_option(:default_sort)).to eq(title: :asc)
     end
   end
 
-  describe 'Schema-level configuration override' do
+  describe 'Schema-level adapter configuration override' do
     let(:schema_override_api) do
       Apiwork::API.draw '/api/schema_override' do
-        configure do
+        adapter do
           default_page_size 20
           max_page_size 200
           default_sort id: :asc
@@ -67,7 +67,7 @@ RSpec.describe 'Configuration Integration', type: :request do
           'Api::SchemaOverride::PostSchema'
         end
 
-        configure do
+        adapter do
           default_page_size 50
           max_page_size 150
         end
@@ -83,60 +83,35 @@ RSpec.describe 'Configuration Integration', type: :request do
       Apiwork::API::Registry.unregister('/api/schema_override')
     end
 
-    it 'schema configuration overrides API configuration' do
+    it 'schema adapter configuration overrides API adapter configuration' do
       # Schema overrides should win
-      expect(schema_with_config.default_page_size).to eq(50)
-      expect(schema_with_config.max_page_size).to eq(150)
+      expect(schema_with_config.resolve_option(:default_page_size)).to eq(50)
+      expect(schema_with_config.resolve_option(:max_page_size)).to eq(150)
 
       # Non-overridden values should inherit from API
-      expect(schema_with_config.default_sort).to eq(id: :asc)
+      expect(schema_with_config.resolve_option(:default_sort)).to eq(id: :asc)
     end
   end
 
-  describe 'Configuration inheritance chain' do
-    let(:inheritance_api) do
-      Apiwork::API.draw '/api/inheritance' do
-        configure do
+  describe 'Resolution chain: Schema -> API -> Adapter default' do
+    let(:resolution_api) do
+      Apiwork::API.draw '/api/resolution' do
+        adapter do
           key_format :camel
           default_page_size 20
           max_page_size 200
-          default_sort id: :asc
-          max_array_items 1000
         end
 
         resources :posts
       end
     end
-    let(:inheritance_schema) do
-      Api::Inheritance::PostSchema
-    end
-    let(:inheritance_contract) do
-      Api::Inheritance::PostContract
-    end
 
     before(:all) do
       module Api
-        module Inheritance
+        module Resolution
           class PostSchema < Apiwork::Schema::Base
-            configure do
+            adapter do
               default_page_size 50
-            end
-          end
-
-          class PostContract < Apiwork::Contract::Base
-            schema!
-
-            configure do
-              max_array_items 500
-            end
-
-            action :create do
-              request do
-                body do
-                  param :title, type: :string
-                  param :tags, type: :array, of: :string
-                end
-              end
             end
           end
         end
@@ -144,51 +119,36 @@ RSpec.describe 'Configuration Integration', type: :request do
     end
 
     after(:all) do
-      Api::Inheritance.send(:remove_const, :PostSchema) if defined?(Api::Inheritance::PostSchema)
-      Api::Inheritance.send(:remove_const, :PostContract) if defined?(Api::Inheritance::PostContract)
+      Api::Resolution.send(:remove_const, :PostSchema) if defined?(Api::Resolution::PostSchema)
     end
 
     before do
-      inheritance_api      # Trigger let to create API
-      inheritance_schema   # Trigger let to create Schema
-      inheritance_contract # Trigger let to create Contract
+      resolution_api # Trigger let to create API
     end
 
     after do
-      Apiwork::API::Registry.unregister('/api/inheritance')
+      Apiwork::API::Registry.unregister('/api/resolution')
     end
 
-    it 'contract configuration overrides schema and API configuration' do
-      # Contract override wins
-      expect(Apiwork::Configuration::Resolver.resolve(
-               :max_array_items,
-               contract_class: inheritance_contract,
-               schema_class: inheritance_schema,
-               api_class: inheritance_api
-             )).to eq(500)
+    it 'schema overrides API, API overrides adapter defaults' do
+      schema = Api::Resolution::PostSchema
 
       # Schema override wins over API
-      expect(Apiwork::Configuration::Resolver.resolve(
-               :default_page_size,
-               contract_class: inheritance_contract,
-               schema_class: inheritance_schema,
-               api_class: inheritance_api
-             )).to eq(50)
+      expect(schema.resolve_option(:default_page_size)).to eq(50)
 
-      # API value when no overrides
-      expect(Apiwork::Configuration::Resolver.resolve(
-               :key_format,
-               contract_class: inheritance_contract,
-               schema_class: inheritance_schema,
-               api_class: inheritance_api
-             )).to eq(:camel)
+      # API value when not in schema
+      expect(schema.resolve_option(:key_format)).to eq(:camel)
+      expect(schema.resolve_option(:max_page_size)).to eq(200)
+
+      # Adapter default when not in API or schema
+      expect(schema.resolve_option(:max_array_items)).to eq(1000)
     end
   end
 
-  describe 'Deep merge for hash settings' do
-    let(:deep_merge_api) do
-      Apiwork::API.draw '/api/deep_merge' do
-        configure do
+  describe 'No deep merge - schema replaces API value entirely' do
+    let(:no_merge_api) do
+      Apiwork::API.draw '/api/no_merge' do
+        adapter do
           default_sort id: :asc, created_at: :desc
         end
 
@@ -196,51 +156,96 @@ RSpec.describe 'Configuration Integration', type: :request do
       end
     end
 
-    let(:deep_merge_schema) do
+    let(:no_merge_schema) do
       Class.new(Apiwork::Schema::Base) do
         def self.name
-          'Api::DeepMerge::PostSchema'
+          'Api::NoMerge::PostSchema'
         end
 
-        configure do
+        adapter do
           default_sort title: :asc
         end
       end
     end
 
     before do
-      deep_merge_api    # Trigger let to create API
-      deep_merge_schema # Trigger let to create Schema
+      no_merge_api    # Trigger let to create API
+      no_merge_schema # Trigger let to create Schema
     end
 
     after do
-      Apiwork::API::Registry.unregister('/api/deep_merge')
+      Apiwork::API::Registry.unregister('/api/no_merge')
     end
 
-    it 'deep merges hash configuration values' do
-      # Should merge API and Schema default_sort
-      result = Apiwork::Configuration::Resolver.resolve(
-        :default_sort,
-        schema_class: deep_merge_schema,
-        api_class: deep_merge_api
-      )
+    it 'does NOT deep merge - schema value completely replaces API value' do
+      # Schema value should completely replace, NOT merge
+      result = no_merge_schema.resolve_option(:default_sort)
 
-      # Schema value should win for 'title', API values should be included
-      expect(result).to include(title: :asc)
-      expect(result).to include(id: :asc)
-      expect(result).to include(created_at: :desc)
+      expect(result).to eq(title: :asc)
+      expect(result).not_to include(:id)
+      expect(result).not_to include(:created_at)
     end
   end
 
   describe 'Validation' do
-    it 'validates key_format values' do
+    it 'validates key_format enum values' do
       expect do
         Apiwork::API.draw '/api/invalid_transform' do
-          configure do
+          adapter do
             key_format :invalid_strategy
           end
         end
-      end.to raise_error(Apiwork::ConfigurationError, /Invalid key_format/)
+      end.to raise_error(Apiwork::AdapterError, /must be one of/)
+    end
+
+    it 'validates type for integer options' do
+      expect do
+        Apiwork::API.draw '/api/invalid_type' do
+          adapter do
+            default_page_size 'not_an_integer'
+          end
+        end
+      end.to raise_error(Apiwork::AdapterError, /must be integer/)
+    end
+
+    it 'raises for unknown options' do
+      expect do
+        Apiwork::API.draw '/api/unknown_option' do
+          adapter do
+            unknown_option 'value'
+          end
+        end
+      end.to raise_error(Apiwork::AdapterError, /Unknown option/)
+    end
+  end
+
+  describe 'API adapter method is both getter and DSL' do
+    let(:dual_purpose_api) do
+      Apiwork::API.draw '/api/dual_purpose' do
+        adapter do
+          key_format :camel
+        end
+
+        resources :posts
+      end
+    end
+
+    before do
+      dual_purpose_api
+    end
+
+    after do
+      Apiwork::API::Registry.unregister('/api/dual_purpose')
+    end
+
+    it 'returns adapter instance when called without block' do
+      api = Apiwork::API.find('/api/dual_purpose')
+      expect(api.adapter).to be_a(Apiwork::Adapter::Apiwork)
+    end
+
+    it 'stores config when called with block' do
+      api = Apiwork::API.find('/api/dual_purpose')
+      expect(api.adapter_config[:key_format]).to eq(:camel)
     end
   end
 end

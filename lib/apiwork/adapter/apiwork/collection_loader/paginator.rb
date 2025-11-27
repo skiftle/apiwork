@@ -28,11 +28,11 @@ module Apiwork
           end
 
           def default_page_size
-            schema_class.default_page_size
+            schema_class.resolve_option(:default_page_size)
           end
 
           def max_page_size
-            schema_class.max_page_size
+            schema_class.resolve_option(:max_page_size)
           end
 
           private

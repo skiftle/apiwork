@@ -34,7 +34,7 @@ module Apiwork
           @data, pagination_metadata = Paginator.perform(@data, @schema_class, params[:page] || {})
           @metadata.merge!(pagination_metadata)
 
-          raise AdapterError, issues if issues.any?
+          raise ConstraintError, issues if issues.any?
 
           @data = EagerLoader.perform(@data, @schema_class, params)
 

@@ -3,6 +3,21 @@
 module Apiwork
   module Adapter
     class Base
+      class << self
+        def options
+          @options ||= {}
+        end
+
+        def inherited(subclass)
+          super
+          subclass.instance_variable_set(:@options, options.dup)
+        end
+
+        def option(name, type:, default:, enum: nil)
+          options[name] = Option.new(name, type: type, default: default, enum: enum)
+        end
+      end
+
       def build_global_descriptors(builder, schema_data)
         raise NotImplementedError
       end

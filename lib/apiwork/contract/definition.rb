@@ -15,8 +15,10 @@ module Apiwork
         @params = {}
       end
 
-      def configuration(key)
-        Configuration::Resolver.resolve(key, contract_class: @contract_class)
+      def resolve_option(key)
+        return @contract_class.schema_class.resolve_option(key) if @contract_class.schema_class
+
+        Adapter::Apiwork.options[key]&.default
       end
 
       def introspect
@@ -412,10 +414,7 @@ module Apiwork
         issues = []
         values = []
 
-        max_items = param_options[:max_items] || Configuration::Resolver.resolve(
-          :max_array_items,
-          contract_class: @contract_class
-        )
+        max_items = param_options[:max_items] || resolve_option(:max_array_items)
         if array.length > max_items
           issues << Issue.new(
             code: :array_too_large,

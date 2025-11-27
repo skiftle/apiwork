@@ -4,7 +4,8 @@ module Apiwork
   module API
     class Base
       class << self
-        attr_reader :metadata,
+        attr_reader :adapter_config,
+                    :metadata,
                     :mount_path,
                     :namespaces,
                     :recorder,
@@ -21,7 +22,7 @@ module Apiwork
 
           Registry.register(self)
 
-          @configuration = {}
+          @adapter_config = {}
         end
 
         def spec(type, path: nil)
@@ -47,22 +48,21 @@ module Apiwork
           @metadata.error_codes = codes.flatten.map(&:to_i).uniq.sort
         end
 
-        def configure(&block)
-          return unless block
-
-          builder = Configuration::Builder.new(@configuration)
-          builder.instance_eval(&block)
-        end
-
-        def configuration
-          @configuration ||= {}
-        end
-
-        def adapter
-          @adapter ||= begin
-            adapter_name = configuration[:adapter] || :apiwork
-            Adapter.resolve(adapter_name).new
+        def adapter(name = nil, &block)
+          if name.is_a?(Symbol)
+            @adapter_name = name
+            @adapter_instance = nil
           end
+
+          if block
+            @adapter_config ||= {}
+            adapter_class = Adapter.resolve(@adapter_name || :apiwork)
+            builder = Adapter::Configuration.new(adapter_class, @adapter_config)
+            builder.instance_eval(&block)
+            return
+          end
+
+          @adapter ||= Adapter.resolve(@adapter_name || :apiwork).new
         end
 
         def type(name, description: nil, example: nil, format: nil, deprecated: false, &block)
