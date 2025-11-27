@@ -3,7 +3,7 @@
 module Apiwork
   module Generator
     class Openapi < Base
-      generator_name :openapi
+      identifier :openapi
       content_type 'application/json'
 
       VALID_VERSIONS = ['3.1.0'].freeze

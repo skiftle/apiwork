@@ -3,6 +3,8 @@
 module Apiwork
   module Adapter
     class Apiwork < Base
+      identifier :apiwork
+
       option :key_format, type: :symbol, default: :keep, enum: %i[keep camel underscore]
 
       option :pagination, type: :hash do

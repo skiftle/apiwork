@@ -38,6 +38,7 @@ module Apiwork
 
         if nested?
           raise AdapterError, "#{name} must be a Hash" unless value.is_a?(Hash)
+
           validate_children!(value)
         else
           validate_type!(value)

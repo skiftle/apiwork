@@ -3,6 +3,8 @@
 module Apiwork
   module Adapter
     class Base
+      extend Registrable
+
       class << self
         def options
           @options ||= {}

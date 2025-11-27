@@ -12,9 +12,11 @@ module Apiwork
     config.to_prepare do
       Apiwork.reset!
 
-      Apiwork::Generator.register(:openapi, Apiwork::Generator::Openapi)
-      Apiwork::Generator.register(:zod, Apiwork::Generator::Zod)
-      Apiwork::Generator.register(:typescript, Apiwork::Generator::Typescript)
+      Apiwork::Adapter.register(Apiwork::Adapter::Apiwork)
+
+      Apiwork::Generator.register(Apiwork::Generator::Openapi)
+      Apiwork::Generator.register(Apiwork::Generator::Zod)
+      Apiwork::Generator.register(Apiwork::Generator::Typescript)
 
       if Rails.root.join('app/contracts').exist?
         Dir[Rails.root.join('app/contracts/**/*.rb')].sort.each do |file|

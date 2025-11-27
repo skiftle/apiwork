@@ -5,22 +5,21 @@ require 'concurrent/map'
 module Apiwork
   module Generator
     class Registry
-      class GeneratorNotFound < StandardError; end
-
       class << self
         def generators
           @generators ||= Concurrent::Map.new
         end
 
-        def register(name, generator_class)
+        def register(generator_class)
           raise ArgumentError, 'Generator must inherit from Apiwork::Generator::Base' unless generator_class < Base
+          raise ArgumentError, "Generator #{generator_class} must define an identifier" unless generator_class.identifier
 
-          generators[name.to_sym] = generator_class
+          generators[generator_class.identifier] = generator_class
         end
 
         def find(name)
-          generators[name.to_sym] or raise GeneratorNotFound, "Generator :#{name} not registered. " \
-                                                               "Available generators: #{all.join(', ')}"
+          key = name.to_sym
+          generators.fetch(key) { raise KeyError.new("Generator :#{key} not found. Available: #{all.join(', ')}", key:, receiver: generators) }
         end
 
         def registered?(name)

@@ -547,9 +547,9 @@ RSpec.describe Apiwork::Generator::Zod do
     end
   end
 
-  describe '.generator_name' do
+  describe '.identifier' do
     it 'returns :zod' do
-      expect(described_class.generator_name).to eq(:zod)
+      expect(described_class.identifier).to eq(:zod)
     end
   end
 

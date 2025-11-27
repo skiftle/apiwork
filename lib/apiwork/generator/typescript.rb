@@ -3,7 +3,7 @@
 module Apiwork
   module Generator
     class Typescript < Base
-      generator_name :typescript
+      identifier :typescript
       content_type 'text/plain; charset=utf-8'
 
       VALID_VERSIONS = %w[4 5].freeze

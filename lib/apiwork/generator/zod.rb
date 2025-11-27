@@ -3,7 +3,7 @@
 module Apiwork
   module Generator
     class Zod < Base
-      generator_name :zod
+      identifier :zod
       content_type 'text/plain; charset=utf-8'
 
       VALID_VERSIONS = %w[3 4].freeze

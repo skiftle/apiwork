@@ -3,6 +3,8 @@
 module Apiwork
   module Generator
     class Base
+      extend Registrable
+
       attr_reader :data,
                   :options,
                   :path
@@ -10,11 +12,6 @@ module Apiwork
       class << self
         def generate(path:, **options)
           new(path, **options).generate
-        end
-
-        def generator_name(name = nil)
-          @generator_name = name if name
-          @generator_name || self.name.demodulize.underscore.to_sym
         end
 
         def content_type(type = nil)

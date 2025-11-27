@@ -3,20 +3,14 @@
 module Apiwork
   module Adapter
     class << self
-      def register(name, adapter_class)
-        registry[name.to_sym] = adapter_class
-      end
+      delegate :register, :find, :registered?, :all, to: Registry
 
       def resolve(name)
-        registry[name.to_sym] || (raise ArgumentError, "Unknown adapter: #{name}")
-      end
-
-      def registry
-        @registry ||= { apiwork: Adapter::Apiwork }
+        Registry.find(name)
       end
 
       def reset!
-        @registry = nil
+        Registry.clear!
         Contract::SchemaRegistry.clear!
       end
     end
