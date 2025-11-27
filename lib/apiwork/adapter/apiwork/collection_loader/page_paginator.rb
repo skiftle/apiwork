@@ -52,11 +52,13 @@ module Apiwork
           end
 
           def count_items
-            if @relation.joins_values.any?
-              @relation.except(:limit, :offset).distinct.count(:all)
-            else
-              @relation.except(:limit, :offset).count
-            end
+            count_result = if @relation.joins_values.any?
+                             @relation.except(:limit, :offset, :group).distinct.count(:all)
+                           else
+                             @relation.except(:limit, :offset, :group).count
+                           end
+
+            count_result.is_a?(Hash) ? count_result.size : count_result
           end
         end
       end

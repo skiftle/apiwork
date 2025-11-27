@@ -106,7 +106,7 @@ module Apiwork
                   next
                 end
 
-                association_resource = schema_class.association_definitions[key].schema_class || schema.detect_association_resource(key)
+                association_resource = schema_class.association_definitions[key].schema_class
 
                 if association_resource.nil?
                   @issues << Issue.new(

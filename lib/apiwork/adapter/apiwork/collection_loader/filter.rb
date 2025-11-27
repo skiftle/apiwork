@@ -358,7 +358,8 @@ module Apiwork
 
           def build_date_where_clause(key, value, target_klass)
             column = target_klass.arel_table[key]
-            allow_nil = target_klass.columns_hash[key.to_s].null
+            column_info = target_klass.columns_hash[key.to_s]
+            allow_nil = column_info&.null != false
 
             if value.is_a?(String) || value.nil?
               return handle_date_nil_value(column, key, allow_nil) if value.blank?

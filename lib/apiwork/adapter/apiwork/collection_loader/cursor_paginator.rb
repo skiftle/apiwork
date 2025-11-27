@@ -54,7 +54,14 @@ module Apiwork
           end
 
           def primary_key
-            @primary_key ||= @relation.klass.primary_key.to_sym
+            return @primary_key if defined?(@primary_key)
+
+            pk = @relation.klass.primary_key
+            if pk.is_a?(Array)
+              raise NotImplementedError, 'Cursor pagination does not support composite primary keys'
+            end
+
+            @primary_key = pk.to_sym
           end
 
           def build_metadata(records, has_more)
