@@ -30,15 +30,18 @@ module Apiwork
           private
 
           def fetch_records(page_size)
+            table = @relation.klass.arel_table
+            pk_column = table[primary_key]
+
             if @params[:after]
               cursor_data = decode_cursor(@params[:after])
-              @relation.where('id > ?', cursor_data[:id]).order(id: :asc).limit(page_size + 1).to_a
+              @relation.where(pk_column.gt(cursor_data[primary_key])).order(pk_column.asc).limit(page_size + 1).to_a
             elsif @params[:before]
               cursor_data = decode_cursor(@params[:before])
-              records = @relation.where('id < ?', cursor_data[:id]).order(id: :desc).limit(page_size + 1).to_a
+              records = @relation.where(pk_column.lt(cursor_data[primary_key])).order(pk_column.desc).limit(page_size + 1).to_a
               records.reverse
             else
-              @relation.order(id: :asc).limit(page_size + 1).to_a
+              @relation.order(pk_column.asc).limit(page_size + 1).to_a
             end
           end
 
@@ -48,6 +51,10 @@ module Apiwork
 
           def default_page_size
             @schema_class.resolve_option(:default_page_size)
+          end
+
+          def primary_key
+            @primary_key ||= @relation.klass.primary_key.to_sym
           end
 
           def build_metadata(records, has_more)
@@ -60,7 +67,7 @@ module Apiwork
           end
 
           def encode_cursor(record)
-            Base64.urlsafe_encode64({ id: record.id }.to_json)
+            Base64.urlsafe_encode64({ primary_key => record.public_send(primary_key) }.to_json)
           end
 
           def decode_cursor(cursor)

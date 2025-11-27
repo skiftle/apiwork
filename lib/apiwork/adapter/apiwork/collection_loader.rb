@@ -31,12 +31,12 @@ module Apiwork
 
           @data = Sorter.perform(@data, @schema_class, params[:sort], issues)
 
-          @data, pagination_metadata = Paginator.perform(@data, @schema_class, params[:page] || {})
-          @metadata.merge!(pagination_metadata)
-
           raise ConstraintError, issues if issues.any?
 
           @data = EagerLoader.perform(@data, @schema_class, params)
+
+          @data, pagination_metadata = Paginator.perform(@data, @schema_class, params[:page] || {})
+          @metadata.merge!(pagination_metadata)
 
           { data: @data, metadata: @metadata }
         end
