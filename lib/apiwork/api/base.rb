@@ -9,11 +9,13 @@ module Apiwork
                     :mount_path,
                     :namespaces,
                     :recorder,
+                    :spec_configs,
                     :specs
 
         def mount(path)
           @mount_path = path
           @specs = {}
+          @spec_configs = {}
           @contracts_built_for = Set.new
 
           @namespaces = path == '/' ? [:root] : path.split('/').reject(&:empty?).map(&:to_sym)
@@ -30,7 +32,7 @@ module Apiwork
           @contracts_built_for ||= Set.new
         end
 
-        def spec(type, path: nil)
+        def spec(type, path: nil, &block)
           unless Spec::Registry.registered?(type)
             available = Spec::Registry.all.join(', ')
             raise ConfigurationError,
@@ -39,10 +41,21 @@ module Apiwork
           end
 
           @specs ||= {}
+          @spec_configs ||= {}
 
           path ||= "/.spec/#{type}"
-
           @specs[type] = path
+
+          return unless block
+
+          spec_class = Spec::Registry.find(type)
+          @spec_configs[type] ||= {}
+          builder = Configuration.new(spec_class, @spec_configs[type])
+          builder.instance_eval(&block)
+        end
+
+        def spec_config(type)
+          @spec_configs&.[](type) || {}
         end
 
         def specs?
@@ -62,7 +75,7 @@ module Apiwork
           if block
             @adapter_config ||= {}
             adapter_class = Adapter.resolve(@adapter_name || :apiwork)
-            builder = Adapter::Configuration.new(adapter_class, @adapter_config)
+            builder = Configuration.new(adapter_class, @adapter_config)
             builder.instance_eval(&block)
             return
           end

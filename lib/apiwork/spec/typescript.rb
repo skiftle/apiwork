@@ -6,19 +6,11 @@ module Apiwork
       identifier :typescript
       content_type 'text/plain; charset=utf-8'
 
-      VALID_VERSIONS = %w[4 5].freeze
+      option :version, type: :string, default: '5', enum: %w[4 5]
+      option :key_transform, type: :symbol, default: :keep, enum: %i[keep camel underscore]
 
       def self.file_extension
         '.ts'
-      end
-
-      def self.default_options
-        { version: '5' }
-      end
-
-      def initialize(path, **options)
-        super
-        validate_version!
       end
 
       def generate
@@ -89,16 +81,6 @@ module Apiwork
         end
 
         all_types.sort_by { |t| t[:name] }.map { |t| t[:code] }.join("\n\n")
-      end
-
-      def validate_version!
-        return if version.nil?
-
-        return if VALID_VERSIONS.include?(version)
-
-        raise ArgumentError,
-              "Invalid version for typescript: #{version.inspect}. " \
-              "Valid versions: #{VALID_VERSIONS.join(', ')}"
       end
     end
   end

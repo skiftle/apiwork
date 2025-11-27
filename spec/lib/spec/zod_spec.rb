@@ -44,13 +44,13 @@ RSpec.describe Apiwork::Spec::Zod do
     it 'raises error for invalid version' do
       expect do
         described_class.new(path, version: '2')
-      end.to raise_error(ArgumentError, /Invalid version for zod: "2"/)
+      end.to raise_error(Apiwork::ConfigurationError, /must be one of/)
     end
 
     it 'raises error for version 5' do
       expect do
         described_class.new(path, version: '5')
-      end.to raise_error(ArgumentError, /Invalid version for zod/)
+      end.to raise_error(Apiwork::ConfigurationError, /must be one of/)
     end
 
     it 'accepts nil version' do

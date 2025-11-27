@@ -161,7 +161,7 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
             key_format :invalid_strategy
           end
         end
-      end.to raise_error(Apiwork::AdapterError, /must be one of/)
+      end.to raise_error(Apiwork::ConfigurationError, /must be one of/)
     end
 
     it 'validates type for integer options' do
@@ -173,7 +173,7 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
             end
           end
         end
-      end.to raise_error(Apiwork::AdapterError, /must be integer/)
+      end.to raise_error(Apiwork::ConfigurationError, /must be integer/)
     end
 
     it 'raises for unknown options' do
@@ -183,7 +183,7 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
             unknown_option 'value'
           end
         end
-      end.to raise_error(Apiwork::AdapterError, /Unknown option/)
+      end.to raise_error(Apiwork::ConfigurationError, /Unknown option/)
     end
   end
 

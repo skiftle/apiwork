@@ -25,13 +25,13 @@ RSpec.describe Apiwork::Spec::Openapi do
     it 'raises error for invalid version' do
       expect do
         described_class.new(path, version: '3.0.0')
-      end.to raise_error(ArgumentError, /Invalid version for openapi: "3.0.0"/)
+      end.to raise_error(Apiwork::ConfigurationError, /must be one of/)
     end
 
     it 'raises error for version 2.0' do
       expect do
         described_class.new(path, version: '2.0')
-      end.to raise_error(ArgumentError, /Invalid version for openapi/)
+      end.to raise_error(Apiwork::ConfigurationError, /must be one of/)
     end
 
     it 'accepts nil version' do

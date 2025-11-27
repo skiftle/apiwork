@@ -10,6 +10,19 @@ module Apiwork
                   :path
 
       class << self
+        def options
+          @options ||= {}
+        end
+
+        def inherited(subclass)
+          super
+          subclass.instance_variable_set(:@options, options.dup)
+        end
+
+        def option(name, type:, default: nil, enum: nil)
+          options[name] = ::Apiwork::Option.new(name, type:, default:, enum:)
+        end
+
         def generate(path:, **options)
           new(path, **options).generate
         end
@@ -24,15 +37,22 @@ module Apiwork
         end
 
         def default_options
-          {}
+          options.transform_values(&:default).compact
         end
       end
 
       def initialize(path, **options)
         @path = path
         @options = self.class.default_options.merge(options)
-        @options[:key_transform] ||= :keep
+        validate_options!
         load_data
+      end
+
+      def validate_options!
+        @options.each do |name, value|
+          option = self.class.options[name]
+          option&.validate!(value)
+        end
       end
 
       def load_data

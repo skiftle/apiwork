@@ -3,10 +3,10 @@
 module Apiwork
   module Spec
     class << self
-      delegate :register, :find, :registered?, :all, to: Registry
+      delegate :register, :find, to: Registry
 
       def generate(name, path, **options)
-        Registry.find(name)&.generate(path: path, **options)
+        find(name)&.generate(path: path, **options)
       end
 
       def reset!

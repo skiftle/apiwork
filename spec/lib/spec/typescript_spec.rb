@@ -44,13 +44,13 @@ RSpec.describe Apiwork::Spec::Typescript do
     it 'raises error for invalid version' do
       expect do
         described_class.new(path, version: '3')
-      end.to raise_error(ArgumentError, /Invalid version for typescript: "3"/)
+      end.to raise_error(Apiwork::ConfigurationError, /must be one of/)
     end
 
     it 'raises error for version 6' do
       expect do
         described_class.new(path, version: '6')
-      end.to raise_error(ArgumentError, /Invalid version for typescript/)
+      end.to raise_error(Apiwork::ConfigurationError, /must be one of/)
     end
 
     it 'accepts nil version' do

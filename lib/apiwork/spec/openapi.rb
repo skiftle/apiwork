@@ -6,19 +6,11 @@ module Apiwork
       identifier :openapi
       content_type 'application/json'
 
-      VALID_VERSIONS = ['3.1.0'].freeze
+      option :version, type: :string, default: '3.1.0', enum: %w[3.1.0]
+      option :key_transform, type: :symbol, default: :keep, enum: %i[keep camel underscore]
 
       def self.file_extension
         '.json'
-      end
-
-      def self.default_options
-        { version: '3.1.0' }
-      end
-
-      def initialize(path, **options)
-        super
-        validate_version!
       end
 
       def generate
@@ -501,16 +493,6 @@ module Apiwork
 
       def schema_name(name)
         transform_key(name, key_transform)
-      end
-
-      def validate_version!
-        return if version.nil?
-
-        return if VALID_VERSIONS.include?(version)
-
-        raise ArgumentError,
-              "Invalid version for openapi: #{version.inspect}. " \
-              "Valid versions: #{VALID_VERSIONS.join(', ')}"
       end
 
       def numeric_type?(type)
