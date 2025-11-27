@@ -131,11 +131,11 @@ module Apiwork
         contract_class = @resource_metadata[:contract_class]
 
         unless contract_class
-          class_name = @resource_metadata[:contract_class_name]
-          return nil unless class_name
+          contract_name = @resource_metadata[:contract]
+          return nil unless contract_name
 
           contract_class = @resource_metadata[:contract_class] = begin
-            class_name.constantize
+            contract_name.constantize
           rescue StandardError
             nil
           end
@@ -147,16 +147,8 @@ module Apiwork
       end
 
       def resolve_schema_class
-        return @resource_metadata[:schema_class] if @resource_metadata[:schema_class]
-
-        class_name = @resource_metadata[:schema_class_name]
-        return nil unless class_name
-
-        @resource_metadata[:schema_class] = begin
-          class_name.constantize
-        rescue StandardError
-          nil
-        end
+        contract_class = resolve_contract_class
+        contract_class&.schema_class
       end
 
       def serialize_resource_schema(schema_class)

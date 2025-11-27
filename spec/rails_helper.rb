@@ -32,7 +32,7 @@ RSpec.configure do |config|
   config.before do |example|
     unless [:request, :integration].include?(example.metadata[:type])
       Apiwork::Descriptor.reset!
-      Apiwork::API::Registry.all.find_each do |api_class|
+      Apiwork::API::Registry.all.each do |api_class| # rubocop:disable Rails/FindEach
         api_class.instance_variable_set(:@contracts_built_for, Set.new)
       end
     end

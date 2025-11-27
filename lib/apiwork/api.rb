@@ -48,7 +48,6 @@ module Apiwork
         contract_class = resource_data[:contract_class]
         contract_class&.action_definitions&.clear
 
-        resource_data[:schema_class] = nil
         resource_data[:contract_class] = nil
 
         resource_data[:resources]&.each_value do |nested_resource|

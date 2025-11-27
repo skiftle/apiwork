@@ -123,23 +123,20 @@ module Apiwork
 
           parent = @resource_stack.last
 
-          contract_path = merged_options[:contract]
-          controller_option = merged_options[:controller]
+          contract_path = merged_options.delete(:contract)
+          controller_option = merged_options.delete(:controller)
 
-          schema_class_name = infer_schema_class_name(name)
-
-          contract_class_name = if contract_path
-                                  contract_path_to_class_name(contract_path)
-                                else
-                                  infer_contract_class_name(name)
-                                end
+          contract = if contract_path
+                       contract_path_to_class_name(contract_path)
+                     else
+                       infer_contract_class_name(name)
+                     end
 
           @metadata.add_resource(
             name,
             singular: singular,
-            schema_class_name: schema_class_name,
+            contract: contract,
             controller: controller_option,
-            contract_class_name: contract_class_name,
             parent: parent,
             **merged_options
           )

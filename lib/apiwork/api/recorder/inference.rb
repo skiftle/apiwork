@@ -6,11 +6,6 @@ module Apiwork
       module Inference
         private
 
-        def infer_schema_class_name(name)
-          resource_name = name.to_s.singularize.camelize
-          "#{namespaces_string}::#{resource_name}Schema"
-        end
-
         def infer_contract_class_name(name)
           contract_name = name.to_s.singularize.camelize
           "#{namespaces_string}::#{contract_name}Contract"

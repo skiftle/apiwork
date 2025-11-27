@@ -136,7 +136,7 @@ module Apiwork
           resource_data = find_resource_for_contract(contract_class)
           return unless resource_data
 
-          schema_class = @metadata.resolve_schema_class(resource_data)
+          schema_class = contract_class.schema_class
           return unless schema_class
 
           actions = extract_actions_from_resource(resource_data)
@@ -159,21 +159,22 @@ module Apiwork
 
         def find_resource_for_contract(contract_class)
           @metadata&.search_resources do |resource_data|
-            resource_data if resource_data[:contract_class_name] == contract_class.name ||
+            resource_data if resource_data[:contract] == contract_class.name ||
                              resource_data[:contract_class] == contract_class
           end
         end
 
         def build_contracts_for_resource(resource_data)
           contract_class = @metadata.resolve_contract_class(resource_data)
-          schema_class = @metadata.resolve_schema_class(resource_data)
+          return unless contract_class
+          return if contracts_built_for.include?(contract_class.name)
 
-          if contract_class && schema_class && !contracts_built_for.include?(contract_class.name)
-            actions = extract_actions_from_resource(resource_data)
+          schema_class = contract_class.schema_class
+          return unless schema_class
 
-            adapter.build_contract(contract_class, schema_class, actions: actions)
-            contracts_built_for.add(contract_class.name)
-          end
+          actions = extract_actions_from_resource(resource_data)
+          adapter.build_contract(contract_class, schema_class, actions: actions)
+          contracts_built_for.add(contract_class.name)
 
           resource_data[:resources]&.each_value do |nested_resource|
             build_contracts_for_resource(nested_resource)
@@ -188,7 +189,8 @@ module Apiwork
 
         def collect_schemas_recursive(resources, schemas)
           resources.each_value do |resource_data|
-            schema_class = @metadata.resolve_schema_class(resource_data)
+            contract_class = @metadata.resolve_contract_class(resource_data)
+            schema_class = contract_class&.schema_class
             schemas << schema_class if schema_class
             collect_schemas_recursive(resource_data[:resources] || {}, schemas)
           end

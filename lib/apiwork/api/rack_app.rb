@@ -10,17 +10,9 @@ module Apiwork
       private
 
       def route_set
-        return build_route_set if development?
+        return Routing::Builder.new.build if Rails.env.development?
 
-        @route_set ||= build_route_set
-      end
-
-      def build_route_set
-        Routing::Builder.new.build
-      end
-
-      def development?
-        defined?(::Rails) && ::Rails.env.development?
+        @route_set ||= Routing::Builder.new.build
       end
     end
   end
