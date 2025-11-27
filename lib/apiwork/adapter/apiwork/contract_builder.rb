@@ -788,7 +788,7 @@ module Apiwork
           reflection = model_class.reflect_on_association(association_definition.name)
           return nil unless reflection
 
-          resolved_schema = Schema::Resolver.from_association(reflection, schema_class)
+          resolved_schema = Schema::Base.resolve_association_schema(reflection, schema_class)
           return nil unless resolved_schema
 
           return { sti: true, schema: resolved_schema } if resolved_schema.respond_to?(:sti_base?) && resolved_schema.sti_base?

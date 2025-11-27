@@ -33,12 +33,18 @@ module Apiwork
         return nil unless self.class.model_class
 
         reflection = object.class.reflect_on_association(association_name)
-        return nil unless reflection
-
-        Apiwork::Schema::Resolver.from_association(reflection, self.class)
+        self.class.resolve_association_schema(reflection, self.class)
       end
 
       class << self
+        def resolve_association_schema(reflection, base_schema_class)
+          return nil unless reflection
+          return nil if reflection.polymorphic?
+
+          namespace = base_schema_class.name.deconstantize
+          "#{namespace}::#{reflection.klass.name}Schema".safe_constantize
+        end
+
         def model(value = nil)
           if value
             unless value.is_a?(Class)

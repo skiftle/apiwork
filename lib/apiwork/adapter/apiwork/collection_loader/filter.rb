@@ -270,7 +270,7 @@ module Apiwork
 
           def build_join_conditions(key, value, association)
             reflection = schema_class.model_class.reflect_on_association(key)
-            assoc_resource = association.schema_class || ::Apiwork::Schema::Resolver.from_association(reflection, schema)
+            assoc_resource = association.schema_class || ::Apiwork::Schema::Base.resolve_association_schema(reflection, schema)
 
             assoc_resource = assoc_resource.constantize if assoc_resource.is_a?(String)
 

@@ -6,17 +6,13 @@ module Apiwork
       attr_reader :plural,
                   :singular
 
-      def initialize(singular, plural = nil)
+      def initialize(singular, plural = singular.pluralize)
         @singular = singular
-        @plural = plural || singular&.pluralize
+        @plural   = plural
       end
 
       def to_s
         singular
-      end
-
-      def inspect
-        "#<Apiwork::Schema::RootKey singular=#{singular.inspect} plural=#{plural.inspect}>"
       end
     end
   end

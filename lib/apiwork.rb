@@ -14,7 +14,6 @@ module Apiwork
     def reset!
       API.reset!
       Descriptor.reset!
-      Schema.reset!
     end
   end
 end

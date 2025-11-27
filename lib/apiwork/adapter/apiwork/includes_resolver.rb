@@ -136,7 +136,7 @@ module Apiwork
         end
 
         def resolve_schema_class(definition, association)
-          schema_class = definition.schema_class || ::Apiwork::Schema::Resolver.from_association(association, schema)
+          schema_class = definition.schema_class || ::Apiwork::Schema::Base.resolve_association_schema(association, schema)
 
           schema_class = constantize_safe(schema_class) if schema_class.is_a?(String)
 
