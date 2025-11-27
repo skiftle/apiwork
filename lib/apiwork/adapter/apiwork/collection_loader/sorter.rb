@@ -18,8 +18,6 @@ module Apiwork
           end
 
           def perform(params)
-            validate = params.present?
-            params = params.presence || default_sort
             return @relation if params.blank?
 
             params = params.reduce({}) { |acc, hash| acc.merge(hash) } if params.is_a?(Array)
@@ -34,38 +32,32 @@ module Apiwork
               return @relation
             end
 
-            orders, joins = build_order_clauses(params, schema_class.model_class, validate:)
+            orders, joins = build_order_clauses(params, schema_class.model_class)
             scope = @relation.joins(joins).order(orders)
             scope = scope.distinct if joins.present?
             scope
           end
 
-          def default_sort
-            schema_class.resolve_option(:default_sort)
-          end
-
           private
 
-          def build_order_clauses(params, target_klass = schema_class.model_class, validate: true)
+          def build_order_clauses(params, target_klass = schema_class.model_class)
             params.each_with_object([[], []]) do |(key, value), (orders, joins)|
               key = key.to_sym
 
               if value.is_a?(String) || value.is_a?(Symbol)
-                if validate
-                  attribute_definition = schema_class.attribute_definitions[key]
-                  unless attribute_definition&.sortable?
-                    available = schema_class.attribute_definitions
-                                            .select { |_, definition| definition.sortable? }
-                                            .keys
+                attribute_definition = schema_class.attribute_definitions[key]
+                unless attribute_definition&.sortable?
+                  available = schema_class.attribute_definitions
+                                          .select { |_, definition| definition.sortable? }
+                                          .keys
 
-                    @issues << Issue.new(
-                      code: :field_not_sortable,
-                      detail: "#{key} is not sortable on #{target_klass.name}. Sortable: #{available.join(', ')}",
-                      path: [:sort, key],
-                      meta: { field: key, class: target_klass.name, available: available }
-                    )
-                    next
-                  end
+                  @issues << Issue.new(
+                    code: :field_not_sortable,
+                    detail: "#{key} is not sortable on #{target_klass.name}. Sortable: #{available.join(', ')}",
+                    path: [:sort, key],
+                    meta: { field: key, class: target_klass.name, available: available }
+                  )
+                  next
                 end
 
                 column = target_klass.arel_table[key]
@@ -97,7 +89,7 @@ module Apiwork
                   next
                 end
 
-                if validate && !schema_class.association_definitions[key]&.sortable?
+                unless schema_class.association_definitions[key]&.sortable?
                   @issues << Issue.new(
                     code: :association_not_sortable,
                     detail: "Association #{key} is not sortable",
@@ -122,8 +114,7 @@ module Apiwork
                 association_resource = association_resource.constantize if association_resource.is_a?(String)
 
                 nested_query = Sorter.new(association.klass.all, association_resource, @issues)
-                nested_orders, nested_joins = nested_query.send(:build_order_clauses, value, association.klass,
-                                                                validate: validate)
+                nested_orders, nested_joins = nested_query.send(:build_order_clauses, value, association.klass)
                 orders.concat(nested_orders)
 
                 joins << (nested_joins.any? ? { key => nested_joins } : key)

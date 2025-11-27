@@ -20,7 +20,6 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
             default_size 25
             max_size 100
           end
-          default_sort title: :asc
           max_array_items 500
         end
 
@@ -46,7 +45,7 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
       # Should use API configuration via resolve_option
       expect(schema_class.resolve_option(:pagination, :default_size)).to eq(25)
       expect(schema_class.resolve_option(:pagination, :max_size)).to eq(100)
-      expect(schema_class.resolve_option(:default_sort)).to eq(title: :asc)
+      expect(schema_class.resolve_option(:max_array_items)).to eq(500)
     end
   end
 
@@ -58,7 +57,7 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
             default_size 20
             max_size 200
           end
-          default_sort id: :asc
+          max_array_items 500
         end
 
         resources :posts
@@ -95,7 +94,7 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
       expect(schema_with_config.resolve_option(:pagination, :max_size)).to eq(150)
 
       # Non-overridden values should inherit from API
-      expect(schema_with_config.resolve_option(:default_sort)).to eq(id: :asc)
+      expect(schema_with_config.resolve_option(:max_array_items)).to eq(500)
     end
   end
 
@@ -152,48 +151,6 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
 
       # Adapter default when not in API or schema
       expect(schema.resolve_option(:max_array_items)).to eq(1000)
-    end
-  end
-
-  describe 'No deep merge - schema replaces API value entirely' do
-    let(:no_merge_api) do
-      Apiwork::API.draw '/api/no_merge' do
-        adapter do
-          default_sort id: :asc, created_at: :desc
-        end
-
-        resources :posts
-      end
-    end
-
-    let(:no_merge_schema) do
-      Class.new(Apiwork::Schema::Base) do
-        def self.name
-          'Api::NoMerge::PostSchema'
-        end
-
-        adapter do
-          default_sort title: :asc
-        end
-      end
-    end
-
-    before do
-      no_merge_api    # Trigger let to create API
-      no_merge_schema # Trigger let to create Schema
-    end
-
-    after do
-      Apiwork::API::Registry.unregister('/api/no_merge')
-    end
-
-    it 'does NOT deep merge - schema value completely replaces API value' do
-      # Schema value should completely replace, NOT merge
-      result = no_merge_schema.resolve_option(:default_sort)
-
-      expect(result).to eq(title: :asc)
-      expect(result).not_to include(:id)
-      expect(result).not_to include(:created_at)
     end
   end
 

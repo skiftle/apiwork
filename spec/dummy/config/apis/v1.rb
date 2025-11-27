@@ -17,7 +17,6 @@ Apiwork::API.draw '/api/v1' do
   # API-level adapter configuration
   adapter do
     key_format :keep
-    default_sort id: :asc
     max_array_items 1000
     pagination do
       default_size 20
