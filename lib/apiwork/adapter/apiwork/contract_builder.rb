@@ -800,6 +800,16 @@ module Apiwork
           return nil if visited.include?(association_schema)
 
           association_contract = contract_class.find_contract_for_schema(association_schema)
+
+          unless association_contract
+            contract_name = association_schema.name.sub(/Schema$/, 'Contract')
+            association_contract = begin
+              contract_name.constantize
+            rescue StandardError
+              nil
+            end
+          end
+
           return nil unless association_contract
 
           alias_name = association_schema.root_key.singular.to_sym
@@ -807,16 +817,18 @@ module Apiwork
           contract_class.import(association_contract, as: alias_name) unless contract_class.imports.key?(alias_name)
 
           if association_contract.schema?
+            api_class = association_contract.api_class
+            api_class&.ensure_contract_built!(association_contract)
+
             temp_builder = self.class.allocate
             temp_builder.instance_variable_set(:@contract_class, association_contract)
             temp_builder.instance_variable_set(:@schema_class, association_schema)
             temp_builder.instance_variable_set(:@context, nil)
 
-            temp_builder.send(:build_filter_type, visited: visited, depth: 0)
-            temp_builder.send(:build_sort_type, visited: visited, depth: 0)
-            temp_builder.send(:build_include_type, visited: visited, depth: 0)
+            temp_builder.send(:build_filter_type, visited: Set.new, depth: 0)
+            temp_builder.send(:build_sort_type, visited: Set.new, depth: 0)
+            temp_builder.send(:build_include_type, visited: Set.new, depth: 0)
             temp_builder.send(:build_nested_payload_union)
-
             temp_builder.send(:build_response_type, visited: Set.new)
           end
 

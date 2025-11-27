@@ -24,7 +24,7 @@ module Apiwork
         }
 
         contract_class = resolve_contract_class
-        schema_class = @resource_metadata[:schema_class]
+        schema_class = resolve_schema_class
 
         result[:schema] = serialize_resource_schema(schema_class) if schema_class
 
@@ -129,9 +129,34 @@ module Apiwork
 
       def resolve_contract_class
         contract_class = @resource_metadata[:contract_class]
+
+        unless contract_class
+          class_name = @resource_metadata[:contract_class_name]
+          return nil unless class_name
+
+          contract_class = @resource_metadata[:contract_class] = begin
+            class_name.constantize
+          rescue StandardError
+            nil
+          end
+        end
+
         return nil unless contract_class
 
         contract_class < Contract::Base ? contract_class : nil
+      end
+
+      def resolve_schema_class
+        return @resource_metadata[:schema_class] if @resource_metadata[:schema_class]
+
+        class_name = @resource_metadata[:schema_class_name]
+        return nil unless class_name
+
+        @resource_metadata[:schema_class] = begin
+          class_name.constantize
+        rescue StandardError
+          nil
+        end
       end
 
       def serialize_resource_schema(schema_class)

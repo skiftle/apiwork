@@ -21,7 +21,7 @@ RSpec.describe 'Contract Override Option', type: :request do
 
         articles_metadata = api.metadata.resources[:articles]
         expect(articles_metadata).to be_present
-        expect(articles_metadata[:contract_class]).to eq(Api::OverrideTest::PostContract)
+        expect(api.metadata.resolve_contract_class(articles_metadata)).to eq(Api::OverrideTest::PostContract)
       end
 
       it 'controller resolves to explicit contract from metadata' do
@@ -75,7 +75,7 @@ RSpec.describe 'Contract Override Option', type: :request do
 
         posts_metadata = api.metadata.resources[:posts]
         expect(posts_metadata).to be_present
-        expect(posts_metadata[:contract_class]).to eq(Api::InferenceTest::PostContract)
+        expect(api.metadata.resolve_contract_class(posts_metadata)).to eq(Api::InferenceTest::PostContract)
       end
 
       it 'controller resolves to inferred contract' do

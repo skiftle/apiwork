@@ -6,25 +6,17 @@ module Apiwork
       module Inference
         private
 
-        def infer_resource_class(name)
+        def infer_schema_class_name(name)
           resource_name = name.to_s.singularize.camelize
-          class_name = "#{namespaces_string}::#{resource_name}Schema"
-
-          class_name.constantize
-        rescue NameError
-          nil
+          "#{namespaces_string}::#{resource_name}Schema"
         end
 
-        def infer_contract_class(name)
+        def infer_contract_class_name(name)
           contract_name = name.to_s.singularize.camelize
-          class_name = "#{namespaces_string}::#{contract_name}Contract"
-
-          class_name.constantize
-        rescue NameError
-          nil
+          "#{namespaces_string}::#{contract_name}Contract"
         end
 
-        def constantize_contract_path(path)
+        def contract_path_to_class_name(path)
           parts = if path.start_with?('/')
                     path[1..].split('/')
                   else
@@ -34,10 +26,7 @@ module Apiwork
           parts = parts.map { |part| part.to_s.camelize }
           parts[-1] = parts[-1].singularize
 
-          class_name = "#{parts.join('::')}Contract"
-          class_name.constantize
-        rescue NameError
-          nil
+          "#{parts.join('::')}Contract"
         end
       end
     end

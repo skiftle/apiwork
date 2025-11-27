@@ -26,7 +26,7 @@ module Apiwork
         @namespaces.map(&:to_s).map(&:camelize).join('::')
       end
 
-      def add_resource(name, singular:, schema_class:, controller: nil, contract_class: nil, parent: nil,
+      def add_resource(name, singular:, schema_class_name:, controller: nil, contract_class_name: nil, parent: nil,
                        **options)
         target = if parent
                    parent_resource = find_resource(parent)
@@ -39,9 +39,11 @@ module Apiwork
 
         target[name] = {
           singular: singular,
-          schema_class: schema_class,
+          schema_class_name: schema_class_name,
+          schema_class: nil,
           controller: controller,
-          contract_class: contract_class,
+          contract_class_name: contract_class_name,
+          contract_class: nil,
           actions: {},
           only: determine_actions(singular, options),
           members: {},
@@ -51,6 +53,24 @@ module Apiwork
           options: options,
           metadata: {}
         }
+      end
+
+      def resolve_schema_class(resource_data)
+        return resource_data[:schema_class] if resource_data[:schema_class]
+        return nil unless resource_data[:schema_class_name]
+
+        resource_data[:schema_class] = resource_data[:schema_class_name].constantize
+      rescue NameError
+        nil
+      end
+
+      def resolve_contract_class(resource_data)
+        return resource_data[:contract_class] if resource_data[:contract_class]
+        return nil unless resource_data[:contract_class_name]
+
+        resource_data[:contract_class] = resource_data[:contract_class_name].constantize
+      rescue NameError
+        nil
       end
 
       def add_crud_action(resource_name, action, method:, metadata: {})

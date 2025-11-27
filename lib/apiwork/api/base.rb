@@ -14,6 +14,7 @@ module Apiwork
         def mount(path)
           @mount_path = path
           @specs = {}
+          @contracts_built_for = Set.new
 
           @namespaces = path == '/' ? [:root] : path.split('/').reject(&:empty?).map(&:to_sym)
 
@@ -23,6 +24,10 @@ module Apiwork
           Registry.register(self)
 
           @adapter_config = {}
+        end
+
+        def contracts_built_for
+          @contracts_built_for ||= Set.new
         end
 
         def spec(type, path: nil)
@@ -115,6 +120,7 @@ module Apiwork
         end
 
         def introspect
+          ensure_all_contracts_built!
           @introspect ||= Apiwork::Introspection.api(self)
         end
 
@@ -122,32 +128,69 @@ module Apiwork
           introspect
         end
 
-        def build_contracts
+        def ensure_contract_built!(contract_class)
+          return if contracts_built_for.include?(contract_class.name)
+
+          contracts_built_for.add(contract_class.name)
+
+          resource_data = find_resource_for_contract(contract_class)
+          return unless resource_data
+
+          schema_class = @metadata.resolve_schema_class(resource_data)
+          return unless schema_class
+
+          actions = extract_actions_from_resource(resource_data)
+          adapter.build_contract(contract_class, schema_class, actions: actions)
+        end
+
+        def ensure_all_contracts_built!
           return unless @metadata
 
           @metadata.resources.each_value do |resource_data|
             build_contracts_for_resource(resource_data)
           end
 
-          schemas = @metadata.resources.values.map { |r| r[:schema_class] }.compact
+          schemas = collect_all_schemas
           schema_data = Adapter::SchemaData.new(schemas)
           adapter.build_global_descriptors(Descriptor::Builder.new(api_class: self), schema_data)
         end
 
         private
 
-        def build_contracts_for_resource(resource_data)
-          contract_class = resource_data[:contract_class]
-          schema_class = resource_data[:schema_class]
+        def find_resource_for_contract(contract_class)
+          @metadata&.search_resources do |resource_data|
+            resource_data if resource_data[:contract_class_name] == contract_class.name ||
+                             resource_data[:contract_class] == contract_class
+          end
+        end
 
-          if contract_class && schema_class
+        def build_contracts_for_resource(resource_data)
+          contract_class = @metadata.resolve_contract_class(resource_data)
+          schema_class = @metadata.resolve_schema_class(resource_data)
+
+          if contract_class && schema_class && !contracts_built_for.include?(contract_class.name)
             actions = extract_actions_from_resource(resource_data)
 
             adapter.build_contract(contract_class, schema_class, actions: actions)
+            contracts_built_for.add(contract_class.name)
           end
 
           resource_data[:resources]&.each_value do |nested_resource|
             build_contracts_for_resource(nested_resource)
+          end
+        end
+
+        def collect_all_schemas
+          schemas = []
+          collect_schemas_recursive(@metadata.resources, schemas)
+          schemas.compact
+        end
+
+        def collect_schemas_recursive(resources, schemas)
+          resources.each_value do |resource_data|
+            schema_class = @metadata.resolve_schema_class(resource_data)
+            schemas << schema_class if schema_class
+            collect_schemas_recursive(resource_data[:resources] || {}, schemas)
           end
         end
 

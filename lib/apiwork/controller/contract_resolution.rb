@@ -30,7 +30,7 @@ module Apiwork
         resource_metadata = api.metadata.resources[resource_name]
         return nil unless resource_metadata
 
-        resource_metadata[:contract_class]
+        api.metadata.resolve_contract_class(resource_metadata)
       end
 
       def extract_api_path_from_request

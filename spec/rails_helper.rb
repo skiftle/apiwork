@@ -30,7 +30,12 @@ RSpec.configure do |config|
   # Clear registries before each test, but skip integration tests
   # Integration tests use before(:all) to load API config once for performance
   config.before do |example|
-    Apiwork::Descriptor.reset! unless [:request, :integration].include?(example.metadata[:type])
+    unless [:request, :integration].include?(example.metadata[:type])
+      Apiwork::Descriptor.reset!
+      Apiwork::API::Registry.all.find_each do |api_class|
+        api_class.instance_variable_set(:@contracts_built_for, Set.new)
+      end
+    end
   end
 
   # Ensure APIs are loaded for request/integration specs

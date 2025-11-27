@@ -135,6 +135,8 @@ module Apiwork
         end
 
         def action_definition(action_name)
+          api_class&.ensure_contract_built!(self)
+
           action_name_sym = action_name.to_sym
           action_definitions[action_name_sym]
         end
@@ -187,7 +189,7 @@ module Apiwork
         end
 
         def resolve_type(name)
-          Descriptor.resolve_type(name, contract_class: self)
+          Descriptor.resolve_type(name, contract_class: self, api_class: api_class)
         end
 
         def scoped_type_name(type_name)

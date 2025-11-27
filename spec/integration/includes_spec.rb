@@ -71,10 +71,14 @@ RSpec.describe 'Includes API', type: :request do
       end
 
       # Clear descriptor registry cache for the include type
-      Apiwork::Descriptor::Registry.instance_variable_set(:@types, {}) if Apiwork::Descriptor::Registry.instance_variable_defined?(:@types)
+      Apiwork::Descriptor.reset!
 
-      # Rebuild actions after clearing (eager loading requires explicit rebuild)
-      Apiwork::API.find('/api/v1')&.build_contracts
+      # Reset contracts_built_for to force rebuild
+      api = Apiwork::API.find('/api/v1')
+      api&.instance_variable_set(:@contracts_built_for, Set.new)
+
+      # Rebuild actions after clearing (lazy loading will rebuild on demand)
+      api&.ensure_all_contracts_built!
     end
 
     after do
@@ -92,10 +96,14 @@ RSpec.describe 'Includes API', type: :request do
       end
 
       # Clear descriptor registry cache
-      Apiwork::Descriptor::Registry.instance_variable_set(:@types, {}) if Apiwork::Descriptor::Registry.instance_variable_defined?(:@types)
+      Apiwork::Descriptor.reset!
 
-      # Rebuild actions after clearing (eager loading requires explicit rebuild)
-      Apiwork::API.find('/api/v1')&.build_contracts
+      # Reset contracts_built_for to force rebuild
+      api = Apiwork::API.find('/api/v1')
+      api&.instance_variable_set(:@contracts_built_for, Set.new)
+
+      # Rebuild actions after clearing (lazy loading will rebuild on demand)
+      api&.ensure_all_contracts_built!
     end
 
     it 'supports nested includes' do
@@ -139,10 +147,14 @@ RSpec.describe 'Includes API', type: :request do
         end
 
         # Clear descriptor registry cache for the include type
-        Apiwork::Descriptor::Registry.instance_variable_set(:@types, {}) if Apiwork::Descriptor::Registry.instance_variable_defined?(:@types)
+        Apiwork::Descriptor.reset!
 
-        # Rebuild actions after clearing (eager loading requires explicit rebuild)
-        Apiwork::API.find('/api/v1')&.build_contracts
+        # Reset contracts_built_for to force rebuild
+        api = Apiwork::API.find('/api/v1')
+        api&.instance_variable_set(:@contracts_built_for, Set.new)
+
+        # Rebuild actions after clearing (lazy loading will rebuild on demand)
+        api&.ensure_all_contracts_built!
       end
 
       after do
@@ -161,10 +173,14 @@ RSpec.describe 'Includes API', type: :request do
         end
 
         # Clear descriptor registry cache
-        Apiwork::Descriptor::Registry.instance_variable_set(:@types, {}) if Apiwork::Descriptor::Registry.instance_variable_defined?(:@types)
+        Apiwork::Descriptor.reset!
 
-        # Rebuild actions after clearing (eager loading requires explicit rebuild)
-        Apiwork::API.find('/api/v1')&.build_contracts
+        # Reset contracts_built_for to force rebuild
+        api = Apiwork::API.find('/api/v1')
+        api&.instance_variable_set(:@contracts_built_for, Set.new)
+
+        # Rebuild actions after clearing (lazy loading will rebuild on demand)
+        api&.ensure_all_contracts_built!
       end
 
       it 'allows nested includes under include: :always association' do
