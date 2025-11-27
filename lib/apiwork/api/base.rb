@@ -50,7 +50,7 @@ module Apiwork
 
           spec_class = Spec::Registry.find(type)
           @spec_configs[type] ||= {}
-          builder = Configuration.new(spec_class, @spec_configs[type])
+          builder = Configuration::Builder.new(spec_class, @spec_configs[type])
           builder.instance_eval(&block)
         end
 
@@ -75,7 +75,7 @@ module Apiwork
           if block
             @adapter_config ||= {}
             adapter_class = Adapter.resolve(@adapter_name || :apiwork)
-            builder = Configuration.new(adapter_class, @adapter_config)
+            builder = Configuration::Builder.new(adapter_class, @adapter_config)
             builder.instance_eval(&block)
             return
           end

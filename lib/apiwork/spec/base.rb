@@ -4,25 +4,13 @@ module Apiwork
   module Spec
     class Base
       extend Registrable
+      include Configurable
 
       attr_reader :data,
                   :options,
                   :path
 
       class << self
-        def options
-          @options ||= {}
-        end
-
-        def inherited(subclass)
-          super
-          subclass.instance_variable_set(:@options, options.dup)
-        end
-
-        def option(name, type:, default: nil, enum: nil)
-          options[name] = ::Apiwork::Option.new(name, type:, default:, enum:)
-        end
-
         def generate(path:, **options)
           new(path, **options).generate
         end
@@ -34,10 +22,6 @@ module Apiwork
 
         def file_extension
           raise NotImplementedError, "#{self} must implement .file_extension"
-        end
-
-        def default_options
-          options.transform_values(&:default).compact
         end
       end
 

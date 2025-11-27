@@ -140,7 +140,7 @@ module Apiwork
 
           self._adapter_config = _adapter_config.dup
           api_adapter_class = api_class&.adapter&.class || Adapter::Apiwork
-          builder = Configuration.new(api_adapter_class, _adapter_config)
+          builder = Configuration::Builder.new(api_adapter_class, _adapter_config)
           builder.instance_eval(&block)
         end
 

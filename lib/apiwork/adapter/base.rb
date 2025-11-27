@@ -4,21 +4,7 @@ module Apiwork
   module Adapter
     class Base
       extend Registrable
-
-      class << self
-        def options
-          @options ||= {}
-        end
-
-        def inherited(subclass)
-          super
-          subclass.instance_variable_set(:@options, options.dup)
-        end
-
-        def option(name, type:, default: nil, enum: nil, &block)
-          options[name] = ::Apiwork::Option.new(name, type:, default:, enum:, &block)
-        end
-      end
+      include Configurable
 
       def build_global_descriptors(builder, schema_data)
         raise NotImplementedError
