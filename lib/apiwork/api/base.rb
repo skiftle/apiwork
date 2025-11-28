@@ -125,8 +125,8 @@ module Apiwork
           Descriptor::Registry.register_union(name, data, scope:, api_class: self)
         end
 
-        def resolve_type(name, contract_class:, scope: nil)
-          Descriptor::Registry.resolve_type(name, contract_class: contract_class, api_class: self, scope: scope)
+        def resolve_type(name, scope: nil)
+          Descriptor::Registry.resolve_type(name, scope:, api_class: self)
         end
 
         def resolve_enum(name, scope:)

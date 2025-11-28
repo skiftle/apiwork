@@ -35,12 +35,12 @@ module Apiwork
             TypeStore.register_union(name, data, scope: scope, api_class: api_class)
           end
 
-          def resolve_type(name, contract_class:, api_class: nil, scope: nil)
-            TypeStore.resolve(name, contract_class: contract_class, api_class: api_class, scope: scope)
+          def resolve_type(name, scope: nil, api_class: nil)
+            TypeStore.resolve(name, scope:, api_class:)
           end
 
-          def scoped_name(contract_class, name)
-            TypeStore.scoped_name(contract_class, name)
+          def scoped_name(scope, name)
+            TypeStore.scoped_name(scope, name)
           end
 
           private

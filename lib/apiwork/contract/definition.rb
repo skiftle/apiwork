@@ -506,7 +506,7 @@ module Apiwork
       def validate_custom_type(value, type_name, field_path, max_depth, current_depth)
         return nil unless type_name.is_a?(Symbol)
 
-        type_definition = @contract_class.api_class&.resolve_type(type_name, contract_class: @contract_class, scope: self)
+        type_definition = @contract_class.resolve_custom_type(type_name)
 
         return nil unless type_definition # Not a registered custom type
 
@@ -761,7 +761,7 @@ module Apiwork
 
         raise ArgumentError, "enum must be a Symbol (reference) or Array (inline values), got #{enum.class}" unless enum.is_a?(Symbol)
 
-        values = @contract_class.api_class.resolve_enum(enum, scope: self)
+        values = @contract_class.resolve_enum(enum)
 
         if values
           { ref: enum, values: values }

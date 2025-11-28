@@ -70,6 +70,15 @@ module Apiwork
           _schema_class.present?
         end
 
+        def scope_prefix
+          return _identifier if _identifier
+          return schema_class.root_key.singular if schema_class
+
+          return nil unless name
+
+          name.demodulize.underscore.gsub(/_(contract|schema)$/, '')
+        end
+
         def type(name, description: nil, example: nil, format: nil, deprecated: false, &block)
           api_class.define_type(name, scope: self, description:, example:, format:, deprecated:, &block)
         end
@@ -112,8 +121,13 @@ module Apiwork
           action_definitions[action_name_sym] = action_definition
         end
 
-        def resolve_custom_type(type_name)
-          api_class.resolve_type(type_name, contract_class: self)
+        def resolve_custom_type(type_name, visited: Set.new)
+          raise ConfigurationError, "Circular import detected while resolving :#{type_name}" if visited.include?(self)
+
+          result = api_class.resolve_type(type_name, scope: self)
+          return result if result
+
+          resolve_imported_type(type_name, visited: visited.dup.add(self))
         end
 
         def action_definition(action_name)
@@ -172,7 +186,16 @@ module Apiwork
         end
 
         def resolve_type(name)
-          api_class.resolve_type(name, contract_class: self)
+          resolve_custom_type(name)
+        end
+
+        def resolve_enum(enum_name, visited: Set.new)
+          return nil if visited.include?(self)
+
+          result = api_class.resolve_enum(enum_name, scope: self)
+          return result if result
+
+          resolve_imported_enum(enum_name, visited: visited.dup.add(self))
         end
 
         def scoped_type_name(type_name)
@@ -201,6 +224,34 @@ module Apiwork
           union_data = union_definition.serialize
           register_union(name, union_data)
           name
+        end
+
+        private
+
+        def resolve_imported_type(type_name, visited:)
+          imports.each do |import_alias, imported_contract|
+            prefix = "#{import_alias}_"
+            next unless type_name.to_s.start_with?(prefix)
+
+            unprefixed_name = type_name.to_s.sub(prefix, '').to_sym
+            result = imported_contract.resolve_custom_type(unprefixed_name, visited:)
+            return result if result
+          end
+
+          nil
+        end
+
+        def resolve_imported_enum(enum_name, visited:)
+          imports.each do |import_alias, imported_contract|
+            prefix = "#{import_alias}_"
+            next unless enum_name.to_s.start_with?(prefix)
+
+            unprefixed_name = enum_name.to_s.sub(prefix, '').to_sym
+            result = imported_contract.resolve_enum(unprefixed_name, visited:)
+            return result if result
+          end
+
+          nil
         end
       end
     end

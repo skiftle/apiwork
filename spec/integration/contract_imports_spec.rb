@@ -64,11 +64,7 @@ RSpec.describe 'Contract Imports' do
         end
       end
 
-      enum_values = Apiwork::API::Descriptor::EnumStore.resolve(
-        :user_status,
-        contract_class: importing_contract,
-        api_class: importing_contract.api_class
-      )
+      enum_values = importing_contract.resolve_enum(:user_status)
       expect(enum_values).to eq(%w[active inactive suspended])
     end
 
