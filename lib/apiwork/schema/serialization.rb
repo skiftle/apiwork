@@ -19,21 +19,17 @@ module Apiwork
 
         def serialize_single(obj, context: {}, include: nil)
           if respond_to?(:sti_base?) && sti_base?
-            variant_schema = resolve_sti_variant_for_object(obj)
+            variant_schema = resolve_sti_variant(obj)
             return variant_schema.new(obj, context: context, include: include).as_json if variant_schema
           end
 
           new(obj, context: context, include: include).as_json
         end
 
-        def resolve_sti_variant_for_object(obj)
-          discriminator_column = self.discriminator_column
+        def resolve_sti_variant(obj)
           sti_type = obj.public_send(discriminator_column)
-
           variant = variants.find { |_tag, data| data[:sti_type] == sti_type }
-          return nil unless variant
-
-          variant.last[:schema]
+          variant&.last&.[](:schema)
         end
       end
 
@@ -78,7 +74,7 @@ module Apiwork
 
         resource_class = resource_class.constantize if resource_class.is_a?(String)
 
-        nested_includes = build_nested_includes(name)
+        nested_includes = @include.is_a?(Hash) ? (@include[name] || @include[name.to_s] || @include[name.to_sym]) : nil
 
         if definition.collection?
           associated.map { |item| serialize_sti_aware(item, resource_class, nested_includes) }
@@ -89,21 +85,11 @@ module Apiwork
 
       def serialize_sti_aware(item, resource_class, nested_includes)
         if resource_class.respond_to?(:sti_base?) && resource_class.sti_base?
-          variant_schema = resolve_sti_variant_schema(item, resource_class)
+          variant_schema = resource_class.resolve_sti_variant(item)
           return variant_schema.new(item, context: context, include: nested_includes).as_json if variant_schema
         end
 
         resource_class.new(item, context: context, include: nested_includes).as_json
-      end
-
-      def resolve_sti_variant_schema(item, base_schema)
-        discriminator_column = base_schema.discriminator_column
-        sti_type = item.public_send(discriminator_column)
-
-        variant = base_schema.variants.find { |_tag, data| data[:sti_type] == sti_type }
-        return nil unless variant
-
-        variant.last[:schema]
       end
 
       def should_include_association?(name, definition)
@@ -126,12 +112,6 @@ module Apiwork
         else
           false
         end
-      end
-
-      def build_nested_includes(association_name)
-        return nil unless @include.is_a?(Hash)
-
-        @include[association_name] || @include[association_name.to_s] || @include[association_name.to_sym]
       end
     end
   end

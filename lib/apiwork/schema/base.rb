@@ -71,20 +71,14 @@ module Apiwork
           if model_class.present?
             self._model_class = model_class
           else
-            raise_model_not_found_error(model_name)
+            raise ConfigurationError.new(
+              code: :model_not_found,
+              detail: "Could not find model '#{model_name}' for #{name}. " \
+                      "Either create the model, declare it explicitly with 'model YourModel', " \
+                      "or mark this schema as abstract with 'abstract'",
+              path: []
+            )
           end
-        end
-
-        def raise_model_not_found_error(model_name)
-          error = ConfigurationError.new(
-            code: :model_not_found,
-            detail: "Could not find model '#{model_name}' for #{name}. " \
-                    "Either create the model, declare it explicitly with 'model YourModel', " \
-                    "or mark this schema as abstract with 'abstract'",
-            path: []
-          )
-
-          raise error
         end
 
         def try_constantize_model(namespace, model_name)
@@ -304,14 +298,6 @@ module Apiwork
                      .select { |col| col.default.nil? }
                      .map(&:name)
                      .map(&:to_sym)
-        end
-
-        def column_nullable?(attribute_name)
-          column_for(attribute_name)&.null || false
-        end
-
-        def column_type_for(attribute_name)
-          model_class&.type_for_attribute(attribute_name.to_s)&.type
         end
 
         private

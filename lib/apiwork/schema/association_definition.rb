@@ -61,10 +61,6 @@ module Apiwork
         @include == :always
       end
 
-      def optional_included?
-        @include == :optional
-      end
-
       def writable?
         @writable[:on].any?
       end
