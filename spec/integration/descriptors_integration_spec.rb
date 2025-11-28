@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Descriptors Integration', type: :request do
-  # Test descriptor features using ONLY public APIs
+RSpec.describe 'TypeSystem Integration', type: :request do
+  # Test type system features using ONLY public APIs
   # The public API is: Apiwork::API.introspect(path)
 
   # Force reload of API configuration before tests
@@ -12,7 +12,7 @@ RSpec.describe 'Descriptors Integration', type: :request do
   end
 
   describe 'Public introspection API' do
-    it 'returns descriptor information for an API' do
+    it 'returns type system information for an API' do
       result = Apiwork::API.introspect('/api/v1')
 
       expect(result).to be_a(Hash)
@@ -27,8 +27,8 @@ RSpec.describe 'Descriptors Integration', type: :request do
     end
   end
 
-  describe 'API-level descriptors (global to API)' do
-    it 'includes global types defined in descriptors block' do
+  describe 'API-level types (global to API)' do
+    it 'includes global types defined in type block' do
       introspection = Apiwork::API.introspect('/api/v1')
 
       # error_detail type from config/apis/v1.rb
@@ -66,7 +66,7 @@ RSpec.describe 'Descriptors Integration', type: :request do
       )
     end
 
-    it 'includes global enums defined in descriptors block' do
+    it 'includes global enums defined in enum block' do
       introspection = Apiwork::API.introspect('/api/v1')
 
       # sort_direction enum from config/apis/v1.rb
@@ -228,21 +228,21 @@ RSpec.describe 'Descriptors Integration', type: :request do
       Apiwork::API::Registry.unregister('/api/v2')
     end
 
-    it 'keeps descriptors isolated between APIs' do
+    it 'keeps types isolated between APIs' do
       v1_introspection = Apiwork::API.introspect('/api/v1')
       v2_introspection = Apiwork::API.introspect('/api/v2')
 
-      # V1 should NOT have V2 descriptors
+      # V1 should NOT have V2 types
       expect(v1_introspection[:types]).not_to have_key(:v2_specific_type)
       expect(v1_introspection[:enums]).not_to have_key(:v2_status)
 
-      # V2 should NOT have V1 descriptors
+      # V2 should NOT have V1 types
       expect(v2_introspection[:types]).not_to have_key(:error_detail)
       expect(v2_introspection[:types]).not_to have_key(:pagination_params)
       expect(v2_introspection[:enums]).not_to have_key(:sort_direction)
       expect(v2_introspection[:enums]).not_to have_key(:post_status)
 
-      # V2 should HAVE its own descriptors
+      # V2 should HAVE its own types
       expect(v2_introspection[:types]).to have_key(:v2_specific_type)
       expect(v2_introspection[:enums]).to have_key(:v2_status)
       expect(v2_introspection[:enums][:v2_status][:values]).to match_array(%i[pending approved rejected])
@@ -260,14 +260,14 @@ RSpec.describe 'Descriptors Integration', type: :request do
     end
   end
 
-  describe 'Contract-scoped descriptors' do
+  describe 'Contract-scoped types' do
     before(:all) do
-      # Create an API with contract-scoped descriptors
+      # Create an API with contract-scoped types
       @contract_api = Apiwork::API.draw '/api/contracts' do
         # No resources, just contracts for testing
       end
 
-      # Create a contract with scoped descriptors
+      # Create a contract with scoped types
       @test_contract = Class.new(Apiwork::Contract::Base) do
         identifier :test_scoped
 
@@ -362,12 +362,12 @@ RSpec.describe 'Descriptors Integration', type: :request do
     end
   end
 
-  describe 'Mixed descriptor sources' do
-    it 'combines global, schema, and contract-scoped descriptors in one API' do
+  describe 'Mixed type sources' do
+    it 'combines global, schema, and contract-scoped types in one API' do
       introspection = Apiwork::API.introspect('/api/v1')
 
       # Should have ALL three types
-      # 1. Global from descriptors block
+      # 1. Global from type block
       expect(introspection[:types]).to have_key(:error_detail)
       expect(introspection[:enums]).to have_key(:sort_direction)
 
@@ -392,7 +392,7 @@ RSpec.describe 'Descriptors Integration', type: :request do
   end
 
   describe 'Complete introspection structure' do
-    it 'returns complete API introspection with all descriptor types' do
+    it 'returns complete API introspection with all types' do
       introspection = Apiwork::API.introspect('/api/v1')
 
       # Top-level structure

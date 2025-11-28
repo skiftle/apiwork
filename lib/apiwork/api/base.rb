@@ -97,7 +97,7 @@ module Apiwork
         def union(name, scope: nil, discriminator: nil, &block)
           raise ArgumentError, 'Union requires a block' unless block_given?
 
-          union_builder = Descriptor::UnionBuilder.new(discriminator:)
+          union_builder = TypeSystem::UnionBuilder.new(discriminator:)
           union_builder.instance_eval(&block)
           type_system.register_union(name, union_builder.serialize, scope:)
         end

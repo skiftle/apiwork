@@ -14,7 +14,7 @@ module Apiwork
       end
 
       def build_global_descriptors(api_class, schema_data)
-        DescriptorBuilder.build(api_class, schema_data)
+        TypeSystemBuilder.build(api_class, schema_data)
       end
 
       def build_contract(contract_class, schema_class, actions:)

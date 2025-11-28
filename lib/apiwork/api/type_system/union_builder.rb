@@ -2,7 +2,7 @@
 
 module Apiwork
   module API
-    module Descriptor
+    class TypeSystem
       class UnionBuilder
         attr_reader :discriminator,
                     :variants
@@ -16,8 +16,8 @@ module Apiwork
           validate_tag!(tag)
 
           variant_data = {
-            type: type,
-            of: of
+            type:,
+            of:
           }
 
           variant_data[:enum] = enum if enum

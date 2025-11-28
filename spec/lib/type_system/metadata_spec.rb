@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Descriptor Metadata' do
+RSpec.describe 'TypeSystem Metadata' do
   before do
     Apiwork.reset!
   end

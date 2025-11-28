@@ -23,7 +23,7 @@ Apiwork::API.draw '/api/v1' do
     end
   end
 
-  # API-level descriptors - available to all contracts in this API
+  # API-level types - available to all contracts in this API
   # Error response type
   type :error_detail do
     param :code, type: :string

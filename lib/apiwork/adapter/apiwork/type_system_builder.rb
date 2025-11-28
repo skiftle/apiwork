@@ -3,7 +3,7 @@
 module Apiwork
   module Adapter
     class Apiwork < Base
-      class DescriptorBuilder
+      class TypeSystemBuilder
         def self.build(api_class, schema_data)
           new(api_class, schema_data)
         end
@@ -57,7 +57,7 @@ module Apiwork
             filter_types_to_register.add(determine_filter_type(type, nullable: true))
           end
 
-          filter_types_to_register.each { |type| register_filter_descriptor(type) }
+          filter_types_to_register.each { |type| register_filter_type(type) }
         end
 
         def determine_filter_type(attr_type, nullable: false)
@@ -89,7 +89,7 @@ module Apiwork
           end
         end
 
-        def register_filter_descriptor(type_name)
+        def register_filter_type(type_name)
           case type_name
           when :string_filter
             register_string_filter

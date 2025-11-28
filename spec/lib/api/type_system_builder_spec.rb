@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'API Descriptor Builder' do
+RSpec.describe 'API TypeSystem Builder' do
   before do
     Apiwork.reset!
   end
