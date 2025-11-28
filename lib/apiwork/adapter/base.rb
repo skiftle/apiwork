@@ -6,7 +6,7 @@ module Apiwork
       extend Registrable
       include Configurable
 
-      def register_global_types(type_registrar, schema_data)
+      def register_api_types(type_registrar, schema_data)
         raise NotImplementedError
       end
 

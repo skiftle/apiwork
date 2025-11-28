@@ -13,7 +13,7 @@ module Apiwork
         option :max_size, type: :integer, default: 100
       end
 
-      def register_global_types(type_registrar, schema_data)
+      def register_api_types(type_registrar, schema_data)
         TypeSystemBuilder.build(type_registrar, schema_data)
       end
 

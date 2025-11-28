@@ -174,8 +174,8 @@ module Apiwork
 
           schemas = collect_all_schemas
           schema_data = Adapter::SchemaData.new(schemas)
-          type_registrar = Adapter::GlobalTypeRegistrar.new(self)
-          adapter.register_global_types(type_registrar, schema_data)
+          type_registrar = Adapter::ApiTypeRegistrar.new(self)
+          adapter.register_api_types(type_registrar, schema_data)
         end
 
         private
