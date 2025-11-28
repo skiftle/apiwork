@@ -110,11 +110,7 @@ module Apiwork
           type_system.resolve_enum(name, scope:)
         end
 
-        def scoped_type_name(scope, name)
-          type_system.scoped_name(scope, name)
-        end
-
-        def scoped_enum_name(scope, name)
+        def scoped_name(scope, name)
           type_system.scoped_name(scope, name)
         end
 

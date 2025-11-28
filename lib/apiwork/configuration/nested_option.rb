@@ -3,6 +3,8 @@
 module Apiwork
   module Configuration
     class NestedOption
+      include Validatable
+
       attr_reader :default,
                   :enum,
                   :name,
@@ -20,24 +22,6 @@ module Apiwork
 
         validate_type!(value)
         validate_enum!(value) if enum
-      end
-
-      private
-
-      def validate_type!(value)
-        valid = case type
-                when :symbol then value.is_a?(Symbol)
-                when :string then value.is_a?(String)
-                when :integer then value.is_a?(Integer)
-                when :hash then value.is_a?(Hash)
-                end
-        raise ConfigurationError, "#{name} must be #{type}, got #{value.class}" unless valid
-      end
-
-      def validate_enum!(value)
-        return if enum.include?(value)
-
-        raise ConfigurationError, "#{name} must be one of #{enum.inspect}, got #{value.inspect}"
       end
     end
   end

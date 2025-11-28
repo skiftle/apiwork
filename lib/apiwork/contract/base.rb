@@ -187,11 +187,11 @@ module Apiwork
         end
 
         def scoped_type_name(type_name)
-          api_class.scoped_type_name(self, type_name)
+          api_class.scoped_name(self, type_name)
         end
 
         def scoped_enum_name(enum_name)
-          api_class.scoped_enum_name(self, enum_name)
+          api_class.scoped_name(self, enum_name)
         end
 
         def define_action(action_name, &block)

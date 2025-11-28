@@ -61,19 +61,17 @@ module Apiwork
 
           action_metadata = extract_action_metadata(action, current_resource)
 
-          if @in_member_block || options[:on] == :member
-            @metadata.add_member_action(
+          action_type = if @in_member_block || options[:on] == :member
+                          :member
+                        elsif @in_collection_block || options[:on] == :collection
+                          :collection
+                        end
+
+          if action_type
+            @metadata.add_action(
               current_resource,
               action,
-              method: method,
-              options: options,
-              contract_class: contract_class,
-              metadata: action_metadata
-            )
-          elsif @in_collection_block || options[:on] == :collection
-            @metadata.add_collection_action(
-              current_resource,
-              action,
+              type: action_type,
               method: method,
               options: options,
               contract_class: contract_class,

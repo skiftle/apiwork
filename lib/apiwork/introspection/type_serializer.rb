@@ -62,11 +62,7 @@ module Apiwork
       private
 
       def expand_payload(metadata)
-        payload = if metadata[:payload]
-                    metadata[:payload]
-                  else
-                    expand(metadata[:definition], contract_class: metadata[:scope])
-                  end
+        payload = metadata[:payload] || expand(metadata[:definition], contract_class: metadata[:scope])
 
         expand_union_variants(payload, metadata[:scope]) if payload.is_a?(Hash) && payload[:type] == :union
 

@@ -71,23 +71,12 @@ module Apiwork
         }
       end
 
-      def add_member_action(resource_name, action, method:, options:, contract_class: nil, metadata: {})
+      def add_action(resource_name, action, type:, method:, options:, contract_class: nil, metadata: {})
         resource = find_resource(resource_name)
         return unless resource
 
-        resource[:members][action] = {
-          method: method,
-          options: options,
-          contract_class: contract_class,
-          metadata: metadata
-        }
-      end
-
-      def add_collection_action(resource_name, action, method:, options:, contract_class: nil, metadata: {})
-        resource = find_resource(resource_name)
-        return unless resource
-
-        resource[:collections][action] = {
+        storage_key = type == :member ? :members : :collections
+        resource[storage_key][action] = {
           method: method,
           options: options,
           contract_class: contract_class,

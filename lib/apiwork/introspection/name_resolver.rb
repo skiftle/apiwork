@@ -50,7 +50,7 @@ module Apiwork
 
         scope = scope_for_type(definition)
         api_class = definition.contract_class.api_class
-        api_class&.scoped_type_name(scope, type_name) || type_name
+        api_class&.scoped_name(scope, type_name) || type_name
       end
 
       private
