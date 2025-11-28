@@ -21,9 +21,6 @@ module Apiwork
         @pending_metadata = {}
       end
 
-      def namespaces_string
-        metadata.namespaces_string
-      end
     end
   end
 end

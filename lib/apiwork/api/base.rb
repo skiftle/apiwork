@@ -21,7 +21,7 @@ module Apiwork
           @type_system = TypeSystem.new
           @built_contracts = Set.new
 
-          @namespaces = path == '/' ? [:root] : path.split('/').reject(&:empty?).map(&:to_sym)
+          @namespaces = path == '/' ? [] : path.split('/').reject(&:empty?).map(&:to_sym)
 
           @metadata = Metadata.new(path)
           @recorder = Recorder.new(@metadata, @namespaces)

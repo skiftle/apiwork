@@ -8,7 +8,7 @@ module Apiwork
 
         def infer_contract_class_name(name)
           contract_name = name.to_s.singularize.camelize
-          "#{namespaces_string}::#{contract_name}Contract"
+          [*@namespaces.map { |n| n.to_s.camelize }, "#{contract_name}Contract"].join('::')
         end
 
         def contract_path_to_class_name(path)

@@ -52,8 +52,11 @@ module Apiwork
       end
 
       def raise_contract_not_found_error
-        contract_name = "#{api_class.metadata.namespaces_string}::#{resource_name.to_s.singularize.camelize}Contract"
-        contract_path = "app/contracts/#{api_class.metadata.namespaces.join('/')}/#{resource_name.to_s.singularize}_contract.rb"
+        resource_base = resource_name.to_s.singularize
+        namespaces = api_class.metadata.namespaces
+
+        contract_name = [*namespaces.map { |n| n.to_s.camelize }, "#{resource_base.camelize}Contract"].join('::')
+        contract_path = ['app/contracts', *namespaces, "#{resource_base}_contract.rb"].join('/')
 
         raise ConfigurationError,
               "No contract found for #{self.class.name}. " \

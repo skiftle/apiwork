@@ -14,16 +14,12 @@ module Apiwork
       def initialize(path)
         @path = path
 
-        @namespaces = path == '/' ? [:root] : path.split('/').reject(&:empty?).map(&:to_sym)
+        @namespaces = path == '/' ? [] : path.split('/').reject(&:empty?).map(&:to_sym)
 
         @resources = {}
         @concerns = {}
         @info = nil
         @error_codes = []
-      end
-
-      def namespaces_string
-        @namespaces.map(&:to_s).map(&:camelize).join('::')
       end
 
       def add_resource(name, singular:, contract:, controller: nil, parent: nil, **options)
