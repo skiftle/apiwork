@@ -5,8 +5,6 @@ module Apiwork
     module Deserialization
       extend ActiveSupport::Concern
 
-      Result = Contract::Parser::Result
-
       included do
         before_action :validate_input
       end
@@ -50,7 +48,7 @@ module Apiwork
           all_issues = query_result.issues + body_result.issues
           merged_data = (query_result.data || {}).merge(body_result.data || {})
 
-          Result.new(merged_data, all_issues)
+          Contract::Parser::Result.new(merged_data, all_issues)
         end
       end
 

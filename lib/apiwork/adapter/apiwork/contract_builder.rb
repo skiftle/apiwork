@@ -572,9 +572,9 @@ module Apiwork
           create_qualified_name = contract_class.scoped_type_name(create_type_name)
           update_qualified_name = contract_class.scoped_type_name(update_type_name)
 
-          contract_class.build_union(nested_payload_type_name, discriminator: :_type) do |union|
-            union.variant(type: create_qualified_name, tag: 'create')
-            union.variant(type: update_qualified_name, tag: 'update')
+          contract_class.union(nested_payload_type_name, discriminator: :_type) do
+            variant type: create_qualified_name, tag: 'create'
+            variant type: update_qualified_name, tag: 'update'
           end
         end
 
@@ -670,13 +670,15 @@ module Apiwork
           return existing if existing
 
           builder = self
+          discriminator = association_definition.discriminator
+          polymorphic_local = polymorphic
 
-          contract_class.build_union(union_type_name, discriminator: association_definition.discriminator) do |union|
-            polymorphic.each do |tag, schema_class|
+          contract_class.union(union_type_name, discriminator:) do
+            polymorphic_local.each do |tag, schema_class|
               import_alias = builder.send(:import_association_contract, schema_class, visited)
               next unless import_alias
 
-              union.variant(type: import_alias, tag: tag.to_s)
+              variant type: import_alias, tag: tag.to_s
             end
           end
         end
@@ -686,17 +688,21 @@ module Apiwork
           return nil unless variants&.any?
 
           discriminator_name = schema_class.discriminator_name
+          contract = contract_class
+          variants_local = variants
 
-          contract_class.build_union(union_type_name, discriminator: discriminator_name) do |union|
-            variants.each do |tag, variant_data|
+          contract_class.union(union_type_name, discriminator: discriminator_name) do
+            variants_local.each do |tag, variant_data|
               variant_schema = variant_data[:schema]
 
-              variant_type = yield(contract_class, variant_schema, tag, visited)
+              variant_type = yield(contract, variant_schema, tag, visited)
               next unless variant_type
 
-              union.variant(type: variant_type, tag: tag.to_s)
+              variant type: variant_type, tag: tag.to_s
             end
           end
+
+          union_type_name
         end
 
         def build_sti_association_type(association_definition, schema_class_arg, visited: Set.new)

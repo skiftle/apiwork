@@ -87,12 +87,8 @@ module Apiwork
           api_class.enum(name, values:, scope: self, description:, example:, deprecated:)
         end
 
-        def union(name, data: nil, &block)
-          if data
-            api_class.union(name, scope: self, data:)
-          else
-            api_class.union(name, scope: self, &block)
-          end
+        def union(name, discriminator: nil, &block)
+          api_class.union(name, scope: self, discriminator:, &block)
         end
 
         # DOCUMENTATION
@@ -208,13 +204,6 @@ module Apiwork
 
           action_definition.instance_eval(&block) if block_given?
           action_definition
-        end
-
-        def build_union(name, discriminator: nil)
-          union_definition = Contract::UnionDefinition.new(self, discriminator:)
-          yield(union_definition) if block_given?
-          union(name, data: union_definition.serialize)
-          name
         end
 
         private
