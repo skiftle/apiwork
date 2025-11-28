@@ -41,6 +41,16 @@ module Apiwork
           @key_format = format
         end
 
+        def transform_request(hash)
+          transform_request_keys(hash)
+        end
+
+        def transform_response(hash)
+          transform_response_keys(hash)
+        end
+
+        private
+
         def transform_request_keys(hash)
           case @key_format
           when :camel
@@ -58,6 +68,8 @@ module Apiwork
             hash
           end
         end
+
+        public
 
         def spec(type, path: nil, &block)
           unless Spec::Registry.registered?(type)

@@ -21,7 +21,7 @@ module Apiwork
         end
 
         json = adapter.transform_response(json)
-        json = api_class.transform_response_keys(json)
+        json = api_class.transform_response(json)
         render json: json, status: status || (action_name.to_sym == :create ? :created : :ok)
       end
 

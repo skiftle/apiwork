@@ -27,13 +27,13 @@ module Apiwork
 
       def transformed_query_parameters
         parameters = request.query_parameters.deep_symbolize_keys
-        parameters = api_class.transform_request_keys(parameters)
+        parameters = api_class.transform_request(parameters)
         adapter.transform_request(parameters)
       end
 
       def transformed_body_parameters
         parameters = request.request_parameters.deep_symbolize_keys
-        parameters = api_class.transform_request_keys(parameters)
+        parameters = api_class.transform_request(parameters)
         adapter.transform_request(parameters)
       end
     end
