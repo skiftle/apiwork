@@ -18,11 +18,7 @@ module Apiwork
       Apiwork::Spec.register(Apiwork::Spec::Zod)
       Apiwork::Spec.register(Apiwork::Spec::Typescript)
 
-      if Rails.root.join('config/apis').exist?
-        Dir[Rails.root.join('config/apis/**/*.rb')].sort.each do |file|
-          load file
-        end
-      end
+      Dir[Rails.root.join('config/apis/**/*.rb')].sort.each(&method(:load))
     end
   end
 end
