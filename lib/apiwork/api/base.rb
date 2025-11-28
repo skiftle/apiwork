@@ -115,15 +115,14 @@ module Apiwork
         def define_union(name, scope: nil, &block)
           raise ArgumentError, 'Union type requires a block' unless block_given?
 
-          union_definition = Contract::UnionDefinition.new(scope)
-          union_definition.instance_eval(&block)
+          union_builder = Descriptor::UnionBuilder.new
+          union_builder.instance_eval(&block)
 
-          Descriptor::Registry.register_union(
-            name,
-            union_definition.serialize,
-            scope: scope,
-            api_class: self
-          )
+          register_union(name, union_builder.serialize, scope:)
+        end
+
+        def register_union(name, data, scope: nil)
+          Descriptor::Registry.register_union(name, data, scope:, api_class: self)
         end
 
         def resolve_type(name, contract_class:, scope: nil)

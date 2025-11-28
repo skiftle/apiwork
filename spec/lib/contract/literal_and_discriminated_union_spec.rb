@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Literal and Discriminated Union Features' do
   describe 'Literal type' do
     let(:contract_class) do
-      Class.new(Apiwork::Contract::Base) do
+      create_test_contract do
         action :test do
           request do
             body do
@@ -40,7 +40,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
 
     it 'raises error if value parameter is missing' do
       expect do
-        Class.new(Apiwork::Contract::Base) do
+        create_test_contract do
           action :test do
             request do
               body do
@@ -55,8 +55,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
 
   describe 'Discriminated union' do
     let(:contract_class) do
-      Class.new(Apiwork::Contract::Base) do
-        # Define custom types first
+      create_test_contract do
         type :string_filter do
           param :value, type: :string
         end
@@ -126,7 +125,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
   describe 'DSL validation errors' do
     it 'raises error when using discriminator without union type' do
       expect do
-        Class.new(Apiwork::Contract::Base) do
+        create_test_contract do
           action :test do
             request do
               body do
@@ -140,7 +139,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
 
     it 'raises error when using tag without discriminator' do
       expect do
-        Class.new(Apiwork::Contract::Base) do
+        create_test_contract do
           action :test do
             request do
               body do
@@ -156,7 +155,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
 
     it 'raises error when discriminator is present but variant lacks tag' do
       expect do
-        Class.new(Apiwork::Contract::Base) do
+        create_test_contract do
           action :test do
             request do
               body do

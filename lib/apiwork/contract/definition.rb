@@ -761,11 +761,7 @@ module Apiwork
 
         raise ArgumentError, "enum must be a Symbol (reference) or Array (inline values), got #{enum.class}" unless enum.is_a?(Symbol)
 
-        values = if @contract_class.api_class
-                   @contract_class.api_class.resolve_enum(enum, scope: self)
-                 else
-                   API::Descriptor::EnumStore.resolve(enum, scope: self, api_class: nil)
-                 end
+        values = @contract_class.api_class.resolve_enum(enum, scope: self)
 
         if values
           { ref: enum, values: values }

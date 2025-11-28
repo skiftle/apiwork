@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Security and edge case validation' do
-  let(:contract_class) { Class.new(Apiwork::Contract::Base) }
+  let(:contract_class) { create_test_contract }
 
   describe 'large array handling' do
     let(:definition) do

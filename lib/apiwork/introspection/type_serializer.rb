@@ -70,7 +70,7 @@ module Apiwork
       end
 
       def expand(definition, contract_class: nil, type_name: nil)
-        temp_contract = contract_class || Class.new(Apiwork::Contract::Base)
+        temp_contract = contract_class || create_temp_contract
 
         temp_definition = Apiwork::Contract::Definition.new(
           type: :body,
@@ -80,6 +80,12 @@ module Apiwork
         temp_definition.instance_eval(&definition)
 
         DefinitionSerializer.new(temp_definition).serialize
+      end
+
+      def create_temp_contract
+        contract = Class.new(Apiwork::Contract::Base)
+        contract.instance_variable_set(:@api_class, @api)
+        contract
       end
     end
   end

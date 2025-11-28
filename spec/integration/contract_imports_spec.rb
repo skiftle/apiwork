@@ -11,7 +11,7 @@ RSpec.describe 'Contract Imports' do
 
   describe 'basic import functionality' do
     let(:user_contract) do
-      Class.new(Apiwork::Contract::Base) do
+      create_test_contract do
         type :address do
           param :street, type: :string, required: true
           param :city, type: :string, required: true
@@ -23,7 +23,7 @@ RSpec.describe 'Contract Imports' do
     end
 
     let(:order_contract) do
-      Class.new(Apiwork::Contract::Base) do
+      create_test_contract do
         type :order_item do
           param :product_id, type: :uuid, required: true
           param :quantity, type: :integer, required: true
@@ -33,7 +33,7 @@ RSpec.describe 'Contract Imports' do
 
     it 'allows importing types from another contract' do
       uc = user_contract
-      importing_contract = Class.new(Apiwork::Contract::Base) do
+      importing_contract = create_test_contract do
         import uc, as: :user
 
         action :create do
@@ -52,7 +52,7 @@ RSpec.describe 'Contract Imports' do
 
     it 'allows importing enums from another contract' do
       uc = user_contract
-      importing_contract = Class.new(Apiwork::Contract::Base) do
+      importing_contract = create_test_contract do
         import uc, as: :user
 
         action :create do
@@ -64,10 +64,10 @@ RSpec.describe 'Contract Imports' do
         end
       end
 
-      # Should be able to resolve the imported enum
       enum_values = Apiwork::API::Descriptor::EnumStore.resolve(
         :user_status,
-        contract_class: importing_contract
+        contract_class: importing_contract,
+        api_class: importing_contract.api_class
       )
       expect(enum_values).to eq(%w[active inactive suspended])
     end
@@ -75,7 +75,7 @@ RSpec.describe 'Contract Imports' do
     it 'supports multiple imports' do
       uc = user_contract
       oc = order_contract
-      importing_contract = Class.new(Apiwork::Contract::Base) do
+      importing_contract = create_test_contract do
         import uc, as: :user
         import oc, as: :order
 
@@ -98,7 +98,7 @@ RSpec.describe 'Contract Imports' do
 
     it 'validates that import is a Class' do
       expect do
-        Class.new(Apiwork::Contract::Base) do
+        create_test_contract do
           import 'UserContract', as: :user
         end
       end.to raise_error(ArgumentError, /import must be a Class constant/)
@@ -108,7 +108,7 @@ RSpec.describe 'Contract Imports' do
       not_a_contract = Class.new
 
       expect do
-        Class.new(Apiwork::Contract::Base) do
+        create_test_contract do
           import not_a_contract, as: :other
         end
       end.to raise_error(ArgumentError, /import must be a Contract class/)
@@ -117,7 +117,7 @@ RSpec.describe 'Contract Imports' do
     it 'validates that alias is a Symbol' do
       uc = user_contract
       expect do
-        Class.new(Apiwork::Contract::Base) do
+        create_test_contract do
           import uc, as: 'user'
         end
       end.to raise_error(ArgumentError, /import alias must be a Symbol/)
@@ -126,19 +126,14 @@ RSpec.describe 'Contract Imports' do
 
   describe 'with dynamically created contracts' do
     it 'allows importing from dynamically created contracts' do
-      # Create a dynamically created contract
-      user_contract = Class.new(Apiwork::Contract::Base)
-
-      # Register a type on it
-      user_contract.class_eval do
+      user_contract = create_test_contract do
         type :address do
           param :street, type: :string
         end
       end
 
-      # Import from the dynamically created contract
       uc = user_contract
-      order_contract = Class.new(Apiwork::Contract::Base) do
+      order_contract = create_test_contract do
         import uc, as: :user
 
         action :create do
@@ -158,11 +153,9 @@ RSpec.describe 'Contract Imports' do
 
   describe 'circular import detection' do
     it 'allows mutual imports between contracts' do
-      contract_a = Class.new(Apiwork::Contract::Base)
+      contract_a = create_test_contract
+      contract_b = create_test_contract
 
-      contract_b = Class.new(Apiwork::Contract::Base)
-
-      # Create mutual imports (both contracts import each other)
       a = contract_a
       b = contract_b
 
@@ -182,26 +175,19 @@ RSpec.describe 'Contract Imports' do
         end
       end
 
-      # Mutual imports should work fine - no circular error
       expect(contract_a.resolve_custom_type(:b_b_type)).not_to be_nil
       expect(contract_b.resolve_custom_type(:a_a_type)).not_to be_nil
     end
 
     it 'detects circular import loops during resolution' do
-      # This test verifies the visited_contracts Set prevents infinite loops
-      # The circular check triggers when we visit the same contract twice in one resolution chain
-
-      contract_a = Class.new(Apiwork::Contract::Base)
-
-      contract_b = Class.new(Apiwork::Contract::Base)
-
-      contract_c = Class.new(Apiwork::Contract::Base)
+      contract_a = create_test_contract
+      contract_b = create_test_contract
+      contract_c = create_test_contract
 
       a = contract_a
       b = contract_b
       c = contract_c
 
-      # Create a chain: A imports B, B imports C, C imports A
       contract_a.class_eval do
         import b, as: :b
       end
@@ -214,8 +200,6 @@ RSpec.describe 'Contract Imports' do
         import a, as: :a
       end
 
-      # Now try to resolve a type that would loop: A -> B -> C -> A
-      # Looking for :b_c_a_something from contract_a should detect the loop
       expect do
         contract_a.resolve_custom_type(:b_c_a_something)
       end.to raise_error(Apiwork::ConfigurationError)
@@ -224,7 +208,7 @@ RSpec.describe 'Contract Imports' do
 
   describe 'serialization with imports' do
     let(:user_contract) do
-      Class.new(Apiwork::Contract::Base) do
+      create_test_contract do
         type :address do
           param :street, type: :string, required: true
           param :city, type: :string, required: true
@@ -234,7 +218,7 @@ RSpec.describe 'Contract Imports' do
 
     it 'serializes imported types correctly' do
       uc = user_contract
-      order_contract = Class.new(Apiwork::Contract::Base) do
+      order_contract = create_test_contract do
         import uc, as: :user
 
         action :create do
@@ -257,7 +241,7 @@ RSpec.describe 'Contract Imports' do
 
   describe 'type resolution priority' do
     let(:base_contract) do
-      Class.new(Apiwork::Contract::Base) do
+      create_test_contract do
         type :metadata do
           param :version, type: :integer
         end
@@ -266,7 +250,7 @@ RSpec.describe 'Contract Imports' do
 
     it 'prefers local types over imported types with same name' do
       bc = base_contract
-      importing_contract = Class.new(Apiwork::Contract::Base) do
+      importing_contract = create_test_contract do
         import bc, as: :base
 
         # Define local type with same base name

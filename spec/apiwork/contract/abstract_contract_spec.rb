@@ -5,15 +5,13 @@ require 'rails_helper'
 RSpec.describe 'Abstract Contract' do
   describe 'abstract behavior' do
     let(:abstract_contract) do
-      Class.new(Apiwork::Contract::Base) do
+      create_test_contract do
         abstract
       end
     end
 
     let(:concrete_contract) do
-      Class.new(abstract_contract) do
-        # Inherits from abstract contract
-      end
+      Class.new(abstract_contract)
     end
 
     it 'allows marking class as abstract' do
@@ -35,7 +33,10 @@ RSpec.describe 'Abstract Contract' do
 
   describe 'BaseContract pattern' do
     before(:all) do
-      # Define abstract base contract for testing
+      @test_api = Apiwork::API.draw '/test_namespace' do
+        resources :posts
+      end
+
       module TestNamespace
         class PostSchema < Apiwork::Schema::Base
         end
@@ -62,6 +63,7 @@ RSpec.describe 'Abstract Contract' do
       TestNamespace.send(:remove_const, :PostSchema)
       TestNamespace.send(:remove_const, :BaseContract)
       TestNamespace.send(:remove_const, :PostContract)
+      Apiwork::API::Registry.unregister('/test_namespace')
     end
 
     it 'BaseContract is abstract' do

@@ -71,61 +71,15 @@ module Apiwork
         end
 
         def type(name, description: nil, example: nil, format: nil, deprecated: false, &block)
-          if api_class
-            api_class.define_type(
-              name,
-              scope: self,
-              description: description,
-              example: example,
-              format: format,
-              deprecated: deprecated,
-              &block
-            )
-          else
-            API::Descriptor::Registry.register_type(
-              name,
-              scope: self,
-              api_class: nil,
-              description: description,
-              example: example,
-              format: format,
-              deprecated: deprecated,
-              &block
-            )
-          end
+          api_class.define_type(name, scope: self, description:, example:, format:, deprecated:, &block)
         end
 
         def enum(name, values:, description: nil, example: nil, deprecated: false)
-          if api_class
-            api_class.define_enum(
-              name,
-              values: values,
-              scope: self,
-              description: description,
-              example: example,
-              deprecated: deprecated
-            )
-          else
-            API::Descriptor::Registry.register_enum(
-              name,
-              values,
-              scope: self,
-              api_class: nil,
-              description: description,
-              example: example,
-              deprecated: deprecated
-            )
-          end
+          api_class.define_enum(name, values:, scope: self, description:, example:, deprecated:)
         end
 
         def union(name, &block)
-          if api_class
-            api_class.define_union(name, scope: self, &block)
-          else
-            union_definition = Contract::UnionDefinition.new(self)
-            union_definition.instance_eval(&block)
-            API::Descriptor::Registry.register_union(name, union_definition.serialize, scope: self, api_class: nil)
-          end
+          api_class.define_union(name, scope: self, &block)
         end
 
         # DOCUMENTATION
@@ -159,11 +113,7 @@ module Apiwork
         end
 
         def resolve_custom_type(type_name)
-          if api_class
-            api_class.resolve_type(type_name, contract_class: self)
-          else
-            API::Descriptor::TypeStore.resolve(type_name, contract_class: self, api_class: nil)
-          end
+          api_class.resolve_type(type_name, contract_class: self)
         end
 
         def action_definition(action_name)
@@ -206,19 +156,19 @@ module Apiwork
         end
 
         def register_enum(name, values)
-          API::Descriptor::Registry.register_enum(name, values, scope: self, api_class: api_class)
+          api_class.define_enum(name, values:, scope: self)
         end
 
         def register_type(name, &block)
-          API::Descriptor::Registry.register_type(name, scope: self, api_class: api_class, &block)
+          api_class.define_type(name, scope: self, &block)
         end
 
         def register_union(name, data)
-          API::Descriptor::Registry.register_union(name, data, scope: self, api_class: api_class)
+          api_class.register_union(name, data, scope: self)
         end
 
         def register_global_type(name, &block)
-          API::Descriptor::Registry.register_type(name, scope: nil, api_class: api_class, &block)
+          api_class.define_type(name, scope: nil, &block)
         end
 
         def resolve_type(name)

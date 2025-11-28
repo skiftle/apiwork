@@ -17,7 +17,7 @@ RSpec.describe 'Contract Serialization' do
     end
 
     it 'serializes simple params' do
-      contract_class = Class.new(Apiwork::Contract::Base) do
+      contract_class = create_test_contract do
         action :create do
           request do
             body do
@@ -49,7 +49,7 @@ RSpec.describe 'Contract Serialization' do
     end
 
     it 'serializes object with shape' do
-      contract_class = Class.new(Apiwork::Contract::Base) do
+      contract_class = create_test_contract do
         action :create do
           request do
             body do
@@ -105,7 +105,7 @@ RSpec.describe 'Contract Serialization' do
     end
 
     it 'serializes arrays with of type' do
-      contract_class = Class.new(Apiwork::Contract::Base) do
+      contract_class = create_test_contract do
         action :create do
           request do
             body do
@@ -135,7 +135,7 @@ RSpec.describe 'Contract Serialization' do
     end
 
     it 'serializes enums' do
-      contract_class = Class.new(Apiwork::Contract::Base) do
+      contract_class = create_test_contract do
         action :create do
           request do
             body do
@@ -165,7 +165,7 @@ RSpec.describe 'Contract Serialization' do
     end
 
     it 'serializes param with as: transformation' do
-      contract_class = Class.new(Apiwork::Contract::Base) do
+      contract_class = create_test_contract do
         action :create do
           request do
             body do
@@ -195,7 +195,7 @@ RSpec.describe 'Contract Serialization' do
     end
 
     it 'serializes union types' do
-      contract_class = Class.new(Apiwork::Contract::Base) do
+      contract_class = create_test_contract do
         action :create do
           request do
             body do
@@ -226,9 +226,7 @@ RSpec.describe 'Contract Serialization' do
     end
 
     it 'serializes custom types' do
-      contract_class = Class.new(Apiwork::Contract::Base) do
-        def self.name = 'TestShippingContract'
-
+      contract_class = create_test_contract do
         type :address do
           param :street, type: :string, required: true
           param :city, type: :string, required: true
@@ -260,9 +258,7 @@ RSpec.describe 'Contract Serialization' do
     end
 
     it 'returns type references for custom types in unions' do
-      contract_class = Class.new(Apiwork::Contract::Base) do
-        def self.name = 'TestTest_unionContract'
-
+      contract_class = create_test_contract do
         type :test_union_filter_a do
           param :equal, type: :string, required: false
           param :contains, type: :string, required: false
@@ -304,9 +300,7 @@ RSpec.describe 'Contract Serialization' do
     end
 
     it 'returns type references for array of custom types in unions' do
-      contract_class = Class.new(Apiwork::Contract::Base) do
-        def self.name = 'TestTest_array_unionContract'
-
+      contract_class = create_test_contract do
         type :test_union_filter_b do
           param :equal, type: :string, required: false
           param :contains, type: :string, required: false
@@ -350,7 +344,7 @@ RSpec.describe 'Contract Serialization' do
 
   describe 'ActionDefinition#as_json' do
     it 'serializes action with input and output' do
-      contract_class = Class.new(Apiwork::Contract::Base) do
+      contract_class = create_test_contract do
         action :create do
           request do
             body do
@@ -420,7 +414,7 @@ RSpec.describe 'Contract Serialization' do
     end
 
     it 'returns empty hash for missing definitions' do
-      contract_class = Class.new(Apiwork::Contract::Base) do
+      contract_class = create_test_contract do
         action :destroy do
           # No input or output defined
         end
@@ -437,7 +431,7 @@ RSpec.describe 'Contract Serialization' do
 
   describe 'Contract::Base.as_json' do
     it 'serializes entire contract with all actions' do
-      contract_class = Class.new(Apiwork::Contract::Base) do
+      contract_class = create_test_contract do
         action :index do
           response do
             body do
@@ -473,7 +467,7 @@ RSpec.describe 'Contract Serialization' do
 
   describe 'Contract::Base.introspect' do
     it 'returns introspection for specific action' do
-      contract_class = Class.new(Apiwork::Contract::Base) do
+      contract_class = create_test_contract do
         action :create do
           request do
             body do
@@ -514,7 +508,7 @@ RSpec.describe 'Contract Serialization' do
     end
 
     it 'returns nil for non-existent action' do
-      contract_class = Class.new(Apiwork::Contract::Base)
+      contract_class = create_test_contract
 
       json = contract_class.introspect(:nonexistent)
 
@@ -559,8 +553,7 @@ RSpec.describe 'Contract Serialization' do
 
     context 'when API definition is not available' do
       it 'falls back to explicitly defined actions' do
-        # Create a contract without any API definition
-        contract_class = Class.new(Apiwork::Contract::Base) do
+        contract_class = create_test_contract do
           action :custom_action do
             request do
               body do
@@ -579,13 +572,7 @@ RSpec.describe 'Contract Serialization' do
   end
 
   describe 'Definition#meta' do
-    let(:contract_class) do
-      Class.new(Apiwork::Contract::Base) do
-        def self.name
-          'TestContract'
-        end
-      end
-    end
+    let(:contract_class) { create_test_contract }
 
     it 'creates meta param if not exists' do
       definition = Apiwork::Contract::Definition.new(
@@ -631,7 +618,7 @@ RSpec.describe 'Contract Serialization' do
     end
 
     it 'works in response body context' do
-      contract_class_with_meta = Class.new(Apiwork::Contract::Base) do
+      contract_class_with_meta = create_test_contract do
         action :test do
           response do
             body do

@@ -5,9 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Parser Nested Custom Type Enum Validation' do
   describe 'output validation with nested custom types' do
     it 'validates enum values in nested custom types' do
-      # Define a custom type with enum
-      contract_class = Class.new(Apiwork::Contract::Base) do
-        # Register custom type for account
+      contract_class = create_test_contract do
         type :account do
           param :id, type: :integer, required: true
           param :name, type: :string, required: true
@@ -70,7 +68,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
     end
 
     it 'validates type errors in nested custom types without coercion' do
-      contract_class = Class.new(Apiwork::Contract::Base) do
+      contract_class = create_test_contract do
         type :account do
           param :id, type: :integer, required: true
           param :name, type: :string, required: true
@@ -101,8 +99,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
     end
 
     it 'validates deeply nested custom types' do
-      contract_class = Class.new(Apiwork::Contract::Base) do
-        # Nested custom type
+      contract_class = create_test_contract do
         type :address do
           param :city, type: :string, required: true
           param :country, type: :string, enum: %w[US UK SE], required: true

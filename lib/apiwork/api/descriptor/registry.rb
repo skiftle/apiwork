@@ -49,24 +49,22 @@ module Apiwork
             scoped_enum_name = EnumStore.scoped_name(scope, enum_name)
             filter_name = :"#{enum_name}_filter"
 
-            contract_class = scope || begin
-              klass = Class.new(Apiwork::Contract::Base)
-              klass.instance_variable_set(:@api_class, api_class)
-              klass
-            end
+            union_builder = UnionBuilder.new
+            union_builder.variant(type: scoped_enum_name)
+            union_builder.variant(type: :object, partial: true)
 
-            union_definition = Apiwork::Contract::UnionDefinition.new(contract_class)
+            union_data = union_builder.serialize
 
-            union_definition.variant(type: scoped_enum_name)
-
-            union_definition.variant(type: :object, partial: true) do
-              param :eq, type: scoped_enum_name
-              param :in, type: :array, of: scoped_enum_name
-            end
-
-            union_data = union_definition.serialize
+            union_data[:variants][1][:shape] = build_enum_filter_shape(scoped_enum_name)
 
             TypeStore.register_union(filter_name, union_data, scope: scope, api_class: api_class)
+          end
+
+          def build_enum_filter_shape(enum_type)
+            {
+              eq: { name: :eq, type: enum_type, required: false },
+              in: { name: :in, type: :array, of: enum_type, required: false }
+            }
           end
 
           public
