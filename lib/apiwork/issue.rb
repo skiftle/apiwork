@@ -31,5 +31,14 @@ module Apiwork
     def as_json
       to_h
     end
+
+    def to_s
+      path_str = path.any? ? " at #{pointer}" : ''
+      "[#{code}]#{path_str} #{detail}"
+    end
+
+    def warn
+      Rails.logger.warn("[Apiwork] #{self}")
+    end
   end
 end
