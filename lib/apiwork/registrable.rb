@@ -2,9 +2,13 @@
 
 module Apiwork
   module Registrable
-    def identifier(name = nil)
-      @identifier = name.to_sym if name
-      @identifier
+    extend ActiveSupport::Concern
+
+    class_methods do
+      def identifier(name = nil)
+        @identifier = name.to_sym if name
+        @identifier
+      end
     end
   end
 end

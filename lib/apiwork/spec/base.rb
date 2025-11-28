@@ -3,7 +3,7 @@
 module Apiwork
   module Spec
     class Base
-      extend Registrable
+      include Registrable
       include Configurable
 
       attr_reader :data,

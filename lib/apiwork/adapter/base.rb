@@ -3,7 +3,7 @@
 module Apiwork
   module Adapter
     class Base
-      extend Registrable
+      include Registrable
       include Configurable
 
       def register_api_types(type_registrar, schema_data)
