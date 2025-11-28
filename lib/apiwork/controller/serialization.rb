@@ -25,9 +25,8 @@ module Apiwork
       end
 
       def render_error(issues, status: :bad_request)
-        issues_array = Array(issues)
-        response = adapter.render_error(issues_array, action_data)
-        render json: response, status: status
+        json = adapter.render_error(issues, action_data)
+        render json: json, status: status
       end
 
       private
