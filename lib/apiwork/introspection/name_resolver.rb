@@ -25,8 +25,7 @@ module Apiwork
       end
 
       def type_global_for_api?(type_name, api_class:)
-        store = API::Descriptor::TypeStore.send(:storage, api_class)
-        metadata = store[type_name]
+        metadata = api_class.descriptors.type_metadata(type_name)
         return false unless metadata
 
         metadata[:scope].nil?

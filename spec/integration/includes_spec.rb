@@ -70,11 +70,11 @@ RSpec.describe 'Includes API', type: :request do
         Api::V1::CommentContract.action_definitions = {}
       end
 
-      # Clear descriptor registry cache for the include type
-      Apiwork::API::Descriptor::Registry.clear!
+      # Clear descriptors cache for the include type
+      api = Apiwork::API.find('/api/v1')
+      api&.descriptors&.clear!
 
       # Reset contracts_built_for to force rebuild
-      api = Apiwork::API.find('/api/v1')
       api&.instance_variable_set(:@contracts_built_for, Set.new)
 
       # Rebuild actions after clearing (lazy loading will rebuild on demand)
@@ -95,11 +95,11 @@ RSpec.describe 'Includes API', type: :request do
         Api::V1::CommentContract.action_definitions = {}
       end
 
-      # Clear descriptor registry cache
-      Apiwork::API::Descriptor::Registry.clear!
+      # Clear descriptors cache
+      api = Apiwork::API.find('/api/v1')
+      api&.descriptors&.clear!
 
       # Reset contracts_built_for to force rebuild
-      api = Apiwork::API.find('/api/v1')
       api&.instance_variable_set(:@contracts_built_for, Set.new)
 
       # Rebuild actions after clearing (lazy loading will rebuild on demand)
@@ -146,11 +146,11 @@ RSpec.describe 'Includes API', type: :request do
           Api::V1::CommentContract.action_definitions = {}
         end
 
-        # Clear descriptor registry cache for the include type
-        Apiwork::API::Descriptor::Registry.clear!
+        # Clear descriptors cache for the include type
+        api = Apiwork::API.find('/api/v1')
+        api&.descriptors&.clear!
 
         # Reset contracts_built_for to force rebuild
-        api = Apiwork::API.find('/api/v1')
         api&.instance_variable_set(:@contracts_built_for, Set.new)
 
         # Rebuild actions after clearing (lazy loading will rebuild on demand)
@@ -172,11 +172,11 @@ RSpec.describe 'Includes API', type: :request do
           Api::V1::CommentContract.action_definitions = {}
         end
 
-        # Clear descriptor registry cache
-        Apiwork::API::Descriptor::Registry.clear!
+        # Clear descriptors cache
+        api = Apiwork::API.find('/api/v1')
+        api&.descriptors&.clear!
 
         # Reset contracts_built_for to force rebuild
-        api = Apiwork::API.find('/api/v1')
         api&.instance_variable_set(:@contracts_built_for, Set.new)
 
         # Rebuild actions after clearing (lazy loading will rebuild on demand)

@@ -6,9 +6,9 @@ module Apiwork
       include Abstractable
       include Serialization
 
-      class_attribute :_model_class
       class_attribute :attribute_definitions, default: {}
       class_attribute :association_definitions, default: {}
+      class_attribute :_model_class
       class_attribute :_root, default: nil
       class_attribute :_auto_detection_complete, default: false
       class_attribute :_adapter_config, default: {}

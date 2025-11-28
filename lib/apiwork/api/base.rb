@@ -5,6 +5,7 @@ module Apiwork
     class Base
       class << self
         attr_reader :adapter_config,
+                    :descriptors,
                     :metadata,
                     :mount_path,
                     :namespaces,
@@ -17,6 +18,7 @@ module Apiwork
           @specs = {}
           @spec_configs = {}
           @contracts_built_for = Set.new
+          @descriptors = Descriptors.new
 
           @namespaces = path == '/' ? [:root] : path.split('/').reject(&:empty?).map(&:to_sym)
 
@@ -86,13 +88,13 @@ module Apiwork
         def type(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false, &block)
           raise ArgumentError, 'Block required for type definition' unless block_given?
 
-          Descriptor::Registry.register_type(name, scope:, api_class: self, description:, example:, format:, deprecated:, &block)
+          descriptors.register_type(name, scope:, description:, example:, format:, deprecated:, &block)
         end
 
         def enum(name, values:, scope: nil, description: nil, example: nil, deprecated: false)
           raise ArgumentError, 'Values array required for enum definition' if values.nil? || !values.is_a?(Array)
 
-          Descriptor::Registry.register_enum(name, values, scope:, api_class: self, description:, example:, deprecated:)
+          descriptors.register_enum(name, values, scope:, description:, example:, deprecated:)
         end
 
         def union(name, scope: nil, discriminator: nil, &block)
@@ -100,23 +102,23 @@ module Apiwork
 
           union_builder = Descriptor::UnionBuilder.new(discriminator:)
           union_builder.instance_eval(&block)
-          Descriptor::Registry.register_union(name, union_builder.serialize, scope:, api_class: self)
+          descriptors.register_union(name, union_builder.serialize, scope:)
         end
 
         def resolve_type(name, scope: nil)
-          Descriptor::Registry.resolve_type(name, scope:, api_class: self)
+          descriptors.resolve_type(name, scope:)
         end
 
         def resolve_enum(name, scope:)
-          Descriptor::Registry.resolve_enum(name, scope:, api_class: self)
+          descriptors.resolve_enum(name, scope:)
         end
 
         def scoped_type_name(scope, name)
-          Descriptor::TypeStore.scoped_name(scope, name)
+          descriptors.scoped_name(scope, name)
         end
 
         def scoped_enum_name(scope, name)
-          Descriptor::EnumStore.scoped_name(scope, name)
+          descriptors.scoped_name(scope, name)
         end
 
         def info(&block)
