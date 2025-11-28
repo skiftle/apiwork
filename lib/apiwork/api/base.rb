@@ -20,6 +20,7 @@ module Apiwork
           @spec_configs = {}
           @type_system = TypeSystem.new
           @built_contracts = Set.new
+          @key_format = :keep
 
           @namespaces = path == '/' ? [] : path.split('/').reject(&:empty?).map(&:to_sym)
 
@@ -29,6 +30,33 @@ module Apiwork
           Registry.register(self)
 
           @adapter_config = {}
+        end
+
+        def key_format(format = nil)
+          return @key_format if format.nil?
+
+          valid = %i[keep camel underscore]
+          raise ConfigurationError, "key_format must be one of #{valid}" unless valid.include?(format)
+
+          @key_format = format
+        end
+
+        def transform_request_keys(hash)
+          case @key_format
+          when :camel
+            hash.deep_transform_keys { |key| key.to_s.underscore.to_sym }
+          else
+            hash
+          end
+        end
+
+        def transform_response_keys(hash)
+          case @key_format
+          when :camel
+            hash.deep_transform_keys { |key| key.to_s.camelize(:lower).to_sym }
+          else
+            hash
+          end
         end
 
         def spec(type, path: nil, &block)

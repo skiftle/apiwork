@@ -14,9 +14,11 @@ Apiwork::API.draw '/api/v1' do
     description 'Dummy API for the Apiwork gem'
   end
 
+  # API-level key format
+  key_format :keep
+
   # API-level adapter configuration
   adapter do
-    key_format :keep
     pagination do
       default_size 20
       max_size 200

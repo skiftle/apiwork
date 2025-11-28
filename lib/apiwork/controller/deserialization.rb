@@ -27,14 +27,14 @@ module Apiwork
 
       def transformed_query_parameters
         parameters = request.query_parameters.deep_symbolize_keys
-        schema_class = contract_class.schema_class
-        schema_class ? adapter.transform_request(parameters, schema_class) : parameters
+        parameters = api_class.transform_request_keys(parameters)
+        adapter.transform_request(parameters)
       end
 
       def transformed_body_parameters
         parameters = request.request_parameters.deep_symbolize_keys
-        schema_class = contract_class.schema_class
-        schema_class ? adapter.transform_request(parameters, schema_class) : parameters
+        parameters = api_class.transform_request_keys(parameters)
+        adapter.transform_request(parameters)
       end
     end
   end

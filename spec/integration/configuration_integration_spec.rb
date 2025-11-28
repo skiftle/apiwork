@@ -14,8 +14,9 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
   describe 'API-level adapter configuration' do
     let(:config_test_api) do
       Apiwork::API.draw '/api/config_test' do
+        key_format :camel
+
         adapter do
-          key_format :camel
           pagination do
             default_size 25
             max_size 100
@@ -44,15 +45,20 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
       # Should use API configuration via resolve_option
       expect(schema_class.resolve_option(:pagination, :default_size)).to eq(25)
       expect(schema_class.resolve_option(:pagination, :max_size)).to eq(100)
-      expect(schema_class.resolve_option(:key_format)).to eq(:camel)
+    end
+
+    it 'applies key_format at API level' do
+      api = Apiwork::API.find('/api/config_test')
+      expect(api.key_format).to eq(:camel)
     end
   end
 
   describe 'Schema-level adapter configuration override' do
     let(:schema_override_api) do
       Apiwork::API.draw '/api/schema_override' do
+        key_format :camel
+
         adapter do
-          key_format :camel
           pagination do
             default_size 20
             max_size 200
@@ -91,17 +97,20 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
       # Schema overrides should win
       expect(schema_with_config.resolve_option(:pagination, :default_size)).to eq(50)
       expect(schema_with_config.resolve_option(:pagination, :max_size)).to eq(150)
+    end
 
-      # Non-overridden values should inherit from API
-      expect(schema_with_config.resolve_option(:key_format)).to eq(:camel)
+    it 'key_format is at API level' do
+      api = Apiwork::API.find('/api/schema_override')
+      expect(api.key_format).to eq(:camel)
     end
   end
 
   describe 'Resolution chain: Schema -> API -> Adapter default' do
     let(:resolution_api) do
       Apiwork::API.draw '/api/resolution' do
+        key_format :camel
+
         adapter do
-          key_format :camel
           pagination do
             default_size 20
             max_size 200
@@ -145,11 +154,15 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
       expect(schema.resolve_option(:pagination, :default_size)).to eq(50)
 
       # API value when not in schema
-      expect(schema.resolve_option(:key_format)).to eq(:camel)
       expect(schema.resolve_option(:pagination, :max_size)).to eq(200)
 
       # Adapter default when not in API or schema
       expect(schema.resolve_option(:pagination, :strategy)).to eq(:page)
+    end
+
+    it 'key_format is at API level' do
+      api = Apiwork::API.find('/api/resolution')
+      expect(api.key_format).to eq(:camel)
     end
   end
 
@@ -157,9 +170,7 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
     it 'validates key_format enum values' do
       expect do
         Apiwork::API.draw '/api/invalid_transform' do
-          adapter do
-            key_format :invalid_strategy
-          end
+          key_format :invalid_strategy
         end
       end.to raise_error(Apiwork::ConfigurationError, /must be one of/)
     end
@@ -190,8 +201,12 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
   describe 'API adapter method is both getter and DSL' do
     let(:dual_purpose_api) do
       Apiwork::API.draw '/api/dual_purpose' do
+        key_format :camel
+
         adapter do
-          key_format :camel
+          pagination do
+            default_size 30
+          end
         end
 
         resources :posts
@@ -211,9 +226,14 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
       expect(api.adapter).to be_a(Apiwork::Adapter::Apiwork)
     end
 
-    it 'stores config when called with block' do
+    it 'stores adapter config when called with block' do
       api = Apiwork::API.find('/api/dual_purpose')
-      expect(api.adapter_config[:key_format]).to eq(:camel)
+      expect(api.adapter_config[:pagination][:default_size]).to eq(30)
+    end
+
+    it 'stores key_format at API level' do
+      api = Apiwork::API.find('/api/dual_purpose')
+      expect(api.key_format).to eq(:camel)
     end
   end
 end

@@ -5,8 +5,6 @@ module Apiwork
     class Apiwork < Base
       identifier :apiwork
 
-      option :key_format, type: :symbol, default: :keep, enum: %i[keep camel underscore]
-
       option :pagination, type: :hash do
         option :strategy, type: :symbol, default: :page, enum: %i[page cursor]
         option :default_size, type: :integer, default: 20
@@ -48,39 +46,12 @@ module Apiwork
         { issues: issues.map(&:to_h) }
       end
 
-      def transform_request(hash, schema_class)
-        format = schema_class.resolve_option(:key_format)
-        transformed = transform_request_keys(hash, format)
-        ParamsNormalizer.call(transformed)
+      def transform_request(hash)
+        ParamsNormalizer.call(hash)
       end
 
-      def transform_response(hash, schema_class)
-        format = schema_class.resolve_option(:key_format)
-        transform_response_keys(hash, format)
-      end
-
-      private
-
-      def transform_request_keys(hash, format)
-        case format
-        when :camel
-          hash.deep_transform_keys { |key| key.to_s.underscore.to_sym }
-        when :underscore
-          hash
-        else
-          hash
-        end
-      end
-
-      def transform_response_keys(hash, format)
-        case format
-        when :camel
-          hash.deep_transform_keys { |key| key.to_s.camelize(:lower).to_sym }
-        when :underscore
-          hash
-        else
-          hash
-        end
+      def transform_response(hash)
+        hash
       end
     end
   end

@@ -20,7 +20,8 @@ module Apiwork
           result.issues.each(&:warn)
         end
 
-        json = adapter.transform_response(json, schema_class) if schema_class
+        json = adapter.transform_response(json)
+        json = api_class.transform_response_keys(json)
         render json: json, status: status || (action_name.to_sym == :create ? :created : :ok)
       end
 
