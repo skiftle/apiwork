@@ -35,25 +35,6 @@ RSpec.describe 'Contract Override Option', type: :request do
 
         expect(contract).to eq(Api::OverrideTest::PostContract)
       end
-
-      it 'metadata contract takes precedence over controller name inference' do
-        request_double = instance_double(ActionDispatch::Request, path: '/api/override_test/articles')
-        controller = Api::OverrideTest::ArticlesController.new
-
-        allow(controller).to receive(:request).and_return(request_double)
-
-        metadata_contract = controller.send(:resolve_contract_from_metadata)
-        inferred_contract = controller.send(:infer_contract_class)
-
-        expect(metadata_contract).to eq(Api::OverrideTest::PostContract)
-        expect(inferred_contract).to eq(Api::OverrideTest::ArticleContract)
-
-        controller.send(:set_current_contract)
-        actual_contract = controller.send(:current_contract)
-
-        expect(actual_contract).to eq(metadata_contract)
-        expect(actual_contract).not_to eq(inferred_contract)
-      end
     end
   end
 

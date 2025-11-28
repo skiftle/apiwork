@@ -5,7 +5,7 @@ module Apiwork
     module Concern
       extend ActiveSupport::Concern
 
-      include ContractResolution
+      include Resolution
       include Deserialization
       include Serialization
 

@@ -63,10 +63,6 @@ module Apiwork
         response
       end
 
-      def adapter
-        @adapter ||= current_contract.api_class.adapter
-      end
-
       def action_data(meta = {})
         Adapter::ActionData.new(
           name: action_name,

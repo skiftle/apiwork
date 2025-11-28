@@ -59,10 +59,6 @@ module Apiwork
 
         raise ContractError, action_request.issues
       end
-
-      def adapter
-        @adapter ||= current_contract.api_class.adapter
-      end
     end
   end
 end
