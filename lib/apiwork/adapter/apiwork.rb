@@ -13,12 +13,12 @@ module Apiwork
         option :max_size, type: :integer, default: 100
       end
 
-      def build_global_descriptors(api_class, schema_data)
-        TypeSystemBuilder.build(api_class, schema_data)
+      def register_global_types(type_registrar, schema_data)
+        TypeSystemBuilder.build(type_registrar, schema_data)
       end
 
-      def build_contract(contract_class, schema_class, actions:)
-        ContractBuilder.build(contract_class, schema_class, actions)
+      def register_contract_types(type_registrar, schema_class, actions:)
+        ContractBuilder.build(type_registrar, schema_class, actions)
       end
 
       def render_collection(collection, schema_class, action_data)

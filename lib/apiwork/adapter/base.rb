@@ -6,11 +6,11 @@ module Apiwork
       extend Registrable
       include Configurable
 
-      def build_global_descriptors(api_class, schema_data)
+      def register_global_types(type_registrar, schema_data)
         raise NotImplementedError
       end
 
-      def build_contract(contract_class, schema_class, actions:)
+      def register_contract_types(type_registrar, schema_class, actions:)
         raise NotImplementedError
       end
 

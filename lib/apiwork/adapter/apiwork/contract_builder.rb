@@ -6,12 +6,12 @@ module Apiwork
       class ContractBuilder
         MAX_RECURSION_DEPTH = 3
 
-        def self.build(contract_class, schema_class, actions)
-          new(contract_class, schema_class, actions)
+        def self.build(type_registrar, schema_class, actions)
+          new(type_registrar, schema_class, actions)
         end
 
-        def initialize(contract_class, schema_class, actions)
-          @contract_class = contract_class
+        def initialize(type_registrar, schema_class, actions)
+          @type_registrar = type_registrar
           @schema_class = schema_class
           @actions = actions
 
@@ -22,7 +22,7 @@ module Apiwork
         private
 
         attr_reader :actions,
-                    :contract_class,
+                    :type_registrar,
                     :schema_class
 
         def query_params(definition)
@@ -59,8 +59,8 @@ module Apiwork
           else
             payload_type_name = :"#{context_symbol}_payload"
 
-            unless contract_class.resolve_type(payload_type_name)
-              contract_class.type(payload_type_name) do
+            unless type_registrar.resolve_type(payload_type_name)
+              type_registrar.type(payload_type_name) do
                 builder.send(:writable_params, self, context_symbol, nested: false)
               end
             end
@@ -105,7 +105,7 @@ module Apiwork
               if import_alias
                 association_payload_type = :"#{import_alias}_nested_payload"
 
-                association_contract = contract_class.find_contract_for_schema(association_schema)
+                association_contract = type_registrar.find_contract_for_schema(association_schema)
               end
             end
 
@@ -165,7 +165,7 @@ module Apiwork
           schema_class.attribute_definitions.each do |name, attribute_definition|
             next unless attribute_definition.enum&.any?
 
-            contract_class.enum(name, values: attribute_definition.enum)
+            type_registrar.enum(name, values: attribute_definition.enum)
           end
         end
 
@@ -176,7 +176,7 @@ module Apiwork
         end
 
         def build_action_definition(action_name, action_info)
-          action_definition = contract_class.define_action(action_name)
+          action_definition = type_registrar.define_action(action_name)
 
           build_request_for_action(action_definition, action_name, action_info) unless action_definition.resets_request?
           build_response_for_action(action_definition, action_name, action_info) unless action_definition.resets_response?
@@ -255,19 +255,19 @@ module Apiwork
           discriminator_name = schema_class.discriminator_name
           builder = self
 
-          build_sti_union(union_type_name: union_type_name) do |contract, variant_schema, tag, _visited|
+          build_sti_union(union_type_name: union_type_name) do |_contract, variant_schema, tag, _visited|
             variant_schema_name = variant_schema.name.demodulize.underscore.gsub(/_schema$/, '')
             variant_type_name = :"#{variant_schema_name}_#{context_symbol}_payload"
 
-            unless contract.resolve_type(variant_type_name)
-              contract.type(variant_type_name) do
+            unless type_registrar.resolve_type(variant_type_name)
+              type_registrar.type(variant_type_name) do
                 param discriminator_name, type: :literal, value: tag.to_s, required: true
 
                 builder.send(:writable_params, self, context_symbol, nested: false)
               end
             end
 
-            contract.scoped_type_name(variant_type_name)
+            type_registrar.scoped_type_name(variant_type_name)
           end
         end
 
@@ -276,9 +276,9 @@ module Apiwork
             build_sti_response_union_type
           else
             root_key = schema_class.root_key.singular.to_sym
-            resource_type_name = contract_class.scoped_type_name(nil)
+            resource_type_name = type_registrar.scoped_type_name(nil)
 
-            register_resource_type(root_key) unless contract_class.resolve_type(resource_type_name)
+            register_resource_type(root_key) unless type_registrar.resolve_type(resource_type_name)
 
             resource_type_name
           end
@@ -294,7 +294,7 @@ module Apiwork
 
           schema_class_local = schema_class
           builder = self
-          contract_class.type(type_name) do
+          type_registrar.type(type_name) do
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
               enum_option = attribute_definition.enum ? { enum: name } : {}
 
@@ -340,13 +340,13 @@ module Apiwork
 
           type_name = type_name(:filter, depth)
 
-          existing = contract_class.resolve_type(type_name)
+          existing = type_registrar.resolve_type(type_name)
           return type_name if existing
 
           builder = self
           schema_class_local = schema_class
 
-          contract_class.type(type_name) do
+          type_registrar.type(type_name) do
             param :_and, type: :array, of: type_name, required: false
             param :_or, type: :array, of: type_name, required: false
             param :_not, type: type_name, required: false
@@ -394,7 +394,7 @@ module Apiwork
 
         def build_filter_type_for_schema(assoc_schema, visited:, depth:)
           temp_builder = self.class.allocate
-          temp_builder.instance_variable_set(:@contract_class, contract_class)
+          temp_builder.instance_variable_set(:@type_registrar, type_registrar)
           temp_builder.instance_variable_set(:@schema_class, assoc_schema)
           temp_builder.instance_variable_set(:@context, nil)
           temp_builder.send(:build_filter_type, visited: visited, depth: depth)
@@ -408,13 +408,13 @@ module Apiwork
 
           type_name = type_name(:sort, depth)
 
-          existing = contract_class.resolve_type(type_name)
+          existing = type_registrar.resolve_type(type_name)
           return type_name if existing
 
           builder = self
           schema_class_local = schema_class
 
-          contract_class.type(type_name) do
+          type_registrar.type(type_name) do
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
               next unless attribute_definition.sortable?
 
@@ -448,7 +448,7 @@ module Apiwork
 
         def build_sort_type_for_schema(assoc_schema, visited:, depth:)
           temp_builder = self.class.allocate
-          temp_builder.instance_variable_set(:@contract_class, contract_class)
+          temp_builder.instance_variable_set(:@type_registrar, type_registrar)
           temp_builder.instance_variable_set(:@schema_class, assoc_schema)
           temp_builder.instance_variable_set(:@context, nil)
           temp_builder.send(:build_sort_type, visited: visited, depth: depth)
@@ -460,17 +460,17 @@ module Apiwork
 
           type_name = type_name(:page, 1)
 
-          existing = contract_class.resolve_type(type_name)
+          existing = type_registrar.resolve_type(type_name)
           return type_name if existing
 
           if strategy == :cursor
-            contract_class.global_type(type_name) do
+            type_registrar.global_type(type_name) do
               param :after, type: :string, required: false
               param :before, type: :string, required: false
               param :size, type: :integer, required: false, min: 1, max: max_size
             end
           else
-            contract_class.global_type(type_name) do
+            type_registrar.global_type(type_name) do
               param :number, type: :integer, required: false, min: 1
               param :size, type: :integer, required: false, min: 1, max: max_size
             end
@@ -487,7 +487,7 @@ module Apiwork
         def build_include_type(visited: Set.new, depth: 0)
           type_name = type_name(:include, depth)
 
-          existing = contract_class.resolve_type(type_name)
+          existing = type_registrar.resolve_type(type_name)
           return type_name if existing
           return type_name if depth >= MAX_RECURSION_DEPTH
 
@@ -496,7 +496,7 @@ module Apiwork
           builder = self
           schema_class_local = schema_class
 
-          contract_class.type(type_name) do
+          type_registrar.type(type_name) do
             schema_class_local.association_definitions.each do |name, association_definition|
               association_resource = builder.send(:resolve_association_resource, association_definition)
               next unless association_resource
@@ -535,7 +535,7 @@ module Apiwork
 
         def build_include_type_for_schema(assoc_schema, visited:, depth:)
           temp_builder = self.class.allocate
-          temp_builder.instance_variable_set(:@contract_class, contract_class)
+          temp_builder.instance_variable_set(:@type_registrar, type_registrar)
           temp_builder.instance_variable_set(:@schema_class, assoc_schema)
           temp_builder.instance_variable_set(:@context, nil)
           temp_builder.send(:build_include_type, visited: visited, depth: depth)
@@ -549,8 +549,8 @@ module Apiwork
           builder = self
           schema = schema_class
 
-          unless contract_class.resolve_type(create_type_name)
-            contract_class.type(create_type_name) do
+          unless type_registrar.resolve_type(create_type_name)
+            type_registrar.type(create_type_name) do
               param :_type, type: :literal, value: 'create', required: true
               builder.send(:writable_params, self, :create, nested: true)
               param :_destroy, type: :boolean, required: false if schema.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
@@ -558,8 +558,8 @@ module Apiwork
           end
 
           update_type_name = :nested_update_payload
-          unless contract_class.resolve_type(update_type_name)
-            contract_class.type(update_type_name) do
+          unless type_registrar.resolve_type(update_type_name)
+            type_registrar.type(update_type_name) do
               param :_type, type: :literal, value: 'update', required: true
               builder.send(:writable_params, self, :update, nested: true)
               param :_destroy, type: :boolean, required: false if schema.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
@@ -567,12 +567,12 @@ module Apiwork
           end
 
           nested_payload_type_name = :nested_payload
-          return if contract_class.resolve_type(nested_payload_type_name)
+          return if type_registrar.resolve_type(nested_payload_type_name)
 
-          create_qualified_name = contract_class.scoped_type_name(create_type_name)
-          update_qualified_name = contract_class.scoped_type_name(update_type_name)
+          create_qualified_name = type_registrar.scoped_type_name(create_type_name)
+          update_qualified_name = type_registrar.scoped_type_name(update_type_name)
 
-          contract_class.union(nested_payload_type_name, discriminator: :_type) do
+          type_registrar.union(nested_payload_type_name, discriminator: :_type) do
             variant type: create_qualified_name, tag: 'create'
             variant type: update_qualified_name, tag: 'update'
           end
@@ -586,16 +586,16 @@ module Apiwork
           return if sti_base_schema?
 
           root_key = schema_class.root_key.singular.to_sym
-          resource_type_name = contract_class.scoped_type_name(nil)
+          resource_type_name = type_registrar.scoped_type_name(nil)
 
-          return if contract_class.resolve_type(resource_type_name)
+          return if type_registrar.resolve_type(resource_type_name)
 
           build_enums
 
           builder = self
           schema_class_local = schema_class
 
-          contract_class.type(root_key) do
+          type_registrar.type(root_key) do
             if schema_class_local.respond_to?(:sti_variant?) && schema_class_local.sti_variant?
               parent_schema = schema_class_local.superclass
               discriminator_name = parent_schema.discriminator_name
@@ -666,14 +666,14 @@ module Apiwork
 
           union_type_name = :"#{association_definition.name}_polymorphic"
 
-          existing = contract_class.resolve_type(union_type_name)
+          existing = type_registrar.resolve_type(union_type_name)
           return existing if existing
 
           builder = self
           discriminator = association_definition.discriminator
           polymorphic_local = polymorphic
 
-          contract_class.union(union_type_name, discriminator:) do
+          type_registrar.union(union_type_name, discriminator:) do
             polymorphic_local.each do |tag, schema_class|
               import_alias = builder.send(:import_association_contract, schema_class, visited)
               next unless import_alias
@@ -688,14 +688,14 @@ module Apiwork
           return nil unless variants&.any?
 
           discriminator_name = schema_class.discriminator_name
-          contract = contract_class
           variants_local = variants
+          registrar = type_registrar
 
-          contract_class.union(union_type_name, discriminator: discriminator_name) do
+          registrar.union(union_type_name, discriminator: discriminator_name) do
             variants_local.each do |tag, variant_data|
               variant_schema = variant_data[:schema]
 
-              variant_type = yield(contract, variant_schema, tag, visited)
+              variant_type = yield(registrar, variant_schema, tag, visited)
               next unless variant_type
 
               variant type: variant_type, tag: tag.to_s
@@ -709,7 +709,7 @@ module Apiwork
           union_type_name = :"#{association_definition.name}_sti"
 
           temp_builder = self.class.allocate
-          temp_builder.instance_variable_set(:@contract_class, contract_class)
+          temp_builder.instance_variable_set(:@type_registrar, type_registrar)
           temp_builder.instance_variable_set(:@schema_class, schema_class_arg)
           temp_builder.instance_variable_set(:@context, nil)
 
@@ -759,7 +759,7 @@ module Apiwork
         end
 
         def enum_filter_type(attribute_definition)
-          scoped_enum_name = contract_class.scoped_enum_name(attribute_definition.name)
+          scoped_enum_name = type_registrar.scoped_enum_name(attribute_definition.name)
           :"#{scoped_enum_name}_filter"
         end
 
@@ -805,7 +805,7 @@ module Apiwork
         def import_association_contract(association_schema, visited)
           return nil if visited.include?(association_schema)
 
-          association_contract = contract_class.find_contract_for_schema(association_schema)
+          association_contract = type_registrar.find_contract_for_schema(association_schema)
 
           unless association_contract
             contract_name = association_schema.name.sub(/Schema$/, 'Contract')
@@ -820,14 +820,15 @@ module Apiwork
 
           alias_name = association_schema.root_key.singular.to_sym
 
-          contract_class.import(association_contract, as: alias_name) unless contract_class.imports.key?(alias_name)
+          type_registrar.import(association_contract, as: alias_name) unless type_registrar.imports.key?(alias_name)
 
           if association_contract.schema?
             api_class = association_contract.api_class
             api_class&.ensure_contract_built!(association_contract)
 
+            association_type_registrar = ContractTypeRegistrar.new(association_contract)
             temp_builder = self.class.allocate
-            temp_builder.instance_variable_set(:@contract_class, association_contract)
+            temp_builder.instance_variable_set(:@type_registrar, association_type_registrar)
             temp_builder.instance_variable_set(:@schema_class, association_schema)
             temp_builder.instance_variable_set(:@context, nil)
 

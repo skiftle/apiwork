@@ -161,7 +161,8 @@ module Apiwork
           built_contracts.add(contract_class)
 
           actions = extract_actions_from_resource(resource_data)
-          adapter.build_contract(contract_class, schema_class, actions: actions)
+          type_registrar = Adapter::ContractTypeRegistrar.new(contract_class)
+          adapter.register_contract_types(type_registrar, schema_class, actions: actions)
         end
 
         def ensure_all_contracts_built!
@@ -173,7 +174,8 @@ module Apiwork
 
           schemas = collect_all_schemas
           schema_data = Adapter::SchemaData.new(schemas)
-          adapter.build_global_descriptors(self, schema_data)
+          type_registrar = Adapter::GlobalTypeRegistrar.new(self)
+          adapter.register_global_types(type_registrar, schema_data)
         end
 
         private
@@ -196,7 +198,8 @@ module Apiwork
           built_contracts.add(contract_class)
 
           actions = extract_actions_from_resource(resource_data)
-          adapter.build_contract(contract_class, schema_class, actions: actions)
+          type_registrar = Adapter::ContractTypeRegistrar.new(contract_class)
+          adapter.register_contract_types(type_registrar, schema_class, actions: actions)
 
           resource_data[:resources]&.each_value do |nested_resource|
             build_contracts_for_resource(nested_resource)
