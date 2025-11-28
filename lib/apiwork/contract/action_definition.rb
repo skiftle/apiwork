@@ -8,10 +8,6 @@ module Apiwork
                   :request_definition,
                   :response_definition
 
-      def schema_class
-        contract_class.schema_class
-      end
-
       def initialize(action_name:, contract_class:, replace: false)
         @action_name = action_name
         @contract_class = contract_class

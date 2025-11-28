@@ -6,7 +6,7 @@ module Apiwork
       extend ActiveSupport::Concern
 
       def respond_with(data, meta: {}, status: nil)
-        schema_class = contract_class.action_definition(action_name)&.schema_class
+        schema_class = contract_class.schema_class
 
         response = if schema_class
                      render_with_schema(data, schema_class, meta)
