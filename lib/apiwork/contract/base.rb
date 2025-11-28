@@ -80,15 +80,15 @@ module Apiwork
         end
 
         def type(name, description: nil, example: nil, format: nil, deprecated: false, &block)
-          api_class.define_type(name, scope: self, description:, example:, format:, deprecated:, &block)
+          api_class.type(name, scope: self, description:, example:, format:, deprecated:, &block)
         end
 
         def enum(name, values:, description: nil, example: nil, deprecated: false)
-          api_class.define_enum(name, values:, scope: self, description:, example:, deprecated:)
+          api_class.enum(name, values:, scope: self, description:, example:, deprecated:)
         end
 
         def union(name, &block)
-          api_class.define_union(name, scope: self, &block)
+          api_class.union(name, scope: self, &block)
         end
 
         # DOCUMENTATION
@@ -169,20 +169,12 @@ module Apiwork
           Parser.new(self, direction, action, **options).perform(data)
         end
 
-        def register_enum(name, values)
-          api_class.define_enum(name, values:, scope: self)
-        end
-
-        def register_type(name, &block)
-          api_class.define_type(name, scope: self, &block)
-        end
-
         def register_union(name, data)
           api_class.register_union(name, data, scope: self)
         end
 
-        def register_global_type(name, &block)
-          api_class.define_type(name, scope: nil, &block)
+        def global_type(name, &block)
+          api_class.type(name, scope: nil, &block)
         end
 
         def resolve_type(name)

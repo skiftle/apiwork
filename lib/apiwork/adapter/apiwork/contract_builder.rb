@@ -60,7 +60,7 @@ module Apiwork
             payload_type_name = :"#{context_symbol}_payload"
 
             unless contract_class.resolve_type(payload_type_name)
-              contract_class.register_type(payload_type_name) do
+              contract_class.type(payload_type_name) do
                 builder.send(:writable_params, self, context_symbol, nested: false)
               end
             end
@@ -165,7 +165,7 @@ module Apiwork
           schema_class.attribute_definitions.each do |name, attribute_definition|
             next unless attribute_definition.enum&.any?
 
-            contract_class.register_enum(name, attribute_definition.enum)
+            contract_class.enum(name, values: attribute_definition.enum)
           end
         end
 
@@ -260,7 +260,7 @@ module Apiwork
             variant_type_name = :"#{variant_schema_name}_#{context_symbol}_payload"
 
             unless contract.resolve_type(variant_type_name)
-              contract.register_type(variant_type_name) do
+              contract.type(variant_type_name) do
                 param discriminator_name, type: :literal, value: tag.to_s, required: true
 
                 builder.send(:writable_params, self, context_symbol, nested: false)
@@ -294,7 +294,7 @@ module Apiwork
 
           schema_class_local = schema_class
           builder = self
-          contract_class.register_type(type_name) do
+          contract_class.type(type_name) do
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
               enum_option = attribute_definition.enum ? { enum: name } : {}
 
@@ -346,7 +346,7 @@ module Apiwork
           builder = self
           schema_class_local = schema_class
 
-          contract_class.register_type(type_name) do
+          contract_class.type(type_name) do
             param :_and, type: :array, of: type_name, required: false
             param :_or, type: :array, of: type_name, required: false
             param :_not, type: type_name, required: false
@@ -414,7 +414,7 @@ module Apiwork
           builder = self
           schema_class_local = schema_class
 
-          contract_class.register_type(type_name) do
+          contract_class.type(type_name) do
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
               next unless attribute_definition.sortable?
 
@@ -464,13 +464,13 @@ module Apiwork
           return type_name if existing
 
           if strategy == :cursor
-            contract_class.register_global_type(type_name) do
+            contract_class.global_type(type_name) do
               param :after, type: :string, required: false
               param :before, type: :string, required: false
               param :size, type: :integer, required: false, min: 1, max: max_size
             end
           else
-            contract_class.register_global_type(type_name) do
+            contract_class.global_type(type_name) do
               param :number, type: :integer, required: false, min: 1
               param :size, type: :integer, required: false, min: 1, max: max_size
             end
@@ -496,7 +496,7 @@ module Apiwork
           builder = self
           schema_class_local = schema_class
 
-          contract_class.register_type(type_name) do
+          contract_class.type(type_name) do
             schema_class_local.association_definitions.each do |name, association_definition|
               association_resource = builder.send(:resolve_association_resource, association_definition)
               next unless association_resource
@@ -550,7 +550,7 @@ module Apiwork
           schema = schema_class
 
           unless contract_class.resolve_type(create_type_name)
-            contract_class.register_type(create_type_name) do
+            contract_class.type(create_type_name) do
               param :_type, type: :literal, value: 'create', required: true
               builder.send(:writable_params, self, :create, nested: true)
               param :_destroy, type: :boolean, required: false if schema.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
@@ -559,7 +559,7 @@ module Apiwork
 
           update_type_name = :nested_update_payload
           unless contract_class.resolve_type(update_type_name)
-            contract_class.register_type(update_type_name) do
+            contract_class.type(update_type_name) do
               param :_type, type: :literal, value: 'update', required: true
               builder.send(:writable_params, self, :update, nested: true)
               param :_destroy, type: :boolean, required: false if schema.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
@@ -595,7 +595,7 @@ module Apiwork
           builder = self
           schema_class_local = schema_class
 
-          contract_class.register_type(root_key) do
+          contract_class.type(root_key) do
             if schema_class_local.respond_to?(:sti_variant?) && schema_class_local.sti_variant?
               parent_schema = schema_class_local.superclass
               discriminator_name = parent_schema.discriminator_name
