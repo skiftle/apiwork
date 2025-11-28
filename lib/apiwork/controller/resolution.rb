@@ -15,7 +15,7 @@ module Apiwork
       end
 
       def api_class
-        @api_class ||= Apiwork::API.find(api_path)
+        @api_class ||= Apiwork::API.find(api_path) || raise_api_not_found_error
       end
 
       def api_path
@@ -43,10 +43,21 @@ module Apiwork
         end
       end
 
+      def raise_api_not_found_error
+        api_file = "config/apis/#{api_path.split('/').reject(&:blank?).join('_')}.rb"
+
+        raise ConfigurationError,
+              "No API found for #{self.class.name}. " \
+              "Create the API: #{api_file} (Apiwork::API.draw '#{api_path}')"
+      end
+
       def raise_contract_not_found_error
+        contract_name = "#{api_class.metadata.namespaces_string}::#{resource_name.to_s.singularize.camelize}Contract"
+        contract_path = "app/contracts/#{api_class.metadata.namespaces.join('/')}/#{resource_name.to_s.singularize}_contract.rb"
+
         raise ConfigurationError,
               "No contract found for #{self.class.name}. " \
-              'Ensure the resource is defined in the API and has a contract.'
+              "Create the contract: #{contract_path} (#{contract_name})"
       end
     end
   end
