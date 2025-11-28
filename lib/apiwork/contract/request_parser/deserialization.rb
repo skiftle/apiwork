@@ -2,18 +2,9 @@
 
 module Apiwork
   module Contract
-    class Parser
+    class RequestParser
       module Deserialization
-        extend ActiveSupport::Concern
-
-        private
-
-        def apply_deserialize_transformers(data)
-          return data unless data.is_a?(Hash)
-          return data unless definition
-
-          deserialize_hash(data, definition)
-        end
+        module_function
 
         def deserialize_hash(hash, definition)
           deserialized = hash.dup
@@ -21,8 +12,7 @@ module Apiwork
           definition.params.each do |name, param_options|
             next unless deserialized.key?(name)
 
-            value = deserialized[name]
-            deserialized[name] = deserialize_value(value, param_options)
+            deserialized[name] = deserialize_value(deserialized[name], param_options)
           end
 
           deserialized

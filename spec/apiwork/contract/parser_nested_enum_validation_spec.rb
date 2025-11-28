@@ -22,8 +22,6 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
         end
       end
 
-      parser = Apiwork::Contract::Parser.new(contract_class, :response_body, :show, coerce: false)
-
       # Valid nested enum values should pass
       valid_output = {
         account: {
@@ -33,7 +31,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
           first_day_of_week: 'monday'
         }
       }
-      result = parser.perform(valid_output)
+      result = contract_class.parse_response(body: valid_output, action: :show)
       expect(result.valid?).to be(true), "Expected valid result but got issues: #{result.issues.inspect}"
 
       # Invalid status enum should fail
@@ -45,7 +43,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
           first_day_of_week: 'monday'
         }
       }
-      result = parser.perform(invalid_status)
+      result = contract_class.parse_response(body: invalid_status, action: :show)
       expect(result.invalid?).to be(true)
       expect(result.issues.first.code).to eq(:invalid_value)
       expect(result.issues.first.detail).to include('Must be one of')
@@ -60,7 +58,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
           first_day_of_week: 'hahahahahaha' # Not in enum
         }
       }
-      result = parser.perform(invalid_fdow)
+      result = contract_class.parse_response(body: invalid_fdow, action: :show)
       expect(result.invalid?).to be(true)
       expect(result.issues.first.code).to eq(:invalid_value)
       expect(result.issues.first.detail).to include('Must be one of')
@@ -83,8 +81,6 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
         end
       end
 
-      parser = Apiwork::Contract::Parser.new(contract_class, :response_body, :show, coerce: false)
-
       # Wrong type (number instead of string) should fail WITHOUT coercion
       invalid_output = {
         account: {
@@ -92,7 +88,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
           name: 42 # Should be string
         }
       }
-      result = parser.perform(invalid_output)
+      result = contract_class.parse_response(body: invalid_output, action: :show)
       expect(result.invalid?).to be(true)
       expect(result.issues.first.code).to eq(:invalid_type)
       expect(result.issues.first.path).to eq([:account, :name])
@@ -119,8 +115,6 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
         end
       end
 
-      parser = Apiwork::Contract::Parser.new(contract_class, :response_body, :show, coerce: false)
-
       # Invalid enum in deeply nested object
       invalid_output = {
         account: {
@@ -131,7 +125,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
           }
         }
       }
-      result = parser.perform(invalid_output)
+      result = contract_class.parse_response(body: invalid_output, action: :show)
       expect(result.invalid?).to be(true)
       expect(result.issues.first.code).to eq(:invalid_value)
       expect(result.issues.first.path).to eq([:account, :address, :country])

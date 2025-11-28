@@ -5,23 +5,17 @@ module Apiwork
     module Resolution
       extend ActiveSupport::Concern
 
-      included do
-        before_action :set_current_contract
-      end
-
       private
 
-      def set_current_contract
-        contract = current_api&.metadata&.resolve_contract_class(resource_metadata)
-        @current_contract = contract || raise_contract_not_found_error
+      def contract_class
+        @contract_class ||= begin
+          klass = api_class&.metadata&.resolve_contract_class(resource_metadata)
+          klass || raise_contract_not_found_error
+        end
       end
 
-      def current_contract
-        @current_contract
-      end
-
-      def current_api
-        @current_api ||= Apiwork::API.find(api_path)
+      def api_class
+        @api_class ||= Apiwork::API.find(api_path)
       end
 
       def api_path
@@ -30,17 +24,17 @@ module Apiwork
       end
 
       def adapter
-        current_api.adapter
+        api_class.adapter
       end
 
       def resource_metadata
-        @resource_metadata ||= current_api&.metadata&.resources&.[](resource_name)
+        @resource_metadata ||= api_class&.metadata&.resources&.[](resource_name)
       end
 
       def resource_name
         @resource_name ||= begin
           base_name = self.class.name.underscore.gsub('_controller', '').split('/').last
-          resources = current_api&.metadata&.resources || {}
+          resources = api_class&.metadata&.resources || {}
 
           plural = base_name.to_sym
           singular = base_name.singularize.to_sym

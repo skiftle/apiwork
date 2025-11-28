@@ -2,7 +2,7 @@
 
 module Apiwork
   module Contract
-    class Parser
+    class RequestParser
       module Coercer
         module_function
 
@@ -73,7 +73,7 @@ module Apiwork
           begin
             coercer.call(value)
           rescue ArgumentError, TypeError
-            nil # Coercion failed - will be caught by type validation
+            nil
           end
         end
 

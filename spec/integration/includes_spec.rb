@@ -270,9 +270,7 @@ RSpec.describe 'Includes API', type: :request do
 
   describe 'PATCH /api/v1/posts/:id/archive with include (custom member action)' do
     it 'includes associations on custom member action' do
-      patch "/api/v1/posts/#{post1.id}/archive", params: {
-        include: { comments: true }
-      }, as: :json
+      patch "/api/v1/posts/#{post1.id}/archive?include[comments]=true", as: :json
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)

@@ -6,7 +6,7 @@ module Apiwork
       extend ActiveSupport::Concern
 
       def respond_with(resource_or_collection, meta: {}, status: nil)
-        action_definition = current_contract.action_definition(action_name)
+        action_definition = contract_class.action_definition(action_name)
         schema_class = action_definition&.schema_class
 
         response = if resource_or_collection.is_a?(Enumerable)
@@ -17,7 +17,7 @@ module Apiwork
 
         skip_validation = request.delete? && schema_class.present?
         unless skip_validation
-          result = current_contract.parse(response, :response_body, action_name, coerce: false, context: context)
+          result = contract_class.parse_response(body: response, action: action_name)
           raise ContractError, result.issues if result.invalid?
         end
 
@@ -68,7 +68,7 @@ module Apiwork
           name: action_name,
           method: request.method_symbol,
           context: context,
-          query: action_request.data,
+          query: (contract.query || {}).merge(contract.body || {}),
           meta: meta
         )
       end

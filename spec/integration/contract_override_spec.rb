@@ -30,10 +30,9 @@ RSpec.describe 'Contract Override Option', type: :request do
 
         allow(controller).to receive(:request).and_return(request_double)
 
-        controller.send(:set_current_contract)
-        contract = controller.send(:current_contract)
+        resolved_class = controller.send(:contract_class)
 
-        expect(contract).to eq(Api::OverrideTest::PostContract)
+        expect(resolved_class).to eq(Api::OverrideTest::PostContract)
       end
     end
   end
@@ -65,10 +64,9 @@ RSpec.describe 'Contract Override Option', type: :request do
 
         allow(controller).to receive(:request).and_return(request_double)
 
-        controller.send(:set_current_contract)
-        contract = controller.send(:current_contract)
+        resolved_class = controller.send(:contract_class)
 
-        expect(contract).to eq(Api::InferenceTest::PostContract)
+        expect(resolved_class).to eq(Api::InferenceTest::PostContract)
       end
     end
   end

@@ -22,11 +22,8 @@ module Apiwork
         private
 
         attr_reader :actions,
-                    :schema_class
-
-        def type_registrar
-          @type_registrar
-        end
+                    :schema_class,
+                    :type_registrar
 
         def contract_class
           type_registrar.contract_class

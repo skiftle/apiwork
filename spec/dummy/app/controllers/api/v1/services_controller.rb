@@ -14,12 +14,12 @@ module Api
       end
 
       def create
-        service = Service.create(action_request[:service])
+        service = Service.create(contract.body[:service])
         respond_with service
       end
 
       def update
-        service.update(action_request[:service])
+        service.update(contract.body[:service])
         respond_with service
       end
 

@@ -2,18 +2,9 @@
 
 module Apiwork
   module Contract
-    class Parser
+    class RequestParser
       module Coercion
-        extend ActiveSupport::Concern
-
-        private
-
-        def coerce(data)
-          return data unless data.is_a?(Hash)
-          return data unless definition
-
-          coerce_hash(data, definition)
-        end
+        module_function
 
         def coerce_hash(hash, definition)
           coerced = hash.dup
@@ -21,20 +12,17 @@ module Apiwork
           definition.params.each do |name, param_options|
             next unless coerced.key?(name)
 
-            value = coerced[name]
-            coerced[name] = coerce_value(value, param_options)
+            coerced[name] = coerce_value(coerced[name], param_options, definition)
           end
 
           coerced
         end
 
-        def coerce_value(value, param_options)
+        def coerce_value(value, param_options, definition)
           type = param_options[:type]
 
-          return coerce_union(value, param_options[:union]) if type == :union
-
-          return coerce_array(value, param_options) if type == :array && value.is_a?(Array)
-
+          return coerce_union(value, param_options[:union], definition) if type == :union
+          return coerce_array(value, param_options, definition) if type == :array && value.is_a?(Array)
           return coerce_hash(value, param_options[:shape]) if param_options[:shape] && value.is_a?(Hash)
 
           if Coercer.performable?(type)
@@ -45,7 +33,7 @@ module Apiwork
           value
         end
 
-        def coerce_array(array, param_options)
+        def coerce_array(array, param_options, definition)
           array.map do |item|
             if param_options[:shape] && item.is_a?(Hash)
               coerce_hash(item, param_options[:shape])
@@ -55,7 +43,7 @@ module Apiwork
             elsif param_options[:of] && item.is_a?(Hash)
               custom_type_block = definition.contract_class.resolve_custom_type(param_options[:of])
               if custom_type_block
-                custom_definition = Definition.new(type: @direction, contract_class: definition.contract_class)
+                custom_definition = Definition.new(type: :body, contract_class: definition.contract_class)
                 custom_definition.instance_eval(&custom_type_block)
                 coerce_hash(item, custom_definition)
               else
@@ -67,7 +55,7 @@ module Apiwork
           end
         end
 
-        def coerce_union(value, union_def)
+        def coerce_union(value, union_def, definition)
           if union_def.variants.any? { |variant| variant[:type] == :boolean }
             coerced = Coercer.perform(value, :boolean)
             return coerced unless coerced.nil?
@@ -80,7 +68,7 @@ module Apiwork
             if variant_type == :array && value.is_a?(Array) && variant_of
               custom_type_block = definition.contract_class.resolve_custom_type(variant_of)
               if custom_type_block
-                custom_definition = Definition.new(type: @direction, contract_class: definition.contract_class)
+                custom_definition = Definition.new(type: :body, contract_class: definition.contract_class)
                 custom_definition.instance_eval(&custom_type_block)
 
                 coerced_array = value.map do |item|
@@ -93,7 +81,7 @@ module Apiwork
             custom_type_block = definition.contract_class.resolve_custom_type(variant_type)
             next unless custom_type_block
 
-            custom_definition = Definition.new(type: @direction, contract_class: definition.contract_class)
+            custom_definition = Definition.new(type: :body, contract_class: definition.contract_class)
             custom_definition.instance_eval(&custom_type_block)
 
             if value.is_a?(Hash)

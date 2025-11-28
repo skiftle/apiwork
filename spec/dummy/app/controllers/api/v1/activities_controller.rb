@@ -14,12 +14,12 @@ module Api
       end
 
       def create
-        activity = Activity.create(action_request[:activity])
+        activity = Activity.create(contract.body[:activity])
         respond_with activity
       end
 
       def update
-        activity.update(action_request[:activity])
+        activity.update(contract.body[:activity])
         respond_with activity
       end
 

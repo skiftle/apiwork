@@ -10,6 +10,27 @@ module Apiwork
       class_attribute :_identifier
       class_attribute :_schema_class
 
+      attr_reader :action,
+                  :body,
+                  :issues,
+                  :query
+
+      def initialize(query:, body:, action:, coerce: true)
+        result = RequestParser.new(self.class, action:, coerce:).perform(query:, body:)
+        @query = result.query
+        @body = result.body
+        @issues = result.issues
+        @action = action.to_sym
+      end
+
+      def valid?
+        issues.empty?
+      end
+
+      def invalid?
+        issues.any?
+      end
+
       class << self
         def inherited(subclass)
           super
@@ -169,9 +190,8 @@ module Apiwork
           Apiwork::API.find(path)
         end
 
-        # DOCUMENTATION
-        def parse(data, direction, action, **options)
-          Parser.new(self, direction, action, **options).perform(data)
+        def parse_response(body:, action:)
+          ResponseParser.new(self, action:).perform(body:)
         end
 
         def global_type(name, &block)

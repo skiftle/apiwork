@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Apiwork::Contract::Parser::Coercer do
+RSpec.describe Apiwork::Contract::RequestParser::Coercer do
   describe '.perform' do
     context 'integer type' do
       it 'converts valid integer string to Integer' do

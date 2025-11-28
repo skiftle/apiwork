@@ -17,14 +17,14 @@ module Api
       end
 
       def create
-        person = Post.new(action_request[:person])
+        person = Post.new(contract.body[:person])
         person.save
         respond_with person
       end
 
       def update
         person = Post.find(params[:id])
-        person.update(action_request[:person])
+        person.update(contract.body[:person])
         respond_with person
       end
 
