@@ -95,17 +95,16 @@ module Apiwork
           Descriptor::Registry.register_enum(name, values, scope:, api_class: self, description:, example:, deprecated:)
         end
 
-        def union(name, scope: nil, &block)
-          raise ArgumentError, 'Union type requires a block' unless block_given?
-
-          union_builder = Descriptor::UnionBuilder.new
-          union_builder.instance_eval(&block)
-
-          register_union(name, union_builder.serialize, scope:)
-        end
-
-        def register_union(name, data, scope: nil)
-          Descriptor::Registry.register_union(name, data, scope:, api_class: self)
+        def union(name, scope: nil, data: nil, &block)
+          if data
+            Descriptor::Registry.register_union(name, data, scope:, api_class: self)
+          elsif block_given?
+            union_builder = Descriptor::UnionBuilder.new
+            union_builder.instance_eval(&block)
+            Descriptor::Registry.register_union(name, union_builder.serialize, scope:, api_class: self)
+          else
+            raise ArgumentError, 'Union requires either a block or data:'
+          end
         end
 
         def resolve_type(name, scope: nil)

@@ -87,8 +87,12 @@ module Apiwork
           api_class.enum(name, values:, scope: self, description:, example:, deprecated:)
         end
 
-        def union(name, &block)
-          api_class.union(name, scope: self, &block)
+        def union(name, data: nil, &block)
+          if data
+            api_class.union(name, scope: self, data:)
+          else
+            api_class.union(name, scope: self, &block)
+          end
         end
 
         # DOCUMENTATION
@@ -169,10 +173,6 @@ module Apiwork
           Parser.new(self, direction, action, **options).perform(data)
         end
 
-        def register_union(name, data)
-          api_class.register_union(name, data, scope: self)
-        end
-
         def global_type(name, &block)
           api_class.type(name, scope: nil, &block)
         end
@@ -211,10 +211,9 @@ module Apiwork
         end
 
         def build_union(name, discriminator: nil)
-          union_definition = Contract::UnionDefinition.new(self, discriminator: discriminator)
+          union_definition = Contract::UnionDefinition.new(self, discriminator:)
           yield(union_definition) if block_given?
-          union_data = union_definition.serialize
-          register_union(name, union_data)
+          union(name, data: union_definition.serialize)
           name
         end
 

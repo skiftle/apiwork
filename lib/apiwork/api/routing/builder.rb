@@ -25,7 +25,8 @@ module Apiwork
                 end
               end
 
-              scope path: api_class.mount_path, module: builder_instance.controller_path(api_class) do
+              controller_path = api_class.namespaces.map(&:to_s).join('/').underscore
+              scope path: api_class.mount_path, module: controller_path do
                 builder_instance.draw_resources_in_context(self, api_class.metadata.resources)
               end
             end
@@ -34,36 +35,27 @@ module Apiwork
           set
         end
 
-        def controller_path(api_class)
-          api_class.namespaces.map(&:to_s).join('/').underscore
-        end
-
         def draw_resources_in_context(context, resources_hash)
           resources_hash.each do |name, metadata|
-            builder_instance = self
             resource_method = metadata[:singular] ? :resource : :resources
-
             options = metadata[:options].slice(:only, :except, :controller).compact
+            builder_instance = self
 
             context.instance_eval do
               send(resource_method, name, **options) do
                 if metadata[:members].any?
                   member do
-                    metadata[:members].each do |action, action_metadata|
-                      send(action_metadata[:method], action)
-                    end
+                    metadata[:members].each { |action, meta| send(meta[:method], action) }
                   end
                 end
 
                 if metadata[:collections].any?
                   collection do
-                    metadata[:collections].each do |action, action_metadata|
-                      send(action_metadata[:method], action)
-                    end
+                    metadata[:collections].each { |action, meta| send(meta[:method], action) }
                   end
                 end
 
-                builder_instance.draw_resources_in_context(self, metadata[:resources]) if metadata[:resources].any?
+                builder_instance.draw_resources_in_context(self, metadata[:resources])
               end
             end
           end
