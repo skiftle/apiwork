@@ -20,7 +20,6 @@ module Apiwork
         @in_collection_block = false
         @pending_metadata = {}
       end
-
     end
   end
 end

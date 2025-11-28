@@ -10,7 +10,7 @@ module Apiwork
     def initialize(code:, detail:, path: [], meta: {})
       @code = code
       @detail = detail
-      @path = Array(path).map { |element| element.is_a?(Integer) ? element : element.to_sym }
+      @path = path.map { |element| element.is_a?(Integer) ? element : element.to_sym }
       @meta = meta
     end
 
@@ -33,8 +33,7 @@ module Apiwork
     end
 
     def to_s
-      path_str = path.any? ? " at #{pointer}" : ''
-      "[#{code}]#{path_str} #{detail}"
+      "[#{code}]#{path.any? ? " at #{pointer}" : ''} #{detail}"
     end
 
     def warn
