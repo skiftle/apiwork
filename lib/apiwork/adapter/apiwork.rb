@@ -13,8 +13,8 @@ module Apiwork
         option :max_size, type: :integer, default: 100
       end
 
-      def build_global_descriptors(builder, schema_data)
-        DescriptorBuilder.build(builder, schema_data)
+      def build_global_descriptors(api_class, schema_data)
+        DescriptorBuilder.build(api_class, schema_data)
       end
 
       def build_contract(contract_class, schema_class, actions:)

@@ -5,8 +5,8 @@ require 'rails_helper'
 RSpec.describe 'Contract Imports' do
   after do
     # Clear all types/enums (including global ones)
-    Apiwork::Descriptor::TypeStore.clear!
-    Apiwork::Descriptor::EnumStore.clear!
+    Apiwork::API::Descriptor::TypeStore.clear!
+    Apiwork::API::Descriptor::EnumStore.clear!
   end
 
   describe 'basic import functionality' do
@@ -65,7 +65,7 @@ RSpec.describe 'Contract Imports' do
       end
 
       # Should be able to resolve the imported enum
-      enum_values = Apiwork::Descriptor::EnumStore.resolve(
+      enum_values = Apiwork::API::Descriptor::EnumStore.resolve(
         :user_status,
         contract_class: importing_contract
       )

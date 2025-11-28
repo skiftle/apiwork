@@ -4,8 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Apiwork::Spec::Zod do
   before do
-    Apiwork::API.reset!
-    Apiwork::Descriptor.reset!
+    Apiwork.reset!
     load File.expand_path('../../dummy/config/apis/v1.rb', __dir__)
   end
 

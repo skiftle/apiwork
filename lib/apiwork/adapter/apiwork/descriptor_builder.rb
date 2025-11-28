@@ -4,12 +4,12 @@ module Apiwork
   module Adapter
     class Apiwork < Base
       class DescriptorBuilder
-        def self.build(builder, schema_data)
-          new(builder, schema_data)
+        def self.build(api_class, schema_data)
+          new(api_class, schema_data)
         end
 
-        def initialize(builder, schema_data)
-          @builder = builder
+        def initialize(api_class, schema_data)
+          @api_class = api_class
           @schema_data = schema_data
 
           register_base_types
@@ -19,11 +19,11 @@ module Apiwork
 
         private
 
-        attr_reader :builder,
+        attr_reader :api_class,
                     :schema_data
 
         def register_base_types
-          builder.instance_eval do
+          api_class.instance_eval do
             type :page_pagination do
               param :current, type: :integer, required: true
               param :next, type: :integer, nullable: true
@@ -84,7 +84,7 @@ module Apiwork
         end
 
         def register_sort_direction
-          builder.instance_eval do
+          api_class.instance_eval do
             enum :sort_direction, values: %w[asc desc]
           end
         end
@@ -133,7 +133,7 @@ module Apiwork
         end
 
         def register_string_filter
-          builder.instance_eval do
+          api_class.instance_eval do
             type :string_filter do
               param :eq, type: :string, required: false
               param :in, type: :array, of: :string, required: false
@@ -145,7 +145,7 @@ module Apiwork
         end
 
         def register_integer_filter_between
-          builder.instance_eval do
+          api_class.instance_eval do
             type :integer_filter_between do
               param :from, type: :integer, required: false
               param :to, type: :integer, required: false
@@ -154,7 +154,7 @@ module Apiwork
         end
 
         def register_integer_filter
-          builder.instance_eval do
+          api_class.instance_eval do
             type :integer_filter do
               param :eq, type: :integer, required: false
               param :gt, type: :integer, required: false
@@ -168,7 +168,7 @@ module Apiwork
         end
 
         def register_decimal_filter_between
-          builder.instance_eval do
+          api_class.instance_eval do
             type :decimal_filter_between do
               param :from, type: :decimal, required: false
               param :to, type: :decimal, required: false
@@ -177,7 +177,7 @@ module Apiwork
         end
 
         def register_decimal_filter
-          builder.instance_eval do
+          api_class.instance_eval do
             type :decimal_filter do
               param :eq, type: :decimal, required: false
               param :gt, type: :decimal, required: false
@@ -191,7 +191,7 @@ module Apiwork
         end
 
         def register_boolean_filter
-          builder.instance_eval do
+          api_class.instance_eval do
             type :boolean_filter do
               param :eq, type: :boolean, required: false
             end
@@ -199,7 +199,7 @@ module Apiwork
         end
 
         def register_date_filter_between
-          builder.instance_eval do
+          api_class.instance_eval do
             type :date_filter_between do
               param :from, type: :date, required: false
               param :to, type: :date, required: false
@@ -208,7 +208,7 @@ module Apiwork
         end
 
         def register_date_filter
-          builder.instance_eval do
+          api_class.instance_eval do
             type :date_filter do
               param :eq, type: :date, required: false
               param :gt, type: :date, required: false
@@ -222,7 +222,7 @@ module Apiwork
         end
 
         def register_datetime_filter_between
-          builder.instance_eval do
+          api_class.instance_eval do
             type :datetime_filter_between do
               param :from, type: :datetime, required: false
               param :to, type: :datetime, required: false
@@ -231,7 +231,7 @@ module Apiwork
         end
 
         def register_datetime_filter
-          builder.instance_eval do
+          api_class.instance_eval do
             type :datetime_filter do
               param :eq, type: :datetime, required: false
               param :gt, type: :datetime, required: false
@@ -245,7 +245,7 @@ module Apiwork
         end
 
         def register_uuid_filter
-          builder.instance_eval do
+          api_class.instance_eval do
             type :uuid_filter do
               param :eq, type: :uuid, required: false
               param :in, type: :array, of: :uuid, required: false
@@ -254,7 +254,7 @@ module Apiwork
         end
 
         def register_nullable_string_filter
-          builder.instance_eval do
+          api_class.instance_eval do
             type :nullable_string_filter do
               param :eq, type: :string, required: false
               param :in, type: :array, of: :string, required: false
@@ -268,7 +268,7 @@ module Apiwork
 
         def register_nullable_integer_filter
           register_integer_filter_between
-          builder.instance_eval do
+          api_class.instance_eval do
             type :nullable_integer_filter do
               param :eq, type: :integer, required: false
               param :gt, type: :integer, required: false
@@ -284,7 +284,7 @@ module Apiwork
 
         def register_nullable_decimal_filter
           register_decimal_filter_between
-          builder.instance_eval do
+          api_class.instance_eval do
             type :nullable_decimal_filter do
               param :eq, type: :decimal, required: false
               param :gt, type: :decimal, required: false
@@ -300,7 +300,7 @@ module Apiwork
 
         def register_nullable_date_filter
           register_date_filter_between
-          builder.instance_eval do
+          api_class.instance_eval do
             type :nullable_date_filter do
               param :eq, type: :date, required: false
               param :gt, type: :date, required: false
@@ -316,7 +316,7 @@ module Apiwork
 
         def register_nullable_datetime_filter
           register_datetime_filter_between
-          builder.instance_eval do
+          api_class.instance_eval do
             type :nullable_datetime_filter do
               param :eq, type: :datetime, required: false
               param :gt, type: :datetime, required: false
@@ -331,7 +331,7 @@ module Apiwork
         end
 
         def register_nullable_uuid_filter
-          builder.instance_eval do
+          api_class.instance_eval do
             type :nullable_uuid_filter do
               param :eq, type: :uuid, required: false
               param :in, type: :array, of: :uuid, required: false
@@ -341,7 +341,7 @@ module Apiwork
         end
 
         def register_nullable_boolean_filter
-          builder.instance_eval do
+          api_class.instance_eval do
             type :nullable_boolean_filter do
               param :eq, type: :boolean, required: false
               param :null, type: :boolean, required: false

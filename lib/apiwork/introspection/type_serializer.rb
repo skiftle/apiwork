@@ -12,7 +12,7 @@ module Apiwork
 
         return result unless @api
 
-        type_storage = Descriptor::TypeStore.send(:storage, @api)
+        type_storage = API::Descriptor::TypeStore.send(:storage, @api)
         type_storage.each_pair.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
           expanded_shape = metadata[:expanded_payload] ||= expand_payload(metadata)
 
@@ -43,7 +43,7 @@ module Apiwork
 
         return result unless @api
 
-        enum_storage = Descriptor::EnumStore.send(:storage, @api)
+        enum_storage = API::Descriptor::EnumStore.send(:storage, @api)
         enum_storage.each_pair.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
           enum_data = {
             values: metadata[:payload],

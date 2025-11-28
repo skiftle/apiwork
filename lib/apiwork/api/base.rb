@@ -83,9 +83,12 @@ module Apiwork
           @adapter ||= Adapter.resolve(@adapter_name || :apiwork).new
         end
 
-        def type(name, description: nil, example: nil, format: nil, deprecated: false, &block)
-          Descriptor.define_type(
+        def define_type(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false, &block)
+          raise ArgumentError, 'Block required for type definition' unless block_given?
+
+          Descriptor::Registry.register_type(
             name,
+            scope: scope,
             api_class: self,
             description: description,
             example: example,
@@ -95,10 +98,13 @@ module Apiwork
           )
         end
 
-        def enum(name, values:, description: nil, example: nil, deprecated: false)
-          Descriptor.define_enum(
+        def define_enum(name, values:, scope: nil, description: nil, example: nil, deprecated: false)
+          raise ArgumentError, 'Values array required for enum definition' if values.nil? || !values.is_a?(Array)
+
+          Descriptor::Registry.register_enum(
             name,
-            values: values,
+            values,
+            scope: scope,
             api_class: self,
             description: description,
             example: example,
@@ -106,8 +112,46 @@ module Apiwork
           )
         end
 
+        def define_union(name, scope: nil, &block)
+          raise ArgumentError, 'Union type requires a block' unless block_given?
+
+          union_definition = Contract::UnionDefinition.new(scope)
+          union_definition.instance_eval(&block)
+
+          Descriptor::Registry.register_union(
+            name,
+            union_definition.serialize,
+            scope: scope,
+            api_class: self
+          )
+        end
+
+        def resolve_type(name, contract_class:, scope: nil)
+          Descriptor::Registry.resolve_type(name, contract_class: contract_class, api_class: self, scope: scope)
+        end
+
+        def resolve_enum(name, scope:)
+          Descriptor::Registry.resolve_enum(name, scope: scope, api_class: self)
+        end
+
+        def scoped_type_name(scope, name)
+          Descriptor::TypeStore.scoped_name(scope, name)
+        end
+
+        def scoped_enum_name(scope, name)
+          Descriptor::EnumStore.scoped_name(scope, name)
+        end
+
+        def type(name, description: nil, example: nil, format: nil, deprecated: false, &block)
+          define_type(name, description: description, example: example, format: format, deprecated: deprecated, &block)
+        end
+
+        def enum(name, values:, description: nil, example: nil, deprecated: false)
+          define_enum(name, values: values, description: description, example: example, deprecated: deprecated)
+        end
+
         def union(name, &block)
-          Descriptor.define_union(name, api_class: self, &block)
+          define_union(name, &block)
         end
 
         def info(&block)
@@ -165,7 +209,7 @@ module Apiwork
 
           schemas = collect_all_schemas
           schema_data = Adapter::SchemaData.new(schemas)
-          adapter.build_global_descriptors(Descriptor::Builder.new(api_class: self), schema_data)
+          adapter.build_global_descriptors(self, schema_data)
         end
 
         private

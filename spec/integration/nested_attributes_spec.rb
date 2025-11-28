@@ -6,7 +6,7 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
   # Clear Descriptor::Registry before this test suite to ensure clean state
   # This is needed because other tests may register types that interfere
   before(:all) do
-    Apiwork::Descriptor::Registry.clear!
+    Apiwork::API::Descriptor::Registry.clear!
   end
 
   describe 'Creating with nested has_many' do

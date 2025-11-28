@@ -32,6 +32,7 @@ module Apiwork
 
         def clear!
           @store = Store.new
+          Descriptor::Registry.clear!
         end
 
         private

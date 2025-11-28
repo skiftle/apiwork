@@ -71,7 +71,7 @@ RSpec.describe 'Includes API', type: :request do
       end
 
       # Clear descriptor registry cache for the include type
-      Apiwork::Descriptor.reset!
+      Apiwork::API::Descriptor::Registry.clear!
 
       # Reset contracts_built_for to force rebuild
       api = Apiwork::API.find('/api/v1')
@@ -96,7 +96,7 @@ RSpec.describe 'Includes API', type: :request do
       end
 
       # Clear descriptor registry cache
-      Apiwork::Descriptor.reset!
+      Apiwork::API::Descriptor::Registry.clear!
 
       # Reset contracts_built_for to force rebuild
       api = Apiwork::API.find('/api/v1')
@@ -147,7 +147,7 @@ RSpec.describe 'Includes API', type: :request do
         end
 
         # Clear descriptor registry cache for the include type
-        Apiwork::Descriptor.reset!
+        Apiwork::API::Descriptor::Registry.clear!
 
         # Reset contracts_built_for to force rebuild
         api = Apiwork::API.find('/api/v1')
@@ -173,7 +173,7 @@ RSpec.describe 'Includes API', type: :request do
         end
 
         # Clear descriptor registry cache
-        Apiwork::Descriptor.reset!
+        Apiwork::API::Descriptor::Registry.clear!
 
         # Reset contracts_built_for to force rebuild
         api = Apiwork::API.find('/api/v1')

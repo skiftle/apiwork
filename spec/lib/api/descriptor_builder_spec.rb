@@ -4,13 +4,11 @@ require 'rails_helper'
 
 RSpec.describe 'API Descriptor Builder' do
   before do
-    Apiwork::API.reset!
-    Apiwork::Descriptor.reset!
+    Apiwork.reset!
   end
 
   after do
-    Apiwork::API.reset!
-    Apiwork::Descriptor.reset!
+    Apiwork.reset!
   end
 
   it 'allows defining types via descriptors block' do
@@ -21,7 +19,7 @@ RSpec.describe 'API Descriptor Builder' do
       end
     end
 
-    types = Apiwork::Descriptor::Registry.types(api)
+    types = Apiwork::API::Descriptor::Registry.types(api)
 
     expect(types).to have_key(:error)
     expect(types[:error]).to include(
@@ -43,7 +41,7 @@ RSpec.describe 'API Descriptor Builder' do
       enum :sort_direction, values: %i[asc desc]
     end
 
-    enums = Apiwork::Descriptor::Registry.enums(api)
+    enums = Apiwork::API::Descriptor::Registry.enums(api)
 
     expect(enums).to have_key(:sort_direction)
     expect(enums[:sort_direction][:values]).to eq(%i[asc desc])
@@ -54,7 +52,7 @@ RSpec.describe 'API Descriptor Builder' do
       enum :status, values: %i[active inactive pending]
     end
 
-    types = Apiwork::Descriptor::Registry.types(api)
+    types = Apiwork::API::Descriptor::Registry.types(api)
 
     expect(types).to have_key(:status_filter)
     expect(types[:status_filter][:type]).to eq(:union)
@@ -68,7 +66,7 @@ RSpec.describe 'API Descriptor Builder' do
       end
     end
 
-    types = Apiwork::Descriptor::Registry.types(api)
+    types = Apiwork::API::Descriptor::Registry.types(api)
 
     # Should be registered as :global_type, not qualified with any contract prefix
     expect(types).to have_key(:global_type)
@@ -84,8 +82,8 @@ RSpec.describe 'API Descriptor Builder' do
       enum :priority, values: %i[low medium high]
     end
 
-    types = Apiwork::Descriptor::Registry.types(api)
-    enums = Apiwork::Descriptor::Registry.enums(api)
+    types = Apiwork::API::Descriptor::Registry.types(api)
+    enums = Apiwork::API::Descriptor::Registry.enums(api)
 
     expect(types).to have_key(:error)
     expect(enums).to have_key(:priority)
@@ -99,7 +97,7 @@ RSpec.describe 'API Descriptor Builder' do
         end
       end
 
-      types = Apiwork::Descriptor::Registry.types(api)
+      types = Apiwork::API::Descriptor::Registry.types(api)
 
       expect(types[:documented_type]).to include(description: 'A type with description')
     end
@@ -111,7 +109,7 @@ RSpec.describe 'API Descriptor Builder' do
         end
       end
 
-      types = Apiwork::Descriptor::Registry.types(api)
+      types = Apiwork::API::Descriptor::Registry.types(api)
 
       expect(types[:example_type]).to include(example: { field: 'value' })
     end
@@ -123,7 +121,7 @@ RSpec.describe 'API Descriptor Builder' do
         end
       end
 
-      types = Apiwork::Descriptor::Registry.types(api)
+      types = Apiwork::API::Descriptor::Registry.types(api)
 
       expect(types[:formatted_type]).to include(format: 'email')
     end
@@ -135,7 +133,7 @@ RSpec.describe 'API Descriptor Builder' do
         end
       end
 
-      types = Apiwork::Descriptor::Registry.types(api)
+      types = Apiwork::API::Descriptor::Registry.types(api)
 
       expect(types[:legacy_type]).to include(deprecated: true)
     end
@@ -151,7 +149,7 @@ RSpec.describe 'API Descriptor Builder' do
         end
       end
 
-      types = Apiwork::Descriptor::Registry.types(api)
+      types = Apiwork::API::Descriptor::Registry.types(api)
 
       expect(types[:full_metadata_type]).to include(
         description: 'Comprehensive metadata',
@@ -166,7 +164,7 @@ RSpec.describe 'API Descriptor Builder' do
         enum :documented_enum, values: %i[a b c], description: 'An enum with description'
       end
 
-      enums = Apiwork::Descriptor::Registry.enums(api)
+      enums = Apiwork::API::Descriptor::Registry.enums(api)
 
       expect(enums[:documented_enum]).to include(description: 'An enum with description')
     end
@@ -176,7 +174,7 @@ RSpec.describe 'API Descriptor Builder' do
         enum :example_enum, values: %i[red green blue], example: :red
       end
 
-      enums = Apiwork::Descriptor::Registry.enums(api)
+      enums = Apiwork::API::Descriptor::Registry.enums(api)
 
       expect(enums[:example_enum]).to include(example: :red)
     end
@@ -186,7 +184,7 @@ RSpec.describe 'API Descriptor Builder' do
         enum :legacy_enum, values: %i[old new], deprecated: true
       end
 
-      enums = Apiwork::Descriptor::Registry.enums(api)
+      enums = Apiwork::API::Descriptor::Registry.enums(api)
 
       expect(enums[:legacy_enum]).to include(deprecated: true)
     end
@@ -200,7 +198,7 @@ RSpec.describe 'API Descriptor Builder' do
              deprecated: false
       end
 
-      enums = Apiwork::Descriptor::Registry.enums(api)
+      enums = Apiwork::API::Descriptor::Registry.enums(api)
 
       expect(enums[:full_metadata_enum]).to eq(
         values: %w[option1 option2],
@@ -220,8 +218,8 @@ RSpec.describe 'API Descriptor Builder' do
         enum :chained_enum, values: %i[x y], description: 'Enum metadata flows through'
       end
 
-      types = Apiwork::Descriptor::Registry.types(api)
-      enums = Apiwork::Descriptor::Registry.enums(api)
+      types = Apiwork::API::Descriptor::Registry.types(api)
+      enums = Apiwork::API::Descriptor::Registry.enums(api)
 
       # Verify metadata is preserved through the chain
       expect(types[:chained_type][:description]).to eq('Metadata flows through')

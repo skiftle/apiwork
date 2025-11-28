@@ -5,8 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Zod Generation for Associations', type: :integration do
   # Force reload of API configuration before tests
   before(:all) do
-    Apiwork::API.reset!
-    Apiwork::Descriptor.reset!
+    Apiwork.reset!
     load Rails.root.join('config/apis/v1.rb')
   end
 

@@ -6,7 +6,7 @@ module Apiwork
       extend Registrable
       include Configurable
 
-      def build_global_descriptors(builder, schema_data)
+      def build_global_descriptors(api_class, schema_data)
         raise NotImplementedError
       end
 

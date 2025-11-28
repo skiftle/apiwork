@@ -10,10 +10,8 @@ module Apiwork
       @routes ||= API::RackApp.new
     end
 
-    # DOCUMENTATION
     def reset!
       API.reset!
-      Descriptor.reset!
     end
   end
 end

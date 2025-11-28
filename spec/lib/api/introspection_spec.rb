@@ -4,8 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'API Introspection' do
   before do
-    Apiwork::API.reset!
-    Apiwork::Descriptor.reset!
+    Apiwork.reset!
 
     # Reload contract files to ensure action_definitions with custom params are recreated
     # API.reset! clears action_definitions, so we need to reload contracts to get custom actions back

@@ -25,7 +25,7 @@ module Apiwork
       end
 
       def type_global_for_api?(type_name, api_class:)
-        store = Descriptor::TypeStore.send(:storage, api_class)
+        store = API::Descriptor::TypeStore.send(:storage, api_class)
         metadata = store[type_name]
         return false unless metadata
 
@@ -50,7 +50,8 @@ module Apiwork
         return type_name unless definition.contract_class.schema_class
 
         scope = scope_for_type(definition)
-        Descriptor.scoped_type_name(scope, type_name)
+        api_class = definition.contract_class.api_class
+        api_class&.scoped_type_name(scope, type_name) || type_name
       end
 
       private

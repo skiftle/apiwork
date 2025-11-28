@@ -107,7 +107,8 @@ module Apiwork
         if options[:enum]
           result[:enum] = if options[:enum].is_a?(Hash) && options[:enum][:ref]
                             scope = @name_resolver.scope_for_enum(@definition, options[:enum][:ref])
-                            Descriptor.scoped_enum_name(scope, options[:enum][:ref])
+                            api_class = @definition.contract_class.api_class
+                            api_class&.scoped_enum_name(scope, options[:enum][:ref]) || options[:enum][:ref]
                           else
                             options[:enum]
                           end
@@ -165,7 +166,8 @@ module Apiwork
                             if @definition.contract_class.respond_to?(:schema_class) &&
                                @definition.contract_class.schema_class
                               scope = @name_resolver.scope_for_enum(@definition, variant_definition[:enum])
-                              Descriptor.scoped_enum_name(scope, variant_definition[:enum])
+                              api_class = @definition.contract_class.api_class
+                              api_class&.scoped_enum_name(scope, variant_definition[:enum]) || variant_definition[:enum]
                             else
                               variant_definition[:enum]
                             end

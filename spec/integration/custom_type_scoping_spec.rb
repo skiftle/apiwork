@@ -7,8 +7,8 @@ RSpec.describe 'Schema-based Type Reuse via Imports' do
   # instead of being duplicated
 
   after do
-    Apiwork::Descriptor::TypeStore.clear!
-    Apiwork::Descriptor::EnumStore.clear!
+    Apiwork::API::Descriptor::TypeStore.clear!
+    Apiwork::API::Descriptor::EnumStore.clear!
   end
 
   it 'imports association contracts automatically' do
