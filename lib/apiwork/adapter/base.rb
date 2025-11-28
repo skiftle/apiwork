@@ -33,6 +33,18 @@ module Apiwork
       def transform_response(hash, schema_class)
         hash
       end
+
+      def build_api_type_registrar(api_class)
+        ApiTypeRegistrar.new(api_class)
+      end
+
+      def build_contract_type_registrar(contract_class)
+        ContractTypeRegistrar.new(contract_class)
+      end
+
+      def build_schema_data(schemas)
+        SchemaData.new(schemas)
+      end
     end
   end
 end
