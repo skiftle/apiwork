@@ -29,17 +29,11 @@ module Apiwork
         end
 
         def serialize
-          serialized_variants = @variants.map do |variant|
-            serialized = variant.dup
-            serialized.delete(:shape_block)
-            serialized
-          end
-
           {
             type: :union,
             required: false,
             nullable: false,
-            variants: serialized_variants,
+            variants: @variants.dup,
             discriminator: @discriminator
           }.compact
         end

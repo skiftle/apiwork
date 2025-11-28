@@ -12,7 +12,9 @@ module Apiwork
 
         return result unless @api
 
-        type_storage = @api.descriptors.types_data
+        ensure_enum_filter_types_registered
+
+        type_storage = @api.descriptors.types
         type_storage.each_pair.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
           expanded_shape = metadata[:expanded_payload] ||= expand_payload(metadata)
 
@@ -43,7 +45,7 @@ module Apiwork
 
         return result unless @api
 
-        enum_storage = @api.descriptors.enums_data
+        enum_storage = @api.descriptors.enums
         enum_storage.each_pair.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
           enum_data = {
             values: metadata[:payload],
@@ -60,12 +62,31 @@ module Apiwork
       private
 
       def expand_payload(metadata)
-        if metadata[:payload].is_a?(Hash)
-          metadata[:payload]
-        elsif metadata[:payload].is_a?(Proc)
-          expand(metadata[:payload], contract_class: metadata[:scope], type_name: metadata[:name])
-        else
-          expand(metadata[:definition] || metadata[:payload], contract_class: metadata[:scope], type_name: metadata[:name])
+        payload = if metadata[:payload].is_a?(Hash)
+                    metadata[:payload]
+                  elsif metadata[:payload].is_a?(Proc)
+                    expand(metadata[:payload], contract_class: metadata[:scope], type_name: metadata[:name])
+                  else
+                    expand(metadata[:definition] || metadata[:payload], contract_class: metadata[:scope],
+                                                                        type_name: metadata[:name])
+                  end
+
+        expand_union_variants(payload, metadata[:scope]) if payload.is_a?(Hash) && payload[:type] == :union
+
+        payload
+      end
+
+      def expand_union_variants(payload, scope)
+        return unless payload[:variants]
+
+        payload[:variants] = payload[:variants].map do |variant|
+          if variant[:shape_block]
+            expanded_shape = expand(variant[:shape_block], contract_class: scope)
+            variant = variant.dup
+            variant.delete(:shape_block)
+            variant[:shape] = expanded_shape
+          end
+          variant
         end
       end
 
@@ -86,6 +107,21 @@ module Apiwork
         contract = Class.new(Apiwork::Contract::Base)
         contract.instance_variable_set(:@api_class, @api)
         contract
+      end
+
+      def ensure_enum_filter_types_registered
+        @api.descriptors.enums.each_pair do |enum_name, _metadata|
+          filter_name = :"#{enum_name}_filter"
+          next if @api.descriptors.types.key?(filter_name)
+
+          @api.union(filter_name) do
+            variant type: enum_name
+            variant type: :object, partial: true do
+              param :eq, type: enum_name, required: false
+              param :in, type: :array, of: enum_name, required: false
+            end
+          end
+        end
       end
     end
   end

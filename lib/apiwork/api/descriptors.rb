@@ -54,7 +54,6 @@ module Apiwork
           name:, scoped_name: scoped_name_value, scope:,
           values:, payload: values, description:, example:, deprecated:
         }
-        register_enum_filter_type(name, scoped_name_value, scope:)
       end
 
       def resolve_enum(name, scope: nil)
@@ -65,46 +64,12 @@ module Apiwork
         @enums[name]&.dig(:values)
       end
 
-      def types_data
-        @types
-      end
-
-      def enums_data
-        @enums
-      end
-
-      def clear_expanded_payloads!
-        @types.each_value { |meta| meta.delete(:expanded_payload) }
-      end
+      attr_reader :enums,
+                  :types
 
       def clear!
         @types.clear!
         @enums.clear!
-      end
-
-      private
-
-      def register_enum_filter_type(enum_name, scoped_enum_name, scope:)
-        filter_name = :"#{enum_name}_filter"
-
-        union_data = {
-          type: :union,
-          required: false,
-          nullable: false,
-          variants: [
-            { type: scoped_enum_name, of: nil },
-            { type: :object, of: nil, partial: true, shape: build_enum_filter_shape(scoped_enum_name) }
-          ]
-        }
-
-        register_union(filter_name, union_data, scope:)
-      end
-
-      def build_enum_filter_shape(enum_type)
-        {
-          eq: { name: :eq, type: enum_type, required: false },
-          in: { name: :in, type: :array, of: enum_type, required: false }
-        }
       end
     end
   end
