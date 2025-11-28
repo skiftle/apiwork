@@ -15,7 +15,7 @@ module Apiwork
     end
 
     def pointer
-      @pointer ||= JSONPointer.build(*path)
+      @pointer ||= JSONPointer.new(*path).to_s
     end
 
     def to_h
