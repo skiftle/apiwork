@@ -5,6 +5,7 @@ module Apiwork
     class Base
       class << self
         attr_reader :adapter_config,
+                    :built_contracts,
                     :metadata,
                     :mount_path,
                     :namespaces,
@@ -17,8 +18,8 @@ module Apiwork
           @mount_path = path
           @specs = {}
           @spec_configs = {}
-          @contracts_built_for = Set.new
           @type_system = TypeSystem.new
+          @built_contracts = Set.new
 
           @namespaces = path == '/' ? [:root] : path.split('/').reject(&:empty?).map(&:to_sym)
 
@@ -28,10 +29,6 @@ module Apiwork
           Registry.register(self)
 
           @adapter_config = {}
-        end
-
-        def contracts_built_for
-          @contracts_built_for ||= Set.new
         end
 
         def spec(type, path: nil, &block)
@@ -153,15 +150,15 @@ module Apiwork
         end
 
         def ensure_contract_built!(contract_class)
-          return if contracts_built_for.include?(contract_class.name)
-
-          contracts_built_for.add(contract_class.name)
+          return if built_contracts.include?(contract_class)
 
           resource_data = find_resource_for_contract(contract_class)
           return unless resource_data
 
           schema_class = contract_class.schema_class
           return unless schema_class
+
+          built_contracts.add(contract_class)
 
           actions = extract_actions_from_resource(resource_data)
           adapter.build_contract(contract_class, schema_class, actions: actions)
@@ -191,14 +188,15 @@ module Apiwork
         def build_contracts_for_resource(resource_data)
           contract_class = @metadata.resolve_contract_class(resource_data)
           return unless contract_class
-          return if contracts_built_for.include?(contract_class.name)
+          return if built_contracts.include?(contract_class)
 
           schema_class = contract_class.schema_class
           return unless schema_class
 
+          built_contracts.add(contract_class)
+
           actions = extract_actions_from_resource(resource_data)
           adapter.build_contract(contract_class, schema_class, actions: actions)
-          contracts_built_for.add(contract_class.name)
 
           resource_data[:resources]&.each_value do |nested_resource|
             build_contracts_for_resource(nested_resource)

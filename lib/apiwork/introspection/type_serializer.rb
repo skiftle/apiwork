@@ -48,7 +48,7 @@ module Apiwork
         enum_storage = @api.type_system.enums
         enum_storage.each_pair.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
           enum_data = {
-            values: metadata[:payload],
+            values: metadata[:values],
             description: metadata[:description],
             example: metadata[:example],
             deprecated: metadata[:deprecated] || false
@@ -62,13 +62,10 @@ module Apiwork
       private
 
       def expand_payload(metadata)
-        payload = if metadata[:payload].is_a?(Hash)
+        payload = if metadata[:payload]
                     metadata[:payload]
-                  elsif metadata[:payload].is_a?(Proc)
-                    expand(metadata[:payload], contract_class: metadata[:scope], type_name: metadata[:name])
                   else
-                    expand(metadata[:definition] || metadata[:payload], contract_class: metadata[:scope],
-                                                                        type_name: metadata[:name])
+                    expand(metadata[:definition], contract_class: metadata[:scope])
                   end
 
         expand_union_variants(payload, metadata[:scope]) if payload.is_a?(Hash) && payload[:type] == :union

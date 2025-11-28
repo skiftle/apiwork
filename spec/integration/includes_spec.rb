@@ -70,14 +70,12 @@ RSpec.describe 'Includes API', type: :request do
         Api::V1::CommentContract.action_definitions = {}
       end
 
-      # Clear type_system cache for the include type
+      # Clear type_system cache and built_contracts
       api = Apiwork::API.find('/api/v1')
       api&.type_system&.clear!
+      api&.instance_variable_set(:@built_contracts, Set.new)
 
-      # Reset contracts_built_for to force rebuild
-      api&.instance_variable_set(:@contracts_built_for, Set.new)
-
-      # Rebuild actions after clearing (lazy loading will rebuild on demand)
+      # Rebuild contracts
       api&.ensure_all_contracts_built!
     end
 
@@ -95,14 +93,12 @@ RSpec.describe 'Includes API', type: :request do
         Api::V1::CommentContract.action_definitions = {}
       end
 
-      # Clear type_system cache
+      # Clear type_system cache and built_contracts
       api = Apiwork::API.find('/api/v1')
       api&.type_system&.clear!
+      api&.instance_variable_set(:@built_contracts, Set.new)
 
-      # Reset contracts_built_for to force rebuild
-      api&.instance_variable_set(:@contracts_built_for, Set.new)
-
-      # Rebuild actions after clearing (lazy loading will rebuild on demand)
+      # Rebuild contracts
       api&.ensure_all_contracts_built!
     end
 
@@ -146,14 +142,12 @@ RSpec.describe 'Includes API', type: :request do
           Api::V1::CommentContract.action_definitions = {}
         end
 
-        # Clear descriptors cache for the include type
+        # Clear type_system cache and built_contracts
         api = Apiwork::API.find('/api/v1')
         api&.type_system&.clear!
+        api&.instance_variable_set(:@built_contracts, Set.new)
 
-        # Reset contracts_built_for to force rebuild
-        api&.instance_variable_set(:@contracts_built_for, Set.new)
-
-        # Rebuild actions after clearing (lazy loading will rebuild on demand)
+        # Rebuild contracts
         api&.ensure_all_contracts_built!
       end
 
@@ -172,14 +166,12 @@ RSpec.describe 'Includes API', type: :request do
           Api::V1::CommentContract.action_definitions = {}
         end
 
-        # Clear descriptors cache
+        # Clear type_system cache and built_contracts
         api = Apiwork::API.find('/api/v1')
         api&.type_system&.clear!
+        api&.instance_variable_set(:@built_contracts, Set.new)
 
-        # Reset contracts_built_for to force rebuild
-        api&.instance_variable_set(:@contracts_built_for, Set.new)
-
-        # Rebuild actions after clearing (lazy loading will rebuild on demand)
+        # Rebuild contracts
         api&.ensure_all_contracts_built!
       end
 

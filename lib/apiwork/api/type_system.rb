@@ -9,20 +9,13 @@ module Apiwork
       end
 
       def register_type(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false, &block)
-        scoped_name_value = scoped_name(scope, name)
-        @types[scoped_name_value] = {
-          name:, scoped_name: scoped_name_value, scope:,
-          definition: block,
-          description:, example:, format:, deprecated:
-        }
+        key = scoped_name(scope, name)
+        @types[key] = { scope:, definition: block, description:, example:, format:, deprecated: }
       end
 
-      def register_union(name, data, scope: nil)
-        scoped_name_value = scoped_name(scope, name)
-        @types[scoped_name_value] = {
-          name:, scoped_name: scoped_name_value, scope:,
-          payload: data
-        }
+      def register_union(name, payload, scope: nil)
+        key = scoped_name(scope, name)
+        @types[key] = { scope:, payload: }
       end
 
       def resolve_type(name, scope: nil)
@@ -49,11 +42,8 @@ module Apiwork
       end
 
       def register_enum(name, values, scope: nil, description: nil, example: nil, deprecated: false)
-        scoped_name_value = scoped_name(scope, name)
-        @enums[scoped_name_value] = {
-          name:, scoped_name: scoped_name_value, scope:,
-          values:, payload: values, description:, example:, deprecated:
-        }
+        key = scoped_name(scope, name)
+        @enums[key] = { scope:, values:, description:, example:, deprecated: }
       end
 
       def resolve_enum(name, scope: nil)
