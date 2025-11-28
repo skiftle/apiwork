@@ -2,7 +2,7 @@
 
 module Apiwork
   module API
-    class Descriptors
+    class TypeSystem
       def initialize
         @types = Apiwork::Store.new
         @enums = Apiwork::Store.new

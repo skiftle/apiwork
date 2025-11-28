@@ -25,7 +25,7 @@ module Apiwork
       end
 
       def type_global_for_api?(type_name, api_class:)
-        metadata = api_class.descriptors.type_metadata(type_name)
+        metadata = api_class.type_system.type_metadata(type_name)
         return false unless metadata
 
         metadata[:scope].nil?

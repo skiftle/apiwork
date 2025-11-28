@@ -70,9 +70,9 @@ RSpec.describe 'Includes API', type: :request do
         Api::V1::CommentContract.action_definitions = {}
       end
 
-      # Clear descriptors cache for the include type
+      # Clear type_system cache for the include type
       api = Apiwork::API.find('/api/v1')
-      api&.descriptors&.clear!
+      api&.type_system&.clear!
 
       # Reset contracts_built_for to force rebuild
       api&.instance_variable_set(:@contracts_built_for, Set.new)
@@ -95,9 +95,9 @@ RSpec.describe 'Includes API', type: :request do
         Api::V1::CommentContract.action_definitions = {}
       end
 
-      # Clear descriptors cache
+      # Clear type_system cache
       api = Apiwork::API.find('/api/v1')
-      api&.descriptors&.clear!
+      api&.type_system&.clear!
 
       # Reset contracts_built_for to force rebuild
       api&.instance_variable_set(:@contracts_built_for, Set.new)
@@ -148,7 +148,7 @@ RSpec.describe 'Includes API', type: :request do
 
         # Clear descriptors cache for the include type
         api = Apiwork::API.find('/api/v1')
-        api&.descriptors&.clear!
+        api&.type_system&.clear!
 
         # Reset contracts_built_for to force rebuild
         api&.instance_variable_set(:@contracts_built_for, Set.new)
@@ -174,7 +174,7 @@ RSpec.describe 'Includes API', type: :request do
 
         # Clear descriptors cache
         api = Apiwork::API.find('/api/v1')
-        api&.descriptors&.clear!
+        api&.type_system&.clear!
 
         # Reset contracts_built_for to force rebuild
         api&.instance_variable_set(:@contracts_built_for, Set.new)

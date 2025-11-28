@@ -5,20 +5,20 @@ module Apiwork
     class Base
       class << self
         attr_reader :adapter_config,
-                    :descriptors,
                     :metadata,
                     :mount_path,
                     :namespaces,
                     :recorder,
                     :spec_configs,
-                    :specs
+                    :specs,
+                    :type_system
 
         def mount(path)
           @mount_path = path
           @specs = {}
           @spec_configs = {}
           @contracts_built_for = Set.new
-          @descriptors = Descriptors.new
+          @type_system = TypeSystem.new
 
           @namespaces = path == '/' ? [:root] : path.split('/').reject(&:empty?).map(&:to_sym)
 
@@ -88,13 +88,13 @@ module Apiwork
         def type(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false, &block)
           raise ArgumentError, 'Block required for type definition' unless block_given?
 
-          descriptors.register_type(name, scope:, description:, example:, format:, deprecated:, &block)
+          type_system.register_type(name, scope:, description:, example:, format:, deprecated:, &block)
         end
 
         def enum(name, values:, scope: nil, description: nil, example: nil, deprecated: false)
           raise ArgumentError, 'Values array required for enum definition' if values.nil? || !values.is_a?(Array)
 
-          descriptors.register_enum(name, values, scope:, description:, example:, deprecated:)
+          type_system.register_enum(name, values, scope:, description:, example:, deprecated:)
         end
 
         def union(name, scope: nil, discriminator: nil, &block)
@@ -102,23 +102,23 @@ module Apiwork
 
           union_builder = Descriptor::UnionBuilder.new(discriminator:)
           union_builder.instance_eval(&block)
-          descriptors.register_union(name, union_builder.serialize, scope:)
+          type_system.register_union(name, union_builder.serialize, scope:)
         end
 
         def resolve_type(name, scope: nil)
-          descriptors.resolve_type(name, scope:)
+          type_system.resolve_type(name, scope:)
         end
 
         def resolve_enum(name, scope:)
-          descriptors.resolve_enum(name, scope:)
+          type_system.resolve_enum(name, scope:)
         end
 
         def scoped_type_name(scope, name)
-          descriptors.scoped_name(scope, name)
+          type_system.scoped_name(scope, name)
         end
 
         def scoped_enum_name(scope, name)
-          descriptors.scoped_name(scope, name)
+          type_system.scoped_name(scope, name)
         end
 
         def info(&block)

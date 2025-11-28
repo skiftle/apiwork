@@ -14,7 +14,7 @@ module Apiwork
 
         ensure_enum_filter_types_registered
 
-        type_storage = @api.descriptors.types
+        type_storage = @api.type_system.types
         type_storage.each_pair.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
           expanded_shape = metadata[:expanded_payload] ||= expand_payload(metadata)
 
@@ -45,7 +45,7 @@ module Apiwork
 
         return result unless @api
 
-        enum_storage = @api.descriptors.enums
+        enum_storage = @api.type_system.enums
         enum_storage.each_pair.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
           enum_data = {
             values: metadata[:payload],
@@ -110,9 +110,9 @@ module Apiwork
       end
 
       def ensure_enum_filter_types_registered
-        @api.descriptors.enums.each_pair do |enum_name, _metadata|
+        @api.type_system.enums.each_pair do |enum_name, _metadata|
           filter_name = :"#{enum_name}_filter"
-          next if @api.descriptors.types.key?(filter_name)
+          next if @api.type_system.types.key?(filter_name)
 
           @api.union(filter_name) do
             variant type: enum_name
