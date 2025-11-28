@@ -145,6 +145,10 @@ module Apiwork
           introspect
         end
 
+        def reset_contracts!
+          @built_contracts = Set.new
+        end
+
         def ensure_contract_built!(contract_class)
           return if built_contracts.include?(contract_class)
 

@@ -60,22 +60,13 @@ RSpec.describe 'Includes API', type: :request do
       # For nested includes test, we need post association on comments to be include: :optional
       Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@include, :optional)
 
-      # Clear PostContract and CommentContract cache
-      if defined?(Api::V1::PostContract)
-        Api::V1::PostContract.instance_variable_set(:@custom_types, {}) if Api::V1::PostContract.instance_variable_defined?(:@custom_types)
-        Api::V1::PostContract.action_definitions = {}
-      end
-      if defined?(Api::V1::CommentContract)
-        Api::V1::CommentContract.instance_variable_set(:@custom_types, {}) if Api::V1::CommentContract.instance_variable_defined?(:@custom_types)
-        Api::V1::CommentContract.action_definitions = {}
-      end
+      # Reset contracts and rebuild
+      Api::V1::PostContract.reset_build_state!
+      Api::V1::CommentContract.reset_build_state!
 
-      # Clear type_system cache and built_contracts
       api = Apiwork::API.find('/api/v1')
       api&.type_system&.clear!
-      api&.instance_variable_set(:@built_contracts, Set.new)
-
-      # Rebuild contracts
+      api&.reset_contracts!
       api&.ensure_all_contracts_built!
     end
 
@@ -83,22 +74,13 @@ RSpec.describe 'Includes API', type: :request do
       # Restore
       Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@include, :optional)
 
-      # Clear cache
-      if defined?(Api::V1::PostContract)
-        Api::V1::PostContract.instance_variable_set(:@custom_types, {}) if Api::V1::PostContract.instance_variable_defined?(:@custom_types)
-        Api::V1::PostContract.action_definitions = {}
-      end
-      if defined?(Api::V1::CommentContract)
-        Api::V1::CommentContract.instance_variable_set(:@custom_types, {}) if Api::V1::CommentContract.instance_variable_defined?(:@custom_types)
-        Api::V1::CommentContract.action_definitions = {}
-      end
+      # Reset contracts and rebuild
+      Api::V1::PostContract.reset_build_state!
+      Api::V1::CommentContract.reset_build_state!
 
-      # Clear type_system cache and built_contracts
       api = Apiwork::API.find('/api/v1')
       api&.type_system&.clear!
-      api&.instance_variable_set(:@built_contracts, Set.new)
-
-      # Rebuild contracts
+      api&.reset_contracts!
       api&.ensure_all_contracts_built!
     end
 
@@ -132,22 +114,13 @@ RSpec.describe 'Includes API', type: :request do
         # Temporarily set comments to include: :always
         Api::V1::PostSchema.association_definitions[:comments].instance_variable_set(:@include, :always)
 
-        # Clear contract cache to pick up the change
-        if defined?(Api::V1::PostContract)
-          Api::V1::PostContract.instance_variable_set(:@custom_types, {}) if Api::V1::PostContract.instance_variable_defined?(:@custom_types)
-          Api::V1::PostContract.action_definitions = {}
-        end
-        if defined?(Api::V1::CommentContract)
-          Api::V1::CommentContract.instance_variable_set(:@custom_types, {}) if Api::V1::CommentContract.instance_variable_defined?(:@custom_types)
-          Api::V1::CommentContract.action_definitions = {}
-        end
+        # Reset contracts and rebuild
+        Api::V1::PostContract.reset_build_state!
+        Api::V1::CommentContract.reset_build_state!
 
-        # Clear type_system cache and built_contracts
         api = Apiwork::API.find('/api/v1')
         api&.type_system&.clear!
-        api&.instance_variable_set(:@built_contracts, Set.new)
-
-        # Rebuild contracts
+        api&.reset_contracts!
         api&.ensure_all_contracts_built!
       end
 
@@ -156,22 +129,13 @@ RSpec.describe 'Includes API', type: :request do
         Api::V1::PostSchema.association_definitions[:comments].instance_variable_set(:@include, :optional)
         Api::V1::CommentSchema.association_definitions[:post].instance_variable_set(:@include, :optional)
 
-        # Clear contract cache
-        if defined?(Api::V1::PostContract)
-          Api::V1::PostContract.instance_variable_set(:@custom_types, {}) if Api::V1::PostContract.instance_variable_defined?(:@custom_types)
-          Api::V1::PostContract.action_definitions = {}
-        end
-        if defined?(Api::V1::CommentContract)
-          Api::V1::CommentContract.instance_variable_set(:@custom_types, {}) if Api::V1::CommentContract.instance_variable_defined?(:@custom_types)
-          Api::V1::CommentContract.action_definitions = {}
-        end
+        # Reset contracts and rebuild
+        Api::V1::PostContract.reset_build_state!
+        Api::V1::CommentContract.reset_build_state!
 
-        # Clear type_system cache and built_contracts
         api = Apiwork::API.find('/api/v1')
         api&.type_system&.clear!
-        api&.instance_variable_set(:@built_contracts, Set.new)
-
-        # Rebuild contracts
+        api&.reset_contracts!
         api&.ensure_all_contracts_built!
       end
 

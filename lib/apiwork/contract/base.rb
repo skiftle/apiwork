@@ -70,6 +70,11 @@ module Apiwork
           _schema_class.present?
         end
 
+        def reset_build_state!
+          self.action_definitions = {}
+          self.imports = {}
+        end
+
         def scope_prefix
           return _identifier if _identifier
           return schema_class.root_key.singular if schema_class
