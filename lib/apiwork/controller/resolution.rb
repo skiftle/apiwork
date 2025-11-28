@@ -28,18 +28,18 @@ module Apiwork
       end
 
       def resource_metadata
-        @resource_metadata ||= api_class&.metadata&.resources&.[](resource_name)
+        @resource_metadata ||= api_class&.metadata&.find_resource(resource_name)
       end
 
       def resource_name
         @resource_name ||= begin
           base_name = self.class.name.underscore.gsub('_controller', '').split('/').last
-          resources = api_class&.metadata&.resources || {}
+          metadata = api_class&.metadata
 
           plural = base_name.to_sym
           singular = base_name.singularize.to_sym
 
-          resources.key?(plural) ? plural : singular
+          metadata&.find_resource(plural) ? plural : singular
         end
       end
 
