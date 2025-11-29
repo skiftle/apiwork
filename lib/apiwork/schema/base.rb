@@ -184,11 +184,11 @@ module Apiwork
           )
         end
 
-        def discriminator(as: nil)
+        def discriminator(name = nil)
           ensure_auto_detection_complete
           column = model_class.inheritance_column.to_sym
           self._discriminator_column = column
-          self._discriminator_name = as || column
+          self._discriminator_name = name || column
           self
         end
 

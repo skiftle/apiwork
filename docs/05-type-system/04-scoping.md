@@ -45,6 +45,22 @@ Contract-scoped types get a prefix based on the contract:
 | `OrderContract` | `:line_item` | `:order_line_item` |
 | `PostContract` | `:status` | `:post_status` |
 
+This prefix appears in the generated output:
+
+```typescript
+// API-level type (no prefix)
+export interface Address { ... }
+export const AddressSchema = z.object({ ... });
+
+// Contract-scoped type (prefixed with contract name)
+export interface OrderLineItem { ... }
+export const OrderLineItemSchema = z.object({ ... });
+
+// Contract-scoped enum
+type PostStatus = 'draft' | 'published';
+const PostStatusSchema = z.enum(['draft', 'published']);
+```
+
 ## Resolution Priority
 
 When a type is referenced, Apiwork looks:

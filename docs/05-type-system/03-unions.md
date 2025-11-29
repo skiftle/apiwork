@@ -11,6 +11,14 @@ union :filter_value do
 end
 ```
 
+```typescript
+// TypeScript
+type FilterValue = number | string;
+
+// Zod
+const FilterValueSchema = z.union([z.number().int(), z.string()]);
+```
+
 Usage:
 
 ```ruby
@@ -46,6 +54,35 @@ Input:
 
 The `discriminator` field identifies which variant to use.
 
+```typescript
+// TypeScript
+interface StringFilter {
+  kind: 'string';
+  value: string;
+}
+
+interface RangeFilter {
+  kind: 'range';
+  gte: number;
+  lte?: number;
+}
+
+type Filter = StringFilter | RangeFilter;
+
+// Zod
+const FilterSchema = z.discriminatedUnion('kind', [
+  z.object({
+    kind: z.literal('string'),
+    value: z.string()
+  }),
+  z.object({
+    kind: z.literal('range'),
+    gte: z.number().int(),
+    lte: z.number().int().optional()
+  })
+]);
+```
+
 ## Variant Options
 
 ```ruby
@@ -79,5 +116,5 @@ end
 Unions are reflected in:
 
 - OpenAPI specs as `oneOf`
-- TypeScript as union types
-- Zod as `z.union()`
+- TypeScript as union types (`A | B`)
+- Zod as `z.union()` or `z.discriminatedUnion()`

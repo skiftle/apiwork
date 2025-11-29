@@ -15,6 +15,26 @@ Apiwork::API.draw '/api/v1' do
 end
 ```
 
+## Generated Output
+
+```typescript
+// TypeScript
+export interface Address {
+  city?: string;
+  country?: string;
+  postal_code?: string;
+  street?: string;
+}
+
+// Zod
+export const AddressSchema = z.object({
+  city: z.string().optional(),
+  country: z.string().optional(),
+  postal_code: z.string().optional(),
+  street: z.string().optional()
+});
+```
+
 ## Using Types
 
 Reference by name:
@@ -43,6 +63,14 @@ end
 param :addresses, type: :array, of: :address
 ```
 
+```typescript
+// TypeScript
+addresses?: Address[];
+
+// Zod
+addresses: z.array(AddressSchema).optional()
+```
+
 ## Nested Types
 
 Types can reference other types:
@@ -60,6 +88,32 @@ Apiwork::API.draw '/api/v1' do
     param :work_address, type: :address
   end
 end
+```
+
+```typescript
+// TypeScript
+export interface Address {
+  city?: string;
+  street?: string;
+}
+
+export interface Person {
+  home_address?: Address;
+  name?: string;
+  work_address?: Address;
+}
+
+// Zod
+export const AddressSchema = z.object({
+  city: z.string().optional(),
+  street: z.string().optional()
+});
+
+export const PersonSchema = z.object({
+  home_address: AddressSchema.optional(),
+  name: z.string().optional(),
+  work_address: AddressSchema.optional()
+});
 ```
 
 ## Contract-Scoped Types
@@ -85,3 +139,19 @@ end
 ```
 
 The type is scoped as `:order_line_item`.
+
+```typescript
+// TypeScript (note the prefixed name)
+export interface OrderLineItem {
+  product_id?: number;
+  quantity?: number;
+  unit_price?: number;
+}
+
+// Zod
+export const OrderLineItemSchema = z.object({
+  product_id: z.number().int().optional(),
+  quantity: z.number().int().optional(),
+  unit_price: z.number().optional()
+});
+```

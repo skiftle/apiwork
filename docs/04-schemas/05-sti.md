@@ -23,7 +23,7 @@ To use a different name in JSON output:
 
 ```ruby
 class ClientSchema < Apiwork::Schema::Base
-  discriminator as: :kind  # JSON field is "kind", database column is still "type"
+  discriminator :kind  # JSON field is "kind", database column is still "type"
 
   attribute :name
   attribute :email
@@ -68,8 +68,8 @@ When you omit options, Apiwork uses Rails conventions:
 | Option | Default | Source |
 |--------|---------|--------|
 | Discriminator column | `:type` | `model_class.inheritance_column` |
-| Discriminator JSON name | Same as column | `as:` option or column name |
-| Variant tag | Class name | `model_class.sti_name` |
+| Discriminator JSON name | Same as column | Positional argument or column name |
+| Variant tag | Class name | `as:` option or `model_class.sti_name` |
 
 ## Serialization
 
@@ -77,17 +77,19 @@ Objects are serialized based on their actual type:
 
 ```ruby
 PersonClient.create!(name: "John", email: "john@example.com", birth_date: "1990-01-15")
-# With discriminator as: :kind, variant as: :person
+# With discriminator :kind, variant as: :person
 # => { "kind": "person", "name": "John", "email": "...", "birthDate": "1990-01-15" }
 
 CompanyClient.create!(name: "Acme", email: "info@acme.com", industry: "Tech")
-# With discriminator as: :kind, variant as: :company
+# With discriminator :kind, variant as: :company
 # => { "kind": "company", "name": "Acme", "email": "...", "industry": "Tech" }
 ```
 
 ## Type Generation
 
-STI generates a discriminated union type:
+STI generates a discriminated union type.
+
+### TypeScript
 
 ```typescript
 type Client = PersonClient | CompanyClient;
@@ -106,4 +108,28 @@ interface CompanyClient {
   industry: string;
   registrationNumber: string;
 }
+```
+
+### Zod
+
+```typescript
+const PersonClientSchema = z.object({
+  kind: z.literal("person"),
+  name: z.string(),
+  email: z.string(),
+  birthDate: z.string(),
+});
+
+const CompanyClientSchema = z.object({
+  kind: z.literal("company"),
+  name: z.string(),
+  email: z.string(),
+  industry: z.string(),
+  registrationNumber: z.string(),
+});
+
+const ClientSchema = z.discriminatedUnion("kind", [
+  PersonClientSchema,
+  CompanyClientSchema,
+]);
 ```

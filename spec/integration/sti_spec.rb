@@ -39,12 +39,6 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
   end
 
   describe 'DSL and Schema Configuration' do
-    it 'base schema has discriminator metadata' do
-      expect(Api::V1::ClientSchema.discriminator_column).to eq(:type)
-      expect(Api::V1::ClientSchema.discriminator_name).to eq(:kind)
-      expect(Api::V1::ClientSchema.sti_base?).to be(true)
-    end
-
     it 'variant schemas have variant metadata' do
       expect(Api::V1::PersonClientSchema.variant_tag).to eq(:person)
       expect(Api::V1::PersonClientSchema.sti_type).to eq('PersonClient')
@@ -68,6 +62,12 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
 
     it 'auto-marks base schema as abstract when variants register' do
       expect(Api::V1::ClientSchema.abstract?).to be(true)
+    end
+
+    it 'base schema has discriminator metadata' do
+      expect(Api::V1::ClientSchema.discriminator_column).to eq(:type)
+      expect(Api::V1::ClientSchema.discriminator_name).to eq(:kind)
+      expect(Api::V1::ClientSchema.sti_base?).to be(true)
     end
   end
 

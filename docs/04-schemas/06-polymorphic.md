@@ -1,20 +1,27 @@
 # Polymorphic Associations
 
-Schemas support Rails polymorphic associations.
+Apiwork supports Rails polymorphic associations with full type safety through discriminated unions.
 
-## Basic Setup
+## Definition
+
+Define a polymorphic association by mapping type keys to their schemas:
 
 ```ruby
 class CommentSchema < Apiwork::Schema::Base
+  model Comment
+
   attribute :content
 
-  belongs_to :commentable, polymorphic: true
+  belongs_to :commentable, polymorphic: {
+    post: PostSchema,
+    article: ArticleSchema
+  }
 end
 ```
 
-## How It Works
+The hash keys (`:post`, `:article`) become variant tags in the generated union type.
 
-With a polymorphic association:
+## Rails Model Setup
 
 ```ruby
 class Comment < ApplicationRecord
@@ -30,30 +37,91 @@ class Article < ApplicationRecord
 end
 ```
 
-Apiwork serializes the association based on the actual type:
+Database columns required: `commentable_id` and `commentable_type`.
+
+## Type Generation
+
+Apiwork generates a discriminated union type for polymorphic associations.
+
+For `belongs_to :commentable, polymorphic: {...}`:
+
+### TypeScript
+
+```typescript
+export type CommentablePolymorphic = Article | Post;
+
+export interface Comment {
+  id?: number;
+  content?: string;
+  commentable?: CommentablePolymorphic;
+}
+```
+
+### Zod
+
+```typescript
+const ArticleSchema = z.object({
+  id: z.number(),
+  title: z.string(),
+  commentableType: z.literal("Article"),
+});
+
+const PostSchema = z.object({
+  id: z.number(),
+  title: z.string(),
+  commentableType: z.literal("Post"),
+});
+
+const CommentablePolymorphicSchema = z.discriminatedUnion("commentableType", [
+  ArticleSchema,
+  PostSchema,
+]);
+
+const CommentSchema = z.object({
+  id: z.number().optional(),
+  content: z.string().optional(),
+  commentable: CommentablePolymorphicSchema.optional(),
+});
+```
+
+The discriminator field (`commentable_type`) is auto-detected from the Rails association reflection.
+
+## Introspection
+
+The introspection output represents polymorphic as a union:
 
 ```json
 {
-  "comment": {
-    "id": 1,
-    "content": "Great post!",
-    "commentable": {
-      "type": "Post",
-      "id": 42
-    }
+  "commentable": {
+    "type": "union",
+    "discriminator": "commentable_type",
+    "variants": [
+      { "type": "post", "tag": "post" },
+      { "type": "article", "tag": "article" }
+    ],
+    "required": false,
+    "nullable": true
   }
 }
 ```
 
 ## Including Polymorphic Data
 
-When including the polymorphic association:
+Use `include` to control eager loading:
+
+```ruby
+belongs_to :commentable,
+           polymorphic: { post: PostSchema, article: ArticleSchema },
+           include: :optional  # or :always
+```
+
+Request with include:
 
 ```
 GET /api/v1/comments/1?include=commentable
 ```
 
-The response includes the full object based on its type:
+Response:
 
 ```json
 {
@@ -61,10 +129,30 @@ The response includes the full object based on its type:
     "id": 1,
     "content": "Great post!",
     "commentable": {
-      "type": "Post",
       "id": 42,
-      "title": "Hello World"
+      "title": "Hello World",
+      "commentable_type": "Post"
     }
   }
 }
 ```
+
+The actual object type determines which schema serializes the data.
+
+## Limitations
+
+Polymorphic associations cannot use:
+
+| Option | Allowed | Reason |
+|--------|---------|--------|
+| `include: :optional` | Yes | |
+| `include: :always` | Yes | |
+| `filterable: true` | No | Cannot filter across multiple tables |
+| `sortable: true` | No | Cannot sort across multiple tables |
+| `writable: true` | No | Rails does not support nested saves |
+
+### No Nested Writes
+
+Rails does not support `accepts_nested_attributes_for` on polymorphic associations. This is a Rails limitation, not an Apiwork limitation. Setting `writable: true` on a polymorphic association has no effect.
+
+To create or update the polymorphic target, use separate API calls.

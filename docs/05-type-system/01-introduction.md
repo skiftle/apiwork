@@ -16,6 +16,22 @@ Apiwork::API.draw '/api/v1' do
 end
 ```
 
+```typescript
+// TypeScript
+export interface Address {
+  city?: string;
+  country?: string;
+  street?: string;
+}
+
+// Zod
+export const AddressSchema = z.object({
+  city: z.string().optional(),
+  country: z.string().optional(),
+  street: z.string().optional()
+});
+```
+
 ## Enums
 
 Enums restrict values to a predefined set:
@@ -24,6 +40,14 @@ Enums restrict values to a predefined set:
 Apiwork::API.draw '/api/v1' do
   enum :status, values: %w[draft published archived]
 end
+```
+
+```typescript
+// TypeScript
+type Status = 'archived' | 'draft' | 'published';
+
+// Zod
+const StatusSchema = z.enum(['archived', 'draft', 'published']);
 ```
 
 ## Unions
@@ -39,12 +63,20 @@ Apiwork::API.draw '/api/v1' do
 end
 ```
 
+```typescript
+// TypeScript
+type FilterValue = number | string;
+
+// Zod
+const FilterValueSchema = z.union([z.number().int(), z.string()]);
+```
+
 ## Two Levels
 
 Types can be defined at two levels:
 
 1. **API-level** (global): Available to all contracts in the API
-2. **Contract-scoped**: Local to a specific contract
+2. **Contract-scoped**: Local to a specific contract, unless you explicitly import it into another.
 
 From an external perspective, all types are effectively global. The only difference between API-level types and contract-scoped types is that contract types are prefixed with the contract name. This prefix can be customized using the `identifier` option.
 
