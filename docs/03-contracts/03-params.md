@@ -15,6 +15,8 @@ param :start_time, type: :time
 param :id, type: :uuid
 ```
 
+See [Types](../05-type-system/06-types.md) for the complete list of supported types.
+
 ## Required & Optional
 
 ```ruby

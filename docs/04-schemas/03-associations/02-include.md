@@ -44,6 +44,90 @@ GET /api/v1/posts/1
 }
 ```
 
+## Type Guarantees
+
+The `include` option directly affects generated types. This is powerful for type safety.
+
+### optional (default)
+
+With `include: :optional`, the field might not be present in responses. Generated types reflect this uncertainty:
+
+```ruby
+has_many :comments, include: :optional
+```
+
+```typescript
+// TypeScript - optional field
+interface Post {
+  title?: string;
+  comments?: Comment[];  // May not be present
+}
+
+// Zod - optional
+const PostSchema = z.object({
+  title: z.string().optional(),
+  comments: z.array(CommentSchema).optional()
+});
+```
+
+### always
+
+With `include: :always`, the field is guaranteed to be present. Generated types remove the optional marker:
+
+```ruby
+belongs_to :author, include: :always
+```
+
+```typescript
+// TypeScript - required field (no ?)
+interface Post {
+  title?: string;
+  author: Author;  // Always present
+}
+
+// Zod - not optional
+const PostSchema = z.object({
+  title: z.string().optional(),
+  author: AuthorSchema  // No .optional()
+});
+```
+
+### nullable vs optional
+
+`nullable` and `include` are independent:
+
+- **optional** (`?`) — field may not exist in response
+- **nullable** (`| null`) — field exists but value can be null
+
+```ruby
+# Always present, never null
+belongs_to :author, include: :always
+# → author: Author
+
+# Always present, can be null (e.g., optional foreign key)
+belongs_to :reviewer, include: :always, nullable: true
+# → reviewer: Author | null
+
+# May not be present, if present then not null
+has_many :comments, include: :optional
+# → comments?: Comment[]
+
+# May not be present, if present can be null
+belongs_to :category, include: :optional, nullable: true
+# → category?: Category | null
+```
+
+### Summary
+
+| Config | TypeScript | Zod |
+|--------|------------|-----|
+| `include: :optional` | `field?: Type` | `.optional()` |
+| `include: :always` | `field: Type` | (no modifier) |
+| `nullable: true` | `Type \| null` | `.nullable()` |
+| `include: :always, nullable: true` | `field: Type \| null` | `.nullable()` |
+
+Use `include: :always` when your frontend always needs the data. The stricter types eliminate null checks and optional chaining.
+
 ## Request Format
 
 ### Single Association

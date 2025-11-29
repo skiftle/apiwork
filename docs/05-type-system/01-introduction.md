@@ -92,3 +92,7 @@ end
 ```
 
 See [Scoping](./04-scoping.md) for details.
+
+## Available Types
+
+For a complete reference of all primitive and special types, see [Types](./06-types.md).

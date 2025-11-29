@@ -24,18 +24,39 @@ The `schema` option specifies which schema handles the associated resource.
 
 ## Options Reference
 
-| Option        | Type            | Default     | Description                     |
-| ------------- | --------------- | ----------- | ------------------------------- |
-| `schema`      | Class           | auto        | Associated schema class         |
-| `include`     | Symbol          | `:optional` | `:always` or `:optional`        |
-| `writable`    | `bool` / `hash` | `false`     | Allow nested attributes         |
-| `filterable`  | `bool`          | `false`     | Enable filtering by association |
-| `sortable`    | `bool`          | `false`     | Enable sorting by association   |
-| `nullable`    | `bool`          | auto        | Allow null (belongs_to)         |
-| `polymorphic` | Hash            | `nil`       | Polymorphic type mapping        |
-| `description` | `string`        | `nil`       | API documentation               |
-| `example`     | `any`           | `nil`       | Example value                   |
-| `deprecated`  | `bool`          | `false`     | Mark as deprecated              |
+| Option        | Type            | Default     | Description                              |
+| ------------- | --------------- | ----------- | ---------------------------------------- |
+| `schema`      | Class           | auto        | Associated schema class                  |
+| `include`     | Symbol          | `:optional` | `:always` or `:optional`                 |
+| `writable`    | `bool` / `hash` | `false`     | Allow nested attributes (see below)      |
+| `filterable`  | `bool`          | `false`     | Enable filtering by association          |
+| `sortable`    | `bool`          | `false`     | Enable sorting by association            |
+| `nullable`    | `bool`          | auto        | Allow null (auto-detected from DB)       |
+| `polymorphic` | Hash            | `nil`       | Polymorphic type mapping                 |
+| `description` | `string`        | `nil`       | API documentation                        |
+| `example`     | `any`           | `nil`       | Example value                            |
+| `deprecated`  | `bool`          | `false`     | Mark as deprecated                       |
+
+### Writable Hash Syntax
+
+The `writable` option supports context-specific writing:
+
+```ruby
+has_many :comments, writable: true                          # Create and update
+has_many :comments, writable: { on: [:create] }             # Only on create
+has_many :comments, writable: { on: [:update] }             # Only on update
+has_many :comments, writable: { on: [:create, :update] }    # Same as true
+```
+
+### Nullable Auto-Detection
+
+For `belongs_to` associations, `nullable` is auto-detected from the database foreign key constraint. Override explicitly when needed:
+
+```ruby
+belongs_to :author                    # nullable: auto-detected from DB
+belongs_to :author, nullable: false   # Require author even if DB allows NULL
+belongs_to :author, nullable: true    # Allow null even if DB requires it
+```
 
 ## Auto-Detection
 

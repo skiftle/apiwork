@@ -154,8 +154,72 @@ end
 
 ## Generated Output
 
-Unions are reflected in:
+### OpenAPI 3.1
 
-- OpenAPI specs as `oneOf`
-- TypeScript as union types (`A | B`)
-- Zod as `z.union()` or `z.discriminatedUnion()`
+Simple unions use `oneOf`:
+
+```yaml
+FilterValue:
+  oneOf:
+    - type: string
+    - type: integer
+```
+
+Discriminated unions add a `discriminator` object with `propertyName` and `mapping`:
+
+```yaml
+Filter:
+  oneOf:
+    - $ref: '#/components/schemas/StringFilter'
+    - $ref: '#/components/schemas/RangeFilter'
+  discriminator:
+    propertyName: kind
+    mapping:
+      string: '#/components/schemas/StringFilter'
+      range: '#/components/schemas/RangeFilter'
+
+StringFilter:
+  type: object
+  required: [kind, value]
+  properties:
+    kind:
+      type: string
+      enum: [string]
+    value:
+      type: string
+
+RangeFilter:
+  type: object
+  required: [kind, gte]
+  properties:
+    kind:
+      type: string
+      enum: [range]
+    gte:
+      type: integer
+    lte:
+      type: integer
+```
+
+The `discriminator.mapping` tells OpenAPI clients exactly which schema to use based on the `kind` value. This enables proper validation and code generation in tools that support OpenAPI 3.1.
+
+### TypeScript
+
+```typescript
+type FilterValue = number | string;
+
+type Filter = StringFilter | RangeFilter;
+```
+
+### Zod
+
+```typescript
+// Simple union
+const FilterValueSchema = z.union([z.number().int(), z.string()]);
+
+// Discriminated union
+const FilterSchema = z.discriminatedUnion('kind', [
+  z.object({ kind: z.literal('string'), value: z.string() }),
+  z.object({ kind: z.literal('range'), gte: z.number().int(), lte: z.number().int().optional() })
+]);
+```
