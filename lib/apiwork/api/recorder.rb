@@ -19,6 +19,7 @@ module Apiwork
         @in_member_block = false
         @in_collection_block = false
         @pending_metadata = {}
+        @concerns = {}
       end
     end
   end

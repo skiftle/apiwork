@@ -4,20 +4,17 @@ module Apiwork
   module API
     class Recorder
       module Concern
-        def concern(name, &block)
-          @metadata.add_concern(name, block)
+        def concern(name, callable = nil, &block)
+          callable ||= ->(recorder, options) { recorder.instance_exec(options, &block) }
+          @concerns[name] = callable
         end
 
-        private
+        def concerns(*names, **options)
+          names.flatten.each do |name|
+            callable = @concerns[name]
+            raise ConfigurationError, "No concern named :#{name} was found" unless callable
 
-        def apply_concerns(concerns)
-          return unless concerns
-
-          concerns.each do |concern_name|
-            concern_block = @metadata.concerns[concern_name]
-            next unless concern_block
-
-            instance_eval(&concern_block)
+            callable.call(self, options)
           end
         end
       end

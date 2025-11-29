@@ -5,19 +5,21 @@ module Apiwork
     class Recorder
       module Resource
         def resources(name, **options, &block)
+          concern_names = options.delete(:concerns)
+
           capture_resource_metadata(
             name,
             singular: false,
             options: options
           )
 
-          if block
-            @pending_metadata = {}
+          @pending_metadata = {}
+          @resource_stack.push(name)
 
-            @resource_stack.push(name)
-            instance_eval(&block)
-            @resource_stack.pop
-          end
+          concerns(*concern_names) if concern_names
+          instance_eval(&block) if block
+
+          @resource_stack.pop
 
           apply_resource_metadata(name)
 
@@ -25,19 +27,21 @@ module Apiwork
         end
 
         def resource(name, **options, &block)
+          concern_names = options.delete(:concerns)
+
           capture_resource_metadata(
             name,
             singular: true,
             options: options
           )
 
-          if block
-            @pending_metadata = {}
+          @pending_metadata = {}
+          @resource_stack.push(name)
 
-            @resource_stack.push(name)
-            instance_eval(&block)
-            @resource_stack.pop
-          end
+          concerns(*concern_names) if concern_names
+          instance_eval(&block) if block
+
+          @resource_stack.pop
 
           apply_resource_metadata(name)
 

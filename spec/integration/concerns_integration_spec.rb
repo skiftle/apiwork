@@ -1,0 +1,74 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+RSpec.describe 'API Concerns', type: :integration do
+  after do
+    Apiwork::API::Registry.unregister('/api/concerns_test')
+    Apiwork::API::Registry.unregister('/api/concerns_test2')
+    Apiwork::API::Registry.unregister('/api/concerns_test3')
+    Apiwork::API::Registry.unregister('/api/concerns_error')
+  end
+
+  it 'applies member actions from concern' do
+    api = Apiwork::API.draw '/api/concerns_test' do
+      concern :auditable do
+        member do
+          get :audit_log
+        end
+      end
+
+      resources :posts, concerns: [:auditable]
+    end
+
+    resource = api.metadata.find_resource(:posts)
+    expect(resource[:members]).to have_key(:audit_log)
+    expect(resource[:members][:audit_log][:method]).to eq(:get)
+  end
+
+  it 'applies collection actions from concern' do
+    api = Apiwork::API.draw '/api/concerns_test2' do
+      concern :searchable do
+        collection do
+          get :search
+        end
+      end
+
+      resources :posts, concerns: [:searchable]
+    end
+
+    resource = api.metadata.find_resource(:posts)
+    expect(resource[:collections]).to have_key(:search)
+    expect(resource[:collections][:search][:method]).to eq(:get)
+  end
+
+  it 'applies multiple concerns' do
+    api = Apiwork::API.draw '/api/concerns_test3' do
+      concern :auditable do
+        member do
+          get :audit_log
+        end
+      end
+
+      concern :searchable do
+        collection do
+          get :search
+        end
+      end
+
+      resources :posts, concerns: %i[auditable searchable]
+    end
+
+    resource = api.metadata.find_resource(:posts)
+    expect(resource[:members]).to have_key(:audit_log)
+    expect(resource[:collections]).to have_key(:search)
+  end
+
+  it 'raises error for unknown concern' do
+    expect do
+      Apiwork::API.draw '/api/concerns_error' do
+        resources :posts, concerns: [:unknown]
+      end
+    end.to raise_error(Apiwork::ConfigurationError, /No concern named :unknown/)
+  end
+end

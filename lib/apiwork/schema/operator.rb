@@ -56,22 +56,6 @@ module Apiwork
       NULLABLE_NUMERIC_OPERATORS = (NUMERIC_OPERATORS + NULL_OPERATORS).freeze
       NULLABLE_UUID_OPERATORS = (UUID_OPERATORS + NULL_OPERATORS).freeze
       NULLABLE_BOOLEAN_OPERATORS = (BOOLEAN_OPERATORS + NULL_OPERATORS).freeze
-
-      OPERATORS_BY_TYPE = {
-        string: STRING_OPERATORS,
-        text: STRING_OPERATORS,
-        date: DATE_OPERATORS,
-        datetime: DATE_OPERATORS,
-        integer: NUMERIC_OPERATORS,
-        float: NUMERIC_OPERATORS,
-        decimal: NUMERIC_OPERATORS,
-        uuid: UUID_OPERATORS,
-        boolean: BOOLEAN_OPERATORS
-      }.freeze
-
-      def self.for_type(type)
-        OPERATORS_BY_TYPE[type] || EQUALITY_OPERATORS
-      end
     end
   end
 end

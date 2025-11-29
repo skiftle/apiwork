@@ -3,8 +3,7 @@
 module Apiwork
   module API
     class Metadata
-      attr_reader :concerns,
-                  :namespaces,
+      attr_reader :namespaces,
                   :path,
                   :resources
 
@@ -17,7 +16,6 @@ module Apiwork
         @namespaces = path == '/' ? [] : path.split('/').reject(&:empty?).map(&:to_sym)
 
         @resources = {}
-        @concerns = {}
         @info = nil
         @error_codes = []
       end
@@ -78,10 +76,6 @@ module Apiwork
           contract_class: contract_class,
           metadata: metadata
         }
-      end
-
-      def add_concern(name, block)
-        @concerns[name] = block
       end
 
       def find_resource(resource_name)
