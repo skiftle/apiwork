@@ -1,46 +1,95 @@
 # Schemas
 
-Schemas define how data is serialized for API responses.
+A schema is the bridge between your model, your contract, and the behavior of the endpoint.
+
+It describes:
+
+- Which attributes and relations are exposed
+- How data is shaped when rendered
+- The metadata that powers filtering, sorting, pagination and nested operations
+
+If you've used Active Model Serializers, the DSL will feel familiar. But schemas in Apiwork go further: they don't just describe how to serialize a record — they describe how the API can query and interact with it.
+
+## Why Schemas?
+
+Contracts alone can take you far. But you're still hand-describing structures that already exist in your models.
+
+Schemas change that. They map ActiveRecord models directly into Apiwork's metadata — column types, enums, associations, constraints. Instead of repeating what Rails already knows, Apiwork builds on it.
+
+Contracts give you control. Schemas give you leverage.
+
+## Basic Example
 
 ```ruby
-class PostSchema < Apiwork::Schema::Base
+class InvoiceSchema < Apiwork::Schema::Base
   attribute :id
-  attribute :title
-  attribute :body
+  attribute :number
+  attribute :issued_on
   attribute :created_at
 
-  has_many :comments, schema: CommentSchema
+  has_many :lines
+  belongs_to :customer
 end
 ```
 
-## Naming Convention
+This tells Apiwork that:
 
-Apiwork infers the schema from the contract name:
+- `id`, `number`, `issued_on`, `created_at` are scalar attributes on `Invoice`
+- `lines` is a `has_many` relation that can be included
+- `customer` is a `belongs_to` relation that can be included
 
-| Contract | Schema |
-|----------|--------|
-| `Api::V1::PostContract` | `Api::V1::PostSchema` |
-| `Api::V1::CommentContract` | `Api::V1::CommentSchema` |
+## Model Inference
 
-## Model Auto-Detection
-
-Schemas auto-detect their model from the class name:
+Every schema is backed by a model. By default, Apiwork infers the model from the schema's class name:
 
 ```ruby
-class PostSchema < Apiwork::Schema::Base
-  # Automatically connects to Post model
+class InvoiceSchema < Apiwork::Schema::Base
+  # Expects Invoice model
 end
 ```
 
-Explicit declaration:
+This works even when namespaced:
 
 ```ruby
-class PostSchema < Apiwork::Schema::Base
-  model Post
+module Api::V1
+  class InvoiceSchema < Apiwork::Schema::Base
+    # Still maps to Invoice model
+  end
 end
 ```
 
-See [Inference](./07-inference.md) for all inference features.
+Override explicitly when needed:
+
+```ruby
+class AuthorSchema < Apiwork::Schema::Base
+  model User
+end
+```
+
+See [Inference](./07-inference.md) for complete details.
+
+## Connecting to Contract
+
+Use `schema!` to connect a contract to its schema:
+
+```ruby
+class InvoiceContract < Apiwork::Contract::Base
+  schema!  # Connects to InvoiceSchema
+end
+```
+
+With `schema!`, Apiwork auto-generates request bodies, response shapes, filter types, sort options and includes — all from the schema definition.
+
+## Schemas as Behavior Hints
+
+Beyond describing what to render, schemas act as behavior hints for the API layer. The same definitions that say "this field is exposed" also decide:
+
+- Which fields are safe to filter on
+- Which attributes can be sorted by
+- Which relations can be eagerly loaded
+- How nested writes should be handled
+
+You describe your domain once — in a schema aligned with your model — and Apiwork uses that for both serialization and API behavior.
 
 ## Root Key
 
@@ -53,16 +102,6 @@ end
 ```
 
 Responses use `article` for single objects and `articles` for collections.
-
-## Connecting to Contract
-
-In the contract, use `schema!` to enable serialization:
-
-```ruby
-class PostContract < Apiwork::Contract::Base
-  schema!  # Connects to PostSchema
-end
-```
 
 ## No Conditional Fields
 
@@ -128,6 +167,7 @@ interface User {
 | Nullable fields | ✅ Full | ✅ Consistent | Low |
 
 With nullable fields:
+
 - Clients always know the response structure
 - TypeScript types are accurate
 - No runtime surprises about missing keys

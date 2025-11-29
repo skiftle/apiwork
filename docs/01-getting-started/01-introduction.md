@@ -1,45 +1,30 @@
 # Introduction
 
-Apiwork is a contract-driven, schema-aware API framework for Rails.
+Apiwork is a contract-driven, schema-aware API framework for Rails. It brings validation, serialization, documentation, filtering, sorting, pagination and code generation together into one coherent system built around a single idea: define things once and keep everything in sync automatically.
 
 ## The Problem
 
-Rails developers often combine several libraries: one for serialization, one for documentation, one for filtering, one for pagination, one for validation, one for TypeScript generation. Each solves a fragment of the problem. None talk to each other.
-
-The result is duplication, drift, and maintenance overhead. Documentation falls out of sync. Types are defined twice. Filter logic is scattered.
+Most Rails APIs rely on several separate tools: serializers, strong parameters, documentation generators, validation layers, filter/sort libraries, and hand-written TypeScript, Zod or OpenAPI/spec definitions. Because these tools don’t share metadata, the same structures often end up defined multiple times. As an application evolves, these definitions drift apart, causing documentation to fall out of date, validation and serialization to behave inconsistently, and client-side types to no longer reflect the actual API.
 
 ## The Solution
 
-Apiwork brings these concerns together into one coherent system built around a single principle: **the contract is the source of truth**.
+Apiwork solves this by letting the contract act as the single source of truth for each endpoint. A contract specifies what the API accepts and returns. From that definition, Apiwork generates validation, coercion, serialization, OpenAPI documentation, Zod schemas, TypeScript types and metadata for filtering, sorting and pagination.
 
-A contract describes exactly what an endpoint accepts and returns. From that single definition, Apiwork generates:
-
-- Request validation and coercion
-- Response serialization
-- OpenAPI documentation
-- TypeScript types
-- Zod schemas
-- Filter and sort capabilities
-
-Because everything flows from one place, it stays in sync automatically.
+Schemas extend this by tapping into the information Rails has always had: fields, types, enums, associations and constraints defined in your database and ActiveRecord models. **Apiwork builds on what has been there all along**, making Rails’ existing metadata fully available to the API layer instead of forcing you to redefine it by hand. This removes duplication and keeps the API aligned with the domain automatically as the application grows.
 
 ## Why Contracts?
 
-An API is a boundary. Inside Ruby, dynamic typing works beautifully — models, controllers and helpers communicate freely. But once data crosses that boundary to TypeScript, Swift or Kotlin clients, they need well-defined structures.
+Ruby’s dynamic nature works well inside a Rails application because the framework provides strong conventions and predictable patterns. This makes explicit types less necessary internally. But once data leaves the Rails environment and is consumed by TypeScript, Swift or Kotlin, those conventions disappear. External clients need clear and stable definitions of the data they work with.
 
-Apiwork finds a middle ground. You keep Ruby's expressiveness and Rails conventions. Apiwork adds the structure modern clients expect — without bolting a static type system onto Ruby.
+Contracts make the API boundary explicit without turning Ruby into a statically typed language. Rails remains flexible internally, while the API surface becomes reliable and well-defined.
 
 ## Why Schemas?
 
-Contracts alone can take you far. But you're still hand-describing structures that already exist in your models.
-
-Schemas change that. They map ActiveRecord models directly into Apiwork's metadata — column types, enums, associations, constraints. Instead of repeating what Rails already knows, Apiwork builds on it.
-
-Contracts give you control. Schemas give you leverage.
+Schemas describe the shape of your data model. Apiwork uses the metadata already present in ActiveRecord — columns, types, enums, associations and constraints — to build a consistent representation of your domain. This eliminates the need to define the same model information again in contracts, serializers or client-side types.
 
 ## Works With Rails
 
-Apiwork acts as a preparation layer. It validates and shapes input, then hands clean data to Rails:
+Apiwork doesn’t replace Rails. It prepares incoming data so Rails can handle it naturally:
 
 ```ruby
 def create
@@ -48,6 +33,4 @@ def create
 end
 ```
 
-`contract.body[:invoice]` is already validated, coerced and shaped for ActiveRecord. For nested associations, Apiwork maps `lines` to `lines_attributes` automatically.
-
-Apiwork doesn't replace ActiveRecord validations or callbacks. It prepares the data so Rails can do what Rails is good at.
+`contract.body[:invoice]` is validated, coerced and mapped into the structure ActiveRecord expects, including nested associations (`lines` → `lines_attributes`). Rails still manages persistence, callbacks and business logic. Apiwork simply ensures the data entering those layers is clean, structured and consistent.
