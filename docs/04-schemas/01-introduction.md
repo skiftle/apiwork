@@ -40,7 +40,7 @@ class PostSchema < Apiwork::Schema::Base
 end
 ```
 
-See [Auto-Discovery](./07-auto-discovery.md) for all auto-detection features.
+See [Inference](./07-inference.md) for all inference features.
 
 ## Root Key
 

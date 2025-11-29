@@ -33,7 +33,7 @@ attribute :title, type: :string, nullable: false, required: true
 attribute :status  # Detects Rails enum values automatically
 ```
 
-See [Auto-Discovery](../07-auto-discovery.md) for complete details.
+See [Inference](../07-inference.md) for complete details.
 
 ## Options Reference
 

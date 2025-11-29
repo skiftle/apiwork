@@ -1,6 +1,6 @@
-# Auto-Discovery
+# Inference
 
-Apiwork automatically detects configuration from your database schema and ActiveRecord models. This reduces boilerplate and keeps your API in sync with your data layer.
+Apiwork infers configuration from your database schema and ActiveRecord models. This reduces boilerplate and keeps your API in sync with your data layer.
 
 ## Overview
 

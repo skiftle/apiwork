@@ -53,3 +53,20 @@ Adapters make the data actionable.
 And the API definition ties everything together.
 
 The result is an API that feels consistent, predictable and easy to maintain — without juggling multiple libraries that each solve a small part of the problem.
+
+## Works With Rails, Not Against It
+
+Apiwork is a preparation layer. It validates and transforms input, then hands it off to Rails.
+
+Your controller stays minimal:
+
+```ruby
+def create
+  post = Post.create(contract.body[:post])
+  respond_with post
+end
+```
+
+The `contract.body[:post]` is already validated, coerced, and shaped for ActiveRecord. For writable associations, Apiwork transforms `comments` into `comments_attributes` — ready for Rails' `accepts_nested_attributes_for`. You set up Rails the normal way, and Apiwork prepares the data to match.
+
+This means you keep using Rails the way you always have. Apiwork doesn't replace ActiveRecord validations, callbacks, or any other Rails feature. It prepares data so Rails can do what it does best.

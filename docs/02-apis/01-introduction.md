@@ -23,7 +23,7 @@ Apiwork::API.draw '/api/v1' do
   resources :posts
 end
 
-# Path: /api/v1 ’ Namespace: Api::V1
+# Path: /api/v1 ï¿½ Namespace: Api::V1
 # Controller: Api::V1::PostsController
 # Contract: Api::V1::PostContract
 # Schema: Api::V1::PostSchema

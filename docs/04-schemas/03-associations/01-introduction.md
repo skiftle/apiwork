@@ -60,7 +60,7 @@ belongs_to :author, nullable: true    # Allow null even if DB requires it
 
 ## Auto-Detection
 
-Schema and nullable are auto-detected. See [Auto-Discovery](../07-auto-discovery.md) for details.
+Schema and nullable are inferred. See [Inference](../07-inference.md) for details.
 
 ```ruby
 # These are equivalent:

@@ -40,7 +40,7 @@ Database columns required: `commentable_id` and `commentable_type`.
 
 ## Discriminator
 
-Apiwork auto-detects the discriminator column from Rails (e.g., `commentable_type`). See [Auto-Discovery](../07-auto-discovery.md) for details.
+Apiwork infers the discriminator column from Rails (e.g., `commentable_type`). See [Inference](../07-inference.md) for details.
 
 Override if needed:
 
