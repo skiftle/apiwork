@@ -98,6 +98,8 @@ Apiwork auto-detects this setting.
 
 ## Generated Payload Types
 
+Apiwork generates separate payload types for create and update operations. This enables type-safe API clients that know exactly what fields are available in each context.
+
 ```ruby
 class PostSchema < Apiwork::Schema::Base
   attribute :title, writable: true
@@ -131,12 +133,12 @@ const PostCreatePayloadSchema = z.object({
 });
 ```
 
-### Update Payload
+### Update Payload (Always Partial)
 
-Includes `id` and `_destroy`:
+Update payloads are always **partial** — all fields are optional. This reflects HTTP PATCH semantics: send only the fields you want to change.
 
 ```typescript
-// TypeScript
+// TypeScript - all fields have ?
 interface PostUpdatePayload {
   title?: string;
   comments?: CommentUpdatePayload[];
@@ -149,7 +151,7 @@ interface CommentUpdatePayload {
   _destroy?: boolean;
 }
 
-// Zod
+// Zod - all fields have .optional()
 const PostUpdatePayloadSchema = z.object({
   title: z.string().optional(),
   comments: z.array(z.object({
@@ -159,6 +161,83 @@ const PostUpdatePayloadSchema = z.object({
     _destroy: z.boolean().optional()
   })).optional()
 });
+```
+
+**Why always partial?** With PATCH requests, omitting a field means "keep the current value." This is different from PUT where omitting a field typically means "set to null." Apiwork enforces PATCH semantics for updates.
+
+### Nested Payload Union
+
+For writable associations, Apiwork generates a discriminated union that supports both create and update operations in nested payloads. The `_type` field acts as the discriminator:
+
+```typescript
+// TypeScript
+interface CommentNestedCreatePayload {
+  _type: 'create';
+  content?: string;
+  author?: string;
+}
+
+interface CommentNestedUpdatePayload {
+  _type: 'update';
+  id: string;
+  content?: string;
+  author?: string;
+  _destroy?: boolean;
+}
+
+type CommentNestedPayload = CommentNestedCreatePayload | CommentNestedUpdatePayload;
+
+// Zod
+const CommentNestedPayloadSchema = z.discriminatedUnion('_type', [
+  z.object({
+    _type: z.literal('create'),
+    content: z.string().optional(),
+    author: z.string().optional()
+  }),
+  z.object({
+    _type: z.literal('update'),
+    id: z.string(),
+    content: z.string().optional(),
+    author: z.string().optional(),
+    _destroy: z.boolean().optional()
+  })
+]);
+```
+
+This allows mixing create and update operations in a single request:
+
+```json
+{
+  "post": {
+    "comments": [
+      { "_type": "create", "content": "New comment" },
+      { "_type": "update", "id": "5", "content": "Updated" },
+      { "_type": "update", "id": "3", "_destroy": true }
+    ]
+  }
+}
+```
+
+### Context-Specific Writable
+
+When using `writable: { on: [:create] }` or `writable: { on: [:update] }`, the payload types reflect this:
+
+```ruby
+has_many :tags, writable: { on: [:create] }  # Only writable on create
+```
+
+```typescript
+// Tags only appear in create payload
+interface PostCreatePayload {
+  title?: string;
+  tags?: TagCreatePayload[];
+}
+
+// Tags NOT in update payload
+interface PostUpdatePayload {
+  title?: string;
+  // no tags field
+}
 ```
 
 ## Singular Associations

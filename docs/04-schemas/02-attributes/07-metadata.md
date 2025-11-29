@@ -31,7 +31,21 @@ Deprecated attributes still work but are marked in generated specs to signal cli
 
 ## format
 
-Type-specific format hints for validation and documentation:
+Type-specific format hints for validation and client generation.
+
+**Format overrides type in Zod output.** When you specify a format, Zod uses format-specific validators instead of the base type.
+
+### Allowed Formats by Type
+
+| Type | Allowed Formats |
+|------|-----------------|
+| `:string` | `email`, `uuid`, `uri`, `url`, `date`, `date_time`, `ipv4`, `ipv6`, `password`, `hostname` |
+| `:integer` | `int32`, `int64` |
+| `:float` | `float`, `double` |
+| `:decimal` | `float`, `double` |
+| `:number` | `float`, `double` |
+
+Using a format not allowed for the type raises a `ConfigurationError`.
 
 ### String Formats
 
@@ -40,20 +54,19 @@ attribute :email, format: :email
 attribute :website, format: :uri
 attribute :uuid, format: :uuid
 attribute :ip_address, format: :ipv4
-attribute :created_date, type: :string, format: :date
-attribute :password, format: :password
 ```
 
-| Format | Description |
-|--------|-------------|
-| `:email` | Email address |
-| `:uuid` | UUID string |
-| `:uri` / `:url` | URL |
-| `:date` | Date (YYYY-MM-DD) |
-| `:date_time` | ISO 8601 datetime |
-| `:ipv4` / `:ipv6` | IP address |
-| `:hostname` | Hostname |
-| `:password` | Password (hidden in docs) |
+| Format | OpenAPI | Zod |
+|--------|---------|-----|
+| `:email` | `format: email` | `z.email()` |
+| `:uuid` | `format: uuid` | `z.uuid()` |
+| `:uri` / `:url` | `format: uri` | `z.url()` |
+| `:date` | `format: date` | `z.iso.date()` |
+| `:date_time` | `format: date-time` | `z.iso.datetime()` |
+| `:ipv4` | `format: ipv4` | `z.ipv4()` |
+| `:ipv6` | `format: ipv6` | `z.ipv6()` |
+| `:hostname` | `format: hostname` | `z.string()` |
+| `:password` | `format: password` | `z.string()` |
 
 ### Numeric Formats
 
@@ -63,12 +76,12 @@ attribute :big_count, type: :integer, format: :int64
 attribute :price, type: :float, format: :double
 ```
 
-| Format | Description |
-|--------|-------------|
-| `:int32` | 32-bit integer |
-| `:int64` | 64-bit integer |
-| `:float` | 32-bit float |
-| `:double` | 64-bit float |
+| Format | OpenAPI | Zod |
+|--------|---------|-----|
+| `:int32` | `format: int32` | `z.number().int()` |
+| `:int64` | `format: int64` | `z.number().int()` |
+| `:float` | `format: float` | `z.number()` |
+| `:double` | `format: double` | `z.number()` |
 
 ## Generated Output
 
@@ -86,6 +99,28 @@ class PostSchema < Apiwork::Schema::Base
     deprecated: true,
     description: "Use 'slug' instead"
 end
+```
+
+### Introspection
+
+```json
+{
+  "title": {
+    "type": "string",
+    "description": "The post title",
+    "example": "Hello World"
+  },
+  "email": {
+    "type": "string",
+    "format": "email",
+    "example": "author@example.com"
+  },
+  "legacy_slug": {
+    "type": "string",
+    "deprecated": true,
+    "description": "Use 'slug' instead"
+  }
+}
 ```
 
 ### OpenAPI
