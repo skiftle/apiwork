@@ -159,9 +159,7 @@ RSpec.describe 'TypeScript Generation', type: :integration do
     end
 
     it 'has valid export statements' do
-      output.lines.grep(/^export/).each do |line|
-        expect(line).to match(/^export (interface|type|const) \w+/)
-      end
+      expect(output.lines.grep(/^export/)).to all(match(/^export (interface|type|const) \w+/))
     end
   end
 

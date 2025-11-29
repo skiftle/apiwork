@@ -89,7 +89,7 @@ RSpec.describe 'OpenAPI Generation', type: :integration do
 
       # If parameters exist, verify structure
       if parameters.any?
-        id_param = parameters.find { |p| p[:name] == 'id' || p[:name] == :id }
+        id_param = parameters.find { |p| ['id', :id].include?(p[:name]) }
         if id_param
           expect(id_param[:in]).to eq('path').or eq(:path)
           expect(id_param[:required]).to be true
@@ -104,10 +104,8 @@ RSpec.describe 'OpenAPI Generation', type: :integration do
       expect(parameters).to be_an(Array)
 
       if parameters.any?
-        post_id_param = parameters.find { |p| p[:name] == 'post_id' || p[:name] == :post_id }
-        if post_id_param
-          expect(post_id_param[:in]).to eq('path').or eq(:path)
-        end
+        post_id_param = parameters.find { |p| ['post_id', :post_id].include?(p[:name]) }
+        expect(post_id_param[:in]).to eq('path').or eq(:path) if post_id_param
       end
     end
   end
