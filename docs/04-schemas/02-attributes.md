@@ -141,3 +141,50 @@ end
 ```
 
 Important: Always specify `type:` for computed attributes. Without a database column, Apiwork cannot infer the type.
+
+## Type Generation
+
+Attributes generate types for spec output.
+
+### Introspection
+
+```json
+{
+  "id": {
+    "type": "integer",
+    "required": true,
+    "filterable": true,
+    "sortable": true
+  },
+  "title": {
+    "type": "string",
+    "required": true,
+    "writable": true,
+    "constraints": { "min": 1, "max": 255 }
+  },
+  "deleted_at": {
+    "type": "datetime",
+    "required": false,
+    "nullable": true
+  }
+}
+```
+
+### TypeScript
+
+```typescript
+interface Post {
+  id: number;
+  title: string;
+  deletedAt?: string | null;
+}
+```
+
+### Zod
+
+```typescript
+const PostSchema = z.object({
+  id: z.number().int(),
+  title: z.string().min(1).max(255),
+  deletedAt: z.string().datetime().nullable().optional(),
+});

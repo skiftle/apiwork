@@ -46,16 +46,29 @@ enum :status,
 
 ## Generated Output
 
-Enums are reflected in:
+Enums are reflected in OpenAPI, TypeScript, and Zod.
 
-- OpenAPI specs as `enum` constraints
-- TypeScript as union types
-- Zod as `z.enum()`
+### Introspection
+
+```json
+{
+  "status": {
+    "type": "enum",
+    "values": ["draft", "published", "archived"],
+    "description": "Publication status",
+    "example": "published"
+  }
+}
+```
+
+### TypeScript
 
 ```typescript
-// TypeScript
 type Status = 'draft' | 'published' | 'archived';
+```
 
-// Zod
+### Zod
+
+```typescript
 const StatusSchema = z.enum(['draft', 'published', 'archived']);
 ```

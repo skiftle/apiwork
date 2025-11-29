@@ -11,6 +11,20 @@ union :filter_value do
 end
 ```
 
+Introspection:
+
+```json
+{
+  "filter_value": {
+    "type": "union",
+    "variants": [
+      { "type": "string" },
+      { "type": "integer" }
+    ]
+  }
+}
+```
+
 ```typescript
 // TypeScript
 type FilterValue = number | string;
@@ -53,6 +67,21 @@ Input:
 ```
 
 The `discriminator` field identifies which variant to use.
+
+Introspection:
+
+```json
+{
+  "filter": {
+    "type": "union",
+    "discriminator": "kind",
+    "variants": [
+      { "tag": "string", "type": "object", "shape": { "value": { "type": "string" } } },
+      { "tag": "range", "type": "object", "shape": { "gte": { "type": "integer" }, "lte": { "type": "integer", "required": false } } }
+    ]
+  }
+}
+```
 
 ```typescript
 // TypeScript

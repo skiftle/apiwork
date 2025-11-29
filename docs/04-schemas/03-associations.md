@@ -84,3 +84,47 @@ GET /api/v1/posts?include=author,comments
 ```
 
 See [Serialization](./04-serialization.md).
+
+## Type Generation
+
+Associations generate nested types for spec output.
+
+### Introspection
+
+```json
+{
+  "author": {
+    "type": "has_one",
+    "schema": "UserSchema",
+    "include": "optional",
+    "required": false
+  },
+  "comments": {
+    "type": "has_many",
+    "schema": "CommentSchema",
+    "include": "optional",
+    "required": false
+  }
+}
+```
+
+### TypeScript
+
+```typescript
+interface Post {
+  id: number;
+  title: string;
+  author?: User;
+  comments?: Comment[];
+}
+```
+
+### Zod
+
+```typescript
+const PostSchema = z.object({
+  id: z.number().int(),
+  title: z.string(),
+  author: UserSchema.optional(),
+  comments: z.array(CommentSchema).optional(),
+});

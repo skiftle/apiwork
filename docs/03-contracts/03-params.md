@@ -141,3 +141,65 @@ param :shipping_address, type: :address
 ```
 
 See [Type System](../05-type-system/01-introduction.md).
+
+## Type Generation
+
+Params generate types for spec output.
+
+### Introspection
+
+```json
+{
+  "title": {
+    "type": "string",
+    "required": true,
+    "constraints": { "min": 1, "max": 255 }
+  },
+  "count": {
+    "type": "integer",
+    "required": false,
+    "constraints": { "min": 0, "max": 100 }
+  },
+  "tags": {
+    "type": "array",
+    "of": "string",
+    "required": false
+  },
+  "author": {
+    "type": "object",
+    "required": true,
+    "shape": {
+      "name": { "type": "string", "required": true },
+      "email": { "type": "string", "required": false }
+    }
+  }
+}
+```
+
+### TypeScript
+
+```typescript
+interface CreatePostRequest {
+  title: string;
+  count?: number;
+  tags?: string[];
+  author: {
+    name: string;
+    email?: string;
+  };
+}
+```
+
+### Zod
+
+```typescript
+const CreatePostRequestSchema = z.object({
+  title: z.string().min(1).max(255),
+  count: z.number().int().min(0).max(100).optional(),
+  tags: z.array(z.string()).optional(),
+  author: z.object({
+    name: z.string(),
+    email: z.string().optional(),
+  }),
+});
+```

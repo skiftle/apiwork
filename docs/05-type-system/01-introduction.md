@@ -1,43 +1,6 @@
 # Type System
 
-Apiwork provides a type system for defining reusable types.
-
-## Why Symbol-Based Types?
-
-Types are referenced by symbols (`:address`, `:status`) rather than Ruby classes. This enables:
-
-**Define in any order** — Reference a type before it's defined:
-
-```ruby
-param :billing, type: :billing_address  # Works!
-
-type :billing_address do
-  param :street, type: :string
-end
-```
-
-With Ruby classes, this would fail with `NameError: uninitialized constant`.
-
-**Automatic spec generation** — Symbol names map directly to output formats:
-
-| Ruby | TypeScript | Zod |
-|------|------------|-----|
-| `:address` | `Address` | `AddressSchema` |
-| `:user_status` | `UserStatus` | `UserStatusSchema` |
-
-**Scoping without class proliferation** — The same type name in different contexts:
-
-```ruby
-# In PostContract
-type :status  # → post_status
-
-# In OrderContract
-type :status  # → order_status
-```
-
-One concept, automatic namespacing. No need for `PostStatusType`, `OrderStatusType` classes.
-
-**Circular references handled** — Post references Comments, Comments reference Post. Detected and resolved at spec generation time, not load time.
+The type system is the heart of Apiwork. Every request, response, filter, sort, and payload flows through it. Define a type once, use it everywhere — in contracts, schemas, and generated client code.
 
 ## Types
 

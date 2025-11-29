@@ -17,21 +17,41 @@ end
 
 ## Generated Output
 
+### Introspection
+
+```json
+{
+  "address": {
+    "type": "object",
+    "shape": {
+      "street": { "type": "string", "required": false },
+      "city": { "type": "string", "required": false },
+      "postal_code": { "type": "string", "required": false },
+      "country": { "type": "string", "required": false }
+    }
+  }
+}
+```
+
+### TypeScript
+
 ```typescript
-// TypeScript
 export interface Address {
   city?: string;
   country?: string;
-  postal_code?: string;
+  postalCode?: string;
   street?: string;
 }
+```
 
-// Zod
+### Zod
+
+```typescript
 export const AddressSchema = z.object({
   city: z.string().optional(),
   country: z.string().optional(),
-  postal_code: z.string().optional(),
-  street: z.string().optional()
+  postalCode: z.string().optional(),
+  street: z.string().optional(),
 });
 ```
 
