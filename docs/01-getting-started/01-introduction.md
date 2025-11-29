@@ -22,35 +22,69 @@ Apiwork aims to find a middle ground. It lets you keep the expressive Ruby code,
 This makes it possible to stay in the Rails environment we enjoy, while still giving the API the structure and type-awareness modern clients expect — without the overhead of hand-written types or duplicated schema definitions.
 
 ```ruby
-# app/contracts/post_contract.rb
-class PostContract < Apiwork::Contract::Base
+# app/contracts/invoice_contract.rb
+class InvoiceContract < Apiwork::Contract::Base
   action :create do
     request do
       body do
-        param :title, type: :string
-        param :body,  type: :string
+        param :invoice, type: :object, required: true do
+          param :number, type: :string
+          param :issued_on, type: :date
+          param :notes, type: :string
+          param :lines, type: :array do
+            param :description, type: :string
+            param :quantity, type: :integer
+            param :price, type: :decimal
+          end
+        end
       end
     end
 
-    response { body PostSchema }
+    response do
+      body do
+        param :id, type: :uuid
+        param :number, type: :string
+        param :issued_on, type: :date
+        param :created_at, type: :datetime
+      end
+    end
   end
 end
 ```
 
-Contracts follow Rails naming conventions:  
-`PostsController` → `PostContract` → `PostSchema`.
+## Schemas (optional superpower)
 
-## Schemas (Optional, but Very Helpful)
+Schemas are optional, but they fit naturally into Rails and eliminate a huge amount of manual work. While contracts alone can take you far — and offer a powerful, expressive way to define request and response shapes — relying only on contracts still means you’re hand-describing structures that already exist in your models. The real strength of Apiwork appears when schemas are introduced;
 
-Schemas are optional, but they fit naturally into Rails and reduce a lot of repetition.  
-When used, Apiwork can read structural information directly from your ActiveRecord models:
+```ruby
+# app/schemas/line_schema.rb
+class LineSchema < Apiwork::Schema::Base
+  attribute :id
+  attribute :description, writable: true
+  attribute :quantity, writable: true
+  attribute :price, writable: true
+end
 
-- database column types
-- enum definitions
-- associations
-- nullability and constraints
+# app/schemas/invoice_schema.rb
+class InvoiceSchema < Apiwork::Schema::Base
+  attribute :id
+  attribute :created_at
+  attribute :updated_at
+  attribute :number, writable: true
+  attribute :issued_on, writable: true
+  attribute :notes, writable: true
 
-In practice, the database — surfaced through ActiveRecord — becomes the underlying source of truth. Apiwork uses this to enrich contracts, power adapters and generate more complete specifications. You can define everything manually if you prefer, but schemas save time and keep things consistent with the actual data model.
+  has_many :lines, writable: true, include: :always
+end
+
+# app/contracts/invoice_contract.rb
+class InvoiceContract < Apiwork::Contract::Base
+  schema!
+end
+```
+
+The schema system maps your ActiveRecord models directly into Apiwork’s metadata, automatically pulling in column types, enums, associations and constraints. Instead of repeating what Rails already knows, Apiwork builds on it — wiring up filters, sorting, nested operations, pagination and type generation without extra definitions.
+In short: contracts give you control, but schemas give you leverage. They turn your existing Rails models into fully typed, API-ready structures with almost no effort, and let Apiwork handle the rest.
 
 ## Consolidation
 
@@ -72,13 +106,13 @@ Your controller remains minimal:
 
 ```ruby
 def create
-  post = Post.create(contract.body[:post])
-  respond_with post
+  invoice = Invoice.create(contract.body[:invoice])
+  respond_with invoice
 end
 ```
 
-`contract.body[:post]` is already validated, coerced and shaped for ActiveRecord.  
-For writable associations, Apiwork automatically maps `comments` to `comments_attributes`, ready for Rails’ `accepts_nested_attributes_for`. You configure Rails as usual; Apiwork prepares the data to match.
+`contract.body[:invoice]` is already validated, coerced and shaped for ActiveRecord.
+For writable associations, Apiwork automatically maps `lines` to `lines_attributes`, ready for Rails' `accepts_nested_attributes_for`. You configure Rails as usual; Apiwork prepares the data to match.
 
 Apiwork doesn't replace ActiveRecord validations, callbacks or any Rails functionality.  
 It prepares clean, typed, predictable data so Rails can do what Rails is good at.
