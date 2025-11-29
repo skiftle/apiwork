@@ -1,6 +1,6 @@
 # Resources
 
-Resources define the endpoints for your API.
+Resources define the endpoints for your API. They follow the same structure and naming conventions as Rails’ resource routing, but within Apiwork they serve a broader purpose. A resource does not only describe which endpoints exist — it also links each endpoint to its contract and forms part of the API’s metadata. Declaring a resource sets up the routing, connects it to the appropriate controller, and tells Apiwork which contract governs its behaviour.
 
 ## Plural Resources
 
@@ -10,12 +10,12 @@ resources :posts
 
 Generates five CRUD actions:
 
-| Action | Method | Path |
-|--------|--------|------|
-| index | GET | /posts |
-| show | GET | /posts/:id |
-| create | POST | /posts |
-| update | PATCH | /posts/:id |
+| Action  | Method | Path       |
+| ------- | ------ | ---------- |
+| index   | GET    | /posts     |
+| show    | GET    | /posts/:id |
+| create  | POST   | /posts     |
+| update  | PATCH  | /posts/:id |
 | destroy | DELETE | /posts/:id |
 
 ## Singular Resources
@@ -26,11 +26,11 @@ resource :account
 
 For resources where there's only one (like the current user's account):
 
-| Action | Method | Path |
-|--------|--------|------|
-| show | GET | /account |
-| create | POST | /account |
-| update | PATCH | /account |
+| Action  | Method | Path     |
+| ------- | ------ | -------- |
+| show    | GET    | /account |
+| create  | POST   | /account |
+| update  | PATCH  | /account |
 | destroy | DELETE | /account |
 
 No `index` action, no `:id` in the path. The controller is still plural: `AccountsController`.

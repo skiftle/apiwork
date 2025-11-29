@@ -4,11 +4,11 @@ Two options for handling null and empty values: `nullable` and `empty`.
 
 ## Quick Comparison
 
-| Option | Accepts `null` | Accepts `""` | Stores | Returns |
-|--------|----------------|--------------|--------|---------|
-| Default | No | Yes | As-is | As-is |
-| `nullable: true` | Yes | Yes | As-is | As-is |
-| `empty: true` | No | Yes | `nil` | `""` |
+| Option           | Accepts `null` | Accepts `""` | Stores | Returns |
+| ---------------- | -------------- | ------------ | ------ | ------- |
+| Default          | No             | Yes          | As-is  | As-is   |
+| `nullable: true` | Yes            | Yes          | As-is  | As-is   |
+| `empty: true`    | No             | Yes          | `nil`  | `""`    |
 
 ## nullable: true
 
@@ -78,10 +78,10 @@ Frontend code becomes simpler:
 
 ```typescript
 // Without empty: true
-const name = user.nickname ?? '';  // Must handle null
+const name = user.nickname ?? ""; // Must handle null
 
 // With empty: true
-const name = user.nickname;  // Always a string
+const name = user.nickname; // Always a string
 ```
 
 ### How It Works
@@ -99,12 +99,12 @@ attribute :name,
 
 ### empty vs nullable
 
-| | `nullable: true` | `empty: true` |
-|---|---|---|
-| **Use when** | Null has meaning | Null = no value |
-| **Frontend sees** | `null` or value | `""` or value |
-| **Database stores** | `null` or value | `null` or value |
-| **TypeScript type** | `string \| null` | `string` |
+|                     | `nullable: true` | `empty: true`   |
+| ------------------- | ---------------- | --------------- |
+| **Use when**        | Null has meaning | Null = no value |
+| **Frontend sees**   | `null` or value  | `""` or value   |
+| **Database stores** | `null` or value  | `null` or value |
+| **TypeScript type** | `string \| null` | `string`        |
 
 ### Validation with empty
 
@@ -136,7 +136,7 @@ interface User {
 
 // Zod
 const UserSchema = z.object({
-  bio: z.string().nullable().optional()
+  bio: z.string().nullable().optional(),
 });
 ```
 
@@ -145,12 +145,12 @@ const UserSchema = z.object({
 ```typescript
 // TypeScript
 interface User {
-  name?: string;  // Never null
+  name?: string; // Never null
 }
 
 // Zod
 const UserSchema = z.object({
-  name: z.string().optional()
+  name: z.string().optional(),
 });
 ```
 

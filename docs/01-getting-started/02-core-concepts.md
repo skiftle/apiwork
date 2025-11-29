@@ -186,19 +186,19 @@ Schemas are optional, but they eliminate most manual contract definitions by map
 class LineSchema < Apiwork::Schema::Base
   attribute :id
   attribute :description, writable: true
-  attribute :quantity,    writable: true
-  attribute :price,       writable: true
+  attribute :quantity, writable: true
+  attribute :price, writable: true
 end
 
 # app/schemas/invoice_schema.rb
 class InvoiceSchema < Apiwork::Schema::Base
   attribute :id
-  attribute :number,     writable: true, filterable: true
-  attribute :issued_on,  writable: true, sortable: true
-  attribute :notes,      writable: true
-  attribute :status,     filterable: true, sortable: true
   attribute :created_at, sortable: true
-  attribute :updated_at
+  attribute :updated_at, sortable: true
+  attribute :number, writable: true, filterable: true
+  attribute :issued_on, writable: true, sortable: true
+  attribute :notes, writable: true
+  attribute :status, filterable: true, sortable: true
 
   has_many :lines, writable: true, include: :always
   belongs_to :customer, include: :always

@@ -1,6 +1,7 @@
 # Concerns
 
-Concerns let you extract reusable routing patterns.
+Concerns allow you to extract reusable routing patterns and apply them to multiple resources.  
+They help keep your API definition organised and prevent duplication when several resources share the same endpoint structure.
 
 ## Defining a Concern
 
@@ -58,13 +59,3 @@ resources :articles, concerns: [:commentable]
 ```
 
 Both posts and articles now have nested comment routes with approve, reject, and pending actions.
-
-## When to Use Concerns
-
-Concerns are useful when:
-
-- Multiple resources share the same custom actions
-- You want to keep your API definition DRY
-- A pattern like "auditable" or "commentable" applies to many resources
-
-For simple cases, duplicating a few lines is fine. Use concerns when the pattern is substantial or changes frequently.
