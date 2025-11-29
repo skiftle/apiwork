@@ -56,6 +56,41 @@ Allow nested attributes in create/update:
 has_many :comments, schema: CommentSchema, writable: true
 ```
 
+Requires `accepts_nested_attributes_for` on the model:
+
+```ruby
+class Post < ApplicationRecord
+  has_many :comments
+  accepts_nested_attributes_for :comments, allow_destroy: true
+end
+```
+
+Limit to specific actions:
+
+```ruby
+has_many :comments, schema: CommentSchema, writable: { on: [:create] }
+```
+
+### nullable
+
+Allow the association to be null:
+
+```ruby
+belongs_to :author, schema: UserSchema, nullable: true
+```
+
+### Metadata Options
+
+Add documentation metadata:
+
+```ruby
+has_many :comments,
+         schema: CommentSchema,
+         description: "All comments on this post",
+         example: [{ id: 1, content: "Great post!" }],
+         deprecated: true
+```
+
 ### filterable
 
 Enable filtering on the association:

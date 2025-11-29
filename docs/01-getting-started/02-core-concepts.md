@@ -41,18 +41,22 @@ module Api
         end
 
         response do
-          array :invoices do
-            param :id,     type: :uuid
-            param :status, type: :string
+          body do
+            param :invoices, type: :array do
+              param :id,     type: :uuid
+              param :status, type: :string
+            end
           end
         end
       end
 
       action :show do
         response do
-          param :id,     type: :uuid
-          param :status, type: :string
-          array :items, type: :line_item
+          body do
+            param :id,     type: :uuid
+            param :status, type: :string
+            param :items,  type: :array, of: :line_item
+          end
         end
       end
 
@@ -60,13 +64,15 @@ module Api
         request do
           body do
             param :status, type: :string, required: true
-            array :items,  type: :line_item
+            param :items,  type: :array, of: :line_item
           end
         end
 
         response do
-          param :id,     type: :uuid
-          param :status, type: :string
+          body do
+            param :id,     type: :uuid
+            param :status, type: :string
+          end
         end
       end
 

@@ -5,7 +5,7 @@ Apiwork provides introspection methods to inspect your API at runtime.
 ## API Introspection
 
 ```ruby
-api_class = Apiwork::API::Registry.find('/api/v1')
+api_class = Apiwork::API.find('/api/v1')
 
 Apiwork::Introspection.api(api_class)
 # Returns full API structure: resources, actions, types, enums
@@ -24,7 +24,7 @@ Apiwork::Introspection.contract(PostContract, action: :create)
 ## Types and Enums
 
 ```ruby
-api_class = Apiwork::API::Registry.find('/api/v1')
+api_class = Apiwork::API.find('/api/v1')
 
 Apiwork::Introspection.types(api_class)
 # Returns all registered types
@@ -47,7 +47,7 @@ Apiwork::Introspection.action_definition(action_def)
 The API class has an `introspect` method:
 
 ```ruby
-api_class = Apiwork::API::Registry.find('/api/v1')
+api_class = Apiwork::API.find('/api/v1')
 api_class.introspect
 # Same as Apiwork::Introspection.api(api_class)
 ```

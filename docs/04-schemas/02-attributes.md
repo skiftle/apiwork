@@ -41,6 +41,13 @@ Allow this attribute in create/update requests:
 attribute :title, writable: true
 ```
 
+Limit to specific actions:
+
+```ruby
+attribute :email, writable: { on: [:create] }  # Only writable on create
+attribute :role, writable: { on: [:update] }   # Only writable on update
+```
+
 ### nullable
 
 Allow null values:
@@ -71,6 +78,37 @@ Transform value when deserializing (input):
 
 ```ruby
 attribute :email, decode: ->(value) { value&.upcase }
+```
+
+### format
+
+Specify the format for string types (used in spec generation):
+
+```ruby
+attribute :email, format: :email
+attribute :website, format: :uri
+attribute :uuid, format: :uuid
+```
+
+Available formats: `:email`, `:uri`, `:uuid`, `:date`, `:datetime`, `:time`, `:binary`.
+
+### empty
+
+Convert nil to empty string on output, blank to nil on input:
+
+```ruby
+attribute :bio, empty: true
+```
+
+### Metadata Options
+
+Add documentation metadata:
+
+```ruby
+attribute :status,
+          description: "Current status of the post",
+          example: "published",
+          deprecated: true
 ```
 
 ## Combining Options

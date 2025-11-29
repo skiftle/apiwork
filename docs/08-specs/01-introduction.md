@@ -54,17 +54,12 @@ Options:
 ## Programmatic Generation
 
 ```ruby
-api_class = Apiwork::API::Registry.find('/api/v1')
-
 # Generate OpenAPI spec
-openapi = Apiwork::Spec::Openapi.new(api_class)
-openapi.generate  # Returns JSON
+Apiwork::Spec::Openapi.generate(path: '/api/v1')
 
 # Generate TypeScript
-typescript = Apiwork::Spec::Typescript.new(api_class)
-typescript.generate  # Returns TypeScript code
+Apiwork::Spec::Typescript.generate(path: '/api/v1')
 
 # Generate Zod
-zod = Apiwork::Spec::Zod.new(api_class)
-zod.generate  # Returns Zod schemas
+Apiwork::Spec::Zod.generate(path: '/api/v1')
 ```

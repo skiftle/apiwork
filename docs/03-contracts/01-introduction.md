@@ -1,6 +1,6 @@
 # Contracts
 
-Contracts define the request and resonse for each API action.
+Contracts define the request and response for each API action.
 
 ```ruby
 class PostContract < Apiwork::Contract::Base

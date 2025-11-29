@@ -120,6 +120,18 @@ variant type: :my_custom_type                # Reference to custom type
 variant type: :array, of: :string            # Array type
 variant type: :object do ... end             # Inline object
 variant tag: 'text', type: :object do ... end  # For discriminated unions
+variant type: :my_type, partial: true        # Makes all fields optional
+```
+
+### partial
+
+The `partial: true` option makes all fields in the variant optional:
+
+```ruby
+union :user_update do
+  variant type: :full_user
+  variant type: :full_user, partial: true, tag: 'patch'  # All fields optional
+end
 ```
 
 ## Contract-Scoped Union

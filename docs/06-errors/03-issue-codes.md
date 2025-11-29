@@ -25,6 +25,19 @@
 | `:invalid_enum_value` | Invalid value for enum field |
 | `:invalid_date_format` | Invalid date format |
 | `:null_not_allowed` | Null not allowed for this operation |
+| `:invalid_operator` | Invalid filter operator |
+| `:invalid_filter_value_type` | Filter value has wrong type |
+| `:invalid_numeric_format` | Invalid numeric format |
+
+## Sorting
+
+| Code | Meaning |
+|------|---------|
+| `:field_not_sortable` | Field is not sortable |
+| `:invalid_sort_params_type` | Sort params must be a hash |
+| `:invalid_sort_direction` | Sort direction must be 'asc' or 'desc' |
+| `:invalid_sort_value_type` | Invalid value type for sort |
+| `:association_not_sortable` | Association is not sortable |
 
 ## Associations
 
