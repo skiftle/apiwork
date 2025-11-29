@@ -1,0 +1,83 @@
+# Unions
+
+Unions allow a value to be one of several types.
+
+## Simple Union
+
+```ruby
+union :filter_value do
+  variant type: :string
+  variant type: :integer
+end
+```
+
+Usage:
+
+```ruby
+param :filter, type: :union do
+  variant type: :string
+  variant type: :integer
+end
+```
+
+## Discriminated Union
+
+A discriminated union uses a field to determine the variant:
+
+```ruby
+param :filter, type: :union, discriminator: :kind do
+  variant tag: 'string', type: :object do
+    param :value, type: :string
+  end
+
+  variant tag: 'range', type: :object do
+    param :gte, type: :integer
+    param :lte, type: :integer, required: false
+  end
+end
+```
+
+Input:
+
+```json
+{ "kind": "string", "value": "hello" }
+{ "kind": "range", "gte": 10, "lte": 20 }
+```
+
+The `discriminator` field identifies which variant to use.
+
+## Variant Options
+
+```ruby
+variant type: :string                        # Primitive type
+variant type: :my_custom_type                # Reference to custom type
+variant type: :array, of: :string            # Array type
+variant type: :object do ... end             # Inline object
+variant tag: 'text', type: :object do ... end  # For discriminated unions
+```
+
+## Contract-Scoped Union
+
+```ruby
+class PostContract < Apiwork::Contract::Base
+  union :content_block do
+    variant type: :object do
+      param :type, type: :literal, value: 'text'
+      param :content, type: :string
+    end
+
+    variant type: :object do
+      param :type, type: :literal, value: 'image'
+      param :url, type: :string
+    end
+  end
+end
+```
+
+## Generated Output
+
+Unions are reflected in:
+
+- OpenAPI specs as `oneOf`
+- TypeScript as union types
+- Zod as `z.union()`
