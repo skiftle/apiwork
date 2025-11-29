@@ -1,32 +1,41 @@
 # Introduction
 
-Apiwork is a contract-driven, schema-powered API framework for Rails.
+Apiwork is a contract-driven, schema-aware API framework for Rails.
 
-It builds directly on Rails foundations — especially ActiveRecord — and adds a structured layer for defining and maintaining APIs. The goal isn’t to rethink Rails or replace its patterns, but to extend them in a way that feels completely natural. You still write controllers, models and resources the same way; Apiwork simply gives your API a clear, explicit definition that Rails has never formalized on its own.
+It builds on the strengths Rails already gives you — especially ActiveRecord — and adds a clear structure around the API itself. You keep working the same way you normally do with controllers, models and resources. Apiwork just provides a clean place to describe how the API is supposed to behave.
 
 ## Why Contract-Driven?
 
-A contract-driven API brings several major advantages:
+A contract defines what an endpoint accepts and returns. That brings a few important benefits:
 
-**Safety** — only the data you explicitly define is allowed in.  
-**Predictability** — requests, responses and behavior follow a consistent structure.  
-**Typed clients** — because contracts describe the API precisely, Apiwork can generate OpenAPI, Zod and TypeScript clients directly from the same source. Typed clients are standard today, and Apiwork supports them out of the box.  
-**Accurate documentation** — docs are generated from the same contracts that drive the server, so they never drift or become outdated.  
-**Consistency across the whole system** — controllers, specs, clients and schemas all point to one single definition.
+**Safety** — only the fields you’ve defined are allowed in.  
+**Predictability** — requests and responses follow a clear structure.  
+**Generated specs** — because the contract is explicit, Apiwork can generate OpenAPI, Zod schemas, TypeScript types and similar specs automatically. These are standard tools today for validation, documentation and typed clients, and Apiwork supports them out of the box.  
+**Documentation that stays accurate** — since it’s based on the contract, it stays in sync without extra work.
 
-Another major strength of this approach is consolidation. Rails developers often rely on a mix of serializers, presenters, documentation tools, validation gems, pagination gems, filtering gems and manually written client types. Apiwork unifies all of this into one coherent system. You no longer need five or six gems that each solve one part of the puzzle. The pieces inside Apiwork are designed to work seamlessly together, without conflicts, glue code or integration friction.
+In short, the contract becomes the single place where the API is described, which helps everything else fall into place.
 
-## Schema as Source of Truth
+## Schemas (Optional, but Very Helpful)
 
-Apiwork also builds on ActiveRecord as its foundation. When you use schemas, Apiwork automatically reads structural information directly from your models:
+Schemas are optional, but they match Rails well and remove a lot of duplication.  
+When you use them, Apiwork can read information directly from your ActiveRecord models:
 
-- database column types
+- column and database types
 - enums
 - associations
-- nullability and basic constraints
+- nullability and constraints
 
-In practice, the database — through ActiveRecord — becomes the raw source of truth. Apiwork turns that information into structured metadata that flows into contracts, controllers, adapter logic and generated clients. Schemas are optional, but when used, they unlock a powerful, Rails-friendly workflow with minimal configuration and maximum consistency.
+This means the database — via ActiveRecord — acts as the underlying source of truth. Apiwork uses that information to enrich contracts, power adapters and improve generated specs. You’re free to define everything manually, but schemas save time and keep things consistent.
 
-Together, the API definition, contracts and schemas create a unified model for your entire API. Instead of stitching together multiple gems that each solve one piece of the picture, Apiwork provides a single, tightly integrated layer that keeps your API predictable, documented and type-safe from end to end.
+## Consolidation
 
-Continue to **Core Concepts** to see how these pieces fit together in practice.
+One of the nice things about Apiwork is that it replaces several tools that are often combined in Rails apps. Instead of reaching for separate gems for serialization, documentation, filtering, pagination, validation and client type generation, Apiwork brings all of this together into a single system designed to work smoothly from end to end.
+
+Contracts describe the rules.  
+Schemas (when used) add extra structure.  
+Adapters make the data actionable.  
+And the API definition ties everything together.
+
+The result is an API that feels consistent, predictable and easy to maintain — without juggling multiple libraries that each solve a small part of the problem.
+
+When you’re ready for more detail, continue to **Core Concepts**.
