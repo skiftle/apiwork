@@ -1,6 +1,6 @@
 # Contract Integration
 
-When a schema is connected to a contract via `schema!`, Apiwork automatically generates request and response structures for all actions.
+When a schema is connected to a contract via `schema!`, Apiwork automatically generates request and response structures for all defined actions.
 
 ## How It Works
 
@@ -33,7 +33,7 @@ Each action type has default request and response structures:
 | `update` | member | include | `{ post: {...} }` | `{ post: {...} }` |
 | `destroy` | member | — | — | `{}` |
 | custom member | member | include | — | `{ post: {...} }` |
-| custom collection | collection | — | — | `{ posts: [...], pagination: {...} }` |
+| custom collection | collection | — | — | `{}` |
 
 ### Index (Collection)
 

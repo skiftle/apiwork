@@ -107,12 +107,12 @@ The introspection output represents polymorphic as a union:
 
 ## Including Polymorphic Data
 
-Use `include` to control eager loading:
+By default, polymorphic associations use `include: :optional`. To always include:
 
 ```ruby
 belongs_to :commentable,
            polymorphic: { post: PostSchema, article: ArticleSchema },
-           include: :optional  # or :always
+           include: :always
 ```
 
 Request with include:
@@ -130,14 +130,17 @@ Response:
     "content": "Great post!",
     "commentable": {
       "id": 42,
-      "title": "Hello World",
-      "commentable_type": "Post"
+      "title": "Hello World"
     }
   }
 }
 ```
 
 The actual object type determines which schema serializes the data.
+
+## Discriminator
+
+The discriminator field (e.g., `commentable_type`) is auto-detected from Rails' association reflection and cannot be renamed. It's used internally for type generation but is not included in the serialized response by default.
 
 ## Limitations
 

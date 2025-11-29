@@ -30,6 +30,16 @@ class ClientSchema < Apiwork::Schema::Base
 end
 ```
 
+### What `discriminator` Does
+
+When you call `discriminator`:
+
+1. **Reads the inheritance column** from Rails (`model_class.inheritance_column`, typically `:type`)
+2. **Sets the JSON field name** for the discriminator (your argument, or the column name if omitted)
+3. **Prepares the schema for variants** to register themselves
+
+The base schema is not marked abstract until a variant registers. This happens automatically when a child schema calls `variant` — the parent becomes abstract, preventing direct instantiation.
+
 ## Variant Schemas
 
 Variant schemas inherit from the base and declare themselves with `variant`:
@@ -60,6 +70,17 @@ class PersonClientSchema < ClientSchema
   attribute :birth_date
 end
 ```
+
+### What `variant` Does
+
+When you call `variant`:
+
+1. **Determines the tag** from your `as:` argument, or falls back to Rails' `sti_name`
+2. **Stores the STI type** (`model_class.sti_name`) for runtime routing
+3. **Registers with the parent schema**, adding itself to the parent's variant registry
+4. **Marks the parent as abstract**, since it should no longer be used directly
+
+This registration is what enables Apiwork to route serialization to the correct variant schema based on the actual object type at runtime.
 
 ## Defaults
 

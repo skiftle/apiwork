@@ -1,6 +1,6 @@
 # Contracts
 
-Contracts define the input and output for each API action.
+Contracts define the request and resonse for each API action.
 
 ```ruby
 class PostContract < Apiwork::Contract::Base
@@ -21,9 +21,9 @@ end
 
 Apiwork infers the contract from the controller name:
 
-| Controller | Contract |
-|-----------|----------|
-| `Api::V1::PostsController` | `Api::V1::PostContract` |
+| Controller                    | Contract                   |
+| ----------------------------- | -------------------------- |
+| `Api::V1::PostsController`    | `Api::V1::PostContract`    |
 | `Api::V1::CommentsController` | `Api::V1::CommentContract` |
 
 The contract name is the singular form of the controller name.
