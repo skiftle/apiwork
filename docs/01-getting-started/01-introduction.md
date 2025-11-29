@@ -15,6 +15,22 @@ A contract defines what an endpoint accepts and returns. That brings a few impor
 
 In short, the contract becomes the single place where the API is described, which helps everything else fall into place.
 
+```ruby
+class PostContract < Apiwork::Contract::Base
+  action :create do
+    request do
+      body do
+        param :title, type: :string
+        param :body, type: :string
+      end
+    end
+    response { body PostSchema }
+  end
+end
+```
+
+Naming follows Rails conventions: `PostsController` automatically uses `PostContract` and `PostSchema`.
+
 ## Schemas (Optional, but Very Helpful)
 
 Schemas are optional, but they match Rails well and remove a lot of duplication.  
@@ -37,5 +53,3 @@ Adapters make the data actionable.
 And the API definition ties everything together.
 
 The result is an API that feels consistent, predictable and easy to maintain — without juggling multiple libraries that each solve a small part of the problem.
-
-When you’re ready for more detail, continue to **Core Concepts**.

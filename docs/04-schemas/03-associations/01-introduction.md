@@ -27,12 +27,12 @@ The `schema` option specifies which schema handles the associated resource.
 | Option        | Type            | Default     | Description                              |
 | ------------- | --------------- | ----------- | ---------------------------------------- |
 | `schema`      | Class           | auto        | Associated schema class                  |
-| `include`     | Symbol          | `:optional` | `:always` or `:optional`                 |
-| `writable`    | `bool` / `hash` | `false`     | Allow nested attributes (see below)      |
-| `filterable`  | `bool`          | `false`     | Enable filtering by association          |
-| `sortable`    | `bool`          | `false`     | Enable sorting by association            |
-| `nullable`    | `bool`          | auto        | Allow null (auto-detected from DB)       |
-| `polymorphic` | Hash            | `nil`       | Polymorphic type mapping                 |
+| [`include`](./02-include.md)     | Symbol          | `:optional` | `:always` or `:optional`                 |
+| [`writable`](./03-writable.md)    | `bool` / `hash` | `false`     | Allow nested attributes                  |
+| [`filterable`](./04-filtering-sorting.md)  | `bool`          | `false`     | Enable filtering by association          |
+| [`sortable`](./04-filtering-sorting.md)    | `bool`          | `false`     | Enable sorting by association            |
+| [`nullable`](./02-include.md#nullable-vs-optional)    | `bool`          | auto        | Allow null (auto-detected from DB)       |
+| [`polymorphic`](./05-polymorphic.md) | Hash            | `nil`       | Polymorphic type mapping                 |
 | `description` | `string`        | `nil`       | API documentation                        |
 | `example`     | `any`           | `nil`       | Example value                            |
 | `deprecated`  | `bool`          | `false`     | Mark as deprecated                       |

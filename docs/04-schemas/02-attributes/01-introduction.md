@@ -39,20 +39,20 @@ See [Auto-Discovery](../07-auto-discovery.md) for complete details.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `writable` | `bool` / `hash` | `false` | Allow in create/update requests |
-| `filterable` | `bool` | `false` | Enable filtering |
-| `sortable` | `bool` | `false` | Enable sorting |
-| `encode` | `callable` | `nil` | Transform on response |
-| `decode` | `callable` | `nil` | Transform on request |
-| `empty` | `bool` | `false` | Convert nil to empty string |
-| `nullable` | `bool` | auto | Allow null values |
+| [`writable`](./02-writable.md) | `bool` / `hash` | `false` | Allow in create/update requests |
+| [`filterable`](./03-filtering.md) | `bool` | `false` | Enable filtering |
+| [`sortable`](./04-sorting.md) | `bool` | `false` | Enable sorting |
+| [`encode`](./05-encode-decode.md) | `callable` | `nil` | Transform on response |
+| [`decode`](./05-encode-decode.md) | `callable` | `nil` | Transform on request |
+| [`empty`](./06-empty-nullable.md) | `bool` | `false` | Convert nil to empty string |
+| [`nullable`](./06-empty-nullable.md) | `bool` | auto | Allow null values |
 | `required` | `bool` | auto | Required in requests |
 | `type` | `symbol` | auto | Data type |
-| `format` | `symbol` | `nil` | Format hint (email, uuid, etc.) |
+| [`format`](./07-metadata.md#format) | `symbol` | `nil` | Format hint (email, uuid, etc.) |
 | `min` / `max` | `integer` | `nil` | Value/length constraints |
-| `description` | `string` | `nil` | API documentation |
-| `example` | `any` | `nil` | Example value |
-| `deprecated` | `bool` | `false` | Mark as deprecated |
+| [`description`](./07-metadata.md) | `string` | `nil` | API documentation |
+| [`example`](./07-metadata.md) | `any` | `nil` | Example value |
+| [`deprecated`](./07-metadata.md) | `bool` | `false` | Mark as deprecated |
 
 ## Batch Configuration
 

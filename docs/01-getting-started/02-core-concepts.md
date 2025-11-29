@@ -112,7 +112,24 @@ Other than that Apiwork does not change your controllers work; it simply guarant
 
 ## Schemas (optional superpower)
 
-Schemas are optional but extremely powerful. They resemble a modern, structured version of Active Model Serializers, but they do much more. Schemas are processed through **adapters**, which turn schema definitions into actionable metadata used for filtering, sorting, pagination, eager loading and nested operations.
+Schemas are optional but extremely powerful. They resemble a modern, structured version of Active Model Serializers, but they do much more.
+
+```ruby
+# app/schemas/api/v1/invoice_schema.rb
+class InvoiceSchema < Apiwork::Schema::Base
+  attribute :id
+  attribute :status, filterable: true, sortable: true
+  attribute :total, filterable: true
+  attribute :created_at, sortable: true
+
+  has_many :line_items
+  belongs_to :customer, include: :always
+end
+```
+
+With `schema!` in your contract, Apiwork auto-generates filter types, sort options, payloads and includes — all from this single declaration.
+
+Schemas are processed through **adapters**, which turn schema definitions into actionable metadata used for filtering, sorting, pagination, eager loading and nested operations.
 
 Apiwork ships with a built-in adapter tightly integrated with ActiveRecord. It automatically inherits:
 
