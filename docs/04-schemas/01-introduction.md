@@ -76,6 +76,25 @@ attribute :salary, unless: -> { guest? }
 
 **Why?** Conditional fields break static analysis. Generated types cannot know whether a field will be present — it depends on runtime state. This makes TypeScript interfaces unreliable and API contracts unpredictable.
 
+### Exception: Optional Associations
+
+Associations with `include: :optional` are the one exception — but for a fundamentally different reason. Optional includes are **client-controlled**, not runtime-conditional:
+
+```ruby
+has_many :comments, include: :optional  # ✅ Client decides
+attribute :salary, if: :admin?          # ❌ Server decides at runtime
+```
+
+| Aspect | `include: :optional` | Conditional fields |
+|--------|---------------------|-------------------|
+| Who controls | Client (query param) | Server (runtime state) |
+| Predictable | Yes — client knows what they requested | No — depends on hidden logic |
+| Type safety | Yes — types reflect optionality | No — impossible to type |
+
+With optional includes, the client explicitly requests `?include[comments]=true`. They know whether they asked for comments or not. The generated types correctly mark the field as optional (`comments?: Comment[]`), and the client handles both cases.
+
+Conditional fields based on server state (`if: :admin?`) are fundamentally different — the client has no way to know whether they'll receive the field.
+
 ### Use Nullable Instead
 
 Instead of conditionally hiding fields, always include them and return `null` when not applicable:
