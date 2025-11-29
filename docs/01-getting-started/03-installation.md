@@ -23,10 +23,10 @@ Create the following directories in your Rails app:
 
 ```
 app/
-  contracts/
-  schemas/
+├── contracts/
+└── schemas/
 config/
-  apis/
+└── apis/
 ```
 
 These sit alongside your existing `app/controllers/` and `app/models/`.
@@ -88,5 +88,5 @@ curl http://localhost:3000/api/v1/.spec/openapi
 
 ## Next Steps
 
-- [Architecture](04-architecture.md)  understand how the pieces fit together
-- [Quick Start](05-quick-start.md)  build a complete endpoint
+- [Architecture](04-architecture.md) - understand how the pieces fit together
+- [Quick Start](05-quick-start.md) - build a complete endpoint

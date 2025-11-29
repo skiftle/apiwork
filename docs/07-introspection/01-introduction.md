@@ -1,81 +1,79 @@
 # Introspection
 
-Apiwork provides introspection methods to inspect your API at runtime.
+Introspection is the machine-readable representation of your API. You rarely use it directly — it powers spec generators like OpenAPI, TypeScript, and Zod behind the scenes.
 
-## API Introspection
-
-```ruby
-api_class = Apiwork::API.find('/api/v1')
-
-Apiwork::Introspection.api(api_class)
-# Returns full API structure: resources, actions, types, enums
-```
-
-## Contract Introspection
+## Usage
 
 ```ruby
-Apiwork::Introspection.contract(PostContract)
-# Returns contract definition with all actions
-
-Apiwork::Introspection.contract(PostContract, action: :create)
-# Returns only the create action definition
+Apiwork::API.introspect('/api/v1')
 ```
 
-## Types and Enums
-
-```ruby
-api_class = Apiwork::API.find('/api/v1')
-
-Apiwork::Introspection.types(api_class)
-# Returns all registered types
-
-Apiwork::Introspection.enums(api_class)
-# Returns all registered enums
-```
-
-## Action Definition
-
-```ruby
-action_def = PostContract.action_definition(:create)
-
-Apiwork::Introspection.action_definition(action_def)
-# Returns serialized action definition
-```
-
-## API Shortcut
-
-The API class has an `introspect` method:
-
-```ruby
-api_class = Apiwork::API.find('/api/v1')
-api_class.introspect
-# Same as Apiwork::Introspection.api(api_class)
-```
-
-## Use Cases
-
-- Debugging API structure
-- Building custom documentation
-- Generating client code
-- Testing that definitions are correct
-- Admin interfaces
+Returns a hash with everything about your API: resources, actions, types, and enums.
 
 ## Output Structure
 
-```ruby
-Apiwork::Introspection.api(api_class)
-# {
-#   resources: {
-#     posts: { path: "/posts", actions: {...} },
-#     comments: { path: "/comments", actions: {...} }
-#   },
-#   types: {
-#     address: { type: :object, shape: {...} },
-#     ...
-#   },
-#   enums: {
-#     status: { values: ["draft", "published"] },
-#     ...
-#   }
-# }
+The introspection format is designed to be as compact as possible while containing all information needed for spec generation.
+
+```json
+{
+  "path": "/api/v1",
+  "info": {
+    "title": "My API",
+    "version": "1.0.0"
+  },
+  "resources": {
+    "posts": {
+      "path": "posts",
+      "actions": {
+        "index": {
+          "method": "GET",
+          "path": "/",
+          "response": {
+            "body": { "type": "array", "of": "post" }
+          }
+        },
+        "create": {
+          "method": "POST",
+          "path": "/",
+          "request": {
+            "body": {
+              "title": { "type": "string", "required": true },
+              "body": { "type": "string", "required": false }
+            }
+          },
+          "response": {
+            "body": { "type": "post" }
+          }
+        }
+      }
+    }
+  },
+  "types": {
+    "post": {
+      "type": "object",
+      "shape": {
+        "id": { "type": "integer" },
+        "title": { "type": "string" },
+        "body": { "type": "string" }
+      }
+    }
+  },
+  "enums": {
+    "status": {
+      "values": ["draft", "published", "archived"]
+    }
+  },
+  "error_codes": [400, 404, 422]
+}
 ```
+
+## What It Powers
+
+Introspection is the foundation for:
+
+- **OpenAPI specs** — generates `/openapi.json` endpoints
+- **TypeScript types** — generates interfaces for frontend use
+- **Zod schemas** — generates runtime validators for JavaScript/TypeScript
+- **Custom generators** — build your own spec formats
+
+See [Specs](../08-specs/01-introduction.md) for how to use these generators.
