@@ -60,7 +60,7 @@ belongs_to :author, nullable: true    # Allow null even if DB requires it
 
 ## Auto-Detection
 
-The schema is auto-detected from the association name:
+Schema and nullable are auto-detected. See [Auto-Discovery](../07-auto-discovery.md) for details.
 
 ```ruby
 # These are equivalent:

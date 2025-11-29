@@ -15,12 +15,12 @@ end
 
 ## Auto-Detection
 
-Apiwork automatically detects from your model:
+Apiwork automatically detects from your database and model:
 
 | Property | Source |
 |----------|--------|
 | `type` | Column type (string, integer, boolean, datetime, etc.) |
-| `nullable` | Column allows NULL |
+| `nullable` | Column NULL constraint |
 | `required` | Column NOT NULL and no default value |
 | `enum` | Rails enum definition |
 
@@ -32,6 +32,8 @@ attribute :title, type: :string, nullable: false, required: true
 # Enum auto-detection
 attribute :status  # Detects Rails enum values automatically
 ```
+
+See [Auto-Discovery](../07-auto-discovery.md) for complete details.
 
 ## Options Reference
 

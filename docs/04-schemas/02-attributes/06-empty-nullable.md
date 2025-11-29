@@ -29,7 +29,7 @@ attribute :bio, nullable: true, writable: true
 
 ### Auto-Detection
 
-`nullable` is auto-detected from database columns:
+`nullable` is auto-detected from database columns. See [Auto-Discovery](../07-auto-discovery.md) for details.
 
 ```ruby
 # If bio column allows NULL:

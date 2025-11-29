@@ -21,6 +21,18 @@ The `schema!` call:
 2. Generates request/response structures for each action
 3. Creates types for filtering, sorting, pagination, and payloads
 
+## Naming Convention
+
+Apiwork expects the schema class to match the contract name with `Schema` suffix instead of `Contract`:
+
+| Contract | Expected Schema |
+|----------|-----------------|
+| `PostContract` | `PostSchema` |
+| `UserContract` | `UserSchema` |
+| `Api::V2::InvoiceContract` | `Api::V2::InvoiceSchema` |
+
+If the schema doesn't exist, Apiwork raises an `ArgumentError` with a clear message about the expected convention.
+
 ## Default Action Behaviors
 
 Each action type has default request and response structures:

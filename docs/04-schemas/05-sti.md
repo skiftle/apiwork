@@ -1,6 +1,6 @@
 # Single Table Inheritance
 
-Apiwork supports Rails STI (Single Table Inheritance) with automatic type detection.
+Apiwork supports Rails STI (Single Table Inheritance) with automatic type detection. See [Auto-Discovery](./07-auto-discovery.md) for all auto-detection features.
 
 ## Base Schema
 
