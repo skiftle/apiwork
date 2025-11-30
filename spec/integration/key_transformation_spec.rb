@@ -126,10 +126,10 @@ RSpec.describe 'Key Transformation in Spec Generation', type: :integration do
 
       it 'transforms filter property names to camelCase' do
         filter_schema = spec[:components][:schemas]['post_filter']
-        return unless filter_schema
+        skip 'No filter schema' unless filter_schema
 
         properties = filter_schema[:properties]
-        return unless properties
+        skip 'No properties in filter schema' unless properties
 
         property_names = properties.keys.map(&:to_s)
         expect(property_names).to include('createdAt') if property_names.any? { |n| n.include?('reated') }

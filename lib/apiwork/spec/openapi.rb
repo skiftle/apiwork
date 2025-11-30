@@ -264,7 +264,7 @@ module Apiwork
           schemas[component_name] = if type_shape.is_a?(Hash) && type_shape[:type] == :union
                                       map_union(type_shape)
                                     else
-                                      map_object({ shape: type_shape })
+                                      map_object(type_shape)
                                     end
         end
 
