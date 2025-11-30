@@ -328,19 +328,37 @@ Documentation examples are linked to real implementations in `docs/app/` using H
 ```
 
 <details>
-<summary>View generated output</summary>
+<summary>Introspection</summary>
 
-- [Introspection](../examples/eager-lion/introspection.json)
-- [TypeScript](../examples/eager-lion/typescript.ts)
-- [Zod](../examples/eager-lion/zod.ts)
-- [OpenAPI](../examples/eager-lion/openapi.yml)
+<<< @/examples/eager-lion/introspection.json
+
+</details>
+
+<details>
+<summary>TypeScript</summary>
+
+<<< @/examples/eager-lion/typescript.ts
+
+</details>
+
+<details>
+<summary>Zod</summary>
+
+<<< @/examples/eager-lion/zod.ts
+
+</details>
+
+<details>
+<summary>OpenAPI</summary>
+
+<<< @/examples/eager-lion/openapi.yml
 
 </details>
 ```
 
 **How it works:**
 1. The `<!-- example: NAME -->` comment goes BEFORE the code block
-2. The `<details>` section with links goes AFTER the code block
+2. Each format gets its own `<details>` block with VitePress inline embed `<<<`
 3. The comment stays permanently — it marks the connection for future updates
 
 **When you discover a NEW example tag (e.g., `<!-- example: lazy-cow -->`):**
@@ -358,7 +376,7 @@ Documentation examples are linked to real implementations in `docs/app/` using H
    - `db/migrate/` — Migration for tables
 
 4. Run `rake docs:generate` to generate output files
-5. Add the `<details>` section after the code block
+5. Add individual `<details>` blocks for each format after the code block
 
 ### Namespace Naming Conventions
 
@@ -408,7 +426,7 @@ This regenerates all files in `docs/examples/` from the playground APIs. Run thi
 1. Create/update corresponding code in `docs/app/`
 2. Run `rake docs:generate` to produce REAL output
 3. Verify files in `docs/examples/<namespace>/`
-4. Add `<details>` section with links after the code block
+4. Add individual `<details>` blocks for each format using `<<< @/examples/<name>/file`
 5. NEVER invent, abbreviate, or guess output
 
 **When changing code that affects output formats:**
@@ -417,7 +435,7 @@ This regenerates all files in `docs/examples/` from the playground APIs. Run thi
 3. Include updated `docs/examples/` files in the SAME commit
 
 **The fundamental rule:**
-Code → docs/app → `rake docs:generate` → docs/examples/ → markdown links.
+Code → docs/app → `rake docs:generate` → docs/examples/ → VitePress inline embeds.
 They are ONE system. Change one, change all. Same commit. No exceptions.
 
 Style:
@@ -427,7 +445,7 @@ Style:
 - Examples over explanations
 - Minimal code examples — only what's needed
 
-Type system examples must show all four formats in this order using `<details>`:
+Type system examples must show all four formats in this order, each in its own `<details>` using VitePress inline embed:
 
 1. Introspection
 2. TypeScript
@@ -438,33 +456,29 @@ Type system examples must show all four formats in this order using `<details>`:
 <details>
 <summary>Introspection</summary>
 
-\`\`\`json
-{ ... }
-\`\`\`
+<<< @/examples/example-name/introspection.json
+
 </details>
 
 <details>
 <summary>TypeScript</summary>
 
-\`\`\`typescript
-...
-\`\`\`
+<<< @/examples/example-name/typescript.ts
+
 </details>
 
 <details>
 <summary>Zod</summary>
 
-\`\`\`typescript
-...
-\`\`\`
+<<< @/examples/example-name/zod.ts
+
 </details>
 
 <details>
 <summary>OpenAPI</summary>
 
-\`\`\`yaml
-...
-\`\`\`
+<<< @/examples/example-name/openapi.yml
+
 </details>
 ```
 

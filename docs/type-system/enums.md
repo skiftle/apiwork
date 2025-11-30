@@ -17,12 +17,30 @@ end
 ```
 
 <details>
-<summary>View generated output</summary>
+<summary>Introspection</summary>
 
-- [Introspection](../examples/happy-zebra/introspection.json)
-- [TypeScript](../examples/happy-zebra/typescript.ts)
-- [Zod](../examples/happy-zebra/zod.ts)
-- [OpenAPI](../examples/happy-zebra/openapi.yml)
+<<< @/examples/happy-zebra/introspection.json
+
+</details>
+
+<details>
+<summary>TypeScript</summary>
+
+<<< @/examples/happy-zebra/typescript.ts
+
+</details>
+
+<details>
+<summary>Zod</summary>
+
+<<< @/examples/happy-zebra/zod.ts
+
+</details>
+
+<details>
+<summary>OpenAPI</summary>
+
+<<< @/examples/happy-zebra/openapi.yml
 
 </details>
 
@@ -37,12 +55,30 @@ end
 ```
 
 <details>
-<summary>View generated output</summary>
+<summary>Introspection</summary>
 
-- [Introspection](../examples/lazy-cow/introspection.json)
-- [TypeScript](../examples/lazy-cow/typescript.ts)
-- [Zod](../examples/lazy-cow/zod.ts)
-- [OpenAPI](../examples/lazy-cow/openapi.yml)
+<<< @/examples/lazy-cow/introspection.json
+
+</details>
+
+<details>
+<summary>TypeScript</summary>
+
+<<< @/examples/lazy-cow/typescript.ts
+
+</details>
+
+<details>
+<summary>Zod</summary>
+
+<<< @/examples/lazy-cow/zod.ts
+
+</details>
+
+<details>
+<summary>OpenAPI</summary>
+
+<<< @/examples/lazy-cow/openapi.yml
 
 </details>
 

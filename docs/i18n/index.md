@@ -1,4 +1,4 @@
 ---
-order: 0
+order: 10
 ---
-# Internationalization
+# i18n

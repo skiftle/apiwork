@@ -219,12 +219,30 @@ end
 ```
 
 <details>
-<summary>View generated output</summary>
+<summary>Introspection</summary>
 
-- [Introspection](../examples/eager-lion/introspection.json)
-- [TypeScript](../examples/eager-lion/typescript.ts)
-- [Zod](../examples/eager-lion/zod.ts)
-- [OpenAPI](../examples/eager-lion/openapi.yml)
+<<< @/examples/eager-lion/introspection.json
+
+</details>
+
+<details>
+<summary>TypeScript</summary>
+
+<<< @/examples/eager-lion/typescript.ts
+
+</details>
+
+<details>
+<summary>Zod</summary>
+
+<<< @/examples/eager-lion/zod.ts
+
+</details>
+
+<details>
+<summary>OpenAPI</summary>
+
+<<< @/examples/eager-lion/openapi.yml
 
 </details>
 
