@@ -4,6 +4,8 @@ Enums restrict a value to a predefined set.
 
 ## API-Level Enum
 
+<!-- example: happy-zebra -->
+
 ```ruby
 Apiwork::API.draw '/api/v1' do
   enum :status, values: %w[draft published archived]
@@ -11,6 +13,8 @@ end
 ```
 
 ## Contract-Scoped Enum
+
+<!-- example: lazy-cow -->
 
 ```ruby
 class PostContract < Apiwork::Contract::Base
@@ -64,11 +68,11 @@ Enums are reflected in OpenAPI, TypeScript, and Zod.
 ### TypeScript
 
 ```typescript
-type Status = 'draft' | 'published' | 'archived';
+type Status = "draft" | "published" | "archived";
 ```
 
 ### Zod
 
 ```typescript
-const StatusSchema = z.enum(['draft', 'published', 'archived']);
+const StatusSchema = z.enum(["draft", "published", "archived"]);
 ```
