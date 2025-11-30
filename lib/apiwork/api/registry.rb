@@ -39,7 +39,7 @@ module Apiwork
         def normalize_path(path)
           return 'root' if path == '/'
 
-          path.sub(%r{^/}, '').downcase
+          path.sub(%r{^/}, '').tr('-', '_').downcase
         end
       end
     end

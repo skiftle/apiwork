@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Apiwork::API.draw "/eager-lion" do
+Apiwork::API.draw '/eager-lion' do
   spec :openapi
   spec :zod
   spec :typescript
