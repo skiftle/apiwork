@@ -181,6 +181,7 @@ Apiwork doesn’t change how you write controllers — it simply guarantees that
 
 Schemas are optional, but they eliminate most manual contract definitions by mapping directly to your ActiveRecord models.
 
+<!-- example: eager-lion -->
 ```ruby
 # app/schemas/line_schema.rb
 class LineSchema < Apiwork::Schema::Base
@@ -213,6 +214,16 @@ class InvoiceContract < Apiwork::Contract::Base
 end
 ```
 
+<details>
+<summary>View generated output</summary>
+
+- [Introspection](../examples/eager-lion/introspection.json)
+- [TypeScript](../examples/eager-lion/typescript.ts)
+- [Zod](../examples/eager-lion/zod.ts)
+- [OpenAPI](../examples/eager-lion/openapi.yml)
+
+</details>
+
 Schemas run through adapters, which transform schema definitions into metadata used for filtering, sorting, pagination, eager loading and nested operations.
 
 Apiwork ships with an ActiveRecord-aware adapter that automatically pulls in:
@@ -231,28 +242,3 @@ The API definition, contracts and schemas all feed into a unified metadata model
 
 Documentation, typed clients and server behaviour all come from the same source of truth — eliminating duplication and keeping the entire API consistent end-to-end.
 
-From the Invoice schema above, Apiwork generates typed output for TypeScript, Zod, and OpenAPI.
-
-### Generated Output
-
-View the complete generated files:
-
-- [Output Example](../examples/eager-lion/output.json) - Example API response
-- [Introspection](../examples/eager-lion/introspection.json) - Full introspection data
-- [TypeScript](../examples/eager-lion/typescript.ts) - Generated TypeScript types
-- [Zod](../examples/eager-lion/zod.ts) - Generated Zod schemas
-- [OpenAPI](../examples/eager-lion/openapi.yml) - OpenAPI specification
-
-<details>
-<summary>Show TypeScript types</summary>
-
-<!-- See ../examples/eager-lion/typescript.ts for full source -->
-
-</details>
-
-<details>
-<summary>Show Zod schemas</summary>
-
-<!-- See ../examples/eager-lion/zod.ts for full source -->
-
-</details>

@@ -316,23 +316,48 @@ Before writing documentation:
 - Run specs or read spec tests to see real output
 - Copy exact output — documentation must match reality
 
-### External Example Files
+### Example Linking System
 
-**CRITICAL:** Documentation examples and `docs/app/` MUST stay in sync — always, in BOTH directions.
+Documentation examples are linked to real implementations in `docs/app/` using HTML comments.
 
-Each example is isolated in its own namespace with a unique name (mood + animal, e.g., `eager_lion`).
+**Format:**
+```markdown
+<!-- example: eager-lion -->
+```ruby
+# code example here
+```
 
-All documentation examples live in `docs/examples/<namespace>/` with these files:
-- `output.json` - example response
-- `introspection.json` - introspection data
-- `typescript.ts` - generated TypeScript types
-- `zod.ts` - generated Zod schemas
-- `openapi.yml` - OpenAPI spec
+<details>
+<summary>View generated output</summary>
+
+- [Introspection](../examples/eager-lion/introspection.json)
+- [TypeScript](../examples/eager-lion/typescript.ts)
+- [Zod](../examples/eager-lion/zod.ts)
+- [OpenAPI](../examples/eager-lion/openapi.yml)
+
+</details>
+```
+
+**How it works:**
+1. The `<!-- example: NAME -->` comment goes BEFORE the code block
+2. The `<details>` section with links goes AFTER the code block
+3. The comment stays permanently — it marks the connection for future updates
+
+**When you discover a NEW example tag (e.g., `<!-- example: lazy-cow -->`):**
+1. Create the namespace in `docs/app/`:
+   - `app/models/lazy_cow/` — ActiveRecord models
+   - `app/schemas/lazy_cow/` — Schema definitions
+   - `app/contracts/lazy_cow/` — Contract definitions
+   - `config/apis/lazy_cow.rb` — API definition
+   - `db/migrate/` — Migration for tables
+2. Run `rake docs:generate` to generate output files
+3. Add the `<details>` section after the code block
 
 ### Namespace Naming Conventions
 
 | Context | Format | Example |
 |---------|--------|---------|
+| Example comment | dash-case | `<!-- example: eager-lion -->` |
 | Ruby namespace | PascalCase | `EagerLion::Invoice` |
 | App folder | snake_case | `app/models/eager_lion/` |
 | API mount path | dash-case | `/eager-lion` |
@@ -352,7 +377,6 @@ docs/
 │   └── db/migrate/
 └── examples/
     └── eager-lion/                   # Generated output (dasherized)
-        ├── output.json
         ├── introspection.json
         ├── typescript.ts
         ├── zod.ts
@@ -377,7 +401,7 @@ This regenerates all files in `docs/examples/` from the playground APIs. Run thi
 1. Create/update corresponding code in `docs/app/`
 2. Run `rake docs:generate` to produce REAL output
 3. Verify files in `docs/examples/<namespace>/`
-4. Link from markdown with relative paths
+4. Add `<details>` section with links after the code block
 5. NEVER invent, abbreviate, or guess output
 
 **When changing code that affects output formats:**
