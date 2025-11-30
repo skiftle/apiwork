@@ -350,6 +350,13 @@ module Apiwork
           builder = self
           schema_class_local = schema_class
 
+          schema_class_local.attribute_definitions.each do |name, attribute_definition|
+            next unless attribute_definition.filterable?
+            next unless attribute_definition.enum
+
+            register_enum_filter(name)
+          end
+
           contract_class.type(type_name) do
             param :_and, type: :array, of: type_name, required: false
             param :_or, type: :array, of: type_name, required: false
@@ -764,6 +771,22 @@ module Apiwork
         def enum_filter_type(attribute_definition)
           scoped_enum_name = contract_class.scoped_enum_name(attribute_definition.name)
           :"#{scoped_enum_name}_filter"
+        end
+
+        def register_enum_filter(enum_name)
+          scoped_enum_name = contract_class.scoped_enum_name(enum_name)
+          filter_name = :"#{scoped_enum_name}_filter"
+
+          api = contract_class.api_class
+          return if api.resolve_type(filter_name)
+
+          api.union(filter_name) do
+            variant type: scoped_enum_name
+            variant type: :object, partial: true do
+              param :eq, type: scoped_enum_name, required: false
+              param :in, type: :array, of: scoped_enum_name, required: false
+            end
+          end
         end
 
         def sti_base_schema?

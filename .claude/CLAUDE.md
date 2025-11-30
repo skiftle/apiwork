@@ -472,7 +472,7 @@ Type system examples must show all four formats in this order using `<details>`:
 
 ## Code Style
 
-Run `bundle exec rubocop -a` on every file you modify.
+Run `bundle exec rubocop -A` on every file you modify. This uses aggressive auto-correction.
 
 ---
 

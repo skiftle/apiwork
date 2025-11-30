@@ -7,7 +7,7 @@ module Api
 
       attribute :id
       attribute :name
-      attribute :status
+      attribute :status, filterable: true
       attribute :first_day_of_week
     end
   end
