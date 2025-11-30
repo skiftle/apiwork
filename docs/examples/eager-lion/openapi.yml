@@ -216,17 +216,6 @@
                 - invoice
 :components:
   :schemas:
-    cursor_pagination:
-      :type: object
-      :properties:
-        next_cursor:
-          :type:
-          - string
-          - 'null'
-        prev_cursor:
-          :type:
-          - string
-          - 'null'
     invoice:
       :type: object
       :properties:

@@ -2,11 +2,6 @@ import { z } from 'zod';
 
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
-export const CursorPaginationSchema = z.object({
-  next_cursor: z.string().nullable().optional(),
-  prev_cursor: z.string().nullable().optional()
-});
-
 export const InvoiceSchema = z.object({
   created_at: z.iso.datetime().optional(),
   customer: z.object({}),
@@ -190,11 +185,6 @@ export const InvoicesArchiveResponseBodySchema = z.union([z.object({ invoice: In
 export const InvoicesArchiveResponseSchema = z.object({
   body: InvoicesArchiveResponseBodySchema
 });
-
-export interface CursorPagination {
-  next_cursor?: null | string;
-  prev_cursor?: null | string;
-}
 
 export interface Invoice {
   created_at: string;

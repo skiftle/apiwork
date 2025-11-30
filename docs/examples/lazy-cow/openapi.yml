@@ -48,17 +48,6 @@
           :description: No content
 :components:
   :schemas:
-    cursor_pagination:
-      :type: object
-      :properties:
-        next_cursor:
-          :type:
-          - string
-          - 'null'
-        prev_cursor:
-          :type:
-          - string
-          - 'null'
     issue:
       :type: object
       :properties:
@@ -77,24 +66,3 @@
       - detail
       - field
       - path
-    page_pagination:
-      :type: object
-      :properties:
-        current:
-          :type: integer
-        items:
-          :type: integer
-        next:
-          :type:
-          - integer
-          - 'null'
-        prev:
-          :type:
-          - integer
-          - 'null'
-        total:
-          :type: integer
-      :required:
-      - current
-      - items
-      - total

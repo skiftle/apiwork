@@ -1,8 +1,3 @@
-export interface CursorPagination {
-  next_cursor?: null | string;
-  prev_cursor?: null | string;
-}
-
 export interface Invoice {
   created_at?: string;
   customer: object;

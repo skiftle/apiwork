@@ -2,37 +2,6 @@
   "path": "/eager-lion",
   "info": {},
   "types": {
-    "cursor_pagination": {
-      "type": "object",
-      "shape": {
-        "next_cursor": {
-          "type": "string",
-          "required": false,
-          "nullable": true,
-          "description": null,
-          "example": null,
-          "format": null,
-          "deprecated": false,
-          "min": null,
-          "max": null
-        },
-        "prev_cursor": {
-          "type": "string",
-          "required": false,
-          "nullable": true,
-          "description": null,
-          "example": null,
-          "format": null,
-          "deprecated": false,
-          "min": null,
-          "max": null
-        }
-      },
-      "description": null,
-      "example": null,
-      "format": null,
-      "deprecated": false
-    },
     "invoice": {
       "type": "object",
       "shape": {
