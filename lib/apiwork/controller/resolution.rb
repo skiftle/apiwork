@@ -15,12 +15,27 @@ module Apiwork
       end
 
       def api_class
-        @api_class ||= Apiwork::API.find(api_path) || raise_api_not_found_error
+        @api_class ||= find_api_class || raise_api_not_found_error
+      end
+
+      def find_api_class
+        path_parts = request.path.split('/').reject(&:blank?)
+        return Apiwork::API.find('/') if path_parts.empty?
+
+        (path_parts.length - 1).downto(1) do |i|
+          path = "/#{path_parts[0...i].join('/')}"
+          api = Apiwork::API.find(path)
+          return api if api
+        end
+
+        nil
       end
 
       def api_path
-        path_parts = request.path.split('/').reject(&:blank?)
-        path_parts.empty? ? '/' : "/#{path_parts[0..1].join('/')}"
+        api_class&.metadata&.path || begin
+          path_parts = request.path.split('/').reject(&:blank?)
+          path_parts.empty? ? '/' : "/#{path_parts[0..1].join('/')}"
+        end
       end
 
       def adapter

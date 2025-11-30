@@ -22,7 +22,7 @@ module Apiwork
           @built_contracts = Set.new
           @key_format = :keep
 
-          @namespaces = path == '/' ? [] : path.split('/').reject(&:empty?).map(&:to_sym)
+          @namespaces = path == '/' ? [] : path.split('/').reject(&:empty?).map { |n| n.tr('-', '_').to_sym }
 
           @metadata = Metadata.new(path)
           @recorder = Recorder.new(@metadata, @namespaces)

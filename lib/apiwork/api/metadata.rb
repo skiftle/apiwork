@@ -13,7 +13,7 @@ module Apiwork
       def initialize(path)
         @path = path
 
-        @namespaces = path == '/' ? [] : path.split('/').reject(&:empty?).map(&:to_sym)
+        @namespaces = path == '/' ? [] : path.split('/').reject(&:empty?).map { |n| n.tr('-', '_').to_sym }
 
         @resources = {}
         @info = nil

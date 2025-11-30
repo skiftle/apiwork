@@ -149,3 +149,1623 @@ FOREIGN KEY ("invoice_id")
   [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
 Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
 Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+  [1m[36mEagerLion::Customer Load (0.4ms)[0m  [1m[34mSELECT "eager_lion_customers".* FROM "eager_lion_customers" WHERE "eager_lion_customers"."name" = ? LIMIT ?[0m  [["name", "Acme Corporation"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mEagerLion::Customer Create (0.4ms)[0m  [1m[32mINSERT INTO "eager_lion_customers" ("name", "created_at", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["name", "Acme Corporation"], ["created_at", "2025-11-30 08:12:21.718268"], ["updated_at", "2025-11-30 08:12:21.718268"]]
+  [1m[36mTRANSACTION (1.1ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+  [1m[36mEagerLion::Customer Load (0.1ms)[0m  [1m[34mSELECT "eager_lion_customers".* FROM "eager_lion_customers" WHERE "eager_lion_customers"."name" = ? LIMIT ?[0m  [["name", "Acme Corporation"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mEagerLion::Customer Create (0.1ms)[0m  [1m[32mINSERT INTO "eager_lion_customers" ("id", "name", "created_at", "updated_at") VALUES (?, ?, ?, ?) RETURNING "id"[0m  [["id", "4aa3ccf1-3fa4-47c1-a18f-219e095f8560"], ["name", "Acme Corporation"], ["created_at", "2025-11-30 08:12:41.563409"], ["updated_at", "2025-11-30 08:12:41.563409"]]
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mEagerLion::Invoice Create (0.3ms)[0m  [1m[32mINSERT INTO "eager_lion_invoices" ("id", "customer_id", "number", "issued_on", "notes", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["id", "b5694b0f-a457-459c-a6dd-61b4ffc5e646"], ["customer_id", "4aa3ccf1-3fa4-47c1-a18f-219e095f8560"], ["number", "INV-2024-001"], ["issued_on", "2024-03-15"], ["notes", "Sample invoice"], ["status", "pending"], ["created_at", "2025-11-30 08:12:41.576466"], ["updated_at", "2025-11-30 08:12:41.576466"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+Started GET "/eager-lion/invoices" for 127.0.0.1 at 2025-11-30 09:12:41 +0100
+  
+ActionController::RoutingError (No route matches [GET] "/eager-lion/invoices"):
+  
+lib/docs/example_generator.rb:90:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started GET "/eager-lion/invoices/b5694b0f-a457-459c-a6dd-61b4ffc5e646" for 127.0.0.1 at 2025-11-30 09:12:41 +0100
+  
+ActionController::RoutingError (No route matches [GET] "/eager-lion/invoices/b5694b0f-a457-459c-a6dd-61b4ffc5e646"):
+  
+lib/docs/example_generator.rb:92:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started POST "/eager-lion/invoices" for 127.0.0.1 at 2025-11-30 09:12:41 +0100
+  
+ActionController::RoutingError (No route matches [POST] "/eager-lion/invoices"):
+  
+lib/docs/example_generator.rb:94:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started PATCH "/eager-lion/invoices/b5694b0f-a457-459c-a6dd-61b4ffc5e646" for 127.0.0.1 at 2025-11-30 09:12:41 +0100
+  
+ActionController::RoutingError (No route matches [PATCH] "/eager-lion/invoices/b5694b0f-a457-459c-a6dd-61b4ffc5e646"):
+  
+lib/docs/example_generator.rb:96:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started DELETE "/eager-lion/invoices/b5694b0f-a457-459c-a6dd-61b4ffc5e646" for 127.0.0.1 at 2025-11-30 09:12:41 +0100
+  
+ActionController::RoutingError (No route matches [DELETE] "/eager-lion/invoices/b5694b0f-a457-459c-a6dd-61b4ffc5e646"):
+  
+lib/docs/example_generator.rb:98:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started PATCH "/eager-lion/invoices/b5694b0f-a457-459c-a6dd-61b4ffc5e646/archive" for 127.0.0.1 at 2025-11-30 09:12:41 +0100
+  
+ActionController::RoutingError (No route matches [PATCH] "/eager-lion/invoices/b5694b0f-a457-459c-a6dd-61b4ffc5e646/archive"):
+  
+lib/docs/example_generator.rb:100:in `call_action'
+lib/docs/example_generator.rb:78:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:77:in `each_key'
+lib/docs/example_generator.rb:77:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+  [1m[36mEagerLion::Customer Load (0.1ms)[0m  [1m[34mSELECT "eager_lion_customers".* FROM "eager_lion_customers" WHERE "eager_lion_customers"."name" = ? LIMIT ?[0m  [["name", "Acme Corporation"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mEagerLion::Invoice Create (0.4ms)[0m  [1m[32mINSERT INTO "eager_lion_invoices" ("id", "customer_id", "number", "issued_on", "notes", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["id", "1704699f-d52c-4323-a324-5db7b14596ce"], ["customer_id", "4aa3ccf1-3fa4-47c1-a18f-219e095f8560"], ["number", "INV-2024-001"], ["issued_on", "2024-03-15"], ["notes", "Sample invoice"], ["status", "pending"], ["created_at", "2025-11-30 08:13:51.906284"], ["updated_at", "2025-11-30 08:13:51.906284"]]
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+Started GET "/eager-lion/invoices" for 127.0.0.1 at 2025-11-30 09:13:51 +0100
+Processing by EagerLion::InvoicesController#index as JSON
+  Parameters: {"invoice"=>{}}
+Completed 500 Internal Server Error in 11ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+NoMethodError (undefined method `respond_with' for #<EagerLion::InvoicesController:0x0000000000b108>):
+  
+app/controllers/eager_lion/invoices_controller.rb:9:in `index'
+lib/docs/example_generator.rb:90:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started GET "/eager-lion/invoices/1704699f-d52c-4323-a324-5db7b14596ce" for 127.0.0.1 at 2025-11-30 09:13:51 +0100
+Processing by EagerLion::InvoicesController#show as JSON
+  Parameters: {"id"=>"1704699f-d52c-4323-a324-5db7b14596ce", "invoice"=>{}}
+  [1m[36mEagerLion::Invoice Load (0.1ms)[0m  [1m[34mSELECT "eager_lion_invoices".* FROM "eager_lion_invoices" WHERE "eager_lion_invoices"."id" = ? LIMIT ?[0m  [["id", "1704699f-d52c-4323-a324-5db7b14596ce"], ["LIMIT", 1]]
+Completed 500 Internal Server Error in 1ms (ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+  
+NoMethodError (undefined method `respond_with' for #<EagerLion::InvoicesController:0x0000000000b1f8>):
+  
+app/controllers/eager_lion/invoices_controller.rb:13:in `show'
+lib/docs/example_generator.rb:92:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started POST "/eager-lion/invoices" for 127.0.0.1 at 2025-11-30 09:13:52 +0100
+Processing by EagerLion::InvoicesController#create as JSON
+  Parameters: {"invoice"=>{"number"=>"INV-2024-002", "issued_on"=>"2024-03-20", "notes"=>"New invoice"}}
+  [1m[36mEagerLion::Customer Load (0.2ms)[0m  [1m[34mSELECT "eager_lion_customers".* FROM "eager_lion_customers" ORDER BY "eager_lion_customers"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mEagerLion::Invoice Create (0.2ms)[0m  [1m[32mINSERT INTO "eager_lion_invoices" ("id", "customer_id", "number", "issued_on", "notes", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["id", "19f29cfc-79fb-4de7-98da-1714fc377ed4"], ["customer_id", "4aa3ccf1-3fa4-47c1-a18f-219e095f8560"], ["number", "INV-2024-002"], ["issued_on", "2024-03-20"], ["notes", "New invoice"], ["status", nil], ["created_at", "2025-11-30 08:13:52.004937"], ["updated_at", "2025-11-30 08:13:52.004937"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.5ms (2 queries, 0 cached) | GC: 0.0ms)
+  
+NoMethodError (undefined method `respond_with' for #<EagerLion::InvoicesController:0x0000000000b298>):
+  
+app/controllers/eager_lion/invoices_controller.rb:20:in `create'
+lib/docs/example_generator.rb:94:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started PATCH "/eager-lion/invoices/1704699f-d52c-4323-a324-5db7b14596ce" for 127.0.0.1 at 2025-11-30 09:13:52 +0100
+Processing by EagerLion::InvoicesController#update as JSON
+  Parameters: {"invoice"=>{"status"=>"paid", "notes"=>"Payment received"}, "id"=>"1704699f-d52c-4323-a324-5db7b14596ce"}
+  [1m[36mEagerLion::Invoice Load (0.1ms)[0m  [1m[34mSELECT "eager_lion_invoices".* FROM "eager_lion_invoices" WHERE "eager_lion_invoices"."id" = ? LIMIT ?[0m  [["id", "1704699f-d52c-4323-a324-5db7b14596ce"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mEagerLion::Invoice Update (0.2ms)[0m  [1m[33mUPDATE "eager_lion_invoices" SET "notes" = ?, "status" = ?, "updated_at" = ? WHERE "eager_lion_invoices"."id" = ?[0m  [["notes", "Payment received"], ["status", "paid"], ["updated_at", "2025-11-30 08:13:52.009333"], ["id", "1704699f-d52c-4323-a324-5db7b14596ce"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.3ms (2 queries, 0 cached) | GC: 0.0ms)
+  
+NoMethodError (undefined method `respond_with' for #<EagerLion::InvoicesController:0x0000000000b338>):
+  
+app/controllers/eager_lion/invoices_controller.rb:25:in `update'
+lib/docs/example_generator.rb:96:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started DELETE "/eager-lion/invoices/1704699f-d52c-4323-a324-5db7b14596ce" for 127.0.0.1 at 2025-11-30 09:13:52 +0100
+Processing by EagerLion::InvoicesController#destroy as JSON
+  Parameters: {"id"=>"1704699f-d52c-4323-a324-5db7b14596ce", "invoice"=>{}}
+  [1m[36mEagerLion::Invoice Load (0.1ms)[0m  [1m[34mSELECT "eager_lion_invoices".* FROM "eager_lion_invoices" WHERE "eager_lion_invoices"."id" = ? LIMIT ?[0m  [["id", "1704699f-d52c-4323-a324-5db7b14596ce"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mEagerLion::Line Load (0.1ms)[0m  [1m[34mSELECT "eager_lion_lines".* FROM "eager_lion_lines" WHERE "eager_lion_lines"."invoice_id" = ?[0m  [["invoice_id", "1704699f-d52c-4323-a324-5db7b14596ce"]]
+  [1m[36mEagerLion::Invoice Destroy (0.1ms)[0m  [1m[31mDELETE FROM "eager_lion_invoices" WHERE "eager_lion_invoices"."id" = ?[0m  [["id", "1704699f-d52c-4323-a324-5db7b14596ce"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+Completed 500 Internal Server Error in 10ms (ActiveRecord: 1.0ms (3 queries, 0 cached) | GC: 0.3ms)
+  
+NoMethodError (undefined method `respond_with' for #<EagerLion::InvoicesController:0x0000000000b478>):
+  
+app/controllers/eager_lion/invoices_controller.rb:30:in `destroy'
+lib/docs/example_generator.rb:98:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started PATCH "/eager-lion/invoices/1704699f-d52c-4323-a324-5db7b14596ce/archive" for 127.0.0.1 at 2025-11-30 09:13:52 +0100
+Processing by EagerLion::InvoicesController#archive as JSON
+  Parameters: {"id"=>"1704699f-d52c-4323-a324-5db7b14596ce", "invoice"=>{}}
+  [1m[36mEagerLion::Invoice Load (0.1ms)[0m  [1m[34mSELECT "eager_lion_invoices".* FROM "eager_lion_invoices" WHERE "eager_lion_invoices"."id" = ? LIMIT ?[0m  [["id", "1704699f-d52c-4323-a324-5db7b14596ce"], ["LIMIT", 1]]
+Completed 404 Not Found in 0ms (ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+  
+ActiveRecord::RecordNotFound (Couldn't find EagerLion::Invoice with 'id'="1704699f-d52c-4323-a324-5db7b14596ce"):
+  
+app/controllers/eager_lion/invoices_controller.rb:43:in `set_invoice'
+lib/docs/example_generator.rb:100:in `call_action'
+lib/docs/example_generator.rb:78:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:77:in `each_key'
+lib/docs/example_generator.rb:77:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+Started GET "/eager-lion/invoices" for 127.0.0.1 at 2025-11-30 09:14:02 +0100
+Processing by EagerLion::InvoicesController#index as JSON
+  Parameters: {"invoice"=>{}}
+Completed 500 Internal Server Error in 12ms (ActiveRecord: 4.4ms (0 queries, 0 cached) | GC: 0.5ms)
+  
+NoMethodError (undefined method `respond_with' for #<EagerLion::InvoicesController:0x0000000000aaa0>):
+  
+app/controllers/eager_lion/invoices_controller.rb:9:in `index'
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+Started GET "/eager-lion/invoices" for 127.0.0.1 at 2025-11-30 09:14:08 +0100
+Processing by EagerLion::InvoicesController#index as JSON
+  Parameters: {"invoice"=>{}}
+Completed 500 Internal Server Error in 12ms (ActiveRecord: 4.0ms (0 queries, 0 cached) | GC: 0.5ms)
+  
+NoMethodError (undefined method `respond_with' for #<EagerLion::InvoicesController:0x0000000000aaa0>):
+  
+app/controllers/eager_lion/invoices_controller.rb:9:in `index'
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+Started GET "/eager-lion/invoices" for 127.0.0.1 at 2025-11-30 09:14:14 +0100
+Processing by EagerLion::InvoicesController#index as JSON
+  Parameters: {"invoice"=>{}}
+Completed 500 Internal Server Error in 12ms (ActiveRecord: 3.9ms (0 queries, 0 cached) | GC: 0.5ms)
+  
+NoMethodError (undefined method `respond_with' for #<EagerLion::InvoicesController:0x0000000000aaa0>):
+  
+app/controllers/eager_lion/invoices_controller.rb:9:in `index'
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+  [1m[36mEagerLion::Customer Load (0.1ms)[0m  [1m[34mSELECT "eager_lion_customers".* FROM "eager_lion_customers" WHERE "eager_lion_customers"."name" = ? LIMIT ?[0m  [["name", "Acme Corporation"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mEagerLion::Invoice Create (0.4ms)[0m  [1m[32mINSERT INTO "eager_lion_invoices" ("id", "customer_id", "number", "issued_on", "notes", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["id", "e91ffe11-ba5d-43e2-adc3-6a120d6cf4f6"], ["customer_id", "4aa3ccf1-3fa4-47c1-a18f-219e095f8560"], ["number", "INV-2024-001"], ["issued_on", "2024-03-15"], ["notes", "Sample invoice"], ["status", "pending"], ["created_at", "2025-11-30 08:14:48.478958"], ["updated_at", "2025-11-30 08:14:48.478958"]]
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+Started GET "/eager-lion/invoices" for 127.0.0.1 at 2025-11-30 09:14:48 +0100
+  
+ActionDispatch::MissingController (uninitialized constant EagerLion::InvoicesController)
+Caused by: NameError (uninitialized constant EagerLion::InvoicesController)
+
+Information for: ActionDispatch::MissingController (uninitialized constant EagerLion::InvoicesController):
+  
+lib/docs/example_generator.rb:90:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+
+Information for cause: NameError (uninitialized constant EagerLion::InvoicesController):
+  
+lib/docs/example_generator.rb:90:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started GET "/eager-lion/invoices/e91ffe11-ba5d-43e2-adc3-6a120d6cf4f6" for 127.0.0.1 at 2025-11-30 09:14:48 +0100
+  
+ActionDispatch::MissingController (uninitialized constant EagerLion::InvoicesController)
+Caused by: NameError (uninitialized constant EagerLion::InvoicesController)
+
+Information for: ActionDispatch::MissingController (uninitialized constant EagerLion::InvoicesController):
+  
+lib/docs/example_generator.rb:92:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+
+Information for cause: NameError (uninitialized constant EagerLion::InvoicesController):
+  
+lib/docs/example_generator.rb:92:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started POST "/eager-lion/invoices" for 127.0.0.1 at 2025-11-30 09:14:48 +0100
+  
+ActionDispatch::MissingController (uninitialized constant EagerLion::InvoicesController)
+Caused by: NameError (uninitialized constant EagerLion::InvoicesController)
+
+Information for: ActionDispatch::MissingController (uninitialized constant EagerLion::InvoicesController):
+  
+lib/docs/example_generator.rb:94:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+
+Information for cause: NameError (uninitialized constant EagerLion::InvoicesController):
+  
+lib/docs/example_generator.rb:94:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started PATCH "/eager-lion/invoices/e91ffe11-ba5d-43e2-adc3-6a120d6cf4f6" for 127.0.0.1 at 2025-11-30 09:14:48 +0100
+  
+ActionDispatch::MissingController (uninitialized constant EagerLion::InvoicesController)
+Caused by: NameError (uninitialized constant EagerLion::InvoicesController)
+
+Information for: ActionDispatch::MissingController (uninitialized constant EagerLion::InvoicesController):
+  
+lib/docs/example_generator.rb:96:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+
+Information for cause: NameError (uninitialized constant EagerLion::InvoicesController):
+  
+lib/docs/example_generator.rb:96:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started DELETE "/eager-lion/invoices/e91ffe11-ba5d-43e2-adc3-6a120d6cf4f6" for 127.0.0.1 at 2025-11-30 09:14:48 +0100
+  
+ActionDispatch::MissingController (uninitialized constant EagerLion::InvoicesController)
+Caused by: NameError (uninitialized constant EagerLion::InvoicesController)
+
+Information for: ActionDispatch::MissingController (uninitialized constant EagerLion::InvoicesController):
+  
+lib/docs/example_generator.rb:98:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+
+Information for cause: NameError (uninitialized constant EagerLion::InvoicesController):
+  
+lib/docs/example_generator.rb:98:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started PATCH "/eager-lion/invoices/e91ffe11-ba5d-43e2-adc3-6a120d6cf4f6/archive" for 127.0.0.1 at 2025-11-30 09:14:48 +0100
+  
+ActionDispatch::MissingController (uninitialized constant EagerLion::InvoicesController)
+Caused by: NameError (uninitialized constant EagerLion::InvoicesController)
+
+Information for: ActionDispatch::MissingController (uninitialized constant EagerLion::InvoicesController):
+  
+lib/docs/example_generator.rb:100:in `call_action'
+lib/docs/example_generator.rb:78:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:77:in `each_key'
+lib/docs/example_generator.rb:77:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+
+Information for cause: NameError (uninitialized constant EagerLion::InvoicesController):
+  
+lib/docs/example_generator.rb:100:in `call_action'
+lib/docs/example_generator.rb:78:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:77:in `each_key'
+lib/docs/example_generator.rb:77:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+Started GET "/eager-lion/invoices" for 127.0.0.1 at 2025-11-30 09:15:02 +0100
+  
+ActionDispatch::MissingController (uninitialized constant EagerLion::InvoicesController)
+Caused by: NameError (uninitialized constant EagerLion::InvoicesController)
+
+Information for: ActionDispatch::MissingController (uninitialized constant EagerLion::InvoicesController):
+  
+actionpack (8.1.1) lib/action_dispatch/http/request.rb:101:in `rescue in controller_class_for'
+actionpack (8.1.1) lib/action_dispatch/http/request.rb:97:in `controller_class_for'
+actionpack (8.1.1) lib/action_dispatch/http/request.rb:90:in `controller_class'
+actionpack (8.1.1) lib/action_dispatch/routing/route_set.rb:61:in `controller'
+actionpack (8.1.1) lib/action_dispatch/routing/route_set.rb:48:in `serve'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:35:in `block in serve'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:86:in `block in recognize'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:66:in `each'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:66:in `recognize'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:31:in `serve'
+actionpack (8.1.1) lib/action_dispatch/routing/route_set.rb:906:in `call'
+/Users/joakim/GitHub/apiwork/lib/apiwork/api/rack_app.rb:7:in `call'
+actionpack (8.1.1) lib/action_dispatch/routing/mapper.rb:33:in `block in <class:Constraints>'
+actionpack (8.1.1) lib/action_dispatch/routing/mapper.rb:62:in `serve'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:35:in `block in serve'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:92:in `block in recognize'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:66:in `each'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:66:in `recognize'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:31:in `serve'
+actionpack (8.1.1) lib/action_dispatch/routing/route_set.rb:906:in `call'
+railties (8.1.1) lib/rails/engine/lazy_route_set.rb:60:in `call'
+rack (3.2.4) lib/rack/tempfile_reaper.rb:20:in `call'
+rack (3.2.4) lib/rack/etag.rb:29:in `call'
+rack (3.2.4) lib/rack/conditional_get.rb:31:in `call'
+rack (3.2.4) lib/rack/head.rb:15:in `call'
+actionpack (8.1.1) lib/action_dispatch/http/content_security_policy.rb:38:in `call'
+rack-session (2.1.1) lib/rack/session/abstract/id.rb:274:in `context'
+rack-session (2.1.1) lib/rack/session/abstract/id.rb:268:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/cookies.rb:708:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/callbacks.rb:31:in `block in call'
+activesupport (8.1.1) lib/active_support/callbacks.rb:101:in `run_callbacks'
+actionpack (8.1.1) lib/action_dispatch/middleware/callbacks.rb:30:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/executor.rb:20:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/debug_exceptions.rb:31:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/show_exceptions.rb:32:in `call'
+railties (8.1.1) lib/rails/rack/logger.rb:41:in `call_app'
+railties (8.1.1) lib/rails/rack/logger.rb:29:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/remote_ip.rb:98:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/request_id.rb:34:in `call'
+rack (3.2.4) lib/rack/method_override.rb:28:in `call'
+rack (3.2.4) lib/rack/runtime.rb:24:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/executor.rb:20:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/static.rb:27:in `call'
+rack (3.2.4) lib/rack/sendfile.rb:131:in `call'
+railties (8.1.1) lib/rails/engine.rb:534:in `call'
+rack-test (2.2.0) lib/rack/test.rb:360:in `process_request'
+rack-test (2.2.0) lib/rack/test.rb:153:in `request'
+actionpack (8.1.1) lib/action_dispatch/testing/integration.rb:297:in `process'
+actionpack (8.1.1) lib/action_dispatch/testing/integration.rb:19:in `get'
+railties (8.1.1) lib/rails/commands/runner/runner_command.rb:52:in `<main>'
+railties (8.1.1) lib/rails/commands/runner/runner_command.rb:49:in `eval'
+railties (8.1.1) lib/rails/commands/runner/runner_command.rb:49:in `block in perform'
+activesupport (8.1.1) lib/active_support/execution_wrapper.rb:91:in `wrap'
+railties (8.1.1) lib/rails/commands/runner/runner_command.rb:70:in `conditional_executor'
+railties (8.1.1) lib/rails/commands/runner/runner_command.rb:48:in `perform'
+thor (1.4.0) lib/thor/command.rb:28:in `run'
+thor (1.4.0) lib/thor/invocation.rb:127:in `invoke_command'
+railties (8.1.1) lib/rails/command/base.rb:176:in `invoke_command'
+thor (1.4.0) lib/thor.rb:538:in `dispatch'
+railties (8.1.1) lib/rails/command/base.rb:71:in `perform'
+railties (8.1.1) lib/rails/command.rb:65:in `block in invoke'
+railties (8.1.1) lib/rails/command.rb:143:in `with_argv'
+railties (8.1.1) lib/rails/command.rb:63:in `invoke'
+railties (8.1.1) lib/rails/commands.rb:18:in `<top (required)>'
+bin/rails:6:in `require'
+bin/rails:6:in `<main>'
+
+Information for cause: NameError (uninitialized constant EagerLion::InvoicesController):
+  
+activesupport (8.1.1) lib/active_support/inflector/methods.rb:290:in `constantize'
+activesupport (8.1.1) lib/active_support/core_ext/string/inflections.rb:74:in `constantize'
+actionpack (8.1.1) lib/action_dispatch/http/request.rb:98:in `controller_class_for'
+actionpack (8.1.1) lib/action_dispatch/http/request.rb:90:in `controller_class'
+actionpack (8.1.1) lib/action_dispatch/routing/route_set.rb:61:in `controller'
+actionpack (8.1.1) lib/action_dispatch/routing/route_set.rb:48:in `serve'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:35:in `block in serve'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:86:in `block in recognize'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:66:in `each'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:66:in `recognize'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:31:in `serve'
+actionpack (8.1.1) lib/action_dispatch/routing/route_set.rb:906:in `call'
+/Users/joakim/GitHub/apiwork/lib/apiwork/api/rack_app.rb:7:in `call'
+actionpack (8.1.1) lib/action_dispatch/routing/mapper.rb:33:in `block in <class:Constraints>'
+actionpack (8.1.1) lib/action_dispatch/routing/mapper.rb:62:in `serve'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:35:in `block in serve'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:92:in `block in recognize'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:66:in `each'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:66:in `recognize'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:31:in `serve'
+actionpack (8.1.1) lib/action_dispatch/routing/route_set.rb:906:in `call'
+railties (8.1.1) lib/rails/engine/lazy_route_set.rb:60:in `call'
+rack (3.2.4) lib/rack/tempfile_reaper.rb:20:in `call'
+rack (3.2.4) lib/rack/etag.rb:29:in `call'
+rack (3.2.4) lib/rack/conditional_get.rb:31:in `call'
+rack (3.2.4) lib/rack/head.rb:15:in `call'
+actionpack (8.1.1) lib/action_dispatch/http/content_security_policy.rb:38:in `call'
+rack-session (2.1.1) lib/rack/session/abstract/id.rb:274:in `context'
+rack-session (2.1.1) lib/rack/session/abstract/id.rb:268:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/cookies.rb:708:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/callbacks.rb:31:in `block in call'
+activesupport (8.1.1) lib/active_support/callbacks.rb:101:in `run_callbacks'
+actionpack (8.1.1) lib/action_dispatch/middleware/callbacks.rb:30:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/executor.rb:20:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/debug_exceptions.rb:31:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/show_exceptions.rb:32:in `call'
+railties (8.1.1) lib/rails/rack/logger.rb:41:in `call_app'
+railties (8.1.1) lib/rails/rack/logger.rb:29:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/remote_ip.rb:98:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/request_id.rb:34:in `call'
+rack (3.2.4) lib/rack/method_override.rb:28:in `call'
+rack (3.2.4) lib/rack/runtime.rb:24:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/executor.rb:20:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/static.rb:27:in `call'
+rack (3.2.4) lib/rack/sendfile.rb:131:in `call'
+railties (8.1.1) lib/rails/engine.rb:534:in `call'
+rack-test (2.2.0) lib/rack/test.rb:360:in `process_request'
+rack-test (2.2.0) lib/rack/test.rb:153:in `request'
+actionpack (8.1.1) lib/action_dispatch/testing/integration.rb:297:in `process'
+actionpack (8.1.1) lib/action_dispatch/testing/integration.rb:19:in `get'
+railties (8.1.1) lib/rails/commands/runner/runner_command.rb:52:in `<main>'
+railties (8.1.1) lib/rails/commands/runner/runner_command.rb:49:in `eval'
+railties (8.1.1) lib/rails/commands/runner/runner_command.rb:49:in `block in perform'
+activesupport (8.1.1) lib/active_support/execution_wrapper.rb:91:in `wrap'
+railties (8.1.1) lib/rails/commands/runner/runner_command.rb:70:in `conditional_executor'
+railties (8.1.1) lib/rails/commands/runner/runner_command.rb:48:in `perform'
+thor (1.4.0) lib/thor/command.rb:28:in `run'
+thor (1.4.0) lib/thor/invocation.rb:127:in `invoke_command'
+railties (8.1.1) lib/rails/command/base.rb:176:in `invoke_command'
+thor (1.4.0) lib/thor.rb:538:in `dispatch'
+railties (8.1.1) lib/rails/command/base.rb:71:in `perform'
+railties (8.1.1) lib/rails/command.rb:65:in `block in invoke'
+railties (8.1.1) lib/rails/command.rb:143:in `with_argv'
+railties (8.1.1) lib/rails/command.rb:63:in `invoke'
+railties (8.1.1) lib/rails/commands.rb:18:in `<top (required)>'
+bin/rails:6:in `require'
+bin/rails:6:in `<main>'
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+Started GET "/eager-lion/invoices" for 127.0.0.1 at 2025-11-30 09:15:13 +0100
+  
+ActionDispatch::MissingController (uninitialized constant EagerLion::InvoicesController)
+Caused by: NameError (uninitialized constant EagerLion::InvoicesController)
+
+Information for: ActionDispatch::MissingController (uninitialized constant EagerLion::InvoicesController):
+  
+actionpack (8.1.1) lib/action_dispatch/http/request.rb:101:in `rescue in controller_class_for'
+actionpack (8.1.1) lib/action_dispatch/http/request.rb:97:in `controller_class_for'
+actionpack (8.1.1) lib/action_dispatch/http/request.rb:90:in `controller_class'
+actionpack (8.1.1) lib/action_dispatch/routing/route_set.rb:61:in `controller'
+actionpack (8.1.1) lib/action_dispatch/routing/route_set.rb:48:in `serve'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:35:in `block in serve'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:86:in `block in recognize'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:66:in `each'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:66:in `recognize'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:31:in `serve'
+actionpack (8.1.1) lib/action_dispatch/routing/route_set.rb:906:in `call'
+/Users/joakim/GitHub/apiwork/lib/apiwork/api/rack_app.rb:7:in `call'
+actionpack (8.1.1) lib/action_dispatch/routing/mapper.rb:33:in `block in <class:Constraints>'
+actionpack (8.1.1) lib/action_dispatch/routing/mapper.rb:62:in `serve'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:35:in `block in serve'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:92:in `block in recognize'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:66:in `each'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:66:in `recognize'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:31:in `serve'
+actionpack (8.1.1) lib/action_dispatch/routing/route_set.rb:906:in `call'
+railties (8.1.1) lib/rails/engine/lazy_route_set.rb:60:in `call'
+rack (3.2.4) lib/rack/tempfile_reaper.rb:20:in `call'
+rack (3.2.4) lib/rack/etag.rb:29:in `call'
+rack (3.2.4) lib/rack/conditional_get.rb:31:in `call'
+rack (3.2.4) lib/rack/head.rb:15:in `call'
+actionpack (8.1.1) lib/action_dispatch/http/content_security_policy.rb:38:in `call'
+rack-session (2.1.1) lib/rack/session/abstract/id.rb:274:in `context'
+rack-session (2.1.1) lib/rack/session/abstract/id.rb:268:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/cookies.rb:708:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/callbacks.rb:31:in `block in call'
+activesupport (8.1.1) lib/active_support/callbacks.rb:101:in `run_callbacks'
+actionpack (8.1.1) lib/action_dispatch/middleware/callbacks.rb:30:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/executor.rb:20:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/debug_exceptions.rb:31:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/show_exceptions.rb:32:in `call'
+railties (8.1.1) lib/rails/rack/logger.rb:41:in `call_app'
+railties (8.1.1) lib/rails/rack/logger.rb:29:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/remote_ip.rb:98:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/request_id.rb:34:in `call'
+rack (3.2.4) lib/rack/method_override.rb:28:in `call'
+rack (3.2.4) lib/rack/runtime.rb:24:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/executor.rb:20:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/static.rb:27:in `call'
+rack (3.2.4) lib/rack/sendfile.rb:131:in `call'
+railties (8.1.1) lib/rails/engine.rb:534:in `call'
+rack-test (2.2.0) lib/rack/test.rb:360:in `process_request'
+rack-test (2.2.0) lib/rack/test.rb:153:in `request'
+actionpack (8.1.1) lib/action_dispatch/testing/integration.rb:297:in `process'
+actionpack (8.1.1) lib/action_dispatch/testing/integration.rb:19:in `get'
+railties (8.1.1) lib/rails/commands/runner/runner_command.rb:52:in `<main>'
+railties (8.1.1) lib/rails/commands/runner/runner_command.rb:49:in `eval'
+railties (8.1.1) lib/rails/commands/runner/runner_command.rb:49:in `block in perform'
+activesupport (8.1.1) lib/active_support/execution_wrapper.rb:91:in `wrap'
+railties (8.1.1) lib/rails/commands/runner/runner_command.rb:70:in `conditional_executor'
+railties (8.1.1) lib/rails/commands/runner/runner_command.rb:48:in `perform'
+thor (1.4.0) lib/thor/command.rb:28:in `run'
+thor (1.4.0) lib/thor/invocation.rb:127:in `invoke_command'
+railties (8.1.1) lib/rails/command/base.rb:176:in `invoke_command'
+thor (1.4.0) lib/thor.rb:538:in `dispatch'
+railties (8.1.1) lib/rails/command/base.rb:71:in `perform'
+railties (8.1.1) lib/rails/command.rb:65:in `block in invoke'
+railties (8.1.1) lib/rails/command.rb:143:in `with_argv'
+railties (8.1.1) lib/rails/command.rb:63:in `invoke'
+railties (8.1.1) lib/rails/commands.rb:18:in `<top (required)>'
+bin/rails:6:in `require'
+bin/rails:6:in `<main>'
+
+Information for cause: NameError (uninitialized constant EagerLion::InvoicesController):
+  
+activesupport (8.1.1) lib/active_support/inflector/methods.rb:290:in `constantize'
+activesupport (8.1.1) lib/active_support/core_ext/string/inflections.rb:74:in `constantize'
+actionpack (8.1.1) lib/action_dispatch/http/request.rb:98:in `controller_class_for'
+actionpack (8.1.1) lib/action_dispatch/http/request.rb:90:in `controller_class'
+actionpack (8.1.1) lib/action_dispatch/routing/route_set.rb:61:in `controller'
+actionpack (8.1.1) lib/action_dispatch/routing/route_set.rb:48:in `serve'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:35:in `block in serve'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:86:in `block in recognize'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:66:in `each'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:66:in `recognize'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:31:in `serve'
+actionpack (8.1.1) lib/action_dispatch/routing/route_set.rb:906:in `call'
+/Users/joakim/GitHub/apiwork/lib/apiwork/api/rack_app.rb:7:in `call'
+actionpack (8.1.1) lib/action_dispatch/routing/mapper.rb:33:in `block in <class:Constraints>'
+actionpack (8.1.1) lib/action_dispatch/routing/mapper.rb:62:in `serve'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:35:in `block in serve'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:92:in `block in recognize'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:66:in `each'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:66:in `recognize'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:31:in `serve'
+actionpack (8.1.1) lib/action_dispatch/routing/route_set.rb:906:in `call'
+railties (8.1.1) lib/rails/engine/lazy_route_set.rb:60:in `call'
+rack (3.2.4) lib/rack/tempfile_reaper.rb:20:in `call'
+rack (3.2.4) lib/rack/etag.rb:29:in `call'
+rack (3.2.4) lib/rack/conditional_get.rb:31:in `call'
+rack (3.2.4) lib/rack/head.rb:15:in `call'
+actionpack (8.1.1) lib/action_dispatch/http/content_security_policy.rb:38:in `call'
+rack-session (2.1.1) lib/rack/session/abstract/id.rb:274:in `context'
+rack-session (2.1.1) lib/rack/session/abstract/id.rb:268:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/cookies.rb:708:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/callbacks.rb:31:in `block in call'
+activesupport (8.1.1) lib/active_support/callbacks.rb:101:in `run_callbacks'
+actionpack (8.1.1) lib/action_dispatch/middleware/callbacks.rb:30:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/executor.rb:20:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/debug_exceptions.rb:31:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/show_exceptions.rb:32:in `call'
+railties (8.1.1) lib/rails/rack/logger.rb:41:in `call_app'
+railties (8.1.1) lib/rails/rack/logger.rb:29:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/remote_ip.rb:98:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/request_id.rb:34:in `call'
+rack (3.2.4) lib/rack/method_override.rb:28:in `call'
+rack (3.2.4) lib/rack/runtime.rb:24:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/executor.rb:20:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/static.rb:27:in `call'
+rack (3.2.4) lib/rack/sendfile.rb:131:in `call'
+railties (8.1.1) lib/rails/engine.rb:534:in `call'
+rack-test (2.2.0) lib/rack/test.rb:360:in `process_request'
+rack-test (2.2.0) lib/rack/test.rb:153:in `request'
+actionpack (8.1.1) lib/action_dispatch/testing/integration.rb:297:in `process'
+actionpack (8.1.1) lib/action_dispatch/testing/integration.rb:19:in `get'
+railties (8.1.1) lib/rails/commands/runner/runner_command.rb:52:in `<main>'
+railties (8.1.1) lib/rails/commands/runner/runner_command.rb:49:in `eval'
+railties (8.1.1) lib/rails/commands/runner/runner_command.rb:49:in `block in perform'
+activesupport (8.1.1) lib/active_support/execution_wrapper.rb:91:in `wrap'
+railties (8.1.1) lib/rails/commands/runner/runner_command.rb:70:in `conditional_executor'
+railties (8.1.1) lib/rails/commands/runner/runner_command.rb:48:in `perform'
+thor (1.4.0) lib/thor/command.rb:28:in `run'
+thor (1.4.0) lib/thor/invocation.rb:127:in `invoke_command'
+railties (8.1.1) lib/rails/command/base.rb:176:in `invoke_command'
+thor (1.4.0) lib/thor.rb:538:in `dispatch'
+railties (8.1.1) lib/rails/command/base.rb:71:in `perform'
+railties (8.1.1) lib/rails/command.rb:65:in `block in invoke'
+railties (8.1.1) lib/rails/command.rb:143:in `with_argv'
+railties (8.1.1) lib/rails/command.rb:63:in `invoke'
+railties (8.1.1) lib/rails/commands.rb:18:in `<top (required)>'
+bin/rails:6:in `require'
+bin/rails:6:in `<main>'
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+  [1m[36mEagerLion::Customer Load (0.1ms)[0m  [1m[34mSELECT "eager_lion_customers".* FROM "eager_lion_customers" WHERE "eager_lion_customers"."name" = ? LIMIT ?[0m  [["name", "Acme Corporation"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mEagerLion::Invoice Create (0.3ms)[0m  [1m[32mINSERT INTO "eager_lion_invoices" ("id", "customer_id", "number", "issued_on", "notes", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["id", "dd1da6c3-b0ac-4e24-b2e9-6420e6e5722b"], ["customer_id", "4aa3ccf1-3fa4-47c1-a18f-219e095f8560"], ["number", "INV-2024-001"], ["issued_on", "2024-03-15"], ["notes", "Sample invoice"], ["status", "pending"], ["created_at", "2025-11-30 08:15:31.551552"], ["updated_at", "2025-11-30 08:15:31.551552"]]
+  [1m[36mTRANSACTION (2.2ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+Started GET "/eager-lion/invoices" for 127.0.0.1 at 2025-11-30 09:15:31 +0100
+Processing by EagerLion::InvoicesController#index as JSON
+  Parameters: {"invoice"=>{}}
+Completed 500 Internal Server Error in 9ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+NoMethodError (undefined method `respond_with' for #<EagerLion::InvoicesController:0x0000000000b590>):
+  
+app/controllers/eager_lion/invoices_controller.rb:9:in `index'
+lib/docs/example_generator.rb:90:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started GET "/eager-lion/invoices/dd1da6c3-b0ac-4e24-b2e9-6420e6e5722b" for 127.0.0.1 at 2025-11-30 09:15:31 +0100
+Processing by EagerLion::InvoicesController#show as JSON
+  Parameters: {"id"=>"dd1da6c3-b0ac-4e24-b2e9-6420e6e5722b", "invoice"=>{}}
+  [1m[36mEagerLion::Invoice Load (0.1ms)[0m  [1m[34mSELECT "eager_lion_invoices".* FROM "eager_lion_invoices" WHERE "eager_lion_invoices"."id" = ? LIMIT ?[0m  [["id", "dd1da6c3-b0ac-4e24-b2e9-6420e6e5722b"], ["LIMIT", 1]]
+Completed 500 Internal Server Error in 1ms (ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+  
+NoMethodError (undefined method `respond_with' for #<EagerLion::InvoicesController:0x0000000000b680>):
+  
+app/controllers/eager_lion/invoices_controller.rb:13:in `show'
+lib/docs/example_generator.rb:92:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started POST "/eager-lion/invoices" for 127.0.0.1 at 2025-11-30 09:15:31 +0100
+Processing by EagerLion::InvoicesController#create as JSON
+  Parameters: {"invoice"=>{"number"=>"INV-2024-002", "issued_on"=>"2024-03-20", "notes"=>"New invoice"}}
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+NameError (undefined local variable or method `contract' for #<EagerLion::InvoicesController:0x0000000000b6f8>):
+  
+app/controllers/eager_lion/invoices_controller.rb:17:in `create'
+lib/docs/example_generator.rb:94:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started PATCH "/eager-lion/invoices/dd1da6c3-b0ac-4e24-b2e9-6420e6e5722b" for 127.0.0.1 at 2025-11-30 09:15:31 +0100
+Processing by EagerLion::InvoicesController#update as JSON
+  Parameters: {"invoice"=>{"status"=>"paid", "notes"=>"Payment received"}, "id"=>"dd1da6c3-b0ac-4e24-b2e9-6420e6e5722b"}
+  [1m[36mEagerLion::Invoice Load (0.1ms)[0m  [1m[34mSELECT "eager_lion_invoices".* FROM "eager_lion_invoices" WHERE "eager_lion_invoices"."id" = ? LIMIT ?[0m  [["id", "dd1da6c3-b0ac-4e24-b2e9-6420e6e5722b"], ["LIMIT", 1]]
+Completed 500 Internal Server Error in 1ms (ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+  
+NameError (undefined local variable or method `contract' for #<EagerLion::InvoicesController:0x0000000000b770>):
+  
+app/controllers/eager_lion/invoices_controller.rb:24:in `update'
+lib/docs/example_generator.rb:96:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started DELETE "/eager-lion/invoices/dd1da6c3-b0ac-4e24-b2e9-6420e6e5722b" for 127.0.0.1 at 2025-11-30 09:15:31 +0100
+Processing by EagerLion::InvoicesController#destroy as JSON
+  Parameters: {"id"=>"dd1da6c3-b0ac-4e24-b2e9-6420e6e5722b", "invoice"=>{}}
+  [1m[36mEagerLion::Invoice Load (0.1ms)[0m  [1m[34mSELECT "eager_lion_invoices".* FROM "eager_lion_invoices" WHERE "eager_lion_invoices"."id" = ? LIMIT ?[0m  [["id", "dd1da6c3-b0ac-4e24-b2e9-6420e6e5722b"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mEagerLion::Line Load (0.1ms)[0m  [1m[34mSELECT "eager_lion_lines".* FROM "eager_lion_lines" WHERE "eager_lion_lines"."invoice_id" = ?[0m  [["invoice_id", "dd1da6c3-b0ac-4e24-b2e9-6420e6e5722b"]]
+  [1m[36mEagerLion::Invoice Destroy (0.1ms)[0m  [1m[31mDELETE FROM "eager_lion_invoices" WHERE "eager_lion_invoices"."id" = ?[0m  [["id", "dd1da6c3-b0ac-4e24-b2e9-6420e6e5722b"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+Completed 500 Internal Server Error in 9ms (ActiveRecord: 0.8ms (3 queries, 0 cached) | GC: 0.0ms)
+  
+NoMethodError (undefined method `respond_with' for #<EagerLion::InvoicesController:0x0000000000b8b0>):
+  
+app/controllers/eager_lion/invoices_controller.rb:30:in `destroy'
+lib/docs/example_generator.rb:98:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started PATCH "/eager-lion/invoices/dd1da6c3-b0ac-4e24-b2e9-6420e6e5722b/archive" for 127.0.0.1 at 2025-11-30 09:15:31 +0100
+Processing by EagerLion::InvoicesController#archive as JSON
+  Parameters: {"id"=>"dd1da6c3-b0ac-4e24-b2e9-6420e6e5722b", "invoice"=>{}}
+  [1m[36mEagerLion::Invoice Load (0.1ms)[0m  [1m[34mSELECT "eager_lion_invoices".* FROM "eager_lion_invoices" WHERE "eager_lion_invoices"."id" = ? LIMIT ?[0m  [["id", "dd1da6c3-b0ac-4e24-b2e9-6420e6e5722b"], ["LIMIT", 1]]
+Completed 404 Not Found in 0ms (ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+  
+ActiveRecord::RecordNotFound (Couldn't find EagerLion::Invoice with 'id'="dd1da6c3-b0ac-4e24-b2e9-6420e6e5722b"):
+  
+app/controllers/eager_lion/invoices_controller.rb:43:in `set_invoice'
+lib/docs/example_generator.rb:100:in `call_action'
+lib/docs/example_generator.rb:78:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:77:in `each_key'
+lib/docs/example_generator.rb:77:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+Started GET "/eager-lion/invoices" for 127.0.0.1 at 2025-11-30 09:15:47 +0100
+Processing by EagerLion::InvoicesController#index as JSON
+  Parameters: {"invoice"=>{}}
+Completed 500 Internal Server Error in 12ms (ActiveRecord: 11.7ms (0 queries, 0 cached) | GC: 0.5ms)
+  
+NoMethodError (undefined method `respond_with' for #<EagerLion::InvoicesController:0x0000000000af28>):
+  
+app/controllers/eager_lion/invoices_controller.rb:9:in `index'
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+  [1m[36mEagerLion::Customer Load (0.1ms)[0m  [1m[34mSELECT "eager_lion_customers".* FROM "eager_lion_customers" WHERE "eager_lion_customers"."name" = ? LIMIT ?[0m  [["name", "Acme Corporation"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mEagerLion::Invoice Create (0.4ms)[0m  [1m[32mINSERT INTO "eager_lion_invoices" ("id", "customer_id", "number", "issued_on", "notes", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["id", "c4117cd9-d414-408f-8005-2ee446bb26a8"], ["customer_id", "4aa3ccf1-3fa4-47c1-a18f-219e095f8560"], ["number", "INV-2024-001"], ["issued_on", "2024-03-15"], ["notes", "Sample invoice"], ["status", "pending"], ["created_at", "2025-11-30 08:16:19.397834"], ["updated_at", "2025-11-30 08:16:19.397834"]]
+  [1m[36mTRANSACTION (1.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+Started GET "/eager-lion/invoices" for 127.0.0.1 at 2025-11-30 09:16:19 +0100
+Processing by EagerLion::InvoicesController#index as JSON
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+Apiwork::ConfigurationError (No API found for EagerLion::InvoicesController. Create the API: config/apis/eager-lion_invoices.rb (Apiwork::API.draw '/eager-lion/invoices')):
+  
+lib/docs/example_generator.rb:90:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started GET "/eager-lion/invoices/c4117cd9-d414-408f-8005-2ee446bb26a8" for 127.0.0.1 at 2025-11-30 09:16:19 +0100
+Processing by EagerLion::InvoicesController#show as JSON
+  Parameters: {"id"=>"c4117cd9-d414-408f-8005-2ee446bb26a8"}
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+Apiwork::ConfigurationError (No API found for EagerLion::InvoicesController. Create the API: config/apis/eager-lion_invoices.rb (Apiwork::API.draw '/eager-lion/invoices')):
+  
+lib/docs/example_generator.rb:92:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started POST "/eager-lion/invoices" for 127.0.0.1 at 2025-11-30 09:16:19 +0100
+Processing by EagerLion::InvoicesController#create as JSON
+  Parameters: {"invoice"=>{"number"=>"INV-2024-002", "issued_on"=>"2024-03-20", "notes"=>"New invoice"}}
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+Apiwork::ConfigurationError (No API found for EagerLion::InvoicesController. Create the API: config/apis/eager-lion_invoices.rb (Apiwork::API.draw '/eager-lion/invoices')):
+  
+lib/docs/example_generator.rb:94:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started PATCH "/eager-lion/invoices/c4117cd9-d414-408f-8005-2ee446bb26a8" for 127.0.0.1 at 2025-11-30 09:16:19 +0100
+Processing by EagerLion::InvoicesController#update as JSON
+  Parameters: {"invoice"=>{"status"=>"paid", "notes"=>"Payment received"}, "id"=>"c4117cd9-d414-408f-8005-2ee446bb26a8"}
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+Apiwork::ConfigurationError (No API found for EagerLion::InvoicesController. Create the API: config/apis/eager-lion_invoices.rb (Apiwork::API.draw '/eager-lion/invoices')):
+  
+lib/docs/example_generator.rb:96:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started DELETE "/eager-lion/invoices/c4117cd9-d414-408f-8005-2ee446bb26a8" for 127.0.0.1 at 2025-11-30 09:16:19 +0100
+Processing by EagerLion::InvoicesController#destroy as JSON
+  Parameters: {"id"=>"c4117cd9-d414-408f-8005-2ee446bb26a8"}
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+Apiwork::ConfigurationError (No API found for EagerLion::InvoicesController. Create the API: config/apis/eager-lion_invoices.rb (Apiwork::API.draw '/eager-lion/invoices')):
+  
+lib/docs/example_generator.rb:98:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started PATCH "/eager-lion/invoices/c4117cd9-d414-408f-8005-2ee446bb26a8/archive" for 127.0.0.1 at 2025-11-30 09:16:19 +0100
+Processing by EagerLion::InvoicesController#archive as JSON
+  Parameters: {"id"=>"c4117cd9-d414-408f-8005-2ee446bb26a8"}
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+Apiwork::ConfigurationError (No API found for EagerLion::InvoicesController. Create the API: config/apis/eager-lion_invoices.rb (Apiwork::API.draw '/eager-lion/invoices')):
+  
+lib/docs/example_generator.rb:100:in `call_action'
+lib/docs/example_generator.rb:78:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:77:in `each_key'
+lib/docs/example_generator.rb:77:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+Started GET "/eager-lion/invoices" for 127.0.0.1 at 2025-11-30 09:16:32 +0100
+Processing by EagerLion::InvoicesController#index as JSON
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+Apiwork::ConfigurationError (No API found for EagerLion::InvoicesController. Create the API: config/apis/eager-lion_invoices.rb (Apiwork::API.draw '/eager-lion/invoices')):
+  
+/Users/joakim/GitHub/apiwork/lib/apiwork/controller/resolution.rb:49:in `raise_api_not_found_error'
+/Users/joakim/GitHub/apiwork/lib/apiwork/controller/resolution.rb:18:in `api_class'
+/Users/joakim/GitHub/apiwork/lib/apiwork/controller/resolution.rb:12:in `contract_class'
+/Users/joakim/GitHub/apiwork/lib/apiwork/controller/deserialization.rb:13:in `contract'
+/Users/joakim/GitHub/apiwork/lib/apiwork/controller/deserialization.rb:23:in `validate_contract'
+activesupport (8.1.1) lib/active_support/callbacks.rb:362:in `block in make_lambda'
+activesupport (8.1.1) lib/active_support/callbacks.rb:179:in `block in call'
+actionpack (8.1.1) lib/abstract_controller/callbacks.rb:36:in `block (2 levels) in <module:Callbacks>'
+activesupport (8.1.1) lib/active_support/callbacks.rb:180:in `call'
+activesupport (8.1.1) lib/active_support/callbacks.rb:560:in `block in invoke_before'
+activesupport (8.1.1) lib/active_support/callbacks.rb:560:in `each'
+activesupport (8.1.1) lib/active_support/callbacks.rb:560:in `invoke_before'
+activesupport (8.1.1) lib/active_support/callbacks.rb:109:in `run_callbacks'
+actionpack (8.1.1) lib/abstract_controller/callbacks.rb:266:in `process_action'
+actionpack (8.1.1) lib/action_controller/metal/rescue.rb:36:in `process_action'
+actionpack (8.1.1) lib/action_controller/metal/instrumentation.rb:76:in `block in process_action'
+activesupport (8.1.1) lib/active_support/notifications.rb:210:in `block in instrument'
+activesupport (8.1.1) lib/active_support/notifications/instrumenter.rb:58:in `instrument'
+activesupport (8.1.1) lib/active_support/notifications.rb:210:in `instrument'
+actionpack (8.1.1) lib/action_controller/metal/instrumentation.rb:75:in `process_action'
+actionpack (8.1.1) lib/action_controller/metal/params_wrapper.rb:259:in `process_action'
+activerecord (8.1.1) lib/active_record/railties/controller_runtime.rb:39:in `process_action'
+actionpack (8.1.1) lib/abstract_controller/base.rb:154:in `process'
+actionpack (8.1.1) lib/action_controller/metal.rb:252:in `dispatch'
+actionpack (8.1.1) lib/action_controller/metal.rb:335:in `dispatch'
+actionpack (8.1.1) lib/action_dispatch/routing/route_set.rb:65:in `dispatch'
+actionpack (8.1.1) lib/action_dispatch/routing/route_set.rb:50:in `serve'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:35:in `block in serve'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:86:in `block in recognize'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:66:in `each'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:66:in `recognize'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:31:in `serve'
+actionpack (8.1.1) lib/action_dispatch/routing/route_set.rb:906:in `call'
+/Users/joakim/GitHub/apiwork/lib/apiwork/api/rack_app.rb:7:in `call'
+actionpack (8.1.1) lib/action_dispatch/routing/mapper.rb:33:in `block in <class:Constraints>'
+actionpack (8.1.1) lib/action_dispatch/routing/mapper.rb:62:in `serve'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:35:in `block in serve'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:92:in `block in recognize'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:66:in `each'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:66:in `recognize'
+actionpack (8.1.1) lib/action_dispatch/journey/router.rb:31:in `serve'
+actionpack (8.1.1) lib/action_dispatch/routing/route_set.rb:906:in `call'
+railties (8.1.1) lib/rails/engine/lazy_route_set.rb:60:in `call'
+rack (3.2.4) lib/rack/tempfile_reaper.rb:20:in `call'
+rack (3.2.4) lib/rack/etag.rb:29:in `call'
+rack (3.2.4) lib/rack/conditional_get.rb:31:in `call'
+rack (3.2.4) lib/rack/head.rb:15:in `call'
+actionpack (8.1.1) lib/action_dispatch/http/content_security_policy.rb:38:in `call'
+rack-session (2.1.1) lib/rack/session/abstract/id.rb:274:in `context'
+rack-session (2.1.1) lib/rack/session/abstract/id.rb:268:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/cookies.rb:708:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/callbacks.rb:31:in `block in call'
+activesupport (8.1.1) lib/active_support/callbacks.rb:101:in `run_callbacks'
+actionpack (8.1.1) lib/action_dispatch/middleware/callbacks.rb:30:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/executor.rb:20:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/debug_exceptions.rb:31:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/show_exceptions.rb:32:in `call'
+railties (8.1.1) lib/rails/rack/logger.rb:41:in `call_app'
+railties (8.1.1) lib/rails/rack/logger.rb:29:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/remote_ip.rb:98:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/request_id.rb:34:in `call'
+rack (3.2.4) lib/rack/method_override.rb:28:in `call'
+rack (3.2.4) lib/rack/runtime.rb:24:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/executor.rb:20:in `call'
+actionpack (8.1.1) lib/action_dispatch/middleware/static.rb:27:in `call'
+rack (3.2.4) lib/rack/sendfile.rb:131:in `call'
+railties (8.1.1) lib/rails/engine.rb:534:in `call'
+rack-test (2.2.0) lib/rack/test.rb:360:in `process_request'
+rack-test (2.2.0) lib/rack/test.rb:153:in `request'
+actionpack (8.1.1) lib/action_dispatch/testing/integration.rb:297:in `process'
+actionpack (8.1.1) lib/action_dispatch/testing/integration.rb:19:in `get'
+railties (8.1.1) lib/rails/commands/runner/runner_command.rb:52:in `<main>'
+railties (8.1.1) lib/rails/commands/runner/runner_command.rb:49:in `eval'
+railties (8.1.1) lib/rails/commands/runner/runner_command.rb:49:in `block in perform'
+activesupport (8.1.1) lib/active_support/execution_wrapper.rb:91:in `wrap'
+railties (8.1.1) lib/rails/commands/runner/runner_command.rb:70:in `conditional_executor'
+railties (8.1.1) lib/rails/commands/runner/runner_command.rb:48:in `perform'
+thor (1.4.0) lib/thor/command.rb:28:in `run'
+thor (1.4.0) lib/thor/invocation.rb:127:in `invoke_command'
+railties (8.1.1) lib/rails/command/base.rb:176:in `invoke_command'
+thor (1.4.0) lib/thor.rb:538:in `dispatch'
+railties (8.1.1) lib/rails/command/base.rb:71:in `perform'
+railties (8.1.1) lib/rails/command.rb:65:in `block in invoke'
+railties (8.1.1) lib/rails/command.rb:143:in `with_argv'
+railties (8.1.1) lib/rails/command.rb:63:in `invoke'
+railties (8.1.1) lib/rails/commands.rb:18:in `<top (required)>'
+bin/rails:6:in `require'
+bin/rails:6:in `<main>'
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+  [1m[36mEagerLion::Customer Load (0.1ms)[0m  [1m[34mSELECT "eager_lion_customers".* FROM "eager_lion_customers" WHERE "eager_lion_customers"."name" = ? LIMIT ?[0m  [["name", "Acme Corporation"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mEagerLion::Invoice Create (0.4ms)[0m  [1m[32mINSERT INTO "eager_lion_invoices" ("id", "customer_id", "number", "issued_on", "notes", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["id", "a0338ca5-8b2a-48c5-b729-7d34fdc96e48"], ["customer_id", "4aa3ccf1-3fa4-47c1-a18f-219e095f8560"], ["number", "INV-2024-001"], ["issued_on", "2024-03-15"], ["notes", "Sample invoice"], ["status", "pending"], ["created_at", "2025-11-30 08:18:39.245196"], ["updated_at", "2025-11-30 08:18:39.245196"]]
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+Started GET "/eager/lion/invoices" for 127.0.0.1 at 2025-11-30 09:18:39 +0100
+Processing by Eager::Lion::InvoicesController#index as JSON
+Completed 500 Internal Server Error in 1ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+Apiwork::ConfigurationError (No contract found for Eager::Lion::InvoicesController. Create the contract: app/contracts/eager/lion/invoice_contract.rb (Eager::Lion::InvoiceContract)):
+  
+lib/docs/example_generator.rb:90:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started GET "/eager/lion/invoices/a0338ca5-8b2a-48c5-b729-7d34fdc96e48" for 127.0.0.1 at 2025-11-30 09:18:39 +0100
+Processing by Eager::Lion::InvoicesController#show as JSON
+  Parameters: {"id"=>"a0338ca5-8b2a-48c5-b729-7d34fdc96e48"}
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+Apiwork::ConfigurationError (No contract found for Eager::Lion::InvoicesController. Create the contract: app/contracts/eager/lion/invoice_contract.rb (Eager::Lion::InvoiceContract)):
+  
+lib/docs/example_generator.rb:92:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started POST "/eager/lion/invoices" for 127.0.0.1 at 2025-11-30 09:18:39 +0100
+Processing by Eager::Lion::InvoicesController#create as JSON
+  Parameters: {"invoice"=>{"number"=>"INV-2024-002", "issued_on"=>"2024-03-20", "notes"=>"New invoice"}}
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+Apiwork::ConfigurationError (No contract found for Eager::Lion::InvoicesController. Create the contract: app/contracts/eager/lion/invoice_contract.rb (Eager::Lion::InvoiceContract)):
+  
+lib/docs/example_generator.rb:94:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started PATCH "/eager/lion/invoices/a0338ca5-8b2a-48c5-b729-7d34fdc96e48" for 127.0.0.1 at 2025-11-30 09:18:39 +0100
+Processing by Eager::Lion::InvoicesController#update as JSON
+  Parameters: {"invoice"=>{"status"=>"paid", "notes"=>"Payment received"}, "id"=>"a0338ca5-8b2a-48c5-b729-7d34fdc96e48"}
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+Apiwork::ConfigurationError (No contract found for Eager::Lion::InvoicesController. Create the contract: app/contracts/eager/lion/invoice_contract.rb (Eager::Lion::InvoiceContract)):
+  
+lib/docs/example_generator.rb:96:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started DELETE "/eager/lion/invoices/a0338ca5-8b2a-48c5-b729-7d34fdc96e48" for 127.0.0.1 at 2025-11-30 09:18:39 +0100
+Processing by Eager::Lion::InvoicesController#destroy as JSON
+  Parameters: {"id"=>"a0338ca5-8b2a-48c5-b729-7d34fdc96e48"}
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+Apiwork::ConfigurationError (No contract found for Eager::Lion::InvoicesController. Create the contract: app/contracts/eager/lion/invoice_contract.rb (Eager::Lion::InvoiceContract)):
+  
+lib/docs/example_generator.rb:98:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started PATCH "/eager/lion/invoices/a0338ca5-8b2a-48c5-b729-7d34fdc96e48/archive" for 127.0.0.1 at 2025-11-30 09:18:39 +0100
+Processing by Eager::Lion::InvoicesController#archive as JSON
+  Parameters: {"id"=>"a0338ca5-8b2a-48c5-b729-7d34fdc96e48"}
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+Apiwork::ConfigurationError (No contract found for Eager::Lion::InvoicesController. Create the contract: app/contracts/eager/lion/invoice_contract.rb (Eager::Lion::InvoiceContract)):
+  
+lib/docs/example_generator.rb:100:in `call_action'
+lib/docs/example_generator.rb:78:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:77:in `each_key'
+lib/docs/example_generator.rb:77:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+  [1m[36mEagerLion::Customer Load (0.1ms)[0m  [1m[34mSELECT "eager_lion_customers".* FROM "eager_lion_customers" WHERE "eager_lion_customers"."name" = ? LIMIT ?[0m  [["name", "Acme Corporation"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mEagerLion::Invoice Create (0.7ms)[0m  [1m[32mINSERT INTO "eager_lion_invoices" ("id", "customer_id", "number", "issued_on", "notes", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["id", "1aaea18b-ca44-455b-9256-c07285306b58"], ["customer_id", "4aa3ccf1-3fa4-47c1-a18f-219e095f8560"], ["number", "INV-2024-001"], ["issued_on", "2024-03-15"], ["notes", "Sample invoice"], ["status", "pending"], ["created_at", "2025-11-30 08:19:41.332926"], ["updated_at", "2025-11-30 08:19:41.332926"]]
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+Started GET "/eager-lion/invoices" for 127.0.0.1 at 2025-11-30 09:19:41 +0100
+Processing by EagerLion::InvoicesController#index as JSON
+Completed 500 Internal Server Error in 1ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+Apiwork::ConfigurationError (No contract found for EagerLion::InvoicesController. Create the contract: app/contracts/eager-lion/invoice_contract.rb (Eager-lion::InvoiceContract)):
+  
+lib/docs/example_generator.rb:90:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started GET "/eager-lion/invoices/1aaea18b-ca44-455b-9256-c07285306b58" for 127.0.0.1 at 2025-11-30 09:19:41 +0100
+Processing by EagerLion::InvoicesController#show as JSON
+  Parameters: {"id"=>"1aaea18b-ca44-455b-9256-c07285306b58"}
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+Apiwork::ConfigurationError (No contract found for EagerLion::InvoicesController. Create the contract: app/contracts/eager-lion/invoice_contract.rb (Eager-lion::InvoiceContract)):
+  
+lib/docs/example_generator.rb:92:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started POST "/eager-lion/invoices" for 127.0.0.1 at 2025-11-30 09:19:41 +0100
+Processing by EagerLion::InvoicesController#create as JSON
+  Parameters: {"invoice"=>{"number"=>"INV-2024-002", "issued_on"=>"2024-03-20", "notes"=>"New invoice"}}
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+Apiwork::ConfigurationError (No contract found for EagerLion::InvoicesController. Create the contract: app/contracts/eager-lion/invoice_contract.rb (Eager-lion::InvoiceContract)):
+  
+lib/docs/example_generator.rb:94:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started PATCH "/eager-lion/invoices/1aaea18b-ca44-455b-9256-c07285306b58" for 127.0.0.1 at 2025-11-30 09:19:41 +0100
+Processing by EagerLion::InvoicesController#update as JSON
+  Parameters: {"invoice"=>{"status"=>"paid", "notes"=>"Payment received"}, "id"=>"1aaea18b-ca44-455b-9256-c07285306b58"}
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+Apiwork::ConfigurationError (No contract found for EagerLion::InvoicesController. Create the contract: app/contracts/eager-lion/invoice_contract.rb (Eager-lion::InvoiceContract)):
+  
+lib/docs/example_generator.rb:96:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started DELETE "/eager-lion/invoices/1aaea18b-ca44-455b-9256-c07285306b58" for 127.0.0.1 at 2025-11-30 09:19:41 +0100
+Processing by EagerLion::InvoicesController#destroy as JSON
+  Parameters: {"id"=>"1aaea18b-ca44-455b-9256-c07285306b58"}
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+Apiwork::ConfigurationError (No contract found for EagerLion::InvoicesController. Create the contract: app/contracts/eager-lion/invoice_contract.rb (Eager-lion::InvoiceContract)):
+  
+lib/docs/example_generator.rb:98:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started PATCH "/eager-lion/invoices/1aaea18b-ca44-455b-9256-c07285306b58/archive" for 127.0.0.1 at 2025-11-30 09:19:41 +0100
+Processing by EagerLion::InvoicesController#archive as JSON
+  Parameters: {"id"=>"1aaea18b-ca44-455b-9256-c07285306b58"}
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+Apiwork::ConfigurationError (No contract found for EagerLion::InvoicesController. Create the contract: app/contracts/eager-lion/invoice_contract.rb (Eager-lion::InvoiceContract)):
+  
+lib/docs/example_generator.rb:100:in `call_action'
+lib/docs/example_generator.rb:78:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:77:in `each_key'
+lib/docs/example_generator.rb:77:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+  [1m[36mEagerLion::Customer Load (0.2ms)[0m  [1m[34mSELECT "eager_lion_customers".* FROM "eager_lion_customers" WHERE "eager_lion_customers"."name" = ? LIMIT ?[0m  [["name", "Acme Corporation"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mEagerLion::Invoice Create (0.5ms)[0m  [1m[32mINSERT INTO "eager_lion_invoices" ("id", "customer_id", "number", "issued_on", "notes", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["id", "d04c4189-314c-4bff-95ff-e1772be2b575"], ["customer_id", "4aa3ccf1-3fa4-47c1-a18f-219e095f8560"], ["number", "INV-2024-001"], ["issued_on", "2024-03-15"], ["notes", "Sample invoice"], ["status", "pending"], ["created_at", "2025-11-30 08:21:05.522449"], ["updated_at", "2025-11-30 08:21:05.522449"]]
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+Started GET "/eager-lion/invoices" for 127.0.0.1 at 2025-11-30 09:21:05 +0100
+Processing by EagerLion::InvoicesController#index as JSON
+Completed 500 Internal Server Error in 1ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+Apiwork::ConfigurationError (No contract found for EagerLion::InvoicesController. Create the contract: app/contracts/eager_lion/invoice_contract.rb (EagerLion::InvoiceContract)):
+  
+lib/docs/example_generator.rb:90:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started GET "/eager-lion/invoices/d04c4189-314c-4bff-95ff-e1772be2b575" for 127.0.0.1 at 2025-11-30 09:21:05 +0100
+Processing by EagerLion::InvoicesController#show as JSON
+  Parameters: {"id"=>"d04c4189-314c-4bff-95ff-e1772be2b575"}
+Completed 500 Internal Server Error in 1ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+Apiwork::ConfigurationError (No contract found for EagerLion::InvoicesController. Create the contract: app/contracts/eager_lion/invoice_contract.rb (EagerLion::InvoiceContract)):
+  
+lib/docs/example_generator.rb:92:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started POST "/eager-lion/invoices" for 127.0.0.1 at 2025-11-30 09:21:05 +0100
+Processing by EagerLion::InvoicesController#create as JSON
+  Parameters: {"invoice"=>{"number"=>"INV-2024-002", "issued_on"=>"2024-03-20", "notes"=>"New invoice"}}
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+Apiwork::ConfigurationError (No contract found for EagerLion::InvoicesController. Create the contract: app/contracts/eager_lion/invoice_contract.rb (EagerLion::InvoiceContract)):
+  
+lib/docs/example_generator.rb:94:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started PATCH "/eager-lion/invoices/d04c4189-314c-4bff-95ff-e1772be2b575" for 127.0.0.1 at 2025-11-30 09:21:05 +0100
+Processing by EagerLion::InvoicesController#update as JSON
+  Parameters: {"invoice"=>{"status"=>"paid", "notes"=>"Payment received"}, "id"=>"d04c4189-314c-4bff-95ff-e1772be2b575"}
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+Apiwork::ConfigurationError (No contract found for EagerLion::InvoicesController. Create the contract: app/contracts/eager_lion/invoice_contract.rb (EagerLion::InvoiceContract)):
+  
+lib/docs/example_generator.rb:96:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started DELETE "/eager-lion/invoices/d04c4189-314c-4bff-95ff-e1772be2b575" for 127.0.0.1 at 2025-11-30 09:21:05 +0100
+Processing by EagerLion::InvoicesController#destroy as JSON
+  Parameters: {"id"=>"d04c4189-314c-4bff-95ff-e1772be2b575"}
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+Apiwork::ConfigurationError (No contract found for EagerLion::InvoicesController. Create the contract: app/contracts/eager_lion/invoice_contract.rb (EagerLion::InvoiceContract)):
+  
+lib/docs/example_generator.rb:98:in `call_action'
+lib/docs/example_generator.rb:72:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:71:in `each_key'
+lib/docs/example_generator.rb:71:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Started PATCH "/eager-lion/invoices/d04c4189-314c-4bff-95ff-e1772be2b575/archive" for 127.0.0.1 at 2025-11-30 09:21:05 +0100
+Processing by EagerLion::InvoicesController#archive as JSON
+  Parameters: {"id"=>"d04c4189-314c-4bff-95ff-e1772be2b575"}
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  
+Apiwork::ConfigurationError (No contract found for EagerLion::InvoicesController. Create the contract: app/contracts/eager_lion/invoice_contract.rb (EagerLion::InvoiceContract)):
+  
+lib/docs/example_generator.rb:100:in `call_action'
+lib/docs/example_generator.rb:78:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:77:in `each_key'
+lib/docs/example_generator.rb:77:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+  [1m[36mEagerLion::Customer Load (0.2ms)[0m  [1m[34mSELECT "eager_lion_customers".* FROM "eager_lion_customers" WHERE "eager_lion_customers"."name" = ? LIMIT ?[0m  [["name", "Acme Corporation"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mEagerLion::Invoice Create (0.4ms)[0m  [1m[32mINSERT INTO "eager_lion_invoices" ("id", "customer_id", "number", "issued_on", "notes", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["id", "bba4438b-56b1-4edd-a894-3c31bb9a8761"], ["customer_id", "4aa3ccf1-3fa4-47c1-a18f-219e095f8560"], ["number", "INV-2024-001"], ["issued_on", "2024-03-15"], ["notes", "Sample invoice"], ["status", "pending"], ["created_at", "2025-11-30 08:22:49.936577"], ["updated_at", "2025-11-30 08:22:49.936577"]]
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+Started GET "/eager-lion/invoices" for 127.0.0.1 at 2025-11-30 09:22:50 +0100
+Processing by EagerLion::InvoicesController#index as JSON
+  [1m[36mEagerLion::Invoice Count (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "eager_lion_invoices"[0m
+  [1m[36mEagerLion::Invoice Load (0.1ms)[0m  [1m[34mSELECT "eager_lion_invoices".* FROM "eager_lion_invoices" LIMIT ? OFFSET ?[0m  [["LIMIT", 20], ["OFFSET", 0]]
+  [1m[36mEagerLion::Line Load (0.7ms)[0m  [1m[34mSELECT "eager_lion_lines".* FROM "eager_lion_lines" WHERE "eager_lion_lines"."invoice_id" IN (?, ?, ?, ?, ?, ?, ?, ?)[0m  [["invoice_id", "b5694b0f-a457-459c-a6dd-61b4ffc5e646"], ["invoice_id", "19f29cfc-79fb-4de7-98da-1714fc377ed4"], ["invoice_id", "e91ffe11-ba5d-43e2-adc3-6a120d6cf4f6"], ["invoice_id", "c4117cd9-d414-408f-8005-2ee446bb26a8"], ["invoice_id", "a0338ca5-8b2a-48c5-b729-7d34fdc96e48"], ["invoice_id", "1aaea18b-ca44-455b-9256-c07285306b58"], ["invoice_id", "d04c4189-314c-4bff-95ff-e1772be2b575"], ["invoice_id", "bba4438b-56b1-4edd-a894-3c31bb9a8761"]]
+  [1m[36mEagerLion::Customer Load (0.1ms)[0m  [1m[34mSELECT "eager_lion_customers".* FROM "eager_lion_customers" WHERE "eager_lion_customers"."id" = ?[0m  [["id", "4aa3ccf1-3fa4-47c1-a18f-219e095f8560"]]
+Completed 200 OK in 28ms (Views: 0.3ms | ActiveRecord: 1.8ms (4 queries, 0 cached) | GC: 0.8ms)
+Started GET "/eager-lion/invoices/bba4438b-56b1-4edd-a894-3c31bb9a8761" for 127.0.0.1 at 2025-11-30 09:22:50 +0100
+Processing by EagerLion::InvoicesController#show as JSON
+  Parameters: {"id"=>"bba4438b-56b1-4edd-a894-3c31bb9a8761"}
+  [1m[36mEagerLion::Invoice Load (0.1ms)[0m  [1m[34mSELECT "eager_lion_invoices".* FROM "eager_lion_invoices" WHERE "eager_lion_invoices"."id" = ? LIMIT ?[0m  [["id", "bba4438b-56b1-4edd-a894-3c31bb9a8761"], ["LIMIT", 1]]
+  [1m[36mEagerLion::Line Load (0.1ms)[0m  [1m[34mSELECT "eager_lion_lines".* FROM "eager_lion_lines" WHERE "eager_lion_lines"."invoice_id" = ?[0m  [["invoice_id", "bba4438b-56b1-4edd-a894-3c31bb9a8761"]]
+  [1m[36mEagerLion::Customer Load (0.1ms)[0m  [1m[34mSELECT "eager_lion_customers".* FROM "eager_lion_customers" WHERE "eager_lion_customers"."id" = ? LIMIT ?[0m  [["id", "4aa3ccf1-3fa4-47c1-a18f-219e095f8560"], ["LIMIT", 1]]
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 0.3ms (3 queries, 0 cached) | GC: 0.0ms)
+Started POST "/eager-lion/invoices" for 127.0.0.1 at 2025-11-30 09:22:50 +0100
+Processing by EagerLion::InvoicesController#create as JSON
+  Parameters: {"invoice"=>{"number"=>"INV-2024-002", "issued_on"=>"2024-03-20", "notes"=>"New invoice"}}
+  [1m[36mEagerLion::Customer Load (0.1ms)[0m  [1m[34mSELECT "eager_lion_customers".* FROM "eager_lion_customers" ORDER BY "eager_lion_customers"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mEagerLion::Invoice Create (0.2ms)[0m  [1m[32mINSERT INTO "eager_lion_invoices" ("id", "customer_id", "number", "issued_on", "notes", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["id", "cf5de4c8-5942-423a-9f50-995c50909b37"], ["customer_id", "4aa3ccf1-3fa4-47c1-a18f-219e095f8560"], ["number", "INV-2024-002"], ["issued_on", "2024-03-20"], ["notes", "New invoice"], ["status", nil], ["created_at", "2025-11-30 08:22:50.086648"], ["updated_at", "2025-11-30 08:22:50.086648"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mEagerLion::Line Load (0.0ms)[0m  [1m[34mSELECT "eager_lion_lines".* FROM "eager_lion_lines" WHERE "eager_lion_lines"."invoice_id" = ?[0m  [["invoice_id", "cf5de4c8-5942-423a-9f50-995c50909b37"]]
+Completed 201 Created in 4ms (Views: 0.1ms | ActiveRecord: 0.5ms (3 queries, 0 cached) | GC: 0.0ms)
+Started PATCH "/eager-lion/invoices/bba4438b-56b1-4edd-a894-3c31bb9a8761" for 127.0.0.1 at 2025-11-30 09:22:50 +0100
+Processing by EagerLion::InvoicesController#update as JSON
+  Parameters: {"invoice"=>{"status"=>"paid", "notes"=>"Payment received"}, "id"=>"bba4438b-56b1-4edd-a894-3c31bb9a8761"}
+rescue_from handled Apiwork::ContractError (Field required; Unknown field) - /Users/joakim/GitHub/apiwork/lib/apiwork/controller/deserialization.rb:25:in `validate_contract'
+Completed 400 Bad Request in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+Started DELETE "/eager-lion/invoices/bba4438b-56b1-4edd-a894-3c31bb9a8761" for 127.0.0.1 at 2025-11-30 09:22:50 +0100
+Processing by EagerLion::InvoicesController#destroy as JSON
+  Parameters: {"id"=>"bba4438b-56b1-4edd-a894-3c31bb9a8761"}
+  [1m[36mEagerLion::Invoice Load (0.1ms)[0m  [1m[34mSELECT "eager_lion_invoices".* FROM "eager_lion_invoices" WHERE "eager_lion_invoices"."id" = ? LIMIT ?[0m  [["id", "bba4438b-56b1-4edd-a894-3c31bb9a8761"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mEagerLion::Line Load (0.1ms)[0m  [1m[34mSELECT "eager_lion_lines".* FROM "eager_lion_lines" WHERE "eager_lion_lines"."invoice_id" = ?[0m  [["invoice_id", "bba4438b-56b1-4edd-a894-3c31bb9a8761"]]
+  [1m[36mEagerLion::Invoice Destroy (0.1ms)[0m  [1m[31mDELETE FROM "eager_lion_invoices" WHERE "eager_lion_invoices"."id" = ?[0m  [["id", "bba4438b-56b1-4edd-a894-3c31bb9a8761"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.4ms (3 queries, 0 cached) | GC: 0.0ms)
+Started PATCH "/eager-lion/invoices/bba4438b-56b1-4edd-a894-3c31bb9a8761/archive" for 127.0.0.1 at 2025-11-30 09:22:50 +0100
+Processing by EagerLion::InvoicesController#archive as JSON
+  Parameters: {"id"=>"bba4438b-56b1-4edd-a894-3c31bb9a8761"}
+  [1m[36mEagerLion::Invoice Load (0.1ms)[0m  [1m[34mSELECT "eager_lion_invoices".* FROM "eager_lion_invoices" WHERE "eager_lion_invoices"."id" = ? LIMIT ?[0m  [["id", "bba4438b-56b1-4edd-a894-3c31bb9a8761"], ["LIMIT", 1]]
+Completed 404 Not Found in 0ms (ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+  
+ActiveRecord::RecordNotFound (Couldn't find EagerLion::Invoice with 'id'="bba4438b-56b1-4edd-a894-3c31bb9a8761"):
+  
+app/controllers/eager_lion/invoices_controller.rb:43:in `set_invoice'
+lib/docs/example_generator.rb:100:in `call_action'
+lib/docs/example_generator.rb:78:in `block (2 levels) in write_action_outputs'
+lib/docs/example_generator.rb:77:in `each_key'
+lib/docs/example_generator.rb:77:in `block in write_action_outputs'
+lib/docs/example_generator.rb:68:in `each'
+lib/docs/example_generator.rb:68:in `write_action_outputs'
+lib/docs/example_generator.rb:41:in `generate_for_api'
+lib/docs/example_generator.rb:22:in `block in generate_all'
+lib/docs/example_generator.rb:21:in `each'
+lib/docs/example_generator.rb:21:in `generate_all'
+lib/docs/example_generator.rb:12:in `run'
+lib/tasks/docs.rake:8:in `block (2 levels) in <top (required)>'
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+  [1m[35m (0.6ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.2ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'test', '2025-11-30 08:25:42.458700', '2025-11-30 08:25:42.458703') RETURNING "key"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateEagerLionTables (20251130000004)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "eager_lion_customers" ("id" varchar NOT NULL PRIMARY KEY, "name" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "eager_lion_invoices" ("id" varchar NOT NULL PRIMARY KEY, "customer_id" varchar NOT NULL, "number" varchar NOT NULL, "issued_on" date, "notes" varchar, "status" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "eager_lion_lines" ("id" varchar NOT NULL PRIMARY KEY, "invoice_id" varchar NOT NULL, "description" varchar, "quantity" integer, "price" decimal(10,2), "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aeager_lion_invoices" ("id" varchar NOT NULL PRIMARY KEY, "customer_id" varchar NOT NULL, "number" varchar NOT NULL, "issued_on" date, "notes" varchar, "status" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "aeager_lion_invoices" ("id","customer_id","number","issued_on","notes","status","created_at","updated_at")
+                     SELECT "id","customer_id","number","issued_on","notes","status","created_at","updated_at" FROM "eager_lion_invoices"[0m
+  [1m[35m (0.6ms)[0m  [1m[35mDROP TABLE "eager_lion_invoices"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "eager_lion_invoices" ("id" varchar NOT NULL PRIMARY KEY, "customer_id" varchar NOT NULL, "number" varchar NOT NULL, "issued_on" date, "notes" varchar, "status" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_96d45c90c4"
+FOREIGN KEY ("customer_id")
+  REFERENCES "eager_lion_customers" ("id")
+)[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "eager_lion_invoices" ("id","customer_id","number","issued_on","notes","status","created_at","updated_at")
+                     SELECT "id","customer_id","number","issued_on","notes","status","created_at","updated_at" FROM "aeager_lion_invoices"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "aeager_lion_invoices"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aeager_lion_lines" ("id" varchar NOT NULL PRIMARY KEY, "invoice_id" varchar NOT NULL, "description" varchar, "quantity" integer, "price" decimal(10,2), "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "aeager_lion_lines" ("id","invoice_id","description","quantity","price","created_at","updated_at")
+                     SELECT "id","invoice_id","description","quantity","price","created_at","updated_at" FROM "eager_lion_lines"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "eager_lion_lines"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "eager_lion_lines" ("id" varchar NOT NULL PRIMARY KEY, "invoice_id" varchar NOT NULL, "description" varchar, "quantity" integer, "price" decimal(10,2), "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_78a10004e2"
+FOREIGN KEY ("invoice_id")
+  REFERENCES "eager_lion_invoices" ("id")
+)[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "eager_lion_lines" ("id","invoice_id","description","quantity","price","created_at","updated_at")
+                     SELECT "id","invoice_id","description","quantity","price","created_at","updated_at" FROM "aeager_lion_lines"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "aeager_lion_lines"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20251130000004') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
