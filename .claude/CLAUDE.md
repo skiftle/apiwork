@@ -310,6 +310,23 @@ Use `require` for: gems, stdlib, files outside autoload paths.
 
 Keep docs in sync with code. Docs live in `docs/`.
 
+Before writing documentation:
+- Verify against actual code and tests
+- Never invent formats or structures
+- Run specs or read spec tests to see real output
+- Copy exact output — documentation must match reality
+
+### Generated Output Examples
+
+When documentation includes generated output (Introspection, TypeScript, Zod, OpenAPI):
+
+1. Create/update example code in `.playground/`
+2. Run generators to get actual output
+3. Copy EXACT output to documentation
+4. NEVER invent or guess output formats
+
+`.playground/` is a minimal Rails app for documentation examples. It is gitignored and can be updated freely.
+
 Style:
 - Pedagogical — teach, don't just describe
 - Simple English — no jargon or marketing fluff

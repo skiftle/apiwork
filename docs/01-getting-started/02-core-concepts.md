@@ -127,6 +127,84 @@ end
 
 If a request does not match the contract, Apiwork rejects it immediately. If a response does not match, Apiwork logs the mismatch in development mode.
 
+From these contract definitions, Apiwork generates typed output in multiple formats:
+
+<details>
+<summary>Introspection</summary>
+
+```json
+{
+  "type": "object",
+  "shape": {
+    "id": { "type": "uuid", "required": false },
+    "created_at": { "type": "datetime", "required": false },
+    "updated_at": { "type": "datetime", "required": false },
+    "number": { "type": "string", "required": false },
+    "issued_on": { "type": "date", "required": false },
+    "status": { "type": "string", "required": false },
+    "lines": { "type": "array", "required": false, "of": "line" }
+  }
+}
+```
+</details>
+
+<details>
+<summary>TypeScript</summary>
+
+```typescript
+export interface Invoice {
+  id?: string;
+  created_at?: string;
+  updated_at?: string;
+  number?: string;
+  issued_on?: string;
+  status?: string;
+  lines?: Line[];
+}
+```
+</details>
+
+<details>
+<summary>Zod</summary>
+
+```typescript
+export const InvoiceSchema = z.object({
+  id: z.uuid().optional(),
+  created_at: z.iso.datetime().optional(),
+  updated_at: z.iso.datetime().optional(),
+  number: z.string().optional(),
+  issued_on: z.iso.date().optional(),
+  status: z.string().optional(),
+  lines: z.array(LineSchema).optional()
+});
+```
+</details>
+
+<details>
+<summary>OpenAPI</summary>
+
+```yaml
+type: object
+properties:
+  id:
+    type: string
+  created_at:
+    type: string
+  updated_at:
+    type: string
+  number:
+    type: string
+  issued_on:
+    type: string
+  status:
+    type: string
+  lines:
+    type: array
+    items:
+      $ref: "#/components/schemas/line"
+```
+</details>
+
 ## Controllers
 
 Your controllers remain familiar. You keep your own logic, your own queries and service calls. The only changes are:
