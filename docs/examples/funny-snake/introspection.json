@@ -1,0 +1,555 @@
+{
+  "path": "/funny-snake",
+  "info": {},
+  "types": {
+    "invoice": {
+      "type": "object",
+      "shape": {
+        "created_at": {
+          "type": "datetime",
+          "required": false,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "id": {
+          "type": "uuid",
+          "required": false,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "issued_on": {
+          "type": "date",
+          "required": false,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "lines": {
+          "type": "array",
+          "required": false,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null,
+          "of": "invoice_line"
+        },
+        "number": {
+          "type": "string",
+          "required": false,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "status": {
+          "type": "string",
+          "required": false,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "updated_at": {
+          "type": "datetime",
+          "required": false,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        }
+      },
+      "description": null,
+      "example": null,
+      "format": null,
+      "deprecated": false
+    },
+    "invoice_line": {
+      "type": "object",
+      "shape": {
+        "created_at": {
+          "type": "datetime",
+          "required": false,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "description": {
+          "type": "string",
+          "required": false,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "id": {
+          "type": "uuid",
+          "required": false,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "price": {
+          "type": "decimal",
+          "required": false,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "quantity": {
+          "type": "decimal",
+          "required": false,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "updated_at": {
+          "type": "datetime",
+          "required": false,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        }
+      },
+      "description": null,
+      "example": null,
+      "format": null,
+      "deprecated": false
+    },
+    "invoice_payload": {
+      "type": "object",
+      "shape": {
+        "issued_on": {
+          "type": "date",
+          "required": false,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "lines_attributes": {
+          "type": "array",
+          "required": false,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null,
+          "shape": {
+            "_destroy": {
+              "type": "boolean",
+              "required": false,
+              "nullable": false,
+              "description": null,
+              "example": null,
+              "format": null,
+              "deprecated": false,
+              "min": null,
+              "max": null
+            },
+            "description": {
+              "type": "string",
+              "required": false,
+              "nullable": false,
+              "description": null,
+              "example": null,
+              "format": null,
+              "deprecated": false,
+              "min": null,
+              "max": null
+            },
+            "id": {
+              "type": "uuid",
+              "required": false,
+              "nullable": false,
+              "description": null,
+              "example": null,
+              "format": null,
+              "deprecated": false,
+              "min": null,
+              "max": null
+            },
+            "price": {
+              "type": "decimal",
+              "required": false,
+              "nullable": false,
+              "description": null,
+              "example": null,
+              "format": null,
+              "deprecated": false,
+              "min": null,
+              "max": null
+            },
+            "quantity": {
+              "type": "integer",
+              "required": false,
+              "nullable": false,
+              "description": null,
+              "example": null,
+              "format": null,
+              "deprecated": false,
+              "min": null,
+              "max": null
+            }
+          }
+        },
+        "notes": {
+          "type": "string",
+          "required": false,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "number": {
+          "type": "string",
+          "required": false,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        }
+      },
+      "description": null,
+      "example": null,
+      "format": null,
+      "deprecated": false
+    },
+    "issue": {
+      "type": "object",
+      "shape": {
+        "code": {
+          "type": "string",
+          "required": true,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "detail": {
+          "type": "string",
+          "required": true,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "field": {
+          "type": "string",
+          "required": true,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "path": {
+          "type": "array",
+          "required": true,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null,
+          "of": "string"
+        }
+      },
+      "description": null,
+      "example": null,
+      "format": null,
+      "deprecated": false
+    }
+  },
+  "enums": {},
+  "resources": {
+    "invoices": {
+      "path": "invoices",
+      "summary": "Invoices",
+      "description": "Operations for managing invoices.",
+      "tags": [
+        "Invoices"
+      ],
+      "actions": {
+        "index": {
+          "method": "get",
+          "path": "/",
+          "summary": "List invoices",
+          "description": null,
+          "tags": null,
+          "deprecated": null,
+          "operation_id": null,
+          "request": {
+            "query": {
+              "filter": {
+                "type": "object",
+                "required": false,
+                "nullable": false,
+                "description": null,
+                "example": null,
+                "format": null,
+                "deprecated": false,
+                "min": null,
+                "max": null,
+                "shape": {
+                  "status": {
+                    "type": "string",
+                    "required": false,
+                    "nullable": false,
+                    "description": null,
+                    "example": null,
+                    "format": null,
+                    "deprecated": false,
+                    "min": null,
+                    "max": null
+                  }
+                }
+              },
+              "sort": {
+                "type": "object",
+                "required": false,
+                "nullable": false,
+                "description": null,
+                "example": null,
+                "format": null,
+                "deprecated": false,
+                "min": null,
+                "max": null,
+                "shape": {
+                  "issued_on": {
+                    "type": "string",
+                    "required": false,
+                    "nullable": false,
+                    "description": null,
+                    "example": null,
+                    "format": null,
+                    "deprecated": false,
+                    "min": null,
+                    "max": null,
+                    "enum": [
+                      "asc",
+                      "desc"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "object",
+              "shape": {
+                "invoices": {
+                  "type": "array",
+                  "required": false,
+                  "nullable": false,
+                  "description": null,
+                  "example": null,
+                  "format": null,
+                  "deprecated": false,
+                  "min": null,
+                  "max": null,
+                  "of": "invoice"
+                }
+              }
+            }
+          },
+          "error_codes": []
+        },
+        "show": {
+          "method": "get",
+          "path": "/:id",
+          "summary": "Get invoice",
+          "description": null,
+          "tags": null,
+          "deprecated": null,
+          "operation_id": null,
+          "response": {
+            "body": {
+              "type": "object",
+              "shape": {
+                "invoice": {
+                  "type": "invoice",
+                  "required": false,
+                  "nullable": false,
+                  "description": null,
+                  "example": null,
+                  "format": null,
+                  "deprecated": false,
+                  "min": null,
+                  "max": null
+                }
+              }
+            }
+          },
+          "error_codes": []
+        },
+        "create": {
+          "method": "post",
+          "path": "/",
+          "summary": "Create invoice",
+          "description": null,
+          "tags": null,
+          "deprecated": null,
+          "operation_id": null,
+          "request": {
+            "body": {
+              "invoice": {
+                "type": "invoice_payload",
+                "required": true,
+                "nullable": false,
+                "description": null,
+                "example": null,
+                "format": null,
+                "deprecated": false,
+                "min": null,
+                "max": null
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "object",
+              "shape": {
+                "invoice": {
+                  "type": "invoice",
+                  "required": false,
+                  "nullable": false,
+                  "description": null,
+                  "example": null,
+                  "format": null,
+                  "deprecated": false,
+                  "min": null,
+                  "max": null
+                }
+              }
+            }
+          },
+          "error_codes": []
+        },
+        "update": {
+          "method": "patch",
+          "path": "/:id",
+          "summary": "Update invoice",
+          "description": null,
+          "tags": null,
+          "deprecated": null,
+          "operation_id": null,
+          "request": {
+            "body": {
+              "invoice": {
+                "type": "invoice_payload",
+                "required": true,
+                "nullable": false,
+                "description": null,
+                "example": null,
+                "format": null,
+                "deprecated": false,
+                "min": null,
+                "max": null
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "object",
+              "shape": {
+                "invoice": {
+                  "type": "invoice",
+                  "required": false,
+                  "nullable": false,
+                  "description": null,
+                  "example": null,
+                  "format": null,
+                  "deprecated": false,
+                  "min": null,
+                  "max": null
+                }
+              }
+            }
+          },
+          "error_codes": []
+        },
+        "destroy": {
+          "method": "delete",
+          "path": "/:id",
+          "summary": "Delete invoice",
+          "description": null,
+          "tags": null,
+          "deprecated": null,
+          "operation_id": null,
+          "error_codes": []
+        }
+      }
+    }
+  },
+  "error_codes": []
+}

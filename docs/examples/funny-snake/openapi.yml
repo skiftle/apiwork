@@ -1,0 +1,185 @@
+---
+:openapi: 3.1.0
+:info:
+  :title: "/funny-snake API"
+  :version: 1.0.0
+:paths:
+  invoices/:
+    get:
+      :operationId: invoices_index
+      :summary: List invoices
+      :tags:
+      - Invoices
+      :parameters:
+      - :in: query
+        :name: filter
+        :required: false
+        :schema:
+          :type: object
+          :properties:
+            status:
+              :type: string
+      - :in: query
+        :name: sort
+        :required: false
+        :schema:
+          :type: object
+          :properties:
+            issued_on:
+              :type: string
+              :enum:
+              - asc
+              - desc
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  invoices:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/invoice"
+    post:
+      :operationId: invoices_create
+      :summary: Create invoice
+      :tags:
+      - Invoices
+      :requestBody:
+        :required: true
+        :content:
+          :application/json:
+            :schema:
+              :type: object
+              :properties:
+                invoice:
+                  :$ref: "#/components/schemas/invoice_payload"
+              :required:
+              - invoice
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  invoice:
+                    :$ref: "#/components/schemas/invoice"
+  invoices/:id:
+    get:
+      :operationId: invoices_show
+      :summary: Get invoice
+      :tags:
+      - Invoices
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  invoice:
+                    :$ref: "#/components/schemas/invoice"
+    patch:
+      :operationId: invoices_update
+      :summary: Update invoice
+      :tags:
+      - Invoices
+      :requestBody:
+        :required: true
+        :content:
+          :application/json:
+            :schema:
+              :type: object
+              :properties:
+                invoice:
+                  :$ref: "#/components/schemas/invoice_payload"
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  invoice:
+                    :$ref: "#/components/schemas/invoice"
+    delete:
+      :operationId: invoices_destroy
+      :summary: Delete invoice
+      :tags:
+      - Invoices
+      :responses:
+        :204:
+          :description: No content
+:components:
+  :schemas:
+    invoice:
+      :type: object
+      :properties:
+        created_at:
+          :type: string
+        id:
+          :type: string
+        issued_on:
+          :type: string
+        lines:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/invoice_line"
+        number:
+          :type: string
+        status:
+          :type: string
+        updated_at:
+          :type: string
+    invoice_line:
+      :type: object
+      :properties:
+        created_at:
+          :type: string
+        description:
+          :type: string
+        id:
+          :type: string
+        price:
+          :type: number
+        quantity:
+          :type: number
+        updated_at:
+          :type: string
+    invoice_payload:
+      :type: object
+      :properties:
+        issued_on:
+          :type: string
+        lines_attributes:
+          :type: array
+          :items:
+            :type: string
+        notes:
+          :type: string
+        number:
+          :type: string
+    issue:
+      :type: object
+      :properties:
+        code:
+          :type: string
+        detail:
+          :type: string
+        field:
+          :type: string
+        path:
+          :type: array
+          :items:
+            :type: string
+      :required:
+      - code
+      - detail
+      - field
+      - path

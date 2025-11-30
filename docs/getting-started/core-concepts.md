@@ -27,6 +27,8 @@ end
 
 A contract defines the actions a resource supports — such as `index`, `show`, or `create` — and the precise shape of both incoming requests and outgoing responses. Contracts can also define custom types, enums or shared structures used across actions.
 
+<!-- example: funny-snake -->
+
 ```ruby
 # app/contracts/invoice_contract.rb
 class InvoiceContract < Apiwork::Contract::Base
@@ -129,6 +131,34 @@ class InvoiceContract < Apiwork::Contract::Base
 end
 ```
 
+<details>
+<summary>Introspection</summary>
+
+<<< @/examples/funny-snake/introspection.json
+
+</details>
+
+<details>
+<summary>TypeScript</summary>
+
+<<< @/examples/funny-snake/typescript.ts
+
+</details>
+
+<details>
+<summary>Zod</summary>
+
+<<< @/examples/funny-snake/zod.ts
+
+</details>
+
+<details>
+<summary>OpenAPI</summary>
+
+<<< @/examples/funny-snake/openapi.yml
+
+</details>
+
 If a request does not match the contract, Apiwork rejects it immediately. If a response does not match, Apiwork logs the mismatch in development mode.
 
 ## Controllers
@@ -186,6 +216,7 @@ Apiwork doesn’t change how you write controllers — it simply guarantees that
 Schemas are optional, but they eliminate most manual contract definitions by mapping directly to your ActiveRecord models.
 
 <!-- example: eager-lion -->
+
 ```ruby
 # app/schemas/line_schema.rb
 class LineSchema < Apiwork::Schema::Base
@@ -263,4 +294,3 @@ This lets Apiwork infer capabilities directly from the model.
 The API definition, contracts and schemas all feed into a unified metadata model. Because each piece builds on the same foundation, Apiwork can generate OpenAPI, Zod and TypeScript definitions that stay perfectly aligned with your server.
 
 Documentation, typed clients and server behaviour all come from the same source of truth — eliminating duplication and keeping the entire API consistent end-to-end.
-
