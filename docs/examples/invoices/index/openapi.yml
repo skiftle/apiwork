@@ -1,0 +1,427 @@
+---
+:openapi: 3.1.0
+:info:
+  :title: "/api/v1 API"
+  :version: 1.0.0
+:paths:
+  invoices/:
+    get:
+      :operationId: invoices_index
+      :summary: List invoices
+      :tags:
+      - Invoices
+      :parameters:
+      - :in: query
+        :name: filter
+        :required: false
+        :schema:
+          :oneOf:
+          - :$ref: "#/components/schemas/invoice_filter"
+          - :type: array
+            :items:
+              :$ref: "#/components/schemas/invoice_filter"
+      - :in: query
+        :name: include
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/invoice_include"
+      - :in: query
+        :name: page
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/invoice_page"
+      - :in: query
+        :name: sort
+        :required: false
+        :schema:
+          :oneOf:
+          - :$ref: "#/components/schemas/invoice_sort"
+          - :type: array
+            :items:
+              :$ref: "#/components/schemas/invoice_sort"
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  invoices:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/invoice"
+                  meta:
+                    :type: object
+                    :properties: {}
+                  pagination:
+                    :$ref: "#/components/schemas/page_pagination"
+    post:
+      :operationId: invoices_create
+      :summary: Create invoice
+      :tags:
+      - Invoices
+      :parameters:
+      - :in: query
+        :name: include
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/invoice_include"
+      :requestBody:
+        :required: true
+        :content:
+          :application/json:
+            :schema:
+              :type: object
+              :properties:
+                invoice:
+                  :$ref: "#/components/schemas/invoice_create_payload"
+              :required:
+              - invoice
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  invoice:
+                    :$ref: "#/components/schemas/invoice"
+                  meta:
+                    :type: object
+                    :properties: {}
+                :required:
+                - invoice
+        :422:
+          :description: Unprocessable Entity
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  issues:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/issue"
+                :required:
+                - issues
+  invoices/:id:
+    get:
+      :operationId: invoices_show
+      :summary: Get invoice
+      :tags:
+      - Invoices
+      :parameters:
+      - :in: query
+        :name: include
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/invoice_include"
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  invoice:
+                    :$ref: "#/components/schemas/invoice"
+                  meta:
+                    :type: object
+                    :properties: {}
+                :required:
+                - invoice
+    patch:
+      :operationId: invoices_update
+      :summary: Update invoice
+      :tags:
+      - Invoices
+      :parameters:
+      - :in: query
+        :name: include
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/invoice_include"
+      :requestBody:
+        :required: true
+        :content:
+          :application/json:
+            :schema:
+              :type: object
+              :properties:
+                invoice:
+                  :$ref: "#/components/schemas/invoice_update_payload"
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  invoice:
+                    :$ref: "#/components/schemas/invoice"
+                  meta:
+                    :type: object
+                    :properties: {}
+        :422:
+          :description: Unprocessable Entity
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  issues:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/issue"
+                :required:
+                - issues
+    delete:
+      :operationId: invoices_destroy
+      :summary: Delete invoice
+      :tags:
+      - Invoices
+      :responses:
+        :204:
+          :description: No content
+  invoices/:id/archive:
+    patch:
+      :operationId: invoices_archive
+      :summary: Archive invoice
+      :tags:
+      - Invoices
+      :parameters:
+      - :in: query
+        :name: include
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/invoice_include"
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  invoice:
+                    :$ref: "#/components/schemas/invoice"
+                  meta:
+                    :type: object
+                    :properties: {}
+                :required:
+                - invoice
+:components:
+  :schemas:
+    cursor_pagination:
+      :type: object
+      :properties:
+        next_cursor:
+          :type:
+          - string
+          - 'null'
+        prev_cursor:
+          :type:
+          - string
+          - 'null'
+    invoice:
+      :type: object
+      :properties:
+        created_at:
+          :type: string
+        customer:
+          :type:
+          - object
+          - 'null'
+          :properties: {}
+        id: {}
+        issued_on:
+          :type: string
+        lines:
+          :type: array
+          :items:
+            :type: string
+        notes:
+          :type: string
+        number:
+          :type: string
+        status:
+          :type: string
+        updated_at:
+          :type: string
+      :required:
+      - customer
+      - lines
+    invoice_create_payload:
+      :type: object
+      :properties:
+        issued_on:
+          :type:
+          - string
+          - 'null'
+        lines:
+          :type: array
+          :items:
+            :type: string
+        notes:
+          :type:
+          - string
+          - 'null'
+        number:
+          :type: string
+      :required:
+      - number
+    invoice_customer_include:
+      :type: object
+      :properties: {}
+    invoice_filter:
+      :type: object
+      :properties:
+        _and:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/invoice_filter"
+        _not:
+          :$ref: "#/components/schemas/invoice_filter"
+        _or:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/invoice_filter"
+        number:
+          :oneOf:
+          - :type: string
+          - :$ref: "#/components/schemas/string_filter"
+        status:
+          :oneOf:
+          - :type: string
+          - :$ref: "#/components/schemas/nullable_string_filter"
+    invoice_include:
+      :type: object
+      :properties:
+        customer:
+          :$ref: "#/components/schemas/invoice_customer_include"
+        lines:
+          :$ref: "#/components/schemas/invoice_line_include"
+    invoice_line_include:
+      :type: object
+      :properties: {}
+    invoice_page:
+      :type: object
+      :properties:
+        number:
+          :type: integer
+          :minimum: 1
+        size:
+          :type: integer
+          :minimum: 1
+          :maximum: 100
+    invoice_sort:
+      :type: object
+      :properties:
+        created_at: {}
+        issued_on: {}
+        status: {}
+        updated_at: {}
+    invoice_update_payload:
+      :type: object
+      :properties:
+        issued_on:
+          :type:
+          - string
+          - 'null'
+        lines:
+          :type: array
+          :items:
+            :type: string
+        notes:
+          :type:
+          - string
+          - 'null'
+        number:
+          :type: string
+      :required:
+      - number
+    issue:
+      :type: object
+      :properties:
+        code:
+          :type: string
+        detail:
+          :type: string
+        field:
+          :type: string
+        path:
+          :type: array
+          :items:
+            :type: string
+      :required:
+      - code
+      - detail
+      - field
+      - path
+    nullable_string_filter:
+      :type: object
+      :properties:
+        contains:
+          :type: string
+        ends_with:
+          :type: string
+        eq:
+          :type: string
+        in:
+          :type: array
+          :items:
+            :type: string
+        'null':
+          :type: boolean
+        starts_with:
+          :type: string
+    page_pagination:
+      :type: object
+      :properties:
+        current:
+          :type: integer
+        items:
+          :type: integer
+        next:
+          :type:
+          - integer
+          - 'null'
+        prev:
+          :type:
+          - integer
+          - 'null'
+        total:
+          :type: integer
+      :required:
+      - current
+      - items
+      - total
+    sort_direction_filter:
+      :oneOf:
+      - {}
+      - :type: object
+        :properties:
+          eq: {}
+          in:
+            :type: array
+            :items:
+              :type:
+    string_filter:
+      :type: object
+      :properties:
+        contains:
+          :type: string
+        ends_with:
+          :type: string
+        eq:
+          :type: string
+        in:
+          :type: array
+          :items:
+            :type: string
+        starts_with:
+          :type: string

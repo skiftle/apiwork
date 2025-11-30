@@ -316,31 +316,53 @@ Before writing documentation:
 - Run specs or read spec tests to see real output
 - Copy exact output — documentation must match reality
 
-### Generated Output Examples
+### External Example Files
 
-**CRITICAL:** Documentation and `.playground/` must stay in sync — in BOTH directions.
+**CRITICAL:** Documentation examples and `.playground/` MUST stay in sync — always, in BOTH directions.
 
-**Structure:**
-- Each documentation example has its own API definition in `.playground/config/apis/`
-- API file naming: `{doc_number}_{doc_name}_{example}.rb` (e.g. `02_core_concepts_contract.rb`)
-- Show COMPLETE output in docs, not excerpts
+All documentation examples live in `docs/examples/<resource>/<action>/` with these files:
+- `output.json` - example response
+- `introspection.json` - introspection data
+- `typescript.ts` - generated TypeScript types
+- `zod.ts` - generated Zod schemas
+- `openapi.yml` - OpenAPI spec
 
-**When writing/changing documentation:**
-1. Create/update example code in `.playground/`
-2. Create dedicated API definition for the example
-3. Run generators to get COMPLETE output
-4. Copy EXACT full output to documentation
-5. NEVER invent, abbreviate, or guess output formats
+Markdown documents link to these files with relative paths.
+
+### Playground Namespacing
+
+Each doc example is completely isolated in `.playground/` using Ruby namespaces:
+
+| Doc Path | Ruby Namespace | API Mount | Tables |
+|----------|----------------|-----------|--------|
+| `docs/.../02-core-concepts.md` | `Docs::CoreConcepts` | `/docs/core-concepts` | `docs_core_concepts_*` |
+
+**Directory structure:**
+- Models: `.playground/app/models/docs/{section}/`
+- Schemas: `.playground/app/schemas/docs/{section}/`
+- Contracts: `.playground/app/contracts/docs/{section}/`
+- APIs: `.playground/config/apis/{doc_name}.rb`
+
+### Synchronization Rules
+
+**ALWAYS keep these in sync. This is non-negotiable.**
+
+**When writing or changing documentation:**
+1. Create/update corresponding code in `.playground/`
+2. Run generators to produce REAL output
+3. Save output to `docs/examples/<resource>/<action>/`
+4. Link from markdown with relative paths
+5. NEVER invent, abbreviate, or guess output
 
 **When changing code that affects output formats:**
-1. Check if it affects Introspection, TypeScript, Zod, or OpenAPI output
-2. If yes: re-generate all examples from `.playground/`
-3. Update affected documentation with new output
-4. Include doc updates in the same commit
+1. Check if it affects Introspection, TypeScript, Zod, or OpenAPI
+2. If yes: regenerate ALL examples from `.playground/`
+3. Update ALL files in `docs/examples/`
+4. Include updates in the SAME commit
 
-`.playground/` is a minimal Rails app for documentation examples. Gitignored.
-
-**The rule:** Code changes that affect output formats → documentation updates in same commit.
+**The fundamental rule:**
+Code → playground → docs/examples/ → markdown links.
+They are ONE system. Change one, change all. Same commit. No exceptions.
 
 Style:
 - Pedagogical — teach, don't just describe

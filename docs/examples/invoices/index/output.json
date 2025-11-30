@@ -1,0 +1,59 @@
+{
+  "invoices": [
+    {
+      "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "number": "INV-2024-001",
+      "issued_on": "2024-03-15",
+      "status": "paid",
+      "notes": "Payment received",
+      "created_at": "2024-03-01T10:30:00Z",
+      "updated_at": "2024-03-20T14:45:00Z",
+      "customer": {
+        "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "name": "Acme Corporation"
+      },
+      "lines": [
+        {
+          "id": "11111111-2222-3333-4444-555555555555",
+          "description": "Consulting services",
+          "quantity": 10,
+          "price": "150.00"
+        },
+        {
+          "id": "66666666-7777-8888-9999-000000000000",
+          "description": "Software license",
+          "quantity": 1,
+          "price": "500.00"
+        }
+      ]
+    },
+    {
+      "id": "e8b7c6d5-4a3b-2c1d-0e9f-8a7b6c5d4e3f",
+      "number": "INV-2024-002",
+      "issued_on": "2024-03-20",
+      "status": "pending",
+      "notes": null,
+      "created_at": "2024-03-20T09:00:00Z",
+      "updated_at": "2024-03-20T09:00:00Z",
+      "customer": {
+        "id": "b2c3d4e5-f6a7-8901-bcde-f23456789012",
+        "name": "Tech Startup Inc"
+      },
+      "lines": [
+        {
+          "id": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+          "description": "Development hours",
+          "quantity": 40,
+          "price": "125.00"
+        }
+      ]
+    }
+  ],
+  "pagination": {
+    "current": 1,
+    "total": 2,
+    "items": 2,
+    "prev": null,
+    "next": null
+  }
+}
