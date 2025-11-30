@@ -8,23 +8,23 @@ hero:
   actions:
     - theme: brand
       text: Getting Started
-      link: /01-getting-started/01-introduction
+      link: /getting-started/introduction
     - theme: alt
       text: Type System
-      link: /05-type-system/01-introduction
+      link: /type-system/introduction
 
 features:
   - title: Contracts
     details: Define request/response structures with full validation and type safety.
-    link: /03-contracts/01-introduction
+    link: /contracts/introduction
   - title: Schemas
     details: Auto-generate CRUD operations from your ActiveRecord models.
-    link: /04-schemas/01-introduction
+    link: /schemas/introduction
   - title: Type System
     details: Reusable types, enums, and unions with TypeScript and Zod generation.
-    link: /05-type-system/01-introduction
+    link: /type-system/introduction
   - title: Specs
     details: Generate OpenAPI, TypeScript interfaces, and Zod schemas.
-    link: /08-specs/01-introduction
+    link: /specs/introduction
 ---
 

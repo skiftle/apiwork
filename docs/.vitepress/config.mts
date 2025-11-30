@@ -1,28 +1,25 @@
 import { defineConfig } from 'vitepress'
+import { generateSidebar } from 'vitepress-sidebar'
 
-// https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "Apiwork",
-  description: "Apiwork",
+  description: "Ruby API Framework",
   themeConfig: {
-    // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Examples', link: '/markdown-examples' }
+      { text: 'Docs', link: '/getting-started/introduction' }
     ],
-
-    sidebar: [
-      {
-        text: 'Examples',
-        items: [
-          { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' }
-        ]
-      }
-    ],
-
+    sidebar: generateSidebar({
+      documentRootPath: '.',
+      useTitleFromFileHeading: true,
+      useFolderTitleFromIndexFile: true,
+      sortMenusByFrontmatterOrder: true,
+      frontmatterOrderDefaultValue: 999,
+      excludeByGlobPattern: ['index.md', 'node_modules/**', '.vitepress/**', 'examples/**', 'app/**', 'api-examples.md', 'markdown-examples.md'],
+      collapsed: false
+    }),
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
+      { icon: 'github', link: 'https://github.com/skiftle/apiwork' }
     ]
   }
 })
