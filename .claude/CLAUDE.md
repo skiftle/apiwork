@@ -318,6 +318,16 @@ Run `bundle exec rubocop -a` on every file you modify.
 
 ---
 
+## Testing
+
+- Run tests after every code change
+- New functionality requires new tests
+- Integration tests with dummy app are priority — test real user flows
+- Unit tests when it makes sense
+- Update tests when code changes
+
+---
+
 ## Quick Reference
 
 | ❌ Bad | ✅ Good |
