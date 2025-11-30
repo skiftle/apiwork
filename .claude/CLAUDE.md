@@ -310,6 +310,54 @@ Use `require` for: gems, stdlib, files outside autoload paths.
 
 Keep docs in sync with code. Docs live in `docs/`.
 
+Style:
+- Pedagogical — teach, don't just describe
+- Simple English — no jargon or marketing fluff
+- Direct — show code, explain briefly
+- Examples over explanations
+- Minimal code examples — only what's needed
+
+Type system examples must show all four formats in this order using `<details>`:
+
+1. Introspection
+2. TypeScript
+3. Zod
+4. OpenAPI
+
+```markdown
+<details>
+<summary>Introspection</summary>
+
+\`\`\`json
+{ ... }
+\`\`\`
+</details>
+
+<details>
+<summary>TypeScript</summary>
+
+\`\`\`typescript
+...
+\`\`\`
+</details>
+
+<details>
+<summary>Zod</summary>
+
+\`\`\`typescript
+...
+\`\`\`
+</details>
+
+<details>
+<summary>OpenAPI</summary>
+
+\`\`\`yaml
+...
+\`\`\`
+</details>
+```
+
 ---
 
 ## Code Style
