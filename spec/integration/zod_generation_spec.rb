@@ -203,32 +203,25 @@ RSpec.describe 'Zod Generation for Associations', type: :integration do
       expect(filter_def).not_to include('z.string()')
     end
 
-    it 'handles both global and schema-scoped enum filters' do
-      # Global enums (post_status)
-      expect(output).to include('export const PostStatusSchema')
-      expect(output).to include('export const PostStatusFilterSchema')
+    it 'generates enum filters ONLY for enums used with filterable: true' do
+      # Global enums (post_status) - NOT used by any filterable schema attribute
+      expect(output).to include('export const PostStatusSchema') # enum exists
+      expect(output).not_to include('export const PostStatusFilterSchema') # but no filter!
 
-      # Schema-scoped enums (account_status)
+      # Schema-scoped enums (account_status) - used with filterable: true in AccountSchema
       expect(output).to include('export const AccountStatusSchema')
       expect(output).to include('export const AccountStatusFilterSchema')
 
-      # Both should be properly generated as union types with enum references
-      %w[PostStatus AccountStatus].each do |enum_name|
-        filter_schema_match = output.match(/export const #{enum_name}FilterSchema = z\.union\(\[.*?\]\);/m)
-        expect(filter_schema_match).not_to be_nil, "#{enum_name}FilterSchema not properly generated"
-      end
+      # Only AccountStatus should have filter schema
+      filter_schema_match = output.match(/export const AccountStatusFilterSchema = z\.union\(\[.*?\]\);/m)
+      expect(filter_schema_match).not_to be_nil, 'AccountStatusFilterSchema not properly generated'
     end
 
     it 'maintains correct topological order: enum schemas before filter schemas' do
       # Enum schemas must come before their filter schemas in the output
-      post_status_pos = output.index('export const PostStatusSchema')
-      post_status_filter_pos = output.index('export const PostStatusFilterSchema')
-
       account_status_pos = output.index('export const AccountStatusSchema')
       account_status_filter_pos = output.index('export const AccountStatusFilterSchema')
 
-      expect(post_status_pos).to be < post_status_filter_pos,
-                                 'PostStatusSchema should come before PostStatusFilterSchema'
       expect(account_status_pos).to be < account_status_filter_pos,
                                     'AccountStatusSchema should come before AccountStatusFilterSchema'
     end

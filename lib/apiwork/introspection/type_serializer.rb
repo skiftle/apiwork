@@ -12,8 +12,6 @@ module Apiwork
 
         return result unless @api
 
-        ensure_enum_filter_types_registered
-
         type_storage = @api.type_system.types
         type_storage.each_pair.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
           expanded_shape = metadata[:expanded_payload] ||= expand_payload(metadata)
@@ -100,21 +98,6 @@ module Apiwork
         contract = Class.new(Apiwork::Contract::Base)
         contract.instance_variable_set(:@api_class, @api)
         contract
-      end
-
-      def ensure_enum_filter_types_registered
-        @api.type_system.enums.each_pair do |enum_name, _metadata|
-          filter_name = :"#{enum_name}_filter"
-          next if @api.type_system.types.key?(filter_name)
-
-          @api.union(filter_name) do
-            variant type: enum_name
-            variant type: :object, partial: true do
-              param :eq, type: enum_name, required: false
-              param :in, type: :array, of: enum_name, required: false
-            end
-          end
-        end
       end
     end
   end

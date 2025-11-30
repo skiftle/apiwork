@@ -84,8 +84,8 @@ Apiwork::API.draw '/api/v1' do
   # Routing DSL override testing - exclude specific actions
   resources :safe_comments, except: [:destroy]
 
-  # Account resource for testing enum validation
-  resources :accounts, only: [:show]
+  # Account resource for testing enum validation and filterable enum attributes
+  resources :accounts, only: [:index, :show]
 
   # Camelized account resource for testing enum validation with key transformation
   resources :camelized_accounts, only: [:show]

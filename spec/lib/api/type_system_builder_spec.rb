@@ -47,16 +47,16 @@ RSpec.describe 'API TypeSystem Builder' do
     expect(enums[:sort_direction][:values]).to eq(%i[asc desc])
   end
 
-  it 'auto-generates enum filter types for enums defined via descriptors' do
+  it 'does NOT auto-generate enum filter types for enums without filterable schema attribute' do
     api = Apiwork::API.draw '/api/test' do
       enum :status, values: %i[active inactive pending]
     end
 
     types = Apiwork::Introspection.types(api)
 
-    expect(types).to have_key(:status_filter)
-    expect(types[:status_filter][:type]).to eq(:union)
-    expect(types[:status_filter][:variants].size).to eq(2)
+    # Enum filter types should ONLY be generated when the enum is used
+    # by a schema attribute with filterable: true
+    expect(types).not_to have_key(:status_filter)
   end
 
   it 'registers descriptors as unprefixed (API-global)' do

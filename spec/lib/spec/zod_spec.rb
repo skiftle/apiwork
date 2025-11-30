@@ -262,16 +262,23 @@ RSpec.describe Apiwork::Spec::Zod do
     end
 
     describe 'enum schemas' do
-      it 'generates enum value and filter schemas for all registered enums' do
+      it 'generates enum schemas but only filter schemas for filterable enums' do
         introspect[:enums].each_key do |enum_name|
           schema_name = enum_name.to_s.camelize(:upper)
-          # Should have TypeScript type declarations
+          # Should have TypeScript type declarations for enum
           expect(output).to include("export type #{schema_name} =")
-          expect(output).to include("export type #{schema_name}Filter =")
           # Should have Zod schemas without type annotations (non-recursive)
           expect(output).to include("export const #{schema_name}Schema = z.enum")
-          expect(output).to include("export const #{schema_name}FilterSchema = z.union")
         end
+
+        # Filter schemas should ONLY exist for enums with filterable: true
+        # AccountStatus has filterable: true in AccountSchema
+        expect(output).to include('export type AccountStatusFilter =')
+        expect(output).to include('export const AccountStatusFilterSchema = z.union')
+
+        # SortDirection does NOT have filterable: true - no filter schema
+        expect(output).not_to include('export type SortDirectionFilter =')
+        expect(output).not_to include('export const SortDirectionFilterSchema =')
       end
 
       it 'generates enum filter schemas with correct enum schema references' do
@@ -307,14 +314,13 @@ RSpec.describe Apiwork::Spec::Zod do
 
       it 'generates enum filter schemas without type annotations (non-recursive)' do
         # Enum filter schemas (union of enum + filter object) are not recursive
-        introspect[:enums].each_key do |enum_name|
-          schema_name = "#{enum_name.to_s.camelize(:upper)}Filter"
-          # Should NOT have type annotation
-          expect(output).not_to include("export const #{schema_name}Schema: z.ZodType<#{schema_name}>"),
-                                "Enum filter schema #{enum_name}_filter should not have z.ZodType annotation"
-          # Should have simple union declaration
-          expect(output).to include("export const #{schema_name}Schema = z.union")
-        end
+        # Only AccountStatus has filterable: true, so only it has a filter schema
+        schema_name = 'AccountStatusFilter'
+        # Should NOT have type annotation
+        expect(output).not_to include("export const #{schema_name}Schema: z.ZodType<#{schema_name}>"),
+                              'Enum filter schema account_status_filter should not have z.ZodType annotation'
+        # Should have simple union declaration
+        expect(output).to include("export const #{schema_name}Schema = z.union")
       end
 
       it 'generates AccountStatusFilterSchema as union of enum and filter object' do

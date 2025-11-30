@@ -132,19 +132,20 @@ RSpec.describe Apiwork::Spec::Typescript do
     end
 
     describe 'union types from filters' do
-      it 'includes SortDirectionFilter union type' do
-        expect(output).to include('export type SortDirectionFilter = ')
-        expect(output).to match(/SortDirectionFilter = SortDirection \| \{/)
+      it 'includes AccountStatusFilter union type for filterable enum' do
+        # AccountSchema has status with filterable: true
+        expect(output).to include('export type AccountStatusFilter = ')
+        expect(output).to match(/AccountStatusFilter = AccountStatus \| \{/)
       end
 
-      it 'generates enum filter union types' do
-        # Check that enum filters exist and have the pattern: EnumType | { ... }
-        expect(output).to match(/export type \w+Filter = \w+ \| \{/)
+      it 'does NOT include SortDirectionFilter for non-filterable enum' do
+        # sort_direction enum is NOT used by any filterable schema attribute
+        expect(output).not_to include('export type SortDirectionFilter = ')
       end
 
       it 'generates partial object variants correctly' do
-        # SortDirectionFilter should have eq? and in? as optional fields
-        expect(output).to match(/SortDirectionFilter = SortDirection \| \{ eq\?: SortDirection; in\?: SortDirection\[\] \}/)
+        # AccountStatusFilter should have eq? and in? as optional fields
+        expect(output).to match(/AccountStatusFilter = AccountStatus \| \{ eq\?: AccountStatus; in\?: AccountStatus\[\] \}/)
       end
     end
 
@@ -190,7 +191,7 @@ RSpec.describe Apiwork::Spec::Typescript do
 
       it 'sorts inline object properties alphabetically' do
         # Check that union object variants have sorted properties
-        filter_match = output.match(/SortDirectionFilter = SortDirection \| \{ (eq\?: SortDirection; in\?: SortDirection\[\]) \}/)
+        filter_match = output.match(/AccountStatusFilter = AccountStatus \| \{ (eq\?: AccountStatus; in\?: AccountStatus\[\]) \}/)
         expect(filter_match).not_to be_nil
 
         # Properties should be: eq, in (alphabetical)
@@ -218,9 +219,9 @@ RSpec.describe Apiwork::Spec::Typescript do
       end
 
       it 'generates correct enum references' do
-        # Filter unions should reference the enum type
-        expect(output).to match(/SortDirectionFilter = SortDirection \|/)
-        expect(output).to match(/eq\?: SortDirection/)
+        # Filter unions should reference the enum type (only for filterable enums)
+        expect(output).to match(/AccountStatusFilter = AccountStatus \|/)
+        expect(output).to match(/eq\?: AccountStatus/)
       end
     end
 

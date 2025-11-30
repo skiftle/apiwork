@@ -78,18 +78,14 @@ RSpec.describe 'TypeSystem Integration', type: :request do
       expect(introspection[:enums][:post_status][:values]).to match_array(%i[draft published archived])
     end
 
-    it 'auto-generates filter types for global enums' do
+    it 'does NOT auto-generate filter types for global enums without filterable usage' do
       introspection = Apiwork::API.introspect('/api/v1')
 
-      # Auto-generated filter for sort_direction
-      expect(introspection[:types]).to have_key(:sort_direction_filter)
-      filter_type = introspection[:types][:sort_direction_filter]
-      expect(filter_type[:type]).to eq(:union)
-      expect(filter_type[:variants]).to be_an(Array)
-      expect(filter_type[:variants].size).to eq(2)
-
-      # Auto-generated filter for post_status
-      expect(introspection[:types]).to have_key(:post_status_filter)
+      # sort_direction and post_status enums are defined but NOT used
+      # by any schema attribute with filterable: true
+      # Therefore, no filter types should be generated for them
+      expect(introspection[:types]).not_to have_key(:sort_direction_filter)
+      expect(introspection[:types]).not_to have_key(:post_status_filter)
     end
   end
 
@@ -351,14 +347,14 @@ RSpec.describe 'TypeSystem Integration', type: :request do
       expect(filter[:variants].size).to eq(2)
     end
 
-    it 'auto-generates filter types for contract-scoped enums' do
+    it 'does NOT auto-generate filter types for contract-scoped enums without filterable schema attribute' do
       introspection = Apiwork::API.introspect('/api/contracts')
 
-      # Should have auto-generated filter
-      expect(introspection[:types]).to have_key(:test_scoped_priority_filter)
-      filter = introspection[:types][:test_scoped_priority_filter]
-      expect(filter[:type]).to eq(:union)
-      expect(filter[:variants].size).to eq(2)
+      # Enum filter types should ONLY be generated when the enum is used
+      # by a schema attribute with filterable: true
+      # Since this contract only uses the enum in body params (not a filterable schema attr),
+      # no filter type should be generated
+      expect(introspection[:types]).not_to have_key(:test_scoped_priority_filter)
     end
   end
 
@@ -366,7 +362,6 @@ RSpec.describe 'TypeSystem Integration', type: :request do
     it 'combines global, schema, and contract-scoped types in one API' do
       introspection = Apiwork::API.introspect('/api/v1')
 
-      # Should have ALL three types
       # 1. Global from type block
       expect(introspection[:types]).to have_key(:error_detail)
       expect(introspection[:enums]).to have_key(:sort_direction)
@@ -374,8 +369,10 @@ RSpec.describe 'TypeSystem Integration', type: :request do
       # 2. Schema-based enums
       expect(introspection[:enums]).to have_key(:account_status)
 
-      # 3. Auto-generated filters for both global and schema enums
-      expect(introspection[:types]).to have_key(:sort_direction_filter)
+      # 3. Enum filter ONLY for schema enums with filterable: true
+      # sort_direction is NOT used by any filterable schema attribute
+      expect(introspection[:types]).not_to have_key(:sort_direction_filter)
+      # account_status IS used with filterable: true in AccountSchema
       expect(introspection[:types]).to have_key(:account_status_filter)
     end
 
@@ -481,16 +478,14 @@ RSpec.describe 'TypeSystem Integration', type: :request do
       expect(introspection[:enums][:status_with_metadata][:deprecated]).to be false
     end
 
-    it 'does not affect auto-generated filter types' do
+    it 'does NOT auto-generate filter types for enums without filterable schema attribute' do
       introspection = Apiwork::API.introspect('/api/metadata_test')
 
-      # Filter type should be auto-generated
-      expect(introspection[:types]).to have_key(:status_with_metadata_filter)
-
-      # Filter type should be a union
-      filter = introspection[:types][:status_with_metadata_filter]
-      expect(filter[:type]).to eq(:union)
-      expect(filter[:variants].size).to eq(2)
+      # Enum filter types should ONLY be generated when the enum is used
+      # by a schema attribute with filterable: true
+      # Since this API has no schema with filterable enum attributes,
+      # no filter type should be generated
+      expect(introspection[:types]).not_to have_key(:status_with_metadata_filter)
     end
   end
 end
