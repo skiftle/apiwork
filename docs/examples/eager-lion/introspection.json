@@ -328,7 +328,7 @@
       "type": "object",
       "shape": {
         "created_at": {
-          "type": "sort_direction",
+          "type": "invoice_sort_direction",
           "required": false,
           "nullable": false,
           "description": null,
@@ -339,7 +339,7 @@
           "max": null
         },
         "issued_on": {
-          "type": "sort_direction",
+          "type": "invoice_sort_direction",
           "required": false,
           "nullable": false,
           "description": null,
@@ -350,7 +350,7 @@
           "max": null
         },
         "status": {
-          "type": "sort_direction",
+          "type": "invoice_sort_direction",
           "required": false,
           "nullable": false,
           "description": null,
@@ -361,7 +361,7 @@
           "max": null
         },
         "updated_at": {
-          "type": "sort_direction",
+          "type": "invoice_sort_direction",
           "required": false,
           "nullable": false,
           "description": null,

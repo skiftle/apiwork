@@ -182,31 +182,47 @@ When you define a custom type or enum, it becomes a **named type** in your gener
 
 ### The Difference
 
-Consider two ways to define the same data:
+Consider two ways to define the same data. These examples use two playground APIs:
+- [grumpy-panda](../examples/grumpy-panda/) uses inline types
+- [friendly-tiger](../examples/friendly-tiger/) uses named types
+
+<!-- example: grumpy-panda -->
+
+**Inline type** ([grumpy-panda](../examples/grumpy-panda/)):
 
 ```ruby
-# Option A: Inline (anonymous) type
-action :create do
-  request do
-    body do
-      param :address, type: :object do
-        param :street, type: :string
-        param :city, type: :string
+# docs/app/app/contracts/grumpy_panda/order_contract.rb
+class OrderContract < Apiwork::Contract::Base
+  action :create do
+    request do
+      body do
+        param :shipping_address, type: :object, required: true do
+          param :street, type: :string, required: true
+          param :city, type: :string, required: true
+        end
       end
     end
   end
 end
+```
 
-# Option B: Named type
-type :address do
-  param :street, type: :string
-  param :city, type: :string
-end
+<!-- example: friendly-tiger -->
 
-action :create do
-  request do
-    body do
-      param :address, type: :address
+**Named type** ([friendly-tiger](../examples/friendly-tiger/)):
+
+```ruby
+# docs/app/app/contracts/friendly_tiger/order_contract.rb
+class OrderContract < Apiwork::Contract::Base
+  type :address do
+    param :street, type: :string, required: true
+    param :city, type: :string, required: true
+  end
+
+  action :create do
+    request do
+      body do
+        param :shipping_address, type: :address, required: true
+      end
     end
   end
 end
@@ -216,11 +232,13 @@ Both options work identically at runtime. The difference is in the generated spe
 
 ### OpenAPI Output
 
-**Inline type** embeds the definition directly:
+<!-- example: grumpy-panda -->
+
+**Inline type** ([grumpy-panda](../examples/grumpy-panda/openapi.yml)) embeds the definition directly:
 
 ```yaml
 paths:
-  /orders:
+  orders/:
     post:
       requestBody:
         content:
@@ -228,20 +246,22 @@ paths:
             schema:
               type: object
               properties:
-                address:
-                  type: object          # Embedded here
+                shipping_address:
+                  type: object          # Embedded inline
                   properties:
-                    street:
-                      type: string
                     city:
+                      type: string
+                    street:
                       type: string
 ```
 
-**Named type** creates a reusable schema:
+<!-- example: friendly-tiger -->
+
+**Named type** ([friendly-tiger](../examples/friendly-tiger/openapi.yml)) creates a reusable schema:
 
 ```yaml
 paths:
-  /orders:
+  orders/:
     post:
       requestBody:
         content:
@@ -249,45 +269,21 @@ paths:
             schema:
               type: object
               properties:
-                address:
-                  $ref: '#/components/schemas/Address'  # Reference
+                shipping_address:
+                  $ref: "#/components/schemas/order_address"  # Reference
 
 components:
   schemas:
-    Address:                            # Defined once
+    order_address:                      # Prefixed with resource name
       type: object
       properties:
-        street:
-          type: string
         city:
           type: string
+        street:
+          type: string
 ```
 
-### TypeScript Output
-
-**Inline type:**
-
-```typescript
-export interface OrdersCreateRequest {
-  address?: {
-    street?: string;
-    city?: string;
-  };
-}
-```
-
-**Named type:**
-
-```typescript
-export interface Address {
-  street?: string;
-  city?: string;
-}
-
-export interface OrdersCreateRequest {
-  address?: Address;
-}
-```
+Note: Types defined inside a contract are prefixed with the resource name (`order_address` instead of `address`).
 
 ### When to Use Named Types
 
@@ -304,51 +300,31 @@ Use inline types when:
 - You don't need to reference it elsewhere
 - It's a simple, one-off shape
 
+<!-- example: friendly-tiger -->
+
 ### Enums Follow the Same Pattern
 
-```ruby
-# Named enum - appears in components/schemas
-enum :status, values: %w[draft published archived]
+Named enums are expanded inline in OpenAPI. See [friendly-tiger](../examples/friendly-tiger/):
 
-action :update do
-  request do
-    body do
-      param :status, type: :status  # References the enum
-    end
-  end
-end
+```ruby
+enum :priority, values: %w[low normal high urgent]
 ```
 
 ```yaml
-# OpenAPI output
-components:
-  schemas:
-    Status:
-      type: string
-      enum: [archived, draft, published]
+# In OpenAPI, enum values are inlined:
+priority:
+  type: string
+  enum:
+    - low
+    - normal
+    - high
+    - urgent
 ```
 
 ### Introspection
 
-Named types appear in the `types` section of introspection output:
+Named types appear in the `types` and `enums` sections of introspection output, making them discoverable by tooling and client generators.
 
-```json
-{
-  "types": {
-    "address": {
-      "type": "object",
-      "shape": {
-        "street": { "type": "string" },
-        "city": { "type": "string" }
-      }
-    }
-  },
-  "enums": {
-    "status": {
-      "values": ["archived", "draft", "published"]
-    }
-  }
-}
-```
-
-This makes them discoverable by tooling and client generators.
+See the generated examples:
+- [grumpy-panda/](../examples/grumpy-panda/) - inline types
+- [friendly-tiger/](../examples/friendly-tiger/) - named types

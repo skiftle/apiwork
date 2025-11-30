@@ -45,8 +45,6 @@ module Apiwork
       def qualified_name(type_name, definition)
         return type_name if global_type?(type_name, definition)
         return type_name if imported_type?(type_name, definition)
-        return type_name unless definition.contract_class.respond_to?(:schema_class)
-        return type_name unless definition.contract_class.schema_class
 
         scope = scope_for_type(definition)
         api_class = definition.contract_class.api_class

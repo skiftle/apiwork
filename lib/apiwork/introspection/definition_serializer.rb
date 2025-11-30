@@ -91,6 +91,8 @@ module Apiwork
         type_value = options[:type]
         if type_value && @definition.contract_class.resolve_custom_type(type_value)
           type_value = @name_resolver.qualified_name(type_value, @definition)
+        elsif type_value && @definition.contract_class.resolve_enum(type_value)
+          type_value = @name_resolver.qualified_name(type_value, @definition)
         end
 
         result = {

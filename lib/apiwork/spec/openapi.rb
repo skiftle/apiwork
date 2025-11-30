@@ -300,6 +300,11 @@ module Apiwork
           return apply_nullable(schema, definition[:nullable])
         end
 
+        if definition[:type].is_a?(Symbol) && enums.key?(definition[:type])
+          schema = { type: 'string', enum: enums[definition[:type]][:values] }
+          return apply_nullable(schema, definition[:nullable])
+        end
+
         schema = map_type_definition(definition, action_name)
 
         schema[:description] = definition[:description] if definition[:description]
@@ -328,6 +333,8 @@ module Apiwork
         else
           if types.key?(type)
             { '$ref': "#/components/schemas/#{schema_name(type)}" }
+          elsif enums.key?(type)
+            { type: 'string', enum: enums[type][:values] }
           else
             map_primitive(definition)
           end
