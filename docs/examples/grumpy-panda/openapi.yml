@@ -1,0 +1,96 @@
+---
+:openapi: 3.1.0
+:info:
+  :title: "/grumpy-panda API"
+  :version: 1.0.0
+:paths:
+  orders/:
+    get:
+      :operationId: orders_index
+      :summary: List orders
+      :tags:
+      - Orders
+      :responses:
+        :204:
+          :description: No content
+    post:
+      :operationId: orders_create
+      :summary: Create order
+      :tags:
+      - Orders
+      :requestBody:
+        :required: true
+        :content:
+          :application/json:
+            :schema:
+              :type: object
+              :properties:
+                shipping_address:
+                  :type: object
+                  :properties:
+                    city:
+                      :type: string
+                    street:
+                      :type: string
+                  :required:
+                  - city
+                  - street
+              :required:
+              - shipping_address
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  id:
+                    :type: integer
+                  status:
+                    :type: string
+  orders/:id:
+    get:
+      :operationId: orders_show
+      :summary: Get order
+      :tags:
+      - Orders
+      :responses:
+        :204:
+          :description: No content
+    patch:
+      :operationId: orders_update
+      :summary: Update order
+      :tags:
+      - Orders
+      :responses:
+        :204:
+          :description: No content
+    delete:
+      :operationId: orders_destroy
+      :summary: Delete order
+      :tags:
+      - Orders
+      :responses:
+        :204:
+          :description: No content
+:components:
+  :schemas:
+    issue:
+      :type: object
+      :properties:
+        code:
+          :type: string
+        detail:
+          :type: string
+        field:
+          :type: string
+        path:
+          :type: array
+          :items:
+            :type: string
+      :required:
+      - code
+      - detail
+      - field
+      - path

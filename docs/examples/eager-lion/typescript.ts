@@ -40,10 +40,10 @@ export interface InvoicePage {
 }
 
 export interface InvoiceSort {
-  created_at?: SortDirection;
-  issued_on?: SortDirection;
-  status?: SortDirection;
-  updated_at?: SortDirection;
+  created_at?: unknown;
+  issued_on?: unknown;
+  status?: unknown;
+  updated_at?: unknown;
 }
 
 export interface InvoiceUpdatePayload {

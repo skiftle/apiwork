@@ -35,10 +35,10 @@ export const InvoicePageSchema = z.object({
 });
 
 export const InvoiceSortSchema = z.object({
-  created_at: SortDirectionSchema.optional(),
-  issued_on: SortDirectionSchema.optional(),
-  status: SortDirectionSchema.optional(),
-  updated_at: SortDirectionSchema.optional()
+  created_at: z.unknown().optional(),
+  issued_on: z.unknown().optional(),
+  status: z.unknown().optional(),
+  updated_at: z.unknown().optional()
 });
 
 export const InvoiceUpdatePayloadSchema = z.object({
@@ -238,10 +238,10 @@ export interface InvoicePage {
 }
 
 export interface InvoiceSort {
-  created_at?: SortDirection;
-  issued_on?: SortDirection;
-  status?: SortDirection;
-  updated_at?: SortDirection;
+  created_at?: unknown;
+  issued_on?: unknown;
+  status?: unknown;
+  updated_at?: unknown;
 }
 
 export interface InvoiceUpdatePayload {

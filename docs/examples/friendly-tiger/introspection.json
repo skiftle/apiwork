@@ -1,0 +1,218 @@
+{
+  "path": "/friendly-tiger",
+  "info": {},
+  "types": {
+    "issue": {
+      "type": "object",
+      "shape": {
+        "code": {
+          "type": "string",
+          "required": true,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "detail": {
+          "type": "string",
+          "required": true,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "field": {
+          "type": "string",
+          "required": true,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "path": {
+          "type": "array",
+          "required": true,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null,
+          "of": "string"
+        }
+      },
+      "description": null,
+      "example": null,
+      "format": null,
+      "deprecated": false
+    },
+    "order_address": {
+      "type": "object",
+      "shape": {
+        "city": {
+          "type": "string",
+          "required": true,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "street": {
+          "type": "string",
+          "required": true,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        }
+      },
+      "description": null,
+      "example": null,
+      "format": null,
+      "deprecated": false
+    }
+  },
+  "enums": {
+    "order_priority": {
+      "values": [
+        "low",
+        "normal",
+        "high",
+        "urgent"
+      ],
+      "description": null,
+      "example": null,
+      "deprecated": false
+    }
+  },
+  "resources": {
+    "orders": {
+      "path": "orders",
+      "summary": "Orders",
+      "description": "Operations for managing orders.",
+      "tags": [
+        "Orders"
+      ],
+      "actions": {
+        "index": {
+          "method": "get",
+          "path": "/",
+          "summary": "List orders",
+          "description": null,
+          "tags": null,
+          "deprecated": null,
+          "operation_id": null
+        },
+        "show": {
+          "method": "get",
+          "path": "/:id",
+          "summary": "Get order",
+          "description": null,
+          "tags": null,
+          "deprecated": null,
+          "operation_id": null
+        },
+        "create": {
+          "method": "post",
+          "path": "/",
+          "summary": "Create order",
+          "description": null,
+          "tags": null,
+          "deprecated": null,
+          "operation_id": null,
+          "request": {
+            "body": {
+              "priority": {
+                "type": "order_priority",
+                "required": false,
+                "nullable": false,
+                "description": null,
+                "example": null,
+                "format": null,
+                "deprecated": false,
+                "min": null,
+                "max": null
+              },
+              "shipping_address": {
+                "type": "order_address",
+                "required": true,
+                "nullable": false,
+                "description": null,
+                "example": null,
+                "format": null,
+                "deprecated": false,
+                "min": null,
+                "max": null
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "object",
+              "shape": {
+                "id": {
+                  "type": "integer",
+                  "required": false,
+                  "nullable": false,
+                  "description": null,
+                  "example": null,
+                  "format": null,
+                  "deprecated": false,
+                  "min": null,
+                  "max": null
+                },
+                "status": {
+                  "type": "string",
+                  "required": false,
+                  "nullable": false,
+                  "description": null,
+                  "example": null,
+                  "format": null,
+                  "deprecated": false,
+                  "min": null,
+                  "max": null
+                }
+              }
+            }
+          },
+          "error_codes": []
+        },
+        "update": {
+          "method": "patch",
+          "path": "/:id",
+          "summary": "Update order",
+          "description": null,
+          "tags": null,
+          "deprecated": null,
+          "operation_id": null
+        },
+        "destroy": {
+          "method": "delete",
+          "path": "/:id",
+          "summary": "Delete order",
+          "description": null,
+          "tags": null,
+          "deprecated": null,
+          "operation_id": null
+        }
+      }
+    }
+  },
+  "error_codes": []
+}
