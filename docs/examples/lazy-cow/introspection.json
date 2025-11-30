@@ -1,0 +1,272 @@
+{
+  "path": "/lazy-cow",
+  "info": {},
+  "types": {
+    "cursor_pagination": {
+      "type": "object",
+      "shape": {
+        "next_cursor": {
+          "type": "string",
+          "required": false,
+          "nullable": true,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "prev_cursor": {
+          "type": "string",
+          "required": false,
+          "nullable": true,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        }
+      },
+      "description": null,
+      "example": null,
+      "format": null,
+      "deprecated": false
+    },
+    "issue": {
+      "type": "object",
+      "shape": {
+        "code": {
+          "type": "string",
+          "required": true,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "detail": {
+          "type": "string",
+          "required": true,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "field": {
+          "type": "string",
+          "required": true,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "path": {
+          "type": "array",
+          "required": true,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null,
+          "of": "string"
+        }
+      },
+      "description": null,
+      "example": null,
+      "format": null,
+      "deprecated": false
+    },
+    "page_pagination": {
+      "type": "object",
+      "shape": {
+        "current": {
+          "type": "integer",
+          "required": true,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "items": {
+          "type": "integer",
+          "required": true,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "next": {
+          "type": "integer",
+          "required": false,
+          "nullable": true,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "prev": {
+          "type": "integer",
+          "required": false,
+          "nullable": true,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "total": {
+          "type": "integer",
+          "required": true,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        }
+      },
+      "description": null,
+      "example": null,
+      "format": null,
+      "deprecated": false
+    },
+    "post_priority_filter": {
+      "type": "union",
+      "required": false,
+      "nullable": false,
+      "variants": [
+        {
+          "type": "post_priority",
+          "of": null,
+          "partial": false
+        },
+        {
+          "type": "object",
+          "of": null,
+          "partial": true,
+          "shape": {
+            "eq": {
+              "type": "post_priority",
+              "required": false,
+              "nullable": false,
+              "description": null,
+              "example": null,
+              "format": null,
+              "deprecated": false,
+              "min": null,
+              "max": null
+            },
+            "in": {
+              "type": "array",
+              "required": false,
+              "nullable": false,
+              "description": null,
+              "example": null,
+              "format": null,
+              "deprecated": false,
+              "min": null,
+              "max": null,
+              "of": "post_priority"
+            }
+          }
+        }
+      ],
+      "description": null,
+      "example": null,
+      "format": null,
+      "deprecated": false
+    }
+  },
+  "enums": {
+    "post_priority": {
+      "values": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ],
+      "description": null,
+      "example": null,
+      "deprecated": false
+    }
+  },
+  "resources": {
+    "posts": {
+      "path": "posts",
+      "summary": "Posts",
+      "description": "Operations for managing posts.",
+      "tags": [
+        "Posts"
+      ],
+      "actions": {
+        "index": {
+          "method": "get",
+          "path": "/",
+          "summary": "List posts",
+          "description": null,
+          "tags": null,
+          "deprecated": null,
+          "operation_id": null
+        },
+        "show": {
+          "method": "get",
+          "path": "/:id",
+          "summary": "Get post",
+          "description": null,
+          "tags": null,
+          "deprecated": null,
+          "operation_id": null
+        },
+        "create": {
+          "method": "post",
+          "path": "/",
+          "summary": "Create post",
+          "description": null,
+          "tags": null,
+          "deprecated": null,
+          "operation_id": null
+        },
+        "update": {
+          "method": "patch",
+          "path": "/:id",
+          "summary": "Update post",
+          "description": null,
+          "tags": null,
+          "deprecated": null,
+          "operation_id": null
+        },
+        "destroy": {
+          "method": "delete",
+          "path": "/:id",
+          "summary": "Delete post",
+          "description": null,
+          "tags": null,
+          "deprecated": null,
+          "operation_id": null
+        }
+      }
+    }
+  },
+  "error_codes": []
+}

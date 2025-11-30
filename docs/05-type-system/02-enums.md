@@ -12,6 +12,16 @@ Apiwork::API.draw '/api/v1' do
 end
 ```
 
+<details>
+<summary>View generated output</summary>
+
+- [Introspection](../examples/happy-zebra/introspection.json)
+- [TypeScript](../examples/happy-zebra/typescript.ts)
+- [Zod](../examples/happy-zebra/zod.ts)
+- [OpenAPI](../examples/happy-zebra/openapi.yml)
+
+</details>
+
 ## Contract-Scoped Enum
 
 <!-- example: lazy-cow -->
@@ -21,6 +31,16 @@ class PostContract < Apiwork::Contract::Base
   enum :priority, values: %i[low medium high critical]
 end
 ```
+
+<details>
+<summary>View generated output</summary>
+
+- [Introspection](../examples/lazy-cow/introspection.json)
+- [TypeScript](../examples/lazy-cow/typescript.ts)
+- [Zod](../examples/lazy-cow/zod.ts)
+- [OpenAPI](../examples/lazy-cow/openapi.yml)
+
+</details>
 
 ## Using Enums
 

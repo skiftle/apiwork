@@ -1,0 +1,110 @@
+---
+:openapi: 3.1.0
+:info:
+  :title: "/lazy-cow API"
+  :version: 1.0.0
+:paths:
+  posts/:
+    get:
+      :operationId: posts_index
+      :summary: List posts
+      :tags:
+      - Posts
+      :responses:
+        :204:
+          :description: No content
+    post:
+      :operationId: posts_create
+      :summary: Create post
+      :tags:
+      - Posts
+      :responses:
+        :204:
+          :description: No content
+  posts/:id:
+    get:
+      :operationId: posts_show
+      :summary: Get post
+      :tags:
+      - Posts
+      :responses:
+        :204:
+          :description: No content
+    patch:
+      :operationId: posts_update
+      :summary: Update post
+      :tags:
+      - Posts
+      :responses:
+        :204:
+          :description: No content
+    delete:
+      :operationId: posts_destroy
+      :summary: Delete post
+      :tags:
+      - Posts
+      :responses:
+        :204:
+          :description: No content
+:components:
+  :schemas:
+    cursor_pagination:
+      :type: object
+      :properties:
+        next_cursor:
+          :type:
+          - string
+          - 'null'
+        prev_cursor:
+          :type:
+          - string
+          - 'null'
+    issue:
+      :type: object
+      :properties:
+        code:
+          :type: string
+        detail:
+          :type: string
+        field:
+          :type: string
+        path:
+          :type: array
+          :items:
+            :type: string
+      :required:
+      - code
+      - detail
+      - field
+      - path
+    page_pagination:
+      :type: object
+      :properties:
+        current:
+          :type: integer
+        items:
+          :type: integer
+        next:
+          :type:
+          - integer
+          - 'null'
+        prev:
+          :type:
+          - integer
+          - 'null'
+        total:
+          :type: integer
+      :required:
+      - current
+      - items
+      - total
+    post_priority_filter:
+      :oneOf:
+      - {}
+      - :type: object
+        :properties:
+          eq: {}
+          in:
+            :type: array
+            :items:
+              :type:
