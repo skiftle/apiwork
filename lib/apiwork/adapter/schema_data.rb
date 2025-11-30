@@ -11,6 +11,7 @@ module Apiwork
         @sortable = check_sortable(schemas)
         @has_resources = has_resources
         @has_index_actions = has_index_actions
+        @pagination_strategies = extract_pagination_strategies(schemas)
       end
 
       def sortable?
@@ -23,6 +24,14 @@ module Apiwork
 
       def has_index_actions?
         @has_index_actions
+      end
+
+      def uses_page_pagination?
+        @pagination_strategies.include?(:page)
+      end
+
+      def uses_cursor_pagination?
+        @pagination_strategies.include?(:cursor)
       end
 
       private
@@ -49,6 +58,15 @@ module Apiwork
           schema.attribute_definitions.values.any?(&:sortable?) ||
             schema.association_definitions.values.any?(&:sortable?)
         end
+      end
+
+      def extract_pagination_strategies(schemas)
+        strategies = Set.new
+        schemas.each do |schema|
+          strategy = schema.resolve_option(:pagination, :strategy)
+          strategies.add(strategy) if strategy
+        end
+        strategies
       end
     end
   end

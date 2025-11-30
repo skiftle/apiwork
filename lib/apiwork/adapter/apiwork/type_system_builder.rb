@@ -24,6 +24,11 @@ module Apiwork
                     :schema_data
 
         def register_pagination_types
+          register_page_pagination if schema_data.uses_page_pagination?
+          register_cursor_pagination if schema_data.uses_cursor_pagination?
+        end
+
+        def register_page_pagination
           type_registrar.type :page_pagination do
             param :current, type: :integer, required: true
             param :next, type: :integer, nullable: true
@@ -31,7 +36,9 @@ module Apiwork
             param :total, type: :integer, required: true
             param :items, type: :integer, required: true
           end
+        end
 
+        def register_cursor_pagination
           type_registrar.type :cursor_pagination do
             param :next_cursor, type: :string, nullable: true
             param :prev_cursor, type: :string, nullable: true
