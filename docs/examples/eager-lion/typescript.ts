@@ -167,8 +167,6 @@ export interface PagePagination {
 
 export type SortDirection = 'asc' | 'desc';
 
-export type SortDirectionFilter = SortDirection | { eq?: SortDirection; in?: SortDirection[] };
-
 export interface StringFilter {
   contains?: string;
   ends_with?: string;

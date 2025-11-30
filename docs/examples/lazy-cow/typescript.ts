@@ -19,5 +19,3 @@ export interface PagePagination {
 }
 
 export type PostPriority = 'critical' | 'high' | 'low' | 'medium';
-
-export type PostPriorityFilter = PostPriority | { eq?: PostPriority; in?: PostPriority[] };

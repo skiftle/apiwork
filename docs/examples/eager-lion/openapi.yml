@@ -399,16 +399,6 @@
       - current
       - items
       - total
-    sort_direction_filter:
-      :oneOf:
-      - {}
-      - :type: object
-        :properties:
-          eq: {}
-          in:
-            :type: array
-            :items:
-              :type:
     string_filter:
       :type: object
       :properties:
