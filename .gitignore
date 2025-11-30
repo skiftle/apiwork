@@ -26,4 +26,7 @@
 
 # Gem files
 *.gem
-/.claude
+
+# Claude Code - local files
+/.claude/*.local.json
+/.claude/plans/
