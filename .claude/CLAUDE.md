@@ -344,14 +344,21 @@ Documentation examples are linked to real implementations in `docs/app/` using H
 3. The comment stays permanently — it marks the connection for future updates
 
 **When you discover a NEW example tag (e.g., `<!-- example: lazy-cow -->`):**
-1. Create the namespace in `docs/app/`:
-   - `app/models/lazy_cow/` — ActiveRecord models
-   - `app/schemas/lazy_cow/` — Schema definitions
-   - `app/contracts/lazy_cow/` — Contract definitions
+
+1. **Always create:**
    - `config/apis/lazy_cow.rb` — API definition
+
+2. **If the example uses contracts (no `schema!`):**
+   - `app/contracts/lazy_cow/` — Contract definitions only
+
+3. **If the example uses schemas (`schema!`):**
+   - `app/contracts/lazy_cow/` — Contract with `schema!`
+   - `app/schemas/lazy_cow/` — Schema definitions
+   - `app/models/lazy_cow/` — ActiveRecord models
    - `db/migrate/` — Migration for tables
-2. Run `rake docs:generate` to generate output files
-3. Add the `<details>` section after the code block
+
+4. Run `rake docs:generate` to generate output files
+5. Add the `<details>` section after the code block
 
 ### Namespace Naming Conventions
 

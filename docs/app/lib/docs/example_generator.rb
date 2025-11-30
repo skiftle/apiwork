@@ -18,7 +18,7 @@ module Docs
       FileUtils.rm_rf(EXAMPLES_DIR)
       FileUtils.mkdir_p(EXAMPLES_DIR)
 
-      Apiwork::API.all.find_each do |api|
+      Apiwork::API.all.each do |api| # rubocop:disable Rails/FindEach
         generate_for_api(api)
       end
 

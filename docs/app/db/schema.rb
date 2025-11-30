@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 20_251_130_000_004) do
+ActiveRecord::Schema[8.1].define(version: 20_251_130_000_005) do
   create_table 'eager_lion_customers', id: :string, force: :cascade do |t|
     t.datetime 'created_at', null: false
     t.string 'name', null: false
@@ -35,6 +35,13 @@ ActiveRecord::Schema[8.1].define(version: 20_251_130_000_004) do
     t.string 'invoice_id', null: false
     t.decimal 'price', precision: 10, scale: 2
     t.integer 'quantity'
+    t.datetime 'updated_at', null: false
+  end
+
+  create_table 'lazy_cow_posts', id: :string, force: :cascade do |t|
+    t.datetime 'created_at', null: false
+    t.string 'priority'
+    t.string 'title', null: false
     t.datetime 'updated_at', null: false
   end
 
