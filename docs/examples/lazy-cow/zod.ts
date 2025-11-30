@@ -22,11 +22,6 @@ export const PagePaginationSchema = z.object({
   total: z.number().int()
 });
 
-export const PostPriorityFilterSchema = z.union([
-  PostPrioritySchema,
-  z.object({ eq: PostPrioritySchema, in: z.array(PostPrioritySchema) }).partial()
-]);
-
 export interface CursorPagination {
   next_cursor?: null | string;
   prev_cursor?: null | string;
@@ -48,5 +43,3 @@ export interface PagePagination {
 }
 
 export type PostPriority = 'critical' | 'high' | 'low' | 'medium';
-
-export type PostPriorityFilter = PostPriority | { eq?: PostPriority; in?: PostPriority[] };

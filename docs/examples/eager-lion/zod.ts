@@ -77,11 +77,6 @@ export const PagePaginationSchema = z.object({
   total: z.number().int()
 });
 
-export const SortDirectionFilterSchema = z.union([
-  SortDirectionSchema,
-  z.object({ eq: SortDirectionSchema, in: z.array(SortDirectionSchema) }).partial()
-]);
-
 export const StringFilterSchema = z.object({
   contains: z.string().optional(),
   ends_with: z.string().optional(),
@@ -374,8 +369,6 @@ export interface PagePagination {
 }
 
 export type SortDirection = 'asc' | 'desc';
-
-export type SortDirectionFilter = SortDirection | { eq?: SortDirection; in?: SortDirection[] };
 
 export interface StringFilter {
   contains?: string;

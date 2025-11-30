@@ -5,14 +5,4 @@
   :version: 1.0.0
 :paths: {}
 :components:
-  :schemas:
-    status_filter:
-      :oneOf:
-      - {}
-      - :type: object
-        :properties:
-          eq: {}
-          in:
-            :type: array
-            :items:
-              :type:
+  :schemas: {}

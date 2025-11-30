@@ -150,52 +150,6 @@
       "example": null,
       "format": null,
       "deprecated": false
-    },
-    "post_priority_filter": {
-      "type": "union",
-      "required": false,
-      "nullable": false,
-      "variants": [
-        {
-          "type": "post_priority",
-          "of": null,
-          "partial": false
-        },
-        {
-          "type": "object",
-          "of": null,
-          "partial": true,
-          "shape": {
-            "eq": {
-              "type": "post_priority",
-              "required": false,
-              "nullable": false,
-              "description": null,
-              "example": null,
-              "format": null,
-              "deprecated": false,
-              "min": null,
-              "max": null
-            },
-            "in": {
-              "type": "array",
-              "required": false,
-              "nullable": false,
-              "description": null,
-              "example": null,
-              "format": null,
-              "deprecated": false,
-              "min": null,
-              "max": null,
-              "of": "post_priority"
-            }
-          }
-        }
-      ],
-      "description": null,
-      "example": null,
-      "format": null,
-      "deprecated": false
     }
   },
   "enums": {
