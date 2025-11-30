@@ -175,3 +175,180 @@ export const OrderLineItemSchema = z.object({
   unit_price: z.number().optional()
 });
 ```
+
+## Named vs Inline Types in Specs
+
+When you define a custom type or enum, it becomes a **named type** in your generated specs. This affects how the type appears in OpenAPI, TypeScript, and Zod output.
+
+### The Difference
+
+Consider two ways to define the same data:
+
+```ruby
+# Option A: Inline (anonymous) type
+action :create do
+  request do
+    body do
+      param :address, type: :object do
+        param :street, type: :string
+        param :city, type: :string
+      end
+    end
+  end
+end
+
+# Option B: Named type
+type :address do
+  param :street, type: :string
+  param :city, type: :string
+end
+
+action :create do
+  request do
+    body do
+      param :address, type: :address
+    end
+  end
+end
+```
+
+Both options work identically at runtime. The difference is in the generated specs.
+
+### OpenAPI Output
+
+**Inline type** embeds the definition directly:
+
+```yaml
+paths:
+  /orders:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                address:
+                  type: object          # Embedded here
+                  properties:
+                    street:
+                      type: string
+                    city:
+                      type: string
+```
+
+**Named type** creates a reusable schema:
+
+```yaml
+paths:
+  /orders:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                address:
+                  $ref: '#/components/schemas/Address'  # Reference
+
+components:
+  schemas:
+    Address:                            # Defined once
+      type: object
+      properties:
+        street:
+          type: string
+        city:
+          type: string
+```
+
+### TypeScript Output
+
+**Inline type:**
+
+```typescript
+export interface OrdersCreateRequest {
+  address?: {
+    street?: string;
+    city?: string;
+  };
+}
+```
+
+**Named type:**
+
+```typescript
+export interface Address {
+  street?: string;
+  city?: string;
+}
+
+export interface OrdersCreateRequest {
+  address?: Address;
+}
+```
+
+### When to Use Named Types
+
+Use named types when:
+
+- **Reusability**: The same structure appears in multiple places
+- **Documentation**: You want the type to appear in OpenAPI's `components/schemas`
+- **Client code**: You want a dedicated TypeScript interface or Zod schema
+- **Semantic meaning**: The type represents a domain concept (Address, Money, Coordinates)
+
+Use inline types when:
+
+- The structure is unique to one endpoint
+- You don't need to reference it elsewhere
+- It's a simple, one-off shape
+
+### Enums Follow the Same Pattern
+
+```ruby
+# Named enum - appears in components/schemas
+enum :status, values: %w[draft published archived]
+
+action :update do
+  request do
+    body do
+      param :status, type: :status  # References the enum
+    end
+  end
+end
+```
+
+```yaml
+# OpenAPI output
+components:
+  schemas:
+    Status:
+      type: string
+      enum: [archived, draft, published]
+```
+
+### Introspection
+
+Named types appear in the `types` section of introspection output:
+
+```json
+{
+  "types": {
+    "address": {
+      "type": "object",
+      "shape": {
+        "street": { "type": "string" },
+        "city": { "type": "string" }
+      }
+    }
+  },
+  "enums": {
+    "status": {
+      "values": ["archived", "draft", "published"]
+    }
+  }
+}
+```
+
+This makes them discoverable by tooling and client generators.
