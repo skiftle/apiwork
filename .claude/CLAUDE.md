@@ -318,14 +318,29 @@ Before writing documentation:
 
 ### Generated Output Examples
 
-When documentation includes generated output (Introspection, TypeScript, Zod, OpenAPI):
+**CRITICAL:** Documentation and `.playground/` must stay in sync — in BOTH directions.
 
+**Structure:**
+- Each documentation example has its own API definition in `.playground/config/apis/`
+- API file naming: `{doc_number}_{doc_name}_{example}.rb` (e.g. `02_core_concepts_contract.rb`)
+- Show COMPLETE output in docs, not excerpts
+
+**When writing/changing documentation:**
 1. Create/update example code in `.playground/`
-2. Run generators to get actual output
-3. Copy EXACT output to documentation
-4. NEVER invent or guess output formats
+2. Create dedicated API definition for the example
+3. Run generators to get COMPLETE output
+4. Copy EXACT full output to documentation
+5. NEVER invent, abbreviate, or guess output formats
 
-`.playground/` is a minimal Rails app for documentation examples. It is gitignored and can be updated freely.
+**When changing code that affects output formats:**
+1. Check if it affects Introspection, TypeScript, Zod, or OpenAPI output
+2. If yes: re-generate all examples from `.playground/`
+3. Update affected documentation with new output
+4. Include doc updates in the same commit
+
+`.playground/` is a minimal Rails app for documentation examples. Gitignored.
+
+**The rule:** Code changes that affect output formats → documentation updates in same commit.
 
 Style:
 - Pedagogical — teach, don't just describe

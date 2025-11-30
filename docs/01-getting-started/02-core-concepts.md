@@ -127,84 +127,6 @@ end
 
 If a request does not match the contract, Apiwork rejects it immediately. If a response does not match, Apiwork logs the mismatch in development mode.
 
-From these contract definitions, Apiwork generates typed output in multiple formats:
-
-<details>
-<summary>Introspection</summary>
-
-```json
-{
-  "type": "object",
-  "shape": {
-    "id": { "type": "uuid", "required": false },
-    "created_at": { "type": "datetime", "required": false },
-    "updated_at": { "type": "datetime", "required": false },
-    "number": { "type": "string", "required": false },
-    "issued_on": { "type": "date", "required": false },
-    "status": { "type": "string", "required": false },
-    "lines": { "type": "array", "required": false, "of": "line" }
-  }
-}
-```
-</details>
-
-<details>
-<summary>TypeScript</summary>
-
-```typescript
-export interface Invoice {
-  id?: string;
-  created_at?: string;
-  updated_at?: string;
-  number?: string;
-  issued_on?: string;
-  status?: string;
-  lines?: Line[];
-}
-```
-</details>
-
-<details>
-<summary>Zod</summary>
-
-```typescript
-export const InvoiceSchema = z.object({
-  id: z.uuid().optional(),
-  created_at: z.iso.datetime().optional(),
-  updated_at: z.iso.datetime().optional(),
-  number: z.string().optional(),
-  issued_on: z.iso.date().optional(),
-  status: z.string().optional(),
-  lines: z.array(LineSchema).optional()
-});
-```
-</details>
-
-<details>
-<summary>OpenAPI</summary>
-
-```yaml
-type: object
-properties:
-  id:
-    type: string
-  created_at:
-    type: string
-  updated_at:
-    type: string
-  number:
-    type: string
-  issued_on:
-    type: string
-  status:
-    type: string
-  lines:
-    type: array
-    items:
-      $ref: "#/components/schemas/line"
-```
-</details>
-
 ## Controllers
 
 Your controllers remain familiar. You keep your own logic, your own queries and service calls. The only changes are:
@@ -308,3 +230,277 @@ This lets Apiwork infer capabilities directly from the model.
 The API definition, contracts and schemas all feed into a unified metadata model. Because each piece builds on the same foundation, Apiwork can generate OpenAPI, Zod and TypeScript definitions that stay perfectly aligned with your server.
 
 Documentation, typed clients and server behaviour all come from the same source of truth — eliminating duplication and keeping the entire API consistent end-to-end.
+
+From the Invoice schema above, Apiwork generates the following typed output:
+
+<details>
+<summary>TypeScript</summary>
+
+```typescript
+export interface CursorPagination {
+  next_cursor?: null | string;
+  prev_cursor?: null | string;
+}
+
+export interface Invoice {
+  created_at?: string;
+  customer: null | object;
+  id?: unknown;
+  issued_on?: string;
+  lines: string[];
+  notes?: string;
+  number?: string;
+  status?: string;
+  updated_at?: string;
+}
+
+export interface InvoiceCreatePayload {
+  issued_on?: null | string;
+  lines?: string[];
+  notes?: null | string;
+  number: string;
+}
+
+export type InvoiceCustomerInclude = object;
+
+export interface InvoiceFilter {
+  _and?: InvoiceFilter[];
+  _not?: InvoiceFilter;
+  _or?: InvoiceFilter[];
+  number?: StringFilter | string;
+  status?: NullableStringFilter | string;
+}
+
+export interface InvoiceInclude {
+  customer?: InvoiceCustomerInclude;
+  lines?: InvoiceLineInclude;
+}
+
+export type InvoiceLineInclude = object;
+
+export interface InvoicePage {
+  number?: number;
+  size?: number;
+}
+
+export interface InvoiceSort {
+  created_at?: SortDirection;
+  issued_on?: SortDirection;
+  status?: SortDirection;
+  updated_at?: SortDirection;
+}
+
+export interface InvoiceUpdatePayload {
+  issued_on?: null | string;
+  lines?: string[];
+  notes?: null | string;
+  number?: string;
+}
+
+export interface InvoicesArchiveRequest {
+  query: InvoicesArchiveRequestQuery;
+}
+
+export interface InvoicesArchiveRequestQuery {
+  include?: InvoiceInclude;
+}
+
+export interface InvoicesArchiveResponse {
+  body: InvoicesArchiveResponseBody;
+}
+
+export type InvoicesArchiveResponseBody = { invoice: Invoice; meta?: object } | { issues: Issue[] };
+
+export interface InvoicesCreateRequest {
+  query: InvoicesCreateRequestQuery;
+  body: InvoicesCreateRequestBody;
+}
+
+export interface InvoicesCreateRequestBody {
+  invoice: InvoiceCreatePayload;
+}
+
+export interface InvoicesCreateRequestQuery {
+  include?: InvoiceInclude;
+}
+
+export interface InvoicesCreateResponse {
+  body: InvoicesCreateResponseBody;
+}
+
+export type InvoicesCreateResponseBody = { invoice: Invoice; meta?: object } | { issues: Issue[] };
+
+export interface InvoicesIndexRequest {
+  query: InvoicesIndexRequestQuery;
+}
+
+export interface InvoicesIndexRequestQuery {
+  filter?: InvoiceFilter | InvoiceFilter[];
+  include?: InvoiceInclude;
+  page?: InvoicePage;
+  sort?: InvoiceSort | InvoiceSort[];
+}
+
+export interface InvoicesIndexResponse {
+  body: InvoicesIndexResponseBody;
+}
+
+export type InvoicesIndexResponseBody = { invoices?: Invoice[]; meta?: object; pagination?: PagePagination } | { issues: Issue[] };
+
+export interface InvoicesShowRequest {
+  query: InvoicesShowRequestQuery;
+}
+
+export interface InvoicesShowRequestQuery {
+  include?: InvoiceInclude;
+}
+
+export interface InvoicesShowResponse {
+  body: InvoicesShowResponseBody;
+}
+
+export type InvoicesShowResponseBody = { invoice: Invoice; meta?: object } | { issues: Issue[] };
+
+export interface InvoicesUpdateRequest {
+  query: InvoicesUpdateRequestQuery;
+  body: InvoicesUpdateRequestBody;
+}
+
+export interface InvoicesUpdateRequestBody {
+  invoice: InvoiceUpdatePayload;
+}
+
+export interface InvoicesUpdateRequestQuery {
+  include?: InvoiceInclude;
+}
+
+export interface InvoicesUpdateResponse {
+  body: InvoicesUpdateResponseBody;
+}
+
+export type InvoicesUpdateResponseBody = { invoice: Invoice; meta?: object } | { issues: Issue[] };
+
+export interface Issue {
+  code: string;
+  detail: string;
+  field: string;
+  path: string[];
+}
+
+export interface NullableStringFilter {
+  contains?: string;
+  ends_with?: string;
+  eq?: string;
+  in?: string[];
+  null?: boolean;
+  starts_with?: string;
+}
+
+export interface PagePagination {
+  current: number;
+  items: number;
+  next?: null | number;
+  prev?: null | number;
+  total: number;
+}
+
+export type SortDirection = 'asc' | 'desc';
+
+export type SortDirectionFilter = SortDirection | { eq?: SortDirection; in?: SortDirection[] };
+
+export interface StringFilter {
+  contains?: string;
+  ends_with?: string;
+  eq?: string;
+  in?: string[];
+  starts_with?: string;
+}
+```
+</details>
+
+<details>
+<summary>Zod</summary>
+
+```typescript
+import { z } from 'zod';
+
+export const SortDirectionSchema = z.enum(['asc', 'desc']);
+
+export const CursorPaginationSchema = z.object({
+  next_cursor: z.string().nullable().optional(),
+  prev_cursor: z.string().nullable().optional()
+});
+
+export const InvoiceSchema = z.object({
+  created_at: z.iso.datetime().optional(),
+  customer: z.object({}).nullable(),
+  id: z.unknown().optional(),
+  issued_on: z.iso.date().optional(),
+  lines: z.array(z.string()),
+  notes: z.string().optional(),
+  number: z.string().optional(),
+  status: z.string().optional(),
+  updated_at: z.iso.datetime().optional()
+});
+
+export const InvoiceCreatePayloadSchema = z.object({
+  issued_on: z.iso.date().nullable().optional(),
+  lines: z.array(z.string()).optional(),
+  notes: z.string().nullable().optional(),
+  number: z.string()
+});
+
+export const InvoicePageSchema = z.object({
+  number: z.number().int().min(1).optional(),
+  size: z.number().int().min(1).max(100).optional()
+});
+
+export const InvoiceSortSchema = z.object({
+  created_at: SortDirectionSchema.optional(),
+  issued_on: SortDirectionSchema.optional(),
+  status: SortDirectionSchema.optional(),
+  updated_at: SortDirectionSchema.optional()
+});
+
+export const InvoiceUpdatePayloadSchema = z.object({
+  issued_on: z.iso.date().nullable().optional(),
+  lines: z.array(z.string()).optional(),
+  notes: z.string().nullable().optional(),
+  number: z.string().optional()
+});
+
+export const IssueSchema = z.object({
+  code: z.string(),
+  detail: z.string(),
+  field: z.string(),
+  path: z.array(z.string())
+});
+
+export const NullableStringFilterSchema = z.object({
+  contains: z.string().optional(),
+  ends_with: z.string().optional(),
+  eq: z.string().optional(),
+  in: z.array(z.string()).optional(),
+  null: z.boolean().optional(),
+  starts_with: z.string().optional()
+});
+
+export const PagePaginationSchema = z.object({
+  current: z.number().int(),
+  items: z.number().int(),
+  next: z.number().int().nullable().optional(),
+  prev: z.number().int().nullable().optional(),
+  total: z.number().int()
+});
+
+export const StringFilterSchema = z.object({
+  contains: z.string().optional(),
+  ends_with: z.string().optional(),
+  eq: z.string().optional(),
+  in: z.array(z.string()).optional(),
+  starts_with: z.string().optional()
+});
+
+// ... request/response schemas for each action
+```
+</details>
