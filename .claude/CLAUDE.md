@@ -318,49 +318,65 @@ Before writing documentation:
 
 ### External Example Files
 
-**CRITICAL:** Documentation examples and `.playground/` MUST stay in sync — always, in BOTH directions.
+**CRITICAL:** Documentation examples and `docs/app/` MUST stay in sync — always, in BOTH directions.
 
-All documentation examples live in `docs/examples/<resource>/<action>/` with these files:
+Each example is isolated in its own namespace with a unique name (mood + animal, e.g., `eager_lion`).
+
+All documentation examples live in `docs/examples/<namespace>/` with these files:
 - `output.json` - example response
 - `introspection.json` - introspection data
 - `typescript.ts` - generated TypeScript types
 - `zod.ts` - generated Zod schemas
 - `openapi.yml` - OpenAPI spec
 
-Markdown documents link to these files with relative paths.
+### Namespace Naming Conventions
 
-### Playground Namespacing
+| Context | Format | Example |
+|---------|--------|---------|
+| Ruby namespace | PascalCase | `EagerLion::Invoice` |
+| App folder | snake_case | `app/models/eager_lion/` |
+| API mount path | dash-case | `/eager-lion` |
+| Examples folder | dash-case | `docs/examples/eager-lion/` |
+| Table name | snake_case prefix | `eager_lion_invoices` |
 
-Each doc example is completely isolated in `.playground/` using Ruby namespaces:
+### Directory Structure
 
-| Doc Path | Ruby Namespace | API Mount | Tables |
-|----------|----------------|-----------|--------|
-| `docs/.../02-core-concepts.md` | `Docs::CoreConcepts` | `/docs/core-concepts` | `docs_core_concepts_*` |
-
-**Directory structure:**
-- Models: `.playground/app/models/docs/{section}/`
-- Schemas: `.playground/app/schemas/docs/{section}/`
-- Contracts: `.playground/app/contracts/docs/{section}/`
-- APIs: `.playground/config/apis/{doc_name}.rb`
+```
+docs/
+├── app/                              # Rails app for generating examples
+│   ├── app/
+│   │   ├── models/eager_lion/
+│   │   ├── schemas/eager_lion/
+│   │   └── contracts/eager_lion/
+│   ├── config/apis/eager_lion.rb
+│   └── db/migrate/
+└── examples/
+    └── eager-lion/                   # Generated output (dasherized)
+        ├── output.json
+        ├── introspection.json
+        ├── typescript.ts
+        ├── zod.ts
+        └── openapi.yml
+```
 
 ### Generating Examples
 
-Run `rake docs:generate` from `.playground/` to regenerate all example files:
+Run `rake docs:generate` from `docs/app/` to regenerate all example files:
 
 ```bash
-cd .playground && RAILS_ENV=test rake docs:generate
+cd docs/app && RAILS_ENV=test rake docs:generate
 ```
 
-This regenerates all files in `docs/examples/` from the playground API. Run this after every change that affects output formats.
+This regenerates all files in `docs/examples/` from the playground APIs. Run this after every change that affects output formats.
 
 ### Synchronization Rules
 
 **ALWAYS keep these in sync. This is non-negotiable.**
 
 **When writing or changing documentation:**
-1. Create/update corresponding code in `.playground/`
+1. Create/update corresponding code in `docs/app/`
 2. Run `rake docs:generate` to produce REAL output
-3. Verify files in `docs/examples/<resource>/<action>/`
+3. Verify files in `docs/examples/<namespace>/`
 4. Link from markdown with relative paths
 5. NEVER invent, abbreviate, or guess output
 
@@ -370,7 +386,7 @@ This regenerates all files in `docs/examples/` from the playground API. Run this
 3. Include updated `docs/examples/` files in the SAME commit
 
 **The fundamental rule:**
-Code → playground → `rake docs:generate` → docs/examples/ → markdown links.
+Code → docs/app → `rake docs:generate` → docs/examples/ → markdown links.
 They are ONE system. Change one, change all. Same commit. No exceptions.
 
 Style:

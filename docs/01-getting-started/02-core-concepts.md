@@ -237,22 +237,22 @@ From the Invoice schema above, Apiwork generates typed output for TypeScript, Zo
 
 View the complete generated files:
 
-- [Output Example](../examples/invoices/index/output.json) - Example API response
-- [Introspection](../examples/invoices/index/introspection.json) - Full introspection data
-- [TypeScript](../examples/invoices/index/typescript.ts) - Generated TypeScript types
-- [Zod](../examples/invoices/index/zod.ts) - Generated Zod schemas
-- [OpenAPI](../examples/invoices/index/openapi.yml) - OpenAPI specification
+- [Output Example](../examples/eager-lion/output.json) - Example API response
+- [Introspection](../examples/eager-lion/introspection.json) - Full introspection data
+- [TypeScript](../examples/eager-lion/typescript.ts) - Generated TypeScript types
+- [Zod](../examples/eager-lion/zod.ts) - Generated Zod schemas
+- [OpenAPI](../examples/eager-lion/openapi.yml) - OpenAPI specification
 
 <details>
 <summary>Show TypeScript types</summary>
 
-<!-- See ../examples/invoices/index/typescript.ts for full source -->
+<!-- See ../examples/eager-lion/typescript.ts for full source -->
 
 </details>
 
 <details>
 <summary>Show Zod schemas</summary>
 
-<!-- See ../examples/invoices/index/zod.ts for full source -->
+<!-- See ../examples/eager-lion/zod.ts for full source -->
 
 </details>

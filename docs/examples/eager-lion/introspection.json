@@ -1,0 +1,223 @@
+{
+  "path": "/eager-lion",
+  "info": {},
+  "types": {
+    "cursor_pagination": {
+      "type": "object",
+      "shape": {
+        "next_cursor": {
+          "type": "string",
+          "required": false,
+          "nullable": true,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "prev_cursor": {
+          "type": "string",
+          "required": false,
+          "nullable": true,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        }
+      },
+      "description": null,
+      "example": null,
+      "format": null,
+      "deprecated": false
+    },
+    "issue": {
+      "type": "object",
+      "shape": {
+        "code": {
+          "type": "string",
+          "required": true,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "detail": {
+          "type": "string",
+          "required": true,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "field": {
+          "type": "string",
+          "required": true,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "path": {
+          "type": "array",
+          "required": true,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null,
+          "of": "string"
+        }
+      },
+      "description": null,
+      "example": null,
+      "format": null,
+      "deprecated": false
+    },
+    "page_pagination": {
+      "type": "object",
+      "shape": {
+        "current": {
+          "type": "integer",
+          "required": true,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "items": {
+          "type": "integer",
+          "required": true,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "next": {
+          "type": "integer",
+          "required": false,
+          "nullable": true,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "prev": {
+          "type": "integer",
+          "required": false,
+          "nullable": true,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        },
+        "total": {
+          "type": "integer",
+          "required": true,
+          "nullable": false,
+          "description": null,
+          "example": null,
+          "format": null,
+          "deprecated": false,
+          "min": null,
+          "max": null
+        }
+      },
+      "description": null,
+      "example": null,
+      "format": null,
+      "deprecated": false
+    }
+  },
+  "enums": {},
+  "resources": {
+    "invoices": {
+      "path": "invoices",
+      "summary": "Invoices",
+      "description": "Operations for managing invoices.",
+      "tags": [
+        "Invoices"
+      ],
+      "actions": {
+        "index": {
+          "method": "get",
+          "path": "/",
+          "summary": "List invoices",
+          "description": null,
+          "tags": null,
+          "deprecated": null,
+          "operation_id": null
+        },
+        "show": {
+          "method": "get",
+          "path": "/:id",
+          "summary": "Get invoice",
+          "description": null,
+          "tags": null,
+          "deprecated": null,
+          "operation_id": null
+        },
+        "create": {
+          "method": "post",
+          "path": "/",
+          "summary": "Create invoice",
+          "description": null,
+          "tags": null,
+          "deprecated": null,
+          "operation_id": null
+        },
+        "update": {
+          "method": "patch",
+          "path": "/:id",
+          "summary": "Update invoice",
+          "description": null,
+          "tags": null,
+          "deprecated": null,
+          "operation_id": null
+        },
+        "destroy": {
+          "method": "delete",
+          "path": "/:id",
+          "summary": "Delete invoice",
+          "description": null,
+          "tags": null,
+          "deprecated": null,
+          "operation_id": null
+        },
+        "archive": {
+          "method": "patch",
+          "path": "/:id/archive",
+          "summary": "Archive invoice",
+          "description": null,
+          "tags": null,
+          "deprecated": null,
+          "operation_id": null
+        }
+      }
+    }
+  },
+  "error_codes": []
+}
