@@ -213,7 +213,9 @@ module Apiwork
           end
 
           schemas = collect_all_schemas
-          schema_data = adapter.build_schema_data(schemas)
+          has_resources = @metadata.resources.any?
+          has_index_actions = any_index_actions?(@metadata.resources)
+          schema_data = adapter.build_schema_data(schemas, has_resources:, has_index_actions:)
           type_registrar = adapter.build_api_type_registrar(self)
           adapter.register_api_types(type_registrar, schema_data)
         end
@@ -291,6 +293,18 @@ module Apiwork
           when :destroy then :delete
           else :get
           end
+        end
+
+        def any_index_actions?(resources)
+          resources.any? do |_, resource_data|
+            resource_has_index?(resource_data)
+          end
+        end
+
+        def resource_has_index?(resource_data)
+          return true if resource_data[:only]&.include?(:index)
+
+          resource_data[:resources]&.any? { |_, nested| resource_has_index?(nested) }
         end
       end
     end

@@ -6,13 +6,23 @@ module Apiwork
       attr_reader :filterable_types,
                   :nullable_filterable_types
 
-      def initialize(schemas)
+      def initialize(schemas, has_resources: false, has_index_actions: false)
         @filterable_types, @nullable_filterable_types = extract_filterable_type_variants(schemas)
         @sortable = check_sortable(schemas)
+        @has_resources = has_resources
+        @has_index_actions = has_index_actions
       end
 
       def sortable?
         @sortable
+      end
+
+      def has_resources?
+        @has_resources
+      end
+
+      def has_index_actions?
+        @has_index_actions
       end
 
       private
