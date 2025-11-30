@@ -2017,3 +2017,9 @@ Generating documentation examples...
   Generating: happy-zebra/
   Generating: lazy-cow/
 Done!
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+Generating documentation examples...
+  Generating: eager-lion/
+  Generating: happy-zebra/
+  Generating: lazy-cow/
+Done!
