@@ -343,25 +343,34 @@ Each doc example is completely isolated in `.playground/` using Ruby namespaces:
 - Contracts: `.playground/app/contracts/docs/{section}/`
 - APIs: `.playground/config/apis/{doc_name}.rb`
 
+### Generating Examples
+
+Run `rake docs:generate` from `.playground/` to regenerate all example files:
+
+```bash
+cd .playground && RAILS_ENV=test rake docs:generate
+```
+
+This regenerates all files in `docs/examples/` from the playground API. Run this after every change that affects output formats.
+
 ### Synchronization Rules
 
 **ALWAYS keep these in sync. This is non-negotiable.**
 
 **When writing or changing documentation:**
 1. Create/update corresponding code in `.playground/`
-2. Run generators to produce REAL output
-3. Save output to `docs/examples/<resource>/<action>/`
+2. Run `rake docs:generate` to produce REAL output
+3. Verify files in `docs/examples/<resource>/<action>/`
 4. Link from markdown with relative paths
 5. NEVER invent, abbreviate, or guess output
 
 **When changing code that affects output formats:**
 1. Check if it affects Introspection, TypeScript, Zod, or OpenAPI
-2. If yes: regenerate ALL examples from `.playground/`
-3. Update ALL files in `docs/examples/`
-4. Include updates in the SAME commit
+2. Run `rake docs:generate` to regenerate ALL examples
+3. Include updated `docs/examples/` files in the SAME commit
 
 **The fundamental rule:**
-Code → playground → docs/examples/ → markdown links.
+Code → playground → `rake docs:generate` → docs/examples/ → markdown links.
 They are ONE system. Change one, change all. Same commit. No exceptions.
 
 Style:
