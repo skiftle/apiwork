@@ -183,12 +183,12 @@ When you define a custom type or enum, it becomes a **named type** in your gener
 ### The Difference
 
 Consider two ways to define the same data. These examples use two playground APIs:
-- [grumpy-panda](../examples/grumpy-panda/) uses inline types
-- [friendly-tiger](../examples/friendly-tiger/) uses named types
+- [grumpy-panda](../examples/grumpy-panda/openapi.yml) uses inline types
+- [friendly-tiger](../examples/friendly-tiger/openapi.yml) uses named types
 
 <!-- example: grumpy-panda -->
 
-**Inline type** ([grumpy-panda](../examples/grumpy-panda/)):
+**Inline type** ([grumpy-panda](../examples/grumpy-panda/openapi.yml)):
 
 ```ruby
 # docs/app/app/contracts/grumpy_panda/order_contract.rb
@@ -208,7 +208,7 @@ end
 
 <!-- example: friendly-tiger -->
 
-**Named type** ([friendly-tiger](../examples/friendly-tiger/)):
+**Named type** ([friendly-tiger](../examples/friendly-tiger/openapi.yml)):
 
 ```ruby
 # docs/app/app/contracts/friendly_tiger/order_contract.rb
@@ -304,7 +304,7 @@ Use inline types when:
 
 ### Enums Follow the Same Pattern
 
-Named enums are expanded inline in OpenAPI. See [friendly-tiger](../examples/friendly-tiger/):
+Named enums are expanded inline in OpenAPI. See [friendly-tiger](../examples/friendly-tiger/openapi.yml):
 
 ```ruby
 enum :priority, values: %w[low normal high urgent]
@@ -326,5 +326,5 @@ priority:
 Named types appear in the `types` and `enums` sections of introspection output, making them discoverable by tooling and client generators.
 
 See the generated examples:
-- [grumpy-panda/](../examples/grumpy-panda/) - inline types
-- [friendly-tiger/](../examples/friendly-tiger/) - named types
+- [grumpy-panda](../examples/grumpy-panda/openapi.yml) - inline types
+- [friendly-tiger](../examples/friendly-tiger/openapi.yml) - named types

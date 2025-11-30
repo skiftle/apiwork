@@ -2,7 +2,7 @@
 
 The type system is the heart of Apiwork. Every request, response, filter, sort, and payload flows through it. Define a type once, use it everywhere — in contracts, schemas, and generated client code.
 
-## [Types](./02-types.md)
+## [Types](./06-types.md)
 
 Types are reusable structures:
 
@@ -30,7 +30,7 @@ export const AddressSchema = z.object({
 });
 ```
 
-## [Enums](./05-enums.md)
+## [Enums](./02-enums.md)
 
 Enums restrict values to a predefined set:
 

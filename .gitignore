@@ -31,5 +31,7 @@
 /.claude/*.local.json
 /.claude/plans/
 
-# Playground - documentation examples
-/.playground/
+
+docs/node_modules
+docs/.vitepress/cache
+docs/.vitepress/dist
