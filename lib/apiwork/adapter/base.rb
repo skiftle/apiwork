@@ -42,8 +42,8 @@ module Apiwork
         ContractTypeRegistrar.new(contract_class)
       end
 
-      def build_schema_data(schemas)
-        SchemaData.new(schemas)
+      def build_schema_data(schemas, has_resources: false, has_index_actions: false)
+        SchemaData.new(schemas, has_resources:, has_index_actions:)
       end
     end
   end

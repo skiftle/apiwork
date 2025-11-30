@@ -12,7 +12,8 @@ module Apiwork
           @type_registrar = type_registrar
           @schema_data = schema_data
 
-          register_base_types
+          register_pagination_types if schema_data.has_index_actions?
+          register_issue_type if schema_data.has_resources?
           register_global_filter_types if schema_data.filterable_types.any?
           register_sort_direction if schema_data.sortable?
         end
@@ -22,7 +23,7 @@ module Apiwork
         attr_reader :type_registrar,
                     :schema_data
 
-        def register_base_types
+        def register_pagination_types
           type_registrar.type :page_pagination do
             param :current, type: :integer, required: true
             param :next, type: :integer, nullable: true
@@ -35,7 +36,9 @@ module Apiwork
             param :next_cursor, type: :string, nullable: true
             param :prev_cursor, type: :string, nullable: true
           end
+        end
 
+        def register_issue_type
           type_registrar.type :issue do
             param :code, type: :string, required: true
             param :field, type: :string, required: true
