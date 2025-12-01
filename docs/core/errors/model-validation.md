@@ -4,11 +4,16 @@ order: 3
 
 # Model Validation
 
-When ActiveRecord validations fail, Apiwork converts them into the same issue format used by contract errors. This gives clients a unified error structure regardless of where validation happened.
+When you use a schema with the built-in adapter, ActiveRecord validation errors are automatically converted into Issues — the same format used by contract errors. Your API returns a consistent error shape whether the failure comes from contract validation, model validation, or nested associations.
 
-## How It Works
+This feature requires:
+- A schema attached to your contract (`schema!`)
+- The built-in Apiwork adapter (default)
+- ActiveRecord models
 
-When `respond_with` receives a record with validation errors, Apiwork intercepts the response:
+## Automatic Error Handling
+
+Pass a record to `respond_with`. If it has validation errors, the adapter handles everything:
 
 ```ruby
 def create
@@ -17,42 +22,18 @@ def create
 end
 ```
 
-If `Invoice.create` fails validation, Apiwork:
+That's it. If `Invoice.create` fails validation:
 
-1. Detects that `invoice.errors` is not empty
-2. Converts each Rails error into an Issue
-3. Raises a `ValidationError` with those issues
-4. The controller concern catches it and renders a 422 response
+1. The adapter detects `invoice.errors` is not empty
+2. Each Rails error becomes an Issue with path, code, and metadata
+3. A `ValidationError` is raised
+4. The controller renders a 422 response with all issues
 
-You don't need to check `invoice.valid?` or handle errors manually — `respond_with` does it automatically.
+No manual error checking. No conditional rendering. The adapter does the work.
 
-## Error Conversion
+## The Issue Format
 
-Rails validation errors map to Apiwork issues:
-
-| Rails Error | Issue Code | Detail |
-|-------------|------------|--------|
-| `blank` | `:blank` | "can't be blank" |
-| `too_short` | `:too_short` | "is too short (minimum is X characters)" |
-| `too_long` | `:too_long` | "is too long (maximum is X characters)" |
-| `invalid` | `:invalid` | "is invalid" |
-| `taken` | `:taken` | "has already been taken" |
-| `greater_than` | `:greater_than` | "must be greater than X" |
-| `less_than` | `:less_than` | "must be less than X" |
-
-The `code` comes directly from Rails' error type. The `detail` is the human-readable message.
-
-## Path Building
-
-Paths are built from the schema's root key:
-
-```ruby
-class InvoiceSchema < Apiwork::Schema::Base
-  attribute :number, writable: true
-end
-```
-
-A validation error on `number`:
+Every validation error becomes an Issue:
 
 ```json
 {
@@ -64,16 +45,36 @@ A validation error on `number`:
 }
 ```
 
-The root key (`invoice`) comes from the schema class name, matching the request body structure.
+| Field | Source |
+|-------|--------|
+| `code` | Rails error type (`:blank`, `:too_short`, `:taken`, etc.) |
+| `detail` | The human-readable message from Rails |
+| `path` | Array built from schema root key + attribute name |
+| `pointer` | JSON Pointer derived from path |
+| `meta` | Validation constraints and context |
 
-## Metadata
+## Rails Error Mapping
 
-Rails validation options are preserved in the `meta` field:
+Rails validation types map directly to issue codes:
+
+| Rails Validation | Issue Code | Example Detail |
+|-----------------|------------|----------------|
+| `presence: true` | `blank` | "can't be blank" |
+| `uniqueness: true` | `taken` | "has already been taken" |
+| `length: { minimum: 3 }` | `too_short` | "is too short (minimum is 3 characters)" |
+| `length: { maximum: 100 }` | `too_long` | "is too long (maximum is 100 characters)" |
+| `numericality: { greater_than: 0 }` | `greater_than` | "must be greater than 0" |
+| `numericality: { less_than: 100 }` | `less_than` | "must be less than 100" |
+| `format: { with: /.../ }` | `invalid` | "is invalid" |
+| `inclusion: { in: [...] }` | `inclusion` | "is not included in the list" |
+
+## Rich Metadata
+
+Validation constraints are preserved in `meta`:
 
 ```ruby
 class Invoice < ApplicationRecord
   validates :number, length: { minimum: 3, maximum: 50 }
-  validates :total, numericality: { greater_than: 0 }
 end
 ```
 
@@ -83,11 +84,17 @@ end
   "detail": "is too short (minimum is 3 characters)",
   "path": ["invoice", "number"],
   "pointer": "/invoice/number",
-  "meta": { "attribute": "number", "minimum": 3, "count": 2 }
+  "meta": {
+    "attribute": "number",
+    "minimum": 3,
+    "count": 1
+  }
 }
 ```
 
-Available metadata fields:
+The `count` field shows the actual length. Clients can use this to build precise feedback: "1 character entered, 3 required."
+
+Available metadata by validation type:
 
 | Validation | Meta Fields |
 |------------|-------------|
@@ -95,32 +102,44 @@ Available metadata fields:
 | `length: { maximum: X }` | `maximum`, `count` |
 | `length: { is: X }` | `is`, `count` |
 | `length: { in: X..Y }` | `in`, `count` |
-| `numericality: { greater_than: X }` | `count` |
+| `numericality` | `count` (the actual value) |
 | `inclusion: { in: [...] }` | `in` |
+
+## Path Building
+
+Paths start with the schema's root key — derived from the schema class name:
+
+```ruby
+class InvoiceSchema < Apiwork::Schema::Base
+  attribute :number, writable: true
+end
+```
+
+`InvoiceSchema` → root key `invoice` → path `["invoice", "number"]`
+
+This matches your request body structure exactly. The client sent `{ "invoice": { "number": "" } }`, and the error points to `["invoice", "number"]`.
 
 ## Nested Associations
 
-The real power emerges with nested saves. When a parent and its associations save together, errors from any level are collected with accurate paths.
+The real power: validation errors from nested records include their full path with array indexes.
 
-Given these models:
+Models:
 
 ```ruby
 class Invoice < ApplicationRecord
   has_many :lines
   accepts_nested_attributes_for :lines
-
   validates :number, presence: true
 end
 
 class Line < ApplicationRecord
   belongs_to :invoice
-
-  validates :quantity, numericality: { greater_than: 0 }
   validates :description, presence: true
+  validates :quantity, numericality: { greater_than: 0 }
 end
 ```
 
-And schemas with `writable: true`:
+Schemas:
 
 ```ruby
 class InvoiceSchema < Apiwork::Schema::Base
@@ -134,7 +153,7 @@ class LineSchema < Apiwork::Schema::Base
 end
 ```
 
-A request that violates multiple validations:
+Request with multiple errors:
 
 ```json
 {
@@ -148,7 +167,7 @@ A request that violates multiple validations:
 }
 ```
 
-Returns errors with precise paths:
+Response:
 
 ```json
 {
@@ -178,48 +197,39 @@ Returns errors with precise paths:
 }
 ```
 
-The path `["invoice", "lines", 1, "quantity"]` tells the client exactly which line failed — the second one (index 1).
+The path `["invoice", "lines", 1, "quantity"]` tells the client: second line item (index 1), quantity field. A form can highlight exactly the right input.
 
 ## Association Types
 
-Errors are collected from all association types:
-
 ### has_many
 
-Each record is indexed:
+Each record gets its index in the path:
 
-```json
-{
-  "path": ["invoice", "lines", 2, "quantity"],
-  "pointer": "/invoice/lines/2/quantity"
-}
+```
+["invoice", "lines", 0, "description"]
+["invoice", "lines", 1, "description"]
+["invoice", "lines", 2, "description"]
 ```
 
 ### has_one
 
-The association name appears directly:
+The association name appears directly (no index):
 
-```json
-{
-  "path": ["user", "profile", "bio"],
-  "pointer": "/user/profile/bio"
-}
+```
+["user", "profile", "bio"]
 ```
 
 ### belongs_to
 
 Foreign key errors use the `_id` suffix:
 
-```json
-{
-  "path": ["line", "invoice_id"],
-  "pointer": "/line/invoice_id"
-}
+```
+["line", "invoice_id"]
 ```
 
-## Deep Nesting
+## Unlimited Depth
 
-Validation works recursively through any depth. If invoices have lines, and lines have adjustments:
+The adapter walks associations recursively. Three levels deep? No problem:
 
 ```ruby
 class Line < ApplicationRecord
@@ -232,41 +242,50 @@ class Adjustment < ApplicationRecord
 end
 ```
 
-An error three levels deep:
+Error path:
 
 ```json
 {
-  "code": "blank",
-  "detail": "can't be blank",
   "path": ["invoice", "lines", 0, "adjustments", 2, "reason"],
-  "pointer": "/invoice/lines/0/adjustments/2/reason",
-  "meta": { "attribute": "reason" }
+  "pointer": "/invoice/lines/0/adjustments/2/reason"
 }
 ```
 
-## Enabling Nested Validation
+First line, third adjustment, reason field.
 
-For nested validation to work, mark associations as `writable: true` in the schema:
+## Requirements
 
-```ruby
-class InvoiceSchema < Apiwork::Schema::Base
-  has_many :lines, writable: true
-end
-```
+For nested validation to work:
 
-Without `writable: true`, the association won't accept nested attributes and validation errors won't be collected from it.
+1. **Schema association marked writable:**
+   ```ruby
+   has_many :lines, writable: true
+   ```
+
+2. **Model accepts nested attributes:**
+   ```ruby
+   accepts_nested_attributes_for :lines
+   ```
+
+Without `writable: true`, the association won't accept nested input and errors won't be collected.
 
 ## HTTP Status
 
-Model validation errors return **422 Unprocessable Entity**. This indicates the request was well-formed (passed contract validation) but couldn't be processed due to business rules.
+Model validation errors return **422 Unprocessable Entity**.
 
-## ActiveRecord Adapter
+- **400 Bad Request** → Contract error (malformed request)
+- **422 Unprocessable Entity** → Validation error (business rules failed)
 
-This behavior is provided by the built-in ActiveRecord adapter. The adapter:
+The request was syntactically correct (passed contract validation) but semantically invalid (failed model validation).
 
-1. Detects when a record has errors after save
-2. Walks through the record's associations
+## Built-in Adapter Only
+
+This automatic validation-to-issue conversion is provided by the built-in Apiwork adapter. It:
+
+1. Checks if the record has errors before rendering
+2. Walks `has_many` and `has_one` associations
 3. Recursively collects errors from nested records
-4. Builds accurate paths using association names and indexes
+4. Builds paths using association names and array indexes
+5. Raises `ValidationError` with all collected issues
 
-If you're using a custom adapter, you may need to implement similar logic for your ORM.
+If you implement a custom adapter for a different ORM, you'll need to provide equivalent logic for your persistence layer.

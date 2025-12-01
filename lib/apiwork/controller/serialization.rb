@@ -36,16 +36,8 @@ module Apiwork
         if data.is_a?(Enumerable)
           adapter.render_collection(data, schema_class, build_action_data(meta))
         else
-          validate_record_errors!(data, schema_class)
           adapter.render_record(data, schema_class, build_action_data(meta))
         end
-      end
-
-      def validate_record_errors!(record, schema_class)
-        return unless record.respond_to?(:errors) && record.errors.any?
-
-        validation_adapter = ValidationAdapter.new(record, schema_class: schema_class)
-        raise ValidationError, validation_adapter.convert
       end
 
       def build_action_data(meta = {})
