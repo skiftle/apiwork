@@ -8,7 +8,7 @@ Apiwork is built around three central components: the API definition, the contra
 
 ## API Definition
 
-The API definition acts similarly to Rails’ `routes.rb`, but focuses on the logical API structure rather than URL routing alone. It defines the resource tree and connects each resource to its contract and controller.
+The API definition acts similarly to Rails' `routes.rb`, but focuses on the logical API structure rather than URL routing alone. It defines the resource tree and connects each resource to its contract and controller.
 
 ```ruby
 # config/apis/v1.rb
@@ -109,7 +109,7 @@ def set_invoice
 end
 ```
 
-Apiwork doesn’t change how you write controllers — it simply guarantees that whatever enters or leaves them matches the contract.
+Apiwork doesn't change how you write controllers — it simply guarantees that whatever enters or leaves them matches the contract.
 
 ## Schemas
 

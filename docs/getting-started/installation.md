@@ -92,5 +92,5 @@ curl http://localhost:3000/api/v1/.spec/openapi
 
 ## Next Steps
 
-- [Architecture](./architecture.md) - understand how the pieces fit together
+- [Execution Layer](./execution-layer.md) - understand how the pieces fit together
 - [Quick Start](./quick-start.md) - build a complete endpoint
