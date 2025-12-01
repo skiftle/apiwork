@@ -3,7 +3,13 @@
 module Apiwork
   module Adapter
     class Apiwork < Base
-      class ValidationAdapter
+      class RecordValidator
+        attr_reader :schema_class
+
+        def self.validate(record, schema_class:)
+          new(record, schema_class:).validate
+        end
+
         def initialize(record, schema_class: nil, root_path: nil)
           @record = record
           @schema_class = schema_class
@@ -13,18 +19,22 @@ module Apiwork
                        elsif @schema_class
                          build_root_path(@schema_class)
                        else
-                         [:data] # Default fallback
+                         [:data]
                        end
         end
 
-        def convert
-          return [] unless @record.respond_to?(:errors)
+        def validate
+          return unless @record.respond_to?(:errors) && @record.errors.any?
 
-          errors = []
-          errors.concat(convert_attribute_errors)
-          errors.concat(convert_association_errors_of_type(:has_many))
-          errors.concat(convert_association_errors_of_type(:has_one))
-          errors
+          raise ValidationError, issues
+        end
+
+        def issues
+          result = []
+          result.concat(attribute_issues)
+          result.concat(association_issues(:has_many))
+          result.concat(association_issues(:has_one))
+          result
         end
 
         private
@@ -34,7 +44,7 @@ module Apiwork
           [type_key.to_sym]
         end
 
-        def convert_attribute_errors
+        def attribute_issues
           return [] unless @record.errors.any?
 
           @record.errors.filter_map do |error|
@@ -48,12 +58,12 @@ module Apiwork
 
             path = [@root_path, attribute_name].flatten
 
-            issue(error, path: path)
+            issue(error, path:)
           end
         end
 
-        def convert_association_errors_of_type(association_type)
-          errors = []
+        def association_issues(association_type)
+          result = []
 
           @record.class.reflect_on_all_associations(association_type).each do |association|
             associated = @record.send(association.name)
@@ -79,12 +89,12 @@ module Apiwork
                                    [@root_path, association.name].flatten
                                  end
 
-              converter = self.class.new(item, root_path: association_path)
-              errors.concat(converter.convert)
+              validator = self.class.new(item, root_path: association_path)
+              result.concat(validator.issues)
             end
           end
 
-          errors
+          result
         end
 
         def belongs_to?(attribute)
@@ -106,8 +116,8 @@ module Apiwork
           Issue.new(
             code: rails_error.type,
             detail: rails_error.message,
-            path: path,
-            meta: meta
+            path:,
+            meta:
           )
         end
       end

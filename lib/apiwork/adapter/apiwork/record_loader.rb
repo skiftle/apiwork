@@ -17,8 +17,6 @@ module Apiwork
         end
 
         def load
-          validate_errors!
-
           return @record unless @record.is_a?(ActiveRecord::Base)
 
           includes_param = @query[:include]
@@ -32,13 +30,6 @@ module Apiwork
         end
 
         private
-
-        def validate_errors!
-          return unless @record.respond_to?(:errors) && @record.errors.any?
-
-          adapter = ValidationAdapter.new(@record, schema_class: @schema_class)
-          raise ValidationError, adapter.convert
-        end
 
         def build_includes_hash(includes_param)
           IncludesResolver.new(schema: schema_class).build(
