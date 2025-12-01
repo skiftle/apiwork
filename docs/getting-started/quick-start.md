@@ -11,112 +11,76 @@ This guide walks you through building a complete API endpoint with validation, s
 We'll create a Posts API with:
 - List posts with filtering and pagination
 - Create posts with validation
-- Auto-generated OpenAPI spec
+- Auto-generated OpenAPI, TypeScript, and Zod specs
 
-## 1. Database Setup
+## 1. Database & Model
 
-```ruby
-# db/migrate/xxx_create_posts.rb
-class CreatePosts < ActiveRecord::Migration[8.0]
-  def change
-    create_table :posts do |t|
-      t.string :title, null: false
-      t.text :body
-      t.string :status, default: 'draft'
-      t.timestamps
-    end
-  end
-end
-```
+<<< @/app/db/migrate/20251201000001_create_swift_fox_tables.rb
 
-```ruby
-# app/models/post.rb
-class Post < ApplicationRecord
-  enum :status, { draft: 'draft', published: 'published', archived: 'archived' }
-
-  validates :title, presence: true
-end
-```
+<<< @/app/app/models/swift_fox/post.rb
 
 ## 2. API Definition
 
-```ruby
-# config/apis/v1.rb
-Apiwork::API.draw '/api/v1' do
-  resources :posts
+<<< @/app/config/apis/swift_fox.rb
 
-  spec :openapi
-  spec :typescript
-end
-```
+## 3. Routes
 
-## 3. Schema
+Mount Apiwork routes in your Rails application:
+
+<<< @/app/config/routes.rb
+
+## 4. Schema
 
 The schema defines how your model is serialized and what can be filtered/sorted:
 
-```ruby
-# app/schemas/api/v1/post_schema.rb
-class Api::V1::PostSchema < Apiwork::Schema::Base
-  attribute :id
-  attribute :title, writable: true, filterable: true
-  attribute :body, writable: true
-  attribute :status, writable: true, filterable: true, sortable: true
-  attribute :created_at, sortable: true
-  attribute :updated_at
-end
-```
+<<< @/app/app/schemas/swift_fox/post_schema.rb
 
-## 4. Contract
+## 5. Contract
 
 The contract imports the schema and can add action-specific rules:
 
-```ruby
-# app/contracts/api/v1/post_contract.rb
-class Api::V1::PostContract < Apiwork::Contract::Base
-  schema!
-end
-```
+<<< @/app/app/contracts/swift_fox/post_contract.rb
 
 `schema!` imports all attributes from PostSchema. The contract now knows:
 - What fields are writable (for create/update)
 - What fields are filterable/sortable (for index)
 - The types of all fields (for validation)
 
-## 5. Controller
+## 6. Controller
 
 ```ruby
-# app/controllers/api/v1/posts_controller.rb
-class Api::V1::PostsController < ApplicationController
+# app/controllers/swift_fox/posts_controller.rb
+class SwiftFox::PostsController < ApplicationController
   include Apiwork::Controller::Concern
 
   def index
-    respond_with Post.all
+    respond_with SwiftFox::Post.all
   end
 
   def show
-    respond_with Post.find(params[:id])
+    respond_with SwiftFox::Post.find(params[:id])
   end
 
   def create
-    post = Post.create!(contract.body[:post])
+    post = SwiftFox::Post.create!(contract.body[:post])
     respond_with post, status: :created
   end
 
   def update
-    post = Post.find(params[:id])
+    post = SwiftFox::Post.find(params[:id])
     post.update!(contract.body[:post])
     respond_with post
   end
 
   def destroy
-    post = Post.find(params[:id])
+    post = SwiftFox::Post.find(params[:id])
     post.destroy!
     head :no_content
   end
 end
 ```
 
-## 6. Try It Out
+## 7. Try It Out
 
 Start the server:
 
@@ -127,7 +91,7 @@ rails server
 ### Create a post
 
 ```bash
-curl -X POST http://localhost:3000/api/v1/posts \
+curl -X POST http://localhost:3000/swift-fox/posts \
   -H "Content-Type: application/json" \
   -d '{"post": {"title": "Hello World", "body": "My first post"}}'
 ```
@@ -136,22 +100,24 @@ curl -X POST http://localhost:3000/api/v1/posts \
 
 ```bash
 # All posts
-curl http://localhost:3000/api/v1/posts
+curl http://localhost:3000/swift-fox/posts
 
 # Filter by status
-curl "http://localhost:3000/api/v1/posts?filter[status][eq]=published"
+curl "http://localhost:3000/swift-fox/posts?filter[status][eq]=published"
 
 # Sort by created_at descending
-curl "http://localhost:3000/api/v1/posts?sort[created_at]=desc"
+curl "http://localhost:3000/swift-fox/posts?sort[created_at]=desc"
 
 # Paginate
-curl "http://localhost:3000/api/v1/posts?page[number]=1&page[size]=10"
+curl "http://localhost:3000/swift-fox/posts?page[number]=1&page[size]=10"
 ```
 
-### Get the OpenAPI spec
+### Get the specs
 
 ```bash
-curl http://localhost:3000/api/v1/.spec/openapi
+curl http://localhost:3000/swift-fox/.spec/openapi
+curl http://localhost:3000/swift-fox/.spec/typescript
+curl http://localhost:3000/swift-fox/.spec/zod
 ```
 
 ## What Just Happened?
@@ -163,7 +129,37 @@ With minimal code, you got:
 3. **Filtering** — `filterable: true` attributes can be filtered via query params
 4. **Sorting** — `sortable: true` attributes can be sorted
 5. **Pagination** — Built-in page-based pagination
-6. **Documentation** — OpenAPI spec generated from your contracts and schemas
+6. **Documentation** — OpenAPI, TypeScript, and Zod specs generated automatically
+
+## Generated Output
+
+<details>
+<summary>Introspection</summary>
+
+<<< @/examples/swift-fox/introspection.json
+
+</details>
+
+<details>
+<summary>OpenAPI</summary>
+
+<<< @/examples/swift-fox/openapi.yml
+
+</details>
+
+<details>
+<summary>TypeScript</summary>
+
+<<< @/examples/swift-fox/typescript.ts
+
+</details>
+
+<details>
+<summary>Zod</summary>
+
+<<< @/examples/swift-fox/zod.ts
+
+</details>
 
 ## Next Steps
 

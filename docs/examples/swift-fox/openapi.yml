@@ -1,0 +1,345 @@
+---
+:openapi: 3.1.0
+:info:
+  :title: "/swift-fox API"
+  :version: 1.0.0
+:paths:
+  posts/:
+    get:
+      :operationId: posts_index
+      :summary: List posts
+      :tags:
+      - Posts
+      :parameters:
+      - :in: query
+        :name: filter
+        :required: false
+        :schema:
+          :oneOf:
+          - :$ref: "#/components/schemas/post_filter"
+          - :type: array
+            :items:
+              :$ref: "#/components/schemas/post_filter"
+      - :in: query
+        :name: include
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/post_include"
+      - :in: query
+        :name: page
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/post_page"
+      - :in: query
+        :name: sort
+        :required: false
+        :schema:
+          :oneOf:
+          - :$ref: "#/components/schemas/post_sort"
+          - :type: array
+            :items:
+              :$ref: "#/components/schemas/post_sort"
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  meta:
+                    :type: object
+                    :properties: {}
+                  pagination:
+                    :$ref: "#/components/schemas/page_pagination"
+                  posts:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/post"
+    post:
+      :operationId: posts_create
+      :summary: Create post
+      :tags:
+      - Posts
+      :requestBody:
+        :required: true
+        :content:
+          :application/json:
+            :schema:
+              :type: object
+              :properties:
+                post:
+                  :$ref: "#/components/schemas/post_create_payload"
+              :required:
+              - post
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  meta:
+                    :type: object
+                    :properties: {}
+                  post:
+                    :$ref: "#/components/schemas/post"
+                :required:
+                - post
+        :422:
+          :description: Unprocessable Entity
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  issues:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/issue"
+                :required:
+                - issues
+  posts/:id:
+    get:
+      :operationId: posts_show
+      :summary: Get post
+      :tags:
+      - Posts
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  meta:
+                    :type: object
+                    :properties: {}
+                  post:
+                    :$ref: "#/components/schemas/post"
+                :required:
+                - post
+    patch:
+      :operationId: posts_update
+      :summary: Update post
+      :tags:
+      - Posts
+      :requestBody:
+        :required: true
+        :content:
+          :application/json:
+            :schema:
+              :type: object
+              :properties:
+                post:
+                  :$ref: "#/components/schemas/post_update_payload"
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  meta:
+                    :type: object
+                    :properties: {}
+                  post:
+                    :$ref: "#/components/schemas/post"
+        :422:
+          :description: Unprocessable Entity
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  issues:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/issue"
+                :required:
+                - issues
+    delete:
+      :operationId: posts_destroy
+      :summary: Delete post
+      :tags:
+      - Posts
+      :responses:
+        :204:
+          :description: No content
+:components:
+  :schemas:
+    issue:
+      :type: object
+      :properties:
+        code:
+          :type: string
+        detail:
+          :type: string
+        field:
+          :type: string
+        path:
+          :type: array
+          :items:
+            :type: string
+      :required:
+      - code
+      - detail
+      - field
+      - path
+    nullable_string_filter:
+      :type: object
+      :properties:
+        contains:
+          :type: string
+        ends_with:
+          :type: string
+        eq:
+          :type: string
+        in:
+          :type: array
+          :items:
+            :type: string
+        'null':
+          :type: boolean
+        starts_with:
+          :type: string
+    page_pagination:
+      :type: object
+      :properties:
+        current:
+          :type: integer
+        items:
+          :type: integer
+        next:
+          :type:
+          - integer
+          - 'null'
+        prev:
+          :type:
+          - integer
+          - 'null'
+        total:
+          :type: integer
+      :required:
+      - current
+      - items
+      - total
+    post:
+      :type: object
+      :properties:
+        body:
+          :type: string
+        created_at:
+          :type: string
+        id:
+          :type: integer
+        status:
+          :type: string
+          :enum: &1
+          - draft
+          - published
+          - archived
+        title:
+          :type: string
+        updated_at:
+          :type: string
+    post_create_payload:
+      :type: object
+      :properties:
+        body:
+          :type:
+          - string
+          - 'null'
+        status:
+          :type:
+          - string
+          - 'null'
+          :enum: *1
+        title:
+          :type: string
+      :required:
+      - title
+    post_filter:
+      :type: object
+      :properties:
+        _and:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/post_filter"
+        _not:
+          :$ref: "#/components/schemas/post_filter"
+        _or:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/post_filter"
+        status:
+          :$ref: "#/components/schemas/post_status_filter"
+        title:
+          :oneOf:
+          - :type: string
+          - :$ref: "#/components/schemas/string_filter"
+    post_include:
+      :type: object
+      :properties: {}
+    post_page:
+      :type: object
+      :properties:
+        number:
+          :type: integer
+          :minimum: 1
+        size:
+          :type: integer
+          :minimum: 1
+          :maximum: 100
+    post_sort:
+      :type: object
+      :properties:
+        created_at: {}
+        status: {}
+    post_status_filter:
+      :oneOf:
+      - :type: string
+        :enum: *1
+      - :type: object
+        :properties:
+          eq:
+            :type: string
+            :enum: *1
+          in:
+            :type: array
+            :items:
+              :type:
+    post_update_payload:
+      :type: object
+      :properties:
+        body:
+          :type:
+          - string
+          - 'null'
+        status:
+          :type:
+          - string
+          - 'null'
+          :enum: *1
+        title:
+          :type: string
+      :required:
+      - title
+    string_filter:
+      :type: object
+      :properties:
+        contains:
+          :type: string
+        ends_with:
+          :type: string
+        eq:
+          :type: string
+        in:
+          :type: array
+          :items:
+            :type: string
+        starts_with:
+          :type: string
