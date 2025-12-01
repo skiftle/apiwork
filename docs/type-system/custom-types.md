@@ -130,13 +130,13 @@ export interface Person {
 // Zod
 export const AddressSchema = z.object({
   city: z.string().optional(),
-  street: z.string().optional()
+  street: z.string().optional(),
 });
 
 export const PersonSchema = z.object({
   home_address: AddressSchema.optional(),
   name: z.string().optional(),
-  work_address: AddressSchema.optional()
+  work_address: AddressSchema.optional(),
 });
 ```
 
@@ -176,7 +176,7 @@ export interface OrderLineItem {
 export const OrderLineItemSchema = z.object({
   product_id: z.number().int().optional(),
   quantity: z.number().int().optional(),
-  unit_price: z.number().optional()
+  unit_price: z.number().optional(),
 });
 ```
 
@@ -187,105 +187,83 @@ When you define a custom type or enum, it becomes a **named type** in your gener
 ### The Difference
 
 Consider two ways to define the same data. These examples use two playground APIs:
+
 - [grumpy-panda](../examples/grumpy-panda/openapi.yml) uses inline types
 - [friendly-tiger](../examples/friendly-tiger/openapi.yml) uses named types
 
 <!-- example: grumpy-panda -->
 
-**Inline type** ([grumpy-panda](../examples/grumpy-panda/openapi.yml)):
+**Inline type** — the address is defined directly in the action:
 
-```ruby
-# docs/app/app/contracts/grumpy_panda/order_contract.rb
-class OrderContract < Apiwork::Contract::Base
-  action :create do
-    request do
-      body do
-        param :shipping_address, type: :object, required: true do
-          param :street, type: :string, required: true
-          param :city, type: :string, required: true
-        end
-      end
-    end
-  end
-end
-```
+<<< @/app/app/contracts/grumpy_panda/order_contract.rb
 
-<!-- example: friendly-tiger -->
+<details>
+<summary>Introspection</summary>
 
-**Named type** ([friendly-tiger](../examples/friendly-tiger/openapi.yml)):
+<<< @/examples/grumpy-panda/introspection.json
 
-```ruby
-# docs/app/app/contracts/friendly_tiger/order_contract.rb
-class OrderContract < Apiwork::Contract::Base
-  type :address do
-    param :street, type: :string, required: true
-    param :city, type: :string, required: true
-  end
+</details>
 
-  action :create do
-    request do
-      body do
-        param :shipping_address, type: :address, required: true
-      end
-    end
-  end
-end
-```
+<details>
+<summary>TypeScript</summary>
 
-Both options work identically at runtime. The difference is in the generated specs.
+<<< @/examples/grumpy-panda/typescript.ts
 
-### OpenAPI Output
+</details>
 
-<!-- example: grumpy-panda -->
+<details>
+<summary>Zod</summary>
 
-**Inline type** ([grumpy-panda](../examples/grumpy-panda/openapi.yml)) embeds the definition directly:
+<<< @/examples/grumpy-panda/zod.ts
 
-```yaml
-paths:
-  orders/:
-    post:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                shipping_address:
-                  type: object          # Embedded inline
-                  properties:
-                    city:
-                      type: string
-                    street:
-                      type: string
-```
+</details>
+
+<details>
+<summary>OpenAPI</summary>
+
+<<< @/examples/grumpy-panda/openapi.yml
+
+</details>
 
 <!-- example: friendly-tiger -->
 
-**Named type** ([friendly-tiger](../examples/friendly-tiger/openapi.yml)) creates a reusable schema:
+**Named type** — the address is a reusable type referenced by name:
 
-```yaml
-paths:
-  orders/:
-    post:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                shipping_address:
-                  $ref: "#/components/schemas/order_address"  # Reference
+<<< @/app/app/contracts/friendly_tiger/order_contract.rb
 
-components:
-  schemas:
-    order_address:                      # Prefixed with resource name
-      type: object
-      properties:
-        city:
-          type: string
-        street:
-          type: string
-```
+::: info Generated Artifacts
+
+<details>
+  <summary>Introspection</summary>
+
+<<< @/examples/friendly-tiger/introspection.json
+
+</details>
+
+<details>
+  <summary>TypeScript</summary>
+
+<<< @/examples/friendly-tiger/typescript.ts
+
+</details>
+
+<details>
+  <summary>Zod</summary>
+
+<<< @/examples/friendly-tiger/zod.ts
+
+</details>
+
+<details>
+  <summary>OpenAPI</summary>
+
+<<< @/examples/friendly-tiger/openapi.yml
+
+</details>
+
+:::
+
+Both options work identically at runtime. The difference is in the generated specs — expand the OpenAPI details above to compare how inline types embed the definition directly while named types create `$ref` references to `components/schemas`.
 
 Note: Types defined inside a contract are prefixed with the resource name (`order_address` instead of `address`).
 
@@ -304,31 +282,10 @@ Use inline types when:
 - You don't need to reference it elsewhere
 - It's a simple, one-off shape
 
-<!-- example: friendly-tiger -->
-
 ### Enums Follow the Same Pattern
 
-Named enums are expanded inline in OpenAPI. See [friendly-tiger](../examples/friendly-tiger/openapi.yml):
-
-```ruby
-enum :priority, values: %w[low normal high urgent]
-```
-
-```yaml
-# In OpenAPI, enum values are inlined:
-priority:
-  type: string
-  enum:
-    - low
-    - normal
-    - high
-    - urgent
-```
+Named enums are expanded inline in OpenAPI. The friendly-tiger example above includes an `enum :priority` — expand its OpenAPI output to see how enum values are inlined.
 
 ### Introspection
 
-Named types appear in the `types` and `enums` sections of introspection output, making them discoverable by tooling and client generators.
-
-See the generated examples:
-- [grumpy-panda](../examples/grumpy-panda/openapi.yml) - inline types
-- [friendly-tiger](../examples/friendly-tiger/openapi.yml) - named types
+Named types appear in the `types` and `enums` sections of introspection output, making them discoverable by tooling and client generators. Expand the Introspection details above to see how types and enums are structured.

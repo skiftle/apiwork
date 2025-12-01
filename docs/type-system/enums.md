@@ -10,11 +10,7 @@ Enums restrict a value to a predefined set.
 
 <!-- example: happy-zebra -->
 
-```ruby
-Apiwork::API.draw '/api/v1' do
-  enum :status, values: %w[draft published archived]
-end
-```
+<<< @/app/config/apis/happy_zebra.rb
 
 <details>
 <summary>Introspection</summary>
@@ -48,11 +44,7 @@ end
 
 <!-- example: lazy-cow -->
 
-```ruby
-class PostContract < Apiwork::Contract::Base
-  enum :priority, values: %i[low medium high critical]
-end
-```
+<<< @/app/app/contracts/lazy_cow/post_contract.rb
 
 <details>
 <summary>Introspection</summary>

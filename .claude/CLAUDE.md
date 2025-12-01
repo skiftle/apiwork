@@ -318,14 +318,13 @@ Before writing documentation:
 
 ### Example Linking System
 
-Documentation examples are linked to real implementations in `docs/app/` using HTML comments.
+Documentation examples are linked to real implementations in `docs/app/` using HTML comments and VitePress inline embeds.
 
 **Format:**
 ```markdown
 <!-- example: eager-lion -->
-```ruby
-# code example here
-```
+
+<<< @/app/app/contracts/eager_lion/invoice_contract.rb
 
 <details>
 <summary>Introspection</summary>
@@ -355,6 +354,12 @@ Documentation examples are linked to real implementations in `docs/app/` using H
 
 </details>
 ```
+
+**Single Source of Truth:**
+- Source code is embedded from `docs/app/` using `<<< @/app/...`
+- Generated output is embedded from `docs/examples/` using `<<< @/examples/...`
+- **Never duplicate code** in markdown - always embed from source files
+- VitePress automatically applies syntax highlighting based on file extension
 
 **How it works:**
 1. The `<!-- example: NAME -->` comment goes BEFORE the code block

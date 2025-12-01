@@ -10,7 +10,7 @@ export interface OrderAddress {
   street: string;
 }
 
-export type OrderPriority = 'high' | 'low' | 'normal' | 'urgent';
+export type OrderPriority = "high" | "low" | "normal" | "urgent";
 
 export interface OrdersCreateRequest {
   body: OrdersCreateRequestBody;
