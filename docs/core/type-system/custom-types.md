@@ -188,8 +188,8 @@ When you define a custom type or enum, it becomes a **named type** in your gener
 
 Consider two ways to define the same data. These examples use two playground APIs:
 
-- [grumpy-panda](../examples/grumpy-panda/openapi.yml) uses inline types
-- [friendly-tiger](../examples/friendly-tiger/openapi.yml) uses named types
+- [grumpy-panda](../../examples/grumpy-panda/openapi.yml) uses inline types
+- [friendly-tiger](../../examples/friendly-tiger/openapi.yml) uses named types
 
 <!-- example: grumpy-panda -->
 

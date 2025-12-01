@@ -76,13 +76,23 @@ end
 
 ### replace
 
-By default, contract responses are merged with schema responses. Use `replace: true` to completely override:
+By default, contract requests and responses are merged with schema definitions. Use `replace: true` to completely override:
 
 ```ruby
 action :destroy do
+  # Replace the response entirely
   response replace: true do
     body do
       param :deleted_id, type: :uuid
+    end
+  end
+end
+
+action :create do
+  # Replace the request entirely
+  request replace: true do
+    body do
+      param :title, type: :string, required: true
     end
   end
 end

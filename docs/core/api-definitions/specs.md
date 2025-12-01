@@ -87,7 +87,6 @@ end
 | `tags` | OpenAPI tags for grouping |
 | `operation_id` | Unique identifier for the operation |
 | `deprecated` | Mark action as deprecated |
-| `internal` | Mark action as internal (hidden from public docs) |
 
 ## Multiple Descriptions
 

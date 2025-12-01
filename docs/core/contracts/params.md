@@ -24,16 +24,16 @@ See [Types](../type-system/types.md) for the complete list of supported types.
 ## Required & Optional
 
 ```ruby
-# Required by default in body
+# Optional by default
 param :title, type: :string
 
-# Explicitly optional
-param :subtitle, type: :string, required: false
+# Explicitly required
+param :title, type: :string, required: true
 
-# Query params are optional by default
+# Works the same in query blocks
 query do
-  param :q, type: :string  # optional
-  param :page, type: :integer, required: true  # required
+  param :q, type: :string                       # optional
+  param :page, type: :integer, required: true   # required
 end
 ```
 

@@ -17,7 +17,6 @@ Primitive types form the foundation of the type system. Every param and attribut
 | `:boolean` | `true`, `false` | `boolean` | `z.boolean()` |
 | `:date` | `Date` | `string` | `z.iso.date()` |
 | `:datetime` | `DateTime`, `Time` | `string` | `z.iso.datetime()` |
-| `:time` | `Time` | `string` | `z.iso.time()` |
 | `:uuid` | `String` (UUID format) | `string` | `z.uuid()` |
 
 ## Aliases
@@ -55,7 +54,6 @@ param :price, type: :decimal
 param :active, type: :boolean
 param :published_at, type: :datetime
 param :birth_date, type: :date
-param :start_time, type: :time
 param :id, type: :uuid
 ```
 
@@ -67,7 +65,6 @@ Date and time types serialize to ISO 8601 strings:
 |------|--------|---------|
 | `:date` | `YYYY-MM-DD` | `"2024-01-15"` |
 | `:datetime` | `YYYY-MM-DDTHH:MM:SSZ` | `"2024-01-15T10:30:00Z"` |
-| `:time` | `HH:MM:SS` | `"10:30:00"` |
 
 ## Literal Type
 

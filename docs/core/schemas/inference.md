@@ -250,12 +250,17 @@ class Vehicle < ApplicationRecord; end
 class Car < Vehicle; end
 class Truck < Vehicle; end
 
-# Schema
+# Schemas
+class CarSchema < Apiwork::Schema::Base
+  variant  # tag: 'Car' (from model's sti_name)
+end
+
+class TruckSchema < Apiwork::Schema::Base
+  variant  # tag: 'Truck' (from model's sti_name)
+end
+
 class VehicleSchema < Apiwork::Schema::Base
   discriminator  # Uses :type column (auto-detected)
-
-  variant CarSchema    # tag: 'Car' (from sti_name)
-  variant TruckSchema  # tag: 'Truck' (from sti_name)
 end
 ```
 

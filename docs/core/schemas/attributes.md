@@ -441,3 +441,5 @@ attribute :ip_address, format: :ipv4
 | `:date_time` | `format: date-time` | `z.iso.datetime()` |
 | `:ipv4` | `format: ipv4` | `z.ipv4()` |
 | `:ipv6` | `format: ipv6` | `z.ipv6()` |
+| `:password` | `format: password` | `z.string()` |
+| `:hostname` | `format: hostname` | `z.string()` |
