@@ -90,6 +90,8 @@ end
 
 The `object` method returns the current model instance.
 
+**Important:** Computed attributes require an explicit `type`. There's no model column to infer from.
+
 ---
 
 ## Writable
@@ -302,42 +304,33 @@ Transform values during serialization (encode) and deserialization (decode).
 | `encode` | Response (output) | Database → API |
 | `decode` | Request (input) | API → Database |
 
-### Basic Usage
+### When to Use
+
+Transformers are for presentation — changing how data appears in your API without changing what's stored.
 
 ```ruby
-attribute :email,
-  encode: ->(value) { value&.downcase },
-  decode: ->(value) { value&.strip&.downcase }
+# Polymorphic type from Rails STI: "Invoice" → "invoice"
+attribute :subjectable_type, encode: ->(v) { v&.underscore }
+
+# Consistent enum format: "pending" → "PENDING" outbound, "PENDING" → "pending" inbound
+attribute :status,
+  encode: ->(v) { v&.upcase },
+  decode: ->(v) { v&.downcase }
 ```
 
-- **encode**: Email is always lowercase in API responses
-- **decode**: Email is stripped and lowercased before saving
+For null/empty string conversion, use [`empty: true`](#empty-true) instead.
 
-### Transformer Types
+### Prefer ActiveRecord Normalizes
 
-**Lambda / Proc:**
+For attributes you control, use Rails' built-in `normalizes`:
 
 ```ruby
-attribute :name, encode: ->(value) { value&.titleize }
-attribute :slug, decode: ->(value) { value&.parameterize }
+class User < ApplicationRecord
+  normalizes :email, with: ->(v) { v&.strip&.downcase }
+end
 ```
 
-**Symbol (Built-in):**
-
-```ruby
-attribute :bio, encode: :nil_to_empty    # nil → ""
-attribute :bio, decode: :blank_to_nil    # "" → nil
-```
-
-**Array (Multiple Transformers):**
-
-Applied in order:
-
-```ruby
-attribute :email,
-  encode: [->(v) { v&.downcase }, :nil_to_empty],
-  decode: [->(v) { v&.strip }, ->(v) { v&.downcase }, :blank_to_nil]
-```
+Why? Normalization at the model layer is consistent everywhere — not just through the API. Schema transformers are for presentation; model normalizes are for data integrity.
 
 ---
 
