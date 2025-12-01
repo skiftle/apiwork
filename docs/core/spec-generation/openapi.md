@@ -19,7 +19,7 @@ end
 ```ruby
 spec :openapi,
      path: '/openapi.json',      # Custom endpoint path
-     key_transform: :camel       # Transform keys to camelCase
+     key_format: :camel       # Transform keys to camelCase
 ```
 
 ## API Metadata

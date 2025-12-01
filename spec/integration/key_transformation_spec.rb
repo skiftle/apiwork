@@ -11,8 +11,8 @@ RSpec.describe 'Key Transformation in Spec Generation', type: :integration do
   let(:path) { '/api/v1' }
 
   describe 'TypeScript generation' do
-    describe 'with key_transform: :keep (default)' do
-      let(:generator) { Apiwork::Spec::Typescript.new(path, key_transform: :keep) }
+    describe 'with key_format: :keep (default)' do
+      let(:generator) { Apiwork::Spec::Typescript.new(path, key_format: :keep) }
       let(:output) { generator.generate }
 
       it 'keeps snake_case property names' do
@@ -29,8 +29,8 @@ RSpec.describe 'Key Transformation in Spec Generation', type: :integration do
       end
     end
 
-    describe 'with key_transform: :camel' do
-      let(:generator) { Apiwork::Spec::Typescript.new(path, key_transform: :camel) }
+    describe 'with key_format: :camel' do
+      let(:generator) { Apiwork::Spec::Typescript.new(path, key_format: :camel) }
       let(:output) { generator.generate }
 
       it 'transforms property names to camelCase' do
@@ -50,8 +50,8 @@ RSpec.describe 'Key Transformation in Spec Generation', type: :integration do
   end
 
   describe 'Zod generation' do
-    describe 'with key_transform: :keep (default)' do
-      let(:generator) { Apiwork::Spec::Zod.new(path, key_transform: :keep) }
+    describe 'with key_format: :keep (default)' do
+      let(:generator) { Apiwork::Spec::Zod.new(path, key_format: :keep) }
       let(:output) { generator.generate }
 
       it 'keeps snake_case property names in schemas' do
@@ -65,8 +65,8 @@ RSpec.describe 'Key Transformation in Spec Generation', type: :integration do
       end
     end
 
-    describe 'with key_transform: :camel' do
-      let(:generator) { Apiwork::Spec::Zod.new(path, key_transform: :camel) }
+    describe 'with key_format: :camel' do
+      let(:generator) { Apiwork::Spec::Zod.new(path, key_format: :camel) }
       let(:output) { generator.generate }
 
       it 'transforms property names to camelCase' do
@@ -82,8 +82,8 @@ RSpec.describe 'Key Transformation in Spec Generation', type: :integration do
   end
 
   describe 'OpenAPI generation' do
-    describe 'with key_transform: :keep (default)' do
-      let(:generator) { Apiwork::Spec::Openapi.new(path, key_transform: :keep) }
+    describe 'with key_format: :keep (default)' do
+      let(:generator) { Apiwork::Spec::Openapi.new(path, key_format: :keep) }
       let(:spec) { generator.generate }
 
       it 'keeps snake_case property names in schemas' do
@@ -102,8 +102,8 @@ RSpec.describe 'Key Transformation in Spec Generation', type: :integration do
       end
     end
 
-    describe 'with key_transform: :camel' do
-      let(:generator) { Apiwork::Spec::Openapi.new(path, key_transform: :camel) }
+    describe 'with key_format: :camel' do
+      let(:generator) { Apiwork::Spec::Openapi.new(path, key_format: :camel) }
       let(:spec) { generator.generate }
 
       it 'transforms property names to camelCase' do
@@ -138,9 +138,9 @@ RSpec.describe 'Key Transformation in Spec Generation', type: :integration do
   end
 
   describe 'Consistency across generators' do
-    let(:ts_generator) { Apiwork::Spec::Typescript.new(path, key_transform: :camel) }
-    let(:zod_generator) { Apiwork::Spec::Zod.new(path, key_transform: :camel) }
-    let(:openapi_generator) { Apiwork::Spec::Openapi.new(path, key_transform: :camel) }
+    let(:ts_generator) { Apiwork::Spec::Typescript.new(path, key_format: :camel) }
+    let(:zod_generator) { Apiwork::Spec::Zod.new(path, key_format: :camel) }
+    let(:openapi_generator) { Apiwork::Spec::Openapi.new(path, key_format: :camel) }
 
     it 'applies same transformation across all generators' do
       ts_output = ts_generator.generate
@@ -155,7 +155,7 @@ RSpec.describe 'Key Transformation in Spec Generation', type: :integration do
 
   describe 'Edge cases' do
     describe 'single word properties' do
-      let(:generator) { Apiwork::Spec::Typescript.new(path, key_transform: :camel) }
+      let(:generator) { Apiwork::Spec::Typescript.new(path, key_format: :camel) }
       let(:output) { generator.generate }
 
       it 'keeps single word properties unchanged' do
@@ -165,7 +165,7 @@ RSpec.describe 'Key Transformation in Spec Generation', type: :integration do
     end
 
     describe 'id property' do
-      let(:generator) { Apiwork::Spec::Typescript.new(path, key_transform: :camel) }
+      let(:generator) { Apiwork::Spec::Typescript.new(path, key_format: :camel) }
       let(:output) { generator.generate }
 
       it 'keeps id property unchanged' do
@@ -174,7 +174,7 @@ RSpec.describe 'Key Transformation in Spec Generation', type: :integration do
     end
 
     describe 'association references' do
-      let(:generator) { Apiwork::Spec::Typescript.new(path, key_transform: :camel) }
+      let(:generator) { Apiwork::Spec::Typescript.new(path, key_format: :camel) }
       let(:output) { generator.generate }
 
       it 'transforms association foreign key names' do

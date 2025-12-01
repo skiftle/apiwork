@@ -133,7 +133,7 @@ RSpec.describe 'TypeScript Generation', type: :integration do
 
   describe 'Key transformation options' do
     context 'with camelCase transformation' do
-      let(:generator) { Apiwork::Spec::Typescript.new(path, key_transform: :camel) }
+      let(:generator) { Apiwork::Spec::Typescript.new(path, key_format: :camel) }
 
       it 'transforms property names to camelCase' do
         post_interface = extract_interface(output, 'Post')
@@ -142,7 +142,7 @@ RSpec.describe 'TypeScript Generation', type: :integration do
     end
 
     context 'with keep (no transformation)' do
-      let(:generator) { Apiwork::Spec::Typescript.new(path, key_transform: :keep) }
+      let(:generator) { Apiwork::Spec::Typescript.new(path, key_format: :keep) }
 
       it 'keeps property names unchanged' do
         post_interface = extract_interface(output, 'Post')

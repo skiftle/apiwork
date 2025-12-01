@@ -7,7 +7,7 @@ module Apiwork
       content_type 'text/plain; charset=utf-8'
 
       option :version, type: :string, default: '5', enum: %w[4 5]
-      option :key_transform, type: :symbol, default: :keep, enum: %i[keep camel underscore]
+      option :key_format, type: :symbol, default: :keep, enum: %i[keep camel underscore]
 
       def self.file_extension
         '.ts'
@@ -20,7 +20,7 @@ module Apiwork
       private
 
       def mapper
-        @mapper ||= TypescriptMapper.new(introspection: @data, key_transform: key_transform)
+        @mapper ||= TypescriptMapper.new(introspection: @data, key_format:)
       end
 
       def build_all_typescript_types

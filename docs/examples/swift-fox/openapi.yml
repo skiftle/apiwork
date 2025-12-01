@@ -6,7 +6,7 @@
 :paths:
   posts/:
     get:
-      :operationId: posts_index
+      :operationId: postsIndex
       :summary: List posts
       :tags:
       - Posts
@@ -16,29 +16,29 @@
         :required: false
         :schema:
           :oneOf:
-          - :$ref: "#/components/schemas/post_filter"
+          - :$ref: "#/components/schemas/postFilter"
           - :type: array
             :items:
-              :$ref: "#/components/schemas/post_filter"
+              :$ref: "#/components/schemas/postFilter"
       - :in: query
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/post_include"
+          :$ref: "#/components/schemas/postInclude"
       - :in: query
         :name: page
         :required: false
         :schema:
-          :$ref: "#/components/schemas/post_page"
+          :$ref: "#/components/schemas/postPage"
       - :in: query
         :name: sort
         :required: false
         :schema:
           :oneOf:
-          - :$ref: "#/components/schemas/post_sort"
+          - :$ref: "#/components/schemas/postSort"
           - :type: array
             :items:
-              :$ref: "#/components/schemas/post_sort"
+              :$ref: "#/components/schemas/postSort"
       :responses:
         :200:
           :description: Successful response
@@ -51,13 +51,13 @@
                     :type: object
                     :properties: {}
                   pagination:
-                    :$ref: "#/components/schemas/page_pagination"
+                    :$ref: "#/components/schemas/pagePagination"
                   posts:
                     :type: array
                     :items:
                       :$ref: "#/components/schemas/post"
     post:
-      :operationId: posts_create
+      :operationId: postsCreate
       :summary: Create post
       :tags:
       - Posts
@@ -69,7 +69,7 @@
               :type: object
               :properties:
                 post:
-                  :$ref: "#/components/schemas/post_create_payload"
+                  :$ref: "#/components/schemas/postCreatePayload"
               :required:
               - post
       :responses:
@@ -102,7 +102,7 @@
                 - issues
   posts/:id:
     get:
-      :operationId: posts_show
+      :operationId: postsShow
       :summary: Get post
       :tags:
       - Posts
@@ -122,7 +122,7 @@
                 :required:
                 - post
     patch:
-      :operationId: posts_update
+      :operationId: postsUpdate
       :summary: Update post
       :tags:
       - Posts
@@ -134,7 +134,7 @@
               :type: object
               :properties:
                 post:
-                  :$ref: "#/components/schemas/post_update_payload"
+                  :$ref: "#/components/schemas/postUpdatePayload"
       :responses:
         :200:
           :description: Successful response
@@ -162,7 +162,7 @@
                 :required:
                 - issues
     delete:
-      :operationId: posts_destroy
+      :operationId: postsDestroy
       :summary: Delete post
       :tags:
       - Posts
@@ -189,12 +189,12 @@
       - detail
       - field
       - path
-    nullable_string_filter:
+    nullableStringFilter:
       :type: object
       :properties:
         contains:
           :type: string
-        ends_with:
+        endsWith:
           :type: string
         eq:
           :type: string
@@ -204,9 +204,9 @@
             :type: string
         'null':
           :type: boolean
-        starts_with:
+        startsWith:
           :type: string
-    page_pagination:
+    pagePagination:
       :type: object
       :properties:
         current:
@@ -232,7 +232,7 @@
       :properties:
         body:
           :type: string
-        created_at:
+        createdAt:
           :type: string
         id:
           :type: integer
@@ -244,9 +244,9 @@
           - archived
         title:
           :type: string
-        updated_at:
+        updatedAt:
           :type: string
-    post_create_payload:
+    postCreatePayload:
       :type: object
       :properties:
         body:
@@ -262,29 +262,29 @@
           :type: string
       :required:
       - title
-    post_filter:
+    postFilter:
       :type: object
       :properties:
         _and:
           :type: array
           :items:
-            :$ref: "#/components/schemas/post_filter"
+            :$ref: "#/components/schemas/postFilter"
         _not:
-          :$ref: "#/components/schemas/post_filter"
+          :$ref: "#/components/schemas/postFilter"
         _or:
           :type: array
           :items:
-            :$ref: "#/components/schemas/post_filter"
+            :$ref: "#/components/schemas/postFilter"
         status:
-          :$ref: "#/components/schemas/post_status_filter"
+          :$ref: "#/components/schemas/postStatusFilter"
         title:
           :oneOf:
           - :type: string
-          - :$ref: "#/components/schemas/string_filter"
-    post_include:
+          - :$ref: "#/components/schemas/stringFilter"
+    postInclude:
       :type: object
       :properties: {}
-    post_page:
+    postPage:
       :type: object
       :properties:
         number:
@@ -294,12 +294,12 @@
           :type: integer
           :minimum: 1
           :maximum: 100
-    post_sort:
+    postSort:
       :type: object
       :properties:
-        created_at: {}
+        createdAt: {}
         status: {}
-    post_status_filter:
+    postStatusFilter:
       :oneOf:
       - :type: string
         :enum: *1
@@ -312,7 +312,7 @@
             :type: array
             :items:
               :type:
-    post_update_payload:
+    postUpdatePayload:
       :type: object
       :properties:
         body:
@@ -328,12 +328,12 @@
           :type: string
       :required:
       - title
-    string_filter:
+    stringFilter:
       :type: object
       :properties:
         contains:
           :type: string
-        ends_with:
+        endsWith:
           :type: string
         eq:
           :type: string
@@ -341,5 +341,5 @@
           :type: array
           :items:
             :type: string
-        starts_with:
+        startsWith:
           :type: string

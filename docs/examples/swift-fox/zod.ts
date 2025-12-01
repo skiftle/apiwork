@@ -13,11 +13,11 @@ export const IssueSchema = z.object({
 
 export const NullableStringFilterSchema = z.object({
   contains: z.string().optional(),
-  ends_with: z.string().optional(),
+  endsWith: z.string().optional(),
   eq: z.string().optional(),
   in: z.array(z.string()).optional(),
   null: z.boolean().optional(),
-  starts_with: z.string().optional()
+  startsWith: z.string().optional()
 });
 
 export const PagePaginationSchema = z.object({
@@ -30,11 +30,11 @@ export const PagePaginationSchema = z.object({
 
 export const PostSchema = z.object({
   body: z.string().optional(),
-  created_at: z.iso.datetime().optional(),
+  createdAt: z.iso.datetime().optional(),
   id: z.number().int().optional(),
   status: PostStatusSchema.optional(),
   title: z.string().optional(),
-  updated_at: z.iso.datetime().optional()
+  updatedAt: z.iso.datetime().optional()
 });
 
 export const PostCreatePayloadSchema = z.object({
@@ -53,7 +53,7 @@ export const PostPageSchema = z.object({
 });
 
 export const PostSortSchema = z.object({
-  created_at: z.unknown().optional(),
+  createdAt: z.unknown().optional(),
   status: z.unknown().optional()
 });
 
@@ -70,10 +70,10 @@ export const PostUpdatePayloadSchema = z.object({
 
 export const StringFilterSchema = z.object({
   contains: z.string().optional(),
-  ends_with: z.string().optional(),
+  endsWith: z.string().optional(),
   eq: z.string().optional(),
   in: z.array(z.string()).optional(),
-  starts_with: z.string().optional()
+  startsWith: z.string().optional()
 });
 
 export const PostFilterSchema: z.ZodType<PostFilter> = z.lazy(() => z.object({
@@ -86,11 +86,11 @@ export const PostFilterSchema: z.ZodType<PostFilter> = z.lazy(() => z.object({
 
 export const PostSchema = z.object({
   body: z.string().nullable().optional(),
-  created_at: z.iso.datetime(),
+  createdAt: z.iso.datetime(),
   id: z.number().int(),
   status: z.string().nullable().optional(),
   title: z.string(),
-  updated_at: z.iso.datetime()
+  updatedAt: z.iso.datetime()
 });
 
 export const PostsIndexRequestQuerySchema = z.object({
@@ -153,11 +153,11 @@ export interface Issue {
 
 export interface NullableStringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
   null?: boolean;
-  starts_with?: string;
+  startsWith?: string;
 }
 
 export interface PagePagination {
@@ -170,20 +170,20 @@ export interface PagePagination {
 
 export interface Post {
   body?: null | string;
-  created_at: string;
+  createdAt: string;
   id: number;
   status?: null | string;
   title: string;
-  updated_at: string;
+  updatedAt: string;
 }
 
 export interface Post {
   body?: string;
-  created_at?: string;
+  createdAt?: string;
   id?: number;
   status?: PostStatus;
   title?: string;
-  updated_at?: string;
+  updatedAt?: string;
 }
 
 export interface PostCreatePayload {
@@ -208,7 +208,7 @@ export interface PostPage {
 }
 
 export interface PostSort {
-  created_at?: unknown;
+  createdAt?: unknown;
   status?: unknown;
 }
 
@@ -277,8 +277,8 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
-  starts_with?: string;
+  startsWith?: string;
 }

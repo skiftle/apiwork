@@ -7,11 +7,11 @@ export interface Issue {
 
 export interface NullableStringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
   null?: boolean;
-  starts_with?: string;
+  startsWith?: string;
 }
 
 export interface PagePagination {
@@ -24,11 +24,11 @@ export interface PagePagination {
 
 export interface Post {
   body?: string;
-  created_at?: string;
+  createdAt?: string;
   id?: number;
   status?: PostStatus;
   title?: string;
-  updated_at?: string;
+  updatedAt?: string;
 }
 
 export interface PostCreatePayload {
@@ -53,7 +53,7 @@ export interface PostPage {
 }
 
 export interface PostSort {
-  created_at?: unknown;
+  createdAt?: unknown;
   status?: unknown;
 }
 
@@ -122,8 +122,8 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
-  starts_with?: string;
+  startsWith?: string;
 }

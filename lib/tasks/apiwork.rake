@@ -10,24 +10,24 @@ namespace :apiwork do
       api_path = ENV['API_PATH']
       output = ENV['OUTPUT']
       format = ENV['FORMAT']&.to_sym
-      key_transform = ENV['KEY_TRANSFORM']&.to_sym
+      key_format = ENV['KEY_FORMAT']&.to_sym
 
       unless output
         puts 'Error: OUTPUT required'
         puts ''
-        puts 'Usage: rake apiwork:spec:write OUTPUT=path [API_PATH=/api/v1] [FORMAT=openapi] [KEY_TRANSFORM=underscore]'
+        puts 'Usage: rake apiwork:spec:write OUTPUT=path [API_PATH=/api/v1] [FORMAT=openapi] [KEY_FORMAT=camel]'
         puts ''
         puts 'Examples:'
         puts '  rake apiwork:spec:write OUTPUT=public/specs'
         puts '  rake apiwork:spec:write API_PATH=/api/v1 OUTPUT=public/specs'
         puts '  rake apiwork:spec:write API_PATH=/api/v1 FORMAT=openapi OUTPUT=public/openapi.json'
-        puts '  rake apiwork:spec:write FORMAT=zod KEY_TRANSFORM=camel OUTPUT=public/specs'
+        puts '  rake apiwork:spec:write FORMAT=zod KEY_FORMAT=camel OUTPUT=public/specs'
         puts ''
         puts 'Available formats:'
         puts "  #{Apiwork::Spec::Registry.all.join(', ')}"
         puts ''
-        puts 'Available key transforms:'
-        puts '  underscore, camel, keep'
+        puts 'Available key formats:'
+        puts '  keep, camel, underscore'
         exit 1
       end
 
@@ -36,7 +36,7 @@ namespace :apiwork do
           api_path: api_path,
           output: output,
           format: format,
-          key_transform: key_transform
+          key_format: key_format
         )
       rescue ArgumentError => e
         puts "Error: #{e.message}"

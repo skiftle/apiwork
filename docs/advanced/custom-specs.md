@@ -13,7 +13,7 @@ class MySpec < Apiwork::Spec::Base
   identifier :myspec
   content_type 'application/json'
 
-  option :key_transform, type: :symbol, default: :keep
+  option :key_format, type: :symbol, default: :keep
 
   def self.file_extension
     '.json'

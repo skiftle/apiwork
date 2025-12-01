@@ -4,11 +4,11 @@ module Apiwork
   module Spec
     class TypescriptMapper
       attr_reader :introspection,
-                  :key_transform_strategy
+                  :key_format
 
-      def initialize(introspection:, key_transform: :keep)
+      def initialize(introspection:, key_format: :keep)
         @introspection = introspection
-        @key_transform_strategy = key_transform
+        @key_format = key_format
       end
 
       def build_interface(type_name, type_shape, action_name = nil, recursive: false)
@@ -275,7 +275,7 @@ module Apiwork
         leading_underscore = key_str.start_with?('_')
         base = leading_underscore ? key_str[1..] : key_str
 
-        transformed = case key_transform_strategy
+        transformed = case key_format
                       when :camel
                         base.camelize(:lower)
                       when :pascal

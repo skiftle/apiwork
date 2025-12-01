@@ -27,9 +27,10 @@ module Apiwork
 
       def initialize(path, **options)
         @path = path
-        @options = self.class.default_options.merge(options)
-        validate_options!
+        @explicit_options = options
         load_data
+        @options = self.class.default_options.merge(@api_options).merge(@explicit_options)
+        validate_options!
       end
 
       def validate_options!
@@ -43,6 +44,7 @@ module Apiwork
         api = Apiwork::API.find(path)
         raise "API not found at path: #{path}" unless api
 
+        @api_options = { key_format: api.key_format }
         @data = api.introspect
       end
 
@@ -52,8 +54,8 @@ module Apiwork
 
       protected
 
-      def key_transform
-        @options[:key_transform]
+      def key_format
+        @options[:key_format]
       end
 
       def version
@@ -62,7 +64,7 @@ module Apiwork
 
       def transform_key(key, strategy = nil)
         key_str = key.to_s
-        transform_strategy = strategy || key_transform
+        transform_strategy = strategy || key_format
 
         if key_str.start_with?('_')
           underscore_prefix = key_str.match(/^_+/)[0]

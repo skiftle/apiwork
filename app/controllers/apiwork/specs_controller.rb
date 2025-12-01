@@ -6,11 +6,11 @@ module Apiwork
   # Automatically mounted by Routes when API classes use `spec` DSL
   #
   # Supports query parameters:
-  # - key_transform: Transform key casing (underscore, camel, keep)
+  # - key_format: Transform key casing (underscore, camel, keep)
   #
   # @example GET /api/v1/.spec/openapi
-  # @example GET /api/v1/.spec/openapi?key_transform=underscore
-  # @example GET /api/v1/.spec/zod?key_transform=camel
+  # @example GET /api/v1/.spec/openapi?key_format=underscore
+  # @example GET /api/v1/.spec/zod?key_format=camel
   class SpecsController < ActionController::API
     # GET /.spec/:type
     #
@@ -18,11 +18,12 @@ module Apiwork
     def show
       api = ::Apiwork::API.find(params[:api_path])
       spec_type = params[:spec_type].to_sym
-      api_config = api.spec_config(spec_type)
+      spec_config = api.spec_config(spec_type)
 
-      merged_options = api_config.merge(
-        key_transform: params[:key_transform]&.to_sym
-      ).compact
+      merged_options = { key_format: api.key_format }
+                       .merge(spec_config)
+                       .merge(key_format: params[:key_format]&.to_sym)
+                       .compact
 
       spec = ::Apiwork::Spec::Pipeline.generate(
         api_path: params[:api_path],

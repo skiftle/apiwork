@@ -7,7 +7,7 @@ module Apiwork
       content_type 'application/json'
 
       option :version, type: :string, default: '3.1.0', enum: %w[3.1.0]
-      option :key_transform, type: :symbol, default: :keep, enum: %i[keep camel underscore]
+      option :key_format, type: :symbol, default: :keep, enum: %i[keep camel underscore]
 
       def self.file_extension
         '.json'
@@ -103,10 +103,10 @@ module Apiwork
 
         joined = parts.join('_')
 
-        if key_transform == :keep
+        if key_format == :keep
           joined
         else
-          transform_key(joined, key_transform)
+          transform_key(joined, key_format)
         end
       end
 
@@ -499,7 +499,7 @@ module Apiwork
       end
 
       def schema_name(name)
-        transform_key(name, key_transform)
+        transform_key(name, key_format)
       end
 
       def numeric_type?(type)

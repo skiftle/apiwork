@@ -19,7 +19,7 @@ end
 ```ruby
 spec :typescript,
      path: '/types.ts',         # Custom endpoint path
-     key_transform: :camel      # Transform keys to camelCase
+     key_format: :camel      # Transform keys to camelCase
 ```
 
 ## Output

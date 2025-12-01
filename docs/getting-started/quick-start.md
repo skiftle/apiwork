@@ -48,37 +48,7 @@ The contract imports the schema and can add action-specific rules:
 
 ## 6. Controller
 
-```ruby
-# app/controllers/swift_fox/posts_controller.rb
-class SwiftFox::PostsController < ApplicationController
-  include Apiwork::Controller::Concern
-
-  def index
-    respond_with SwiftFox::Post.all
-  end
-
-  def show
-    respond_with SwiftFox::Post.find(params[:id])
-  end
-
-  def create
-    post = SwiftFox::Post.create!(contract.body[:post])
-    respond_with post, status: :created
-  end
-
-  def update
-    post = SwiftFox::Post.find(params[:id])
-    post.update!(contract.body[:post])
-    respond_with post
-  end
-
-  def destroy
-    post = SwiftFox::Post.find(params[:id])
-    post.destroy!
-    head :no_content
-  end
-end
-```
+<<< @/app/app/controllers/swift_fox/posts_controller.rb
 
 ## 7. Try It Out
 

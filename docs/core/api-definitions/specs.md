@@ -43,20 +43,43 @@ Now served at:
 - `GET /api/v1/types.ts`
 - `GET /api/v1/schemas.ts`
 
-## Options
+## Key Format
 
-### key_transform
-
-Transform keys in the output:
+Specs inherit `key_format` from the API definition by default:
 
 ```ruby
-spec :openapi, key_transform: :camel
+Apiwork::API.draw '/api/v1' do
+  key_format :camel  # All specs will use camelCase
+
+  spec :openapi      # Inherits :camel
+  spec :typescript   # Inherits :camel
+  spec :zod          # Inherits :camel
+end
+```
+
+Override per spec using a block:
+
+```ruby
+Apiwork::API.draw '/api/v1' do
+  key_format :camel
+
+  spec :openapi      # Inherits :camel
+  spec :zod do
+    key_format :keep # Override to snake_case
+  end
+end
 ```
 
 Options:
 - `:keep` — No transformation (default)
 - `:camel` — `created_at` becomes `createdAt`
 - `:underscore` — All keys use snake_case
+
+Query parameter override:
+
+```
+GET /api/v1/.spec/openapi?key_format=camel
+```
 
 ## Describe Actions
 

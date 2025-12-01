@@ -47,7 +47,7 @@ Now served at `GET /api/v1/openapi.json`.
 Transform JSON keys in the output:
 
 ```ruby
-spec :openapi, key_transform: :camel
+spec :openapi, key_format: :camel
 ```
 
 Options:

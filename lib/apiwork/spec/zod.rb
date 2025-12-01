@@ -7,7 +7,7 @@ module Apiwork
       content_type 'text/plain; charset=utf-8'
 
       option :version, type: :string, default: '4', enum: %w[3 4]
-      option :key_transform, type: :symbol, default: :keep, enum: %i[keep camel underscore]
+      option :key_format, type: :symbol, default: :keep, enum: %i[keep camel underscore]
 
       def self.file_extension
         '.ts'
@@ -54,11 +54,11 @@ module Apiwork
       private
 
       def zod_mapper
-        @zod_mapper ||= ZodMapper.new(introspection: @data, key_transform: key_transform)
+        @zod_mapper ||= ZodMapper.new(introspection: @data, key_format:)
       end
 
       def typescript_mapper
-        @typescript_mapper ||= TypescriptMapper.new(introspection: @data, key_transform: key_transform)
+        @typescript_mapper ||= TypescriptMapper.new(introspection: @data, key_format:)
       end
 
       def build_enum_schemas
