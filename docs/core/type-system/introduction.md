@@ -2,7 +2,7 @@
 order: 1
 ---
 
-# Type System
+# Introduction
 
 The type system is the heart of Apiwork. Every request, response, filter, sort, and payload flows through it. Define a type once, use it everywhere — in contracts, schemas, and generated client code.
 

@@ -2,7 +2,7 @@
 order: 1
 ---
 
-# Contracts
+# Introduction
 
 Contracts define the structure of each API action: what the request must look like and what the response will contain. They act as the formal description of how an endpoint behaves.
 

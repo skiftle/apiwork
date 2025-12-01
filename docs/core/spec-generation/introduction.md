@@ -2,7 +2,7 @@
 order: 1
 ---
 
-# Spec Generation
+# Introduction
 
 Apiwork generates API specifications from your definitions.
 

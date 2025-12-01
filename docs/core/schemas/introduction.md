@@ -2,7 +2,7 @@
 order: 1
 ---
 
-# Schemas
+# Introduction
 
 A schema is the bridge between your model, your contract, and the behavior of the endpoint.
 
