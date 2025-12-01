@@ -8,7 +8,7 @@ Apiwork is built around three central components: the API definition, the contra
 
 ## API Definition
 
-The API definition acts similarly to Rails' `routes.rb`, but focuses on the logical API structure rather than URL routing alone. It defines the resource tree and connects each resource to its contract and controller.
+Each API has its own definition file under `config/apis/`. An API definition works similarly to Rails' `routes.rb`, but focuses on the logical API structure rather than URL routing alone. It defines the resource tree, connects each resource to its contract and controller, and holds API-level settings like `key_format` and which specs to expose.
 
 ```ruby
 # config/apis/v1.rb
@@ -25,7 +25,7 @@ end
 
 ## Contracts
 
-A contract defines the actions a resource supports — such as `index`, `show`, or `create` — and the precise shape of both incoming requests and outgoing responses. Contracts can also define custom types, enums or shared structures used across actions.
+A contract defines the actions a resource supports — such as `index`, `show`, or `create` — along with the precise shape of both incoming requests and outgoing responses. Contracts can also define custom types, enums and shared structures that are reused across actions, and import types from other contracts when needed.
 
 <!-- example: funny-snake -->
 
