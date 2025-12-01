@@ -131,6 +131,10 @@ With minimal code, you got:
 
 </details>
 
+## There's More
+
+This was a minimal example to get you started. Apiwork has a lot more to offer, including associations with sideloading via `?include=`, nested saves that create or update related records in a single request, automatic eager loading to prevent N+1 queries, advanced filtering with operators like `contains`, `starts_with`, and complex `_and`/`_or` logic, cursor-based pagination for large datasets, custom types, enums, unions, polymorphic associations, STI support with discriminated unions, custom encoders and decoders for attribute transformation, and i18n support. Keep reading to learn more.
+
 ## Next Steps
 
 - [Contracts](../core/contracts/introduction.md) — Add custom validation and action-specific params
