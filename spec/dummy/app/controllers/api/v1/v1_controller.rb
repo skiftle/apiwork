@@ -3,7 +3,7 @@
 module Api
   module V1
     class V1Controller < ApplicationController
-      include Apiwork::Controller::Concern
+      include Apiwork::Controller
 
       rescue_from ActiveRecord::RecordNotFound do |error|
         render json: { errors: [{ code: 'not_found', detail: error.message }] }, status: :not_found

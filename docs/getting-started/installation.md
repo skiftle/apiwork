@@ -52,14 +52,14 @@ The path `/api/v1` determines both the mount point and the namespace. Apiwork ex
 - Contracts in `Api::V1::` (e.g. `Api::V1::PostContract`)
 - Schemas in `Api::V1::` (e.g. `Api::V1::PostSchema`)
 
-## Include the Controller Concern
+## Include the Controller Module
 
-In your controllers, include `Apiwork::Controller::Concern`:
+In your controllers, include `Apiwork::Controller`:
 
 ```ruby
 # app/controllers/api/v1/posts_controller.rb
 class Api::V1::PostsController < ApplicationController
-  include Apiwork::Controller::Concern
+  include Apiwork::Controller
 
   def index
     respond_with Post.all

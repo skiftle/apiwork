@@ -5,7 +5,7 @@ module Api
     # PersonsController - Controller using PersonResource
     # Demonstrates irregular plural root keys (person/people)
     class PersonsController < ApplicationController
-      include Apiwork::Controller::Concern
+      include Apiwork::Controller
 
       def index
         respond_with Post.all

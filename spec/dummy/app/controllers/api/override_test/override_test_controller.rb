@@ -3,7 +3,7 @@
 module Api
   module OverrideTest
     class OverrideTestController < ApplicationController
-      include Apiwork::Controller::Concern
+      include Apiwork::Controller
     end
   end
 end

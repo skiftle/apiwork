@@ -2,7 +2,7 @@
 
 module SwiftFox
   class PostsController < ApplicationController
-    include Apiwork::Controller::Concern
+    include Apiwork::Controller
 
     before_action :set_post, only: %i[show update destroy]
 

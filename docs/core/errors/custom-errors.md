@@ -171,7 +171,7 @@ Include in your controller:
 
 ```ruby
 class ApplicationController < ActionController::API
-  include Apiwork::Controller::Concern
+  include Apiwork::Controller
   include ErrorHelpers
 
   def handle_not_found(resource, id)

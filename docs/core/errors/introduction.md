@@ -78,11 +78,11 @@ Contract errors happen before your controller code runs — the request never re
 
 ## Handling Errors
 
-The `Apiwork::Controller::Concern` automatically rescues constraint errors:
+The `Apiwork::Controller` module automatically rescues constraint errors:
 
 ```ruby
 class PostsController < ApplicationController
-  include Apiwork::Controller::Concern
+  include Apiwork::Controller
 
   def create
     post = Post.create(contract.body[:post])
