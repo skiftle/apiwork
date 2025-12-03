@@ -6,11 +6,11 @@ module Api
       schema!
 
       action :show do
-        error_codes 404, 403 # Not found, forbidden
+        error_codes :not_found, :forbidden
       end
 
       action :create do
-        error_codes 422 # Validation error
+        error_codes :unprocessable_entity
 
         request do
           body do
@@ -24,7 +24,7 @@ module Api
       end
 
       action :update do
-        error_codes 404, 422 # Not found, validation error
+        error_codes :not_found, :unprocessable_entity
 
         request do
           body do

@@ -9,6 +9,10 @@ module Apiwork
       load File.expand_path('../tasks/apiwork.rake', __dir__)
     end
 
+    initializer 'apiwork.i18n' do
+      config.i18n.load_path += Dir[File.expand_path('../../config/locales/**/*.yml', __dir__)]
+    end
+
     config.to_prepare do
       Apiwork.reset!
 

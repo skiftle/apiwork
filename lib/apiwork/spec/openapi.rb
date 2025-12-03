@@ -182,9 +182,10 @@ module Apiwork
               }
             }
 
-            combined_error_codes = (error_codes + action_error_codes).uniq.sort
+            combined_error_codes = (error_codes + action_error_codes).uniq.sort_by(&:to_s)
             combined_error_codes.each do |code|
-              responses[code.to_s.to_sym] = build_union_error_response(code, error_variant)
+              status = error_status(code)
+              responses[status.to_s.to_sym] = build_union_error_response(code, error_variant)
             end
           else
             responses[:'200'] = {
@@ -196,9 +197,10 @@ module Apiwork
               }
             }
 
-            combined_error_codes = (error_codes + action_error_codes).uniq.sort
+            combined_error_codes = (error_codes + action_error_codes).uniq.sort_by(&:to_s)
             combined_error_codes.each do |code|
-              responses[code.to_s.to_sym] = build_error_response(code)
+              status = error_status(code)
+              responses[status.to_s.to_sym] = build_error_response(code)
             end
           end
         else
@@ -243,16 +245,22 @@ module Apiwork
         }
       end
 
+      def error_status(code)
+        ErrorCode.fetch(code).status
+      end
+
       def error_description(code)
-        case code
-        when 400 then 'Bad Request'
-        when 401 then 'Unauthorized'
-        when 403 then 'Forbidden'
-        when 404 then 'Not Found'
-        when 422 then 'Unprocessable Entity'
-        when 500 then 'Internal Server Error'
-        else "Error #{code}"
-        end
+        api_path = path.delete_prefix('/')
+
+        api_key = :"apiwork.apis.#{api_path}.error_codes.#{code}"
+        translation = I18n.t(api_key, default: nil)
+        return translation if translation
+
+        global_key = :"apiwork.error_codes.#{code}"
+        translation = I18n.t(global_key, default: nil)
+        return translation if translation
+
+        code.to_s.titleize
       end
 
       def build_schemas

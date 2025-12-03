@@ -35,7 +35,7 @@ RSpec.describe 'Error Response' do
         get '/api/v1/posts/999999'
 
         json = JSON.parse(response.body)
-        expect(json['issues'].first['detail']).to eq('Resource not found')
+        expect(json['issues'].first['detail']).to eq('Not Found')
       end
     end
   end

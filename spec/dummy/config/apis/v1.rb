@@ -6,7 +6,7 @@ Apiwork::API.draw '/api/v1' do
   spec :typescript
 
   # Global error codes for all endpoints
-  error_codes 400, 500
+  error_codes :bad_request, :internal_server_error
 
   info do
     title 'Test API'

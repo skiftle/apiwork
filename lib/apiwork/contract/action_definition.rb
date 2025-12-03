@@ -35,7 +35,20 @@ module Apiwork
       end
 
       def error_codes(*codes)
-        @error_codes = codes.flatten.map(&:to_i)
+        codes = codes.flatten
+        codes.each do |code|
+          unless code.is_a?(Symbol)
+            hint = code.is_a?(Integer) ? " Use :#{ErrorCode.name_for_status(code)} instead." : ''
+            raise ConfigurationError, "error_codes must be symbols, got #{code.class}: #{code}.#{hint}"
+          end
+
+          unless ErrorCode.registered?(code)
+            raise ConfigurationError,
+                  "Unknown error code :#{code}. Register it with: " \
+                  "Apiwork::ErrorCode.register :#{code}, status: <status>"
+          end
+        end
+        @error_codes = codes
       end
 
       def request(replace: false, &block)

@@ -274,7 +274,7 @@ RSpec.describe 'API Introspection' do
     let(:json) { api.as_json }
 
     it 'includes API-level global error codes at root level' do
-      expect(json[:error_codes]).to eq([400, 500])
+      expect(json[:error_codes]).to contain_exactly(:bad_request, :internal_server_error)
     end
 
     context 'when action has no specific error codes' do
@@ -289,23 +289,23 @@ RSpec.describe 'API Introspection' do
     context 'when action has specific error codes' do
       it 'includes only action-specific codes for show action' do
         show_action = json[:resources][:posts][:actions][:show]
-        # PostContract#show has error_codes 404, 403
-        # Global codes (400, 500) are NOT included - they're in json[:error_codes]
-        expect(show_action[:error_codes]).to contain_exactly(403, 404)
+        # PostContract#show has error_codes :not_found, :forbidden
+        # Global codes are NOT included - they're in json[:error_codes]
+        expect(show_action[:error_codes]).to contain_exactly(:forbidden, :not_found)
       end
 
-      it 'keeps codes unique and sorted' do
+      it 'keeps codes unique and sorted alphabetically' do
         show_action = json[:resources][:posts][:actions][:show]
         codes = show_action[:error_codes]
-        expect(codes).to eq(codes.uniq.sort)
+        expect(codes).to eq(codes.uniq.sort_by(&:to_s))
       end
 
-      it 'includes only auto-generated 422 for create action' do
+      it 'includes only auto-generated :unprocessable_entity for create action' do
         create_action = json[:resources][:posts][:actions][:create]
-        # PostContract#create has error_codes 422 (manual)
-        # Auto-generated 422 is merged with manual
-        # Global codes (400, 500) are NOT included
-        expect(create_action[:error_codes]).to eq([422])
+        # PostContract#create has error_codes :unprocessable_entity (manual)
+        # Auto-generated :unprocessable_entity is merged with manual
+        # Global codes are NOT included
+        expect(create_action[:error_codes]).to eq([:unprocessable_entity])
       end
 
       it 'has different codes for different actions' do
@@ -313,14 +313,14 @@ RSpec.describe 'API Introspection' do
         create_action = json[:resources][:posts][:actions][:create]
         update_action = json[:resources][:posts][:actions][:update]
 
-        # show: 403, 404 (action-specific)
-        expect(show_action[:error_codes]).to contain_exactly(403, 404)
+        # show: :forbidden, :not_found (action-specific)
+        expect(show_action[:error_codes]).to contain_exactly(:forbidden, :not_found)
 
-        # create: 422 (manual + auto merged)
-        expect(create_action[:error_codes]).to eq([422])
+        # create: :unprocessable_entity (manual + auto merged)
+        expect(create_action[:error_codes]).to eq([:unprocessable_entity])
 
-        # update: 404 (action-specific), 422 (auto-generated)
-        expect(update_action[:error_codes]).to contain_exactly(404, 422)
+        # update: :not_found (action-specific), :unprocessable_entity (auto-generated)
+        expect(update_action[:error_codes]).to contain_exactly(:not_found, :unprocessable_entity)
       end
     end
   end

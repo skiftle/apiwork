@@ -28,6 +28,10 @@ module Apiwork
     class << self
       delegate :register, :fetch, :registered?, :all, to: Registry
 
+      def name_for_status(status)
+        DEFAULTS.key(status)
+      end
+
       def reset!
         Registry.clear!
         register_defaults!

@@ -48,21 +48,21 @@ module Apiwork
         action_codes = @action_definition.instance_variable_get(:@error_codes) || []
         auto_codes = auto_writable_error_codes
 
-        (action_codes + auto_codes).uniq.sort
+        (action_codes + auto_codes).uniq.sort_by(&:to_s)
       end
 
       def auto_writable_error_codes
         return [] unless @action_definition.contract_class.schema?
 
         action_name_sym = @action_definition.action_name.to_sym
-        return [422] if [:create, :update].include?(action_name_sym)
+        return [:unprocessable_entity] if [:create, :update].include?(action_name_sym)
 
         return [] if [:index, :show, :destroy].include?(action_name_sym)
 
         http_method = find_http_method
         return [] unless http_method
 
-        [:post, :patch, :put].include?(http_method) ? [422] : []
+        [:post, :patch, :put].include?(http_method) ? [:unprocessable_entity] : []
       end
 
       def find_http_method
