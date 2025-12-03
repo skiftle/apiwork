@@ -29,3 +29,12 @@
 
 en:
   hello: "Hello world"
+  apiwork:
+    apis:
+      api/v1:
+        contracts:
+          post:
+            actions:
+              bulk_create:
+                summary: "Bulk create posts"
+                description: "Create multiple posts in one request"

@@ -92,7 +92,12 @@ module Api
       end
 
       # Test replace: true for response (completely replaces schema response)
+      # Also tests deprecated and custom operation_id
       action :destroy do
+        summary "Delete a post"
+        deprecated true
+        operation_id "deletePost"
+
         response replace: true do
           body do
             param :deleted_id, type: :uuid, required: true
