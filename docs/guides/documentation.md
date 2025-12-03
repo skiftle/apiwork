@@ -229,49 +229,9 @@ Apiwork::API.draw '/api/v1' do
 end
 ```
 
-## How Generators Use Documentation
+## Generated Output
 
-### OpenAPI
-
-The OpenAPI generator maps documentation fields to the spec:
-
-- `info` block → `info` object
-- Resource `summary`/`description` → operation descriptions
-- `describe` → path operation fields
-- Attribute `description`/`example`/`format` → schema properties
-- `deprecated` → `deprecated: true` throughout
-
-Generate with:
-
-```bash
-rake apiwork:spec:write FORMAT=openapi OUTPUT=public/openapi.json
-```
-
-### TypeScript
-
-The TypeScript generator uses documentation for JSDoc comments:
-
-```typescript
-/**
- * A monetary amount with currency
- * @example { amount: "99.99", currency: "USD" }
- */
-interface Money {
-  amount: string;
-  currency: string;
-}
-
-/**
- * Current state of an invoice
- */
-type InvoiceStatus = 'draft' | 'sent' | 'paid' | 'void';
-```
-
-Generate with:
-
-```bash
-rake apiwork:spec:write FORMAT=typescript OUTPUT=public/types.ts
-```
+These documentation fields are used by the spec generators. See [Spec Generation](../core/spec-generation/openapi.md) for how to generate OpenAPI specs, TypeScript definitions, and other outputs.
 
 ## Future: Internationalization
 
