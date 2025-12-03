@@ -65,32 +65,16 @@ end
 }
 ```
 
-## Action Metadata
-
-Add OpenAPI-specific metadata:
-
-```ruby
-resources :posts do
-  describe :publish,
-    summary: "Publish a post",
-    description: "Changes status from draft to published",
-    tags: ["Publishing"],
-    operation_id: "publishPost"
-
-  member do
-    patch :publish
-  end
-end
-```
-
 ## Error Codes
 
 Document possible error responses:
 
 ```ruby
 action :show do
-  error_codes 404, 403
+  error_codes :not_found, :forbidden
 end
 ```
 
 Appears in the OpenAPI spec as possible responses.
+
+See [Contracts: Actions](../contracts/actions.md#metadata) for how to add metadata like `summary`, `description`, and `tags`.

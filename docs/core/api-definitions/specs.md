@@ -81,56 +81,6 @@ Query parameter override:
 GET /api/v1/.spec/openapi?key_format=camel
 ```
 
-## Describe Actions
-
-Add metadata to actions for richer spec output:
-
-```ruby
-Apiwork::API.draw '/api/v1' do
-  resources :posts do
-    describe :publish,
-      summary: "Publish a post",
-      description: "Changes the post status from draft to published",
-      tags: ["Publishing"],
-      operation_id: "publishPost"
-
-    member do
-      patch :publish
-    end
-  end
-end
-```
-
-### Available Options
-
-| Option | Description |
-|--------|-------------|
-| `summary` | Short description (appears in endpoint list) |
-| `description` | Detailed description |
-| `tags` | OpenAPI tags for grouping |
-| `operation_id` | Unique identifier for the operation |
-| `deprecated` | Mark action as deprecated |
-
-## Multiple Descriptions
-
-Describe multiple actions:
-
-```ruby
-resources :posts do
-  describe :index,
-    summary: "List posts",
-    tags: ["Posts"]
-
-  describe :create,
-    summary: "Create a post",
-    tags: ["Posts"]
-
-  describe :publish,
-    summary: "Publish a post",
-    tags: ["Publishing"]
-end
-```
-
 ## Spec Generation
 
 For detailed information about each spec format:

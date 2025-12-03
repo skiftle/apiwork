@@ -100,16 +100,58 @@ end
 
 ## Error Codes
 
-Declare HTTP error codes that can be returned:
+Declare error codes that can be returned:
 
 ```ruby
 action :show do
-  error_codes 404, 403
+  error_codes :not_found, :forbidden
 end
 
 action :create do
-  error_codes 422
+  error_codes :unprocessable_entity
 end
 ```
 
 These appear in generated OpenAPI specs.
+
+## Metadata
+
+Document actions with metadata fields:
+
+```ruby
+action :index do
+  summary "List all posts"
+  description "Returns a paginated list of posts"
+  tags :posts, :public
+end
+
+action :create do
+  summary "Create a post"
+  deprecated true
+  operation_id "createPost"
+
+  error_codes :unprocessable_entity
+
+  request do
+    body do
+      param :title, type: :string
+    end
+  end
+end
+```
+
+### Metadata Fields
+
+| Field | Description |
+|-------|-------------|
+| `summary` | One-line description. Shows in endpoint lists. |
+| `description` | Longer description. Supports markdown. |
+| `tags` | Action-specific tags for grouping. |
+| `deprecated` | Marks the action as deprecated. |
+| `operation_id` | Explicit operation ID for OpenAPI. |
+
+### Translations
+
+Summaries and descriptions can be translated. Define them in locale files instead of inline, and they'll change with `I18n.locale`.
+
+See [i18n: Action Metadata](../../advanced/i18n.md#action-metadata) for the full guide.

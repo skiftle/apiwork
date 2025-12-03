@@ -14,7 +14,9 @@ Apiwork::API.draw '/api/v1' do
   end
 
   resources :invoices do
-    describe :create, summary: "Create a new invoice"
+    summary "Invoice management"
+    description "Create, update, and query invoices"
+    tags :billing
   end
 end
 ```
@@ -104,47 +106,30 @@ These appear in the OpenAPI spec under the resource's operations.
 
 ## Action Documentation
 
-Use `describe` to document individual actions:
+Document individual actions in Contracts. See [Contracts: Actions](../core/contracts/actions.md#metadata) for the full reference.
 
 ```ruby
-resources :invoices do
-  describe :index,
-    summary: "List all invoices",
-    description: "Returns invoices for the authenticated account"
+class InvoiceContract < Apiwork::Contract::Base
+  action :index do
+    summary "List all invoices"
+    description "Returns invoices for the authenticated account"
+    tags :billing
+  end
 
-  describe :show,
-    summary: "Get invoice details"
+  action :create do
+    summary "Create invoice"
+    description "Creates a new invoice. Returns 201 on success."
+    operation_id "createInvoice"
 
-  describe :create,
-    summary: "Create invoice",
-    description: "Creates a new invoice. Returns 201 on success.",
-    tags: [:write]
+    error_codes :unprocessable_entity
+  end
 
-  describe :destroy,
-    summary: "Delete invoice",
-    deprecated: true
+  action :destroy do
+    summary "Delete invoice"
+    deprecated true
+  end
 end
 ```
-
-### Action Fields
-
-| Field | Description |
-|-------|-------------|
-| `summary` | One-line description. Shows in endpoint lists. |
-| `description` | Longer description. Supports markdown. |
-| `tags` | Action-specific tags (merged with resource tags). |
-| `deprecated` | Marks the action as deprecated. |
-| `operation_id` | Explicit operation ID for OpenAPI. |
-
-### Operation IDs
-
-By default, Apiwork generates operation IDs from the resource and action name (`invoices_create`). Override with `operation_id`:
-
-```ruby
-describe :create, operation_id: "createInvoice"
-```
-
-This affects the generated OpenAPI spec and TypeScript function names.
 
 ## Attribute Documentation
 
@@ -233,26 +218,8 @@ end
 
 These documentation fields are used by the spec generators. See [Spec Generation](../core/spec-generation/openapi.md) for how to generate OpenAPI specs, TypeScript definitions, and other outputs.
 
-## Future: Internationalization
+## Internationalization
 
-Apiwork will support translated documentation in a future release. The vision:
+Action metadata — summaries and descriptions — can be translated. Define them in locale files instead of inline, and they'll change with `I18n.locale`.
 
-```ruby
-# config/locales/api.en.yml
-en:
-  apiwork:
-    schemas:
-      invoice:
-        number:
-          description: "Unique invoice number"
-
-# config/locales/api.sv.yml
-sv:
-  apiwork:
-    schemas:
-      invoice:
-        number:
-          description: "Unikt fakturanummer"
-```
-
-For now, write documentation in your primary language. The i18n feature will be backwards-compatible when released.
+See [i18n: Action Metadata](../advanced/i18n.md#action-metadata) for the full guide.
