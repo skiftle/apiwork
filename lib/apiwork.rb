@@ -12,6 +12,7 @@ module Apiwork
 
     def reset!
       API.reset!
+      ErrorCode.reset!
     end
   end
 end

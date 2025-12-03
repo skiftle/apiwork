@@ -7,6 +7,7 @@ module Apiwork
     include Resolution
     include Deserialization
     include Serialization
+    include ErrorResponse
 
     included do
       wrap_parameters false

@@ -1,0 +1,23 @@
+en:
+  apiwork:
+    error_codes:
+      bad_request: "Bad request"
+      unauthorized: "Authentication required"
+      payment_required: "Payment required"
+      forbidden: "Access denied"
+      not_found: "Resource not found"
+      method_not_allowed: "Method not allowed"
+      not_acceptable: "Not acceptable"
+      request_timeout: "Request timeout"
+      conflict: "Conflict with current state"
+      gone: "Resource no longer available"
+      precondition_failed: "Precondition failed"
+      unsupported_media_type: "Unsupported media type"
+      unprocessable_entity: "Validation failed"
+      locked: "Resource is locked"
+      too_many_requests: "Too many requests"
+      internal_server_error: "An unexpected error occurred"
+      not_implemented: "Not implemented"
+      bad_gateway: "Bad gateway"
+      service_unavailable: "Service temporarily unavailable"
+      gateway_timeout: "Gateway timeout"
