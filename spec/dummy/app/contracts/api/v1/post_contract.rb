@@ -5,7 +5,15 @@ module Api
     class PostContract < Apiwork::Contract::Base
       schema!
 
+      action :index do
+        summary "List all posts"
+        description "Returns a paginated list of all posts"
+        tags :posts, :public
+      end
+
       action :show do
+        summary "Get a post"
+        description "Returns a single post by ID"
         error_codes :not_found, :forbidden
       end
 

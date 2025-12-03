@@ -55,17 +55,16 @@ module Apiwork
         nil
       end
 
-      def add_crud_action(resource_name, action, method:, metadata: {})
+      def add_crud_action(resource_name, action, method:)
         resource = find_resource(resource_name)
         return unless resource
 
         resource[:actions][action] = {
-          method: method,
-          metadata: metadata
+          method: method
         }
       end
 
-      def add_action(resource_name, action, type:, method:, options:, contract_class: nil, metadata: {})
+      def add_action(resource_name, action, type:, method:, options:, contract_class: nil)
         resource = find_resource(resource_name)
         return unless resource
 
@@ -73,8 +72,7 @@ module Apiwork
         resource[storage_key][action] = {
           method: method,
           options: options,
-          contract_class: contract_class,
-          metadata: metadata
+          contract_class: contract_class
         }
       end
 

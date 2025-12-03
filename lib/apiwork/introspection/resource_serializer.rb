@@ -108,12 +108,7 @@ module Apiwork
       def add_action(actions, name, method, path, contract_class, metadata: {})
         actions[name] = {
           method: method,
-          path: path,
-          summary: metadata[:summary],
-          description: metadata[:description],
-          tags: metadata[:tags],
-          deprecated: metadata[:deprecated],
-          operation_id: metadata[:operation_id]
+          path: path
         }
 
         return unless contract_class
@@ -122,6 +117,12 @@ module Apiwork
         return unless action_definition
 
         contract_json = ActionSerializer.new(action_definition).serialize
+
+        actions[name][:summary] = contract_json[:summary]
+        actions[name][:description] = contract_json[:description]
+        actions[name][:tags] = contract_json[:tags]
+        actions[name][:deprecated] = contract_json[:deprecated]
+        actions[name][:operation_id] = contract_json[:operation_id]
         actions[name][:request] = contract_json[:request] if contract_json[:request]
         actions[name][:response] = contract_json[:response] if contract_json[:response]
         actions[name][:error_codes] = contract_json[:error_codes] || []

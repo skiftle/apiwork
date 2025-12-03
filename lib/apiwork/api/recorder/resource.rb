@@ -85,29 +85,11 @@ module Apiwork
           crud_actions = resource[:only] || []
 
           crud_actions.each do |action_name|
-            action_meta = @pending_metadata[:actions]&.delete(action_name) || {}
-
-            action_meta[:summary] ||= default_crud_action_summary(action_name, name)
-
             @metadata.add_crud_action(
               name,
               action_name,
-              method: crud_action_method(action_name),
-              metadata: action_meta
+              method: crud_action_method(action_name)
             )
-          end
-        end
-
-        def default_crud_action_summary(action, resource_name)
-          resource_singular = resource_name.to_s.singularize
-          resource_plural = resource_name.to_s
-
-          case action.to_sym
-          when :index then "List #{resource_plural}"
-          when :show then "Get #{resource_singular}"
-          when :create then "Create #{resource_singular}"
-          when :update then "Update #{resource_singular}"
-          when :destroy then "Delete #{resource_singular}"
           end
         end
 

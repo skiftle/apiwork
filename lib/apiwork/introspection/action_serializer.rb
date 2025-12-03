@@ -10,6 +10,12 @@ module Apiwork
       def serialize
         result = {}
 
+        result[:summary] = resolve_summary
+        result[:description] = resolve_description
+        result[:tags] = @action_definition.tags
+        result[:deprecated] = @action_definition.deprecated
+        result[:operation_id] = @action_definition.operation_id
+
         request_def = @action_definition.request_definition
         result[:request] = serialize_request(request_def) if request_def
 
@@ -18,10 +24,35 @@ module Apiwork
 
         result[:error_codes] = error_codes
 
-        result
+        result.compact
       end
 
       private
+
+      def resolve_summary
+        return @action_definition.summary if @action_definition.summary
+
+        i18n_lookup(:summary)
+      end
+
+      def resolve_description
+        return @action_definition.description if @action_definition.description
+
+        i18n_lookup(:description)
+      end
+
+      def i18n_lookup(field)
+        contract_class = @action_definition.contract_class
+        api_class = contract_class.api_class
+        return nil unless api_class&.metadata&.path && contract_class.name
+
+        api_path = api_class.metadata.path.delete_prefix('/')
+        contract_name = contract_class.name.demodulize.underscore.gsub(/_contract$/, '')
+        action_name = @action_definition.action_name
+
+        key = :"apiwork.apis.#{api_path}.contracts.#{contract_name}.actions.#{action_name}.#{field}"
+        I18n.t(key, default: nil)
+      end
 
       def serialize_request(request_def)
         result = {}

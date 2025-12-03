@@ -56,10 +56,7 @@ module Apiwork
           end
 
           contract_path = options[:contract]
-
           contract_class = contract_path ? contract_path_to_class_name(contract_path) : nil
-
-          action_metadata = extract_action_metadata(action, current_resource)
 
           action_type = if @in_member_block || options[:on] == :member
                           :member
@@ -74,8 +71,7 @@ module Apiwork
               type: action_type,
               method: method,
               options: options,
-              contract_class: contract_class,
-              metadata: action_metadata
+              contract_class: contract_class
             )
           else
             raise Apiwork::ConfigurationError,
@@ -86,38 +82,6 @@ module Apiwork
                   "  #{method} :#{action}, on: :member\n" \
                   "  collection { #{method} :#{action} }\n" \
                   "  #{method} :#{action}, on: :collection"
-          end
-        end
-
-        def extract_action_metadata(action, resource_name)
-          action_meta = @pending_metadata[:actions]&.delete(action) || {}
-
-          action_type = if @in_member_block || @in_collection_block
-                          @in_member_block ? :member : :collection
-                        else
-                          :member # Default assumption
-                        end
-
-          action_meta[:summary] ||= default_action_summary(action, action_type, resource_name)
-          action_meta
-        end
-
-        def default_action_summary(action, type, resource_name)
-          resource_singular = resource_name.to_s.singularize
-          resource_plural = resource_name.to_s
-
-          case action.to_sym
-          when :index then "List #{resource_plural}"
-          when :show then "Get #{resource_singular}"
-          when :create then "Create #{resource_singular}"
-          when :update then "Update #{resource_singular}"
-          when :destroy then "Delete #{resource_singular}"
-          else
-            if type == :member
-              "#{action.to_s.titleize} #{resource_singular}"
-            else
-              "#{action.to_s.titleize} #{resource_plural}"
-            end
           end
         end
       end

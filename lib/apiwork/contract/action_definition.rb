@@ -16,6 +16,11 @@ module Apiwork
         @request_definition = nil
         @response_definition = nil
         @error_codes = []
+        @summary = nil
+        @description = nil
+        @tags = nil
+        @deprecated = nil
+        @operation_id = nil
       end
 
       def resets_request?
@@ -32,6 +37,31 @@ module Apiwork
 
       def as_json
         introspect
+      end
+
+      def summary(text = nil)
+        @summary = text if text
+        @summary
+      end
+
+      def description(text = nil)
+        @description = text if text
+        @description
+      end
+
+      def tags(*tags_list)
+        @tags = tags_list.flatten if tags_list.any?
+        @tags
+      end
+
+      def deprecated(value = nil)
+        @deprecated = value unless value.nil?
+        @deprecated
+      end
+
+      def operation_id(value = nil)
+        @operation_id = value if value
+        @operation_id
       end
 
       def error_codes(*codes)

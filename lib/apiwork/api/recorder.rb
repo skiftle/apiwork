@@ -7,7 +7,6 @@ module Apiwork
       include Recorder::Action       # Handles member/collection actions
       include Recorder::Concern      # Handles concern definitions
       include Recorder::Inference    # Handles class inference
-      include Recorder::Description  # Handles description DSL
 
       attr_reader :metadata
 
