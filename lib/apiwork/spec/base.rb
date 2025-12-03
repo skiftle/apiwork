@@ -105,7 +105,11 @@ module Apiwork
       end
 
       def error_codes
-        @data[:error_codes] || {}
+        @data[:error_codes] || []
+      end
+
+      def errors
+        @data[:errors] || {}
       end
 
       def each_resource(&block)

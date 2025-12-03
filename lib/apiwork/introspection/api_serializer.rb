@@ -11,27 +11,48 @@ module Apiwork
         return nil unless @api_class.metadata
 
         resources = serialize_resources
+        all_error_codes = collect_all_error_codes(resources)
 
-        result = {
+        {
           path: @api_class.mount_path,
           info: serialize_info,
           types: TypeSerializer.new(@api_class).serialize_types,
           enums: TypeSerializer.new(@api_class).serialize_enums,
+          errors: serialize_errors(all_error_codes),
+          error_codes: @api_class.metadata.error_codes || [],
           resources: resources
         }
-
-        result[:error_codes] = serialize_error_codes(@api_class.metadata.error_codes || [])
-
-        result
       end
 
       private
 
-      def serialize_error_codes(codes)
+      def collect_all_error_codes(resources)
+        codes = Set.new(@api_class.metadata.error_codes || [])
+
+        collect_action_error_codes(resources, codes)
+
+        codes.to_a.sort_by(&:to_s)
+      end
+
+      def collect_action_error_codes(resources, codes)
+        resources.each_value do |resource_data|
+          resource_data[:actions]&.each_value do |action_data|
+            codes.merge(action_data[:error_codes] || [])
+          end
+
+          collect_action_error_codes(resource_data[:resources], codes) if resource_data[:resources]
+        end
+      end
+
+      def serialize_errors(codes)
         api_path = @api_class.metadata.path.delete_prefix('/')
 
         codes.each_with_object({}) do |code, hash|
-          hash[code] = resolve_error_description(code, api_path)
+          error_code = ErrorCode.fetch(code)
+          hash[code] = {
+            status: error_code.status,
+            description: resolve_error_description(code, api_path)
+          }
         end
       end
 

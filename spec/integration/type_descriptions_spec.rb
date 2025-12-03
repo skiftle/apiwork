@@ -74,16 +74,16 @@ RSpec.describe 'Type Descriptions', type: :integration do
       end
 
       I18n.backend.store_translations(:en, {
-        apiwork: {
-          apis: {
-            'api/override_test' => {
-              types: {
-                post_filter: { description: 'Custom filter for posts' }
-              }
-            }
-          }
-        }
-      })
+                                        apiwork: {
+                                          apis: {
+                                            'api/override_test' => {
+                                              types: {
+                                                post_filter: { description: 'Custom filter for posts' }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      })
     end
 
     after(:all) do

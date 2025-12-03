@@ -274,46 +274,47 @@ RSpec.describe 'API Introspection' do
     let(:json) { api.as_json }
 
     it 'includes API-level global error codes at root level' do
-      expect(json[:error_codes].keys).to contain_exactly(:bad_request, :internal_server_error)
-      expect(json[:error_codes][:bad_request]).to eq('Bad Request')
-      expect(json[:error_codes][:internal_server_error]).to eq('Internal Server Error')
+      expect(json[:error_codes]).to contain_exactly(:bad_request, :internal_server_error)
+    end
+
+    it 'includes errors hash with status and description for all used error codes' do
+      expect(json[:errors].keys).to include(:bad_request, :internal_server_error, :not_found, :forbidden, :unprocessable_entity)
+      expect(json[:errors][:bad_request]).to eq({ status: 400, description: 'Bad Request' })
+      expect(json[:errors][:not_found]).to eq({ status: 404, description: 'Not Found' })
     end
 
     context 'when action has no specific error codes' do
-      it 'has empty hash for index action (only global codes apply)' do
+      it 'has empty error_codes for index action (API-level codes apply implicitly)' do
         index_action = json[:resources][:posts][:actions][:index]
-        expect(index_action[:error_codes]).to eq({})
+        expect(index_action[:error_codes]).to be_empty
       end
     end
 
     context 'when action has specific error codes' do
-      it 'includes only action-specific codes for show action' do
+      it 'includes only action-specific codes for show action (not API-level)' do
         show_action = json[:resources][:posts][:actions][:show]
-        expect(show_action[:error_codes].keys).to contain_exactly(:forbidden, :not_found)
-        expect(show_action[:error_codes][:not_found]).to eq('Not Found')
-        expect(show_action[:error_codes][:forbidden]).to eq('Forbidden')
+        expect(show_action[:error_codes]).to contain_exactly(:forbidden, :not_found)
       end
 
       it 'keeps codes unique and sorted alphabetically' do
         show_action = json[:resources][:posts][:actions][:show]
-        codes = show_action[:error_codes].keys
+        codes = show_action[:error_codes]
         expect(codes).to eq(codes.uniq.sort_by(&:to_s))
       end
 
       it 'includes only auto-generated :unprocessable_entity for create action' do
         create_action = json[:resources][:posts][:actions][:create]
-        expect(create_action[:error_codes].keys).to eq([:unprocessable_entity])
-        expect(create_action[:error_codes][:unprocessable_entity]).to eq('Unprocessable Entity')
+        expect(create_action[:error_codes]).to contain_exactly(:unprocessable_entity)
       end
 
-      it 'has different codes for different actions' do
+      it 'has different codes for different actions (only action-specific, not API-level)' do
         show_action = json[:resources][:posts][:actions][:show]
         create_action = json[:resources][:posts][:actions][:create]
         update_action = json[:resources][:posts][:actions][:update]
 
-        expect(show_action[:error_codes].keys).to contain_exactly(:forbidden, :not_found)
-        expect(create_action[:error_codes].keys).to eq([:unprocessable_entity])
-        expect(update_action[:error_codes].keys).to contain_exactly(:not_found, :unprocessable_entity)
+        expect(show_action[:error_codes]).to contain_exactly(:forbidden, :not_found)
+        expect(create_action[:error_codes]).to contain_exactly(:unprocessable_entity)
+        expect(update_action[:error_codes]).to contain_exactly(:not_found, :unprocessable_entity)
       end
     end
   end

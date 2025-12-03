@@ -72,11 +72,11 @@ module Apiwork
             raise ConfigurationError, "error_codes must be symbols, got #{code.class}: #{code}.#{hint}"
           end
 
-          unless ErrorCode.registered?(code)
-            raise ConfigurationError,
-                  "Unknown error code :#{code}. Register it with: " \
-                  "Apiwork::ErrorCode.register :#{code}, status: <status>"
-          end
+          next if ErrorCode.registered?(code)
+
+          raise ConfigurationError,
+                "Unknown error code :#{code}. Register it with: " \
+                "Apiwork::ErrorCode.register :#{code}, status: <status>"
         end
         @error_codes = codes
       end

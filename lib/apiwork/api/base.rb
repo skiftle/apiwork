@@ -109,11 +109,11 @@ module Apiwork
               raise ConfigurationError, "error_codes must be symbols, got #{code.class}: #{code}.#{hint}"
             end
 
-            unless ErrorCode.registered?(code)
-              raise ConfigurationError,
-                    "Unknown error code :#{code}. Register it with: " \
-                    "Apiwork::ErrorCode.register :#{code}, status: <status>"
-            end
+            next if ErrorCode.registered?(code)
+
+            raise ConfigurationError,
+                  "Unknown error code :#{code}. Register it with: " \
+                  "Apiwork::ErrorCode.register :#{code}, status: <status>"
           end
           @metadata.error_codes = codes
         end
@@ -140,7 +140,7 @@ module Apiwork
           raise ArgumentError, 'Block required for type definition' unless block_given?
 
           type_system.register_type(name, scope:, description:, example:, format:, deprecated:,
-                                    schema_class:, type_kind:, &block)
+                                          schema_class:, type_kind:, &block)
         end
 
         def enum(name, values:, scope: nil, description: nil, example: nil, deprecated: false)

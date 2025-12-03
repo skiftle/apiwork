@@ -166,6 +166,7 @@ module Apiwork
 
       def build_responses(action_name, response_params, action_error_codes = [])
         responses = {}
+        combined_codes = (error_codes + action_error_codes).uniq
 
         if response_params
           # Detect unwrapped union and separate success/error variants
@@ -182,10 +183,9 @@ module Apiwork
               }
             }
 
-            combined_error_codes = error_codes.merge(action_error_codes)
-            combined_error_codes.sort_by { |k, _| k.to_s }.each do |code, description|
-              status = error_status(code)
-              responses[status.to_s.to_sym] = build_union_error_response(description, error_variant)
+            combined_codes.each do |code|
+              error_data = errors[code]
+              responses[error_data[:status].to_s.to_sym] = build_union_error_response(error_data[:description], error_variant)
             end
           else
             responses[:'200'] = {
@@ -197,10 +197,9 @@ module Apiwork
               }
             }
 
-            combined_error_codes = error_codes.merge(action_error_codes)
-            combined_error_codes.sort_by { |k, _| k.to_s }.each do |code, description|
-              status = error_status(code)
-              responses[status.to_s.to_sym] = build_error_response(description)
+            combined_codes.each do |code|
+              error_data = errors[code]
+              responses[error_data[:status].to_s.to_sym] = build_error_response(error_data[:description])
             end
           end
         else
@@ -243,10 +242,6 @@ module Apiwork
             }
           }
         }
-      end
-
-      def error_status(code)
-        ErrorCode.fetch(code).status
       end
 
       def build_schemas
