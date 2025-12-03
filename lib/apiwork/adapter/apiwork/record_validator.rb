@@ -30,11 +30,7 @@ module Apiwork
         end
 
         def issues
-          result = []
-          result.concat(attribute_issues)
-          result.concat(association_issues(:has_many))
-          result.concat(association_issues(:has_one))
-          result
+          attribute_issues + association_issues(:has_many) + association_issues(:has_one)
         end
 
         private
