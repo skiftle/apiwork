@@ -108,4 +108,4 @@ Status must be 400-599.
 
 ## i18n
 
-Error messages support translations. See the [i18n section](/core/i18n) for details.
+Error messages support translations. See the [i18n section](/advanced/i18n) for details.
