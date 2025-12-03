@@ -57,8 +57,11 @@ Apiwork distinguishes between different error categories:
 |-------|-------------|------|
 | `ContractError` | 400 Bad Request | Request doesn't match the contract |
 | `ValidationError` | 422 Unprocessable Entity | Model validation failed |
+| `respond_with_error` | Varies | HTTP errors (not found, forbidden, etc.) |
 
-Both inherit from `ConstraintError` and carry an array of issues. The controller automatically catches these and renders the appropriate response.
+`ContractError` and `ValidationError` inherit from `ConstraintError` and carry an array of issues. The controller automatically catches these and renders the appropriate response.
+
+For HTTP errors like "not found" or "forbidden", use `respond_with_error`.
 
 ## Error Flow
 
@@ -93,26 +96,30 @@ end
 
 If `Post.create` fails validation, `respond_with` detects the errors and raises a `ValidationError`. The concern catches it and renders the issues with a 422 status.
 
-For custom error handling, use `render_error`:
+For HTTP errors, use `respond_with_error`:
 
 ```ruby
-def create
-  post = Post.new(contract.body[:post])
+class PostsController < ApplicationController
+  include Apiwork::Controller
 
-  unless current_user.can_create_posts?
-    issue = Apiwork::Issue.new(
-      code: :unauthorized,
-      detail: "You don't have permission to create posts",
-      path: [],
-      meta: {}
-    )
-    return render_error [issue], status: :forbidden
+  rescue_from ActiveRecord::RecordNotFound do
+    respond_with_error :not_found
   end
 
-  post.save!
-  respond_with post
+  def publish
+    post = Post.find(params[:id])
+
+    unless current_user.can_publish?(post)
+      return respond_with_error :forbidden
+    end
+
+    post.publish!
+    respond_with post
+  end
 end
 ```
+
+See [Error Codes](./error-codes) for the full list of built-in codes and how to register custom ones.
 
 ## Why This Matters
 

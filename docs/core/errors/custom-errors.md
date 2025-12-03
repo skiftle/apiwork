@@ -51,26 +51,24 @@ end
 
 ## Authorization Errors
 
-For permission checks:
+For common HTTP errors like forbidden or not found, use `respond_with_error`:
 
 ```ruby
 def destroy
   post = Post.find(params[:id])
 
   unless current_user.can_delete?(post)
-    issue = Apiwork::Issue.new(
-      code: :forbidden,
+    return respond_with_error :forbidden,
       detail: "You don't have permission to delete this post",
-      path: [],
       meta: { user_id: current_user.id, post_id: post.id }
-    )
-    return render_error [issue], status: :forbidden
   end
 
   post.destroy
   respond_with post
 end
 ```
+
+See [Error Codes](./error-codes) for all built-in codes.
 
 ## Domain Validation
 
@@ -132,54 +130,6 @@ Choose the appropriate status for your error type:
 | `422 Unprocessable Entity` | Business rule violation |
 | `429 Too Many Requests` | Rate limiting |
 
-## Error Builders
-
-For reusable error patterns, create helper methods:
-
-```ruby
-module ErrorHelpers
-  def forbidden_error(message, meta = {})
-    Apiwork::Issue.new(
-      code: :forbidden,
-      detail: message,
-      path: [],
-      meta: meta
-    )
-  end
-
-  def not_found_error(resource, id)
-    Apiwork::Issue.new(
-      code: :not_found,
-      detail: "#{resource.to_s.humanize} not found",
-      path: [],
-      meta: { resource: resource, id: id }
-    )
-  end
-
-  def field_error(code, message, path, meta = {})
-    Apiwork::Issue.new(
-      code: code,
-      detail: message,
-      path: Array(path),
-      meta: meta
-    )
-  end
-end
-```
-
-Include in your controller:
-
-```ruby
-class ApplicationController < ActionController::API
-  include Apiwork::Controller
-  include ErrorHelpers
-
-  def handle_not_found(resource, id)
-    render_error [not_found_error(resource, id)], status: :not_found
-  end
-end
-```
-
 ## Combining Error Sources
 
 You can mix custom issues with validation issues:
@@ -215,41 +165,22 @@ def create
 end
 ```
 
-## Consistent Error Codes
+## Registering Custom Codes
 
-Define standard error codes for your application:
+For domain-specific errors that you use frequently, register them as error codes:
 
 ```ruby
-module ErrorCodes
-  # Authentication
-  INVALID_TOKEN = :invalid_token
-  TOKEN_EXPIRED = :token_expired
-
-  # Authorization
-  FORBIDDEN = :forbidden
-  OWNERSHIP_REQUIRED = :ownership_required
-
-  # Business Rules
-  INSUFFICIENT_FUNDS = :insufficient_funds
-  CREDIT_LIMIT_EXCEEDED = :credit_limit_exceeded
-  ACCOUNT_FROZEN = :account_frozen
-
-  # Inventory
-  OUT_OF_STOCK = :out_of_stock
-  QUANTITY_EXCEEDS_AVAILABLE = :quantity_exceeds_available
-
-  # State
-  ALREADY_PROCESSED = :already_processed
-  INVALID_STATE_TRANSITION = :invalid_state_transition
-end
+# config/initializers/error_codes.rb
+Apiwork::ErrorCode.register :insufficient_funds, status: 402
+Apiwork::ErrorCode.register :account_frozen, status: 403
+Apiwork::ErrorCode.register :out_of_stock, status: 409
 ```
 
-Using consistent codes helps clients handle errors programmatically:
+Then use them with `respond_with_error`:
 
-```typescript
-if (error.code === 'insufficient_funds') {
-  showInsufficientFundsDialog(error.meta.available);
-} else if (error.code === 'out_of_stock') {
-  removeItemFromCart(error.meta.product_id);
-}
+```ruby
+respond_with_error :insufficient_funds,
+  meta: { requested: amount, available: from_account.balance }
 ```
+
+This gives you i18n support and consistent HTTP status codes. See [Error Codes](./error-codes) for details.
