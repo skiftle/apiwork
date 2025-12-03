@@ -64,7 +64,9 @@ module Apiwork
             payload_type_name = :"#{context_symbol}_payload"
 
             unless contract_class.resolve_type(payload_type_name)
-              type_registrar.type(payload_type_name) do
+              type_registrar.type(payload_type_name,
+                                  schema_class: schema_class,
+                                  type_kind: :"#{context_symbol}_payload") do
                 builder.send(:writable_params, self, context_symbol, nested: false)
               end
             end
@@ -357,7 +359,10 @@ module Apiwork
             register_enum_filter(name)
           end
 
-          contract_class.type(type_name) do
+          type_options = { schema_class: schema_class_local, type_kind: :filter }
+          type_options = {} unless depth.zero?
+
+          contract_class.type(type_name, **type_options) do
             param :_and, type: :array, of: type_name, required: false
             param :_or, type: :array, of: type_name, required: false
             param :_not, type: type_name, required: false
@@ -425,7 +430,10 @@ module Apiwork
           builder = self
           schema_class_local = schema_class
 
-          contract_class.type(type_name) do
+          type_options = { schema_class: schema_class_local, type_kind: :sort }
+          type_options = {} unless depth.zero?
+
+          contract_class.type(type_name, **type_options) do
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
               next unless attribute_definition.sortable?
 
@@ -892,6 +900,7 @@ module Apiwork
           else :unknown
           end
         end
+
       end
     end
   end

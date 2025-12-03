@@ -20,12 +20,32 @@ module Apiwork
           resources: resources
         }
 
-        result[:error_codes] = @api_class.metadata.error_codes || []
+        result[:error_codes] = serialize_error_codes(@api_class.metadata.error_codes || [])
 
         result
       end
 
       private
+
+      def serialize_error_codes(codes)
+        api_path = @api_class.metadata.path.delete_prefix('/')
+
+        codes.each_with_object({}) do |code, hash|
+          hash[code] = resolve_error_description(code, api_path)
+        end
+      end
+
+      def resolve_error_description(code, api_path)
+        api_key = :"apiwork.apis.#{api_path}.error_codes.#{code}"
+        result = I18n.t(api_key, default: nil)
+        return result if result
+
+        global_key = :"apiwork.error_codes.#{code}"
+        result = I18n.t(global_key, default: nil)
+        return result if result
+
+        code.to_s.titleize
+      end
 
       def serialize_resources
         resources = {}

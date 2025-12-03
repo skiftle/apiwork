@@ -182,10 +182,10 @@ module Apiwork
               }
             }
 
-            combined_error_codes = (error_codes + action_error_codes).uniq.sort_by(&:to_s)
-            combined_error_codes.each do |code|
+            combined_error_codes = error_codes.merge(action_error_codes)
+            combined_error_codes.sort_by { |k, _| k.to_s }.each do |code, description|
               status = error_status(code)
-              responses[status.to_s.to_sym] = build_union_error_response(code, error_variant)
+              responses[status.to_s.to_sym] = build_union_error_response(description, error_variant)
             end
           else
             responses[:'200'] = {
@@ -197,10 +197,10 @@ module Apiwork
               }
             }
 
-            combined_error_codes = (error_codes + action_error_codes).uniq.sort_by(&:to_s)
-            combined_error_codes.each do |code|
+            combined_error_codes = error_codes.merge(action_error_codes)
+            combined_error_codes.sort_by { |k, _| k.to_s }.each do |code, description|
               status = error_status(code)
-              responses[status.to_s.to_sym] = build_error_response(code)
+              responses[status.to_s.to_sym] = build_error_response(description)
             end
           end
         else
@@ -212,9 +212,9 @@ module Apiwork
         responses
       end
 
-      def build_error_response(code)
+      def build_error_response(description)
         {
-          description: error_description(code),
+          description:,
           content: {
             'application/json': {
               schema: {
@@ -234,9 +234,9 @@ module Apiwork
         }
       end
 
-      def build_union_error_response(code, error_variant)
+      def build_union_error_response(description, error_variant)
         {
-          description: error_description(code),
+          description:,
           content: {
             'application/json': {
               schema: map_type_definition(error_variant, nil)
@@ -247,20 +247,6 @@ module Apiwork
 
       def error_status(code)
         ErrorCode.fetch(code).status
-      end
-
-      def error_description(code)
-        api_path = path.delete_prefix('/')
-
-        api_key = :"apiwork.apis.#{api_path}.error_codes.#{code}"
-        translation = I18n.t(api_key, default: nil)
-        return translation if translation
-
-        global_key = :"apiwork.error_codes.#{code}"
-        translation = I18n.t(global_key, default: nil)
-        return translation if translation
-
-        code.to_s.titleize
       end
 
       def build_schemas

@@ -409,7 +409,7 @@ RSpec.describe 'Contract Serialization' do
                                }
                              }
                            },
-                           error_codes: []
+                           error_codes: {}
                          })
     end
 
@@ -424,7 +424,7 @@ RSpec.describe 'Contract Serialization' do
       json = action_def.as_json
 
       expect(json).to eq({
-                           error_codes: []
+                           error_codes: {}
                          })
     end
   end
@@ -503,7 +503,7 @@ RSpec.describe 'Contract Serialization' do
                                }
                              }
                            },
-                           error_codes: []
+                           error_codes: {}
                          })
     end
 

@@ -135,10 +135,12 @@ module Apiwork
           @adapter ||= Adapter.resolve(@adapter_name || :apiwork).new
         end
 
-        def type(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false, &block)
+        def type(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false,
+                 schema_class: nil, type_kind: nil, &block)
           raise ArgumentError, 'Block required for type definition' unless block_given?
 
-          type_system.register_type(name, scope:, description:, example:, format:, deprecated:, &block)
+          type_system.register_type(name, scope:, description:, example:, format:, deprecated:,
+                                    schema_class:, type_kind:, &block)
         end
 
         def enum(name, values:, scope: nil, description: nil, example: nil, deprecated: false)

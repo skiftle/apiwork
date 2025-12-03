@@ -78,8 +78,27 @@ module Apiwork
       def error_codes
         action_codes = @action_definition.instance_variable_get(:@error_codes) || []
         auto_codes = auto_writable_error_codes
+        all_codes = (action_codes + auto_codes).uniq.sort_by(&:to_s)
 
-        (action_codes + auto_codes).uniq.sort_by(&:to_s)
+        all_codes.each_with_object({}) do |code, hash|
+          hash[code] = resolve_error_description(code)
+        end
+      end
+
+      def resolve_error_description(code)
+        contract_class = @action_definition.contract_class
+        api_class = contract_class.api_class
+        api_path = api_class&.metadata&.path&.delete_prefix('/') || ''
+
+        api_key = :"apiwork.apis.#{api_path}.error_codes.#{code}"
+        result = I18n.t(api_key, default: nil)
+        return result if result
+
+        global_key = :"apiwork.error_codes.#{code}"
+        result = I18n.t(global_key, default: nil)
+        return result if result
+
+        code.to_s.titleize
       end
 
       def auto_writable_error_codes

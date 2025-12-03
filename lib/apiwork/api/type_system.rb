@@ -8,9 +8,11 @@ module Apiwork
         @enums = Apiwork::Store.new
       end
 
-      def register_type(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false, &block)
+      def register_type(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false,
+                        schema_class: nil, type_kind: nil, &block)
         key = scoped_name(scope, name)
-        @types[key] = { scope:, definition: block, description:, example:, format:, deprecated: }
+        @types[key] = { scope:, definition: block, description:, example:, format:, deprecated:,
+                        schema_class:, type_kind: }
       end
 
       def register_union(name, payload, scope: nil)

@@ -21,3 +21,56 @@ en:
       bad_gateway: "Bad Gateway"
       service_unavailable: "Service Unavailable"
       gateway_timeout: "Gateway Timeout"
+    types:
+      filter:
+        description: "Filter options for %{model_name}"
+      sort:
+        description: "Sort options for %{model_name}"
+      create_payload:
+        description: "Payload for creating a %{model_name}"
+      update_payload:
+        description: "Payload for updating a %{model_name}"
+      string_filter:
+        description: "String filter operators"
+      integer_filter:
+        description: "Integer filter operators"
+      integer_filter_between:
+        description: "Integer range filter"
+      decimal_filter:
+        description: "Decimal filter operators"
+      decimal_filter_between:
+        description: "Decimal range filter"
+      date_filter:
+        description: "Date filter operators"
+      date_filter_between:
+        description: "Date range filter"
+      datetime_filter:
+        description: "Datetime filter operators"
+      datetime_filter_between:
+        description: "Datetime range filter"
+      uuid_filter:
+        description: "UUID filter operators"
+      boolean_filter:
+        description: "Boolean filter operators"
+      nullable_string_filter:
+        description: "String filter operators (nullable)"
+      nullable_integer_filter:
+        description: "Integer filter operators (nullable)"
+      nullable_decimal_filter:
+        description: "Decimal filter operators (nullable)"
+      nullable_date_filter:
+        description: "Date filter operators (nullable)"
+      nullable_datetime_filter:
+        description: "Datetime filter operators (nullable)"
+      nullable_uuid_filter:
+        description: "UUID filter operators (nullable)"
+      nullable_boolean_filter:
+        description: "Boolean filter operators (nullable)"
+      page_pagination:
+        description: "Page-based pagination info"
+      cursor_pagination:
+        description: "Cursor-based pagination info"
+      sort_direction:
+        description: "Sort direction (asc/desc)"
+      issue:
+        description: "Validation issue details"
