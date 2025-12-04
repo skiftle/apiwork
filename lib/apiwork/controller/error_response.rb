@@ -5,13 +5,13 @@ module Apiwork
     module ErrorResponse
       extend ActiveSupport::Concern
 
-      def respond_with_error(code_key, detail: nil, path: [], meta: {}, i18n: {})
+      def respond_with_error(code_key, detail: nil, path: nil, meta: {}, i18n: {})
         error_code = ErrorCode.fetch(code_key)
 
         issue = Issue.new(
           code: error_code.key,
           detail: resolve_error_detail(error_code.key, detail, i18n),
-          path:,
+          path: path || default_error_path(error_code),
           meta:
         )
 
@@ -19,6 +19,12 @@ module Apiwork
       end
 
       private
+
+      def default_error_path(error_code)
+        return relative_path.split('/').reject(&:blank?) if error_code.attach_path?
+
+        []
+      end
 
       def resolve_error_detail(code_key, detail, i18n_options)
         return detail if detail

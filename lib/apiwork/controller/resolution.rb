@@ -38,6 +38,10 @@ module Apiwork
         end
       end
 
+      def relative_path
+        request.path.delete_prefix(api_path)
+      end
+
       def adapter
         api_class.adapter
       end

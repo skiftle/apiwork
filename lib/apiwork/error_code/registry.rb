@@ -8,13 +8,13 @@ module Apiwork
           @store ||= Store.new
         end
 
-        def register(key, status:)
+        def register(key, status:, attach_path: false)
           key = key.to_sym
           status = Integer(status)
 
           raise ArgumentError, "Status must be 400-599, got #{status}" unless (400..599).cover?(status)
 
-          store[key] = Definition.new(key:, status:)
+          store[key] = Definition.new(key:, status:, attach_path:)
         end
 
         def fetch(key)
