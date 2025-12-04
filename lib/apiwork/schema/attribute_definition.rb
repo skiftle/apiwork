@@ -107,6 +107,10 @@ module Apiwork
         apply_transformers(value, @decode)
       end
 
+      def schema_class_name
+        @klass.name.demodulize.underscore.gsub(/_schema$/, '')
+      end
+
       private
 
       def apply_defaults(options)

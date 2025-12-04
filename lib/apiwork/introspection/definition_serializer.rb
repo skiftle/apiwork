@@ -188,12 +188,33 @@ module Apiwork
       end
 
       def apply_metadata_fields(result, options)
-        result[:description] = options[:description]
+        result[:description] = resolve_attribute_description(options)
         result[:example] = options[:example]
         result[:format] = options[:format]
         result[:deprecated] = options[:deprecated] || false
         result[:min] = options[:min]
         result[:max] = options[:max]
+      end
+
+      def resolve_attribute_description(options)
+        return options[:description] if options[:description]
+
+        attr_def = options[:attribute_definition]
+        return nil unless attr_def
+
+        i18n_attribute_description(attr_def)
+      end
+
+      def i18n_attribute_description(attribute_definition)
+        api_class = @definition.contract_class&.api_class
+        return nil unless api_class
+
+        api_path = api_class.metadata.path.delete_prefix('/')
+        schema_name = attribute_definition.schema_class_name
+        attr_name = attribute_definition.name
+
+        key = :"apiwork.apis.#{api_path}.schemas.#{schema_name}.attributes.#{attr_name}.description"
+        I18n.t(key, default: nil)
       end
     end
   end

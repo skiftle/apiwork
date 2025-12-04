@@ -12,7 +12,7 @@ module Api
 
         with_options writable: true do
           attribute :title
-          attribute :body
+          attribute :body, description: 'The main content of the post'
           attribute :published
           attribute :metadata
         end

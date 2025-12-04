@@ -209,4 +209,72 @@ RSpec.describe 'Type Descriptions', type: :integration do
       expect(shape[:search][:description]).to eq('Full text search')
     end
   end
+
+  describe 'i18n schema attribute descriptions' do
+    before(:all) do
+      I18n.backend.store_translations(:en, {
+                                        apiwork: {
+                                          apis: {
+                                            'api/v1' => {
+                                              schemas: {
+                                                post: {
+                                                  attributes: {
+                                                    title: { description: 'Post title from i18n' }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      })
+
+      Apiwork.reset!
+      load Rails.root.join('config/apis/v1.rb')
+    end
+
+    after(:all) do
+      I18n.backend.reload!
+      I18n.backend.load_translations
+    end
+
+    it 'uses i18n description for schema attribute in filter type' do
+      introspection = Apiwork::API.introspect('/api/v1')
+      filter_shape = introspection[:types][:post_filter][:shape]
+
+      expect(filter_shape[:title][:description]).to eq('Post title from i18n')
+    end
+
+    it 'uses i18n description for schema attribute in create payload' do
+      introspection = Apiwork::API.introspect('/api/v1')
+      payload_shape = introspection[:types][:post_create_payload][:shape]
+
+      expect(payload_shape[:title][:description]).to eq('Post title from i18n')
+    end
+
+    it 'prefers inline description over i18n' do
+      I18n.backend.store_translations(:en, {
+                                        apiwork: {
+                                          apis: {
+                                            'api/v1' => {
+                                              schemas: {
+                                                post: {
+                                                  attributes: {
+                                                    body: { description: 'Should be overridden by inline' }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      })
+
+      Apiwork.reset!
+      load Rails.root.join('config/apis/v1.rb')
+
+      introspection = Apiwork::API.introspect('/api/v1')
+      payload_shape = introspection[:types][:post_create_payload][:shape]
+
+      expect(payload_shape[:body][:description]).to eq('The main content of the post')
+    end
+  end
 end

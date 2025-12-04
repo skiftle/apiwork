@@ -372,9 +372,9 @@ module Apiwork
               filter_type = builder.send(:filter_type_for, attribute_definition)
 
               if attribute_definition.enum
-                param name, type: filter_type, required: false
+                param name, type: filter_type, required: false, attribute_definition: attribute_definition
               else
-                param name, type: :union, required: false do
+                param name, type: :union, required: false, attribute_definition: attribute_definition do
                   variant type: builder.send(:map_type, attribute_definition.type)
                   variant type: filter_type
                 end
