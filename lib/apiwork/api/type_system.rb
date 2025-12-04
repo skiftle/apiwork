@@ -9,10 +9,10 @@ module Apiwork
       end
 
       def register_type(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false,
-                        schema_class: nil, type_kind: nil, &block)
+                        schema_class: nil, &block)
         key = scoped_name(scope, name)
         @types[key] = { scope:, definition: block, description:, example:, format:, deprecated:,
-                        schema_class:, type_kind: }
+                        schema_class: }
       end
 
       def register_union(name, payload, scope: nil)

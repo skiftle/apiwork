@@ -64,9 +64,7 @@ module Apiwork
             payload_type_name = :"#{context_symbol}_payload"
 
             unless contract_class.resolve_type(payload_type_name)
-              type_registrar.type(payload_type_name,
-                                  schema_class: schema_class,
-                                  type_kind: :"#{context_symbol}_payload") do
+              type_registrar.type(payload_type_name, schema_class: schema_class) do
                 builder.send(:writable_params, self, context_symbol, nested: false)
               end
             end
@@ -300,7 +298,7 @@ module Apiwork
 
           schema_class_local = schema_class
           builder = self
-          type_registrar.type(type_name) do
+          type_registrar.type(type_name, schema_class: schema_class_local) do
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
               enum_option = attribute_definition.enum ? { enum: name } : {}
 
@@ -359,7 +357,7 @@ module Apiwork
             register_enum_filter(name)
           end
 
-          type_options = { schema_class: schema_class_local, type_kind: :filter }
+          type_options = { schema_class: schema_class_local }
           type_options = {} unless depth.zero?
 
           contract_class.type(type_name, **type_options) do
@@ -430,7 +428,7 @@ module Apiwork
           builder = self
           schema_class_local = schema_class
 
-          type_options = { schema_class: schema_class_local, type_kind: :sort }
+          type_options = { schema_class: schema_class_local }
           type_options = {} unless depth.zero?
 
           contract_class.type(type_name, **type_options) do
@@ -614,7 +612,7 @@ module Apiwork
           builder = self
           schema_class_local = schema_class
 
-          contract_class.type(root_key) do
+          contract_class.type(root_key, schema_class: schema_class_local) do
             if schema_class_local.respond_to?(:sti_variant?) && schema_class_local.sti_variant?
               parent_schema = schema_class_local.superclass
               discriminator_name = parent_schema.discriminator_name

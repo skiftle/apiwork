@@ -106,9 +106,9 @@ module Apiwork
         end
 
         def type(name, description: nil, example: nil, format: nil, deprecated: false,
-                 schema_class: nil, type_kind: nil, &block)
+                 schema_class: nil, &block)
           api_class.type(name, scope: self, description:, example:, format:, deprecated:,
-                               schema_class:, type_kind:, &block)
+                               schema_class:, &block)
         end
 
         def enum(name, values:, description: nil, example: nil, deprecated: false)

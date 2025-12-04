@@ -63,20 +63,23 @@ module Apiwork
       def resolve_type_description(type_name, metadata)
         return metadata[:description] if metadata[:description]
 
-        i18n_type_description(type_name, metadata)
+        if metadata[:schema_class].respond_to?(:description)
+          schema_desc = metadata[:schema_class].description
+          return schema_desc if schema_desc
+        end
+
+        i18n_type_description(type_name)
       end
 
-      def i18n_type_description(type_name, metadata)
+      def i18n_type_description(type_name)
         api_path = @api.metadata.path.delete_prefix('/')
-        i18n_options = build_i18n_options(metadata)
 
         api_key = :"apiwork.apis.#{api_path}.types.#{type_name}.description"
-        result = I18n.t(api_key, **i18n_options, default: nil)
+        result = I18n.t(api_key, default: nil)
         return result if result
 
-        type_kind = extract_type_kind(type_name, metadata)
-        global_key = :"apiwork.types.#{type_kind}.description"
-        I18n.t(global_key, **i18n_options, default: nil)
+        global_key = :"apiwork.types.#{type_name}.description"
+        I18n.t(global_key, default: nil)
       end
 
       def resolve_enum_description(enum_name, metadata)
@@ -90,25 +93,6 @@ module Apiwork
 
         global_key = :"apiwork.types.#{enum_name}.description"
         I18n.t(global_key, default: nil)
-      end
-
-      def build_i18n_options(metadata)
-        return {} unless metadata[:schema_class]
-
-        { model_name: human_model_name(metadata[:schema_class]) }
-      end
-
-      def human_model_name(schema_class)
-        schema_class.model_class&.model_name&.human
-      end
-
-      def extract_type_kind(type_name, metadata)
-        return metadata[:type_kind] if metadata[:type_kind]
-
-        return type_name unless metadata[:schema_class]
-
-        match = type_name.to_s.match(/_(filter|sort|create_payload|update_payload)$/)
-        match ? match[1].to_sym : type_name
       end
 
       def expand_payload(metadata)

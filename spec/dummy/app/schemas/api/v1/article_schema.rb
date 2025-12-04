@@ -2,11 +2,10 @@
 
 module Api
   module V1
-    # ArticleSchema - Minimal representation of Post model
-    # Demonstrates how the same model can have multiple resource representations
     class ArticleSchema < Apiwork::Schema::Base
       model Post
       root :article
+      description 'A news article'
 
       attribute :id, filterable: true, sortable: true
       attribute :title, filterable: true, sortable: true

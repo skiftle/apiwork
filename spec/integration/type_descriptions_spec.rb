@@ -35,24 +35,24 @@ RSpec.describe 'Type Descriptions', type: :integration do
   describe 'Schema-generated types' do
     let(:introspection) { Apiwork::API.introspect('/api/v1') }
 
-    it 'includes description with model name for filter types' do
+    it 'has no auto-generated description for filter types' do
       expect(introspection[:types]).to have_key(:post_filter)
-      expect(introspection[:types][:post_filter][:description]).to eq('Filter options for Post')
+      expect(introspection[:types][:post_filter][:description]).to be_nil
     end
 
-    it 'includes description with model name for sort types' do
+    it 'has no auto-generated description for sort types' do
       expect(introspection[:types]).to have_key(:post_sort)
-      expect(introspection[:types][:post_sort][:description]).to eq('Sort options for Post')
+      expect(introspection[:types][:post_sort][:description]).to be_nil
     end
 
-    it 'includes description with model name for create_payload types' do
+    it 'has no auto-generated description for create_payload types' do
       expect(introspection[:types]).to have_key(:post_create_payload)
-      expect(introspection[:types][:post_create_payload][:description]).to eq('Payload for creating a Post')
+      expect(introspection[:types][:post_create_payload][:description]).to be_nil
     end
 
-    it 'includes description with model name for update_payload types' do
+    it 'has no auto-generated description for update_payload types' do
       expect(introspection[:types]).to have_key(:post_update_payload)
-      expect(introspection[:types][:post_update_payload][:description]).to eq('Payload for updating a Post')
+      expect(introspection[:types][:post_update_payload][:description]).to be_nil
     end
   end
 
@@ -62,6 +62,14 @@ RSpec.describe 'Type Descriptions', type: :integration do
     it 'includes description for sort_direction enum' do
       expect(introspection[:enums]).to have_key(:sort_direction)
       expect(introspection[:enums][:sort_direction][:description]).to eq('Sort direction (asc/desc)')
+    end
+  end
+
+  describe 'Schema description DSL' do
+    let(:introspection) { Apiwork::API.introspect('/api/v1') }
+
+    it 'uses schema description for resource type' do
+      expect(introspection[:types][:article][:description]).to eq('A news article')
     end
   end
 

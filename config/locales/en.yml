@@ -42,14 +42,6 @@ en:
       gateway_timeout:
         description: "Gateway Timeout"
     types:
-      filter:
-        description: "Filter options for %{model_name}"
-      sort:
-        description: "Sort options for %{model_name}"
-      create_payload:
-        description: "Payload for creating a %{model_name}"
-      update_payload:
-        description: "Payload for updating a %{model_name}"
       string_filter:
         description: "String filter operators"
       integer_filter:

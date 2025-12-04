@@ -17,6 +17,9 @@ module Apiwork
       class_attribute :_variant_tag, default: nil
       class_attribute :_sti_type, default: nil
       class_attribute :_variants, default: {}
+      class_attribute :_description, default: nil
+      class_attribute :_deprecated, default: false
+      class_attribute :_examples, default: nil
 
       attr_reader :context,
                   :include,
@@ -237,6 +240,24 @@ module Apiwork
 
         def sti_variant?
           _variant_tag.present?
+        end
+
+        def description(value = nil)
+          return _description if value.nil?
+
+          self._description = value
+        end
+
+        def deprecated(value = true)
+          self._deprecated = value
+        end
+
+        def deprecated?
+          _deprecated == true
+        end
+
+        def examples(value)
+          self._examples = value
         end
 
         attr_writer :type
