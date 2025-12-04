@@ -29,6 +29,12 @@ module Apiwork
               scope path: api_class.mount_path, module: controller_path do
                 builder_instance.draw_resources_in_context(self, api_class.metadata.resources)
               end
+
+              scope path: api_class.mount_path do
+                match '*unmatched',
+                      to: 'apiwork/errors#not_found',
+                      via: :all
+              end
             end
           end
 

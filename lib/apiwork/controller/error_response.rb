@@ -25,12 +25,12 @@ module Apiwork
 
         if api_class.metadata.path
           api_path = api_class.metadata.path.delete_prefix('/')
-          api_key = :"apiwork.apis.#{api_path}.error_codes.#{code_key}"
+          api_key = :"apiwork.apis.#{api_path}.error_codes.#{code_key}.description"
           translation = I18n.t(api_key, **i18n_options, default: nil)
           return translation if translation
         end
 
-        global_key = :"apiwork.error_codes.#{code_key}"
+        global_key = :"apiwork.error_codes.#{code_key}.description"
         translation = I18n.t(global_key, **i18n_options, default: nil)
         return translation if translation
 

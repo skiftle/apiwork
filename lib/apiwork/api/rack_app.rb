@@ -5,6 +5,10 @@ module Apiwork
     class RackApp
       def call(env)
         route_set.call(env)
+      rescue ActionController::RoutingError
+        ErrorsController.action(:not_found).call(env)
+      rescue ActionController::UnknownHttpMethod
+        ErrorsController.action(:method_not_allowed).call(env)
       end
 
       private

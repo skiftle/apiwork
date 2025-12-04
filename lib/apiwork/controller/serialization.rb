@@ -45,7 +45,7 @@ module Apiwork
           name: action_name,
           method: request.method_symbol,
           context: context,
-          query: contract.query,
+          query: resource_metadata ? contract.query : {},
           meta: meta
         )
       end

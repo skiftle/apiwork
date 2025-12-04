@@ -9,6 +9,12 @@ module Apiwork
         before_action :validate_contract
       end
 
+      class_methods do
+        def skip_contract_validation!(**options)
+          skip_before_action :validate_contract, **options
+        end
+      end
+
       def contract
         @contract ||= contract_class.new(
           query: transformed_query_parameters,
@@ -20,6 +26,7 @@ module Apiwork
       private
 
       def validate_contract
+        return unless resource_metadata
         return if contract.valid?
 
         raise ContractError, contract.issues

@@ -57,11 +57,11 @@ module Apiwork
       end
 
       def resolve_error_description(code, api_path)
-        api_key = :"apiwork.apis.#{api_path}.error_codes.#{code}"
+        api_key = :"apiwork.apis.#{api_path}.error_codes.#{code}.description"
         result = I18n.t(api_key, default: nil)
         return result if result
 
-        global_key = :"apiwork.error_codes.#{code}"
+        global_key = :"apiwork.error_codes.#{code}.description"
         result = I18n.t(global_key, default: nil)
         return result if result
 
