@@ -75,11 +75,7 @@ module Apiwork
         api_path = @api.metadata.path.delete_prefix('/')
 
         api_key = :"apiwork.apis.#{api_path}.types.#{type_name}.description"
-        result = I18n.t(api_key, default: nil)
-        return result if result
-
-        global_key = :"apiwork.types.#{type_name}.description"
-        I18n.t(global_key, default: nil)
+        I18n.t(api_key, default: nil)
       end
 
       def resolve_enum_description(enum_name, metadata)
@@ -87,12 +83,8 @@ module Apiwork
 
         api_path = @api.metadata.path.delete_prefix('/')
 
-        api_key = :"apiwork.apis.#{api_path}.types.#{enum_name}.description"
-        result = I18n.t(api_key, default: nil)
-        return result if result
-
-        global_key = :"apiwork.types.#{enum_name}.description"
-        I18n.t(global_key, default: nil)
+        api_key = :"apiwork.apis.#{api_path}.enums.#{enum_name}.description"
+        I18n.t(api_key, default: nil)
       end
 
       def expand_payload(metadata)
@@ -118,7 +110,7 @@ module Apiwork
         end
       end
 
-      def expand(definitions, contract_class: nil, type_name: nil)
+      def expand(definitions, contract_class: nil)
         return nil unless definitions
 
         temp_contract = contract_class || create_temp_contract

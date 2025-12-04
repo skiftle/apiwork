@@ -71,12 +71,11 @@ end
 
 ### API Flags
 
-Mark an API as deprecated or internal:
+Mark an API as deprecated:
 
 ```ruby
 info do
   deprecated true  # Shows deprecation warning in docs
-  internal true    # Excludes from public documentation
 end
 ```
 
@@ -156,6 +155,8 @@ class InvoiceSchema < Apiwork::Schema
 end
 ```
 
+When using `schema!`, these fields are carried over to the auto-generated types — filters, payloads, and response schemas all inherit the attribute documentation.
+
 ### Attribute Documentation Fields
 
 | Field | Description |
@@ -196,6 +197,18 @@ Apiwork::API.draw '/api/v1' do
 end
 ```
 
+### Param-Level Documentation
+
+Document individual params within a type:
+
+```ruby
+type :address do
+  param :street, type: :string, description: "Street address including number"
+  param :city, type: :string, description: "City name"
+  param :postal_code, type: :string, description: "ZIP or postal code", example: "12345"
+end
+```
+
 ## Enum Documentation
 
 Document enums at definition:
@@ -214,6 +227,69 @@ Apiwork::API.draw '/api/v1' do
 end
 ```
 
+## Documenting Auto-Generated Types
+
+When using `schema!`, adapters may generate types automatically. You can add documentation to these types directly in your Contract.
+
+The built-in Apiwork adapter generates types for filters, sorts, and payloads. For example, an `InvoiceContract` with `schema!` gets `invoice_filter`, `invoice_sort`, `invoice_create_payload`, and `invoice_update_payload` types.
+
+### Adding Type Description
+
+```ruby
+class InvoiceContract < Apiwork::Contract::Base
+  schema!
+
+  type :filter, description: "Filter invoices by any combination of fields"
+  type :sort, description: "Sort invoices by date or amount"
+  type :create_payload, description: "Data for creating a new invoice"
+end
+```
+
+::: info Scoped Names
+When referencing types in a Contract, use the short name without the prefix. Write `type :filter`, not `type :invoice_filter`. The Contract automatically scopes types to the resource — `:filter` becomes `invoice_filter` in the generated output.
+:::
+
+### Adding Param Description
+
+Document individual params within a type:
+
+```ruby
+class InvoiceContract < Apiwork::Contract::Base
+  schema!
+
+  type :filter do
+    param :status, description: "Filter by invoice status"
+    param :amount, description: "Filter by amount range"
+  end
+end
+```
+
+### Adding Custom Params
+
+Extend generated types with new fields:
+
+```ruby
+class InvoiceContract < Apiwork::Contract::Base
+  schema!
+
+  type :filter do
+    param :search, type: :string, description: "Full-text search across all fields"
+  end
+end
+```
+
+### Documenting Enums
+
+```ruby
+class InvoiceContract < Apiwork::Contract::Base
+  schema!
+
+  enum :status, description: "Invoice lifecycle status"
+end
+```
+
+These declarations merge with the auto-generated definitions. See [Type Merging](../core/type-system/type-merging) for details.
+
 ## Generated Output
 
 These documentation fields are used by the spec generators. See [Spec Generation](../core/spec-generation/openapi.md) for how to generate OpenAPI specs, TypeScript definitions, and other outputs.
@@ -223,3 +299,7 @@ These documentation fields are used by the spec generators. See [Spec Generation
 Action metadata — summaries and descriptions — can be translated. Define them in locale files instead of inline, and they'll change with `I18n.locale`.
 
 See [i18n: Action Metadata](../advanced/i18n.md#action-metadata) for the full guide.
+
+Type and enum descriptions can also be translated via i18n. See [i18n: Type Descriptions](../advanced/i18n.md#type-descriptions).
+
+For complex cases where you need to extend auto-generated types, see [Type Merging](../core/type-system/type-merging).

@@ -55,10 +55,6 @@ module Apiwork
           @info[:deprecated] = value
         end
 
-        def internal(value = true)
-          @info[:internal] = value
-        end
-
         class ContactBuilder
           attr_reader :data
 
