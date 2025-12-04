@@ -18,8 +18,8 @@ module Apiwork
           info: serialize_info,
           types: TypeSerializer.new(@api_class).serialize_types,
           enums: TypeSerializer.new(@api_class).serialize_enums,
-          errors: serialize_errors(all_error_codes),
-          error_codes: @api_class.metadata.error_codes || [],
+          error_codes: serialize_error_codes(all_error_codes),
+          raises: @api_class.metadata.raises || [],
           resources: resources
         }
       end
@@ -27,7 +27,7 @@ module Apiwork
       private
 
       def collect_all_error_codes(resources)
-        codes = Set.new(@api_class.metadata.error_codes || [])
+        codes = Set.new(@api_class.metadata.raises || [])
 
         collect_action_error_codes(resources, codes)
 
@@ -37,14 +37,14 @@ module Apiwork
       def collect_action_error_codes(resources, codes)
         resources.each_value do |resource_data|
           resource_data[:actions]&.each_value do |action_data|
-            codes.merge(action_data[:error_codes] || [])
+            codes.merge(action_data[:raises] || [])
           end
 
           collect_action_error_codes(resource_data[:resources], codes) if resource_data[:resources]
         end
       end
 
-      def serialize_errors(codes)
+      def serialize_error_codes(codes)
         api_path = @api_class.metadata.path.delete_prefix('/')
 
         codes.each_with_object({}) do |code, hash|

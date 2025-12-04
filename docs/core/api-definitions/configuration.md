@@ -50,17 +50,17 @@ info do
 end
 ```
 
-## Error Codes
+## Raises
 
-Declare HTTP error codes that apply to all endpoints:
+Declare which errors all endpoints can raise:
 
 ```ruby
 Apiwork::API.draw '/api/v1' do
-  error_codes 400, 401, 403, 404, 500
+  raises :bad_request, :unauthorized, :forbidden, :not_found, :internal_server_error
 end
 ```
 
-These appear in generated OpenAPI specs as possible responses.
+These appear in generated OpenAPI specs as possible responses for all endpoints.
 
 ## Key Format
 

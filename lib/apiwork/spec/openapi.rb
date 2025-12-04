@@ -81,7 +81,7 @@ module Apiwork
         end
 
         response_data = action_data[:response]
-        operation[:responses] = build_responses(action_name, response_data&.dig(:body), action_data[:error_codes] || [])
+        operation[:responses] = build_responses(action_name, response_data&.dig(:body), action_data[:raises] || [])
 
         operation.compact
       end
@@ -164,9 +164,9 @@ module Apiwork
         }
       end
 
-      def build_responses(action_name, response_params, action_error_codes = [])
+      def build_responses(action_name, response_params, action_raises = [])
         responses = {}
-        combined_codes = (error_codes + action_error_codes).uniq
+        combined_raises = (raises + action_raises).uniq
 
         if response_params
           # Detect unwrapped union and separate success/error variants
@@ -183,8 +183,8 @@ module Apiwork
               }
             }
 
-            combined_codes.each do |code|
-              error_data = errors[code]
+            combined_raises.each do |code|
+              error_data = error_codes[code]
               responses[error_data[:status].to_s.to_sym] = build_union_error_response(error_data[:description], error_variant)
             end
           else
@@ -197,8 +197,8 @@ module Apiwork
               }
             }
 
-            combined_codes.each do |code|
-              error_data = errors[code]
+            combined_raises.each do |code|
+              error_data = error_codes[code]
               responses[error_data[:status].to_s.to_sym] = build_error_response(error_data[:description])
             end
           end

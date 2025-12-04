@@ -121,7 +121,7 @@ class InvoiceContract < Apiwork::Contract::Base
     description "Creates a new invoice. Returns 201 on success."
     operation_id "createInvoice"
 
-    error_codes :unprocessable_entity
+    raises :unprocessable_entity
   end
 
   action :destroy do

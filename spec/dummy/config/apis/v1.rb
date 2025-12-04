@@ -5,8 +5,8 @@ Apiwork::API.draw '/api/v1' do
   spec :zod
   spec :typescript
 
-  # Global error codes for all endpoints
-  error_codes :bad_request, :internal_server_error
+  # Global errors that all endpoints can raise
+  raises :bad_request, :internal_server_error
 
   info do
     title 'Test API'

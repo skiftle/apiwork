@@ -104,12 +104,12 @@ module Apiwork
         @data[:resources] || {}
       end
 
-      def error_codes
-        @data[:error_codes] || []
+      def raises
+        @data[:raises] || []
       end
 
-      def errors
-        @data[:errors] || {}
+      def error_codes
+        @data[:error_codes] || {}
       end
 
       def each_resource(&block)

@@ -125,7 +125,7 @@ module Apiwork
         actions[name][:operation_id] = contract_json[:operation_id]
         actions[name][:request] = contract_json[:request] if contract_json[:request]
         actions[name][:response] = contract_json[:response] if contract_json[:response]
-        actions[name][:error_codes] = contract_json[:error_codes] || []
+        actions[name][:raises] = contract_json[:raises] || []
       end
 
       def resolve_contract_class

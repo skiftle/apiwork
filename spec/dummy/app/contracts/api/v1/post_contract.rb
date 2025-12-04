@@ -14,11 +14,11 @@ module Api
       action :show do
         summary "Get a post"
         description "Returns a single post by ID"
-        error_codes :not_found, :forbidden
+        raises :not_found, :forbidden
       end
 
       action :create do
-        error_codes :unprocessable_entity
+        raises :unprocessable_entity
 
         request do
           body do
@@ -32,7 +32,7 @@ module Api
       end
 
       action :update do
-        error_codes :not_found, :unprocessable_entity
+        raises :not_found, :unprocessable_entity
 
         request do
           body do

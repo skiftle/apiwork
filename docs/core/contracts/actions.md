@@ -98,21 +98,21 @@ action :create do
 end
 ```
 
-## Error Codes
+## Raises
 
-Declare error codes that can be returned:
+Declare which errors an action can raise:
 
 ```ruby
 action :show do
-  error_codes :not_found, :forbidden
+  raises :not_found, :forbidden
 end
 
 action :create do
-  error_codes :unprocessable_entity
+  raises :unprocessable_entity
 end
 ```
 
-These appear in generated OpenAPI specs.
+These appear in generated OpenAPI specs as possible error responses.
 
 ## Metadata
 
@@ -130,7 +130,7 @@ action :create do
   deprecated true
   operation_id "createPost"
 
-  error_codes :unprocessable_entity
+  raises :unprocessable_entity
 
   request do
     body do

@@ -7,8 +7,8 @@ module Apiwork
                   :path,
                   :resources
 
-      attr_accessor :error_codes,
-                    :info
+      attr_accessor :info,
+                    :raises
 
       def initialize(path)
         @path = path
@@ -17,7 +17,7 @@ module Apiwork
 
         @resources = {}
         @info = nil
-        @error_codes = []
+        @raises = []
       end
 
       def add_resource(name, singular:, contract:, controller: nil, parent: nil, **options)

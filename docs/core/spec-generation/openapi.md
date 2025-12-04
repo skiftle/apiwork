@@ -65,13 +65,13 @@ end
 }
 ```
 
-## Error Codes
+## Raises
 
 Document possible error responses:
 
 ```ruby
 action :show do
-  error_codes :not_found, :forbidden
+  raises :not_found, :forbidden
 end
 ```
 

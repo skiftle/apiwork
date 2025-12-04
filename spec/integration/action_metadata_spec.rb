@@ -32,8 +32,8 @@ RSpec.describe 'Action Metadata', type: :integration do
       expect(posts[:actions][:destroy][:operation_id]).to eq('deletePost')
     end
 
-    it 'includes error_codes as symbols' do
-      expect(posts[:actions][:show][:error_codes]).to include(:not_found, :forbidden)
+    it 'includes raises as symbols' do
+      expect(posts[:actions][:show][:raises]).to include(:not_found, :forbidden)
     end
   end
 
@@ -61,7 +61,7 @@ RSpec.describe 'Action Metadata', type: :integration do
       expect(spec[:paths]['posts/:id']['delete'][:operationId]).to eq('deletePost')
     end
 
-    it 'generates error responses from error_codes' do
+    it 'generates error responses from raises' do
       show_op = spec[:paths]['posts/:id']['get']
       expect(show_op[:responses]).to have_key(:'404')
       expect(show_op[:responses]).to have_key(:'403')

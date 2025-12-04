@@ -101,12 +101,12 @@ module Apiwork
           @specs&.any?
         end
 
-        def error_codes(*codes)
-          codes = codes.flatten.uniq
-          codes.each do |code|
+        def raises(*error_codes)
+          error_codes = error_codes.flatten.uniq
+          error_codes.each do |code|
             unless code.is_a?(Symbol)
               hint = code.is_a?(Integer) ? " Use :#{ErrorCode.name_for_status(code)} instead." : ''
-              raise ConfigurationError, "error_codes must be symbols, got #{code.class}: #{code}.#{hint}"
+              raise ConfigurationError, "raises must be symbols, got #{code.class}: #{code}.#{hint}"
             end
 
             next if ErrorCode.registered?(code)
@@ -115,7 +115,7 @@ module Apiwork
                   "Unknown error code :#{code}. Register it with: " \
                   "Apiwork::ErrorCode.register :#{code}, status: <status>"
           end
-          @metadata.error_codes = codes
+          @metadata.raises = error_codes
         end
 
         def adapter(name = nil, &block)

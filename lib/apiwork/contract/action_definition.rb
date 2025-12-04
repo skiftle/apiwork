@@ -15,7 +15,7 @@ module Apiwork
         @reset_response = replace
         @request_definition = nil
         @response_definition = nil
-        @error_codes = []
+        @raises = []
         @summary = nil
         @description = nil
         @tags = nil
@@ -64,12 +64,12 @@ module Apiwork
         @operation_id
       end
 
-      def error_codes(*codes)
-        codes = codes.flatten
-        codes.each do |code|
+      def raises(*error_codes)
+        error_codes = error_codes.flatten
+        error_codes.each do |code|
           unless code.is_a?(Symbol)
             hint = code.is_a?(Integer) ? " Use :#{ErrorCode.name_for_status(code)} instead." : ''
-            raise ConfigurationError, "error_codes must be symbols, got #{code.class}: #{code}.#{hint}"
+            raise ConfigurationError, "raises must be symbols, got #{code.class}: #{code}.#{hint}"
           end
 
           next if ErrorCode.registered?(code)
@@ -78,7 +78,7 @@ module Apiwork
                 "Unknown error code :#{code}. Register it with: " \
                 "Apiwork::ErrorCode.register :#{code}, status: <status>"
         end
-        @error_codes = codes
+        @raises = error_codes
       end
 
       def request(replace: false, &block)

@@ -22,7 +22,7 @@ module Apiwork
         response_def = @action_definition.response_definition
         result[:response] = serialize_response(response_def) if response_def
 
-        result[:error_codes] = error_codes
+        result[:raises] = raises
 
         result.compact
       end
@@ -75,13 +75,13 @@ module Apiwork
         result.presence
       end
 
-      def error_codes
-        action_codes = @action_definition.instance_variable_get(:@error_codes) || []
-        auto_codes = auto_writable_error_codes
+      def raises
+        action_codes = @action_definition.instance_variable_get(:@raises) || []
+        auto_codes = auto_raises
         (action_codes + auto_codes).uniq.sort_by(&:to_s)
       end
 
-      def auto_writable_error_codes
+      def auto_raises
         return [] unless @action_definition.contract_class.schema?
 
         action_name_sym = @action_definition.action_name.to_sym
