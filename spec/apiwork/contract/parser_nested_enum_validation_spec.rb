@@ -3,6 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe 'Parser Nested Custom Type Enum Validation' do
+  before do
+    TestApiHelper.api_class.type_system.clear!
+  end
+
   describe 'output validation with nested custom types' do
     it 'validates enum values in nested custom types' do
       contract_class = create_test_contract do

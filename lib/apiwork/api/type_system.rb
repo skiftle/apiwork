@@ -3,6 +3,9 @@
 module Apiwork
   module API
     class TypeSystem
+      attr_reader :enums,
+                  :types
+
       def initialize
         @types = Apiwork::Store.new
         @enums = Apiwork::Store.new
@@ -11,8 +14,13 @@ module Apiwork
       def register_type(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false,
                         schema_class: nil, &block)
         key = scoped_name(scope, name)
-        @types[key] = { scope:, definition: block, description:, example:, format:, deprecated:,
-                        schema_class: }
+
+        if @types.key?(key)
+          merge_type(key, description:, example:, format:, deprecated:, schema_class:, block:)
+        else
+          @types[key] = { scope:, definition: block, definitions: nil, description:, example:, format:,
+                          deprecated:, schema_class: }
+        end
       end
 
       def register_union(name, payload, scope: nil)
@@ -21,11 +29,15 @@ module Apiwork
       end
 
       def resolve_type(name, scope: nil)
-        if scope
-          scoped_name_value = scoped_name(scope, name)
-          return @types[scoped_name_value]&.dig(:definition) if @types.key?(scoped_name_value)
-        end
-        @types[name]&.dig(:definition)
+        metadata = if scope
+                     scoped_name_value = scoped_name(scope, name)
+                     @types[scoped_name_value] if @types.key?(scoped_name_value)
+                   end
+        metadata ||= @types[name]
+
+        return nil unless metadata
+
+        metadata[:definitions] || metadata[:definition]
       end
 
       def type_metadata(name)
@@ -43,9 +55,14 @@ module Apiwork
         :"#{prefix}_#{name}"
       end
 
-      def register_enum(name, values, scope: nil, description: nil, example: nil, deprecated: false)
+      def register_enum(name, values = nil, scope: nil, description: nil, example: nil, deprecated: false)
         key = scoped_name(scope, name)
-        @enums[key] = { scope:, values:, description:, example:, deprecated: }
+
+        if @enums.key?(key)
+          merge_enum(key, values:, description:, example:, deprecated:)
+        else
+          @enums[key] = { scope:, values:, description:, example:, deprecated: }
+        end
       end
 
       def resolve_enum(name, scope: nil)
@@ -56,12 +73,39 @@ module Apiwork
         @enums[name]&.dig(:values)
       end
 
-      attr_reader :enums,
-                  :types
-
       def clear!
         @types.clear!
         @enums.clear!
+      end
+
+      private
+
+      def merge_type(key, description:, example:, format:, deprecated:, schema_class:, block:)
+        existing = @types[key]
+
+        merged_definitions = existing[:definitions]&.dup || []
+        merged_definitions << existing[:definition] if existing[:definition] && existing[:definitions].nil?
+        merged_definitions << block if block
+
+        @types[key] = existing.merge(
+          description: description || existing[:description],
+          example: example || existing[:example],
+          format: format || existing[:format],
+          deprecated: deprecated || existing[:deprecated],
+          schema_class: schema_class || existing[:schema_class],
+          definition: nil,
+          definitions: merged_definitions.compact.presence
+        )
+      end
+
+      def merge_enum(key, values:, description:, example:, deprecated:)
+        existing = @enums[key]
+        @enums[key] = existing.merge(
+          description: description || existing[:description],
+          example: example || existing[:example],
+          deprecated: deprecated || existing[:deprecated],
+          values: values || existing[:values]
+        )
       end
     end
   end

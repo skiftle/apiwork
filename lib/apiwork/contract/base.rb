@@ -111,7 +111,7 @@ module Apiwork
                                schema_class:, &block)
         end
 
-        def enum(name, values:, description: nil, example: nil, deprecated: false)
+        def enum(name, values: nil, description: nil, example: nil, deprecated: false)
           api_class.enum(name, values:, scope: self, description:, example:, deprecated:)
         end
 

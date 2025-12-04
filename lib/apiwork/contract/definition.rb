@@ -41,9 +41,17 @@ module Apiwork
       end
 
       # rubocop:disable Metrics/ParameterLists
-      def param(name, type: :string, required: false, default: nil, enum: nil, of: nil, as: nil,
+      def param(name, type: nil, required: nil, default: nil, enum: nil, of: nil, as: nil,
                 discriminator: nil, value: nil, visited_types: nil, **options, &block)
         # rubocop:enable Metrics/ParameterLists
+
+        if @params.key?(name)
+          merge_existing_param(name, type:, required:, default:, enum:, of:, as:,
+                                     discriminator:, value:, options:, &block)
+          return
+        end
+
+        type ||= :string
         raise ArgumentError, 'discriminator can only be used with type: :union' if discriminator && type != :union
 
         visited_types = visited_types || @visited_types || Set.new
@@ -52,13 +60,13 @@ module Apiwork
 
         case type
         when :literal
-          define_literal_param(name, value: value, required: required, default: default, as: as, options: options)
+          define_literal_param(name, value: value, required: required || false, default: default, as: as, options: options)
         when :union
           define_union_param(name, discriminator: discriminator, resolved_enum: resolved_enum,
-                                   required: required, default: default, as: as, options: options, &block)
+                                   required: required || false, default: default, as: as, options: options, &block)
         else
           define_regular_param(name, type: type, resolved_enum: resolved_enum,
-                                     required: required, default: default, of: of, as: as,
+                                     required: required || false, default: default, of: of, as: as,
                                      visited_types: visited_types, options: options, &block)
         end
       end
@@ -78,6 +86,38 @@ module Apiwork
       end
 
       private
+
+      # rubocop:disable Metrics/ParameterLists
+      def merge_existing_param(name, type:, required:, default:, enum:, of:, as:, discriminator:, value:, options:, &block)
+        # rubocop:enable Metrics/ParameterLists
+        existing = @params[name]
+
+        resolved_enum = enum ? resolve_enum_value(enum) : nil
+
+        merged = existing.merge(options.compact)
+        merged[:type] = type if type
+        merged[:required] = required unless required.nil?
+        merged[:default] = default if default
+        merged[:enum] = resolved_enum if resolved_enum
+        merged[:of] = of if of
+        merged[:as] = as if as
+        merged[:discriminator] = discriminator if discriminator
+        merged[:value] = value if value
+
+        @params[name] = merged
+
+        return unless block
+
+        if existing[:union]
+          existing[:union].instance_eval(&block)
+        elsif existing[:shape]
+          existing[:shape].instance_eval(&block)
+        else
+          shape_definition = Definition.new(type: nil, contract_class: @contract_class, action_name: @action_name)
+          shape_definition.instance_eval(&block)
+          @params[name][:shape] = shape_definition
+        end
+      end
 
       def apply_param_defaults(param_hash)
         {
@@ -160,7 +200,9 @@ module Apiwork
 
         shape_definition.instance_variable_set(:@visited_types, visited_with_current)
 
-        shape_definition.instance_eval(&custom_type_block)
+        Array(custom_type_block).each do |definition_block|
+          shape_definition.instance_eval(&definition_block)
+        end
 
         shape_definition.instance_eval(&block) if block_given?
 
@@ -474,7 +516,7 @@ module Apiwork
               end
 
               custom_definition = Definition.new(type: @type, contract_class: contract_class_for_custom_type, action_name: @action_name)
-              custom_definition.instance_eval(&custom_type_block)
+              Array(custom_type_block).each { |block| custom_definition.instance_eval(&block) }
 
               shape_result = custom_definition.validate(
                 item,
@@ -662,7 +704,7 @@ module Apiwork
         custom_type_block = @contract_class.resolve_custom_type(variant_type)
         if custom_type_block
           custom_definition = Definition.new(type: @type, contract_class: @contract_class, action_name: @action_name)
-          custom_definition.instance_eval(&custom_type_block)
+          Array(custom_type_block).each { |block| custom_definition.instance_eval(&block) }
 
           unless value.is_a?(Hash)
             type_error = Issue.new(

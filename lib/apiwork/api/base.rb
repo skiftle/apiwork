@@ -137,14 +137,12 @@ module Apiwork
 
         def type(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false,
                  schema_class: nil, &block)
-          raise ArgumentError, 'Block required for type definition' unless block_given?
-
           type_system.register_type(name, scope:, description:, example:, format:, deprecated:,
                                           schema_class:, &block)
         end
 
-        def enum(name, values:, scope: nil, description: nil, example: nil, deprecated: false)
-          raise ArgumentError, 'Values array required for enum definition' if values.nil? || !values.is_a?(Array)
+        def enum(name, values: nil, scope: nil, description: nil, example: nil, deprecated: false)
+          raise ArgumentError, 'Values must be an array' if values && !values.is_a?(Array)
 
           type_system.register_enum(name, values, scope:, description:, example:, deprecated:)
         end

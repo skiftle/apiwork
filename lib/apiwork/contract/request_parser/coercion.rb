@@ -44,7 +44,7 @@ module Apiwork
               custom_type_block = definition.contract_class.resolve_custom_type(param_options[:of])
               if custom_type_block
                 custom_definition = Definition.new(type: :body, contract_class: definition.contract_class)
-                custom_definition.instance_eval(&custom_type_block)
+                Array(custom_type_block).each { |block| custom_definition.instance_eval(&block) }
                 coerce_hash(item, custom_definition)
               else
                 item
@@ -69,7 +69,7 @@ module Apiwork
               custom_type_block = definition.contract_class.resolve_custom_type(variant_of)
               if custom_type_block
                 custom_definition = Definition.new(type: :body, contract_class: definition.contract_class)
-                custom_definition.instance_eval(&custom_type_block)
+                Array(custom_type_block).each { |block| custom_definition.instance_eval(&block) }
 
                 coerced_array = value.map do |item|
                   item.is_a?(Hash) ? coerce_hash(item, custom_definition) : item
@@ -82,7 +82,7 @@ module Apiwork
             next unless custom_type_block
 
             custom_definition = Definition.new(type: :body, contract_class: definition.contract_class)
-            custom_definition.instance_eval(&custom_type_block)
+            Array(custom_type_block).each { |block| custom_definition.instance_eval(&block) }
 
             if value.is_a?(Hash)
               coerced = coerce_hash(value, custom_definition)

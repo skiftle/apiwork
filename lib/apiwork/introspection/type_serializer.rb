@@ -96,7 +96,8 @@ module Apiwork
       end
 
       def expand_payload(metadata)
-        payload = metadata[:payload] || expand(metadata[:definition], contract_class: metadata[:scope])
+        definition_blocks = metadata[:definitions] || metadata[:definition]
+        payload = metadata[:payload] || expand(definition_blocks, contract_class: metadata[:scope])
 
         expand_union_variants(payload, metadata[:scope]) if payload.is_a?(Hash) && payload[:type] == :union
 
@@ -117,7 +118,9 @@ module Apiwork
         end
       end
 
-      def expand(definition, contract_class: nil, type_name: nil)
+      def expand(definitions, contract_class: nil, type_name: nil)
+        return nil unless definitions
+
         temp_contract = contract_class || create_temp_contract
 
         temp_definition = Apiwork::Contract::Definition.new(
@@ -125,7 +128,9 @@ module Apiwork
           contract_class: temp_contract
         )
 
-        temp_definition.instance_eval(&definition)
+        Array(definitions).each do |definition_block|
+          temp_definition.instance_eval(&definition_block)
+        end
 
         DefinitionSerializer.new(temp_definition).serialize
       end
