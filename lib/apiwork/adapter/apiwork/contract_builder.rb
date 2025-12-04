@@ -119,7 +119,8 @@ module Apiwork
               as: "#{name}_attributes".to_sym,
               description: association_definition.description,
               example: association_definition.example,
-              deprecated: association_definition.deprecated
+              deprecated: association_definition.deprecated,
+              association_definition: association_definition
             }
 
             param_options[:type_contract_class] = association_contract if association_contract
@@ -320,7 +321,8 @@ module Apiwork
                 nullable: association_definition.nullable?,
                 description: association_definition.description,
                 example: association_definition.example,
-                deprecated: association_definition.deprecated
+                deprecated: association_definition.deprecated,
+                association_definition: association_definition
               }
 
               if association_definition.singular?

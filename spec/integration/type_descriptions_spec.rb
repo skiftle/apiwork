@@ -277,4 +277,46 @@ RSpec.describe 'Type Descriptions', type: :integration do
       expect(payload_shape[:body][:description]).to eq('The main content of the post')
     end
   end
+
+  describe 'i18n schema association descriptions' do
+    before(:all) do
+      I18n.backend.store_translations(:en, {
+                                        apiwork: {
+                                          apis: {
+                                            'api/v1' => {
+                                              schemas: {
+                                                post: {
+                                                  associations: {
+                                                    comments: { description: 'Post comments from i18n' }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      })
+
+      Apiwork.reset!
+      load Rails.root.join('config/apis/v1.rb')
+    end
+
+    after(:all) do
+      I18n.backend.reload!
+      I18n.backend.load_translations
+    end
+
+    it 'uses i18n description for association in response type' do
+      introspection = Apiwork::API.introspect('/api/v1')
+      post_shape = introspection[:types][:post][:shape]
+
+      expect(post_shape[:comments][:description]).to eq('Post comments from i18n')
+    end
+
+    it 'uses i18n description for writable association in create payload' do
+      introspection = Apiwork::API.introspect('/api/v1')
+      payload_shape = introspection[:types][:post_create_payload][:shape]
+
+      expect(payload_shape[:comments][:description]).to eq('Post comments from i18n')
+    end
+  end
 end

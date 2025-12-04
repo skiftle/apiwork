@@ -97,6 +97,10 @@ module Apiwork
         false
       end
 
+      def schema_class_name
+        @klass.name.demodulize.underscore.gsub(/_schema$/, '')
+      end
+
       private
 
       def column_for(name)

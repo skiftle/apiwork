@@ -19,7 +19,7 @@ module Apiwork
       class_attribute :_variants, default: {}
       class_attribute :_description, default: nil
       class_attribute :_deprecated, default: false
-      class_attribute :_examples, default: nil
+      class_attribute :_example, default: nil
 
       attr_reader :context,
                   :include,
@@ -256,8 +256,10 @@ module Apiwork
           _deprecated == true
         end
 
-        def examples(value)
-          self._examples = value
+        def example(value = nil)
+          return _example if value.nil?
+
+          self._example = value
         end
 
         attr_writer :type

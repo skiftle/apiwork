@@ -199,10 +199,17 @@ module Apiwork
       def resolve_attribute_description(options)
         return options[:description] if options[:description]
 
-        attr_def = options[:attribute_definition]
-        return nil unless attr_def
+        if (attr_def = options[:attribute_definition])
+          desc = i18n_attribute_description(attr_def)
+          return desc if desc
+        end
 
-        i18n_attribute_description(attr_def)
+        if (assoc_def = options[:association_definition])
+          desc = i18n_association_description(assoc_def)
+          return desc if desc
+        end
+
+        nil
       end
 
       def i18n_attribute_description(attribute_definition)
@@ -214,6 +221,18 @@ module Apiwork
         attr_name = attribute_definition.name
 
         key = :"apiwork.apis.#{api_path}.schemas.#{schema_name}.attributes.#{attr_name}.description"
+        I18n.t(key, default: nil)
+      end
+
+      def i18n_association_description(association_definition)
+        api_class = @definition.contract_class&.api_class
+        return nil unless api_class
+
+        api_path = api_class.metadata.path.delete_prefix('/')
+        schema_name = association_definition.schema_class_name
+        assoc_name = association_definition.name
+
+        key = :"apiwork.apis.#{api_path}.schemas.#{schema_name}.associations.#{assoc_name}.description"
         I18n.t(key, default: nil)
       end
     end
