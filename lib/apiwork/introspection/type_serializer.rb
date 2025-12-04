@@ -16,11 +16,12 @@ module Apiwork
         type_storage.each_pair.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
           expanded_shape = metadata[:expanded_payload] ||= expand_payload(metadata)
           description = resolve_type_description(qualified_name, metadata)
+          example = resolve_type_example(metadata)
 
           result[qualified_name] = if expanded_shape.is_a?(Hash) && expanded_shape[:type] == :union
                                      expanded_shape.merge(
                                        description:,
-                                       example: metadata[:example],
+                                       example:,
                                        format: metadata[:format],
                                        deprecated: metadata[:deprecated] || false
                                      )
@@ -29,7 +30,7 @@ module Apiwork
                                        type: :object,
                                        shape: expanded_shape,
                                        description:,
-                                       example: metadata[:example],
+                                       example:,
                                        format: metadata[:format],
                                        deprecated: metadata[:deprecated] || false
                                      }
@@ -69,6 +70,12 @@ module Apiwork
         end
 
         i18n_type_description(type_name)
+      end
+
+      def resolve_type_example(metadata)
+        return metadata[:example] if metadata[:example]
+
+        metadata[:schema_class]&.example
       end
 
       def i18n_type_description(type_name)

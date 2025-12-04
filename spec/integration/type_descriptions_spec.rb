@@ -14,6 +14,10 @@ RSpec.describe 'Type Descriptions', type: :integration do
     it 'uses schema description for resource type' do
       expect(introspection[:types][:article][:description]).to eq('A news article')
     end
+
+    it 'uses schema example for resource type' do
+      expect(introspection[:types][:article][:example]).to eq({ id: 1, title: 'Breaking News' })
+    end
   end
 
   describe 'i18n API-specific overrides' do

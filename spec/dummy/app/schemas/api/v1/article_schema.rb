@@ -6,6 +6,7 @@ module Api
       model Post
       root :article
       description 'A news article'
+      example({ id: 1, title: 'Breaking News' })
 
       attribute :id, filterable: true, sortable: true
       attribute :title, filterable: true, sortable: true

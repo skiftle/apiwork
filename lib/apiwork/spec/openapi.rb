@@ -336,6 +336,9 @@ module Apiwork
           properties: {}
         }
 
+        result[:description] = definition[:description] if definition[:description]
+        result[:example] = definition[:example] if definition[:example]
+
         shape_fields = definition[:shape] || {}
 
         shape_fields.each do |property_name, property_def|

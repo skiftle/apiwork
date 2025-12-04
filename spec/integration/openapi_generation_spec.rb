@@ -193,6 +193,18 @@ RSpec.describe 'OpenAPI Generation', type: :integration do
       expect(schemas).to have_key('post_create_payload')
       expect(schemas).to have_key('post_update_payload')
     end
+
+    it 'includes schema description on resource type' do
+      article_schema = spec[:components][:schemas]['article']
+
+      expect(article_schema[:description]).to eq('A news article')
+    end
+
+    it 'includes schema example on resource type' do
+      article_schema = spec[:components][:schemas]['article']
+
+      expect(article_schema[:example]).to eq({ id: 1, title: 'Breaking News' })
+    end
   end
 
   describe 'Custom member and collection actions' do
