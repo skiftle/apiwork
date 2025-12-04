@@ -401,7 +401,7 @@ module Apiwork
                                                        depth: depth + 1)
                                         end
 
-              param name, type: association_filter_type, required: false if association_filter_type
+              param name, type: association_filter_type, required: false, association_definition: association_definition if association_filter_type
             end
           end
 
@@ -437,7 +437,7 @@ module Apiwork
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
               next unless attribute_definition.sortable?
 
-              param name, type: :sort_direction, required: false
+              param name, type: :sort_direction, required: false, attribute_definition: attribute_definition
             end
 
             schema_class_local.association_definitions.each do |name, association_definition|
@@ -458,7 +458,7 @@ module Apiwork
                                                      depth: depth + 1)
                                       end
 
-              param name, type: association_sort_type, required: false if association_sort_type
+              param name, type: association_sort_type, required: false, association_definition: association_definition if association_sort_type
             end
           end
 

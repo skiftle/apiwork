@@ -255,6 +255,13 @@ RSpec.describe 'Type Descriptions', type: :integration do
       expect(payload_shape[:title][:description]).to eq('Post title from i18n')
     end
 
+    it 'uses i18n description for schema attribute in sort type' do
+      introspection = Apiwork::API.introspect('/api/v1')
+      sort_shape = introspection[:types][:post_sort][:shape]
+
+      expect(sort_shape[:title][:description]).to eq('Post title from i18n')
+    end
+
     it 'prefers inline description over i18n' do
       I18n.backend.store_translations(:en, {
                                         apiwork: {
