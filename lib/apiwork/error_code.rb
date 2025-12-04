@@ -8,7 +8,7 @@ module Apiwork
       payment_required: { status: 402 },
       forbidden: { status: 403 },
       not_found: { status: 404, attach_path: true },
-      method_not_allowed: { status: 405, attach_path: true },
+      method_not_allowed: { status: 405 },
       not_acceptable: { status: 406 },
       request_timeout: { status: 408 },
       conflict: { status: 409 },
@@ -28,7 +28,7 @@ module Apiwork
     class << self
       delegate :register, :fetch, :registered?, :all, to: Registry
 
-      def name_for_status(status)
+      def key_for_status(status)
         DEFAULTS.find { |_, config| config[:status] == status }&.first
       end
 

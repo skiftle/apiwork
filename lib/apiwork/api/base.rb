@@ -105,7 +105,7 @@ module Apiwork
           error_code_keys = error_code_keys.flatten.uniq
           error_code_keys.each do |error_code_key|
             unless error_code_key.is_a?(Symbol)
-              hint = error_code_key.is_a?(Integer) ? " Use :#{ErrorCode.name_for_status(error_code_key)} instead." : ''
+              hint = error_code_key.is_a?(Integer) ? " Use :#{ErrorCode.key_for_status(error_code_key)} instead." : ''
               raise ConfigurationError, "raises must be symbols, got #{error_code_key.class}: #{error_code_key}.#{hint}"
             end
 
