@@ -41,7 +41,7 @@ module Apiwork
                  else
                    action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
                    recursive = TypeAnalysis.circular_reference?(type_name, type_shape, filter: :custom_only)
-                   mapper.build_interface(type_name, type_shape, action_name, recursive: recursive)
+                   mapper.build_interface(type_name, type_shape, action_name: action_name, recursive: recursive)
                  end
           all_types << { name: type_name_pascal, code: code }
         end
@@ -51,31 +51,31 @@ module Apiwork
             request_data = action_data[:request]
             if request_data && (request_data[:query]&.any? || request_data[:body]&.any?)
               if request_data[:query]&.any?
-                type_name = mapper.action_type_name(resource_name, action_name, 'RequestQuery', parent_path)
-                code = mapper.build_action_request_query_type(resource_name, action_name, request_data[:query], parent_path)
+                type_name = mapper.action_type_name(resource_name, action_name, 'RequestQuery', parent_path: parent_path)
+                code = mapper.build_action_request_query_type(resource_name, action_name, request_data[:query], parent_path: parent_path)
                 all_types << { name: type_name, code: code }
               end
 
               if request_data[:body]&.any?
-                type_name = mapper.action_type_name(resource_name, action_name, 'RequestBody', parent_path)
-                code = mapper.build_action_request_body_type(resource_name, action_name, request_data[:body], parent_path)
+                type_name = mapper.action_type_name(resource_name, action_name, 'RequestBody', parent_path: parent_path)
+                code = mapper.build_action_request_body_type(resource_name, action_name, request_data[:body], parent_path: parent_path)
                 all_types << { name: type_name, code: code }
               end
 
-              type_name = mapper.action_type_name(resource_name, action_name, 'Request', parent_path)
-              code = mapper.build_action_request_type(resource_name, action_name, request_data, parent_path)
+              type_name = mapper.action_type_name(resource_name, action_name, 'Request', parent_path: parent_path)
+              code = mapper.build_action_request_type(resource_name, action_name, request_data, parent_path: parent_path)
               all_types << { name: type_name, code: code }
             end
 
             response_data = action_data[:response]
             next unless response_data && response_data[:body]
 
-            type_name = mapper.action_type_name(resource_name, action_name, 'ResponseBody', parent_path)
-            code = mapper.build_action_response_body_type(resource_name, action_name, response_data[:body], parent_path)
+            type_name = mapper.action_type_name(resource_name, action_name, 'ResponseBody', parent_path: parent_path)
+            code = mapper.build_action_response_body_type(resource_name, action_name, response_data[:body], parent_path: parent_path)
             all_types << { name: type_name, code: code }
 
-            type_name = mapper.action_type_name(resource_name, action_name, 'Response', parent_path)
-            code = mapper.build_action_response_type(resource_name, action_name, response_data, parent_path)
+            type_name = mapper.action_type_name(resource_name, action_name, 'Response', parent_path: parent_path)
+            code = mapper.build_action_response_type(resource_name, action_name, response_data, parent_path: parent_path)
             all_types << { name: type_name, code: code }
           end
         end

@@ -28,14 +28,14 @@ module Apiwork
         @key_format = key_format
       end
 
-      def build_object_schema(type_name, type_shape, action_name = nil, recursive: false)
+      def build_object_schema(type_name, type_shape, action_name: nil, recursive: false)
         schema_name = pascal_case(type_name)
 
         fields = type_shape[:shape] || {}
 
         properties = fields.sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
           key = transform_key(property_name)
-          zod_type = map_field_definition(property_def, action_name)
+          zod_type = map_field_definition(property_def, action_name: action_name)
           "  #{key}: #{zod_type}"
         end.join(",\n")
 
@@ -52,7 +52,7 @@ module Apiwork
         schema_name = pascal_case(type_name)
         variants = type_shape[:variants]
 
-        variant_schemas = variants.map { |variant| map_type_definition(variant, nil) }
+        variant_schemas = variants.map { |variant| map_type_definition(variant, action_name: nil) }
         variants_str = variant_schemas.map { |v| "  #{v}" }.join(",\n")
 
         if type_shape[:discriminator]
@@ -63,64 +63,64 @@ module Apiwork
         end
       end
 
-      def build_action_request_query_schema(resource_name, action_name, query_params, parent_path = nil)
-        schema_name = action_schema_name(resource_name, action_name, 'RequestQuery', parent_path)
+      def build_action_request_query_schema(resource_name, action_name, query_params, parent_path: nil)
+        schema_name = action_schema_name(resource_name, action_name, 'RequestQuery', parent_path: parent_path)
 
         properties = query_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
           key = transform_key(param_name)
-          zod_type = map_field_definition(param_definition, nil)
+          zod_type = map_field_definition(param_definition, action_name: nil)
           "  #{key}: #{zod_type}"
         end.join(",\n")
 
         "export const #{schema_name}Schema = z.object({\n#{properties}\n});"
       end
 
-      def build_action_request_body_schema(resource_name, action_name, body_params, parent_path = nil)
-        schema_name = action_schema_name(resource_name, action_name, 'RequestBody', parent_path)
+      def build_action_request_body_schema(resource_name, action_name, body_params, parent_path: nil)
+        schema_name = action_schema_name(resource_name, action_name, 'RequestBody', parent_path: parent_path)
 
         properties = body_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
           key = transform_key(param_name)
-          zod_type = map_field_definition(param_definition, nil)
+          zod_type = map_field_definition(param_definition, action_name: nil)
           "  #{key}: #{zod_type}"
         end.join(",\n")
 
         "export const #{schema_name}Schema = z.object({\n#{properties}\n});"
       end
 
-      def build_action_request_schema(resource_name, action_name, request_data, parent_path = nil)
-        schema_name = action_schema_name(resource_name, action_name, 'Request', parent_path)
+      def build_action_request_schema(resource_name, action_name, request_data, parent_path: nil)
+        schema_name = action_schema_name(resource_name, action_name, 'Request', parent_path: parent_path)
 
         nested_properties = []
 
         if request_data[:query]&.any?
-          query_schema_name = action_schema_name(resource_name, action_name, 'RequestQuery', parent_path)
+          query_schema_name = action_schema_name(resource_name, action_name, 'RequestQuery', parent_path: parent_path)
           nested_properties << "  query: #{query_schema_name}Schema"
         end
 
         if request_data[:body]&.any?
-          body_schema_name = action_schema_name(resource_name, action_name, 'RequestBody', parent_path)
+          body_schema_name = action_schema_name(resource_name, action_name, 'RequestBody', parent_path: parent_path)
           nested_properties << "  body: #{body_schema_name}Schema"
         end
 
         "export const #{schema_name}Schema = z.object({\n#{nested_properties.join(",\n")}\n});"
       end
 
-      def build_action_response_body_schema(resource_name, action_name, response_body_def, parent_path = nil)
-        schema_name = action_schema_name(resource_name, action_name, 'ResponseBody', parent_path)
+      def build_action_response_body_schema(resource_name, action_name, response_body_def, parent_path: nil)
+        schema_name = action_schema_name(resource_name, action_name, 'ResponseBody', parent_path: parent_path)
 
-        zod_schema = map_type_definition(response_body_def, nil)
+        zod_schema = map_type_definition(response_body_def, action_name: nil)
 
         "export const #{schema_name}Schema = #{zod_schema};"
       end
 
-      def build_action_response_schema(resource_name, action_name, response_data, parent_path = nil)
-        schema_name = action_schema_name(resource_name, action_name, 'Response', parent_path)
-        body_schema_name = action_schema_name(resource_name, action_name, 'ResponseBody', parent_path)
+      def build_action_response_schema(resource_name, action_name, response_data, parent_path: nil)
+        schema_name = action_schema_name(resource_name, action_name, 'Response', parent_path: parent_path)
+        body_schema_name = action_schema_name(resource_name, action_name, 'ResponseBody', parent_path: parent_path)
 
         "export const #{schema_name}Schema = z.object({\n  body: #{body_schema_name}Schema\n});"
       end
 
-      def action_schema_name(resource_name, action_name, suffix, parent_path = nil)
+      def action_schema_name(resource_name, action_name, suffix, parent_path: nil)
         parent_names = extract_parent_resource_names(parent_path)
         base_parts = parent_names + [resource_name.to_s, action_name.to_s]
         base_name = pascal_case(base_parts.join('_'))
@@ -128,7 +128,7 @@ module Apiwork
         "#{base_name}#{suffix_pascal}"
       end
 
-      def map_field_definition(definition, action_name = nil)
+      def map_field_definition(definition, action_name: nil)
         return 'z.string()' unless definition.is_a?(Hash)
 
         if definition[:type].is_a?(Symbol) && (types.key?(definition[:type]) || enums.key?(definition[:type]))
@@ -137,24 +137,24 @@ module Apiwork
           return apply_modifiers(type, definition, action_name)
         end
 
-        type = map_type_definition(definition, action_name)
+        type = map_type_definition(definition, action_name: action_name)
         type = resolve_enum_schema(definition) || type
 
         apply_modifiers(type, definition, action_name)
       end
 
-      def map_type_definition(definition, action_name = nil)
+      def map_type_definition(definition, action_name: nil)
         return 'z.never()' unless definition.is_a?(Hash)
 
         type = definition[:type]
 
         case type
         when :object
-          map_object_type(definition, action_name)
+          map_object_type(definition, action_name: action_name)
         when :array
-          map_array_type(definition, action_name)
+          map_array_type(definition, action_name: action_name)
         when :union
-          map_union_type(definition, action_name)
+          map_union_type(definition, action_name: action_name)
         when :literal
           map_literal_type(definition)
         when nil
@@ -165,7 +165,7 @@ module Apiwork
         end
       end
 
-      def map_object_type(definition, action_name = nil)
+      def map_object_type(definition, action_name: nil)
         return 'z.object({})' unless definition[:shape]
 
         is_partial = definition[:partial]
@@ -173,9 +173,9 @@ module Apiwork
         properties = definition[:shape].sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
           key = transform_key(property_name)
           zod_type = if is_partial
-                       map_field_definition(property_def.merge(optional: false), nil)
+                       map_field_definition(property_def.merge(optional: false), action_name: nil)
                      else
-                       map_field_definition(property_def, action_name)
+                       map_field_definition(property_def, action_name: action_name)
                      end
           "#{key}: #{zod_type}"
         end.join(', ')
@@ -184,14 +184,14 @@ module Apiwork
         is_partial ? "#{base_object}.partial()" : base_object
       end
 
-      def map_array_type(definition, action_name = nil)
+      def map_array_type(definition, action_name: nil)
         items_type = definition[:of]
         return 'z.array(z.string())' unless items_type
 
         if items_type.is_a?(Symbol) && enum_or_type_reference?(items_type)
           "z.array(#{schema_reference(items_type)})"
         elsif items_type.is_a?(Hash)
-          items_schema = map_type_definition(items_type, action_name)
+          items_schema = map_type_definition(items_type, action_name: action_name)
           "z.array(#{items_schema})"
         else
           primitive = map_primitive({ type: items_type })
@@ -199,20 +199,20 @@ module Apiwork
         end
       end
 
-      def map_union_type(definition, action_name = nil)
+      def map_union_type(definition, action_name: nil)
         if definition[:discriminator]
-          map_discriminated_union(definition, action_name)
+          map_discriminated_union(definition, action_name: action_name)
         else
-          variants = definition[:variants].map { |variant| map_type_definition(variant, action_name) }
+          variants = definition[:variants].map { |variant| map_type_definition(variant, action_name: action_name) }
           "z.union([#{variants.join(', ')}])"
         end
       end
 
-      def map_discriminated_union(definition, action_name = nil)
+      def map_discriminated_union(definition, action_name: nil)
         discriminator_field = transform_key(definition[:discriminator])
         variants = definition[:variants]
 
-        variant_schemas = variants.map { |variant| map_type_definition(variant, action_name) }
+        variant_schemas = variants.map { |variant| map_type_definition(variant, action_name: action_name) }
 
         "z.discriminatedUnion('#{discriminator_field}', [#{variant_schemas.join(', ')}])"
       end

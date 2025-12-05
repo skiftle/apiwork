@@ -260,14 +260,16 @@ validated = processed.select { valid?(_1) }
 ## Method Arguments
 
 ### Positional
-When unambiguous and essential: `User.find(id)`, `Money.new(amount, currency)`
+Required and unambiguous: `User.find(id)`, `Money.new(amount, currency)`
 
 ### Keyword
-When meaning isn't obvious, for booleans, optionals, or >2 args:
+Optional or when meaning isn't obvious:
 ```ruby
 resize(width: 800, height: 600)
-broadcast(event, async: true)
+generate(:openapi, '/api/v1', locale: :sv)
 ```
+
+Never use optional positional args (`arg = nil`) — use keyword args instead.
 
 ### Options hash
 Only when truly dynamic: `define_resource(:invoice, **options)`
