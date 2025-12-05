@@ -68,6 +68,10 @@ Your controllers remain familiar. You keep your own logic, your own queries and 
 - Input comes from `contract.query` or `contract.body` instead of `params`
 - Output goes through `respond_with`, which enforces the contract
 
+::: info Replaces Strong Parameters
+`contract.query` and `contract.body` only include params defined in the contract — unknown keys are rejected before reaching your controller. You can pass them directly to `create` and `update` without `permit`.
+:::
+
 ```ruby
 before_action :set_invoice, only: %i[show update destroy archive]
 

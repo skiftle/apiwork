@@ -107,3 +107,45 @@ Apiwork::API.draw '/api/v1' do
   end
 end
 ```
+
+## Defining Options
+
+Use `option` to define configurable settings:
+
+```ruby
+class MyAdapter < Apiwork::Adapter::Base
+  identifier :myadapter
+
+  option :timeout, type: :integer, default: 30
+  option :format, type: :symbol, default: :json, enum: %i[json xml]
+
+  option :cache, type: :hash do
+    option :enabled, type: :boolean, default: false
+    option :ttl, type: :integer, default: 3600
+  end
+end
+```
+
+### Option Types
+
+| Type | Description |
+|------|-------------|
+| `:string` | String value |
+| `:integer` | Integer value |
+| `:symbol` | Symbol value |
+| `:boolean` | Boolean value |
+| `:hash` | Nested options (use block) |
+
+### Accessing Options
+
+Options are accessed via `resolve_option`:
+
+```ruby
+def render_collection(collection, schema_class, action_data)
+  timeout = resolve_option(:timeout)
+  cache_enabled = resolve_option(:cache, :enabled)
+  # ...
+end
+```
+
+For nested options, pass the parent key first, then the child key.

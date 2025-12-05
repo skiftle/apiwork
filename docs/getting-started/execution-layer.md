@@ -158,6 +158,35 @@ Post.includes(:comments, :author)
 
 Prevents N+1 queries automatically.
 
+## Response Metadata
+
+Add custom metadata to any response:
+
+```ruby
+def index
+  posts = Post.all
+  respond_with posts, meta: {
+    generated_at: Time.current.iso8601,
+    api_version: 'v1'
+  }
+end
+```
+
+Response:
+
+```json
+{
+  "posts": [...],
+  "pagination": {...},
+  "meta": {
+    "generated_at": "2024-01-15T10:30:00Z",
+    "api_version": "v1"
+  }
+}
+```
+
+Works with both collections and single records.
+
 ## Per-Schema Configuration
 
 Override adapter settings for specific schemas:
