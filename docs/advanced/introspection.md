@@ -90,7 +90,9 @@ See [Spec Generation](../core/spec-generation/introduction.md) for details.
 
 ## Field Types
 
-Every field in introspection has a `type`. Here's the complete list:
+Understanding these types is essential if you're building a custom spec generator. The introspection format is the foundation — OpenAPI, TypeScript, and Zod generators all read from this same structure.
+
+Every field has a `type`. Here's the complete list:
 
 ### Primitive Types
 
@@ -190,3 +192,7 @@ Introspection output is compact by design. Properties are **omitted** when they 
 | `max` | `nil` |
 
 This means a simple string field appears as just `{ "type": "string" }` rather than including all possible properties with null/false values.
+
+## Building Custom Generators
+
+Ready to build your own spec generator? See [Custom Specs](./custom-specs.md).
