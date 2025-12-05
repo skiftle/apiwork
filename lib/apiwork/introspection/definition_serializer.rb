@@ -216,24 +216,20 @@ module Apiwork
         api_class = @definition.contract_class&.api_class
         return nil unless api_class
 
-        api_path = api_class.metadata.locale_key
         schema_name = attribute_definition.schema_class_name
         attr_name = attribute_definition.name
 
-        key = :"apiwork.apis.#{api_path}.schemas.#{schema_name}.attributes.#{attr_name}.description"
-        I18n.t(key, default: nil)
+        api_class.metadata.i18n_lookup(:schemas, schema_name, :attributes, attr_name, :description)
       end
 
       def i18n_association_description(association_definition)
         api_class = @definition.contract_class&.api_class
         return nil unless api_class
 
-        api_path = api_class.metadata.locale_key
         schema_name = association_definition.schema_class_name
         assoc_name = association_definition.name
 
-        key = :"apiwork.apis.#{api_path}.schemas.#{schema_name}.associations.#{assoc_name}.description"
-        I18n.t(key, default: nil)
+        api_class.metadata.i18n_lookup(:schemas, schema_name, :associations, assoc_name, :description)
       end
     end
   end

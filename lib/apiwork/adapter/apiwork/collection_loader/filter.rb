@@ -7,6 +7,8 @@ module Apiwork
         class Filter
           include ::Apiwork::Schema::Operator
 
+          LOGICAL_OPERATORS = %i[_and _or _not].freeze
+
           attr_reader :schema_class
 
           def self.perform(relation, schema_class, filter_params, issues)
@@ -33,15 +35,13 @@ module Apiwork
           private
 
           def apply_hash_filter(params)
-            logical_ops = params.slice(:_and, :_or, :_not)
-            regular_attrs = params.except(:_and, :_or, :_not)
+            logical_ops, regular_attrs = separate_logical_operators(params)
 
             scope = @relation
 
             if regular_attrs.present?
               conditions, joins = build_where_conditions(regular_attrs, schema_class.model_class)
-              result = scope.joins(joins).where(conditions.reduce(:and))
-              scope = joins.present? ? result.distinct : result
+              scope = with_joins_and_distinct(scope, joins) { |s| s.where(conditions.reduce(:and)) }
             end
 
             scope = apply_not(scope, logical_ops[:_not]) if logical_ops.key?(:_not)
@@ -60,20 +60,16 @@ module Apiwork
             or_condition = individual_conditions.reduce(:or) if individual_conditions.any?
             all_joins = params.map { |p| build_where_conditions(p, schema_class.model_class)[1] }.reduce({}) { |acc, j| acc.deep_merge(j) }
 
-            result = @relation
-            result = result.joins(all_joins) if all_joins.present?
-            result = result.where(or_condition) if or_condition
-            all_joins.present? ? result.distinct : result
+            with_joins_and_distinct(@relation, all_joins) do |scope|
+              or_condition ? scope.where(or_condition) : scope
+            end
           end
 
           def apply_not(scope, filter_params)
             condition, joins = build_conditions_recursive(filter_params)
-
             return scope if condition.nil?
 
-            result = scope.joins(joins)
-            result = result.where.not(condition)
-            joins.present? ? result.distinct : result
+            with_joins_and_distinct(scope, joins) { |s| s.where.not(condition) }
           end
 
           def apply_or(scope, conditions_array)
@@ -90,10 +86,9 @@ module Apiwork
 
             or_condition = or_conditions.compact.reduce(:or) if or_conditions.any?
 
-            result = scope
-            result = result.joins(all_joins) if all_joins.present?
-            result = result.where(or_condition) if or_condition
-            all_joins.present? ? result.distinct : result
+            with_joins_and_distinct(scope, all_joins) do |s|
+              or_condition ? s.where(or_condition) : s
+            end
           end
 
           def apply_and(scope, conditions_array)
@@ -108,8 +103,7 @@ module Apiwork
             return [nil, {}] if filter_params.blank?
             return [nil, {}] unless filter_params.is_a?(Hash)
 
-            logical_ops = filter_params.slice(:_and, :_or, :_not)
-            regular_attrs = filter_params.except(:_and, :_or, :_not)
+            logical_ops, regular_attrs = separate_logical_operators(filter_params)
 
             conditions = []
             all_joins = {}
@@ -558,6 +552,15 @@ module Apiwork
             else
               column.matches(pattern)
             end
+          end
+
+          def separate_logical_operators(params)
+            [params.slice(*LOGICAL_OPERATORS), params.except(*LOGICAL_OPERATORS)]
+          end
+
+          def with_joins_and_distinct(scope, joins)
+            result = yield(joins.present? ? scope.joins(joins) : scope)
+            joins.present? ? result.distinct : result
           end
         end
       end

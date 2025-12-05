@@ -11,6 +11,11 @@ module Apiwork
         @locale_key ||= path.delete_prefix('/')
       end
 
+      def i18n_lookup(*segments, default: nil)
+        key = :"apiwork.apis.#{locale_key}.#{segments.join('.')}"
+        I18n.t(key, default:)
+      end
+
       attr_accessor :info,
                     :raises
 

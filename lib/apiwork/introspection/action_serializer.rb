@@ -46,12 +46,10 @@ module Apiwork
         api_class = contract_class.api_class
         return nil unless api_class&.metadata&.path && contract_class.name
 
-        api_path = api_class.metadata.locale_key
         contract_name = contract_class.name.demodulize.underscore.gsub(/_contract$/, '')
         action_name = @action_definition.action_name
 
-        key = :"apiwork.apis.#{api_path}.contracts.#{contract_name}.actions.#{action_name}.#{field}"
-        I18n.t(key, default: nil)
+        api_class.metadata.i18n_lookup(:contracts, contract_name, :actions, action_name, field)
       end
 
       def serialize_request(request_def)

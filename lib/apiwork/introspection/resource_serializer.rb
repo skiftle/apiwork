@@ -28,9 +28,9 @@ module Apiwork
 
         result[:schema] = serialize_resource_schema(schema_class) if schema_class
 
-        add_standard_actions(result[:actions], contract_class) if @resource_metadata[:actions]&.any?
-        add_member_actions(result[:actions], contract_class) if @resource_metadata[:members]&.any?
-        add_collection_actions(result[:actions], contract_class) if @resource_metadata[:collections]&.any?
+        add_actions(result[:actions], @resource_metadata[:actions], :standard, contract_class)
+        add_actions(result[:actions], @resource_metadata[:members], :member, contract_class)
+        add_actions(result[:actions], @resource_metadata[:collections], :collection, contract_class)
         add_nested_resources(result, resource_path) if @resource_metadata[:resources]&.any?
 
         result
@@ -53,27 +53,14 @@ module Apiwork
         end
       end
 
-      def add_standard_actions(actions, contract_class)
-        @resource_metadata[:actions].each do |action_name, action_data|
-          path = action_path(action_name, action_name.to_sym)
+      def add_actions(actions, action_source, action_type, contract_class)
+        return unless action_source&.any?
+
+        action_source.each do |action_name, action_data|
+          path_type = action_type == :standard ? action_name.to_sym : action_type
+          path = action_path(action_name, path_type)
           add_action(actions, action_name, action_data[:method], path, contract_class,
                      metadata: action_data[:metadata])
-        end
-      end
-
-      def add_member_actions(actions, contract_class)
-        @resource_metadata[:members].each do |action_name, action_metadata|
-          path = action_path(action_name, :member)
-          add_action(actions, action_name, action_metadata[:method], path, contract_class,
-                     metadata: action_metadata[:metadata])
-        end
-      end
-
-      def add_collection_actions(actions, contract_class)
-        @resource_metadata[:collections].each do |action_name, action_metadata|
-          path = action_path(action_name, :collection)
-          add_action(actions, action_name, action_metadata[:method], path, contract_class,
-                     metadata: action_metadata[:metadata])
         end
       end
 

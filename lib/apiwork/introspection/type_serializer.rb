@@ -79,19 +79,13 @@ module Apiwork
       end
 
       def i18n_type_description(type_name)
-        api_path = @api.metadata.locale_key
-
-        api_key = :"apiwork.apis.#{api_path}.types.#{type_name}.description"
-        I18n.t(api_key, default: nil)
+        @api.metadata.i18n_lookup(:types, type_name, :description)
       end
 
       def resolve_enum_description(enum_name, metadata)
         return metadata[:description] if metadata[:description]
 
-        api_path = @api.metadata.locale_key
-
-        api_key = :"apiwork.apis.#{api_path}.enums.#{enum_name}.description"
-        I18n.t(api_key, default: nil)
+        @api.metadata.i18n_lookup(:enums, enum_name, :description)
       end
 
       def expand_payload(metadata)
