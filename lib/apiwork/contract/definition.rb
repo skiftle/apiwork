@@ -200,7 +200,7 @@ module Apiwork
 
         shape_definition.instance_variable_set(:@visited_types, visited_with_current)
 
-        Array(custom_type_block).each do |definition_block|
+        custom_type_block.each do |definition_block|
           shape_definition.instance_eval(&definition_block)
         end
 
@@ -516,7 +516,7 @@ module Apiwork
               end
 
               custom_definition = Definition.new(type: @type, contract_class: contract_class_for_custom_type, action_name: @action_name)
-              Array(custom_type_block).each { |block| custom_definition.instance_eval(&block) }
+              custom_type_block.each { |block| custom_definition.instance_eval(&block) }
 
               shape_result = custom_definition.validate(
                 item,
@@ -704,7 +704,7 @@ module Apiwork
         custom_type_block = @contract_class.resolve_custom_type(variant_type)
         if custom_type_block
           custom_definition = Definition.new(type: @type, contract_class: @contract_class, action_name: @action_name)
-          Array(custom_type_block).each { |block| custom_definition.instance_eval(&block) }
+          custom_type_block.each { |block| custom_definition.instance_eval(&block) }
 
           unless value.is_a?(Hash)
             type_error = Issue.new(

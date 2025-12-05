@@ -75,7 +75,7 @@ module Apiwork
             action_name: definition.action_name
           )
 
-          Array(custom_type_block).each { |block| temp_definition.instance_eval(&block) }
+          custom_type_block.each { |block| temp_definition.instance_eval(&block) }
 
           temp_definition
         end

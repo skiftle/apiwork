@@ -37,7 +37,7 @@ module Apiwork
 
         return nil unless metadata
 
-        metadata[:definitions] || metadata[:definition]
+        (metadata[:definitions] || [metadata[:definition]].compact).presence
       end
 
       def type_metadata(name)
