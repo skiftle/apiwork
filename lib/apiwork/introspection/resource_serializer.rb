@@ -158,11 +158,7 @@ module Apiwork
 
         {
           type: :object,
-          shape: attributes,
-          description: nil,
-          example: nil,
-          format: nil,
-          deprecated: false
+          shape: attributes
         }
       end
     end

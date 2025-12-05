@@ -25,14 +25,9 @@ RSpec.describe 'API TypeSystem Builder' do
     expect(types[:error]).to include(
       type: :object,
       shape: {
-        error: { type: :string, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
-                 max: nil },
-        code: { type: :integer, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil, max: nil }
-      },
-      description: nil,
-      example: nil,
-      format: nil,
-      deprecated: false
+        error: { type: :string },
+        code: { type: :integer }
+      }
     )
   end
 
@@ -144,7 +139,7 @@ RSpec.describe 'API TypeSystem Builder' do
              description: 'Comprehensive metadata',
              example: { data: 'example' },
              format: 'custom',
-             deprecated: false do
+             deprecated: true do
           param :data, type: :string
         end
       end
@@ -155,7 +150,7 @@ RSpec.describe 'API TypeSystem Builder' do
         description: 'Comprehensive metadata',
         example: { data: 'example' },
         format: 'custom',
-        deprecated: false
+        deprecated: true
       )
     end
 
@@ -195,7 +190,7 @@ RSpec.describe 'API TypeSystem Builder' do
              values: %w[option1 option2],
              description: 'Complete enum metadata',
              example: 'option1',
-             deprecated: false
+             deprecated: true
       end
 
       enums = Apiwork::Introspection.enums(api)
@@ -204,7 +199,7 @@ RSpec.describe 'API TypeSystem Builder' do
         values: %w[option1 option2],
         description: 'Complete enum metadata',
         example: 'option1',
-        deprecated: false
+        deprecated: true
       )
     end
 

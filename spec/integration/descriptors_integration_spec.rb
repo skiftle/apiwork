@@ -31,38 +31,23 @@ RSpec.describe 'TypeSystem Integration', type: :request do
     it 'includes global types defined in type block' do
       introspection = Apiwork::API.introspect('/api/v1')
 
-      # error_detail type from config/apis/v1.rb
       expect(introspection[:types]).to have_key(:error_detail)
       expect(introspection[:types][:error_detail]).to include(
         type: :object,
         shape: {
-          code: { type: :string, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
-                  max: nil },
-          message: { type: :string, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
-                     max: nil },
-          field: { type: :string, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
-                   max: nil }
-        },
-        description: nil,
-        example: nil,
-        format: nil,
-        deprecated: false
+          code: { type: :string },
+          message: { type: :string },
+          field: { type: :string }
+        }
       )
 
-      # pagination_params type from config/apis/v1.rb
       expect(introspection[:types]).to have_key(:pagination_params)
       expect(introspection[:types][:pagination_params]).to include(
         type: :object,
         shape: {
-          page: { type: :integer, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
-                  max: nil },
-          per_page: { type: :integer, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
-                      max: nil }
-        },
-        description: nil,
-        example: nil,
-        format: nil,
-        deprecated: false
+          page: { type: :integer },
+          per_page: { type: :integer }
+        }
       )
     end
 
@@ -314,20 +299,13 @@ RSpec.describe 'TypeSystem Integration', type: :request do
     it 'includes contract-scoped types with proper qualification' do
       introspection = Apiwork::API.introspect('/api/contracts')
 
-      # Should be qualified with contract identifier
       expect(introspection[:types]).to have_key(:test_scoped_metadata)
       expect(introspection[:types][:test_scoped_metadata]).to include(
         type: :object,
         shape: {
-          author: { type: :string, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
-                    max: nil },
-          version: { type: :integer, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
-                     max: nil }
-        },
-        description: nil,
-        example: nil,
-        format: nil,
-        deprecated: false
+          author: { type: :string },
+          version: { type: :integer }
+        }
       )
     end
 
@@ -454,8 +432,7 @@ RSpec.describe 'TypeSystem Integration', type: :request do
       expect(introspection[:enums][:status_with_metadata]).to eq(
         values: %w[active inactive],
         description: 'Status values with description',
-        example: 'active',
-        deprecated: false
+        example: 'active'
       )
     end
 
@@ -468,14 +445,15 @@ RSpec.describe 'TypeSystem Integration', type: :request do
       expect(enum_data).to have_key(:values)
       expect(enum_data).to have_key(:description)
       expect(enum_data).to have_key(:example)
-      expect(enum_data).to have_key(:deprecated)
+      # deprecated is omitted when false
+      expect(enum_data).not_to have_key(:deprecated)
     end
 
-    it 'shows deprecated: false explicitly when set' do
+    it 'omits deprecated: false' do
       introspection = Apiwork::API.introspect('/api/metadata_test')
 
-      # deprecated: false should appear explicitly, not be omitted
-      expect(introspection[:enums][:status_with_metadata][:deprecated]).to be false
+      # deprecated: false should be omitted (only include when true)
+      expect(introspection[:enums][:status_with_metadata]).not_to have_key(:deprecated)
     end
 
     it 'does NOT auto-generate filter types for enums without filterable schema attribute' do

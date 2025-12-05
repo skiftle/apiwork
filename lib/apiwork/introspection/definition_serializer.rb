@@ -64,7 +64,7 @@ module Apiwork
         if options[:type] == :union
           result = serialize_union(options[:union])
           result[:optional] = true if options[:optional]
-          result[:nullable] = options[:nullable] || false
+          result[:nullable] = true if options[:nullable]
           apply_metadata_fields(result, options)
           return result
         end
@@ -76,10 +76,8 @@ module Apiwork
             custom_type_name = @name_resolver.qualified_name(custom_type_name, @definition)
           end
 
-          result = {
-            type: custom_type_name,
-            nullable: options[:nullable] || false
-          }
+          result = { type: custom_type_name }
+          result[:nullable] = true if options[:nullable]
           result[:optional] = true if options[:optional]
           apply_metadata_fields(result, options)
           result[:as] = options[:as] if options[:as]
@@ -93,16 +91,14 @@ module Apiwork
           type_value = @name_resolver.qualified_name(type_value, @definition)
         end
 
-        result = {
-          type: type_value,
-          nullable: options[:nullable] || false
-        }
+        result = { type: type_value }
+        result[:nullable] = true if options[:nullable]
         result[:optional] = true if options[:optional]
         apply_metadata_fields(result, options)
 
         result[:value] = options[:value] if options[:type] == :literal
 
-        result[:default] = options[:default] if options.key?(:default) && !options[:default].nil?
+        result[:default] = options[:default] unless options[:default].nil?
 
         if options[:enum]
           result[:enum] = if options[:enum].is_a?(Hash) && options[:enum][:ref]
@@ -186,12 +182,13 @@ module Apiwork
       end
 
       def apply_metadata_fields(result, options)
-        result[:description] = resolve_attribute_description(options)
-        result[:example] = options[:example]
-        result[:format] = options[:format]
-        result[:deprecated] = options[:deprecated] || false
-        result[:min] = options[:min]
-        result[:max] = options[:max]
+        description = resolve_attribute_description(options)
+        result[:description] = description if description
+        result[:example] = options[:example] if options[:example]
+        result[:format] = options[:format] if options[:format]
+        result[:deprecated] = true if options[:deprecated]
+        result[:min] = options[:min] if options[:min]
+        result[:max] = options[:max] if options[:max]
       end
 
       def resolve_attribute_description(options)

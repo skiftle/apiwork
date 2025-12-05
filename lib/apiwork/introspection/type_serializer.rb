@@ -18,23 +18,18 @@ module Apiwork
           description = resolve_type_description(qualified_name, metadata)
           example = resolve_type_example(metadata)
 
-          result[qualified_name] = if expanded_shape.is_a?(Hash) && expanded_shape[:type] == :union
-                                     expanded_shape.merge(
-                                       description:,
-                                       example:,
-                                       format: metadata[:format],
-                                       deprecated: metadata[:deprecated] || false
-                                     )
-                                   else
-                                     {
-                                       type: :object,
-                                       shape: expanded_shape,
-                                       description:,
-                                       example:,
-                                       format: metadata[:format],
-                                       deprecated: metadata[:deprecated] || false
-                                     }
-                                   end
+          base = if expanded_shape.is_a?(Hash) && expanded_shape[:type] == :union
+                   expanded_shape
+                 else
+                   { type: :object, shape: expanded_shape }
+                 end
+
+          base[:description] = description if description
+          base[:example] = example if example
+          base[:format] = metadata[:format] if metadata[:format]
+          base[:deprecated] = true if metadata[:deprecated]
+
+          result[qualified_name] = base
         end
 
         result
@@ -47,12 +42,11 @@ module Apiwork
 
         enum_storage = @api.type_system.enums
         enum_storage.each_pair.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
-          enum_data = {
-            values: metadata[:values],
-            description: resolve_enum_description(qualified_name, metadata),
-            example: metadata[:example],
-            deprecated: metadata[:deprecated] || false
-          }
+          enum_data = { values: metadata[:values] }
+          description = resolve_enum_description(qualified_name, metadata)
+          enum_data[:description] = description if description
+          enum_data[:example] = metadata[:example] if metadata[:example]
+          enum_data[:deprecated] = true if metadata[:deprecated]
           result[qualified_name] = enum_data
         end
 
