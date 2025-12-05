@@ -216,7 +216,7 @@ module Apiwork
         api_class = @definition.contract_class&.api_class
         return nil unless api_class
 
-        api_path = api_class.metadata.path.delete_prefix('/')
+        api_path = api_class.metadata.locale_key
         schema_name = attribute_definition.schema_class_name
         attr_name = attribute_definition.name
 
@@ -228,7 +228,7 @@ module Apiwork
         api_class = @definition.contract_class&.api_class
         return nil unless api_class
 
-        api_path = api_class.metadata.path.delete_prefix('/')
+        api_path = api_class.metadata.locale_key
         schema_name = association_definition.schema_class_name
         assoc_name = association_definition.name
 

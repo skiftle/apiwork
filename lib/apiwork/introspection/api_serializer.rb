@@ -45,7 +45,7 @@ module Apiwork
       end
 
       def serialize_error_codes(codes)
-        api_path = @api_class.metadata.path.delete_prefix('/')
+        api_path = @api_class.metadata.locale_key
 
         codes.each_with_object({}) do |code, hash|
           error_code = ErrorCode.fetch(code)

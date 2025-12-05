@@ -46,7 +46,7 @@ module Apiwork
         api_class = contract_class.api_class
         return nil unless api_class&.metadata&.path && contract_class.name
 
-        api_path = api_class.metadata.path.delete_prefix('/')
+        api_path = api_class.metadata.locale_key
         contract_name = contract_class.name.demodulize.underscore.gsub(/_contract$/, '')
         action_name = @action_definition.action_name
 

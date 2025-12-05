@@ -7,6 +7,10 @@ module Apiwork
                   :path,
                   :resources
 
+      def locale_key
+        @locale_key ||= path.delete_prefix('/')
+      end
+
       attr_accessor :info,
                     :raises
 

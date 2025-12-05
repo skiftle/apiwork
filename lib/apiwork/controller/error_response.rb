@@ -29,7 +29,7 @@ module Apiwork
       def resolve_error_detail(error_code, detail, options)
         return detail if detail
 
-        api_path = api_class.metadata.path&.delete_prefix('/')
+        api_path = api_class.metadata&.locale_key
         error_code.description(api_path:, options:)
       end
     end

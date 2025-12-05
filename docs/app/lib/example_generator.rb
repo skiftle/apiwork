@@ -27,7 +27,7 @@ class ExampleGenerator
   private
 
   def generate_for_api(api)
-    namespace = api.metadata.path.delete_prefix('/')
+    namespace = api.metadata.locale_key
     output_dir = EXAMPLES_DIR.join(namespace)
     FileUtils.mkdir_p(output_dir)
 
