@@ -7,15 +7,14 @@ module Apiwork
       include Configurable
 
       option :locale, type: :symbol, default: nil
-      option :path, type: :string, default: nil
 
-      attr_reader :data,
-                  :options,
-                  :path
+      attr_reader :api_path,
+                  :data,
+                  :options
 
       class << self
-        def generate(path:, **options)
-          new(path, **options).generate
+        def generate(api_path, **options)
+          new(api_path, **options).generate
         end
 
         def content_type(type = nil)
@@ -28,10 +27,10 @@ module Apiwork
         end
       end
 
-      def initialize(path, **options)
-        @path = path
-        @api = Apiwork::API.find(path)
-        raise "API not found at path: #{path}" unless @api
+      def initialize(api_path, **options)
+        @api_path = api_path
+        @api = Apiwork::API.find(api_path)
+        raise "API not found at path: #{api_path}" unless @api
 
         @options = self.class.default_options
                        .merge(key_format: @api.key_format)

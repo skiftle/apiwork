@@ -19,22 +19,18 @@ module Apiwork
     # Returns spec for the current API
     def show
       api = find_api
-      spec_type = params[:spec_type].to_sym
-      spec_config = api.spec_config(spec_type)
+      identifier = params[:spec_type].to_sym
+      spec_config = api.spec_config(identifier)
 
-      merged_options = { key_format: api.key_format }
-                       .merge(spec_config)
-                       .merge(key_format: params[:key_format]&.to_sym)
-                       .merge(locale: params[:locale]&.to_sym)
-                       .compact
+      options = { key_format: api.key_format }
+                .merge(spec_config)
+                .merge(key_format: params[:key_format]&.to_sym)
+                .merge(locale: params[:locale]&.to_sym)
+                .compact
 
-      spec = ::Apiwork::Spec::Pipeline.generate(
-        api_path: api.metadata.path,
-        format: spec_type,
-        **merged_options
-      )
+      spec = ::Apiwork::Spec.generate(identifier, api.metadata.path, **options)
 
-      generator_class = ::Apiwork::Spec::Registry.find(spec_type)
+      generator_class = ::Apiwork::Spec.find(identifier)
       render_spec(spec, generator_class.content_type)
     rescue KeyError => e
       render json: { error: e.message }, status: :bad_request

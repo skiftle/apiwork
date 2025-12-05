@@ -5,8 +5,8 @@ module Apiwork
     class << self
       delegate :register, :find, to: Registry
 
-      def generate(name, path, **options)
-        find(name)&.generate(path: path, **options)
+      def generate(identifier, api_path, **options)
+        find(identifier)&.generate(api_path, **options)
       end
 
       def reset!

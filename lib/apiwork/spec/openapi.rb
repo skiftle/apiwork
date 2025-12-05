@@ -30,7 +30,7 @@ module Apiwork
         info_data = metadata&.dig(:info) || {}
 
         {
-          title: info_data[:title] || "#{path} API",
+          title: info_data[:title] || "#{api_path} API",
           version: info_data[:version] || '1.0.0',
           description: info_data[:description]
         }.compact

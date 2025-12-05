@@ -9,13 +9,13 @@ module Apiwork
       module Writer
         module_function
 
-        def write(content:, output:, extension:, api_path: nil, format: nil)
+        def write(content:, output:, extension:, api_path: nil, identifier: nil)
           if file_path?(output)
             write_file(content, output)
           else
-            raise ArgumentError, 'api_path and format required when output is a directory' if api_path.blank? || format.blank?
+            raise ArgumentError, 'api_path and identifier required when output is a directory' if api_path.blank? || identifier.blank?
 
-            file_path = build_file_path(output, api_path, format, extension)
+            file_path = build_file_path(output, api_path, identifier, extension)
             write_file(content, file_path)
           end
         end
@@ -38,9 +38,9 @@ module Apiwork
           File.extname(path) != ''
         end
 
-        def build_file_path(output, api_path, format, extension)
+        def build_file_path(output, api_path, identifier, extension)
           path_parts = api_path.split('/').reject(&:empty?)
-          File.join(output, *path_parts, "#{format}#{extension}")
+          File.join(output, *path_parts, "#{identifier}#{extension}")
         end
 
         def write_file(content, file_path)
