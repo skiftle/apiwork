@@ -11,7 +11,6 @@ module Apiwork
         end
 
         def initialize(collection, schema_class, query, action_data)
-          @collection = collection
           @schema_class = schema_class
           @query = query
           @action_data = action_data
@@ -20,8 +19,8 @@ module Apiwork
         end
 
         def load
-          return { data: @collection, metadata: {} } unless @action_data.index?
-          return { data: @collection, metadata: {} } unless @collection.is_a?(ActiveRecord::Relation)
+          return { data: @data, metadata: {} } unless @action_data.index?
+          return { data: @data, metadata: {} } unless @data.is_a?(ActiveRecord::Relation)
 
           params = @query.slice(:filter, :sort, :page, :include)
 

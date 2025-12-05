@@ -10,7 +10,7 @@ module Apiwork
 
         issue = Issue.new(
           code: error_code.key,
-          detail: resolve_error_detail(error_code.key, detail, i18n),
+          detail: resolve_error_detail(error_code, detail, i18n),
           path: path || default_error_path(error_code),
           meta:
         )
@@ -26,21 +26,11 @@ module Apiwork
         []
       end
 
-      def resolve_error_detail(code_key, detail, i18n_options)
+      def resolve_error_detail(error_code, detail, options)
         return detail if detail
 
-        if api_class.metadata.path
-          api_path = api_class.metadata.path.delete_prefix('/')
-          api_key = :"apiwork.apis.#{api_path}.error_codes.#{code_key}.description"
-          translation = I18n.t(api_key, **i18n_options, default: nil)
-          return translation if translation
-        end
-
-        global_key = :"apiwork.error_codes.#{code_key}.description"
-        translation = I18n.t(global_key, **i18n_options, default: nil)
-        return translation if translation
-
-        code_key.to_s.titleize
+        api_path = api_class.metadata.path&.delete_prefix('/')
+        error_code.description(api_path:, options:)
       end
     end
   end

@@ -51,21 +51,9 @@ module Apiwork
           error_code = ErrorCode.fetch(code)
           hash[code] = {
             status: error_code.status,
-            description: resolve_error_description(code, api_path)
+            description: error_code.description(api_path:)
           }
         end
-      end
-
-      def resolve_error_description(code, api_path)
-        api_key = :"apiwork.apis.#{api_path}.error_codes.#{code}.description"
-        result = I18n.t(api_key, default: nil)
-        return result if result
-
-        global_key = :"apiwork.error_codes.#{code}.description"
-        result = I18n.t(global_key, default: nil)
-        return result if result
-
-        code.to_s.titleize
       end
 
       def serialize_resources

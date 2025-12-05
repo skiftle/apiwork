@@ -7,13 +7,19 @@ module Apiwork
         MAX_RECURSION_DEPTH = 3
 
         def self.build(type_registrar, schema_class, actions)
-          new(type_registrar, schema_class, actions)
+          new(type_registrar, schema_class, actions, run_build: true)
         end
 
-        def initialize(type_registrar, schema_class, actions)
+        def self.for_schema(type_registrar, schema_class)
+          new(type_registrar, schema_class, nil, run_build: false)
+        end
+
+        def initialize(type_registrar, schema_class, actions, run_build: true)
           @type_registrar = type_registrar
           @schema_class = schema_class
           @actions = actions
+
+          return unless run_build
 
           build_enums
           build_actions
@@ -99,17 +105,17 @@ module Apiwork
           schema_class.association_definitions.each do |name, association_definition|
             next unless association_definition.writable_for?(context_symbol)
 
-            association_schema = resolve_association_resource(association_definition)
+            association_resource = resolve_association_resource(association_definition)
             association_payload_type = nil
 
             association_contract = nil
-            if association_schema
-              import_alias = import_association_contract(association_schema, Set.new)
+            if association_resource&.schema
+              import_alias = import_association_contract(association_resource.schema, Set.new)
 
               if import_alias
                 association_payload_type = :"#{import_alias}_nested_payload"
 
-                association_contract = contract_class.find_contract_for_schema(association_schema)
+                association_contract = contract_class.find_contract_for_schema(association_resource.schema)
               end
             end
 
@@ -387,16 +393,16 @@ module Apiwork
               next unless association_definition.filterable?
 
               association_resource = builder.send(:resolve_association_resource, association_definition)
-              next unless association_resource
-              next if visited.include?(association_resource)
+              next unless association_resource&.schema
+              next if visited.include?(association_resource.schema)
 
-              import_alias = builder.send(:import_association_contract, association_resource, visited)
+              import_alias = builder.send(:import_association_contract, association_resource.schema, visited)
 
               association_filter_type = if import_alias
                                           :"#{import_alias}_filter"
                                         else
                                           builder.send(:build_filter_type_for_schema,
-                                                       association_resource,
+                                                       association_resource.schema,
                                                        visited: visited,
                                                        depth: depth + 1)
                                         end
@@ -409,11 +415,8 @@ module Apiwork
         end
 
         def build_filter_type_for_schema(assoc_schema, visited:, depth:)
-          temp_builder = self.class.allocate
-          temp_builder.instance_variable_set(:@type_registrar, type_registrar)
-          temp_builder.instance_variable_set(:@schema_class, assoc_schema)
-          temp_builder.instance_variable_set(:@context, nil)
-          temp_builder.send(:build_filter_type, visited: visited, depth: depth)
+          self.class.for_schema(type_registrar, assoc_schema)
+              .send(:build_filter_type, visited:, depth:)
         end
 
         def build_sort_type(visited: Set.new, depth: 0)
@@ -444,16 +447,16 @@ module Apiwork
               next unless association_definition.sortable?
 
               association_resource = builder.send(:resolve_association_resource, association_definition)
-              next unless association_resource
-              next if visited.include?(association_resource)
+              next unless association_resource&.schema
+              next if visited.include?(association_resource.schema)
 
-              import_alias = builder.send(:import_association_contract, association_resource, visited)
+              import_alias = builder.send(:import_association_contract, association_resource.schema, visited)
 
               association_sort_type = if import_alias
                                         :"#{import_alias}_sort"
                                       else
                                         builder.send(:build_sort_type_for_schema,
-                                                     association_resource,
+                                                     association_resource.schema,
                                                      visited: visited,
                                                      depth: depth + 1)
                                       end
@@ -466,11 +469,8 @@ module Apiwork
         end
 
         def build_sort_type_for_schema(assoc_schema, visited:, depth:)
-          temp_builder = self.class.allocate
-          temp_builder.instance_variable_set(:@type_registrar, type_registrar)
-          temp_builder.instance_variable_set(:@schema_class, assoc_schema)
-          temp_builder.instance_variable_set(:@context, nil)
-          temp_builder.send(:build_sort_type, visited: visited, depth: depth)
+          self.class.for_schema(type_registrar, assoc_schema)
+              .send(:build_sort_type, visited:, depth:)
         end
 
         def build_page_type
@@ -518,21 +518,18 @@ module Apiwork
           contract_class.type(type_name) do
             schema_class_local.association_definitions.each do |name, association_definition|
               association_resource = builder.send(:resolve_association_resource, association_definition)
-              next unless association_resource
+              next unless association_resource&.schema
 
-              is_sti = association_resource.is_a?(Hash) && association_resource[:sti]
-              actual_schema = is_sti ? association_resource[:schema] : association_resource
-
-              if visited.include?(actual_schema)
+              if visited.include?(association_resource.schema)
                 param name, type: :boolean, required: false unless association_definition.always_included?
               else
-                import_alias = builder.send(:import_association_contract, actual_schema, visited)
+                import_alias = builder.send(:import_association_contract, association_resource.schema, visited)
 
                 association_include_type = if import_alias
                                              :"#{import_alias}_include"
                                            else
                                              builder.send(:build_include_type_for_schema,
-                                                          actual_schema,
+                                                          association_resource.schema,
                                                           visited: visited,
                                                           depth: depth + 1)
                                            end
@@ -553,11 +550,8 @@ module Apiwork
         end
 
         def build_include_type_for_schema(assoc_schema, visited:, depth:)
-          temp_builder = self.class.allocate
-          temp_builder.instance_variable_set(:@type_registrar, type_registrar)
-          temp_builder.instance_variable_set(:@schema_class, assoc_schema)
-          temp_builder.instance_variable_set(:@context, nil)
-          temp_builder.send(:build_include_type, visited: visited, depth: depth)
+          self.class.for_schema(type_registrar, assoc_schema)
+              .send(:build_include_type, visited:, depth:)
         end
 
         def build_nested_payload_union
@@ -664,16 +658,14 @@ module Apiwork
         def build_association_type(association_definition, visited: Set.new)
           return build_polymorphic_association_type(association_definition, visited: visited) if association_definition.polymorphic?
 
-          association_schema = resolve_association_resource(association_definition)
-          return nil unless association_schema
+          association_resource = resolve_association_resource(association_definition)
+          return nil unless association_resource
 
-          if association_schema.is_a?(Hash) && association_schema[:sti]
-            return build_sti_association_type(association_definition, association_schema[:schema], visited: visited)
-          end
+          return build_sti_association_type(association_definition, association_resource.schema, visited: visited) if association_resource.sti?
 
-          return nil if visited.include?(association_schema)
+          return nil if visited.include?(association_resource.schema)
 
-          import_alias = import_association_contract(association_schema, visited)
+          import_alias = import_association_contract(association_resource.schema, visited)
           return import_alias if import_alias
 
           nil
@@ -726,14 +718,10 @@ module Apiwork
         def build_sti_association_type(association_definition, schema_class_arg, visited: Set.new)
           union_type_name = :"#{association_definition.name}_sti"
 
-          temp_builder = self.class.allocate
-          temp_builder.instance_variable_set(:@type_registrar, type_registrar)
-          temp_builder.instance_variable_set(:@schema_class, schema_class_arg)
-          temp_builder.instance_variable_set(:@context, nil)
+          sub_builder = self.class.for_schema(type_registrar, schema_class_arg)
 
-          temp_builder.send(:build_sti_union, union_type_name: union_type_name,
-                                              visited: visited) do |_contract, variant_schema, _tag, visit_set|
-            temp_builder.send(:import_association_contract, variant_schema, visit_set)
+          sub_builder.send(:build_sti_union, union_type_name:, visited:) do |_contract, variant_schema, _tag, visit_set|
+            sub_builder.send(:import_association_contract, variant_schema, visit_set)
           end
         end
 
@@ -804,23 +792,17 @@ module Apiwork
         end
 
         def resolve_association_resource(association_definition)
-          return :polymorphic if association_definition.polymorphic?
+          return AssociationResource.polymorphic if association_definition.polymorphic?
 
-          if association_definition.schema_class
-            resolved_schema = if association_definition.schema_class.is_a?(Class)
-                                association_definition.schema_class
-                              else
-                                begin
-                                  association_definition.schema_class.constantize
-                                rescue NameError
-                                  nil
-                                end
-                              end
+          resolved_schema = resolve_schema_from_definition(association_definition)
+          return nil unless resolved_schema
 
-            return { sti: true, schema: resolved_schema } if resolved_schema.respond_to?(:sti_base?) && resolved_schema.sti_base?
+          sti = resolved_schema.respond_to?(:sti_base?) && resolved_schema.sti_base?
+          AssociationResource.for(resolved_schema, sti:)
+        end
 
-            return resolved_schema
-          end
+        def resolve_schema_from_definition(association_definition)
+          return resolve_schema_class(association_definition.schema_class) if association_definition.schema_class
 
           model_class = association_definition.model_class
           return nil unless model_class
@@ -828,12 +810,15 @@ module Apiwork
           reflection = model_class.reflect_on_association(association_definition.name)
           return nil unless reflection
 
-          resolved_schema = Schema::Base.resolve_association_schema(reflection, schema_class)
-          return nil unless resolved_schema
+          Schema::Base.resolve_association_schema(reflection, schema_class)
+        end
 
-          return { sti: true, schema: resolved_schema } if resolved_schema.respond_to?(:sti_base?) && resolved_schema.sti_base?
+        def resolve_schema_class(schema_class_ref)
+          return schema_class_ref if schema_class_ref.is_a?(Class)
 
-          resolved_schema
+          schema_class_ref.constantize
+        rescue NameError
+          nil
         end
 
         def import_association_contract(association_schema, visited)
@@ -861,16 +846,13 @@ module Apiwork
             api_class&.ensure_contract_built!(association_contract)
 
             association_type_registrar = ContractTypeRegistrar.new(association_contract)
-            temp_builder = self.class.allocate
-            temp_builder.instance_variable_set(:@type_registrar, association_type_registrar)
-            temp_builder.instance_variable_set(:@schema_class, association_schema)
-            temp_builder.instance_variable_set(:@context, nil)
+            sub_builder = self.class.for_schema(association_type_registrar, association_schema)
 
-            temp_builder.send(:build_filter_type, visited: Set.new, depth: 0)
-            temp_builder.send(:build_sort_type, visited: Set.new, depth: 0)
-            temp_builder.send(:build_include_type, visited: Set.new, depth: 0)
-            temp_builder.send(:build_nested_payload_union)
-            temp_builder.send(:build_response_type, visited: Set.new)
+            sub_builder.send(:build_filter_type, visited: Set.new, depth: 0)
+            sub_builder.send(:build_sort_type, visited: Set.new, depth: 0)
+            sub_builder.send(:build_include_type, visited: Set.new, depth: 0)
+            sub_builder.send(:build_nested_payload_union)
+            sub_builder.send(:build_response_type, visited: Set.new)
           end
 
           alias_name

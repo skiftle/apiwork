@@ -4,6 +4,103 @@ module Apiwork
   module Adapter
     class Apiwork < Base
       class TypeSystemBuilder
+        FILTER_DEFINITIONS = {
+          string_filter: {
+            params: [
+              { name: :eq, type: :string },
+              { name: :in, type: :array, of: :string },
+              { name: :contains, type: :string },
+              { name: :starts_with, type: :string },
+              { name: :ends_with, type: :string }
+            ]
+          },
+          integer_filter_between: {
+            params: [
+              { name: :from, type: :integer },
+              { name: :to, type: :integer }
+            ]
+          },
+          integer_filter: {
+            depends_on: :integer_filter_between,
+            params: [
+              { name: :eq, type: :integer },
+              { name: :gt, type: :integer },
+              { name: :gte, type: :integer },
+              { name: :lt, type: :integer },
+              { name: :lte, type: :integer },
+              { name: :in, type: :array, of: :integer },
+              { name: :between, type: :integer_filter_between }
+            ]
+          },
+          decimal_filter_between: {
+            params: [
+              { name: :from, type: :decimal },
+              { name: :to, type: :decimal }
+            ]
+          },
+          decimal_filter: {
+            depends_on: :decimal_filter_between,
+            params: [
+              { name: :eq, type: :decimal },
+              { name: :gt, type: :decimal },
+              { name: :gte, type: :decimal },
+              { name: :lt, type: :decimal },
+              { name: :lte, type: :decimal },
+              { name: :in, type: :array, of: :decimal },
+              { name: :between, type: :decimal_filter_between }
+            ]
+          },
+          boolean_filter: {
+            params: [
+              { name: :eq, type: :boolean }
+            ]
+          },
+          date_filter_between: {
+            params: [
+              { name: :from, type: :date },
+              { name: :to, type: :date }
+            ]
+          },
+          date_filter: {
+            depends_on: :date_filter_between,
+            params: [
+              { name: :eq, type: :date },
+              { name: :gt, type: :date },
+              { name: :gte, type: :date },
+              { name: :lt, type: :date },
+              { name: :lte, type: :date },
+              { name: :between, type: :date_filter_between },
+              { name: :in, type: :array, of: :date }
+            ]
+          },
+          datetime_filter_between: {
+            params: [
+              { name: :from, type: :datetime },
+              { name: :to, type: :datetime }
+            ]
+          },
+          datetime_filter: {
+            depends_on: :datetime_filter_between,
+            params: [
+              { name: :eq, type: :datetime },
+              { name: :gt, type: :datetime },
+              { name: :gte, type: :datetime },
+              { name: :lt, type: :datetime },
+              { name: :lte, type: :datetime },
+              { name: :between, type: :datetime_filter_between },
+              { name: :in, type: :array, of: :datetime }
+            ]
+          },
+          uuid_filter: {
+            params: [
+              { name: :eq, type: :uuid },
+              { name: :in, type: :array, of: :uuid }
+            ]
+          }
+        }.freeze
+
+        NULLABLE_EXTENSION = { name: :null, type: :boolean }.freeze
+
         def self.build(type_registrar, schema_data)
           new(type_registrar, schema_data)
         end
@@ -70,22 +167,14 @@ module Apiwork
 
         def determine_filter_type(attr_type, nullable: false)
           base_type = case attr_type
-                      when :string
-                        :string_filter
-                      when :date
-                        :date_filter
-                      when :datetime
-                        :datetime_filter
-                      when :integer
-                        :integer_filter
-                      when :decimal, :float
-                        :decimal_filter
-                      when :uuid
-                        :uuid_filter
-                      when :boolean
-                        :boolean_filter
-                      else
-                        :string_filter
+                      when :string then :string_filter
+                      when :date then :date_filter
+                      when :datetime then :datetime_filter
+                      when :integer then :integer_filter
+                      when :decimal, :float then :decimal_filter
+                      when :uuid then :uuid_filter
+                      when :boolean then :boolean_filter
+                      else :string_filter
                       end
 
           nullable ? :"nullable_#{base_type}" : base_type
@@ -96,226 +185,25 @@ module Apiwork
         end
 
         def register_filter_type(type_name)
-          case type_name
-          when :string_filter
-            register_string_filter
-          when :integer_filter
-            register_integer_filter_between
-            register_integer_filter
-          when :decimal_filter
-            register_decimal_filter_between
-            register_decimal_filter
-          when :boolean_filter
-            register_boolean_filter
-          when :date_filter
-            register_date_filter_between
-            register_date_filter
-          when :datetime_filter
-            register_datetime_filter_between
-            register_datetime_filter
-          when :uuid_filter
-            register_uuid_filter
-          when :nullable_string_filter
-            register_nullable_string_filter
-          when :nullable_integer_filter
-            register_integer_filter_between
-            register_nullable_integer_filter
-          when :nullable_decimal_filter
-            register_decimal_filter_between
-            register_nullable_decimal_filter
-          when :nullable_boolean_filter
-            register_nullable_boolean_filter
-          when :nullable_date_filter
-            register_date_filter_between
-            register_nullable_date_filter
-          when :nullable_datetime_filter
-            register_datetime_filter_between
-            register_nullable_datetime_filter
-          when :nullable_uuid_filter
-            register_nullable_uuid_filter
-          else
-            raise ConfigurationError, "Unknown global filter type: #{type_name.inspect}"
-          end
-        end
+          base_type_name = type_name.to_s.delete_prefix('nullable_').to_sym
+          nullable = type_name.to_s.start_with?('nullable_')
 
-        def register_string_filter
-          type_registrar.type :string_filter do
-            param :eq, type: :string, required: false
-            param :in, type: :array, of: :string, required: false
-            param :contains, type: :string, required: false
-            param :starts_with, type: :string, required: false
-            param :ends_with, type: :string, required: false
-          end
-        end
+          definition = FILTER_DEFINITIONS[base_type_name]
+          raise ConfigurationError, "Unknown global filter type: #{type_name.inspect}" unless definition
 
-        def register_integer_filter_between
-          type_registrar.type :integer_filter_between do
-            param :from, type: :integer, required: false
-            param :to, type: :integer, required: false
-          end
-        end
+          register_filter_type(definition[:depends_on]) if definition[:depends_on]
 
-        def register_integer_filter
-          type_registrar.type :integer_filter do
-            param :eq, type: :integer, required: false
-            param :gt, type: :integer, required: false
-            param :gte, type: :integer, required: false
-            param :lt, type: :integer, required: false
-            param :lte, type: :integer, required: false
-            param :in, type: :array, of: :integer, required: false
-            param :between, type: :integer_filter_between, required: false
-          end
-        end
+          params = definition[:params].dup
+          params << NULLABLE_EXTENSION if nullable
 
-        def register_decimal_filter_between
-          type_registrar.type :decimal_filter_between do
-            param :from, type: :decimal, required: false
-            param :to, type: :decimal, required: false
-          end
-        end
-
-        def register_decimal_filter
-          type_registrar.type :decimal_filter do
-            param :eq, type: :decimal, required: false
-            param :gt, type: :decimal, required: false
-            param :gte, type: :decimal, required: false
-            param :lt, type: :decimal, required: false
-            param :lte, type: :decimal, required: false
-            param :in, type: :array, of: :decimal, required: false
-            param :between, type: :decimal_filter_between, required: false
-          end
-        end
-
-        def register_boolean_filter
-          type_registrar.type :boolean_filter do
-            param :eq, type: :boolean, required: false
-          end
-        end
-
-        def register_date_filter_between
-          type_registrar.type :date_filter_between do
-            param :from, type: :date, required: false
-            param :to, type: :date, required: false
-          end
-        end
-
-        def register_date_filter
-          type_registrar.type :date_filter do
-            param :eq, type: :date, required: false
-            param :gt, type: :date, required: false
-            param :gte, type: :date, required: false
-            param :lt, type: :date, required: false
-            param :lte, type: :date, required: false
-            param :between, type: :date_filter_between, required: false
-            param :in, type: :array, of: :date, required: false
-          end
-        end
-
-        def register_datetime_filter_between
-          type_registrar.type :datetime_filter_between do
-            param :from, type: :datetime, required: false
-            param :to, type: :datetime, required: false
-          end
-        end
-
-        def register_datetime_filter
-          type_registrar.type :datetime_filter do
-            param :eq, type: :datetime, required: false
-            param :gt, type: :datetime, required: false
-            param :gte, type: :datetime, required: false
-            param :lt, type: :datetime, required: false
-            param :lte, type: :datetime, required: false
-            param :between, type: :datetime_filter_between, required: false
-            param :in, type: :array, of: :datetime, required: false
-          end
-        end
-
-        def register_uuid_filter
-          type_registrar.type :uuid_filter do
-            param :eq, type: :uuid, required: false
-            param :in, type: :array, of: :uuid, required: false
-          end
-        end
-
-        def register_nullable_string_filter
-          type_registrar.type :nullable_string_filter do
-            param :eq, type: :string, required: false
-            param :in, type: :array, of: :string, required: false
-            param :contains, type: :string, required: false
-            param :starts_with, type: :string, required: false
-            param :ends_with, type: :string, required: false
-            param :null, type: :boolean, required: false
-          end
-        end
-
-        def register_nullable_integer_filter
-          register_integer_filter_between
-          type_registrar.type :nullable_integer_filter do
-            param :eq, type: :integer, required: false
-            param :gt, type: :integer, required: false
-            param :gte, type: :integer, required: false
-            param :lt, type: :integer, required: false
-            param :lte, type: :integer, required: false
-            param :in, type: :array, of: :integer, required: false
-            param :between, type: :integer_filter_between, required: false
-            param :null, type: :boolean, required: false
-          end
-        end
-
-        def register_nullable_decimal_filter
-          register_decimal_filter_between
-          type_registrar.type :nullable_decimal_filter do
-            param :eq, type: :decimal, required: false
-            param :gt, type: :decimal, required: false
-            param :gte, type: :decimal, required: false
-            param :lt, type: :decimal, required: false
-            param :lte, type: :decimal, required: false
-            param :in, type: :array, of: :decimal, required: false
-            param :between, type: :decimal_filter_between, required: false
-            param :null, type: :boolean, required: false
-          end
-        end
-
-        def register_nullable_date_filter
-          register_date_filter_between
-          type_registrar.type :nullable_date_filter do
-            param :eq, type: :date, required: false
-            param :gt, type: :date, required: false
-            param :gte, type: :date, required: false
-            param :lt, type: :date, required: false
-            param :lte, type: :date, required: false
-            param :between, type: :date_filter_between, required: false
-            param :in, type: :array, of: :date, required: false
-            param :null, type: :boolean, required: false
-          end
-        end
-
-        def register_nullable_datetime_filter
-          register_datetime_filter_between
-          type_registrar.type :nullable_datetime_filter do
-            param :eq, type: :datetime, required: false
-            param :gt, type: :datetime, required: false
-            param :gte, type: :datetime, required: false
-            param :lt, type: :datetime, required: false
-            param :lte, type: :datetime, required: false
-            param :between, type: :datetime_filter_between, required: false
-            param :in, type: :array, of: :datetime, required: false
-            param :null, type: :boolean, required: false
-          end
-        end
-
-        def register_nullable_uuid_filter
-          type_registrar.type :nullable_uuid_filter do
-            param :eq, type: :uuid, required: false
-            param :in, type: :array, of: :uuid, required: false
-            param :null, type: :boolean, required: false
-          end
-        end
-
-        def register_nullable_boolean_filter
-          type_registrar.type :nullable_boolean_filter do
-            param :eq, type: :boolean, required: false
-            param :null, type: :boolean, required: false
+          type_registrar.type(type_name) do
+            params.each do |param_def|
+              if param_def[:of]
+                param param_def[:name], type: param_def[:type], of: param_def[:of], required: false
+              else
+                param param_def[:name], type: param_def[:type], required: false
+              end
+            end
           end
         end
       end

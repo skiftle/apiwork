@@ -50,7 +50,7 @@ module Apiwork
 
         def with_options(options = {}, &block)
           old_options = @current_options
-          @current_options = (@current_options || {}).merge(options)
+          @current_options = merged_options(options)
 
           instance_eval(&block)
 
@@ -58,6 +58,10 @@ module Apiwork
         end
 
         private
+
+        def merged_options(options = {})
+          (@current_options || {}).merge(options)
+        end
 
         def apply_resource_metadata(name)
           resource = @metadata.find_resource(name)
@@ -105,12 +109,12 @@ module Apiwork
         end
 
         def capture_resource_metadata(name, singular:, options:)
-          merged_options = (@current_options || {}).merge(options)
+          merged = merged_options(options)
 
           parent = @resource_stack.last
 
-          contract_path = merged_options.delete(:contract)
-          controller_option = merged_options.delete(:controller)
+          contract_path = merged.delete(:contract)
+          controller_option = merged.delete(:controller)
 
           contract = if contract_path
                        contract_path_to_class_name(contract_path)
@@ -124,7 +128,7 @@ module Apiwork
             contract: contract,
             controller: controller_option,
             parent: parent,
-            **merged_options
+            **merged
           )
         end
       end
