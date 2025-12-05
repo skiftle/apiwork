@@ -74,6 +74,49 @@ action :show do
 end
 ```
 
+### meta
+
+Define the structure of response metadata:
+
+```ruby
+action :index do
+  response do
+    meta do
+      param :generated_at, type: :datetime
+      param :api_version, type: :string
+    end
+  end
+end
+```
+
+This is shorthand for `param :meta, type: :object do ... end`.
+
+In your controller, pass the values:
+
+```ruby
+def index
+  posts = Post.all
+  respond_with posts, meta: {
+    generated_at: Time.current,
+    api_version: 'v1'
+  }
+end
+```
+
+Response:
+
+```json
+{
+  "posts": [...],
+  "meta": {
+    "generated_at": "2024-01-15T10:30:00Z",
+    "api_version": "v1"
+  }
+}
+```
+
+The `meta` block documents the shape. The controller provides the values.
+
 ### replace
 
 By default, contract requests and responses are merged with schema definitions. Use `replace: true` to completely override:

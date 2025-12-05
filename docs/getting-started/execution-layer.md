@@ -166,7 +166,7 @@ Add custom metadata to any response:
 def index
   posts = Post.all
   respond_with posts, meta: {
-    generated_at: Time.current.iso8601,
+    generated_at: Time.current,
     api_version: 'v1'
   }
 end
@@ -185,7 +185,7 @@ Response:
 }
 ```
 
-Works with both collections and single records.
+To document the meta structure in your contract, use the `meta` block. See [Actions - meta](../core/contracts/actions.md#meta).
 
 ## Per-Schema Configuration
 
