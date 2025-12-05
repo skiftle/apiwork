@@ -37,7 +37,9 @@ Specs are served at `/.spec/{format}`:
 ## Custom Path
 
 ```ruby
-spec :openapi, path: '/openapi.json'
+spec :openapi do
+  path '/openapi.json'
+end
 ```
 
 Now served at `GET /api/v1/openapi.json`.
@@ -47,7 +49,9 @@ Now served at `GET /api/v1/openapi.json`.
 Transform JSON keys in the output:
 
 ```ruby
-spec :openapi, key_format: :camel
+spec :openapi do
+  key_format :camel
+end
 ```
 
 Options:

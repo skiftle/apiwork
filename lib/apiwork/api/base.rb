@@ -16,7 +16,7 @@ module Apiwork
 
         def mount(path)
           @mount_path = path
-          @specs = {}
+          @specs = Set.new
           @spec_configs = {}
           @type_system = TypeSystem.new
           @built_contracts = Set.new
@@ -71,7 +71,7 @@ module Apiwork
 
         public
 
-        def spec(type, path: nil, &block)
+        def spec(type, &block)
           unless Spec::Registry.registered?(type)
             available = Spec::Registry.all.join(', ')
             raise ConfigurationError,
@@ -79,18 +79,22 @@ module Apiwork
                   "Available: #{available}"
           end
 
-          @specs ||= {}
+          @specs ||= Set.new
           @spec_configs ||= {}
 
-          path ||= "/.spec/#{type}"
-          @specs[type] = path
+          @specs.add(type)
+          @spec_configs[type] ||= {}
+          @spec_configs[type][:path] ||= "/.spec/#{type}"
 
           return unless block
 
           spec_class = Spec::Registry.find(type)
-          @spec_configs[type] ||= {}
           builder = Configuration::Builder.new(spec_class, @spec_configs[type])
           builder.instance_eval(&block)
+        end
+
+        def spec_path(type)
+          @spec_configs&.dig(type, :path) || "/.spec/#{type}"
         end
 
         def spec_config(type)

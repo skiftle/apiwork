@@ -111,7 +111,9 @@ Generates endpoints at `/.spec/openapi`, `/.spec/zod`, `/.spec/typescript`.
 Custom paths:
 
 ```ruby
-spec :openapi, path: '/openapi.json'
+spec :openapi do
+  path '/openapi.json'
+end
 ```
 
 See [Spec Generation](../spec-generation/introduction.md) for configuration options.

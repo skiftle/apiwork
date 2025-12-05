@@ -16,8 +16,8 @@ module Apiwork
 
               if api_class.specs?
                 scope path: api_class.mount_path do
-                  api_class.specs.each do |spec_type, spec_path|
-                    get spec_path, to: 'apiwork/specs#show', defaults: {
+                  api_class.specs.each do |spec_type|
+                    get api_class.spec_path(spec_type), to: 'apiwork/specs#show', defaults: {
                       spec_type: spec_type,
                       api_path: api_class.metadata.path
                     }

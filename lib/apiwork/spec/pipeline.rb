@@ -68,7 +68,7 @@ module Apiwork
       def generate_file(api_class:, format:, output:, options:)
         api_path = api_class.metadata.path
 
-        unless api_class.specs&.key?(format)
+        unless api_class.specs&.include?(format)
           Rails.logger.debug "  ⊘ Skipping #{api_path} → #{format} (not configured)"
           return 0
         end

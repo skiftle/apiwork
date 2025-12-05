@@ -30,12 +30,20 @@ Each spec declaration creates an endpoint:
 
 ## Custom Paths
 
-Override the default path:
+Override the default path using a block:
 
 ```ruby
-spec :openapi, path: '/openapi.json'
-spec :typescript, path: '/types.ts'
-spec :zod, path: '/schemas.ts'
+spec :openapi do
+  path '/openapi.json'
+end
+
+spec :typescript do
+  path '/types.ts'
+end
+
+spec :zod do
+  path '/schemas.ts'
+end
 ```
 
 Now served at:
