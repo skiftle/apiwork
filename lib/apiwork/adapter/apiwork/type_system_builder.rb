@@ -165,8 +165,8 @@ module Apiwork
           filter_types_to_register.each { |type| register_filter_type(type) }
         end
 
-        def determine_filter_type(attr_type, nullable: false)
-          base_type = case attr_type
+        def determine_filter_type(attribute_type, nullable: false)
+          base_type = case attribute_type
                       when :string then :string_filter
                       when :date then :date_filter
                       when :datetime then :datetime_filter

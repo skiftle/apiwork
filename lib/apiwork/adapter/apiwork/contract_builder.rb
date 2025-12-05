@@ -296,9 +296,9 @@ module Apiwork
         end
 
         def register_resource_type(type_name)
-          assoc_type_map = {}
+          association_type_map = {}
           schema_class.association_definitions.each do |name, association_definition|
-            assoc_type_map[name] = build_association_type(association_definition)
+            association_type_map[name] = build_association_type(association_definition)
           end
 
           build_enums
@@ -320,7 +320,7 @@ module Apiwork
             end
 
             schema_class_local.association_definitions.each do |name, association_definition|
-              assoc_type = assoc_type_map[name]
+              association_type = association_type_map[name]
 
               base_options = {
                 optional: !association_definition.always_included?,
@@ -332,10 +332,10 @@ module Apiwork
               }
 
               if association_definition.singular?
-                param name, type: assoc_type || :object, **base_options
+                param name, type: association_type || :object, **base_options
               elsif association_definition.collection?
-                if assoc_type
-                  param name, type: :array, of: assoc_type, **base_options
+                if association_type
+                  param name, type: :array, of: association_type, **base_options
                 else
                   param name, type: :array, **base_options
                 end
@@ -414,8 +414,8 @@ module Apiwork
           type_name
         end
 
-        def build_filter_type_for_schema(assoc_schema, visited:, depth:)
-          self.class.for_schema(type_registrar, assoc_schema)
+        def build_filter_type_for_schema(association_schema, visited:, depth:)
+          self.class.for_schema(type_registrar, association_schema)
               .send(:build_filter_type, visited:, depth:)
         end
 
@@ -468,8 +468,8 @@ module Apiwork
           type_name
         end
 
-        def build_sort_type_for_schema(assoc_schema, visited:, depth:)
-          self.class.for_schema(type_registrar, assoc_schema)
+        def build_sort_type_for_schema(association_schema, visited:, depth:)
+          self.class.for_schema(type_registrar, association_schema)
               .send(:build_sort_type, visited:, depth:)
         end
 
@@ -549,8 +549,8 @@ module Apiwork
           type_name
         end
 
-        def build_include_type_for_schema(assoc_schema, visited:, depth:)
-          self.class.for_schema(type_registrar, assoc_schema)
+        def build_include_type_for_schema(association_schema, visited:, depth:)
+          self.class.for_schema(type_registrar, association_schema)
               .send(:build_include_type, visited:, depth:)
         end
 
@@ -617,10 +617,10 @@ module Apiwork
               param discriminator_name, type: :literal, value: variant_tag
             end
 
-            assoc_type_map = {}
+            association_type_map = {}
             schema_class_local.association_definitions.each do |name, association_definition|
               result = builder.send(:build_association_type, association_definition, visited: visited)
-              assoc_type_map[name] = result
+              association_type_map[name] = result
             end
 
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
@@ -636,14 +636,14 @@ module Apiwork
             end
 
             schema_class_local.association_definitions.each do |name, association_definition|
-              assoc_type = assoc_type_map[name]
+              association_type = association_type_map[name]
               is_optional = !association_definition.always_included?
 
-              if assoc_type
+              if association_type
                 if association_definition.singular?
-                  param name, type: assoc_type, optional: is_optional, nullable: association_definition.nullable?
+                  param name, type: association_type, optional: is_optional, nullable: association_definition.nullable?
                 elsif association_definition.collection?
-                  param name, type: :array, of: assoc_type, optional: is_optional,
+                  param name, type: :array, of: association_type, optional: is_optional,
                               nullable: association_definition.nullable?
                 end
               elsif association_definition.singular?
@@ -735,8 +735,8 @@ module Apiwork
           end
         end
 
-        def determine_filter_type(attr_type, nullable: false)
-          base_type = case attr_type
+        def determine_filter_type(attribute_type, nullable: false)
+          base_type = case attribute_type
                       when :string
                         :string_filter
                       when :date

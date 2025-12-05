@@ -126,8 +126,8 @@ module Apiwork
             all_joins = {}
 
             if regular_attrs.present?
-              attr_conditions, joins = build_where_conditions(regular_attrs, schema_class.model_class)
-              conditions << attr_conditions.reduce(:and) if attr_conditions.any?
+              attribute_conditions, joins = build_where_conditions(regular_attrs, schema_class.model_class)
+              conditions << attribute_conditions.reduce(:and) if attribute_conditions.any?
               all_joins = all_joins.deep_merge(joins)
             end
 
@@ -281,11 +281,11 @@ module Apiwork
 
           def build_join_conditions(key, value, association)
             reflection = schema_class.model_class.reflect_on_association(key)
-            assoc_resource = association.schema_class || ::Apiwork::Schema::Base.resolve_association_schema(reflection, schema)
+            association_resource = association.schema_class || ::Apiwork::Schema::Base.resolve_association_schema(reflection, schema)
 
-            assoc_resource = assoc_resource.constantize if assoc_resource.is_a?(String)
+            association_resource = association_resource.constantize if association_resource.is_a?(String)
 
-            unless assoc_resource
+            unless association_resource
               @issues << Issue.new(
                 code: :association_resource_not_found,
                 detail: "Cannot find resource for association #{key}",
@@ -306,7 +306,7 @@ module Apiwork
               return [[], {}]
             end
 
-            nested_query = Filter.new(association_reflection.klass.all, assoc_resource, @issues)
+            nested_query = Filter.new(association_reflection.klass.all, association_resource, @issues)
             nested_conditions, nested_joins = nested_query.send(:build_where_conditions, value, association_reflection.klass)
 
             [nested_conditions, { key => (nested_joins.any? ? nested_joins : {}) }]

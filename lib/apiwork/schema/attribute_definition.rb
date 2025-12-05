@@ -178,17 +178,17 @@ module Apiwork
       def apply_transformers(value, transformers)
         return value if transformers.nil?
 
-        Array(transformers).reduce(value) do |val, transformer|
+        Array(transformers).reduce(value) do |current_value, transformer|
           if transformer.respond_to?(:call)
-            transformer.call(val)
+            transformer.call(current_value)
           else
             case transformer
             when :nil_to_empty
-              val.nil? ? '' : val
+              current_value.nil? ? '' : current_value
             when :blank_to_nil
-              val.presence
+              current_value.presence
             else
-              val
+              current_value
             end
           end
         end
