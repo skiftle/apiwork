@@ -7,10 +7,12 @@ module Apiwork
   #
   # Supports query parameters:
   # - key_format: Transform key casing (underscore, camel, keep)
+  # - locale: Generate spec in specific locale (defaults to I18n.locale)
   #
   # @example GET /api/v1/.spec/openapi
   # @example GET /api/v1/.spec/openapi?key_format=underscore
   # @example GET /api/v1/.spec/zod?key_format=camel
+  # @example GET /api/v1/.spec/openapi?locale=sv
   class SpecsController < ActionController::API
     # GET /.spec/:type
     #
@@ -23,6 +25,7 @@ module Apiwork
       merged_options = { key_format: api.key_format }
                        .merge(spec_config)
                        .merge(key_format: params[:key_format]&.to_sym)
+                       .merge(locale: params[:locale]&.to_sym)
                        .compact
 
       spec = ::Apiwork::Spec::Pipeline.generate(

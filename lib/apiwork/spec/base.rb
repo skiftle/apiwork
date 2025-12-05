@@ -6,6 +6,8 @@ module Apiwork
       include Registrable
       include Configurable
 
+      option :locale, type: :symbol, default: nil
+
       attr_reader :data,
                   :options,
                   :path
@@ -28,13 +30,16 @@ module Apiwork
       def initialize(path, **options)
         @path = path
         @explicit_options = options
-        load_data
+        validate_locale!
+        with_locale { load_data }
         @options = self.class.default_options.merge(@api_options).merge(@explicit_options)
         validate_options!
       end
 
       def validate_options!
         @options.each do |name, value|
+          next if name == :locale # Already validated in validate_locale!
+
           option = self.class.options[name]
           option&.validate!(value)
         end
@@ -151,6 +156,20 @@ module Apiwork
       end
 
       private
+
+      def validate_locale!
+        locale = @explicit_options[:locale]
+        return unless locale
+        return if I18n.available_locales.include?(locale)
+
+        raise ConfigurationError,
+              "locale must be one of #{I18n.available_locales.inspect}, got #{locale.inspect}"
+      end
+
+      def with_locale(&block)
+        locale = @explicit_options[:locale]
+        locale ? I18n.with_locale(locale, &block) : yield
+      end
 
       def iterate_resources(resources_hash, parent_path = nil, &block)
         resources_hash.each do |resource_name, resource_data|
