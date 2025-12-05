@@ -37,7 +37,7 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
         expect(result[:issues]).to be_empty
       end
 
-      it 'accepts Time object' do
+      it 'preserves Time object type and value' do
         time = Time.zone.parse('2024-01-15T10:30:00Z')
         result = definition.validate({ archived_at: time })
 
@@ -152,7 +152,7 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
     end
 
     context 'with invalid date values' do
-      it 'rejects string' do
+      it 'rejects invalid date string (Feb 30)' do
         result = definition.validate({ birth_date: '2024-02-30' })
 
         expect(result[:issues]).not_to be_empty
@@ -162,14 +162,14 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
         expect(result[:issues].first.meta[:actual]).to eq(:string)
       end
 
-      it 'rejects string' do
+      it 'rejects non-date string' do
         result = definition.validate({ birth_date: 'not-a-date' })
 
         expect(result[:issues]).not_to be_empty
         expect(result[:issues].first.code).to eq(:invalid_type)
       end
 
-      it 'rejects string' do
+      it 'rejects invalid month string' do
         result = definition.validate({ birth_date: '2024-13-01' })
 
         expect(result[:issues]).not_to be_empty

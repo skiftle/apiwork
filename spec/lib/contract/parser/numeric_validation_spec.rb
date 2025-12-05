@@ -37,25 +37,32 @@ RSpec.describe 'Numeric min/max validation' do
   end
 
   describe 'float validation' do
-    it 'validates min constraint' do
+    it 'rejects value below min' do
       result = definition.validate({ rating: -0.1 })
       expect(result[:issues]).not_to be_empty
     end
 
-    it 'validates max constraint' do
+    it 'rejects value above max' do
       result = definition.validate({ rating: 5.1 })
       expect(result[:issues]).not_to be_empty
     end
   end
 
   describe 'decimal validation' do
-    it 'validates min constraint' do
+    it 'rejects value below min' do
       result = definition.validate({ price: BigDecimal('0.00') })
       expect(result[:issues]).not_to be_empty
     end
 
     it 'accepts valid price' do
       result = definition.validate({ price: BigDecimal('19.99') })
+      expect(result[:issues]).to be_empty
+    end
+  end
+
+  describe 'optional fields' do
+    it 'allows omitting optional fields' do
+      result = definition.validate({})
       expect(result[:issues]).to be_empty
     end
   end
