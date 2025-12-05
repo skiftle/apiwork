@@ -49,8 +49,8 @@ module Apiwork
           return nil unless param_definition[:type_contract_class]
 
           action_name = definition.action_name || :create
-          nested_request_def = param_definition[:type_contract_class].action_definition(action_name)&.request_definition
-          nested_definition = nested_request_def&.body_definition
+          nested_request_definition = param_definition[:type_contract_class].action_definition(action_name)&.request_definition
+          nested_definition = nested_request_definition&.body_definition
 
           return nil unless nested_definition
 

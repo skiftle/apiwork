@@ -369,8 +369,8 @@ module Apiwork
 
           def build_date_where_clause(key, value, target_klass)
             column = target_klass.arel_table[key]
-            column_info = target_klass.columns_hash[key.to_s]
-            allow_nil = column_info&.null != false
+            column_metadata = target_klass.columns_hash[key.to_s]
+            allow_nil = column_metadata&.null != false
 
             if value.is_a?(String) || value.nil?
               return handle_date_nil_value(column, key, allow_nil) if value.blank?
@@ -457,11 +457,11 @@ module Apiwork
                 column.lteq(number)
               when :between
                 if compare.is_a?(Hash)
-                  from_num = parse_numeric(compare[:from] || compare['from'], key)
-                  to_num = parse_numeric(compare[:to] || compare['to'], key)
-                  next unless from_num && to_num
+                  from_number = parse_numeric(compare[:from] || compare['from'], key)
+                  to_number = parse_numeric(compare[:to] || compare['to'], key)
+                  next unless from_number && to_number
 
-                  column.between(from_num..to_num)
+                  column.between(from_number..to_number)
                 else
                   number = parse_numeric(compare, key)
                   next unless number

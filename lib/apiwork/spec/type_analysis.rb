@@ -88,8 +88,8 @@ module Apiwork
           referenced_types.uniq
         end
 
-        def circular_reference?(type_name, type_def, filter: :custom_only)
-          refs = type_references(type_def, filter: filter)
+        def circular_reference?(type_name, type_definition, filter: :custom_only)
+          refs = type_references(type_definition, filter: filter)
           refs.include?(type_name)
         end
 
@@ -103,10 +103,10 @@ module Apiwork
 
         private
 
-        def add_type_if_matches(collection, type_ref, filter)
-          return unless type_ref
+        def add_type_if_matches(collection, type_reference, filter)
+          return unless type_reference
 
-          type_sym = type_ref.is_a?(String) ? type_ref.to_sym : type_ref
+          type_sym = type_reference.is_a?(String) ? type_reference.to_sym : type_reference
           return unless type_sym.is_a?(Symbol)
 
           case filter

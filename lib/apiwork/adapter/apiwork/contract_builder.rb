@@ -181,19 +181,19 @@ module Apiwork
         end
 
         def build_actions
-          actions.each do |action_name, action_info|
-            build_action_definition(action_name, action_info)
+          actions.each do |action_name, action_metadata|
+            build_action_definition(action_name, action_metadata)
           end
         end
 
-        def build_action_definition(action_name, action_info)
+        def build_action_definition(action_name, action_metadata)
           action_definition = type_registrar.define_action(action_name)
 
-          build_request_for_action(action_definition, action_name, action_info) unless action_definition.resets_request?
-          build_response_for_action(action_definition, action_name, action_info) unless action_definition.resets_response?
+          build_request_for_action(action_definition, action_name, action_metadata) unless action_definition.resets_request?
+          build_response_for_action(action_definition, action_name, action_metadata) unless action_definition.resets_response?
         end
 
-        def build_request_for_action(action_definition, action_name, action_info)
+        def build_request_for_action(action_definition, action_name, action_metadata)
           builder = self
 
           case action_name.to_sym
@@ -216,11 +216,11 @@ module Apiwork
           when :destroy
             nil
           else
-            add_include_query_param_if_needed(action_definition) if action_info[:type] == :member
+            add_include_query_param_if_needed(action_definition) if action_metadata[:type] == :member
           end
         end
 
-        def build_response_for_action(action_definition, action_name, action_info)
+        def build_response_for_action(action_definition, action_name, action_metadata)
           builder = self
 
           case action_name.to_sym
@@ -235,11 +235,11 @@ module Apiwork
           when :destroy
             action_definition.response {}
           else
-            if action_info[:type] == :collection
+            if action_metadata[:type] == :collection
               action_definition.response do
                 body { builder.send(:collection_response, self) }
               end
-            elsif action_info[:type] == :member
+            elsif action_metadata[:type] == :member
               action_definition.response do
                 body { builder.send(:single_response, self) }
               end

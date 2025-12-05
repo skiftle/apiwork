@@ -16,11 +16,11 @@ module Apiwork
         result[:deprecated] = @action_definition.deprecated
         result[:operation_id] = @action_definition.operation_id
 
-        request_def = @action_definition.request_definition
-        result[:request] = serialize_request(request_def) if request_def
+        request_definition = @action_definition.request_definition
+        result[:request] = serialize_request(request_definition) if request_definition
 
-        response_def = @action_definition.response_definition
-        result[:response] = serialize_response(response_def) if response_def
+        response_definition = @action_definition.response_definition
+        result[:response] = serialize_response(response_definition) if response_definition
 
         result[:raises] = raises
 
@@ -52,23 +52,23 @@ module Apiwork
         api_class.metadata.i18n_lookup(:contracts, contract_name, :actions, action_name, field)
       end
 
-      def serialize_request(request_def)
+      def serialize_request(request_definition)
         result = {}
 
-        query_def = request_def.query_definition
-        result[:query] = DefinitionSerializer.new(query_def).serialize if query_def
+        query_definition = request_definition.query_definition
+        result[:query] = DefinitionSerializer.new(query_definition).serialize if query_definition
 
-        body_def = request_def.body_definition
-        result[:body] = DefinitionSerializer.new(body_def).serialize if body_def
+        body_definition = request_definition.body_definition
+        result[:body] = DefinitionSerializer.new(body_definition).serialize if body_definition
 
         result.presence
       end
 
-      def serialize_response(response_def)
+      def serialize_response(response_definition)
         result = {}
 
-        body_def = response_def.body_definition
-        result[:body] = DefinitionSerializer.new(body_def).serialize if body_def
+        body_definition = response_definition.body_definition
+        result[:body] = DefinitionSerializer.new(body_definition).serialize if body_definition
 
         result.presence
       end

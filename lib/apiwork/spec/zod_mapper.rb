@@ -33,9 +33,9 @@ module Apiwork
 
         fields = type_shape[:shape] || {}
 
-        properties = fields.sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
+        properties = fields.sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_definition|
           key = transform_key(property_name)
-          zod_type = map_field_definition(property_def, action_name: action_name)
+          zod_type = map_field_definition(property_definition, action_name: action_name)
           "  #{key}: #{zod_type}"
         end.join(",\n")
 
@@ -105,10 +105,10 @@ module Apiwork
         "export const #{schema_name}Schema = z.object({\n#{nested_properties.join(",\n")}\n});"
       end
 
-      def build_action_response_body_schema(resource_name, action_name, response_body_def, parent_path: nil)
+      def build_action_response_body_schema(resource_name, action_name, response_body_definition, parent_path: nil)
         schema_name = action_schema_name(resource_name, action_name, 'ResponseBody', parent_path: parent_path)
 
-        zod_schema = map_type_definition(response_body_def, action_name: nil)
+        zod_schema = map_type_definition(response_body_definition, action_name: nil)
 
         "export const #{schema_name}Schema = #{zod_schema};"
       end
@@ -170,12 +170,12 @@ module Apiwork
 
         is_partial = definition[:partial]
 
-        properties = definition[:shape].sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
+        properties = definition[:shape].sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_definition|
           key = transform_key(property_name)
           zod_type = if is_partial
-                       map_field_definition(property_def.merge(optional: false), action_name: nil)
+                       map_field_definition(property_definition.merge(optional: false), action_name: nil)
                      else
-                       map_field_definition(property_def, action_name: action_name)
+                       map_field_definition(property_definition, action_name: action_name)
                      end
           "#{key}: #{zod_type}"
         end.join(', ')
@@ -292,11 +292,11 @@ module Apiwork
       def resolve_enum_schema(definition)
         return nil unless definition[:enum]
 
-        enum_ref = definition[:enum]
-        if enum_ref.is_a?(Symbol) && enums.key?(enum_ref)
-          "#{pascal_case(enum_ref)}Schema"
-        elsif enum_ref.is_a?(Array)
-          values_str = enum_ref.map { |v| "'#{v}'" }.join(', ')
+        enum_reference = definition[:enum]
+        if enum_reference.is_a?(Symbol) && enums.key?(enum_reference)
+          "#{pascal_case(enum_reference)}Schema"
+        elsif enum_reference.is_a?(Array)
+          values_str = enum_reference.map { |v| "'#{v}'" }.join(', ')
           "z.enum([#{values_str}])"
         end
       end

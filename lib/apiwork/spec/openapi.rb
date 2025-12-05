@@ -341,9 +341,9 @@ module Apiwork
 
         shape_fields = definition[:shape] || {}
 
-        shape_fields.each do |property_name, property_def|
+        shape_fields.each do |property_name, property_definition|
           transformed_key = transform_key(property_name)
-          result[:properties][transformed_key] = map_field_definition(property_def, action_name)
+          result[:properties][transformed_key] = map_field_definition(property_definition, action_name)
         end
 
         is_create_action = action_name.to_s != 'update'

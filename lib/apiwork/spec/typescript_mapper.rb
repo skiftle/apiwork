@@ -16,12 +16,12 @@ module Apiwork
 
         fields = type_shape[:shape] || {}
 
-        properties = fields.sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
+        properties = fields.sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_definition|
           key = transform_key(property_name)
           is_update = action_name.to_s == 'update'
-          is_optional = property_def[:optional]
+          is_optional = property_definition[:optional]
 
-          ts_type = map_field(property_def, action_name: action_name)
+          ts_type = map_field(property_definition, action_name: action_name)
           optional_marker = is_update || is_optional ? '?' : ''
           "  #{key}#{optional_marker}: #{ts_type};"
         end.join("\n")
@@ -88,9 +88,9 @@ module Apiwork
         "export interface #{type_name} {\n#{nested_properties.join("\n")}\n}"
       end
 
-      def build_action_response_body_type(resource_name, action_name, response_body_def, parent_path: nil)
+      def build_action_response_body_type(resource_name, action_name, response_body_definition, parent_path: nil)
         type_name = action_type_name(resource_name, action_name, 'ResponseBody', parent_path: parent_path)
-        ts_type = map_type_definition(response_body_def, action_name: action_name)
+        ts_type = map_type_definition(response_body_definition, action_name: action_name)
         "export type #{type_name} = #{ts_type};"
       end
 
@@ -120,11 +120,11 @@ module Apiwork
                     end
 
         if definition[:enum]
-          enum_ref = definition[:enum]
-          if enum_ref.is_a?(Symbol) && enums.key?(enum_ref)
-            base_type = pascal_case(enum_ref)
-          elsif enum_ref.is_a?(Array)
-            base_type = enum_ref.sort.map { |v| "'#{v}'" }.join(' | ')
+          enum_reference = definition[:enum]
+          if enum_reference.is_a?(Symbol) && enums.key?(enum_reference)
+            base_type = pascal_case(enum_reference)
+          elsif enum_reference.is_a?(Array)
+            base_type = enum_reference.sort.map { |v| "'#{v}'" }.join(' | ')
           end
         end
 
@@ -162,10 +162,10 @@ module Apiwork
 
         is_partial = definition[:partial]
 
-        properties = definition[:shape].sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
+        properties = definition[:shape].sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_definition|
           key = transform_key(property_name)
-          ts_type = map_field(property_def, action_name: action_name)
-          is_optional = property_def[:optional]
+          ts_type = map_field(property_definition, action_name: action_name)
+          is_optional = property_definition[:optional]
           optional_marker = is_partial || is_optional ? '?' : ''
           "#{key}#{optional_marker}: #{ts_type}"
         end.join('; ')

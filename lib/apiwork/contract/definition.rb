@@ -582,12 +582,12 @@ module Apiwork
         )
       end
 
-      def validate_union(name, value, union_def, path, max_depth:, current_depth:)
-        variants = union_def.variants
+      def validate_union(name, value, union_definition, path, max_depth:, current_depth:)
+        variants = union_definition.variants
 
-        if union_def.discriminator
+        if union_definition.discriminator
           return validate_discriminated_union(
-            name, value, union_def, path, max_depth: max_depth, current_depth: current_depth
+            name, value, union_definition, path, max_depth: max_depth, current_depth: current_depth
           )
         end
 
@@ -630,9 +630,9 @@ module Apiwork
         [error, nil]
       end
 
-      def validate_discriminated_union(name, value, union_def, path, max_depth:, current_depth:)
-        discriminator = union_def.discriminator
-        variants = union_def.variants
+      def validate_discriminated_union(name, value, union_definition, path, max_depth:, current_depth:)
+        discriminator = union_definition.discriminator
+        variants = union_definition.variants
 
         unless value.is_a?(Hash)
           error = Issue.new(

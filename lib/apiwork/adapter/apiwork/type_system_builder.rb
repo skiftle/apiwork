@@ -197,11 +197,11 @@ module Apiwork
           params << NULLABLE_EXTENSION if nullable
 
           type_registrar.type(type_name) do
-            params.each do |param_def|
-              if param_def[:of]
-                param param_def[:name], type: param_def[:type], of: param_def[:of], optional: true
+            params.each do |param_definition|
+              if param_definition[:of]
+                param param_definition[:name], type: param_definition[:type], of: param_definition[:of], optional: true
               else
-                param param_def[:name], type: param_def[:type], optional: true
+                param param_definition[:name], type: param_definition[:type], optional: true
               end
             end
           end

@@ -55,13 +55,13 @@ module Apiwork
           end
         end
 
-        def coerce_union(value, union_def, definition)
-          if union_def.variants.any? { |variant| variant[:type] == :boolean }
+        def coerce_union(value, union_definition, definition)
+          if union_definition.variants.any? { |variant| variant[:type] == :boolean }
             coerced = Coercer.perform(value, :boolean)
             return coerced unless coerced.nil?
           end
 
-          union_def.variants.each do |variant|
+          union_definition.variants.each do |variant|
             variant_type = variant[:type]
             variant_of = variant[:of]
 
