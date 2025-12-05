@@ -11,10 +11,14 @@ You rarely use it directly. It powers spec generators like OpenAPI, TypeScript, 
 ## Usage
 
 ```ruby
+# Uses current Rails locale (I18n.locale)
 Apiwork::API.introspect('/api/v1')
+
+# With specific locale
+Apiwork::API.introspect('/api/v1', locale: :sv)
 ```
 
-This returns a hash with your full API structure.
+Returns a hash with your full API structure. Descriptions are localized based on the locale parameter (defaults to Rails' current locale).
 
 ## Output Structure
 
@@ -83,3 +87,106 @@ Introspection drives all spec generation:
 - **Custom generators** — build your own formats
 
 See [Spec Generation](../core/spec-generation/introduction.md) for details.
+
+## Field Types
+
+Every field in introspection has a `type`. Here's the complete list:
+
+### Primitive Types
+
+| Type | Description | `min`/`max` meaning | `format` support |
+|------|-------------|---------------------|------------------|
+| `string` | Text | Character length | `email`, `uri`, `uuid` |
+| `integer` | Whole number | Numeric value | - |
+| `float` | Decimal number | Numeric value | - |
+| `decimal` | High-precision decimal | Numeric value | - |
+| `boolean` | True/false | - | - |
+| `datetime` | ISO 8601 timestamp | - | `date-time` |
+| `date` | ISO 8601 date only | - | `date` |
+| `uuid` | UUID string | - | `uuid` |
+
+### Container Types
+
+| Type | Description | Required fields |
+|------|-------------|-----------------|
+| `array` | Ordered list | `of` (element type) |
+| `object` | Key-value structure | `shape` (field definitions) |
+| `union` | Multiple possible types | `variants` (array of types) |
+
+### Special Types
+
+| Type | Description | Required fields |
+|------|-------------|-----------------|
+| `literal` | Exact value match | `value` |
+| Custom type name | Reference to defined type | - |
+| Enum reference | Reference to defined enum | - |
+
+## Field Properties
+
+Properties describe the field's behavior. Not all properties apply to all types.
+
+### Property Applicability
+
+| Property | string | integer | float | boolean | date | array | object | union | literal |
+|----------|--------|---------|-------|---------|------|-------|--------|-------|---------|
+| `type` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| `optional` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| `nullable` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| `default` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | - | ✓ |
+| `description` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| `example` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | - |
+| `format` | ✓ | - | - | - | ✓ | - | - | - | - |
+| `deprecated` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| `min` | length | value | value | - | - | length | - | - | - |
+| `max` | length | value | value | - | - | length | - | - | - |
+| `enum` | ✓ | ✓ | - | - | - | - | - | - | - |
+| `of` | - | - | - | - | - | ✓ | - | - | - |
+| `shape` | - | - | - | - | - | ✓* | ✓ | ✓* | - |
+| `variants` | - | - | - | - | - | - | - | ✓ | - |
+| `discriminator` | - | - | - | - | - | - | - | ✓ | - |
+| `tag` | - | - | - | - | - | - | - | ✓ | - |
+| `value` | - | - | - | - | - | - | - | - | ✓ |
+| `as` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | - |
+
+\* `shape` on array: when `of: :object`. On union: inside each variant.
+
+### Property Descriptions
+
+| Property | Description |
+|----------|-------------|
+| `type` | The data type |
+| `optional` | Field can be omitted from request |
+| `nullable` | Field value can be `null` |
+| `default` | Value used when field is omitted |
+| `description` | Human-readable documentation |
+| `example` | Sample value for documentation |
+| `format` | Format hint (e.g., `email`, `uri`) |
+| `deprecated` | Field should not be used |
+| `min` | Minimum value (numbers) or length (strings/arrays) |
+| `max` | Maximum value (numbers) or length (strings/arrays) |
+| `enum` | Valid values (inline array or reference) |
+| `of` | Element type for arrays |
+| `shape` | Nested field definitions for objects |
+| `variants` | Possible types for unions |
+| `discriminator` | Field name that determines union variant |
+| `tag` | Value that identifies a union variant |
+| `value` | Exact value for literal type |
+| `as` | Transformation alias (e.g., `comments_attributes`) |
+
+## Compact Output
+
+Introspection output is compact by design. Properties are **omitted** when they have no meaningful value:
+
+| Property | Omitted when |
+|----------|--------------|
+| `optional` | `false` (default) |
+| `nullable` | `false` (default) |
+| `default` | `nil` |
+| `description` | `nil` or empty |
+| `example` | `nil` |
+| `format` | `nil` |
+| `deprecated` | `false` (default) |
+| `min` | `nil` |
+| `max` | `nil` |
+
+This means a simple string field appears as just `{ "type": "string" }` rather than including all possible properties with null/false values.
