@@ -194,14 +194,14 @@ module Apiwork
       def resolve_attribute_description(options)
         return options[:description] if options[:description]
 
-        if (attr_def = options[:attribute_definition])
-          desc = i18n_attribute_description(attr_def)
-          return desc if desc
+        if (attribute_definition = options[:attribute_definition])
+          description = i18n_attribute_description(attribute_definition)
+          return description if description
         end
 
-        if (assoc_def = options[:association_definition])
-          desc = i18n_association_description(assoc_def)
-          return desc if desc
+        if (association_definition = options[:association_definition])
+          description = i18n_association_description(association_definition)
+          return description if description
         end
 
         nil
@@ -212,9 +212,9 @@ module Apiwork
         return nil unless api_class
 
         schema_name = attribute_definition.schema_class_name
-        attr_name = attribute_definition.name
+        attribute_name = attribute_definition.name
 
-        api_class.metadata.i18n_lookup(:schemas, schema_name, :attributes, attr_name, :description)
+        api_class.metadata.i18n_lookup(:schemas, schema_name, :attributes, attribute_name, :description)
       end
 
       def i18n_association_description(association_definition)
@@ -222,9 +222,9 @@ module Apiwork
         return nil unless api_class
 
         schema_name = association_definition.schema_class_name
-        assoc_name = association_definition.name
+        association_name = association_definition.name
 
-        api_class.metadata.i18n_lookup(:schemas, schema_name, :associations, assoc_name, :description)
+        api_class.metadata.i18n_lookup(:schemas, schema_name, :associations, association_name, :description)
       end
     end
   end

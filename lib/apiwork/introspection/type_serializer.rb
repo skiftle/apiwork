@@ -59,8 +59,8 @@ module Apiwork
         return metadata[:description] if metadata[:description]
 
         if metadata[:schema_class].respond_to?(:description)
-          schema_desc = metadata[:schema_class].description
-          return schema_desc if schema_desc
+          schema_description = metadata[:schema_class].description
+          return schema_description if schema_description
         end
 
         i18n_type_description(type_name)

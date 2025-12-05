@@ -143,17 +143,17 @@ module Apiwork
         return nil unless schema_class.respond_to?(:attribute_definitions)
 
         attributes = {}
-        schema_class.attribute_definitions.each do |attr_name, attr_def|
-          attr_hash = {
-            type: attr_def.type,
-            nullable: attr_def.nullable?,
-            format: attr_def.format,
-            example: attr_def.example,
-            description: attr_def.description,
-            deprecated: attr_def.deprecated
+        schema_class.attribute_definitions.each do |attribute_name, attribute_definition|
+          attribute_hash = {
+            type: attribute_definition.type,
+            nullable: attribute_definition.nullable?,
+            format: attribute_definition.format,
+            example: attribute_definition.example,
+            description: attribute_definition.description,
+            deprecated: attribute_definition.deprecated
           }
-          attr_hash[:optional] = true if attr_def.optional?
-          attributes[attr_name] = attr_hash.compact
+          attribute_hash[:optional] = true if attribute_definition.optional?
+          attributes[attribute_name] = attribute_hash.compact
         end
 
         {
