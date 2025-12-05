@@ -1,5 +1,5 @@
 ---
-order: 3
+order: 2
 ---
 
 # Installation
@@ -92,5 +92,5 @@ curl http://localhost:3000/api/v1/.spec/openapi
 
 ## Next Steps
 
-- [Execution Layer](./execution-layer.md) - understand how the pieces fit together
-- [Quick Start](./quick-start.md) - build a complete endpoint
+- [Core Concepts](./core-concepts.md) — understand API definitions, contracts, and schemas
+- [Quick Start](./quick-start.md) — build a complete endpoint

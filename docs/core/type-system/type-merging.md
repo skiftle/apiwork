@@ -1,3 +1,7 @@
+---
+order: 7
+---
+
 # Type Merging
 
 Types in Apiwork work like interfaces in TypeScript — they're open for extension.

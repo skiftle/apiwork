@@ -1,5 +1,5 @@
 ---
-order: 2
+order: 3
 ---
 
 # Core Concepts
@@ -198,3 +198,8 @@ This lets Apiwork infer capabilities directly from the model.
 The API definition, contracts and schemas all feed into a unified metadata model. Because each piece builds on the same foundation, Apiwork can generate OpenAPI, Zod and TypeScript definitions that stay perfectly aligned with your server.
 
 Documentation, typed clients and server behaviour all come from the same source of truth — eliminating duplication and keeping the entire API consistent end-to-end.
+
+## Next Steps
+
+- [Quick Start](./quick-start.md) — build a complete endpoint from scratch
+- [Execution Layer](./execution-layer.md) — filtering, sorting, pagination, and eager loading

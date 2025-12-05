@@ -1,5 +1,5 @@
 ---
-order: 4
+order: 5
 ---
 
 # Execution Layer
@@ -256,3 +256,9 @@ end
 ## Custom Adapters
 
 For non-ActiveRecord data sources or custom query logic, you can create your own adapter. See [Custom Adapters](../advanced/custom-adapters.md).
+
+## Next Steps
+
+- [Contracts](../core/contracts/introduction.md) — define request/response shapes
+- [Schemas](../core/schemas/introduction.md) — auto-generate contracts from models
+- [Errors](../core/errors/introduction.md) — structured error handling
