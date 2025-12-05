@@ -130,13 +130,13 @@ module Apiwork
 
           if block
             @adapter_config ||= {}
-            adapter_class = Adapter.resolve(@adapter_name || :apiwork)
+            adapter_class = Adapter.find(@adapter_name || :apiwork)
             builder = Configuration::Builder.new(adapter_class, @adapter_config)
             builder.instance_eval(&block)
             return
           end
 
-          @adapter ||= Adapter.resolve(@adapter_name || :apiwork).new
+          @adapter ||= Adapter.find(@adapter_name || :apiwork).new
         end
 
         def type(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false,

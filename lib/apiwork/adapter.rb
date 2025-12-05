@@ -5,10 +5,6 @@ module Apiwork
     class << self
       delegate :register, :find, :registered?, :all, to: Registry
 
-      def resolve(name)
-        Registry.find(name)
-      end
-
       def reset!
         Registry.clear!
       end
