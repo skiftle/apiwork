@@ -7,7 +7,6 @@
   orders/:
     get:
       :operationId: orders_index
-      :summary: List orders
       :tags:
       - Orders
       :responses:
@@ -15,7 +14,6 @@
           :description: No content
     post:
       :operationId: orders_create
-      :summary: Create order
       :tags:
       - Orders
       :requestBody:
@@ -49,10 +47,12 @@
                     :type: integer
                   status:
                     :type: string
+                :required:
+                - id
+                - status
   orders/:id:
     get:
       :operationId: orders_show
-      :summary: Get order
       :tags:
       - Orders
       :responses:
@@ -60,7 +60,6 @@
           :description: No content
     patch:
       :operationId: orders_update
-      :summary: Update order
       :tags:
       - Orders
       :responses:
@@ -68,7 +67,6 @@
           :description: No content
     delete:
       :operationId: orders_destroy
-      :summary: Delete order
       :tags:
       - Orders
       :responses:

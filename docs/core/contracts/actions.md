@@ -135,7 +135,7 @@ action :create do
   # Replace the request entirely
   request replace: true do
     body do
-      param :title, type: :string, required: true
+      param :title, type: :string
     end
   end
 end

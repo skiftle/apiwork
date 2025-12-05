@@ -36,11 +36,11 @@ RSpec.describe 'TypeSystem Integration', type: :request do
       expect(introspection[:types][:error_detail]).to include(
         type: :object,
         shape: {
-          code: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
+          code: { type: :string, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
                   max: nil },
-          message: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
+          message: { type: :string, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
                      max: nil },
-          field: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
+          field: { type: :string, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
                    max: nil }
         },
         description: nil,
@@ -54,9 +54,9 @@ RSpec.describe 'TypeSystem Integration', type: :request do
       expect(introspection[:types][:pagination_params]).to include(
         type: :object,
         shape: {
-          page: { type: :integer, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
+          page: { type: :integer, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
                   max: nil },
-          per_page: { type: :integer, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
+          per_page: { type: :integer, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
                       max: nil }
         },
         description: nil,
@@ -319,9 +319,9 @@ RSpec.describe 'TypeSystem Integration', type: :request do
       expect(introspection[:types][:test_scoped_metadata]).to include(
         type: :object,
         shape: {
-          author: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
+          author: { type: :string, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
                     max: nil },
-          version: { type: :integer, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
+          version: { type: :integer, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
                      max: nil }
         },
         description: nil,

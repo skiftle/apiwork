@@ -25,13 +25,13 @@ Apiwork automatically detects from your database and model:
 |----------|--------|
 | `type` | Column type (string, integer, boolean, datetime, etc.) |
 | `nullable` | Column NULL constraint |
-| `required` | Column NOT NULL and no default value |
+| `optional` | Column allows NULL or has default value |
 | `enum` | Rails enum definition |
 
 ```ruby
 # These are equivalent:
 attribute :title
-attribute :title, type: :string, nullable: false, required: true
+attribute :title, type: :string, nullable: false
 
 # Enum auto-detection
 attribute :status  # Detects Rails enum values automatically
@@ -50,7 +50,7 @@ See [Inference](./inference.md) for complete details.
 | `decode` | `callable` | `nil` | Transform on request |
 | `empty` | `bool` | `false` | Convert nil to empty string |
 | `nullable` | `bool` | auto | Allow null values |
-| `required` | `bool` | auto | Required in requests |
+| `optional` | `bool` | auto | Optional in requests |
 | `type` | `symbol` | auto | Data type |
 | `format` | `symbol` | `nil` | Format hint (email, uuid, etc.) |
 | `min` / `max` | `integer` | `nil` | Value/length constraints |

@@ -376,7 +376,7 @@ RSpec.describe Apiwork::Spec::Typescript do
       output = Apiwork::Spec.generate(:typescript, '/api/ts_full_metadata')
 
       expect(output).to include('export interface FullMeta')
-      expect(output).to include('x?: number')
+      expect(output).to include('x: number')
 
       Apiwork::API::Registry.unregister('/api/ts_full_metadata')
     end

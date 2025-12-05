@@ -114,7 +114,7 @@ export const InvoicesIndexRequestSchema = z.object({
   query: InvoicesIndexRequestQuerySchema
 });
 
-export const InvoicesIndexResponseBodySchema = z.union([z.object({ invoices: z.array(InvoiceSchema).optional(), meta: z.object({}).optional(), pagination: PagePaginationSchema.optional() }), z.object({ issues: z.array(IssueSchema) })]);
+export const InvoicesIndexResponseBodySchema = z.union([z.object({ invoices: z.array(InvoiceSchema).optional(), meta: z.object({}).optional(), pagination: PagePaginationSchema.optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
 
 export const InvoicesIndexResponseSchema = z.object({
   body: InvoicesIndexResponseBodySchema
@@ -128,7 +128,7 @@ export const InvoicesShowRequestSchema = z.object({
   query: InvoicesShowRequestQuerySchema
 });
 
-export const InvoicesShowResponseBodySchema = z.union([z.object({ invoice: InvoiceSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(IssueSchema) })]);
+export const InvoicesShowResponseBodySchema = z.union([z.object({ invoice: InvoiceSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
 
 export const InvoicesShowResponseSchema = z.object({
   body: InvoicesShowResponseBodySchema
@@ -147,7 +147,7 @@ export const InvoicesCreateRequestSchema = z.object({
   body: InvoicesCreateRequestBodySchema
 });
 
-export const InvoicesCreateResponseBodySchema = z.union([z.object({ invoice: InvoiceSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(IssueSchema) })]);
+export const InvoicesCreateResponseBodySchema = z.union([z.object({ invoice: InvoiceSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
 
 export const InvoicesCreateResponseSchema = z.object({
   body: InvoicesCreateResponseBodySchema
@@ -166,7 +166,7 @@ export const InvoicesUpdateRequestSchema = z.object({
   body: InvoicesUpdateRequestBodySchema
 });
 
-export const InvoicesUpdateResponseBodySchema = z.union([z.object({ invoice: InvoiceSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(IssueSchema) })]);
+export const InvoicesUpdateResponseBodySchema = z.union([z.object({ invoice: InvoiceSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
 
 export const InvoicesUpdateResponseSchema = z.object({
   body: InvoicesUpdateResponseBodySchema
@@ -180,7 +180,7 @@ export const InvoicesArchiveRequestSchema = z.object({
   query: InvoicesArchiveRequestQuerySchema
 });
 
-export const InvoicesArchiveResponseBodySchema = z.union([z.object({ invoice: InvoiceSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(IssueSchema) })]);
+export const InvoicesArchiveResponseBodySchema = z.union([z.object({ invoice: InvoiceSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
 
 export const InvoicesArchiveResponseSchema = z.object({
   body: InvoicesArchiveResponseBodySchema
@@ -263,7 +263,7 @@ export interface InvoicesArchiveResponse {
   body: InvoicesArchiveResponseBody;
 }
 
-export type InvoicesArchiveResponseBody = { invoice: Invoice; meta?: object } | { issues: Issue[] };
+export type InvoicesArchiveResponseBody = { invoice: Invoice; meta?: object } | { issues?: Issue[] };
 
 export interface InvoicesCreateRequest {
   query: InvoicesCreateRequestQuery;
@@ -282,7 +282,7 @@ export interface InvoicesCreateResponse {
   body: InvoicesCreateResponseBody;
 }
 
-export type InvoicesCreateResponseBody = { invoice: Invoice; meta?: object } | { issues: Issue[] };
+export type InvoicesCreateResponseBody = { invoice: Invoice; meta?: object } | { issues?: Issue[] };
 
 export interface InvoicesIndexRequest {
   query: InvoicesIndexRequestQuery;
@@ -299,7 +299,7 @@ export interface InvoicesIndexResponse {
   body: InvoicesIndexResponseBody;
 }
 
-export type InvoicesIndexResponseBody = { invoices?: Invoice[]; meta?: object; pagination?: PagePagination } | { issues: Issue[] };
+export type InvoicesIndexResponseBody = { invoices?: Invoice[]; meta?: object; pagination?: PagePagination } | { issues?: Issue[] };
 
 export interface InvoicesShowRequest {
   query: InvoicesShowRequestQuery;
@@ -313,7 +313,7 @@ export interface InvoicesShowResponse {
   body: InvoicesShowResponseBody;
 }
 
-export type InvoicesShowResponseBody = { invoice: Invoice; meta?: object } | { issues: Issue[] };
+export type InvoicesShowResponseBody = { invoice: Invoice; meta?: object } | { issues?: Issue[] };
 
 export interface InvoicesUpdateRequest {
   query: InvoicesUpdateRequestQuery;
@@ -332,7 +332,7 @@ export interface InvoicesUpdateResponse {
   body: InvoicesUpdateResponseBody;
 }
 
-export type InvoicesUpdateResponseBody = { invoice: Invoice; meta?: object } | { issues: Issue[] };
+export type InvoicesUpdateResponseBody = { invoice: Invoice; meta?: object } | { issues?: Issue[] };
 
 export interface Issue {
   code: string;

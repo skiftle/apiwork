@@ -22,9 +22,9 @@ module Api
 
         request do
           body do
-            param :post, type: :object, required: true do
+            param :post, type: :object do
               param :title, type: :string
-              param :body, type: :string, required: false
+              param :body, type: :string, optional: true
               param :published, type: :boolean, default: false
             end
           end
@@ -36,10 +36,10 @@ module Api
 
         request do
           body do
-            param :post, type: :object, required: true do
-              param :title, type: :string, required: false
-              param :body, type: :string, required: false
-              param :published, type: :boolean, required: false
+            param :post, type: :object do
+              param :title, type: :string, optional: true
+              param :body, type: :string, optional: true
+              param :published, type: :boolean, optional: true
             end
           end
         end
@@ -49,15 +49,15 @@ module Api
       action :archive do
         request do
           body do
-            param :reason, type: :string, required: false
-            param :notify_users, type: :boolean, required: false, default: true
+            param :reason, type: :string, optional: true
+            param :notify_users, type: :boolean, optional: true, default: true
           end
         end
 
         response do
           body do
-            param :archived_at, type: :datetime, required: false
-            param :archive_note, type: :string, required: false
+            param :archived_at, type: :datetime, optional: true
+            param :archive_note, type: :string, optional: true
           end
         end
       end
@@ -66,14 +66,14 @@ module Api
       action :search do
         request do
           query do
-            param :q, type: :string
+            param :q, type: :string, optional: true, default: ''
           end
         end
 
         response do
           body do
-            param :search_query, type: :string, required: false
-            param :result_count, type: :integer, required: false
+            param :search_query, type: :string, optional: true
+            param :result_count, type: :integer, optional: true
           end
         end
       end
@@ -82,10 +82,10 @@ module Api
       action :bulk_create do
         request do
           body do
-            param :posts, type: :array, required: false, default: [] do
+            param :posts, type: :array, optional: true, default: [] do
               param :title, type: :string
               param :body, type: :string
-              param :published, type: :boolean
+              param :published, type: :boolean, optional: true, default: false
             end
           end
         end
@@ -100,7 +100,7 @@ module Api
 
         response replace: true do
           body do
-            param :deleted_id, type: :uuid, required: true
+            param :deleted_id, type: :uuid
           end
         end
       end

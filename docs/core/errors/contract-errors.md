@@ -15,8 +15,8 @@ class PostContract < Apiwork::Contract::Base
   action :create do
     request do
       body do
-        param :title, type: :string, required: true
-        param :status, type: :string, enum: %w[draft published]
+        param :title, type: :string
+        param :status, type: :string, enum: %w[draft published], optional: true
       end
     end
   end
@@ -157,7 +157,7 @@ action :create do
     body do
       param :post, type: :object do
         param :metadata, type: :object do
-          param :author_id, type: :uuid, required: true
+          param :author_id, type: :uuid
         end
       end
     end
@@ -186,8 +186,8 @@ action :create do
   request do
     body do
       param :items, type: :array do
-        param :sku, type: :string, required: true
-        param :quantity, type: :integer, required: true
+        param :sku, type: :string
+        param :quantity, type: :integer
       end
     end
   end
@@ -213,10 +213,10 @@ For discriminated unions, errors point to the discriminator or the variant field
 ```ruby
 param :content, type: :union, discriminator: :type do
   variant :text, tag: 'text' do
-    param :body, type: :string, required: true
+    param :body, type: :string
   end
   variant :image, tag: 'image' do
-    param :url, type: :string, required: true
+    param :url, type: :string
   end
 end
 ```

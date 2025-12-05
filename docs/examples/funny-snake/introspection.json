@@ -7,7 +7,6 @@
       "shape": {
         "created_at": {
           "type": "datetime",
-          "required": false,
           "nullable": false,
           "description": null,
           "example": null,
@@ -18,7 +17,6 @@
         },
         "id": {
           "type": "uuid",
-          "required": false,
           "nullable": false,
           "description": null,
           "example": null,
@@ -29,7 +27,6 @@
         },
         "issued_on": {
           "type": "date",
-          "required": false,
           "nullable": false,
           "description": null,
           "example": null,
@@ -40,7 +37,6 @@
         },
         "lines": {
           "type": "array",
-          "required": false,
           "nullable": false,
           "description": null,
           "example": null,
@@ -52,7 +48,6 @@
         },
         "number": {
           "type": "string",
-          "required": false,
           "nullable": false,
           "description": null,
           "example": null,
@@ -63,7 +58,6 @@
         },
         "status": {
           "type": "string",
-          "required": false,
           "nullable": false,
           "description": null,
           "example": null,
@@ -74,7 +68,6 @@
         },
         "updated_at": {
           "type": "datetime",
-          "required": false,
           "nullable": false,
           "description": null,
           "example": null,
@@ -94,7 +87,6 @@
       "shape": {
         "created_at": {
           "type": "datetime",
-          "required": false,
           "nullable": false,
           "description": null,
           "example": null,
@@ -105,7 +97,6 @@
         },
         "description": {
           "type": "string",
-          "required": false,
           "nullable": false,
           "description": null,
           "example": null,
@@ -116,7 +107,6 @@
         },
         "id": {
           "type": "uuid",
-          "required": false,
           "nullable": false,
           "description": null,
           "example": null,
@@ -127,7 +117,6 @@
         },
         "price": {
           "type": "decimal",
-          "required": false,
           "nullable": false,
           "description": null,
           "example": null,
@@ -138,7 +127,6 @@
         },
         "quantity": {
           "type": "decimal",
-          "required": false,
           "nullable": false,
           "description": null,
           "example": null,
@@ -149,7 +137,6 @@
         },
         "updated_at": {
           "type": "datetime",
-          "required": false,
           "nullable": false,
           "description": null,
           "example": null,
@@ -169,7 +156,6 @@
       "shape": {
         "issued_on": {
           "type": "date",
-          "required": false,
           "nullable": false,
           "description": null,
           "example": null,
@@ -180,7 +166,6 @@
         },
         "lines_attributes": {
           "type": "array",
-          "required": false,
           "nullable": false,
           "description": null,
           "example": null,
@@ -191,7 +176,6 @@
           "shape": {
             "_destroy": {
               "type": "boolean",
-              "required": false,
               "nullable": false,
               "description": null,
               "example": null,
@@ -202,7 +186,6 @@
             },
             "description": {
               "type": "string",
-              "required": false,
               "nullable": false,
               "description": null,
               "example": null,
@@ -213,7 +196,6 @@
             },
             "id": {
               "type": "uuid",
-              "required": false,
               "nullable": false,
               "description": null,
               "example": null,
@@ -224,7 +206,6 @@
             },
             "price": {
               "type": "decimal",
-              "required": false,
               "nullable": false,
               "description": null,
               "example": null,
@@ -235,7 +216,6 @@
             },
             "quantity": {
               "type": "integer",
-              "required": false,
               "nullable": false,
               "description": null,
               "example": null,
@@ -248,7 +228,6 @@
         },
         "notes": {
           "type": "string",
-          "required": false,
           "nullable": false,
           "description": null,
           "example": null,
@@ -259,7 +238,6 @@
         },
         "number": {
           "type": "string",
-          "required": false,
           "nullable": false,
           "description": null,
           "example": null,
@@ -279,7 +257,6 @@
       "shape": {
         "code": {
           "type": "string",
-          "required": true,
           "nullable": false,
           "description": null,
           "example": null,
@@ -290,7 +267,6 @@
         },
         "detail": {
           "type": "string",
-          "required": true,
           "nullable": false,
           "description": null,
           "example": null,
@@ -301,7 +277,6 @@
         },
         "field": {
           "type": "string",
-          "required": true,
           "nullable": false,
           "description": null,
           "example": null,
@@ -312,7 +287,6 @@
         },
         "path": {
           "type": "array",
-          "required": true,
           "nullable": false,
           "description": null,
           "example": null,
@@ -330,6 +304,8 @@
     }
   },
   "enums": {},
+  "error_codes": {},
+  "raises": [],
   "resources": {
     "invoices": {
       "path": "invoices",
@@ -342,7 +318,7 @@
         "index": {
           "method": "get",
           "path": "/",
-          "summary": "List invoices",
+          "summary": null,
           "description": null,
           "tags": null,
           "deprecated": null,
@@ -351,7 +327,6 @@
             "query": {
               "filter": {
                 "type": "object",
-                "required": false,
                 "nullable": false,
                 "description": null,
                 "example": null,
@@ -362,7 +337,6 @@
                 "shape": {
                   "status": {
                     "type": "string",
-                    "required": false,
                     "nullable": false,
                     "description": null,
                     "example": null,
@@ -375,7 +349,6 @@
               },
               "sort": {
                 "type": "object",
-                "required": false,
                 "nullable": false,
                 "description": null,
                 "example": null,
@@ -386,7 +359,6 @@
                 "shape": {
                   "issued_on": {
                     "type": "string",
-                    "required": false,
                     "nullable": false,
                     "description": null,
                     "example": null,
@@ -409,7 +381,6 @@
               "shape": {
                 "invoices": {
                   "type": "array",
-                  "required": false,
                   "nullable": false,
                   "description": null,
                   "example": null,
@@ -422,12 +393,12 @@
               }
             }
           },
-          "error_codes": []
+          "raises": []
         },
         "show": {
           "method": "get",
           "path": "/:id",
-          "summary": "Get invoice",
+          "summary": null,
           "description": null,
           "tags": null,
           "deprecated": null,
@@ -438,7 +409,6 @@
               "shape": {
                 "invoice": {
                   "type": "invoice",
-                  "required": false,
                   "nullable": false,
                   "description": null,
                   "example": null,
@@ -450,12 +420,12 @@
               }
             }
           },
-          "error_codes": []
+          "raises": []
         },
         "create": {
           "method": "post",
           "path": "/",
-          "summary": "Create invoice",
+          "summary": null,
           "description": null,
           "tags": null,
           "deprecated": null,
@@ -464,7 +434,6 @@
             "body": {
               "invoice": {
                 "type": "invoice_payload",
-                "required": true,
                 "nullable": false,
                 "description": null,
                 "example": null,
@@ -481,7 +450,6 @@
               "shape": {
                 "invoice": {
                   "type": "invoice",
-                  "required": false,
                   "nullable": false,
                   "description": null,
                   "example": null,
@@ -493,12 +461,12 @@
               }
             }
           },
-          "error_codes": []
+          "raises": []
         },
         "update": {
           "method": "patch",
           "path": "/:id",
-          "summary": "Update invoice",
+          "summary": null,
           "description": null,
           "tags": null,
           "deprecated": null,
@@ -507,7 +475,6 @@
             "body": {
               "invoice": {
                 "type": "invoice_payload",
-                "required": true,
                 "nullable": false,
                 "description": null,
                 "example": null,
@@ -524,7 +491,6 @@
               "shape": {
                 "invoice": {
                   "type": "invoice",
-                  "required": false,
                   "nullable": false,
                   "description": null,
                   "example": null,
@@ -536,20 +502,19 @@
               }
             }
           },
-          "error_codes": []
+          "raises": []
         },
         "destroy": {
           "method": "delete",
           "path": "/:id",
-          "summary": "Delete invoice",
+          "summary": null,
           "description": null,
           "tags": null,
           "deprecated": null,
           "operation_id": null,
-          "error_codes": []
+          "raises": []
         }
       }
     }
-  },
-  "error_codes": []
+  }
 }

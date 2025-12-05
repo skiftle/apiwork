@@ -19,10 +19,10 @@ module Apiwork
         properties = fields.sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
           key = transform_key(property_name)
           is_update = action_name.to_s == 'update'
-          is_required = property_def[:required]
+          is_optional = property_def[:optional]
 
           ts_type = map_field(property_def, action_name)
-          optional_marker = is_update || !is_required ? '?' : ''
+          optional_marker = is_update || is_optional ? '?' : ''
           "  #{key}#{optional_marker}: #{ts_type};"
         end.join("\n")
 
@@ -48,8 +48,8 @@ module Apiwork
         properties = query_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
           key = transform_key(param_name)
           ts_type = map_field(param_definition, action_name)
-          is_required = param_definition[:required]
-          optional_marker = is_required ? '' : '?'
+          is_optional = param_definition[:optional]
+          optional_marker = is_optional ? '?' : ''
           "  #{key}#{optional_marker}: #{ts_type};"
         end.join("\n")
 
@@ -62,8 +62,8 @@ module Apiwork
         properties = body_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
           key = transform_key(param_name)
           ts_type = map_field(param_definition, action_name)
-          is_required = param_definition[:required]
-          optional_marker = is_required ? '' : '?'
+          is_optional = param_definition[:optional]
+          optional_marker = is_optional ? '?' : ''
           "  #{key}#{optional_marker}: #{ts_type};"
         end.join("\n")
 
@@ -165,8 +165,8 @@ module Apiwork
         properties = definition[:shape].sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
           key = transform_key(property_name)
           ts_type = map_field(property_def, action_name)
-          is_required = property_def[:required]
-          optional_marker = is_partial || !is_required ? '?' : ''
+          is_optional = property_def[:optional]
+          optional_marker = is_partial || is_optional ? '?' : ''
           "#{key}#{optional_marker}: #{ts_type}"
         end.join('; ')
 

@@ -25,9 +25,9 @@ RSpec.describe 'API TypeSystem Builder' do
     expect(types[:error]).to include(
       type: :object,
       shape: {
-        error: { type: :string, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
+        error: { type: :string, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil,
                  max: nil },
-        code: { type: :integer, required: false, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil, max: nil }
+        code: { type: :integer, nullable: false, description: nil, example: nil, format: nil, deprecated: false, min: nil, max: nil }
       },
       description: nil,
       example: nil,

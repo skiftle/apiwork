@@ -144,15 +144,16 @@ module Apiwork
 
         attributes = {}
         schema_class.attribute_definitions.each do |attr_name, attr_def|
-          attributes[attr_name] = {
+          attr_hash = {
             type: attr_def.type,
             nullable: attr_def.nullable?,
-            required: attr_def.required?,
             format: attr_def.format,
             example: attr_def.example,
             description: attr_def.description,
             deprecated: attr_def.deprecated
-          }.compact
+          }
+          attr_hash[:optional] = true if attr_def.optional?
+          attributes[attr_name] = attr_hash.compact
         end
 
         {

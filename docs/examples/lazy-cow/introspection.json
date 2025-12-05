@@ -7,7 +7,6 @@
       "shape": {
         "code": {
           "type": "string",
-          "required": true,
           "nullable": false,
           "description": null,
           "example": null,
@@ -18,7 +17,6 @@
         },
         "detail": {
           "type": "string",
-          "required": true,
           "nullable": false,
           "description": null,
           "example": null,
@@ -29,7 +27,6 @@
         },
         "field": {
           "type": "string",
-          "required": true,
           "nullable": false,
           "description": null,
           "example": null,
@@ -40,7 +37,6 @@
         },
         "path": {
           "type": "array",
-          "required": true,
           "nullable": false,
           "description": null,
           "example": null,
@@ -70,6 +66,8 @@
       "deprecated": false
     }
   },
+  "error_codes": {},
+  "raises": [],
   "resources": {
     "posts": {
       "path": "posts",
@@ -81,51 +79,25 @@
       "actions": {
         "index": {
           "method": "get",
-          "path": "/",
-          "summary": "List posts",
-          "description": null,
-          "tags": null,
-          "deprecated": null,
-          "operation_id": null
+          "path": "/"
         },
         "show": {
           "method": "get",
-          "path": "/:id",
-          "summary": "Get post",
-          "description": null,
-          "tags": null,
-          "deprecated": null,
-          "operation_id": null
+          "path": "/:id"
         },
         "create": {
           "method": "post",
-          "path": "/",
-          "summary": "Create post",
-          "description": null,
-          "tags": null,
-          "deprecated": null,
-          "operation_id": null
+          "path": "/"
         },
         "update": {
           "method": "patch",
-          "path": "/:id",
-          "summary": "Update post",
-          "description": null,
-          "tags": null,
-          "deprecated": null,
-          "operation_id": null
+          "path": "/:id"
         },
         "destroy": {
           "method": "delete",
-          "path": "/:id",
-          "summary": "Delete post",
-          "description": null,
-          "tags": null,
-          "deprecated": null,
-          "operation_id": null
+          "path": "/:id"
         }
       }
     }
-  },
-  "error_codes": []
+  }
 }

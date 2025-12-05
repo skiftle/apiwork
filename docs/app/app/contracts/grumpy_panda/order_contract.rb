@@ -5,9 +5,9 @@ module GrumpyPanda
     action :create do
       request do
         body do
-          param :shipping_address, type: :object, required: true do
-            param :street, type: :string, required: true
-            param :city, type: :string, required: true
+          param :shipping_address, type: :object do
+            param :street, type: :string
+            param :city, type: :string
           end
         end
       end

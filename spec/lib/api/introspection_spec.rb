@@ -117,11 +117,11 @@ RSpec.describe 'API Introspection' do
 
             success_variant = response_body[:variants][0]
             expect(success_variant[:shape].keys).to include(:post)
-            expect(success_variant[:shape][:post][:required]).to be(true)
+            expect(success_variant[:shape][:post][:optional]).to be_nil
 
             error_variant = response_body[:variants][1]
             expect(error_variant[:shape].keys).to include(:issues)
-            expect(error_variant[:shape][:issues][:required]).to be(true)
+            expect(error_variant[:shape][:issues][:optional]).to be(true)
           end
 
           it 'merges custom response params at top level' do
@@ -155,7 +155,7 @@ RSpec.describe 'API Introspection' do
             # Should only have custom-defined fields
             expect(response_body[:shape].keys).to eq([:deleted_id])
             expect(response_body[:shape][:deleted_id][:type]).to eq(:uuid)
-            expect(response_body[:shape][:deleted_id][:required]).to be(true)
+            expect(response_body[:shape][:deleted_id][:optional]).to be_nil
           end
         end
 

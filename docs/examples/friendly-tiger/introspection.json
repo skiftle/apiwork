@@ -7,7 +7,6 @@
       "shape": {
         "code": {
           "type": "string",
-          "required": true,
           "nullable": false,
           "description": null,
           "example": null,
@@ -18,7 +17,6 @@
         },
         "detail": {
           "type": "string",
-          "required": true,
           "nullable": false,
           "description": null,
           "example": null,
@@ -29,7 +27,6 @@
         },
         "field": {
           "type": "string",
-          "required": true,
           "nullable": false,
           "description": null,
           "example": null,
@@ -40,7 +37,6 @@
         },
         "path": {
           "type": "array",
-          "required": true,
           "nullable": false,
           "description": null,
           "example": null,
@@ -61,7 +57,6 @@
       "shape": {
         "city": {
           "type": "string",
-          "required": true,
           "nullable": false,
           "description": null,
           "example": null,
@@ -72,7 +67,6 @@
         },
         "street": {
           "type": "string",
-          "required": true,
           "nullable": false,
           "description": null,
           "example": null,
@@ -101,6 +95,8 @@
       "deprecated": false
     }
   },
+  "error_codes": {},
+  "raises": [],
   "resources": {
     "orders": {
       "path": "orders",
@@ -112,26 +108,16 @@
       "actions": {
         "index": {
           "method": "get",
-          "path": "/",
-          "summary": "List orders",
-          "description": null,
-          "tags": null,
-          "deprecated": null,
-          "operation_id": null
+          "path": "/"
         },
         "show": {
           "method": "get",
-          "path": "/:id",
-          "summary": "Get order",
-          "description": null,
-          "tags": null,
-          "deprecated": null,
-          "operation_id": null
+          "path": "/:id"
         },
         "create": {
           "method": "post",
           "path": "/",
-          "summary": "Create order",
+          "summary": null,
           "description": null,
           "tags": null,
           "deprecated": null,
@@ -140,7 +126,6 @@
             "body": {
               "priority": {
                 "type": "order_priority",
-                "required": false,
                 "nullable": false,
                 "description": null,
                 "example": null,
@@ -151,7 +136,6 @@
               },
               "shipping_address": {
                 "type": "order_address",
-                "required": true,
                 "nullable": false,
                 "description": null,
                 "example": null,
@@ -168,7 +152,6 @@
               "shape": {
                 "id": {
                   "type": "integer",
-                  "required": false,
                   "nullable": false,
                   "description": null,
                   "example": null,
@@ -179,7 +162,6 @@
                 },
                 "status": {
                   "type": "string",
-                  "required": false,
                   "nullable": false,
                   "description": null,
                   "example": null,
@@ -191,28 +173,17 @@
               }
             }
           },
-          "error_codes": []
+          "raises": []
         },
         "update": {
           "method": "patch",
-          "path": "/:id",
-          "summary": "Update order",
-          "description": null,
-          "tags": null,
-          "deprecated": null,
-          "operation_id": null
+          "path": "/:id"
         },
         "destroy": {
           "method": "delete",
-          "path": "/:id",
-          "summary": "Delete order",
-          "description": null,
-          "tags": null,
-          "deprecated": null,
-          "operation_id": null
+          "path": "/:id"
         }
       }
     }
-  },
-  "error_codes": []
+  }
 }

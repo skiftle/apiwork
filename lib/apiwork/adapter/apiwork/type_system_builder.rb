@@ -127,27 +127,27 @@ module Apiwork
 
         def register_page_pagination
           type_registrar.type :page_pagination do
-            param :current, type: :integer, required: true
-            param :next, type: :integer, nullable: true
-            param :prev, type: :integer, nullable: true
-            param :total, type: :integer, required: true
-            param :items, type: :integer, required: true
+            param :current, type: :integer
+            param :next, type: :integer, nullable: true, optional: true
+            param :prev, type: :integer, nullable: true, optional: true
+            param :total, type: :integer
+            param :items, type: :integer
           end
         end
 
         def register_cursor_pagination
           type_registrar.type :cursor_pagination do
-            param :next_cursor, type: :string, nullable: true
-            param :prev_cursor, type: :string, nullable: true
+            param :next_cursor, type: :string, nullable: true, optional: true
+            param :prev_cursor, type: :string, nullable: true, optional: true
           end
         end
 
         def register_issue_type
           type_registrar.type :issue do
-            param :code, type: :string, required: true
-            param :field, type: :string, required: true
-            param :detail, type: :string, required: true
-            param :path, type: :array, of: :string, required: true
+            param :code, type: :string
+            param :field, type: :string
+            param :detail, type: :string
+            param :path, type: :array, of: :string
           end
         end
 
@@ -199,9 +199,9 @@ module Apiwork
           type_registrar.type(type_name) do
             params.each do |param_def|
               if param_def[:of]
-                param param_def[:name], type: param_def[:type], of: param_def[:of], required: false
+                param param_def[:name], type: param_def[:type], of: param_def[:of], optional: true
               else
-                param param_def[:name], type: param_def[:type], required: false
+                param param_def[:name], type: param_def[:type], optional: true
               end
             end
           end

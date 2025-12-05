@@ -37,12 +37,10 @@ module Apiwork
         @definition.params.sort_by { |name, _| name.to_s }.each do |name, param_options|
           case name
           when :issues
-            issue_params[name] = serialize_param(name, param_options).tap do |serialized|
-              serialized[:required] = true
-            end
+            issue_params[name] = serialize_param(name, param_options)
           else
             serialized = serialize_param(name, param_options)
-            serialized[:required] = param_options.fetch(:required, true)
+            serialized[:optional] = true if param_options[:optional]
             success_params[name] = serialized
           end
         end
@@ -65,7 +63,7 @@ module Apiwork
       def serialize_param(name, options)
         if options[:type] == :union
           result = serialize_union(options[:union])
-          result[:required] = options[:required] || false
+          result[:optional] = true if options[:optional]
           result[:nullable] = options[:nullable] || false
           apply_metadata_fields(result, options)
           return result
@@ -80,9 +78,9 @@ module Apiwork
 
           result = {
             type: custom_type_name,
-            required: options[:required] || false,
             nullable: options[:nullable] || false
           }
+          result[:optional] = true if options[:optional]
           apply_metadata_fields(result, options)
           result[:as] = options[:as] if options[:as]
           return result
@@ -97,9 +95,9 @@ module Apiwork
 
         result = {
           type: type_value,
-          required: options[:required] || false,
           nullable: options[:nullable] || false
         }
+        result[:optional] = true if options[:optional]
         apply_metadata_fields(result, options)
 
         result[:value] = options[:value] if options[:type] == :literal

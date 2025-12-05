@@ -3,7 +3,7 @@
 module Apiwork
   module Schema
     class AttributeDefinition
-      attr_reader :name, :type, :enum, :required, :empty, :min, :max,
+      attr_reader :name, :type, :enum, :optional, :empty, :min, :max,
                   :description, :example, :format, :deprecated
 
       ALLOWED_FORMATS = {
@@ -26,7 +26,7 @@ module Apiwork
 
             options[:enum] ||= detect_enum_values(name)
             options[:type] ||= detect_type(name) if @is_db_column
-            options[:required] = detect_required(name) if options[:required].nil?
+            options[:optional] = detect_optional(name) if options[:optional].nil?
             options[:nullable] = detect_nullable(name) if options[:nullable].nil?
           rescue ActiveRecord::StatementInvalid, ActiveRecord::NoDatabaseError, ActiveRecord::ConnectionNotEstablished
             # Silently skip DB introspection if database is unavailable (e.g., in CI without DB setup)
@@ -47,7 +47,7 @@ module Apiwork
         @decode = options[:decode]
         @empty = options[:empty]
         @nullable = options[:nullable] # Explicit nullable option (overrides DB detection)
-        @required = options[:required] || false
+        @optional = options[:optional] || false
         @type = options[:type]
         @enum = options[:enum]
         @min = options[:min]
@@ -75,8 +75,8 @@ module Apiwork
         @sortable
       end
 
-      def required?
-        @required
+      def optional?
+        @optional
       end
 
       def nullable?
@@ -122,7 +122,7 @@ module Apiwork
           decode: nil,
           empty: false,
           nullable: false,
-          required: false,
+          optional: false,
           type: :unknown,
           enum: nil,
           description: nil,
@@ -204,15 +204,15 @@ module Apiwork
         @model_class.type_for_attribute(name).type
       end
 
-      def detect_required(name)
+      def detect_optional(name)
         return false unless @model_class
         return false unless @is_db_column
 
         column = column_for(name)
 
-        return false if column&.default.present? && @model_class.defined_enums.exclude?(name.to_s)
+        return true if column&.default.present? && @model_class.defined_enums.exclude?(name.to_s)
 
-        !column&.null
+        column&.null || false
       end
 
       def detect_nullable(name)

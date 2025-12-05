@@ -17,4 +17,4 @@ export interface OrdersCreateResponse {
   body: OrdersCreateResponseBody;
 }
 
-export type OrdersCreateResponseBody = { id?: number; status?: string };
+export type OrdersCreateResponseBody = { id: number; status: string };

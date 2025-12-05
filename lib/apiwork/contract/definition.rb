@@ -41,12 +41,12 @@ module Apiwork
       end
 
       # rubocop:disable Metrics/ParameterLists
-      def param(name, type: nil, required: nil, default: nil, enum: nil, of: nil, as: nil,
+      def param(name, type: nil, optional: nil, default: nil, enum: nil, of: nil, as: nil,
                 discriminator: nil, value: nil, visited_types: nil, **options, &block)
         # rubocop:enable Metrics/ParameterLists
 
         if @params.key?(name)
-          merge_existing_param(name, type:, required:, default:, enum:, of:, as:,
+          merge_existing_param(name, type:, optional:, default:, enum:, of:, as:,
                                      discriminator:, value:, options:, &block)
           return
         end
@@ -60,13 +60,13 @@ module Apiwork
 
         case type
         when :literal
-          define_literal_param(name, value: value, required: required || false, default: default, as: as, options: options)
+          define_literal_param(name, value: value, optional: optional || false, default: default, as: as, options: options)
         when :union
           define_union_param(name, discriminator: discriminator, resolved_enum: resolved_enum,
-                                   required: required || false, default: default, as: as, options: options, &block)
+                                   optional: optional || false, default: default, as: as, options: options, &block)
         else
           define_regular_param(name, type: type, resolved_enum: resolved_enum,
-                                     required: required || false, default: default, of: of, as: as,
+                                     optional: optional || false, default: default, of: of, as: as,
                                      visited_types: visited_types, options: options, &block)
         end
       end
@@ -81,14 +81,14 @@ module Apiwork
           existing_meta[:shape].instance_eval(&block)
         else
           # First definition of meta - create it
-          param :meta, type: :object, required: false, &block
+          param :meta, type: :object, optional: true, &block
         end
       end
 
       private
 
       # rubocop:disable Metrics/ParameterLists
-      def merge_existing_param(name, type:, required:, default:, enum:, of:, as:, discriminator:, value:, options:, &block)
+      def merge_existing_param(name, type:, optional:, default:, enum:, of:, as:, discriminator:, value:, options:, &block)
         # rubocop:enable Metrics/ParameterLists
         existing = @params[name]
 
@@ -96,7 +96,7 @@ module Apiwork
 
         merged = existing.merge(options.compact)
         merged[:type] = type if type
-        merged[:required] = required unless required.nil?
+        merged[:optional] = optional unless optional.nil?
         merged[:default] = default if default
         merged[:enum] = resolved_enum if resolved_enum
         merged[:of] = of if of
@@ -121,7 +121,7 @@ module Apiwork
 
       def apply_param_defaults(param_hash)
         {
-          required: false,
+          optional: false,
           nullable: nil,
           default: nil,
           as: nil,
@@ -131,7 +131,7 @@ module Apiwork
         }.merge(param_hash)
       end
 
-      def define_literal_param(name, value:, required:, default:, as:, options:)
+      def define_literal_param(name, value:, optional:, default:, as:, options:)
         raise ArgumentError, 'Literal type requires a value parameter' if value.nil? && !options.key?(:value)
 
         literal_value = value.nil? ? options[:value] : value
@@ -140,14 +140,14 @@ module Apiwork
                                                name: name,
                                                type: :literal,
                                                value: literal_value,
-                                               required: required,
+                                               optional: optional,
                                                default: default,
                                                as: as,
                                                **options.except(:value) # Remove :value from options to avoid duplication
                                              })
       end
 
-      def define_union_param(name, discriminator:, resolved_enum:, required:, default:, as:, options:, &block)
+      def define_union_param(name, discriminator:, resolved_enum:, optional:, default:, as:, options:, &block)
         raise ArgumentError, 'Union type requires a block with variant definitions' unless block_given?
 
         union_definition = UnionDefinition.new(@contract_class, discriminator: discriminator)
@@ -156,7 +156,7 @@ module Apiwork
         @params[name] = apply_param_defaults({
                                                name: name,
                                                type: :union,
-                                               required: required,
+                                               optional: optional,
                                                default: default,
                                                as: as,
                                                union: union_definition,
@@ -167,7 +167,7 @@ module Apiwork
       end
 
       # rubocop:disable Metrics/ParameterLists
-      def define_regular_param(name, type:, resolved_enum:, required:, default:, of:, as:, visited_types:, options:, &block)
+      def define_regular_param(name, type:, resolved_enum:, optional:, default:, of:, as:, visited_types:, options:, &block)
         # rubocop:enable Metrics/ParameterLists
         custom_type_block = @contract_class.resolve_custom_type(type)
 
@@ -179,17 +179,17 @@ module Apiwork
 
         if custom_type_block
           define_custom_type_param(name, type: type, custom_type_block: custom_type_block,
-                                         resolved_enum: resolved_enum, required: required,
+                                         resolved_enum: resolved_enum, optional: optional,
                                          default: default, of: of, as: as, visited_types: visited_types,
                                          options: options, &block)
         else
           define_standard_param(name, type: type, resolved_enum: resolved_enum,
-                                      required: required, default: default, of: of, as: as, options: options, &block)
+                                      optional: optional, default: default, of: of, as: as, options: options, &block)
         end
       end
 
       # rubocop:disable Metrics/ParameterLists
-      def define_custom_type_param(name, type:, custom_type_block:, resolved_enum:, required:, default:, of:, as:,
+      def define_custom_type_param(name, type:, custom_type_block:, resolved_enum:, optional:, default:, of:, as:,
                                    visited_types:, options:, &block)
         # rubocop:enable Metrics/ParameterLists
         expansion_key = [@contract_class.object_id, type]
@@ -209,7 +209,7 @@ module Apiwork
         @params[name] = apply_param_defaults({
                                                name: name,
                                                type: :object, # Custom types are objects internally
-                                               required: required,
+                                               optional: optional,
                                                default: default,
                                                enum: resolved_enum, # Store resolved enum (values or reference)
                                                of: of,
@@ -220,11 +220,11 @@ module Apiwork
                                              })
       end
 
-      def define_standard_param(name, type:, resolved_enum:, required:, default:, of:, as:, options:, &block)
+      def define_standard_param(name, type:, resolved_enum:, optional:, default:, of:, as:, options:, &block)
         @params[name] = apply_param_defaults({
                                                name: name,
                                                type: type,
-                                               required: required,
+                                               optional: optional,
                                                default: default,
                                                enum: resolved_enum, # Store resolved enum (values or reference)
                                                of: of,
@@ -335,7 +335,7 @@ module Apiwork
       end
 
       def validate_required(name, value, param_options, field_path)
-        return nil unless param_options[:required]
+        return nil if param_options[:optional]
 
         is_missing = if param_options[:type] == :boolean
                        value.nil?

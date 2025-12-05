@@ -8,7 +8,7 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
 
   describe 'datetime type validation' do
     before do
-      definition.param :archived_at, type: :datetime, required: true
+      definition.param :archived_at, type: :datetime
     end
 
     context 'with valid datetime values' do
@@ -108,7 +108,7 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
     context 'when datetime field is optional' do
       before do
         definition.instance_variable_set(:@params, {})
-        definition.param :archived_at, type: :datetime, required: false
+        definition.param :archived_at, type: :datetime, optional: true
       end
 
       it 'allows nil value' do
@@ -128,7 +128,7 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
 
   describe 'date type validation' do
     before do
-      definition.param :birth_date, type: :date, required: true
+      definition.param :birth_date, type: :date
     end
 
     context 'with valid date values' do
@@ -203,7 +203,7 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
     context 'when date field is optional' do
       before do
         definition.instance_variable_set(:@params, {})
-        definition.param :birth_date, type: :date, required: false
+        definition.param :birth_date, type: :date, optional: true
       end
 
       it 'allows nil value' do
@@ -223,7 +223,7 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
 
   describe 'required enum validation' do
     before do
-      definition.param :status, type: :string, enum: %w[active inactive archived], required: true
+      definition.param :status, type: :string, enum: %w[active inactive archived]
     end
 
     context 'when required enum field is missing' do
@@ -307,7 +307,7 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
 
   describe 'optional enum validation' do
     before do
-      definition.param :status, type: :string, enum: %w[active inactive], required: false
+      definition.param :status, type: :string, enum: %w[active inactive], optional: true
     end
 
     it 'allows missing field' do
@@ -342,7 +342,7 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
   describe 'required non-enum fields' do
     let(:definition) do
       described_class.new(type: :body, contract_class: contract_class).tap do |d|
-        d.param :name, type: :string, required: true
+        d.param :name, type: :string
       end
     end
 
@@ -384,7 +384,7 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
   describe 'nullable validation for associations' do
     let(:definition) do
       described_class.new(type: :body, contract_class: contract_class).tap do |d|
-        d.param :address, type: :object, required: false, nullable: false
+        d.param :address, type: :object, optional: true, nullable: false
       end
     end
 
@@ -417,7 +417,7 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
     context 'when nullable: true' do
       let(:definition) do
         described_class.new(type: :body, contract_class: contract_class).tap do |d|
-          d.param :address, type: :object, required: false, nullable: true
+          d.param :address, type: :object, optional: true, nullable: true
         end
       end
 
@@ -446,7 +446,7 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
     context 'when nullable is not specified (defaults to allowing nil)' do
       let(:definition) do
         described_class.new(type: :body, contract_class: contract_class).tap do |d|
-          d.param :address, type: :object, required: false
+          d.param :address, type: :object, optional: true
         end
       end
 
@@ -461,7 +461,7 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
     context 'with array type (has_many)' do
       let(:definition) do
         described_class.new(type: :body, contract_class: contract_class).tap do |d|
-          d.param :comments, type: :array, required: false, nullable: false
+          d.param :comments, type: :array, optional: true, nullable: false
         end
       end
 
@@ -494,7 +494,7 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
     context 'with max constraint' do
       let(:definition) do
         described_class.new(type: :body, contract_class: contract_class).tap do |d|
-          d.param :tags, type: :array, of: :string, max: 3
+          d.param :tags, type: :array, of: :string, max: 3, optional: true
         end
       end
 
@@ -534,7 +534,7 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
     context 'with min constraint' do
       let(:definition) do
         described_class.new(type: :body, contract_class: contract_class).tap do |d|
-          d.param :tags, type: :array, of: :string, min: 2
+          d.param :tags, type: :array, of: :string, min: 2, optional: true
         end
       end
 
@@ -577,7 +577,7 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
     context 'with both min and max constraints' do
       let(:definition) do
         described_class.new(type: :body, contract_class: contract_class).tap do |d|
-          d.param :tags, type: :array, of: :string, min: 1, max: 5
+          d.param :tags, type: :array, of: :string, min: 1, max: 5, optional: true
         end
       end
 
@@ -618,7 +618,7 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
     context 'without length constraints' do
       let(:definition) do
         described_class.new(type: :body, contract_class: contract_class).tap do |d|
-          d.param :tags, type: :array, of: :string
+          d.param :tags, type: :array, of: :string, optional: true
         end
       end
 
@@ -640,7 +640,7 @@ RSpec.describe Apiwork::Contract::Definition, '#validate datetime and date types
     context 'with nested object arrays' do
       let(:definition) do
         described_class.new(type: :body, contract_class: contract_class).tap do |d|
-          d.param :comments, type: :array, of: :object, min: 1, max: 10
+          d.param :comments, type: :array, of: :object, min: 1, max: 10, optional: true
         end
       end
 

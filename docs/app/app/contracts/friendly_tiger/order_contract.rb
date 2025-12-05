@@ -3,8 +3,8 @@
 module FriendlyTiger
   class OrderContract < Apiwork::Contract::Base
     type :address do
-      param :street, type: :string, required: true
-      param :city, type: :string, required: true
+      param :street, type: :string
+      param :city, type: :string
     end
 
     enum :priority, values: %w[low normal high urgent]
@@ -12,7 +12,7 @@ module FriendlyTiger
     action :create do
       request do
         body do
-          param :shipping_address, type: :address, required: true
+          param :shipping_address, type: :address
           param :priority, type: :priority
         end
       end

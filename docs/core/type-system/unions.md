@@ -58,7 +58,7 @@ param :filter, type: :union, discriminator: :kind do
 
   variant tag: 'range', type: :object do
     param :gte, type: :integer
-    param :lte, type: :integer, required: false
+    param :lte, type: :integer, optional: true
   end
 end
 ```

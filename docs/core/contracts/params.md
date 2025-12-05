@@ -23,17 +23,19 @@ See [Types](../type-system/types.md) for the complete list of supported types.
 
 ## Required & Optional
 
+Fields are required by default, matching TypeScript conventions.
+
 ```ruby
-# Optional by default
+# Required (default)
 param :title, type: :string
 
-# Explicitly required
-param :title, type: :string, required: true
+# Explicitly optional
+param :notes, type: :string, optional: true
 
 # Works the same in query blocks
 query do
-  param :q, type: :string                       # optional
-  param :page, type: :integer, required: true   # required
+  param :id, type: :uuid                        # required
+  param :page, type: :integer, optional: true   # optional
 end
 ```
 
@@ -157,26 +159,22 @@ Params generate types for spec output.
 ```json
 {
   "title": {
-    "type": "string",
-    "required": true,
-    "constraints": { "min": 1, "max": 255 }
+    "type": "string"
   },
   "count": {
     "type": "integer",
-    "required": false,
-    "constraints": { "min": 0, "max": 100 }
+    "optional": true
   },
   "tags": {
     "type": "array",
     "of": "string",
-    "required": false
+    "optional": true
   },
   "author": {
     "type": "object",
-    "required": true,
     "shape": {
-      "name": { "type": "string", "required": true },
-      "email": { "type": "string", "required": false }
+      "name": { "type": "string" },
+      "email": { "type": "string", "optional": true }
     }
   }
 }

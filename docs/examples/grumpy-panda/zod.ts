@@ -15,7 +15,7 @@ export const OrdersCreateRequestSchema = z.object({
   body: OrdersCreateRequestBodySchema
 });
 
-export const OrdersCreateResponseBodySchema = z.object({ id: z.number().int().optional(), status: z.string().optional() });
+export const OrdersCreateResponseBodySchema = z.object({ id: z.number().int(), status: z.string() });
 
 export const OrdersCreateResponseSchema = z.object({
   body: OrdersCreateResponseBodySchema

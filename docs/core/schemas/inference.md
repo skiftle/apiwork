@@ -17,7 +17,7 @@ Everything that Apiwork derives automatically can be overridden when needed. In 
 | Model class               | Schema class name        | `model YourModel`       |
 | Attribute type            | Database column type     | `type: :string`         |
 | Nullable                  | Column NULL constraint   | `nullable: true`        |
-| Required                  | NOT NULL + no default    | `required: true`        |
+| Optional                  | NULL allowed or has default | `optional: true`     |
 | Enum values               | Rails enum definition    | `enum: [:a, :b]`        |
 | Association schema        | Association name         | `schema: CommentSchema` |
 | Association nullable      | Foreign key constraint   | `nullable: true`        |
@@ -112,8 +112,8 @@ An attribute is required when:
 ```ruby
 # Database: title VARCHAR(255) NOT NULL, status INTEGER DEFAULT 0
 class PostSchema < Apiwork::Schema::Base
-  attribute :title   # required: true (NOT NULL, no default)
-  attribute :status  # required: false (has default)
+  attribute :title   # required (NOT NULL, no default)
+  attribute :status  # optional (has default)
 end
 ```
 

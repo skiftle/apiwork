@@ -10,14 +10,14 @@ export interface OrderAddress {
   street: string;
 }
 
-export type OrderPriority = "high" | "low" | "normal" | "urgent";
+export type OrderPriority = 'high' | 'low' | 'normal' | 'urgent';
 
 export interface OrdersCreateRequest {
   body: OrdersCreateRequestBody;
 }
 
 export interface OrdersCreateRequestBody {
-  priority?: OrderPriority;
+  priority: OrderPriority;
   shipping_address: OrderAddress;
 }
 
@@ -25,4 +25,4 @@ export interface OrdersCreateResponse {
   body: OrdersCreateResponseBody;
 }
 
-export type OrdersCreateResponseBody = { id?: number; status?: string };
+export type OrdersCreateResponseBody = { id: number; status: string };

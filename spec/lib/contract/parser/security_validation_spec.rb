@@ -8,7 +8,7 @@ RSpec.describe 'Security and edge case validation' do
   describe 'large array handling' do
     let(:definition) do
       Apiwork::Contract::Definition.new(type: :input, contract_class: contract_class).tap do |d|
-        d.param :items, type: :array, of: :integer, required: false
+        d.param :items, type: :array, of: :integer, optional: true
       end
     end
 
@@ -31,7 +31,7 @@ RSpec.describe 'Security and edge case validation' do
   describe 'malformed input handling' do
     let(:definition) do
       Apiwork::Contract::Definition.new(type: :input, contract_class: contract_class).tap do |d|
-        d.param :name, type: :string, required: true
+        d.param :name, type: :string
       end
     end
 
@@ -47,7 +47,7 @@ RSpec.describe 'Security and edge case validation' do
   describe 'special character handling' do
     let(:definition) do
       Apiwork::Contract::Definition.new(type: :input, contract_class: contract_class).tap do |d|
-        d.param :text, type: :string, required: false
+        d.param :text, type: :string, optional: true
       end
     end
 
@@ -68,7 +68,7 @@ RSpec.describe 'Security and edge case validation' do
 
     it 'handles string with max_length constraint' do
       constrained_def = Apiwork::Contract::Definition.new(type: :input, contract_class: contract_class).tap do |d|
-        d.param :text, type: :string, required: false, max: 100
+        d.param :text, type: :string, optional: true, max: 100
       end
 
       result = constrained_def.validate({ text: 'a' * 101 })
@@ -81,8 +81,8 @@ RSpec.describe 'Security and edge case validation' do
   describe 'type confusion protection' do
     let(:definition) do
       Apiwork::Contract::Definition.new(type: :input, contract_class: contract_class).tap do |d|
-        d.param :count, type: :integer, required: false
-        d.param :active, type: :boolean, required: false
+        d.param :count, type: :integer, optional: true
+        d.param :active, type: :boolean, optional: true
       end
     end
 
@@ -106,8 +106,8 @@ RSpec.describe 'Security and edge case validation' do
   describe 'boundary value validation' do
     let(:definition) do
       Apiwork::Contract::Definition.new(type: :input, contract_class: contract_class).tap do |d|
-        d.param :huge_int, type: :integer, required: false
-        d.param :precise_float, type: :float, required: false
+        d.param :huge_int, type: :integer, optional: true
+        d.param :precise_float, type: :float, optional: true
       end
     end
 
@@ -129,9 +129,9 @@ RSpec.describe 'Security and edge case validation' do
   describe 'error accumulation' do
     it 'reports multiple validation errors' do
       multi_def = Apiwork::Contract::Definition.new(type: :input, contract_class: contract_class).tap do |d|
-        d.param :field1, type: :integer, required: true
-        d.param :field2, type: :integer, required: true
-        d.param :field3, type: :integer, required: true
+        d.param :field1, type: :integer
+        d.param :field2, type: :integer
+        d.param :field3, type: :integer
       end
 
       result = multi_def.validate({

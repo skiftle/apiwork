@@ -173,7 +173,7 @@ module Apiwork
         properties = definition[:shape].sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_def|
           key = transform_key(property_name)
           zod_type = if is_partial
-                       map_field_definition(property_def.merge(required: true), nil)
+                       map_field_definition(property_def.merge(optional: false), nil)
                      else
                        map_field_definition(property_def, action_name)
                      end
@@ -321,11 +321,11 @@ module Apiwork
 
         type += '.nullable()' if definition[:nullable]
 
-        is_discriminator = definition[:type] == :literal && definition[:required]
+        is_discriminator = definition[:type] == :literal && !definition[:optional]
 
         if is_update && !is_discriminator
           type += '.optional()' unless type.include?('.optional()')
-        elsif definition[:required] == false
+        elsif definition[:optional]
           type += '.optional()'
         end
 

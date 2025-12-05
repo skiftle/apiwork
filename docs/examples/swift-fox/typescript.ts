@@ -79,7 +79,7 @@ export interface PostsCreateResponse {
   body: PostsCreateResponseBody;
 }
 
-export type PostsCreateResponseBody = { issues: Issue[] } | { meta?: object; post: Post };
+export type PostsCreateResponseBody = { issues?: Issue[] } | { meta?: object; post: Post };
 
 export interface PostsIndexRequest {
   query: PostsIndexRequestQuery;
@@ -96,13 +96,13 @@ export interface PostsIndexResponse {
   body: PostsIndexResponseBody;
 }
 
-export type PostsIndexResponseBody = { issues: Issue[] } | { meta?: object; pagination?: PagePagination; posts?: Post[] };
+export type PostsIndexResponseBody = { issues?: Issue[] } | { meta?: object; pagination?: PagePagination; posts?: Post[] };
 
 export interface PostsShowResponse {
   body: PostsShowResponseBody;
 }
 
-export type PostsShowResponseBody = { issues: Issue[] } | { meta?: object; post: Post };
+export type PostsShowResponseBody = { issues?: Issue[] } | { meta?: object; post: Post };
 
 export interface PostsUpdateRequest {
   body: PostsUpdateRequestBody;
@@ -116,7 +116,7 @@ export interface PostsUpdateResponse {
   body: PostsUpdateResponseBody;
 }
 
-export type PostsUpdateResponseBody = { issues: Issue[] } | { meta?: object; post: Post };
+export type PostsUpdateResponseBody = { issues?: Issue[] } | { meta?: object; post: Post };
 
 export type SortDirection = 'asc' | 'desc';
 

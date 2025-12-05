@@ -7,7 +7,6 @@
   posts/:
     get:
       :operationId: postsIndex
-      :summary: List posts
       :tags:
       - Posts
       :parameters:
@@ -58,7 +57,6 @@
                       :$ref: "#/components/schemas/post"
     post:
       :operationId: postsCreate
-      :summary: Create post
       :tags:
       - Posts
       :requestBody:
@@ -98,12 +96,9 @@
                     :type: array
                     :items:
                       :$ref: "#/components/schemas/issue"
-                :required:
-                - issues
   posts/:id:
     get:
       :operationId: postsShow
-      :summary: Get post
       :tags:
       - Posts
       :responses:
@@ -123,7 +118,6 @@
                 - post
     patch:
       :operationId: postsUpdate
-      :summary: Update post
       :tags:
       - Posts
       :requestBody:
@@ -159,11 +153,8 @@
                     :type: array
                     :items:
                       :$ref: "#/components/schemas/issue"
-                :required:
-                - issues
     delete:
       :operationId: postsDestroy
-      :summary: Delete post
       :tags:
       - Posts
       :responses:

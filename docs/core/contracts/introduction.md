@@ -29,9 +29,9 @@ This says: the `create` action expects a request body with `title` and `body`, b
 
 Apiwork finds the contract from the controller name:
 
-| Controller | Contract |
-|------------|----------|
-| `Api::V1::PostsController` | `Api::V1::PostContract` |
+| Controller                    | Contract                   |
+| ----------------------------- | -------------------------- |
+| `Api::V1::PostsController`    | `Api::V1::PostContract`    |
 | `Api::V1::CommentsController` | `Api::V1::CommentContract` |
 
 Singular form of the controller name.
@@ -51,6 +51,7 @@ Now responses are serialized through the schema. See [Schemas](../schemas/introd
 ## What Happens at Runtime
 
 **Request validation:**
+
 1. Request comes in
 2. Contract extracts query and body params
 3. Values are coerced to declared types
@@ -59,6 +60,7 @@ Now responses are serialized through the schema. See [Schemas](../schemas/introd
 6. If invalid → 422 with structured errors
 
 **Response checking:**
+
 - After your controller runs, Apiwork checks the response against the contract
 - Mismatches are logged in development — you'll see them, fix them early
 - No errors returned to clients, no checks in production

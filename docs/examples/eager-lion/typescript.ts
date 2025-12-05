@@ -65,7 +65,7 @@ export interface InvoicesArchiveResponse {
   body: InvoicesArchiveResponseBody;
 }
 
-export type InvoicesArchiveResponseBody = { invoice: Invoice; meta?: object } | { issues: Issue[] };
+export type InvoicesArchiveResponseBody = { invoice: Invoice; meta?: object } | { issues?: Issue[] };
 
 export interface InvoicesCreateRequest {
   query: InvoicesCreateRequestQuery;
@@ -84,7 +84,7 @@ export interface InvoicesCreateResponse {
   body: InvoicesCreateResponseBody;
 }
 
-export type InvoicesCreateResponseBody = { invoice: Invoice; meta?: object } | { issues: Issue[] };
+export type InvoicesCreateResponseBody = { invoice: Invoice; meta?: object } | { issues?: Issue[] };
 
 export interface InvoicesIndexRequest {
   query: InvoicesIndexRequestQuery;
@@ -101,7 +101,7 @@ export interface InvoicesIndexResponse {
   body: InvoicesIndexResponseBody;
 }
 
-export type InvoicesIndexResponseBody = { invoices?: Invoice[]; meta?: object; pagination?: PagePagination } | { issues: Issue[] };
+export type InvoicesIndexResponseBody = { invoices?: Invoice[]; meta?: object; pagination?: PagePagination } | { issues?: Issue[] };
 
 export interface InvoicesShowRequest {
   query: InvoicesShowRequestQuery;
@@ -115,7 +115,7 @@ export interface InvoicesShowResponse {
   body: InvoicesShowResponseBody;
 }
 
-export type InvoicesShowResponseBody = { invoice: Invoice; meta?: object } | { issues: Issue[] };
+export type InvoicesShowResponseBody = { invoice: Invoice; meta?: object } | { issues?: Issue[] };
 
 export interface InvoicesUpdateRequest {
   query: InvoicesUpdateRequestQuery;
@@ -134,7 +134,7 @@ export interface InvoicesUpdateResponse {
   body: InvoicesUpdateResponseBody;
 }
 
-export type InvoicesUpdateResponseBody = { invoice: Invoice; meta?: object } | { issues: Issue[] };
+export type InvoicesUpdateResponseBody = { invoice: Invoice; meta?: object } | { issues?: Issue[] };
 
 export interface Issue {
   code: string;

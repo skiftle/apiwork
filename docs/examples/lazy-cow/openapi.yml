@@ -7,7 +7,6 @@
   posts/:
     get:
       :operationId: posts_index
-      :summary: List posts
       :tags:
       - Posts
       :responses:
@@ -15,7 +14,6 @@
           :description: No content
     post:
       :operationId: posts_create
-      :summary: Create post
       :tags:
       - Posts
       :responses:
@@ -24,7 +22,6 @@
   posts/:id:
     get:
       :operationId: posts_show
-      :summary: Get post
       :tags:
       - Posts
       :responses:
@@ -32,7 +29,6 @@
           :description: No content
     patch:
       :operationId: posts_update
-      :summary: Update post
       :tags:
       - Posts
       :responses:
@@ -40,7 +36,6 @@
           :description: No content
     delete:
       :operationId: posts_destroy
-      :summary: Delete post
       :tags:
       - Posts
       :responses:

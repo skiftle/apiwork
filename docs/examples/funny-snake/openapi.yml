@@ -7,21 +7,22 @@
   invoices/:
     get:
       :operationId: invoices_index
-      :summary: List invoices
       :tags:
       - Invoices
       :parameters:
       - :in: query
         :name: filter
-        :required: false
+        :required: true
         :schema:
           :type: object
           :properties:
             status:
               :type: string
+          :required:
+          - status
       - :in: query
         :name: sort
-        :required: false
+        :required: true
         :schema:
           :type: object
           :properties:
@@ -30,6 +31,8 @@
               :enum:
               - asc
               - desc
+          :required:
+          - issued_on
       :responses:
         :200:
           :description: Successful response
@@ -42,9 +45,10 @@
                     :type: array
                     :items:
                       :$ref: "#/components/schemas/invoice"
+                :required:
+                - invoices
     post:
       :operationId: invoices_create
-      :summary: Create invoice
       :tags:
       - Invoices
       :requestBody:
@@ -68,10 +72,11 @@
                 :properties:
                   invoice:
                     :$ref: "#/components/schemas/invoice"
+                :required:
+                - invoice
   invoices/:id:
     get:
       :operationId: invoices_show
-      :summary: Get invoice
       :tags:
       - Invoices
       :responses:
@@ -84,9 +89,10 @@
                 :properties:
                   invoice:
                     :$ref: "#/components/schemas/invoice"
+                :required:
+                - invoice
     patch:
       :operationId: invoices_update
-      :summary: Update invoice
       :tags:
       - Invoices
       :requestBody:
@@ -108,9 +114,10 @@
                 :properties:
                   invoice:
                     :$ref: "#/components/schemas/invoice"
+                :required:
+                - invoice
     delete:
       :operationId: invoices_destroy
-      :summary: Delete invoice
       :tags:
       - Invoices
       :responses:
@@ -137,6 +144,14 @@
           :type: string
         updated_at:
           :type: string
+      :required:
+      - created_at
+      - id
+      - issued_on
+      - lines
+      - number
+      - status
+      - updated_at
     invoice_line:
       :type: object
       :properties:
@@ -152,6 +167,13 @@
           :type: number
         updated_at:
           :type: string
+      :required:
+      - created_at
+      - description
+      - id
+      - price
+      - quantity
+      - updated_at
     invoice_payload:
       :type: object
       :properties:
@@ -165,6 +187,11 @@
           :type: string
         number:
           :type: string
+      :required:
+      - issued_on
+      - lines_attributes
+      - notes
+      - number
     issue:
       :type: object
       :properties:

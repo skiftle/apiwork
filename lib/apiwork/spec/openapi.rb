@@ -135,7 +135,7 @@ module Apiwork
           {
             in: 'query',
             name: transform_key(param_name),
-            required: param_definition.is_a?(Hash) ? (param_definition[:required] || false) : false,
+            required: param_definition.is_a?(Hash) ? !param_definition[:optional] : true,
             schema: build_parameter_schema(param_definition)
           }.tap do |param|
             param[:description] = param_definition[:description] if param_definition.is_a?(Hash) && param_definition[:description]
@@ -273,7 +273,7 @@ module Apiwork
         params_hash.each do |param_name, param_definition|
           transformed_key = transform_key(param_name)
           properties[transformed_key] = map_field_definition(param_definition, action_name)
-          required_fields << transformed_key if param_definition.is_a?(Hash) && param_definition[:required] && is_create_action
+          required_fields << transformed_key if param_definition.is_a?(Hash) && !param_definition[:optional] && is_create_action
         end
 
         result = { type: 'object', properties: }
@@ -348,7 +348,7 @@ module Apiwork
 
         is_create_action = action_name.to_s != 'update'
         if shape_fields.any? && is_create_action
-          required_keys = shape_fields.select { |_name, prop_def| prop_def.is_a?(Hash) && prop_def[:required] }.keys
+          required_keys = shape_fields.select { |_name, prop_def| prop_def.is_a?(Hash) && !prop_def[:optional] }.keys
           required_fields = required_keys.map { |k| transform_key(k) }
           result[:required] = required_fields if required_fields.any?
         end

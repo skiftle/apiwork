@@ -40,24 +40,24 @@ module Apiwork
           sort_type = build_sort_type
 
           if filter_type
-            definition.param :filter, type: :union, required: false do
+            definition.param :filter, type: :union, optional: true do
               variant type: filter_type
               variant type: :array, of: filter_type
             end
           end
 
           if sort_type
-            definition.param :sort, type: :union, required: false do
+            definition.param :sort, type: :union, optional: true do
               variant type: sort_type
               variant type: :array, of: sort_type
             end
           end
 
           page_type = build_page_type
-          definition.param :page, type: page_type, required: false
+          definition.param :page, type: page_type, optional: true
 
           include_type = build_include_type
-          definition.param :include, type: include_type, required: false
+          definition.param :include, type: include_type, optional: true
         end
 
         def writable_request(definition, context_symbol)
@@ -76,7 +76,7 @@ module Apiwork
             end
           end
 
-          definition.param root_key, type: payload_type_name, required: true
+          definition.param root_key, type: payload_type_name
         end
 
         def writable_params(definition, context_symbol, nested: false)
@@ -85,7 +85,7 @@ module Apiwork
 
             param_options = {
               type: map_type(attribute_definition.type),
-              required: attribute_definition.required?,
+              optional: attribute_definition.optional?,
               nullable: attribute_definition.nullable?,
               description: attribute_definition.description,
               example: attribute_definition.example,
@@ -120,7 +120,7 @@ module Apiwork
             end
 
             param_options = {
-              required: false,
+              optional: true,
               nullable: association_definition.nullable?,
               as: "#{name}_attributes".to_sym,
               description: association_definition.description,
@@ -152,10 +152,10 @@ module Apiwork
 
           definition.instance_variable_set(:@unwrapped_union, true)
 
-          definition.param root_key, type: resource_type_name, required: true
-          definition.param :meta, type: :object, required: false
+          definition.param root_key, type: resource_type_name
+          definition.param :meta, type: :object, optional: true
 
-          definition.param :issues, type: :array, of: :issue, required: false
+          definition.param :issues, type: :array, of: :issue, optional: true
         end
 
         def collection_response(definition)
@@ -165,11 +165,11 @@ module Apiwork
 
           definition.instance_variable_set(:@unwrapped_union, true)
 
-          definition.param root_key_plural, type: :array, of: resource_type_name, required: false
-          definition.param :pagination, type: pagination_type, required: false
-          definition.param :meta, type: :object, required: false
+          definition.param root_key_plural, type: :array, of: resource_type_name, optional: true
+          definition.param :pagination, type: pagination_type, optional: true
+          definition.param :meta, type: :object, optional: true
 
-          definition.param :issues, type: :array, of: :issue, required: false
+          definition.param :issues, type: :array, of: :issue, optional: true
         end
 
         def build_enums
@@ -256,7 +256,7 @@ module Apiwork
           action_definition.request do
             query do
               include_type = builder.send(:build_include_type)
-              param :include, type: include_type, required: false
+              param :include, type: include_type, optional: true
             end
           end
         end
@@ -272,7 +272,7 @@ module Apiwork
 
             unless contract_class.resolve_type(variant_type_name)
               contract_class.type(variant_type_name) do
-                param discriminator_name, type: :literal, value: tag.to_s, required: true
+                param discriminator_name, type: :literal, value: tag.to_s
 
                 builder.send(:writable_params, self, context_symbol, nested: false)
               end
@@ -311,7 +311,7 @@ module Apiwork
 
               param name,
                     type: builder.send(:map_type, attribute_definition.type),
-                    required: false,
+                    optional: true,
                     description: attribute_definition.description,
                     example: attribute_definition.example,
                     format: attribute_definition.format,
@@ -323,7 +323,7 @@ module Apiwork
               assoc_type = assoc_type_map[name]
 
               base_options = {
-                required: association_definition.always_included?,
+                optional: !association_definition.always_included?,
                 nullable: association_definition.nullable?,
                 description: association_definition.description,
                 example: association_definition.example,
@@ -369,9 +369,9 @@ module Apiwork
           type_options = {} unless depth.zero?
 
           contract_class.type(type_name, **type_options) do
-            param :_and, type: :array, of: type_name, required: false
-            param :_or, type: :array, of: type_name, required: false
-            param :_not, type: type_name, required: false
+            param :_and, type: :array, of: type_name, optional: true
+            param :_or, type: :array, of: type_name, optional: true
+            param :_not, type: type_name, optional: true
 
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
               next unless attribute_definition.filterable?
@@ -380,9 +380,9 @@ module Apiwork
               filter_type = builder.send(:filter_type_for, attribute_definition)
 
               if attribute_definition.enum
-                param name, type: filter_type, required: false, attribute_definition: attribute_definition
+                param name, type: filter_type, optional: true, attribute_definition: attribute_definition
               else
-                param name, type: :union, required: false, attribute_definition: attribute_definition do
+                param name, type: :union, optional: true, attribute_definition: attribute_definition do
                   variant type: builder.send(:map_type, attribute_definition.type)
                   variant type: filter_type
                 end
@@ -407,7 +407,7 @@ module Apiwork
                                                        depth: depth + 1)
                                         end
 
-              param name, type: association_filter_type, required: false, association_definition: association_definition if association_filter_type
+              param name, type: association_filter_type, optional: true, association_definition: association_definition if association_filter_type
             end
           end
 
@@ -440,7 +440,7 @@ module Apiwork
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
               next unless attribute_definition.sortable?
 
-              param name, type: :sort_direction, required: false, attribute_definition: attribute_definition
+              param name, type: :sort_direction, optional: true, attribute_definition: attribute_definition
             end
 
             schema_class_local.association_definitions.each do |name, association_definition|
@@ -461,7 +461,7 @@ module Apiwork
                                                      depth: depth + 1)
                                       end
 
-              param name, type: association_sort_type, required: false, association_definition: association_definition if association_sort_type
+              param name, type: association_sort_type, optional: true, association_definition: association_definition if association_sort_type
             end
           end
 
@@ -484,14 +484,14 @@ module Apiwork
 
           if strategy == :cursor
             contract_class.global_type(type_name) do
-              param :after, type: :string, required: false
-              param :before, type: :string, required: false
-              param :size, type: :integer, required: false, min: 1, max: max_size
+              param :after, type: :string, optional: true
+              param :before, type: :string, optional: true
+              param :size, type: :integer, optional: true, min: 1, max: max_size
             end
           else
             contract_class.global_type(type_name) do
-              param :number, type: :integer, required: false, min: 1
-              param :size, type: :integer, required: false, min: 1, max: max_size
+              param :number, type: :integer, optional: true, min: 1
+              param :size, type: :integer, optional: true, min: 1, max: max_size
             end
           end
 
@@ -521,7 +521,7 @@ module Apiwork
               next unless association_resource&.schema
 
               if visited.include?(association_resource.schema)
-                param name, type: :boolean, required: false unless association_definition.always_included?
+                param name, type: :boolean, optional: true unless association_definition.always_included?
               else
                 import_alias = builder.send(:import_association_contract, association_resource.schema, visited)
 
@@ -535,9 +535,9 @@ module Apiwork
                                            end
 
                 if association_definition.always_included?
-                  param name, type: association_include_type, required: false
+                  param name, type: association_include_type, optional: true
                 else
-                  param name, type: :union, required: false do
+                  param name, type: :union, optional: true do
                     variant type: :boolean
                     variant type: association_include_type
                   end
@@ -564,18 +564,18 @@ module Apiwork
 
           unless contract_class.resolve_type(create_type_name)
             contract_class.type(create_type_name) do
-              param :_type, type: :literal, value: 'create', required: true
+              param :_type, type: :literal, value: 'create'
               builder.send(:writable_params, self, :create, nested: true)
-              param :_destroy, type: :boolean, required: false if schema.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
+              param :_destroy, type: :boolean, optional: true if schema.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
             end
           end
 
           update_type_name = :nested_update_payload
           unless contract_class.resolve_type(update_type_name)
             contract_class.type(update_type_name) do
-              param :_type, type: :literal, value: 'update', required: true
+              param :_type, type: :literal, value: 'update'
               builder.send(:writable_params, self, :update, nested: true)
-              param :_destroy, type: :boolean, required: false if schema.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
+              param :_destroy, type: :boolean, optional: true if schema.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
             end
           end
 
@@ -614,7 +614,7 @@ module Apiwork
               discriminator_name = parent_schema.discriminator_name
               variant_tag = schema_class_local.variant_tag.to_s
 
-              param discriminator_name, type: :literal, value: variant_tag, required: true
+              param discriminator_name, type: :literal, value: variant_tag
             end
 
             assoc_type_map = {}
@@ -627,7 +627,7 @@ module Apiwork
               enum_option = attribute_definition.enum ? { enum: name } : {}
               param name,
                     type: builder.send(:map_type, attribute_definition.type),
-                    required: false,
+                    optional: true,
                     description: attribute_definition.description,
                     example: attribute_definition.example,
                     format: attribute_definition.format,
@@ -637,19 +637,19 @@ module Apiwork
 
             schema_class_local.association_definitions.each do |name, association_definition|
               assoc_type = assoc_type_map[name]
-              is_required = association_definition.always_included?
+              is_optional = !association_definition.always_included?
 
               if assoc_type
                 if association_definition.singular?
-                  param name, type: assoc_type, required: is_required, nullable: association_definition.nullable?
+                  param name, type: assoc_type, optional: is_optional, nullable: association_definition.nullable?
                 elsif association_definition.collection?
-                  param name, type: :array, of: assoc_type, required: is_required,
+                  param name, type: :array, of: assoc_type, optional: is_optional,
                               nullable: association_definition.nullable?
                 end
               elsif association_definition.singular?
-                param name, type: :object, required: is_required, nullable: association_definition.nullable?
+                param name, type: :object, optional: is_optional, nullable: association_definition.nullable?
               elsif association_definition.collection?
-                param name, type: :array, of: :object, required: is_required, nullable: association_definition.nullable?
+                param name, type: :array, of: :object, optional: is_optional, nullable: association_definition.nullable?
               end
             end
           end
@@ -779,8 +779,8 @@ module Apiwork
           api.union(filter_name) do
             variant type: scoped_enum_name
             variant type: :object, partial: true do
-              param :eq, type: scoped_enum_name, required: false
-              param :in, type: :array, of: scoped_enum_name, required: false
+              param :eq, type: scoped_enum_name, optional: true
+              param :in, type: :array, of: scoped_enum_name, optional: true
             end
           end
         end

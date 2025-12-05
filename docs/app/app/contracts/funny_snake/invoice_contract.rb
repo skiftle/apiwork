@@ -64,7 +64,7 @@ module FunnySnake
     action :create do
       request do
         body do
-          param :invoice, type: :payload, required: true
+          param :invoice, type: :payload
         end
       end
 
@@ -78,7 +78,7 @@ module FunnySnake
     action :update do
       request do
         body do
-          param :invoice, type: :payload, required: true
+          param :invoice, type: :payload
         end
       end
 

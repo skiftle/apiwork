@@ -7,7 +7,6 @@
   invoices/:
     get:
       :operationId: invoices_index
-      :summary: List invoices
       :tags:
       - Invoices
       :parameters:
@@ -58,7 +57,6 @@
                     :$ref: "#/components/schemas/page_pagination"
     post:
       :operationId: invoices_create
-      :summary: Create invoice
       :tags:
       - Invoices
       :parameters:
@@ -104,12 +102,9 @@
                     :type: array
                     :items:
                       :$ref: "#/components/schemas/issue"
-                :required:
-                - issues
   invoices/:id:
     get:
       :operationId: invoices_show
-      :summary: Get invoice
       :tags:
       - Invoices
       :parameters:
@@ -135,7 +130,6 @@
                 - invoice
     patch:
       :operationId: invoices_update
-      :summary: Update invoice
       :tags:
       - Invoices
       :parameters:
@@ -177,11 +171,8 @@
                     :type: array
                     :items:
                       :$ref: "#/components/schemas/issue"
-                :required:
-                - issues
     delete:
       :operationId: invoices_destroy
-      :summary: Delete invoice
       :tags:
       - Invoices
       :responses:
@@ -190,7 +181,6 @@
   invoices/:id/archive:
     patch:
       :operationId: invoices_archive
-      :summary: Archive invoice
       :tags:
       - Invoices
       :parameters:
