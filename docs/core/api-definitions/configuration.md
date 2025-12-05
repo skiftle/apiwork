@@ -77,6 +77,42 @@ Options:
 - `:camel` - `created_at` → `createdAt` in responses, `createdAt` → `created_at` in requests
 - `:underscore` - all keys use snake_case
 
+### Custom Transformation
+
+Key transformation happens via two methods on the API class:
+
+- `transform_request(hash)` — transforms incoming request parameters
+- `transform_response(hash)` — transforms outgoing response data
+
+Override these for custom behavior:
+
+```ruby
+class Api::V1 < Apiwork::API::Base
+  mount '/api/v1'
+
+  def self.transform_response(hash)
+    result = super  # Apply key_format transformation first
+    result[:_generated_at] = Time.current.iso8601
+    result
+  end
+end
+```
+
+To completely replace the default transformation:
+
+```ruby
+class Api::V1 < Apiwork::API::Base
+  mount '/api/v1'
+
+  def self.transform_request(hash)
+    # Custom logic without calling super
+    hash.deep_transform_keys { |k| k.to_s.downcase.to_sym }
+  end
+end
+```
+
+For more advanced customization, consider [creating a custom adapter](../../advanced/custom-adapters.md).
+
 ## Adapter Configuration
 
 Configure the built-in adapter:

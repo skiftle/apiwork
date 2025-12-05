@@ -7,7 +7,6 @@ module Apiwork
       include Configurable
 
       option :locale, type: :symbol, default: nil
-      option :key_format, type: :symbol, default: :keep, enum: %i[keep camel underscore]
       option :path, type: :string, default: nil
 
       attr_reader :data,
