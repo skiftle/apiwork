@@ -7,7 +7,8 @@ module Apiwork
 
       def generate(api_path:, format:, **options)
         generator_class = Registry.find(format)
-        generator_class.generate(path: api_path, **options.compact)
+        filtered_options = options.except(:path).compact
+        generator_class.generate(path: api_path, **filtered_options)
       end
 
       def write(output:, api_path: nil, format: nil, **options)

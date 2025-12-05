@@ -18,7 +18,7 @@ module Apiwork
     #
     # Returns spec for the current API
     def show
-      api = ::Apiwork::API.find(params[:api_path])
+      api = find_api
       spec_type = params[:spec_type].to_sym
       spec_config = api.spec_config(spec_type)
 
@@ -29,7 +29,7 @@ module Apiwork
                        .compact
 
       spec = ::Apiwork::Spec::Pipeline.generate(
-        api_path: params[:api_path],
+        api_path: api.metadata.path,
         format: spec_type,
         **merged_options
       )
@@ -45,6 +45,26 @@ module Apiwork
     end
 
     private
+
+    def find_api
+      api = ::Apiwork::API.find(params[:api_path]) if params[:api_path].present?
+      return api if api
+
+      find_api_from_request_path
+    end
+
+    def find_api_from_request_path
+      path_parts = request.path.split('/').reject(&:blank?)
+      return nil if path_parts.empty?
+
+      (path_parts.length - 1).downto(1) do |i|
+        path = "/#{path_parts[0...i].join('/')}"
+        api = ::Apiwork::API.find(path)
+        return api if api
+      end
+
+      raise "No API found for path: #{request.path}"
+    end
 
     # Render spec with appropriate content type
     def render_spec(spec, content_type)
