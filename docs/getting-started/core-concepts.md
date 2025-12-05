@@ -4,11 +4,11 @@ order: 3
 
 # Core Concepts
 
-Apiwork is built around three central components: the API definition, the contracts, and (optionally) schemas. Together they describe how your API is structured, which resources exist, which actions they expose, and the exact shape of both requests and responses.
+Apiwork has three main pieces: API definitions, contracts, and schemas. Here's how they fit together.
 
 ## API Definition
 
-Each API has its own definition file under `config/apis/`. An API definition works similarly to Rails' `routes.rb`, but focuses on the logical API structure rather than URL routing alone. It defines the resource tree, connects each resource to its contract and controller, and holds API-level settings like `key_format` and which specs to expose.
+Your API starts with a definition file in `config/apis/`. Think of it like `routes.rb`, but for your API structure:
 
 ```ruby
 # config/apis/v1.rb
@@ -21,11 +21,13 @@ Apiwork::API.draw '/api/v1' do
 end
 ```
 
-`resources` behaves as in Rails, and Apiwork uses the Rails router under the hood. The difference is that each resource must have a corresponding contract, ensuring every action has a well-defined structure.
+This declares which resources exist and which actions they support. Under the hood, Apiwork uses the Rails router — `resources` works exactly as you'd expect.
+
+The difference: every resource needs a contract. No contract, no endpoint.
 
 ## Contracts
 
-A contract defines the actions a resource supports — such as `index`, `show`, or `create` — along with the precise shape of both incoming requests and outgoing responses. Contracts can also define custom types, enums and shared structures that are reused across actions, and import types from other contracts when needed.
+Contracts define what each action accepts and returns:
 
 <!-- example: funny-snake -->
 
@@ -59,17 +61,17 @@ A contract defines the actions a resource supports — such as `index`, `show`, 
 
 </details>
 
-If a request does not match the contract, Apiwork rejects it immediately. If a response does not match, Apiwork logs the mismatch in development mode.
+Request doesn't match? Rejected immediately. Response doesn't match? Logged in development so you catch it early.
 
 ## Controllers
 
-Your controllers remain familiar. You keep your own logic, your own queries and service calls. The only changes are:
+Your controllers stay familiar. Two changes:
 
-- Input comes from `contract.query` or `contract.body` instead of `params`
-- Output goes through `respond_with`, which enforces the contract
+- Use `contract.query` and `contract.body` instead of `params`
+- Use `respond_with` to serialize responses
 
 ::: info Replaces Strong Parameters
-`contract.query` and `contract.body` only include params defined in the contract — unknown keys are rejected before reaching your controller. You can pass them directly to `create` and `update` without `permit`.
+`contract.query` and `contract.body` only include params defined in the contract. Unknown keys are rejected before your controller runs. Pass them directly to `create` and `update` — no `permit` needed.
 :::
 
 ```ruby
@@ -113,11 +115,11 @@ def set_invoice
 end
 ```
 
-Apiwork doesn't change how you write controllers — it simply guarantees that whatever enters or leaves them matches the contract.
+Same controller patterns. Apiwork just guarantees the data matches the contract.
 
 ## Schemas
 
-Schemas are optional, but they eliminate most manual contract definitions by mapping directly to your ActiveRecord models.
+Schemas connect contracts to your models. They're optional, but they save you from writing most contract definitions by hand.
 
 <!-- example: eager-lion -->
 
@@ -145,7 +147,7 @@ class InvoiceSchema < Apiwork::Schema::Base
 end
 ```
 
-With `schema!` in your contract, Apiwork generates request bodies, response shapes, filter types, sort options and includes — all from the schema:
+Add `schema!` to your contract, and Apiwork generates everything — request bodies, response shapes, filter types, sort options:
 
 ```ruby
 class InvoiceContract < Apiwork::Contract::Base
@@ -181,23 +183,21 @@ end
 
 </details>
 
-Schemas run through adapters, which transform schema definitions into metadata used for filtering, sorting, pagination, eager loading and nested operations.
+The adapter reads your database and model to infer:
 
-Apiwork ships with an ActiveRecord-aware adapter that automatically pulls in:
-
-- Database column types
-- Enum definitions
-- Nullability rules
+- Column types
+- Enum values
+- Nullability
 - Associations
 - Default values
 
-This lets Apiwork infer capabilities directly from the model.
+You declare what to expose. Apiwork figures out the rest.
 
 ## One Metadata Model
 
-The API definition, contracts and schemas all feed into a unified metadata model. Because each piece builds on the same foundation, Apiwork can generate OpenAPI, Zod and TypeScript definitions that stay perfectly aligned with your server.
+API definitions, contracts, and schemas all feed into the same metadata. That's why generated specs stay perfectly aligned with your server — OpenAPI, TypeScript, Zod all come from the same source.
 
-Documentation, typed clients and server behaviour all come from the same source of truth — eliminating duplication and keeping the entire API consistent end-to-end.
+Change a type, and the TypeScript updates. Add a filter, and OpenAPI reflects it. One source of truth, multiple outputs.
 
 ## Next Steps
 

@@ -4,15 +4,14 @@ order: 1
 
 # Introduction
 
-Contracts define the structure of each API action: what the request must look like and what the response will contain. They act as the formal description of how an endpoint behaves.
+Contracts define what goes in and what comes out of each endpoint.
 
-Every action that plans to receive a request or produce a response should have an action definition in its contract. The API definition declares _which_ actions exist, the controller implements the behaviour, and the contract specifies the shape of the request and response for those actions.
+You declare the shape of requests and responses. Apiwork validates incoming data, rejects anything that doesn't match, and checks responses in development.
 
-A minimal contract might look like this:
+## A Minimal Contract
 
 ```ruby
 class PostContract < Apiwork::Contract::Base
-
   action :create do
     request do
       body do
@@ -24,20 +23,22 @@ class PostContract < Apiwork::Contract::Base
 end
 ```
 
+This says: the `create` action expects a request body with `title` and `body`, both strings.
+
 ## Naming Convention
 
-Apiwork infers the contract from the controller name:
+Apiwork finds the contract from the controller name:
 
-| Controller                    | Contract                   |
-| ----------------------------- | -------------------------- |
-| `Api::V1::PostsController`    | `Api::V1::PostContract`    |
+| Controller | Contract |
+|------------|----------|
+| `Api::V1::PostsController` | `Api::V1::PostContract` |
 | `Api::V1::CommentsController` | `Api::V1::CommentContract` |
 
-The contract name is the singular form of the controller name.
+Singular form of the controller name.
 
-## Connecting to Schema
+## Connecting to a Schema
 
-Use `schema!` to connect the contract to its corresponding schema:
+Add `schema!` to connect the contract to its schema:
 
 ```ruby
 class PostContract < Apiwork::Contract::Base
@@ -45,17 +46,28 @@ class PostContract < Apiwork::Contract::Base
 end
 ```
 
-This enables automatic serialization of responses. See [Schemas](../schemas/introduction.md).
+Now responses are serialized through the schema. See [Schemas](../schemas/introduction.md).
 
-## How Contract Requirements Are Enforced
+## What Happens at Runtime
 
-Apiwork ensures that both incoming and outgoing data adhere to the contract in a clear and unobtrusive way.
+**Request validation:**
+1. Request comes in
+2. Contract extracts query and body params
+3. Values are coerced to declared types
+4. Validation runs against the contract
+5. If valid → controller receives clean data
+6. If invalid → 422 with structured errors
 
-When a request comes in, a `before_action` in the controller hands the parameters over to the contract. The contract then extracts the query and body parameters, coerces the incoming values into the declared types, and validates them against the request definition. If everything matches, the controller action runs as usual and receives the data. If not, Apiwork returns a `ValidationError` with a detailed `errors` array describing exactly what failed.
+**Response checking:**
+- After your controller runs, Apiwork checks the response against the contract
+- Mismatches are logged in development — you'll see them, fix them early
+- No errors returned to clients, no checks in production
 
-Response handling works differently, since it is less critical for the request flow. After the controller finishes, Apiwork checks the response against the contract's response definition. If something doesn't match, the mismatch is logged in development mode so it can be fixed early. No error is ever returned to the client, and these checks are skipped entirely in production to avoid any performance impact.
+This keeps incoming data strict while giving you visibility into response drift.
 
-This approach keeps incoming data strict and reliable—while still giving developers visibility into accidental response drift without affecting production behaviour.
+## Manual Usage
+
+You rarely need this, but contracts work standalone:
 
 ```ruby
 contract = PostContract.new(
@@ -65,8 +77,8 @@ contract = PostContract.new(
 )
 
 if contract.valid?
-  contract.body  # Parsed and coerced data
+  contract.body   # Parsed, coerced data
 else
-  contract.issues  # Validation errors
+  contract.issues # Validation errors
 end
 ```

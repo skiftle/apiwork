@@ -4,7 +4,9 @@ order: 1
 
 # Introspection
 
-Introspection is the machine-readable representation of your API. You rarely use it directly — it powers spec generators like OpenAPI, TypeScript, and Zod behind the scenes.
+Your API as data. Introspection gives you a complete, machine-readable snapshot of your API — resources, actions, types, enums, everything.
+
+You rarely use it directly. It powers spec generators like OpenAPI, TypeScript, and Zod behind the scenes.
 
 ## Usage
 
@@ -12,11 +14,11 @@ Introspection is the machine-readable representation of your API. You rarely use
 Apiwork::API.introspect('/api/v1')
 ```
 
-Returns a hash with everything about your API: resources, actions, types, and enums.
+This returns a hash with your full API structure.
 
 ## Output Structure
 
-The introspection format is designed to be as compact as possible while containing all information needed for spec generation.
+Compact but complete. Everything a spec generator needs:
 
 ```json
 {
@@ -73,11 +75,11 @@ The introspection format is designed to be as compact as possible while containi
 
 ## What It Powers
 
-Introspection is the foundation for:
+Introspection drives all spec generation:
 
-- **OpenAPI specs** — generates `/openapi.json` endpoints
-- **TypeScript types** — generates interfaces for frontend use
-- **Zod schemas** — generates runtime validators for JavaScript/TypeScript
-- **Custom generators** — build your own spec formats
+- **OpenAPI** — `/openapi.json` endpoints
+- **TypeScript** — type interfaces for your frontend
+- **Zod** — runtime validators for JavaScript/TypeScript
+- **Custom generators** — build your own formats
 
-See [Spec Generation](../core/spec-generation/introduction.md) for how to use these generators.
+See [Spec Generation](../core/spec-generation/introduction.md) for details.

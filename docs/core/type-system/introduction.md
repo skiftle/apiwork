@@ -4,11 +4,13 @@ order: 1
 
 # Introduction
 
-The type system is the heart of Apiwork. Every request, response, filter, sort, and payload flows through it. Define a type once, use it everywhere — in contracts, schemas, and generated client code.
+The type system powers everything in Apiwork. Requests, responses, filters, payloads — all flow through it.
+
+Define a type once. Use it in contracts, schemas, and generated specs.
 
 ## [Types](./types.md)
 
-Types are reusable structures:
+Reusable structures:
 
 ```ruby
 type :address do
@@ -36,7 +38,7 @@ export const AddressSchema = z.object({
 
 ## [Enums](./enums.md)
 
-Enums restrict values to a predefined set:
+Restrict values to a set:
 
 ```ruby
 enum :status, values: %w[draft published archived]
@@ -52,7 +54,7 @@ const StatusSchema = z.enum(['archived', 'draft', 'published']);
 
 ## [Unions](./unions.md)
 
-Unions allow multiple type options:
+Multiple type options:
 
 ```ruby
 union :filter_value do
@@ -69,24 +71,21 @@ type FilterValue = number | string;
 const FilterValueSchema = z.union([z.number().int(), z.string()]);
 ```
 
-## Two Levels
+## Scoping
 
-Types can be defined at two levels:
+Types can live at two levels:
 
-1. **API-level** (global): Available to all contracts in the API
-2. **Contract-scoped**: Local to a specific contract, unless you explicitly import it into another.
-
-From an external perspective, all types are effectively global. The only difference between API-level types and contract-scoped types is that contract types are prefixed with the contract name. This prefix can be customized using the `identifier` option.
-
-For example, a type `:status` defined in `OrderContract` becomes `order_status` in the generated specs, while an API-level `:status` type remains simply `status`.
-
+**API-level** — available to all contracts:
 ```ruby
-# API-level (global)
-type :address do
-  param :street, type: :string
+Apiwork::API.draw '/api/v1' do
+  type :address do
+    param :street, type: :string
+  end
 end
+```
 
-# Contract-scoped
+**Contract-scoped** — local to one contract:
+```ruby
 class OrderContract < Apiwork::Contract::Base
   type :line_item do
     param :product_id, type: :integer
@@ -95,8 +94,10 @@ class OrderContract < Apiwork::Contract::Base
 end
 ```
 
+The difference in generated specs: contract-scoped types get prefixed with the contract name. A `:status` type in `OrderContract` becomes `order_status`. API-level types keep their name as-is.
+
 See [Scoping](./scoping.md) for details.
 
 ## Available Types
 
-For a complete reference of all primitive and special types, see [Types](./types.md).
+For all primitives and special types, see [Types](./types.md).

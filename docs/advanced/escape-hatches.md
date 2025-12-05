@@ -4,11 +4,11 @@ order: 5
 
 # Escape Hatches
 
-Sometimes you need endpoints that don't fit Apiwork's contract-based model. Health checks, webhooks, or legacy endpoints might need different handling.
+Not everything belongs in a contract. Health checks, webhooks, legacy endpoints — sometimes you need to bypass Apiwork.
 
 ## Parallel Routes (Recommended)
 
-The cleanest approach is to define routes outside Apiwork entirely. Rails merges route sets, so your own routes coexist with Apiwork's.
+Define routes outside Apiwork entirely. Rails merges route sets, so your routes coexist with Apiwork's:
 
 ```ruby
 # config/routes.rb
@@ -22,7 +22,7 @@ Rails.application.routes.draw do
 end
 ```
 
-These controllers don't include `Apiwork::Controller` at all:
+These controllers don't include `Apiwork::Controller`:
 
 ```ruby
 class HealthController < ApplicationController
@@ -42,11 +42,11 @@ class WebhooksController < ApplicationController
 end
 ```
 
-This keeps Apiwork concerns completely separate from non-API endpoints.
+Clean separation. Apiwork never sees these endpoints.
 
 ## Base Controllers
 
-Base controllers that include `Apiwork::Controller` work automatically. Contract validation only runs when a matching resource exists in the API definition.
+Base controllers with `Apiwork::Controller` work fine. Validation only runs when a matching resource exists in the API definition:
 
 ```ruby
 module Api
@@ -62,34 +62,34 @@ module Api
 end
 ```
 
-No special configuration needed. Child controllers with defined resources validate contracts normally.
+No special configuration needed.
 
-## Skipping Contract Validation
+## Skipping Validation
 
-For controllers that include `Apiwork::Controller` but should skip validation:
+Rarely needed, but you can skip validation for specific actions:
 
 ```ruby
-class MySpecialController < ApplicationController
+class MyController < ApplicationController
   include Apiwork::Controller
 
   # Skip for all actions
   skip_contract_validation!
 
-  # Or skip for specific actions
+  # Or specific actions only
   skip_contract_validation! only: [:health, :ping]
 
-  # Or skip for all except specific actions
+  # Or all except specific actions
   skip_contract_validation! except: [:create, :update]
 end
 ```
 
-This is rarely needed. Consider parallel routes first.
+Consider parallel routes first.
 
-### When to Use
+## When to Use What
 
 | Scenario | Approach |
 |----------|----------|
 | Health checks, webhooks | Parallel routes |
 | Base controller | Works automatically |
-| Admin endpoints outside API | Parallel routes |
-| Controller that must include Apiwork::Controller but has no resource | `skip_contract_validation!` |
+| Admin endpoints | Parallel routes |
+| Must include Apiwork::Controller but has no resource | `skip_contract_validation!` |
