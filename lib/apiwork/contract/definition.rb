@@ -28,8 +28,8 @@ module Apiwork
         end
       end
 
-      def introspect
-        Apiwork::Introspection.definition(self)
+      def introspect(locale: nil)
+        Apiwork::Introspection.definition(self, locale:)
       end
 
       def as_json

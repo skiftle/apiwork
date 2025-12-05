@@ -29,28 +29,22 @@ module Apiwork
 
       def initialize(path, **options)
         @path = path
-        @explicit_options = options
-        validate_locale!
-        with_locale { load_data }
-        @options = self.class.default_options.merge(@api_options).merge(@explicit_options)
+        @api = Apiwork::API.find(path)
+        raise "API not found at path: #{path}" unless @api
+
+        @options = self.class.default_options
+                       .merge(key_format: @api.key_format)
+                       .merge(options)
         validate_options!
+
+        @data = @api.introspect(locale: @options[:locale])
       end
 
       def validate_options!
         @options.each do |name, value|
-          next if name == :locale # Already validated in validate_locale!
-
           option = self.class.options[name]
           option&.validate!(value)
         end
-      end
-
-      def load_data
-        api = Apiwork::API.find(path)
-        raise "API not found at path: #{path}" unless api
-
-        @api_options = { key_format: api.key_format }
-        @data = api.introspect
       end
 
       def generate
@@ -156,20 +150,6 @@ module Apiwork
       end
 
       private
-
-      def validate_locale!
-        locale = @explicit_options[:locale]
-        return unless locale
-        return if I18n.available_locales.include?(locale)
-
-        raise ConfigurationError,
-              "locale must be one of #{I18n.available_locales.inspect}, got #{locale.inspect}"
-      end
-
-      def with_locale(&block)
-        locale = @explicit_options[:locale]
-        locale ? I18n.with_locale(locale, &block) : yield
-      end
 
       def iterate_resources(resources_hash, parent_path = nil, &block)
         resources_hash.each do |resource_name, resource_data|

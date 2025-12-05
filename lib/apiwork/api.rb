@@ -22,8 +22,8 @@ module Apiwork
       end
 
       # DOCUMENTATION
-      def introspect(path)
-        find(path)&.introspect
+      def introspect(path, locale: nil)
+        find(path)&.introspect(locale:)
       end
 
       # DOCUMENTATION

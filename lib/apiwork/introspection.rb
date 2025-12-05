@@ -3,28 +3,41 @@
 module Apiwork
   module Introspection
     class << self
-      def api(api_class)
-        ApiSerializer.new(api_class).serialize
+      def api(api_class, locale: nil)
+        with_locale(locale) { ApiSerializer.new(api_class).serialize }
       end
 
-      def contract(contract_class, action: nil)
-        ContractSerializer.new(contract_class, action: action).serialize
+      def contract(contract_class, action: nil, locale: nil)
+        with_locale(locale) { ContractSerializer.new(contract_class, action:).serialize }
       end
 
-      def action_definition(action_definition)
-        ActionSerializer.new(action_definition).serialize
+      def action_definition(action_definition, locale: nil)
+        with_locale(locale) { ActionSerializer.new(action_definition).serialize }
       end
 
-      def types(api)
-        TypeSerializer.new(api).serialize_types
+      def types(api, locale: nil)
+        with_locale(locale) { TypeSerializer.new(api).serialize_types }
       end
 
-      def enums(api)
-        TypeSerializer.new(api).serialize_enums
+      def enums(api, locale: nil)
+        with_locale(locale) { TypeSerializer.new(api).serialize_enums }
       end
 
-      def definition(definition)
-        DefinitionSerializer.new(definition).serialize
+      def definition(definition, locale: nil)
+        with_locale(locale) { DefinitionSerializer.new(definition).serialize }
+      end
+
+      private
+
+      def with_locale(locale, &block)
+        return yield unless locale
+
+        unless I18n.available_locales.include?(locale)
+          raise ConfigurationError,
+                "locale must be one of #{I18n.available_locales.inspect}, got #{locale.inspect}"
+        end
+
+        I18n.with_locale(locale, &block)
       end
     end
   end

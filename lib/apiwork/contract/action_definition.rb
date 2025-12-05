@@ -31,8 +31,8 @@ module Apiwork
         @reset_response
       end
 
-      def introspect
-        Apiwork::Introspection.action_definition(self)
+      def introspect(locale: nil)
+        Apiwork::Introspection.action_definition(self, locale:)
       end
 
       def as_json

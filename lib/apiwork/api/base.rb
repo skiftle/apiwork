@@ -189,9 +189,10 @@ module Apiwork
           @recorder.with_options(options, &block)
         end
 
-        def introspect
+        def introspect(locale: nil)
           ensure_all_contracts_built!
-          @introspect ||= Apiwork::Introspection.api(self)
+          @introspect_cache ||= {}
+          @introspect_cache[locale] ||= Apiwork::Introspection.api(self, locale:)
         end
 
         def as_json

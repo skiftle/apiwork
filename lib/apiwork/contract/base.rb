@@ -166,8 +166,8 @@ module Apiwork
         end
 
         # DOCUMENTATION
-        def introspect(action = nil)
-          Apiwork::Introspection.contract(self, action: action)
+        def introspect(action: nil, locale: nil)
+          Apiwork::Introspection.contract(self, action:, locale:)
         end
 
         def as_json

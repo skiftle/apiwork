@@ -485,7 +485,7 @@ RSpec.describe 'Contract Serialization' do
         end
       end
 
-      json = contract_class.introspect(:create)
+      json = contract_class.introspect(action: :create)
 
       expect(json).to eq({
                            request: {
@@ -510,7 +510,7 @@ RSpec.describe 'Contract Serialization' do
     it 'returns nil for non-existent action' do
       contract_class = create_test_contract
 
-      json = contract_class.introspect(:nonexistent)
+      json = contract_class.introspect(action: :nonexistent)
 
       expect(json).to be_nil
     end
