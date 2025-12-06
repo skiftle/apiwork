@@ -75,7 +75,7 @@ interface Address {
 
 ## Extending Adapter Types
 
-[Adapters](/adapters/) may generate types you don't control directly — filter types, sort types, pagination types. Type merging makes it possible to add metadata like descriptions to these types.
+Adapters may generate types you don't control directly — filter types, sort types, pagination types. Type merging makes it possible to add metadata like descriptions to these types.
 
 ```ruby
 class InvoiceContract < Apiwork::Contract::Base
