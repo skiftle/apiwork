@@ -3,7 +3,7 @@
 module Apiwork
   module Adapter
     module ParamsNormalizer
-      NUMERIC_KEY_PATTERN = /^\d+$/.freeze
+      NUMERIC_KEY_PATTERN = /^\d+$/
 
       module_function
 

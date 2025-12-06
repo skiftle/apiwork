@@ -106,14 +106,14 @@ module Apiwork
         def add_type_if_matches(collection, type_reference, filter)
           return unless type_reference
 
-          type_reference_symbol = type_reference.is_a?(String) ? type_reference.to_sym : type_reference
-          return unless type_reference_symbol.is_a?(Symbol)
+          type_reference = type_reference.to_sym if type_reference.is_a?(String)
+          return unless type_reference.is_a?(Symbol)
 
           case filter
           when :custom_only
-            collection << type_reference_symbol unless primitive_type?(type_reference_symbol)
+            collection << type_reference unless primitive_type?(type_reference)
           when Array
-            collection << type_reference_symbol if filter.include?(type_reference_symbol)
+            collection << type_reference if filter.include?(type_reference)
           end
         end
       end

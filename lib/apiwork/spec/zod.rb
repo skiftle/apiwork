@@ -67,8 +67,8 @@ module Apiwork
         enums.map do |enum_name, enum_data|
           schema_name = zod_mapper.pascal_case(enum_name)
           enum_values = enum_data[:values]
-          enum_values_string = enum_values.sort.map { |v| "'#{v}'" }.join(', ')
-          "export const #{schema_name}Schema = z.enum([#{enum_values_string}]);"
+          enum_literal = enum_values.sort.map { |v| "'#{v}'" }.join(', ')
+          "export const #{schema_name}Schema = z.enum([#{enum_literal}]);"
         end.join("\n\n")
       end
 
@@ -140,8 +140,8 @@ module Apiwork
         enums.each do |enum_name, enum_data|
           type_name = typescript_mapper.pascal_case(enum_name)
           enum_values = enum_data[:values]
-          enum_values_string = enum_values.sort.map { |v| "'#{v}'" }.join(' | ')
-          all_types << { name: type_name, code: "export type #{type_name} = #{enum_values_string};" }
+          type_literal = enum_values.sort.map { |v| "'#{v}'" }.join(' | ')
+          all_types << { name: type_name, code: "export type #{type_name} = #{type_literal};" }
         end
 
         types.each do |type_name, type_shape|

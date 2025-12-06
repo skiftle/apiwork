@@ -270,10 +270,10 @@ module Apiwork
       end
 
       def transform_key(key)
-        key_string = key.to_s
+        key = key.to_s
 
-        leading_underscore = key_string.start_with?('_')
-        base = leading_underscore ? key_string[1..] : key_string
+        leading_underscore = key.start_with?('_')
+        base = leading_underscore ? key[1..] : key
 
         transformed = case key_format
                       when :camel

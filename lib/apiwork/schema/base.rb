@@ -117,9 +117,9 @@ module Apiwork
         end
 
         def root(singular, plural = nil)
-          singular_string = singular.to_s
-          plural_string = plural ? plural.to_s : singular_string.pluralize
-          self._root = { singular: singular_string, plural: plural_string }
+          singular = singular.to_s
+          plural = plural ? plural.to_s : singular.pluralize
+          self._root = { singular:, plural: }
         end
 
         def api_class
