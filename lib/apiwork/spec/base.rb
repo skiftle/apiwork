@@ -63,16 +63,12 @@ module Apiwork
 
       def transform_key(key, strategy = nil)
         key = key.to_s
-        transform_strategy = strategy || key_format
+        strategy ||= key_format
 
-        if key.start_with?('_')
-          underscore_prefix = key.match(/^_+/)[0]
-          key_without_prefix = key[underscore_prefix.length..]
-          transformed = transform_string(key_without_prefix, transform_strategy)
-          "#{underscore_prefix}#{transformed}"
-        else
-          transform_string(key, transform_strategy)
-        end
+        return transform_string(key, strategy) unless key.start_with?('_')
+
+        prefix = key[/^_+/]
+        "#{prefix}#{transform_string(key.delete_prefix(prefix), strategy)}"
       end
 
       def transform_string(string, strategy)

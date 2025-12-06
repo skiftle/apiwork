@@ -45,8 +45,7 @@ module Apiwork
 
             if nested_schema_class.respond_to?(:new)
               builder = self.class.new(nested_schema_class)
-              nested = builder.send(:always_included, visited)
-              result[name] = nested.any? ? nested : {}
+              result[name] = builder.send(:always_included, visited)
             else
               result[name] = {}
             end

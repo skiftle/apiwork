@@ -200,18 +200,11 @@ module Apiwork
       end
 
       def map_literal_type(definition)
-        value = definition[:value]
-        case value
-        when String
-          "'#{value}'"
-        when Integer, Float
-          value.to_s
-        when TrueClass, FalseClass
-          value.to_s
-        when NilClass
-          'null'
-        else
-          "'#{value}'"
+        case definition[:value]
+        when nil then 'null'
+        when String then "'#{definition[:value]}'"
+        when Numeric, TrueClass, FalseClass then definition[:value].to_s
+        else "'#{definition[:value]}'"
         end
       end
 
@@ -257,16 +250,7 @@ module Apiwork
       def extract_parent_resource_names(parent_path)
         return [] unless parent_path
 
-        parent_names = []
-        segments = parent_path.to_s.split('/')
-
-        segments.each do |segment|
-          next if segment.match?(/:/) # Skip ID parameters like :post_id
-
-          parent_names << segment
-        end
-
-        parent_names
+        parent_path.to_s.split('/').reject { |s| s.start_with?(':') }
       end
 
       def transform_key(key)

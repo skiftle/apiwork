@@ -74,7 +74,7 @@ module Apiwork
 
         resource_class = resource_class.constantize if resource_class.is_a?(String)
 
-        nested_includes = @include.is_a?(Hash) ? (@include[name] || @include[name.to_s] || @include[name.to_sym]) : nil
+        nested_includes = @include[name] || @include[name.to_s] || @include[name.to_sym] if @include.is_a?(Hash)
 
         if definition.collection?
           associated.map { |item| serialize_sti_aware(item, resource_class, nested_includes) }

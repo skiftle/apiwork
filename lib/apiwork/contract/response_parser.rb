@@ -13,8 +13,7 @@ module Apiwork
 
       def perform(body:)
         definition = body_definition
-        return ResponseResult.new(body:, issues: []) unless definition
-        return ResponseResult.new(body:, issues: []) if definition.params.empty?
+        return ResponseResult.new(body:, issues: []) unless definition&.params&.any?
 
         validated = definition.validate(body) || { params: body, issues: [] }
 

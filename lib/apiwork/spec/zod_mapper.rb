@@ -218,18 +218,11 @@ module Apiwork
       end
 
       def map_literal_type(definition)
-        value = definition[:value]
-        case value
-        when String
-          "z.literal('#{value}')"
-        when Integer, Float
-          "z.literal(#{value})"
-        when TrueClass, FalseClass
-          "z.literal(#{value})"
-        when NilClass
-          'z.null()'
-        else
-          "z.literal('#{value}')"
+        case definition[:value]
+        when nil then 'z.null()'
+        when String then "z.literal('#{definition[:value]}')"
+        when Numeric, TrueClass, FalseClass then "z.literal(#{definition[:value]})"
+        else "z.literal('#{definition[:value]}')"
         end
       end
 
@@ -304,16 +297,7 @@ module Apiwork
       def extract_parent_resource_names(parent_path)
         return [] unless parent_path
 
-        parent_names = []
-        segments = parent_path.to_s.split('/')
-
-        segments.each do |segment|
-          next if segment.match?(/:/) # Skip ID parameters like :post_id
-
-          parent_names << segment
-        end
-
-        parent_names
+        parent_path.to_s.split('/').reject { |s| s.start_with?(':') }
       end
 
       def apply_modifiers(type, definition, action_name)
