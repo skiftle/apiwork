@@ -250,17 +250,17 @@ class Vehicle < ApplicationRecord; end
 class Car < Vehicle; end
 class Truck < Vehicle; end
 
-# Schemas
-class CarSchema < Apiwork::Schema::Base
+# Schemas - parent first, children inherit from parent
+class VehicleSchema < Apiwork::Schema::Base
+  discriminator  # Uses :type column (auto-detected)
+end
+
+class CarSchema < VehicleSchema
   variant  # tag: 'Car' (from model's sti_name)
 end
 
-class TruckSchema < Apiwork::Schema::Base
+class TruckSchema < VehicleSchema
   variant  # tag: 'Truck' (from model's sti_name)
-end
-
-class VehicleSchema < Apiwork::Schema::Base
-  discriminator  # Uses :type column (auto-detected)
 end
 ```
 
