@@ -3,81 +3,83 @@
 module Apiwork
   module Contract
     class RequestParser
-      module Transformation
-        module_function
+      class Transformation
+        class << self
+          def apply(params, definition)
+            return params unless params.is_a?(Hash)
 
-        def apply(params, definition)
-          return params unless params.is_a?(Hash)
+            transformed = params.dup
 
-          transformed = params.dup
+            definition.params.each do |name, param_definition|
+              next unless transformed.key?(name)
 
-          definition.params.each do |name, param_definition|
-            next unless transformed.key?(name)
-
-            value = transformed[name]
-
-            if param_definition[:as]
-              transformed[param_definition[:as]] = transformed.delete(name)
-              name = param_definition[:as]
               value = transformed[name]
+
+              if param_definition[:as]
+                transformed[param_definition[:as]] = transformed.delete(name)
+                name = param_definition[:as]
+                value = transformed[name]
+              end
+
+              if param_definition[:shape] && value.is_a?(Hash)
+                transformed[name] = apply(value, param_definition[:shape])
+              elsif param_definition[:shape] && value.is_a?(Array)
+                transformed[name] = value.map do |item|
+                  item.is_a?(Hash) ? apply(item, param_definition[:shape]) : item
+                end
+              elsif param_definition[:type] == :array && param_definition[:of] && value.is_a?(Array)
+                transformed_array = transform_custom_type_array(value, param_definition, definition)
+                transformed[name] = transformed_array if transformed_array
+              end
             end
 
-            if param_definition[:shape] && value.is_a?(Hash)
-              transformed[name] = apply(value, param_definition[:shape])
-            elsif param_definition[:shape] && value.is_a?(Array)
-              transformed[name] = value.map do |item|
-                item.is_a?(Hash) ? apply(item, param_definition[:shape]) : item
-              end
-            elsif param_definition[:type] == :array && param_definition[:of] && value.is_a?(Array)
-              transformed_array = transform_custom_type_array(value, param_definition, definition)
-              transformed[name] = transformed_array if transformed_array
-            end
+            transformed
           end
 
-          transformed
-        end
+          private
 
-        def transform_custom_type_array(value, param_definition, definition)
-          shape = resolve_custom_type_shape(param_definition[:of], definition, param_definition[:type_contract_class])
+          def transform_custom_type_array(value, param_definition, definition)
+            shape = resolve_custom_type_shape(param_definition[:of], definition, param_definition[:type_contract_class])
 
-          return value.map { |item| item.is_a?(Hash) ? apply(item, shape) : item } if shape
+            return value.map { |item| item.is_a?(Hash) ? apply(item, shape) : item } if shape
 
-          transform_union_type_array(value, param_definition, definition)
-        end
+            transform_union_type_array(value, param_definition, definition)
+          end
 
-        def transform_union_type_array(value, param_definition, definition)
-          return nil unless param_definition[:type_contract_class]
+          def transform_union_type_array(value, param_definition, definition)
+            return nil unless param_definition[:type_contract_class]
 
-          action_name = definition.action_name || :create
-          nested_request_definition = param_definition[:type_contract_class].action_definition(action_name)&.request_definition
-          nested_definition = nested_request_definition&.body_definition
+            action_name = definition.action_name || :create
+            nested_request_definition = param_definition[:type_contract_class].action_definition(action_name)&.request_definition
+            nested_definition = nested_request_definition&.body_definition
 
-          return nil unless nested_definition
+            return nil unless nested_definition
 
-          root_param = nested_definition.params.values.first
-          nested_shape = root_param[:shape] if root_param
+            root_param = nested_definition.params.values.first
+            nested_shape = root_param[:shape] if root_param
 
-          return nil unless nested_shape
+            return nil unless nested_shape
 
-          value.map { |item| item.is_a?(Hash) ? apply(item, nested_shape) : item }
-        end
+            value.map { |item| item.is_a?(Hash) ? apply(item, nested_shape) : item }
+          end
 
-        def resolve_custom_type_shape(type_name, definition, type_contract_class = nil)
-          contract_class = type_contract_class || definition&.contract_class
-          return nil unless contract_class
+          def resolve_custom_type_shape(type_name, definition, type_contract_class = nil)
+            contract_class = type_contract_class || definition&.contract_class
+            return nil unless contract_class
 
-          custom_type_block = contract_class.resolve_custom_type(type_name)
-          return nil unless custom_type_block
+            custom_type_block = contract_class.resolve_custom_type(type_name)
+            return nil unless custom_type_block
 
-          temp_definition = Apiwork::Contract::Definition.new(
-            type: definition.type,
-            contract_class: contract_class,
-            action_name: definition.action_name
-          )
+            temp_definition = Apiwork::Contract::Definition.new(
+              type: definition.type,
+              contract_class: contract_class,
+              action_name: definition.action_name
+            )
 
-          custom_type_block.each { |block| temp_definition.instance_eval(&block) }
+            custom_type_block.each { |block| temp_definition.instance_eval(&block) }
 
-          temp_definition
+            temp_definition
+          end
         end
       end
     end

@@ -54,7 +54,6 @@ module Apiwork
         def deprecated(value = true)
           @info[:deprecated] = value
         end
-
       end
     end
   end

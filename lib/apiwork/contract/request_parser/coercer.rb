@@ -3,9 +3,7 @@
 module Apiwork
   module Contract
     class RequestParser
-      module Coercer
-        module_function
-
+      class Coercer
         COERCERS = {
           integer: lambda { |value|
             return nil if value.nil?
@@ -66,19 +64,21 @@ module Apiwork
           }
         }.freeze
 
-        def perform(value, type)
-          coercer = COERCERS[type]
-          return value unless coercer
+        class << self
+          def perform(value, type)
+            coercer = COERCERS[type]
+            return value unless coercer
 
-          begin
-            coercer.call(value)
-          rescue ArgumentError, TypeError
-            nil
+            begin
+              coercer.call(value)
+            rescue ArgumentError, TypeError
+              nil
+            end
           end
-        end
 
-        def performable?(type)
-          COERCERS.key?(type)
+          def performable?(type)
+            COERCERS.key?(type)
+          end
         end
       end
     end
