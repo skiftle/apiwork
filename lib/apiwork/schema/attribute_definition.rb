@@ -108,7 +108,7 @@ module Apiwork
       end
 
       def schema_class_name
-        @klass.name.demodulize.underscore.gsub(/_schema$/, '')
+        @schema_class_name ||= @klass.name.demodulize.underscore.gsub(/_schema$/, '')
       end
 
       private

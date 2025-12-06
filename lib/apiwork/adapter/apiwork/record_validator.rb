@@ -94,9 +94,11 @@ module Apiwork
         end
 
         def belongs_to?(attribute)
-          @record.class.reflect_on_all_associations(:belongs_to)
-                 .map(&:name)
-                 .include?(attribute)
+          belongs_to_names.include?(attribute)
+        end
+
+        def belongs_to_names
+          @belongs_to_names ||= @record.class.reflect_on_all_associations(:belongs_to).map(&:name)
         end
 
         def issue(rails_error, path:)

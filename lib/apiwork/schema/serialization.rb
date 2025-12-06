@@ -105,13 +105,17 @@ module Apiwork
         when Symbol, String
           @include.to_sym == name
         when Array
-          @include.map(&:to_sym).include?(name)
+          include_symbols.include?(name)
         when Hash
           name_sym = name.to_sym
           @include.key?(name_sym) || @include.key?(name_sym.to_s)
         else
           false
         end
+      end
+
+      def include_symbols
+        @include_symbols ||= @include.map(&:to_sym)
       end
     end
   end
