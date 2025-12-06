@@ -18,11 +18,11 @@ module Apiwork
 
         properties = fields.sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_definition|
           key = transform_key(property_name)
-          is_update = action_name.to_s == 'update'
-          is_optional = property_definition[:optional]
+          update = action_name.to_s == 'update'
+          optional = property_definition[:optional]
 
           ts_type = map_field(property_definition, action_name: action_name)
-          optional_marker = is_update || is_optional ? '?' : ''
+          optional_marker = update || optional ? '?' : ''
           "  #{key}#{optional_marker}: #{ts_type};"
         end.join("\n")
 
@@ -48,8 +48,8 @@ module Apiwork
         properties = query_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
           key = transform_key(param_name)
           ts_type = map_field(param_definition, action_name: action_name)
-          is_optional = param_definition[:optional]
-          optional_marker = is_optional ? '?' : ''
+          optional = param_definition[:optional]
+          optional_marker = optional ? '?' : ''
           "  #{key}#{optional_marker}: #{ts_type};"
         end.join("\n")
 
@@ -62,8 +62,8 @@ module Apiwork
         properties = body_params.sort_by { |k, _| k.to_s }.map do |param_name, param_definition|
           key = transform_key(param_name)
           ts_type = map_field(param_definition, action_name: action_name)
-          is_optional = param_definition[:optional]
-          optional_marker = is_optional ? '?' : ''
+          optional = param_definition[:optional]
+          optional_marker = optional ? '?' : ''
           "  #{key}#{optional_marker}: #{ts_type};"
         end.join("\n")
 
@@ -111,7 +111,7 @@ module Apiwork
       def map_field(definition, action_name: nil)
         return 'string' unless definition.is_a?(Hash)
 
-        is_nullable = definition[:nullable]
+        nullable = definition[:nullable]
 
         base_type = if definition[:type].is_a?(Symbol) && enum_or_type_reference?(definition[:type])
                       type_reference(definition[:type])
@@ -128,7 +128,7 @@ module Apiwork
           end
         end
 
-        if is_nullable
+        if nullable
           members = [base_type, 'null'].sort
           base_type = members.join(' | ')
         end
@@ -160,13 +160,13 @@ module Apiwork
       def map_object_type(definition, action_name: nil)
         return 'object' unless definition[:shape]
 
-        is_partial = definition[:partial]
+        partial = definition[:partial]
 
         properties = definition[:shape].sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_definition|
           key = transform_key(property_name)
           ts_type = map_field(property_definition, action_name: action_name)
-          is_optional = property_definition[:optional]
-          optional_marker = is_partial || is_optional ? '?' : ''
+          optional = property_definition[:optional]
+          optional_marker = partial || optional ? '?' : ''
           "#{key}#{optional_marker}: #{ts_type}"
         end.join('; ')
 

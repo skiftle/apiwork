@@ -168,11 +168,11 @@ module Apiwork
       def map_object_type(definition, action_name: nil)
         return 'z.object({})' unless definition[:shape]
 
-        is_partial = definition[:partial]
+        partial = definition[:partial]
 
         properties = definition[:shape].sort_by { |property_name, _| property_name.to_s }.map do |property_name, property_definition|
           key = transform_key(property_name)
-          zod_type = if is_partial
+          zod_type = if partial
                        map_field_definition(property_definition.merge(optional: false), action_name: nil)
                      else
                        map_field_definition(property_definition, action_name: action_name)
@@ -181,7 +181,7 @@ module Apiwork
         end.join(', ')
 
         base_object = "z.object({ #{properties} })"
-        is_partial ? "#{base_object}.partial()" : base_object
+        partial ? "#{base_object}.partial()" : base_object
       end
 
       def map_array_type(definition, action_name: nil)
@@ -317,13 +317,13 @@ module Apiwork
       end
 
       def apply_modifiers(type, definition, action_name)
-        is_update = action_name.to_s == 'update'
+        update = action_name.to_s == 'update'
 
         type += '.nullable()' if definition[:nullable]
 
-        is_discriminator = definition[:type] == :literal && !definition[:optional]
+        discriminator = definition[:type] == :literal && !definition[:optional]
 
-        if is_update && !is_discriminator
+        if update && !discriminator
           type += '.optional()' unless type.include?('.optional()')
         elsif definition[:optional]
           type += '.optional()'
