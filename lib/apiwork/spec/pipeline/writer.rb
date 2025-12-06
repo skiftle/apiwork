@@ -47,15 +47,15 @@ module Apiwork
           def write_file(content, file_path)
             FileUtils.mkdir_p(File.dirname(file_path))
 
-            content_string = if content.is_a?(Hash)
-                               JSON.pretty_generate(content)
-                             else
-                               content.to_s
-                             end
+            formatted_content = if content.is_a?(Hash)
+                                  JSON.pretty_generate(content)
+                                else
+                                  content.to_s
+                                end
 
             temp_file = Tempfile.new(['artifact', File.extname(file_path)])
             begin
-              temp_file.write(content_string)
+              temp_file.write(formatted_content)
               temp_file.close
               FileUtils.mv(temp_file.path, file_path)
             ensure

@@ -141,12 +141,12 @@ module Apiwork
 
         # DOCUMENTATION
         def action(action_name, replace: false, &block)
-          action_name_sym = action_name.to_sym
+          action_name = action_name.to_sym
 
-          action_definition = ActionDefinition.new(action_name: action_name_sym, contract_class: self, replace: replace)
+          action_definition = ActionDefinition.new(action_name:, contract_class: self, replace:)
           action_definition.instance_eval(&block) if block_given?
 
-          action_definitions[action_name_sym] = action_definition
+          action_definitions[action_name] = action_definition
         end
 
         def resolve_custom_type(type_name, visited: Set.new)
@@ -161,8 +161,8 @@ module Apiwork
         def action_definition(action_name)
           api_class&.ensure_contract_built!(self)
 
-          action_name_sym = action_name.to_sym
-          action_definitions[action_name_sym]
+          action_name = action_name.to_sym
+          action_definitions[action_name]
         end
 
         # DOCUMENTATION
@@ -222,10 +222,10 @@ module Apiwork
         end
 
         def define_action(action_name, &block)
-          action_name_sym = action_name.to_sym
+          action_name = action_name.to_sym
 
-          action_definition = action_definitions[action_name_sym] ||= ActionDefinition.new(
-            action_name: action_name_sym,
+          action_definition = action_definitions[action_name] ||= ActionDefinition.new(
+            action_name:,
             contract_class: self
           )
 

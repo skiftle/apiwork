@@ -27,25 +27,25 @@ module Apiwork
             end
 
             filter_hash.each do |key, value|
-              key_name_sym = key.to_sym
+              key = key.to_sym
 
-              if %i[_or _and].include?(key_name_sym) && value.is_a?(Array)
+              if %i[_or _and].include?(key) && value.is_a?(Array)
                 value.each do |filter_item|
                   extracted = extract_from_filter(filter_item, visited)
                   result = IncludesResolver.deep_merge_includes(result, extracted)
                 end
                 next
-              elsif key_name_sym == :_not && value.is_a?(Hash)
+              elsif key == :_not && value.is_a?(Hash)
                 extracted = extract_from_filter(value, visited)
                 result = IncludesResolver.deep_merge_includes(result, extracted)
                 next
               end
 
-              association_definition = schema_class.association_definitions[key_name_sym]
+              association_definition = schema_class.association_definitions[key]
 
               next unless association_definition
 
-              result[key_name_sym] = {}
+              result[key] = {}
 
               next unless value.is_a?(Hash)
 
@@ -55,7 +55,7 @@ module Apiwork
 
               extractor = self.class.new(nested_schema_class)
               nested_includes = extractor.extract_from_filter(value, visited)
-              result[key_name_sym] = nested_includes if nested_includes.any?
+              result[key] = nested_includes if nested_includes.any?
             end
 
             result
@@ -74,12 +74,12 @@ module Apiwork
               next unless sort_item.is_a?(Hash)
 
               sort_item.each do |key, value|
-                key_name_sym = key.to_sym
-                association_definition = schema_class.association_definitions[key_name_sym]
+                key = key.to_sym
+                association_definition = schema_class.association_definitions[key]
 
                 next unless association_definition
 
-                result[key_name_sym] = {}
+                result[key] = {}
 
                 next unless value.is_a?(Hash)
 
@@ -89,7 +89,7 @@ module Apiwork
 
                 extractor = self.class.new(nested_schema_class)
                 nested_includes = extractor.extract_from_sort(value, visited)
-                result[key_name_sym] = nested_includes if nested_includes.any?
+                result[key] = nested_includes if nested_includes.any?
               end
             end
 

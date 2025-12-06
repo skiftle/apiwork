@@ -38,8 +38,8 @@ module Apiwork
 
         return true if import_prefixes[:direct].include?(type_name)
 
-        type_name_str = type_name.to_s
-        import_prefixes[:prefixes].any? { |prefix| type_name_str.start_with?(prefix) }
+        type_name = type_name.to_s
+        import_prefixes[:prefixes].any? { |prefix| type_name.start_with?(prefix) }
       end
 
       def qualified_name(type_name, definition)

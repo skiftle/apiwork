@@ -71,23 +71,23 @@ module Apiwork
           return if include_params.blank?
 
           include_params.each do |key, value|
-            key_name_sym = key.to_sym
-            association_definition = schema_class.association_definitions[key_name_sym]
+            key = key.to_sym
+            association_definition = schema_class.association_definitions[key]
 
             if false?(value)
               next if association_definition&.always_included?
 
-              combined.delete(key_name_sym)
+              combined.delete(key)
 
             elsif value.is_a?(Hash)
               normalized = normalize_nested_includes(value)
-              combined[key_name_sym] = if combined.key?(key_name_sym) && combined[key_name_sym].is_a?(Hash)
-                                         deep_merge_includes(combined[key_name_sym], normalized)
-                                       else
-                                         normalized
-                                       end
+              combined[key] = if combined.key?(key) && combined[key].is_a?(Hash)
+                                deep_merge_includes(combined[key], normalized)
+                              else
+                                normalized
+                              end
             elsif true?(value)
-              combined[key_name_sym] ||= {}
+              combined[key] ||= {}
             end
           end
         end
@@ -99,12 +99,12 @@ module Apiwork
         def self.deep_merge_includes(base, override)
           result = base.dup
           override.each do |key, value|
-            key_name_sym = key.to_sym
-            result[key_name_sym] = if result[key_name_sym].is_a?(Hash) && value.is_a?(Hash)
-                                     deep_merge_includes(result[key_name_sym], value)
-                                   else
-                                     value
-                                   end
+            key = key.to_sym
+            result[key] = if result[key].is_a?(Hash) && value.is_a?(Hash)
+                            deep_merge_includes(result[key], value)
+                          else
+                            value
+                          end
           end
           result
         end
@@ -112,17 +112,17 @@ module Apiwork
         def normalize_nested_includes(hash)
           result = {}
           hash.each do |key, value|
-            key_name_sym = key.to_sym
+            key = key.to_sym
 
             next if false?(value)
 
-            result[key_name_sym] = if true?(value)
-                                     {}
-                                   elsif value.is_a?(Hash)
-                                     normalize_nested_includes(value)
-                                   else
-                                     {}
-                                   end
+            result[key] = if true?(value)
+                            {}
+                          elsif value.is_a?(Hash)
+                            normalize_nested_includes(value)
+                          else
+                            {}
+                          end
           end
           result
         end

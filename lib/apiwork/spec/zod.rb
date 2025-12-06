@@ -95,10 +95,9 @@ module Apiwork
           next unless resource_data[:schema]
 
           singular_name = resource_name.to_s.singularize
-          zod_mapper.pascal_case(singular_name)
-          schema_name_sym = singular_name.to_sym
+          schema_name = singular_name.to_sym
 
-          schema = zod_mapper.build_object_schema(schema_name_sym, resource_data[:schema], action_name: nil, recursive: false)
+          schema = zod_mapper.build_object_schema(schema_name, resource_data[:schema], action_name: nil, recursive: false)
           schemas << schema
         end
 
@@ -160,10 +159,10 @@ module Apiwork
           next unless resource_data[:schema]
 
           singular_name = resource_name.to_s.singularize
-          type_name = typescript_mapper.pascal_case(singular_name)
-          type_name_sym = singular_name.to_sym
+          type_name = singular_name.to_sym
 
-          code = typescript_mapper.build_interface(type_name_sym, resource_data[:schema], action_name: nil, recursive: false)
+          code = typescript_mapper.build_interface(type_name, resource_data[:schema], action_name: nil, recursive: false)
+          type_name = typescript_mapper.pascal_case(singular_name)
           all_types << { name: type_name, code: code }
 
           each_action(resource_data) do |action_name, action_data|

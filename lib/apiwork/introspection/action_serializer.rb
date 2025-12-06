@@ -82,10 +82,10 @@ module Apiwork
       def auto_raises
         return [] unless @action_definition.contract_class.schema?
 
-        action_name_sym = @action_definition.action_name.to_sym
-        return [:unprocessable_entity] if [:create, :update].include?(action_name_sym)
+        action_name = @action_definition.action_name.to_sym
+        return [:unprocessable_entity] if [:create, :update].include?(action_name)
 
-        return [] if [:index, :show, :destroy].include?(action_name_sym)
+        return [] if [:index, :show, :destroy].include?(action_name)
 
         http_method = find_http_method
         return [] unless http_method
@@ -96,17 +96,17 @@ module Apiwork
       def find_http_method
         return nil unless @action_definition.respond_to?(:find_api_for_contract, true)
 
-        api = @action_definition.send(:find_api_for_contract)
-        return nil unless api&.metadata
+        api_class = @action_definition.send(:find_api_for_contract)
+        return nil unless api_class&.metadata
 
-        action_name_sym = @action_definition.action_name.to_sym
-        api.metadata.search_resources do |resource_metadata|
+        action_name = @action_definition.action_name.to_sym
+        api_class.metadata.search_resources do |resource_metadata|
           next unless @action_definition.send(:resource_uses_contract?, resource_metadata, @action_definition.contract_class)
 
-          method = resource_metadata.dig(:members, action_name_sym, :method)
+          method = resource_metadata.dig(:members, action_name, :method)
           return method if method
 
-          resource_metadata.dig(:collections, action_name_sym, :method)
+          resource_metadata.dig(:collections, action_name, :method)
         end
       end
     end

@@ -107,8 +107,8 @@ module Apiwork
         when Array
           include_symbols.include?(name)
         when Hash
-          name_sym = name.to_sym
-          @include.key?(name_sym) || @include.key?(name_sym.to_s)
+          name = name.to_sym
+          @include.key?(name) || @include.key?(name.to_s)
         else
           false
         end
