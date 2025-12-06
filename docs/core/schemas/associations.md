@@ -216,39 +216,23 @@ has_many :comments, writable: true                   # Both
 
 ### Request Format
 
-Apiwork transforms association names to Rails' `_attributes` format:
+**Create** new records (no `id`):
 
 ```json
-// POST /api/v1/posts
 {
   "post": {
     "title": "New Post",
     "comments": [
-      { "content": "First comment", "author": "Alice" },
-      { "content": "Second comment", "author": "Bob" }
+      { "content": "First comment" },
+      { "content": "Second comment" }
     ]
   }
 }
 ```
 
-Internally becomes:
-
-```ruby
-{
-  title: "New Post",
-  comments_attributes: [
-    { content: "First comment", author: "Alice" },
-    { content: "Second comment", author: "Bob" }
-  ]
-}
-```
-
-### Updating Existing Records
-
-Include `id` to update existing associated records:
+**Update** existing records (include `id`):
 
 ```json
-// PATCH /api/v1/posts/1
 {
   "post": {
     "comments": [
@@ -258,9 +242,7 @@ Include `id` to update existing associated records:
 }
 ```
 
-### Deleting Records
-
-Use `_destroy: true` to delete associated records:
+**Delete** records (include `id` and `_destroy: true`):
 
 ```json
 {
@@ -273,6 +255,46 @@ Use `_destroy: true` to delete associated records:
 ```
 
 Requires `allow_destroy: true` in Rails model.
+
+**Mixed operations:**
+
+```json
+{
+  "post": {
+    "comments": [
+      { "id": "5", "content": "Updated" },
+      { "content": "New comment" },
+      { "id": "3", "_destroy": true }
+    ]
+  }
+}
+```
+
+### Generated Types
+
+The adapter generates a discriminated union for type-safe client code:
+
+```typescript
+// Create payload - no id
+interface CommentNestedCreatePayload {
+  _type: 'create';
+  content?: string;
+}
+
+// Update payload - id required
+interface CommentNestedUpdatePayload {
+  _type: 'update';
+  id: string;
+  content?: string;
+  _destroy?: boolean;
+}
+
+type CommentNestedPayload =
+  | CommentNestedCreatePayload
+  | CommentNestedUpdatePayload;
+```
+
+The `_type` discriminator lets TypeScript narrow the type based on the operation. At runtime, Rails determines create vs update by presence of `id` — the `_type` field is optional.
 
 ---
 
@@ -385,3 +407,5 @@ Polymorphic associations have limitations:
 | `writable` | No | Rails doesn't support nested attributes for polymorphic |
 | `filterable` | No | Cannot filter across multiple tables |
 | `sortable` | No | Cannot sort across multiple tables |
+
+If you need filtering or sorting on polymorphic associations, expose the associated models as their own [resources](/core/api-definitions/resources).
