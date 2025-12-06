@@ -22,9 +22,9 @@ module Apiwork
 
         # Response bodies are always objects (unless they're unions handled above)
         if @definition.type == :response_body
-          { type: :object, shape: result }
+          result.empty? ? nil : { type: :object, shape: result }
         else
-          result
+          result.presence
         end
       end
 
@@ -61,68 +61,82 @@ module Apiwork
       end
 
       def serialize_param(name, options)
-        if options[:type] == :union
-          result = serialize_union(options[:union])
-          result[:optional] = true if options[:optional]
-          result[:nullable] = true if options[:nullable]
-          apply_metadata_fields(result, options)
-          return result
-        end
+        return serialize_union_param(options) if options[:type] == :union
+        return serialize_custom_type_param(options) if options[:custom_type]
 
-        if options[:custom_type]
-          custom_type_name = options[:custom_type]
+        type_value = resolve_type(options[:type])
 
-          if @definition.contract_class.resolve_custom_type(custom_type_name)
-            custom_type_name = @name_resolver.qualified_name(custom_type_name, @definition)
-          end
+        result = {
+          type: type_value,
+          value: options[:type] == :literal ? options[:value] : nil,
+          enum: resolve_enum(options),
+          as: options[:as],
+          of: resolve_of(options),
+          shape: options[:shape]&.then { serialize_nested_shape(_1).presence }
+        }.compact
 
-          result = { type: custom_type_name }
-          result[:nullable] = true if options[:nullable]
-          result[:optional] = true if options[:optional]
-          apply_metadata_fields(result, options)
-          result[:as] = options[:as] if options[:as]
-          return result
-        end
-
-        type_value = options[:type]
-        if type_value && @definition.contract_class.resolve_custom_type(type_value)
-          type_value = @name_resolver.qualified_name(type_value, @definition)
-        elsif type_value && @definition.contract_class.resolve_enum(type_value)
-          type_value = @name_resolver.qualified_name(type_value, @definition)
-        end
-
-        result = { type: type_value }
-        result[:nullable] = true if options[:nullable]
-        result[:optional] = true if options[:optional]
+        apply_boolean_flags(result, options)
         apply_metadata_fields(result, options)
-
-        result[:value] = options[:value] if options[:type] == :literal
-
         result[:default] = options[:default] unless options[:default].nil?
 
-        if options[:enum]
-          result[:enum] = if options[:enum].is_a?(Hash) && options[:enum][:ref]
-                            scope = @name_resolver.scope_for_enum(@definition, options[:enum][:ref])
-                            api_class = @definition.contract_class.api_class
-                            api_class&.scoped_name(scope, options[:enum][:ref]) || options[:enum][:ref]
-                          else
-                            options[:enum]
-                          end
-        end
-
-        result[:as] = options[:as] if options[:as]
-
-        if options[:of]
-          result[:of] = if @definition.contract_class.resolve_custom_type(options[:of])
-                          @name_resolver.qualified_name(options[:of], @definition)
-                        else
-                          options[:of]
-                        end
-        end
-
-        result[:shape] = serialize_nested_shape(options[:shape]) if options[:shape]
-
         result
+      end
+
+      def serialize_union_param(options)
+        result = serialize_union(options[:union])
+        apply_boolean_flags(result, options)
+        apply_metadata_fields(result, options)
+        result
+      end
+
+      def serialize_custom_type_param(options)
+        custom_type_name = options[:custom_type]
+        if @definition.contract_class.resolve_custom_type(custom_type_name)
+          custom_type_name = @name_resolver.qualified_name(custom_type_name,
+                                                           @definition)
+        end
+
+        result = { type: custom_type_name, as: options[:as] }.compact
+        apply_boolean_flags(result, options)
+        apply_metadata_fields(result, options)
+        result
+      end
+
+      def apply_boolean_flags(result, options)
+        result[:nullable] = true if options[:nullable]
+        result[:optional] = true if options[:optional]
+      end
+
+      def resolve_type(type_value)
+        return type_value unless type_value
+
+        if @definition.contract_class.resolve_custom_type(type_value) || @definition.contract_class.resolve_enum(type_value)
+          @name_resolver.qualified_name(type_value, @definition)
+        else
+          type_value
+        end
+      end
+
+      def resolve_enum(options)
+        return nil unless options[:enum]
+
+        if options[:enum].is_a?(Hash) && options[:enum][:ref]
+          scope = @name_resolver.scope_for_enum(@definition, options[:enum][:ref])
+          api_class = @definition.contract_class.api_class
+          api_class&.scoped_name(scope, options[:enum][:ref]) || options[:enum][:ref]
+        else
+          options[:enum]
+        end
+      end
+
+      def resolve_of(options)
+        return nil unless options[:of]
+
+        if @definition.contract_class.resolve_custom_type(options[:of])
+          @name_resolver.qualified_name(options[:of], @definition)
+        else
+          options[:of]
+        end
       end
 
       def serialize_union(union_definition)
@@ -172,7 +186,10 @@ module Apiwork
                           end
         end
 
-        result[:shape] = serialize_nested_shape(variant_definition[:shape]) if variant_definition[:shape]
+        if variant_definition[:shape]
+          nested = serialize_nested_shape(variant_definition[:shape])
+          result[:shape] = nested if nested.present?
+        end
 
         result
       end
@@ -182,13 +199,15 @@ module Apiwork
       end
 
       def apply_metadata_fields(result, options)
-        description = resolve_attribute_description(options)
-        result[:description] = description if description
-        result[:example] = options[:example] if options[:example]
-        result[:format] = options[:format] if options[:format]
+        result.merge!({
+          description: resolve_attribute_description(options),
+          example: options[:example],
+          format: options[:format],
+          min: options[:min],
+          max: options[:max]
+        }.compact)
+
         result[:deprecated] = true if options[:deprecated]
-        result[:min] = options[:min] if options[:min]
-        result[:max] = options[:max] if options[:max]
       end
 
       def resolve_attribute_description(options)

@@ -284,9 +284,9 @@ RSpec.describe 'API Introspection' do
     end
 
     context 'when action has no specific raises' do
-      it 'has empty raises for index action (API-level raises apply implicitly)' do
+      it 'does not include raises key for index action (API-level raises apply implicitly)' do
         index_action = json[:resources][:posts][:actions][:index]
-        expect(index_action[:raises]).to be_empty
+        expect(index_action).not_to have_key(:raises)
       end
     end
 

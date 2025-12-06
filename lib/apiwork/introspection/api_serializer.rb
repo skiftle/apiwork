@@ -11,17 +11,16 @@ module Apiwork
         return nil unless @api_class.metadata
 
         resources = serialize_resources
-        all_error_codes = collect_all_error_codes(resources)
 
         {
           path: @api_class.mount_path,
-          info: serialize_info,
+          info: serialize_info.presence,
           types: TypeSerializer.new(@api_class).serialize_types,
           enums: TypeSerializer.new(@api_class).serialize_enums,
-          error_codes: serialize_error_codes(all_error_codes),
-          raises: @api_class.metadata.raises || [],
-          resources: resources
-        }
+          raises: @api_class.metadata.raises.presence,
+          error_codes: serialize_error_codes(collect_all_error_codes(resources)),
+          resources:
+        }.compact
       end
 
       private
@@ -70,15 +69,9 @@ module Apiwork
 
       def serialize_info
         info = @api_class.metadata.info
-        result = {}
+        return nil unless info
 
-        if info
-          result[:title] = info[:title]
-          result[:version] = info[:version]
-          result[:description] = info[:description]
-        end
-
-        result
+        { title: info[:title], version: info[:version], description: info[:description] }.compact.presence
       end
     end
   end

@@ -8,47 +8,47 @@ module Apiwork
       end
 
       def serialize_types
-        result = {}
+        return {} unless @api_class
 
-        return result unless @api_class
-
-        type_storage = @api_class.type_system.types
-        type_storage.each_pair.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
-          expanded_shape = metadata[:expanded_payload] ||= expand_payload(metadata)
-          description = resolve_type_description(qualified_name, metadata)
-          example = resolve_type_example(metadata)
-
-          base = if expanded_shape.is_a?(Hash) && expanded_shape[:type] == :union
-                   expanded_shape
-                 else
-                   { type: :object, shape: expanded_shape }
-                 end
-
-          base[:description] = description if description
-          base[:example] = example if example
-          base[:format] = metadata[:format] if metadata[:format]
-          base[:deprecated] = true if metadata[:deprecated]
-
-          result[qualified_name] = base
+        @api_class.type_system.types.each_pair.sort_by { |name, _| name.to_s }.each_with_object({}) do |(qualified_name, metadata), result|
+          result[qualified_name] = serialize_type(qualified_name, metadata)
         end
+      end
 
-        result
+      def serialize_type(qualified_name, metadata)
+        expanded_shape = metadata[:expanded_payload] ||= expand_payload(metadata)
+
+        base = if expanded_shape.is_a?(Hash) && expanded_shape[:type] == :union
+                 expanded_shape
+               elsif expanded_shape.present?
+                 { type: :object, shape: expanded_shape }
+               else
+                 { type: :object }
+               end
+
+        base.merge({
+          description: resolve_type_description(qualified_name, metadata),
+          example: resolve_type_example(metadata),
+          format: metadata[:format]
+        }.compact).tap { _1[:deprecated] = true if metadata[:deprecated] }
       end
 
       def serialize_enums
-        result = {}
+        return {} unless @api_class
 
-        return result unless @api_class
-
-        enum_storage = @api_class.type_system.enums
-        enum_storage.each_pair.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
-          enum_data = { values: metadata[:values] }
-          description = resolve_enum_description(qualified_name, metadata)
-          enum_data[:description] = description if description
-          enum_data[:example] = metadata[:example] if metadata[:example]
-          enum_data[:deprecated] = true if metadata[:deprecated]
-          result[qualified_name] = enum_data
+        @api_class.type_system.enums.each_pair.sort_by { |name, _| name.to_s }.each_with_object({}) do |(qualified_name, metadata), result|
+          result[qualified_name] = serialize_enum(qualified_name, metadata)
         end
+      end
+
+      def serialize_enum(qualified_name, metadata)
+        result = {
+          values: metadata[:values],
+          description: resolve_enum_description(qualified_name, metadata),
+          example: metadata[:example]
+        }.compact
+
+        result[:deprecated] = true if metadata[:deprecated]
 
         result
       end
@@ -99,7 +99,7 @@ module Apiwork
             expanded_shape = expand(variant[:shape_block], contract_class: scope)
             variant = variant.dup
             variant.delete(:shape_block)
-            variant[:shape] = expanded_shape
+            variant[:shape] = expanded_shape if expanded_shape.present?
           end
           variant
         end

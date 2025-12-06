@@ -268,8 +268,7 @@ RSpec.describe 'Contract Serialization' do
                                  title: { type: :string }
                                }
                              }
-                           },
-                           raises: []
+                           }
                          })
     end
 
@@ -283,9 +282,7 @@ RSpec.describe 'Contract Serialization' do
       action_def = contract_class.action_definition(:destroy)
       json = action_def.as_json
 
-      expect(json).to eq({
-                           raises: []
-                         })
+      expect(json).to eq({})
     end
   end
 
@@ -352,8 +349,7 @@ RSpec.describe 'Contract Serialization' do
                              body: {
                                title: { type: :string }
                              }
-                           },
-                           raises: []
+                           }
                          })
     end
 

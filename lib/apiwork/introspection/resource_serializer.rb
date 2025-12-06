@@ -14,26 +14,17 @@ module Apiwork
       def serialize
         resource_path = build_resource_path
         metadata = @resource_metadata[:metadata] || {}
+        contract_class = resolve_contract_class
 
-        result = {
+        {
           path: resource_path,
           summary: metadata[:summary],
           description: metadata[:description],
-          tags: metadata[:tags],
-          actions: {}
-        }
-
-        contract_class = resolve_contract_class
-        schema_class = resolve_schema_class
-
-        result[:schema] = serialize_resource_schema(schema_class) if schema_class
-
-        add_actions(result[:actions], @resource_metadata[:actions], :standard, contract_class)
-        add_actions(result[:actions], @resource_metadata[:members], :member, contract_class)
-        add_actions(result[:actions], @resource_metadata[:collections], :collection, contract_class)
-        add_nested_resources(result, resource_path) if @resource_metadata[:resources]&.any?
-
-        result
+          tags: metadata[:tags].presence,
+          schema: serialize_resource_schema(resolve_schema_class),
+          actions: build_actions(contract_class),
+          resources: build_nested_resources(resource_path)
+        }.compact
       end
 
       private
@@ -53,21 +44,28 @@ module Apiwork
         end
       end
 
+      def build_actions(contract_class)
+        actions = {}
+        add_actions(actions, @resource_metadata[:actions], :standard, contract_class)
+        add_actions(actions, @resource_metadata[:members], :member, contract_class)
+        add_actions(actions, @resource_metadata[:collections], :collection, contract_class)
+        actions
+      end
+
       def add_actions(actions, action_source, action_type, contract_class)
         return unless action_source&.any?
 
         action_source.each do |action_name, action_data|
           path_type = action_type == :standard ? action_name.to_sym : action_type
-          path = action_path(action_name, path_type)
-          add_action(actions, action_name, action_data[:method], path, contract_class,
-                     metadata: action_data[:metadata])
+          add_action(actions, action_name, action_data[:method], action_path(action_name, path_type), contract_class)
         end
       end
 
-      def add_nested_resources(result, resource_path)
-        result[:resources] = {}
-        @resource_metadata[:resources].each do |nested_name, nested_metadata|
-          result[:resources][nested_name] = ResourceSerializer.new(
+      def build_nested_resources(resource_path)
+        return nil unless @resource_metadata[:resources]&.any?
+
+        @resource_metadata[:resources].each_with_object({}) do |(nested_name, nested_metadata), result|
+          result[nested_name] = ResourceSerializer.new(
             @api_class,
             nested_name,
             nested_metadata,
@@ -92,27 +90,14 @@ module Apiwork
         end
       end
 
-      def add_action(actions, name, method, path, contract_class, metadata: {})
-        actions[name] = {
-          method: method,
-          path: path
-        }
+      def add_action(actions, name, method, path, contract_class)
+        actions[name] = { method:, path: }
 
-        return unless contract_class
-
-        action_definition = contract_class.action_definition(name)
+        action_definition = contract_class&.action_definition(name)
         return unless action_definition
 
-        contract_json = ActionSerializer.new(action_definition).serialize
-
-        actions[name][:summary] = contract_json[:summary]
-        actions[name][:description] = contract_json[:description]
-        actions[name][:tags] = contract_json[:tags]
-        actions[name][:deprecated] = contract_json[:deprecated]
-        actions[name][:operation_id] = contract_json[:operation_id]
-        actions[name][:request] = contract_json[:request] if contract_json[:request]
-        actions[name][:response] = contract_json[:response] if contract_json[:response]
-        actions[name][:raises] = contract_json[:raises] || []
+        actions[name].merge!(ActionSerializer.new(action_definition).serialize.except(:deprecated).compact)
+        actions[name][:deprecated] = true if action_definition.deprecated
       end
 
       def resolve_contract_class
@@ -142,24 +127,25 @@ module Apiwork
       def serialize_resource_schema(schema_class)
         return nil unless schema_class.respond_to?(:attribute_definitions)
 
-        attributes = {}
-        schema_class.attribute_definitions.each do |attribute_name, attribute_definition|
-          attribute_hash = {
-            type: attribute_definition.type,
-            nullable: attribute_definition.nullable?,
-            format: attribute_definition.format,
-            example: attribute_definition.example,
-            description: attribute_definition.description,
-            deprecated: attribute_definition.deprecated
-          }
-          attribute_hash[:optional] = true if attribute_definition.optional?
-          attributes[attribute_name] = attribute_hash.compact
-        end
+        attributes = schema_class.attribute_definitions.transform_values { serialize_attribute(_1) }
+        return nil if attributes.empty?
 
-        {
-          type: :object,
-          shape: attributes
-        }
+        { type: :object, shape: attributes }
+      end
+
+      def serialize_attribute(attr_def)
+        result = {
+          type: attr_def.type,
+          format: attr_def.format,
+          example: attr_def.example,
+          description: attr_def.description
+        }.compact
+
+        result[:nullable] = true if attr_def.nullable?
+        result[:optional] = true if attr_def.optional?
+        result[:deprecated] = true if attr_def.deprecated
+
+        result
       end
     end
   end

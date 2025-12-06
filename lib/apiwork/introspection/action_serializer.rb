@@ -8,23 +8,19 @@ module Apiwork
       end
 
       def serialize
-        result = {}
+        result = {
+          summary: resolve_summary,
+          description: resolve_description,
+          tags: @action_definition.tags.presence,
+          operation_id: @action_definition.operation_id,
+          request: serialize_request(@action_definition.request_definition),
+          response: serialize_response(@action_definition.response_definition),
+          raises: raises.presence
+        }.compact
 
-        result[:summary] = resolve_summary
-        result[:description] = resolve_description
-        result[:tags] = @action_definition.tags
-        result[:deprecated] = @action_definition.deprecated
-        result[:operation_id] = @action_definition.operation_id
+        result[:deprecated] = true if @action_definition.deprecated
 
-        request_definition = @action_definition.request_definition
-        result[:request] = serialize_request(request_definition) if request_definition
-
-        response_definition = @action_definition.response_definition
-        result[:response] = serialize_response(response_definition) if response_definition
-
-        result[:raises] = raises
-
-        result.compact
+        result
       end
 
       private
@@ -53,24 +49,18 @@ module Apiwork
       end
 
       def serialize_request(request_definition)
-        result = {}
+        return nil unless request_definition
 
-        query_definition = request_definition.query_definition
-        result[:query] = DefinitionSerializer.new(query_definition).serialize if query_definition
-
-        body_definition = request_definition.body_definition
-        result[:body] = DefinitionSerializer.new(body_definition).serialize if body_definition
-
-        result.presence
+        {
+          query: request_definition.query_definition&.then { DefinitionSerializer.new(_1).serialize },
+          body: request_definition.body_definition&.then { DefinitionSerializer.new(_1).serialize }
+        }.compact.presence
       end
 
       def serialize_response(response_definition)
-        result = {}
+        return nil unless response_definition
 
-        body_definition = response_definition.body_definition
-        result[:body] = DefinitionSerializer.new(body_definition).serialize if body_definition
-
-        result.presence
+        { body: response_definition.body_definition&.then { DefinitionSerializer.new(_1).serialize } }.compact.presence
       end
 
       def raises
