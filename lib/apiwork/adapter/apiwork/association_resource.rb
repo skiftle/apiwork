@@ -5,7 +5,7 @@ module Apiwork
     class Apiwork < Base
       AssociationResource = Struct.new(:schema, :sti, keyword_init: true) do
         def sti?
-          sti == true
+          sti
         end
 
         def self.polymorphic

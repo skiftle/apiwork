@@ -98,7 +98,7 @@ module Apiwork
       end
 
       def encode(value)
-        validate_enum(value) if enum && !value.nil?
+        validate_enum(value) if enum && value.present?
 
         apply_transformers(value, @encode)
       end
@@ -158,9 +158,9 @@ module Apiwork
 
       def validate_enum(value)
         enum_values = enum.is_a?(Hash) ? enum.values : enum
-        value_str = value.to_s
+        enum_value_string = value.to_s
 
-        return if enum_values.map(&:to_s).include?(value_str)
+        return if enum_values.map(&:to_s).include?(enum_value_string)
 
         issue = Issue.new(
           code: :invalid_value,
@@ -241,14 +241,14 @@ module Apiwork
         return if @format.nil?
 
         allowed_formats = ALLOWED_FORMATS[@type]
-        format_sym = @format.to_sym
+        format_symbol = @format.to_sym
 
         unless allowed_formats
           raise ConfigurationError,
                 "Attribute #{@name}: format option is not supported for type :#{@type}"
         end
 
-        return if allowed_formats.include?(format_sym)
+        return if allowed_formats.include?(format_symbol)
 
         raise ConfigurationError,
               "Attribute #{@name}: format :#{@format} is not valid for type :#{@type}. " \

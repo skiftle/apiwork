@@ -71,7 +71,7 @@ module Apiwork
           summary: action_data[:summary],
           description: action_data[:description],
           tags: build_tags(resource_metadata[:tags], action_data[:tags]),
-          deprecated: action_data[:deprecated] == true ? true : nil
+          deprecated: action_data[:deprecated] || nil
         }
 
         request_data = action_data[:request]
@@ -119,7 +119,7 @@ module Apiwork
         segments.each do |segment|
           if (match = segment.match(/:(\w+)_id/))
             parent_paths << match[1].pluralize
-          elsif !segment.include?(':')
+          elsif segment.exclude?(':')
             parent_paths << segment
           end
         end

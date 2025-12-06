@@ -202,16 +202,28 @@ total = invoice.total  # Context lost
 | `invoices_paginated` | `paginated_invoices` |
 | `user_serialized` | `serialized_user` |
 
-### Preserve full names
+### No type suffixes in variable names
+
+Don't add `_str`, `_string`, `_sym`, `_symbol`, `_int` etc. Describe *what* the value is, not its type.
 
 ```ruby
-# ✅ Good
-action_name_sym = action_name.to_sym
-customer_email = customer.email
+# ❌ Bad — type suffix
+values_str = enum_values.map { |v| "'#{v}'" }.join(' | ')
+key_string = key.to_s
 
+# ✅ Good — describes purpose
+type_literal = enum_values.map { |v| "'#{v}'" }.join(' | ')
+key = key.to_s
+```
+
+For single-use conversions, inline it:
+```ruby
 # ❌ Bad
-action_sym = action_name.to_sym
-email = customer.email
+format_sym = @format.to_sym
+allowed_formats.include?(format_sym)
+
+# ✅ Good
+allowed_formats.include?(@format.to_sym)
 ```
 
 ### Positive predicates

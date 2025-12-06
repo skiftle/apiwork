@@ -29,8 +29,8 @@ module Apiwork
         enums.each do |enum_name, enum_data|
           type_name = mapper.pascal_case(enum_name)
           enum_values = enum_data[:values]
-          values_str = enum_values.sort.map { |v| "'#{v}'" }.join(' | ')
-          all_types << { name: type_name, code: "export type #{type_name} = #{values_str};" }
+          enum_values_string = enum_values.sort.map { |v| "'#{v}'" }.join(' | ')
+          all_types << { name: type_name, code: "export type #{type_name} = #{enum_values_string};" }
         end
 
         sorted_types = TypeAnalysis.topological_sort_types(types)

@@ -20,14 +20,14 @@ module Apiwork
 
             def build(operator_hash)
               operator_hash.map do |operator, compare_value|
-                operator_sym = operator.to_sym
+                operator_symbol = operator.to_sym
 
-                unless valid_operators.include?(operator_sym)
-                  add_invalid_operator_issue(operator_sym)
+                unless valid_operators.include?(operator_symbol)
+                  add_invalid_operator_issue(operator_symbol)
                   next
                 end
 
-                yield(operator_sym, compare_value)
+                yield(operator_symbol, compare_value)
               end.compact.reduce(:and)
             end
 

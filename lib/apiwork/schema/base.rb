@@ -117,9 +117,9 @@ module Apiwork
         end
 
         def root(singular, plural = nil)
-          singular_str = singular.to_s
-          plural_str = plural ? plural.to_s : singular_str.pluralize
-          self._root = { singular: singular_str, plural: plural_str }
+          singular_string = singular.to_s
+          plural_string = plural ? plural.to_s : singular_string.pluralize
+          self._root = { singular: singular_string, plural: plural_string }
         end
 
         def api_class
@@ -253,7 +253,7 @@ module Apiwork
         end
 
         def deprecated?
-          _deprecated == true
+          _deprecated
         end
 
         def example(value = nil)

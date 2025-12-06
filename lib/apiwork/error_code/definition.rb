@@ -4,7 +4,7 @@ module Apiwork
   module ErrorCode
     Definition = Struct.new(:key, :status, :attach_path, keyword_init: true) do
       def attach_path?
-        attach_path == true
+        attach_path
       end
 
       def description(api_path: nil, options: {})

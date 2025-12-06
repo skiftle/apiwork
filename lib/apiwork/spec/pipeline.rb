@@ -78,8 +78,8 @@ module Apiwork
           return 0
         end
 
-        opts_str = options.any? ? " (#{options.map { |k, v| "#{k}: #{v}" }.join(', ')})" : ''
-        Rails.logger.debug "  ✓ #{api_path} → #{identifier}#{opts_str}"
+        options_string = options.any? ? " (#{options.map { |k, v| "#{k}: #{v}" }.join(', ')})" : ''
+        Rails.logger.debug "  ✓ #{api_path} → #{identifier}#{options_string}"
 
         content = generate(identifier, api_path, **options)
         generator_class = Registry.find(identifier)

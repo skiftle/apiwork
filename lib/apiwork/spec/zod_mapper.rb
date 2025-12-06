@@ -53,13 +53,13 @@ module Apiwork
         variants = type_shape[:variants]
 
         variant_schemas = variants.map { |variant| map_type_definition(variant, action_name: nil) }
-        variants_str = variant_schemas.map { |v| "  #{v}" }.join(",\n")
+        variant_schemas_string = variant_schemas.map { |v| "  #{v}" }.join(",\n")
 
         if type_shape[:discriminator]
           discriminator_key = transform_key(type_shape[:discriminator])
-          "export const #{schema_name}Schema = z.discriminatedUnion('#{discriminator_key}', [\n#{variants_str}\n]);"
+          "export const #{schema_name}Schema = z.discriminatedUnion('#{discriminator_key}', [\n#{variant_schemas_string}\n]);"
         else
-          "export const #{schema_name}Schema = z.union([\n#{variants_str}\n]);"
+          "export const #{schema_name}Schema = z.union([\n#{variant_schemas_string}\n]);"
         end
       end
 
@@ -296,8 +296,8 @@ module Apiwork
         if enum_reference.is_a?(Symbol) && enums.key?(enum_reference)
           "#{pascal_case(enum_reference)}Schema"
         elsif enum_reference.is_a?(Array)
-          values_str = enum_reference.map { |v| "'#{v}'" }.join(', ')
-          "z.enum([#{values_str}])"
+          enum_values_string = enum_reference.map { |v| "'#{v}'" }.join(', ')
+          "z.enum([#{enum_values_string}])"
         end
       end
 
@@ -337,10 +337,10 @@ module Apiwork
       end
 
       def transform_key(key)
-        key_str = key.to_s
+        key_string = key.to_s
 
-        leading_underscore = key_str.start_with?('_')
-        base = leading_underscore ? key_str[1..] : key_str
+        leading_underscore = key_string.start_with?('_')
+        base = leading_underscore ? key_string[1..] : key_string
 
         transformed = case key_format
                       when :camel
