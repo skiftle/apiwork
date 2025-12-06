@@ -868,8 +868,10 @@ module Apiwork
         nil
       end
 
+      NUMERIC_TYPES = Set[:integer, :float, :decimal, :number].freeze
+
       def numeric_type?(type)
-        [:integer, :float, :decimal, :number].include?(type&.to_sym)
+        NUMERIC_TYPES.include?(type&.to_sym)
       end
     end
   end

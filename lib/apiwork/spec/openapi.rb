@@ -117,10 +117,9 @@ module Apiwork
         segments = parent_path.to_s.split('/')
 
         segments.each do |segment|
-          if segment.match?(/:(\w+)_id/)
-            match = segment.match(/:(\w+)_id/)
-            parent_paths << match[1].pluralize if match
-          elsif segment.match?(/:/).nil?
+          if (match = segment.match(/:(\w+)_id/))
+            parent_paths << match[1].pluralize
+          elsif !segment.include?(':')
             parent_paths << segment
           end
         end

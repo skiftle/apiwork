@@ -19,11 +19,11 @@ module Apiwork
       end
 
       def find_api_class
-        path_parts = request.path.split('/').reject(&:blank?)
-        return Apiwork::API.find('/') if path_parts.empty?
+        parts = path_parts
+        return Apiwork::API.find('/') if parts.empty?
 
-        (path_parts.length - 1).downto(1) do |i|
-          path = "/#{path_parts[0...i].join('/')}"
+        (parts.length - 1).downto(1) do |i|
+          path = "/#{parts[0...i].join('/')}"
           api = Apiwork::API.find(path)
           return api if api
         end
@@ -33,9 +33,13 @@ module Apiwork
 
       def api_path
         api_class&.metadata&.path || begin
-          path_parts = request.path.split('/').reject(&:blank?)
-          path_parts.empty? ? '/' : "/#{path_parts[0..1].join('/')}"
+          parts = path_parts
+          parts.empty? ? '/' : "/#{parts[0..1].join('/')}"
         end
+      end
+
+      def path_parts
+        @path_parts ||= request.path.split('/').reject(&:blank?)
       end
 
       def relative_path

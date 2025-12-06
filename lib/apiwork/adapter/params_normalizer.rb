@@ -3,6 +3,8 @@
 module Apiwork
   module Adapter
     module ParamsNormalizer
+      NUMERIC_KEY_PATTERN = /^\d+$/.freeze
+
       module_function
 
       def call(params)
@@ -33,7 +35,7 @@ module Apiwork
       def indexed_hash?(hash)
         return false if hash.empty?
 
-        hash.keys.all? { |k| k.to_s =~ /^\d+$/ }
+        hash.keys.all? { |k| NUMERIC_KEY_PATTERN.match?(k.to_s) }
       end
     end
   end

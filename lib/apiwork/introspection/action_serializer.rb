@@ -103,9 +103,10 @@ module Apiwork
         api.metadata.search_resources do |resource_metadata|
           next unless @action_definition.send(:resource_uses_contract?, resource_metadata, @action_definition.contract_class)
 
-          return resource_metadata[:members][action_name_sym][:method] if resource_metadata[:members]&.key?(action_name_sym)
+          method = resource_metadata.dig(:members, action_name_sym, :method)
+          return method if method
 
-          resource_metadata[:collections][action_name_sym][:method] if resource_metadata[:collections]&.key?(action_name_sym)
+          resource_metadata.dig(:collections, action_name_sym, :method)
         end
       end
     end
