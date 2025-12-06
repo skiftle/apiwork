@@ -29,15 +29,15 @@ module Apiwork
 
       def initialize(api_path, **options)
         @api_path = api_path
-        @api = Apiwork::API.find(api_path)
-        raise "API not found at path: #{api_path}" unless @api
+        @api_class = Apiwork::API.find(api_path)
+        raise "API not found at path: #{api_path}" unless @api_class
 
         @options = self.class.default_options
-                       .merge(key_format: @api.key_format)
+                       .merge(key_format: @api_class.key_format)
                        .merge(options)
         validate_options!
 
-        @data = @api.introspect(locale: @options[:locale])
+        @data = @api_class.introspect(locale: @options[:locale])
       end
 
       def validate_options!

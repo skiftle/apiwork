@@ -4,14 +4,14 @@ module Apiwork
   module Adapter
     class Apiwork < Base
       class IncludesResolver
-        attr_reader :schema
+        attr_reader :schema_class
 
-        def initialize(schema:)
-          @schema = schema
+        def initialize(schema_class)
+          @schema_class = schema_class
         end
 
         def build(params: {}, for_collection: true)
-          return {} if schema.association_definitions.empty?
+          return {} if schema_class.association_definitions.empty?
 
           combined = {}
 
@@ -30,21 +30,21 @@ module Apiwork
         private
 
         def always_included(visited = Set.new)
-          return {} if visited.include?(schema.name)
+          return {} if visited.include?(schema_class.name)
 
-          visited = visited.dup.add(schema.name)
+          visited = visited.dup.add(schema_class.name)
           result = {}
 
-          schema.association_definitions.each do |name, definition|
+          schema_class.association_definitions.each do |name, definition|
             next unless definition.always_included?
 
-            association = schema.model_class.reflect_on_association(name)
+            association = schema_class.model_class.reflect_on_association(name)
 
-            nested_schema = resolve_schema_class(definition, association)
-            next unless nested_schema
+            nested_schema_class = resolve_schema_class(definition, association)
+            next unless nested_schema_class
 
-            if nested_schema.respond_to?(:new)
-              builder = self.class.new(schema: nested_schema)
+            if nested_schema_class.respond_to?(:new)
+              builder = self.class.new(nested_schema_class)
               nested = builder.send(:always_included, visited)
               result[name] = nested.any? ? nested : {}
             else
@@ -58,13 +58,13 @@ module Apiwork
         def extract_from_filter(filter_hash)
           return {} if filter_hash.blank?
 
-          AssociationExtractor.new(schema: schema).extract_from_filter(filter_hash)
+          AssociationExtractor.new(schema_class).extract_from_filter(filter_hash)
         end
 
         def extract_from_sort(sort_hash)
           return {} if sort_hash.blank?
 
-          AssociationExtractor.new(schema: schema).extract_from_sort(sort_hash)
+          AssociationExtractor.new(schema_class).extract_from_sort(sort_hash)
         end
 
         def apply_explicit_includes(combined, include_params)
@@ -72,7 +72,7 @@ module Apiwork
 
           include_params.each do |key, value|
             key_name_sym = key.to_sym
-            association_definition = schema.association_definitions[key_name_sym]
+            association_definition = schema_class.association_definitions[key_name_sym]
 
             if false?(value)
               next if association_definition&.always_included?
@@ -136,11 +136,11 @@ module Apiwork
         end
 
         def resolve_schema_class(definition, association)
-          schema_class = definition.schema_class || ::Apiwork::Schema::Base.resolve_association_schema(association, schema)
+          resolved_class = definition.schema_class || ::Apiwork::Schema::Base.resolve_association_schema(association, schema_class)
 
-          schema_class = constantize_safe(schema_class) if schema_class.is_a?(String)
+          resolved_class = constantize_safe(resolved_class) if resolved_class.is_a?(String)
 
-          schema_class
+          resolved_class
         end
 
         def constantize_safe(class_name)
@@ -154,17 +154,17 @@ module Apiwork
         end
 
         class AssociationExtractor
-          attr_reader :schema
+          attr_reader :schema_class
 
-          def initialize(schema:)
-            @schema = schema
+          def initialize(schema_class)
+            @schema_class = schema_class
           end
 
           def extract_from_filter(filter_hash, visited = Set.new)
             return {} if filter_hash.blank?
-            return {} if visited.include?(schema.name)
+            return {} if visited.include?(schema_class.name)
 
-            visited = visited.dup.add(schema.name)
+            visited = visited.dup.add(schema_class.name)
             result = {}
 
             if filter_hash.is_a?(Array)
@@ -190,7 +190,7 @@ module Apiwork
                 next
               end
 
-              association_definition = schema.association_definitions[key_name_sym]
+              association_definition = schema_class.association_definitions[key_name_sym]
 
               next unless association_definition
 
@@ -198,11 +198,11 @@ module Apiwork
 
               next unless value.is_a?(Hash)
 
-              nested_schema = resolve_nested_schema(association_definition)
+              nested_schema_class = resolve_nested_schema_class(association_definition)
 
-              next unless nested_schema.respond_to?(:association_definitions)
+              next unless nested_schema_class.respond_to?(:association_definitions)
 
-              extractor = self.class.new(schema: nested_schema)
+              extractor = self.class.new(nested_schema_class)
               nested_includes = extractor.extract_from_filter(value, visited)
               result[key_name_sym] = nested_includes if nested_includes.any?
             end
@@ -212,9 +212,9 @@ module Apiwork
 
           def extract_from_sort(sort_hash, visited = Set.new)
             return {} if sort_hash.blank?
-            return {} if visited.include?(schema.name)
+            return {} if visited.include?(schema_class.name)
 
-            visited = visited.dup.add(schema.name)
+            visited = visited.dup.add(schema_class.name)
             result = {}
 
             sort_array = sort_hash.is_a?(Array) ? sort_hash : [sort_hash]
@@ -224,7 +224,7 @@ module Apiwork
 
               sort_item.each do |key, value|
                 key_name_sym = key.to_sym
-                association_definition = schema.association_definitions[key_name_sym]
+                association_definition = schema_class.association_definitions[key_name_sym]
 
                 next unless association_definition
 
@@ -232,11 +232,11 @@ module Apiwork
 
                 next unless value.is_a?(Hash)
 
-                nested_schema = resolve_nested_schema(association_definition)
+                nested_schema_class = resolve_nested_schema_class(association_definition)
 
-                next unless nested_schema.respond_to?(:association_definitions)
+                next unless nested_schema_class.respond_to?(:association_definitions)
 
-                extractor = self.class.new(schema: nested_schema)
+                extractor = self.class.new(nested_schema_class)
                 nested_includes = extractor.extract_from_sort(value, visited)
                 result[key_name_sym] = nested_includes if nested_includes.any?
               end
@@ -247,12 +247,12 @@ module Apiwork
 
           private
 
-          def resolve_nested_schema(association_definition)
-            nested_schema = association_definition.schema_class
+          def resolve_nested_schema_class(association_definition)
+            nested_schema_class = association_definition.schema_class
 
-            nested_schema = IncludesResolver.constantize_safe(nested_schema) if nested_schema.is_a?(String)
+            nested_schema_class = IncludesResolver.constantize_safe(nested_schema_class) if nested_schema_class.is_a?(String)
 
-            nested_schema
+            nested_schema_class
           end
         end
       end

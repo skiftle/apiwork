@@ -3,16 +3,16 @@
 module Apiwork
   module Introspection
     class TypeSerializer
-      def initialize(api)
-        @api = api
+      def initialize(api_class)
+        @api_class = api_class
       end
 
       def serialize_types
         result = {}
 
-        return result unless @api
+        return result unless @api_class
 
-        type_storage = @api.type_system.types
+        type_storage = @api_class.type_system.types
         type_storage.each_pair.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
           expanded_shape = metadata[:expanded_payload] ||= expand_payload(metadata)
           description = resolve_type_description(qualified_name, metadata)
@@ -38,9 +38,9 @@ module Apiwork
       def serialize_enums
         result = {}
 
-        return result unless @api
+        return result unless @api_class
 
-        enum_storage = @api.type_system.enums
+        enum_storage = @api_class.type_system.enums
         enum_storage.each_pair.sort_by { |qualified_name, _| qualified_name.to_s }.each do |qualified_name, metadata|
           enum_data = { values: metadata[:values] }
           description = resolve_enum_description(qualified_name, metadata)
@@ -73,13 +73,13 @@ module Apiwork
       end
 
       def i18n_type_description(type_name)
-        @api.metadata.i18n_lookup(:types, type_name, :description)
+        @api_class.metadata.i18n_lookup(:types, type_name, :description)
       end
 
       def resolve_enum_description(enum_name, metadata)
         return metadata[:description] if metadata[:description]
 
-        @api.metadata.i18n_lookup(:enums, enum_name, :description)
+        @api_class.metadata.i18n_lookup(:enums, enum_name, :description)
       end
 
       def expand_payload(metadata)
@@ -124,7 +124,7 @@ module Apiwork
 
       def create_temp_contract
         contract = Class.new(Apiwork::Contract::Base)
-        contract.instance_variable_set(:@api_class, @api)
+        contract.instance_variable_set(:@api_class, @api_class)
         contract
       end
     end

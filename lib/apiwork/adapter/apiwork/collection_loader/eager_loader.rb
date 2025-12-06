@@ -19,7 +19,7 @@ module Apiwork
           def perform(params)
             return @relation if schema_class.association_definitions.empty?
 
-            includes_hash = IncludesResolver.new(schema: schema_class).build(params: params, for_collection: true)
+            includes_hash = IncludesResolver.new(schema_class).build(params: params, for_collection: true)
             return @relation if includes_hash.empty?
 
             @relation.includes(includes_hash)

@@ -15,12 +15,12 @@ module Apiwork
         with_locale(locale) { ActionSerializer.new(action_definition).serialize }
       end
 
-      def types(api, locale: nil)
-        with_locale(locale) { TypeSerializer.new(api).serialize_types }
+      def types(api_class, locale: nil)
+        with_locale(locale) { TypeSerializer.new(api_class).serialize_types }
       end
 
-      def enums(api, locale: nil)
-        with_locale(locale) { TypeSerializer.new(api).serialize_enums }
+      def enums(api_class, locale: nil)
+        with_locale(locale) { TypeSerializer.new(api_class).serialize_enums }
       end
 
       def definition(definition, locale: nil)

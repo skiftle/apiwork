@@ -32,7 +32,7 @@ module Apiwork
         private
 
         def build_includes_hash(includes_param)
-          IncludesResolver.new(schema: schema_class).build(
+          IncludesResolver.new(schema_class).build(
             params: { include: includes_param },
             for_collection: false
           )

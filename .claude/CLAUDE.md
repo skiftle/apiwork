@@ -226,6 +226,25 @@ allowed_formats.include?(format_sym)
 allowed_formats.include?(@format.to_sym)
 ```
 
+### Class reference naming
+
+Variables holding a class (not an instance) must use the `_class` suffix.
+
+```ruby
+# ❌ Bad
+def initialize(api)
+  @api = api
+end
+
+# ✅ Good
+def initialize(api_class)
+  @api_class = api_class
+end
+```
+
+This applies to parameters, instance variables, and local variables.
+Instances use short names: `schema`, `api`, `contract`.
+
 ### Positive predicates
 
 ```ruby
