@@ -42,11 +42,11 @@ module Apiwork
 
       def build_action_data(meta = {})
         Adapter::ActionData.new(
-          name: action_name,
-          method: request.method_symbol,
-          context: context,
+          action_name,
+          request.method_symbol,
+          context:,
           query: resource_metadata ? contract.query : {},
-          meta: meta
+          meta:
         )
       end
 

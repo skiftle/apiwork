@@ -14,9 +14,9 @@ module Apiwork
         number: %i[float double]
       }.freeze
 
-      def initialize(name, schema_class:, **options)
+      def initialize(name, schema_class, **options)
         @name = name
-        @klass = schema_class
+        @owner_schema_class = schema_class
 
         if schema_class.respond_to?(:model_class) && schema_class.model_class.present?
           @model_class = schema_class.model_class
@@ -108,7 +108,7 @@ module Apiwork
       end
 
       def schema_class_name
-        @schema_class_name ||= @klass.name.demodulize.underscore.gsub(/_schema$/, '')
+        @schema_class_name ||= @owner_schema_class.name.demodulize.underscore.gsub(/_schema$/, '')
       end
 
       private
@@ -135,17 +135,17 @@ module Apiwork
       end
 
       def validate_attribute_exists!
-        return if @klass.abstract_class
+        return if @owner_schema_class.abstract_class
 
         return if @model_class && (@is_db_column || @model_class.instance_methods.include?(@name.to_sym))
 
-        return if @klass.instance_methods.include?(@name.to_sym)
+        return if @owner_schema_class.instance_methods.include?(@name.to_sym)
 
         detail = if @model_class
-                   "Undefined resource attribute '#{@name}' in #{@klass.name}: " \
+                   "Undefined resource attribute '#{@name}' in #{@owner_schema_class.name}: " \
                    'no DB column, no reader method on model, and no reader method on resource'
                  else
-                   "Undefined resource attribute '#{@name}' in #{@klass.name}: " \
+                   "Undefined resource attribute '#{@name}' in #{@owner_schema_class.name}: " \
                    'no reader method on resource'
                  end
 

@@ -14,10 +14,10 @@ module Apiwork
                   :polymorphic,
                   :discriminator
 
-      def initialize(name, type:, schema_class:, **options)
+      def initialize(name, type, schema_class, **options)
         @name = name
         @type = type
-        @klass = schema_class
+        @owner_schema_class = schema_class
         @model_class = schema_class.model_class
         @schema_class = options[:schema]
         @polymorphic = options[:polymorphic] if options[:polymorphic].is_a?(Hash)
@@ -98,7 +98,7 @@ module Apiwork
       end
 
       def schema_class_name
-        @schema_class_name ||= @klass.name.demodulize.underscore.gsub(/_schema$/, '')
+        @schema_class_name ||= @owner_schema_class.name.demodulize.underscore.gsub(/_schema$/, '')
       end
 
       private
@@ -186,12 +186,12 @@ module Apiwork
       end
 
       def validate_association_exists!
-        return if @klass.abstract_class || @model_class.nil? || @schema_class
+        return if @owner_schema_class.abstract_class || @model_class.nil? || @schema_class
 
         reflection = @model_class.reflect_on_association(@name)
         return if reflection
 
-        detail = "Undefined resource association '#{@name}' in #{@klass.name}: no association on model"
+        detail = "Undefined resource association '#{@name}' in #{@owner_schema_class.name}: no association on model"
         error = ConfigurationError.new(
           code: :invalid_association,
           detail: detail,

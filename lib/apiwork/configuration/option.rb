@@ -11,7 +11,7 @@ module Apiwork
                   :name,
                   :type
 
-      def initialize(name, type:, default: nil, enum: nil, &block)
+      def initialize(name, type, default: nil, enum: nil, &block)
         @name = name
         @type = type
         @default = default
@@ -22,7 +22,7 @@ module Apiwork
       end
 
       def option(name, type:, default:, enum: nil)
-        @children[name] = NestedOption.new(name, type:, default:, enum:)
+        @children[name] = NestedOption.new(name, type, default, enum:)
       end
 
       def nested?

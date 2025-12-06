@@ -15,7 +15,7 @@ module Apiwork
       end
 
       def option(name, type:, default: nil, enum: nil, &block)
-        options[name] = Configuration::Option.new(name, type:, default:, enum:, &block)
+        options[name] = Configuration::Option.new(name, type, default:, enum:, &block)
       end
 
       def default_options

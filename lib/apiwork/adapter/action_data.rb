@@ -9,7 +9,7 @@ module Apiwork
                   :query,
                   :meta
 
-      def initialize(name:, method:, context: {}, query: {}, meta: {})
+      def initialize(name, method, context: {}, query: {}, meta: {})
         @name = name.to_sym
         @method = method.to_sym
         @context = context

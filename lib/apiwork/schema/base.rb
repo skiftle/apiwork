@@ -165,25 +165,25 @@ module Apiwork
 
         def attribute(name, **options)
           self.attribute_definitions = attribute_definitions.merge(
-            name => AttributeDefinition.new(name, schema_class: self, **options)
+            name => AttributeDefinition.new(name, self, **options)
           )
         end
 
         def has_one(name, **options)
           self.association_definitions = association_definitions.merge(
-            name => AssociationDefinition.new(name, type: :has_one, schema_class: self, **options)
+            name => AssociationDefinition.new(name, :has_one, self, **options)
           )
         end
 
         def has_many(name, **options)
           self.association_definitions = association_definitions.merge(
-            name => AssociationDefinition.new(name, type: :has_many, schema_class: self, **options)
+            name => AssociationDefinition.new(name, :has_many, self, **options)
           )
         end
 
         def belongs_to(name, **options)
           self.association_definitions = association_definitions.merge(
-            name => AssociationDefinition.new(name, type: :belongs_to, schema_class: self, **options)
+            name => AssociationDefinition.new(name, :belongs_to, self, **options)
           )
         end
 

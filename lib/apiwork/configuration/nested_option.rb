@@ -10,7 +10,7 @@ module Apiwork
                   :name,
                   :type
 
-      def initialize(name, type:, default:, enum: nil)
+      def initialize(name, type, default, enum: nil)
         @name = name
         @type = type
         @default = default
