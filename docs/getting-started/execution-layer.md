@@ -4,7 +4,7 @@ order: 5
 
 # Execution Layer
 
-The execution layer sits between your contracts and your data. It handles filtering, sorting, pagination, eager loading, and response formatting. This is where Apiwork transforms contract metadata into actual database queries and API responses.
+The execution layer sits between your contracts and your data. It handles filtering, sorting, pagination, eager loading, and response formatting.
 
 ## What It Does
 
@@ -21,18 +21,54 @@ Request → Contract → Execution Layer → Schema → Response
                     ActiveRecord
 ```
 
-## Built-in Adapter
+## Built-in Runtime
 
-Apiwork includes a built-in adapter that provides:
+Apiwork includes a built-in runtime that provides:
 
-- **Pagination** — page-based and cursor-based
-- **Filtering** — type-aware operators
+- **Filtering** — type-aware operators, logical combinations
 - **Sorting** — multi-field ordering
+- **Pagination** — page-based and cursor-based
 - **Eager Loading** — automatic N+1 prevention
+
+For detailed documentation, see [Runtime](../core/runtime/introduction.md).
+
+## Quick Reference
+
+### Filtering
+
+```
+GET /posts?filter[status][eq]=published&filter[views][gt]=100
+```
+
+See [Runtime — Filtering](../core/runtime/filtering.md) for all operators.
+
+### Sorting
+
+```
+GET /posts?sort[created_at]=desc&sort[title]=asc
+```
+
+See [Runtime — Sorting](../core/runtime/sorting.md) for multi-field sorting.
+
+### Pagination
+
+```
+GET /posts?page[number]=2&page[size]=20
+```
+
+See [Runtime — Pagination](../core/runtime/pagination.md) for cursor-based pagination.
+
+### Eager Loading
+
+```
+GET /posts?include[comments]=true&include[author]=true
+```
+
+See [Runtime — Eager Loading](../core/runtime/eager-loading.md) for nested includes.
 
 ## Configuration
 
-Configure the adapter in your API definition:
+Configure the runtime in your API definition:
 
 ```ruby
 Apiwork::API.draw '/api/v1' do
@@ -46,117 +82,43 @@ Apiwork::API.draw '/api/v1' do
 end
 ```
 
-## Pagination
-
-### Page-Based (Default)
+Override for specific schemas:
 
 ```ruby
-adapter do
-  pagination do
-    strategy :page
-    default_size 20
-    max_size 100
+class PostSchema < Apiwork::Schema::Base
+  adapter do
+    pagination do
+      strategy :cursor
+      default_size 50
+    end
   end
 end
 ```
 
-**Query:**
+## How It Flows
 
-```
-GET /api/v1/posts?page[number]=2&page[size]=10
-```
-
-**Response:**
-
-```json
-{
-  "posts": [...],
-  "pagination": {
-    "current_page": 2,
-    "total_pages": 5,
-    "total_count": 48,
-    "per_page": 10
-  }
-}
-```
-
-### Cursor-Based
+### Collection Request (index)
 
 ```ruby
-adapter do
-  pagination do
-    strategy :cursor
-    default_size 20
-    max_size 100
-  end
+def index
+  posts = Post.all
+  respond_with posts
 end
+
+# Runtime applies: filter → sort → paginate → includes
+# Returns: { posts: [...], pagination: {...} }
 ```
 
-**Query:**
-
-```
-GET /api/v1/posts?page[after]=eyJpZCI6MTIzfQ&page[size]=10
-```
-
-**Response:**
-
-```json
-{
-  "posts": [...],
-  "pagination": {
-    "has_next_page": true,
-    "has_previous_page": true,
-    "start_cursor": "eyJpZCI6MTAwfQ",
-    "end_cursor": "eyJpZCI6MTEwfQ"
-  }
-}
-```
-
-## Filtering
-
-The adapter translates filter params to ActiveRecord queries:
-
-```
-GET /api/v1/posts?filter[status][eq]=published&filter[created_at][gt]=2024-01-01
-```
-
-Becomes:
+### Single Record Request (show, create, update)
 
 ```ruby
-Post.where(status: 'published').where('created_at > ?', Date.parse('2024-01-01'))
+def show
+  respond_with Post.find(params[:id])
+end
+
+# Runtime applies: includes (if requested)
+# Returns: { post: {...} }
 ```
-
-See [Attributes - Filtering](../core/schemas/attributes.md#filtering) for all operators.
-
-## Sorting
-
-```
-GET /api/v1/posts?sort[created_at]=desc&sort[title]=asc
-```
-
-Becomes:
-
-```ruby
-Post.order(created_at: :desc, title: :asc)
-```
-
-See [Attributes - Sorting](../core/schemas/attributes.md#sorting) for details.
-
-## Eager Loading
-
-When includes are requested, the adapter preloads associations:
-
-```
-GET /api/v1/posts?include[comments]=true&include[author]=true
-```
-
-Becomes:
-
-```ruby
-Post.includes(:comments, :author)
-```
-
-Prevents N+1 queries automatically.
 
 ## Response Metadata
 
@@ -187,53 +149,9 @@ Response:
 
 To document the meta structure in your contract, use the `meta` block. See [Actions - meta](../core/contracts/actions.md#meta).
 
-## Per-Schema Configuration
-
-Override adapter settings for specific schemas:
-
-```ruby
-class PostSchema < Apiwork::Schema::Base
-  adapter do
-    pagination do
-      default_size 10
-      max_size 50
-    end
-  end
-end
-```
-
-## How It Flows
-
-### Collection Request (index)
-
-```ruby
-# 1. Controller
-def index
-  posts = Post.all
-  respond_with posts
-end
-
-# 2. Adapter receives Post.all and contract.query
-#    Applies: filter, sort, paginate, includes
-#    Returns: { posts: [...], pagination: {...} }
-```
-
-### Single Record Request (show, create, update)
-
-```ruby
-# 1. Controller
-def show
-  respond_with Post.find(params[:id])
-end
-
-# 2. Adapter receives single record
-#    Applies: includes (if requested)
-#    Returns: { post: {...} }
-```
-
 ## Key Transform
 
-The adapter respects the API's key format setting:
+The runtime respects the API's key format setting:
 
 ```ruby
 Apiwork::API.draw '/api/v1' do
@@ -244,12 +162,10 @@ end
 ```json
 // Request
 { "post": { "createdAt": "2024-01-15" } }
-// ↓ transformed to
-// { post: { created_at: "2024-01-15" } }
+// ↓ transformed to snake_case internally
 
 // Response
-// { created_at: "2024-01-15" }
-// ↓ transformed to
+// snake_case ↓ transformed to camelCase
 { "createdAt": "2024-01-15" }
 ```
 
@@ -259,6 +175,6 @@ For non-ActiveRecord data sources or custom query logic, you can create your own
 
 ## Next Steps
 
+- [Runtime](../core/runtime/introduction.md) — detailed query parameter documentation
 - [Contracts](../core/contracts/introduction.md) — define request/response shapes
 - [Schemas](../core/schemas/introduction.md) — auto-generate contracts from models
-- [Errors](../core/errors/introduction.md) — structured error handling
