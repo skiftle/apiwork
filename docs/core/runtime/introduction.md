@@ -4,23 +4,80 @@ order: 1
 
 # Runtime
 
-The runtime is Apiwork's built-in query engine. It translates query parameters into ActiveRecord queries and handles filtering, sorting, pagination, and eager loading.
+The runtime is powered by Apiwork's built-in adapter. It reads your schemas, generates typed definitions, executes queries, and serializes responses.
 
-## What It Does
+## What the Adapter Does
 
-When a request comes in:
+The adapter is the engine behind `schema!`. When you connect a schema to a contract:
 
-1. **Contract validates** the request structure
-2. **Runtime applies** filters, sorting, pagination, includes
-3. **Schema serializes** the result
-
-```
-Request → Contract → Runtime → Schema → Response
-                        ↓
-                  ActiveRecord
+```ruby
+class InvoiceContract < Apiwork::Contract::Base
+  schema!  # Finds InvoiceSchema automatically
+end
 ```
 
-The runtime reads your schema definitions to know which fields are filterable, sortable, and how associations should load.
+The adapter:
+
+1. **Reads schema metadata** — filterable, sortable, writable attributes and associations
+2. **Generates types** — filter, sort, include, and payload types for the contract
+3. **Powers code generation** — TypeScript, Zod, and OpenAPI definitions come from these types
+4. **Executes queries** — filtering, sorting, pagination at runtime
+5. **Serializes responses** — formats output according to the schema
+
+## Architecture
+
+```
+Schema Definition
+       ↓
+   Adapter reads metadata
+       ↓
+   ContractBuilder generates types
+       ├── Filter types (from filterable attributes)
+       ├── Sort types (from sortable attributes)
+       ├── Include types (from associations)
+       ├── Payload types (from writable attributes)
+       └── Resource types (for responses)
+       ↓
+   Contract with typed actions
+       ↓
+   TypeScript / Zod / OpenAPI generation
+```
+
+At runtime:
+
+```
+Request → Contract validates → Adapter executes query → Schema serializes → Response
+```
+
+## Generated Types
+
+For a schema like:
+
+```ruby
+class InvoiceSchema < Apiwork::Schema::Base
+  attribute :number, filterable: true, sortable: true, writable: true
+  attribute :issued_on, filterable: true, sortable: true
+
+  belongs_to :customer, filterable: true, sortable: true
+  has_many :lines, writable: true, include: :always
+end
+```
+
+The adapter generates:
+
+| Type | Purpose | Source |
+|------|---------|--------|
+| `invoice_filter` | Filter query validation | `filterable: true` attributes |
+| `invoice_sort` | Sort query validation | `sortable: true` attributes |
+| `invoice_include` | Include query validation | associations |
+| `invoice_create_payload` | Create request body | `writable: true` attributes |
+| `invoice_update_payload` | Update request body | `writable: true` attributes |
+| `invoice` | Response serialization | all attributes |
+
+These types power:
+- Request validation (is this filter valid?)
+- Code generation (TypeScript interfaces, Zod schemas)
+- Documentation (OpenAPI specs)
 
 ## Configuration
 
@@ -53,7 +110,7 @@ end
 
 ## Query Parameters
 
-The runtime recognizes four query parameter groups:
+The adapter handles four query parameter groups:
 
 | Parameter | Purpose | Example |
 |-----------|---------|---------|
@@ -64,7 +121,7 @@ The runtime recognizes four query parameter groups:
 
 ## Schema Integration
 
-The runtime respects schema attribute options:
+The adapter reads schema options to determine what's allowed:
 
 ```ruby
 class PostSchema < Apiwork::Schema::Base
@@ -77,10 +134,11 @@ class PostSchema < Apiwork::Schema::Base
 end
 ```
 
-- `filterable: true` — allows `filter[field][operator]=value`
-- `sortable: true` — allows `sort[field]=asc|desc`
-- `include: :optional` — client can request with `include[assoc]=true`
-- `include: :always` — automatically included in every response
+- `filterable: true` — generates filter type, allows `filter[field][operator]=value`
+- `sortable: true` — generates sort type, allows `sort[field]=asc|desc`
+- `writable: true` — generates payload type for create/update
+- `include: :optional` — generates include type, client requests with `include[assoc]=true`
+- `include: :always` — included automatically in every response
 
 ## Error Handling
 
