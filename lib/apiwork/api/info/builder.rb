@@ -55,41 +55,6 @@ module Apiwork
           @info[:deprecated] = value
         end
 
-        class ContactBuilder
-          attr_reader :data
-
-          def initialize
-            @data = {}
-          end
-
-          def name(text)
-            @data[:name] = text
-          end
-
-          def email(text)
-            @data[:email] = text
-          end
-
-          def url(text)
-            @data[:url] = text
-          end
-        end
-
-        class LicenseBuilder
-          attr_reader :data
-
-          def initialize
-            @data = {}
-          end
-
-          def name(text)
-            @data[:name] = text
-          end
-
-          def url(text)
-            @data[:url] = text
-          end
-        end
       end
     end
   end

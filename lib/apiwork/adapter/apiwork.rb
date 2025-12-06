@@ -20,7 +20,7 @@ module Apiwork
       end
 
       def render_collection(collection, schema_class, action_data)
-        CollectionLoader.load(collection, schema_class, action_data.query, action_data) => { data:, metadata: }
+        CollectionLoader.load(collection, schema_class, action_data) => { data:, metadata: }
         serialized = schema_class.serialize(data, context: action_data.context, include: action_data.query[:include])
 
         {
