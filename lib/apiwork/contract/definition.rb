@@ -45,9 +45,9 @@ module Apiwork
                 discriminator: nil, value: nil, visited_types: nil, **options, &block)
         # rubocop:enable Metrics/ParameterLists
 
-        if @params.key?(name)
-          merge_existing_param(name, type:, optional:, default:, enum:, of:, as:,
-                                     discriminator:, value:, options:, &block)
+        if type.nil? && (existing = @params[name])
+          merge_existing_param(name, existing, type:, optional:, default:, enum:, of:, as:,
+                                               discriminator:, value:, options:, &block)
           return
         end
 
@@ -88,10 +88,9 @@ module Apiwork
       private
 
       # rubocop:disable Metrics/ParameterLists
-      def merge_existing_param(name, type:, optional:, default:, enum:, of:, as:, discriminator:, value:, options:, &block)
+      def merge_existing_param(name, existing, type:, optional:, default:, enum:, of:, as:, discriminator:, value:,
+                               options:, &block)
         # rubocop:enable Metrics/ParameterLists
-        existing = @params[name]
-
         resolved_enum = enum ? resolve_enum_value(enum) : nil
 
         merged = existing.merge(options.compact)
