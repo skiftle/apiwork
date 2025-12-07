@@ -155,95 +155,54 @@
       }
     },
     "vehicle": {
-      "type": "union",
-      "required": false,
-      "nullable": false,
-      "variants": [],
-      "discriminator": "kind"
-    },
-    "vehicle_car_create_payload": {
       "type": "object",
       "shape": {
         "brand": {
-          "type": "string"
+          "type": "string",
+          "optional": true
         },
         "color": {
           "type": "string",
-          "nullable": true,
           "optional": true
         },
-        "doors": {
-          "type": "integer",
-          "nullable": true,
+        "id": {
+          "type": "unknown",
           "optional": true
-        },
-        "kind": {
-          "type": "unknown"
         },
         "model": {
-          "type": "string"
-        },
-        "year": {
-          "type": "integer",
-          "nullable": true,
-          "optional": true
-        }
-      }
-    },
-    "vehicle_car_update_payload": {
-      "type": "object",
-      "shape": {
-        "brand": {
-          "type": "string"
-        },
-        "color": {
           "type": "string",
-          "nullable": true,
           "optional": true
         },
-        "doors": {
-          "type": "integer",
-          "nullable": true,
+        "type": {
+          "type": "string",
           "optional": true
-        },
-        "kind": {
-          "type": "unknown"
-        },
-        "model": {
-          "type": "string"
         },
         "year": {
           "type": "integer",
-          "nullable": true,
           "optional": true
         }
       }
     },
     "vehicle_create_payload": {
-      "type": "union",
-      "required": false,
-      "nullable": false,
-      "variants": [
-        {
-          "type": "vehicle_car_create_payload",
-          "of": null,
-          "tag": "car",
-          "partial": false
+      "type": "object",
+      "shape": {
+        "brand": {
+          "type": "string"
         },
-        {
-          "type": "vehicle_motorcycle_create_payload",
-          "of": null,
-          "tag": "motorcycle",
-          "partial": false
+        "color": {
+          "type": "string",
+          "nullable": true,
+          "optional": true
         },
-        {
-          "type": "vehicle_truck_create_payload",
-          "of": null,
-          "tag": "truck",
-          "partial": false
+        "model": {
+          "type": "string"
+        },
+        "year": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
         }
-      ],
-      "discriminator": "kind"
+      }
     },
     "vehicle_filter": {
       "type": "object",
@@ -303,64 +262,6 @@
     "vehicle_include": {
       "type": "object"
     },
-    "vehicle_motorcycle_create_payload": {
-      "type": "object",
-      "shape": {
-        "brand": {
-          "type": "string"
-        },
-        "color": {
-          "type": "string",
-          "nullable": true,
-          "optional": true
-        },
-        "engine_cc": {
-          "type": "integer",
-          "nullable": true,
-          "optional": true
-        },
-        "kind": {
-          "type": "unknown"
-        },
-        "model": {
-          "type": "string"
-        },
-        "year": {
-          "type": "integer",
-          "nullable": true,
-          "optional": true
-        }
-      }
-    },
-    "vehicle_motorcycle_update_payload": {
-      "type": "object",
-      "shape": {
-        "brand": {
-          "type": "string"
-        },
-        "color": {
-          "type": "string",
-          "nullable": true,
-          "optional": true
-        },
-        "engine_cc": {
-          "type": "integer",
-          "nullable": true,
-          "optional": true
-        },
-        "kind": {
-          "type": "unknown"
-        },
-        "model": {
-          "type": "string"
-        },
-        "year": {
-          "type": "integer",
-          "nullable": true,
-          "optional": true
-        }
-      }
-    },
     "vehicle_page": {
       "type": "object",
       "shape": {
@@ -386,89 +287,26 @@
         }
       }
     },
-    "vehicle_truck_create_payload": {
-      "type": "object",
-      "shape": {
-        "brand": {
-          "type": "string"
-        },
-        "color": {
-          "type": "string",
-          "nullable": true,
-          "optional": true
-        },
-        "kind": {
-          "type": "unknown"
-        },
-        "model": {
-          "type": "string"
-        },
-        "payload_capacity": {
-          "type": "decimal",
-          "nullable": true,
-          "optional": true
-        },
-        "year": {
-          "type": "integer",
-          "nullable": true,
-          "optional": true
-        }
-      }
-    },
-    "vehicle_truck_update_payload": {
-      "type": "object",
-      "shape": {
-        "brand": {
-          "type": "string"
-        },
-        "color": {
-          "type": "string",
-          "nullable": true,
-          "optional": true
-        },
-        "kind": {
-          "type": "unknown"
-        },
-        "model": {
-          "type": "string"
-        },
-        "payload_capacity": {
-          "type": "decimal",
-          "nullable": true,
-          "optional": true
-        },
-        "year": {
-          "type": "integer",
-          "nullable": true,
-          "optional": true
-        }
-      }
-    },
     "vehicle_update_payload": {
-      "type": "union",
-      "required": false,
-      "nullable": false,
-      "variants": [
-        {
-          "type": "vehicle_car_update_payload",
-          "of": null,
-          "tag": "car",
-          "partial": false
+      "type": "object",
+      "shape": {
+        "brand": {
+          "type": "string"
         },
-        {
-          "type": "vehicle_motorcycle_update_payload",
-          "of": null,
-          "tag": "motorcycle",
-          "partial": false
+        "color": {
+          "type": "string",
+          "nullable": true,
+          "optional": true
         },
-        {
-          "type": "vehicle_truck_update_payload",
-          "of": null,
-          "tag": "truck",
-          "partial": false
+        "model": {
+          "type": "string"
+        },
+        "year": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
         }
-      ],
-      "discriminator": "kind"
+      }
     }
   },
   "enums": {
@@ -496,10 +334,10 @@
       "schema": {
         "type": "object",
         "shape": {
-          "kind": {
-            "type": "unknown"
-          },
           "id": {},
+          "type": {
+            "type": "string"
+          },
           "brand": {
             "type": "string"
           },
@@ -635,7 +473,7 @@
           "request": {
             "body": {
               "vehicle": {
-                "type": "create_payload"
+                "type": "vehicle_create_payload"
               }
             }
           },
@@ -678,7 +516,7 @@
           "request": {
             "body": {
               "vehicle": {
-                "type": "update_payload"
+                "type": "vehicle_update_payload"
               }
             }
           },

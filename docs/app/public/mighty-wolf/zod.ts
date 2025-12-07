@@ -30,48 +30,24 @@ export const StringFilterSchema = z.object({
   startsWith: z.string().optional()
 });
 
-export const VehicleSchema = z.discriminatedUnion('kind', [
-
-]);
-
-export const VehicleCarCreatePayloadSchema = z.object({
-  brand: z.string(),
-  color: z.string().nullable().optional(),
-  doors: z.number().int().nullable().optional(),
-  kind: z.unknown(),
-  model: z.string(),
-  year: z.number().int().nullable().optional()
+export const VehicleSchema = z.object({
+  brand: z.string().optional(),
+  color: z.string().optional(),
+  id: z.unknown().optional(),
+  model: z.string().optional(),
+  type: z.string().optional(),
+  year: z.number().int().optional()
 });
 
-export const VehicleCarUpdatePayloadSchema = z.object({
-  brand: z.string().optional(),
+export const VehicleCreatePayloadSchema = z.object({
+  brand: z.string(),
   color: z.string().nullable().optional(),
-  doors: z.number().int().nullable().optional(),
-  kind: z.unknown().optional(),
-  model: z.string().optional(),
+  model: z.string(),
   year: z.number().int().nullable().optional()
 });
 
 export const VehicleIncludeSchema = z.object({
 
-});
-
-export const VehicleMotorcycleCreatePayloadSchema = z.object({
-  brand: z.string(),
-  color: z.string().nullable().optional(),
-  engineCc: z.number().int().nullable().optional(),
-  kind: z.unknown(),
-  model: z.string(),
-  year: z.number().int().nullable().optional()
-});
-
-export const VehicleMotorcycleUpdatePayloadSchema = z.object({
-  brand: z.string().optional(),
-  color: z.string().nullable().optional(),
-  engineCc: z.number().int().nullable().optional(),
-  kind: z.unknown().optional(),
-  model: z.string().optional(),
-  year: z.number().int().nullable().optional()
 });
 
 export const VehiclePageSchema = z.object({
@@ -83,21 +59,10 @@ export const VehicleSortSchema = z.object({
   year: z.unknown().optional()
 });
 
-export const VehicleTruckCreatePayloadSchema = z.object({
-  brand: z.string(),
-  color: z.string().nullable().optional(),
-  kind: z.unknown(),
-  model: z.string(),
-  payloadCapacity: z.number().nullable().optional(),
-  year: z.number().int().nullable().optional()
-});
-
-export const VehicleTruckUpdatePayloadSchema = z.object({
+export const VehicleUpdatePayloadSchema = z.object({
   brand: z.string().optional(),
   color: z.string().nullable().optional(),
-  kind: z.unknown().optional(),
   model: z.string().optional(),
-  payloadCapacity: z.number().nullable().optional(),
   year: z.number().int().nullable().optional()
 });
 
@@ -122,18 +87,6 @@ export const NullableIntegerFilterSchema = z.object({
   null: z.boolean().optional()
 });
 
-export const VehicleCreatePayloadSchema = z.discriminatedUnion('kind', [
-  VehicleCarCreatePayloadSchema,
-  VehicleMotorcycleCreatePayloadSchema,
-  VehicleTruckCreatePayloadSchema
-]);
-
-export const VehicleUpdatePayloadSchema = z.discriminatedUnion('kind', [
-  VehicleCarUpdatePayloadSchema,
-  VehicleMotorcycleUpdatePayloadSchema,
-  VehicleTruckUpdatePayloadSchema
-]);
-
 export const VehicleFilterSchema: z.ZodType<VehicleFilter> = z.lazy(() => z.object({
   _and: z.array(VehicleFilterSchema).optional(),
   _not: VehicleFilterSchema.optional(),
@@ -147,8 +100,8 @@ export const VehicleSchema = z.object({
   brand: z.string(),
   color: z.string().nullable().optional(),
   id: z.never(),
-  kind: z.unknown(),
   model: z.string(),
+  type: z.string(),
   year: z.number().int().nullable().optional()
 });
 
@@ -176,7 +129,7 @@ export const VehiclesShowResponseSchema = z.object({
 });
 
 export const VehiclesCreateRequestBodySchema = z.object({
-  vehicle: z.unknown()
+  vehicle: VehicleCreatePayloadSchema
 });
 
 export const VehiclesCreateRequestSchema = z.object({
@@ -190,7 +143,7 @@ export const VehiclesCreateResponseSchema = z.object({
 });
 
 export const VehiclesUpdateRequestBodySchema = z.object({
-  vehicle: z.unknown()
+  vehicle: VehicleUpdatePayloadSchema
 });
 
 export const VehiclesUpdateRequestSchema = z.object({
@@ -258,32 +211,26 @@ export interface Vehicle {
   brand: string;
   color?: null | string;
   id: never;
-  kind: unknown;
   model: string;
+  type: string;
   year?: null | number;
 }
 
-export type Vehicle = ;
+export interface Vehicle {
+  brand?: string;
+  color?: string;
+  id?: unknown;
+  model?: string;
+  type?: string;
+  year?: number;
+}
 
-export interface VehicleCarCreatePayload {
+export interface VehicleCreatePayload {
   brand: string;
   color?: null | string;
-  doors?: null | number;
-  kind: unknown;
   model: string;
   year?: null | number;
 }
-
-export interface VehicleCarUpdatePayload {
-  brand?: string;
-  color?: null | string;
-  doors?: null | number;
-  kind?: unknown;
-  model?: string;
-  year?: null | number;
-}
-
-export type VehicleCreatePayload = VehicleCarCreatePayload | VehicleMotorcycleCreatePayload | VehicleTruckCreatePayload;
 
 export interface VehicleFilter {
   _and?: VehicleFilter[];
@@ -296,24 +243,6 @@ export interface VehicleFilter {
 
 export type VehicleInclude = object;
 
-export interface VehicleMotorcycleCreatePayload {
-  brand: string;
-  color?: null | string;
-  engineCc?: null | number;
-  kind: unknown;
-  model: string;
-  year?: null | number;
-}
-
-export interface VehicleMotorcycleUpdatePayload {
-  brand?: string;
-  color?: null | string;
-  engineCc?: null | number;
-  kind?: unknown;
-  model?: string;
-  year?: null | number;
-}
-
 export interface VehiclePage {
   number?: number;
   size?: number;
@@ -323,32 +252,19 @@ export interface VehicleSort {
   year?: unknown;
 }
 
-export interface VehicleTruckCreatePayload {
-  brand: string;
-  color?: null | string;
-  kind: unknown;
-  model: string;
-  payloadCapacity?: null | number;
-  year?: null | number;
-}
-
-export interface VehicleTruckUpdatePayload {
+export interface VehicleUpdatePayload {
   brand?: string;
   color?: null | string;
-  kind?: unknown;
   model?: string;
-  payloadCapacity?: null | number;
   year?: null | number;
 }
-
-export type VehicleUpdatePayload = VehicleCarUpdatePayload | VehicleMotorcycleUpdatePayload | VehicleTruckUpdatePayload;
 
 export interface VehiclesCreateRequest {
   body: VehiclesCreateRequestBody;
 }
 
 export interface VehiclesCreateRequestBody {
-  vehicle: unknown;
+  vehicle: VehicleCreatePayload;
 }
 
 export interface VehiclesCreateResponse {
@@ -385,7 +301,7 @@ export interface VehiclesUpdateRequest {
 }
 
 export interface VehiclesUpdateRequestBody {
-  vehicle: unknown;
+  vehicle: VehicleUpdatePayload;
 }
 
 export interface VehiclesUpdateResponse {

@@ -100,31 +100,28 @@ GET /mighty_wolf/vehicles
 {
   "vehicles": [
     {
-      "kind": "car",
-      "id": "5faef4cf-13b5-4261-bcab-837fdc1a7ab7",
+      "id": "f103c0a7-5c77-460f-ada5-e3a9761ab4c3",
+      "type": "MightyWolf::Car",
       "brand": "Tesla",
       "model": "Model 3",
       "year": null,
-      "color": null,
-      "doors": null
+      "color": null
     },
     {
-      "kind": "motorcycle",
-      "id": "3af7d6ca-4b15-48af-9dab-ec23ec788188",
+      "id": "a5ca84f8-83f7-402b-91a2-856d2f6d9b5c",
+      "type": "MightyWolf::Motorcycle",
       "brand": "Harley-Davidson",
       "model": "Street Glide",
       "year": null,
-      "color": null,
-      "engineCc": null
+      "color": null
     },
     {
-      "kind": "truck",
-      "id": "c944f409-1d22-472c-af53-e676eb7b1d54",
+      "id": "e769500f-5c97-47ff-9bc9-995d4ec98aba",
+      "type": "MightyWolf::Truck",
       "brand": "Ford",
       "model": "F-150",
       "year": null,
-      "color": null,
-      "payloadCapacity": null
+      "color": null
     }
   ],
   "pagination": {
@@ -145,7 +142,7 @@ GET /mighty_wolf/vehicles
 **Request**
 
 ```http
-GET /mighty_wolf/vehicles/c9b880b6-81c6-459e-b652-2fc993286a5e
+GET /mighty_wolf/vehicles/7a897d31-c55e-4671-a40f-4c4a536f8702
 ```
 
 **Response** `200`
@@ -153,13 +150,12 @@ GET /mighty_wolf/vehicles/c9b880b6-81c6-459e-b652-2fc993286a5e
 ```json
 {
   "vehicle": {
-    "kind": "car",
-    "id": "c9b880b6-81c6-459e-b652-2fc993286a5e",
+    "id": "7a897d31-c55e-4671-a40f-4c4a536f8702",
+    "type": "MightyWolf::Car",
     "brand": "Tesla",
     "model": "Model 3",
     "year": 2024,
-    "color": "red",
-    "doors": null
+    "color": "red"
   }
 }
 ```
@@ -186,19 +182,30 @@ Content-Type: application/json
 }
 ```
 
-**Response** `201`
+**Response** `400`
 
 ```json
 {
-  "vehicle": {
-    "kind": "car",
-    "id": "a392f6ec-198b-426c-8075-3f065e8935fd",
-    "brand": "Tesla",
-    "model": "Model 3",
-    "year": 2024,
-    "color": "red",
-    "doors": null
-  }
+  "issues": [
+    {
+      "code": "field_unknown",
+      "detail": "Unknown field",
+      "path": [
+        "vehicle",
+        "kind"
+      ],
+      "pointer": "/vehicle/kind",
+      "meta": {
+        "field": "kind",
+        "allowed": [
+          "brand",
+          "model",
+          "year",
+          "color"
+        ]
+      }
+    }
+  ]
 }
 ```
 
@@ -224,19 +231,30 @@ Content-Type: application/json
 }
 ```
 
-**Response** `201`
+**Response** `400`
 
 ```json
 {
-  "vehicle": {
-    "kind": "motorcycle",
-    "id": "15aad704-1811-4262-b1cb-840a24bb9825",
-    "brand": "Harley-Davidson",
-    "model": "Street Glide",
-    "year": 2023,
-    "color": "black",
-    "engineCc": null
-  }
+  "issues": [
+    {
+      "code": "field_unknown",
+      "detail": "Unknown field",
+      "path": [
+        "vehicle",
+        "kind"
+      ],
+      "pointer": "/vehicle/kind",
+      "meta": {
+        "field": "kind",
+        "allowed": [
+          "brand",
+          "model",
+          "year",
+          "color"
+        ]
+      }
+    }
+  ]
 }
 ```
 
@@ -262,19 +280,30 @@ Content-Type: application/json
 }
 ```
 
-**Response** `201`
+**Response** `400`
 
 ```json
 {
-  "vehicle": {
-    "kind": "truck",
-    "id": "0e2b4fb0-8672-4dd4-a7a5-986e35329718",
-    "brand": "Ford",
-    "model": "F-150",
-    "year": 2024,
-    "color": "blue",
-    "payloadCapacity": null
-  }
+  "issues": [
+    {
+      "code": "field_unknown",
+      "detail": "Unknown field",
+      "path": [
+        "vehicle",
+        "kind"
+      ],
+      "pointer": "/vehicle/kind",
+      "meta": {
+        "field": "kind",
+        "allowed": [
+          "brand",
+          "model",
+          "year",
+          "color"
+        ]
+      }
+    }
+  ]
 }
 ```
 

@@ -8,31 +8,28 @@
     "body": {
       "vehicles": [
         {
-          "kind": "car",
-          "id": "5faef4cf-13b5-4261-bcab-837fdc1a7ab7",
+          "id": "f103c0a7-5c77-460f-ada5-e3a9761ab4c3",
+          "type": "MightyWolf::Car",
           "brand": "Tesla",
           "model": "Model 3",
           "year": null,
-          "color": null,
-          "doors": null
+          "color": null
         },
         {
-          "kind": "motorcycle",
-          "id": "3af7d6ca-4b15-48af-9dab-ec23ec788188",
+          "id": "a5ca84f8-83f7-402b-91a2-856d2f6d9b5c",
+          "type": "MightyWolf::Motorcycle",
           "brand": "Harley-Davidson",
           "model": "Street Glide",
           "year": null,
-          "color": null,
-          "engineCc": null
+          "color": null
         },
         {
-          "kind": "truck",
-          "id": "c944f409-1d22-472c-af53-e676eb7b1d54",
+          "id": "e769500f-5c97-47ff-9bc9-995d4ec98aba",
+          "type": "MightyWolf::Truck",
           "brand": "Ford",
           "model": "F-150",
           "year": null,
-          "color": null,
-          "payloadCapacity": null
+          "color": null
         }
       ],
       "pagination": {

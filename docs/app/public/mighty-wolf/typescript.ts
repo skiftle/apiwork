@@ -49,27 +49,21 @@ export interface StringFilter {
   startsWith?: string;
 }
 
-export type Vehicle = ;
+export interface Vehicle {
+  brand?: string;
+  color?: string;
+  id?: unknown;
+  model?: string;
+  type?: string;
+  year?: number;
+}
 
-export interface VehicleCarCreatePayload {
+export interface VehicleCreatePayload {
   brand: string;
   color?: null | string;
-  doors?: null | number;
-  kind: unknown;
   model: string;
   year?: null | number;
 }
-
-export interface VehicleCarUpdatePayload {
-  brand?: string;
-  color?: null | string;
-  doors?: null | number;
-  kind?: unknown;
-  model?: string;
-  year?: null | number;
-}
-
-export type VehicleCreatePayload = VehicleCarCreatePayload | VehicleMotorcycleCreatePayload | VehicleTruckCreatePayload;
 
 export interface VehicleFilter {
   _and?: VehicleFilter[];
@@ -82,24 +76,6 @@ export interface VehicleFilter {
 
 export type VehicleInclude = object;
 
-export interface VehicleMotorcycleCreatePayload {
-  brand: string;
-  color?: null | string;
-  engineCc?: null | number;
-  kind: unknown;
-  model: string;
-  year?: null | number;
-}
-
-export interface VehicleMotorcycleUpdatePayload {
-  brand?: string;
-  color?: null | string;
-  engineCc?: null | number;
-  kind?: unknown;
-  model?: string;
-  year?: null | number;
-}
-
 export interface VehiclePage {
   number?: number;
   size?: number;
@@ -109,32 +85,19 @@ export interface VehicleSort {
   year?: unknown;
 }
 
-export interface VehicleTruckCreatePayload {
-  brand: string;
-  color?: null | string;
-  kind: unknown;
-  model: string;
-  payloadCapacity?: null | number;
-  year?: null | number;
-}
-
-export interface VehicleTruckUpdatePayload {
+export interface VehicleUpdatePayload {
   brand?: string;
   color?: null | string;
-  kind?: unknown;
   model?: string;
-  payloadCapacity?: null | number;
   year?: null | number;
 }
-
-export type VehicleUpdatePayload = VehicleCarUpdatePayload | VehicleMotorcycleUpdatePayload | VehicleTruckUpdatePayload;
 
 export interface VehiclesCreateRequest {
   body: VehiclesCreateRequestBody;
 }
 
 export interface VehiclesCreateRequestBody {
-  vehicle: unknown;
+  vehicle: VehicleCreatePayload;
 }
 
 export interface VehiclesCreateResponse {
@@ -171,7 +134,7 @@ export interface VehiclesUpdateRequest {
 }
 
 export interface VehiclesUpdateRequestBody {
-  vehicle: unknown;
+  vehicle: VehicleUpdatePayload;
 }
 
 export interface VehiclesUpdateResponse {

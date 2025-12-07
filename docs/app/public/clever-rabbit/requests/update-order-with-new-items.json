@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "PATCH",
-    "path": "/clever_rabbit/orders/29e92b0b-dabc-46d7-b118-af42d1b65d17",
+    "path": "/clever_rabbit/orders/35bbeeca-705c-4589-90f7-858aee03c7c0",
     "body": {
       "order": {
         "order_number": "ORD-001",
@@ -19,12 +19,12 @@
     "status": 200,
     "body": {
       "order": {
-        "id": "29e92b0b-dabc-46d7-b118-af42d1b65d17",
+        "id": "35bbeeca-705c-4589-90f7-858aee03c7c0",
         "orderNumber": "ORD-001",
         "status": "pending",
         "total": null,
-        "createdAt": "2025-12-07T13:48:51.100Z",
-        "updatedAt": "2025-12-07T13:48:51.100Z",
+        "createdAt": "2025-12-07T14:49:42.557Z",
+        "updatedAt": "2025-12-07T14:49:42.557Z",
         "lineItems": null,
         "shippingAddress": null
       }

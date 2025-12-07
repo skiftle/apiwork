@@ -138,20 +138,20 @@ GET /gentle_owl/comments
 {
   "comments": [
     {
-      "id": "826934f4-83b7-449a-83b0-1077698e4e86",
+      "id": "2d109de6-611c-4486-819d-af4fe430a1fb",
       "body": "Great post!",
       "authorName": "John Doe",
       "commentableType": "GentleOwl::Post",
-      "commentableId": "71786663-ad73-4740-b61d-06fb0b2d14dc",
-      "createdAt": "2025-12-07T13:48:51.353Z"
+      "commentableId": "b8d16b1f-5adc-445e-b621-6049c0d30646",
+      "createdAt": "2025-12-07T14:49:42.938Z"
     },
     {
-      "id": "a5cc3525-0dbb-4c69-9c84-22679a73c7a0",
+      "id": "df1a9737-af99-436c-92af-0fb5c8b7543a",
       "body": "Helpful video!",
       "authorName": "Jane Doe",
       "commentableType": "GentleOwl::Video",
-      "commentableId": "fb66aff5-2401-4cd4-b933-2bb8894166e5",
-      "createdAt": "2025-12-07T13:48:51.355Z"
+      "commentableId": "f93dfae8-87ba-4d68-8177-6d43a10bea34",
+      "createdAt": "2025-12-07T14:49:42.944Z"
     }
   ],
   "pagination": {
@@ -172,7 +172,7 @@ GET /gentle_owl/comments
 **Request**
 
 ```http
-GET /gentle_owl/comments/bdd7b4b6-aa29-46c1-a7dd-cf17cd5ddb15
+GET /gentle_owl/comments/aefd23fa-8873-4c6b-bfdf-3e4e17249ce4
 ```
 
 **Response** `200`
@@ -180,12 +180,12 @@ GET /gentle_owl/comments/bdd7b4b6-aa29-46c1-a7dd-cf17cd5ddb15
 ```json
 {
   "comment": {
-    "id": "bdd7b4b6-aa29-46c1-a7dd-cf17cd5ddb15",
+    "id": "aefd23fa-8873-4c6b-bfdf-3e4e17249ce4",
     "body": "Great post!",
     "authorName": "John Doe",
     "commentableType": "GentleOwl::Post",
-    "commentableId": "54fe4771-7e84-469f-93fc-c46f99e2fc4a",
-    "createdAt": "2025-12-07T13:48:51.365Z"
+    "commentableId": "de85abf6-18d3-47a2-b292-abee1d5b0896",
+    "createdAt": "2025-12-07T14:49:42.964Z"
   }
 }
 ```
@@ -206,7 +206,7 @@ Content-Type: application/json
     "body": "This is a great article!",
     "author_name": "Jane Doe",
     "commentable_type": "GentleOwl::Post",
-    "commentable_id": "add1147a-ea5f-486e-bdc2-abbecd39320b"
+    "commentable_id": "1691832e-7665-43c3-996f-a737308ebb17"
   }
 }
 ```
@@ -216,12 +216,12 @@ Content-Type: application/json
 ```json
 {
   "comment": {
-    "id": "13ee63c3-ed89-42bf-a1f2-1ac5c05015db",
+    "id": "32c77779-1ede-49f5-af93-2906f836fe62",
     "body": "This is a great article!",
     "authorName": "Jane Doe",
     "commentableType": "GentleOwl::Post",
-    "commentableId": "add1147a-ea5f-486e-bdc2-abbecd39320b",
-    "createdAt": "2025-12-07T13:48:51.378Z"
+    "commentableId": "1691832e-7665-43c3-996f-a737308ebb17",
+    "createdAt": "2025-12-07T14:49:42.984Z"
   }
 }
 ```
@@ -242,7 +242,7 @@ Content-Type: application/json
     "body": "Very helpful video!",
     "author_name": "Bob Smith",
     "commentable_type": "GentleOwl::Video",
-    "commentable_id": "8e7e7956-e8bf-4e57-aabe-cb4cef1bd38a"
+    "commentable_id": "9e9af79e-563d-42f5-80d9-edde34027c0a"
   }
 }
 ```
@@ -252,12 +252,12 @@ Content-Type: application/json
 ```json
 {
   "comment": {
-    "id": "6a8ce574-c44f-445a-9b39-d45331adbeaa",
+    "id": "b3ef9fc5-f3a7-4c96-a138-0d1d7386d19b",
     "body": "Very helpful video!",
     "authorName": "Bob Smith",
     "commentableType": "GentleOwl::Video",
-    "commentableId": "8e7e7956-e8bf-4e57-aabe-cb4cef1bd38a",
-    "createdAt": "2025-12-07T13:48:51.386Z"
+    "commentableId": "9e9af79e-563d-42f5-80d9-edde34027c0a",
+    "createdAt": "2025-12-07T14:49:42.995Z"
   }
 }
 ```
@@ -279,12 +279,12 @@ GET /gentle_owl/comments?filter[commentable_type][eq]=GentleOwl::Post
 {
   "comments": [
     {
-      "id": "3bed5293-0d67-4eb0-bf13-9e637dae6887",
+      "id": "fd62ff05-81fe-4d8f-999a-4456758d3967",
       "body": "Post comment",
       "authorName": "User 1",
       "commentableType": "GentleOwl::Post",
-      "commentableId": "278dca8f-a0b0-4230-bac5-447a38560e8d",
-      "createdAt": "2025-12-07T13:48:51.392Z"
+      "commentableId": "25a78176-258d-44f9-b19b-b4165cf097a1",
+      "createdAt": "2025-12-07T14:49:43.003Z"
     }
   ],
   "pagination": {

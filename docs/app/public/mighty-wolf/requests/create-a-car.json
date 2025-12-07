@@ -13,17 +13,28 @@
     }
   },
   "response": {
-    "status": 201,
+    "status": 400,
     "body": {
-      "vehicle": {
-        "kind": "car",
-        "id": "a392f6ec-198b-426c-8075-3f065e8935fd",
-        "brand": "Tesla",
-        "model": "Model 3",
-        "year": 2024,
-        "color": "red",
-        "doors": null
-      }
+      "issues": [
+        {
+          "code": "field_unknown",
+          "detail": "Unknown field",
+          "path": [
+            "vehicle",
+            "kind"
+          ],
+          "pointer": "/vehicle/kind",
+          "meta": {
+            "field": "kind",
+            "allowed": [
+              "brand",
+              "model",
+              "year",
+              "color"
+            ]
+          }
+        }
+      ]
     }
   }
 }
