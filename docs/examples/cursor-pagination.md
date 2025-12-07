@@ -70,26 +70,26 @@ GET /grumpy_panda/activities
 {
   "activities": [
     {
-      "id": "10d3f422-3739-4066-b2db-7dfca1b7f1c0",
-      "action": "post.delete",
-      "occurredAt": "2024-01-01T14:00:00.000Z",
-      "createdAt": "2025-12-07T15:57:33.176Z"
+      "id": "790acde5-9e64-4200-8901-c4e641d6342d",
+      "action": "post.create",
+      "occurredAt": "2024-01-01T12:00:00.000Z",
+      "createdAt": "2025-12-07T16:17:39.963Z"
     },
     {
-      "id": "422ed237-2a17-4dba-a056-4a85e3a1b724",
+      "id": "a34d957e-9ca5-411a-b96f-799dea3aefb4",
+      "action": "post.update",
+      "occurredAt": "2024-01-01T13:00:00.000Z",
+      "createdAt": "2025-12-07T16:17:39.964Z"
+    },
+    {
+      "id": "bad508e8-8cb3-4a5c-93a2-516d03ca66a8",
       "action": "user.logout",
       "occurredAt": "2024-01-01T11:00:00.000Z",
-      "createdAt": "2025-12-07T15:57:33.173Z"
-    },
-    {
-      "id": "76c8187c-6bfd-42a7-9920-f54022642483",
-      "action": "user.login",
-      "occurredAt": "2024-01-01T10:00:00.000Z",
-      "createdAt": "2025-12-07T15:57:33.167Z"
+      "createdAt": "2025-12-07T16:17:39.962Z"
     }
   ],
   "pagination": {
-    "nextCursor": "eyJpZCI6Ijc2YzgxODdjLTZiZmQtNDJhNy05OTIwLWY1NDAyMjY0MjQ4MyJ9",
+    "nextCursor": "eyJpZCI6ImJhZDUwOGU4LThjYjMtNGE1Yy05M2EyLTUxNmQwM2NhNjZhOCJ9",
     "prevCursor": null
   }
 }

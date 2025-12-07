@@ -9,7 +9,7 @@
       "vehicles": [
         {
           "type": "car",
-          "id": "640262d3-e336-4109-ab37-59fd24626691",
+          "id": "b0f871cd-a28d-4095-a881-7c0f4089b5ae",
           "brand": "Volvo",
           "model": "EX30",
           "year": null,
@@ -18,7 +18,7 @@
         },
         {
           "type": "motorcycle",
-          "id": "13c88d16-e277-4da7-9050-da3a005150e7",
+          "id": "19aa8bed-653f-4ce1-a793-62482c23c143",
           "brand": "Harley-Davidson",
           "model": "Street Glide",
           "year": null,
@@ -27,7 +27,7 @@
         },
         {
           "type": "truck",
-          "id": "0d594427-6df6-4b6c-809d-647c6c422e55",
+          "id": "29783eb0-4df6-4528-bc85-e222094d79a1",
           "brand": "Ford",
           "model": "F-150",
           "year": null,

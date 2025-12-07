@@ -1,3 +1,31 @@
+export interface Car {
+  brand?: string;
+  color?: string;
+  doors?: number;
+  id?: unknown;
+  model?: string;
+  type: 'car';
+  year?: number;
+}
+
+export interface CarCreatePayload {
+  brand: string;
+  color?: null | string;
+  doors?: null | number;
+  model: string;
+  type: 'car';
+  year?: null | number;
+}
+
+export interface CarUpdatePayload {
+  brand?: string;
+  color?: null | string;
+  doors?: null | number;
+  model?: string;
+  type?: 'car';
+  year?: null | number;
+}
+
 export interface IntegerFilter {
   between?: IntegerFilterBetween;
   eq?: number;
@@ -18,6 +46,34 @@ export interface Issue {
   detail: string;
   field: string;
   path: string[];
+}
+
+export interface Motorcycle {
+  brand?: string;
+  color?: string;
+  engineCc?: number;
+  id?: unknown;
+  model?: string;
+  type: 'motorcycle';
+  year?: number;
+}
+
+export interface MotorcycleCreatePayload {
+  brand: string;
+  color?: null | string;
+  engineCc?: null | number;
+  model: string;
+  type: 'motorcycle';
+  year?: null | number;
+}
+
+export interface MotorcycleUpdatePayload {
+  brand?: string;
+  color?: null | string;
+  engineCc?: null | number;
+  model?: string;
+  type?: 'motorcycle';
+  year?: null | number;
 }
 
 export interface NullableIntegerFilter {
@@ -49,37 +105,37 @@ export interface StringFilter {
   startsWith?: string;
 }
 
-export type Vehicle = VehicleCar | VehicleMotorcycle | VehicleTruck;
-
-export interface VehicleCar {
+export interface Truck {
   brand?: string;
   color?: string;
-  doors?: number;
   id?: unknown;
   model?: string;
-  type: 'car';
+  payloadCapacity?: number;
+  type: 'truck';
   year?: number;
 }
 
-export interface VehicleCarCreatePayload {
+export interface TruckCreatePayload {
   brand: string;
   color?: null | string;
-  doors?: null | number;
   model: string;
-  type: 'car';
+  payloadCapacity?: null | number;
+  type: 'truck';
   year?: null | number;
 }
 
-export interface VehicleCarUpdatePayload {
+export interface TruckUpdatePayload {
   brand?: string;
   color?: null | string;
-  doors?: null | number;
   model?: string;
-  type?: 'car';
+  payloadCapacity?: null | number;
+  type?: 'truck';
   year?: null | number;
 }
 
-export type VehicleCreatePayload = VehicleCarCreatePayload | VehicleMotorcycleCreatePayload | VehicleTruckCreatePayload;
+export type Vehicle = Car | Motorcycle | Truck;
+
+export type VehicleCreatePayload = CarCreatePayload | MotorcycleCreatePayload | TruckCreatePayload;
 
 export interface VehicleFilter {
   _and?: VehicleFilter[];
@@ -92,34 +148,6 @@ export interface VehicleFilter {
 
 export type VehicleInclude = object;
 
-export interface VehicleMotorcycle {
-  brand?: string;
-  color?: string;
-  engineCc?: number;
-  id?: unknown;
-  model?: string;
-  type: 'motorcycle';
-  year?: number;
-}
-
-export interface VehicleMotorcycleCreatePayload {
-  brand: string;
-  color?: null | string;
-  engineCc?: null | number;
-  model: string;
-  type: 'motorcycle';
-  year?: null | number;
-}
-
-export interface VehicleMotorcycleUpdatePayload {
-  brand?: string;
-  color?: null | string;
-  engineCc?: null | number;
-  model?: string;
-  type?: 'motorcycle';
-  year?: null | number;
-}
-
 export interface VehiclePage {
   number?: number;
   size?: number;
@@ -129,35 +157,7 @@ export interface VehicleSort {
   year?: unknown;
 }
 
-export interface VehicleTruck {
-  brand?: string;
-  color?: string;
-  id?: unknown;
-  model?: string;
-  payloadCapacity?: number;
-  type: 'truck';
-  year?: number;
-}
-
-export interface VehicleTruckCreatePayload {
-  brand: string;
-  color?: null | string;
-  model: string;
-  payloadCapacity?: null | number;
-  type: 'truck';
-  year?: null | number;
-}
-
-export interface VehicleTruckUpdatePayload {
-  brand?: string;
-  color?: null | string;
-  model?: string;
-  payloadCapacity?: null | number;
-  type?: 'truck';
-  year?: null | number;
-}
-
-export type VehicleUpdatePayload = VehicleCarUpdatePayload | VehicleMotorcycleUpdatePayload | VehicleTruckUpdatePayload;
+export type VehicleUpdatePayload = CarUpdatePayload | MotorcycleUpdatePayload | TruckUpdatePayload;
 
 export interface VehiclesCreateRequest {
   body: VehiclesCreateRequestBody;

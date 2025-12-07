@@ -8,20 +8,20 @@
     "body": {
       "comments": [
         {
-          "id": "a1a63071-02cd-4c9a-9421-5e2ddd5a2eb7",
+          "id": "c2d918c1-4e78-4c4f-8ece-5ccb6d1949c0",
           "body": "Great post!",
           "authorName": "John Doe",
           "commentableType": "GentleOwl::Post",
-          "commentableId": "0dcc94a6-5875-4cc9-9b55-12af089757f3",
-          "createdAt": "2025-12-07T15:57:33.101Z"
+          "commentableId": "329d298e-89ae-44c1-9e40-d5776c8e5db5",
+          "createdAt": "2025-12-07T16:17:39.887Z"
         },
         {
-          "id": "309d0ca1-a58b-4292-8957-2fe2f50dfbbb",
+          "id": "adc99338-cdaa-44fa-a39c-44ea6b3123a8",
           "body": "Helpful video!",
           "authorName": "Jane Doe",
           "commentableType": "GentleOwl::Video",
-          "commentableId": "3a52143f-8a15-4414-b785-5d896d5f723a",
-          "createdAt": "2025-12-07T15:57:33.102Z"
+          "commentableId": "1bbd2e4f-f2b4-4e21-af6e-d1de37724667",
+          "createdAt": "2025-12-07T16:17:39.889Z"
         }
       ],
       "pagination": {

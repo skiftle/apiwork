@@ -118,26 +118,26 @@ GET /brave_eagle/tasks
 {
   "tasks": [
     {
-      "id": "9810699c-0f1a-4c54-bcb9-d2476e86b39a",
+      "id": "10199d27-8385-4a86-bf3a-c89e22582a42",
       "title": "Write documentation",
       "description": "Complete the API reference guide",
       "status": "pending",
       "priority": "high",
       "dueDate": null,
       "archived": false,
-      "createdAt": "2025-12-07T15:57:32.620Z",
-      "updatedAt": "2025-12-07T15:57:32.620Z"
+      "createdAt": "2025-12-07T16:17:39.538Z",
+      "updatedAt": "2025-12-07T16:17:39.538Z"
     },
     {
-      "id": "a9b9011f-3b85-403c-aabb-6c0089dbc3c0",
+      "id": "a0aecd34-3bc4-48ad-9ce4-6fe304f8766c",
       "title": "Review pull request",
       "description": null,
       "status": "completed",
       "priority": "medium",
       "dueDate": null,
       "archived": false,
-      "createdAt": "2025-12-07T15:57:32.621Z",
-      "updatedAt": "2025-12-07T15:57:32.621Z"
+      "createdAt": "2025-12-07T16:17:39.540Z",
+      "updatedAt": "2025-12-07T16:17:39.540Z"
     }
   ],
   "pagination": {
@@ -158,7 +158,7 @@ GET /brave_eagle/tasks
 **Request**
 
 ```http
-GET /brave_eagle/tasks/c8f19cc4-a147-4915-b72f-9c341aae0034
+GET /brave_eagle/tasks/da44f5d1-1b22-47f7-a8ef-c0c9761ab172
 ```
 
 **Response** `404`
@@ -188,7 +188,7 @@ Content-Type: application/json
     "status": "pending",
     "priority": "high",
     "due_date": "2024-02-01",
-    "assignee_id": "4e455611-b2bb-4c53-aece-f6e93d2d8e91"
+    "assignee_id": "b53dd0dc-6af8-4605-8b1f-85beda5effd3"
   }
 }
 ```
@@ -229,7 +229,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-PATCH /brave_eagle/tasks/eea683a0-4c87-4986-98fd-df5c69992f4f/archive
+PATCH /brave_eagle/tasks/c9f57404-1454-4bc8-8801-fd719003b890/archive
 ```
 
 **Response** `200`
@@ -237,15 +237,15 @@ PATCH /brave_eagle/tasks/eea683a0-4c87-4986-98fd-df5c69992f4f/archive
 ```json
 {
   "task": {
-    "id": "eea683a0-4c87-4986-98fd-df5c69992f4f",
+    "id": "c9f57404-1454-4bc8-8801-fd719003b890",
     "title": "Old task to archive",
     "description": null,
     "status": "completed",
     "priority": "medium",
     "dueDate": null,
     "archived": true,
-    "createdAt": "2025-12-07T15:57:32.658Z",
-    "updatedAt": "2025-12-07T15:57:32.663Z"
+    "createdAt": "2025-12-07T16:17:39.577Z",
+    "updatedAt": "2025-12-07T16:17:39.582Z"
   }
 }
 ```
