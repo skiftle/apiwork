@@ -19,10 +19,6 @@ Apiwork::API.draw '/brave_eagle' do
     end
   end
 
-  spec :openapi
-  spec :zod
-  spec :typescript
-
   resources :tasks do
     member do
       patch :archive

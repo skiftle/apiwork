@@ -9,9 +9,5 @@ Apiwork::API.draw '/wise_tiger' do
     description 'API for managing projects with I18n-powered documentation'
   end
 
-  spec :openapi
-  spec :zod
-  spec :typescript
-
   resources :projects
 end

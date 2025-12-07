@@ -3,10 +3,6 @@
 Apiwork::API.draw '/lazy_cow' do
   key_format :camel
 
-  spec :openapi
-  spec :zod
-  spec :typescript
-
   resource :status, only: [] do
     collection do
       get :health

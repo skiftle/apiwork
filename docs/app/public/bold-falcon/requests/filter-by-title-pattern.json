@@ -8,15 +8,15 @@
     "body": {
       "articles": [
         {
-          "id": "4caa7c8b-8790-49f8-8b5b-b7a273a3ea7d",
+          "id": "5b37cb6d-5a69-4603-9424-cea2d5c460d9",
           "title": "Getting Started with Rails",
           "body": null,
           "status": "published",
           "viewCount": 0,
           "rating": null,
           "publishedOn": null,
-          "createdAt": "2025-12-07T17:09:09.392Z",
-          "updatedAt": "2025-12-07T17:09:09.392Z"
+          "createdAt": "2025-12-07T17:20:06.414Z",
+          "updatedAt": "2025-12-07T17:20:06.414Z"
         }
       ],
       "pagination": {

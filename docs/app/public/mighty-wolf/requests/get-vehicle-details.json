@@ -1,14 +1,14 @@
 {
   "request": {
     "method": "GET",
-    "path": "/mighty_wolf/vehicles/30a4f74a-6eb9-4775-a99c-8a4080a73bdc"
+    "path": "/mighty_wolf/vehicles/874b69dd-8485-43fb-ac86-250906ec5317"
   },
   "response": {
     "status": 200,
     "body": {
       "vehicle": {
         "type": "car",
-        "id": "30a4f74a-6eb9-4775-a99c-8a4080a73bdc",
+        "id": "874b69dd-8485-43fb-ac86-250906ec5317",
         "brand": "Volvo",
         "model": "EX30",
         "year": 2024,

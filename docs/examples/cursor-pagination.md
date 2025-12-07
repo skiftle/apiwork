@@ -70,26 +70,26 @@ GET /grumpy_panda/activities
 {
   "activities": [
     {
-      "id": "38c47e10-4f8f-426b-a98c-d970c7df40d7",
-      "action": "user.logout",
-      "occurredAt": "2024-01-01T11:00:00.000Z",
-      "createdAt": "2025-12-07T17:09:09.936Z"
-    },
-    {
-      "id": "4607634e-1167-4f67-9a8c-38f3cc9907eb",
-      "action": "post.update",
-      "occurredAt": "2024-01-01T13:00:00.000Z",
-      "createdAt": "2025-12-07T17:09:09.938Z"
-    },
-    {
-      "id": "c0cd5cdb-8f6b-4a0c-83a9-f720ef8ee9e9",
+      "id": "35033e2a-2833-49ce-a974-f10790a7a8d5",
       "action": "post.create",
       "occurredAt": "2024-01-01T12:00:00.000Z",
-      "createdAt": "2025-12-07T17:09:09.937Z"
+      "createdAt": "2025-12-07T17:20:07.176Z"
+    },
+    {
+      "id": "4e2d1d2c-f284-484c-a3ae-59617ead8093",
+      "action": "post.delete",
+      "occurredAt": "2024-01-01T14:00:00.000Z",
+      "createdAt": "2025-12-07T17:20:07.178Z"
+    },
+    {
+      "id": "e50ce779-0009-4142-8733-2396698140bc",
+      "action": "user.logout",
+      "occurredAt": "2024-01-01T11:00:00.000Z",
+      "createdAt": "2025-12-07T17:20:07.175Z"
     }
   ],
   "pagination": {
-    "nextCursor": "eyJpZCI6ImMwY2Q1Y2RiLThmNmItNGEwYy04M2E5LWY3MjBlZjhlZTllOSJ9",
+    "nextCursor": "eyJpZCI6ImU1MGNlNzc5LTAwMDktNDE0Mi04NzMzLTIzOTY2OTgxNDBiYyJ9",
     "prevCursor": null
   }
 }

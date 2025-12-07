@@ -3,9 +3,5 @@
 Apiwork::API.draw '/swift_fox' do
   key_format :camel
 
-  spec :openapi
-  spec :zod
-  spec :typescript
-
   resources :contacts
 end

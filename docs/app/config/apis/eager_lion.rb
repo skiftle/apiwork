@@ -3,10 +3,6 @@
 Apiwork::API.draw '/eager_lion' do
   key_format :camel
 
-  spec :openapi
-  spec :zod
-  spec :typescript
-
   resources :invoices do
     member do
       patch :archive
