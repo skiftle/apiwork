@@ -54,6 +54,12 @@ Comments that belong to different content types (posts, videos, images)
 
 <<< @/app/app/contracts/gentle_owl/comment_contract.rb
 
+## Controllers
+
+<small>`app/controllers/gentle_owl/comments_controller.rb`</small>
+
+<<< @/app/app/controllers/gentle_owl/comments_controller.rb
+
 ---
 
 ## Generated Output

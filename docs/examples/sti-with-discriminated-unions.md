@@ -54,6 +54,12 @@ Single Table Inheritance with automatic variant serialization and TypeScript uni
 
 <<< @/app/app/contracts/mighty_wolf/vehicle_contract.rb
 
+## Controllers
+
+<small>`app/controllers/mighty_wolf/vehicles_controller.rb`</small>
+
+<<< @/app/app/controllers/mighty_wolf/vehicles_controller.rb
+
 ---
 
 ## Generated Output

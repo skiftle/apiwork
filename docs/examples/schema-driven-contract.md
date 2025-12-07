@@ -46,6 +46,12 @@ Using `schema!` to generate a complete contract from schema definitions
 
 <<< @/app/app/contracts/eager_lion/invoice_contract.rb
 
+## Controllers
+
+<small>`app/controllers/eager_lion/invoices_controller.rb`</small>
+
+<<< @/app/app/controllers/eager_lion/invoices_controller.rb
+
 ---
 
 ## Generated Output

@@ -38,6 +38,12 @@ Complex queries with string patterns, numeric ranges, and logical operators
 
 <<< @/app/app/contracts/bold_falcon/article_contract.rb
 
+## Controllers
+
+<small>`app/controllers/bold_falcon/articles_controller.rb`</small>
+
+<<< @/app/app/controllers/bold_falcon/articles_controller.rb
+
 ---
 
 ## Generated Output

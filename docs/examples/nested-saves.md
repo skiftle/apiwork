@@ -46,6 +46,12 @@ Create, update, and delete nested records in a single request
 
 <<< @/app/app/contracts/clever_rabbit/order_contract.rb
 
+## Controllers
+
+<small>`app/controllers/clever_rabbit/orders_controller.rb`</small>
+
+<<< @/app/app/controllers/clever_rabbit/orders_controller.rb
+
 ---
 
 ## Generated Output
