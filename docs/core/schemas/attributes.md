@@ -98,6 +98,10 @@ The `object` method returns the current model instance.
 
 The `writable` option controls whether an attribute can be set during create or update requests.
 
+::: warning Database Column Required
+Only attributes backed by a database column can be writable. Virtual attributes (methods) cannot be written.
+:::
+
 ### Basic Usage
 
 ```ruby
@@ -172,6 +176,10 @@ Writable attributes are sent in the request body under the resource key:
 ## Filtering
 
 The `filterable` option enables query filtering on an attribute.
+
+::: warning Database Column Required
+Only attributes backed by a database column can be filterable. Virtual attributes (methods) cannot be filtered.
+:::
 
 ### Basic Usage
 
@@ -261,6 +269,10 @@ GET /api/v1/posts?filter[_not][published][eq]=true
 ## Sorting
 
 The `sortable` option enables ordering results by an attribute.
+
+::: warning Database Column Required
+Only attributes backed by a database column can be sortable. Virtual attributes (methods) cannot be sorted.
+:::
 
 ### Basic Usage
 

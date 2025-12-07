@@ -65,6 +65,7 @@ module Apiwork
 
       def validate!
         validate_attribute_exists!
+        validate_column_required_options!
       end
 
       def filterable?
@@ -251,6 +252,35 @@ module Apiwork
         raise ConfigurationError,
               "Attribute #{@name}: format :#{@format} is not valid for type :#{@type}. " \
               "Allowed formats: #{allowed_formats.join(', ')}"
+      end
+
+      def validate_column_required_options!
+        return if @is_db_column
+        return if @owner_schema_class.abstract_class
+
+        if filterable?
+          raise ConfigurationError.new(
+            code: :filterable_requires_column,
+            detail: "Attribute #{@name}: filterable requires a database column",
+            path: [@name]
+          )
+        end
+
+        if sortable?
+          raise ConfigurationError.new(
+            code: :sortable_requires_column,
+            detail: "Attribute #{@name}: sortable requires a database column",
+            path: [@name]
+          )
+        end
+
+        return unless writable?
+
+        raise ConfigurationError.new(
+          code: :writable_requires_column,
+          detail: "Attribute #{@name}: writable requires a database column",
+          path: [@name]
+        )
       end
     end
   end
