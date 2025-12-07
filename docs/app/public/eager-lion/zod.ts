@@ -3,21 +3,21 @@ import { z } from 'zod';
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
 export const InvoiceSchema = z.object({
-  created_at: z.iso.datetime().optional(),
+  createdAt: z.iso.datetime().optional(),
   customer: z.object({}),
-  customer_id: z.string().optional(),
+  customerId: z.string().optional(),
   id: z.string().optional(),
-  issued_on: z.iso.date().optional(),
+  issuedOn: z.iso.date().optional(),
   lines: z.array(z.string()),
   notes: z.string().optional(),
   number: z.string().optional(),
   status: z.string().optional(),
-  updated_at: z.iso.datetime().optional()
+  updatedAt: z.iso.datetime().optional()
 });
 
 export const InvoiceCreatePayloadSchema = z.object({
-  customer_id: z.string(),
-  issued_on: z.iso.date().nullable().optional(),
+  customerId: z.string(),
+  issuedOn: z.iso.date().nullable().optional(),
   lines: z.array(z.string()).optional(),
   notes: z.string().nullable().optional(),
   number: z.string()
@@ -33,15 +33,15 @@ export const InvoicePageSchema = z.object({
 });
 
 export const InvoiceSortSchema = z.object({
-  created_at: z.unknown().optional(),
-  issued_on: z.unknown().optional(),
+  createdAt: z.unknown().optional(),
+  issuedOn: z.unknown().optional(),
   status: z.unknown().optional(),
-  updated_at: z.unknown().optional()
+  updatedAt: z.unknown().optional()
 });
 
 export const InvoiceUpdatePayloadSchema = z.object({
-  customer_id: z.string().optional(),
-  issued_on: z.iso.date().nullable().optional(),
+  customerId: z.string().optional(),
+  issuedOn: z.iso.date().nullable().optional(),
   lines: z.array(z.string()).optional(),
   notes: z.string().nullable().optional(),
   number: z.string().optional()
@@ -56,11 +56,11 @@ export const IssueSchema = z.object({
 
 export const NullableStringFilterSchema = z.object({
   contains: z.string().optional(),
-  ends_with: z.string().optional(),
+  endsWith: z.string().optional(),
   eq: z.string().optional(),
   in: z.array(z.string()).optional(),
   null: z.boolean().optional(),
-  starts_with: z.string().optional()
+  startsWith: z.string().optional()
 });
 
 export const PagePaginationSchema = z.object({
@@ -73,10 +73,10 @@ export const PagePaginationSchema = z.object({
 
 export const StringFilterSchema = z.object({
   contains: z.string().optional(),
-  ends_with: z.string().optional(),
+  endsWith: z.string().optional(),
   eq: z.string().optional(),
   in: z.array(z.string()).optional(),
-  starts_with: z.string().optional()
+  startsWith: z.string().optional()
 });
 
 export const InvoiceFilterSchema: z.ZodType<InvoiceFilter> = z.lazy(() => z.object({
@@ -88,14 +88,14 @@ export const InvoiceFilterSchema: z.ZodType<InvoiceFilter> = z.lazy(() => z.obje
 }));
 
 export const InvoiceSchema = z.object({
-  created_at: z.iso.datetime(),
-  customer_id: z.string(),
+  createdAt: z.iso.datetime(),
+  customerId: z.string(),
   id: z.string(),
-  issued_on: z.iso.date().nullable().optional(),
+  issuedOn: z.iso.date().nullable().optional(),
   notes: z.string().nullable().optional(),
   number: z.string(),
   status: z.string().nullable().optional(),
-  updated_at: z.iso.datetime()
+  updatedAt: z.iso.datetime()
 });
 
 export const InvoicesIndexRequestQuerySchema = z.object({
@@ -182,32 +182,32 @@ export const InvoicesArchiveResponseSchema = z.object({
 });
 
 export interface Invoice {
-  created_at: string;
-  customer_id: string;
+  createdAt: string;
+  customerId: string;
   id: string;
-  issued_on?: null | string;
+  issuedOn?: null | string;
   notes?: null | string;
   number: string;
   status?: null | string;
-  updated_at: string;
+  updatedAt: string;
 }
 
 export interface Invoice {
-  created_at?: string;
+  createdAt?: string;
   customer: object;
-  customer_id?: string;
+  customerId?: string;
   id?: string;
-  issued_on?: string;
+  issuedOn?: string;
   lines: string[];
   notes?: string;
   number?: string;
   status?: string;
-  updated_at?: string;
+  updatedAt?: string;
 }
 
 export interface InvoiceCreatePayload {
-  customer_id: string;
-  issued_on?: null | string;
+  customerId: string;
+  issuedOn?: null | string;
   lines?: string[];
   notes?: null | string;
   number: string;
@@ -229,15 +229,15 @@ export interface InvoicePage {
 }
 
 export interface InvoiceSort {
-  created_at?: unknown;
-  issued_on?: unknown;
+  createdAt?: unknown;
+  issuedOn?: unknown;
   status?: unknown;
-  updated_at?: unknown;
+  updatedAt?: unknown;
 }
 
 export interface InvoiceUpdatePayload {
-  customer_id?: string;
-  issued_on?: null | string;
+  customerId?: string;
+  issuedOn?: null | string;
   lines?: string[];
   notes?: null | string;
   number?: string;
@@ -335,11 +335,11 @@ export interface Issue {
 
 export interface NullableStringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
   null?: boolean;
-  starts_with?: string;
+  startsWith?: string;
 }
 
 export interface PagePagination {
@@ -354,8 +354,8 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
-  starts_with?: string;
+  startsWith?: string;
 }

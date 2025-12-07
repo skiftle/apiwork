@@ -43,10 +43,10 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
-  starts_with?: string;
+  startsWith?: string;
 }
 
 export type Vehicle = ;
@@ -85,7 +85,7 @@ export type VehicleInclude = object;
 export interface VehicleMotorcycleCreatePayload {
   brand: string;
   color?: null | string;
-  engine_cc?: null | number;
+  engineCc?: null | number;
   kind: unknown;
   model: string;
   year?: null | number;
@@ -94,7 +94,7 @@ export interface VehicleMotorcycleCreatePayload {
 export interface VehicleMotorcycleUpdatePayload {
   brand?: string;
   color?: null | string;
-  engine_cc?: null | number;
+  engineCc?: null | number;
   kind?: unknown;
   model?: string;
   year?: null | number;
@@ -114,7 +114,7 @@ export interface VehicleTruckCreatePayload {
   color?: null | string;
   kind: unknown;
   model: string;
-  payload_capacity?: null | number;
+  payloadCapacity?: null | number;
   year?: null | number;
 }
 
@@ -123,7 +123,7 @@ export interface VehicleTruckUpdatePayload {
   color?: null | string;
   kind?: unknown;
   model?: string;
-  payload_capacity?: null | number;
+  payloadCapacity?: null | number;
   year?: null | number;
 }
 

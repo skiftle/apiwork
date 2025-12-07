@@ -17,12 +17,12 @@
     "body": {
       "vehicle": {
         "kind": "motorcycle",
-        "id": "2b7c075b-b139-4402-a961-b43c24650e07",
+        "id": "00675ae2-4b5b-472d-a267-f4c869cf1561",
         "brand": "Harley-Davidson",
         "model": "Street Glide",
         "year": 2023,
         "color": "black",
-        "engine_cc": null
+        "engineCc": null
       }
     }
   }

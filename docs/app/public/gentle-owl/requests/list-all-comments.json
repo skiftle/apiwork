@@ -8,20 +8,20 @@
     "body": {
       "comments": [
         {
-          "id": "ae40de2c-b98a-49f9-9db8-6ecb244918a7",
+          "id": "ce72738a-9ed1-46cb-8e4a-9d3536f74428",
           "body": "Great post!",
-          "author_name": "John Doe",
-          "commentable_type": "GentleOwl::Post",
-          "commentable_id": "7526d95e-545b-4d3b-a45c-b4e81d23241d",
-          "created_at": "2025-12-07T13:14:57.252Z"
+          "authorName": "John Doe",
+          "commentableType": "GentleOwl::Post",
+          "commentableId": "f507aa27-71f1-4e5a-9b60-02284883252b",
+          "createdAt": "2025-12-07T13:22:39.930Z"
         },
         {
-          "id": "c43121d0-e8b0-47ef-bc16-9836d74df806",
+          "id": "0dcb7aae-0eed-4581-88ae-aeed4d0c906c",
           "body": "Helpful video!",
-          "author_name": "Jane Doe",
-          "commentable_type": "GentleOwl::Video",
-          "commentable_id": "4528c8fc-80c1-4554-a6f0-5f7c36ba2a53",
-          "created_at": "2025-12-07T13:14:57.257Z"
+          "authorName": "Jane Doe",
+          "commentableType": "GentleOwl::Video",
+          "commentableId": "fd9fe16f-d19d-4213-a067-e8c960d1e389",
+          "createdAt": "2025-12-07T13:22:39.934Z"
         }
       ],
       "pagination": {

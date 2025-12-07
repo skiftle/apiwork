@@ -6,7 +6,7 @@
 :paths:
   contacts/:
     get:
-      :operationId: contacts_index
+      :operationId: contactsIndex
       :tags:
       - Contacts
       :parameters:
@@ -14,12 +14,12 @@
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/contact_include"
+          :$ref: "#/components/schemas/contactInclude"
       - :in: query
         :name: page
         :required: false
         :schema:
-          :$ref: "#/components/schemas/contact_page"
+          :$ref: "#/components/schemas/contactPage"
       :responses:
         :200:
           :description: Successful response
@@ -36,9 +36,9 @@
                     :type: object
                     :properties: {}
                   pagination:
-                    :$ref: "#/components/schemas/page_pagination"
+                    :$ref: "#/components/schemas/pagePagination"
     post:
-      :operationId: contacts_create
+      :operationId: contactsCreate
       :tags:
       - Contacts
       :requestBody:
@@ -49,7 +49,7 @@
               :type: object
               :properties:
                 contact:
-                  :$ref: "#/components/schemas/contact_create_payload"
+                  :$ref: "#/components/schemas/contactCreatePayload"
               :required:
               - contact
       :responses:
@@ -80,7 +80,7 @@
                       :$ref: "#/components/schemas/issue"
   contacts/:id:
     get:
-      :operationId: contacts_show
+      :operationId: contactsShow
       :tags:
       - Contacts
       :responses:
@@ -99,7 +99,7 @@
                 :required:
                 - contact
     patch:
-      :operationId: contacts_update
+      :operationId: contactsUpdate
       :tags:
       - Contacts
       :requestBody:
@@ -110,7 +110,7 @@
               :type: object
               :properties:
                 contact:
-                  :$ref: "#/components/schemas/contact_update_payload"
+                  :$ref: "#/components/schemas/contactUpdatePayload"
       :responses:
         :200:
           :description: Successful response
@@ -136,7 +136,7 @@
                     :items:
                       :$ref: "#/components/schemas/issue"
     delete:
-      :operationId: contacts_destroy
+      :operationId: contactsDestroy
       :tags:
       - Contacts
       :responses:
@@ -157,7 +157,7 @@
           :type: string
         phone:
           :type: string
-    contact_create_payload:
+    contactCreatePayload:
       :type: object
       :properties:
         email:
@@ -172,10 +172,10 @@
           :type: string
       :required:
       - name
-    contact_include:
+    contactInclude:
       :type: object
       :properties: {}
-    contact_page:
+    contactPage:
       :type: object
       :properties:
         number:
@@ -185,7 +185,7 @@
           :type: integer
           :minimum: 1
           :maximum: 100
-    contact_update_payload:
+    contactUpdatePayload:
       :type: object
       :properties:
         email:
@@ -218,7 +218,7 @@
       - detail
       - field
       - path
-    page_pagination:
+    pagePagination:
       :type: object
       :properties:
         current:

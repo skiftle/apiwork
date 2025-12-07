@@ -6,7 +6,7 @@
 :paths:
   orders/:
     get:
-      :operationId: orders_index
+      :operationId: ordersIndex
       :tags:
       - Orders
       :parameters:
@@ -15,29 +15,29 @@
         :required: false
         :schema:
           :oneOf:
-          - :$ref: "#/components/schemas/order_filter"
+          - :$ref: "#/components/schemas/orderFilter"
           - :type: array
             :items:
-              :$ref: "#/components/schemas/order_filter"
+              :$ref: "#/components/schemas/orderFilter"
       - :in: query
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/order_include"
+          :$ref: "#/components/schemas/orderInclude"
       - :in: query
         :name: page
         :required: false
         :schema:
-          :$ref: "#/components/schemas/order_page"
+          :$ref: "#/components/schemas/orderPage"
       - :in: query
         :name: sort
         :required: false
         :schema:
           :oneOf:
-          - :$ref: "#/components/schemas/order_sort"
+          - :$ref: "#/components/schemas/orderSort"
           - :type: array
             :items:
-              :$ref: "#/components/schemas/order_sort"
+              :$ref: "#/components/schemas/orderSort"
       :responses:
         :200:
           :description: Successful response
@@ -54,9 +54,9 @@
                     :items:
                       :$ref: "#/components/schemas/order"
                   pagination:
-                    :$ref: "#/components/schemas/page_pagination"
+                    :$ref: "#/components/schemas/pagePagination"
     post:
-      :operationId: orders_create
+      :operationId: ordersCreate
       :tags:
       - Orders
       :parameters:
@@ -64,7 +64,7 @@
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/order_include"
+          :$ref: "#/components/schemas/orderInclude"
       :requestBody:
         :required: true
         :content:
@@ -73,7 +73,7 @@
               :type: object
               :properties:
                 order:
-                  :$ref: "#/components/schemas/order_create_payload"
+                  :$ref: "#/components/schemas/orderCreatePayload"
               :required:
               - order
       :responses:
@@ -104,7 +104,7 @@
                       :$ref: "#/components/schemas/issue"
   orders/:id:
     get:
-      :operationId: orders_show
+      :operationId: ordersShow
       :tags:
       - Orders
       :parameters:
@@ -112,7 +112,7 @@
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/order_include"
+          :$ref: "#/components/schemas/orderInclude"
       :responses:
         :200:
           :description: Successful response
@@ -129,7 +129,7 @@
                 :required:
                 - order
     patch:
-      :operationId: orders_update
+      :operationId: ordersUpdate
       :tags:
       - Orders
       :parameters:
@@ -137,7 +137,7 @@
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/order_include"
+          :$ref: "#/components/schemas/orderInclude"
       :requestBody:
         :required: true
         :content:
@@ -146,7 +146,7 @@
               :type: object
               :properties:
                 order:
-                  :$ref: "#/components/schemas/order_update_payload"
+                  :$ref: "#/components/schemas/orderUpdatePayload"
       :responses:
         :200:
           :description: Successful response
@@ -172,7 +172,7 @@
                     :items:
                       :$ref: "#/components/schemas/issue"
     delete:
-      :operationId: orders_destroy
+      :operationId: ordersDestroy
       :tags:
       - Orders
       :responses:
@@ -198,12 +198,12 @@
       - detail
       - field
       - path
-    nullable_string_filter:
+    nullableStringFilter:
       :type: object
       :properties:
         contains:
           :type: string
-        ends_with:
+        endsWith:
           :type: string
         eq:
           :type: string
@@ -213,67 +213,67 @@
             :type: string
         'null':
           :type: boolean
-        starts_with:
+        startsWith:
           :type: string
     order:
       :type: object
       :properties:
-        created_at:
+        createdAt:
           :type: string
         id: {}
-        line_items:
+        lineItems:
           :type: array
           :items:
             :type: string
-        order_number:
+        orderNumber:
           :type: string
-        shipping_address:
+        shippingAddress:
           :type: object
           :properties: {}
         status:
           :type: string
         total:
           :type: number
-        updated_at:
+        updatedAt:
           :type: string
       :required:
-      - line_items
-      - shipping_address
-    order_create_payload:
+      - lineItems
+      - shippingAddress
+    orderCreatePayload:
       :type: object
       :properties:
-        line_items:
+        lineItems:
           :type: array
           :items:
             :type: string
-        order_number:
+        orderNumber:
           :type: string
-        shipping_address:
+        shippingAddress:
           :type: object
           :properties: {}
       :required:
-      - order_number
-    order_filter:
+      - orderNumber
+    orderFilter:
       :type: object
       :properties:
         _and:
           :type: array
           :items:
-            :$ref: "#/components/schemas/order_filter"
+            :$ref: "#/components/schemas/orderFilter"
         _not:
-          :$ref: "#/components/schemas/order_filter"
+          :$ref: "#/components/schemas/orderFilter"
         _or:
           :type: array
           :items:
-            :$ref: "#/components/schemas/order_filter"
+            :$ref: "#/components/schemas/orderFilter"
         status:
           :oneOf:
           - :type: string
-          - :$ref: "#/components/schemas/nullable_string_filter"
-    order_include:
+          - :$ref: "#/components/schemas/nullableStringFilter"
+    orderInclude:
       :type: object
       :properties: {}
-    order_page:
+    orderPage:
       :type: object
       :properties:
         number:
@@ -283,26 +283,26 @@
           :type: integer
           :minimum: 1
           :maximum: 100
-    order_sort:
+    orderSort:
       :type: object
       :properties:
-        created_at: {}
+        createdAt: {}
         status: {}
-    order_update_payload:
+    orderUpdatePayload:
       :type: object
       :properties:
-        line_items:
+        lineItems:
           :type: array
           :items:
             :type: string
-        order_number:
+        orderNumber:
           :type: string
-        shipping_address:
+        shippingAddress:
           :type: object
           :properties: {}
       :required:
-      - order_number
-    page_pagination:
+      - orderNumber
+    pagePagination:
       :type: object
       :properties:
         current:
@@ -323,12 +323,12 @@
       - current
       - items
       - total
-    string_filter:
+    stringFilter:
       :type: object
       :properties:
         contains:
           :type: string
-        ends_with:
+        endsWith:
           :type: string
         eq:
           :type: string
@@ -336,5 +336,5 @@
           :type: array
           :items:
             :type: string
-        starts_with:
+        startsWith:
           :type: string

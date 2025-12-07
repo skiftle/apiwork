@@ -6,7 +6,7 @@
 :paths:
   users/:
     get:
-      :operationId: users_index
+      :operationId: usersIndex
       :tags:
       - Users
       :parameters:
@@ -15,29 +15,29 @@
         :required: false
         :schema:
           :oneOf:
-          - :$ref: "#/components/schemas/user_filter"
+          - :$ref: "#/components/schemas/userFilter"
           - :type: array
             :items:
-              :$ref: "#/components/schemas/user_filter"
+              :$ref: "#/components/schemas/userFilter"
       - :in: query
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/user_include"
+          :$ref: "#/components/schemas/userInclude"
       - :in: query
         :name: page
         :required: false
         :schema:
-          :$ref: "#/components/schemas/user_page"
+          :$ref: "#/components/schemas/userPage"
       - :in: query
         :name: sort
         :required: false
         :schema:
           :oneOf:
-          - :$ref: "#/components/schemas/user_sort"
+          - :$ref: "#/components/schemas/userSort"
           - :type: array
             :items:
-              :$ref: "#/components/schemas/user_sort"
+              :$ref: "#/components/schemas/userSort"
       :responses:
         :200:
           :description: Successful response
@@ -50,13 +50,13 @@
                     :type: object
                     :properties: {}
                   pagination:
-                    :$ref: "#/components/schemas/page_pagination"
+                    :$ref: "#/components/schemas/pagePagination"
                   users:
                     :type: array
                     :items:
                       :$ref: "#/components/schemas/user"
     post:
-      :operationId: users_create
+      :operationId: usersCreate
       :tags:
       - Users
       :parameters:
@@ -64,7 +64,7 @@
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/user_include"
+          :$ref: "#/components/schemas/userInclude"
       :requestBody:
         :required: true
         :content:
@@ -73,7 +73,7 @@
               :type: object
               :properties:
                 user:
-                  :$ref: "#/components/schemas/user_create_payload"
+                  :$ref: "#/components/schemas/userCreatePayload"
               :required:
               - user
       :responses:
@@ -104,7 +104,7 @@
                       :$ref: "#/components/schemas/issue"
   users/:id:
     get:
-      :operationId: users_show
+      :operationId: usersShow
       :tags:
       - Users
       :parameters:
@@ -112,7 +112,7 @@
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/user_include"
+          :$ref: "#/components/schemas/userInclude"
       :responses:
         :200:
           :description: Successful response
@@ -129,7 +129,7 @@
                 :required:
                 - user
     patch:
-      :operationId: users_update
+      :operationId: usersUpdate
       :tags:
       - Users
       :parameters:
@@ -137,7 +137,7 @@
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/user_include"
+          :$ref: "#/components/schemas/userInclude"
       :requestBody:
         :required: true
         :content:
@@ -146,7 +146,7 @@
               :type: object
               :properties:
                 user:
-                  :$ref: "#/components/schemas/user_update_payload"
+                  :$ref: "#/components/schemas/userUpdatePayload"
       :responses:
         :200:
           :description: Successful response
@@ -172,7 +172,7 @@
                     :items:
                       :$ref: "#/components/schemas/issue"
     delete:
-      :operationId: users_destroy
+      :operationId: usersDestroy
       :tags:
       - Users
       :responses:
@@ -180,7 +180,7 @@
           :description: No content
   posts/:
     get:
-      :operationId: posts_index
+      :operationId: postsIndex
       :tags:
       - Posts
       :parameters:
@@ -188,12 +188,12 @@
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/post_include"
+          :$ref: "#/components/schemas/postInclude"
       - :in: query
         :name: page
         :required: false
         :schema:
-          :$ref: "#/components/schemas/post_page"
+          :$ref: "#/components/schemas/postPage"
       :responses:
         :200:
           :description: Successful response
@@ -206,13 +206,13 @@
                     :type: object
                     :properties: {}
                   pagination:
-                    :$ref: "#/components/schemas/page_pagination"
+                    :$ref: "#/components/schemas/pagePagination"
                   posts:
                     :type: array
                     :items:
                       :$ref: "#/components/schemas/post"
     post:
-      :operationId: posts_create
+      :operationId: postsCreate
       :tags:
       - Posts
       :parameters:
@@ -220,7 +220,7 @@
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/post_include"
+          :$ref: "#/components/schemas/postInclude"
       :requestBody:
         :required: true
         :content:
@@ -229,7 +229,7 @@
               :type: object
               :properties:
                 post:
-                  :$ref: "#/components/schemas/post_create_payload"
+                  :$ref: "#/components/schemas/postCreatePayload"
               :required:
               - post
       :responses:
@@ -260,7 +260,7 @@
                       :$ref: "#/components/schemas/issue"
   posts/:id:
     get:
-      :operationId: posts_show
+      :operationId: postsShow
       :tags:
       - Posts
       :parameters:
@@ -268,7 +268,7 @@
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/post_include"
+          :$ref: "#/components/schemas/postInclude"
       :responses:
         :200:
           :description: Successful response
@@ -285,7 +285,7 @@
                 :required:
                 - post
     patch:
-      :operationId: posts_update
+      :operationId: postsUpdate
       :tags:
       - Posts
       :parameters:
@@ -293,7 +293,7 @@
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/post_include"
+          :$ref: "#/components/schemas/postInclude"
       :requestBody:
         :required: true
         :content:
@@ -302,7 +302,7 @@
               :type: object
               :properties:
                 post:
-                  :$ref: "#/components/schemas/post_update_payload"
+                  :$ref: "#/components/schemas/postUpdatePayload"
       :responses:
         :200:
           :description: Successful response
@@ -328,7 +328,7 @@
                     :items:
                       :$ref: "#/components/schemas/issue"
     delete:
-      :operationId: posts_destroy
+      :operationId: postsDestroy
       :tags:
       - Posts
       :responses:
@@ -336,7 +336,7 @@
           :description: No content
   comments/:
     get:
-      :operationId: comments_index
+      :operationId: commentsIndex
       :tags:
       - Comments
       :parameters:
@@ -344,12 +344,12 @@
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/comment_include"
+          :$ref: "#/components/schemas/commentInclude"
       - :in: query
         :name: page
         :required: false
         :schema:
-          :$ref: "#/components/schemas/comment_page"
+          :$ref: "#/components/schemas/commentPage"
       :responses:
         :200:
           :description: Successful response
@@ -366,9 +366,9 @@
                     :type: object
                     :properties: {}
                   pagination:
-                    :$ref: "#/components/schemas/page_pagination"
+                    :$ref: "#/components/schemas/pagePagination"
     post:
-      :operationId: comments_create
+      :operationId: commentsCreate
       :tags:
       - Comments
       :requestBody:
@@ -379,7 +379,7 @@
               :type: object
               :properties:
                 comment:
-                  :$ref: "#/components/schemas/comment_create_payload"
+                  :$ref: "#/components/schemas/commentCreatePayload"
               :required:
               - comment
       :responses:
@@ -410,7 +410,7 @@
                       :$ref: "#/components/schemas/issue"
   comments/:id:
     get:
-      :operationId: comments_show
+      :operationId: commentsShow
       :tags:
       - Comments
       :responses:
@@ -429,7 +429,7 @@
                 :required:
                 - comment
     patch:
-      :operationId: comments_update
+      :operationId: commentsUpdate
       :tags:
       - Comments
       :requestBody:
@@ -440,7 +440,7 @@
               :type: object
               :properties:
                 comment:
-                  :$ref: "#/components/schemas/comment_update_payload"
+                  :$ref: "#/components/schemas/commentUpdatePayload"
       :responses:
         :200:
           :description: Successful response
@@ -466,7 +466,7 @@
                     :items:
                       :$ref: "#/components/schemas/issue"
     delete:
-      :operationId: comments_destroy
+      :operationId: commentsDestroy
       :tags:
       - Comments
       :responses:
@@ -483,7 +483,7 @@
           :type: string
         id:
           :type: string
-    comment_create_payload:
+    commentCreatePayload:
       :type: object
       :properties:
         author:
@@ -493,10 +493,10 @@
       :required:
       - author
       - body
-    comment_include:
+    commentInclude:
       :type: object
       :properties: {}
-    comment_nested_create_payload:
+    commentNestedCreatePayload:
       :type: object
       :properties:
         _type:
@@ -510,16 +510,16 @@
       - _type
       - author
       - body
-    comment_nested_payload:
+    commentNestedPayload:
       :oneOf:
-      - :$ref: "#/components/schemas/comment_nested_create_payload"
-      - :$ref: "#/components/schemas/comment_nested_update_payload"
+      - :$ref: "#/components/schemas/commentNestedCreatePayload"
+      - :$ref: "#/components/schemas/commentNestedUpdatePayload"
       :discriminator:
         :propertyName: _type
         :mapping:
-          create: "#/components/schemas/comment_nested_create_payload"
-          update: "#/components/schemas/comment_nested_update_payload"
-    comment_nested_update_payload:
+          create: "#/components/schemas/commentNestedCreatePayload"
+          update: "#/components/schemas/commentNestedUpdatePayload"
+    commentNestedUpdatePayload:
       :type: object
       :properties:
         _type:
@@ -533,7 +533,7 @@
       - _type
       - author
       - body
-    comment_page:
+    commentPage:
       :type: object
       :properties:
         number:
@@ -543,7 +543,7 @@
           :type: integer
           :minimum: 1
           :maximum: 100
-    comment_update_payload:
+    commentUpdatePayload:
       :type: object
       :properties:
         author:
@@ -571,7 +571,7 @@
       - detail
       - field
       - path
-    page_pagination:
+    pagePagination:
       :type: object
       :properties:
         current:
@@ -605,23 +605,23 @@
           :type: string
       :required:
       - comments
-    post_create_payload:
+    postCreatePayload:
       :type: object
       :properties:
         comments:
           :type: array
           :items:
-            :$ref: "#/components/schemas/comment_nested_payload"
+            :$ref: "#/components/schemas/commentNestedPayload"
         title:
           :type: string
       :required:
       - title
-    post_include:
+    postInclude:
       :type: object
       :properties:
         comments:
-          :$ref: "#/components/schemas/comment_include"
-    post_nested_create_payload:
+          :$ref: "#/components/schemas/commentInclude"
+    postNestedCreatePayload:
       :type: object
       :properties:
         _type:
@@ -630,22 +630,22 @@
         comments:
           :type: array
           :items:
-            :$ref: "#/components/schemas/comment_nested_payload"
+            :$ref: "#/components/schemas/commentNestedPayload"
         title:
           :type: string
       :required:
       - _type
       - title
-    post_nested_payload:
+    postNestedPayload:
       :oneOf:
-      - :$ref: "#/components/schemas/post_nested_create_payload"
-      - :$ref: "#/components/schemas/post_nested_update_payload"
+      - :$ref: "#/components/schemas/postNestedCreatePayload"
+      - :$ref: "#/components/schemas/postNestedUpdatePayload"
       :discriminator:
         :propertyName: _type
         :mapping:
-          create: "#/components/schemas/post_nested_create_payload"
-          update: "#/components/schemas/post_nested_update_payload"
-    post_nested_update_payload:
+          create: "#/components/schemas/postNestedCreatePayload"
+          update: "#/components/schemas/postNestedUpdatePayload"
+    postNestedUpdatePayload:
       :type: object
       :properties:
         _type:
@@ -654,13 +654,13 @@
         comments:
           :type: array
           :items:
-            :$ref: "#/components/schemas/comment_nested_payload"
+            :$ref: "#/components/schemas/commentNestedPayload"
         title:
           :type: string
       :required:
       - _type
       - title
-    post_page:
+    postPage:
       :type: object
       :properties:
         number:
@@ -670,23 +670,23 @@
           :type: integer
           :minimum: 1
           :maximum: 100
-    post_update_payload:
+    postUpdatePayload:
       :type: object
       :properties:
         comments:
           :type: array
           :items:
-            :$ref: "#/components/schemas/comment_nested_payload"
+            :$ref: "#/components/schemas/commentNestedPayload"
         title:
           :type: string
       :required:
       - title
-    string_filter:
+    stringFilter:
       :type: object
       :properties:
         contains:
           :type: string
-        ends_with:
+        endsWith:
           :type: string
         eq:
           :type: string
@@ -694,12 +694,12 @@
           :type: array
           :items:
             :type: string
-        starts_with:
+        startsWith:
           :type: string
     user:
       :type: object
       :properties:
-        created_at:
+        createdAt:
           :type: string
         email:
           :type: string
@@ -712,14 +712,14 @@
         profile:
           :type: object
           :properties: {}
-        updated_at:
+        updatedAt:
           :type: string
         username:
           :type: string
       :required:
       - posts
       - profile
-    user_create_payload:
+    userCreatePayload:
       :type: object
       :properties:
         email:
@@ -727,7 +727,7 @@
         posts:
           :type: array
           :items:
-            :$ref: "#/components/schemas/post_nested_payload"
+            :$ref: "#/components/schemas/postNestedPayload"
         profile:
           :type: object
           :properties: {}
@@ -736,35 +736,35 @@
       :required:
       - email
       - username
-    user_filter:
+    userFilter:
       :type: object
       :properties:
         _and:
           :type: array
           :items:
-            :$ref: "#/components/schemas/user_filter"
+            :$ref: "#/components/schemas/userFilter"
         _not:
-          :$ref: "#/components/schemas/user_filter"
+          :$ref: "#/components/schemas/userFilter"
         _or:
           :type: array
           :items:
-            :$ref: "#/components/schemas/user_filter"
+            :$ref: "#/components/schemas/userFilter"
         email:
           :oneOf:
           - :type: string
-          - :$ref: "#/components/schemas/string_filter"
+          - :$ref: "#/components/schemas/stringFilter"
         username:
           :oneOf:
           - :type: string
-          - :$ref: "#/components/schemas/string_filter"
-    user_include:
+          - :$ref: "#/components/schemas/stringFilter"
+    userInclude:
       :type: object
       :properties:
         posts:
-          :$ref: "#/components/schemas/post_include"
+          :$ref: "#/components/schemas/postInclude"
         profile:
-          :$ref: "#/components/schemas/user_profile_include"
-    user_page:
+          :$ref: "#/components/schemas/userProfileInclude"
+    userPage:
       :type: object
       :properties:
         number:
@@ -774,15 +774,15 @@
           :type: integer
           :minimum: 1
           :maximum: 100
-    user_profile_include:
+    userProfileInclude:
       :type: object
       :properties: {}
-    user_sort:
+    userSort:
       :type: object
       :properties:
-        created_at: {}
-        updated_at: {}
-    user_update_payload:
+        createdAt: {}
+        updatedAt: {}
+    userUpdatePayload:
       :type: object
       :properties:
         email:
@@ -790,7 +790,7 @@
         posts:
           :type: array
           :items:
-            :$ref: "#/components/schemas/post_nested_payload"
+            :$ref: "#/components/schemas/postNestedPayload"
         profile:
           :type: object
           :properties: {}

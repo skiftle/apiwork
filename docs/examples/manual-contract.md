@@ -60,29 +60,13 @@ Defining contracts manually without schemas
 GET /funny-snake/invoices
 ```
 
-**Response** `200`
+**Response** `500`
 
 ```json
-[
-  {
-    "id": "36768912-22f4-41cf-ace5-46b71162f9a9",
-    "number": "INV-001",
-    "issued_on": null,
-    "status": "draft",
-    "notes": null,
-    "created_at": "2025-12-07T13:14:57.095Z",
-    "updated_at": "2025-12-07T13:14:57.095Z"
-  },
-  {
-    "id": "dd018003-c51e-4afc-a8d0-1f6f0df6394e",
-    "number": "INV-002",
-    "issued_on": null,
-    "status": "sent",
-    "notes": null,
-    "created_at": "2025-12-07T13:14:57.097Z",
-    "updated_at": "2025-12-07T13:14:57.097Z"
-  }
-]
+{
+  "status": 500,
+  "error": "Internal Server Error"
+}
 ```
 
 </details>
@@ -93,20 +77,15 @@ GET /funny-snake/invoices
 **Request**
 
 ```http
-GET /funny-snake/invoices/a5834d6e-ec84-45a0-b9c8-ab35c1960bf7
+GET /funny-snake/invoices/e93c798a-63bb-4c6d-9ba5-8daf512df2ce
 ```
 
-**Response** `200`
+**Response** `500`
 
 ```json
 {
-  "id": "a5834d6e-ec84-45a0-b9c8-ab35c1960bf7",
-  "number": "INV-001",
-  "issued_on": null,
-  "status": "draft",
-  "notes": null,
-  "created_at": "2025-12-07T13:14:57.112Z",
-  "updated_at": "2025-12-07T13:14:57.112Z"
+  "status": 500,
+  "error": "Internal Server Error"
 }
 ```
 
@@ -131,17 +110,12 @@ Content-Type: application/json
 }
 ```
 
-**Response** `201`
+**Response** `500`
 
 ```json
 {
-  "id": "cc85ef44-e733-44f5-9154-df21793fba29",
-  "number": "INV-001",
-  "issued_on": "2024-01-15",
-  "status": "draft",
-  "notes": "First invoice",
-  "created_at": "2025-12-07T13:14:57.134Z",
-  "updated_at": "2025-12-07T13:14:57.134Z"
+  "status": 500,
+  "error": "Internal Server Error"
 }
 ```
 
@@ -153,7 +127,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-PATCH /funny-snake/invoices/cfc7c475-ec3e-42c1-a97d-fe66d1d8a011
+PATCH /funny-snake/invoices/680fcd90-c843-492f-98b0-687657695be7
 Content-Type: application/json
 
 {
@@ -166,17 +140,12 @@ Content-Type: application/json
 }
 ```
 
-**Response** `200`
+**Response** `500`
 
 ```json
 {
-  "number": "INV-001",
-  "issued_on": "2024-01-15",
-  "status": "sent",
-  "notes": "Updated invoice",
-  "id": "cfc7c475-ec3e-42c1-a97d-fe66d1d8a011",
-  "created_at": "2025-12-07T13:14:57.139Z",
-  "updated_at": "2025-12-07T13:14:57.146Z"
+  "status": 500,
+  "error": "Internal Server Error"
 }
 ```
 
@@ -188,20 +157,15 @@ Content-Type: application/json
 **Request**
 
 ```http
-DELETE /funny-snake/invoices/8a21d5c9-319a-4e23-a501-a21666b0bfa6
+DELETE /funny-snake/invoices/42313175-0b87-44c0-a26b-7ca596cdc77d
 ```
 
-**Response** `200`
+**Response** `500`
 
 ```json
 {
-  "id": "8a21d5c9-319a-4e23-a501-a21666b0bfa6",
-  "number": "INV-001",
-  "issued_on": null,
-  "status": null,
-  "notes": null,
-  "created_at": "2025-12-07T13:14:57.149Z",
-  "updated_at": "2025-12-07T13:14:57.149Z"
+  "status": 500,
+  "error": "Internal Server Error"
 }
 ```
 

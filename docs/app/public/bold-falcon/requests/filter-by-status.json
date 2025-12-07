@@ -8,15 +8,15 @@
     "body": {
       "articles": [
         {
-          "id": "70093428-88f1-4941-ac2c-bfd415a1d826",
+          "id": "81d49ec9-5381-4f17-9561-f688aaa8117a",
           "title": "Published Article",
           "body": null,
           "status": "published",
-          "view_count": 0,
+          "viewCount": 0,
           "rating": null,
-          "published_on": null,
-          "created_at": "2025-12-07T13:14:56.623Z",
-          "updated_at": "2025-12-07T13:14:56.623Z"
+          "publishedOn": null,
+          "createdAt": "2025-12-07T13:22:39.416Z",
+          "updatedAt": "2025-12-07T13:22:39.416Z"
         }
       ],
       "pagination": {

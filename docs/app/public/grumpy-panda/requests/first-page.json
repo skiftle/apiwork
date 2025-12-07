@@ -8,27 +8,27 @@
     "body": {
       "activities": [
         {
-          "id": "3b83c9a1-bdec-4963-bf3f-b7af614c924f",
-          "action": "user.logout",
-          "occurred_at": "2024-01-01T11:00:00.000Z",
-          "created_at": "2025-12-07T13:14:57.407Z"
+          "id": "03b56d7f-b1f6-4839-910c-16ca86c2daef",
+          "action": "post.update",
+          "occurredAt": "2024-01-01T13:00:00.000Z",
+          "createdAt": "2025-12-07T13:22:40.023Z"
         },
         {
-          "id": "3e386b60-31e8-4fc9-a53e-1c5e08d3f7b5",
-          "action": "post.create",
-          "occurred_at": "2024-01-01T12:00:00.000Z",
-          "created_at": "2025-12-07T13:14:57.409Z"
-        },
-        {
-          "id": "4ff8f59b-3805-4c0f-85c9-0b3d6b53ec1a",
+          "id": "09c2c95d-f0e3-4385-b90b-f4000988ffb6",
           "action": "post.delete",
-          "occurred_at": "2024-01-01T14:00:00.000Z",
-          "created_at": "2025-12-07T13:14:57.416Z"
+          "occurredAt": "2024-01-01T14:00:00.000Z",
+          "createdAt": "2025-12-07T13:22:40.024Z"
+        },
+        {
+          "id": "26d7b27c-e551-4cf6-98b0-dc8833e93020",
+          "action": "post.create",
+          "occurredAt": "2024-01-01T12:00:00.000Z",
+          "createdAt": "2025-12-07T13:22:40.022Z"
         }
       ],
       "pagination": {
-        "next_cursor": "eyJpZCI6IjRmZjhmNTliLTM4MDUtNGMwZi04NWM5LTBiM2Q2YjUzZWMxYSJ9",
-        "prev_cursor": null
+        "nextCursor": "eyJpZCI6IjI2ZDdiMjdjLWU1NTEtNGNmNi05OGIwLWRjODgzM2U5MzAyMCJ9",
+        "prevCursor": null
       }
     }
   }

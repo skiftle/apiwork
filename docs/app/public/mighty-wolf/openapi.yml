@@ -6,7 +6,7 @@
 :paths:
   vehicles/:
     get:
-      :operationId: vehicles_index
+      :operationId: vehiclesIndex
       :tags:
       - Vehicles
       :parameters:
@@ -15,29 +15,29 @@
         :required: false
         :schema:
           :oneOf:
-          - :$ref: "#/components/schemas/vehicle_filter"
+          - :$ref: "#/components/schemas/vehicleFilter"
           - :type: array
             :items:
-              :$ref: "#/components/schemas/vehicle_filter"
+              :$ref: "#/components/schemas/vehicleFilter"
       - :in: query
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/vehicle_include"
+          :$ref: "#/components/schemas/vehicleInclude"
       - :in: query
         :name: page
         :required: false
         :schema:
-          :$ref: "#/components/schemas/vehicle_page"
+          :$ref: "#/components/schemas/vehiclePage"
       - :in: query
         :name: sort
         :required: false
         :schema:
           :oneOf:
-          - :$ref: "#/components/schemas/vehicle_sort"
+          - :$ref: "#/components/schemas/vehicleSort"
           - :type: array
             :items:
-              :$ref: "#/components/schemas/vehicle_sort"
+              :$ref: "#/components/schemas/vehicleSort"
       :responses:
         :200:
           :description: Successful response
@@ -50,13 +50,13 @@
                     :type: object
                     :properties: {}
                   pagination:
-                    :$ref: "#/components/schemas/page_pagination"
+                    :$ref: "#/components/schemas/pagePagination"
                   vehicles:
                     :type: array
                     :items:
                       :$ref: "#/components/schemas/vehicle"
     post:
-      :operationId: vehicles_create
+      :operationId: vehiclesCreate
       :tags:
       - Vehicles
       :requestBody:
@@ -97,7 +97,7 @@
                       :$ref: "#/components/schemas/issue"
   vehicles/:id:
     get:
-      :operationId: vehicles_show
+      :operationId: vehiclesShow
       :tags:
       - Vehicles
       :responses:
@@ -116,7 +116,7 @@
                 :required:
                 - vehicle
     patch:
-      :operationId: vehicles_update
+      :operationId: vehiclesUpdate
       :tags:
       - Vehicles
       :requestBody:
@@ -152,7 +152,7 @@
                     :items:
                       :$ref: "#/components/schemas/issue"
     delete:
-      :operationId: vehicles_destroy
+      :operationId: vehiclesDestroy
       :tags:
       - Vehicles
       :responses:
@@ -160,11 +160,11 @@
           :description: No content
 :components:
   :schemas:
-    integer_filter:
+    integerFilter:
       :type: object
       :properties:
         between:
-          :$ref: "#/components/schemas/integer_filter_between"
+          :$ref: "#/components/schemas/integerFilterBetween"
         eq:
           :type: integer
         gt:
@@ -179,7 +179,7 @@
           :type: integer
         lte:
           :type: integer
-    integer_filter_between:
+    integerFilterBetween:
       :type: object
       :properties:
         from:
@@ -204,11 +204,11 @@
       - detail
       - field
       - path
-    nullable_integer_filter:
+    nullableIntegerFilter:
       :type: object
       :properties:
         between:
-          :$ref: "#/components/schemas/integer_filter_between"
+          :$ref: "#/components/schemas/integerFilterBetween"
         eq:
           :type: integer
         gt:
@@ -225,7 +225,7 @@
           :type: integer
         'null':
           :type: boolean
-    page_pagination:
+    pagePagination:
       :type: object
       :properties:
         current:
@@ -246,12 +246,12 @@
       - current
       - items
       - total
-    string_filter:
+    stringFilter:
       :type: object
       :properties:
         contains:
           :type: string
-        ends_with:
+        endsWith:
           :type: string
         eq:
           :type: string
@@ -259,13 +259,13 @@
           :type: array
           :items:
             :type: string
-        starts_with:
+        startsWith:
           :type: string
     vehicle:
       :oneOf: []
       :discriminator:
         :propertyName: kind
-    vehicle_car_create_payload:
+    vehicleCarCreatePayload:
       :type: object
       :properties:
         brand:
@@ -289,7 +289,7 @@
       - brand
       - kind
       - model
-    vehicle_car_update_payload:
+    vehicleCarUpdatePayload:
       :type: object
       :properties:
         brand:
@@ -313,46 +313,46 @@
       - brand
       - kind
       - model
-    vehicle_create_payload:
+    vehicleCreatePayload:
       :oneOf:
-      - :$ref: "#/components/schemas/vehicle_car_create_payload"
-      - :$ref: "#/components/schemas/vehicle_motorcycle_create_payload"
-      - :$ref: "#/components/schemas/vehicle_truck_create_payload"
+      - :$ref: "#/components/schemas/vehicleCarCreatePayload"
+      - :$ref: "#/components/schemas/vehicleMotorcycleCreatePayload"
+      - :$ref: "#/components/schemas/vehicleTruckCreatePayload"
       :discriminator:
         :propertyName: kind
         :mapping:
-          car: "#/components/schemas/vehicle_car_create_payload"
-          motorcycle: "#/components/schemas/vehicle_motorcycle_create_payload"
-          truck: "#/components/schemas/vehicle_truck_create_payload"
-    vehicle_filter:
+          car: "#/components/schemas/vehicleCarCreatePayload"
+          motorcycle: "#/components/schemas/vehicleMotorcycleCreatePayload"
+          truck: "#/components/schemas/vehicleTruckCreatePayload"
+    vehicleFilter:
       :type: object
       :properties:
         _and:
           :type: array
           :items:
-            :$ref: "#/components/schemas/vehicle_filter"
+            :$ref: "#/components/schemas/vehicleFilter"
         _not:
-          :$ref: "#/components/schemas/vehicle_filter"
+          :$ref: "#/components/schemas/vehicleFilter"
         _or:
           :type: array
           :items:
-            :$ref: "#/components/schemas/vehicle_filter"
+            :$ref: "#/components/schemas/vehicleFilter"
         brand:
           :oneOf:
           - :type: string
-          - :$ref: "#/components/schemas/string_filter"
+          - :$ref: "#/components/schemas/stringFilter"
         model:
           :oneOf:
           - :type: string
-          - :$ref: "#/components/schemas/string_filter"
+          - :$ref: "#/components/schemas/stringFilter"
         year:
           :oneOf:
           - :type: integer
-          - :$ref: "#/components/schemas/nullable_integer_filter"
-    vehicle_include:
+          - :$ref: "#/components/schemas/nullableIntegerFilter"
+    vehicleInclude:
       :type: object
       :properties: {}
-    vehicle_motorcycle_create_payload:
+    vehicleMotorcycleCreatePayload:
       :type: object
       :properties:
         brand:
@@ -361,7 +361,7 @@
           :type:
           - string
           - 'null'
-        engine_cc:
+        engineCc:
           :type:
           - integer
           - 'null'
@@ -376,7 +376,7 @@
       - brand
       - kind
       - model
-    vehicle_motorcycle_update_payload:
+    vehicleMotorcycleUpdatePayload:
       :type: object
       :properties:
         brand:
@@ -385,7 +385,7 @@
           :type:
           - string
           - 'null'
-        engine_cc:
+        engineCc:
           :type:
           - integer
           - 'null'
@@ -400,7 +400,7 @@
       - brand
       - kind
       - model
-    vehicle_page:
+    vehiclePage:
       :type: object
       :properties:
         number:
@@ -410,11 +410,11 @@
           :type: integer
           :minimum: 1
           :maximum: 100
-    vehicle_sort:
+    vehicleSort:
       :type: object
       :properties:
         year: {}
-    vehicle_truck_create_payload:
+    vehicleTruckCreatePayload:
       :type: object
       :properties:
         brand:
@@ -426,7 +426,7 @@
         kind: {}
         model:
           :type: string
-        payload_capacity:
+        payloadCapacity:
           :type:
           - number
           - 'null'
@@ -438,7 +438,7 @@
       - brand
       - kind
       - model
-    vehicle_truck_update_payload:
+    vehicleTruckUpdatePayload:
       :type: object
       :properties:
         brand:
@@ -450,7 +450,7 @@
         kind: {}
         model:
           :type: string
-        payload_capacity:
+        payloadCapacity:
           :type:
           - number
           - 'null'
@@ -462,14 +462,14 @@
       - brand
       - kind
       - model
-    vehicle_update_payload:
+    vehicleUpdatePayload:
       :oneOf:
-      - :$ref: "#/components/schemas/vehicle_car_update_payload"
-      - :$ref: "#/components/schemas/vehicle_motorcycle_update_payload"
-      - :$ref: "#/components/schemas/vehicle_truck_update_payload"
+      - :$ref: "#/components/schemas/vehicleCarUpdatePayload"
+      - :$ref: "#/components/schemas/vehicleMotorcycleUpdatePayload"
+      - :$ref: "#/components/schemas/vehicleTruckUpdatePayload"
       :discriminator:
         :propertyName: kind
         :mapping:
-          car: "#/components/schemas/vehicle_car_update_payload"
-          motorcycle: "#/components/schemas/vehicle_motorcycle_update_payload"
-          truck: "#/components/schemas/vehicle_truck_update_payload"
+          car: "#/components/schemas/vehicleCarUpdatePayload"
+          motorcycle: "#/components/schemas/vehicleMotorcycleUpdatePayload"
+          truck: "#/components/schemas/vehicleTruckUpdatePayload"

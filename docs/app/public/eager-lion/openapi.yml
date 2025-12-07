@@ -6,7 +6,7 @@
 :paths:
   invoices/:
     get:
-      :operationId: invoices_index
+      :operationId: invoicesIndex
       :tags:
       - Invoices
       :parameters:
@@ -15,29 +15,29 @@
         :required: false
         :schema:
           :oneOf:
-          - :$ref: "#/components/schemas/invoice_filter"
+          - :$ref: "#/components/schemas/invoiceFilter"
           - :type: array
             :items:
-              :$ref: "#/components/schemas/invoice_filter"
+              :$ref: "#/components/schemas/invoiceFilter"
       - :in: query
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/invoice_include"
+          :$ref: "#/components/schemas/invoiceInclude"
       - :in: query
         :name: page
         :required: false
         :schema:
-          :$ref: "#/components/schemas/invoice_page"
+          :$ref: "#/components/schemas/invoicePage"
       - :in: query
         :name: sort
         :required: false
         :schema:
           :oneOf:
-          - :$ref: "#/components/schemas/invoice_sort"
+          - :$ref: "#/components/schemas/invoiceSort"
           - :type: array
             :items:
-              :$ref: "#/components/schemas/invoice_sort"
+              :$ref: "#/components/schemas/invoiceSort"
       :responses:
         :200:
           :description: Successful response
@@ -54,9 +54,9 @@
                     :type: object
                     :properties: {}
                   pagination:
-                    :$ref: "#/components/schemas/page_pagination"
+                    :$ref: "#/components/schemas/pagePagination"
     post:
-      :operationId: invoices_create
+      :operationId: invoicesCreate
       :tags:
       - Invoices
       :parameters:
@@ -64,7 +64,7 @@
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/invoice_include"
+          :$ref: "#/components/schemas/invoiceInclude"
       :requestBody:
         :required: true
         :content:
@@ -73,7 +73,7 @@
               :type: object
               :properties:
                 invoice:
-                  :$ref: "#/components/schemas/invoice_create_payload"
+                  :$ref: "#/components/schemas/invoiceCreatePayload"
               :required:
               - invoice
       :responses:
@@ -104,7 +104,7 @@
                       :$ref: "#/components/schemas/issue"
   invoices/:id:
     get:
-      :operationId: invoices_show
+      :operationId: invoicesShow
       :tags:
       - Invoices
       :parameters:
@@ -112,7 +112,7 @@
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/invoice_include"
+          :$ref: "#/components/schemas/invoiceInclude"
       :responses:
         :200:
           :description: Successful response
@@ -129,7 +129,7 @@
                 :required:
                 - invoice
     patch:
-      :operationId: invoices_update
+      :operationId: invoicesUpdate
       :tags:
       - Invoices
       :parameters:
@@ -137,7 +137,7 @@
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/invoice_include"
+          :$ref: "#/components/schemas/invoiceInclude"
       :requestBody:
         :required: true
         :content:
@@ -146,7 +146,7 @@
               :type: object
               :properties:
                 invoice:
-                  :$ref: "#/components/schemas/invoice_update_payload"
+                  :$ref: "#/components/schemas/invoiceUpdatePayload"
       :responses:
         :200:
           :description: Successful response
@@ -172,7 +172,7 @@
                     :items:
                       :$ref: "#/components/schemas/issue"
     delete:
-      :operationId: invoices_destroy
+      :operationId: invoicesDestroy
       :tags:
       - Invoices
       :responses:
@@ -180,7 +180,7 @@
           :description: No content
   invoices/:id/archive:
     patch:
-      :operationId: invoices_archive
+      :operationId: invoicesArchive
       :tags:
       - Invoices
       :parameters:
@@ -188,7 +188,7 @@
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/invoice_include"
+          :$ref: "#/components/schemas/invoiceInclude"
       :responses:
         :200:
           :description: Successful response
@@ -209,16 +209,16 @@
     invoice:
       :type: object
       :properties:
-        created_at:
+        createdAt:
           :type: string
         customer:
           :type: object
           :properties: {}
-        customer_id:
+        customerId:
           :type: string
         id:
           :type: string
-        issued_on:
+        issuedOn:
           :type: string
         lines:
           :type: array
@@ -230,17 +230,17 @@
           :type: string
         status:
           :type: string
-        updated_at:
+        updatedAt:
           :type: string
       :required:
       - customer
       - lines
-    invoice_create_payload:
+    invoiceCreatePayload:
       :type: object
       :properties:
-        customer_id:
+        customerId:
           :type: string
-        issued_on:
+        issuedOn:
           :type:
           - string
           - 'null'
@@ -255,33 +255,33 @@
         number:
           :type: string
       :required:
-      - customer_id
+      - customerId
       - number
-    invoice_filter:
+    invoiceFilter:
       :type: object
       :properties:
         _and:
           :type: array
           :items:
-            :$ref: "#/components/schemas/invoice_filter"
+            :$ref: "#/components/schemas/invoiceFilter"
         _not:
-          :$ref: "#/components/schemas/invoice_filter"
+          :$ref: "#/components/schemas/invoiceFilter"
         _or:
           :type: array
           :items:
-            :$ref: "#/components/schemas/invoice_filter"
+            :$ref: "#/components/schemas/invoiceFilter"
         number:
           :oneOf:
           - :type: string
-          - :$ref: "#/components/schemas/string_filter"
+          - :$ref: "#/components/schemas/stringFilter"
         status:
           :oneOf:
           - :type: string
-          - :$ref: "#/components/schemas/nullable_string_filter"
-    invoice_include:
+          - :$ref: "#/components/schemas/nullableStringFilter"
+    invoiceInclude:
       :type: object
       :properties: {}
-    invoice_page:
+    invoicePage:
       :type: object
       :properties:
         number:
@@ -291,19 +291,19 @@
           :type: integer
           :minimum: 1
           :maximum: 100
-    invoice_sort:
+    invoiceSort:
       :type: object
       :properties:
-        created_at: {}
-        issued_on: {}
+        createdAt: {}
+        issuedOn: {}
         status: {}
-        updated_at: {}
-    invoice_update_payload:
+        updatedAt: {}
+    invoiceUpdatePayload:
       :type: object
       :properties:
-        customer_id:
+        customerId:
           :type: string
-        issued_on:
+        issuedOn:
           :type:
           - string
           - 'null'
@@ -318,7 +318,7 @@
         number:
           :type: string
       :required:
-      - customer_id
+      - customerId
       - number
     issue:
       :type: object
@@ -338,12 +338,12 @@
       - detail
       - field
       - path
-    nullable_string_filter:
+    nullableStringFilter:
       :type: object
       :properties:
         contains:
           :type: string
-        ends_with:
+        endsWith:
           :type: string
         eq:
           :type: string
@@ -353,9 +353,9 @@
             :type: string
         'null':
           :type: boolean
-        starts_with:
+        startsWith:
           :type: string
-    page_pagination:
+    pagePagination:
       :type: object
       :properties:
         current:
@@ -376,12 +376,12 @@
       - current
       - items
       - total
-    string_filter:
+    stringFilter:
       :type: object
       :properties:
         contains:
           :type: string
-        ends_with:
+        endsWith:
           :type: string
         eq:
           :type: string
@@ -389,5 +389,5 @@
           :type: array
           :items:
             :type: string
-        starts_with:
+        startsWith:
           :type: string

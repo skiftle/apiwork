@@ -6,7 +6,7 @@
 :paths:
   articles/:
     get:
-      :operationId: articles_index
+      :operationId: articlesIndex
       :tags:
       - Articles
       :parameters:
@@ -15,29 +15,29 @@
         :required: false
         :schema:
           :oneOf:
-          - :$ref: "#/components/schemas/article_filter"
+          - :$ref: "#/components/schemas/articleFilter"
           - :type: array
             :items:
-              :$ref: "#/components/schemas/article_filter"
+              :$ref: "#/components/schemas/articleFilter"
       - :in: query
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/article_include"
+          :$ref: "#/components/schemas/articleInclude"
       - :in: query
         :name: page
         :required: false
         :schema:
-          :$ref: "#/components/schemas/article_page"
+          :$ref: "#/components/schemas/articlePage"
       - :in: query
         :name: sort
         :required: false
         :schema:
           :oneOf:
-          - :$ref: "#/components/schemas/article_sort"
+          - :$ref: "#/components/schemas/articleSort"
           - :type: array
             :items:
-              :$ref: "#/components/schemas/article_sort"
+              :$ref: "#/components/schemas/articleSort"
       :responses:
         :200:
           :description: Successful response
@@ -54,9 +54,9 @@
                     :type: object
                     :properties: {}
                   pagination:
-                    :$ref: "#/components/schemas/page_pagination"
+                    :$ref: "#/components/schemas/pagePagination"
     post:
-      :operationId: articles_create
+      :operationId: articlesCreate
       :tags:
       - Articles
       :parameters:
@@ -64,7 +64,7 @@
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/article_include"
+          :$ref: "#/components/schemas/articleInclude"
       :requestBody:
         :required: true
         :content:
@@ -73,7 +73,7 @@
               :type: object
               :properties:
                 article:
-                  :$ref: "#/components/schemas/article_create_payload"
+                  :$ref: "#/components/schemas/articleCreatePayload"
               :required:
               - article
       :responses:
@@ -104,7 +104,7 @@
                       :$ref: "#/components/schemas/issue"
   articles/:id:
     get:
-      :operationId: articles_show
+      :operationId: articlesShow
       :tags:
       - Articles
       :parameters:
@@ -112,7 +112,7 @@
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/article_include"
+          :$ref: "#/components/schemas/articleInclude"
       :responses:
         :200:
           :description: Successful response
@@ -129,7 +129,7 @@
                 :required:
                 - article
     patch:
-      :operationId: articles_update
+      :operationId: articlesUpdate
       :tags:
       - Articles
       :parameters:
@@ -137,7 +137,7 @@
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/article_include"
+          :$ref: "#/components/schemas/articleInclude"
       :requestBody:
         :required: true
         :content:
@@ -146,7 +146,7 @@
               :type: object
               :properties:
                 article:
-                  :$ref: "#/components/schemas/article_update_payload"
+                  :$ref: "#/components/schemas/articleUpdatePayload"
       :responses:
         :200:
           :description: Successful response
@@ -172,7 +172,7 @@
                     :items:
                       :$ref: "#/components/schemas/issue"
     delete:
-      :operationId: articles_destroy
+      :operationId: articlesDestroy
       :tags:
       - Articles
       :responses:
@@ -190,10 +190,10 @@
           - object
           - 'null'
           :properties: {}
-        created_at:
+        createdAt:
           :type: string
         id: {}
-        published_on:
+        publishedOn:
           :type: string
         rating:
           :type: number
@@ -205,18 +205,18 @@
           - archived
         title:
           :type: string
-        updated_at:
+        updatedAt:
           :type: string
-        view_count:
+        viewCount:
           :type: integer
-    article_create_payload:
+    articleCreatePayload:
       :type: object
       :properties:
         body:
           :type:
           - string
           - 'null'
-        published_on:
+        publishedOn:
           :type:
           - string
           - 'null'
@@ -229,41 +229,41 @@
           :type: string
       :required:
       - title
-    article_filter:
+    articleFilter:
       :type: object
       :properties:
         _and:
           :type: array
           :items:
-            :$ref: "#/components/schemas/article_filter"
+            :$ref: "#/components/schemas/articleFilter"
         _not:
-          :$ref: "#/components/schemas/article_filter"
+          :$ref: "#/components/schemas/articleFilter"
         _or:
           :type: array
           :items:
-            :$ref: "#/components/schemas/article_filter"
-        published_on:
+            :$ref: "#/components/schemas/articleFilter"
+        publishedOn:
           :oneOf:
           - :type: string
-          - :$ref: "#/components/schemas/nullable_date_filter"
+          - :$ref: "#/components/schemas/nullableDateFilter"
         rating:
           :oneOf:
           - :type: number
-          - :$ref: "#/components/schemas/nullable_decimal_filter"
+          - :$ref: "#/components/schemas/nullableDecimalFilter"
         status:
-          :$ref: "#/components/schemas/article_status_filter"
+          :$ref: "#/components/schemas/articleStatusFilter"
         title:
           :oneOf:
           - :type: string
-          - :$ref: "#/components/schemas/string_filter"
-        view_count:
+          - :$ref: "#/components/schemas/stringFilter"
+        viewCount:
           :oneOf:
           - :type: integer
-          - :$ref: "#/components/schemas/nullable_integer_filter"
-    article_include:
+          - :$ref: "#/components/schemas/nullableIntegerFilter"
+    articleInclude:
       :type: object
       :properties: {}
-    article_page:
+    articlePage:
       :type: object
       :properties:
         number:
@@ -273,15 +273,15 @@
           :type: integer
           :minimum: 1
           :maximum: 100
-    article_sort:
+    articleSort:
       :type: object
       :properties:
-        created_at: {}
-        published_on: {}
+        createdAt: {}
+        publishedOn: {}
         rating: {}
         status: {}
-        view_count: {}
-    article_status_filter:
+        viewCount: {}
+    articleStatusFilter:
       :oneOf:
       - :type: string
         :enum: *1
@@ -294,14 +294,14 @@
             :type: array
             :items:
               :type:
-    article_update_payload:
+    articleUpdatePayload:
       :type: object
       :properties:
         body:
           :type:
           - string
           - 'null'
-        published_on:
+        publishedOn:
           :type:
           - string
           - 'null'
@@ -314,11 +314,11 @@
           :type: string
       :required:
       - title
-    date_filter:
+    dateFilter:
       :type: object
       :properties:
         between:
-          :$ref: "#/components/schemas/date_filter_between"
+          :$ref: "#/components/schemas/dateFilterBetween"
         eq:
           :type: string
         gt:
@@ -333,18 +333,18 @@
           :type: string
         lte:
           :type: string
-    date_filter_between:
+    dateFilterBetween:
       :type: object
       :properties:
         from:
           :type: string
         to:
           :type: string
-    decimal_filter:
+    decimalFilter:
       :type: object
       :properties:
         between:
-          :$ref: "#/components/schemas/decimal_filter_between"
+          :$ref: "#/components/schemas/decimalFilterBetween"
         eq:
           :type: number
         gt:
@@ -359,18 +359,18 @@
           :type: number
         lte:
           :type: number
-    decimal_filter_between:
+    decimalFilterBetween:
       :type: object
       :properties:
         from:
           :type: number
         to:
           :type: number
-    integer_filter:
+    integerFilter:
       :type: object
       :properties:
         between:
-          :$ref: "#/components/schemas/integer_filter_between"
+          :$ref: "#/components/schemas/integerFilterBetween"
         eq:
           :type: integer
         gt:
@@ -385,7 +385,7 @@
           :type: integer
         lte:
           :type: integer
-    integer_filter_between:
+    integerFilterBetween:
       :type: object
       :properties:
         from:
@@ -410,11 +410,11 @@
       - detail
       - field
       - path
-    nullable_date_filter:
+    nullableDateFilter:
       :type: object
       :properties:
         between:
-          :$ref: "#/components/schemas/date_filter_between"
+          :$ref: "#/components/schemas/dateFilterBetween"
         eq:
           :type: string
         gt:
@@ -431,11 +431,11 @@
           :type: string
         'null':
           :type: boolean
-    nullable_decimal_filter:
+    nullableDecimalFilter:
       :type: object
       :properties:
         between:
-          :$ref: "#/components/schemas/decimal_filter_between"
+          :$ref: "#/components/schemas/decimalFilterBetween"
         eq:
           :type: number
         gt:
@@ -452,11 +452,11 @@
           :type: number
         'null':
           :type: boolean
-    nullable_integer_filter:
+    nullableIntegerFilter:
       :type: object
       :properties:
         between:
-          :$ref: "#/components/schemas/integer_filter_between"
+          :$ref: "#/components/schemas/integerFilterBetween"
         eq:
           :type: integer
         gt:
@@ -473,12 +473,12 @@
           :type: integer
         'null':
           :type: boolean
-    nullable_string_filter:
+    nullableStringFilter:
       :type: object
       :properties:
         contains:
           :type: string
-        ends_with:
+        endsWith:
           :type: string
         eq:
           :type: string
@@ -488,9 +488,9 @@
             :type: string
         'null':
           :type: boolean
-        starts_with:
+        startsWith:
           :type: string
-    page_pagination:
+    pagePagination:
       :type: object
       :properties:
         current:
@@ -511,12 +511,12 @@
       - current
       - items
       - total
-    string_filter:
+    stringFilter:
       :type: object
       :properties:
         contains:
           :type: string
-        ends_with:
+        endsWith:
           :type: string
         eq:
           :type: string
@@ -524,5 +524,5 @@
           :type: array
           :items:
             :type: string
-        starts_with:
+        startsWith:
           :type: string

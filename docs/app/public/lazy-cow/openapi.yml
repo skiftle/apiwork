@@ -6,7 +6,7 @@
 :paths:
   status/health:
     get:
-      :operationId: status_health
+      :operationId: statusHealth
       :tags:
       - Status
       :responses:
@@ -29,7 +29,7 @@
                 - version
   status/stats:
     get:
-      :operationId: status_stats
+      :operationId: statusStats
       :tags:
       - Status
       :responses:
@@ -40,16 +40,16 @@
               :schema:
                 :type: object
                 :properties:
-                  posts_count:
+                  postsCount:
                     :type: integer
-                  uptime_seconds:
+                  uptimeSeconds:
                     :type: integer
-                  users_count:
+                  usersCount:
                     :type: integer
                 :required:
-                - posts_count
-                - uptime_seconds
-                - users_count
+                - postsCount
+                - uptimeSeconds
+                - usersCount
 :components:
   :schemas:
     issue:

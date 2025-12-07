@@ -7,28 +7,28 @@ export interface Issue {
 
 export interface NullableStringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
   null?: boolean;
-  starts_with?: string;
+  startsWith?: string;
 }
 
 export interface Order {
-  created_at?: string;
+  createdAt?: string;
   id?: unknown;
-  line_items: string[];
-  order_number?: string;
-  shipping_address: object;
+  lineItems: string[];
+  orderNumber?: string;
+  shippingAddress: object;
   status?: string;
   total?: number;
-  updated_at?: string;
+  updatedAt?: string;
 }
 
 export interface OrderCreatePayload {
-  line_items?: string[];
-  order_number: string;
-  shipping_address?: object;
+  lineItems?: string[];
+  orderNumber: string;
+  shippingAddress?: object;
 }
 
 export interface OrderFilter {
@@ -46,14 +46,14 @@ export interface OrderPage {
 }
 
 export interface OrderSort {
-  created_at?: unknown;
+  createdAt?: unknown;
   status?: unknown;
 }
 
 export interface OrderUpdatePayload {
-  line_items?: string[];
-  order_number?: string;
-  shipping_address?: object;
+  lineItems?: string[];
+  orderNumber?: string;
+  shippingAddress?: object;
 }
 
 export interface OrdersCreateRequest {
@@ -137,8 +137,8 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
-  starts_with?: string;
+  startsWith?: string;
 }

@@ -3,19 +3,19 @@ import { z } from 'zod';
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
 export const CommentSchema = z.object({
-  author_name: z.string().optional(),
+  authorName: z.string().optional(),
   body: z.string().optional(),
-  commentable_id: z.unknown().optional(),
-  commentable_type: z.string().optional(),
-  created_at: z.iso.datetime().optional(),
+  commentableId: z.unknown().optional(),
+  commentableType: z.string().optional(),
+  createdAt: z.iso.datetime().optional(),
   id: z.unknown().optional()
 });
 
 export const CommentCreatePayloadSchema = z.object({
-  author_name: z.string().nullable().optional(),
+  authorName: z.string().nullable().optional(),
   body: z.string(),
-  commentable_id: z.unknown(),
-  commentable_type: z.string()
+  commentableId: z.unknown(),
+  commentableType: z.string()
 });
 
 export const CommentIncludeSchema = z.object({
@@ -28,14 +28,14 @@ export const CommentPageSchema = z.object({
 });
 
 export const CommentSortSchema = z.object({
-  created_at: z.unknown().optional()
+  createdAt: z.unknown().optional()
 });
 
 export const CommentUpdatePayloadSchema = z.object({
-  author_name: z.string().nullable().optional(),
+  authorName: z.string().nullable().optional(),
   body: z.string().optional(),
-  commentable_id: z.unknown().optional(),
-  commentable_type: z.string().optional()
+  commentableId: z.unknown().optional(),
+  commentableType: z.string().optional()
 });
 
 export const IssueSchema = z.object({
@@ -55,25 +55,25 @@ export const PagePaginationSchema = z.object({
 
 export const StringFilterSchema = z.object({
   contains: z.string().optional(),
-  ends_with: z.string().optional(),
+  endsWith: z.string().optional(),
   eq: z.string().optional(),
   in: z.array(z.string()).optional(),
-  starts_with: z.string().optional()
+  startsWith: z.string().optional()
 });
 
 export const CommentFilterSchema: z.ZodType<CommentFilter> = z.lazy(() => z.object({
   _and: z.array(CommentFilterSchema).optional(),
   _not: CommentFilterSchema.optional(),
   _or: z.array(CommentFilterSchema).optional(),
-  commentable_type: z.union([z.string(), StringFilterSchema]).optional()
+  commentableType: z.union([z.string(), StringFilterSchema]).optional()
 }));
 
 export const CommentSchema = z.object({
-  author_name: z.string().nullable().optional(),
+  authorName: z.string().nullable().optional(),
   body: z.string(),
-  commentable_id: z.never(),
-  commentable_type: z.string(),
-  created_at: z.iso.datetime(),
+  commentableId: z.never(),
+  commentableType: z.string(),
+  createdAt: z.iso.datetime(),
   id: z.never()
 });
 
@@ -129,35 +129,35 @@ export const CommentsUpdateResponseSchema = z.object({
 });
 
 export interface Comment {
-  author_name?: null | string;
+  authorName?: null | string;
   body: string;
-  commentable_id: never;
-  commentable_type: string;
-  created_at: string;
+  commentableId: never;
+  commentableType: string;
+  createdAt: string;
   id: never;
 }
 
 export interface Comment {
-  author_name?: string;
+  authorName?: string;
   body?: string;
-  commentable_id?: unknown;
-  commentable_type?: string;
-  created_at?: string;
+  commentableId?: unknown;
+  commentableType?: string;
+  createdAt?: string;
   id?: unknown;
 }
 
 export interface CommentCreatePayload {
-  author_name?: null | string;
+  authorName?: null | string;
   body: string;
-  commentable_id: unknown;
-  commentable_type: string;
+  commentableId: unknown;
+  commentableType: string;
 }
 
 export interface CommentFilter {
   _and?: CommentFilter[];
   _not?: CommentFilter;
   _or?: CommentFilter[];
-  commentable_type?: StringFilter | string;
+  commentableType?: StringFilter | string;
 }
 
 export type CommentInclude = object;
@@ -168,14 +168,14 @@ export interface CommentPage {
 }
 
 export interface CommentSort {
-  created_at?: unknown;
+  createdAt?: unknown;
 }
 
 export interface CommentUpdatePayload {
-  author_name?: null | string;
+  authorName?: null | string;
   body?: string;
-  commentable_id?: unknown;
-  commentable_type?: string;
+  commentableId?: unknown;
+  commentableType?: string;
 }
 
 export interface CommentsCreateRequest {
@@ -248,8 +248,8 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
-  starts_with?: string;
+  startsWith?: string;
 }

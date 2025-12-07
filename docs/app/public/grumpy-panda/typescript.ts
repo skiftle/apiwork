@@ -49,14 +49,14 @@ export type ActivitiesUpdateResponseBody = { activity: Activity; meta?: object }
 
 export interface Activity {
   action?: string;
-  created_at?: string;
+  createdAt?: string;
   id?: string;
-  occurred_at?: string;
+  occurredAt?: string;
 }
 
 export interface ActivityCreatePayload {
   action: string;
-  occurred_at?: null | string;
+  occurredAt?: null | string;
 }
 
 export type ActivityInclude = object;
@@ -69,12 +69,12 @@ export interface ActivityPage {
 
 export interface ActivityUpdatePayload {
   action?: string;
-  occurred_at?: null | string;
+  occurredAt?: null | string;
 }
 
 export interface CursorPagination {
-  next_cursor?: null | string;
-  prev_cursor?: null | string;
+  nextCursor?: null | string;
+  prevCursor?: null | string;
 }
 
 export interface Issue {

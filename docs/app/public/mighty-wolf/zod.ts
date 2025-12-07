@@ -24,10 +24,10 @@ export const PagePaginationSchema = z.object({
 
 export const StringFilterSchema = z.object({
   contains: z.string().optional(),
-  ends_with: z.string().optional(),
+  endsWith: z.string().optional(),
   eq: z.string().optional(),
   in: z.array(z.string()).optional(),
-  starts_with: z.string().optional()
+  startsWith: z.string().optional()
 });
 
 export const VehicleSchema = z.discriminatedUnion('kind', [
@@ -59,7 +59,7 @@ export const VehicleIncludeSchema = z.object({
 export const VehicleMotorcycleCreatePayloadSchema = z.object({
   brand: z.string(),
   color: z.string().nullable().optional(),
-  engine_cc: z.number().int().nullable().optional(),
+  engineCc: z.number().int().nullable().optional(),
   kind: z.unknown(),
   model: z.string(),
   year: z.number().int().nullable().optional()
@@ -68,7 +68,7 @@ export const VehicleMotorcycleCreatePayloadSchema = z.object({
 export const VehicleMotorcycleUpdatePayloadSchema = z.object({
   brand: z.string().optional(),
   color: z.string().nullable().optional(),
-  engine_cc: z.number().int().nullable().optional(),
+  engineCc: z.number().int().nullable().optional(),
   kind: z.unknown().optional(),
   model: z.string().optional(),
   year: z.number().int().nullable().optional()
@@ -88,7 +88,7 @@ export const VehicleTruckCreatePayloadSchema = z.object({
   color: z.string().nullable().optional(),
   kind: z.unknown(),
   model: z.string(),
-  payload_capacity: z.number().nullable().optional(),
+  payloadCapacity: z.number().nullable().optional(),
   year: z.number().int().nullable().optional()
 });
 
@@ -97,7 +97,7 @@ export const VehicleTruckUpdatePayloadSchema = z.object({
   color: z.string().nullable().optional(),
   kind: z.unknown().optional(),
   model: z.string().optional(),
-  payload_capacity: z.number().nullable().optional(),
+  payloadCapacity: z.number().nullable().optional(),
   year: z.number().int().nullable().optional()
 });
 
@@ -248,10 +248,10 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
-  starts_with?: string;
+  startsWith?: string;
 }
 
 export interface Vehicle {
@@ -299,7 +299,7 @@ export type VehicleInclude = object;
 export interface VehicleMotorcycleCreatePayload {
   brand: string;
   color?: null | string;
-  engine_cc?: null | number;
+  engineCc?: null | number;
   kind: unknown;
   model: string;
   year?: null | number;
@@ -308,7 +308,7 @@ export interface VehicleMotorcycleCreatePayload {
 export interface VehicleMotorcycleUpdatePayload {
   brand?: string;
   color?: null | string;
-  engine_cc?: null | number;
+  engineCc?: null | number;
   kind?: unknown;
   model?: string;
   year?: null | number;
@@ -328,7 +328,7 @@ export interface VehicleTruckCreatePayload {
   color?: null | string;
   kind: unknown;
   model: string;
-  payload_capacity?: null | number;
+  payloadCapacity?: null | number;
   year?: null | number;
 }
 
@@ -337,7 +337,7 @@ export interface VehicleTruckUpdatePayload {
   color?: null | string;
   kind?: unknown;
   model?: string;
-  payload_capacity?: null | number;
+  payloadCapacity?: null | number;
   year?: null | number;
 }
 

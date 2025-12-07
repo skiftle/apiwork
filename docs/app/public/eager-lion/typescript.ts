@@ -1,19 +1,19 @@
 export interface Invoice {
-  created_at?: string;
+  createdAt?: string;
   customer: object;
-  customer_id?: string;
+  customerId?: string;
   id?: string;
-  issued_on?: string;
+  issuedOn?: string;
   lines: string[];
   notes?: string;
   number?: string;
   status?: string;
-  updated_at?: string;
+  updatedAt?: string;
 }
 
 export interface InvoiceCreatePayload {
-  customer_id: string;
-  issued_on?: null | string;
+  customerId: string;
+  issuedOn?: null | string;
   lines?: string[];
   notes?: null | string;
   number: string;
@@ -35,15 +35,15 @@ export interface InvoicePage {
 }
 
 export interface InvoiceSort {
-  created_at?: unknown;
-  issued_on?: unknown;
+  createdAt?: unknown;
+  issuedOn?: unknown;
   status?: unknown;
-  updated_at?: unknown;
+  updatedAt?: unknown;
 }
 
 export interface InvoiceUpdatePayload {
-  customer_id?: string;
-  issued_on?: null | string;
+  customerId?: string;
+  issuedOn?: null | string;
   lines?: string[];
   notes?: null | string;
   number?: string;
@@ -141,11 +141,11 @@ export interface Issue {
 
 export interface NullableStringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
   null?: boolean;
-  starts_with?: string;
+  startsWith?: string;
 }
 
 export interface PagePagination {
@@ -160,8 +160,8 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
-  starts_with?: string;
+  startsWith?: string;
 }

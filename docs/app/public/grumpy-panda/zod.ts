@@ -2,14 +2,14 @@ import { z } from 'zod';
 
 export const ActivitySchema = z.object({
   action: z.string().optional(),
-  created_at: z.iso.datetime().optional(),
+  createdAt: z.iso.datetime().optional(),
   id: z.string().optional(),
-  occurred_at: z.iso.datetime().optional()
+  occurredAt: z.iso.datetime().optional()
 });
 
 export const ActivityCreatePayloadSchema = z.object({
   action: z.string(),
-  occurred_at: z.iso.datetime().nullable().optional()
+  occurredAt: z.iso.datetime().nullable().optional()
 });
 
 export const ActivityIncludeSchema = z.object({
@@ -24,12 +24,12 @@ export const ActivityPageSchema = z.object({
 
 export const ActivityUpdatePayloadSchema = z.object({
   action: z.string().optional(),
-  occurred_at: z.iso.datetime().nullable().optional()
+  occurredAt: z.iso.datetime().nullable().optional()
 });
 
 export const CursorPaginationSchema = z.object({
-  next_cursor: z.string().nullable().optional(),
-  prev_cursor: z.string().nullable().optional()
+  nextCursor: z.string().nullable().optional(),
+  prevCursor: z.string().nullable().optional()
 });
 
 export const IssueSchema = z.object({
@@ -41,9 +41,9 @@ export const IssueSchema = z.object({
 
 export const ActivitySchema = z.object({
   action: z.string(),
-  created_at: z.iso.datetime(),
+  createdAt: z.iso.datetime(),
   id: z.string(),
-  occurred_at: z.iso.datetime().nullable().optional()
+  occurredAt: z.iso.datetime().nullable().optional()
 });
 
 export const ActivitiesIndexRequestQuerySchema = z.object({
@@ -146,21 +146,21 @@ export type ActivitiesUpdateResponseBody = { activity: Activity; meta?: object }
 
 export interface Activity {
   action: string;
-  created_at: string;
+  createdAt: string;
   id: string;
-  occurred_at?: null | string;
+  occurredAt?: null | string;
 }
 
 export interface Activity {
   action?: string;
-  created_at?: string;
+  createdAt?: string;
   id?: string;
-  occurred_at?: string;
+  occurredAt?: string;
 }
 
 export interface ActivityCreatePayload {
   action: string;
-  occurred_at?: null | string;
+  occurredAt?: null | string;
 }
 
 export type ActivityInclude = object;
@@ -173,12 +173,12 @@ export interface ActivityPage {
 
 export interface ActivityUpdatePayload {
   action?: string;
-  occurred_at?: null | string;
+  occurredAt?: null | string;
 }
 
 export interface CursorPagination {
-  next_cursor?: null | string;
-  prev_cursor?: null | string;
+  nextCursor?: null | string;
+  prevCursor?: null | string;
 }
 
 export interface Issue {

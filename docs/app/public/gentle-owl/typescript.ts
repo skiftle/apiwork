@@ -1,24 +1,24 @@
 export interface Comment {
-  author_name?: string;
+  authorName?: string;
   body?: string;
-  commentable_id?: unknown;
-  commentable_type?: string;
-  created_at?: string;
+  commentableId?: unknown;
+  commentableType?: string;
+  createdAt?: string;
   id?: unknown;
 }
 
 export interface CommentCreatePayload {
-  author_name?: null | string;
+  authorName?: null | string;
   body: string;
-  commentable_id: unknown;
-  commentable_type: string;
+  commentableId: unknown;
+  commentableType: string;
 }
 
 export interface CommentFilter {
   _and?: CommentFilter[];
   _not?: CommentFilter;
   _or?: CommentFilter[];
-  commentable_type?: StringFilter | string;
+  commentableType?: StringFilter | string;
 }
 
 export type CommentInclude = object;
@@ -29,14 +29,14 @@ export interface CommentPage {
 }
 
 export interface CommentSort {
-  created_at?: unknown;
+  createdAt?: unknown;
 }
 
 export interface CommentUpdatePayload {
-  author_name?: null | string;
+  authorName?: null | string;
   body?: string;
-  commentable_id?: unknown;
-  commentable_type?: string;
+  commentableId?: unknown;
+  commentableType?: string;
 }
 
 export interface CommentsCreateRequest {
@@ -109,8 +109,8 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
-  starts_with?: string;
+  startsWith?: string;
 }

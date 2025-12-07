@@ -11,28 +11,28 @@ export const IssueSchema = z.object({
 
 export const NullableStringFilterSchema = z.object({
   contains: z.string().optional(),
-  ends_with: z.string().optional(),
+  endsWith: z.string().optional(),
   eq: z.string().optional(),
   in: z.array(z.string()).optional(),
   null: z.boolean().optional(),
-  starts_with: z.string().optional()
+  startsWith: z.string().optional()
 });
 
 export const OrderSchema = z.object({
-  created_at: z.iso.datetime().optional(),
+  createdAt: z.iso.datetime().optional(),
   id: z.unknown().optional(),
-  line_items: z.array(z.string()),
-  order_number: z.string().optional(),
-  shipping_address: z.object({}),
+  lineItems: z.array(z.string()),
+  orderNumber: z.string().optional(),
+  shippingAddress: z.object({}),
   status: z.string().optional(),
   total: z.number().optional(),
-  updated_at: z.iso.datetime().optional()
+  updatedAt: z.iso.datetime().optional()
 });
 
 export const OrderCreatePayloadSchema = z.object({
-  line_items: z.array(z.string()).optional(),
-  order_number: z.string(),
-  shipping_address: z.object({}).optional()
+  lineItems: z.array(z.string()).optional(),
+  orderNumber: z.string(),
+  shippingAddress: z.object({}).optional()
 });
 
 export const OrderIncludeSchema = z.object({
@@ -45,14 +45,14 @@ export const OrderPageSchema = z.object({
 });
 
 export const OrderSortSchema = z.object({
-  created_at: z.unknown().optional(),
+  createdAt: z.unknown().optional(),
   status: z.unknown().optional()
 });
 
 export const OrderUpdatePayloadSchema = z.object({
-  line_items: z.array(z.string()).optional(),
-  order_number: z.string().optional(),
-  shipping_address: z.object({}).optional()
+  lineItems: z.array(z.string()).optional(),
+  orderNumber: z.string().optional(),
+  shippingAddress: z.object({}).optional()
 });
 
 export const PagePaginationSchema = z.object({
@@ -65,10 +65,10 @@ export const PagePaginationSchema = z.object({
 
 export const StringFilterSchema = z.object({
   contains: z.string().optional(),
-  ends_with: z.string().optional(),
+  endsWith: z.string().optional(),
   eq: z.string().optional(),
   in: z.array(z.string()).optional(),
-  starts_with: z.string().optional()
+  startsWith: z.string().optional()
 });
 
 export const OrderFilterSchema: z.ZodType<OrderFilter> = z.lazy(() => z.object({
@@ -79,12 +79,12 @@ export const OrderFilterSchema: z.ZodType<OrderFilter> = z.lazy(() => z.object({
 }));
 
 export const OrderSchema = z.object({
-  created_at: z.iso.datetime(),
+  createdAt: z.iso.datetime(),
   id: z.never(),
-  order_number: z.string(),
+  orderNumber: z.string(),
   status: z.string().nullable().optional(),
   total: z.number().nullable().optional(),
-  updated_at: z.iso.datetime()
+  updatedAt: z.iso.datetime()
 });
 
 export const OrdersIndexRequestQuerySchema = z.object({
@@ -165,37 +165,37 @@ export interface Issue {
 
 export interface NullableStringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
   null?: boolean;
-  starts_with?: string;
+  startsWith?: string;
 }
 
 export interface Order {
-  created_at: string;
+  createdAt: string;
   id: never;
-  order_number: string;
+  orderNumber: string;
   status?: null | string;
   total?: null | number;
-  updated_at: string;
+  updatedAt: string;
 }
 
 export interface Order {
-  created_at?: string;
+  createdAt?: string;
   id?: unknown;
-  line_items: string[];
-  order_number?: string;
-  shipping_address: object;
+  lineItems: string[];
+  orderNumber?: string;
+  shippingAddress: object;
   status?: string;
   total?: number;
-  updated_at?: string;
+  updatedAt?: string;
 }
 
 export interface OrderCreatePayload {
-  line_items?: string[];
-  order_number: string;
-  shipping_address?: object;
+  lineItems?: string[];
+  orderNumber: string;
+  shippingAddress?: object;
 }
 
 export interface OrderFilter {
@@ -213,14 +213,14 @@ export interface OrderPage {
 }
 
 export interface OrderSort {
-  created_at?: unknown;
+  createdAt?: unknown;
   status?: unknown;
 }
 
 export interface OrderUpdatePayload {
-  line_items?: string[];
-  order_number?: string;
-  shipping_address?: object;
+  lineItems?: string[];
+  orderNumber?: string;
+  shippingAddress?: object;
 }
 
 export interface OrdersCreateRequest {
@@ -304,8 +304,8 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
-  starts_with?: string;
+  startsWith?: string;
 }

@@ -6,7 +6,7 @@
 :paths:
   invoices/:
     get:
-      :operationId: invoices_index
+      :operationId: invoicesIndex
       :tags:
       - Invoices
       :responses:
@@ -24,7 +24,7 @@
                 :required:
                 - invoices
     post:
-      :operationId: invoices_create
+      :operationId: invoicesCreate
       :tags:
       - Invoices
       :requestBody:
@@ -35,7 +35,7 @@
               :type: object
               :properties:
                 invoice:
-                  :$ref: "#/components/schemas/invoice_payload"
+                  :$ref: "#/components/schemas/invoicePayload"
               :required:
               - invoice
       :responses:
@@ -52,7 +52,7 @@
                 - invoice
   invoices/:id:
     get:
-      :operationId: invoices_show
+      :operationId: invoicesShow
       :tags:
       - Invoices
       :responses:
@@ -68,7 +68,7 @@
                 :required:
                 - invoice
     patch:
-      :operationId: invoices_update
+      :operationId: invoicesUpdate
       :tags:
       - Invoices
       :requestBody:
@@ -79,7 +79,7 @@
               :type: object
               :properties:
                 invoice:
-                  :$ref: "#/components/schemas/invoice_payload"
+                  :$ref: "#/components/schemas/invoicePayload"
       :responses:
         :200:
           :description: Successful response
@@ -93,7 +93,7 @@
                 :required:
                 - invoice
     delete:
-      :operationId: invoices_destroy
+      :operationId: invoicesDestroy
       :tags:
       - Invoices
       :responses:
@@ -104,11 +104,11 @@
     invoice:
       :type: object
       :properties:
-        created_at:
+        createdAt:
           :type: string
         id:
           :type: string
-        issued_on:
+        issuedOn:
           :type: string
         notes:
           :type: string
@@ -116,20 +116,20 @@
           :type: string
         status:
           :type: string
-        updated_at:
+        updatedAt:
           :type: string
       :required:
-      - created_at
+      - createdAt
       - id
-      - issued_on
+      - issuedOn
       - notes
       - number
       - status
-      - updated_at
-    invoice_payload:
+      - updatedAt
+    invoicePayload:
       :type: object
       :properties:
-        issued_on:
+        issuedOn:
           :type: string
         notes:
           :type: string
@@ -138,7 +138,7 @@
         status:
           :type: string
       :required:
-      - issued_on
+      - issuedOn
       - notes
       - number
       - status

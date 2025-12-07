@@ -44,7 +44,7 @@ GET /lazy-cow/status/health
 ```json
 {
   "status": "ok",
-  "timestamp": "2025-12-07T13:14:57.694Z",
+  "timestamp": "2025-12-07T13:22:40.257Z",
   "version": "1.0.0"
 }
 ```
@@ -64,9 +64,9 @@ GET /lazy-cow/status/stats
 
 ```json
 {
-  "users_count": 1234,
-  "posts_count": 5678,
-  "uptime_seconds": 86400
+  "usersCount": 1234,
+  "postsCount": 5678,
+  "uptimeSeconds": 86400
 }
 ```
 

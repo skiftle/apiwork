@@ -11,11 +11,11 @@ export const IssueSchema = z.object({
 
 export const NullableStringFilterSchema = z.object({
   contains: z.string().optional(),
-  ends_with: z.string().optional(),
+  endsWith: z.string().optional(),
   eq: z.string().optional(),
   in: z.array(z.string()).optional(),
   null: z.boolean().optional(),
-  starts_with: z.string().optional()
+  startsWith: z.string().optional()
 });
 
 export const PagePaginationSchema = z.object({
@@ -28,27 +28,27 @@ export const PagePaginationSchema = z.object({
 
 export const StringFilterSchema = z.object({
   contains: z.string().optional(),
-  ends_with: z.string().optional(),
+  endsWith: z.string().optional(),
   eq: z.string().optional(),
   in: z.array(z.string()).optional(),
-  starts_with: z.string().optional()
+  startsWith: z.string().optional()
 });
 
 export const TaskSchema = z.object({
   archived: z.boolean().optional(),
-  created_at: z.iso.datetime().optional(),
+  createdAt: z.iso.datetime().optional(),
   description: z.string().optional(),
-  due_date: z.iso.datetime().optional(),
+  dueDate: z.iso.datetime().optional(),
   id: z.string().optional(),
   priority: z.string().optional(),
   status: z.string().optional(),
   title: z.string().optional(),
-  updated_at: z.iso.datetime().optional()
+  updatedAt: z.iso.datetime().optional()
 });
 
 export const TaskCreatePayloadSchema = z.object({
   description: z.string().nullable().optional(),
-  due_date: z.iso.datetime().nullable().optional(),
+  dueDate: z.iso.datetime().nullable().optional(),
   priority: z.string().nullable().optional(),
   status: z.string().nullable().optional(),
   title: z.string()
@@ -64,13 +64,13 @@ export const TaskPageSchema = z.object({
 });
 
 export const TaskSortSchema = z.object({
-  created_at: z.unknown().optional(),
-  due_date: z.unknown().optional()
+  createdAt: z.unknown().optional(),
+  dueDate: z.unknown().optional()
 });
 
 export const TaskUpdatePayloadSchema = z.object({
   description: z.string().nullable().optional(),
-  due_date: z.iso.datetime().nullable().optional(),
+  dueDate: z.iso.datetime().nullable().optional(),
   priority: z.string().nullable().optional(),
   status: z.string().nullable().optional(),
   title: z.string().optional()
@@ -86,14 +86,14 @@ export const TaskFilterSchema: z.ZodType<TaskFilter> = z.lazy(() => z.object({
 
 export const TaskSchema = z.object({
   archived: z.boolean().nullable().optional(),
-  created_at: z.iso.datetime(),
+  createdAt: z.iso.datetime(),
   description: z.string().nullable().optional(),
-  due_date: z.iso.datetime().nullable().optional(),
+  dueDate: z.iso.datetime().nullable().optional(),
   id: z.string(),
   priority: z.string().nullable().optional(),
   status: z.string().nullable().optional(),
   title: z.string(),
-  updated_at: z.iso.datetime()
+  updatedAt: z.iso.datetime()
 });
 
 export const TasksIndexRequestQuerySchema = z.object({
@@ -162,11 +162,11 @@ export interface Issue {
 
 export interface NullableStringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
   null?: boolean;
-  starts_with?: string;
+  startsWith?: string;
 }
 
 export interface PagePagination {
@@ -181,39 +181,39 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
-  starts_with?: string;
+  startsWith?: string;
 }
 
 export interface Task {
   archived?: boolean | null;
-  created_at: string;
+  createdAt: string;
   description?: null | string;
-  due_date?: null | string;
+  dueDate?: null | string;
   id: string;
   priority?: null | string;
   status?: null | string;
   title: string;
-  updated_at: string;
+  updatedAt: string;
 }
 
 export interface Task {
   archived?: boolean;
-  created_at?: string;
+  createdAt?: string;
   description?: string;
-  due_date?: string;
+  dueDate?: string;
   id?: string;
   priority?: string;
   status?: string;
   title?: string;
-  updated_at?: string;
+  updatedAt?: string;
 }
 
 export interface TaskCreatePayload {
   description?: null | string;
-  due_date?: null | string;
+  dueDate?: null | string;
   priority?: null | string;
   status?: null | string;
   title: string;
@@ -235,13 +235,13 @@ export interface TaskPage {
 }
 
 export interface TaskSort {
-  created_at?: unknown;
-  due_date?: unknown;
+  createdAt?: unknown;
+  dueDate?: unknown;
 }
 
 export interface TaskUpdatePayload {
   description?: null | string;
-  due_date?: null | string;
+  dueDate?: null | string;
   priority?: null | string;
   status?: null | string;
   title?: string;

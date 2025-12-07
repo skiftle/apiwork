@@ -118,24 +118,24 @@ GET /clever-rabbit/orders
 {
   "orders": [
     {
-      "id": "eb78f463-8644-4260-8147-de7fa9711f1a",
-      "order_number": "ORD-001",
+      "id": "afc4f6b1-6d5d-4a78-bf7a-9012624ce4c7",
+      "orderNumber": "ORD-001",
       "status": "pending",
       "total": null,
-      "created_at": "2025-12-07T13:14:56.830Z",
-      "updated_at": "2025-12-07T13:14:56.830Z",
-      "line_items": null,
-      "shipping_address": null
+      "createdAt": "2025-12-07T13:22:39.612Z",
+      "updatedAt": "2025-12-07T13:22:39.612Z",
+      "lineItems": null,
+      "shippingAddress": null
     },
     {
-      "id": "10313d94-4c23-4668-b47f-6a6d7f8e018d",
-      "order_number": "ORD-002",
+      "id": "d8e9ad71-4aae-4871-973b-707e93d9346d",
+      "orderNumber": "ORD-002",
       "status": "pending",
       "total": null,
-      "created_at": "2025-12-07T13:14:56.832Z",
-      "updated_at": "2025-12-07T13:14:56.832Z",
-      "line_items": null,
-      "shipping_address": null
+      "createdAt": "2025-12-07T13:22:39.613Z",
+      "updatedAt": "2025-12-07T13:22:39.613Z",
+      "lineItems": null,
+      "shippingAddress": null
     }
   ],
   "pagination": {
@@ -156,7 +156,7 @@ GET /clever-rabbit/orders
 **Request**
 
 ```http
-GET /clever-rabbit/orders/b73ead43-97ad-441d-a362-0c8db876601d
+GET /clever-rabbit/orders/3f99a96a-8ad4-466c-b9dc-d157b33091d0
 ```
 
 **Response** `200`
@@ -164,14 +164,14 @@ GET /clever-rabbit/orders/b73ead43-97ad-441d-a362-0c8db876601d
 ```json
 {
   "order": {
-    "id": "b73ead43-97ad-441d-a362-0c8db876601d",
-    "order_number": "ORD-001",
+    "id": "3f99a96a-8ad4-466c-b9dc-d157b33091d0",
+    "orderNumber": "ORD-001",
     "status": "pending",
     "total": null,
-    "created_at": "2025-12-07T13:14:56.855Z",
-    "updated_at": "2025-12-07T13:14:56.855Z",
-    "line_items": null,
-    "shipping_address": null
+    "createdAt": "2025-12-07T13:22:39.640Z",
+    "updatedAt": "2025-12-07T13:22:39.640Z",
+    "lineItems": null,
+    "shippingAddress": null
   }
 }
 ```
@@ -217,14 +217,14 @@ Content-Type: application/json
 ```json
 {
   "order": {
-    "id": "a1f6bc01-f45f-43bd-a599-c03ed4ca881a",
-    "order_number": "ORD-001",
+    "id": "892991dc-8f14-4e1e-b291-9e91ce7c4b5d",
+    "orderNumber": "ORD-001",
     "status": "pending",
     "total": null,
-    "created_at": "2025-12-07T13:14:56.877Z",
-    "updated_at": "2025-12-07T13:14:56.877Z",
-    "line_items": null,
-    "shipping_address": null
+    "createdAt": "2025-12-07T13:22:39.664Z",
+    "updatedAt": "2025-12-07T13:22:39.664Z",
+    "lineItems": null,
+    "shippingAddress": null
   }
 }
 ```
@@ -237,7 +237,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-PATCH /clever-rabbit/orders/3dbf087e-8010-488b-8193-d53f20db8c50
+PATCH /clever-rabbit/orders/1f617edc-3f46-48ba-bc5d-db2630fd02f9
 Content-Type: application/json
 
 {
@@ -259,14 +259,14 @@ Content-Type: application/json
 ```json
 {
   "order": {
-    "id": "3dbf087e-8010-488b-8193-d53f20db8c50",
-    "order_number": "ORD-001",
+    "id": "1f617edc-3f46-48ba-bc5d-db2630fd02f9",
+    "orderNumber": "ORD-001",
     "status": "pending",
     "total": null,
-    "created_at": "2025-12-07T13:14:56.884Z",
-    "updated_at": "2025-12-07T13:14:56.884Z",
-    "line_items": null,
-    "shipping_address": null
+    "createdAt": "2025-12-07T13:22:39.670Z",
+    "updatedAt": "2025-12-07T13:22:39.670Z",
+    "lineItems": null,
+    "shippingAddress": null
   }
 }
 ```
@@ -279,7 +279,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-DELETE /clever-rabbit/orders/e5c9f581-a93d-4024-aa74-ae45bb70708e
+DELETE /clever-rabbit/orders/b504f2d3-ca51-49a7-b342-ad0cbed84420
 ```
 
 **Response** `200`
@@ -298,14 +298,14 @@ DELETE /clever-rabbit/orders/e5c9f581-a93d-4024-aa74-ae45bb70708e
 **Request**
 
 ```http
-PATCH /clever-rabbit/orders/ac48e80a-eda4-44c5-9940-f7287c3c3765
+PATCH /clever-rabbit/orders/2a701bfc-32cc-4541-963c-22d6fdc481b9
 Content-Type: application/json
 
 {
   "order": {
     "line_items": [
       {
-        "id": "552afe7e-57c8-4d90-b42e-b56c4e3b07be",
+        "id": "69e06bba-cc07-40e9-a6a6-dca954192401",
         "_destroy": true
       }
     ]

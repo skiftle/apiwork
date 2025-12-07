@@ -4,26 +4,10 @@
     "path": "/funny-snake/invoices"
   },
   "response": {
-    "status": 200,
-    "body": [
-      {
-        "id": "36768912-22f4-41cf-ace5-46b71162f9a9",
-        "number": "INV-001",
-        "issued_on": null,
-        "status": "draft",
-        "notes": null,
-        "created_at": "2025-12-07T13:14:57.095Z",
-        "updated_at": "2025-12-07T13:14:57.095Z"
-      },
-      {
-        "id": "dd018003-c51e-4afc-a8d0-1f6f0df6394e",
-        "number": "INV-002",
-        "issued_on": null,
-        "status": "sent",
-        "notes": null,
-        "created_at": "2025-12-07T13:14:57.097Z",
-        "updated_at": "2025-12-07T13:14:57.097Z"
-      }
-    ]
+    "status": 500,
+    "body": {
+      "status": 500,
+      "error": "Internal Server Error"
+    }
   }
 }

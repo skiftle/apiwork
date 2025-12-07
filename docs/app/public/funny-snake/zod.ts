@@ -1,17 +1,17 @@
 import { z } from 'zod';
 
 export const InvoiceSchema = z.object({
-  created_at: z.iso.datetime(),
+  createdAt: z.iso.datetime(),
   id: z.uuid(),
-  issued_on: z.iso.date(),
+  issuedOn: z.iso.date(),
   notes: z.string(),
   number: z.string(),
   status: z.string(),
-  updated_at: z.iso.datetime()
+  updatedAt: z.iso.datetime()
 });
 
 export const InvoicePayloadSchema = z.object({
-  issued_on: z.iso.date(),
+  issuedOn: z.iso.date(),
   notes: z.string(),
   number: z.string(),
   status: z.string()
@@ -65,17 +65,17 @@ export const InvoicesUpdateResponseSchema = z.object({
 });
 
 export interface Invoice {
-  created_at: string;
+  createdAt: string;
   id: string;
-  issued_on: string;
+  issuedOn: string;
   notes: string;
   number: string;
   status: string;
-  updated_at: string;
+  updatedAt: string;
 }
 
 export interface InvoicePayload {
-  issued_on: string;
+  issuedOn: string;
   notes: string;
   number: string;
   status: string;

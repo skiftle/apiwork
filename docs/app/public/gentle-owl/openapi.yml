@@ -6,7 +6,7 @@
 :paths:
   comments/:
     get:
-      :operationId: comments_index
+      :operationId: commentsIndex
       :tags:
       - Comments
       :parameters:
@@ -15,29 +15,29 @@
         :required: false
         :schema:
           :oneOf:
-          - :$ref: "#/components/schemas/comment_filter"
+          - :$ref: "#/components/schemas/commentFilter"
           - :type: array
             :items:
-              :$ref: "#/components/schemas/comment_filter"
+              :$ref: "#/components/schemas/commentFilter"
       - :in: query
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/comment_include"
+          :$ref: "#/components/schemas/commentInclude"
       - :in: query
         :name: page
         :required: false
         :schema:
-          :$ref: "#/components/schemas/comment_page"
+          :$ref: "#/components/schemas/commentPage"
       - :in: query
         :name: sort
         :required: false
         :schema:
           :oneOf:
-          - :$ref: "#/components/schemas/comment_sort"
+          - :$ref: "#/components/schemas/commentSort"
           - :type: array
             :items:
-              :$ref: "#/components/schemas/comment_sort"
+              :$ref: "#/components/schemas/commentSort"
       :responses:
         :200:
           :description: Successful response
@@ -54,9 +54,9 @@
                     :type: object
                     :properties: {}
                   pagination:
-                    :$ref: "#/components/schemas/page_pagination"
+                    :$ref: "#/components/schemas/pagePagination"
     post:
-      :operationId: comments_create
+      :operationId: commentsCreate
       :tags:
       - Comments
       :requestBody:
@@ -67,7 +67,7 @@
               :type: object
               :properties:
                 comment:
-                  :$ref: "#/components/schemas/comment_create_payload"
+                  :$ref: "#/components/schemas/commentCreatePayload"
               :required:
               - comment
       :responses:
@@ -98,7 +98,7 @@
                       :$ref: "#/components/schemas/issue"
   comments/:id:
     get:
-      :operationId: comments_show
+      :operationId: commentsShow
       :tags:
       - Comments
       :responses:
@@ -117,7 +117,7 @@
                 :required:
                 - comment
     patch:
-      :operationId: comments_update
+      :operationId: commentsUpdate
       :tags:
       - Comments
       :requestBody:
@@ -128,7 +128,7 @@
               :type: object
               :properties:
                 comment:
-                  :$ref: "#/components/schemas/comment_update_payload"
+                  :$ref: "#/components/schemas/commentUpdatePayload"
       :responses:
         :200:
           :description: Successful response
@@ -154,7 +154,7 @@
                     :items:
                       :$ref: "#/components/schemas/issue"
     delete:
-      :operationId: comments_destroy
+      :operationId: commentsDestroy
       :tags:
       - Comments
       :responses:
@@ -165,53 +165,53 @@
     comment:
       :type: object
       :properties:
-        author_name:
+        authorName:
           :type: string
         body:
           :type: string
-        commentable_id: {}
-        commentable_type:
+        commentableId: {}
+        commentableType:
           :type: string
-        created_at:
+        createdAt:
           :type: string
         id: {}
-    comment_create_payload:
+    commentCreatePayload:
       :type: object
       :properties:
-        author_name:
+        authorName:
           :type:
           - string
           - 'null'
         body:
           :type: string
-        commentable_id: {}
-        commentable_type:
+        commentableId: {}
+        commentableType:
           :type: string
       :required:
       - body
-      - commentable_id
-      - commentable_type
-    comment_filter:
+      - commentableId
+      - commentableType
+    commentFilter:
       :type: object
       :properties:
         _and:
           :type: array
           :items:
-            :$ref: "#/components/schemas/comment_filter"
+            :$ref: "#/components/schemas/commentFilter"
         _not:
-          :$ref: "#/components/schemas/comment_filter"
+          :$ref: "#/components/schemas/commentFilter"
         _or:
           :type: array
           :items:
-            :$ref: "#/components/schemas/comment_filter"
-        commentable_type:
+            :$ref: "#/components/schemas/commentFilter"
+        commentableType:
           :oneOf:
           - :type: string
-          - :$ref: "#/components/schemas/string_filter"
-    comment_include:
+          - :$ref: "#/components/schemas/stringFilter"
+    commentInclude:
       :type: object
       :properties: {}
-    comment_page:
+    commentPage:
       :type: object
       :properties:
         number:
@@ -221,26 +221,26 @@
           :type: integer
           :minimum: 1
           :maximum: 100
-    comment_sort:
+    commentSort:
       :type: object
       :properties:
-        created_at: {}
-    comment_update_payload:
+        createdAt: {}
+    commentUpdatePayload:
       :type: object
       :properties:
-        author_name:
+        authorName:
           :type:
           - string
           - 'null'
         body:
           :type: string
-        commentable_id: {}
-        commentable_type:
+        commentableId: {}
+        commentableType:
           :type: string
       :required:
       - body
-      - commentable_id
-      - commentable_type
+      - commentableId
+      - commentableType
     issue:
       :type: object
       :properties:
@@ -259,7 +259,7 @@
       - detail
       - field
       - path
-    page_pagination:
+    pagePagination:
       :type: object
       :properties:
         current:
@@ -280,12 +280,12 @@
       - current
       - items
       - total
-    string_filter:
+    stringFilter:
       :type: object
       :properties:
         contains:
           :type: string
-        ends_with:
+        endsWith:
           :type: string
         eq:
           :type: string
@@ -293,5 +293,5 @@
           :type: array
           :items:
             :type: string
-        starts_with:
+        startsWith:
           :type: string

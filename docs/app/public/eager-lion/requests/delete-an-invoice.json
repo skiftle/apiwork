@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "DELETE",
-    "path": "/eager-lion/invoices/8c314c17-9e08-4c84-8610-33fb7c1322e5"
+    "path": "/eager-lion/invoices/cb79831a-483f-45b6-ba9c-d27841cf4ab2"
   },
   "response": {
     "status": 200,

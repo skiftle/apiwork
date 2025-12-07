@@ -8,24 +8,24 @@
     "body": {
       "orders": [
         {
-          "id": "eb78f463-8644-4260-8147-de7fa9711f1a",
-          "order_number": "ORD-001",
+          "id": "afc4f6b1-6d5d-4a78-bf7a-9012624ce4c7",
+          "orderNumber": "ORD-001",
           "status": "pending",
           "total": null,
-          "created_at": "2025-12-07T13:14:56.830Z",
-          "updated_at": "2025-12-07T13:14:56.830Z",
-          "line_items": null,
-          "shipping_address": null
+          "createdAt": "2025-12-07T13:22:39.612Z",
+          "updatedAt": "2025-12-07T13:22:39.612Z",
+          "lineItems": null,
+          "shippingAddress": null
         },
         {
-          "id": "10313d94-4c23-4668-b47f-6a6d7f8e018d",
-          "order_number": "ORD-002",
+          "id": "d8e9ad71-4aae-4871-973b-707e93d9346d",
+          "orderNumber": "ORD-002",
           "status": "pending",
           "total": null,
-          "created_at": "2025-12-07T13:14:56.832Z",
-          "updated_at": "2025-12-07T13:14:56.832Z",
-          "line_items": null,
-          "shipping_address": null
+          "createdAt": "2025-12-07T13:22:39.613Z",
+          "updatedAt": "2025-12-07T13:22:39.613Z",
+          "lineItems": null,
+          "shippingAddress": null
         }
       ],
       "pagination": {

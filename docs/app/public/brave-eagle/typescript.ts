@@ -7,11 +7,11 @@ export interface Issue {
 
 export interface NullableStringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
   null?: boolean;
-  starts_with?: string;
+  startsWith?: string;
 }
 
 export interface PagePagination {
@@ -26,27 +26,27 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
-  starts_with?: string;
+  startsWith?: string;
 }
 
 export interface Task {
   archived?: boolean;
-  created_at?: string;
+  createdAt?: string;
   description?: string;
-  due_date?: string;
+  dueDate?: string;
   id?: string;
   priority?: string;
   status?: string;
   title?: string;
-  updated_at?: string;
+  updatedAt?: string;
 }
 
 export interface TaskCreatePayload {
   description?: null | string;
-  due_date?: null | string;
+  dueDate?: null | string;
   priority?: null | string;
   status?: null | string;
   title: string;
@@ -68,13 +68,13 @@ export interface TaskPage {
 }
 
 export interface TaskSort {
-  created_at?: unknown;
-  due_date?: unknown;
+  createdAt?: unknown;
+  dueDate?: unknown;
 }
 
 export interface TaskUpdatePayload {
   description?: null | string;
-  due_date?: null | string;
+  dueDate?: null | string;
   priority?: null | string;
   status?: null | string;
   title?: string;

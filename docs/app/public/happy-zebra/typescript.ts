@@ -209,19 +209,19 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
-  starts_with?: string;
+  startsWith?: string;
 }
 
 export interface User {
-  created_at?: string;
+  createdAt?: string;
   email?: string;
   id?: string;
   posts: Post[];
   profile: object;
-  updated_at?: string;
+  updatedAt?: string;
   username?: string;
 }
 
@@ -253,8 +253,8 @@ export interface UserPage {
 export type UserProfileInclude = object;
 
 export interface UserSort {
-  created_at?: unknown;
-  updated_at?: unknown;
+  createdAt?: unknown;
+  updatedAt?: unknown;
 }
 
 export interface UserUpdatePayload {

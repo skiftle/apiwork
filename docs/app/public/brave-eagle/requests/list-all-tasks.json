@@ -8,26 +8,26 @@
     "body": {
       "tasks": [
         {
-          "id": "0ddc4a3c-790f-48c4-88fe-31eccc37831e",
+          "id": "128bba19-91e4-4a4f-b924-f59a21168b4b",
           "title": "Write documentation",
           "description": null,
           "status": "pending",
           "priority": "high",
-          "due_date": null,
+          "dueDate": null,
           "archived": false,
-          "created_at": "2025-12-07T13:14:56.765Z",
-          "updated_at": "2025-12-07T13:14:56.765Z"
+          "createdAt": "2025-12-07T13:22:39.544Z",
+          "updatedAt": "2025-12-07T13:22:39.544Z"
         },
         {
-          "id": "ddea330c-eb5d-4313-a167-b4344bd6efed",
+          "id": "2fcad2b3-5e23-4ce7-b501-be44790f786c",
           "title": "Review pull request",
           "description": null,
           "status": "completed",
           "priority": "medium",
-          "due_date": null,
+          "dueDate": null,
           "archived": false,
-          "created_at": "2025-12-07T13:14:56.766Z",
-          "updated_at": "2025-12-07T13:14:56.766Z"
+          "createdAt": "2025-12-07T13:22:39.553Z",
+          "updatedAt": "2025-12-07T13:22:39.553Z"
         }
       ],
       "pagination": {

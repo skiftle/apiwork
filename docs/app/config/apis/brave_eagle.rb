@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 Apiwork::API.draw '/brave-eagle' do
+  key_format :camel
+
   info do
     title 'Task Management API'
     version '1.0.0'

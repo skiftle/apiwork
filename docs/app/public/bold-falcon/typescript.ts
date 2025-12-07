@@ -1,19 +1,19 @@
 export interface Article {
   body?: string;
   category?: null | object;
-  created_at?: string;
+  createdAt?: string;
   id?: unknown;
-  published_on?: string;
+  publishedOn?: string;
   rating?: number;
   status?: ArticleStatus;
   title?: string;
-  updated_at?: string;
-  view_count?: number;
+  updatedAt?: string;
+  viewCount?: number;
 }
 
 export interface ArticleCreatePayload {
   body?: null | string;
-  published_on?: null | string;
+  publishedOn?: null | string;
   status?: ArticleStatus | null;
   title: string;
 }
@@ -22,11 +22,11 @@ export interface ArticleFilter {
   _and?: ArticleFilter[];
   _not?: ArticleFilter;
   _or?: ArticleFilter[];
-  published_on?: NullableDateFilter | string;
+  publishedOn?: NullableDateFilter | string;
   rating?: NullableDecimalFilter | number;
   status?: ArticleStatusFilter;
   title?: StringFilter | string;
-  view_count?: NullableIntegerFilter | number;
+  viewCount?: NullableIntegerFilter | number;
 }
 
 export type ArticleInclude = object;
@@ -37,11 +37,11 @@ export interface ArticlePage {
 }
 
 export interface ArticleSort {
-  created_at?: unknown;
-  published_on?: unknown;
+  createdAt?: unknown;
+  publishedOn?: unknown;
   rating?: unknown;
   status?: unknown;
-  view_count?: unknown;
+  viewCount?: unknown;
 }
 
 export type ArticleStatus = 'archived' | 'draft' | 'published';
@@ -50,7 +50,7 @@ export type ArticleStatusFilter = ArticleStatus | { eq?: ArticleStatus; in?: Art
 
 export interface ArticleUpdatePayload {
   body?: null | string;
-  published_on?: null | string;
+  publishedOn?: null | string;
   status?: ArticleStatus | null;
   title?: string;
 }
@@ -211,11 +211,11 @@ export interface NullableIntegerFilter {
 
 export interface NullableStringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
   null?: boolean;
-  starts_with?: string;
+  startsWith?: string;
 }
 
 export interface PagePagination {
@@ -230,8 +230,8 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
-  starts_with?: string;
+  startsWith?: string;
 }

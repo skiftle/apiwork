@@ -61,10 +61,10 @@ export const PostPageSchema = z.object({
 
 export const StringFilterSchema = z.object({
   contains: z.string().optional(),
-  ends_with: z.string().optional(),
+  endsWith: z.string().optional(),
   eq: z.string().optional(),
   in: z.array(z.string()).optional(),
-  starts_with: z.string().optional()
+  startsWith: z.string().optional()
 });
 
 export const UserPageSchema = z.object({
@@ -77,8 +77,8 @@ export const UserProfileIncludeSchema = z.object({
 });
 
 export const UserSortSchema = z.object({
-  created_at: z.unknown().optional(),
-  updated_at: z.unknown().optional()
+  createdAt: z.unknown().optional(),
+  updatedAt: z.unknown().optional()
 });
 
 export const PostSchema = z.object({
@@ -105,12 +105,12 @@ export const UserFilterSchema: z.ZodType<UserFilter> = z.lazy(() => z.object({
 }));
 
 export const UserSchema = z.object({
-  created_at: z.iso.datetime().optional(),
+  createdAt: z.iso.datetime().optional(),
   email: z.string().optional(),
   id: z.string().optional(),
   posts: z.array(PostSchema),
   profile: z.object({}),
-  updated_at: z.iso.datetime().optional(),
+  updatedAt: z.iso.datetime().optional(),
   username: z.string().optional()
 });
 
@@ -161,10 +161,10 @@ export const UserUpdatePayloadSchema = z.object({
 });
 
 export const UserSchema = z.object({
-  created_at: z.iso.datetime(),
+  createdAt: z.iso.datetime(),
   email: z.string(),
   id: z.string(),
-  updated_at: z.iso.datetime(),
+  updatedAt: z.iso.datetime(),
   username: z.string()
 });
 
@@ -586,27 +586,27 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
   contains?: string;
-  ends_with?: string;
+  endsWith?: string;
   eq?: string;
   in?: string[];
-  starts_with?: string;
+  startsWith?: string;
 }
 
 export interface User {
-  created_at: string;
+  createdAt: string;
   email: string;
   id: string;
-  updated_at: string;
+  updatedAt: string;
   username: string;
 }
 
 export interface User {
-  created_at?: string;
+  createdAt?: string;
   email?: string;
   id?: string;
   posts: Post[];
   profile: object;
-  updated_at?: string;
+  updatedAt?: string;
   username?: string;
 }
 
@@ -638,8 +638,8 @@ export interface UserPage {
 export type UserProfileInclude = object;
 
 export interface UserSort {
-  created_at?: unknown;
-  updated_at?: unknown;
+  createdAt?: unknown;
+  updatedAt?: unknown;
 }
 
 export interface UserUpdatePayload {

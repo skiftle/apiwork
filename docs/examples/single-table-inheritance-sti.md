@@ -101,7 +101,7 @@ GET /mighty-wolf/vehicles
   "vehicles": [
     {
       "kind": "car",
-      "id": "62df8297-6217-423d-97f0-5f5cd0e10512",
+      "id": "454723d4-cf08-4649-b3e6-4ae462beb8ae",
       "brand": "Tesla",
       "model": "Model 3",
       "year": null,
@@ -110,21 +110,21 @@ GET /mighty-wolf/vehicles
     },
     {
       "kind": "motorcycle",
-      "id": "2832b098-c304-4483-967a-15583001295b",
+      "id": "05094ce7-c3d3-49a5-89f0-a459d71cc111",
       "brand": "Harley-Davidson",
       "model": "Street Glide",
       "year": null,
       "color": null,
-      "engine_cc": null
+      "engineCc": null
     },
     {
       "kind": "truck",
-      "id": "2b86edfa-6558-49d2-b9a6-f0d86aceada4",
+      "id": "837bfb25-7f0f-416a-a76f-d0dd5571ffa9",
       "brand": "Ford",
       "model": "F-150",
       "year": null,
       "color": null,
-      "payload_capacity": null
+      "payloadCapacity": null
     }
   ],
   "pagination": {
@@ -145,7 +145,7 @@ GET /mighty-wolf/vehicles
 **Request**
 
 ```http
-GET /mighty-wolf/vehicles/4d97c039-57cb-40a4-8911-ba12ec137819
+GET /mighty-wolf/vehicles/54d5598a-b86b-4141-a343-42cd4357af1f
 ```
 
 **Response** `200`
@@ -154,7 +154,7 @@ GET /mighty-wolf/vehicles/4d97c039-57cb-40a4-8911-ba12ec137819
 {
   "vehicle": {
     "kind": "car",
-    "id": "4d97c039-57cb-40a4-8911-ba12ec137819",
+    "id": "54d5598a-b86b-4141-a343-42cd4357af1f",
     "brand": "Tesla",
     "model": "Model 3",
     "year": 2024,
@@ -192,7 +192,7 @@ Content-Type: application/json
 {
   "vehicle": {
     "kind": "car",
-    "id": "3f121722-efa9-46d2-9c30-267210b985ad",
+    "id": "7d8dc90f-0442-4430-9e9f-fc2278f4866f",
     "brand": "Tesla",
     "model": "Model 3",
     "year": 2024,
@@ -230,12 +230,12 @@ Content-Type: application/json
 {
   "vehicle": {
     "kind": "motorcycle",
-    "id": "2b7c075b-b139-4402-a961-b43c24650e07",
+    "id": "00675ae2-4b5b-472d-a267-f4c869cf1561",
     "brand": "Harley-Davidson",
     "model": "Street Glide",
     "year": 2023,
     "color": "black",
-    "engine_cc": null
+    "engineCc": null
   }
 }
 ```
@@ -268,12 +268,12 @@ Content-Type: application/json
 {
   "vehicle": {
     "kind": "truck",
-    "id": "3e48426d-1c02-41c4-8cf0-91c8a26bc1c6",
+    "id": "c91dbbcf-7007-41ce-96e0-f145c590027d",
     "brand": "Ford",
     "model": "F-150",
     "year": 2024,
     "color": "blue",
-    "payload_capacity": null
+    "payloadCapacity": null
   }
 }
 ```

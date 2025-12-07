@@ -20,29 +20,29 @@
         :required: false
         :schema:
           :oneOf:
-          - :$ref: "#/components/schemas/task_filter"
+          - :$ref: "#/components/schemas/taskFilter"
           - :type: array
             :items:
-              :$ref: "#/components/schemas/task_filter"
+              :$ref: "#/components/schemas/taskFilter"
       - :in: query
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/task_include"
+          :$ref: "#/components/schemas/taskInclude"
       - :in: query
         :name: page
         :required: false
         :schema:
-          :$ref: "#/components/schemas/task_page"
+          :$ref: "#/components/schemas/taskPage"
       - :in: query
         :name: sort
         :required: false
         :schema:
           :oneOf:
-          - :$ref: "#/components/schemas/task_sort"
+          - :$ref: "#/components/schemas/taskSort"
           - :type: array
             :items:
-              :$ref: "#/components/schemas/task_sort"
+              :$ref: "#/components/schemas/taskSort"
       :responses:
         :200:
           :description: Successful response
@@ -55,7 +55,7 @@
                     :type: object
                     :properties: {}
                   pagination:
-                    :$ref: "#/components/schemas/page_pagination"
+                    :$ref: "#/components/schemas/pagePagination"
                   tasks:
                     :type: array
                     :items:
@@ -75,7 +75,7 @@
               :type: object
               :properties:
                 task:
-                  :$ref: "#/components/schemas/task_create_payload"
+                  :$ref: "#/components/schemas/taskCreatePayload"
               :required:
               - task
       :responses:
@@ -142,7 +142,7 @@
               :type: object
               :properties:
                 task:
-                  :$ref: "#/components/schemas/task_update_payload"
+                  :$ref: "#/components/schemas/taskUpdatePayload"
       :responses:
         :200:
           :description: Successful response
@@ -223,12 +223,12 @@
       - detail
       - field
       - path
-    nullable_string_filter:
+    nullableStringFilter:
       :type: object
       :properties:
         contains:
           :type: string
-        ends_with:
+        endsWith:
           :type: string
         eq:
           :type: string
@@ -238,9 +238,9 @@
             :type: string
         'null':
           :type: boolean
-        starts_with:
+        startsWith:
           :type: string
-    page_pagination:
+    pagePagination:
       :type: object
       :properties:
         current:
@@ -261,12 +261,12 @@
       - current
       - items
       - total
-    string_filter:
+    stringFilter:
       :type: object
       :properties:
         contains:
           :type: string
-        ends_with:
+        endsWith:
           :type: string
         eq:
           :type: string
@@ -274,18 +274,18 @@
           :type: array
           :items:
             :type: string
-        starts_with:
+        startsWith:
           :type: string
     task:
       :type: object
       :properties:
         archived:
           :type: boolean
-        created_at:
+        createdAt:
           :type: string
         description:
           :type: string
-        due_date:
+        dueDate:
           :type: string
         id:
           :type: string
@@ -295,16 +295,16 @@
           :type: string
         title:
           :type: string
-        updated_at:
+        updatedAt:
           :type: string
-    task_create_payload:
+    taskCreatePayload:
       :type: object
       :properties:
         description:
           :type:
           - string
           - 'null'
-        due_date:
+        dueDate:
           :type:
           - string
           - 'null'
@@ -320,31 +320,31 @@
           :type: string
       :required:
       - title
-    task_filter:
+    taskFilter:
       :type: object
       :properties:
         _and:
           :type: array
           :items:
-            :$ref: "#/components/schemas/task_filter"
+            :$ref: "#/components/schemas/taskFilter"
         _not:
-          :$ref: "#/components/schemas/task_filter"
+          :$ref: "#/components/schemas/taskFilter"
         _or:
           :type: array
           :items:
-            :$ref: "#/components/schemas/task_filter"
+            :$ref: "#/components/schemas/taskFilter"
         priority:
           :oneOf:
           - :type: string
-          - :$ref: "#/components/schemas/nullable_string_filter"
+          - :$ref: "#/components/schemas/nullableStringFilter"
         status:
           :oneOf:
           - :type: string
-          - :$ref: "#/components/schemas/nullable_string_filter"
-    task_include:
+          - :$ref: "#/components/schemas/nullableStringFilter"
+    taskInclude:
       :type: object
       :properties: {}
-    task_page:
+    taskPage:
       :type: object
       :properties:
         number:
@@ -354,19 +354,19 @@
           :type: integer
           :minimum: 1
           :maximum: 100
-    task_sort:
+    taskSort:
       :type: object
       :properties:
-        created_at: {}
-        due_date: {}
-    task_update_payload:
+        createdAt: {}
+        dueDate: {}
+    taskUpdatePayload:
       :type: object
       :properties:
         description:
           :type:
           - string
           - 'null'
-        due_date:
+        dueDate:
           :type:
           - string
           - 'null'
