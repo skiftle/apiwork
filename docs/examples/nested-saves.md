@@ -90,7 +90,7 @@ GET /clever-rabbit/orders
 **Request**
 
 ```http
-GET /clever-rabbit/orders/53e8ba8c-9300-4b3f-abbe-a74710b5caf8
+GET /clever-rabbit/orders/d137a5e3-44ef-49bd-bca1-9785e1e95512
 ```
 
 **Response** `200`
@@ -98,12 +98,12 @@ GET /clever-rabbit/orders/53e8ba8c-9300-4b3f-abbe-a74710b5caf8
 ```json
 {
   "order": {
-    "id": "53e8ba8c-9300-4b3f-abbe-a74710b5caf8",
+    "id": "d137a5e3-44ef-49bd-bca1-9785e1e95512",
     "order_number": "ORD-001",
     "status": "pending",
     "total": null,
-    "created_at": "2025-12-07T08:42:27.112Z",
-    "updated_at": "2025-12-07T08:42:27.112Z",
+    "created_at": "2025-12-07T08:54:43.826Z",
+    "updated_at": "2025-12-07T08:54:43.826Z",
     "line_items": null,
     "shipping_address": null
   }
@@ -124,7 +124,7 @@ Content-Type: application/json
 {
   "order": {
     "order_number": "ORD-001",
-    "line_items_fields": [
+    "line_items": [
       {
         "product_name": "Widget",
         "quantity": 2,
@@ -136,7 +136,7 @@ Content-Type: application/json
         "unit_price": 49.99
       }
     ],
-    "shipping_address_fields": {
+    "shipping_address": {
       "street": "123 Main St",
       "city": "Springfield",
       "postal_code": "12345",
@@ -146,46 +146,20 @@ Content-Type: application/json
 }
 ```
 
-**Response** `400`
+**Response** `201`
 
 ```json
 {
-  "issues": [
-    {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "path": [
-        "order",
-        "line_items_fields"
-      ],
-      "pointer": "/order/line_items_fields",
-      "meta": {
-        "field": "line_items_fields",
-        "allowed": [
-          "order_number",
-          "line_items",
-          "shipping_address"
-        ]
-      }
-    },
-    {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "path": [
-        "order",
-        "shipping_address_fields"
-      ],
-      "pointer": "/order/shipping_address_fields",
-      "meta": {
-        "field": "shipping_address_fields",
-        "allowed": [
-          "order_number",
-          "line_items",
-          "shipping_address"
-        ]
-      }
-    }
-  ]
+  "order": {
+    "id": "2cd11eaa-2dcc-4f87-a15c-ad8759bc7db1",
+    "order_number": "ORD-001",
+    "status": "pending",
+    "total": null,
+    "created_at": "2025-12-07T08:54:43.891Z",
+    "updated_at": "2025-12-07T08:54:43.891Z",
+    "line_items": null,
+    "shipping_address": null
+  }
 }
 ```
 
@@ -197,12 +171,13 @@ Content-Type: application/json
 **Request**
 
 ```http
-PATCH /clever-rabbit/orders/fa5aaad2-e6cf-4273-b5ca-c8b9af6a28d1
+PATCH /clever-rabbit/orders/96b255c2-7a8b-4b4e-9b59-a5b6dcc4b93b
 Content-Type: application/json
 
 {
   "order": {
-    "line_items_fields": [
+    "order_number": "ORD-001",
+    "line_items": [
       {
         "product_name": "New Item",
         "quantity": 3,
@@ -213,41 +188,20 @@ Content-Type: application/json
 }
 ```
 
-**Response** `400`
+**Response** `200`
 
 ```json
 {
-  "issues": [
-    {
-      "code": "field_missing",
-      "detail": "Field required",
-      "path": [
-        "order",
-        "order_number"
-      ],
-      "pointer": "/order/order_number",
-      "meta": {
-        "field": "order_number"
-      }
-    },
-    {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "path": [
-        "order",
-        "line_items_fields"
-      ],
-      "pointer": "/order/line_items_fields",
-      "meta": {
-        "field": "line_items_fields",
-        "allowed": [
-          "order_number",
-          "line_items",
-          "shipping_address"
-        ]
-      }
-    }
-  ]
+  "order": {
+    "id": "96b255c2-7a8b-4b4e-9b59-a5b6dcc4b93b",
+    "order_number": "ORD-001",
+    "status": "pending",
+    "total": null,
+    "created_at": "2025-12-07T08:54:43.905Z",
+    "updated_at": "2025-12-07T08:54:43.905Z",
+    "line_items": null,
+    "shipping_address": null
+  }
 }
 ```
 
@@ -259,7 +213,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-DELETE /clever-rabbit/orders/9af15b45-638b-44d5-bd1b-bb5d2ec9ce17
+DELETE /clever-rabbit/orders/8bd0a12c-101c-47e9-8692-5f63bb07f18b
 ```
 
 **Response** `200`

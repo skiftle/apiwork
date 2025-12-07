@@ -40,6 +40,12 @@
         },
         "body": {
           "type": "string"
+        },
+        "commentable_id": {
+          "type": "unknown"
+        },
+        "commentable_type": {
+          "type": "string"
         }
       }
     },
@@ -111,6 +117,12 @@
           "optional": true
         },
         "body": {
+          "type": "string"
+        },
+        "commentable_id": {
+          "type": "unknown"
+        },
+        "commentable_type": {
           "type": "string"
         }
       }

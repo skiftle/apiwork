@@ -1,6 +1,7 @@
 export interface Invoice {
   created_at?: string;
   customer: object;
+  customer_id?: string;
   id?: string;
   issued_on?: string;
   lines: string[];
@@ -11,6 +12,7 @@ export interface Invoice {
 }
 
 export interface InvoiceCreatePayload {
+  customer_id: string;
   issued_on?: null | string;
   lines?: string[];
   notes?: null | string;
@@ -47,6 +49,7 @@ export interface InvoiceSort {
 }
 
 export interface InvoiceUpdatePayload {
+  customer_id?: string;
   issued_on?: null | string;
   lines?: string[];
   notes?: null | string;

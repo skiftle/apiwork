@@ -184,8 +184,13 @@
           - 'null'
         body:
           :type: string
+        commentable_id: {}
+        commentable_type:
+          :type: string
       :required:
       - body
+      - commentable_id
+      - commentable_type
     comment_filter:
       :type: object
       :properties:
@@ -229,8 +234,13 @@
           - 'null'
         body:
           :type: string
+        commentable_id: {}
+        commentable_type:
+          :type: string
       :required:
       - body
+      - commentable_id
+      - commentable_type
     issue:
       :type: object
       :properties:

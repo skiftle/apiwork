@@ -59,20 +59,20 @@ GET /funny-snake/invoices
 **Request**
 
 ```http
-GET /funny-snake/invoices/9691df22-fa8c-43f6-b5ad-46ebb338c18f
+GET /funny-snake/invoices/a288ac79-6ec4-4e41-aad6-ab5cc1e63b92
 ```
 
 **Response** `200`
 
 ```json
 {
-  "id": "9691df22-fa8c-43f6-b5ad-46ebb338c18f",
+  "id": "a288ac79-6ec4-4e41-aad6-ab5cc1e63b92",
   "number": "INV-001",
   "issued_on": null,
   "status": "draft",
   "notes": null,
-  "created_at": "2025-12-07T08:42:27.260Z",
-  "updated_at": "2025-12-07T08:42:27.260Z"
+  "created_at": "2025-12-07T08:54:44.229Z",
+  "updated_at": "2025-12-07T08:54:44.229Z"
 }
 ```
 
@@ -101,13 +101,13 @@ Content-Type: application/json
 
 ```json
 {
-  "id": "281bdcdb-cff1-406b-a5f0-16debe55f7a3",
+  "id": "a5e5559a-f652-4005-8108-4b392c951638",
   "number": "INV-001",
   "issued_on": "2024-01-15",
   "status": "draft",
   "notes": "First invoice",
-  "created_at": "2025-12-07T08:42:27.272Z",
-  "updated_at": "2025-12-07T08:42:27.272Z"
+  "created_at": "2025-12-07T08:54:44.240Z",
+  "updated_at": "2025-12-07T08:54:44.240Z"
 }
 ```
 
@@ -119,58 +119,30 @@ Content-Type: application/json
 **Request**
 
 ```http
-PATCH /funny-snake/invoices/93e8965b-f3a0-4339-8543-1d1bc7fccbd4
+PATCH /funny-snake/invoices/d60219ff-19b6-4bf0-8551-3cad13d66f7b
 Content-Type: application/json
 
 {
   "invoice": {
-    "status": "sent"
+    "number": "INV-001",
+    "issued_on": "2024-01-15",
+    "status": "sent",
+    "notes": "Updated invoice"
   }
 }
 ```
 
-**Response** `400`
+**Response** `200`
 
 ```json
 {
-  "issues": [
-    {
-      "code": "field_missing",
-      "detail": "Field required",
-      "path": [
-        "invoice",
-        "number"
-      ],
-      "pointer": "/invoice/number",
-      "meta": {
-        "field": "number"
-      }
-    },
-    {
-      "code": "field_missing",
-      "detail": "Field required",
-      "path": [
-        "invoice",
-        "issued_on"
-      ],
-      "pointer": "/invoice/issued_on",
-      "meta": {
-        "field": "issued_on"
-      }
-    },
-    {
-      "code": "field_missing",
-      "detail": "Field required",
-      "path": [
-        "invoice",
-        "notes"
-      ],
-      "pointer": "/invoice/notes",
-      "meta": {
-        "field": "notes"
-      }
-    }
-  ]
+  "number": "INV-001",
+  "issued_on": "2024-01-15",
+  "status": "sent",
+  "notes": "Updated invoice",
+  "id": "d60219ff-19b6-4bf0-8551-3cad13d66f7b",
+  "created_at": "2025-12-07T08:54:44.242Z",
+  "updated_at": "2025-12-07T08:54:44.247Z"
 }
 ```
 
@@ -182,20 +154,20 @@ Content-Type: application/json
 **Request**
 
 ```http
-DELETE /funny-snake/invoices/32aa7298-f8a7-4121-8abe-ecb69de3ce17
+DELETE /funny-snake/invoices/43634785-85dc-4292-9ab1-94cdd1359227
 ```
 
 **Response** `200`
 
 ```json
 {
-  "id": "32aa7298-f8a7-4121-8abe-ecb69de3ce17",
+  "id": "43634785-85dc-4292-9ab1-94cdd1359227",
   "number": "INV-001",
   "issued_on": null,
   "status": null,
   "notes": null,
-  "created_at": "2025-12-07T08:42:27.280Z",
-  "updated_at": "2025-12-07T08:42:27.280Z"
+  "created_at": "2025-12-07T08:54:44.251Z",
+  "updated_at": "2025-12-07T08:54:44.251Z"
 }
 ```
 

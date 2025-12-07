@@ -55,7 +55,7 @@ export interface VehicleCarCreatePayload {
   brand: string;
   color?: null | string;
   doors?: null | number;
-  kind: 'car';
+  kind: unknown;
   model: string;
   year?: null | number;
 }
@@ -64,7 +64,7 @@ export interface VehicleCarUpdatePayload {
   brand?: string;
   color?: null | string;
   doors?: null | number;
-  kind?: 'car';
+  kind?: unknown;
   model?: string;
   year?: null | number;
 }
@@ -86,7 +86,7 @@ export interface VehicleMotorcycleCreatePayload {
   brand: string;
   color?: null | string;
   engine_cc?: null | number;
-  kind: 'motorcycle';
+  kind: unknown;
   model: string;
   year?: null | number;
 }
@@ -95,7 +95,7 @@ export interface VehicleMotorcycleUpdatePayload {
   brand?: string;
   color?: null | string;
   engine_cc?: null | number;
-  kind?: 'motorcycle';
+  kind?: unknown;
   model?: string;
   year?: null | number;
 }
@@ -112,7 +112,7 @@ export interface VehicleSort {
 export interface VehicleTruckCreatePayload {
   brand: string;
   color?: null | string;
-  kind: 'truck';
+  kind: unknown;
   model: string;
   payload_capacity?: null | number;
   year?: null | number;
@@ -121,7 +121,7 @@ export interface VehicleTruckCreatePayload {
 export interface VehicleTruckUpdatePayload {
   brand?: string;
   color?: null | string;
-  kind?: 'truck';
+  kind?: unknown;
   model?: string;
   payload_capacity?: null | number;
   year?: null | number;

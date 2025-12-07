@@ -90,15 +90,28 @@ GET /eager-lion/invoices
 **Request**
 
 ```http
-GET /eager-lion/invoices/c9a83474-d844-4f96-883c-c8579ed5e8fb
+GET /eager-lion/invoices/de72cbf8-e871-4557-9f2e-a33d5ec999c2
 ```
 
-**Response** `404`
+**Response** `200`
 
 ```json
 {
-  "status": 404,
-  "error": "Not Found"
+  "invoice": {
+    "id": "de72cbf8-e871-4557-9f2e-a33d5ec999c2",
+    "created_at": "2025-12-07T08:54:44.116Z",
+    "updated_at": "2025-12-07T08:54:44.116Z",
+    "number": "INV-001",
+    "issued_on": null,
+    "notes": null,
+    "status": null,
+    "customer_id": "f1ba24f7-80e5-4d03-adef-aa66bbedd3d9",
+    "lines": [],
+    "customer": {
+      "id": "f1ba24f7-80e5-4d03-adef-aa66bbedd3d9",
+      "name": "Acme Corp"
+    }
+  }
 }
 ```
 
@@ -116,37 +129,32 @@ Content-Type: application/json
 {
   "invoice": {
     "number": "INV-001",
-    "customer_id": "105c87ea-08a7-4fd7-9584-2ca7fe5b10b2",
+    "customer_id": "9826e08c-a629-4da2-a452-6ae029bbc63f",
     "issued_on": "2024-01-15",
     "notes": "First invoice"
   }
 }
 ```
 
-**Response** `400`
+**Response** `201`
 
 ```json
 {
-  "issues": [
-    {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "path": [
-        "invoice",
-        "customer_id"
-      ],
-      "pointer": "/invoice/customer_id",
-      "meta": {
-        "field": "customer_id",
-        "allowed": [
-          "number",
-          "issued_on",
-          "notes",
-          "lines"
-        ]
-      }
+  "invoice": {
+    "id": "20b21ca3-4163-4130-9c05-ff169556c887",
+    "created_at": "2025-12-07T08:54:44.157Z",
+    "updated_at": "2025-12-07T08:54:44.157Z",
+    "number": "INV-001",
+    "issued_on": "2024-01-15",
+    "notes": "First invoice",
+    "status": null,
+    "customer_id": "9826e08c-a629-4da2-a452-6ae029bbc63f",
+    "lines": [],
+    "customer": {
+      "id": "9826e08c-a629-4da2-a452-6ae029bbc63f",
+      "name": "Acme Corp"
     }
-  ]
+  }
 }
 ```
 
@@ -158,34 +166,37 @@ Content-Type: application/json
 **Request**
 
 ```http
-PATCH /eager-lion/invoices/ad025512-360b-4ead-8984-173f2a964618
+PATCH /eager-lion/invoices/1ff27a9d-7be8-4adc-9af9-0a945a6a0581
 Content-Type: application/json
 
 {
   "invoice": {
+    "number": "INV-001",
+    "customer_id": "e31b4125-bfc2-4ed5-8056-766e24b550c2",
     "notes": "Updated notes"
   }
 }
 ```
 
-**Response** `400`
+**Response** `200`
 
 ```json
 {
-  "issues": [
-    {
-      "code": "field_missing",
-      "detail": "Field required",
-      "path": [
-        "invoice",
-        "number"
-      ],
-      "pointer": "/invoice/number",
-      "meta": {
-        "field": "number"
-      }
+  "invoice": {
+    "id": "1ff27a9d-7be8-4adc-9af9-0a945a6a0581",
+    "created_at": "2025-12-07T08:54:44.174Z",
+    "updated_at": "2025-12-07T08:54:44.182Z",
+    "number": "INV-001",
+    "issued_on": null,
+    "notes": "Updated notes",
+    "status": null,
+    "customer_id": "e31b4125-bfc2-4ed5-8056-766e24b550c2",
+    "lines": [],
+    "customer": {
+      "id": "e31b4125-bfc2-4ed5-8056-766e24b550c2",
+      "name": "Acme Corp"
     }
-  ]
+  }
 }
 ```
 
@@ -197,15 +208,14 @@ Content-Type: application/json
 **Request**
 
 ```http
-DELETE /eager-lion/invoices/2930cee8-562d-4776-b4fa-0e33d2a40c75
+DELETE /eager-lion/invoices/539c7ace-cde4-466b-b043-a7dcc1b7aa6f
 ```
 
-**Response** `404`
+**Response** `200`
 
 ```json
 {
-  "status": 404,
-  "error": "Not Found"
+  "meta": {}
 }
 ```
 

@@ -214,6 +214,8 @@
         customer:
           :type: object
           :properties: {}
+        customer_id:
+          :type: string
         id:
           :type: string
         issued_on:
@@ -236,6 +238,8 @@
     invoice_create_payload:
       :type: object
       :properties:
+        customer_id:
+          :type: string
         issued_on:
           :type:
           - string
@@ -251,6 +255,7 @@
         number:
           :type: string
       :required:
+      - customer_id
       - number
     invoice_customer_include:
       :type: object
@@ -306,6 +311,8 @@
     invoice_update_payload:
       :type: object
       :properties:
+        customer_id:
+          :type: string
         issued_on:
           :type:
           - string
@@ -321,6 +328,7 @@
         number:
           :type: string
       :required:
+      - customer_id
       - number
     issue:
       :type: object

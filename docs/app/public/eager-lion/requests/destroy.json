@@ -1,13 +1,12 @@
 {
   "request": {
     "method": "DELETE",
-    "path": "/eager-lion/invoices/2930cee8-562d-4776-b4fa-0e33d2a40c75"
+    "path": "/eager-lion/invoices/539c7ace-cde4-466b-b043-a7dcc1b7aa6f"
   },
   "response": {
-    "status": 404,
+    "status": 200,
     "body": {
-      "status": 404,
-      "error": "Not Found"
+      "meta": {}
     }
   }
 }

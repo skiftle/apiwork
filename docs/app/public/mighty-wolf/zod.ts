@@ -38,7 +38,7 @@ export const VehicleCarCreatePayloadSchema = z.object({
   brand: z.string(),
   color: z.string().nullable().optional(),
   doors: z.number().int().nullable().optional(),
-  kind: z.literal('car'),
+  kind: z.unknown(),
   model: z.string(),
   year: z.number().int().nullable().optional()
 });
@@ -47,7 +47,7 @@ export const VehicleCarUpdatePayloadSchema = z.object({
   brand: z.string().optional(),
   color: z.string().nullable().optional(),
   doors: z.number().int().nullable().optional(),
-  kind: z.literal('car'),
+  kind: z.unknown().optional(),
   model: z.string().optional(),
   year: z.number().int().nullable().optional()
 });
@@ -60,7 +60,7 @@ export const VehicleMotorcycleCreatePayloadSchema = z.object({
   brand: z.string(),
   color: z.string().nullable().optional(),
   engine_cc: z.number().int().nullable().optional(),
-  kind: z.literal('motorcycle'),
+  kind: z.unknown(),
   model: z.string(),
   year: z.number().int().nullable().optional()
 });
@@ -69,7 +69,7 @@ export const VehicleMotorcycleUpdatePayloadSchema = z.object({
   brand: z.string().optional(),
   color: z.string().nullable().optional(),
   engine_cc: z.number().int().nullable().optional(),
-  kind: z.literal('motorcycle'),
+  kind: z.unknown().optional(),
   model: z.string().optional(),
   year: z.number().int().nullable().optional()
 });
@@ -86,7 +86,7 @@ export const VehicleSortSchema = z.object({
 export const VehicleTruckCreatePayloadSchema = z.object({
   brand: z.string(),
   color: z.string().nullable().optional(),
-  kind: z.literal('truck'),
+  kind: z.unknown(),
   model: z.string(),
   payload_capacity: z.number().nullable().optional(),
   year: z.number().int().nullable().optional()
@@ -95,7 +95,7 @@ export const VehicleTruckCreatePayloadSchema = z.object({
 export const VehicleTruckUpdatePayloadSchema = z.object({
   brand: z.string().optional(),
   color: z.string().nullable().optional(),
-  kind: z.literal('truck'),
+  kind: z.unknown().optional(),
   model: z.string().optional(),
   payload_capacity: z.number().nullable().optional(),
   year: z.number().int().nullable().optional()
@@ -147,6 +147,7 @@ export const VehicleSchema = z.object({
   brand: z.string(),
   color: z.string().nullable().optional(),
   id: z.never(),
+  kind: z.unknown(),
   model: z.string(),
   year: z.number().int().nullable().optional()
 });
@@ -257,6 +258,7 @@ export interface Vehicle {
   brand: string;
   color?: null | string;
   id: never;
+  kind: unknown;
   model: string;
   year?: null | number;
 }
@@ -267,7 +269,7 @@ export interface VehicleCarCreatePayload {
   brand: string;
   color?: null | string;
   doors?: null | number;
-  kind: 'car';
+  kind: unknown;
   model: string;
   year?: null | number;
 }
@@ -276,7 +278,7 @@ export interface VehicleCarUpdatePayload {
   brand?: string;
   color?: null | string;
   doors?: null | number;
-  kind?: 'car';
+  kind?: unknown;
   model?: string;
   year?: null | number;
 }
@@ -298,7 +300,7 @@ export interface VehicleMotorcycleCreatePayload {
   brand: string;
   color?: null | string;
   engine_cc?: null | number;
-  kind: 'motorcycle';
+  kind: unknown;
   model: string;
   year?: null | number;
 }
@@ -307,7 +309,7 @@ export interface VehicleMotorcycleUpdatePayload {
   brand?: string;
   color?: null | string;
   engine_cc?: null | number;
-  kind?: 'motorcycle';
+  kind?: unknown;
   model?: string;
   year?: null | number;
 }
@@ -324,7 +326,7 @@ export interface VehicleSort {
 export interface VehicleTruckCreatePayload {
   brand: string;
   color?: null | string;
-  kind: 'truck';
+  kind: unknown;
   model: string;
   payload_capacity?: null | number;
   year?: null | number;
@@ -333,7 +335,7 @@ export interface VehicleTruckCreatePayload {
 export interface VehicleTruckUpdatePayload {
   brand?: string;
   color?: null | string;
-  kind?: 'truck';
+  kind?: unknown;
   model?: string;
   payload_capacity?: null | number;
   year?: null | number;

@@ -5,35 +5,30 @@
     "body": {
       "invoice": {
         "number": "INV-001",
-        "customer_id": "105c87ea-08a7-4fd7-9584-2ca7fe5b10b2",
+        "customer_id": "9826e08c-a629-4da2-a452-6ae029bbc63f",
         "issued_on": "2024-01-15",
         "notes": "First invoice"
       }
     }
   },
   "response": {
-    "status": 400,
+    "status": 201,
     "body": {
-      "issues": [
-        {
-          "code": "field_unknown",
-          "detail": "Unknown field",
-          "path": [
-            "invoice",
-            "customer_id"
-          ],
-          "pointer": "/invoice/customer_id",
-          "meta": {
-            "field": "customer_id",
-            "allowed": [
-              "number",
-              "issued_on",
-              "notes",
-              "lines"
-            ]
-          }
+      "invoice": {
+        "id": "20b21ca3-4163-4130-9c05-ff169556c887",
+        "created_at": "2025-12-07T08:54:44.157Z",
+        "updated_at": "2025-12-07T08:54:44.157Z",
+        "number": "INV-001",
+        "issued_on": "2024-01-15",
+        "notes": "First invoice",
+        "status": null,
+        "customer_id": "9826e08c-a629-4da2-a452-6ae029bbc63f",
+        "lines": [],
+        "customer": {
+          "id": "9826e08c-a629-4da2-a452-6ae029bbc63f",
+          "name": "Acme Corp"
         }
-      ]
+      }
     }
   }
 }

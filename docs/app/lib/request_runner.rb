@@ -106,10 +106,18 @@ class RequestRunner
 
   def build_path(path_template, ids)
     path = path_template.dup
+
+    # Replace specific :model_id references first
     ids.each do |key, id|
       path = path.gsub(":#{key}_id", id.to_s)
-      path = path.gsub(':id', id.to_s)
     end
+
+    # Replace generic :id with the last created record's id
+    if path.include?(':id') && ids.any?
+      last_id = ids.values.last
+      path = path.gsub(':id', last_id.to_s)
+    end
+
     path
   end
 

@@ -13,10 +13,17 @@
     }
   },
   "response": {
-    "status": 500,
+    "status": 201,
     "body": {
-      "status": 500,
-      "error": "Internal Server Error"
+      "vehicle": {
+        "kind": "car",
+        "id": "13afea75-5347-4a96-8a9d-173a27fa4e6a",
+        "brand": "Tesla",
+        "model": "Model 3",
+        "year": 2024,
+        "color": "red",
+        "doors": null
+      }
     }
   }
 }

@@ -11,6 +11,10 @@
         "customer": {
           "type": "object"
         },
+        "customer_id": {
+          "type": "string",
+          "optional": true
+        },
         "id": {
           "type": "string",
           "optional": true
@@ -43,6 +47,9 @@
     "invoice_create_payload": {
       "type": "object",
       "shape": {
+        "customer_id": {
+          "type": "string"
+        },
         "issued_on": {
           "type": "date",
           "nullable": true,
@@ -165,6 +172,9 @@
     "invoice_update_payload": {
       "type": "object",
       "shape": {
+        "customer_id": {
+          "type": "string"
+        },
         "issued_on": {
           "type": "date",
           "nullable": true,
@@ -335,6 +345,9 @@
             "type": "string",
             "nullable": true,
             "optional": true
+          },
+          "customer_id": {
+            "type": "string"
           }
         }
       },

@@ -98,7 +98,7 @@ GET /mighty-wolf/vehicles
 **Request**
 
 ```http
-GET /mighty-wolf/vehicles/aeecd6f4-32aa-4261-9170-052d5b71eae4
+GET /mighty-wolf/vehicles/8202ce9b-b4d3-4d35-bce1-57ae93636bf8
 ```
 
 **Response** `200`
@@ -107,7 +107,7 @@ GET /mighty-wolf/vehicles/aeecd6f4-32aa-4261-9170-052d5b71eae4
 {
   "vehicle": {
     "kind": "car",
-    "id": "aeecd6f4-32aa-4261-9170-052d5b71eae4",
+    "id": "8202ce9b-b4d3-4d35-bce1-57ae93636bf8",
     "brand": "Tesla",
     "model": "Model 3",
     "year": 2024,
@@ -139,12 +139,19 @@ Content-Type: application/json
 }
 ```
 
-**Response** `500`
+**Response** `201`
 
 ```json
 {
-  "status": 500,
-  "error": "Internal Server Error"
+  "vehicle": {
+    "kind": "car",
+    "id": "13afea75-5347-4a96-8a9d-173a27fa4e6a",
+    "brand": "Tesla",
+    "model": "Model 3",
+    "year": 2024,
+    "color": "red",
+    "doors": null
+  }
 }
 ```
 
@@ -170,12 +177,19 @@ Content-Type: application/json
 }
 ```
 
-**Response** `500`
+**Response** `201`
 
 ```json
 {
-  "status": 500,
-  "error": "Internal Server Error"
+  "vehicle": {
+    "kind": "motorcycle",
+    "id": "23cc5e8a-0b21-4e02-b3a5-5989dc0eec37",
+    "brand": "Harley-Davidson",
+    "model": "Street Glide",
+    "year": 2023,
+    "color": "black",
+    "engine_cc": null
+  }
 }
 ```
 
@@ -201,12 +215,19 @@ Content-Type: application/json
 }
 ```
 
-**Response** `500`
+**Response** `201`
 
 ```json
 {
-  "status": 500,
-  "error": "Internal Server Error"
+  "vehicle": {
+    "kind": "truck",
+    "id": "4cd97643-fed2-45d4-973c-55bbd96628d9",
+    "brand": "Ford",
+    "model": "F-150",
+    "year": 2024,
+    "color": "blue",
+    "payload_capacity": null
+  }
 }
 ```
 

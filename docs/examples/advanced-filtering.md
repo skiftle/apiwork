@@ -82,7 +82,7 @@ GET /bold-falcon/articles
 **Request**
 
 ```http
-GET /bold-falcon/articles/22a7d95b-1860-4567-a78d-0f9b0b37e3e0
+GET /bold-falcon/articles/f1558af9-67a0-4526-a765-e8029fe6a9f2
 ```
 
 **Response** `200`
@@ -90,15 +90,15 @@ GET /bold-falcon/articles/22a7d95b-1860-4567-a78d-0f9b0b37e3e0
 ```json
 {
   "article": {
-    "id": "22a7d95b-1860-4567-a78d-0f9b0b37e3e0",
+    "id": "f1558af9-67a0-4526-a765-e8029fe6a9f2",
     "title": "Getting Started with Rails",
     "body": null,
     "status": "published",
     "view_count": 0,
     "rating": null,
     "published_on": null,
-    "created_at": "2025-12-07T08:42:27.023Z",
-    "updated_at": "2025-12-07T08:42:27.023Z"
+    "created_at": "2025-12-07T08:54:43.741Z",
+    "updated_at": "2025-12-07T08:54:43.741Z"
   }
 }
 ```
@@ -129,15 +129,15 @@ Content-Type: application/json
 ```json
 {
   "article": {
-    "id": "73eb77cb-e6b3-468d-a11d-6a82b5dbd526",
+    "id": "308ce6c0-a14e-44a5-9ebe-21787d4dd1c5",
     "title": "Getting Started with Rails",
     "body": "A comprehensive guide to Ruby on Rails",
     "status": "draft",
     "view_count": 0,
     "rating": null,
     "published_on": "2024-01-15",
-    "created_at": "2025-12-07T08:42:27.037Z",
-    "updated_at": "2025-12-07T08:42:27.037Z"
+    "created_at": "2025-12-07T08:54:43.753Z",
+    "updated_at": "2025-12-07T08:54:43.753Z"
   }
 }
 ```
@@ -159,15 +159,15 @@ GET /bold-falcon/articles?filter[status][eq]=published
 {
   "articles": [
     {
-      "id": "9352d1fa-b9d5-4abc-b021-0f731d9bcea7",
+      "id": "b0280e99-831d-459a-a4a4-d34143d4eba0",
       "title": "Published Article",
       "body": null,
       "status": "published",
       "view_count": 0,
       "rating": null,
       "published_on": null,
-      "created_at": "2025-12-07T08:42:27.040Z",
-      "updated_at": "2025-12-07T08:42:27.040Z"
+      "created_at": "2025-12-07T08:54:43.756Z",
+      "updated_at": "2025-12-07T08:54:43.756Z"
     }
   ],
   "pagination": {
@@ -197,15 +197,15 @@ GET /bold-falcon/articles?filter[title][contains]=Rails
 {
   "articles": [
     {
-      "id": "60aa93c3-7f47-4174-a8e8-609e4c368e59",
+      "id": "6dda7b25-500f-439c-a748-eee5ff290ca8",
       "title": "Getting Started with Rails",
       "body": null,
       "status": "published",
       "view_count": 0,
       "rating": null,
       "published_on": null,
-      "created_at": "2025-12-07T08:42:27.052Z",
-      "updated_at": "2025-12-07T08:42:27.052Z"
+      "created_at": "2025-12-07T08:54:43.767Z",
+      "updated_at": "2025-12-07T08:54:43.767Z"
     }
   ],
   "pagination": {

@@ -9,6 +9,7 @@ module EagerLion
     attribute :issued_on, writable: true, sortable: true
     attribute :notes, writable: true
     attribute :status, filterable: true, sortable: true
+    attribute :customer_id, writable: true
 
     has_many :lines, schema: LineSchema, writable: true, include: :always
     belongs_to :customer, schema: CustomerSchema, include: :always

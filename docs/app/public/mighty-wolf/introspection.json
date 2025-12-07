@@ -178,8 +178,7 @@
           "optional": true
         },
         "kind": {
-          "type": "literal",
-          "value": "car"
+          "type": "unknown"
         },
         "model": {
           "type": "string"
@@ -208,8 +207,7 @@
           "optional": true
         },
         "kind": {
-          "type": "literal",
-          "value": "car"
+          "type": "unknown"
         },
         "model": {
           "type": "string"
@@ -322,8 +320,7 @@
           "optional": true
         },
         "kind": {
-          "type": "literal",
-          "value": "motorcycle"
+          "type": "unknown"
         },
         "model": {
           "type": "string"
@@ -352,8 +349,7 @@
           "optional": true
         },
         "kind": {
-          "type": "literal",
-          "value": "motorcycle"
+          "type": "unknown"
         },
         "model": {
           "type": "string"
@@ -402,8 +398,7 @@
           "optional": true
         },
         "kind": {
-          "type": "literal",
-          "value": "truck"
+          "type": "unknown"
         },
         "model": {
           "type": "string"
@@ -432,8 +427,7 @@
           "optional": true
         },
         "kind": {
-          "type": "literal",
-          "value": "truck"
+          "type": "unknown"
         },
         "model": {
           "type": "string"
@@ -502,6 +496,9 @@
       "schema": {
         "type": "object",
         "shape": {
+          "kind": {
+            "type": "unknown"
+          },
           "id": {},
           "brand": {
             "type": "string"

@@ -13,10 +13,17 @@
     }
   },
   "response": {
-    "status": 500,
+    "status": 201,
     "body": {
-      "status": 500,
-      "error": "Internal Server Error"
+      "vehicle": {
+        "kind": "motorcycle",
+        "id": "23cc5e8a-0b21-4e02-b3a5-5989dc0eec37",
+        "brand": "Harley-Davidson",
+        "model": "Street Glide",
+        "year": 2023,
+        "color": "black",
+        "engine_cc": null
+      }
     }
   }
 }

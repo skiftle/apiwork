@@ -13,7 +13,9 @@ export const CommentSchema = z.object({
 
 export const CommentCreatePayloadSchema = z.object({
   author_name: z.string().nullable().optional(),
-  body: z.string()
+  body: z.string(),
+  commentable_id: z.unknown(),
+  commentable_type: z.string()
 });
 
 export const CommentIncludeSchema = z.object({
@@ -31,7 +33,9 @@ export const CommentSortSchema = z.object({
 
 export const CommentUpdatePayloadSchema = z.object({
   author_name: z.string().nullable().optional(),
-  body: z.string().optional()
+  body: z.string().optional(),
+  commentable_id: z.unknown().optional(),
+  commentable_type: z.string().optional()
 });
 
 export const IssueSchema = z.object({
@@ -145,6 +149,8 @@ export interface Comment {
 export interface CommentCreatePayload {
   author_name?: null | string;
   body: string;
+  commentable_id: unknown;
+  commentable_type: string;
 }
 
 export interface CommentFilter {
@@ -168,6 +174,8 @@ export interface CommentSort {
 export interface CommentUpdatePayload {
   author_name?: null | string;
   body?: string;
+  commentable_id?: unknown;
+  commentable_type?: string;
 }
 
 export interface CommentsCreateRequest {

@@ -7,47 +7,21 @@
         "body": "Very helpful video!",
         "author_name": "Bob Smith",
         "commentable_type": "GentleOwl::Video",
-        "commentable_id": "72b18ce4-8cc9-4974-aa65-4980aefaf2fd"
+        "commentable_id": "d19c6792-b738-400c-8824-da8b874b275e"
       }
     }
   },
   "response": {
-    "status": 400,
+    "status": 201,
     "body": {
-      "issues": [
-        {
-          "code": "field_unknown",
-          "detail": "Unknown field",
-          "path": [
-            "comment",
-            "commentable_type"
-          ],
-          "pointer": "/comment/commentable_type",
-          "meta": {
-            "field": "commentable_type",
-            "allowed": [
-              "body",
-              "author_name"
-            ]
-          }
-        },
-        {
-          "code": "field_unknown",
-          "detail": "Unknown field",
-          "path": [
-            "comment",
-            "commentable_id"
-          ],
-          "pointer": "/comment/commentable_id",
-          "meta": {
-            "field": "commentable_id",
-            "allowed": [
-              "body",
-              "author_name"
-            ]
-          }
-        }
-      ]
+      "comment": {
+        "id": "9f62b6fe-074f-4f73-a8f1-8213d2638a3f",
+        "body": "Very helpful video!",
+        "author_name": "Bob Smith",
+        "commentable_type": "GentleOwl::Video",
+        "commentable_id": "d19c6792-b738-400c-8824-da8b874b275e",
+        "created_at": "2025-12-07T08:54:44.320Z"
+      }
     }
   }
 }

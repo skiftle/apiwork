@@ -98,15 +98,21 @@ GET /gentle-owl/comments
 **Request**
 
 ```http
-GET /gentle-owl/comments/326180c7-f431-4d12-a194-daaec734e05a
+GET /gentle-owl/comments/41a9206a-bf95-4393-a18e-ac01664e0967
 ```
 
-**Response** `404`
+**Response** `200`
 
 ```json
 {
-  "status": 404,
-  "error": "Not Found"
+  "comment": {
+    "id": "41a9206a-bf95-4393-a18e-ac01664e0967",
+    "body": "Great post!",
+    "author_name": "John Doe",
+    "commentable_type": "GentleOwl::Post",
+    "commentable_id": "f60ee118-bd00-477c-8390-a124b46adc09",
+    "created_at": "2025-12-07T08:54:44.296Z"
+  }
 }
 ```
 
@@ -126,49 +132,23 @@ Content-Type: application/json
     "body": "This is a great article!",
     "author_name": "Jane Doe",
     "commentable_type": "GentleOwl::Post",
-    "commentable_id": "a643e32a-7d33-434d-991f-046501458672"
+    "commentable_id": "526ce159-b7e7-4dab-a5d6-ef8afe8aaa8b"
   }
 }
 ```
 
-**Response** `400`
+**Response** `201`
 
 ```json
 {
-  "issues": [
-    {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "path": [
-        "comment",
-        "commentable_type"
-      ],
-      "pointer": "/comment/commentable_type",
-      "meta": {
-        "field": "commentable_type",
-        "allowed": [
-          "body",
-          "author_name"
-        ]
-      }
-    },
-    {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "path": [
-        "comment",
-        "commentable_id"
-      ],
-      "pointer": "/comment/commentable_id",
-      "meta": {
-        "field": "commentable_id",
-        "allowed": [
-          "body",
-          "author_name"
-        ]
-      }
-    }
-  ]
+  "comment": {
+    "id": "cee7e7cd-a25a-4585-8dd7-1b085de65f52",
+    "body": "This is a great article!",
+    "author_name": "Jane Doe",
+    "commentable_type": "GentleOwl::Post",
+    "commentable_id": "526ce159-b7e7-4dab-a5d6-ef8afe8aaa8b",
+    "created_at": "2025-12-07T08:54:44.308Z"
+  }
 }
 ```
 
@@ -188,49 +168,23 @@ Content-Type: application/json
     "body": "Very helpful video!",
     "author_name": "Bob Smith",
     "commentable_type": "GentleOwl::Video",
-    "commentable_id": "72b18ce4-8cc9-4974-aa65-4980aefaf2fd"
+    "commentable_id": "d19c6792-b738-400c-8824-da8b874b275e"
   }
 }
 ```
 
-**Response** `400`
+**Response** `201`
 
 ```json
 {
-  "issues": [
-    {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "path": [
-        "comment",
-        "commentable_type"
-      ],
-      "pointer": "/comment/commentable_type",
-      "meta": {
-        "field": "commentable_type",
-        "allowed": [
-          "body",
-          "author_name"
-        ]
-      }
-    },
-    {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "path": [
-        "comment",
-        "commentable_id"
-      ],
-      "pointer": "/comment/commentable_id",
-      "meta": {
-        "field": "commentable_id",
-        "allowed": [
-          "body",
-          "author_name"
-        ]
-      }
-    }
-  ]
+  "comment": {
+    "id": "9f62b6fe-074f-4f73-a8f1-8213d2638a3f",
+    "body": "Very helpful video!",
+    "author_name": "Bob Smith",
+    "commentable_type": "GentleOwl::Video",
+    "commentable_id": "d19c6792-b738-400c-8824-da8b874b275e",
+    "created_at": "2025-12-07T08:54:44.320Z"
+  }
 }
 ```
 
@@ -251,12 +205,12 @@ GET /gentle-owl/comments?filter[commentable_type][eq]=GentleOwl::Post
 {
   "comments": [
     {
-      "id": "3abd0494-3d9b-401d-832a-aeb985fdd100",
+      "id": "099b4521-ffa6-42a1-80c1-372efcd284ab",
       "body": "Post comment",
       "author_name": "User 1",
       "commentable_type": "GentleOwl::Post",
-      "commentable_id": "0cf025b5-aa04-4336-86cb-b81f28652f2a",
-      "created_at": "2025-12-07T08:42:27.366Z"
+      "commentable_id": "ac66afb0-2b2d-42c8-8132-c818238372d0",
+      "created_at": "2025-12-07T08:54:44.326Z"
     }
   ],
   "pagination": {

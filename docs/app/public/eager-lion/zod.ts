@@ -5,6 +5,7 @@ export const SortDirectionSchema = z.enum(['asc', 'desc']);
 export const InvoiceSchema = z.object({
   created_at: z.iso.datetime().optional(),
   customer: z.object({}),
+  customer_id: z.string().optional(),
   id: z.string().optional(),
   issued_on: z.iso.date().optional(),
   lines: z.array(z.string()),
@@ -15,6 +16,7 @@ export const InvoiceSchema = z.object({
 });
 
 export const InvoiceCreatePayloadSchema = z.object({
+  customer_id: z.string(),
   issued_on: z.iso.date().nullable().optional(),
   lines: z.array(z.string()).optional(),
   notes: z.string().nullable().optional(),
@@ -42,6 +44,7 @@ export const InvoiceSortSchema = z.object({
 });
 
 export const InvoiceUpdatePayloadSchema = z.object({
+  customer_id: z.string().optional(),
   issued_on: z.iso.date().nullable().optional(),
   lines: z.array(z.string()).optional(),
   notes: z.string().nullable().optional(),
@@ -95,6 +98,7 @@ export const InvoiceFilterSchema: z.ZodType<InvoiceFilter> = z.lazy(() => z.obje
 
 export const InvoiceSchema = z.object({
   created_at: z.iso.datetime(),
+  customer_id: z.string(),
   id: z.string(),
   issued_on: z.iso.date().nullable().optional(),
   notes: z.string().nullable().optional(),
@@ -188,6 +192,7 @@ export const InvoicesArchiveResponseSchema = z.object({
 
 export interface Invoice {
   created_at: string;
+  customer_id: string;
   id: string;
   issued_on?: null | string;
   notes?: null | string;
@@ -199,6 +204,7 @@ export interface Invoice {
 export interface Invoice {
   created_at?: string;
   customer: object;
+  customer_id?: string;
   id?: string;
   issued_on?: string;
   lines: string[];
@@ -209,6 +215,7 @@ export interface Invoice {
 }
 
 export interface InvoiceCreatePayload {
+  customer_id: string;
   issued_on?: null | string;
   lines?: string[];
   notes?: null | string;
@@ -245,6 +252,7 @@ export interface InvoiceSort {
 }
 
 export interface InvoiceUpdatePayload {
+  customer_id?: string;
   issued_on?: null | string;
   lines?: string[];
   notes?: null | string;

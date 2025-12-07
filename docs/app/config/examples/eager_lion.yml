@@ -46,6 +46,8 @@ scenarios:
           customer_id: :customer_id
     body:
       invoice:
+        number: INV-001
+        customer_id: :customer_id
         notes: Updated notes
 
   destroy:

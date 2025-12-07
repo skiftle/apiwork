@@ -36,7 +36,10 @@ scenarios:
           status: draft
     body:
       invoice:
+        number: INV-001
+        issued_on: "2024-01-15"
         status: sent
+        notes: Updated invoice
 
   destroy:
     method: DELETE

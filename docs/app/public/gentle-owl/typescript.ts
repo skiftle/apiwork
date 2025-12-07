@@ -10,6 +10,8 @@ export interface Comment {
 export interface CommentCreatePayload {
   author_name?: null | string;
   body: string;
+  commentable_id: unknown;
+  commentable_type: string;
 }
 
 export interface CommentFilter {
@@ -33,6 +35,8 @@ export interface CommentSort {
 export interface CommentUpdatePayload {
   author_name?: null | string;
   body?: string;
+  commentable_id?: unknown;
+  commentable_type?: string;
 }
 
 export interface CommentsCreateRequest {

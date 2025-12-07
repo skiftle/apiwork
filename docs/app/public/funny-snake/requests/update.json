@@ -1,54 +1,26 @@
 {
   "request": {
     "method": "PATCH",
-    "path": "/funny-snake/invoices/93e8965b-f3a0-4339-8543-1d1bc7fccbd4",
+    "path": "/funny-snake/invoices/d60219ff-19b6-4bf0-8551-3cad13d66f7b",
     "body": {
       "invoice": {
-        "status": "sent"
+        "number": "INV-001",
+        "issued_on": "2024-01-15",
+        "status": "sent",
+        "notes": "Updated invoice"
       }
     }
   },
   "response": {
-    "status": 400,
+    "status": 200,
     "body": {
-      "issues": [
-        {
-          "code": "field_missing",
-          "detail": "Field required",
-          "path": [
-            "invoice",
-            "number"
-          ],
-          "pointer": "/invoice/number",
-          "meta": {
-            "field": "number"
-          }
-        },
-        {
-          "code": "field_missing",
-          "detail": "Field required",
-          "path": [
-            "invoice",
-            "issued_on"
-          ],
-          "pointer": "/invoice/issued_on",
-          "meta": {
-            "field": "issued_on"
-          }
-        },
-        {
-          "code": "field_missing",
-          "detail": "Field required",
-          "path": [
-            "invoice",
-            "notes"
-          ],
-          "pointer": "/invoice/notes",
-          "meta": {
-            "field": "notes"
-          }
-        }
-      ]
+      "number": "INV-001",
+      "issued_on": "2024-01-15",
+      "status": "sent",
+      "notes": "Updated invoice",
+      "id": "d60219ff-19b6-4bf0-8551-3cad13d66f7b",
+      "created_at": "2025-12-07T08:54:44.242Z",
+      "updated_at": "2025-12-07T08:54:44.247Z"
     }
   }
 }
