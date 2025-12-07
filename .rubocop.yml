@@ -54,6 +54,11 @@ Style/SafeNavigation:
 Rails/Delegate:
   Enabled: false
 
+# Schema files use class constants, not strings
+Rails/ReflectionClassName:
+  Exclude:
+    - "docs/app/app/schemas/**/*"
+
 # Disable symbol array cop - breaks validation logic
 Style/SymbolArray:
   Enabled: false

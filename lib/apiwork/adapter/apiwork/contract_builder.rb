@@ -35,10 +35,6 @@ module Apiwork
           type_registrar.contract_class
         end
 
-        def api_class
-          contract_class.api_class
-        end
-
         def query_params(definition)
           filter_type = build_filter_type
           sort_type = build_sort_type
@@ -277,8 +273,8 @@ module Apiwork
             variant_schema_name = variant_schema.name.demodulize.underscore.gsub(/_schema$/, '')
             variant_type_name = :"#{variant_schema_name}_#{context_symbol}_payload"
 
-            unless api_class.resolve_type(variant_type_name)
-              api_class.type(variant_type_name) do
+            unless contract_class.api_class.resolve_type(variant_type_name)
+              contract_class.api_class.type(variant_type_name) do
                 # Rename discriminator from API name to DB column if different
                 as_column = discriminator_name != discriminator_column ? discriminator_column : nil
                 param discriminator_name, type: :literal, value: tag.to_s, as: as_column, sti_mapping: sti_mapping
@@ -749,8 +745,8 @@ module Apiwork
           build_sti_union(union_type_name: union_type_name, visited: visited) do |_contract, variant_schema, tag, _visit_set|
             variant_type_name = variant_schema.root_key.singular.to_sym
 
-            unless api_class.resolve_type(variant_type_name)
-              api_class.type(variant_type_name, schema_class: variant_schema) do
+            unless contract_class.api_class.resolve_type(variant_type_name)
+              contract_class.api_class.type(variant_type_name, schema_class: variant_schema) do
                 param discriminator_name, type: :literal, value: tag.to_s
 
                 variant_schema.attribute_definitions.each do |name, attribute_definition|
