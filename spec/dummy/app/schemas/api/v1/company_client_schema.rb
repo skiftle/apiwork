@@ -6,8 +6,8 @@ module Api
       model CompanyClient
       variant as: "company"
 
-      attribute :industry
-      attribute :registration_number
+      attribute :industry, writable: true
+      attribute :registration_number, writable: true
     end
   end
 end

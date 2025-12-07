@@ -172,6 +172,11 @@
           "nullable": true,
           "optional": true
         },
+        "doors": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
         "kind": {
           "type": "literal",
           "value": "car"
@@ -194,6 +199,11 @@
         },
         "color": {
           "type": "string",
+          "nullable": true,
+          "optional": true
+        },
+        "doors": {
+          "type": "integer",
           "nullable": true,
           "optional": true
         },
@@ -306,6 +316,11 @@
           "nullable": true,
           "optional": true
         },
+        "engine_cc": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
         "kind": {
           "type": "literal",
           "value": "motorcycle"
@@ -328,6 +343,11 @@
         },
         "color": {
           "type": "string",
+          "nullable": true,
+          "optional": true
+        },
+        "engine_cc": {
+          "type": "integer",
           "nullable": true,
           "optional": true
         },
@@ -388,6 +408,11 @@
         "model": {
           "type": "string"
         },
+        "payload_capacity": {
+          "type": "decimal",
+          "nullable": true,
+          "optional": true
+        },
         "year": {
           "type": "integer",
           "nullable": true,
@@ -412,6 +437,11 @@
         },
         "model": {
           "type": "string"
+        },
+        "payload_capacity": {
+          "type": "decimal",
+          "nullable": true,
+          "optional": true
         },
         "year": {
           "type": "integer",

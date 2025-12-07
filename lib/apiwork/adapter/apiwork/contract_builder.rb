@@ -79,8 +79,9 @@ module Apiwork
           definition.param root_key, type: payload_type_name
         end
 
-        def writable_params(definition, context_symbol, nested: false)
-          schema_class.attribute_definitions.each do |name, attribute_definition|
+        def writable_params(definition, context_symbol, nested: false, target_schema: nil)
+          target_schema_class = target_schema || schema_class
+          target_schema_class.attribute_definitions.each do |name, attribute_definition|
             next unless attribute_definition.writable_for?(context_symbol)
 
             param_options = {
@@ -102,7 +103,7 @@ module Apiwork
             definition.param name, **param_options
           end
 
-          schema_class.association_definitions.each do |name, association_definition|
+          target_schema_class.association_definitions.each do |name, association_definition|
             next unless association_definition.writable_for?(context_symbol)
 
             association_resource = resolve_association_resource(association_definition)
@@ -274,7 +275,7 @@ module Apiwork
               contract_class.type(variant_type_name) do
                 param discriminator_name, type: :literal, value: tag.to_s
 
-                builder.send(:writable_params, self, context_symbol, nested: false)
+                builder.send(:writable_params, self, context_symbol, nested: false, target_schema: variant_schema)
               end
             end
 

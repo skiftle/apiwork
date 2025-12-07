@@ -248,5 +248,20 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
       expect(company_type[:shape]).to have_key(:industry)
       expect(company_type[:shape]).to have_key(:registration_number)
     end
+
+    it 'includes variant-specific attributes in payload types' do
+      introspection = Apiwork::API.introspect('/api/v1')
+
+      # PersonClient create payload should include birth_date
+      person_payload = introspection[:types][:client_person_client_create_payload]
+      expect(person_payload).not_to be_nil, 'Expected client_person_client_create_payload to exist'
+      expect(person_payload[:shape].keys).to include(:birth_date)
+
+      # CompanyClient create payload should include industry and registration_number
+      company_payload = introspection[:types][:client_company_client_create_payload]
+      expect(company_payload).not_to be_nil, 'Expected client_company_client_create_payload to exist'
+      expect(company_payload[:shape].keys).to include(:industry)
+      expect(company_payload[:shape].keys).to include(:registration_number)
+    end
   end
 end

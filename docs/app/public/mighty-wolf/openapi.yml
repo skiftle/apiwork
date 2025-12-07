@@ -274,6 +274,10 @@
           :type:
           - string
           - 'null'
+        doors:
+          :type:
+          - integer
+          - 'null'
         kind:
           :type: string
           :const: car
@@ -295,6 +299,10 @@
         color:
           :type:
           - string
+          - 'null'
+        doors:
+          :type:
+          - integer
           - 'null'
         kind:
           :type: string
@@ -357,6 +365,10 @@
           :type:
           - string
           - 'null'
+        engine_cc:
+          :type:
+          - integer
+          - 'null'
         kind:
           :type: string
           :const: motorcycle
@@ -378,6 +390,10 @@
         color:
           :type:
           - string
+          - 'null'
+        engine_cc:
+          :type:
+          - integer
           - 'null'
         kind:
           :type: string
@@ -420,6 +436,10 @@
           :const: truck
         model:
           :type: string
+        payload_capacity:
+          :type:
+          - number
+          - 'null'
         year:
           :type:
           - integer
@@ -442,6 +462,10 @@
           :const: truck
         model:
           :type: string
+        payload_capacity:
+          :type:
+          - number
+          - 'null'
         year:
           :type:
           - integer

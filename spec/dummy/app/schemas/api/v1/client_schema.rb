@@ -5,8 +5,8 @@ module Api
     class ClientSchema < Apiwork::Schema::Base
       discriminator :kind
 
-      attribute :name
-      attribute :email
+      attribute :name, writable: true
+      attribute :email, writable: true
 
       has_many :services
     end

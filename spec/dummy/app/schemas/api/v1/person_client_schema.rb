@@ -6,7 +6,7 @@ module Api
       model PersonClient
       variant as: "person"
 
-      attribute :birth_date
+      attribute :birth_date, writable: true
     end
   end
 end
