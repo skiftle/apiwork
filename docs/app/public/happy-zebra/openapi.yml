@@ -178,8 +178,433 @@
       :responses:
         :204:
           :description: No content
+  posts/:
+    get:
+      :operationId: posts_index
+      :tags:
+      - Posts
+      :parameters:
+      - :in: query
+        :name: filter
+        :required: false
+        :schema:
+          :oneOf:
+          - :$ref: "#/components/schemas/post_filter"
+          - :type: array
+            :items:
+              :$ref: "#/components/schemas/post_filter"
+      - :in: query
+        :name: include
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/post_include"
+      - :in: query
+        :name: page
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/post_page"
+      - :in: query
+        :name: sort
+        :required: false
+        :schema:
+          :oneOf:
+          - :$ref: "#/components/schemas/post_sort"
+          - :type: array
+            :items:
+              :$ref: "#/components/schemas/post_sort"
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  meta:
+                    :type: object
+                    :properties: {}
+                  pagination:
+                    :$ref: "#/components/schemas/page_pagination"
+                  posts:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/post"
+    post:
+      :operationId: posts_create
+      :tags:
+      - Posts
+      :parameters:
+      - :in: query
+        :name: include
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/post_include"
+      :requestBody:
+        :required: true
+        :content:
+          :application/json:
+            :schema:
+              :type: object
+              :properties:
+                post:
+                  :$ref: "#/components/schemas/post_create_payload"
+              :required:
+              - post
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  meta:
+                    :type: object
+                    :properties: {}
+                  post:
+                    :$ref: "#/components/schemas/post"
+                :required:
+                - post
+        :422:
+          :description: Unprocessable Entity
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  issues:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/issue"
+  posts/:id:
+    get:
+      :operationId: posts_show
+      :tags:
+      - Posts
+      :parameters:
+      - :in: query
+        :name: include
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/post_include"
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  meta:
+                    :type: object
+                    :properties: {}
+                  post:
+                    :$ref: "#/components/schemas/post"
+                :required:
+                - post
+    patch:
+      :operationId: posts_update
+      :tags:
+      - Posts
+      :parameters:
+      - :in: query
+        :name: include
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/post_include"
+      :requestBody:
+        :required: true
+        :content:
+          :application/json:
+            :schema:
+              :type: object
+              :properties:
+                post:
+                  :$ref: "#/components/schemas/post_update_payload"
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  meta:
+                    :type: object
+                    :properties: {}
+                  post:
+                    :$ref: "#/components/schemas/post"
+        :422:
+          :description: Unprocessable Entity
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  issues:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/issue"
+    delete:
+      :operationId: posts_destroy
+      :tags:
+      - Posts
+      :responses:
+        :204:
+          :description: No content
+  comments/:
+    get:
+      :operationId: comments_index
+      :tags:
+      - Comments
+      :parameters:
+      - :in: query
+        :name: filter
+        :required: false
+        :schema:
+          :oneOf:
+          - :$ref: "#/components/schemas/comment_filter"
+          - :type: array
+            :items:
+              :$ref: "#/components/schemas/comment_filter"
+      - :in: query
+        :name: include
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/comment_include"
+      - :in: query
+        :name: page
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/comment_page"
+      - :in: query
+        :name: sort
+        :required: false
+        :schema:
+          :oneOf:
+          - :$ref: "#/components/schemas/comment_sort"
+          - :type: array
+            :items:
+              :$ref: "#/components/schemas/comment_sort"
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  comments:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/comment"
+                  meta:
+                    :type: object
+                    :properties: {}
+                  pagination:
+                    :$ref: "#/components/schemas/page_pagination"
+    post:
+      :operationId: comments_create
+      :tags:
+      - Comments
+      :requestBody:
+        :required: true
+        :content:
+          :application/json:
+            :schema:
+              :type: object
+              :properties:
+                comment:
+                  :$ref: "#/components/schemas/comment_create_payload"
+              :required:
+              - comment
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  comment:
+                    :$ref: "#/components/schemas/comment"
+                  meta:
+                    :type: object
+                    :properties: {}
+                :required:
+                - comment
+        :422:
+          :description: Unprocessable Entity
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  issues:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/issue"
+  comments/:id:
+    get:
+      :operationId: comments_show
+      :tags:
+      - Comments
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  comment:
+                    :$ref: "#/components/schemas/comment"
+                  meta:
+                    :type: object
+                    :properties: {}
+                :required:
+                - comment
+    patch:
+      :operationId: comments_update
+      :tags:
+      - Comments
+      :requestBody:
+        :required: true
+        :content:
+          :application/json:
+            :schema:
+              :type: object
+              :properties:
+                comment:
+                  :$ref: "#/components/schemas/comment_update_payload"
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  comment:
+                    :$ref: "#/components/schemas/comment"
+                  meta:
+                    :type: object
+                    :properties: {}
+        :422:
+          :description: Unprocessable Entity
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  issues:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/issue"
+    delete:
+      :operationId: comments_destroy
+      :tags:
+      - Comments
+      :responses:
+        :204:
+          :description: No content
 :components:
   :schemas:
+    comment:
+      :type: object
+      :properties:
+        author:
+          :type: string
+        body:
+          :type: string
+        id:
+          :type: string
+    comment_create_payload:
+      :type: object
+      :properties:
+        author:
+          :type: string
+        body:
+          :type: string
+      :required:
+      - author
+      - body
+    comment_filter:
+      :type: object
+      :properties:
+        _and:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/comment_filter"
+        _not:
+          :$ref: "#/components/schemas/comment_filter"
+        _or:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/comment_filter"
+    comment_include:
+      :type: object
+      :properties: {}
+    comment_nested_create_payload:
+      :type: object
+      :properties:
+        _type:
+          :type: string
+          :const: create
+        author:
+          :type: string
+        body:
+          :type: string
+      :required:
+      - _type
+      - author
+      - body
+    comment_nested_payload:
+      :oneOf:
+      - :$ref: "#/components/schemas/comment_nested_create_payload"
+      - :$ref: "#/components/schemas/comment_nested_update_payload"
+      :discriminator:
+        :propertyName: _type
+        :mapping:
+          create: "#/components/schemas/comment_nested_create_payload"
+          update: "#/components/schemas/comment_nested_update_payload"
+    comment_nested_update_payload:
+      :type: object
+      :properties:
+        _type:
+          :type: string
+          :const: update
+        author:
+          :type: string
+        body:
+          :type: string
+      :required:
+      - _type
+      - author
+      - body
+    comment_page:
+      :type: object
+      :properties:
+        number:
+          :type: integer
+          :minimum: 1
+        size:
+          :type: integer
+          :minimum: 1
+          :maximum: 100
+    comment_sort:
+      :type: object
+      :properties: {}
+    comment_update_payload:
+      :type: object
+      :properties:
+        author:
+          :type: string
+        body:
+          :type: string
+      :required:
+      - author
+      - body
     issue:
       :type: object
       :properties:
@@ -219,6 +644,111 @@
       - current
       - items
       - total
+    post:
+      :type: object
+      :properties:
+        comments:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/comment"
+        id:
+          :type: string
+        title:
+          :type: string
+      :required:
+      - comments
+    post_create_payload:
+      :type: object
+      :properties:
+        comments:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/comment_nested_payload"
+        title:
+          :type: string
+      :required:
+      - title
+    post_filter:
+      :type: object
+      :properties:
+        _and:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/post_filter"
+        _not:
+          :$ref: "#/components/schemas/post_filter"
+        _or:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/post_filter"
+    post_include:
+      :type: object
+      :properties:
+        comments:
+          :$ref: "#/components/schemas/comment_include"
+    post_nested_create_payload:
+      :type: object
+      :properties:
+        _type:
+          :type: string
+          :const: create
+        comments:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/comment_nested_payload"
+        title:
+          :type: string
+      :required:
+      - _type
+      - title
+    post_nested_payload:
+      :oneOf:
+      - :$ref: "#/components/schemas/post_nested_create_payload"
+      - :$ref: "#/components/schemas/post_nested_update_payload"
+      :discriminator:
+        :propertyName: _type
+        :mapping:
+          create: "#/components/schemas/post_nested_create_payload"
+          update: "#/components/schemas/post_nested_update_payload"
+    post_nested_update_payload:
+      :type: object
+      :properties:
+        _type:
+          :type: string
+          :const: update
+        comments:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/comment_nested_payload"
+        title:
+          :type: string
+      :required:
+      - _type
+      - title
+    post_page:
+      :type: object
+      :properties:
+        number:
+          :type: integer
+          :minimum: 1
+        size:
+          :type: integer
+          :minimum: 1
+          :maximum: 100
+    post_sort:
+      :type: object
+      :properties: {}
+    post_update_payload:
+      :type: object
+      :properties:
+        comments:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/comment_nested_payload"
+        title:
+          :type: string
+      :required:
+      - title
     string_filter:
       :type: object
       :properties:
@@ -243,6 +773,10 @@
           :type: string
         id:
           :type: string
+        posts:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/post"
         profile:
           :type: object
           :properties: {}
@@ -251,12 +785,17 @@
         username:
           :type: string
       :required:
+      - posts
       - profile
     user_create_payload:
       :type: object
       :properties:
         email:
           :type: string
+        posts:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/post_nested_payload"
         profile:
           :type: object
           :properties: {}
@@ -288,7 +827,11 @@
           - :$ref: "#/components/schemas/string_filter"
     user_include:
       :type: object
-      :properties: {}
+      :properties:
+        posts:
+          :$ref: "#/components/schemas/post_include"
+        profile:
+          :$ref: "#/components/schemas/user_profile_include"
     user_page:
       :type: object
       :properties:
@@ -299,6 +842,9 @@
           :type: integer
           :minimum: 1
           :maximum: 100
+    user_profile_include:
+      :type: object
+      :properties: {}
     user_sort:
       :type: object
       :properties:
@@ -309,6 +855,10 @@
       :properties:
         email:
           :type: string
+        posts:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/post_nested_payload"
         profile:
           :type: object
           :properties: {}

@@ -65,26 +65,26 @@ GET /bold-falcon/articles
 {
   "articles": [
     {
-      "id": "f12e3ecf-0fcc-45d7-9512-1826c1b2b0db",
+      "id": "c1dc3283-e75e-4fe6-a709-c70f91af3d94",
       "title": "Published Article",
       "body": null,
       "status": "published",
       "view_count": 0,
       "rating": null,
       "published_on": null,
-      "created_at": "2025-12-07T09:46:46.761Z",
-      "updated_at": "2025-12-07T09:46:46.761Z"
+      "created_at": "2025-12-07T10:13:36.986Z",
+      "updated_at": "2025-12-07T10:13:36.986Z"
     },
     {
-      "id": "16bd2a3e-e0be-49d6-9d99-80236b45526c",
+      "id": "1b7b4596-5bb7-4849-83e5-7ea7cfd5d883",
       "title": "Draft Article",
       "body": null,
       "status": "draft",
       "view_count": 0,
       "rating": null,
       "published_on": null,
-      "created_at": "2025-12-07T09:46:46.764Z",
-      "updated_at": "2025-12-07T09:46:46.764Z"
+      "created_at": "2025-12-07T10:13:36.989Z",
+      "updated_at": "2025-12-07T10:13:36.989Z"
     }
   ],
   "pagination": {
@@ -105,7 +105,7 @@ GET /bold-falcon/articles
 **Request**
 
 ```http
-GET /bold-falcon/articles/342fbb24-4caa-4e26-bda7-559cce2aa826
+GET /bold-falcon/articles/0c7bb637-ff4a-40da-aca2-ebe53daa103e
 ```
 
 **Response** `200`
@@ -113,15 +113,15 @@ GET /bold-falcon/articles/342fbb24-4caa-4e26-bda7-559cce2aa826
 ```json
 {
   "article": {
-    "id": "342fbb24-4caa-4e26-bda7-559cce2aa826",
+    "id": "0c7bb637-ff4a-40da-aca2-ebe53daa103e",
     "title": "Getting Started with Rails",
     "body": null,
     "status": "published",
     "view_count": 0,
     "rating": null,
     "published_on": null,
-    "created_at": "2025-12-07T09:46:46.977Z",
-    "updated_at": "2025-12-07T09:46:46.977Z"
+    "created_at": "2025-12-07T10:13:37.202Z",
+    "updated_at": "2025-12-07T10:13:37.202Z"
   }
 }
 ```
@@ -152,15 +152,15 @@ Content-Type: application/json
 ```json
 {
   "article": {
-    "id": "889a91e4-da4a-4fd7-a4c1-74528e349aaa",
+    "id": "958db5c5-29ea-4819-b00a-8b8d81293f41",
     "title": "Getting Started with Rails",
     "body": "A comprehensive guide to Ruby on Rails",
     "status": "draft",
     "view_count": 0,
     "rating": null,
     "published_on": "2024-01-15",
-    "created_at": "2025-12-07T09:46:46.999Z",
-    "updated_at": "2025-12-07T09:46:46.999Z"
+    "created_at": "2025-12-07T10:13:37.216Z",
+    "updated_at": "2025-12-07T10:13:37.216Z"
   }
 }
 ```
@@ -182,15 +182,15 @@ GET /bold-falcon/articles?filter[status][eq]=published
 {
   "articles": [
     {
-      "id": "8f1e9d5a-2218-4c7c-91b2-024e0f724abf",
+      "id": "9c3bfac2-bf4b-4687-9caa-cb844a9fc976",
       "title": "Published Article",
       "body": null,
       "status": "published",
       "view_count": 0,
       "rating": null,
       "published_on": null,
-      "created_at": "2025-12-07T09:46:47.001Z",
-      "updated_at": "2025-12-07T09:46:47.001Z"
+      "created_at": "2025-12-07T10:13:37.219Z",
+      "updated_at": "2025-12-07T10:13:37.219Z"
     }
   ],
   "pagination": {
@@ -220,15 +220,15 @@ GET /bold-falcon/articles?filter[title][contains]=Rails
 {
   "articles": [
     {
-      "id": "04ae11ed-0261-4f4e-a818-9cd3b3f27db1",
+      "id": "1c6da61f-b0cc-4dd7-b9ff-4de21e456893",
       "title": "Getting Started with Rails",
       "body": null,
       "status": "published",
       "view_count": 0,
       "rating": null,
       "published_on": null,
-      "created_at": "2025-12-07T09:46:47.017Z",
-      "updated_at": "2025-12-07T09:46:47.017Z"
+      "created_at": "2025-12-07T10:13:37.232Z",
+      "updated_at": "2025-12-07T10:13:37.232Z"
     }
   ],
   "pagination": {

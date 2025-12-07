@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_07_000006) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_07_000008) do
 # Could not dump table "bold_falcon_articles" because of following StandardError
 #   Unknown type 'uuid' for column 'category_id'
 
@@ -81,6 +81,21 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_07_000006) do
 #   Unknown type 'uuid' for column 'id'
 
 
+  create_table "happy_zebra_comments", id: :string, force: :cascade do |t|
+    t.string "author", null: false
+    t.string "body", null: false
+    t.datetime "created_at", null: false
+    t.string "post_id", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "happy_zebra_posts", id: :string, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.string "user_id", null: false
+  end
+
   create_table "happy_zebra_profiles", id: :string, force: :cascade do |t|
     t.text "bio"
     t.datetime "created_at", null: false
@@ -109,6 +124,15 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_07_000006) do
 #   Unknown type 'uuid' for column 'id'
 
 
+  create_table "swift_fox_contacts", id: :string, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "email"
+    t.string "name", null: false
+    t.string "notes"
+    t.string "phone"
+    t.datetime "updated_at", null: false
+  end
+
   create_table "swift_fox_posts", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
@@ -122,5 +146,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_07_000006) do
   add_foreign_key "clever_rabbit_shipping_addresses", "clever_rabbit_orders", column: "order_id"
   add_foreign_key "eager_lion_invoices", "eager_lion_customers", column: "customer_id"
   add_foreign_key "eager_lion_lines", "eager_lion_invoices", column: "invoice_id"
+  add_foreign_key "happy_zebra_comments", "happy_zebra_posts", column: "post_id"
+  add_foreign_key "happy_zebra_posts", "happy_zebra_users", column: "user_id"
   add_foreign_key "happy_zebra_profiles", "happy_zebra_users", column: "user_id"
 end

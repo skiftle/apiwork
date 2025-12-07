@@ -25,3 +25,4 @@ Each example includes:
 | [Polymorphic Associations](./polymorphic-associations.md) | Comments that belong to different content types (posts, videos, images) |
 | [Model Validation Errors](./model-validation-errors.md) | How Apiwork captures ActiveRecord validation errors and presents them in a unified format |
 | [Custom Hash Responses](./custom-hash-responses.md) | Using respond_with with plain hashes instead of ActiveRecord models |
+| [Encode, Decode & Empty](./encode-decode-empty.md) | Transform values on input/output and handle nil/empty string conversion |

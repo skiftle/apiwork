@@ -1,6 +1,114 @@
 {
   "path": "/swift-fox",
   "types": {
+    "contact": {
+      "type": "object",
+      "shape": {
+        "email": {
+          "type": "string",
+          "optional": true
+        },
+        "id": {
+          "type": "string",
+          "optional": true
+        },
+        "name": {
+          "type": "string",
+          "optional": true
+        },
+        "notes": {
+          "type": "string",
+          "optional": true
+        },
+        "phone": {
+          "type": "string",
+          "optional": true
+        }
+      }
+    },
+    "contact_create_payload": {
+      "type": "object",
+      "shape": {
+        "email": {
+          "type": "string",
+          "nullable": true,
+          "optional": true
+        },
+        "name": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string",
+          "optional": true
+        },
+        "phone": {
+          "type": "string",
+          "optional": true
+        }
+      }
+    },
+    "contact_filter": {
+      "type": "object",
+      "shape": {
+        "_and": {
+          "type": "array",
+          "of": "contact_filter",
+          "optional": true
+        },
+        "_not": {
+          "type": "contact_filter",
+          "optional": true
+        },
+        "_or": {
+          "type": "array",
+          "of": "contact_filter",
+          "optional": true
+        }
+      }
+    },
+    "contact_include": {
+      "type": "object"
+    },
+    "contact_page": {
+      "type": "object",
+      "shape": {
+        "number": {
+          "type": "integer",
+          "optional": true,
+          "min": 1
+        },
+        "size": {
+          "type": "integer",
+          "optional": true,
+          "min": 1,
+          "max": 100
+        }
+      }
+    },
+    "contact_sort": {
+      "type": "object"
+    },
+    "contact_update_payload": {
+      "type": "object",
+      "shape": {
+        "email": {
+          "type": "string",
+          "nullable": true,
+          "optional": true
+        },
+        "name": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string",
+          "optional": true
+        },
+        "phone": {
+          "type": "string",
+          "optional": true
+        }
+      }
+    },
     "issue": {
       "type": "object",
       "shape": {
@@ -16,36 +124,6 @@
         "path": {
           "type": "array",
           "of": "string"
-        }
-      }
-    },
-    "nullable_string_filter": {
-      "type": "object",
-      "shape": {
-        "contains": {
-          "type": "string",
-          "optional": true
-        },
-        "ends_with": {
-          "type": "string",
-          "optional": true
-        },
-        "eq": {
-          "type": "string",
-          "optional": true
-        },
-        "in": {
-          "type": "array",
-          "of": "string",
-          "optional": true
-        },
-        "null": {
-          "type": "boolean",
-          "optional": true
-        },
-        "starts_with": {
-          "type": "string",
-          "optional": true
         }
       }
     },
@@ -72,212 +150,9 @@
           "type": "integer"
         }
       }
-    },
-    "post": {
-      "type": "object",
-      "shape": {
-        "body": {
-          "type": "string",
-          "optional": true
-        },
-        "created_at": {
-          "type": "datetime",
-          "optional": true
-        },
-        "id": {
-          "type": "integer",
-          "optional": true
-        },
-        "status": {
-          "type": "string",
-          "enum": "post_status",
-          "optional": true
-        },
-        "title": {
-          "type": "string",
-          "optional": true
-        },
-        "updated_at": {
-          "type": "datetime",
-          "optional": true
-        }
-      }
-    },
-    "post_create_payload": {
-      "type": "object",
-      "shape": {
-        "body": {
-          "type": "string",
-          "nullable": true,
-          "optional": true
-        },
-        "status": {
-          "type": "string",
-          "enum": "post_status",
-          "nullable": true,
-          "optional": true
-        },
-        "title": {
-          "type": "string"
-        }
-      }
-    },
-    "post_filter": {
-      "type": "object",
-      "shape": {
-        "_and": {
-          "type": "array",
-          "of": "post_filter",
-          "optional": true
-        },
-        "_not": {
-          "type": "post_filter",
-          "optional": true
-        },
-        "_or": {
-          "type": "array",
-          "of": "post_filter",
-          "optional": true
-        },
-        "status": {
-          "type": "post_status_filter",
-          "optional": true
-        },
-        "title": {
-          "type": "union",
-          "variants": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "string_filter"
-            }
-          ],
-          "optional": true
-        }
-      }
-    },
-    "post_include": {
-      "type": "object"
-    },
-    "post_page": {
-      "type": "object",
-      "shape": {
-        "number": {
-          "type": "integer",
-          "optional": true,
-          "min": 1
-        },
-        "size": {
-          "type": "integer",
-          "optional": true,
-          "min": 1,
-          "max": 100
-        }
-      }
-    },
-    "post_sort": {
-      "type": "object",
-      "shape": {
-        "created_at": {
-          "type": "post_sort_direction",
-          "optional": true
-        },
-        "status": {
-          "type": "post_sort_direction",
-          "optional": true
-        }
-      }
-    },
-    "post_status_filter": {
-      "type": "union",
-      "required": false,
-      "nullable": false,
-      "variants": [
-        {
-          "type": "post_status",
-          "of": null,
-          "partial": false
-        },
-        {
-          "type": "object",
-          "of": null,
-          "partial": true,
-          "shape": {
-            "eq": {
-              "type": "post_status",
-              "optional": true
-            },
-            "in": {
-              "type": "array",
-              "of": "post_status",
-              "optional": true
-            }
-          }
-        }
-      ]
-    },
-    "post_update_payload": {
-      "type": "object",
-      "shape": {
-        "body": {
-          "type": "string",
-          "nullable": true,
-          "optional": true
-        },
-        "status": {
-          "type": "string",
-          "enum": "post_status",
-          "nullable": true,
-          "optional": true
-        },
-        "title": {
-          "type": "string"
-        }
-      }
-    },
-    "string_filter": {
-      "type": "object",
-      "shape": {
-        "contains": {
-          "type": "string",
-          "optional": true
-        },
-        "ends_with": {
-          "type": "string",
-          "optional": true
-        },
-        "eq": {
-          "type": "string",
-          "optional": true
-        },
-        "in": {
-          "type": "array",
-          "of": "string",
-          "optional": true
-        },
-        "starts_with": {
-          "type": "string",
-          "optional": true
-        }
-      }
     }
   },
-  "enums": {
-    "post_status": {
-      "values": [
-        "draft",
-        "published",
-        "archived"
-      ]
-    },
-    "sort_direction": {
-      "values": [
-        "asc",
-        "desc"
-      ]
-    }
-  },
+  "enums": {},
   "error_codes": {
     "unprocessable_entity": {
       "status": 422,
@@ -285,37 +160,34 @@
     }
   },
   "resources": {
-    "posts": {
-      "path": "posts",
-      "summary": "Posts",
-      "description": "Operations for managing posts.",
+    "contacts": {
+      "path": "contacts",
+      "summary": "Contacts",
+      "description": "Operations for managing contacts.",
       "tags": [
-        "Posts"
+        "Contacts"
       ],
       "schema": {
         "type": "object",
         "shape": {
           "id": {
-            "type": "integer"
-          },
-          "title": {
             "type": "string"
           },
-          "body": {
-            "type": "text",
-            "nullable": true,
-            "optional": true
+          "name": {
+            "type": "string"
           },
-          "status": {
+          "email": {
             "type": "string",
             "nullable": true,
             "optional": true
           },
-          "created_at": {
-            "type": "datetime"
+          "phone": {
+            "type": "string",
+            "optional": true
           },
-          "updated_at": {
-            "type": "datetime"
+          "notes": {
+            "type": "string",
+            "optional": true
           }
         }
       },
@@ -329,32 +201,32 @@
                 "type": "union",
                 "variants": [
                   {
-                    "type": "post_filter"
+                    "type": "contact_filter"
                   },
                   {
                     "type": "array",
-                    "of": "post_filter"
+                    "of": "contact_filter"
                   }
                 ],
                 "optional": true
               },
               "include": {
-                "type": "post_include",
+                "type": "contact_include",
                 "optional": true
               },
               "page": {
-                "type": "post_page",
+                "type": "contact_page",
                 "optional": true
               },
               "sort": {
                 "type": "union",
                 "variants": [
                   {
-                    "type": "post_sort"
+                    "type": "contact_sort"
                   },
                   {
                     "type": "array",
-                    "of": "post_sort"
+                    "of": "contact_sort"
                   }
                 ],
                 "optional": true
@@ -368,17 +240,17 @@
                 {
                   "type": "object",
                   "shape": {
+                    "contacts": {
+                      "type": "array",
+                      "of": "contact",
+                      "optional": true
+                    },
                     "meta": {
                       "type": "object",
                       "optional": true
                     },
                     "pagination": {
                       "type": "page_pagination",
-                      "optional": true
-                    },
-                    "posts": {
-                      "type": "array",
-                      "of": "post",
                       "optional": true
                     }
                   }
@@ -407,12 +279,12 @@
                 {
                   "type": "object",
                   "shape": {
+                    "contact": {
+                      "type": "contact"
+                    },
                     "meta": {
                       "type": "object",
                       "optional": true
-                    },
-                    "post": {
-                      "type": "post"
                     }
                   }
                 },
@@ -435,8 +307,8 @@
           "path": "/",
           "request": {
             "body": {
-              "post": {
-                "type": "post_create_payload"
+              "contact": {
+                "type": "contact_create_payload"
               }
             }
           },
@@ -447,12 +319,12 @@
                 {
                   "type": "object",
                   "shape": {
+                    "contact": {
+                      "type": "contact"
+                    },
                     "meta": {
                       "type": "object",
                       "optional": true
-                    },
-                    "post": {
-                      "type": "post"
                     }
                   }
                 },
@@ -478,8 +350,8 @@
           "path": "/:id",
           "request": {
             "body": {
-              "post": {
-                "type": "post_update_payload"
+              "contact": {
+                "type": "contact_update_payload"
               }
             }
           },
@@ -490,12 +362,12 @@
                 {
                   "type": "object",
                   "shape": {
+                    "contact": {
+                      "type": "contact"
+                    },
                     "meta": {
                       "type": "object",
                       "optional": true
-                    },
-                    "post": {
-                      "type": "post"
                     }
                   }
                 },

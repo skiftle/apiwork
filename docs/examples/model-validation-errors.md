@@ -14,6 +14,14 @@ How Apiwork captures ActiveRecord validation errors and presents them in a unifi
 
 ## Models
 
+<small>`app/models/happy_zebra/comment.rb`</small>
+
+<<< @/app/app/models/happy_zebra/comment.rb
+
+<small>`app/models/happy_zebra/post.rb`</small>
+
+<<< @/app/app/models/happy_zebra/post.rb
+
 <small>`app/models/happy_zebra/profile.rb`</small>
 
 <<< @/app/app/models/happy_zebra/profile.rb
@@ -23,6 +31,14 @@ How Apiwork captures ActiveRecord validation errors and presents them in a unifi
 <<< @/app/app/models/happy_zebra/user.rb
 
 ## Schemas
+
+<small>`app/schemas/happy_zebra/comment_schema.rb`</small>
+
+<<< @/app/app/schemas/happy_zebra/comment_schema.rb
+
+<small>`app/schemas/happy_zebra/post_schema.rb`</small>
+
+<<< @/app/app/schemas/happy_zebra/post_schema.rb
 
 <small>`app/schemas/happy_zebra/profile_schema.rb`</small>
 
@@ -34,11 +50,27 @@ How Apiwork captures ActiveRecord validation errors and presents them in a unifi
 
 ## Contracts
 
+<small>`app/contracts/happy_zebra/comment_contract.rb`</small>
+
+<<< @/app/app/contracts/happy_zebra/comment_contract.rb
+
+<small>`app/contracts/happy_zebra/post_contract.rb`</small>
+
+<<< @/app/app/contracts/happy_zebra/post_contract.rb
+
 <small>`app/contracts/happy_zebra/user_contract.rb`</small>
 
 <<< @/app/app/contracts/happy_zebra/user_contract.rb
 
 ## Controllers
+
+<small>`app/controllers/happy_zebra/comments_controller.rb`</small>
+
+<<< @/app/app/controllers/happy_zebra/comments_controller.rb
+
+<small>`app/controllers/happy_zebra/posts_controller.rb`</small>
+
+<<< @/app/app/controllers/happy_zebra/posts_controller.rb
 
 <small>`app/controllers/happy_zebra/users_controller.rb`</small>
 
@@ -76,12 +108,19 @@ Content-Type: application/json
 ```json
 {
   "user": {
-    "id": "287e842a-8920-4625-a5a6-bd06bdb37b22",
-    "created_at": "2025-12-07T09:46:47.401Z",
-    "updated_at": "2025-12-07T09:46:47.401Z",
+    "id": "2d0c6777-f8a6-4a28-a00f-0c26cdb42b1c",
+    "created_at": "2025-12-07T10:13:37.663Z",
+    "updated_at": "2025-12-07T10:13:37.663Z",
     "email": "john@example.com",
     "username": "johndoe",
-    "profile": null
+    "profile": {
+      "id": "72be040b-5c5f-49c7-9886-7430a08e99b8",
+      "created_at": "2025-12-07T10:13:37.664Z",
+      "updated_at": "2025-12-07T10:13:37.664Z",
+      "bio": "Software developer",
+      "website": "https://example.com"
+    },
+    "posts": []
   }
 }
 ```
@@ -231,6 +270,161 @@ Content-Type: application/json
       "pointer": "/user/profile/website",
       "meta": {
         "attribute": "website"
+      }
+    }
+  ]
+}
+```
+
+</details>
+
+<details>
+<summary>create_deep_nested_valid</summary>
+
+**Request**
+
+```http
+POST /happy-zebra/users
+Content-Type: application/json
+
+{
+  "user": {
+    "email": "deep@example.com",
+    "username": "deepuser",
+    "posts": [
+      {
+        "title": "My First Post",
+        "comments": [
+          {
+            "body": "Great post!",
+            "author": "Jane"
+          },
+          {
+            "body": "Thanks for sharing",
+            "author": "Bob"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+**Response** `201`
+
+```json
+{
+  "user": {
+    "id": "cbd10ae5-6ce1-465c-8742-676d5951b95a",
+    "created_at": "2025-12-07T10:13:37.715Z",
+    "updated_at": "2025-12-07T10:13:37.715Z",
+    "email": "deep@example.com",
+    "username": "deepuser",
+    "profile": null,
+    "posts": [
+      {
+        "id": "813c4072-f7a6-4d51-a9a6-3dbe93bf82be",
+        "title": "My First Post",
+        "comments": [
+          {
+            "id": "f604c45e-99c7-4e7e-9817-a44b14574a71",
+            "body": "Great post!",
+            "author": "Jane"
+          },
+          {
+            "id": "d38204d2-9266-4c05-98c0-993bfc0ec4bd",
+            "body": "Thanks for sharing",
+            "author": "Bob"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>create_deep_nested_invalid</summary>
+
+**Request**
+
+```http
+POST /happy-zebra/users
+Content-Type: application/json
+
+{
+  "user": {
+    "email": "deep@example.com",
+    "username": "deepuser",
+    "posts": [
+      {
+        "title": "My Post",
+        "comments": [
+          {
+            "body": "",
+            "author": ""
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+**Response** `422`
+
+```json
+{
+  "issues": [
+    {
+      "code": "blank",
+      "detail": "can't be blank",
+      "path": [
+        "user",
+        "posts",
+        "0",
+        "comments",
+        "0",
+        "body"
+      ],
+      "pointer": "/user/posts/0/comments/0/body",
+      "meta": {
+        "attribute": "body"
+      }
+    },
+    {
+      "code": "too_short",
+      "detail": "is too short (minimum is 1 character)",
+      "path": [
+        "user",
+        "posts",
+        "0",
+        "comments",
+        "0",
+        "body"
+      ],
+      "pointer": "/user/posts/0/comments/0/body",
+      "meta": {
+        "attribute": "body",
+        "count": 1
+      }
+    },
+    {
+      "code": "blank",
+      "detail": "can't be blank",
+      "path": [
+        "user",
+        "posts",
+        "0",
+        "comments",
+        "0",
+        "author"
+      ],
+      "pointer": "/user/posts/0/comments/0/author",
+      "meta": {
+        "attribute": "author"
       }
     }
   ]

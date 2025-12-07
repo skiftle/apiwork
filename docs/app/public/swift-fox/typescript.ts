@@ -1,17 +1,96 @@
+export interface Contact {
+  email?: string;
+  id?: string;
+  name?: string;
+  notes?: string;
+  phone?: string;
+}
+
+export interface ContactCreatePayload {
+  email?: null | string;
+  name: string;
+  notes?: string;
+  phone?: string;
+}
+
+export interface ContactFilter {
+  _and?: ContactFilter[];
+  _not?: ContactFilter;
+  _or?: ContactFilter[];
+}
+
+export type ContactInclude = object;
+
+export interface ContactPage {
+  number?: number;
+  size?: number;
+}
+
+export type ContactSort = object;
+
+export interface ContactUpdatePayload {
+  email?: null | string;
+  name?: string;
+  notes?: string;
+  phone?: string;
+}
+
+export interface ContactsCreateRequest {
+  body: ContactsCreateRequestBody;
+}
+
+export interface ContactsCreateRequestBody {
+  contact: ContactCreatePayload;
+}
+
+export interface ContactsCreateResponse {
+  body: ContactsCreateResponseBody;
+}
+
+export type ContactsCreateResponseBody = { contact: Contact; meta?: object } | { issues?: Issue[] };
+
+export interface ContactsIndexRequest {
+  query: ContactsIndexRequestQuery;
+}
+
+export interface ContactsIndexRequestQuery {
+  filter?: ContactFilter | ContactFilter[];
+  include?: ContactInclude;
+  page?: ContactPage;
+  sort?: ContactSort | ContactSort[];
+}
+
+export interface ContactsIndexResponse {
+  body: ContactsIndexResponseBody;
+}
+
+export type ContactsIndexResponseBody = { contacts?: Contact[]; meta?: object; pagination?: PagePagination } | { issues?: Issue[] };
+
+export interface ContactsShowResponse {
+  body: ContactsShowResponseBody;
+}
+
+export type ContactsShowResponseBody = { contact: Contact; meta?: object } | { issues?: Issue[] };
+
+export interface ContactsUpdateRequest {
+  body: ContactsUpdateRequestBody;
+}
+
+export interface ContactsUpdateRequestBody {
+  contact: ContactUpdatePayload;
+}
+
+export interface ContactsUpdateResponse {
+  body: ContactsUpdateResponseBody;
+}
+
+export type ContactsUpdateResponseBody = { contact: Contact; meta?: object } | { issues?: Issue[] };
+
 export interface Issue {
   code: string;
   detail: string;
   field: string;
   path: string[];
-}
-
-export interface NullableStringFilter {
-  contains?: string;
-  endsWith?: string;
-  eq?: string;
-  in?: string[];
-  null?: boolean;
-  startsWith?: string;
 }
 
 export interface PagePagination {
@@ -20,110 +99,4 @@ export interface PagePagination {
   next?: null | number;
   prev?: null | number;
   total: number;
-}
-
-export interface Post {
-  body?: string;
-  createdAt?: string;
-  id?: number;
-  status?: PostStatus;
-  title?: string;
-  updatedAt?: string;
-}
-
-export interface PostCreatePayload {
-  body?: null | string;
-  status?: PostStatus | null;
-  title: string;
-}
-
-export interface PostFilter {
-  _and?: PostFilter[];
-  _not?: PostFilter;
-  _or?: PostFilter[];
-  status?: PostStatusFilter;
-  title?: StringFilter | string;
-}
-
-export type PostInclude = object;
-
-export interface PostPage {
-  number?: number;
-  size?: number;
-}
-
-export interface PostSort {
-  createdAt?: unknown;
-  status?: unknown;
-}
-
-export type PostStatus = 'archived' | 'draft' | 'published';
-
-export type PostStatusFilter = PostStatus | { eq?: PostStatus; in?: PostStatus[] };
-
-export interface PostUpdatePayload {
-  body?: null | string;
-  status?: PostStatus | null;
-  title?: string;
-}
-
-export interface PostsCreateRequest {
-  body: PostsCreateRequestBody;
-}
-
-export interface PostsCreateRequestBody {
-  post: PostCreatePayload;
-}
-
-export interface PostsCreateResponse {
-  body: PostsCreateResponseBody;
-}
-
-export type PostsCreateResponseBody = { issues?: Issue[] } | { meta?: object; post: Post };
-
-export interface PostsIndexRequest {
-  query: PostsIndexRequestQuery;
-}
-
-export interface PostsIndexRequestQuery {
-  filter?: PostFilter | PostFilter[];
-  include?: PostInclude;
-  page?: PostPage;
-  sort?: PostSort | PostSort[];
-}
-
-export interface PostsIndexResponse {
-  body: PostsIndexResponseBody;
-}
-
-export type PostsIndexResponseBody = { issues?: Issue[] } | { meta?: object; pagination?: PagePagination; posts?: Post[] };
-
-export interface PostsShowResponse {
-  body: PostsShowResponseBody;
-}
-
-export type PostsShowResponseBody = { issues?: Issue[] } | { meta?: object; post: Post };
-
-export interface PostsUpdateRequest {
-  body: PostsUpdateRequestBody;
-}
-
-export interface PostsUpdateRequestBody {
-  post: PostUpdatePayload;
-}
-
-export interface PostsUpdateResponse {
-  body: PostsUpdateResponseBody;
-}
-
-export type PostsUpdateResponseBody = { issues?: Issue[] } | { meta?: object; post: Post };
-
-export type SortDirection = 'asc' | 'desc';
-
-export interface StringFilter {
-  contains?: string;
-  endsWith?: string;
-  eq?: string;
-  in?: string[];
-  startsWith?: string;
 }

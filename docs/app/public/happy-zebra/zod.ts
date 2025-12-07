@@ -2,6 +2,53 @@ import { z } from 'zod';
 
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
+export const CommentSchema = z.object({
+  author: z.string().optional(),
+  body: z.string().optional(),
+  id: z.string().optional()
+});
+
+export const CommentCreatePayloadSchema = z.object({
+  author: z.string(),
+  body: z.string()
+});
+
+export const CommentFilterSchema: z.ZodType<CommentFilter> = z.lazy(() => z.object({
+  _and: z.array(CommentFilterSchema).optional(),
+  _not: CommentFilterSchema.optional(),
+  _or: z.array(CommentFilterSchema).optional()
+}));
+
+export const CommentIncludeSchema = z.object({
+
+});
+
+export const CommentNestedCreatePayloadSchema = z.object({
+  _type: z.literal('create'),
+  author: z.string(),
+  body: z.string()
+});
+
+export const CommentNestedUpdatePayloadSchema = z.object({
+  _type: z.literal('update'),
+  author: z.string().optional(),
+  body: z.string().optional()
+});
+
+export const CommentPageSchema = z.object({
+  number: z.number().int().min(1).optional(),
+  size: z.number().int().min(1).max(100).optional()
+});
+
+export const CommentSortSchema = z.object({
+
+});
+
+export const CommentUpdatePayloadSchema = z.object({
+  author: z.string().optional(),
+  body: z.string().optional()
+});
+
 export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
@@ -17,6 +64,21 @@ export const PagePaginationSchema = z.object({
   total: z.number().int()
 });
 
+export const PostFilterSchema: z.ZodType<PostFilter> = z.lazy(() => z.object({
+  _and: z.array(PostFilterSchema).optional(),
+  _not: PostFilterSchema.optional(),
+  _or: z.array(PostFilterSchema).optional()
+}));
+
+export const PostPageSchema = z.object({
+  number: z.number().int().min(1).optional(),
+  size: z.number().int().min(1).max(100).optional()
+});
+
+export const PostSortSchema = z.object({
+
+});
+
 export const StringFilterSchema = z.object({
   contains: z.string().optional(),
   ends_with: z.string().optional(),
@@ -25,28 +87,13 @@ export const StringFilterSchema = z.object({
   starts_with: z.string().optional()
 });
 
-export const UserSchema = z.object({
-  created_at: z.iso.datetime().optional(),
-  email: z.string().optional(),
-  id: z.string().optional(),
-  profile: z.object({}),
-  updated_at: z.iso.datetime().optional(),
-  username: z.string().optional()
-});
-
-export const UserCreatePayloadSchema = z.object({
-  email: z.string(),
-  profile: z.object({}).optional(),
-  username: z.string()
-});
-
-export const UserIncludeSchema = z.object({
-
-});
-
 export const UserPageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
+});
+
+export const UserProfileIncludeSchema = z.object({
+
 });
 
 export const UserSortSchema = z.object({
@@ -54,11 +101,20 @@ export const UserSortSchema = z.object({
   updated_at: z.unknown().optional()
 });
 
-export const UserUpdatePayloadSchema = z.object({
-  email: z.string().optional(),
-  profile: z.object({}).optional(),
-  username: z.string().optional()
+export const PostSchema = z.object({
+  comments: z.array(CommentSchema),
+  id: z.string().optional(),
+  title: z.string().optional()
 });
+
+export const PostIncludeSchema = z.object({
+  comments: CommentIncludeSchema.optional()
+});
+
+export const CommentNestedPayloadSchema = z.discriminatedUnion('_type', [
+  CommentNestedCreatePayloadSchema,
+  CommentNestedUpdatePayloadSchema
+]);
 
 export const UserFilterSchema: z.ZodType<UserFilter> = z.lazy(() => z.object({
   _and: z.array(UserFilterSchema).optional(),
@@ -69,11 +125,78 @@ export const UserFilterSchema: z.ZodType<UserFilter> = z.lazy(() => z.object({
 }));
 
 export const UserSchema = z.object({
+  created_at: z.iso.datetime().optional(),
+  email: z.string().optional(),
+  id: z.string().optional(),
+  posts: z.array(PostSchema),
+  profile: z.object({}),
+  updated_at: z.iso.datetime().optional(),
+  username: z.string().optional()
+});
+
+export const UserIncludeSchema = z.object({
+  posts: PostIncludeSchema.optional(),
+  profile: UserProfileIncludeSchema.optional()
+});
+
+export const PostCreatePayloadSchema = z.object({
+  comments: z.array(CommentNestedPayloadSchema).optional(),
+  title: z.string()
+});
+
+export const PostNestedCreatePayloadSchema = z.object({
+  _type: z.literal('create'),
+  comments: z.array(CommentNestedPayloadSchema).optional(),
+  title: z.string()
+});
+
+export const PostNestedUpdatePayloadSchema = z.object({
+  _type: z.literal('update'),
+  comments: z.array(CommentNestedPayloadSchema).optional(),
+  title: z.string().optional()
+});
+
+export const PostUpdatePayloadSchema = z.object({
+  comments: z.array(CommentNestedPayloadSchema).optional(),
+  title: z.string().optional()
+});
+
+export const PostNestedPayloadSchema = z.discriminatedUnion('_type', [
+  PostNestedCreatePayloadSchema,
+  PostNestedUpdatePayloadSchema
+]);
+
+export const UserCreatePayloadSchema = z.object({
+  email: z.string(),
+  posts: z.array(PostNestedPayloadSchema).optional(),
+  profile: z.object({}).optional(),
+  username: z.string()
+});
+
+export const UserUpdatePayloadSchema = z.object({
+  email: z.string().optional(),
+  posts: z.array(PostNestedPayloadSchema).optional(),
+  profile: z.object({}).optional(),
+  username: z.string().optional()
+});
+
+export const UserSchema = z.object({
   created_at: z.iso.datetime(),
   email: z.string(),
   id: z.string(),
   updated_at: z.iso.datetime(),
   username: z.string()
+});
+
+export const PostSchema = z.object({
+  id: z.string(),
+  title: z.string()
+});
+
+export const CommentSchema = z.object({
+  author: z.string(),
+  body: z.string(),
+  id: z.string()
 });
 
 export const UsersIndexRequestQuerySchema = z.object({
@@ -145,6 +268,228 @@ export const UsersUpdateResponseSchema = z.object({
   body: UsersUpdateResponseBodySchema
 });
 
+export const PostsIndexRequestQuerySchema = z.object({
+  filter: z.union([PostFilterSchema, z.array(PostFilterSchema)]).optional(),
+  include: PostIncludeSchema.optional(),
+  page: PostPageSchema.optional(),
+  sort: z.union([PostSortSchema, z.array(PostSortSchema)]).optional()
+});
+
+export const PostsIndexRequestSchema = z.object({
+  query: PostsIndexRequestQuerySchema
+});
+
+export const PostsIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: PagePaginationSchema.optional(), posts: z.array(PostSchema).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+
+export const PostsIndexResponseSchema = z.object({
+  body: PostsIndexResponseBodySchema
+});
+
+export const PostsShowRequestQuerySchema = z.object({
+  include: PostIncludeSchema.optional()
+});
+
+export const PostsShowRequestSchema = z.object({
+  query: PostsShowRequestQuerySchema
+});
+
+export const PostsShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), post: PostSchema }), z.object({ issues: z.array(IssueSchema).optional() })]);
+
+export const PostsShowResponseSchema = z.object({
+  body: PostsShowResponseBodySchema
+});
+
+export const PostsCreateRequestQuerySchema = z.object({
+  include: PostIncludeSchema.optional()
+});
+
+export const PostsCreateRequestBodySchema = z.object({
+  post: PostCreatePayloadSchema
+});
+
+export const PostsCreateRequestSchema = z.object({
+  query: PostsCreateRequestQuerySchema,
+  body: PostsCreateRequestBodySchema
+});
+
+export const PostsCreateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), post: PostSchema }), z.object({ issues: z.array(IssueSchema).optional() })]);
+
+export const PostsCreateResponseSchema = z.object({
+  body: PostsCreateResponseBodySchema
+});
+
+export const PostsUpdateRequestQuerySchema = z.object({
+  include: PostIncludeSchema.optional()
+});
+
+export const PostsUpdateRequestBodySchema = z.object({
+  post: PostUpdatePayloadSchema
+});
+
+export const PostsUpdateRequestSchema = z.object({
+  query: PostsUpdateRequestQuerySchema,
+  body: PostsUpdateRequestBodySchema
+});
+
+export const PostsUpdateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), post: PostSchema }), z.object({ issues: z.array(IssueSchema).optional() })]);
+
+export const PostsUpdateResponseSchema = z.object({
+  body: PostsUpdateResponseBodySchema
+});
+
+export const CommentsIndexRequestQuerySchema = z.object({
+  filter: z.union([CommentFilterSchema, z.array(CommentFilterSchema)]).optional(),
+  include: CommentIncludeSchema.optional(),
+  page: CommentPageSchema.optional(),
+  sort: z.union([CommentSortSchema, z.array(CommentSortSchema)]).optional()
+});
+
+export const CommentsIndexRequestSchema = z.object({
+  query: CommentsIndexRequestQuerySchema
+});
+
+export const CommentsIndexResponseBodySchema = z.union([z.object({ comments: z.array(CommentSchema).optional(), meta: z.object({}).optional(), pagination: PagePaginationSchema.optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+
+export const CommentsIndexResponseSchema = z.object({
+  body: CommentsIndexResponseBodySchema
+});
+
+export const CommentsShowResponseBodySchema = z.union([z.object({ comment: CommentSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+
+export const CommentsShowResponseSchema = z.object({
+  body: CommentsShowResponseBodySchema
+});
+
+export const CommentsCreateRequestBodySchema = z.object({
+  comment: CommentCreatePayloadSchema
+});
+
+export const CommentsCreateRequestSchema = z.object({
+  body: CommentsCreateRequestBodySchema
+});
+
+export const CommentsCreateResponseBodySchema = z.union([z.object({ comment: CommentSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+
+export const CommentsCreateResponseSchema = z.object({
+  body: CommentsCreateResponseBodySchema
+});
+
+export const CommentsUpdateRequestBodySchema = z.object({
+  comment: CommentUpdatePayloadSchema
+});
+
+export const CommentsUpdateRequestSchema = z.object({
+  body: CommentsUpdateRequestBodySchema
+});
+
+export const CommentsUpdateResponseBodySchema = z.union([z.object({ comment: CommentSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+
+export const CommentsUpdateResponseSchema = z.object({
+  body: CommentsUpdateResponseBodySchema
+});
+
+export interface Comment {
+  author?: string;
+  body?: string;
+  id?: string;
+}
+
+export interface Comment {
+  author: string;
+  body: string;
+  id: string;
+}
+
+export interface CommentCreatePayload {
+  author: string;
+  body: string;
+}
+
+export interface CommentFilter {
+  _and?: CommentFilter[];
+  _not?: CommentFilter;
+  _or?: CommentFilter[];
+}
+
+export type CommentInclude = object;
+
+export interface CommentNestedCreatePayload {
+  _type: 'create';
+  author: string;
+  body: string;
+}
+
+export type CommentNestedPayload = CommentNestedCreatePayload | CommentNestedUpdatePayload;
+
+export interface CommentNestedUpdatePayload {
+  _type?: 'update';
+  author?: string;
+  body?: string;
+}
+
+export interface CommentPage {
+  number?: number;
+  size?: number;
+}
+
+export type CommentSort = object;
+
+export interface CommentUpdatePayload {
+  author?: string;
+  body?: string;
+}
+
+export interface CommentsCreateRequest {
+  body: CommentsCreateRequestBody;
+}
+
+export interface CommentsCreateRequestBody {
+  comment: CommentCreatePayload;
+}
+
+export interface CommentsCreateResponse {
+  body: CommentsCreateResponseBody;
+}
+
+export type CommentsCreateResponseBody = { comment: Comment; meta?: object } | { issues?: Issue[] };
+
+export interface CommentsIndexRequest {
+  query: CommentsIndexRequestQuery;
+}
+
+export interface CommentsIndexRequestQuery {
+  filter?: CommentFilter | CommentFilter[];
+  include?: CommentInclude;
+  page?: CommentPage;
+  sort?: CommentSort | CommentSort[];
+}
+
+export interface CommentsIndexResponse {
+  body: CommentsIndexResponseBody;
+}
+
+export type CommentsIndexResponseBody = { comments?: Comment[]; meta?: object; pagination?: PagePagination } | { issues?: Issue[] };
+
+export interface CommentsShowResponse {
+  body: CommentsShowResponseBody;
+}
+
+export type CommentsShowResponseBody = { comment: Comment; meta?: object } | { issues?: Issue[] };
+
+export interface CommentsUpdateRequest {
+  body: CommentsUpdateRequestBody;
+}
+
+export interface CommentsUpdateRequestBody {
+  comment: CommentUpdatePayload;
+}
+
+export interface CommentsUpdateResponse {
+  body: CommentsUpdateResponseBody;
+}
+
+export type CommentsUpdateResponseBody = { comment: Comment; meta?: object } | { issues?: Issue[] };
+
 export interface Issue {
   code: string;
   detail: string;
@@ -159,6 +504,127 @@ export interface PagePagination {
   prev?: null | number;
   total: number;
 }
+
+export interface Post {
+  id: string;
+  title: string;
+}
+
+export interface Post {
+  comments: Comment[];
+  id?: string;
+  title?: string;
+}
+
+export interface PostCreatePayload {
+  comments?: CommentNestedPayload[];
+  title: string;
+}
+
+export interface PostFilter {
+  _and?: PostFilter[];
+  _not?: PostFilter;
+  _or?: PostFilter[];
+}
+
+export interface PostInclude {
+  comments?: CommentInclude;
+}
+
+export interface PostNestedCreatePayload {
+  _type: 'create';
+  comments?: CommentNestedPayload[];
+  title: string;
+}
+
+export type PostNestedPayload = PostNestedCreatePayload | PostNestedUpdatePayload;
+
+export interface PostNestedUpdatePayload {
+  _type?: 'update';
+  comments?: CommentNestedPayload[];
+  title?: string;
+}
+
+export interface PostPage {
+  number?: number;
+  size?: number;
+}
+
+export type PostSort = object;
+
+export interface PostUpdatePayload {
+  comments?: CommentNestedPayload[];
+  title?: string;
+}
+
+export interface PostsCreateRequest {
+  query: PostsCreateRequestQuery;
+  body: PostsCreateRequestBody;
+}
+
+export interface PostsCreateRequestBody {
+  post: PostCreatePayload;
+}
+
+export interface PostsCreateRequestQuery {
+  include?: PostInclude;
+}
+
+export interface PostsCreateResponse {
+  body: PostsCreateResponseBody;
+}
+
+export type PostsCreateResponseBody = { issues?: Issue[] } | { meta?: object; post: Post };
+
+export interface PostsIndexRequest {
+  query: PostsIndexRequestQuery;
+}
+
+export interface PostsIndexRequestQuery {
+  filter?: PostFilter | PostFilter[];
+  include?: PostInclude;
+  page?: PostPage;
+  sort?: PostSort | PostSort[];
+}
+
+export interface PostsIndexResponse {
+  body: PostsIndexResponseBody;
+}
+
+export type PostsIndexResponseBody = { issues?: Issue[] } | { meta?: object; pagination?: PagePagination; posts?: Post[] };
+
+export interface PostsShowRequest {
+  query: PostsShowRequestQuery;
+}
+
+export interface PostsShowRequestQuery {
+  include?: PostInclude;
+}
+
+export interface PostsShowResponse {
+  body: PostsShowResponseBody;
+}
+
+export type PostsShowResponseBody = { issues?: Issue[] } | { meta?: object; post: Post };
+
+export interface PostsUpdateRequest {
+  query: PostsUpdateRequestQuery;
+  body: PostsUpdateRequestBody;
+}
+
+export interface PostsUpdateRequestBody {
+  post: PostUpdatePayload;
+}
+
+export interface PostsUpdateRequestQuery {
+  include?: PostInclude;
+}
+
+export interface PostsUpdateResponse {
+  body: PostsUpdateResponseBody;
+}
+
+export type PostsUpdateResponseBody = { issues?: Issue[] } | { meta?: object; post: Post };
 
 export type SortDirection = 'asc' | 'desc';
 
@@ -182,6 +648,7 @@ export interface User {
   created_at?: string;
   email?: string;
   id?: string;
+  posts: Post[];
   profile: object;
   updated_at?: string;
   username?: string;
@@ -189,6 +656,7 @@ export interface User {
 
 export interface UserCreatePayload {
   email: string;
+  posts?: PostNestedPayload[];
   profile?: object;
   username: string;
 }
@@ -201,12 +669,17 @@ export interface UserFilter {
   username?: StringFilter | string;
 }
 
-export type UserInclude = object;
+export interface UserInclude {
+  posts?: PostInclude;
+  profile?: UserProfileInclude;
+}
 
 export interface UserPage {
   number?: number;
   size?: number;
 }
+
+export type UserProfileInclude = object;
 
 export interface UserSort {
   created_at?: unknown;
@@ -215,6 +688,7 @@ export interface UserSort {
 
 export interface UserUpdatePayload {
   email?: string;
+  posts?: PostNestedPayload[];
   profile?: object;
   username?: string;
 }

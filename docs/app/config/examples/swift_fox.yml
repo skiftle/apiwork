@@ -1,0 +1,23 @@
+title: Encode, Decode & Empty
+description: Transform values on input/output and handle nil/empty string conversion
+order: 9
+
+scenarios:
+  create_with_transforms:
+    method: POST
+    path: /swift-fox/contacts
+    body:
+      contact:
+        name: John Doe
+        email: John.Doe@Example.COM
+        phone: ""
+        notes: ""
+
+  show_transformed:
+    method: GET
+    path: /swift-fox/contacts/:id
+    setup:
+      - create: contact
+        fields:
+          name: Jane Doe
+          email: JANE@EXAMPLE.COM

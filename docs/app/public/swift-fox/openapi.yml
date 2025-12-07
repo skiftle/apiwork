@@ -4,40 +4,40 @@
   :title: "/swift-fox API"
   :version: 1.0.0
 :paths:
-  posts/:
+  contacts/:
     get:
-      :operationId: postsIndex
+      :operationId: contacts_index
       :tags:
-      - Posts
+      - Contacts
       :parameters:
       - :in: query
         :name: filter
         :required: false
         :schema:
           :oneOf:
-          - :$ref: "#/components/schemas/postFilter"
+          - :$ref: "#/components/schemas/contact_filter"
           - :type: array
             :items:
-              :$ref: "#/components/schemas/postFilter"
+              :$ref: "#/components/schemas/contact_filter"
       - :in: query
         :name: include
         :required: false
         :schema:
-          :$ref: "#/components/schemas/postInclude"
+          :$ref: "#/components/schemas/contact_include"
       - :in: query
         :name: page
         :required: false
         :schema:
-          :$ref: "#/components/schemas/postPage"
+          :$ref: "#/components/schemas/contact_page"
       - :in: query
         :name: sort
         :required: false
         :schema:
           :oneOf:
-          - :$ref: "#/components/schemas/postSort"
+          - :$ref: "#/components/schemas/contact_sort"
           - :type: array
             :items:
-              :$ref: "#/components/schemas/postSort"
+              :$ref: "#/components/schemas/contact_sort"
       :responses:
         :200:
           :description: Successful response
@@ -46,19 +46,19 @@
               :schema:
                 :type: object
                 :properties:
+                  contacts:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/contact"
                   meta:
                     :type: object
                     :properties: {}
                   pagination:
-                    :$ref: "#/components/schemas/pagePagination"
-                  posts:
-                    :type: array
-                    :items:
-                      :$ref: "#/components/schemas/post"
+                    :$ref: "#/components/schemas/page_pagination"
     post:
-      :operationId: postsCreate
+      :operationId: contacts_create
       :tags:
-      - Posts
+      - Contacts
       :requestBody:
         :required: true
         :content:
@@ -66,10 +66,10 @@
             :schema:
               :type: object
               :properties:
-                post:
-                  :$ref: "#/components/schemas/postCreatePayload"
+                contact:
+                  :$ref: "#/components/schemas/contact_create_payload"
               :required:
-              - post
+              - contact
       :responses:
         :200:
           :description: Successful response
@@ -78,13 +78,13 @@
               :schema:
                 :type: object
                 :properties:
+                  contact:
+                    :$ref: "#/components/schemas/contact"
                   meta:
                     :type: object
                     :properties: {}
-                  post:
-                    :$ref: "#/components/schemas/post"
                 :required:
-                - post
+                - contact
         :422:
           :description: Unprocessable Entity
           :content:
@@ -96,11 +96,11 @@
                     :type: array
                     :items:
                       :$ref: "#/components/schemas/issue"
-  posts/:id:
+  contacts/:id:
     get:
-      :operationId: postsShow
+      :operationId: contacts_show
       :tags:
-      - Posts
+      - Contacts
       :responses:
         :200:
           :description: Successful response
@@ -109,17 +109,17 @@
               :schema:
                 :type: object
                 :properties:
+                  contact:
+                    :$ref: "#/components/schemas/contact"
                   meta:
                     :type: object
                     :properties: {}
-                  post:
-                    :$ref: "#/components/schemas/post"
                 :required:
-                - post
+                - contact
     patch:
-      :operationId: postsUpdate
+      :operationId: contacts_update
       :tags:
-      - Posts
+      - Contacts
       :requestBody:
         :required: true
         :content:
@@ -127,8 +127,8 @@
             :schema:
               :type: object
               :properties:
-                post:
-                  :$ref: "#/components/schemas/postUpdatePayload"
+                contact:
+                  :$ref: "#/components/schemas/contact_update_payload"
       :responses:
         :200:
           :description: Successful response
@@ -137,11 +137,11 @@
               :schema:
                 :type: object
                 :properties:
+                  contact:
+                    :$ref: "#/components/schemas/contact"
                   meta:
                     :type: object
                     :properties: {}
-                  post:
-                    :$ref: "#/components/schemas/post"
         :422:
           :description: Unprocessable Entity
           :content:
@@ -154,14 +154,86 @@
                     :items:
                       :$ref: "#/components/schemas/issue"
     delete:
-      :operationId: postsDestroy
+      :operationId: contacts_destroy
       :tags:
-      - Posts
+      - Contacts
       :responses:
         :204:
           :description: No content
 :components:
   :schemas:
+    contact:
+      :type: object
+      :properties:
+        email:
+          :type: string
+        id:
+          :type: string
+        name:
+          :type: string
+        notes:
+          :type: string
+        phone:
+          :type: string
+    contact_create_payload:
+      :type: object
+      :properties:
+        email:
+          :type:
+          - string
+          - 'null'
+        name:
+          :type: string
+        notes:
+          :type: string
+        phone:
+          :type: string
+      :required:
+      - name
+    contact_filter:
+      :type: object
+      :properties:
+        _and:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/contact_filter"
+        _not:
+          :$ref: "#/components/schemas/contact_filter"
+        _or:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/contact_filter"
+    contact_include:
+      :type: object
+      :properties: {}
+    contact_page:
+      :type: object
+      :properties:
+        number:
+          :type: integer
+          :minimum: 1
+        size:
+          :type: integer
+          :minimum: 1
+          :maximum: 100
+    contact_sort:
+      :type: object
+      :properties: {}
+    contact_update_payload:
+      :type: object
+      :properties:
+        email:
+          :type:
+          - string
+          - 'null'
+        name:
+          :type: string
+        notes:
+          :type: string
+        phone:
+          :type: string
+      :required:
+      - name
     issue:
       :type: object
       :properties:
@@ -180,24 +252,7 @@
       - detail
       - field
       - path
-    nullableStringFilter:
-      :type: object
-      :properties:
-        contains:
-          :type: string
-        endsWith:
-          :type: string
-        eq:
-          :type: string
-        in:
-          :type: array
-          :items:
-            :type: string
-        'null':
-          :type: boolean
-        startsWith:
-          :type: string
-    pagePagination:
+    page_pagination:
       :type: object
       :properties:
         current:
@@ -218,119 +273,3 @@
       - current
       - items
       - total
-    post:
-      :type: object
-      :properties:
-        body:
-          :type: string
-        createdAt:
-          :type: string
-        id:
-          :type: integer
-        status:
-          :type: string
-          :enum: &1
-          - draft
-          - published
-          - archived
-        title:
-          :type: string
-        updatedAt:
-          :type: string
-    postCreatePayload:
-      :type: object
-      :properties:
-        body:
-          :type:
-          - string
-          - 'null'
-        status:
-          :type:
-          - string
-          - 'null'
-          :enum: *1
-        title:
-          :type: string
-      :required:
-      - title
-    postFilter:
-      :type: object
-      :properties:
-        _and:
-          :type: array
-          :items:
-            :$ref: "#/components/schemas/postFilter"
-        _not:
-          :$ref: "#/components/schemas/postFilter"
-        _or:
-          :type: array
-          :items:
-            :$ref: "#/components/schemas/postFilter"
-        status:
-          :$ref: "#/components/schemas/postStatusFilter"
-        title:
-          :oneOf:
-          - :type: string
-          - :$ref: "#/components/schemas/stringFilter"
-    postInclude:
-      :type: object
-      :properties: {}
-    postPage:
-      :type: object
-      :properties:
-        number:
-          :type: integer
-          :minimum: 1
-        size:
-          :type: integer
-          :minimum: 1
-          :maximum: 100
-    postSort:
-      :type: object
-      :properties:
-        createdAt: {}
-        status: {}
-    postStatusFilter:
-      :oneOf:
-      - :type: string
-        :enum: *1
-      - :type: object
-        :properties:
-          eq:
-            :type: string
-            :enum: *1
-          in:
-            :type: array
-            :items:
-              :type:
-    postUpdatePayload:
-      :type: object
-      :properties:
-        body:
-          :type:
-          - string
-          - 'null'
-        status:
-          :type:
-          - string
-          - 'null'
-          :enum: *1
-        title:
-          :type: string
-      :required:
-      - title
-    stringFilter:
-      :type: object
-      :properties:
-        contains:
-          :type: string
-        endsWith:
-          :type: string
-        eq:
-          :type: string
-        in:
-          :type: array
-          :items:
-            :type: string
-        startsWith:
-          :type: string
