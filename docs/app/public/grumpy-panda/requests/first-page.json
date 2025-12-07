@@ -1,0 +1,35 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/grumpy-panda/activities"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "activities": [
+        {
+          "id": "3b83c9a1-bdec-4963-bf3f-b7af614c924f",
+          "action": "user.logout",
+          "occurred_at": "2024-01-01T11:00:00.000Z",
+          "created_at": "2025-12-07T13:14:57.407Z"
+        },
+        {
+          "id": "3e386b60-31e8-4fc9-a53e-1c5e08d3f7b5",
+          "action": "post.create",
+          "occurred_at": "2024-01-01T12:00:00.000Z",
+          "created_at": "2025-12-07T13:14:57.409Z"
+        },
+        {
+          "id": "4ff8f59b-3805-4c0f-85c9-0b3d6b53ec1a",
+          "action": "post.delete",
+          "occurred_at": "2024-01-01T14:00:00.000Z",
+          "created_at": "2025-12-07T13:14:57.416Z"
+        }
+      ],
+      "pagination": {
+        "next_cursor": "eyJpZCI6IjRmZjhmNTliLTM4MDUtNGMwZi04NWM5LTBiM2Q2YjUzZWMxYSJ9",
+        "prev_cursor": null
+      }
+    }
+  }
+}

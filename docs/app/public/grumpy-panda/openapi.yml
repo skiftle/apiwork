@@ -4,37 +4,22 @@
   :title: "/grumpy-panda API"
   :version: 1.0.0
 :paths:
-  orders/:
+  activities/:
     get:
-      :operationId: orders_index
+      :operationId: activities_index
       :tags:
-      - Orders
-      :responses:
-        :204:
-          :description: No content
-    post:
-      :operationId: orders_create
-      :tags:
-      - Orders
-      :requestBody:
-        :required: true
-        :content:
-          :application/json:
-            :schema:
-              :type: object
-              :properties:
-                shipping_address:
-                  :type: object
-                  :properties:
-                    city:
-                      :type: string
-                    street:
-                      :type: string
-                  :required:
-                  - city
-                  - street
-              :required:
-              - shipping_address
+      - Activities
+      :parameters:
+      - :in: query
+        :name: include
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/activity_include"
+      - :in: query
+        :name: page
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/activity_page"
       :responses:
         :200:
           :description: Successful response
@@ -43,37 +28,180 @@
               :schema:
                 :type: object
                 :properties:
-                  id:
-                    :type: integer
-                  status:
-                    :type: string
+                  activities:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/activity"
+                  meta:
+                    :type: object
+                    :properties: {}
+                  pagination:
+                    :$ref: "#/components/schemas/cursor_pagination"
+    post:
+      :operationId: activities_create
+      :tags:
+      - Activities
+      :requestBody:
+        :required: true
+        :content:
+          :application/json:
+            :schema:
+              :type: object
+              :properties:
+                activity:
+                  :$ref: "#/components/schemas/activity_create_payload"
+              :required:
+              - activity
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  activity:
+                    :$ref: "#/components/schemas/activity"
+                  meta:
+                    :type: object
+                    :properties: {}
                 :required:
-                - id
-                - status
-  orders/:id:
+                - activity
+        :422:
+          :description: Unprocessable Entity
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  issues:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/issue"
+  activities/:id:
     get:
-      :operationId: orders_show
+      :operationId: activities_show
       :tags:
-      - Orders
+      - Activities
       :responses:
-        :204:
-          :description: No content
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  activity:
+                    :$ref: "#/components/schemas/activity"
+                  meta:
+                    :type: object
+                    :properties: {}
+                :required:
+                - activity
     patch:
-      :operationId: orders_update
+      :operationId: activities_update
       :tags:
-      - Orders
+      - Activities
+      :requestBody:
+        :required: true
+        :content:
+          :application/json:
+            :schema:
+              :type: object
+              :properties:
+                activity:
+                  :$ref: "#/components/schemas/activity_update_payload"
       :responses:
-        :204:
-          :description: No content
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  activity:
+                    :$ref: "#/components/schemas/activity"
+                  meta:
+                    :type: object
+                    :properties: {}
+        :422:
+          :description: Unprocessable Entity
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  issues:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/issue"
     delete:
-      :operationId: orders_destroy
+      :operationId: activities_destroy
       :tags:
-      - Orders
+      - Activities
       :responses:
         :204:
           :description: No content
 :components:
   :schemas:
+    activity:
+      :type: object
+      :properties:
+        action:
+          :type: string
+        created_at:
+          :type: string
+        id:
+          :type: string
+        occurred_at:
+          :type: string
+    activity_create_payload:
+      :type: object
+      :properties:
+        action:
+          :type: string
+        occurred_at:
+          :type:
+          - string
+          - 'null'
+      :required:
+      - action
+    activity_include:
+      :type: object
+      :properties: {}
+    activity_page:
+      :type: object
+      :properties:
+        after:
+          :type: string
+        before:
+          :type: string
+        size:
+          :type: integer
+          :minimum: 1
+          :maximum: 100
+    activity_update_payload:
+      :type: object
+      :properties:
+        action:
+          :type: string
+        occurred_at:
+          :type:
+          - string
+          - 'null'
+      :required:
+      - action
+    cursor_pagination:
+      :type: object
+      :properties:
+        next_cursor:
+          :type:
+          - string
+          - 'null'
+        prev_cursor:
+          :type:
+          - string
+          - 'null'
     issue:
       :type: object
       :properties:

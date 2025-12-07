@@ -9,7 +9,7 @@
       "vehicles": [
         {
           "kind": "car",
-          "id": "b9de59b0-ad7f-4301-ba1c-d92eb990560b",
+          "id": "62df8297-6217-423d-97f0-5f5cd0e10512",
           "brand": "Tesla",
           "model": "Model 3",
           "year": null,
@@ -18,7 +18,7 @@
         },
         {
           "kind": "motorcycle",
-          "id": "e1c32bb1-6c94-4368-8cd2-d19d4d05f5c7",
+          "id": "2832b098-c304-4483-967a-15583001295b",
           "brand": "Harley-Davidson",
           "model": "Street Glide",
           "year": null,
@@ -27,7 +27,7 @@
         },
         {
           "kind": "truck",
-          "id": "e5648f7d-6455-4140-919e-0dcc26357e86",
+          "id": "2b86edfa-6558-49d2-b9a6-f0d86aceada4",
           "brand": "Ford",
           "model": "F-150",
           "year": null,

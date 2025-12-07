@@ -1,0 +1,384 @@
+---
+:openapi: 3.1.0
+:info:
+  :title: "/brave-eagle API"
+  :version: 1.0.0
+:paths:
+  tasks/:
+    get:
+      :operationId: listTasks
+      :summary: List all tasks
+      :description: Returns a paginated list of tasks with optional filtering by status
+        and priority
+      :tags:
+      - Tasks
+      - Tasks
+      - Core
+      :parameters:
+      - :in: query
+        :name: filter
+        :required: false
+        :schema:
+          :oneOf:
+          - :$ref: "#/components/schemas/task_filter"
+          - :type: array
+            :items:
+              :$ref: "#/components/schemas/task_filter"
+      - :in: query
+        :name: include
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/task_include"
+      - :in: query
+        :name: page
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/task_page"
+      - :in: query
+        :name: sort
+        :required: false
+        :schema:
+          :oneOf:
+          - :$ref: "#/components/schemas/task_sort"
+          - :type: array
+            :items:
+              :$ref: "#/components/schemas/task_sort"
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  meta:
+                    :type: object
+                    :properties: {}
+                  pagination:
+                    :$ref: "#/components/schemas/page_pagination"
+                  tasks:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/task"
+    post:
+      :operationId: createTask
+      :summary: Create a new task
+      :description: Creates a task and returns the created resource
+      :tags:
+      - Tasks
+      - Tasks
+      :requestBody:
+        :required: true
+        :content:
+          :application/json:
+            :schema:
+              :type: object
+              :properties:
+                task:
+                  :$ref: "#/components/schemas/task_create_payload"
+              :required:
+              - task
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  meta:
+                    :type: object
+                    :properties: {}
+                  task:
+                    :$ref: "#/components/schemas/task"
+                :required:
+                - task
+        :422:
+          :description: Unprocessable Entity
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  issues:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/issue"
+  tasks/:id:
+    get:
+      :operationId: getTask
+      :summary: Get task details
+      :description: Returns a single task by ID
+      :tags:
+      - Tasks
+      - Tasks
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  meta:
+                    :type: object
+                    :properties: {}
+                  task:
+                    :$ref: "#/components/schemas/task"
+                :required:
+                - task
+    patch:
+      :operationId: updateTask
+      :summary: Update a task
+      :description: Updates an existing task
+      :tags:
+      - Tasks
+      - Tasks
+      :requestBody:
+        :required: true
+        :content:
+          :application/json:
+            :schema:
+              :type: object
+              :properties:
+                task:
+                  :$ref: "#/components/schemas/task_update_payload"
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  meta:
+                    :type: object
+                    :properties: {}
+                  task:
+                    :$ref: "#/components/schemas/task"
+        :422:
+          :description: Unprocessable Entity
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  issues:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/issue"
+    delete:
+      :operationId: deleteTask
+      :summary: Delete a task
+      :description: Permanently removes a task
+      :tags:
+      - Tasks
+      - Tasks
+      :responses:
+        :204:
+          :description: No content
+  tasks/:id/archive:
+    patch:
+      :operationId: archiveTask
+      :summary: Archive a task
+      :description: Marks a task as archived. Archived tasks are hidden from default
+        listings but can still be retrieved.
+      :tags:
+      - Tasks
+      - Tasks
+      - Lifecycle
+      :deprecated: true
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  meta:
+                    :type: object
+                    :properties: {}
+                  task:
+                    :$ref: "#/components/schemas/task"
+                :required:
+                - task
+:components:
+  :schemas:
+    issue:
+      :type: object
+      :properties:
+        code:
+          :type: string
+        detail:
+          :type: string
+        field:
+          :type: string
+        path:
+          :type: array
+          :items:
+            :type: string
+      :required:
+      - code
+      - detail
+      - field
+      - path
+    nullable_string_filter:
+      :type: object
+      :properties:
+        contains:
+          :type: string
+        ends_with:
+          :type: string
+        eq:
+          :type: string
+        in:
+          :type: array
+          :items:
+            :type: string
+        'null':
+          :type: boolean
+        starts_with:
+          :type: string
+    page_pagination:
+      :type: object
+      :properties:
+        current:
+          :type: integer
+        items:
+          :type: integer
+        next:
+          :type:
+          - integer
+          - 'null'
+        prev:
+          :type:
+          - integer
+          - 'null'
+        total:
+          :type: integer
+      :required:
+      - current
+      - items
+      - total
+    string_filter:
+      :type: object
+      :properties:
+        contains:
+          :type: string
+        ends_with:
+          :type: string
+        eq:
+          :type: string
+        in:
+          :type: array
+          :items:
+            :type: string
+        starts_with:
+          :type: string
+    task:
+      :type: object
+      :properties:
+        archived:
+          :type: boolean
+        created_at:
+          :type: string
+        description:
+          :type: string
+        due_date:
+          :type: string
+        id:
+          :type: string
+        priority:
+          :type: string
+        status:
+          :type: string
+        title:
+          :type: string
+        updated_at:
+          :type: string
+    task_create_payload:
+      :type: object
+      :properties:
+        description:
+          :type:
+          - string
+          - 'null'
+        due_date:
+          :type:
+          - string
+          - 'null'
+        priority:
+          :type:
+          - string
+          - 'null'
+        status:
+          :type:
+          - string
+          - 'null'
+        title:
+          :type: string
+      :required:
+      - title
+    task_filter:
+      :type: object
+      :properties:
+        _and:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/task_filter"
+        _not:
+          :$ref: "#/components/schemas/task_filter"
+        _or:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/task_filter"
+        priority:
+          :oneOf:
+          - :type: string
+          - :$ref: "#/components/schemas/nullable_string_filter"
+        status:
+          :oneOf:
+          - :type: string
+          - :$ref: "#/components/schemas/nullable_string_filter"
+    task_include:
+      :type: object
+      :properties: {}
+    task_page:
+      :type: object
+      :properties:
+        number:
+          :type: integer
+          :minimum: 1
+        size:
+          :type: integer
+          :minimum: 1
+          :maximum: 100
+    task_sort:
+      :type: object
+      :properties:
+        created_at: {}
+        due_date: {}
+    task_update_payload:
+      :type: object
+      :properties:
+        description:
+          :type:
+          - string
+          - 'null'
+        due_date:
+          :type:
+          - string
+          - 'null'
+        priority:
+          :type:
+          - string
+          - 'null'
+        status:
+          :type:
+          - string
+          - 'null'
+        title:
+          :type: string
+      :required:
+      - title

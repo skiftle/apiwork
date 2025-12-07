@@ -1,0 +1,22 @@
+{
+  "request": {
+    "method": "PATCH",
+    "path": "/brave-eagle/tasks/1dc8104f-170e-425c-88ff-534844b6d535/archive"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "task": {
+        "id": "1dc8104f-170e-425c-88ff-534844b6d535",
+        "title": "Old task to archive",
+        "description": null,
+        "status": "completed",
+        "priority": "medium",
+        "due_date": null,
+        "archived": true,
+        "created_at": "2025-12-07T13:14:56.782Z",
+        "updated_at": "2025-12-07T13:14:56.787Z"
+      }
+    }
+  }
+}

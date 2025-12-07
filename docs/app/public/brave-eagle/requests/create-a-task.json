@@ -1,0 +1,31 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/brave-eagle/tasks",
+    "body": {
+      "task": {
+        "title": "New feature implementation",
+        "description": "Implement the new dashboard widget",
+        "status": "pending",
+        "priority": "high",
+        "due_date": "2024-02-01"
+      }
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "task": {
+        "id": "08015137-9909-4f00-92d9-3c46f2bfad96",
+        "title": "New feature implementation",
+        "description": "Implement the new dashboard widget",
+        "status": "pending",
+        "priority": "high",
+        "due_date": "2024-02-01T00:00:00.000Z",
+        "archived": false,
+        "created_at": "2025-12-07T13:14:56.779Z",
+        "updated_at": "2025-12-07T13:14:56.779Z"
+      }
+    }
+  }
+}

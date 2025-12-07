@@ -1,0 +1,53 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/bold-falcon/articles?sort[status]=asc&sort[published_on]=desc"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "articles": [
+        {
+          "id": "27ff4c22-b306-4c52-8b3f-f5564817ee32",
+          "title": "Draft 2",
+          "body": null,
+          "status": "draft",
+          "view_count": 0,
+          "rating": null,
+          "published_on": "2024-03-01",
+          "created_at": "2025-12-07T13:14:56.671Z",
+          "updated_at": "2025-12-07T13:14:56.671Z"
+        },
+        {
+          "id": "cbdcaa6e-db70-4a09-813e-c93089877ba3",
+          "title": "Draft 1",
+          "body": null,
+          "status": "draft",
+          "view_count": 0,
+          "rating": null,
+          "published_on": "2024-01-01",
+          "created_at": "2025-12-07T13:14:56.670Z",
+          "updated_at": "2025-12-07T13:14:56.670Z"
+        },
+        {
+          "id": "cfccd598-ec88-4662-a8b7-0e7ea81527d0",
+          "title": "Published 1",
+          "body": null,
+          "status": "published",
+          "view_count": 0,
+          "rating": null,
+          "published_on": "2024-02-01",
+          "created_at": "2025-12-07T13:14:56.671Z",
+          "updated_at": "2025-12-07T13:14:56.671Z"
+        }
+      ],
+      "pagination": {
+        "current": 1,
+        "next": null,
+        "prev": null,
+        "total": 1,
+        "items": 3
+      }
+    }
+  }
+}

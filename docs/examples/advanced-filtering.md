@@ -96,26 +96,26 @@ GET /bold-falcon/articles
 {
   "articles": [
     {
-      "id": "eef62f56-f101-4eab-931a-c3ab1cbeedef",
+      "id": "181981b2-e45d-465a-9de9-2b7be4a78f1b",
       "title": "Published Article",
       "body": null,
       "status": "published",
       "view_count": 0,
       "rating": null,
       "published_on": null,
-      "created_at": "2025-12-07T12:02:57.542Z",
-      "updated_at": "2025-12-07T12:02:57.542Z"
+      "created_at": "2025-12-07T13:14:56.371Z",
+      "updated_at": "2025-12-07T13:14:56.371Z"
     },
     {
-      "id": "20f82b6d-04be-440a-9134-2d75cb4b7845",
+      "id": "520fa5b9-b62e-4553-8db7-dad9bd8c2290",
       "title": "Draft Article",
       "body": null,
       "status": "draft",
       "view_count": 0,
       "rating": null,
       "published_on": null,
-      "created_at": "2025-12-07T12:02:57.545Z",
-      "updated_at": "2025-12-07T12:02:57.545Z"
+      "created_at": "2025-12-07T13:14:56.375Z",
+      "updated_at": "2025-12-07T13:14:56.375Z"
     }
   ],
   "pagination": {
@@ -136,7 +136,7 @@ GET /bold-falcon/articles
 **Request**
 
 ```http
-GET /bold-falcon/articles/409800b5-e185-4bb2-ac2a-6ae0ec6d25fb
+GET /bold-falcon/articles/8ea34367-b8b2-4a96-91b6-0d88b0f3fc1e
 ```
 
 **Response** `200`
@@ -144,15 +144,15 @@ GET /bold-falcon/articles/409800b5-e185-4bb2-ac2a-6ae0ec6d25fb
 ```json
 {
   "article": {
-    "id": "409800b5-e185-4bb2-ac2a-6ae0ec6d25fb",
+    "id": "8ea34367-b8b2-4a96-91b6-0d88b0f3fc1e",
     "title": "Getting Started with Rails",
     "body": null,
     "status": "published",
     "view_count": 0,
     "rating": null,
     "published_on": null,
-    "created_at": "2025-12-07T12:02:57.689Z",
-    "updated_at": "2025-12-07T12:02:57.689Z"
+    "created_at": "2025-12-07T13:14:56.604Z",
+    "updated_at": "2025-12-07T13:14:56.604Z"
   }
 }
 ```
@@ -183,15 +183,15 @@ Content-Type: application/json
 ```json
 {
   "article": {
-    "id": "28da00e5-578c-4adb-9b32-f376909074c5",
+    "id": "7ce52ce6-953e-4355-91df-b866e41ef75c",
     "title": "Getting Started with Rails",
     "body": "A comprehensive guide to Ruby on Rails",
     "status": "draft",
     "view_count": 0,
     "rating": null,
     "published_on": "2024-01-15",
-    "created_at": "2025-12-07T12:02:57.702Z",
-    "updated_at": "2025-12-07T12:02:57.702Z"
+    "created_at": "2025-12-07T13:14:56.620Z",
+    "updated_at": "2025-12-07T13:14:56.620Z"
   }
 }
 ```
@@ -213,15 +213,15 @@ GET /bold-falcon/articles?filter[status][eq]=published
 {
   "articles": [
     {
-      "id": "bad1507d-bd6d-473e-9e9e-2f08bb864590",
+      "id": "70093428-88f1-4941-ac2c-bfd415a1d826",
       "title": "Published Article",
       "body": null,
       "status": "published",
       "view_count": 0,
       "rating": null,
       "published_on": null,
-      "created_at": "2025-12-07T12:02:57.704Z",
-      "updated_at": "2025-12-07T12:02:57.704Z"
+      "created_at": "2025-12-07T13:14:56.623Z",
+      "updated_at": "2025-12-07T13:14:56.623Z"
     }
   ],
   "pagination": {
@@ -251,15 +251,15 @@ GET /bold-falcon/articles?filter[title][contains]=Rails
 {
   "articles": [
     {
-      "id": "9f61acd7-17eb-43cd-8fae-de34bb4178c3",
+      "id": "ea0699bd-2c31-4932-89f7-c745aa4440cc",
       "title": "Getting Started with Rails",
       "body": null,
       "status": "published",
       "view_count": 0,
       "rating": null,
       "published_on": null,
-      "created_at": "2025-12-07T12:02:57.723Z",
-      "updated_at": "2025-12-07T12:02:57.723Z"
+      "created_at": "2025-12-07T13:14:56.646Z",
+      "updated_at": "2025-12-07T13:14:56.646Z"
     }
   ],
   "pagination": {
@@ -269,6 +269,282 @@ GET /bold-falcon/articles?filter[title][contains]=Rails
     "total": 1,
     "items": 1
   }
+}
+```
+
+</details>
+
+<details>
+<summary>Sort by date</summary>
+
+**Request**
+
+```http
+GET /bold-falcon/articles?sort[published_on]=desc
+```
+
+**Response** `200`
+
+```json
+{
+  "articles": [
+    {
+      "id": "70e9b70a-4c42-4a34-a034-8314f5b15bab",
+      "title": "New Article",
+      "body": null,
+      "status": "published",
+      "view_count": 0,
+      "rating": null,
+      "published_on": "2024-06-01",
+      "created_at": "2025-12-07T13:14:56.662Z",
+      "updated_at": "2025-12-07T13:14:56.662Z"
+    },
+    {
+      "id": "ad53ad12-8c66-4f97-bcff-b7232c0de052",
+      "title": "Old Article",
+      "body": null,
+      "status": "published",
+      "view_count": 0,
+      "rating": null,
+      "published_on": "2024-01-01",
+      "created_at": "2025-12-07T13:14:56.661Z",
+      "updated_at": "2025-12-07T13:14:56.661Z"
+    }
+  ],
+  "pagination": {
+    "current": 1,
+    "next": null,
+    "prev": null,
+    "total": 1,
+    "items": 2
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>Multiple sort fields</summary>
+
+**Request**
+
+```http
+GET /bold-falcon/articles?sort[status]=asc&sort[published_on]=desc
+```
+
+**Response** `200`
+
+```json
+{
+  "articles": [
+    {
+      "id": "27ff4c22-b306-4c52-8b3f-f5564817ee32",
+      "title": "Draft 2",
+      "body": null,
+      "status": "draft",
+      "view_count": 0,
+      "rating": null,
+      "published_on": "2024-03-01",
+      "created_at": "2025-12-07T13:14:56.671Z",
+      "updated_at": "2025-12-07T13:14:56.671Z"
+    },
+    {
+      "id": "cbdcaa6e-db70-4a09-813e-c93089877ba3",
+      "title": "Draft 1",
+      "body": null,
+      "status": "draft",
+      "view_count": 0,
+      "rating": null,
+      "published_on": "2024-01-01",
+      "created_at": "2025-12-07T13:14:56.670Z",
+      "updated_at": "2025-12-07T13:14:56.670Z"
+    },
+    {
+      "id": "cfccd598-ec88-4662-a8b7-0e7ea81527d0",
+      "title": "Published 1",
+      "body": null,
+      "status": "published",
+      "view_count": 0,
+      "rating": null,
+      "published_on": "2024-02-01",
+      "created_at": "2025-12-07T13:14:56.671Z",
+      "updated_at": "2025-12-07T13:14:56.671Z"
+    }
+  ],
+  "pagination": {
+    "current": 1,
+    "next": null,
+    "prev": null,
+    "total": 1,
+    "items": 3
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>Filter by date range</summary>
+
+**Request**
+
+```http
+GET /bold-falcon/articles?filter[published_on][gte]=2024-01-01&filter[published_on][lt]=2024-02-01
+```
+
+**Response** `200`
+
+```json
+{
+  "articles": [
+    {
+      "id": "d6fa4655-8a4b-4c32-8405-0e5321d83597",
+      "title": "January Article",
+      "body": null,
+      "status": "published",
+      "view_count": 0,
+      "rating": null,
+      "published_on": "2024-01-15",
+      "created_at": "2025-12-07T13:14:56.679Z",
+      "updated_at": "2025-12-07T13:14:56.679Z"
+    }
+  ],
+  "pagination": {
+    "current": 1,
+    "next": null,
+    "prev": null,
+    "total": 1,
+    "items": 1
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>Filter by view count</summary>
+
+**Request**
+
+```http
+GET /bold-falcon/articles?filter[view_count][gt]=100
+```
+
+**Response** `200`
+
+```json
+{
+  "articles": [
+    {
+      "id": "53ae7bb7-eb13-4b53-a4f1-53120b559212",
+      "title": "Popular Article",
+      "body": null,
+      "status": "published",
+      "view_count": 500,
+      "rating": null,
+      "published_on": null,
+      "created_at": "2025-12-07T13:14:56.694Z",
+      "updated_at": "2025-12-07T13:14:56.694Z"
+    }
+  ],
+  "pagination": {
+    "current": 1,
+    "next": null,
+    "prev": null,
+    "total": 1,
+    "items": 1
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>Combined filter and sort</summary>
+
+**Request**
+
+```http
+GET /bold-falcon/articles?filter[status][eq]=published&sort[view_count]=desc
+```
+
+**Response** `200`
+
+```json
+{
+  "articles": [
+    {
+      "id": "4636ab45-1e07-4e2c-9ce4-0c0d99417328",
+      "title": "Popular Published",
+      "body": null,
+      "status": "published",
+      "view_count": 1000,
+      "rating": null,
+      "published_on": null,
+      "created_at": "2025-12-07T13:14:56.709Z",
+      "updated_at": "2025-12-07T13:14:56.709Z"
+    },
+    {
+      "id": "d303f7e5-3be9-4321-b69c-b5ae21251a58",
+      "title": "Less Popular Published",
+      "body": null,
+      "status": "published",
+      "view_count": 100,
+      "rating": null,
+      "published_on": null,
+      "created_at": "2025-12-07T13:14:56.711Z",
+      "updated_at": "2025-12-07T13:14:56.711Z"
+    }
+  ],
+  "pagination": {
+    "current": 1,
+    "next": null,
+    "prev": null,
+    "total": 1,
+    "items": 2
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>Filter by category</summary>
+
+**Request**
+
+```http
+GET /bold-falcon/articles?filter[category][name][eq]=Technology
+```
+
+**Response** `400`
+
+```json
+{
+  "issues": [
+    {
+      "code": "field_unknown",
+      "detail": "Unknown field",
+      "path": [
+        "filter",
+        "category"
+      ],
+      "pointer": "/filter/category",
+      "meta": {
+        "field": "category",
+        "allowed": [
+          "_and",
+          "_or",
+          "_not",
+          "title",
+          "status",
+          "view_count",
+          "rating",
+          "published_on"
+        ]
+      }
+    }
+  ]
 }
 ```
 

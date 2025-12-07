@@ -8,26 +8,26 @@
     "body": {
       "invoices": [
         {
-          "id": "9ba4b5d6-2650-4702-9700-d30e1b33dc36",
-          "created_at": "2025-12-07T12:02:57.863Z",
-          "updated_at": "2025-12-07T12:02:57.863Z",
+          "id": "1e1abec7-5cfc-4024-91e7-ff605939bfc2",
+          "created_at": "2025-12-07T13:14:57.011Z",
+          "updated_at": "2025-12-07T13:14:57.011Z",
           "number": "INV-001",
           "issued_on": null,
           "notes": null,
           "status": null,
-          "customer_id": "78484d34-7080-406a-b111-cd44e8fb64fa",
+          "customer_id": "9c21729f-f2cc-46e2-8e43-fbfcc9e77275",
           "lines": null,
           "customer": null
         },
         {
-          "id": "2dd7b493-1e33-47d2-901d-7e5ea2638f22",
-          "created_at": "2025-12-07T12:02:57.864Z",
-          "updated_at": "2025-12-07T12:02:57.864Z",
+          "id": "71646f33-915a-495a-8156-8d9b1c5303a8",
+          "created_at": "2025-12-07T13:14:57.013Z",
+          "updated_at": "2025-12-07T13:14:57.013Z",
           "number": "INV-002",
           "issued_on": null,
           "notes": null,
           "status": null,
-          "customer_id": "78484d34-7080-406a-b111-cd44e8fb64fa",
+          "customer_id": "9c21729f-f2cc-46e2-8e43-fbfcc9e77275",
           "lines": null,
           "customer": null
         }

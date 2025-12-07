@@ -1,4 +1,4 @@
-title: STI with Discriminated Unions
+title: Single Table Inheritance (STI)
 description: Single Table Inheritance with automatic variant serialization and TypeScript union types
 order: 5
 

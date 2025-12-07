@@ -73,3 +73,30 @@ scenarios:
       - create: order
         fields:
           order_number: ORD-001
+
+  - title: Remove nested record
+    description: Delete line item using _destroy
+    order: 6
+    method: PATCH
+    path: /clever-rabbit/orders/:order_id
+    setup:
+      - create: order
+        fields:
+          order_number: ORD-001
+      - create: line_item
+        fields:
+          order_id: :order_id
+          product_name: Widget to Remove
+          quantity: 1
+          unit_price: 29.99
+      - create: line_item
+        fields:
+          order_id: :order_id
+          product_name: Widget to Keep
+          quantity: 2
+          unit_price: 19.99
+    body:
+      order:
+        line_items:
+          - id: :line_item_id
+            _destroy: true

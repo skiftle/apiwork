@@ -1,0 +1,35 @@
+{
+  "request": {
+    "method": "PATCH",
+    "path": "/clever-rabbit/orders/ac48e80a-eda4-44c5-9940-f7287c3c3765",
+    "body": {
+      "order": {
+        "line_items": [
+          {
+            "id": "552afe7e-57c8-4d90-b42e-b56c4e3b07be",
+            "_destroy": true
+          }
+        ]
+      }
+    }
+  },
+  "response": {
+    "status": 400,
+    "body": {
+      "issues": [
+        {
+          "code": "field_missing",
+          "detail": "Field required",
+          "path": [
+            "order",
+            "order_number"
+          ],
+          "pointer": "/order/order_number",
+          "meta": {
+            "field": "order_number"
+          }
+        }
+      ]
+    }
+  }
+}

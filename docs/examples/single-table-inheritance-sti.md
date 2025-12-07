@@ -2,7 +2,7 @@
 order: 5
 ---
 
-# STI with Discriminated Unions
+# Single Table Inheritance (STI)
 
 Single Table Inheritance with automatic variant serialization and TypeScript union types
 
@@ -101,7 +101,7 @@ GET /mighty-wolf/vehicles
   "vehicles": [
     {
       "kind": "car",
-      "id": "b9de59b0-ad7f-4301-ba1c-d92eb990560b",
+      "id": "62df8297-6217-423d-97f0-5f5cd0e10512",
       "brand": "Tesla",
       "model": "Model 3",
       "year": null,
@@ -110,7 +110,7 @@ GET /mighty-wolf/vehicles
     },
     {
       "kind": "motorcycle",
-      "id": "e1c32bb1-6c94-4368-8cd2-d19d4d05f5c7",
+      "id": "2832b098-c304-4483-967a-15583001295b",
       "brand": "Harley-Davidson",
       "model": "Street Glide",
       "year": null,
@@ -119,7 +119,7 @@ GET /mighty-wolf/vehicles
     },
     {
       "kind": "truck",
-      "id": "e5648f7d-6455-4140-919e-0dcc26357e86",
+      "id": "2b86edfa-6558-49d2-b9a6-f0d86aceada4",
       "brand": "Ford",
       "model": "F-150",
       "year": null,
@@ -145,7 +145,7 @@ GET /mighty-wolf/vehicles
 **Request**
 
 ```http
-GET /mighty-wolf/vehicles/7f810f47-152d-478a-bdfa-aa9d5cbf3e81
+GET /mighty-wolf/vehicles/4d97c039-57cb-40a4-8911-ba12ec137819
 ```
 
 **Response** `200`
@@ -154,7 +154,7 @@ GET /mighty-wolf/vehicles/7f810f47-152d-478a-bdfa-aa9d5cbf3e81
 {
   "vehicle": {
     "kind": "car",
-    "id": "7f810f47-152d-478a-bdfa-aa9d5cbf3e81",
+    "id": "4d97c039-57cb-40a4-8911-ba12ec137819",
     "brand": "Tesla",
     "model": "Model 3",
     "year": 2024,
@@ -192,7 +192,7 @@ Content-Type: application/json
 {
   "vehicle": {
     "kind": "car",
-    "id": "1294fa29-6ee7-4cc0-af01-2ada216d6cb8",
+    "id": "3f121722-efa9-46d2-9c30-267210b985ad",
     "brand": "Tesla",
     "model": "Model 3",
     "year": 2024,
@@ -230,7 +230,7 @@ Content-Type: application/json
 {
   "vehicle": {
     "kind": "motorcycle",
-    "id": "18a73a1c-c0cf-49eb-9f73-ae23751b9b18",
+    "id": "2b7c075b-b139-4402-a961-b43c24650e07",
     "brand": "Harley-Davidson",
     "model": "Street Glide",
     "year": 2023,
@@ -268,7 +268,7 @@ Content-Type: application/json
 {
   "vehicle": {
     "kind": "truck",
-    "id": "c0339fec-fe0a-4342-967a-ce47b41e4a7f",
+    "id": "3e48426d-1c02-41c4-8cf0-91c8a26bc1c6",
     "brand": "Ford",
     "model": "F-150",
     "year": 2024,

@@ -1,0 +1,620 @@
+{
+  "path": "/brave-eagle",
+  "info": {
+    "title": "Task Management API",
+    "version": "1.0.0",
+    "description": "API for managing tasks and projects"
+  },
+  "types": {
+    "issue": {
+      "type": "object",
+      "shape": {
+        "code": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "field": {
+          "type": "string"
+        },
+        "path": {
+          "type": "array",
+          "of": "string"
+        }
+      }
+    },
+    "nullable_string_filter": {
+      "type": "object",
+      "shape": {
+        "contains": {
+          "type": "string",
+          "optional": true
+        },
+        "ends_with": {
+          "type": "string",
+          "optional": true
+        },
+        "eq": {
+          "type": "string",
+          "optional": true
+        },
+        "in": {
+          "type": "array",
+          "of": "string",
+          "optional": true
+        },
+        "null": {
+          "type": "boolean",
+          "optional": true
+        },
+        "starts_with": {
+          "type": "string",
+          "optional": true
+        }
+      }
+    },
+    "page_pagination": {
+      "type": "object",
+      "shape": {
+        "current": {
+          "type": "integer"
+        },
+        "items": {
+          "type": "integer"
+        },
+        "next": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "prev": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "total": {
+          "type": "integer"
+        }
+      }
+    },
+    "string_filter": {
+      "type": "object",
+      "shape": {
+        "contains": {
+          "type": "string",
+          "optional": true
+        },
+        "ends_with": {
+          "type": "string",
+          "optional": true
+        },
+        "eq": {
+          "type": "string",
+          "optional": true
+        },
+        "in": {
+          "type": "array",
+          "of": "string",
+          "optional": true
+        },
+        "starts_with": {
+          "type": "string",
+          "optional": true
+        }
+      }
+    },
+    "task": {
+      "type": "object",
+      "shape": {
+        "archived": {
+          "type": "boolean",
+          "optional": true
+        },
+        "created_at": {
+          "type": "datetime",
+          "optional": true
+        },
+        "description": {
+          "type": "string",
+          "optional": true
+        },
+        "due_date": {
+          "type": "datetime",
+          "optional": true
+        },
+        "id": {
+          "type": "string",
+          "optional": true
+        },
+        "priority": {
+          "type": "string",
+          "optional": true
+        },
+        "status": {
+          "type": "string",
+          "optional": true
+        },
+        "title": {
+          "type": "string",
+          "optional": true
+        },
+        "updated_at": {
+          "type": "datetime",
+          "optional": true
+        }
+      }
+    },
+    "task_create_payload": {
+      "type": "object",
+      "shape": {
+        "description": {
+          "type": "string",
+          "nullable": true,
+          "optional": true
+        },
+        "due_date": {
+          "type": "datetime",
+          "nullable": true,
+          "optional": true
+        },
+        "priority": {
+          "type": "string",
+          "nullable": true,
+          "optional": true
+        },
+        "status": {
+          "type": "string",
+          "nullable": true,
+          "optional": true
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "task_filter": {
+      "type": "object",
+      "shape": {
+        "_and": {
+          "type": "array",
+          "of": "task_filter",
+          "optional": true
+        },
+        "_not": {
+          "type": "task_filter",
+          "optional": true
+        },
+        "_or": {
+          "type": "array",
+          "of": "task_filter",
+          "optional": true
+        },
+        "priority": {
+          "type": "union",
+          "variants": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "nullable_string_filter"
+            }
+          ],
+          "optional": true
+        },
+        "status": {
+          "type": "union",
+          "variants": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "nullable_string_filter"
+            }
+          ],
+          "optional": true
+        }
+      }
+    },
+    "task_include": {
+      "type": "object"
+    },
+    "task_page": {
+      "type": "object",
+      "shape": {
+        "number": {
+          "type": "integer",
+          "optional": true,
+          "min": 1
+        },
+        "size": {
+          "type": "integer",
+          "optional": true,
+          "min": 1,
+          "max": 100
+        }
+      }
+    },
+    "task_sort": {
+      "type": "object",
+      "shape": {
+        "created_at": {
+          "type": "task_sort_direction",
+          "optional": true
+        },
+        "due_date": {
+          "type": "task_sort_direction",
+          "optional": true
+        }
+      }
+    },
+    "task_update_payload": {
+      "type": "object",
+      "shape": {
+        "description": {
+          "type": "string",
+          "nullable": true,
+          "optional": true
+        },
+        "due_date": {
+          "type": "datetime",
+          "nullable": true,
+          "optional": true
+        },
+        "priority": {
+          "type": "string",
+          "nullable": true,
+          "optional": true
+        },
+        "status": {
+          "type": "string",
+          "nullable": true,
+          "optional": true
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "enums": {
+    "sort_direction": {
+      "values": [
+        "asc",
+        "desc"
+      ]
+    }
+  },
+  "error_codes": {
+    "unprocessable_entity": {
+      "status": 422,
+      "description": "Unprocessable Entity"
+    }
+  },
+  "resources": {
+    "tasks": {
+      "path": "tasks",
+      "summary": "Tasks",
+      "description": "Operations for managing tasks.",
+      "tags": [
+        "Tasks"
+      ],
+      "schema": {
+        "type": "object",
+        "shape": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "text",
+            "nullable": true,
+            "optional": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true,
+            "optional": true
+          },
+          "priority": {
+            "type": "string",
+            "nullable": true,
+            "optional": true
+          },
+          "due_date": {
+            "type": "datetime",
+            "nullable": true,
+            "optional": true
+          },
+          "archived": {
+            "type": "boolean",
+            "nullable": true,
+            "optional": true
+          },
+          "created_at": {
+            "type": "datetime"
+          },
+          "updated_at": {
+            "type": "datetime"
+          }
+        }
+      },
+      "actions": {
+        "index": {
+          "method": "get",
+          "path": "/",
+          "summary": "List all tasks",
+          "description": "Returns a paginated list of tasks with optional filtering by status and priority",
+          "tags": [
+            "Tasks",
+            "Core"
+          ],
+          "operation_id": "listTasks",
+          "request": {
+            "query": {
+              "filter": {
+                "type": "union",
+                "variants": [
+                  {
+                    "type": "task_filter"
+                  },
+                  {
+                    "type": "array",
+                    "of": "task_filter"
+                  }
+                ],
+                "optional": true
+              },
+              "include": {
+                "type": "task_include",
+                "optional": true
+              },
+              "page": {
+                "type": "task_page",
+                "optional": true
+              },
+              "sort": {
+                "type": "union",
+                "variants": [
+                  {
+                    "type": "task_sort"
+                  },
+                  {
+                    "type": "array",
+                    "of": "task_sort"
+                  }
+                ],
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "pagination": {
+                      "type": "page_pagination",
+                      "optional": true
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "of": "task",
+                      "optional": true
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "show": {
+          "method": "get",
+          "path": "/:id",
+          "summary": "Get task details",
+          "description": "Returns a single task by ID",
+          "tags": [
+            "Tasks"
+          ],
+          "operation_id": "getTask",
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "task": {
+                      "type": "task"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "create": {
+          "method": "post",
+          "path": "/",
+          "summary": "Create a new task",
+          "description": "Creates a task and returns the created resource",
+          "tags": [
+            "Tasks"
+          ],
+          "operation_id": "createTask",
+          "request": {
+            "body": {
+              "task": {
+                "type": "task_create_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "task": {
+                      "type": "task"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "raises": [
+            "unprocessable_entity"
+          ]
+        },
+        "update": {
+          "method": "patch",
+          "path": "/:id",
+          "summary": "Update a task",
+          "description": "Updates an existing task",
+          "tags": [
+            "Tasks"
+          ],
+          "operation_id": "updateTask",
+          "request": {
+            "body": {
+              "task": {
+                "type": "task_update_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "task": {
+                      "type": "task"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "raises": [
+            "unprocessable_entity"
+          ]
+        },
+        "destroy": {
+          "method": "delete",
+          "path": "/:id",
+          "summary": "Delete a task",
+          "description": "Permanently removes a task",
+          "tags": [
+            "Tasks"
+          ],
+          "operation_id": "deleteTask"
+        },
+        "archive": {
+          "method": "patch",
+          "path": "/:id/archive",
+          "summary": "Archive a task",
+          "description": "Marks a task as archived. Archived tasks are hidden from default listings but can still be retrieved.",
+          "tags": [
+            "Tasks",
+            "Lifecycle"
+          ],
+          "operation_id": "archiveTask",
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "task": {
+                      "type": "task"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "deprecated": true
+        }
+      }
+    }
+  }
+}

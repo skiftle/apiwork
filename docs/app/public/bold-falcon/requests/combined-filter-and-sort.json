@@ -1,0 +1,42 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/bold-falcon/articles?filter[status][eq]=published&sort[view_count]=desc"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "articles": [
+        {
+          "id": "4636ab45-1e07-4e2c-9ce4-0c0d99417328",
+          "title": "Popular Published",
+          "body": null,
+          "status": "published",
+          "view_count": 1000,
+          "rating": null,
+          "published_on": null,
+          "created_at": "2025-12-07T13:14:56.709Z",
+          "updated_at": "2025-12-07T13:14:56.709Z"
+        },
+        {
+          "id": "d303f7e5-3be9-4321-b69c-b5ae21251a58",
+          "title": "Less Popular Published",
+          "body": null,
+          "status": "published",
+          "view_count": 100,
+          "rating": null,
+          "published_on": null,
+          "created_at": "2025-12-07T13:14:56.711Z",
+          "updated_at": "2025-12-07T13:14:56.711Z"
+        }
+      ],
+      "pagination": {
+        "current": 1,
+        "next": null,
+        "prev": null,
+        "total": 1,
+        "items": 2
+      }
+    }
+  }
+}
