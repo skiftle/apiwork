@@ -15,7 +15,7 @@
     "status": 201,
     "body": {
       "contact": {
-        "id": "4d84596d-9051-46cc-9c85-a1977cb51e00",
+        "id": "cf669332-d3b1-4db9-bc19-cdaa635bcffb",
         "name": "John Doe",
         "email": "john.doe@example.com",
         "phone": "",

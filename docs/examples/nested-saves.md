@@ -26,6 +26,13 @@ Create, update, and delete nested records in a single request
 
 <<< @/app/app/models/clever_rabbit/shipping_address.rb
 
+<details>
+<summary>Database Schema</summary>
+
+<<< @/app/public/clever-rabbit/schema.md
+
+</details>
+
 ## Schemas
 
 <small>`app/schemas/clever_rabbit/line_item_schema.rb`</small>
@@ -73,22 +80,22 @@ GET /clever-rabbit/orders
 {
   "orders": [
     {
-      "id": "b44b163f-8f42-40f5-9335-0b283e0d22ce",
+      "id": "ee2eb017-431d-4aec-974b-2ab125017c06",
       "order_number": "ORD-001",
       "status": "pending",
       "total": null,
-      "created_at": "2025-12-07T10:25:48.777Z",
-      "updated_at": "2025-12-07T10:25:48.777Z",
+      "created_at": "2025-12-07T11:20:16.524Z",
+      "updated_at": "2025-12-07T11:20:16.524Z",
       "line_items": null,
       "shipping_address": null
     },
     {
-      "id": "cfa3c81b-9c63-4e03-b1e5-f3f80a3e3a20",
+      "id": "e0e5e10e-b872-4378-9294-c98738239f5a",
       "order_number": "ORD-002",
       "status": "pending",
       "total": null,
-      "created_at": "2025-12-07T10:25:48.778Z",
-      "updated_at": "2025-12-07T10:25:48.778Z",
+      "created_at": "2025-12-07T11:20:16.526Z",
+      "updated_at": "2025-12-07T11:20:16.526Z",
       "line_items": null,
       "shipping_address": null
     }
@@ -111,7 +118,7 @@ GET /clever-rabbit/orders
 **Request**
 
 ```http
-GET /clever-rabbit/orders/59b980b3-2e2c-4863-be00-533529f2f76d
+GET /clever-rabbit/orders/bece78ba-693c-4ca6-8bc2-95451c77156b
 ```
 
 **Response** `200`
@@ -119,12 +126,12 @@ GET /clever-rabbit/orders/59b980b3-2e2c-4863-be00-533529f2f76d
 ```json
 {
   "order": {
-    "id": "59b980b3-2e2c-4863-be00-533529f2f76d",
+    "id": "bece78ba-693c-4ca6-8bc2-95451c77156b",
     "order_number": "ORD-001",
     "status": "pending",
     "total": null,
-    "created_at": "2025-12-07T10:25:48.800Z",
-    "updated_at": "2025-12-07T10:25:48.800Z",
+    "created_at": "2025-12-07T11:20:16.562Z",
+    "updated_at": "2025-12-07T11:20:16.562Z",
     "line_items": null,
     "shipping_address": null
   }
@@ -172,12 +179,12 @@ Content-Type: application/json
 ```json
 {
   "order": {
-    "id": "13806e22-8a51-4214-b189-2b3761ebeb0b",
+    "id": "cbef07e3-f47d-40ea-bacc-7b7c74d1b718",
     "order_number": "ORD-001",
     "status": "pending",
     "total": null,
-    "created_at": "2025-12-07T10:25:48.818Z",
-    "updated_at": "2025-12-07T10:25:48.818Z",
+    "created_at": "2025-12-07T11:20:16.601Z",
+    "updated_at": "2025-12-07T11:20:16.601Z",
     "line_items": null,
     "shipping_address": null
   }
@@ -192,7 +199,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-PATCH /clever-rabbit/orders/a712fc8b-e74e-49a5-8863-3e7ea0581de2
+PATCH /clever-rabbit/orders/aef8c8c8-501c-42fa-8c87-5a80bddec6c5
 Content-Type: application/json
 
 {
@@ -214,12 +221,12 @@ Content-Type: application/json
 ```json
 {
   "order": {
-    "id": "a712fc8b-e74e-49a5-8863-3e7ea0581de2",
+    "id": "aef8c8c8-501c-42fa-8c87-5a80bddec6c5",
     "order_number": "ORD-001",
     "status": "pending",
     "total": null,
-    "created_at": "2025-12-07T10:25:48.823Z",
-    "updated_at": "2025-12-07T10:25:48.823Z",
+    "created_at": "2025-12-07T11:20:16.606Z",
+    "updated_at": "2025-12-07T11:20:16.606Z",
     "line_items": null,
     "shipping_address": null
   }
@@ -234,7 +241,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-DELETE /clever-rabbit/orders/40cde02e-ea9a-441e-8dfb-5fb2739be700
+DELETE /clever-rabbit/orders/35c8fae8-95a8-41d1-ada3-7d039b0608a6
 ```
 
 **Response** `200`

@@ -18,6 +18,13 @@ Transform values on input/output and handle nil/empty string conversion
 
 <<< @/app/app/models/swift_fox/contact.rb
 
+<details>
+<summary>Database Schema</summary>
+
+<<< @/app/public/swift-fox/schema.md
+
+</details>
+
 ## Schemas
 
 <small>`app/schemas/swift_fox/contact_schema.rb`</small>
@@ -66,7 +73,7 @@ Content-Type: application/json
 ```json
 {
   "contact": {
-    "id": "4d84596d-9051-46cc-9c85-a1977cb51e00",
+    "id": "cf669332-d3b1-4db9-bc19-cdaa635bcffb",
     "name": "John Doe",
     "email": "john.doe@example.com",
     "phone": "",
@@ -83,7 +90,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-GET /swift-fox/contacts/959d0e85-ed10-4159-b6cf-0eb490c44fcc
+GET /swift-fox/contacts/649b49ef-6b6d-44cb-a804-383d841d5302
 ```
 
 **Response** `200`
@@ -91,7 +98,7 @@ GET /swift-fox/contacts/959d0e85-ed10-4159-b6cf-0eb490c44fcc
 ```json
 {
   "contact": {
-    "id": "959d0e85-ed10-4159-b6cf-0eb490c44fcc",
+    "id": "649b49ef-6b6d-44cb-a804-383d841d5302",
     "name": "Jane Doe",
     "email": "jane@example.com",
     "phone": "",

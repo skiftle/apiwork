@@ -30,6 +30,13 @@ How Apiwork captures ActiveRecord validation errors and presents them in a unifi
 
 <<< @/app/app/models/happy_zebra/user.rb
 
+<details>
+<summary>Database Schema</summary>
+
+<<< @/app/public/happy-zebra/schema.md
+
+</details>
+
 ## Schemas
 
 <small>`app/schemas/happy_zebra/comment_schema.rb`</small>
@@ -108,15 +115,15 @@ Content-Type: application/json
 ```json
 {
   "user": {
-    "id": "5a98f4e4-9800-483e-84d9-4072a7780ae1",
-    "created_at": "2025-12-07T10:25:49.217Z",
-    "updated_at": "2025-12-07T10:25:49.217Z",
+    "id": "b6f987a6-bc94-4dd1-9ebc-6708d1473c15",
+    "created_at": "2025-12-07T11:20:16.972Z",
+    "updated_at": "2025-12-07T11:20:16.972Z",
     "email": "john@example.com",
     "username": "johndoe",
     "profile": {
-      "id": "05aa3091-5bd2-4a0b-9713-328833c2c474",
-      "created_at": "2025-12-07T10:25:49.219Z",
-      "updated_at": "2025-12-07T10:25:49.219Z",
+      "id": "608e03a8-2032-4595-b949-44837974f459",
+      "created_at": "2025-12-07T11:20:16.973Z",
+      "updated_at": "2025-12-07T11:20:16.973Z",
       "bio": "Software developer",
       "website": "https://example.com"
     },
@@ -315,24 +322,24 @@ Content-Type: application/json
 ```json
 {
   "user": {
-    "id": "94b82112-1c44-4f66-adb9-3cee013afc56",
-    "created_at": "2025-12-07T10:25:49.292Z",
-    "updated_at": "2025-12-07T10:25:49.292Z",
+    "id": "39c9d3ed-fea5-4574-b311-a958997efa6e",
+    "created_at": "2025-12-07T11:20:17.012Z",
+    "updated_at": "2025-12-07T11:20:17.012Z",
     "email": "deep@example.com",
     "username": "deepuser",
     "profile": null,
     "posts": [
       {
-        "id": "04a688c9-0f5b-43be-945c-6a4a999b1605",
+        "id": "a846d349-e4cb-436f-a4b0-02d81925d948",
         "title": "My First Post",
         "comments": [
           {
-            "id": "7c778ae7-0cb4-45e1-bebc-934f8d36a24a",
+            "id": "1f2dcea3-9e3d-47a4-8fc2-53d2a08a4e0b",
             "body": "Great post!",
             "author": "Jane"
           },
           {
-            "id": "3a716658-7d85-40f2-9d62-54fc2ee29c74",
+            "id": "83430d7c-843d-45cb-8e3c-36bb51057933",
             "body": "Thanks for sharing",
             "author": "Bob"
           }

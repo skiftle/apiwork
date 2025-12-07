@@ -30,6 +30,13 @@ Comments that belong to different content types (posts, videos, images)
 
 <<< @/app/app/models/gentle_owl/video.rb
 
+<details>
+<summary>Database Schema</summary>
+
+<<< @/app/public/gentle-owl/schema.md
+
+</details>
+
 ## Schemas
 
 <small>`app/schemas/gentle_owl/comment_schema.rb`</small>
@@ -81,20 +88,20 @@ GET /gentle-owl/comments
 {
   "comments": [
     {
-      "id": "d1c4147c-8c9b-4f13-a74f-5bffd1d05c37",
+      "id": "50b036f5-d938-4abc-9d69-8929c5d315b6",
       "body": "Great post!",
       "author_name": "John Doe",
       "commentable_type": "GentleOwl::Post",
-      "commentable_id": "e4e93c95-ebf0-4700-8b75-b8d7a34e444b",
-      "created_at": "2025-12-07T10:25:49.022Z"
+      "commentable_id": "4c90ce4b-f1c8-44f2-9ce7-508d563c27a7",
+      "created_at": "2025-12-07T11:20:16.838Z"
     },
     {
-      "id": "d2fa1a83-a4bd-4249-8e0d-5229e7d32a69",
+      "id": "6b6f9e7a-b2d3-42eb-b5cf-580d42577eba",
       "body": "Helpful video!",
       "author_name": "Jane Doe",
       "commentable_type": "GentleOwl::Video",
-      "commentable_id": "3c81e7fc-5990-475d-8c1b-b3895096380b",
-      "created_at": "2025-12-07T10:25:49.024Z"
+      "commentable_id": "f4bb333e-7dd9-4211-8608-90e484dd8929",
+      "created_at": "2025-12-07T11:20:16.841Z"
     }
   ],
   "pagination": {
@@ -115,7 +122,7 @@ GET /gentle-owl/comments
 **Request**
 
 ```http
-GET /gentle-owl/comments/4fce397d-e1ce-4f02-8f9d-9f26eb3b2289
+GET /gentle-owl/comments/effda81c-f881-45da-abc9-83b4c3e1a966
 ```
 
 **Response** `200`
@@ -123,12 +130,12 @@ GET /gentle-owl/comments/4fce397d-e1ce-4f02-8f9d-9f26eb3b2289
 ```json
 {
   "comment": {
-    "id": "4fce397d-e1ce-4f02-8f9d-9f26eb3b2289",
+    "id": "effda81c-f881-45da-abc9-83b4c3e1a966",
     "body": "Great post!",
     "author_name": "John Doe",
     "commentable_type": "GentleOwl::Post",
-    "commentable_id": "4331abec-aec2-4d36-ad7b-2a827a0f13cc",
-    "created_at": "2025-12-07T10:25:49.033Z"
+    "commentable_id": "084f87f1-3545-477b-862b-d4a3ee961da4",
+    "created_at": "2025-12-07T11:20:16.851Z"
   }
 }
 ```
@@ -149,7 +156,7 @@ Content-Type: application/json
     "body": "This is a great article!",
     "author_name": "Jane Doe",
     "commentable_type": "GentleOwl::Post",
-    "commentable_id": "2a0548ec-7001-4c7b-85e0-0bc139cac061"
+    "commentable_id": "dc57a569-d1dc-4389-a45b-6d629eb5f2d4"
   }
 }
 ```
@@ -159,12 +166,12 @@ Content-Type: application/json
 ```json
 {
   "comment": {
-    "id": "3c926d7e-0870-4205-b8b2-b35fe05e1a05",
+    "id": "57701dbe-263d-4f4d-90dc-0a03c4005ae6",
     "body": "This is a great article!",
     "author_name": "Jane Doe",
     "commentable_type": "GentleOwl::Post",
-    "commentable_id": "2a0548ec-7001-4c7b-85e0-0bc139cac061",
-    "created_at": "2025-12-07T10:25:49.045Z"
+    "commentable_id": "dc57a569-d1dc-4389-a45b-6d629eb5f2d4",
+    "created_at": "2025-12-07T11:20:16.863Z"
   }
 }
 ```
@@ -185,7 +192,7 @@ Content-Type: application/json
     "body": "Very helpful video!",
     "author_name": "Bob Smith",
     "commentable_type": "GentleOwl::Video",
-    "commentable_id": "b71841be-03ac-45fe-8553-5d657e4e8a05"
+    "commentable_id": "b4f6ede3-537e-4cee-98de-8d8808dcce95"
   }
 }
 ```
@@ -195,12 +202,12 @@ Content-Type: application/json
 ```json
 {
   "comment": {
-    "id": "8d8c5e0e-74c1-4e34-9d54-9f30ccb06dc0",
+    "id": "3ea987cf-61a2-4180-a08e-9a254278bf76",
     "body": "Very helpful video!",
     "author_name": "Bob Smith",
     "commentable_type": "GentleOwl::Video",
-    "commentable_id": "b71841be-03ac-45fe-8553-5d657e4e8a05",
-    "created_at": "2025-12-07T10:25:49.053Z"
+    "commentable_id": "b4f6ede3-537e-4cee-98de-8d8808dcce95",
+    "created_at": "2025-12-07T11:20:16.870Z"
   }
 }
 ```
@@ -222,12 +229,12 @@ GET /gentle-owl/comments?filter[commentable_type][eq]=GentleOwl::Post
 {
   "comments": [
     {
-      "id": "e53c2f3f-206b-4e69-8ddd-3b7b9f3c9cdc",
+      "id": "9d2a16d5-f6de-4df3-be85-22b4741d6b8f",
       "body": "Post comment",
       "author_name": "User 1",
       "commentable_type": "GentleOwl::Post",
-      "commentable_id": "19e18dc9-794d-4a04-a274-96d7df0fdf30",
-      "created_at": "2025-12-07T10:25:49.059Z"
+      "commentable_id": "32e6a3bf-2ac9-4bee-99fd-c6d143aa57e5",
+      "created_at": "2025-12-07T11:20:16.876Z"
     }
   ],
   "pagination": {

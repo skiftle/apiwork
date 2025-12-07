@@ -14,13 +14,13 @@
   "response": {
     "status": 201,
     "body": {
-      "id": "3e9c6590-926d-4c7d-8e8d-fc7fbf4aca36",
+      "id": "289d4a21-7f54-4ff6-8cde-df13ab1f6f9c",
       "number": "INV-001",
       "issued_on": "2024-01-15",
       "status": "draft",
       "notes": "First invoice",
-      "created_at": "2025-12-07T10:25:48.970Z",
-      "updated_at": "2025-12-07T10:25:48.970Z"
+      "created_at": "2025-12-07T11:20:16.777Z",
+      "updated_at": "2025-12-07T11:20:16.777Z"
     }
   }
 }
