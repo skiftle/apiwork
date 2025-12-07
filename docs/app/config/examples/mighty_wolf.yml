@@ -1,0 +1,3 @@
+title: STI with Discriminated Unions
+description: Single Table Inheritance with automatic variant serialization and TypeScript union types
+order: 6

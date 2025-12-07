@@ -1,0 +1,287 @@
+---
+:openapi: 3.1.0
+:info:
+  :title: "/gentle-owl API"
+  :version: 1.0.0
+:paths:
+  comments/:
+    get:
+      :operationId: comments_index
+      :tags:
+      - Comments
+      :parameters:
+      - :in: query
+        :name: filter
+        :required: false
+        :schema:
+          :oneOf:
+          - :$ref: "#/components/schemas/comment_filter"
+          - :type: array
+            :items:
+              :$ref: "#/components/schemas/comment_filter"
+      - :in: query
+        :name: include
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/comment_include"
+      - :in: query
+        :name: page
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/comment_page"
+      - :in: query
+        :name: sort
+        :required: false
+        :schema:
+          :oneOf:
+          - :$ref: "#/components/schemas/comment_sort"
+          - :type: array
+            :items:
+              :$ref: "#/components/schemas/comment_sort"
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  comments:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/comment"
+                  meta:
+                    :type: object
+                    :properties: {}
+                  pagination:
+                    :$ref: "#/components/schemas/page_pagination"
+    post:
+      :operationId: comments_create
+      :tags:
+      - Comments
+      :requestBody:
+        :required: true
+        :content:
+          :application/json:
+            :schema:
+              :type: object
+              :properties:
+                comment:
+                  :$ref: "#/components/schemas/comment_create_payload"
+              :required:
+              - comment
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  comment:
+                    :$ref: "#/components/schemas/comment"
+                  meta:
+                    :type: object
+                    :properties: {}
+                :required:
+                - comment
+        :422:
+          :description: Unprocessable Entity
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  issues:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/issue"
+  comments/:id:
+    get:
+      :operationId: comments_show
+      :tags:
+      - Comments
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  comment:
+                    :$ref: "#/components/schemas/comment"
+                  meta:
+                    :type: object
+                    :properties: {}
+                :required:
+                - comment
+    patch:
+      :operationId: comments_update
+      :tags:
+      - Comments
+      :requestBody:
+        :required: true
+        :content:
+          :application/json:
+            :schema:
+              :type: object
+              :properties:
+                comment:
+                  :$ref: "#/components/schemas/comment_update_payload"
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  comment:
+                    :$ref: "#/components/schemas/comment"
+                  meta:
+                    :type: object
+                    :properties: {}
+        :422:
+          :description: Unprocessable Entity
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  issues:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/issue"
+    delete:
+      :operationId: comments_destroy
+      :tags:
+      - Comments
+      :responses:
+        :204:
+          :description: No content
+:components:
+  :schemas:
+    comment:
+      :type: object
+      :properties:
+        author_name:
+          :type: string
+        body:
+          :type: string
+        commentable_id: {}
+        commentable_type:
+          :type: string
+        created_at:
+          :type: string
+        id: {}
+    comment_create_payload:
+      :type: object
+      :properties:
+        author_name:
+          :type:
+          - string
+          - 'null'
+        body:
+          :type: string
+      :required:
+      - body
+    comment_filter:
+      :type: object
+      :properties:
+        _and:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/comment_filter"
+        _not:
+          :$ref: "#/components/schemas/comment_filter"
+        _or:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/comment_filter"
+        commentable_type:
+          :oneOf:
+          - :type: string
+          - :$ref: "#/components/schemas/string_filter"
+    comment_include:
+      :type: object
+      :properties: {}
+    comment_page:
+      :type: object
+      :properties:
+        number:
+          :type: integer
+          :minimum: 1
+        size:
+          :type: integer
+          :minimum: 1
+          :maximum: 100
+    comment_sort:
+      :type: object
+      :properties:
+        created_at: {}
+    comment_update_payload:
+      :type: object
+      :properties:
+        author_name:
+          :type:
+          - string
+          - 'null'
+        body:
+          :type: string
+      :required:
+      - body
+    issue:
+      :type: object
+      :properties:
+        code:
+          :type: string
+        detail:
+          :type: string
+        field:
+          :type: string
+        path:
+          :type: array
+          :items:
+            :type: string
+      :required:
+      - code
+      - detail
+      - field
+      - path
+    page_pagination:
+      :type: object
+      :properties:
+        current:
+          :type: integer
+        items:
+          :type: integer
+        next:
+          :type:
+          - integer
+          - 'null'
+        prev:
+          :type:
+          - integer
+          - 'null'
+        total:
+          :type: integer
+      :required:
+      - current
+      - items
+      - total
+    string_filter:
+      :type: object
+      :properties:
+        contains:
+          :type: string
+        ends_with:
+          :type: string
+        eq:
+          :type: string
+        in:
+          :type: array
+          :items:
+            :type: string
+        starts_with:
+          :type: string

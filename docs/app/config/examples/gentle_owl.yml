@@ -1,0 +1,3 @@
+title: Polymorphic Associations
+description: Comments that belong to different content types (posts, videos, images)
+order: 7

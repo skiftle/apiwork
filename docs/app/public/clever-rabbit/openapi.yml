@@ -1,0 +1,340 @@
+---
+:openapi: 3.1.0
+:info:
+  :title: "/clever-rabbit API"
+  :version: 1.0.0
+:paths:
+  orders/:
+    get:
+      :operationId: orders_index
+      :tags:
+      - Orders
+      :parameters:
+      - :in: query
+        :name: filter
+        :required: false
+        :schema:
+          :oneOf:
+          - :$ref: "#/components/schemas/order_filter"
+          - :type: array
+            :items:
+              :$ref: "#/components/schemas/order_filter"
+      - :in: query
+        :name: include
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/order_include"
+      - :in: query
+        :name: page
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/order_page"
+      - :in: query
+        :name: sort
+        :required: false
+        :schema:
+          :oneOf:
+          - :$ref: "#/components/schemas/order_sort"
+          - :type: array
+            :items:
+              :$ref: "#/components/schemas/order_sort"
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  meta:
+                    :type: object
+                    :properties: {}
+                  orders:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/order"
+                  pagination:
+                    :$ref: "#/components/schemas/page_pagination"
+    post:
+      :operationId: orders_create
+      :tags:
+      - Orders
+      :parameters:
+      - :in: query
+        :name: include
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/order_include"
+      :requestBody:
+        :required: true
+        :content:
+          :application/json:
+            :schema:
+              :type: object
+              :properties:
+                order:
+                  :$ref: "#/components/schemas/order_create_payload"
+              :required:
+              - order
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  meta:
+                    :type: object
+                    :properties: {}
+                  order:
+                    :$ref: "#/components/schemas/order"
+                :required:
+                - order
+        :422:
+          :description: Unprocessable Entity
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  issues:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/issue"
+  orders/:id:
+    get:
+      :operationId: orders_show
+      :tags:
+      - Orders
+      :parameters:
+      - :in: query
+        :name: include
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/order_include"
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  meta:
+                    :type: object
+                    :properties: {}
+                  order:
+                    :$ref: "#/components/schemas/order"
+                :required:
+                - order
+    patch:
+      :operationId: orders_update
+      :tags:
+      - Orders
+      :parameters:
+      - :in: query
+        :name: include
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/order_include"
+      :requestBody:
+        :required: true
+        :content:
+          :application/json:
+            :schema:
+              :type: object
+              :properties:
+                order:
+                  :$ref: "#/components/schemas/order_update_payload"
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  meta:
+                    :type: object
+                    :properties: {}
+                  order:
+                    :$ref: "#/components/schemas/order"
+        :422:
+          :description: Unprocessable Entity
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  issues:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/issue"
+    delete:
+      :operationId: orders_destroy
+      :tags:
+      - Orders
+      :responses:
+        :204:
+          :description: No content
+:components:
+  :schemas:
+    issue:
+      :type: object
+      :properties:
+        code:
+          :type: string
+        detail:
+          :type: string
+        field:
+          :type: string
+        path:
+          :type: array
+          :items:
+            :type: string
+      :required:
+      - code
+      - detail
+      - field
+      - path
+    nullable_string_filter:
+      :type: object
+      :properties:
+        contains:
+          :type: string
+        ends_with:
+          :type: string
+        eq:
+          :type: string
+        in:
+          :type: array
+          :items:
+            :type: string
+        'null':
+          :type: boolean
+        starts_with:
+          :type: string
+    order:
+      :type: object
+      :properties:
+        created_at:
+          :type: string
+        id: {}
+        line_items:
+          :type: array
+          :items:
+            :type: string
+        order_number:
+          :type: string
+        shipping_address:
+          :type: object
+          :properties: {}
+        status:
+          :type: string
+        total:
+          :type: number
+        updated_at:
+          :type: string
+      :required:
+      - line_items
+      - shipping_address
+    order_create_payload:
+      :type: object
+      :properties:
+        line_items:
+          :type: array
+          :items:
+            :type: string
+        order_number:
+          :type: string
+        shipping_address:
+          :type: object
+          :properties: {}
+      :required:
+      - order_number
+    order_filter:
+      :type: object
+      :properties:
+        _and:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/order_filter"
+        _not:
+          :$ref: "#/components/schemas/order_filter"
+        _or:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/order_filter"
+        status:
+          :oneOf:
+          - :type: string
+          - :$ref: "#/components/schemas/nullable_string_filter"
+    order_include:
+      :type: object
+      :properties: {}
+    order_page:
+      :type: object
+      :properties:
+        number:
+          :type: integer
+          :minimum: 1
+        size:
+          :type: integer
+          :minimum: 1
+          :maximum: 100
+    order_sort:
+      :type: object
+      :properties:
+        created_at: {}
+        status: {}
+    order_update_payload:
+      :type: object
+      :properties:
+        line_items:
+          :type: array
+          :items:
+            :type: string
+        order_number:
+          :type: string
+        shipping_address:
+          :type: object
+          :properties: {}
+      :required:
+      - order_number
+    page_pagination:
+      :type: object
+      :properties:
+        current:
+          :type: integer
+        items:
+          :type: integer
+        next:
+          :type:
+          - integer
+          - 'null'
+        prev:
+          :type:
+          - integer
+          - 'null'
+        total:
+          :type: integer
+      :required:
+      - current
+      - items
+      - total
+    string_filter:
+      :type: object
+      :properties:
+        contains:
+          :type: string
+        ends_with:
+          :type: string
+        eq:
+          :type: string
+        in:
+          :type: array
+          :items:
+            :type: string
+        starts_with:
+          :type: string

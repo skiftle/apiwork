@@ -1,0 +1,508 @@
+{
+  "path": "/clever-rabbit",
+  "types": {
+    "issue": {
+      "type": "object",
+      "shape": {
+        "code": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "field": {
+          "type": "string"
+        },
+        "path": {
+          "type": "array",
+          "of": "string"
+        }
+      }
+    },
+    "nullable_string_filter": {
+      "type": "object",
+      "shape": {
+        "contains": {
+          "type": "string",
+          "optional": true
+        },
+        "ends_with": {
+          "type": "string",
+          "optional": true
+        },
+        "eq": {
+          "type": "string",
+          "optional": true
+        },
+        "in": {
+          "type": "array",
+          "of": "string",
+          "optional": true
+        },
+        "null": {
+          "type": "boolean",
+          "optional": true
+        },
+        "starts_with": {
+          "type": "string",
+          "optional": true
+        }
+      }
+    },
+    "order": {
+      "type": "object",
+      "shape": {
+        "created_at": {
+          "type": "datetime",
+          "optional": true
+        },
+        "id": {
+          "type": "unknown",
+          "optional": true
+        },
+        "line_items": {
+          "type": "array"
+        },
+        "order_number": {
+          "type": "string",
+          "optional": true
+        },
+        "shipping_address": {
+          "type": "object"
+        },
+        "status": {
+          "type": "string",
+          "optional": true
+        },
+        "total": {
+          "type": "decimal",
+          "optional": true
+        },
+        "updated_at": {
+          "type": "datetime",
+          "optional": true
+        }
+      }
+    },
+    "order_create_payload": {
+      "type": "object",
+      "shape": {
+        "line_items": {
+          "type": "array",
+          "as": "line_items_attributes",
+          "optional": true
+        },
+        "order_number": {
+          "type": "string"
+        },
+        "shipping_address": {
+          "type": "object",
+          "as": "shipping_address_attributes",
+          "optional": true
+        }
+      }
+    },
+    "order_filter": {
+      "type": "object",
+      "shape": {
+        "_and": {
+          "type": "array",
+          "of": "order_filter",
+          "optional": true
+        },
+        "_not": {
+          "type": "order_filter",
+          "optional": true
+        },
+        "_or": {
+          "type": "array",
+          "of": "order_filter",
+          "optional": true
+        },
+        "status": {
+          "type": "union",
+          "variants": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "nullable_string_filter"
+            }
+          ],
+          "optional": true
+        }
+      }
+    },
+    "order_include": {
+      "type": "object"
+    },
+    "order_page": {
+      "type": "object",
+      "shape": {
+        "number": {
+          "type": "integer",
+          "optional": true,
+          "min": 1
+        },
+        "size": {
+          "type": "integer",
+          "optional": true,
+          "min": 1,
+          "max": 100
+        }
+      }
+    },
+    "order_sort": {
+      "type": "object",
+      "shape": {
+        "created_at": {
+          "type": "order_sort_direction",
+          "optional": true
+        },
+        "status": {
+          "type": "order_sort_direction",
+          "optional": true
+        }
+      }
+    },
+    "order_update_payload": {
+      "type": "object",
+      "shape": {
+        "line_items": {
+          "type": "array",
+          "as": "line_items_attributes",
+          "optional": true
+        },
+        "order_number": {
+          "type": "string"
+        },
+        "shipping_address": {
+          "type": "object",
+          "as": "shipping_address_attributes",
+          "optional": true
+        }
+      }
+    },
+    "page_pagination": {
+      "type": "object",
+      "shape": {
+        "current": {
+          "type": "integer"
+        },
+        "items": {
+          "type": "integer"
+        },
+        "next": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "prev": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "total": {
+          "type": "integer"
+        }
+      }
+    },
+    "string_filter": {
+      "type": "object",
+      "shape": {
+        "contains": {
+          "type": "string",
+          "optional": true
+        },
+        "ends_with": {
+          "type": "string",
+          "optional": true
+        },
+        "eq": {
+          "type": "string",
+          "optional": true
+        },
+        "in": {
+          "type": "array",
+          "of": "string",
+          "optional": true
+        },
+        "starts_with": {
+          "type": "string",
+          "optional": true
+        }
+      }
+    }
+  },
+  "enums": {
+    "sort_direction": {
+      "values": [
+        "asc",
+        "desc"
+      ]
+    }
+  },
+  "error_codes": {
+    "unprocessable_entity": {
+      "status": 422,
+      "description": "Unprocessable Entity"
+    }
+  },
+  "resources": {
+    "orders": {
+      "path": "orders",
+      "summary": "Orders",
+      "description": "Operations for managing orders.",
+      "tags": [
+        "Orders"
+      ],
+      "schema": {
+        "type": "object",
+        "shape": {
+          "id": {},
+          "order_number": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true,
+            "optional": true
+          },
+          "total": {
+            "type": "decimal",
+            "nullable": true,
+            "optional": true
+          },
+          "created_at": {
+            "type": "datetime"
+          },
+          "updated_at": {
+            "type": "datetime"
+          }
+        }
+      },
+      "actions": {
+        "index": {
+          "method": "get",
+          "path": "/",
+          "request": {
+            "query": {
+              "filter": {
+                "type": "union",
+                "variants": [
+                  {
+                    "type": "order_filter"
+                  },
+                  {
+                    "type": "array",
+                    "of": "order_filter"
+                  }
+                ],
+                "optional": true
+              },
+              "include": {
+                "type": "order_include",
+                "optional": true
+              },
+              "page": {
+                "type": "order_page",
+                "optional": true
+              },
+              "sort": {
+                "type": "union",
+                "variants": [
+                  {
+                    "type": "order_sort"
+                  },
+                  {
+                    "type": "array",
+                    "of": "order_sort"
+                  }
+                ],
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "orders": {
+                      "type": "array",
+                      "of": "order",
+                      "optional": true
+                    },
+                    "pagination": {
+                      "type": "page_pagination",
+                      "optional": true
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "show": {
+          "method": "get",
+          "path": "/:id",
+          "request": {
+            "query": {
+              "include": {
+                "type": "order_include",
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "order": {
+                      "type": "order"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "create": {
+          "method": "post",
+          "path": "/",
+          "request": {
+            "query": {
+              "include": {
+                "type": "order_include",
+                "optional": true
+              }
+            },
+            "body": {
+              "order": {
+                "type": "order_create_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "order": {
+                      "type": "order"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "raises": [
+            "unprocessable_entity"
+          ]
+        },
+        "update": {
+          "method": "patch",
+          "path": "/:id",
+          "request": {
+            "query": {
+              "include": {
+                "type": "order_include",
+                "optional": true
+              }
+            },
+            "body": {
+              "order": {
+                "type": "order_update_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "order": {
+                      "type": "order"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "raises": [
+            "unprocessable_entity"
+          ]
+        },
+        "destroy": {
+          "method": "delete",
+          "path": "/:id"
+        }
+      }
+    }
+  }
+}

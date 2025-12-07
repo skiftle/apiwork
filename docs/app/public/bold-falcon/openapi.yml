@@ -1,0 +1,528 @@
+---
+:openapi: 3.1.0
+:info:
+  :title: "/bold-falcon API"
+  :version: 1.0.0
+:paths:
+  articles/:
+    get:
+      :operationId: articles_index
+      :tags:
+      - Articles
+      :parameters:
+      - :in: query
+        :name: filter
+        :required: false
+        :schema:
+          :oneOf:
+          - :$ref: "#/components/schemas/article_filter"
+          - :type: array
+            :items:
+              :$ref: "#/components/schemas/article_filter"
+      - :in: query
+        :name: include
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/article_include"
+      - :in: query
+        :name: page
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/article_page"
+      - :in: query
+        :name: sort
+        :required: false
+        :schema:
+          :oneOf:
+          - :$ref: "#/components/schemas/article_sort"
+          - :type: array
+            :items:
+              :$ref: "#/components/schemas/article_sort"
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  articles:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/article"
+                  meta:
+                    :type: object
+                    :properties: {}
+                  pagination:
+                    :$ref: "#/components/schemas/page_pagination"
+    post:
+      :operationId: articles_create
+      :tags:
+      - Articles
+      :parameters:
+      - :in: query
+        :name: include
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/article_include"
+      :requestBody:
+        :required: true
+        :content:
+          :application/json:
+            :schema:
+              :type: object
+              :properties:
+                article:
+                  :$ref: "#/components/schemas/article_create_payload"
+              :required:
+              - article
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  article:
+                    :$ref: "#/components/schemas/article"
+                  meta:
+                    :type: object
+                    :properties: {}
+                :required:
+                - article
+        :422:
+          :description: Unprocessable Entity
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  issues:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/issue"
+  articles/:id:
+    get:
+      :operationId: articles_show
+      :tags:
+      - Articles
+      :parameters:
+      - :in: query
+        :name: include
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/article_include"
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  article:
+                    :$ref: "#/components/schemas/article"
+                  meta:
+                    :type: object
+                    :properties: {}
+                :required:
+                - article
+    patch:
+      :operationId: articles_update
+      :tags:
+      - Articles
+      :parameters:
+      - :in: query
+        :name: include
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/article_include"
+      :requestBody:
+        :required: true
+        :content:
+          :application/json:
+            :schema:
+              :type: object
+              :properties:
+                article:
+                  :$ref: "#/components/schemas/article_update_payload"
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  article:
+                    :$ref: "#/components/schemas/article"
+                  meta:
+                    :type: object
+                    :properties: {}
+        :422:
+          :description: Unprocessable Entity
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  issues:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/issue"
+    delete:
+      :operationId: articles_destroy
+      :tags:
+      - Articles
+      :responses:
+        :204:
+          :description: No content
+:components:
+  :schemas:
+    article:
+      :type: object
+      :properties:
+        body:
+          :type: string
+        category:
+          :type:
+          - object
+          - 'null'
+          :properties: {}
+        created_at:
+          :type: string
+        id: {}
+        published_on:
+          :type: string
+        rating:
+          :type: number
+        status:
+          :type: string
+          :enum: &1
+          - draft
+          - published
+          - archived
+        title:
+          :type: string
+        updated_at:
+          :type: string
+        view_count:
+          :type: integer
+    article_create_payload:
+      :type: object
+      :properties:
+        body:
+          :type:
+          - string
+          - 'null'
+        published_on:
+          :type:
+          - string
+          - 'null'
+        status:
+          :type:
+          - string
+          - 'null'
+          :enum: *1
+        title:
+          :type: string
+      :required:
+      - title
+    article_filter:
+      :type: object
+      :properties:
+        _and:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/article_filter"
+        _not:
+          :$ref: "#/components/schemas/article_filter"
+        _or:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/article_filter"
+        published_on:
+          :oneOf:
+          - :type: string
+          - :$ref: "#/components/schemas/nullable_date_filter"
+        rating:
+          :oneOf:
+          - :type: number
+          - :$ref: "#/components/schemas/nullable_decimal_filter"
+        status:
+          :$ref: "#/components/schemas/article_status_filter"
+        title:
+          :oneOf:
+          - :type: string
+          - :$ref: "#/components/schemas/string_filter"
+        view_count:
+          :oneOf:
+          - :type: integer
+          - :$ref: "#/components/schemas/nullable_integer_filter"
+    article_include:
+      :type: object
+      :properties: {}
+    article_page:
+      :type: object
+      :properties:
+        number:
+          :type: integer
+          :minimum: 1
+        size:
+          :type: integer
+          :minimum: 1
+          :maximum: 100
+    article_sort:
+      :type: object
+      :properties:
+        created_at: {}
+        published_on: {}
+        rating: {}
+        status: {}
+        view_count: {}
+    article_status_filter:
+      :oneOf:
+      - :type: string
+        :enum: *1
+      - :type: object
+        :properties:
+          eq:
+            :type: string
+            :enum: *1
+          in:
+            :type: array
+            :items:
+              :type:
+    article_update_payload:
+      :type: object
+      :properties:
+        body:
+          :type:
+          - string
+          - 'null'
+        published_on:
+          :type:
+          - string
+          - 'null'
+        status:
+          :type:
+          - string
+          - 'null'
+          :enum: *1
+        title:
+          :type: string
+      :required:
+      - title
+    date_filter:
+      :type: object
+      :properties:
+        between:
+          :$ref: "#/components/schemas/date_filter_between"
+        eq:
+          :type: string
+        gt:
+          :type: string
+        gte:
+          :type: string
+        in:
+          :type: array
+          :items:
+            :type: string
+        lt:
+          :type: string
+        lte:
+          :type: string
+    date_filter_between:
+      :type: object
+      :properties:
+        from:
+          :type: string
+        to:
+          :type: string
+    decimal_filter:
+      :type: object
+      :properties:
+        between:
+          :$ref: "#/components/schemas/decimal_filter_between"
+        eq:
+          :type: number
+        gt:
+          :type: number
+        gte:
+          :type: number
+        in:
+          :type: array
+          :items:
+            :type: number
+        lt:
+          :type: number
+        lte:
+          :type: number
+    decimal_filter_between:
+      :type: object
+      :properties:
+        from:
+          :type: number
+        to:
+          :type: number
+    integer_filter:
+      :type: object
+      :properties:
+        between:
+          :$ref: "#/components/schemas/integer_filter_between"
+        eq:
+          :type: integer
+        gt:
+          :type: integer
+        gte:
+          :type: integer
+        in:
+          :type: array
+          :items:
+            :type: integer
+        lt:
+          :type: integer
+        lte:
+          :type: integer
+    integer_filter_between:
+      :type: object
+      :properties:
+        from:
+          :type: integer
+        to:
+          :type: integer
+    issue:
+      :type: object
+      :properties:
+        code:
+          :type: string
+        detail:
+          :type: string
+        field:
+          :type: string
+        path:
+          :type: array
+          :items:
+            :type: string
+      :required:
+      - code
+      - detail
+      - field
+      - path
+    nullable_date_filter:
+      :type: object
+      :properties:
+        between:
+          :$ref: "#/components/schemas/date_filter_between"
+        eq:
+          :type: string
+        gt:
+          :type: string
+        gte:
+          :type: string
+        in:
+          :type: array
+          :items:
+            :type: string
+        lt:
+          :type: string
+        lte:
+          :type: string
+        'null':
+          :type: boolean
+    nullable_decimal_filter:
+      :type: object
+      :properties:
+        between:
+          :$ref: "#/components/schemas/decimal_filter_between"
+        eq:
+          :type: number
+        gt:
+          :type: number
+        gte:
+          :type: number
+        in:
+          :type: array
+          :items:
+            :type: number
+        lt:
+          :type: number
+        lte:
+          :type: number
+        'null':
+          :type: boolean
+    nullable_integer_filter:
+      :type: object
+      :properties:
+        between:
+          :$ref: "#/components/schemas/integer_filter_between"
+        eq:
+          :type: integer
+        gt:
+          :type: integer
+        gte:
+          :type: integer
+        in:
+          :type: array
+          :items:
+            :type: integer
+        lt:
+          :type: integer
+        lte:
+          :type: integer
+        'null':
+          :type: boolean
+    nullable_string_filter:
+      :type: object
+      :properties:
+        contains:
+          :type: string
+        ends_with:
+          :type: string
+        eq:
+          :type: string
+        in:
+          :type: array
+          :items:
+            :type: string
+        'null':
+          :type: boolean
+        starts_with:
+          :type: string
+    page_pagination:
+      :type: object
+      :properties:
+        current:
+          :type: integer
+        items:
+          :type: integer
+        next:
+          :type:
+          - integer
+          - 'null'
+        prev:
+          :type:
+          - integer
+          - 'null'
+        total:
+          :type: integer
+      :required:
+      - current
+      - items
+      - total
+    string_filter:
+      :type: object
+      :properties:
+        contains:
+          :type: string
+        ends_with:
+          :type: string
+        eq:
+          :type: string
+        in:
+          :type: array
+          :items:
+            :type: string
+        starts_with:
+          :type: string

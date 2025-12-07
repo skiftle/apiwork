@@ -1,0 +1,463 @@
+---
+:openapi: 3.1.0
+:info:
+  :title: "/mighty-wolf API"
+  :version: 1.0.0
+:paths:
+  vehicles/:
+    get:
+      :operationId: vehicles_index
+      :tags:
+      - Vehicles
+      :parameters:
+      - :in: query
+        :name: filter
+        :required: false
+        :schema:
+          :oneOf:
+          - :$ref: "#/components/schemas/vehicle_filter"
+          - :type: array
+            :items:
+              :$ref: "#/components/schemas/vehicle_filter"
+      - :in: query
+        :name: include
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/vehicle_include"
+      - :in: query
+        :name: page
+        :required: false
+        :schema:
+          :$ref: "#/components/schemas/vehicle_page"
+      - :in: query
+        :name: sort
+        :required: false
+        :schema:
+          :oneOf:
+          - :$ref: "#/components/schemas/vehicle_sort"
+          - :type: array
+            :items:
+              :$ref: "#/components/schemas/vehicle_sort"
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  meta:
+                    :type: object
+                    :properties: {}
+                  pagination:
+                    :$ref: "#/components/schemas/page_pagination"
+                  vehicles:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/vehicle"
+    post:
+      :operationId: vehicles_create
+      :tags:
+      - Vehicles
+      :requestBody:
+        :required: true
+        :content:
+          :application/json:
+            :schema:
+              :type: object
+              :properties:
+                vehicle: {}
+              :required:
+              - vehicle
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  meta:
+                    :type: object
+                    :properties: {}
+                  vehicle:
+                    :$ref: "#/components/schemas/vehicle"
+                :required:
+                - vehicle
+        :422:
+          :description: Unprocessable Entity
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  issues:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/issue"
+  vehicles/:id:
+    get:
+      :operationId: vehicles_show
+      :tags:
+      - Vehicles
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  meta:
+                    :type: object
+                    :properties: {}
+                  vehicle:
+                    :$ref: "#/components/schemas/vehicle"
+                :required:
+                - vehicle
+    patch:
+      :operationId: vehicles_update
+      :tags:
+      - Vehicles
+      :requestBody:
+        :required: true
+        :content:
+          :application/json:
+            :schema:
+              :type: object
+              :properties:
+                vehicle: {}
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  meta:
+                    :type: object
+                    :properties: {}
+                  vehicle:
+                    :$ref: "#/components/schemas/vehicle"
+        :422:
+          :description: Unprocessable Entity
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  issues:
+                    :type: array
+                    :items:
+                      :$ref: "#/components/schemas/issue"
+    delete:
+      :operationId: vehicles_destroy
+      :tags:
+      - Vehicles
+      :responses:
+        :204:
+          :description: No content
+:components:
+  :schemas:
+    integer_filter:
+      :type: object
+      :properties:
+        between:
+          :$ref: "#/components/schemas/integer_filter_between"
+        eq:
+          :type: integer
+        gt:
+          :type: integer
+        gte:
+          :type: integer
+        in:
+          :type: array
+          :items:
+            :type: integer
+        lt:
+          :type: integer
+        lte:
+          :type: integer
+    integer_filter_between:
+      :type: object
+      :properties:
+        from:
+          :type: integer
+        to:
+          :type: integer
+    issue:
+      :type: object
+      :properties:
+        code:
+          :type: string
+        detail:
+          :type: string
+        field:
+          :type: string
+        path:
+          :type: array
+          :items:
+            :type: string
+      :required:
+      - code
+      - detail
+      - field
+      - path
+    nullable_integer_filter:
+      :type: object
+      :properties:
+        between:
+          :$ref: "#/components/schemas/integer_filter_between"
+        eq:
+          :type: integer
+        gt:
+          :type: integer
+        gte:
+          :type: integer
+        in:
+          :type: array
+          :items:
+            :type: integer
+        lt:
+          :type: integer
+        lte:
+          :type: integer
+        'null':
+          :type: boolean
+    page_pagination:
+      :type: object
+      :properties:
+        current:
+          :type: integer
+        items:
+          :type: integer
+        next:
+          :type:
+          - integer
+          - 'null'
+        prev:
+          :type:
+          - integer
+          - 'null'
+        total:
+          :type: integer
+      :required:
+      - current
+      - items
+      - total
+    string_filter:
+      :type: object
+      :properties:
+        contains:
+          :type: string
+        ends_with:
+          :type: string
+        eq:
+          :type: string
+        in:
+          :type: array
+          :items:
+            :type: string
+        starts_with:
+          :type: string
+    vehicle:
+      :oneOf: []
+      :discriminator:
+        :propertyName: kind
+    vehicle_car_create_payload:
+      :type: object
+      :properties:
+        brand:
+          :type: string
+        color:
+          :type:
+          - string
+          - 'null'
+        kind:
+          :type: string
+          :const: car
+        model:
+          :type: string
+        year:
+          :type:
+          - integer
+          - 'null'
+      :required:
+      - brand
+      - kind
+      - model
+    vehicle_car_update_payload:
+      :type: object
+      :properties:
+        brand:
+          :type: string
+        color:
+          :type:
+          - string
+          - 'null'
+        kind:
+          :type: string
+          :const: car
+        model:
+          :type: string
+        year:
+          :type:
+          - integer
+          - 'null'
+      :required:
+      - brand
+      - kind
+      - model
+    vehicle_create_payload:
+      :oneOf:
+      - :$ref: "#/components/schemas/vehicle_car_create_payload"
+      - :$ref: "#/components/schemas/vehicle_motorcycle_create_payload"
+      - :$ref: "#/components/schemas/vehicle_truck_create_payload"
+      :discriminator:
+        :propertyName: kind
+        :mapping:
+          car: "#/components/schemas/vehicle_car_create_payload"
+          motorcycle: "#/components/schemas/vehicle_motorcycle_create_payload"
+          truck: "#/components/schemas/vehicle_truck_create_payload"
+    vehicle_filter:
+      :type: object
+      :properties:
+        _and:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/vehicle_filter"
+        _not:
+          :$ref: "#/components/schemas/vehicle_filter"
+        _or:
+          :type: array
+          :items:
+            :$ref: "#/components/schemas/vehicle_filter"
+        brand:
+          :oneOf:
+          - :type: string
+          - :$ref: "#/components/schemas/string_filter"
+        model:
+          :oneOf:
+          - :type: string
+          - :$ref: "#/components/schemas/string_filter"
+        year:
+          :oneOf:
+          - :type: integer
+          - :$ref: "#/components/schemas/nullable_integer_filter"
+    vehicle_include:
+      :type: object
+      :properties: {}
+    vehicle_motorcycle_create_payload:
+      :type: object
+      :properties:
+        brand:
+          :type: string
+        color:
+          :type:
+          - string
+          - 'null'
+        kind:
+          :type: string
+          :const: motorcycle
+        model:
+          :type: string
+        year:
+          :type:
+          - integer
+          - 'null'
+      :required:
+      - brand
+      - kind
+      - model
+    vehicle_motorcycle_update_payload:
+      :type: object
+      :properties:
+        brand:
+          :type: string
+        color:
+          :type:
+          - string
+          - 'null'
+        kind:
+          :type: string
+          :const: motorcycle
+        model:
+          :type: string
+        year:
+          :type:
+          - integer
+          - 'null'
+      :required:
+      - brand
+      - kind
+      - model
+    vehicle_page:
+      :type: object
+      :properties:
+        number:
+          :type: integer
+          :minimum: 1
+        size:
+          :type: integer
+          :minimum: 1
+          :maximum: 100
+    vehicle_sort:
+      :type: object
+      :properties:
+        year: {}
+    vehicle_truck_create_payload:
+      :type: object
+      :properties:
+        brand:
+          :type: string
+        color:
+          :type:
+          - string
+          - 'null'
+        kind:
+          :type: string
+          :const: truck
+        model:
+          :type: string
+        year:
+          :type:
+          - integer
+          - 'null'
+      :required:
+      - brand
+      - kind
+      - model
+    vehicle_truck_update_payload:
+      :type: object
+      :properties:
+        brand:
+          :type: string
+        color:
+          :type:
+          - string
+          - 'null'
+        kind:
+          :type: string
+          :const: truck
+        model:
+          :type: string
+        year:
+          :type:
+          - integer
+          - 'null'
+      :required:
+      - brand
+      - kind
+      - model
+    vehicle_update_payload:
+      :oneOf:
+      - :$ref: "#/components/schemas/vehicle_car_update_payload"
+      - :$ref: "#/components/schemas/vehicle_motorcycle_update_payload"
+      - :$ref: "#/components/schemas/vehicle_truck_update_payload"
+      :discriminator:
+        :propertyName: kind
+        :mapping:
+          car: "#/components/schemas/vehicle_car_update_payload"
+          motorcycle: "#/components/schemas/vehicle_motorcycle_update_payload"
+          truck: "#/components/schemas/vehicle_truck_update_payload"

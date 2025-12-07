@@ -1,0 +1,144 @@
+export interface Issue {
+  code: string;
+  detail: string;
+  field: string;
+  path: string[];
+}
+
+export interface NullableStringFilter {
+  contains?: string;
+  ends_with?: string;
+  eq?: string;
+  in?: string[];
+  null?: boolean;
+  starts_with?: string;
+}
+
+export interface Order {
+  created_at?: string;
+  id?: unknown;
+  line_items: string[];
+  order_number?: string;
+  shipping_address: object;
+  status?: string;
+  total?: number;
+  updated_at?: string;
+}
+
+export interface OrderCreatePayload {
+  line_items?: string[];
+  order_number: string;
+  shipping_address?: object;
+}
+
+export interface OrderFilter {
+  _and?: OrderFilter[];
+  _not?: OrderFilter;
+  _or?: OrderFilter[];
+  status?: NullableStringFilter | string;
+}
+
+export type OrderInclude = object;
+
+export interface OrderPage {
+  number?: number;
+  size?: number;
+}
+
+export interface OrderSort {
+  created_at?: unknown;
+  status?: unknown;
+}
+
+export interface OrderUpdatePayload {
+  line_items?: string[];
+  order_number?: string;
+  shipping_address?: object;
+}
+
+export interface OrdersCreateRequest {
+  query: OrdersCreateRequestQuery;
+  body: OrdersCreateRequestBody;
+}
+
+export interface OrdersCreateRequestBody {
+  order: OrderCreatePayload;
+}
+
+export interface OrdersCreateRequestQuery {
+  include?: OrderInclude;
+}
+
+export interface OrdersCreateResponse {
+  body: OrdersCreateResponseBody;
+}
+
+export type OrdersCreateResponseBody = { issues?: Issue[] } | { meta?: object; order: Order };
+
+export interface OrdersIndexRequest {
+  query: OrdersIndexRequestQuery;
+}
+
+export interface OrdersIndexRequestQuery {
+  filter?: OrderFilter | OrderFilter[];
+  include?: OrderInclude;
+  page?: OrderPage;
+  sort?: OrderSort | OrderSort[];
+}
+
+export interface OrdersIndexResponse {
+  body: OrdersIndexResponseBody;
+}
+
+export type OrdersIndexResponseBody = { issues?: Issue[] } | { meta?: object; orders?: Order[]; pagination?: PagePagination };
+
+export interface OrdersShowRequest {
+  query: OrdersShowRequestQuery;
+}
+
+export interface OrdersShowRequestQuery {
+  include?: OrderInclude;
+}
+
+export interface OrdersShowResponse {
+  body: OrdersShowResponseBody;
+}
+
+export type OrdersShowResponseBody = { issues?: Issue[] } | { meta?: object; order: Order };
+
+export interface OrdersUpdateRequest {
+  query: OrdersUpdateRequestQuery;
+  body: OrdersUpdateRequestBody;
+}
+
+export interface OrdersUpdateRequestBody {
+  order: OrderUpdatePayload;
+}
+
+export interface OrdersUpdateRequestQuery {
+  include?: OrderInclude;
+}
+
+export interface OrdersUpdateResponse {
+  body: OrdersUpdateResponseBody;
+}
+
+export type OrdersUpdateResponseBody = { issues?: Issue[] } | { meta?: object; order: Order };
+
+export interface PagePagination {
+  current: number;
+  items: number;
+  next?: null | number;
+  prev?: null | number;
+  total: number;
+}
+
+export type SortDirection = 'asc' | 'desc';
+
+export interface StringFilter {
+  contains?: string;
+  ends_with?: string;
+  eq?: string;
+  in?: string[];
+  starts_with?: string;
+}

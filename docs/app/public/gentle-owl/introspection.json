@@ -1,0 +1,434 @@
+{
+  "path": "/gentle-owl",
+  "types": {
+    "comment": {
+      "type": "object",
+      "shape": {
+        "author_name": {
+          "type": "string",
+          "optional": true
+        },
+        "body": {
+          "type": "string",
+          "optional": true
+        },
+        "commentable_id": {
+          "type": "unknown",
+          "optional": true
+        },
+        "commentable_type": {
+          "type": "string",
+          "optional": true
+        },
+        "created_at": {
+          "type": "datetime",
+          "optional": true
+        },
+        "id": {
+          "type": "unknown",
+          "optional": true
+        }
+      }
+    },
+    "comment_create_payload": {
+      "type": "object",
+      "shape": {
+        "author_name": {
+          "type": "string",
+          "nullable": true,
+          "optional": true
+        },
+        "body": {
+          "type": "string"
+        }
+      }
+    },
+    "comment_filter": {
+      "type": "object",
+      "shape": {
+        "_and": {
+          "type": "array",
+          "of": "comment_filter",
+          "optional": true
+        },
+        "_not": {
+          "type": "comment_filter",
+          "optional": true
+        },
+        "_or": {
+          "type": "array",
+          "of": "comment_filter",
+          "optional": true
+        },
+        "commentable_type": {
+          "type": "union",
+          "variants": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "string_filter"
+            }
+          ],
+          "optional": true
+        }
+      }
+    },
+    "comment_include": {
+      "type": "object"
+    },
+    "comment_page": {
+      "type": "object",
+      "shape": {
+        "number": {
+          "type": "integer",
+          "optional": true,
+          "min": 1
+        },
+        "size": {
+          "type": "integer",
+          "optional": true,
+          "min": 1,
+          "max": 100
+        }
+      }
+    },
+    "comment_sort": {
+      "type": "object",
+      "shape": {
+        "created_at": {
+          "type": "comment_sort_direction",
+          "optional": true
+        }
+      }
+    },
+    "comment_update_payload": {
+      "type": "object",
+      "shape": {
+        "author_name": {
+          "type": "string",
+          "nullable": true,
+          "optional": true
+        },
+        "body": {
+          "type": "string"
+        }
+      }
+    },
+    "issue": {
+      "type": "object",
+      "shape": {
+        "code": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "field": {
+          "type": "string"
+        },
+        "path": {
+          "type": "array",
+          "of": "string"
+        }
+      }
+    },
+    "page_pagination": {
+      "type": "object",
+      "shape": {
+        "current": {
+          "type": "integer"
+        },
+        "items": {
+          "type": "integer"
+        },
+        "next": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "prev": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "total": {
+          "type": "integer"
+        }
+      }
+    },
+    "string_filter": {
+      "type": "object",
+      "shape": {
+        "contains": {
+          "type": "string",
+          "optional": true
+        },
+        "ends_with": {
+          "type": "string",
+          "optional": true
+        },
+        "eq": {
+          "type": "string",
+          "optional": true
+        },
+        "in": {
+          "type": "array",
+          "of": "string",
+          "optional": true
+        },
+        "starts_with": {
+          "type": "string",
+          "optional": true
+        }
+      }
+    }
+  },
+  "enums": {
+    "sort_direction": {
+      "values": [
+        "asc",
+        "desc"
+      ]
+    }
+  },
+  "error_codes": {
+    "unprocessable_entity": {
+      "status": 422,
+      "description": "Unprocessable Entity"
+    }
+  },
+  "resources": {
+    "comments": {
+      "path": "comments",
+      "summary": "Comments",
+      "description": "Operations for managing comments.",
+      "tags": [
+        "Comments"
+      ],
+      "schema": {
+        "type": "object",
+        "shape": {
+          "id": {},
+          "body": {
+            "type": "text"
+          },
+          "author_name": {
+            "type": "string",
+            "nullable": true,
+            "optional": true
+          },
+          "commentable_type": {
+            "type": "string"
+          },
+          "commentable_id": {},
+          "created_at": {
+            "type": "datetime"
+          }
+        }
+      },
+      "actions": {
+        "index": {
+          "method": "get",
+          "path": "/",
+          "request": {
+            "query": {
+              "filter": {
+                "type": "union",
+                "variants": [
+                  {
+                    "type": "comment_filter"
+                  },
+                  {
+                    "type": "array",
+                    "of": "comment_filter"
+                  }
+                ],
+                "optional": true
+              },
+              "include": {
+                "type": "comment_include",
+                "optional": true
+              },
+              "page": {
+                "type": "comment_page",
+                "optional": true
+              },
+              "sort": {
+                "type": "union",
+                "variants": [
+                  {
+                    "type": "comment_sort"
+                  },
+                  {
+                    "type": "array",
+                    "of": "comment_sort"
+                  }
+                ],
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "comments": {
+                      "type": "array",
+                      "of": "comment",
+                      "optional": true
+                    },
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "pagination": {
+                      "type": "page_pagination",
+                      "optional": true
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "show": {
+          "method": "get",
+          "path": "/:id",
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "comment": {
+                      "type": "comment"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "create": {
+          "method": "post",
+          "path": "/",
+          "request": {
+            "body": {
+              "comment": {
+                "type": "comment_create_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "comment": {
+                      "type": "comment"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "raises": [
+            "unprocessable_entity"
+          ]
+        },
+        "update": {
+          "method": "patch",
+          "path": "/:id",
+          "request": {
+            "body": {
+              "comment": {
+                "type": "comment_update_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "comment": {
+                      "type": "comment"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "raises": [
+            "unprocessable_entity"
+          ]
+        },
+        "destroy": {
+          "method": "delete",
+          "path": "/:id"
+        }
+      }
+    }
+  }
+}
