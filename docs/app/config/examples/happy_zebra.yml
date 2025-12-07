@@ -2,6 +2,33 @@ title: Model Validation Errors
 description: How Apiwork captures ActiveRecord validation errors and presents them in a unified format
 order: 7
 
+sections:
+  - title: API Definition
+    files:
+      - config/apis/happy_zebra.rb
+  - title: Models
+    files:
+      - app/models/happy_zebra/user.rb
+      - app/models/happy_zebra/profile.rb
+      - app/models/happy_zebra/post.rb
+      - app/models/happy_zebra/comment.rb
+  - title: Schemas
+    files:
+      - app/schemas/happy_zebra/user_schema.rb
+      - app/schemas/happy_zebra/profile_schema.rb
+      - app/schemas/happy_zebra/post_schema.rb
+      - app/schemas/happy_zebra/comment_schema.rb
+  - title: Contracts
+    files:
+      - app/contracts/happy_zebra/user_contract.rb
+      - app/contracts/happy_zebra/post_contract.rb
+      - app/contracts/happy_zebra/comment_contract.rb
+  - title: Controllers
+    files:
+      - app/controllers/happy_zebra/users_controller.rb
+      - app/controllers/happy_zebra/posts_controller.rb
+      - app/controllers/happy_zebra/comments_controller.rb
+
 scenarios:
   - title: Create valid user
     description: Successfully create user with profile

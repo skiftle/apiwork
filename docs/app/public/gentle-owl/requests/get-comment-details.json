@@ -1,18 +1,18 @@
 {
   "request": {
     "method": "GET",
-    "path": "/gentle_owl/comments/eeaa1b06-5f1a-40c4-abe9-82a66059243c"
+    "path": "/gentle_owl/comments/4a41c600-81b0-471f-80d7-45fd01483814"
   },
   "response": {
     "status": 200,
     "body": {
       "comment": {
-        "id": "eeaa1b06-5f1a-40c4-abe9-82a66059243c",
+        "id": "4a41c600-81b0-471f-80d7-45fd01483814",
         "body": "Great post!",
         "authorName": "John Doe",
         "commentableType": "GentleOwl::Post",
-        "commentableId": "36f07152-2be9-4f35-98f6-91b0ecb7d66f",
-        "createdAt": "2025-12-07T16:17:39.899Z"
+        "commentableId": "bf892321-73c7-4870-9b59-b334b6d25573",
+        "createdAt": "2025-12-07T16:39:26.133Z"
       }
     }
   }

@@ -137,21 +137,53 @@ class ExampleGenerator
   end
 
   def build_markdown(namespace, locale_key, metadata)
-    sections = []
+    parts = []
 
-    sections << frontmatter(metadata)
-    sections << "# #{metadata[:title]}"
-    sections << metadata[:description]
+    parts << frontmatter(metadata)
+    parts << "# #{metadata[:title]}"
+    parts << metadata[:description]
+    parts << sections_content(namespace, metadata)
+    parts << requests_section(locale_key, metadata[:scenarios])
+    parts << generated_output_section(locale_key)
 
-    sections << api_section(namespace)
-    sections << models_section(namespace)
-    sections << schemas_section(namespace)
-    sections << contracts_section(namespace)
-    sections << controllers_section(namespace)
-    sections << requests_section(locale_key, metadata[:scenarios])
-    sections << generated_output_section(locale_key)
+    parts.compact.join("\n\n")
+  end
 
-    sections.compact.join("\n\n")
+  def sections_content(namespace, metadata)
+    return legacy_sections(namespace) unless metadata[:sections]
+
+    metadata[:sections].map { |s| section_block(s[:title], s[:files]) }.compact.join("\n\n")
+  end
+
+  def section_block(title, files)
+    return nil if files.blank?
+
+    content = ["## #{title}"]
+    files.each do |file|
+      next unless file_exists?(file)
+
+      content << file_block(file)
+      content << database_table_details(file) if file.include?('/models/')
+    end
+    content.compact.join("\n\n")
+  end
+
+  def database_table_details(file)
+    model_name = File.basename(file, '.rb')
+    namespace = file.split('/')[-2]
+    table_name = "#{namespace}_#{model_name.pluralize}"
+
+    schema_details_for_table(table_name)
+  end
+
+  def legacy_sections(namespace)
+    [
+      api_section(namespace),
+      models_section(namespace),
+      schemas_section(namespace),
+      contracts_section(namespace),
+      controllers_section(namespace)
+    ].compact.join("\n\n")
   end
 
   def frontmatter(metadata)
@@ -177,16 +209,16 @@ class ExampleGenerator
 
     content = ['## Models']
     files.each do |file|
+      model_name = File.basename(file, '.rb')
+      table_name = "#{namespace}_#{model_name.pluralize}"
+
       content << file_block(file)
-      content << schema_details_for(file, namespace)
+      content << schema_details_for_table(table_name)
     end
     content.compact.join("\n\n")
   end
 
-  def schema_details_for(file, namespace)
-    model_name = File.basename(file, '.rb')
-    table_name = "#{namespace}_#{model_name.pluralize}"
-
+  def schema_details_for_table(table_name)
     return unless table_exists?(table_name)
 
     cols = ActiveRecord::Base.connection.columns(table_name)

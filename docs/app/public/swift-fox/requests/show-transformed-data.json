@@ -1,13 +1,13 @@
 {
   "request": {
     "method": "GET",
-    "path": "/swift_fox/contacts/7402b296-c044-4ea4-b9dd-74a34ff5625d"
+    "path": "/swift_fox/contacts/a2ba1c2b-f659-4439-8fed-510f376d4a99"
   },
   "response": {
     "status": 200,
     "body": {
       "contact": {
-        "id": "7402b296-c044-4ea4-b9dd-74a34ff5625d",
+        "id": "a2ba1c2b-f659-4439-8fed-510f376d4a99",
         "name": "Jane Doe",
         "email": "jane@example.com",
         "phone": "",

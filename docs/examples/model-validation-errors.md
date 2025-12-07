@@ -14,27 +14,9 @@ How Apiwork captures ActiveRecord validation errors and presents them in a unifi
 
 ## Models
 
-<small>`app/models/happy_zebra/comment.rb`</small>
+<small>`app/models/happy_zebra/user.rb`</small>
 
-<<< @/app/app/models/happy_zebra/comment.rb
-
-<details>
-<summary>Database Table</summary>
-
-| Column | Type | Nullable | Default |
-|--------|------|----------|---------|
-| id | string |  |  |
-| post_id | string |  |  |
-| body | string |  |  |
-| author | string |  |  |
-| created_at | datetime |  |  |
-| updated_at | datetime |  |  |
-
-</details>
-
-<small>`app/models/happy_zebra/post.rb`</small>
-
-<<< @/app/app/models/happy_zebra/post.rb
+<<< @/app/app/models/happy_zebra/user.rb
 
 <details>
 <summary>Database Table</summary>
@@ -42,8 +24,8 @@ How Apiwork captures ActiveRecord validation errors and presents them in a unifi
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| user_id | string |  |  |
-| title | string |  |  |
+| email | string |  |  |
+| username | string |  |  |
 | created_at | datetime |  |  |
 | updated_at | datetime |  |  |
 
@@ -67,9 +49,9 @@ How Apiwork captures ActiveRecord validation errors and presents them in a unifi
 
 </details>
 
-<small>`app/models/happy_zebra/user.rb`</small>
+<small>`app/models/happy_zebra/post.rb`</small>
 
-<<< @/app/app/models/happy_zebra/user.rb
+<<< @/app/app/models/happy_zebra/post.rb
 
 <details>
 <summary>Database Table</summary>
@@ -77,8 +59,26 @@ How Apiwork captures ActiveRecord validation errors and presents them in a unifi
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| email | string |  |  |
-| username | string |  |  |
+| user_id | string |  |  |
+| title | string |  |  |
+| created_at | datetime |  |  |
+| updated_at | datetime |  |  |
+
+</details>
+
+<small>`app/models/happy_zebra/comment.rb`</small>
+
+<<< @/app/app/models/happy_zebra/comment.rb
+
+<details>
+<summary>Database Table</summary>
+
+| Column | Type | Nullable | Default |
+|--------|------|----------|---------|
+| id | string |  |  |
+| post_id | string |  |  |
+| body | string |  |  |
+| author | string |  |  |
 | created_at | datetime |  |  |
 | updated_at | datetime |  |  |
 
@@ -86,49 +86,49 @@ How Apiwork captures ActiveRecord validation errors and presents them in a unifi
 
 ## Schemas
 
-<small>`app/schemas/happy_zebra/comment_schema.rb`</small>
+<small>`app/schemas/happy_zebra/user_schema.rb`</small>
 
-<<< @/app/app/schemas/happy_zebra/comment_schema.rb
-
-<small>`app/schemas/happy_zebra/post_schema.rb`</small>
-
-<<< @/app/app/schemas/happy_zebra/post_schema.rb
+<<< @/app/app/schemas/happy_zebra/user_schema.rb
 
 <small>`app/schemas/happy_zebra/profile_schema.rb`</small>
 
 <<< @/app/app/schemas/happy_zebra/profile_schema.rb
 
-<small>`app/schemas/happy_zebra/user_schema.rb`</small>
+<small>`app/schemas/happy_zebra/post_schema.rb`</small>
 
-<<< @/app/app/schemas/happy_zebra/user_schema.rb
+<<< @/app/app/schemas/happy_zebra/post_schema.rb
+
+<small>`app/schemas/happy_zebra/comment_schema.rb`</small>
+
+<<< @/app/app/schemas/happy_zebra/comment_schema.rb
 
 ## Contracts
-
-<small>`app/contracts/happy_zebra/comment_contract.rb`</small>
-
-<<< @/app/app/contracts/happy_zebra/comment_contract.rb
-
-<small>`app/contracts/happy_zebra/post_contract.rb`</small>
-
-<<< @/app/app/contracts/happy_zebra/post_contract.rb
 
 <small>`app/contracts/happy_zebra/user_contract.rb`</small>
 
 <<< @/app/app/contracts/happy_zebra/user_contract.rb
 
+<small>`app/contracts/happy_zebra/post_contract.rb`</small>
+
+<<< @/app/app/contracts/happy_zebra/post_contract.rb
+
+<small>`app/contracts/happy_zebra/comment_contract.rb`</small>
+
+<<< @/app/app/contracts/happy_zebra/comment_contract.rb
+
 ## Controllers
 
-<small>`app/controllers/happy_zebra/comments_controller.rb`</small>
+<small>`app/controllers/happy_zebra/users_controller.rb`</small>
 
-<<< @/app/app/controllers/happy_zebra/comments_controller.rb
+<<< @/app/app/controllers/happy_zebra/users_controller.rb
 
 <small>`app/controllers/happy_zebra/posts_controller.rb`</small>
 
 <<< @/app/app/controllers/happy_zebra/posts_controller.rb
 
-<small>`app/controllers/happy_zebra/users_controller.rb`</small>
+<small>`app/controllers/happy_zebra/comments_controller.rb`</small>
 
-<<< @/app/app/controllers/happy_zebra/users_controller.rb
+<<< @/app/app/controllers/happy_zebra/comments_controller.rb
 
 ---
 
@@ -162,15 +162,15 @@ Content-Type: application/json
 ```json
 {
   "user": {
-    "id": "4fe16245-9b6a-497c-b27d-91d7f74a7e23",
-    "createdAt": "2025-12-07T16:17:40.046Z",
-    "updatedAt": "2025-12-07T16:17:40.046Z",
+    "id": "dc176ed8-41ea-41d9-8685-f02a9763e74e",
+    "createdAt": "2025-12-07T16:39:26.272Z",
+    "updatedAt": "2025-12-07T16:39:26.272Z",
     "email": "john@example.com",
     "username": "johndoe",
     "profile": {
-      "id": "687bbe97-fd04-4e6e-ab58-a9b2f30cba00",
-      "createdAt": "2025-12-07T16:17:40.047Z",
-      "updatedAt": "2025-12-07T16:17:40.047Z",
+      "id": "8690f8ae-2e43-422c-a8cc-b77158e37540",
+      "createdAt": "2025-12-07T16:39:26.273Z",
+      "updatedAt": "2025-12-07T16:39:26.273Z",
       "bio": "Software developer",
       "website": "https://example.com"
     },
@@ -369,24 +369,24 @@ Content-Type: application/json
 ```json
 {
   "user": {
-    "id": "2946fbfc-d7f2-42d1-8be0-949978ce802d",
-    "createdAt": "2025-12-07T16:17:40.078Z",
-    "updatedAt": "2025-12-07T16:17:40.078Z",
+    "id": "bd9adf97-096b-405a-bda8-45474fb2a8c4",
+    "createdAt": "2025-12-07T16:39:26.302Z",
+    "updatedAt": "2025-12-07T16:39:26.302Z",
     "email": "deep@example.com",
     "username": "deepuser",
     "profile": null,
     "posts": [
       {
-        "id": "50011695-9e7b-45b4-801b-a849068d07ce",
+        "id": "a188b305-cd81-47cd-ab54-9e677713b1cb",
         "title": "My First Post",
         "comments": [
           {
-            "id": "cc6aeb61-aac6-4c04-965b-b24fc9d56ad1",
+            "id": "e1ac5fcf-8fe4-4645-b5dd-0faea34693d1",
             "body": "Great post!",
             "author": "Jane"
           },
           {
-            "id": "5cbf5d2e-9b85-49e8-8594-4762420b4ab9",
+            "id": "791fd4af-5b2c-4f28-9482-9cd7658313a9",
             "body": "Thanks for sharing",
             "author": "Bob"
           }

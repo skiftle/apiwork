@@ -14,9 +14,9 @@ Document APIs with descriptions, examples, formats, and deprecation notices at e
 
 ## Models
 
-<small>`app/models/brave_eagle/comment.rb`</small>
+<small>`app/models/brave_eagle/user.rb`</small>
 
-<<< @/app/app/models/brave_eagle/comment.rb
+<<< @/app/app/models/brave_eagle/user.rb
 
 <details>
 <summary>Database Table</summary>
@@ -24,9 +24,8 @@ Document APIs with descriptions, examples, formats, and deprecation notices at e
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| task_id | string |  |  |
-| body | text |  |  |
-| author_name | string | ✓ |  |
+| name | string |  |  |
+| email | string |  |  |
 | created_at | datetime |  |  |
 | updated_at | datetime |  |  |
 
@@ -54,9 +53,9 @@ Document APIs with descriptions, examples, formats, and deprecation notices at e
 
 </details>
 
-<small>`app/models/brave_eagle/user.rb`</small>
+<small>`app/models/brave_eagle/comment.rb`</small>
 
-<<< @/app/app/models/brave_eagle/user.rb
+<<< @/app/app/models/brave_eagle/comment.rb
 
 <details>
 <summary>Database Table</summary>
@@ -64,8 +63,9 @@ Document APIs with descriptions, examples, formats, and deprecation notices at e
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| name | string |  |  |
-| email | string |  |  |
+| task_id | string |  |  |
+| body | text |  |  |
+| author_name | string | ✓ |  |
 | created_at | datetime |  |  |
 | updated_at | datetime |  |  |
 
@@ -73,17 +73,17 @@ Document APIs with descriptions, examples, formats, and deprecation notices at e
 
 ## Schemas
 
-<small>`app/schemas/brave_eagle/comment_schema.rb`</small>
+<small>`app/schemas/brave_eagle/user_schema.rb`</small>
 
-<<< @/app/app/schemas/brave_eagle/comment_schema.rb
+<<< @/app/app/schemas/brave_eagle/user_schema.rb
 
 <small>`app/schemas/brave_eagle/task_schema.rb`</small>
 
 <<< @/app/app/schemas/brave_eagle/task_schema.rb
 
-<small>`app/schemas/brave_eagle/user_schema.rb`</small>
+<small>`app/schemas/brave_eagle/comment_schema.rb`</small>
 
-<<< @/app/app/schemas/brave_eagle/user_schema.rb
+<<< @/app/app/schemas/brave_eagle/comment_schema.rb
 
 ## Contracts
 
@@ -118,26 +118,26 @@ GET /brave_eagle/tasks
 {
   "tasks": [
     {
-      "id": "10199d27-8385-4a86-bf3a-c89e22582a42",
+      "id": "4b326205-43ad-4dfe-ad8c-e19e1eb86931",
       "title": "Write documentation",
       "description": "Complete the API reference guide",
       "status": "pending",
       "priority": "high",
       "dueDate": null,
       "archived": false,
-      "createdAt": "2025-12-07T16:17:39.538Z",
-      "updatedAt": "2025-12-07T16:17:39.538Z"
+      "createdAt": "2025-12-07T16:39:25.792Z",
+      "updatedAt": "2025-12-07T16:39:25.792Z"
     },
     {
-      "id": "a0aecd34-3bc4-48ad-9ce4-6fe304f8766c",
+      "id": "26c26364-9cef-4c09-9c35-0222b8dc0f98",
       "title": "Review pull request",
       "description": null,
       "status": "completed",
       "priority": "medium",
       "dueDate": null,
       "archived": false,
-      "createdAt": "2025-12-07T16:17:39.540Z",
-      "updatedAt": "2025-12-07T16:17:39.540Z"
+      "createdAt": "2025-12-07T16:39:25.794Z",
+      "updatedAt": "2025-12-07T16:39:25.794Z"
     }
   ],
   "pagination": {
@@ -158,7 +158,7 @@ GET /brave_eagle/tasks
 **Request**
 
 ```http
-GET /brave_eagle/tasks/da44f5d1-1b22-47f7-a8ef-c0c9761ab172
+GET /brave_eagle/tasks/f53d9918-033d-48e0-aa3f-6d9409cddaf5
 ```
 
 **Response** `404`
@@ -188,7 +188,7 @@ Content-Type: application/json
     "status": "pending",
     "priority": "high",
     "due_date": "2024-02-01",
-    "assignee_id": "b53dd0dc-6af8-4605-8b1f-85beda5effd3"
+    "assignee_id": "3df275ca-9b47-4618-97ff-c6403d6e7299"
   }
 }
 ```
@@ -229,7 +229,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-PATCH /brave_eagle/tasks/c9f57404-1454-4bc8-8801-fd719003b890/archive
+PATCH /brave_eagle/tasks/02e7ab9d-f739-4f11-bbc5-cfce6792cfc9/archive
 ```
 
 **Response** `200`
@@ -237,15 +237,15 @@ PATCH /brave_eagle/tasks/c9f57404-1454-4bc8-8801-fd719003b890/archive
 ```json
 {
   "task": {
-    "id": "c9f57404-1454-4bc8-8801-fd719003b890",
+    "id": "02e7ab9d-f739-4f11-bbc5-cfce6792cfc9",
     "title": "Old task to archive",
     "description": null,
     "status": "completed",
     "priority": "medium",
     "dueDate": null,
     "archived": true,
-    "createdAt": "2025-12-07T16:17:39.577Z",
-    "updatedAt": "2025-12-07T16:17:39.582Z"
+    "createdAt": "2025-12-07T16:39:25.829Z",
+    "updatedAt": "2025-12-07T16:39:25.834Z"
   }
 }
 ```

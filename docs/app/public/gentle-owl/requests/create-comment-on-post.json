@@ -7,7 +7,7 @@
         "body": "This is a great article!",
         "author_name": "Jane Doe",
         "commentable_type": "GentleOwl::Post",
-        "commentable_id": "57f95da9-170a-4897-8f06-3bdca906938f"
+        "commentable_id": "57156b43-f472-4349-8d3b-1ef3baf66583"
       }
     }
   },
@@ -15,12 +15,12 @@
     "status": 201,
     "body": {
       "comment": {
-        "id": "f6a4b9f4-625a-437f-95d6-77e084189397",
+        "id": "d8c364ae-1459-45af-892b-c8ea8df3ca22",
         "body": "This is a great article!",
         "authorName": "Jane Doe",
         "commentableType": "GentleOwl::Post",
-        "commentableId": "57f95da9-170a-4897-8f06-3bdca906938f",
-        "createdAt": "2025-12-07T16:17:39.916Z"
+        "commentableId": "57156b43-f472-4349-8d3b-1ef3baf66583",
+        "createdAt": "2025-12-07T16:39:26.144Z"
       }
     }
   }

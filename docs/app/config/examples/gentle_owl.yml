@@ -2,6 +2,29 @@ title: Polymorphic Associations
 description: Comments that belong to different content types (posts, videos, images)
 order: 6
 
+sections:
+  - title: API Definition
+    files:
+      - config/apis/gentle_owl.rb
+  - title: Models
+    files:
+      - app/models/gentle_owl/post.rb
+      - app/models/gentle_owl/video.rb
+      - app/models/gentle_owl/image.rb
+      - app/models/gentle_owl/comment.rb
+  - title: Schemas
+    files:
+      - app/schemas/gentle_owl/post_schema.rb
+      - app/schemas/gentle_owl/video_schema.rb
+      - app/schemas/gentle_owl/image_schema.rb
+      - app/schemas/gentle_owl/comment_schema.rb
+  - title: Contracts
+    files:
+      - app/contracts/gentle_owl/comment_contract.rb
+  - title: Controllers
+    files:
+      - app/controllers/gentle_owl/comments_controller.rb
+
 scenarios:
   - title: List all comments
     description: Returns comments for all content types

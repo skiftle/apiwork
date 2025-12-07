@@ -14,18 +14,6 @@ Single Table Inheritance with automatic variant serialization and TypeScript uni
 
 ## Models
 
-<small>`app/models/mighty_wolf/car.rb`</small>
-
-<<< @/app/app/models/mighty_wolf/car.rb
-
-<small>`app/models/mighty_wolf/motorcycle.rb`</small>
-
-<<< @/app/app/models/mighty_wolf/motorcycle.rb
-
-<small>`app/models/mighty_wolf/truck.rb`</small>
-
-<<< @/app/app/models/mighty_wolf/truck.rb
-
 <small>`app/models/mighty_wolf/vehicle.rb`</small>
 
 <<< @/app/app/models/mighty_wolf/vehicle.rb
@@ -49,23 +37,35 @@ Single Table Inheritance with automatic variant serialization and TypeScript uni
 
 </details>
 
+<small>`app/models/mighty_wolf/car.rb`</small>
+
+<<< @/app/app/models/mighty_wolf/car.rb
+
+<small>`app/models/mighty_wolf/truck.rb`</small>
+
+<<< @/app/app/models/mighty_wolf/truck.rb
+
+<small>`app/models/mighty_wolf/motorcycle.rb`</small>
+
+<<< @/app/app/models/mighty_wolf/motorcycle.rb
+
 ## Schemas
+
+<small>`app/schemas/mighty_wolf/vehicle_schema.rb`</small>
+
+<<< @/app/app/schemas/mighty_wolf/vehicle_schema.rb
 
 <small>`app/schemas/mighty_wolf/car_schema.rb`</small>
 
 <<< @/app/app/schemas/mighty_wolf/car_schema.rb
 
-<small>`app/schemas/mighty_wolf/motorcycle_schema.rb`</small>
-
-<<< @/app/app/schemas/mighty_wolf/motorcycle_schema.rb
-
 <small>`app/schemas/mighty_wolf/truck_schema.rb`</small>
 
 <<< @/app/app/schemas/mighty_wolf/truck_schema.rb
 
-<small>`app/schemas/mighty_wolf/vehicle_schema.rb`</small>
+<small>`app/schemas/mighty_wolf/motorcycle_schema.rb`</small>
 
-<<< @/app/app/schemas/mighty_wolf/vehicle_schema.rb
+<<< @/app/app/schemas/mighty_wolf/motorcycle_schema.rb
 
 ## Contracts
 
@@ -101,7 +101,7 @@ GET /mighty_wolf/vehicles
   "vehicles": [
     {
       "type": "car",
-      "id": "b0f871cd-a28d-4095-a881-7c0f4089b5ae",
+      "id": "f890d258-412b-43ad-bb3d-889da4443719",
       "brand": "Volvo",
       "model": "EX30",
       "year": null,
@@ -110,7 +110,7 @@ GET /mighty_wolf/vehicles
     },
     {
       "type": "motorcycle",
-      "id": "19aa8bed-653f-4ce1-a793-62482c23c143",
+      "id": "5645d1c6-8ae9-43b6-a4ac-16b3351f33f4",
       "brand": "Harley-Davidson",
       "model": "Street Glide",
       "year": null,
@@ -119,7 +119,7 @@ GET /mighty_wolf/vehicles
     },
     {
       "type": "truck",
-      "id": "29783eb0-4df6-4528-bc85-e222094d79a1",
+      "id": "b9ebd942-ce8c-4a38-a5b4-28aeb4d52f13",
       "brand": "Ford",
       "model": "F-150",
       "year": null,
@@ -145,7 +145,7 @@ GET /mighty_wolf/vehicles
 **Request**
 
 ```http
-GET /mighty_wolf/vehicles/7c60b04f-6164-4295-a939-713530ea7fec
+GET /mighty_wolf/vehicles/fe5948f4-e74c-46f0-a870-c40bb7827b85
 ```
 
 **Response** `200`
@@ -154,7 +154,7 @@ GET /mighty_wolf/vehicles/7c60b04f-6164-4295-a939-713530ea7fec
 {
   "vehicle": {
     "type": "car",
-    "id": "7c60b04f-6164-4295-a939-713530ea7fec",
+    "id": "fe5948f4-e74c-46f0-a870-c40bb7827b85",
     "brand": "Volvo",
     "model": "EX30",
     "year": 2024,
@@ -192,7 +192,7 @@ Content-Type: application/json
 {
   "vehicle": {
     "type": "car",
-    "id": "3059f64e-5526-4710-aeac-2ad80fba254e",
+    "id": "7015512c-69be-4a5d-9168-d862a33d2132",
     "brand": "Volvo",
     "model": "EX30",
     "year": 2024,
@@ -230,7 +230,7 @@ Content-Type: application/json
 {
   "vehicle": {
     "type": "motorcycle",
-    "id": "02c7b692-fc3e-4dc1-b3e4-6acbab50b80a",
+    "id": "fa928000-5af8-4d0e-ba7d-17fbeeee545f",
     "brand": "Harley-Davidson",
     "model": "Street Glide",
     "year": 2023,
@@ -268,7 +268,7 @@ Content-Type: application/json
 {
   "vehicle": {
     "type": "truck",
-    "id": "0e8bb55d-4776-4f7c-a916-f2df59805b7d",
+    "id": "cdace1df-609e-46dc-aaca-a60795ba5813",
     "brand": "Ford",
     "model": "F-150",
     "year": 2024,

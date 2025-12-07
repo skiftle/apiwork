@@ -2,6 +2,27 @@ title: Nested Saves
 description: Create, update, and delete nested records in a single request
 order: 3
 
+sections:
+  - title: API Definition
+    files:
+      - config/apis/clever_rabbit.rb
+  - title: Models
+    files:
+      - app/models/clever_rabbit/order.rb
+      - app/models/clever_rabbit/line_item.rb
+      - app/models/clever_rabbit/shipping_address.rb
+  - title: Schemas
+    files:
+      - app/schemas/clever_rabbit/order_schema.rb
+      - app/schemas/clever_rabbit/line_item_schema.rb
+      - app/schemas/clever_rabbit/shipping_address_schema.rb
+  - title: Contracts
+    files:
+      - app/contracts/clever_rabbit/order_contract.rb
+  - title: Controllers
+    files:
+      - app/controllers/clever_rabbit/orders_controller.rb
+
 scenarios:
   - title: List all orders
     description: Returns orders with nested data

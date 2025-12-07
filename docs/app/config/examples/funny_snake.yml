@@ -2,6 +2,20 @@ title: Manual Contract
 description: Defining contracts manually without schemas
 order: 1
 
+sections:
+  - title: API Definition
+    files:
+      - config/apis/funny_snake.rb
+  - title: Models
+    files:
+      - app/models/funny_snake/invoice.rb
+  - title: Contracts
+    files:
+      - app/contracts/funny_snake/invoice_contract.rb
+  - title: Controllers
+    files:
+      - app/controllers/funny_snake/invoices_controller.rb
+
 scenarios:
   - title: List all invoices
     description: Returns paginated list of invoices

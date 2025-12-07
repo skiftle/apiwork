@@ -2,6 +2,23 @@ title: Encode, Decode & Empty
 description: Transform values on input/output and handle nil/empty string conversion
 order: 9
 
+sections:
+  - title: API Definition
+    files:
+      - config/apis/swift_fox.rb
+  - title: Models
+    files:
+      - app/models/swift_fox/contact.rb
+  - title: Schemas
+    files:
+      - app/schemas/swift_fox/contact_schema.rb
+  - title: Contracts
+    files:
+      - app/contracts/swift_fox/contact_contract.rb
+  - title: Controllers
+    files:
+      - app/controllers/swift_fox/contacts_controller.rb
+
 scenarios:
   - title: Create with transforms
     description: Email decoded, empty strings handled
