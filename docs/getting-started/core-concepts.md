@@ -29,39 +29,31 @@ The difference: every resource needs a contract. No contract, no endpoint.
 
 Contracts define what each action accepts and returns:
 
-<!-- example: funny-snake -->
+```ruby
+class InvoiceContract < Apiwork::Contract::Base
+  type :invoice do
+    param :id, type: :uuid
+    param :number, type: :string
+    param :status, type: :string
+  end
 
-<<< @/app/app/contracts/funny_snake/invoice_contract.rb
+  action :index do
+    response do
+      body { param :invoices, type: :array, of: :invoice }
+    end
+  end
 
-<details>
-<summary>Introspection</summary>
-
-<<< @/examples/funny-snake/introspection.json
-
-</details>
-
-<details>
-<summary>TypeScript</summary>
-
-<<< @/examples/funny-snake/typescript.ts
-
-</details>
-
-<details>
-<summary>Zod</summary>
-
-<<< @/examples/funny-snake/zod.ts
-
-</details>
-
-<details>
-<summary>OpenAPI</summary>
-
-<<< @/examples/funny-snake/openapi.yml
-
-</details>
+  action :show do
+    response do
+      body { param :invoice, type: :invoice }
+    end
+  end
+end
+```
 
 Request doesn't match? Rejected immediately. Response doesn't match? Logged in development so you catch it early.
+
+See [Manual Contract Example](../examples/manual-contract.md) for a complete contract with all actions.
 
 ## Controllers
 
@@ -163,37 +155,11 @@ This single line activates Apiwork's [built-in adapter](../core/runtime/introduc
 - **Include types** — from associations
 - **Response types** — from all attributes
 
-These generated types power request validation, TypeScript generation, Zod schemas, and OpenAPI specs — all from the same source:
-
-<details>
-<summary>Introspection</summary>
-
-<<< @/examples/eager-lion/introspection.json
-
-</details>
-
-<details>
-<summary>TypeScript</summary>
-
-<<< @/examples/eager-lion/typescript.ts
-
-</details>
-
-<details>
-<summary>Zod</summary>
-
-<<< @/examples/eager-lion/zod.ts
-
-</details>
-
-<details>
-<summary>OpenAPI</summary>
-
-<<< @/examples/eager-lion/openapi.yml
-
-</details>
+These generated types power request validation, TypeScript generation, Zod schemas, and OpenAPI specs — all from the same source.
 
 The adapter also reads your database and model to infer column types, enum values, nullability, associations, and defaults. You declare what to expose — Apiwork figures out the rest.
+
+See [Schema-Driven Example](../examples/schema-driven.md) for complete generated output.
 
 ## One Metadata Model
 

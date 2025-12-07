@@ -8,71 +8,31 @@ Enums restrict a value to a predefined set.
 
 ## API-Level Enum
 
-<!-- example: happy-zebra -->
+Define enums at the API level to share across contracts:
 
-<<< @/app/config/apis/happy_zebra.rb
+```ruby
+Apiwork::API.draw '/api/v1' do
+  enum :status, values: %w[draft published archived]
 
-<details>
-<summary>Introspection</summary>
-
-<<< @/examples/happy-zebra/introspection.json
-
-</details>
-
-<details>
-<summary>TypeScript</summary>
-
-<<< @/examples/happy-zebra/typescript.ts
-
-</details>
-
-<details>
-<summary>Zod</summary>
-
-<<< @/examples/happy-zebra/zod.ts
-
-</details>
-
-<details>
-<summary>OpenAPI</summary>
-
-<<< @/examples/happy-zebra/openapi.yml
-
-</details>
+  resources :posts
+end
+```
 
 ## Contract-Scoped Enum
 
-<!-- example: lazy-cow -->
+Define enums inside a contract for local use:
 
-<<< @/app/app/contracts/lazy_cow/post_contract.rb
+```ruby
+class PostContract < Apiwork::Contract::Base
+  enum :status, values: %w[draft published archived]
 
-<details>
-<summary>Introspection</summary>
-
-<<< @/examples/lazy-cow/introspection.json
-
-</details>
-
-<details>
-<summary>TypeScript</summary>
-
-<<< @/examples/lazy-cow/typescript.ts
-
-</details>
-
-<details>
-<summary>Zod</summary>
-
-<<< @/examples/lazy-cow/zod.ts
-
-</details>
-
-<details>
-<summary>OpenAPI</summary>
-
-<<< @/examples/lazy-cow/openapi.yml
-
-</details>
+  type :post do
+    param :id, type: :uuid
+    param :title, type: :string
+    param :status, type: :status
+  end
+end
+```
 
 ## Using Enums
 

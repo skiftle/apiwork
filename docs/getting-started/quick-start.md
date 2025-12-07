@@ -101,35 +101,7 @@ With minimal code, you got:
 5. **Pagination** — Built-in page-based pagination
 6. **Documentation** — OpenAPI, TypeScript, and Zod specs generated automatically
 
-## Generated Output
-
-<details>
-<summary>Introspection</summary>
-
-<<< @/examples/swift-fox/introspection.json
-
-</details>
-
-<details>
-<summary>OpenAPI</summary>
-
-<<< @/examples/swift-fox/openapi.yml
-
-</details>
-
-<details>
-<summary>TypeScript</summary>
-
-<<< @/examples/swift-fox/typescript.ts
-
-</details>
-
-<details>
-<summary>Zod</summary>
-
-<<< @/examples/swift-fox/zod.ts
-
-</details>
+See [Quick Start Example](../examples/quick-start.md) for the complete generated output (TypeScript, Zod, OpenAPI).
 
 ## There's More
 

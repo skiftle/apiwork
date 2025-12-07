@@ -107,73 +107,39 @@ This becomes `OrderLineItem` in TypeScript, `order_line_item` in specs.
 
 You can define a type once and reference it, or define it inline where you use it.
 
-<!-- example: grumpy-panda -->
-
 **Inline** — defined directly in the action:
 
-<<< @/app/app/contracts/grumpy_panda/order_contract.rb
-
-<details>
-<summary>Introspection</summary>
-
-<<< @/examples/grumpy-panda/introspection.json
-
-</details>
-
-<details>
-<summary>TypeScript</summary>
-
-<<< @/examples/grumpy-panda/typescript.ts
-
-</details>
-
-<details>
-<summary>Zod</summary>
-
-<<< @/examples/grumpy-panda/zod.ts
-
-</details>
-
-<details>
-<summary>OpenAPI</summary>
-
-<<< @/examples/grumpy-panda/openapi.yml
-
-</details>
-
-<!-- example: friendly-tiger -->
+```ruby
+class OrderContract < Apiwork::Contract::Base
+  action :show do
+    response do
+      body do
+        param :order, type: :object do
+          param :id, type: :integer
+          param :total, type: :decimal
+        end
+      end
+    end
+  end
+end
+```
 
 **Named** — defined once, referenced by name:
 
-<<< @/app/app/contracts/friendly_tiger/order_contract.rb
+```ruby
+class OrderContract < Apiwork::Contract::Base
+  type :order do
+    param :id, type: :integer
+    param :total, type: :decimal
+  end
 
-<details>
-<summary>Introspection</summary>
-
-<<< @/examples/friendly-tiger/introspection.json
-
-</details>
-
-<details>
-<summary>TypeScript</summary>
-
-<<< @/examples/friendly-tiger/typescript.ts
-
-</details>
-
-<details>
-<summary>Zod</summary>
-
-<<< @/examples/friendly-tiger/zod.ts
-
-</details>
-
-<details>
-<summary>OpenAPI</summary>
-
-<<< @/examples/friendly-tiger/openapi.yml
-
-</details>
+  action :show do
+    response do
+      body { param :order, type: :order }
+    end
+  end
+end
+```
 
 Both work the same at runtime. The difference is in the specs:
 - Inline types embed the definition directly
