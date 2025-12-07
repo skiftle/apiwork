@@ -1,0 +1,53 @@
+{
+  "request": {
+    "method": "PATCH",
+    "path": "/clever-rabbit/orders/f960a5a2-0f1a-4e2f-9b11-e0bb5905e9fa",
+    "body": {
+      "order": {
+        "line_items_attributes": [
+          {
+            "product_name": "New Item",
+            "quantity": 3,
+            "unit_price": 19.99
+          }
+        ]
+      }
+    }
+  },
+  "response": {
+    "status": 400,
+    "body": {
+      "issues": [
+        {
+          "code": "field_missing",
+          "detail": "Field required",
+          "path": [
+            "order",
+            "order_number"
+          ],
+          "pointer": "/order/order_number",
+          "meta": {
+            "field": "order_number"
+          }
+        },
+        {
+          "code": "field_unknown",
+          "detail": "Unknown field",
+          "path": [
+            "order",
+            "line_items_attributes"
+          ],
+          "pointer": "/order/line_items_attributes",
+          "meta": {
+            "field": "line_items_attributes",
+            "allowed": [
+              "order_number",
+              "line_items",
+              "shipping_address"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

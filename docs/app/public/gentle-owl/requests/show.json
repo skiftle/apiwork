@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/gentle-owl/comments/9bbd58a9-045d-4dda-9457-f8191e6f027c"
+  },
+  "response": {
+    "status": 404,
+    "body": {
+      "status": 404,
+      "error": "Not Found"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/mighty-wolf/vehicles",
+    "body": {
+      "vehicle": {
+        "kind": "car",
+        "brand": "Tesla",
+        "model": "Model 3",
+        "year": 2024,
+        "color": "red"
+      }
+    }
+  },
+  "response": {
+    "status": 500,
+    "body": {
+      "status": 500,
+      "error": "Internal Server Error"
+    }
+  }
+}

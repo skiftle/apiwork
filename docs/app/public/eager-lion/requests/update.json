@@ -1,0 +1,30 @@
+{
+  "request": {
+    "method": "PATCH",
+    "path": "/eager-lion/invoices/ac4cbb4d-24c4-466d-a0e6-5722d186bdd0",
+    "body": {
+      "invoice": {
+        "notes": "Updated notes"
+      }
+    }
+  },
+  "response": {
+    "status": 400,
+    "body": {
+      "issues": [
+        {
+          "code": "field_missing",
+          "detail": "Field required",
+          "path": [
+            "invoice",
+            "number"
+          ],
+          "pointer": "/invoice/number",
+          "meta": {
+            "field": "number"
+          }
+        }
+      ]
+    }
+  }
+}

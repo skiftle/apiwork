@@ -1,0 +1,19 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/bold-falcon/articles"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "articles": [],
+      "pagination": {
+        "current": 1,
+        "next": null,
+        "prev": null,
+        "total": 0,
+        "items": 0
+      }
+    }
+  }
+}

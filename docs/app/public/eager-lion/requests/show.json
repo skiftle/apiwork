@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/eager-lion/invoices/ae85bb91-4941-4e17-8a0e-a5b8be16719c"
+  },
+  "response": {
+    "status": 404,
+    "body": {
+      "status": 404,
+      "error": "Not Found"
+    }
+  }
+}

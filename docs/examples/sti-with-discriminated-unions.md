@@ -62,6 +62,143 @@ Single Table Inheritance with automatic variant serialization and TypeScript uni
 
 ---
 
+
+
+## Request Examples
+
+### Index
+
+**Request**
+
+```http
+GET /mighty-wolf/vehicles
+```
+
+**Response** `200`
+
+```json
+{
+  "vehicles": [],
+  "pagination": {
+    "current": 1,
+    "next": null,
+    "prev": null,
+    "total": 0,
+    "items": 0
+  }
+}
+```
+
+### Show
+
+**Request**
+
+```http
+GET /mighty-wolf/vehicles/021d50ed-e64f-42ea-a0b6-d25556182ad1
+```
+
+**Response** `200`
+
+```json
+{
+  "vehicle": {
+    "kind": "car",
+    "id": "021d50ed-e64f-42ea-a0b6-d25556182ad1",
+    "brand": "Tesla",
+    "model": "Model 3",
+    "year": 2024,
+    "color": "red",
+    "doors": null
+  }
+}
+```
+
+### Create Car
+
+**Request**
+
+```http
+POST /mighty-wolf/vehicles
+Content-Type: application/json
+
+{
+  "vehicle": {
+    "kind": "car",
+    "brand": "Tesla",
+    "model": "Model 3",
+    "year": 2024,
+    "color": "red"
+  }
+}
+```
+
+**Response** `500`
+
+```json
+{
+  "status": 500,
+  "error": "Internal Server Error"
+}
+```
+
+### Create Motorcycle
+
+**Request**
+
+```http
+POST /mighty-wolf/vehicles
+Content-Type: application/json
+
+{
+  "vehicle": {
+    "kind": "motorcycle",
+    "brand": "Harley-Davidson",
+    "model": "Street Glide",
+    "year": 2023,
+    "color": "black"
+  }
+}
+```
+
+**Response** `500`
+
+```json
+{
+  "status": 500,
+  "error": "Internal Server Error"
+}
+```
+
+### Create Truck
+
+**Request**
+
+```http
+POST /mighty-wolf/vehicles
+Content-Type: application/json
+
+{
+  "vehicle": {
+    "kind": "truck",
+    "brand": "Ford",
+    "model": "F-150",
+    "year": 2024,
+    "color": "blue"
+  }
+}
+```
+
+**Response** `500`
+
+```json
+{
+  "status": 500,
+  "error": "Internal Server Error"
+}
+```
+
+---
+
 ## Generated Output
 
 <details>

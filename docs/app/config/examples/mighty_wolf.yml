@@ -1,3 +1,53 @@
 title: STI with Discriminated Unions
 description: Single Table Inheritance with automatic variant serialization and TypeScript union types
 order: 5
+
+scenarios:
+  index:
+    method: GET
+    path: /mighty-wolf/vehicles
+
+  show:
+    method: GET
+    path: /mighty-wolf/vehicles/:id
+    setup:
+      - create: vehicle
+        attributes:
+          type: MightyWolf::Car
+          brand: Tesla
+          model: Model 3
+          year: 2024
+          color: red
+
+  create_car:
+    method: POST
+    path: /mighty-wolf/vehicles
+    body:
+      vehicle:
+        kind: car
+        brand: Tesla
+        model: Model 3
+        year: 2024
+        color: red
+
+  create_motorcycle:
+    method: POST
+    path: /mighty-wolf/vehicles
+    body:
+      vehicle:
+        kind: motorcycle
+        brand: Harley-Davidson
+        model: Street Glide
+        year: 2023
+        color: black
+
+  create_truck:
+    method: POST
+    path: /mighty-wolf/vehicles
+    body:
+      vehicle:
+        kind: truck
+        brand: Ford
+        model: F-150
+        year: 2024
+        color: blue

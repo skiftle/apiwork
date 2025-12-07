@@ -1,3 +1,57 @@
 title: Nested Saves
 description: Create, update, and delete nested records in a single request
 order: 3
+
+scenarios:
+  index:
+    method: GET
+    path: /clever-rabbit/orders
+
+  show:
+    method: GET
+    path: /clever-rabbit/orders/:id
+    setup:
+      - create: order
+        attributes:
+          order_number: ORD-001
+
+  create:
+    method: POST
+    path: /clever-rabbit/orders
+    body:
+      order:
+        order_number: ORD-001
+        line_items_attributes:
+          - product_name: Widget
+            quantity: 2
+            unit_price: 29.99
+          - product_name: Gadget
+            quantity: 1
+            unit_price: 49.99
+        shipping_address_attributes:
+          street: 123 Main St
+          city: Springfield
+          postal_code: "12345"
+          country: USA
+
+  update:
+    method: PATCH
+    path: /clever-rabbit/orders/:id
+    setup:
+      - create: order
+        attributes:
+          order_number: ORD-001
+    body:
+      order:
+        line_items_attributes:
+          - product_name: New Item
+            quantity: 3
+            unit_price: 19.99
+
+  destroy:
+    method: DELETE
+    path: /clever-rabbit/orders/:id
+    setup:
+      - create: order
+        attributes:
+          order_number: ORD-001

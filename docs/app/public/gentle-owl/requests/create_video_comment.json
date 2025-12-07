@@ -1,0 +1,53 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/gentle-owl/comments",
+    "body": {
+      "comment": {
+        "body": "Very helpful video!",
+        "author_name": "Bob Smith",
+        "commentable_type": "GentleOwl::Video",
+        "commentable_id": "2f2844d5-b84f-48dc-8093-f47dcf477fb3"
+      }
+    }
+  },
+  "response": {
+    "status": 400,
+    "body": {
+      "issues": [
+        {
+          "code": "field_unknown",
+          "detail": "Unknown field",
+          "path": [
+            "comment",
+            "commentable_type"
+          ],
+          "pointer": "/comment/commentable_type",
+          "meta": {
+            "field": "commentable_type",
+            "allowed": [
+              "body",
+              "author_name"
+            ]
+          }
+        },
+        {
+          "code": "field_unknown",
+          "detail": "Unknown field",
+          "path": [
+            "comment",
+            "commentable_id"
+          ],
+          "pointer": "/comment/commentable_id",
+          "meta": {
+            "field": "commentable_id",
+            "allowed": [
+              "body",
+              "author_name"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

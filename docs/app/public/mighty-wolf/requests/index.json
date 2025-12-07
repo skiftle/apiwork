@@ -1,0 +1,19 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/mighty-wolf/vehicles"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "vehicles": [],
+      "pagination": {
+        "current": 1,
+        "next": null,
+        "prev": null,
+        "total": 0,
+        "items": 0
+      }
+    }
+  }
+}

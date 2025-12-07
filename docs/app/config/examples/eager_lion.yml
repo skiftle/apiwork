@@ -1,3 +1,61 @@
 title: Schema-Driven Contract
 description: Using `schema!` to generate a complete contract from schema definitions
 order: 2
+
+scenarios:
+  index:
+    method: GET
+    path: /eager-lion/invoices
+
+  show:
+    method: GET
+    path: /eager-lion/invoices/:id
+    setup:
+      - create: customer
+        attributes:
+          name: Acme Corp
+      - create: invoice
+        attributes:
+          number: INV-001
+          customer_id: :customer_id
+
+  create:
+    method: POST
+    path: /eager-lion/invoices
+    setup:
+      - create: customer
+        attributes:
+          name: Acme Corp
+    body:
+      invoice:
+        number: INV-001
+        customer_id: :customer_id
+        issued_on: "2024-01-15"
+        notes: First invoice
+
+  update:
+    method: PATCH
+    path: /eager-lion/invoices/:id
+    setup:
+      - create: customer
+        attributes:
+          name: Acme Corp
+      - create: invoice
+        attributes:
+          number: INV-001
+          customer_id: :customer_id
+    body:
+      invoice:
+        notes: Updated notes
+
+  destroy:
+    method: DELETE
+    path: /eager-lion/invoices/:id
+    setup:
+      - create: customer
+        attributes:
+          name: Acme Corp
+      - create: invoice
+        attributes:
+          number: INV-001
+          customer_id: :customer_id

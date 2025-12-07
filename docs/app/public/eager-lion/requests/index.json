@@ -1,0 +1,19 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/eager-lion/invoices"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "invoices": [],
+      "pagination": {
+        "current": 1,
+        "next": null,
+        "prev": null,
+        "total": 0,
+        "items": 0
+      }
+    }
+  }
+}

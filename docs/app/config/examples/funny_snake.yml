@@ -1,3 +1,47 @@
 title: Manual Contract
 description: Defining contracts manually without schemas
 order: 1
+
+scenarios:
+  index:
+    method: GET
+    path: /funny-snake/invoices
+
+  show:
+    method: GET
+    path: /funny-snake/invoices/:id
+    setup:
+      - create: invoice
+        attributes:
+          number: INV-001
+          status: draft
+
+  create:
+    method: POST
+    path: /funny-snake/invoices
+    body:
+      invoice:
+        number: INV-001
+        issued_on: "2024-01-15"
+        status: draft
+        notes: First invoice
+
+  update:
+    method: PATCH
+    path: /funny-snake/invoices/:id
+    setup:
+      - create: invoice
+        attributes:
+          number: INV-001
+          status: draft
+    body:
+      invoice:
+        status: sent
+
+  destroy:
+    method: DELETE
+    path: /funny-snake/invoices/:id
+    setup:
+      - create: invoice
+        attributes:
+          number: INV-001

@@ -1,0 +1,31 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/bold-falcon/articles?filter[title][contains]=Rails"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "articles": [
+        {
+          "id": "318d6c4c-3261-4eb6-9809-d05871522fed",
+          "title": "Getting Started with Rails",
+          "body": null,
+          "status": "published",
+          "view_count": 0,
+          "rating": null,
+          "published_on": null,
+          "created_at": "2025-12-07T08:33:55.447Z",
+          "updated_at": "2025-12-07T08:33:55.447Z"
+        }
+      ],
+      "pagination": {
+        "current": 1,
+        "next": null,
+        "prev": null,
+        "total": 1,
+        "items": 1
+      }
+    }
+  }
+}

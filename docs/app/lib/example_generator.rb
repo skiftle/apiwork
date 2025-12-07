@@ -3,6 +3,7 @@
 require 'fileutils'
 require 'json'
 require 'yaml'
+require_relative 'request_runner'
 
 class ExampleGenerator
   PUBLIC_DIR = Rails.root.join('public')
@@ -45,7 +46,7 @@ class ExampleGenerator
     yml_path = CONFIG_DIR.join("#{namespace}.yml")
 
     if File.exist?(yml_path)
-      YAML.load_file(yml_path).symbolize_keys
+      YAML.load_file(yml_path).deep_symbolize_keys
     else
       {
         title: namespace.humanize.titleize,
@@ -68,6 +69,7 @@ class ExampleGenerator
     return unless api
 
     write_specs(api, output_dir)
+    write_requests(namespace, output_dir, metadata[:scenarios]) if metadata[:scenarios]
     write_markdown(namespace, locale_key, metadata)
   end
 
@@ -98,6 +100,20 @@ class ExampleGenerator
     File.write(dir.join('introspection.json'), JSON.pretty_generate(content))
   end
 
+  def write_requests(namespace, dir, scenarios)
+    Rails.logger.debug "    Running request scenarios..."
+
+    requests_dir = dir.join('requests')
+    FileUtils.mkdir_p(requests_dir)
+
+    runner = RequestRunner.new(namespace, scenarios)
+    results = runner.run_all
+
+    results.each do |action, data|
+      File.write(requests_dir.join("#{action}.json"), JSON.pretty_generate(data))
+    end
+  end
+
   def write_markdown(namespace, locale_key, metadata)
     content = build_markdown(namespace, locale_key, metadata)
     slug = metadata[:title].parameterize
@@ -116,6 +132,7 @@ class ExampleGenerator
     sections << schemas_section(namespace)
     sections << contracts_section(namespace)
     sections << controllers_section(namespace)
+    sections << requests_section(locale_key, metadata[:scenarios])
     sections << generated_output_section(locale_key)
 
     sections.compact.join("\n\n")
@@ -180,6 +197,52 @@ class ExampleGenerator
       content << file_block(file)
     end
     content.join("\n\n")
+  end
+
+  def requests_section(locale_key, scenarios)
+    return unless scenarios
+
+    requests_dir = PUBLIC_DIR.join(locale_key, 'requests')
+    return unless File.directory?(requests_dir)
+
+    content = ["---", "", "## Request Examples"]
+
+    scenarios.each_key do |action|
+      file_path = requests_dir.join("#{action}.json")
+      next unless File.exist?(file_path)
+
+      data = JSON.parse(File.read(file_path), symbolize_names: true)
+      content << request_example_block(action, data)
+    end
+
+    content.join("\n\n")
+  end
+
+  def request_example_block(action, data)
+    request = data[:request]
+    response = data[:response]
+
+    title = action.to_s.titleize
+    method = request[:method]
+    path = request[:path]
+    status = response[:status]
+
+    parts = []
+    parts << "### #{title}"
+
+    parts << "**Request**"
+    if request[:body]
+      parts << "```http\n#{method} #{path}\nContent-Type: application/json\n\n#{JSON.pretty_generate(request[:body])}\n```"
+    else
+      parts << "```http\n#{method} #{path}\n```"
+    end
+
+    parts << "**Response** `#{status}`"
+    if response[:body]
+      parts << "```json\n#{JSON.pretty_generate(response[:body])}\n```"
+    end
+
+    parts.join("\n\n")
   end
 
   def generated_output_section(locale_key)

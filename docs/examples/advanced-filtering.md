@@ -46,6 +46,167 @@ Complex queries with string patterns, numeric ranges, and logical operators
 
 ---
 
+
+
+## Request Examples
+
+### Index
+
+**Request**
+
+```http
+GET /bold-falcon/articles
+```
+
+**Response** `200`
+
+```json
+{
+  "articles": [],
+  "pagination": {
+    "current": 1,
+    "next": null,
+    "prev": null,
+    "total": 0,
+    "items": 0
+  }
+}
+```
+
+### Show
+
+**Request**
+
+```http
+GET /bold-falcon/articles/5ba4f518-88ef-405c-9742-e2b15212c87a
+```
+
+**Response** `200`
+
+```json
+{
+  "article": {
+    "id": "5ba4f518-88ef-405c-9742-e2b15212c87a",
+    "title": "Getting Started with Rails",
+    "body": null,
+    "status": "published",
+    "view_count": 0,
+    "rating": null,
+    "published_on": null,
+    "created_at": "2025-12-07T08:33:55.419Z",
+    "updated_at": "2025-12-07T08:33:55.419Z"
+  }
+}
+```
+
+### Create
+
+**Request**
+
+```http
+POST /bold-falcon/articles
+Content-Type: application/json
+
+{
+  "article": {
+    "title": "Getting Started with Rails",
+    "body": "A comprehensive guide to Ruby on Rails",
+    "status": "draft",
+    "published_on": "2024-01-15"
+  }
+}
+```
+
+**Response** `201`
+
+```json
+{
+  "article": {
+    "id": "ebabc33b-7491-4e3e-bb09-8ce22b721a12",
+    "title": "Getting Started with Rails",
+    "body": "A comprehensive guide to Ruby on Rails",
+    "status": "draft",
+    "view_count": 0,
+    "rating": null,
+    "published_on": "2024-01-15",
+    "created_at": "2025-12-07T08:33:55.432Z",
+    "updated_at": "2025-12-07T08:33:55.432Z"
+  }
+}
+```
+
+### Filter By Status
+
+**Request**
+
+```http
+GET /bold-falcon/articles?filter[status][eq]=published
+```
+
+**Response** `200`
+
+```json
+{
+  "articles": [
+    {
+      "id": "d55ab2a7-276c-4c9d-a3c9-941d8e42e9b1",
+      "title": "Published Article",
+      "body": null,
+      "status": "published",
+      "view_count": 0,
+      "rating": null,
+      "published_on": null,
+      "created_at": "2025-12-07T08:33:55.434Z",
+      "updated_at": "2025-12-07T08:33:55.434Z"
+    }
+  ],
+  "pagination": {
+    "current": 1,
+    "next": null,
+    "prev": null,
+    "total": 1,
+    "items": 1
+  }
+}
+```
+
+### Filter By Title Contains
+
+**Request**
+
+```http
+GET /bold-falcon/articles?filter[title][contains]=Rails
+```
+
+**Response** `200`
+
+```json
+{
+  "articles": [
+    {
+      "id": "318d6c4c-3261-4eb6-9809-d05871522fed",
+      "title": "Getting Started with Rails",
+      "body": null,
+      "status": "published",
+      "view_count": 0,
+      "rating": null,
+      "published_on": null,
+      "created_at": "2025-12-07T08:33:55.447Z",
+      "updated_at": "2025-12-07T08:33:55.447Z"
+    }
+  ],
+  "pagination": {
+    "current": 1,
+    "next": null,
+    "prev": null,
+    "total": 1,
+    "items": 1
+  }
+}
+```
+
+---
+
 ## Generated Output
 
 <details>

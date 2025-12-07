@@ -1,0 +1,19 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/clever-rabbit/orders"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "orders": [],
+      "pagination": {
+        "current": 1,
+        "next": null,
+        "prev": null,
+        "total": 0,
+        "items": 0
+      }
+    }
+  }
+}

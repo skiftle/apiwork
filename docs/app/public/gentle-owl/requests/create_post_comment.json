@@ -1,0 +1,53 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/gentle-owl/comments",
+    "body": {
+      "comment": {
+        "body": "This is a great article!",
+        "author_name": "Jane Doe",
+        "commentable_type": "GentleOwl::Post",
+        "commentable_id": "62c2505c-5a4f-4ed6-8456-1601afc9d8dd"
+      }
+    }
+  },
+  "response": {
+    "status": 400,
+    "body": {
+      "issues": [
+        {
+          "code": "field_unknown",
+          "detail": "Unknown field",
+          "path": [
+            "comment",
+            "commentable_type"
+          ],
+          "pointer": "/comment/commentable_type",
+          "meta": {
+            "field": "commentable_type",
+            "allowed": [
+              "body",
+              "author_name"
+            ]
+          }
+        },
+        {
+          "code": "field_unknown",
+          "detail": "Unknown field",
+          "path": [
+            "comment",
+            "commentable_id"
+          ],
+          "pointer": "/comment/commentable_id",
+          "meta": {
+            "field": "commentable_id",
+            "allowed": [
+              "body",
+              "author_name"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/eager-lion/invoices",
+    "body": {
+      "invoice": {
+        "number": "INV-001",
+        "customer_id": "d82240ab-b47b-4e14-9e1f-b346666aa115",
+        "issued_on": "2024-01-15",
+        "notes": "First invoice"
+      }
+    }
+  },
+  "response": {
+    "status": 400,
+    "body": {
+      "issues": [
+        {
+          "code": "field_unknown",
+          "detail": "Unknown field",
+          "path": [
+            "invoice",
+            "customer_id"
+          ],
+          "pointer": "/invoice/customer_id",
+          "meta": {
+            "field": "customer_id",
+            "allowed": [
+              "number",
+              "issued_on",
+              "notes",
+              "lines"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

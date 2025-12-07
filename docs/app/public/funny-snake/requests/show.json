@@ -1,0 +1,18 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/funny-snake/invoices/ca808985-3c58-4783-a772-3bc22d024740"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "id": "ca808985-3c58-4783-a772-3bc22d024740",
+      "number": "INV-001",
+      "issued_on": null,
+      "status": "draft",
+      "notes": null,
+      "created_at": "2025-12-07T08:33:55.742Z",
+      "updated_at": "2025-12-07T08:33:55.742Z"
+    }
+  }
+}

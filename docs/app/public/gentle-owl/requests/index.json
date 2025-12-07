@@ -1,0 +1,19 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/gentle-owl/comments"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "comments": [],
+      "pagination": {
+        "current": 1,
+        "next": null,
+        "prev": null,
+        "total": 0,
+        "items": 0
+      }
+    }
+  }
+}

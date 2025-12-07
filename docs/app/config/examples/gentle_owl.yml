@@ -1,3 +1,75 @@
 title: Polymorphic Associations
 description: Comments that belong to different content types (posts, videos, images)
 order: 6
+
+scenarios:
+  index:
+    method: GET
+    path: /gentle-owl/comments
+
+  show:
+    method: GET
+    path: /gentle-owl/comments/:id
+    setup:
+      - create: post
+        attributes:
+          title: My First Post
+      - create: comment
+        attributes:
+          body: Great post!
+          author_name: John Doe
+          commentable_type: GentleOwl::Post
+          commentable_id: :post_id
+
+  create_post_comment:
+    method: POST
+    path: /gentle-owl/comments
+    setup:
+      - create: post
+        attributes:
+          title: My First Post
+    body:
+      comment:
+        body: This is a great article!
+        author_name: Jane Doe
+        commentable_type: GentleOwl::Post
+        commentable_id: :post_id
+
+  create_video_comment:
+    method: POST
+    path: /gentle-owl/comments
+    setup:
+      - create: video
+        attributes:
+          title: Tutorial Video
+          url: https://example.com/video.mp4
+    body:
+      comment:
+        body: Very helpful video!
+        author_name: Bob Smith
+        commentable_type: GentleOwl::Video
+        commentable_id: :video_id
+
+  filter_by_type:
+    method: GET
+    path: /gentle-owl/comments?filter[commentable_type][eq]=GentleOwl::Post
+    setup:
+      - create: post
+        attributes:
+          title: A Post
+      - create: video
+        attributes:
+          title: A Video
+          url: https://example.com/v.mp4
+      - create: comment
+        attributes:
+          body: Post comment
+          author_name: User 1
+          commentable_type: GentleOwl::Post
+          commentable_id: :post_id
+      - create: comment
+        attributes:
+          body: Video comment
+          author_name: User 2
+          commentable_type: GentleOwl::Video
+          commentable_id: :video_id

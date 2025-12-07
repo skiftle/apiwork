@@ -54,7 +54,7 @@ export type Vehicle = ;
 export interface VehicleCarCreatePayload {
   brand: string;
   color?: null | string;
-  doors: unknown;
+  doors?: null | number;
   kind: 'car';
   model: string;
   year?: null | number;
@@ -63,7 +63,7 @@ export interface VehicleCarCreatePayload {
 export interface VehicleCarUpdatePayload {
   brand?: string;
   color?: null | string;
-  doors?: unknown;
+  doors?: null | number;
   kind?: 'car';
   model?: string;
   year?: null | number;
@@ -85,7 +85,7 @@ export type VehicleInclude = object;
 export interface VehicleMotorcycleCreatePayload {
   brand: string;
   color?: null | string;
-  engine_cc: unknown;
+  engine_cc?: null | number;
   kind: 'motorcycle';
   model: string;
   year?: null | number;
@@ -94,7 +94,7 @@ export interface VehicleMotorcycleCreatePayload {
 export interface VehicleMotorcycleUpdatePayload {
   brand?: string;
   color?: null | string;
-  engine_cc?: unknown;
+  engine_cc?: null | number;
   kind?: 'motorcycle';
   model?: string;
   year?: null | number;
@@ -114,7 +114,7 @@ export interface VehicleTruckCreatePayload {
   color?: null | string;
   kind: 'truck';
   model: string;
-  payload_capacity: unknown;
+  payload_capacity?: null | number;
   year?: null | number;
 }
 
@@ -123,7 +123,7 @@ export interface VehicleTruckUpdatePayload {
   color?: null | string;
   kind?: 'truck';
   model?: string;
-  payload_capacity?: unknown;
+  payload_capacity?: null | number;
   year?: null | number;
 }
 

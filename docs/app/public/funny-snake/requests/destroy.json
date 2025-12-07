@@ -1,0 +1,18 @@
+{
+  "request": {
+    "method": "DELETE",
+    "path": "/funny-snake/invoices/de278729-e5f6-46e1-afed-d7aa22b4e0e9"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "id": "de278729-e5f6-46e1-afed-d7aa22b4e0e9",
+      "number": "INV-001",
+      "issued_on": null,
+      "status": null,
+      "notes": null,
+      "created_at": "2025-12-07T08:33:55.758Z",
+      "updated_at": "2025-12-07T08:33:55.758Z"
+    }
+  }
+}

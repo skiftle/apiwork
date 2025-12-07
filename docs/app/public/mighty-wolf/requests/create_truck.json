@@ -1,0 +1,22 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/mighty-wolf/vehicles",
+    "body": {
+      "vehicle": {
+        "kind": "truck",
+        "brand": "Ford",
+        "model": "F-150",
+        "year": 2024,
+        "color": "blue"
+      }
+    }
+  },
+  "response": {
+    "status": 500,
+    "body": {
+      "status": 500,
+      "error": "Internal Server Error"
+    }
+  }
+}

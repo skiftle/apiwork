@@ -1,0 +1,10 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/funny-snake/invoices"
+  },
+  "response": {
+    "status": 200,
+    "body": []
+  }
+}

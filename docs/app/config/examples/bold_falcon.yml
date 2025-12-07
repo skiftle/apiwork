@@ -1,3 +1,53 @@
 title: Advanced Filtering
 description: Complex queries with string patterns, numeric ranges, and logical operators
 order: 4
+
+scenarios:
+  index:
+    method: GET
+    path: /bold-falcon/articles
+
+  show:
+    method: GET
+    path: /bold-falcon/articles/:id
+    setup:
+      - create: article
+        attributes:
+          title: Getting Started with Rails
+          status: published
+
+  create:
+    method: POST
+    path: /bold-falcon/articles
+    body:
+      article:
+        title: Getting Started with Rails
+        body: A comprehensive guide to Ruby on Rails
+        status: draft
+        published_on: "2024-01-15"
+
+  filter_by_status:
+    method: GET
+    path: /bold-falcon/articles?filter[status][eq]=published
+    setup:
+      - create: article
+        attributes:
+          title: Published Article
+          status: published
+      - create: article
+        attributes:
+          title: Draft Article
+          status: draft
+
+  filter_by_title_contains:
+    method: GET
+    path: /bold-falcon/articles?filter[title][contains]=Rails
+    setup:
+      - create: article
+        attributes:
+          title: Getting Started with Rails
+          status: published
+      - create: article
+        attributes:
+          title: Python Basics
+          status: published

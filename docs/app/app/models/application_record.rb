@@ -9,6 +9,9 @@ class ApplicationRecord < ActiveRecord::Base
     super
     return unless subclass.name&.include?('::')
 
+    # Skip STI subclasses - they inherit table_name from parent
+    return if subclass.superclass != ApplicationRecord && subclass.superclass.name&.include?('::')
+
     namespace = subclass.name.deconstantize.underscore.tr('/', '_')
     model_name = subclass.name.demodulize.underscore.pluralize
     subclass.table_name = "#{namespace}_#{model_name}"

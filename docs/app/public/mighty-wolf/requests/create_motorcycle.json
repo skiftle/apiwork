@@ -1,0 +1,22 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/mighty-wolf/vehicles",
+    "body": {
+      "vehicle": {
+        "kind": "motorcycle",
+        "brand": "Harley-Davidson",
+        "model": "Street Glide",
+        "year": 2023,
+        "color": "black"
+      }
+    }
+  },
+  "response": {
+    "status": 500,
+    "body": {
+      "status": 500,
+      "error": "Internal Server Error"
+    }
+  }
+}
