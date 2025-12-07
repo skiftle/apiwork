@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Apiwork::API.draw '/swift-fox' do
+Apiwork::API.draw '/swift_fox' do
   key_format :camel
 
   spec :openapi

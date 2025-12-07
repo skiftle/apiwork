@@ -1,5 +1,5 @@
 {
-  "path": "/mighty-wolf",
+  "path": "/mighty_wolf",
   "types": {
     "integer_filter": {
       "type": "object",

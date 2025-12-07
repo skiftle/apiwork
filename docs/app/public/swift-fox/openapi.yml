@@ -1,7 +1,7 @@
 ---
 :openapi: 3.1.0
 :info:
-  :title: "/swift-fox API"
+  :title: "/swift_fox API"
   :version: 1.0.0
 :paths:
   contacts/:

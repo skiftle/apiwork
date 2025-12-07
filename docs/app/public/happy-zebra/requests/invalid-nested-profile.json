@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "POST",
-    "path": "/happy-zebra/users",
+    "path": "/happy_zebra/users",
     "body": {
       "user": {
         "email": "john@example.com",

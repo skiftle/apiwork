@@ -1,22 +1,22 @@
 {
   "request": {
     "method": "GET",
-    "path": "/bold-falcon/articles?filter[status][eq]=published"
+    "path": "/bold_falcon/articles?filter[status][eq]=published"
   },
   "response": {
     "status": 200,
     "body": {
       "articles": [
         {
-          "id": "81d49ec9-5381-4f17-9561-f688aaa8117a",
+          "id": "587278fa-367e-42a1-a765-52a0460c8962",
           "title": "Published Article",
           "body": null,
           "status": "published",
           "viewCount": 0,
           "rating": null,
           "publishedOn": null,
-          "createdAt": "2025-12-07T13:22:39.416Z",
-          "updatedAt": "2025-12-07T13:22:39.416Z"
+          "createdAt": "2025-12-07T13:30:59.390Z",
+          "updatedAt": "2025-12-07T13:30:59.390Z"
         }
       ],
       "pagination": {

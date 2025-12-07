@@ -91,7 +91,7 @@ Single Table Inheritance with automatic variant serialization and TypeScript uni
 **Request**
 
 ```http
-GET /mighty-wolf/vehicles
+GET /mighty_wolf/vehicles
 ```
 
 **Response** `200`
@@ -101,7 +101,7 @@ GET /mighty-wolf/vehicles
   "vehicles": [
     {
       "kind": "car",
-      "id": "454723d4-cf08-4649-b3e6-4ae462beb8ae",
+      "id": "75118107-3876-432f-892d-2ed6ff8a3bc7",
       "brand": "Tesla",
       "model": "Model 3",
       "year": null,
@@ -110,7 +110,7 @@ GET /mighty-wolf/vehicles
     },
     {
       "kind": "motorcycle",
-      "id": "05094ce7-c3d3-49a5-89f0-a459d71cc111",
+      "id": "b519d63c-dfd9-4e6c-adb5-4fadee206c7b",
       "brand": "Harley-Davidson",
       "model": "Street Glide",
       "year": null,
@@ -119,7 +119,7 @@ GET /mighty-wolf/vehicles
     },
     {
       "kind": "truck",
-      "id": "837bfb25-7f0f-416a-a76f-d0dd5571ffa9",
+      "id": "38dca7b1-4fc1-4a66-aa30-ffaea93fc0e4",
       "brand": "Ford",
       "model": "F-150",
       "year": null,
@@ -145,7 +145,7 @@ GET /mighty-wolf/vehicles
 **Request**
 
 ```http
-GET /mighty-wolf/vehicles/54d5598a-b86b-4141-a343-42cd4357af1f
+GET /mighty_wolf/vehicles/88966083-8f1c-4155-9624-1dc184c7bfec
 ```
 
 **Response** `200`
@@ -154,7 +154,7 @@ GET /mighty-wolf/vehicles/54d5598a-b86b-4141-a343-42cd4357af1f
 {
   "vehicle": {
     "kind": "car",
-    "id": "54d5598a-b86b-4141-a343-42cd4357af1f",
+    "id": "88966083-8f1c-4155-9624-1dc184c7bfec",
     "brand": "Tesla",
     "model": "Model 3",
     "year": 2024,
@@ -172,7 +172,7 @@ GET /mighty-wolf/vehicles/54d5598a-b86b-4141-a343-42cd4357af1f
 **Request**
 
 ```http
-POST /mighty-wolf/vehicles
+POST /mighty_wolf/vehicles
 Content-Type: application/json
 
 {
@@ -192,7 +192,7 @@ Content-Type: application/json
 {
   "vehicle": {
     "kind": "car",
-    "id": "7d8dc90f-0442-4430-9e9f-fc2278f4866f",
+    "id": "19849991-8595-4059-9dd1-2fca4ee9902a",
     "brand": "Tesla",
     "model": "Model 3",
     "year": 2024,
@@ -210,7 +210,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-POST /mighty-wolf/vehicles
+POST /mighty_wolf/vehicles
 Content-Type: application/json
 
 {
@@ -230,7 +230,7 @@ Content-Type: application/json
 {
   "vehicle": {
     "kind": "motorcycle",
-    "id": "00675ae2-4b5b-472d-a267-f4c869cf1561",
+    "id": "42d79bcc-1dae-463a-953e-0c806faf290e",
     "brand": "Harley-Davidson",
     "model": "Street Glide",
     "year": 2023,
@@ -248,7 +248,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-POST /mighty-wolf/vehicles
+POST /mighty_wolf/vehicles
 Content-Type: application/json
 
 {
@@ -268,7 +268,7 @@ Content-Type: application/json
 {
   "vehicle": {
     "kind": "truck",
-    "id": "c91dbbcf-7007-41ce-96e0-f145c590027d",
+    "id": "1b261618-c915-44cb-bc3d-e6db0f6b6239",
     "brand": "Ford",
     "model": "F-150",
     "year": 2024,

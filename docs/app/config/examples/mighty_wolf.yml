@@ -7,7 +7,7 @@ scenarios:
     description: Returns all vehicle types
     order: 1
     method: GET
-    path: /mighty-wolf/vehicles
+    path: /mighty_wolf/vehicles
     setup:
       - create: vehicle
         fields:
@@ -29,7 +29,7 @@ scenarios:
     description: Fetch vehicle with type-specific fields
     order: 2
     method: GET
-    path: /mighty-wolf/vehicles/:id
+    path: /mighty_wolf/vehicles/:id
     setup:
       - create: vehicle
         fields:
@@ -43,7 +43,7 @@ scenarios:
     description: Create car variant
     order: 3
     method: POST
-    path: /mighty-wolf/vehicles
+    path: /mighty_wolf/vehicles
     body:
       vehicle:
         kind: car
@@ -56,7 +56,7 @@ scenarios:
     description: Create motorcycle variant
     order: 4
     method: POST
-    path: /mighty-wolf/vehicles
+    path: /mighty_wolf/vehicles
     body:
       vehicle:
         kind: motorcycle
@@ -69,7 +69,7 @@ scenarios:
     description: Create truck variant
     order: 5
     method: POST
-    path: /mighty-wolf/vehicles
+    path: /mighty_wolf/vehicles
     body:
       vehicle:
         kind: truck

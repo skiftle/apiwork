@@ -1,44 +1,44 @@
 {
   "request": {
     "method": "GET",
-    "path": "/bold-falcon/articles?sort[status]=asc&sort[published_on]=desc"
+    "path": "/bold_falcon/articles?sort[status]=asc&sort[published_on]=desc"
   },
   "response": {
     "status": 200,
     "body": {
       "articles": [
         {
-          "id": "7cd83f6a-69fe-4905-b2c4-dd7cfc522a57",
+          "id": "bae7bc77-d5a3-4309-ab57-6e24a34646a2",
           "title": "Draft 2",
           "body": null,
           "status": "draft",
           "viewCount": 0,
           "rating": null,
           "publishedOn": "2024-03-01",
-          "createdAt": "2025-12-07T13:22:39.450Z",
-          "updatedAt": "2025-12-07T13:22:39.450Z"
+          "createdAt": "2025-12-07T13:30:59.425Z",
+          "updatedAt": "2025-12-07T13:30:59.425Z"
         },
         {
-          "id": "c3066b8d-7fec-45a5-a58b-f247df298f6f",
+          "id": "19462b9d-2e35-461c-820f-c95d7325da12",
           "title": "Draft 1",
           "body": null,
           "status": "draft",
           "viewCount": 0,
           "rating": null,
           "publishedOn": "2024-01-01",
-          "createdAt": "2025-12-07T13:22:39.449Z",
-          "updatedAt": "2025-12-07T13:22:39.449Z"
+          "createdAt": "2025-12-07T13:30:59.423Z",
+          "updatedAt": "2025-12-07T13:30:59.423Z"
         },
         {
-          "id": "fd2e3543-eae1-4818-a0d5-12be8aa7ff79",
+          "id": "714adcef-5180-4f75-a10a-f8559074a0c0",
           "title": "Published 1",
           "body": null,
           "status": "published",
           "viewCount": 0,
           "rating": null,
           "publishedOn": "2024-02-01",
-          "createdAt": "2025-12-07T13:22:39.449Z",
-          "updatedAt": "2025-12-07T13:22:39.449Z"
+          "createdAt": "2025-12-07T13:30:59.424Z",
+          "updatedAt": "2025-12-07T13:30:59.424Z"
         }
       ],
       "pagination": {

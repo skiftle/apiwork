@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "POST",
-    "path": "/mighty-wolf/vehicles",
+    "path": "/mighty_wolf/vehicles",
     "body": {
       "vehicle": {
         "kind": "car",
@@ -17,7 +17,7 @@
     "body": {
       "vehicle": {
         "kind": "car",
-        "id": "7d8dc90f-0442-4430-9e9f-fc2278f4866f",
+        "id": "19849991-8595-4059-9dd1-2fca4ee9902a",
         "brand": "Tesla",
         "model": "Model 3",
         "year": 2024,

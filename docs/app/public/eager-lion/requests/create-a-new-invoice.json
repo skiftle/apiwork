@@ -1,11 +1,11 @@
 {
   "request": {
     "method": "POST",
-    "path": "/eager-lion/invoices",
+    "path": "/eager_lion/invoices",
     "body": {
       "invoice": {
         "number": "INV-001",
-        "customer_id": "4c0f6d5a-cca1-4bfb-ad48-7683e1c4f2cf",
+        "customer_id": "e4728662-9ca6-46bb-9cb1-dd74366a76e1",
         "issued_on": "2024-01-15",
         "notes": "First invoice"
       }
@@ -15,14 +15,14 @@
     "status": 201,
     "body": {
       "invoice": {
-        "id": "ee1c45e9-9176-4522-89cd-dec8f43eeea9",
-        "createdAt": "2025-12-07T13:22:39.784Z",
-        "updatedAt": "2025-12-07T13:22:39.784Z",
+        "id": "cc5322ea-cd10-4420-934d-c6d51f40d03a",
+        "createdAt": "2025-12-07T13:30:59.879Z",
+        "updatedAt": "2025-12-07T13:30:59.879Z",
         "number": "INV-001",
         "issuedOn": "2024-01-15",
         "notes": "First invoice",
         "status": null,
-        "customerId": "4c0f6d5a-cca1-4bfb-ad48-7683e1c4f2cf",
+        "customerId": "e4728662-9ca6-46bb-9cb1-dd74366a76e1",
         "lines": null,
         "customer": null
       }

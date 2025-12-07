@@ -1,12 +1,12 @@
 {
   "request": {
     "method": "PATCH",
-    "path": "/clever-rabbit/orders/2a701bfc-32cc-4541-963c-22d6fdc481b9",
+    "path": "/clever_rabbit/orders/5fe317cf-ed7c-4b0b-ab91-dea00c37d306",
     "body": {
       "order": {
         "line_items": [
           {
-            "id": "69e06bba-cc07-40e9-a6a6-dca954192401",
+            "id": "d87ca0d1-2c2c-48c4-a7bf-69c41c0c94fb",
             "_destroy": true
           }
         ]

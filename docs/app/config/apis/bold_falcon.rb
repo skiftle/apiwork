@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Apiwork::API.draw '/bold-falcon' do
+Apiwork::API.draw '/bold_falcon' do
   key_format :camel
 
   spec :openapi

@@ -65,7 +65,7 @@ class ExampleGenerator
 
     Rails.logger.debug "  Generating: #{locale_key}/"
 
-    api = Apiwork::API.all.find { |a| a.metadata.locale_key == locale_key }
+    api = Apiwork::API.all.find { |a| a.metadata.locale_key == namespace }
     return unless api
 
     write_specs(api, output_dir)

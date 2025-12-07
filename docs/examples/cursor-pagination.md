@@ -61,7 +61,7 @@ Navigate through large datasets using cursor-based pagination
 **Request**
 
 ```http
-GET /grumpy-panda/activities
+GET /grumpy_panda/activities
 ```
 
 **Response** `200`
@@ -70,26 +70,26 @@ GET /grumpy-panda/activities
 {
   "activities": [
     {
-      "id": "03b56d7f-b1f6-4839-910c-16ca86c2daef",
-      "action": "post.update",
-      "occurredAt": "2024-01-01T13:00:00.000Z",
-      "createdAt": "2025-12-07T13:22:40.023Z"
+      "id": "15f390c7-5d74-4889-946a-1d81b8bdd809",
+      "action": "user.logout",
+      "occurredAt": "2024-01-01T11:00:00.000Z",
+      "createdAt": "2025-12-07T13:31:00.228Z"
     },
     {
-      "id": "09c2c95d-f0e3-4385-b90b-f4000988ffb6",
-      "action": "post.delete",
-      "occurredAt": "2024-01-01T14:00:00.000Z",
-      "createdAt": "2025-12-07T13:22:40.024Z"
-    },
-    {
-      "id": "26d7b27c-e551-4cf6-98b0-dc8833e93020",
+      "id": "4ee6684d-c82e-48fe-bc2e-502ae9167010",
       "action": "post.create",
       "occurredAt": "2024-01-01T12:00:00.000Z",
-      "createdAt": "2025-12-07T13:22:40.022Z"
+      "createdAt": "2025-12-07T13:31:00.230Z"
+    },
+    {
+      "id": "a98d0a9e-a8b8-4810-a2f0-658b9276673f",
+      "action": "user.login",
+      "occurredAt": "2024-01-01T10:00:00.000Z",
+      "createdAt": "2025-12-07T13:31:00.227Z"
     }
   ],
   "pagination": {
-    "nextCursor": "eyJpZCI6IjI2ZDdiMjdjLWU1NTEtNGNmNi05OGIwLWRjODgzM2U5MzAyMCJ9",
+    "nextCursor": "eyJpZCI6ImE5OGQwYTllLWE4YjgtNDgxMC1hMmYwLTY1OGI5Mjc2NjczZiJ9",
     "prevCursor": null
   }
 }

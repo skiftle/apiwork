@@ -65,7 +65,7 @@ Add rich metadata with summaries, descriptions, tags, and operation IDs
 **Request**
 
 ```http
-GET /brave-eagle/tasks
+GET /brave_eagle/tasks
 ```
 
 **Response** `200`
@@ -74,26 +74,26 @@ GET /brave-eagle/tasks
 {
   "tasks": [
     {
-      "id": "128bba19-91e4-4a4f-b924-f59a21168b4b",
+      "id": "3bde0316-e5b5-4a9e-b93b-550fd40f87ca",
       "title": "Write documentation",
       "description": null,
       "status": "pending",
       "priority": "high",
       "dueDate": null,
       "archived": false,
-      "createdAt": "2025-12-07T13:22:39.544Z",
-      "updatedAt": "2025-12-07T13:22:39.544Z"
+      "createdAt": "2025-12-07T13:30:59.537Z",
+      "updatedAt": "2025-12-07T13:30:59.537Z"
     },
     {
-      "id": "2fcad2b3-5e23-4ce7-b501-be44790f786c",
+      "id": "03a273f8-f639-4f83-a357-57a3c92c127f",
       "title": "Review pull request",
       "description": null,
       "status": "completed",
       "priority": "medium",
       "dueDate": null,
       "archived": false,
-      "createdAt": "2025-12-07T13:22:39.553Z",
-      "updatedAt": "2025-12-07T13:22:39.553Z"
+      "createdAt": "2025-12-07T13:30:59.559Z",
+      "updatedAt": "2025-12-07T13:30:59.559Z"
     }
   ],
   "pagination": {
@@ -114,7 +114,7 @@ GET /brave-eagle/tasks
 **Request**
 
 ```http
-POST /brave-eagle/tasks
+POST /brave_eagle/tasks
 Content-Type: application/json
 
 {
@@ -133,15 +133,15 @@ Content-Type: application/json
 ```json
 {
   "task": {
-    "id": "fa7d202b-1710-4824-b800-bba770d80d40",
+    "id": "a40b25ed-dbbc-404b-86f0-1ff5424f423f",
     "title": "New feature implementation",
     "description": "Implement the new dashboard widget",
     "status": "pending",
     "priority": "high",
     "dueDate": "2024-02-01T00:00:00.000Z",
     "archived": false,
-    "createdAt": "2025-12-07T13:22:39.567Z",
-    "updatedAt": "2025-12-07T13:22:39.567Z"
+    "createdAt": "2025-12-07T13:30:59.592Z",
+    "updatedAt": "2025-12-07T13:30:59.592Z"
   }
 }
 ```
@@ -154,7 +154,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-PATCH /brave-eagle/tasks/28a10544-a713-41d2-9cbb-14d372aed130/archive
+PATCH /brave_eagle/tasks/1156466c-a3aa-4b10-aae8-255d9cdbf8bd/archive
 ```
 
 **Response** `200`
@@ -162,15 +162,15 @@ PATCH /brave-eagle/tasks/28a10544-a713-41d2-9cbb-14d372aed130/archive
 ```json
 {
   "task": {
-    "id": "28a10544-a713-41d2-9cbb-14d372aed130",
+    "id": "1156466c-a3aa-4b10-aae8-255d9cdbf8bd",
     "title": "Old task to archive",
     "description": null,
     "status": "completed",
     "priority": "medium",
     "dueDate": null,
     "archived": true,
-    "createdAt": "2025-12-07T13:22:39.570Z",
-    "updatedAt": "2025-12-07T13:22:39.575Z"
+    "createdAt": "2025-12-07T13:30:59.597Z",
+    "updatedAt": "2025-12-07T13:30:59.608Z"
   }
 }
 ```

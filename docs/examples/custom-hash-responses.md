@@ -36,7 +36,7 @@ Using respond_with with plain hashes instead of ActiveRecord models
 **Request**
 
 ```http
-GET /lazy-cow/status/health
+GET /lazy_cow/status/health
 ```
 
 **Response** `200`
@@ -44,7 +44,7 @@ GET /lazy-cow/status/health
 ```json
 {
   "status": "ok",
-  "timestamp": "2025-12-07T13:22:40.257Z",
+  "timestamp": "2025-12-07T13:31:00.406Z",
   "version": "1.0.0"
 }
 ```
@@ -57,7 +57,7 @@ GET /lazy-cow/status/health
 **Request**
 
 ```http
-GET /lazy-cow/status/stats
+GET /lazy_cow/status/stats
 ```
 
 **Response** `200`

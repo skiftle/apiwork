@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "path": "/bold-falcon/articles?filter[category][name][eq]=Technology"
+    "path": "/bold_falcon/articles?filter[category][name][eq]=Technology"
   },
   "response": {
     "status": 400,

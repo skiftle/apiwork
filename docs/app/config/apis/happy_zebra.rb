@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Apiwork::API.draw '/happy-zebra' do
+Apiwork::API.draw '/happy_zebra' do
   key_format :camel
 
   spec :openapi

@@ -1,5 +1,5 @@
 {
-  "path": "/lazy-cow",
+  "path": "/lazy_cow",
   "types": {
     "issue": {
       "type": "object",

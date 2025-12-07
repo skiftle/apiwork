@@ -1,13 +1,13 @@
 {
   "request": {
     "method": "POST",
-    "path": "/gentle-owl/comments",
+    "path": "/gentle_owl/comments",
     "body": {
       "comment": {
         "body": "Very helpful video!",
         "author_name": "Bob Smith",
         "commentable_type": "GentleOwl::Video",
-        "commentable_id": "4f49508f-c1cb-4092-ad85-d25bffb4f4ae"
+        "commentable_id": "547d2dc4-164a-4657-b495-25e156da0c08"
       }
     }
   },
@@ -15,12 +15,12 @@
     "status": 201,
     "body": {
       "comment": {
-        "id": "058afe17-6088-4bb8-84c0-dbf27d81be33",
+        "id": "88c349ad-a07e-439c-aa01-8df9f382c2fe",
         "body": "Very helpful video!",
         "authorName": "Bob Smith",
         "commentableType": "GentleOwl::Video",
-        "commentableId": "4f49508f-c1cb-4092-ad85-d25bffb4f4ae",
-        "createdAt": "2025-12-07T13:22:39.975Z"
+        "commentableId": "547d2dc4-164a-4657-b495-25e156da0c08",
+        "createdAt": "2025-12-07T13:31:00.142Z"
       }
     }
   }

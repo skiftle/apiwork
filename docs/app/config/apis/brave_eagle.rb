@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Apiwork::API.draw '/brave-eagle' do
+Apiwork::API.draw '/brave_eagle' do
   key_format :camel
 
   info do

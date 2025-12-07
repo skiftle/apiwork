@@ -1,7 +1,7 @@
 ---
 :openapi: 3.1.0
 :info:
-  :title: "/brave-eagle API"
+  :title: "/brave_eagle API"
   :version: 1.0.0
 :paths:
   tasks/:

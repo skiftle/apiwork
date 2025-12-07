@@ -87,7 +87,7 @@ Complex queries with string patterns, numeric ranges, and logical operators
 **Request**
 
 ```http
-GET /bold-falcon/articles
+GET /bold_falcon/articles
 ```
 
 **Response** `200`
@@ -96,26 +96,26 @@ GET /bold-falcon/articles
 {
   "articles": [
     {
-      "id": "2fb8af2a-de3b-45d6-93ff-7090588a78ba",
+      "id": "56ec4d11-26f1-4db9-8828-2c38298f761e",
       "title": "Published Article",
       "body": null,
       "status": "published",
       "viewCount": 0,
       "rating": null,
       "publishedOn": null,
-      "createdAt": "2025-12-07T13:22:39.230Z",
-      "updatedAt": "2025-12-07T13:22:39.230Z"
+      "createdAt": "2025-12-07T13:30:59.186Z",
+      "updatedAt": "2025-12-07T13:30:59.186Z"
     },
     {
-      "id": "63d400ad-37c8-4313-9ae9-19c4252f84df",
+      "id": "9fc3d7d6-a38c-4ed5-9fe3-61448e074901",
       "title": "Draft Article",
       "body": null,
       "status": "draft",
       "viewCount": 0,
       "rating": null,
       "publishedOn": null,
-      "createdAt": "2025-12-07T13:22:39.241Z",
-      "updatedAt": "2025-12-07T13:22:39.241Z"
+      "createdAt": "2025-12-07T13:30:59.198Z",
+      "updatedAt": "2025-12-07T13:30:59.198Z"
     }
   ],
   "pagination": {
@@ -136,7 +136,7 @@ GET /bold-falcon/articles
 **Request**
 
 ```http
-GET /bold-falcon/articles/f510aa5b-bc42-4bb7-a473-390cf9fc3bef
+GET /bold_falcon/articles/8a528750-0869-419e-8d84-0b84722537e7
 ```
 
 **Response** `200`
@@ -144,15 +144,15 @@ GET /bold-falcon/articles/f510aa5b-bc42-4bb7-a473-390cf9fc3bef
 ```json
 {
   "article": {
-    "id": "f510aa5b-bc42-4bb7-a473-390cf9fc3bef",
+    "id": "8a528750-0869-419e-8d84-0b84722537e7",
     "title": "Getting Started with Rails",
     "body": null,
     "status": "published",
     "viewCount": 0,
     "rating": null,
     "publishedOn": null,
-    "createdAt": "2025-12-07T13:22:39.399Z",
-    "updatedAt": "2025-12-07T13:22:39.399Z"
+    "createdAt": "2025-12-07T13:30:59.372Z",
+    "updatedAt": "2025-12-07T13:30:59.372Z"
   }
 }
 ```
@@ -165,7 +165,7 @@ GET /bold-falcon/articles/f510aa5b-bc42-4bb7-a473-390cf9fc3bef
 **Request**
 
 ```http
-POST /bold-falcon/articles
+POST /bold_falcon/articles
 Content-Type: application/json
 
 {
@@ -183,15 +183,15 @@ Content-Type: application/json
 ```json
 {
   "article": {
-    "id": "b4cb40be-a37f-4109-bef7-4c6e58f71f29",
+    "id": "58933ad8-4e64-4e47-9424-6ffb0dfecda1",
     "title": "Getting Started with Rails",
     "body": "A comprehensive guide to Ruby on Rails",
     "status": "draft",
     "viewCount": 0,
     "rating": null,
     "publishedOn": "2024-01-15",
-    "createdAt": "2025-12-07T13:22:39.413Z",
-    "updatedAt": "2025-12-07T13:22:39.413Z"
+    "createdAt": "2025-12-07T13:30:59.387Z",
+    "updatedAt": "2025-12-07T13:30:59.387Z"
   }
 }
 ```
@@ -204,7 +204,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-GET /bold-falcon/articles?filter[status][eq]=published
+GET /bold_falcon/articles?filter[status][eq]=published
 ```
 
 **Response** `200`
@@ -213,15 +213,15 @@ GET /bold-falcon/articles?filter[status][eq]=published
 {
   "articles": [
     {
-      "id": "81d49ec9-5381-4f17-9561-f688aaa8117a",
+      "id": "587278fa-367e-42a1-a765-52a0460c8962",
       "title": "Published Article",
       "body": null,
       "status": "published",
       "viewCount": 0,
       "rating": null,
       "publishedOn": null,
-      "createdAt": "2025-12-07T13:22:39.416Z",
-      "updatedAt": "2025-12-07T13:22:39.416Z"
+      "createdAt": "2025-12-07T13:30:59.390Z",
+      "updatedAt": "2025-12-07T13:30:59.390Z"
     }
   ],
   "pagination": {
@@ -242,7 +242,7 @@ GET /bold-falcon/articles?filter[status][eq]=published
 **Request**
 
 ```http
-GET /bold-falcon/articles?filter[title][contains]=Rails
+GET /bold_falcon/articles?filter[title][contains]=Rails
 ```
 
 **Response** `200`
@@ -251,15 +251,15 @@ GET /bold-falcon/articles?filter[title][contains]=Rails
 {
   "articles": [
     {
-      "id": "73ebe597-63fa-4db3-98f5-03a56c001281",
+      "id": "49ba8a5a-7f1e-4858-8620-898b0cf2899f",
       "title": "Getting Started with Rails",
       "body": null,
       "status": "published",
       "viewCount": 0,
       "rating": null,
       "publishedOn": null,
-      "createdAt": "2025-12-07T13:22:39.429Z",
-      "updatedAt": "2025-12-07T13:22:39.429Z"
+      "createdAt": "2025-12-07T13:30:59.403Z",
+      "updatedAt": "2025-12-07T13:30:59.403Z"
     }
   ],
   "pagination": {
@@ -280,7 +280,7 @@ GET /bold-falcon/articles?filter[title][contains]=Rails
 **Request**
 
 ```http
-GET /bold-falcon/articles?sort[published_on]=desc
+GET /bold_falcon/articles?sort[published_on]=desc
 ```
 
 **Response** `200`
@@ -289,26 +289,26 @@ GET /bold-falcon/articles?sort[published_on]=desc
 {
   "articles": [
     {
-      "id": "d87ddd4d-dc5b-4a30-8dd7-657a02c3bfc2",
+      "id": "293c2eeb-e269-4096-a035-322bf9df2303",
       "title": "New Article",
       "body": null,
       "status": "published",
       "viewCount": 0,
       "rating": null,
       "publishedOn": "2024-06-01",
-      "createdAt": "2025-12-07T13:22:39.441Z",
-      "updatedAt": "2025-12-07T13:22:39.441Z"
+      "createdAt": "2025-12-07T13:30:59.415Z",
+      "updatedAt": "2025-12-07T13:30:59.415Z"
     },
     {
-      "id": "8bf763e9-cb24-4946-85a9-9a431baf9303",
+      "id": "a066b454-150f-40f6-9d39-284796f68e59",
       "title": "Old Article",
       "body": null,
       "status": "published",
       "viewCount": 0,
       "rating": null,
       "publishedOn": "2024-01-01",
-      "createdAt": "2025-12-07T13:22:39.440Z",
-      "updatedAt": "2025-12-07T13:22:39.440Z"
+      "createdAt": "2025-12-07T13:30:59.414Z",
+      "updatedAt": "2025-12-07T13:30:59.414Z"
     }
   ],
   "pagination": {
@@ -329,7 +329,7 @@ GET /bold-falcon/articles?sort[published_on]=desc
 **Request**
 
 ```http
-GET /bold-falcon/articles?sort[status]=asc&sort[published_on]=desc
+GET /bold_falcon/articles?sort[status]=asc&sort[published_on]=desc
 ```
 
 **Response** `200`
@@ -338,37 +338,37 @@ GET /bold-falcon/articles?sort[status]=asc&sort[published_on]=desc
 {
   "articles": [
     {
-      "id": "7cd83f6a-69fe-4905-b2c4-dd7cfc522a57",
+      "id": "bae7bc77-d5a3-4309-ab57-6e24a34646a2",
       "title": "Draft 2",
       "body": null,
       "status": "draft",
       "viewCount": 0,
       "rating": null,
       "publishedOn": "2024-03-01",
-      "createdAt": "2025-12-07T13:22:39.450Z",
-      "updatedAt": "2025-12-07T13:22:39.450Z"
+      "createdAt": "2025-12-07T13:30:59.425Z",
+      "updatedAt": "2025-12-07T13:30:59.425Z"
     },
     {
-      "id": "c3066b8d-7fec-45a5-a58b-f247df298f6f",
+      "id": "19462b9d-2e35-461c-820f-c95d7325da12",
       "title": "Draft 1",
       "body": null,
       "status": "draft",
       "viewCount": 0,
       "rating": null,
       "publishedOn": "2024-01-01",
-      "createdAt": "2025-12-07T13:22:39.449Z",
-      "updatedAt": "2025-12-07T13:22:39.449Z"
+      "createdAt": "2025-12-07T13:30:59.423Z",
+      "updatedAt": "2025-12-07T13:30:59.423Z"
     },
     {
-      "id": "fd2e3543-eae1-4818-a0d5-12be8aa7ff79",
+      "id": "714adcef-5180-4f75-a10a-f8559074a0c0",
       "title": "Published 1",
       "body": null,
       "status": "published",
       "viewCount": 0,
       "rating": null,
       "publishedOn": "2024-02-01",
-      "createdAt": "2025-12-07T13:22:39.449Z",
-      "updatedAt": "2025-12-07T13:22:39.449Z"
+      "createdAt": "2025-12-07T13:30:59.424Z",
+      "updatedAt": "2025-12-07T13:30:59.424Z"
     }
   ],
   "pagination": {
@@ -389,7 +389,7 @@ GET /bold-falcon/articles?sort[status]=asc&sort[published_on]=desc
 **Request**
 
 ```http
-GET /bold-falcon/articles?filter[published_on][gte]=2024-01-01&filter[published_on][lt]=2024-02-01
+GET /bold_falcon/articles?filter[published_on][gte]=2024-01-01&filter[published_on][lt]=2024-02-01
 ```
 
 **Response** `200`
@@ -398,15 +398,15 @@ GET /bold-falcon/articles?filter[published_on][gte]=2024-01-01&filter[published_
 {
   "articles": [
     {
-      "id": "f190a17f-fdf0-4a94-a0f5-68bff221dc26",
+      "id": "0476c97e-5dc2-4689-b102-5feb32f5dfa8",
       "title": "January Article",
       "body": null,
       "status": "published",
       "viewCount": 0,
       "rating": null,
       "publishedOn": "2024-01-15",
-      "createdAt": "2025-12-07T13:22:39.458Z",
-      "updatedAt": "2025-12-07T13:22:39.458Z"
+      "createdAt": "2025-12-07T13:30:59.433Z",
+      "updatedAt": "2025-12-07T13:30:59.433Z"
     }
   ],
   "pagination": {
@@ -427,7 +427,7 @@ GET /bold-falcon/articles?filter[published_on][gte]=2024-01-01&filter[published_
 **Request**
 
 ```http
-GET /bold-falcon/articles?filter[view_count][gt]=100
+GET /bold_falcon/articles?filter[view_count][gt]=100
 ```
 
 **Response** `200`
@@ -436,15 +436,15 @@ GET /bold-falcon/articles?filter[view_count][gt]=100
 {
   "articles": [
     {
-      "id": "e38c5644-3bf0-4a4d-8c3f-023ddf2138ac",
+      "id": "59f57f73-c5a9-42a7-a14d-d9a901a7ac09",
       "title": "Popular Article",
       "body": null,
       "status": "published",
       "viewCount": 500,
       "rating": null,
       "publishedOn": null,
-      "createdAt": "2025-12-07T13:22:39.472Z",
-      "updatedAt": "2025-12-07T13:22:39.472Z"
+      "createdAt": "2025-12-07T13:30:59.448Z",
+      "updatedAt": "2025-12-07T13:30:59.448Z"
     }
   ],
   "pagination": {
@@ -465,7 +465,7 @@ GET /bold-falcon/articles?filter[view_count][gt]=100
 **Request**
 
 ```http
-GET /bold-falcon/articles?filter[status][eq]=published&sort[view_count]=desc
+GET /bold_falcon/articles?filter[status][eq]=published&sort[view_count]=desc
 ```
 
 **Response** `200`
@@ -474,26 +474,26 @@ GET /bold-falcon/articles?filter[status][eq]=published&sort[view_count]=desc
 {
   "articles": [
     {
-      "id": "a1583608-f4a7-401e-9957-de8a035c2008",
+      "id": "99776af2-6ccd-48dc-8df8-10b9ee56a300",
       "title": "Popular Published",
       "body": null,
       "status": "published",
       "viewCount": 1000,
       "rating": null,
       "publishedOn": null,
-      "createdAt": "2025-12-07T13:22:39.488Z",
-      "updatedAt": "2025-12-07T13:22:39.488Z"
+      "createdAt": "2025-12-07T13:30:59.463Z",
+      "updatedAt": "2025-12-07T13:30:59.463Z"
     },
     {
-      "id": "88b79525-5c21-42ae-93e1-3fbca9dd38cc",
+      "id": "5a848a78-3f60-481e-9f10-f08d331b02a3",
       "title": "Less Popular Published",
       "body": null,
       "status": "published",
       "viewCount": 100,
       "rating": null,
       "publishedOn": null,
-      "createdAt": "2025-12-07T13:22:39.490Z",
-      "updatedAt": "2025-12-07T13:22:39.490Z"
+      "createdAt": "2025-12-07T13:30:59.466Z",
+      "updatedAt": "2025-12-07T13:30:59.466Z"
     }
   ],
   "pagination": {
@@ -514,7 +514,7 @@ GET /bold-falcon/articles?filter[status][eq]=published&sort[view_count]=desc
 **Request**
 
 ```http
-GET /bold-falcon/articles?filter[category][name][eq]=Technology
+GET /bold_falcon/articles?filter[category][name][eq]=Technology
 ```
 
 **Response** `400`

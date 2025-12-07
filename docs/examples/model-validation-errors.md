@@ -142,7 +142,7 @@ How Apiwork captures ActiveRecord validation errors and presents them in a unifi
 **Request**
 
 ```http
-POST /happy-zebra/users
+POST /happy_zebra/users
 Content-Type: application/json
 
 {
@@ -162,15 +162,15 @@ Content-Type: application/json
 ```json
 {
   "user": {
-    "id": "96af2bb4-cf79-4e6f-9a52-35a56fae98b9",
-    "createdAt": "2025-12-07T13:22:40.126Z",
-    "updatedAt": "2025-12-07T13:22:40.126Z",
+    "id": "f578a3d3-376b-4d40-8b2b-d14733f3b294",
+    "createdAt": "2025-12-07T13:31:00.334Z",
+    "updatedAt": "2025-12-07T13:31:00.334Z",
     "email": "john@example.com",
     "username": "johndoe",
     "profile": {
-      "id": "9441a99e-7562-4ae5-b2d6-c3000fca3e04",
-      "createdAt": "2025-12-07T13:22:40.128Z",
-      "updatedAt": "2025-12-07T13:22:40.128Z",
+      "id": "879c5e73-105a-4400-93ea-9a087a539da3",
+      "createdAt": "2025-12-07T13:31:00.336Z",
+      "updatedAt": "2025-12-07T13:31:00.336Z",
       "bio": "Software developer",
       "website": "https://example.com"
     },
@@ -187,7 +187,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-POST /happy-zebra/users
+POST /happy_zebra/users
 Content-Type: application/json
 
 {
@@ -227,7 +227,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-POST /happy-zebra/users
+POST /happy_zebra/users
 Content-Type: application/json
 
 {
@@ -279,7 +279,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-POST /happy-zebra/users
+POST /happy_zebra/users
 Content-Type: application/json
 
 {
@@ -338,7 +338,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-POST /happy-zebra/users
+POST /happy_zebra/users
 Content-Type: application/json
 
 {
@@ -369,24 +369,24 @@ Content-Type: application/json
 ```json
 {
   "user": {
-    "id": "b7f2d1ca-04a7-4642-a894-dea66273c0b0",
-    "createdAt": "2025-12-07T13:22:40.177Z",
-    "updatedAt": "2025-12-07T13:22:40.177Z",
+    "id": "b8d14b53-2164-484f-bfad-e0ca6ffc9f8b",
+    "createdAt": "2025-12-07T13:31:00.370Z",
+    "updatedAt": "2025-12-07T13:31:00.370Z",
     "email": "deep@example.com",
     "username": "deepuser",
     "profile": null,
     "posts": [
       {
-        "id": "30102d74-34eb-40f7-8a83-509cc384ffa1",
+        "id": "3ffd7722-b906-4271-b32f-fd6b71c9f152",
         "title": "My First Post",
         "comments": [
           {
-            "id": "e12ce1d6-5133-40cd-9c32-e3778d47f730",
+            "id": "b8c9bb4d-152a-4395-8a9f-e6017b6cc735",
             "body": "Great post!",
             "author": "Jane"
           },
           {
-            "id": "c3ebd0d6-63b9-43a8-9c22-d4198ad1563f",
+            "id": "9d4d035b-b645-4621-9401-adcddcf78ea8",
             "body": "Thanks for sharing",
             "author": "Bob"
           }
@@ -405,7 +405,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-POST /happy-zebra/users
+POST /happy_zebra/users
 Content-Type: application/json
 
 {

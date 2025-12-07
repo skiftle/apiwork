@@ -57,7 +57,7 @@ Defining contracts manually without schemas
 **Request**
 
 ```http
-GET /funny-snake/invoices
+GET /funny_snake/invoices
 ```
 
 **Response** `500`
@@ -77,7 +77,7 @@ GET /funny-snake/invoices
 **Request**
 
 ```http
-GET /funny-snake/invoices/e93c798a-63bb-4c6d-9ba5-8daf512df2ce
+GET /funny_snake/invoices/e4d6f1ef-5a9e-4984-952e-468b3aa66ed0
 ```
 
 **Response** `500`
@@ -97,7 +97,7 @@ GET /funny-snake/invoices/e93c798a-63bb-4c6d-9ba5-8daf512df2ce
 **Request**
 
 ```http
-POST /funny-snake/invoices
+POST /funny_snake/invoices
 Content-Type: application/json
 
 {
@@ -127,7 +127,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-PATCH /funny-snake/invoices/680fcd90-c843-492f-98b0-687657695be7
+PATCH /funny_snake/invoices/e7e7bea1-bd53-422c-bfde-698f9f2c82a1
 Content-Type: application/json
 
 {
@@ -157,7 +157,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-DELETE /funny-snake/invoices/42313175-0b87-44c0-a26b-7ca596cdc77d
+DELETE /funny_snake/invoices/004071f6-f9c7-4739-b695-a2d22355c421
 ```
 
 **Response** `500`

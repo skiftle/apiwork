@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "POST",
-    "path": "/clever-rabbit/orders",
+    "path": "/clever_rabbit/orders",
     "body": {
       "order": {
         "order_number": "ORD-001",
@@ -30,12 +30,12 @@
     "status": 201,
     "body": {
       "order": {
-        "id": "892991dc-8f14-4e1e-b291-9e91ce7c4b5d",
+        "id": "143aff8f-0904-410d-b710-4ebc28885ae4",
         "orderNumber": "ORD-001",
         "status": "pending",
         "total": null,
-        "createdAt": "2025-12-07T13:22:39.664Z",
-        "updatedAt": "2025-12-07T13:22:39.664Z",
+        "createdAt": "2025-12-07T13:30:59.768Z",
+        "updatedAt": "2025-12-07T13:30:59.768Z",
         "lineItems": null,
         "shippingAddress": null
       }

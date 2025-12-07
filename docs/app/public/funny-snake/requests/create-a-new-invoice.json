@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "POST",
-    "path": "/funny-snake/invoices",
+    "path": "/funny_snake/invoices",
     "body": {
       "invoice": {
         "number": "INV-001",

@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "POST",
-    "path": "/mighty-wolf/vehicles",
+    "path": "/mighty_wolf/vehicles",
     "body": {
       "vehicle": {
         "kind": "truck",
@@ -17,7 +17,7 @@
     "body": {
       "vehicle": {
         "kind": "truck",
-        "id": "c91dbbcf-7007-41ce-96e0-f145c590027d",
+        "id": "1b261618-c915-44cb-bc3d-e6db0f6b6239",
         "brand": "Ford",
         "model": "F-150",
         "year": 2024,

@@ -7,10 +7,10 @@ scenarios:
     description: Returns system health status
     order: 1
     method: GET
-    path: /lazy-cow/status/health
+    path: /lazy_cow/status/health
 
   - title: System statistics
     description: Returns usage metrics
     order: 2
     method: GET
-    path: /lazy-cow/status/stats
+    path: /lazy_cow/status/stats

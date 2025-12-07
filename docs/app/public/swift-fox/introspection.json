@@ -1,5 +1,5 @@
 {
-  "path": "/swift-fox",
+  "path": "/swift_fox",
   "types": {
     "contact": {
       "type": "object",

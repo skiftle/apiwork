@@ -1,13 +1,13 @@
 {
   "request": {
     "method": "POST",
-    "path": "/gentle-owl/comments",
+    "path": "/gentle_owl/comments",
     "body": {
       "comment": {
         "body": "This is a great article!",
         "author_name": "Jane Doe",
         "commentable_type": "GentleOwl::Post",
-        "commentable_id": "07ebb4ce-0b0f-41ac-9216-4368245e7628"
+        "commentable_id": "d8271368-6bd8-4f12-b305-ce496ff521c9"
       }
     }
   },
@@ -15,12 +15,12 @@
     "status": 201,
     "body": {
       "comment": {
-        "id": "56b14f3a-f0c4-4958-941e-b6f71e494aab",
+        "id": "37c43298-1db5-438c-842c-0f26ccb4fbc6",
         "body": "This is a great article!",
         "authorName": "Jane Doe",
         "commentableType": "GentleOwl::Post",
-        "commentableId": "07ebb4ce-0b0f-41ac-9216-4368245e7628",
-        "createdAt": "2025-12-07T13:22:39.965Z"
+        "commentableId": "d8271368-6bd8-4f12-b305-ce496ff521c9",
+        "createdAt": "2025-12-07T13:31:00.124Z"
       }
     }
   }

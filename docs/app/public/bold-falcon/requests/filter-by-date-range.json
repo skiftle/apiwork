@@ -1,22 +1,22 @@
 {
   "request": {
     "method": "GET",
-    "path": "/bold-falcon/articles?filter[published_on][gte]=2024-01-01&filter[published_on][lt]=2024-02-01"
+    "path": "/bold_falcon/articles?filter[published_on][gte]=2024-01-01&filter[published_on][lt]=2024-02-01"
   },
   "response": {
     "status": 200,
     "body": {
       "articles": [
         {
-          "id": "f190a17f-fdf0-4a94-a0f5-68bff221dc26",
+          "id": "0476c97e-5dc2-4689-b102-5feb32f5dfa8",
           "title": "January Article",
           "body": null,
           "status": "published",
           "viewCount": 0,
           "rating": null,
           "publishedOn": "2024-01-15",
-          "createdAt": "2025-12-07T13:22:39.458Z",
-          "updatedAt": "2025-12-07T13:22:39.458Z"
+          "createdAt": "2025-12-07T13:30:59.433Z",
+          "updatedAt": "2025-12-07T13:30:59.433Z"
         }
       ],
       "pagination": {

@@ -1,7 +1,7 @@
 ---
 :openapi: 3.1.0
 :info:
-  :title: "/clever-rabbit API"
+  :title: "/clever_rabbit API"
   :version: 1.0.0
 :paths:
   orders/:

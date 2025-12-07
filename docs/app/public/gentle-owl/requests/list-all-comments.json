@@ -1,27 +1,27 @@
 {
   "request": {
     "method": "GET",
-    "path": "/gentle-owl/comments"
+    "path": "/gentle_owl/comments"
   },
   "response": {
     "status": 200,
     "body": {
       "comments": [
         {
-          "id": "ce72738a-9ed1-46cb-8e4a-9d3536f74428",
+          "id": "ef42197f-7a37-4a4f-bcf7-c0026bb79d3c",
           "body": "Great post!",
           "authorName": "John Doe",
           "commentableType": "GentleOwl::Post",
-          "commentableId": "f507aa27-71f1-4e5a-9b60-02284883252b",
-          "createdAt": "2025-12-07T13:22:39.930Z"
+          "commentableId": "143e43a0-2b7e-459e-87d1-f19e815e2d61",
+          "createdAt": "2025-12-07T13:31:00.072Z"
         },
         {
-          "id": "0dcb7aae-0eed-4581-88ae-aeed4d0c906c",
+          "id": "8dfa777b-0487-4709-9645-8d7f5cd7f3b7",
           "body": "Helpful video!",
           "authorName": "Jane Doe",
           "commentableType": "GentleOwl::Video",
-          "commentableId": "fd9fe16f-d19d-4213-a067-e8c960d1e389",
-          "createdAt": "2025-12-07T13:22:39.934Z"
+          "commentableId": "8e67a114-d621-4447-9f57-4640f0781f8b",
+          "createdAt": "2025-12-07T13:31:00.076Z"
         }
       ],
       "pagination": {

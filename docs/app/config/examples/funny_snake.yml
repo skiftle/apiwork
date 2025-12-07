@@ -7,7 +7,7 @@ scenarios:
     description: Returns paginated list of invoices
     order: 1
     method: GET
-    path: /funny-snake/invoices
+    path: /funny_snake/invoices
     setup:
       - create: invoice
         fields:
@@ -22,7 +22,7 @@ scenarios:
     description: Fetch a single invoice by ID
     order: 2
     method: GET
-    path: /funny-snake/invoices/:id
+    path: /funny_snake/invoices/:id
     setup:
       - create: invoice
         fields:
@@ -33,7 +33,7 @@ scenarios:
     description: Create invoice with all fields
     order: 3
     method: POST
-    path: /funny-snake/invoices
+    path: /funny_snake/invoices
     body:
       invoice:
         number: INV-001
@@ -45,7 +45,7 @@ scenarios:
     description: Modify existing invoice status
     order: 4
     method: PATCH
-    path: /funny-snake/invoices/:id
+    path: /funny_snake/invoices/:id
     setup:
       - create: invoice
         fields:
@@ -62,7 +62,7 @@ scenarios:
     description: Remove invoice from system
     order: 5
     method: DELETE
-    path: /funny-snake/invoices/:id
+    path: /funny_snake/invoices/:id
     setup:
       - create: invoice
         fields:

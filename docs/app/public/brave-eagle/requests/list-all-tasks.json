@@ -1,33 +1,33 @@
 {
   "request": {
     "method": "GET",
-    "path": "/brave-eagle/tasks"
+    "path": "/brave_eagle/tasks"
   },
   "response": {
     "status": 200,
     "body": {
       "tasks": [
         {
-          "id": "128bba19-91e4-4a4f-b924-f59a21168b4b",
+          "id": "3bde0316-e5b5-4a9e-b93b-550fd40f87ca",
           "title": "Write documentation",
           "description": null,
           "status": "pending",
           "priority": "high",
           "dueDate": null,
           "archived": false,
-          "createdAt": "2025-12-07T13:22:39.544Z",
-          "updatedAt": "2025-12-07T13:22:39.544Z"
+          "createdAt": "2025-12-07T13:30:59.537Z",
+          "updatedAt": "2025-12-07T13:30:59.537Z"
         },
         {
-          "id": "2fcad2b3-5e23-4ce7-b501-be44790f786c",
+          "id": "03a273f8-f639-4f83-a357-57a3c92c127f",
           "title": "Review pull request",
           "description": null,
           "status": "completed",
           "priority": "medium",
           "dueDate": null,
           "archived": false,
-          "createdAt": "2025-12-07T13:22:39.553Z",
-          "updatedAt": "2025-12-07T13:22:39.553Z"
+          "createdAt": "2025-12-07T13:30:59.559Z",
+          "updatedAt": "2025-12-07T13:30:59.559Z"
         }
       ],
       "pagination": {

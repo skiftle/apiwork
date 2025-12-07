@@ -7,7 +7,7 @@ scenarios:
     description: Returns comments for all content types
     order: 1
     method: GET
-    path: /gentle-owl/comments
+    path: /gentle_owl/comments
     setup:
       - create: post
         fields:
@@ -33,7 +33,7 @@ scenarios:
     description: Fetch a single comment
     order: 2
     method: GET
-    path: /gentle-owl/comments/:id
+    path: /gentle_owl/comments/:id
     setup:
       - create: post
         fields:
@@ -49,7 +49,7 @@ scenarios:
     description: Add comment to a blog post
     order: 3
     method: POST
-    path: /gentle-owl/comments
+    path: /gentle_owl/comments
     setup:
       - create: post
         fields:
@@ -65,7 +65,7 @@ scenarios:
     description: Add comment to a video
     order: 4
     method: POST
-    path: /gentle-owl/comments
+    path: /gentle_owl/comments
     setup:
       - create: video
         fields:
@@ -82,7 +82,7 @@ scenarios:
     description: Filter comments by commentable type
     order: 5
     method: GET
-    path: /gentle-owl/comments?filter[commentable_type][eq]=GentleOwl::Post
+    path: /gentle_owl/comments?filter[commentable_type][eq]=GentleOwl::Post
     setup:
       - create: post
         fields:

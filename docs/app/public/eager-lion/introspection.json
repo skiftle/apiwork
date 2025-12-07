@@ -1,5 +1,5 @@
 {
-  "path": "/eager-lion",
+  "path": "/eager_lion",
   "types": {
     "invoice": {
       "type": "object",

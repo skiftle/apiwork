@@ -129,7 +129,7 @@ Comments that belong to different content types (posts, videos, images)
 **Request**
 
 ```http
-GET /gentle-owl/comments
+GET /gentle_owl/comments
 ```
 
 **Response** `200`
@@ -138,20 +138,20 @@ GET /gentle-owl/comments
 {
   "comments": [
     {
-      "id": "ce72738a-9ed1-46cb-8e4a-9d3536f74428",
+      "id": "ef42197f-7a37-4a4f-bcf7-c0026bb79d3c",
       "body": "Great post!",
       "authorName": "John Doe",
       "commentableType": "GentleOwl::Post",
-      "commentableId": "f507aa27-71f1-4e5a-9b60-02284883252b",
-      "createdAt": "2025-12-07T13:22:39.930Z"
+      "commentableId": "143e43a0-2b7e-459e-87d1-f19e815e2d61",
+      "createdAt": "2025-12-07T13:31:00.072Z"
     },
     {
-      "id": "0dcb7aae-0eed-4581-88ae-aeed4d0c906c",
+      "id": "8dfa777b-0487-4709-9645-8d7f5cd7f3b7",
       "body": "Helpful video!",
       "authorName": "Jane Doe",
       "commentableType": "GentleOwl::Video",
-      "commentableId": "fd9fe16f-d19d-4213-a067-e8c960d1e389",
-      "createdAt": "2025-12-07T13:22:39.934Z"
+      "commentableId": "8e67a114-d621-4447-9f57-4640f0781f8b",
+      "createdAt": "2025-12-07T13:31:00.076Z"
     }
   ],
   "pagination": {
@@ -172,7 +172,7 @@ GET /gentle-owl/comments
 **Request**
 
 ```http
-GET /gentle-owl/comments/2f1916f3-6d7b-4a6c-b7de-19b49432d79c
+GET /gentle_owl/comments/0ff7d0cc-91f3-4a88-b6d5-d9d872c347b6
 ```
 
 **Response** `200`
@@ -180,12 +180,12 @@ GET /gentle-owl/comments/2f1916f3-6d7b-4a6c-b7de-19b49432d79c
 ```json
 {
   "comment": {
-    "id": "2f1916f3-6d7b-4a6c-b7de-19b49432d79c",
+    "id": "0ff7d0cc-91f3-4a88-b6d5-d9d872c347b6",
     "body": "Great post!",
     "authorName": "John Doe",
     "commentableType": "GentleOwl::Post",
-    "commentableId": "a5279c3b-b355-4fb3-a807-bde4bd491e31",
-    "createdAt": "2025-12-07T13:22:39.949Z"
+    "commentableId": "4c2eb728-25ac-44e9-a6a6-0c7f906b55bf",
+    "createdAt": "2025-12-07T13:31:00.097Z"
   }
 }
 ```
@@ -198,7 +198,7 @@ GET /gentle-owl/comments/2f1916f3-6d7b-4a6c-b7de-19b49432d79c
 **Request**
 
 ```http
-POST /gentle-owl/comments
+POST /gentle_owl/comments
 Content-Type: application/json
 
 {
@@ -206,7 +206,7 @@ Content-Type: application/json
     "body": "This is a great article!",
     "author_name": "Jane Doe",
     "commentable_type": "GentleOwl::Post",
-    "commentable_id": "07ebb4ce-0b0f-41ac-9216-4368245e7628"
+    "commentable_id": "d8271368-6bd8-4f12-b305-ce496ff521c9"
   }
 }
 ```
@@ -216,12 +216,12 @@ Content-Type: application/json
 ```json
 {
   "comment": {
-    "id": "56b14f3a-f0c4-4958-941e-b6f71e494aab",
+    "id": "37c43298-1db5-438c-842c-0f26ccb4fbc6",
     "body": "This is a great article!",
     "authorName": "Jane Doe",
     "commentableType": "GentleOwl::Post",
-    "commentableId": "07ebb4ce-0b0f-41ac-9216-4368245e7628",
-    "createdAt": "2025-12-07T13:22:39.965Z"
+    "commentableId": "d8271368-6bd8-4f12-b305-ce496ff521c9",
+    "createdAt": "2025-12-07T13:31:00.124Z"
   }
 }
 ```
@@ -234,7 +234,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-POST /gentle-owl/comments
+POST /gentle_owl/comments
 Content-Type: application/json
 
 {
@@ -242,7 +242,7 @@ Content-Type: application/json
     "body": "Very helpful video!",
     "author_name": "Bob Smith",
     "commentable_type": "GentleOwl::Video",
-    "commentable_id": "4f49508f-c1cb-4092-ad85-d25bffb4f4ae"
+    "commentable_id": "547d2dc4-164a-4657-b495-25e156da0c08"
   }
 }
 ```
@@ -252,12 +252,12 @@ Content-Type: application/json
 ```json
 {
   "comment": {
-    "id": "058afe17-6088-4bb8-84c0-dbf27d81be33",
+    "id": "88c349ad-a07e-439c-aa01-8df9f382c2fe",
     "body": "Very helpful video!",
     "authorName": "Bob Smith",
     "commentableType": "GentleOwl::Video",
-    "commentableId": "4f49508f-c1cb-4092-ad85-d25bffb4f4ae",
-    "createdAt": "2025-12-07T13:22:39.975Z"
+    "commentableId": "547d2dc4-164a-4657-b495-25e156da0c08",
+    "createdAt": "2025-12-07T13:31:00.142Z"
   }
 }
 ```
@@ -270,7 +270,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-GET /gentle-owl/comments?filter[commentable_type][eq]=GentleOwl::Post
+GET /gentle_owl/comments?filter[commentable_type][eq]=GentleOwl::Post
 ```
 
 **Response** `200`
@@ -279,12 +279,12 @@ GET /gentle-owl/comments?filter[commentable_type][eq]=GentleOwl::Post
 {
   "comments": [
     {
-      "id": "a211fe5b-a30f-4c0a-959c-5d335f405ae1",
+      "id": "cb561ac6-bba8-4a25-925b-90e2431c8c22",
       "body": "Post comment",
       "authorName": "User 1",
       "commentableType": "GentleOwl::Post",
-      "commentableId": "933584c2-690e-4d8e-9b30-f01666f7c44b",
-      "createdAt": "2025-12-07T13:22:39.983Z"
+      "commentableId": "3e2d983d-f52c-4eb9-92e6-cebe2ffe5ba1",
+      "createdAt": "2025-12-07T13:31:00.155Z"
     }
   ],
   "pagination": {

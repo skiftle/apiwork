@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "POST",
-    "path": "/happy-zebra/users",
+    "path": "/happy_zebra/users",
     "body": {
       "user": {
         "email": "john@example.com",
@@ -17,15 +17,15 @@
     "status": 201,
     "body": {
       "user": {
-        "id": "96af2bb4-cf79-4e6f-9a52-35a56fae98b9",
-        "createdAt": "2025-12-07T13:22:40.126Z",
-        "updatedAt": "2025-12-07T13:22:40.126Z",
+        "id": "f578a3d3-376b-4d40-8b2b-d14733f3b294",
+        "createdAt": "2025-12-07T13:31:00.334Z",
+        "updatedAt": "2025-12-07T13:31:00.334Z",
         "email": "john@example.com",
         "username": "johndoe",
         "profile": {
-          "id": "9441a99e-7562-4ae5-b2d6-c3000fca3e04",
-          "createdAt": "2025-12-07T13:22:40.128Z",
-          "updatedAt": "2025-12-07T13:22:40.128Z",
+          "id": "879c5e73-105a-4400-93ea-9a087a539da3",
+          "createdAt": "2025-12-07T13:31:00.336Z",
+          "updatedAt": "2025-12-07T13:31:00.336Z",
           "bio": "Software developer",
           "website": "https://example.com"
         },

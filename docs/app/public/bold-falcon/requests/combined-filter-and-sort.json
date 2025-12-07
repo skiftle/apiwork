@@ -1,33 +1,33 @@
 {
   "request": {
     "method": "GET",
-    "path": "/bold-falcon/articles?filter[status][eq]=published&sort[view_count]=desc"
+    "path": "/bold_falcon/articles?filter[status][eq]=published&sort[view_count]=desc"
   },
   "response": {
     "status": 200,
     "body": {
       "articles": [
         {
-          "id": "a1583608-f4a7-401e-9957-de8a035c2008",
+          "id": "99776af2-6ccd-48dc-8df8-10b9ee56a300",
           "title": "Popular Published",
           "body": null,
           "status": "published",
           "viewCount": 1000,
           "rating": null,
           "publishedOn": null,
-          "createdAt": "2025-12-07T13:22:39.488Z",
-          "updatedAt": "2025-12-07T13:22:39.488Z"
+          "createdAt": "2025-12-07T13:30:59.463Z",
+          "updatedAt": "2025-12-07T13:30:59.463Z"
         },
         {
-          "id": "88b79525-5c21-42ae-93e1-3fbca9dd38cc",
+          "id": "5a848a78-3f60-481e-9f10-f08d331b02a3",
           "title": "Less Popular Published",
           "body": null,
           "status": "published",
           "viewCount": 100,
           "rating": null,
           "publishedOn": null,
-          "createdAt": "2025-12-07T13:22:39.490Z",
-          "updatedAt": "2025-12-07T13:22:39.490Z"
+          "createdAt": "2025-12-07T13:30:59.466Z",
+          "updatedAt": "2025-12-07T13:30:59.466Z"
         }
       ],
       "pagination": {

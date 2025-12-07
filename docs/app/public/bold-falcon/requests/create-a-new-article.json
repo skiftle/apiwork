@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "POST",
-    "path": "/bold-falcon/articles",
+    "path": "/bold_falcon/articles",
     "body": {
       "article": {
         "title": "Getting Started with Rails",
@@ -15,15 +15,15 @@
     "status": 201,
     "body": {
       "article": {
-        "id": "b4cb40be-a37f-4109-bef7-4c6e58f71f29",
+        "id": "58933ad8-4e64-4e47-9424-6ffb0dfecda1",
         "title": "Getting Started with Rails",
         "body": "A comprehensive guide to Ruby on Rails",
         "status": "draft",
         "viewCount": 0,
         "rating": null,
         "publishedOn": "2024-01-15",
-        "createdAt": "2025-12-07T13:22:39.413Z",
-        "updatedAt": "2025-12-07T13:22:39.413Z"
+        "createdAt": "2025-12-07T13:30:59.387Z",
+        "updatedAt": "2025-12-07T13:30:59.387Z"
       }
     }
   }

@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "POST",
-    "path": "/swift-fox/contacts",
+    "path": "/swift_fox/contacts",
     "body": {
       "contact": {
         "name": "John Doe",
@@ -15,7 +15,7 @@
     "status": 201,
     "body": {
       "contact": {
-        "id": "ede6e27b-fe24-4d7f-9c1f-0d485844154f",
+        "id": "c39ac392-6c10-4a5c-a61b-151b873d1c41",
         "name": "John Doe",
         "email": "john.doe@example.com",
         "phone": "",

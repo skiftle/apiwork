@@ -1,5 +1,5 @@
 {
-  "path": "/bold-falcon",
+  "path": "/bold_falcon",
   "types": {
     "article": {
       "type": "object",

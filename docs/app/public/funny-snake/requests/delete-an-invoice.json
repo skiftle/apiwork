@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "DELETE",
-    "path": "/funny-snake/invoices/42313175-0b87-44c0-a26b-7ca596cdc77d"
+    "path": "/funny_snake/invoices/004071f6-f9c7-4739-b695-a2d22355c421"
   },
   "response": {
     "status": 500,

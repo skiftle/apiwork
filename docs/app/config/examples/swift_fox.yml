@@ -7,7 +7,7 @@ scenarios:
     description: Email decoded, empty strings handled
     order: 1
     method: POST
-    path: /swift-fox/contacts
+    path: /swift_fox/contacts
     body:
       contact:
         name: John Doe
@@ -19,7 +19,7 @@ scenarios:
     description: Email encoded in response
     order: 2
     method: GET
-    path: /swift-fox/contacts/:id
+    path: /swift_fox/contacts/:id
     setup:
       - create: contact
         fields:

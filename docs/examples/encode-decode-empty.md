@@ -63,7 +63,7 @@ Transform values on input/output and handle nil/empty string conversion
 **Request**
 
 ```http
-POST /swift-fox/contacts
+POST /swift_fox/contacts
 Content-Type: application/json
 
 {
@@ -81,7 +81,7 @@ Content-Type: application/json
 ```json
 {
   "contact": {
-    "id": "ede6e27b-fe24-4d7f-9c1f-0d485844154f",
+    "id": "c39ac392-6c10-4a5c-a61b-151b873d1c41",
     "name": "John Doe",
     "email": "john.doe@example.com",
     "phone": "",
@@ -98,7 +98,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-GET /swift-fox/contacts/73ee008d-937a-4eb0-b86f-8142687df2dc
+GET /swift_fox/contacts/1baf2dda-d173-4b96-9d95-267738756aaa
 ```
 
 **Response** `200`
@@ -106,7 +106,7 @@ GET /swift-fox/contacts/73ee008d-937a-4eb0-b86f-8142687df2dc
 ```json
 {
   "contact": {
-    "id": "73ee008d-937a-4eb0-b86f-8142687df2dc",
+    "id": "1baf2dda-d173-4b96-9d95-267738756aaa",
     "name": "Jane Doe",
     "email": "jane@example.com",
     "phone": "",

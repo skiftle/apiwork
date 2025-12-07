@@ -1,33 +1,33 @@
 {
   "request": {
     "method": "GET",
-    "path": "/bold-falcon/articles"
+    "path": "/bold_falcon/articles"
   },
   "response": {
     "status": 200,
     "body": {
       "articles": [
         {
-          "id": "2fb8af2a-de3b-45d6-93ff-7090588a78ba",
+          "id": "56ec4d11-26f1-4db9-8828-2c38298f761e",
           "title": "Published Article",
           "body": null,
           "status": "published",
           "viewCount": 0,
           "rating": null,
           "publishedOn": null,
-          "createdAt": "2025-12-07T13:22:39.230Z",
-          "updatedAt": "2025-12-07T13:22:39.230Z"
+          "createdAt": "2025-12-07T13:30:59.186Z",
+          "updatedAt": "2025-12-07T13:30:59.186Z"
         },
         {
-          "id": "63d400ad-37c8-4313-9ae9-19c4252f84df",
+          "id": "9fc3d7d6-a38c-4ed5-9fe3-61448e074901",
           "title": "Draft Article",
           "body": null,
           "status": "draft",
           "viewCount": 0,
           "rating": null,
           "publishedOn": null,
-          "createdAt": "2025-12-07T13:22:39.241Z",
-          "updatedAt": "2025-12-07T13:22:39.241Z"
+          "createdAt": "2025-12-07T13:30:59.198Z",
+          "updatedAt": "2025-12-07T13:30:59.198Z"
         }
       ],
       "pagination": {

@@ -1,5 +1,5 @@
 {
-  "path": "/clever-rabbit",
+  "path": "/clever_rabbit",
   "types": {
     "issue": {
       "type": "object",

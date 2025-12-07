@@ -7,7 +7,7 @@ scenarios:
     description: Returns invoices with customer data
     order: 1
     method: GET
-    path: /eager-lion/invoices
+    path: /eager_lion/invoices
     setup:
       - create: customer
         fields:
@@ -25,7 +25,7 @@ scenarios:
     description: Fetch invoice with associations
     order: 2
     method: GET
-    path: /eager-lion/invoices/:id
+    path: /eager_lion/invoices/:id
     setup:
       - create: customer
         fields:
@@ -39,7 +39,7 @@ scenarios:
     description: Create invoice linked to customer
     order: 3
     method: POST
-    path: /eager-lion/invoices
+    path: /eager_lion/invoices
     setup:
       - create: customer
         fields:
@@ -55,7 +55,7 @@ scenarios:
     description: Modify invoice notes
     order: 4
     method: PATCH
-    path: /eager-lion/invoices/:id
+    path: /eager_lion/invoices/:id
     setup:
       - create: customer
         fields:
@@ -74,7 +74,7 @@ scenarios:
     description: Remove invoice from system
     order: 5
     method: DELETE
-    path: /eager-lion/invoices/:id
+    path: /eager_lion/invoices/:id
     setup:
       - create: customer
         fields:

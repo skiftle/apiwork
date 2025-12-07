@@ -7,7 +7,7 @@ scenarios:
     description: Returns first page with next_cursor
     order: 1
     method: GET
-    path: /grumpy-panda/activities
+    path: /grumpy_panda/activities
     setup:
       - create: activity
         fields:

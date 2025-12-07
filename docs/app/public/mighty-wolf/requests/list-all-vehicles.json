@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "path": "/mighty-wolf/vehicles"
+    "path": "/mighty_wolf/vehicles"
   },
   "response": {
     "status": 200,
@@ -9,7 +9,7 @@
       "vehicles": [
         {
           "kind": "car",
-          "id": "454723d4-cf08-4649-b3e6-4ae462beb8ae",
+          "id": "75118107-3876-432f-892d-2ed6ff8a3bc7",
           "brand": "Tesla",
           "model": "Model 3",
           "year": null,
@@ -18,7 +18,7 @@
         },
         {
           "kind": "motorcycle",
-          "id": "05094ce7-c3d3-49a5-89f0-a459d71cc111",
+          "id": "b519d63c-dfd9-4e6c-adb5-4fadee206c7b",
           "brand": "Harley-Davidson",
           "model": "Street Glide",
           "year": null,
@@ -27,7 +27,7 @@
         },
         {
           "kind": "truck",
-          "id": "837bfb25-7f0f-416a-a76f-d0dd5571ffa9",
+          "id": "38dca7b1-4fc1-4a66-aa30-ffaea93fc0e4",
           "brand": "Ford",
           "model": "F-150",
           "year": null,

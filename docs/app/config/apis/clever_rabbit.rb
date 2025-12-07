@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Apiwork::API.draw '/clever-rabbit' do
+Apiwork::API.draw '/clever_rabbit' do
   key_format :camel
 
   spec :openapi

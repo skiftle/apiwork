@@ -1,5 +1,5 @@
 {
-  "path": "/funny-snake",
+  "path": "/funny_snake",
   "types": {
     "invoice": {
       "type": "object",

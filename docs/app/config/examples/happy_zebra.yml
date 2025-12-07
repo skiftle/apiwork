@@ -7,7 +7,7 @@ scenarios:
     description: Successfully create user with profile
     order: 1
     method: POST
-    path: /happy-zebra/users
+    path: /happy_zebra/users
     body:
       user:
         email: john@example.com
@@ -20,7 +20,7 @@ scenarios:
     description: Email validation error (422)
     order: 2
     method: POST
-    path: /happy-zebra/users
+    path: /happy_zebra/users
     body:
       user:
         email: not-an-email
@@ -30,7 +30,7 @@ scenarios:
     description: Required field validation error (400)
     order: 3
     method: POST
-    path: /happy-zebra/users
+    path: /happy_zebra/users
     body:
       user:
         email: ""
@@ -40,7 +40,7 @@ scenarios:
     description: Nested validation errors (422)
     order: 4
     method: POST
-    path: /happy-zebra/users
+    path: /happy_zebra/users
     body:
       user:
         email: john@example.com
@@ -53,7 +53,7 @@ scenarios:
     description: User with posts and comments
     order: 5
     method: POST
-    path: /happy-zebra/users
+    path: /happy_zebra/users
     body:
       user:
         email: deep@example.com
@@ -70,7 +70,7 @@ scenarios:
     description: Validation error at comment level
     order: 6
     method: POST
-    path: /happy-zebra/users
+    path: /happy_zebra/users
     body:
       user:
         email: deep@example.com

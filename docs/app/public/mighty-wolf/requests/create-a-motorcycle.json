@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "POST",
-    "path": "/mighty-wolf/vehicles",
+    "path": "/mighty_wolf/vehicles",
     "body": {
       "vehicle": {
         "kind": "motorcycle",
@@ -17,7 +17,7 @@
     "body": {
       "vehicle": {
         "kind": "motorcycle",
-        "id": "00675ae2-4b5b-472d-a267-f4c869cf1561",
+        "id": "42d79bcc-1dae-463a-953e-0c806faf290e",
         "brand": "Harley-Davidson",
         "model": "Street Glide",
         "year": 2023,

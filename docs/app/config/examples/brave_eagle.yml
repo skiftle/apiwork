@@ -7,7 +7,7 @@ scenarios:
     description: Shows documented endpoint with tags
     order: 1
     method: GET
-    path: /brave-eagle/tasks
+    path: /brave_eagle/tasks
     setup:
       - create: task
         fields:
@@ -24,7 +24,7 @@ scenarios:
     description: Standard create with metadata
     order: 2
     method: POST
-    path: /brave-eagle/tasks
+    path: /brave_eagle/tasks
     body:
       task:
         title: New feature implementation
@@ -37,7 +37,7 @@ scenarios:
     description: Deprecated action example
     order: 3
     method: PATCH
-    path: /brave-eagle/tasks/:id/archive
+    path: /brave_eagle/tasks/:id/archive
     setup:
       - create: task
         fields:

@@ -107,7 +107,7 @@ Using `schema!` to generate a complete contract from schema definitions
 **Request**
 
 ```http
-GET /eager-lion/invoices
+GET /eager_lion/invoices
 ```
 
 **Response** `200`
@@ -116,26 +116,26 @@ GET /eager-lion/invoices
 {
   "invoices": [
     {
-      "id": "082a5f89-73ab-487e-826e-4da51a9be722",
-      "createdAt": "2025-12-07T13:22:39.754Z",
-      "updatedAt": "2025-12-07T13:22:39.754Z",
+      "id": "96fb1fca-04a4-44a1-a74d-8fd17ed867db",
+      "createdAt": "2025-12-07T13:30:59.851Z",
+      "updatedAt": "2025-12-07T13:30:59.851Z",
       "number": "INV-001",
       "issuedOn": null,
       "notes": null,
       "status": null,
-      "customerId": "65600b79-5203-434a-8aff-359a80137768",
+      "customerId": "da3a75a1-3869-4bee-99b2-b4d87ecafe5a",
       "lines": null,
       "customer": null
     },
     {
-      "id": "28fe6876-906d-4193-9beb-b64816f3d2cb",
-      "createdAt": "2025-12-07T13:22:39.756Z",
-      "updatedAt": "2025-12-07T13:22:39.756Z",
+      "id": "ee5f39ea-717b-4446-8972-c14d07735d02",
+      "createdAt": "2025-12-07T13:30:59.853Z",
+      "updatedAt": "2025-12-07T13:30:59.853Z",
       "number": "INV-002",
       "issuedOn": null,
       "notes": null,
       "status": null,
-      "customerId": "65600b79-5203-434a-8aff-359a80137768",
+      "customerId": "da3a75a1-3869-4bee-99b2-b4d87ecafe5a",
       "lines": null,
       "customer": null
     }
@@ -158,7 +158,7 @@ GET /eager-lion/invoices
 **Request**
 
 ```http
-GET /eager-lion/invoices/8973d397-d784-4c8b-baae-bcc03138c139
+GET /eager_lion/invoices/fae410e9-c23d-4a80-9049-0b5536f7ef4e
 ```
 
 **Response** `200`
@@ -166,14 +166,14 @@ GET /eager-lion/invoices/8973d397-d784-4c8b-baae-bcc03138c139
 ```json
 {
   "invoice": {
-    "id": "8973d397-d784-4c8b-baae-bcc03138c139",
-    "createdAt": "2025-12-07T13:22:39.770Z",
-    "updatedAt": "2025-12-07T13:22:39.770Z",
+    "id": "fae410e9-c23d-4a80-9049-0b5536f7ef4e",
+    "createdAt": "2025-12-07T13:30:59.866Z",
+    "updatedAt": "2025-12-07T13:30:59.866Z",
     "number": "INV-001",
     "issuedOn": null,
     "notes": null,
     "status": null,
-    "customerId": "e2fd46c8-3236-4cb6-8ff1-7996c2b267fd",
+    "customerId": "8bcb602e-b723-4d50-bdfd-a1150f48ea4b",
     "lines": null,
     "customer": null
   }
@@ -188,13 +188,13 @@ GET /eager-lion/invoices/8973d397-d784-4c8b-baae-bcc03138c139
 **Request**
 
 ```http
-POST /eager-lion/invoices
+POST /eager_lion/invoices
 Content-Type: application/json
 
 {
   "invoice": {
     "number": "INV-001",
-    "customer_id": "4c0f6d5a-cca1-4bfb-ad48-7683e1c4f2cf",
+    "customer_id": "e4728662-9ca6-46bb-9cb1-dd74366a76e1",
     "issued_on": "2024-01-15",
     "notes": "First invoice"
   }
@@ -206,14 +206,14 @@ Content-Type: application/json
 ```json
 {
   "invoice": {
-    "id": "ee1c45e9-9176-4522-89cd-dec8f43eeea9",
-    "createdAt": "2025-12-07T13:22:39.784Z",
-    "updatedAt": "2025-12-07T13:22:39.784Z",
+    "id": "cc5322ea-cd10-4420-934d-c6d51f40d03a",
+    "createdAt": "2025-12-07T13:30:59.879Z",
+    "updatedAt": "2025-12-07T13:30:59.879Z",
     "number": "INV-001",
     "issuedOn": "2024-01-15",
     "notes": "First invoice",
     "status": null,
-    "customerId": "4c0f6d5a-cca1-4bfb-ad48-7683e1c4f2cf",
+    "customerId": "e4728662-9ca6-46bb-9cb1-dd74366a76e1",
     "lines": null,
     "customer": null
   }
@@ -228,13 +228,13 @@ Content-Type: application/json
 **Request**
 
 ```http
-PATCH /eager-lion/invoices/118c40e6-4f09-4661-b001-fb6a446144e3
+PATCH /eager_lion/invoices/42470a86-37c9-4a28-9c41-3e1ca9a839f4
 Content-Type: application/json
 
 {
   "invoice": {
     "number": "INV-001",
-    "customer_id": "49740969-0a9d-4358-a16d-9b2ba9081c34",
+    "customer_id": "6a855526-acad-47e1-8972-24e06350e11d",
     "notes": "Updated notes"
   }
 }
@@ -245,14 +245,14 @@ Content-Type: application/json
 ```json
 {
   "invoice": {
-    "id": "118c40e6-4f09-4661-b001-fb6a446144e3",
-    "createdAt": "2025-12-07T13:22:39.788Z",
-    "updatedAt": "2025-12-07T13:22:39.793Z",
+    "id": "42470a86-37c9-4a28-9c41-3e1ca9a839f4",
+    "createdAt": "2025-12-07T13:30:59.884Z",
+    "updatedAt": "2025-12-07T13:30:59.889Z",
     "number": "INV-001",
     "issuedOn": null,
     "notes": "Updated notes",
     "status": null,
-    "customerId": "49740969-0a9d-4358-a16d-9b2ba9081c34",
+    "customerId": "6a855526-acad-47e1-8972-24e06350e11d",
     "lines": null,
     "customer": null
   }
@@ -267,7 +267,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-DELETE /eager-lion/invoices/cb79831a-483f-45b6-ba9c-d27841cf4ab2
+DELETE /eager_lion/invoices/df488ce9-b6b1-47d9-bdc6-5dd8d6a999ff
 ```
 
 **Response** `200`
