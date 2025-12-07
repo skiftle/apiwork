@@ -126,7 +126,10 @@ module Apiwork
             end
 
             response_data = action_data[:response]
-            if response_data && response_data[:body]
+            if response_data&.dig(:no_content)
+              schema_name = zod_mapper.action_schema_name(resource_name, action_name, 'Response', parent_path: parent_path)
+              schemas << "export const #{schema_name} = z.never();"
+            elsif response_data && response_data[:body]
               schemas << zod_mapper.build_action_response_body_schema(resource_name, action_name, response_data[:body], parent_path: parent_path)
               schemas << zod_mapper.build_action_response_schema(resource_name, action_name, response_data, parent_path: parent_path)
             end
@@ -192,15 +195,19 @@ module Apiwork
             end
 
             response_data = action_data[:response]
-            next unless response_data && response_data[:body]
 
-            type_name = typescript_mapper.action_type_name(resource_name, action_name, 'ResponseBody', parent_path: parent_path)
-            code = typescript_mapper.build_action_response_body_type(resource_name, action_name, response_data[:body], parent_path: parent_path)
-            all_types << { name: type_name, code: code }
+            if response_data&.dig(:no_content)
+              type_name = typescript_mapper.action_type_name(resource_name, action_name, 'Response', parent_path: parent_path)
+              all_types << { name: type_name, code: "export type #{type_name} = never;" }
+            elsif response_data && response_data[:body]
+              type_name = typescript_mapper.action_type_name(resource_name, action_name, 'ResponseBody', parent_path: parent_path)
+              code = typescript_mapper.build_action_response_body_type(resource_name, action_name, response_data[:body], parent_path: parent_path)
+              all_types << { name: type_name, code: code }
 
-            type_name = typescript_mapper.action_type_name(resource_name, action_name, 'Response', parent_path: parent_path)
-            code = typescript_mapper.build_action_response_type(resource_name, action_name, response_data, parent_path: parent_path)
-            all_types << { name: type_name, code: code }
+              type_name = typescript_mapper.action_type_name(resource_name, action_name, 'Response', parent_path: parent_path)
+              code = typescript_mapper.build_action_response_type(resource_name, action_name, response_data, parent_path: parent_path)
+              all_types << { name: type_name, code: code }
+            end
           end
         end
 

@@ -141,6 +141,44 @@ action :create do
 end
 ```
 
+### no_content!
+
+For actions that return HTTP 204 No Content (no response body):
+
+```ruby
+action :soft_delete do
+  response { no_content! }
+end
+```
+
+This is the **default for DELETE method actions** (including `destroy`).
+
+**Generated output:**
+- OpenAPI: `204 No Content` (no `content` key)
+- TypeScript: `never`
+- Zod: `z.never()`
+
+To return data instead:
+
+```ruby
+action :destroy do
+  response do
+    body do
+      param :deleted_at, type: :datetime
+    end
+  end
+end
+```
+
+**Important:** `meta` cannot be used with `no_content!` since 204 has no body.
+If you need `meta`, use an empty response instead:
+
+```ruby
+action :destroy do
+  response {}  # 200 OK with { meta?: object }
+end
+```
+
 ## Raises
 
 Declare which errors an action can raise:

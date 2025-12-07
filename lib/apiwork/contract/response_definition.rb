@@ -11,6 +11,15 @@ module Apiwork
         @contract_class = contract_class
         @action_name = action_name
         @body_definition = nil
+        @no_content = false
+      end
+
+      def no_content?
+        @no_content
+      end
+
+      def no_content!
+        @no_content = true
       end
 
       def body(&block)

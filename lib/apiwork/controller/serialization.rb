@@ -6,6 +6,13 @@ module Apiwork
       extend ActiveSupport::Concern
 
       def respond_with(data, meta: {}, status: nil)
+        action_def = contract_class.action_definitions[action_name.to_sym]
+
+        if action_def&.response_definition&.no_content?
+          head :no_content
+          return
+        end
+
         schema_class = contract_class.schema_class
 
         json = if schema_class

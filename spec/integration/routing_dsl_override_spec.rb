@@ -143,7 +143,7 @@ RSpec.describe 'Routing DSL Override with only/except', type: :request do
 
       # Destroy
       delete "/api/v1/posts/#{test_post.id}"
-      expect(response).to have_http_status(:ok)
+      expect(response).to have_http_status(:no_content)
     end
 
     it 'unrestricted comments allow all actions including destroy' do
@@ -155,7 +155,7 @@ RSpec.describe 'Routing DSL Override with only/except', type: :request do
 
       # Destroy
       delete "/api/v1/comments/#{created_id}"
-      expect(response).to have_http_status(:ok)
+      expect(response).to have_http_status(:no_content)
     end
   end
 end

@@ -147,8 +147,7 @@ RSpec.describe 'Resource override and selective serialization', type: :request d
         delete "/api/v1/articles/#{post_record.id}"
       end.to change(Post, :count).by(-1)
 
-      expect(response).to have_http_status(:ok)
-      JSON.parse(response.body)
+      expect(response).to have_http_status(:no_content)
     end
   end
 end

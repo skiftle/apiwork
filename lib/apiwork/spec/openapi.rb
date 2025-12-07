@@ -81,7 +81,7 @@ module Apiwork
         end
 
         response_data = action_data[:response]
-        operation[:responses] = build_responses(action_name, response_data&.dig(:body), action_data[:raises] || [])
+        operation[:responses] = build_responses(action_name, response_data, action_data[:raises] || [])
 
         operation.compact
       end
@@ -163,11 +163,15 @@ module Apiwork
         }
       end
 
-      def build_responses(action_name, response_params, action_raises = [])
+      def build_responses(action_name, response_data, action_raises = [])
         responses = {}
         combined_raises = (raises + action_raises).uniq
 
-        if response_params
+        if response_data&.dig(:no_content)
+          responses[:'204'] = { description: 'No content' }
+        elsif response_data&.dig(:body)
+          response_params = response_data[:body]
+
           # Detect unwrapped union and separate success/error variants
           if response_params[:type] == :union && !response_params[:discriminator]
             success_variant = response_params[:variants][0]
@@ -201,10 +205,24 @@ module Apiwork
               responses[error_data[:status].to_s.to_sym] = build_error_response(error_data[:description])
             end
           end
-        else
-          responses[:'204'] = {
-            description: 'No content'
+        elsif response_data
+          # Empty response {} - 200 with optional meta
+          responses[:'200'] = {
+            description: 'Successful response',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    meta: { type: 'object' }
+                  }
+                }
+              }
+            }
           }
+        else
+          # No response definition at all - default to 204
+          responses[:'204'] = { description: 'No content' }
         end
 
         responses

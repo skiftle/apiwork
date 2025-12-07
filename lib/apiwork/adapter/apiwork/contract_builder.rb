@@ -234,9 +234,11 @@ module Apiwork
               body { builder.send(:single_response, self) }
             end
           when :destroy
-            action_definition.response {}
+            action_definition.response { no_content! }
           else
-            if action_metadata[:type] == :collection
+            if action_metadata[:method] == :delete
+              action_definition.response { no_content! }
+            elsif action_metadata[:type] == :collection
               action_definition.response do
                 body { builder.send(:collection_response, self) }
               end

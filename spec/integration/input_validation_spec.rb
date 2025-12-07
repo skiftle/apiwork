@@ -130,7 +130,7 @@ RSpec.describe 'Input Validation' do
           delete "/api/v1/posts/#{post_record.id}"
         end.to change(Post, :count).by(-1)
 
-        expect(response).to have_http_status(:ok)
+        expect(response).to have_http_status(:no_content)
         expect(Post.exists?(post_record.id)).to be(false)
       end
     end

@@ -13,6 +13,7 @@ RSpec.describe 'Association Edge Cases' do
 
       delete "/api/v1/posts/#{post.id}"
 
+      # PostContract explicitly defines a response body for destroy, so it returns 200 OK
       expect(response).to have_http_status(:ok)
       expect(Post.exists?(post.id)).to be(false)
       expect(Comment.exists?(comment1.id)).to be(false)
@@ -29,7 +30,7 @@ RSpec.describe 'Association Edge Cases' do
 
       delete "/api/v1/posts/#{post.id}/comments/#{comment.id}"
 
-      expect(response).to have_http_status(:ok)
+      expect(response).to have_http_status(:no_content)
       expect(Comment.exists?(comment.id)).to be(false)
       expect(Reply.exists?(reply1.id)).to be(false)
       expect(Reply.exists?(reply2.id)).to be(false)
@@ -42,6 +43,7 @@ RSpec.describe 'Association Edge Cases' do
 
       delete "/api/v1/posts/#{post.id}"
 
+      # PostContract explicitly defines a response body for destroy, so it returns 200 OK
       expect(response).to have_http_status(:ok)
       expect(Post.exists?(post.id)).to be(false)
       expect(Comment.exists?(comment.id)).to be(false)

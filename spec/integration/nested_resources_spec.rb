@@ -148,7 +148,7 @@ RSpec.describe 'Nested Resources Routing', type: :request do
     it 'deletes a comment within the parent post scope' do
       delete "/api/v1/posts/#{post1.id}/comments/#{comment1.id}"
 
-      expect(response).to have_http_status(:ok)
+      expect(response).to have_http_status(:no_content)
       expect(Comment.find_by(id: comment1.id)).to be_nil
     end
 

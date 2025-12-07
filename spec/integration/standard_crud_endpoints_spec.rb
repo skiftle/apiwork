@@ -229,15 +229,15 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
   end
 
   describe 'DELETE /api/v1/posts/:id' do
-    it 'returns success envelope after deletion' do
+    it 'returns 204 No Content after deletion' do
       post_record = Post.create!(title: 'To Delete', body: 'Delete me')
 
       expect do
         delete "/api/v1/posts/#{post_record.id}"
       end.to change(Post, :count).by(-1)
 
-      expect(response).to have_http_status(:ok)
-      JSON.parse(response.body)
+      expect(response).to have_http_status(:no_content)
+      expect(response.body).to be_empty
     end
 
     it 'returns 404 when deleting missing resource' do
