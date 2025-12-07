@@ -1,0 +1,3 @@
+title: Schema-Driven Contract
+description: Using `schema!` to generate a complete contract from schema definitions
+order: 1

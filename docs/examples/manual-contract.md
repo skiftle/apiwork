@@ -4,7 +4,7 @@ order: 2
 
 # Manual Contract
 
-This example shows how to define a contract manually without schemas.
+Defining contracts manually without schemas
 
 ## API Definition
 
@@ -25,27 +25,27 @@ This example shows how to define a contract manually without schemas.
 <details>
 <summary>Introspection</summary>
 
-<<< @/generated/funny-snake/introspection.json
+<<< @/app/public/funny-snake/introspection.json
 
 </details>
 
 <details>
 <summary>TypeScript</summary>
 
-<<< @/generated/funny-snake/typescript.ts
+<<< @/app/public/funny-snake/typescript.ts
 
 </details>
 
 <details>
 <summary>Zod</summary>
 
-<<< @/generated/funny-snake/zod.ts
+<<< @/app/public/funny-snake/zod.ts
 
 </details>
 
 <details>
 <summary>OpenAPI</summary>
 
-<<< @/generated/funny-snake/openapi.yml
+<<< @/app/public/funny-snake/openapi.yml
 
 </details>

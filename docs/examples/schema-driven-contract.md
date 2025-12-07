@@ -4,7 +4,7 @@ order: 1
 
 # Schema-Driven Contract
 
-This example shows how `schema!` generates a complete contract from schema definitions.
+Using `schema!` to generate a complete contract from schema definitions
 
 ## API Definition
 
@@ -53,27 +53,27 @@ This example shows how `schema!` generates a complete contract from schema defin
 <details>
 <summary>Introspection</summary>
 
-<<< @/generated/eager-lion/introspection.json
+<<< @/app/public/eager-lion/introspection.json
 
 </details>
 
 <details>
 <summary>TypeScript</summary>
 
-<<< @/generated/eager-lion/typescript.ts
+<<< @/app/public/eager-lion/typescript.ts
 
 </details>
 
 <details>
 <summary>Zod</summary>
 
-<<< @/generated/eager-lion/zod.ts
+<<< @/app/public/eager-lion/zod.ts
 
 </details>
 
 <details>
 <summary>OpenAPI</summary>
 
-<<< @/generated/eager-lion/openapi.yml
+<<< @/app/public/eager-lion/openapi.yml
 
 </details>

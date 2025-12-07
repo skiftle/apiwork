@@ -1,0 +1,220 @@
+{
+  "path": "/funny-snake",
+  "types": {
+    "invoice": {
+      "type": "object",
+      "shape": {
+        "created_at": {
+          "type": "datetime"
+        },
+        "id": {
+          "type": "uuid"
+        },
+        "issued_on": {
+          "type": "date"
+        },
+        "lines": {
+          "type": "array",
+          "of": "invoice_line"
+        },
+        "number": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "datetime"
+        }
+      }
+    },
+    "invoice_line": {
+      "type": "object",
+      "shape": {
+        "created_at": {
+          "type": "datetime"
+        },
+        "description": {
+          "type": "string"
+        },
+        "id": {
+          "type": "uuid"
+        },
+        "price": {
+          "type": "decimal"
+        },
+        "quantity": {
+          "type": "decimal"
+        },
+        "updated_at": {
+          "type": "datetime"
+        }
+      }
+    },
+    "invoice_payload": {
+      "type": "object",
+      "shape": {
+        "issued_on": {
+          "type": "date"
+        },
+        "lines_attributes": {
+          "type": "array",
+          "shape": {
+            "_destroy": {
+              "type": "boolean"
+            },
+            "description": {
+              "type": "string"
+            },
+            "id": {
+              "type": "uuid"
+            },
+            "price": {
+              "type": "decimal"
+            },
+            "quantity": {
+              "type": "integer"
+            }
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "number": {
+          "type": "string"
+        }
+      }
+    },
+    "issue": {
+      "type": "object",
+      "shape": {
+        "code": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "field": {
+          "type": "string"
+        },
+        "path": {
+          "type": "array",
+          "of": "string"
+        }
+      }
+    }
+  },
+  "enums": {},
+  "error_codes": {},
+  "resources": {
+    "invoices": {
+      "path": "invoices",
+      "summary": "Invoices",
+      "description": "Operations for managing invoices.",
+      "tags": [
+        "Invoices"
+      ],
+      "actions": {
+        "index": {
+          "method": "get",
+          "path": "/",
+          "request": {
+            "query": {
+              "filter": {
+                "type": "object",
+                "shape": {
+                  "status": {
+                    "type": "string"
+                  }
+                }
+              },
+              "sort": {
+                "type": "object",
+                "shape": {
+                  "issued_on": {
+                    "type": "string",
+                    "enum": [
+                      "asc",
+                      "desc"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "object",
+              "shape": {
+                "invoices": {
+                  "type": "array",
+                  "of": "invoice"
+                }
+              }
+            }
+          }
+        },
+        "show": {
+          "method": "get",
+          "path": "/:id",
+          "response": {
+            "body": {
+              "type": "object",
+              "shape": {
+                "invoice": {
+                  "type": "invoice"
+                }
+              }
+            }
+          }
+        },
+        "create": {
+          "method": "post",
+          "path": "/",
+          "request": {
+            "body": {
+              "invoice": {
+                "type": "invoice_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "object",
+              "shape": {
+                "invoice": {
+                  "type": "invoice"
+                }
+              }
+            }
+          }
+        },
+        "update": {
+          "method": "patch",
+          "path": "/:id",
+          "request": {
+            "body": {
+              "invoice": {
+                "type": "invoice_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "object",
+              "shape": {
+                "invoice": {
+                  "type": "invoice"
+                }
+              }
+            }
+          }
+        },
+        "destroy": {
+          "method": "delete",
+          "path": "/:id"
+        }
+      }
+    }
+  }
+}

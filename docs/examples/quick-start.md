@@ -2,9 +2,9 @@
 order: 3
 ---
 
-# Quick Start Example
+# Quick Start
 
-The complete example from the [Quick Start](../getting-started/quick-start.md) guide.
+The complete example from the Quick Start guide
 
 ## API Definition
 
@@ -43,27 +43,27 @@ The complete example from the [Quick Start](../getting-started/quick-start.md) g
 <details>
 <summary>Introspection</summary>
 
-<<< @/generated/swift-fox/introspection.json
+<<< @/app/public/swift-fox/introspection.json
 
 </details>
 
 <details>
 <summary>TypeScript</summary>
 
-<<< @/generated/swift-fox/typescript.ts
+<<< @/app/public/swift-fox/typescript.ts
 
 </details>
 
 <details>
 <summary>Zod</summary>
 
-<<< @/generated/swift-fox/zod.ts
+<<< @/app/public/swift-fox/zod.ts
 
 </details>
 
 <details>
 <summary>OpenAPI</summary>
 
-<<< @/generated/swift-fox/openapi.yml
+<<< @/app/public/swift-fox/openapi.yml
 
 </details>

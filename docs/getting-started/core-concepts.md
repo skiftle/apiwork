@@ -159,7 +159,7 @@ These generated types power request validation, TypeScript generation, Zod schem
 
 The adapter also reads your database and model to infer column types, enum values, nullability, associations, and defaults. You declare what to expose — Apiwork figures out the rest.
 
-See [Schema-Driven Example](../examples/schema-driven.md) for complete generated output.
+See [Schema-Driven Example](../examples/schema-driven-contract.md) for complete generated output.
 
 ## One Metadata Model
 

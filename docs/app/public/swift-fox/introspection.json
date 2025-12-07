@@ -1,0 +1,526 @@
+{
+  "path": "/swift-fox",
+  "types": {
+    "issue": {
+      "type": "object",
+      "shape": {
+        "code": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "field": {
+          "type": "string"
+        },
+        "path": {
+          "type": "array",
+          "of": "string"
+        }
+      }
+    },
+    "nullable_string_filter": {
+      "type": "object",
+      "shape": {
+        "contains": {
+          "type": "string",
+          "optional": true
+        },
+        "ends_with": {
+          "type": "string",
+          "optional": true
+        },
+        "eq": {
+          "type": "string",
+          "optional": true
+        },
+        "in": {
+          "type": "array",
+          "of": "string",
+          "optional": true
+        },
+        "null": {
+          "type": "boolean",
+          "optional": true
+        },
+        "starts_with": {
+          "type": "string",
+          "optional": true
+        }
+      }
+    },
+    "page_pagination": {
+      "type": "object",
+      "shape": {
+        "current": {
+          "type": "integer"
+        },
+        "items": {
+          "type": "integer"
+        },
+        "next": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "prev": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "total": {
+          "type": "integer"
+        }
+      }
+    },
+    "post": {
+      "type": "object",
+      "shape": {
+        "body": {
+          "type": "string",
+          "optional": true
+        },
+        "created_at": {
+          "type": "datetime",
+          "optional": true
+        },
+        "id": {
+          "type": "integer",
+          "optional": true
+        },
+        "status": {
+          "type": "string",
+          "enum": "post_status",
+          "optional": true
+        },
+        "title": {
+          "type": "string",
+          "optional": true
+        },
+        "updated_at": {
+          "type": "datetime",
+          "optional": true
+        }
+      }
+    },
+    "post_create_payload": {
+      "type": "object",
+      "shape": {
+        "body": {
+          "type": "string",
+          "nullable": true,
+          "optional": true
+        },
+        "status": {
+          "type": "string",
+          "enum": "post_status",
+          "nullable": true,
+          "optional": true
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "post_filter": {
+      "type": "object",
+      "shape": {
+        "_and": {
+          "type": "array",
+          "of": "post_filter",
+          "optional": true
+        },
+        "_not": {
+          "type": "post_filter",
+          "optional": true
+        },
+        "_or": {
+          "type": "array",
+          "of": "post_filter",
+          "optional": true
+        },
+        "status": {
+          "type": "post_status_filter",
+          "optional": true
+        },
+        "title": {
+          "type": "union",
+          "variants": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "string_filter"
+            }
+          ],
+          "optional": true
+        }
+      }
+    },
+    "post_include": {
+      "type": "object"
+    },
+    "post_page": {
+      "type": "object",
+      "shape": {
+        "number": {
+          "type": "integer",
+          "optional": true,
+          "min": 1
+        },
+        "size": {
+          "type": "integer",
+          "optional": true,
+          "min": 1,
+          "max": 100
+        }
+      }
+    },
+    "post_sort": {
+      "type": "object",
+      "shape": {
+        "created_at": {
+          "type": "post_sort_direction",
+          "optional": true
+        },
+        "status": {
+          "type": "post_sort_direction",
+          "optional": true
+        }
+      }
+    },
+    "post_status_filter": {
+      "type": "union",
+      "required": false,
+      "nullable": false,
+      "variants": [
+        {
+          "type": "post_status",
+          "of": null,
+          "partial": false
+        },
+        {
+          "type": "object",
+          "of": null,
+          "partial": true,
+          "shape": {
+            "eq": {
+              "type": "post_status",
+              "optional": true
+            },
+            "in": {
+              "type": "array",
+              "of": "post_status",
+              "optional": true
+            }
+          }
+        }
+      ]
+    },
+    "post_update_payload": {
+      "type": "object",
+      "shape": {
+        "body": {
+          "type": "string",
+          "nullable": true,
+          "optional": true
+        },
+        "status": {
+          "type": "string",
+          "enum": "post_status",
+          "nullable": true,
+          "optional": true
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "string_filter": {
+      "type": "object",
+      "shape": {
+        "contains": {
+          "type": "string",
+          "optional": true
+        },
+        "ends_with": {
+          "type": "string",
+          "optional": true
+        },
+        "eq": {
+          "type": "string",
+          "optional": true
+        },
+        "in": {
+          "type": "array",
+          "of": "string",
+          "optional": true
+        },
+        "starts_with": {
+          "type": "string",
+          "optional": true
+        }
+      }
+    }
+  },
+  "enums": {
+    "post_status": {
+      "values": [
+        "draft",
+        "published",
+        "archived"
+      ]
+    },
+    "sort_direction": {
+      "values": [
+        "asc",
+        "desc"
+      ]
+    }
+  },
+  "error_codes": {
+    "unprocessable_entity": {
+      "status": 422,
+      "description": "Unprocessable Entity"
+    }
+  },
+  "resources": {
+    "posts": {
+      "path": "posts",
+      "summary": "Posts",
+      "description": "Operations for managing posts.",
+      "tags": [
+        "Posts"
+      ],
+      "schema": {
+        "type": "object",
+        "shape": {
+          "id": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "body": {
+            "type": "text",
+            "nullable": true,
+            "optional": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true,
+            "optional": true
+          },
+          "created_at": {
+            "type": "datetime"
+          },
+          "updated_at": {
+            "type": "datetime"
+          }
+        }
+      },
+      "actions": {
+        "index": {
+          "method": "get",
+          "path": "/",
+          "request": {
+            "query": {
+              "filter": {
+                "type": "union",
+                "variants": [
+                  {
+                    "type": "post_filter"
+                  },
+                  {
+                    "type": "array",
+                    "of": "post_filter"
+                  }
+                ],
+                "optional": true
+              },
+              "include": {
+                "type": "post_include",
+                "optional": true
+              },
+              "page": {
+                "type": "post_page",
+                "optional": true
+              },
+              "sort": {
+                "type": "union",
+                "variants": [
+                  {
+                    "type": "post_sort"
+                  },
+                  {
+                    "type": "array",
+                    "of": "post_sort"
+                  }
+                ],
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "pagination": {
+                      "type": "page_pagination",
+                      "optional": true
+                    },
+                    "posts": {
+                      "type": "array",
+                      "of": "post",
+                      "optional": true
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "show": {
+          "method": "get",
+          "path": "/:id",
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "post": {
+                      "type": "post"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "create": {
+          "method": "post",
+          "path": "/",
+          "request": {
+            "body": {
+              "post": {
+                "type": "post_create_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "post": {
+                      "type": "post"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "raises": [
+            "unprocessable_entity"
+          ]
+        },
+        "update": {
+          "method": "patch",
+          "path": "/:id",
+          "request": {
+            "body": {
+              "post": {
+                "type": "post_update_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "post": {
+                      "type": "post"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "raises": [
+            "unprocessable_entity"
+          ]
+        },
+        "destroy": {
+          "method": "delete",
+          "path": "/:id"
+        }
+      }
+    }
+  }
+}

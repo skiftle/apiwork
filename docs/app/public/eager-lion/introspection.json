@@ -1,0 +1,606 @@
+{
+  "path": "/eager-lion",
+  "types": {
+    "invoice": {
+      "type": "object",
+      "shape": {
+        "created_at": {
+          "type": "datetime",
+          "optional": true
+        },
+        "customer": {
+          "type": "object"
+        },
+        "id": {
+          "type": "string",
+          "optional": true
+        },
+        "issued_on": {
+          "type": "date",
+          "optional": true
+        },
+        "lines": {
+          "type": "array"
+        },
+        "notes": {
+          "type": "string",
+          "optional": true
+        },
+        "number": {
+          "type": "string",
+          "optional": true
+        },
+        "status": {
+          "type": "string",
+          "optional": true
+        },
+        "updated_at": {
+          "type": "datetime",
+          "optional": true
+        }
+      }
+    },
+    "invoice_create_payload": {
+      "type": "object",
+      "shape": {
+        "issued_on": {
+          "type": "date",
+          "nullable": true,
+          "optional": true
+        },
+        "lines": {
+          "type": "array",
+          "as": "lines_attributes",
+          "optional": true
+        },
+        "notes": {
+          "type": "string",
+          "nullable": true,
+          "optional": true
+        },
+        "number": {
+          "type": "string"
+        }
+      }
+    },
+    "invoice_customer_include": {
+      "type": "object"
+    },
+    "invoice_filter": {
+      "type": "object",
+      "shape": {
+        "_and": {
+          "type": "array",
+          "of": "invoice_filter",
+          "optional": true
+        },
+        "_not": {
+          "type": "invoice_filter",
+          "optional": true
+        },
+        "_or": {
+          "type": "array",
+          "of": "invoice_filter",
+          "optional": true
+        },
+        "number": {
+          "type": "union",
+          "variants": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "string_filter"
+            }
+          ],
+          "optional": true
+        },
+        "status": {
+          "type": "union",
+          "variants": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "nullable_string_filter"
+            }
+          ],
+          "optional": true
+        }
+      }
+    },
+    "invoice_include": {
+      "type": "object",
+      "shape": {
+        "customer": {
+          "type": "invoice_customer_include",
+          "optional": true
+        },
+        "lines": {
+          "type": "invoice_line_include",
+          "optional": true
+        }
+      }
+    },
+    "invoice_line_include": {
+      "type": "object"
+    },
+    "invoice_page": {
+      "type": "object",
+      "shape": {
+        "number": {
+          "type": "integer",
+          "optional": true,
+          "min": 1
+        },
+        "size": {
+          "type": "integer",
+          "optional": true,
+          "min": 1,
+          "max": 100
+        }
+      }
+    },
+    "invoice_sort": {
+      "type": "object",
+      "shape": {
+        "created_at": {
+          "type": "invoice_sort_direction",
+          "optional": true
+        },
+        "issued_on": {
+          "type": "invoice_sort_direction",
+          "optional": true
+        },
+        "status": {
+          "type": "invoice_sort_direction",
+          "optional": true
+        },
+        "updated_at": {
+          "type": "invoice_sort_direction",
+          "optional": true
+        }
+      }
+    },
+    "invoice_update_payload": {
+      "type": "object",
+      "shape": {
+        "issued_on": {
+          "type": "date",
+          "nullable": true,
+          "optional": true
+        },
+        "lines": {
+          "type": "array",
+          "as": "lines_attributes",
+          "optional": true
+        },
+        "notes": {
+          "type": "string",
+          "nullable": true,
+          "optional": true
+        },
+        "number": {
+          "type": "string"
+        }
+      }
+    },
+    "issue": {
+      "type": "object",
+      "shape": {
+        "code": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "field": {
+          "type": "string"
+        },
+        "path": {
+          "type": "array",
+          "of": "string"
+        }
+      }
+    },
+    "nullable_string_filter": {
+      "type": "object",
+      "shape": {
+        "contains": {
+          "type": "string",
+          "optional": true
+        },
+        "ends_with": {
+          "type": "string",
+          "optional": true
+        },
+        "eq": {
+          "type": "string",
+          "optional": true
+        },
+        "in": {
+          "type": "array",
+          "of": "string",
+          "optional": true
+        },
+        "null": {
+          "type": "boolean",
+          "optional": true
+        },
+        "starts_with": {
+          "type": "string",
+          "optional": true
+        }
+      }
+    },
+    "page_pagination": {
+      "type": "object",
+      "shape": {
+        "current": {
+          "type": "integer"
+        },
+        "items": {
+          "type": "integer"
+        },
+        "next": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "prev": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "total": {
+          "type": "integer"
+        }
+      }
+    },
+    "string_filter": {
+      "type": "object",
+      "shape": {
+        "contains": {
+          "type": "string",
+          "optional": true
+        },
+        "ends_with": {
+          "type": "string",
+          "optional": true
+        },
+        "eq": {
+          "type": "string",
+          "optional": true
+        },
+        "in": {
+          "type": "array",
+          "of": "string",
+          "optional": true
+        },
+        "starts_with": {
+          "type": "string",
+          "optional": true
+        }
+      }
+    }
+  },
+  "enums": {
+    "sort_direction": {
+      "values": [
+        "asc",
+        "desc"
+      ]
+    }
+  },
+  "error_codes": {
+    "unprocessable_entity": {
+      "status": 422,
+      "description": "Unprocessable Entity"
+    }
+  },
+  "resources": {
+    "invoices": {
+      "path": "invoices",
+      "summary": "Invoices",
+      "description": "Operations for managing invoices.",
+      "tags": [
+        "Invoices"
+      ],
+      "schema": {
+        "type": "object",
+        "shape": {
+          "id": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "datetime"
+          },
+          "updated_at": {
+            "type": "datetime"
+          },
+          "number": {
+            "type": "string"
+          },
+          "issued_on": {
+            "type": "date",
+            "nullable": true,
+            "optional": true
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true,
+            "optional": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true,
+            "optional": true
+          }
+        }
+      },
+      "actions": {
+        "index": {
+          "method": "get",
+          "path": "/",
+          "request": {
+            "query": {
+              "filter": {
+                "type": "union",
+                "variants": [
+                  {
+                    "type": "invoice_filter"
+                  },
+                  {
+                    "type": "array",
+                    "of": "invoice_filter"
+                  }
+                ],
+                "optional": true
+              },
+              "include": {
+                "type": "invoice_include",
+                "optional": true
+              },
+              "page": {
+                "type": "invoice_page",
+                "optional": true
+              },
+              "sort": {
+                "type": "union",
+                "variants": [
+                  {
+                    "type": "invoice_sort"
+                  },
+                  {
+                    "type": "array",
+                    "of": "invoice_sort"
+                  }
+                ],
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "invoices": {
+                      "type": "array",
+                      "of": "invoice",
+                      "optional": true
+                    },
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "pagination": {
+                      "type": "page_pagination",
+                      "optional": true
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "show": {
+          "method": "get",
+          "path": "/:id",
+          "request": {
+            "query": {
+              "include": {
+                "type": "invoice_include",
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "invoice": {
+                      "type": "invoice"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "create": {
+          "method": "post",
+          "path": "/",
+          "request": {
+            "query": {
+              "include": {
+                "type": "invoice_include",
+                "optional": true
+              }
+            },
+            "body": {
+              "invoice": {
+                "type": "invoice_create_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "invoice": {
+                      "type": "invoice"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "raises": [
+            "unprocessable_entity"
+          ]
+        },
+        "update": {
+          "method": "patch",
+          "path": "/:id",
+          "request": {
+            "query": {
+              "include": {
+                "type": "invoice_include",
+                "optional": true
+              }
+            },
+            "body": {
+              "invoice": {
+                "type": "invoice_update_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "invoice": {
+                      "type": "invoice"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "raises": [
+            "unprocessable_entity"
+          ]
+        },
+        "destroy": {
+          "method": "delete",
+          "path": "/:id"
+        },
+        "archive": {
+          "method": "patch",
+          "path": "/:id/archive",
+          "request": {
+            "query": {
+              "include": {
+                "type": "invoice_include",
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "invoice": {
+                      "type": "invoice"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

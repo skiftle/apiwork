@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-namespace :examples do
-  desc 'Generate examples from app'
+namespace :docs do
+  desc 'Generate documentation examples'
   task generate: :environment do
     require_relative '../example_generator'
 

@@ -19,7 +19,6 @@ export default defineConfig({
         "index.md",
         "node_modules/**",
         ".vitepress/**",
-        "generated/**",
         "app/**",
         "api-examples.md",
         "markdown-examples.md",
