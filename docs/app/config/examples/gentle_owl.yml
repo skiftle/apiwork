@@ -6,6 +6,26 @@ scenarios:
   index:
     method: GET
     path: /gentle-owl/comments
+    setup:
+      - create: post
+        fields:
+          title: My First Post
+      - create: video
+        fields:
+          title: Tutorial Video
+          url: https://example.com/video.mp4
+      - create: comment
+        fields:
+          body: Great post!
+          author_name: John Doe
+          commentable_type: GentleOwl::Post
+          commentable_id: :post_id
+      - create: comment
+        fields:
+          body: Helpful video!
+          author_name: Jane Doe
+          commentable_type: GentleOwl::Video
+          commentable_id: :video_id
 
   show:
     method: GET

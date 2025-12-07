@@ -79,13 +79,41 @@ GET /mighty-wolf/vehicles
 
 ```json
 {
-  "vehicles": [],
+  "vehicles": [
+    {
+      "kind": "car",
+      "id": "d420b869-0880-4646-8f91-c231caf14a8b",
+      "brand": "Tesla",
+      "model": "Model 3",
+      "year": null,
+      "color": null,
+      "doors": null
+    },
+    {
+      "kind": "motorcycle",
+      "id": "e947e572-591c-44b7-87c9-6f73605d189a",
+      "brand": "Harley-Davidson",
+      "model": "Street Glide",
+      "year": null,
+      "color": null,
+      "engine_cc": null
+    },
+    {
+      "kind": "truck",
+      "id": "4a3bd404-e11c-4041-ae8a-881a19f42743",
+      "brand": "Ford",
+      "model": "F-150",
+      "year": null,
+      "color": null,
+      "payload_capacity": null
+    }
+  ],
   "pagination": {
     "current": 1,
     "next": null,
     "prev": null,
-    "total": 0,
-    "items": 0
+    "total": 1,
+    "items": 3
   }
 }
 ```
@@ -98,7 +126,7 @@ GET /mighty-wolf/vehicles
 **Request**
 
 ```http
-GET /mighty-wolf/vehicles/8202ce9b-b4d3-4d35-bce1-57ae93636bf8
+GET /mighty-wolf/vehicles/24830ea8-041c-49bf-afad-5b75c154a054
 ```
 
 **Response** `200`
@@ -107,7 +135,7 @@ GET /mighty-wolf/vehicles/8202ce9b-b4d3-4d35-bce1-57ae93636bf8
 {
   "vehicle": {
     "kind": "car",
-    "id": "8202ce9b-b4d3-4d35-bce1-57ae93636bf8",
+    "id": "24830ea8-041c-49bf-afad-5b75c154a054",
     "brand": "Tesla",
     "model": "Model 3",
     "year": 2024,
@@ -145,7 +173,7 @@ Content-Type: application/json
 {
   "vehicle": {
     "kind": "car",
-    "id": "13afea75-5347-4a96-8a9d-173a27fa4e6a",
+    "id": "4bf995f5-dcb6-4e64-b867-ee7f2460c404",
     "brand": "Tesla",
     "model": "Model 3",
     "year": 2024,
@@ -183,7 +211,7 @@ Content-Type: application/json
 {
   "vehicle": {
     "kind": "motorcycle",
-    "id": "23cc5e8a-0b21-4e02-b3a5-5989dc0eec37",
+    "id": "6c00be6e-b2ad-403d-8b49-e529803a992e",
     "brand": "Harley-Davidson",
     "model": "Street Glide",
     "year": 2023,
@@ -221,7 +249,7 @@ Content-Type: application/json
 {
   "vehicle": {
     "kind": "truck",
-    "id": "4cd97643-fed2-45d4-973c-55bbd96628d9",
+    "id": "f514d3e3-679c-4a36-9915-04277603b988",
     "brand": "Ford",
     "model": "F-150",
     "year": 2024,

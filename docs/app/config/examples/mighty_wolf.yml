@@ -6,6 +6,22 @@ scenarios:
   index:
     method: GET
     path: /mighty-wolf/vehicles
+    setup:
+      - create: vehicle
+        fields:
+          type: MightyWolf::Car
+          brand: Tesla
+          model: Model 3
+      - create: vehicle
+        fields:
+          type: MightyWolf::Motorcycle
+          brand: Harley-Davidson
+          model: Street Glide
+      - create: vehicle
+        fields:
+          type: MightyWolf::Truck
+          brand: Ford
+          model: F-150
 
   show:
     method: GET

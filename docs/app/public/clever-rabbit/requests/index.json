@@ -6,13 +6,34 @@
   "response": {
     "status": 200,
     "body": {
-      "orders": [],
+      "orders": [
+        {
+          "id": "e975f40c-52d6-4a2a-87e1-9223534e80e4",
+          "order_number": "ORD-001",
+          "status": "pending",
+          "total": null,
+          "created_at": "2025-12-07T09:01:00.926Z",
+          "updated_at": "2025-12-07T09:01:00.926Z",
+          "line_items": null,
+          "shipping_address": null
+        },
+        {
+          "id": "29ec1c15-9a40-4803-bf2b-2dd1e4f75d4d",
+          "order_number": "ORD-002",
+          "status": "pending",
+          "total": null,
+          "created_at": "2025-12-07T09:01:00.927Z",
+          "updated_at": "2025-12-07T09:01:00.927Z",
+          "line_items": null,
+          "shipping_address": null
+        }
+      ],
       "pagination": {
         "current": 1,
         "next": null,
         "prev": null,
-        "total": 0,
-        "items": 0
+        "total": 1,
+        "items": 2
       }
     }
   }

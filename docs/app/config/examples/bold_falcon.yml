@@ -6,6 +6,15 @@ scenarios:
   index:
     method: GET
     path: /bold-falcon/articles
+    setup:
+      - create: article
+        fields:
+          title: Published Article
+          status: published
+      - create: article
+        fields:
+          title: Draft Article
+          status: draft
 
   show:
     method: GET

@@ -6,6 +6,13 @@ scenarios:
   index:
     method: GET
     path: /clever-rabbit/orders
+    setup:
+      - create: order
+        fields:
+          order_number: ORD-001
+      - create: order
+        fields:
+          order_number: ORD-002
 
   show:
     method: GET

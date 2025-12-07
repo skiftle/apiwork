@@ -6,6 +6,15 @@ scenarios:
   index:
     method: GET
     path: /funny-snake/invoices
+    setup:
+      - create: invoice
+        fields:
+          number: INV-001
+          status: draft
+      - create: invoice
+        fields:
+          number: INV-002
+          status: sent
 
   show:
     method: GET

@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "PATCH",
-    "path": "/funny-snake/invoices/d60219ff-19b6-4bf0-8551-3cad13d66f7b",
+    "path": "/funny-snake/invoices/6455ac4a-5b15-4979-939f-e716ebcd7785",
     "body": {
       "invoice": {
         "number": "INV-001",
@@ -18,9 +18,9 @@
       "issued_on": "2024-01-15",
       "status": "sent",
       "notes": "Updated invoice",
-      "id": "d60219ff-19b6-4bf0-8551-3cad13d66f7b",
-      "created_at": "2025-12-07T08:54:44.242Z",
-      "updated_at": "2025-12-07T08:54:44.247Z"
+      "id": "6455ac4a-5b15-4979-939f-e716ebcd7785",
+      "created_at": "2025-12-07T09:01:01.267Z",
+      "updated_at": "2025-12-07T09:01:01.272Z"
     }
   }
 }

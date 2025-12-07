@@ -6,6 +6,18 @@ scenarios:
   index:
     method: GET
     path: /eager-lion/invoices
+    setup:
+      - create: customer
+        fields:
+          name: Acme Corp
+      - create: invoice
+        fields:
+          number: INV-001
+          customer_id: :customer_id
+      - create: invoice
+        fields:
+          number: INV-002
+          customer_id: :customer_id
 
   show:
     method: GET
