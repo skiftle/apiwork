@@ -215,7 +215,7 @@ module Apiwork
         end
 
         def derive_variant_tag
-          model_class.name.demodulize.underscore
+          model_class.sti_name
         end
 
         def register_variant(tag:, schema:, sti_type:)
@@ -251,6 +251,14 @@ module Apiwork
 
         def sti_variant?
           _variant_tag.present?
+        end
+
+        def needs_discriminator_transform?
+          variants.any? { |tag, data| tag.to_s != data[:sti_type] }
+        end
+
+        def discriminator_sti_mapping
+          variants.transform_values { |data| data[:sti_type] }
         end
 
         def description(value = nil)

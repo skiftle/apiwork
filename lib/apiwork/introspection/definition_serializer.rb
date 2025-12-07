@@ -110,11 +110,25 @@ module Apiwork
       def resolve_type(type_value)
         return type_value unless type_value
 
-        if @definition.contract_class.resolve_custom_type(type_value) || @definition.contract_class.resolve_enum(type_value)
+        if registered_type?(type_value)
           @name_resolver.qualified_name(type_value, @definition)
         else
           type_value
         end
+      end
+
+      def registered_type?(type_value)
+        return false unless type_value.is_a?(Symbol)
+
+        contract_class = @definition.contract_class
+        return true if contract_class.resolve_custom_type(type_value)
+        return true if contract_class.resolve_enum(type_value)
+
+        api_class = contract_class.api_class
+        return false unless api_class
+
+        scoped_name = api_class.scoped_name(contract_class, type_value)
+        api_class.type_system.types.key?(scoped_name) || api_class.type_system.types.key?(type_value)
       end
 
       def resolve_enum(options)

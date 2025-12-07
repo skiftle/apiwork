@@ -39,13 +39,6 @@ export const IssueSchema = z.object({
   path: z.array(z.string())
 });
 
-export const ActivitySchema = z.object({
-  action: z.string(),
-  createdAt: z.iso.datetime(),
-  id: z.string(),
-  occurredAt: z.iso.datetime().nullable().optional()
-});
-
 export const ActivitiesIndexRequestQuerySchema = z.object({
   include: ActivityIncludeSchema.optional(),
   page: ActivityPageSchema.optional()
@@ -143,13 +136,6 @@ export interface ActivitiesUpdateResponse {
 }
 
 export type ActivitiesUpdateResponseBody = { activity: Activity; meta?: object } | { issues?: Issue[] };
-
-export interface Activity {
-  action: string;
-  createdAt: string;
-  id: string;
-  occurredAt?: null | string;
-}
 
 export interface Activity {
   action?: string;

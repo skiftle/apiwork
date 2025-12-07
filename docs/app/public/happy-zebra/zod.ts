@@ -160,25 +160,6 @@ export const UserUpdatePayloadSchema = z.object({
   username: z.string().optional()
 });
 
-export const UserSchema = z.object({
-  createdAt: z.iso.datetime(),
-  email: z.string(),
-  id: z.string(),
-  updatedAt: z.iso.datetime(),
-  username: z.string()
-});
-
-export const PostSchema = z.object({
-  id: z.string(),
-  title: z.string()
-});
-
-export const CommentSchema = z.object({
-  author: z.string(),
-  body: z.string(),
-  id: z.string()
-});
-
 export const UsersIndexRequestQuerySchema = z.object({
   filter: z.union([UserFilterSchema, z.array(UserFilterSchema)]).optional(),
   include: UserIncludeSchema.optional(),
@@ -365,12 +346,6 @@ export const CommentsUpdateResponseSchema = z.object({
 });
 
 export interface Comment {
-  author: string;
-  body: string;
-  id: string;
-}
-
-export interface Comment {
   author?: string;
   body?: string;
   id?: string;
@@ -475,11 +450,6 @@ export interface Post {
   comments: Comment[];
   id?: string;
   title?: string;
-}
-
-export interface Post {
-  id: string;
-  title: string;
 }
 
 export interface PostCreatePayload {
@@ -590,14 +560,6 @@ export interface StringFilter {
   eq?: string;
   in?: string[];
   startsWith?: string;
-}
-
-export interface User {
-  createdAt: string;
-  email: string;
-  id: string;
-  updatedAt: string;
-  username: string;
 }
 
 export interface User {

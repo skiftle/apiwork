@@ -100,18 +100,6 @@ export const TaskFilterSchema: z.ZodType<TaskFilter> = z.lazy(() => z.object({
   status: TaskStatusFilterSchema.optional()
 }));
 
-export const TaskSchema = z.object({
-  archived: z.boolean().nullable().optional(),
-  createdAt: z.iso.datetime(),
-  description: z.string().nullable().optional(),
-  dueDate: z.iso.datetime().nullable().optional(),
-  id: z.string(),
-  priority: z.string().nullable().optional(),
-  status: z.string().nullable().optional(),
-  title: z.string(),
-  updatedAt: z.iso.datetime()
-});
-
 export const TasksIndexRequestQuerySchema = z.object({
   filter: z.union([TaskFilterSchema, z.array(TaskFilterSchema)]).optional(),
   include: TaskIncludeSchema.optional(),
@@ -227,18 +215,6 @@ export interface StringFilter {
   eq?: string;
   in?: string[];
   startsWith?: string;
-}
-
-export interface Task {
-  archived?: boolean | null;
-  createdAt: string;
-  description?: null | string;
-  dueDate?: null | string;
-  id: string;
-  priority?: null | string;
-  status?: null | string;
-  title: string;
-  updatedAt: string;
 }
 
 export interface Task {

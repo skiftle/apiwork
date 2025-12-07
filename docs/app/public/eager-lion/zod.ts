@@ -87,17 +87,6 @@ export const InvoiceFilterSchema: z.ZodType<InvoiceFilter> = z.lazy(() => z.obje
   status: z.union([z.string(), NullableStringFilterSchema]).optional()
 }));
 
-export const InvoiceSchema = z.object({
-  createdAt: z.iso.datetime(),
-  customerId: z.string(),
-  id: z.string(),
-  issuedOn: z.iso.date().nullable().optional(),
-  notes: z.string().nullable().optional(),
-  number: z.string(),
-  status: z.string().nullable().optional(),
-  updatedAt: z.iso.datetime()
-});
-
 export const InvoicesIndexRequestQuerySchema = z.object({
   filter: z.union([InvoiceFilterSchema, z.array(InvoiceFilterSchema)]).optional(),
   include: InvoiceIncludeSchema.optional(),
@@ -180,17 +169,6 @@ export const InvoicesArchiveResponseBodySchema = z.union([z.object({ invoice: In
 export const InvoicesArchiveResponseSchema = z.object({
   body: InvoicesArchiveResponseBodySchema
 });
-
-export interface Invoice {
-  createdAt: string;
-  customerId: string;
-  id: string;
-  issuedOn?: null | string;
-  notes?: null | string;
-  number: string;
-  status?: null | string;
-  updatedAt: string;
-}
 
 export interface Invoice {
   createdAt?: string;

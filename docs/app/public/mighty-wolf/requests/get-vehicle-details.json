@@ -1,18 +1,19 @@
 {
   "request": {
     "method": "GET",
-    "path": "/mighty_wolf/vehicles/7a897d31-c55e-4671-a40f-4c4a536f8702"
+    "path": "/mighty_wolf/vehicles/8d797720-83b7-46ae-b6a3-5415d39d26df"
   },
   "response": {
     "status": 200,
     "body": {
       "vehicle": {
-        "id": "7a897d31-c55e-4671-a40f-4c4a536f8702",
-        "type": "MightyWolf::Car",
-        "brand": "Tesla",
-        "model": "Model 3",
+        "type": "car",
+        "id": "8d797720-83b7-46ae-b6a3-5415d39d26df",
+        "brand": "Volvo",
+        "model": "EX30",
         "year": 2024,
-        "color": "red"
+        "color": "red",
+        "doors": null
       }
     }
   }

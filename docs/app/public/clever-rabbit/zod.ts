@@ -78,15 +78,6 @@ export const OrderFilterSchema: z.ZodType<OrderFilter> = z.lazy(() => z.object({
   status: z.union([z.string(), NullableStringFilterSchema]).optional()
 }));
 
-export const OrderSchema = z.object({
-  createdAt: z.iso.datetime(),
-  id: z.never(),
-  orderNumber: z.string(),
-  status: z.string().nullable().optional(),
-  total: z.number().nullable().optional(),
-  updatedAt: z.iso.datetime()
-});
-
 export const OrdersIndexRequestQuerySchema = z.object({
   filter: z.union([OrderFilterSchema, z.array(OrderFilterSchema)]).optional(),
   include: OrderIncludeSchema.optional(),
@@ -170,15 +161,6 @@ export interface NullableStringFilter {
   in?: string[];
   null?: boolean;
   startsWith?: string;
-}
-
-export interface Order {
-  createdAt: string;
-  id: never;
-  orderNumber: string;
-  status?: null | string;
-  total?: null | number;
-  updatedAt: string;
 }
 
 export interface Order {

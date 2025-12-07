@@ -33,10 +33,92 @@ module Apiwork
               end
             end
 
+            apply_sti_discriminator_transform(transformed, definition)
+
             transformed
           end
 
           private
+
+          def apply_sti_discriminator_transform(params, definition)
+            definition.params.each do |name, param_options|
+              # Handle direct sti_mapping on param
+              if param_options[:sti_mapping] && params.key?(name)
+                mapping = param_options[:sti_mapping]
+                tag = params[name]
+                params[name] = mapping[tag.to_sym] if mapping.key?(tag.to_sym)
+              end
+
+              # Recurse into nested structures (shapes, custom types, unions)
+              value = params[name]
+              next unless value.is_a?(Hash)
+
+              if param_options[:shape]
+                apply_sti_discriminator_transform(value, param_options[:shape])
+              elsif param_options[:union]
+                apply_sti_transform_to_union_value(value, param_options[:union], definition)
+              elsif param_options[:type].is_a?(Symbol)
+                apply_sti_transform_to_custom_type(value, param_options[:type], definition)
+              end
+            end
+          end
+
+          def apply_sti_transform_to_union_value(value, union_definition, parent_definition)
+            discriminator = union_definition.discriminator
+            return unless discriminator && value.key?(discriminator)
+
+            tag = value[discriminator]
+            variant = union_definition.variants.find do |v|
+              v[:tag].to_s == tag.to_s
+            end
+            return unless variant
+
+            variant_type = variant[:type]
+            apply_sti_transform_to_custom_type(value, variant_type, parent_definition)
+          end
+
+          def apply_sti_transform_to_custom_type(value, type_name, parent_definition)
+            contract_class = parent_definition&.contract_class
+            return unless contract_class
+
+            custom_type_blocks = contract_class.resolve_custom_type(type_name)
+
+            if custom_type_blocks
+              temp_definition = Apiwork::Contract::Definition.new(
+                type: parent_definition.type,
+                contract_class: contract_class,
+                action_name: parent_definition.action_name
+              )
+              custom_type_blocks.each { |block| temp_definition.instance_eval(&block) }
+              apply_sti_discriminator_transform(value, temp_definition)
+            else
+              # Check if this is a union type registered at API level
+              apply_sti_transform_to_registered_union(value, type_name, parent_definition)
+            end
+          end
+
+          def apply_sti_transform_to_registered_union(value, type_name, parent_definition)
+            contract_class = parent_definition&.contract_class
+            api_class = contract_class&.api_class
+            return unless api_class
+
+            scoped_name = api_class.scoped_name(contract_class, type_name)
+            union_metadata = api_class.type_system.types[scoped_name] || api_class.type_system.types[type_name]
+            return unless union_metadata
+
+            payload = union_metadata[:payload]
+            return unless payload && payload[:type] == :union
+
+            discriminator = payload[:discriminator]
+            return unless discriminator && value.key?(discriminator)
+
+            tag = value[discriminator]
+            variant = payload[:variants]&.find { |v| v[:tag].to_s == tag.to_s }
+            return unless variant
+
+            # Apply transform to the variant type
+            apply_sti_transform_to_custom_type(value, variant[:type], parent_definition)
+          end
 
           def transform_custom_type_array(value, param_definition, definition)
             shape = resolve_custom_type_shape(param_definition[:of], definition, param_definition[:type_contract_class])

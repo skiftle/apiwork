@@ -17,6 +17,8 @@ class ExampleGenerator
   def generate_all
     Rails.logger.debug 'Generating documentation examples...'
 
+    eager_load_schemas
+
     FileUtils.rm_rf(EXAMPLES_DIR)
     FileUtils.mkdir_p(EXAMPLES_DIR)
 
@@ -33,6 +35,19 @@ class ExampleGenerator
   end
 
   private
+
+  def eager_load_schemas
+    Dir.glob(Rails.root.join('app/schemas/**/*.rb')).sort.each do |file|
+      relative = file.sub(Rails.root.join('app/schemas/').to_s, '')
+      class_name = relative.sub(/\.rb$/, '').camelize
+
+      begin
+        class_name.constantize
+      rescue NameError
+        # Schema file doesn't define expected class, skip
+      end
+    end
+  end
 
   def each_example
     Dir.glob(Rails.root.join('config/apis/*.rb')).sort.each do |api_file|

@@ -46,14 +46,6 @@ export const PagePaginationSchema = z.object({
   total: z.number().int()
 });
 
-export const ContactSchema = z.object({
-  email: z.string().nullable().optional(),
-  id: z.string(),
-  name: z.string(),
-  notes: z.string().optional(),
-  phone: z.string().optional()
-});
-
 export const ContactsIndexRequestQuerySchema = z.object({
   include: ContactIncludeSchema.optional(),
   page: ContactPageSchema.optional()
@@ -102,14 +94,6 @@ export const ContactsUpdateResponseBodySchema = z.union([z.object({ contact: Con
 export const ContactsUpdateResponseSchema = z.object({
   body: ContactsUpdateResponseBodySchema
 });
-
-export interface Contact {
-  email?: null | string;
-  id: string;
-  name: string;
-  notes?: string;
-  phone?: string;
-}
 
 export interface Contact {
   email?: string;

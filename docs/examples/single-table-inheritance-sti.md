@@ -100,28 +100,31 @@ GET /mighty_wolf/vehicles
 {
   "vehicles": [
     {
-      "id": "f103c0a7-5c77-460f-ada5-e3a9761ab4c3",
-      "type": "MightyWolf::Car",
-      "brand": "Tesla",
-      "model": "Model 3",
+      "type": "car",
+      "id": "640262d3-e336-4109-ab37-59fd24626691",
+      "brand": "Volvo",
+      "model": "EX30",
       "year": null,
-      "color": null
+      "color": null,
+      "doors": null
     },
     {
-      "id": "a5ca84f8-83f7-402b-91a2-856d2f6d9b5c",
-      "type": "MightyWolf::Motorcycle",
+      "type": "motorcycle",
+      "id": "13c88d16-e277-4da7-9050-da3a005150e7",
       "brand": "Harley-Davidson",
       "model": "Street Glide",
       "year": null,
-      "color": null
+      "color": null,
+      "engineCc": null
     },
     {
-      "id": "e769500f-5c97-47ff-9bc9-995d4ec98aba",
-      "type": "MightyWolf::Truck",
+      "type": "truck",
+      "id": "0d594427-6df6-4b6c-809d-647c6c422e55",
       "brand": "Ford",
       "model": "F-150",
       "year": null,
-      "color": null
+      "color": null,
+      "payloadCapacity": null
     }
   ],
   "pagination": {
@@ -142,7 +145,7 @@ GET /mighty_wolf/vehicles
 **Request**
 
 ```http
-GET /mighty_wolf/vehicles/7a897d31-c55e-4671-a40f-4c4a536f8702
+GET /mighty_wolf/vehicles/8d797720-83b7-46ae-b6a3-5415d39d26df
 ```
 
 **Response** `200`
@@ -150,12 +153,13 @@ GET /mighty_wolf/vehicles/7a897d31-c55e-4671-a40f-4c4a536f8702
 ```json
 {
   "vehicle": {
-    "id": "7a897d31-c55e-4671-a40f-4c4a536f8702",
-    "type": "MightyWolf::Car",
-    "brand": "Tesla",
-    "model": "Model 3",
+    "type": "car",
+    "id": "8d797720-83b7-46ae-b6a3-5415d39d26df",
+    "brand": "Volvo",
+    "model": "EX30",
     "year": 2024,
-    "color": "red"
+    "color": "red",
+    "doors": null
   }
 }
 ```
@@ -173,39 +177,28 @@ Content-Type: application/json
 
 {
   "vehicle": {
-    "kind": "car",
-    "brand": "Tesla",
-    "model": "Model 3",
+    "type": "car",
+    "brand": "Volvo",
+    "model": "EX30",
     "year": 2024,
     "color": "red"
   }
 }
 ```
 
-**Response** `400`
+**Response** `201`
 
 ```json
 {
-  "issues": [
-    {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "path": [
-        "vehicle",
-        "kind"
-      ],
-      "pointer": "/vehicle/kind",
-      "meta": {
-        "field": "kind",
-        "allowed": [
-          "brand",
-          "model",
-          "year",
-          "color"
-        ]
-      }
-    }
-  ]
+  "vehicle": {
+    "type": "car",
+    "id": "6a0c0b9c-13b8-4ebd-b358-25fd756f7ef0",
+    "brand": "Volvo",
+    "model": "EX30",
+    "year": 2024,
+    "color": "red",
+    "doors": null
+  }
 }
 ```
 
@@ -222,7 +215,7 @@ Content-Type: application/json
 
 {
   "vehicle": {
-    "kind": "motorcycle",
+    "type": "motorcycle",
     "brand": "Harley-Davidson",
     "model": "Street Glide",
     "year": 2023,
@@ -231,30 +224,19 @@ Content-Type: application/json
 }
 ```
 
-**Response** `400`
+**Response** `201`
 
 ```json
 {
-  "issues": [
-    {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "path": [
-        "vehicle",
-        "kind"
-      ],
-      "pointer": "/vehicle/kind",
-      "meta": {
-        "field": "kind",
-        "allowed": [
-          "brand",
-          "model",
-          "year",
-          "color"
-        ]
-      }
-    }
-  ]
+  "vehicle": {
+    "type": "motorcycle",
+    "id": "0e35707d-20f6-4e6c-84cb-d13e28559998",
+    "brand": "Harley-Davidson",
+    "model": "Street Glide",
+    "year": 2023,
+    "color": "black",
+    "engineCc": null
+  }
 }
 ```
 
@@ -271,7 +253,7 @@ Content-Type: application/json
 
 {
   "vehicle": {
-    "kind": "truck",
+    "type": "truck",
     "brand": "Ford",
     "model": "F-150",
     "year": 2024,
@@ -280,30 +262,19 @@ Content-Type: application/json
 }
 ```
 
-**Response** `400`
+**Response** `201`
 
 ```json
 {
-  "issues": [
-    {
-      "code": "field_unknown",
-      "detail": "Unknown field",
-      "path": [
-        "vehicle",
-        "kind"
-      ],
-      "pointer": "/vehicle/kind",
-      "meta": {
-        "field": "kind",
-        "allowed": [
-          "brand",
-          "model",
-          "year",
-          "color"
-        ]
-      }
-    }
-  ]
+  "vehicle": {
+    "type": "truck",
+    "id": "c440548e-7afe-44aa-ae5a-a1194e0c2539",
+    "brand": "Ford",
+    "model": "F-150",
+    "year": 2024,
+    "color": "blue",
+    "payloadCapacity": null
+  }
 }
 ```
 

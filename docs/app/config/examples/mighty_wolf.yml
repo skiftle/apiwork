@@ -12,8 +12,8 @@ scenarios:
       - create: vehicle
         fields:
           type: MightyWolf::Car
-          brand: Tesla
-          model: Model 3
+          brand: Volvo
+          model: EX30
       - create: vehicle
         fields:
           type: MightyWolf::Motorcycle
@@ -34,8 +34,8 @@ scenarios:
       - create: vehicle
         fields:
           type: MightyWolf::Car
-          brand: Tesla
-          model: Model 3
+          brand: Volvo
+          model: EX30
           year: 2024
           color: red
 
@@ -46,9 +46,9 @@ scenarios:
     path: /mighty_wolf/vehicles
     body:
       vehicle:
-        kind: car
-        brand: Tesla
-        model: Model 3
+        type: car
+        brand: Volvo
+        model: EX30
         year: 2024
         color: red
 
@@ -59,7 +59,7 @@ scenarios:
     path: /mighty_wolf/vehicles
     body:
       vehicle:
-        kind: motorcycle
+        type: motorcycle
         brand: Harley-Davidson
         model: Street Glide
         year: 2023
@@ -72,7 +72,7 @@ scenarios:
     path: /mighty_wolf/vehicles
     body:
       vehicle:
-        kind: truck
+        type: truck
         brand: Ford
         model: F-150
         year: 2024

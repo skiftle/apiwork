@@ -265,7 +265,9 @@ module Apiwork
         def sti_request_union(context_symbol)
           union_type_name = :"#{context_symbol}_payload"
           discriminator_name = schema_class.discriminator_name
+          discriminator_column = schema_class.discriminator_column
           builder = self
+          sti_mapping = schema_class.needs_discriminator_transform? ? schema_class.discriminator_sti_mapping : nil
 
           build_sti_union(union_type_name: union_type_name) do |_contract, variant_schema, tag, _visited|
             variant_schema_name = variant_schema.name.demodulize.underscore.gsub(/_schema$/, '')
@@ -273,7 +275,9 @@ module Apiwork
 
             unless contract_class.resolve_type(variant_type_name)
               contract_class.type(variant_type_name) do
-                param discriminator_name, type: :literal, value: tag.to_s
+                # Rename discriminator from API name to DB column if different
+                as_column = discriminator_name != discriminator_column ? discriminator_column : nil
+                param discriminator_name, type: :literal, value: tag.to_s, as: as_column, sti_mapping: sti_mapping
 
                 builder.send(:writable_params, self, context_symbol, nested: false, target_schema: variant_schema)
               end
@@ -735,11 +739,31 @@ module Apiwork
 
         def build_sti_response_union_type(visited: Set.new)
           union_type_name = schema_class.root_key.singular.to_sym
-
+          discriminator_name = schema_class.discriminator_name
           builder = self
 
-          build_sti_union(union_type_name: union_type_name, visited: visited) do |_contract, variant_schema, _tag, visit_set|
-            builder.send(:import_association_contract, variant_schema, visit_set)
+          build_sti_union(union_type_name: union_type_name, visited: visited) do |_contract, variant_schema, tag, _visit_set|
+            variant_type_name = variant_schema.root_key.singular.to_sym
+
+            unless contract_class.resolve_type(contract_class.scoped_type_name(variant_type_name))
+              contract_class.type(variant_type_name, schema_class: variant_schema) do
+                param discriminator_name, type: :literal, value: tag.to_s
+
+                variant_schema.attribute_definitions.each do |name, attribute_definition|
+                  enum_option = attribute_definition.enum ? { enum: name } : {}
+                  param name,
+                        type: builder.send(:map_type, attribute_definition.type),
+                        optional: true,
+                        description: attribute_definition.description,
+                        example: attribute_definition.example,
+                        format: attribute_definition.format,
+                        deprecated: attribute_definition.deprecated,
+                        **enum_option
+                end
+              end
+            end
+
+            contract_class.scoped_type_name(variant_type_name)
           end
         end
 

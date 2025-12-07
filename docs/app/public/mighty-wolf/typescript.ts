@@ -49,21 +49,37 @@ export interface StringFilter {
   startsWith?: string;
 }
 
-export interface Vehicle {
+export type Vehicle = VehicleCar | VehicleMotorcycle | VehicleTruck;
+
+export interface VehicleCar {
   brand?: string;
   color?: string;
+  doors?: number;
   id?: unknown;
   model?: string;
-  type?: string;
+  type: 'car';
   year?: number;
 }
 
-export interface VehicleCreatePayload {
+export interface VehicleCarCreatePayload {
   brand: string;
   color?: null | string;
+  doors?: null | number;
   model: string;
+  type: 'car';
   year?: null | number;
 }
+
+export interface VehicleCarUpdatePayload {
+  brand?: string;
+  color?: null | string;
+  doors?: null | number;
+  model?: string;
+  type?: 'car';
+  year?: null | number;
+}
+
+export type VehicleCreatePayload = VehicleCarCreatePayload | VehicleMotorcycleCreatePayload | VehicleTruckCreatePayload;
 
 export interface VehicleFilter {
   _and?: VehicleFilter[];
@@ -76,6 +92,34 @@ export interface VehicleFilter {
 
 export type VehicleInclude = object;
 
+export interface VehicleMotorcycle {
+  brand?: string;
+  color?: string;
+  engineCc?: number;
+  id?: unknown;
+  model?: string;
+  type: 'motorcycle';
+  year?: number;
+}
+
+export interface VehicleMotorcycleCreatePayload {
+  brand: string;
+  color?: null | string;
+  engineCc?: null | number;
+  model: string;
+  type: 'motorcycle';
+  year?: null | number;
+}
+
+export interface VehicleMotorcycleUpdatePayload {
+  brand?: string;
+  color?: null | string;
+  engineCc?: null | number;
+  model?: string;
+  type?: 'motorcycle';
+  year?: null | number;
+}
+
 export interface VehiclePage {
   number?: number;
   size?: number;
@@ -85,12 +129,35 @@ export interface VehicleSort {
   year?: unknown;
 }
 
-export interface VehicleUpdatePayload {
+export interface VehicleTruck {
+  brand?: string;
+  color?: string;
+  id?: unknown;
+  model?: string;
+  payloadCapacity?: number;
+  type: 'truck';
+  year?: number;
+}
+
+export interface VehicleTruckCreatePayload {
+  brand: string;
+  color?: null | string;
+  model: string;
+  payloadCapacity?: null | number;
+  type: 'truck';
+  year?: null | number;
+}
+
+export interface VehicleTruckUpdatePayload {
   brand?: string;
   color?: null | string;
   model?: string;
+  payloadCapacity?: null | number;
+  type?: 'truck';
   year?: null | number;
 }
+
+export type VehicleUpdatePayload = VehicleCarUpdatePayload | VehicleMotorcycleUpdatePayload | VehicleTruckUpdatePayload;
 
 export interface VehiclesCreateRequest {
   body: VehiclesCreateRequestBody;

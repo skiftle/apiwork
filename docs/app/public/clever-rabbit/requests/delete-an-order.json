@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "DELETE",
-    "path": "/clever_rabbit/orders/21aff6e1-0b3b-4d18-a690-99fbcda116b1"
+    "path": "/clever_rabbit/orders/31866112-175b-49c1-ac69-425afebf7c75"
   },
   "response": {
     "status": 200,

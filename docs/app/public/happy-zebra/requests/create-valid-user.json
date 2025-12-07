@@ -17,15 +17,15 @@
     "status": 201,
     "body": {
       "user": {
-        "id": "4395cb08-e871-44d1-ba4c-fdb76b603eb2",
-        "createdAt": "2025-12-07T14:49:43.155Z",
-        "updatedAt": "2025-12-07T14:49:43.155Z",
+        "id": "98a3b0ee-2d9f-45c4-9efb-337993514f8c",
+        "createdAt": "2025-12-07T15:57:33.259Z",
+        "updatedAt": "2025-12-07T15:57:33.259Z",
         "email": "john@example.com",
         "username": "johndoe",
         "profile": {
-          "id": "72f656f3-f8d9-4e4b-b657-1cdab76239a4",
-          "createdAt": "2025-12-07T14:49:43.156Z",
-          "updatedAt": "2025-12-07T14:49:43.156Z",
+          "id": "9d0ee84d-8738-4294-8317-09f5fcf1e9e7",
+          "createdAt": "2025-12-07T15:57:33.261Z",
+          "updatedAt": "2025-12-07T15:57:33.261Z",
           "bio": "Software developer",
           "website": "https://example.com"
         },

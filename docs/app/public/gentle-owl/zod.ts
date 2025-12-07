@@ -68,15 +68,6 @@ export const CommentFilterSchema: z.ZodType<CommentFilter> = z.lazy(() => z.obje
   commentableType: z.union([z.string(), StringFilterSchema]).optional()
 }));
 
-export const CommentSchema = z.object({
-  authorName: z.string().nullable().optional(),
-  body: z.string(),
-  commentableId: z.never(),
-  commentableType: z.string(),
-  createdAt: z.iso.datetime(),
-  id: z.never()
-});
-
 export const CommentsIndexRequestQuerySchema = z.object({
   filter: z.union([CommentFilterSchema, z.array(CommentFilterSchema)]).optional(),
   include: CommentIncludeSchema.optional(),
@@ -127,15 +118,6 @@ export const CommentsUpdateResponseBodySchema = z.union([z.object({ comment: Com
 export const CommentsUpdateResponseSchema = z.object({
   body: CommentsUpdateResponseBodySchema
 });
-
-export interface Comment {
-  authorName?: null | string;
-  body: string;
-  commentableId: never;
-  commentableType: string;
-  createdAt: string;
-  id: never;
-}
 
 export interface Comment {
   authorName?: string;

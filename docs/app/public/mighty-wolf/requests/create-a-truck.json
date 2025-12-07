@@ -4,7 +4,7 @@
     "path": "/mighty_wolf/vehicles",
     "body": {
       "vehicle": {
-        "kind": "truck",
+        "type": "truck",
         "brand": "Ford",
         "model": "F-150",
         "year": 2024,
@@ -13,28 +13,17 @@
     }
   },
   "response": {
-    "status": 400,
+    "status": 201,
     "body": {
-      "issues": [
-        {
-          "code": "field_unknown",
-          "detail": "Unknown field",
-          "path": [
-            "vehicle",
-            "kind"
-          ],
-          "pointer": "/vehicle/kind",
-          "meta": {
-            "field": "kind",
-            "allowed": [
-              "brand",
-              "model",
-              "year",
-              "color"
-            ]
-          }
-        }
-      ]
+      "vehicle": {
+        "type": "truck",
+        "id": "c440548e-7afe-44aa-ae5a-a1194e0c2539",
+        "brand": "Ford",
+        "model": "F-150",
+        "year": 2024,
+        "color": "blue",
+        "payloadCapacity": null
+      }
     }
   }
 }

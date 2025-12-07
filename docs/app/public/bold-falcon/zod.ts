@@ -174,18 +174,6 @@ export const ArticleFilterSchema: z.ZodType<ArticleFilter> = z.lazy(() => z.obje
   viewCount: z.union([z.number().int(), NullableIntegerFilterSchema]).optional()
 }));
 
-export const ArticleSchema = z.object({
-  body: z.string().nullable().optional(),
-  createdAt: z.iso.datetime(),
-  id: z.never(),
-  publishedOn: z.iso.date().nullable().optional(),
-  rating: z.number().nullable().optional(),
-  status: z.string().nullable().optional(),
-  title: z.string(),
-  updatedAt: z.iso.datetime(),
-  viewCount: z.number().int().nullable().optional()
-});
-
 export const ArticlesIndexRequestQuerySchema = z.object({
   filter: z.union([ArticleFilterSchema, z.array(ArticleFilterSchema)]).optional(),
   include: ArticleIncludeSchema.optional(),
@@ -254,18 +242,6 @@ export const ArticlesUpdateResponseBodySchema = z.union([z.object({ article: Art
 export const ArticlesUpdateResponseSchema = z.object({
   body: ArticlesUpdateResponseBodySchema
 });
-
-export interface Article {
-  body?: null | string;
-  createdAt: string;
-  id: never;
-  publishedOn?: null | string;
-  rating?: null | number;
-  status?: null | string;
-  title: string;
-  updatedAt: string;
-  viewCount?: null | number;
-}
 
 export interface Article {
   body?: string;
