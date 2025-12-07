@@ -8,24 +8,35 @@
         "description": "Implement the new dashboard widget",
         "status": "pending",
         "priority": "high",
-        "due_date": "2024-02-01"
+        "due_date": "2024-02-01",
+        "assignee_id": "bfd2cb38-7fd9-4393-884f-71704b92edfa"
       }
     }
   },
   "response": {
-    "status": 201,
+    "status": 400,
     "body": {
-      "task": {
-        "id": "a40b25ed-dbbc-404b-86f0-1ff5424f423f",
-        "title": "New feature implementation",
-        "description": "Implement the new dashboard widget",
-        "status": "pending",
-        "priority": "high",
-        "dueDate": "2024-02-01T00:00:00.000Z",
-        "archived": false,
-        "createdAt": "2025-12-07T13:30:59.592Z",
-        "updatedAt": "2025-12-07T13:30:59.592Z"
-      }
+      "issues": [
+        {
+          "code": "field_unknown",
+          "detail": "Unknown field",
+          "path": [
+            "task",
+            "assignee_id"
+          ],
+          "pointer": "/task/assignee_id",
+          "meta": {
+            "field": "assignee_id",
+            "allowed": [
+              "title",
+              "description",
+              "status",
+              "priority",
+              "due_date"
+            ]
+          }
+        }
+      ]
     }
   }
 }

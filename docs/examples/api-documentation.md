@@ -2,9 +2,9 @@
 order: 11
 ---
 
-# Documenting Your API
+# API Documentation
 
-Add rich metadata with summaries, descriptions, tags, and operation IDs
+Document APIs with descriptions, examples, formats, and deprecation notices at every level
 
 ## API Definition
 
@@ -13,6 +13,24 @@ Add rich metadata with summaries, descriptions, tags, and operation IDs
 <<< @/app/config/apis/brave_eagle.rb
 
 ## Models
+
+<small>`app/models/brave_eagle/comment.rb`</small>
+
+<<< @/app/app/models/brave_eagle/comment.rb
+
+<details>
+<summary>Database Table</summary>
+
+| Column | Type | Nullable | Default |
+|--------|------|----------|---------|
+| id | string |  |  |
+| task_id | string |  |  |
+| body | text |  |  |
+| author_name | string | ✓ |  |
+| created_at | datetime |  |  |
+| updated_at | datetime |  |  |
+
+</details>
 
 <small>`app/models/brave_eagle/task.rb`</small>
 
@@ -32,14 +50,40 @@ Add rich metadata with summaries, descriptions, tags, and operation IDs
 | archived | boolean | ✓ |  |
 | created_at | datetime |  |  |
 | updated_at | datetime |  |  |
+| assignee_id | string | ✓ |  |
+
+</details>
+
+<small>`app/models/brave_eagle/user.rb`</small>
+
+<<< @/app/app/models/brave_eagle/user.rb
+
+<details>
+<summary>Database Table</summary>
+
+| Column | Type | Nullable | Default |
+|--------|------|----------|---------|
+| id | string |  |  |
+| name | string |  |  |
+| email | string |  |  |
+| created_at | datetime |  |  |
+| updated_at | datetime |  |  |
 
 </details>
 
 ## Schemas
 
+<small>`app/schemas/brave_eagle/comment_schema.rb`</small>
+
+<<< @/app/app/schemas/brave_eagle/comment_schema.rb
+
 <small>`app/schemas/brave_eagle/task_schema.rb`</small>
 
 <<< @/app/app/schemas/brave_eagle/task_schema.rb
+
+<small>`app/schemas/brave_eagle/user_schema.rb`</small>
+
+<<< @/app/app/schemas/brave_eagle/user_schema.rb
 
 ## Contracts
 
@@ -74,26 +118,26 @@ GET /brave_eagle/tasks
 {
   "tasks": [
     {
-      "id": "3bde0316-e5b5-4a9e-b93b-550fd40f87ca",
+      "id": "4aa11d56-140f-48a6-9e0c-4d0f611562e1",
       "title": "Write documentation",
-      "description": null,
+      "description": "Complete the API reference guide",
       "status": "pending",
       "priority": "high",
       "dueDate": null,
       "archived": false,
-      "createdAt": "2025-12-07T13:30:59.537Z",
-      "updatedAt": "2025-12-07T13:30:59.537Z"
+      "createdAt": "2025-12-07T13:48:50.911Z",
+      "updatedAt": "2025-12-07T13:48:50.911Z"
     },
     {
-      "id": "03a273f8-f639-4f83-a357-57a3c92c127f",
+      "id": "ec999fa3-f7ca-4806-aa75-a167cd7dfff3",
       "title": "Review pull request",
       "description": null,
       "status": "completed",
       "priority": "medium",
       "dueDate": null,
       "archived": false,
-      "createdAt": "2025-12-07T13:30:59.559Z",
-      "updatedAt": "2025-12-07T13:30:59.559Z"
+      "createdAt": "2025-12-07T13:48:50.914Z",
+      "updatedAt": "2025-12-07T13:48:50.914Z"
     }
   ],
   "pagination": {
@@ -103,6 +147,26 @@ GET /brave_eagle/tasks
     "total": 1,
     "items": 2
   }
+}
+```
+
+</details>
+
+<details>
+<summary>Get task details</summary>
+
+**Request**
+
+```http
+GET /brave_eagle/tasks/62576037-75eb-44dd-aa0d-e5960482f930
+```
+
+**Response** `404`
+
+```json
+{
+  "status": 404,
+  "error": "Not Found"
 }
 ```
 
@@ -123,26 +187,37 @@ Content-Type: application/json
     "description": "Implement the new dashboard widget",
     "status": "pending",
     "priority": "high",
-    "due_date": "2024-02-01"
+    "due_date": "2024-02-01",
+    "assignee_id": "bfd2cb38-7fd9-4393-884f-71704b92edfa"
   }
 }
 ```
 
-**Response** `201`
+**Response** `400`
 
 ```json
 {
-  "task": {
-    "id": "a40b25ed-dbbc-404b-86f0-1ff5424f423f",
-    "title": "New feature implementation",
-    "description": "Implement the new dashboard widget",
-    "status": "pending",
-    "priority": "high",
-    "dueDate": "2024-02-01T00:00:00.000Z",
-    "archived": false,
-    "createdAt": "2025-12-07T13:30:59.592Z",
-    "updatedAt": "2025-12-07T13:30:59.592Z"
-  }
+  "issues": [
+    {
+      "code": "field_unknown",
+      "detail": "Unknown field",
+      "path": [
+        "task",
+        "assignee_id"
+      ],
+      "pointer": "/task/assignee_id",
+      "meta": {
+        "field": "assignee_id",
+        "allowed": [
+          "title",
+          "description",
+          "status",
+          "priority",
+          "due_date"
+        ]
+      }
+    }
+  ]
 }
 ```
 
@@ -154,7 +229,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-PATCH /brave_eagle/tasks/1156466c-a3aa-4b10-aae8-255d9cdbf8bd/archive
+PATCH /brave_eagle/tasks/00a92e9b-2caf-4e0b-8d5a-73dc40ddd462/archive
 ```
 
 **Response** `200`
@@ -162,15 +237,15 @@ PATCH /brave_eagle/tasks/1156466c-a3aa-4b10-aae8-255d9cdbf8bd/archive
 ```json
 {
   "task": {
-    "id": "1156466c-a3aa-4b10-aae8-255d9cdbf8bd",
+    "id": "00a92e9b-2caf-4e0b-8d5a-73dc40ddd462",
     "title": "Old task to archive",
     "description": null,
     "status": "completed",
     "priority": "medium",
     "dueDate": null,
     "archived": true,
-    "createdAt": "2025-12-07T13:30:59.597Z",
-    "updatedAt": "2025-12-07T13:30:59.608Z"
+    "createdAt": "2025-12-07T13:48:50.957Z",
+    "updatedAt": "2025-12-07T13:48:50.962Z"
   }
 }
 ```

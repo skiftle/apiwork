@@ -1,18 +1,18 @@
 {
   "request": {
     "method": "GET",
-    "path": "/clever_rabbit/orders/d6ca3f6d-c438-42d4-926b-5f566f0d0b51"
+    "path": "/clever_rabbit/orders/b48e53c9-b5d8-42bb-914e-1c0ed79a8fe9"
   },
   "response": {
     "status": 200,
     "body": {
       "order": {
-        "id": "d6ca3f6d-c438-42d4-926b-5f566f0d0b51",
+        "id": "b48e53c9-b5d8-42bb-914e-1c0ed79a8fe9",
         "orderNumber": "ORD-001",
         "status": "pending",
         "total": null,
-        "createdAt": "2025-12-07T13:30:59.744Z",
-        "updatedAt": "2025-12-07T13:30:59.744Z",
+        "createdAt": "2025-12-07T13:48:51.052Z",
+        "updatedAt": "2025-12-07T13:48:51.052Z",
         "lineItems": null,
         "shippingAddress": null
       }

@@ -92,7 +92,8 @@ class ExampleGenerator
 
   def write_openapi(api, dir)
     content = Apiwork::Spec::Openapi.generate(api.metadata.path)
-    File.write(dir.join('openapi.yml'), content.to_yaml)
+    yaml = JSON.parse(content.to_json).to_yaml
+    File.write(dir.join('openapi.yml'), yaml)
   end
 
   def write_introspection(api, dir)

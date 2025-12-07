@@ -12,21 +12,39 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 20_251_207_000_010) do
+ActiveRecord::Schema[8.1].define(version: 20_251_207_000_011) do
   # Could not dump table "bold_falcon_articles" because of following StandardError
   #   Unknown type 'uuid' for column 'category_id'
 
   # Could not dump table "bold_falcon_categories" because of following StandardError
   #   Unknown type 'uuid' for column 'id'
 
+  create_table 'brave_eagle_comments', id: :string, force: :cascade do |t|
+    t.string 'author_name'
+    t.text 'body', null: false
+    t.datetime 'created_at', null: false
+    t.string 'task_id', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['task_id'], name: 'index_brave_eagle_comments_on_task_id'
+  end
+
   create_table 'brave_eagle_tasks', id: :string, force: :cascade do |t|
     t.boolean 'archived', default: false
+    t.string 'assignee_id'
     t.datetime 'created_at', null: false
     t.text 'description'
     t.datetime 'due_date'
     t.string 'priority', default: 'medium'
     t.string 'status', default: 'pending'
     t.string 'title', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['assignee_id'], name: 'index_brave_eagle_tasks_on_assignee_id'
+  end
+
+  create_table 'brave_eagle_users', id: :string, force: :cascade do |t|
+    t.datetime 'created_at', null: false
+    t.string 'email', null: false
+    t.string 'name', null: false
     t.datetime 'updated_at', null: false
   end
 
@@ -152,6 +170,8 @@ ActiveRecord::Schema[8.1].define(version: 20_251_207_000_010) do
   end
 
   add_foreign_key 'bold_falcon_articles', 'bold_falcon_categories', column: 'category_id'
+  add_foreign_key 'brave_eagle_comments', 'brave_eagle_tasks', column: 'task_id'
+  add_foreign_key 'brave_eagle_tasks', 'brave_eagle_users', column: 'assignee_id'
   add_foreign_key 'clever_rabbit_line_items', 'clever_rabbit_orders', column: 'order_id'
   add_foreign_key 'clever_rabbit_shipping_addresses', 'clever_rabbit_orders', column: 'order_id'
   add_foreign_key 'eager_lion_invoices', 'eager_lion_customers', column: 'customer_id'

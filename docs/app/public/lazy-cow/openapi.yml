@@ -1,71 +1,71 @@
 ---
-:openapi: 3.1.0
-:info:
-  :title: "/lazy_cow API"
-  :version: 1.0.0
-:paths:
+openapi: 3.1.0
+info:
+  title: "/lazy_cow API"
+  version: 1.0.0
+paths:
   status/health:
     get:
-      :operationId: statusHealth
-      :tags:
+      operationId: statusHealth
+      tags:
       - Status
-      :responses:
-        :200:
-          :description: Successful response
-          :content:
-            :application/json:
-              :schema:
-                :type: object
-                :properties:
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   status:
-                    :type: string
+                    type: string
                   timestamp:
-                    :type: string
+                    type: string
                   version:
-                    :type: string
-                :required:
+                    type: string
+                required:
                 - status
                 - timestamp
                 - version
   status/stats:
     get:
-      :operationId: statusStats
-      :tags:
+      operationId: statusStats
+      tags:
       - Status
-      :responses:
-        :200:
-          :description: Successful response
-          :content:
-            :application/json:
-              :schema:
-                :type: object
-                :properties:
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   postsCount:
-                    :type: integer
+                    type: integer
                   uptimeSeconds:
-                    :type: integer
+                    type: integer
                   usersCount:
-                    :type: integer
-                :required:
+                    type: integer
+                required:
                 - postsCount
                 - uptimeSeconds
                 - usersCount
-:components:
-  :schemas:
+components:
+  schemas:
     issue:
-      :type: object
-      :properties:
+      type: object
+      properties:
         code:
-          :type: string
+          type: string
         detail:
-          :type: string
+          type: string
         field:
-          :type: string
+          type: string
         path:
-          :type: array
-          :items:
-            :type: string
-      :required:
+          type: array
+          items:
+            type: string
+      required:
       - code
       - detail
       - field

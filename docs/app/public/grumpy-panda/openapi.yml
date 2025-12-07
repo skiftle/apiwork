@@ -1,221 +1,221 @@
 ---
-:openapi: 3.1.0
-:info:
-  :title: "/grumpy_panda API"
-  :version: 1.0.0
-:paths:
+openapi: 3.1.0
+info:
+  title: "/grumpy_panda API"
+  version: 1.0.0
+paths:
   activities/:
     get:
-      :operationId: activitiesIndex
-      :tags:
+      operationId: activitiesIndex
+      tags:
       - Activities
-      :parameters:
-      - :in: query
-        :name: include
-        :required: false
-        :schema:
-          :$ref: "#/components/schemas/activityInclude"
-      - :in: query
-        :name: page
-        :required: false
-        :schema:
-          :$ref: "#/components/schemas/activityPage"
-      :responses:
-        :200:
-          :description: Successful response
-          :content:
-            :application/json:
-              :schema:
-                :type: object
-                :properties:
+      parameters:
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/activityInclude"
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/activityPage"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   activities:
-                    :type: array
-                    :items:
-                      :$ref: "#/components/schemas/activity"
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/activity"
                   meta:
-                    :type: object
-                    :properties: {}
+                    type: object
+                    properties: {}
                   pagination:
-                    :$ref: "#/components/schemas/cursorPagination"
+                    "$ref": "#/components/schemas/cursorPagination"
     post:
-      :operationId: activitiesCreate
-      :tags:
+      operationId: activitiesCreate
+      tags:
       - Activities
-      :requestBody:
-        :required: true
-        :content:
-          :application/json:
-            :schema:
-              :type: object
-              :properties:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
                 activity:
-                  :$ref: "#/components/schemas/activityCreatePayload"
-              :required:
+                  "$ref": "#/components/schemas/activityCreatePayload"
+              required:
               - activity
-      :responses:
-        :200:
-          :description: Successful response
-          :content:
-            :application/json:
-              :schema:
-                :type: object
-                :properties:
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   activity:
-                    :$ref: "#/components/schemas/activity"
+                    "$ref": "#/components/schemas/activity"
                   meta:
-                    :type: object
-                    :properties: {}
-                :required:
+                    type: object
+                    properties: {}
+                required:
                 - activity
-        :422:
-          :description: Unprocessable Entity
-          :content:
-            :application/json:
-              :schema:
-                :type: object
-                :properties:
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   issues:
-                    :type: array
-                    :items:
-                      :$ref: "#/components/schemas/issue"
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/issue"
   activities/:id:
     get:
-      :operationId: activitiesShow
-      :tags:
+      operationId: activitiesShow
+      tags:
       - Activities
-      :responses:
-        :200:
-          :description: Successful response
-          :content:
-            :application/json:
-              :schema:
-                :type: object
-                :properties:
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   activity:
-                    :$ref: "#/components/schemas/activity"
+                    "$ref": "#/components/schemas/activity"
                   meta:
-                    :type: object
-                    :properties: {}
-                :required:
+                    type: object
+                    properties: {}
+                required:
                 - activity
     patch:
-      :operationId: activitiesUpdate
-      :tags:
+      operationId: activitiesUpdate
+      tags:
       - Activities
-      :requestBody:
-        :required: true
-        :content:
-          :application/json:
-            :schema:
-              :type: object
-              :properties:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
                 activity:
-                  :$ref: "#/components/schemas/activityUpdatePayload"
-      :responses:
-        :200:
-          :description: Successful response
-          :content:
-            :application/json:
-              :schema:
-                :type: object
-                :properties:
+                  "$ref": "#/components/schemas/activityUpdatePayload"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   activity:
-                    :$ref: "#/components/schemas/activity"
+                    "$ref": "#/components/schemas/activity"
                   meta:
-                    :type: object
-                    :properties: {}
-        :422:
-          :description: Unprocessable Entity
-          :content:
-            :application/json:
-              :schema:
-                :type: object
-                :properties:
+                    type: object
+                    properties: {}
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   issues:
-                    :type: array
-                    :items:
-                      :$ref: "#/components/schemas/issue"
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/issue"
     delete:
-      :operationId: activitiesDestroy
-      :tags:
+      operationId: activitiesDestroy
+      tags:
       - Activities
-      :responses:
-        :204:
-          :description: No content
-:components:
-  :schemas:
+      responses:
+        '204':
+          description: No content
+components:
+  schemas:
     activity:
-      :type: object
-      :properties:
+      type: object
+      properties:
         action:
-          :type: string
+          type: string
         createdAt:
-          :type: string
+          type: string
         id:
-          :type: string
+          type: string
         occurredAt:
-          :type: string
+          type: string
     activityCreatePayload:
-      :type: object
-      :properties:
+      type: object
+      properties:
         action:
-          :type: string
+          type: string
         occurredAt:
-          :type:
+          type:
           - string
           - 'null'
-      :required:
+      required:
       - action
     activityInclude:
-      :type: object
-      :properties: {}
+      type: object
+      properties: {}
     activityPage:
-      :type: object
-      :properties:
+      type: object
+      properties:
         after:
-          :type: string
+          type: string
         before:
-          :type: string
+          type: string
         size:
-          :type: integer
-          :minimum: 1
-          :maximum: 100
+          type: integer
+          minimum: 1
+          maximum: 100
     activityUpdatePayload:
-      :type: object
-      :properties:
+      type: object
+      properties:
         action:
-          :type: string
+          type: string
         occurredAt:
-          :type:
+          type:
           - string
           - 'null'
-      :required:
+      required:
       - action
     cursorPagination:
-      :type: object
-      :properties:
+      type: object
+      properties:
         nextCursor:
-          :type:
+          type:
           - string
           - 'null'
         prevCursor:
-          :type:
+          type:
           - string
           - 'null'
     issue:
-      :type: object
-      :properties:
+      type: object
+      properties:
         code:
-          :type: string
+          type: string
         detail:
-          :type: string
+          type: string
         field:
-          :type: string
+          type: string
         path:
-          :type: array
-          :items:
-            :type: string
-      :required:
+          type: array
+          items:
+            type: string
+      required:
       - code
       - detail
       - field

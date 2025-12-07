@@ -1,297 +1,297 @@
 ---
-:openapi: 3.1.0
-:info:
-  :title: "/gentle_owl API"
-  :version: 1.0.0
-:paths:
+openapi: 3.1.0
+info:
+  title: "/gentle_owl API"
+  version: 1.0.0
+paths:
   comments/:
     get:
-      :operationId: commentsIndex
-      :tags:
+      operationId: commentsIndex
+      tags:
       - Comments
-      :parameters:
-      - :in: query
-        :name: filter
-        :required: false
-        :schema:
-          :oneOf:
-          - :$ref: "#/components/schemas/commentFilter"
-          - :type: array
-            :items:
-              :$ref: "#/components/schemas/commentFilter"
-      - :in: query
-        :name: include
-        :required: false
-        :schema:
-          :$ref: "#/components/schemas/commentInclude"
-      - :in: query
-        :name: page
-        :required: false
-        :schema:
-          :$ref: "#/components/schemas/commentPage"
-      - :in: query
-        :name: sort
-        :required: false
-        :schema:
-          :oneOf:
-          - :$ref: "#/components/schemas/commentSort"
-          - :type: array
-            :items:
-              :$ref: "#/components/schemas/commentSort"
-      :responses:
-        :200:
-          :description: Successful response
-          :content:
-            :application/json:
-              :schema:
-                :type: object
-                :properties:
+      parameters:
+      - in: query
+        name: filter
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/commentFilter"
+          - type: array
+            items:
+              "$ref": "#/components/schemas/commentFilter"
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/commentInclude"
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/commentPage"
+      - in: query
+        name: sort
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/commentSort"
+          - type: array
+            items:
+              "$ref": "#/components/schemas/commentSort"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   comments:
-                    :type: array
-                    :items:
-                      :$ref: "#/components/schemas/comment"
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/comment"
                   meta:
-                    :type: object
-                    :properties: {}
+                    type: object
+                    properties: {}
                   pagination:
-                    :$ref: "#/components/schemas/pagePagination"
+                    "$ref": "#/components/schemas/pagePagination"
     post:
-      :operationId: commentsCreate
-      :tags:
+      operationId: commentsCreate
+      tags:
       - Comments
-      :requestBody:
-        :required: true
-        :content:
-          :application/json:
-            :schema:
-              :type: object
-              :properties:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
                 comment:
-                  :$ref: "#/components/schemas/commentCreatePayload"
-              :required:
+                  "$ref": "#/components/schemas/commentCreatePayload"
+              required:
               - comment
-      :responses:
-        :200:
-          :description: Successful response
-          :content:
-            :application/json:
-              :schema:
-                :type: object
-                :properties:
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   comment:
-                    :$ref: "#/components/schemas/comment"
+                    "$ref": "#/components/schemas/comment"
                   meta:
-                    :type: object
-                    :properties: {}
-                :required:
+                    type: object
+                    properties: {}
+                required:
                 - comment
-        :422:
-          :description: Unprocessable Entity
-          :content:
-            :application/json:
-              :schema:
-                :type: object
-                :properties:
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   issues:
-                    :type: array
-                    :items:
-                      :$ref: "#/components/schemas/issue"
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/issue"
   comments/:id:
     get:
-      :operationId: commentsShow
-      :tags:
+      operationId: commentsShow
+      tags:
       - Comments
-      :responses:
-        :200:
-          :description: Successful response
-          :content:
-            :application/json:
-              :schema:
-                :type: object
-                :properties:
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   comment:
-                    :$ref: "#/components/schemas/comment"
+                    "$ref": "#/components/schemas/comment"
                   meta:
-                    :type: object
-                    :properties: {}
-                :required:
+                    type: object
+                    properties: {}
+                required:
                 - comment
     patch:
-      :operationId: commentsUpdate
-      :tags:
+      operationId: commentsUpdate
+      tags:
       - Comments
-      :requestBody:
-        :required: true
-        :content:
-          :application/json:
-            :schema:
-              :type: object
-              :properties:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
                 comment:
-                  :$ref: "#/components/schemas/commentUpdatePayload"
-      :responses:
-        :200:
-          :description: Successful response
-          :content:
-            :application/json:
-              :schema:
-                :type: object
-                :properties:
+                  "$ref": "#/components/schemas/commentUpdatePayload"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   comment:
-                    :$ref: "#/components/schemas/comment"
+                    "$ref": "#/components/schemas/comment"
                   meta:
-                    :type: object
-                    :properties: {}
-        :422:
-          :description: Unprocessable Entity
-          :content:
-            :application/json:
-              :schema:
-                :type: object
-                :properties:
+                    type: object
+                    properties: {}
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   issues:
-                    :type: array
-                    :items:
-                      :$ref: "#/components/schemas/issue"
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/issue"
     delete:
-      :operationId: commentsDestroy
-      :tags:
+      operationId: commentsDestroy
+      tags:
       - Comments
-      :responses:
-        :204:
-          :description: No content
-:components:
-  :schemas:
+      responses:
+        '204':
+          description: No content
+components:
+  schemas:
     comment:
-      :type: object
-      :properties:
+      type: object
+      properties:
         authorName:
-          :type: string
+          type: string
         body:
-          :type: string
+          type: string
         commentableId: {}
         commentableType:
-          :type: string
+          type: string
         createdAt:
-          :type: string
+          type: string
         id: {}
     commentCreatePayload:
-      :type: object
-      :properties:
+      type: object
+      properties:
         authorName:
-          :type:
+          type:
           - string
           - 'null'
         body:
-          :type: string
+          type: string
         commentableId: {}
         commentableType:
-          :type: string
-      :required:
+          type: string
+      required:
       - body
       - commentableId
       - commentableType
     commentFilter:
-      :type: object
-      :properties:
+      type: object
+      properties:
         _and:
-          :type: array
-          :items:
-            :$ref: "#/components/schemas/commentFilter"
+          type: array
+          items:
+            "$ref": "#/components/schemas/commentFilter"
         _not:
-          :$ref: "#/components/schemas/commentFilter"
+          "$ref": "#/components/schemas/commentFilter"
         _or:
-          :type: array
-          :items:
-            :$ref: "#/components/schemas/commentFilter"
+          type: array
+          items:
+            "$ref": "#/components/schemas/commentFilter"
         commentableType:
-          :oneOf:
-          - :type: string
-          - :$ref: "#/components/schemas/stringFilter"
+          oneOf:
+          - type: string
+          - "$ref": "#/components/schemas/stringFilter"
     commentInclude:
-      :type: object
-      :properties: {}
+      type: object
+      properties: {}
     commentPage:
-      :type: object
-      :properties:
+      type: object
+      properties:
         number:
-          :type: integer
-          :minimum: 1
+          type: integer
+          minimum: 1
         size:
-          :type: integer
-          :minimum: 1
-          :maximum: 100
+          type: integer
+          minimum: 1
+          maximum: 100
     commentSort:
-      :type: object
-      :properties:
+      type: object
+      properties:
         createdAt: {}
     commentUpdatePayload:
-      :type: object
-      :properties:
+      type: object
+      properties:
         authorName:
-          :type:
+          type:
           - string
           - 'null'
         body:
-          :type: string
+          type: string
         commentableId: {}
         commentableType:
-          :type: string
-      :required:
+          type: string
+      required:
       - body
       - commentableId
       - commentableType
     issue:
-      :type: object
-      :properties:
+      type: object
+      properties:
         code:
-          :type: string
+          type: string
         detail:
-          :type: string
+          type: string
         field:
-          :type: string
+          type: string
         path:
-          :type: array
-          :items:
-            :type: string
-      :required:
+          type: array
+          items:
+            type: string
+      required:
       - code
       - detail
       - field
       - path
     pagePagination:
-      :type: object
-      :properties:
+      type: object
+      properties:
         current:
-          :type: integer
+          type: integer
         items:
-          :type: integer
+          type: integer
         next:
-          :type:
+          type:
           - integer
           - 'null'
         prev:
-          :type:
+          type:
           - integer
           - 'null'
         total:
-          :type: integer
-      :required:
+          type: integer
+      required:
       - current
       - items
       - total
     stringFilter:
-      :type: object
-      :properties:
+      type: object
+      properties:
         contains:
-          :type: string
+          type: string
         endsWith:
-          :type: string
+          type: string
         eq:
-          :type: string
+          type: string
         in:
-          :type: array
-          :items:
-            :type: string
+          type: array
+          items:
+            type: string
         startsWith:
-          :type: string
+          type: string

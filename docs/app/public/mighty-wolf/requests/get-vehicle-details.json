@@ -1,14 +1,14 @@
 {
   "request": {
     "method": "GET",
-    "path": "/mighty_wolf/vehicles/88966083-8f1c-4155-9624-1dc184c7bfec"
+    "path": "/mighty_wolf/vehicles/c9b880b6-81c6-459e-b652-2fc993286a5e"
   },
   "response": {
     "status": 200,
     "body": {
       "vehicle": {
         "kind": "car",
-        "id": "88966083-8f1c-4155-9624-1dc184c7bfec",
+        "id": "c9b880b6-81c6-459e-b652-2fc993286a5e",
         "brand": "Tesla",
         "model": "Model 3",
         "year": 2024,

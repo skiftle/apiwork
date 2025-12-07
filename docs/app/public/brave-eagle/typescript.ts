@@ -34,12 +34,14 @@ export interface StringFilter {
 
 export interface Task {
   archived?: boolean;
+  assignee?: null | object;
+  comments?: string[];
   createdAt?: string;
   description?: string;
   dueDate?: string;
   id?: string;
-  priority?: string;
-  status?: string;
+  priority?: TaskPriority;
+  status?: TaskStatus;
   title?: string;
   updatedAt?: string;
 }
@@ -47,8 +49,8 @@ export interface Task {
 export interface TaskCreatePayload {
   description?: null | string;
   dueDate?: null | string;
-  priority?: null | string;
-  status?: null | string;
+  priority?: TaskPriority | null;
+  status?: TaskStatus | null;
   title: string;
 }
 
@@ -56,8 +58,8 @@ export interface TaskFilter {
   _and?: TaskFilter[];
   _not?: TaskFilter;
   _or?: TaskFilter[];
-  priority?: NullableStringFilter | string;
-  status?: NullableStringFilter | string;
+  priority?: TaskPriorityFilter;
+  status?: TaskStatusFilter;
 }
 
 export type TaskInclude = object;
@@ -67,17 +69,33 @@ export interface TaskPage {
   size?: number;
 }
 
+export type TaskPriority = 'critical' | 'high' | 'low' | 'medium';
+
+export type TaskPriorityFilter = TaskPriority | { eq?: TaskPriority; in?: TaskPriority[] };
+
 export interface TaskSort {
   createdAt?: unknown;
   dueDate?: unknown;
 }
 
+export type TaskStatus = 'archived' | 'completed' | 'in_progress' | 'pending';
+
+export type TaskStatusFilter = TaskStatus | { eq?: TaskStatus; in?: TaskStatus[] };
+
 export interface TaskUpdatePayload {
   description?: null | string;
   dueDate?: null | string;
-  priority?: null | string;
-  status?: null | string;
+  priority?: TaskPriority | null;
+  status?: TaskStatus | null;
   title?: string;
+}
+
+export interface TasksArchiveRequest {
+  query: TasksArchiveRequestQuery;
+}
+
+export interface TasksArchiveRequestQuery {
+  include?: TaskInclude;
 }
 
 export interface TasksArchiveResponse {
@@ -87,11 +105,16 @@ export interface TasksArchiveResponse {
 export type TasksArchiveResponseBody = { issues?: Issue[] } | { meta?: object; task: Task };
 
 export interface TasksCreateRequest {
+  query: TasksCreateRequestQuery;
   body: TasksCreateRequestBody;
 }
 
 export interface TasksCreateRequestBody {
   task: TaskCreatePayload;
+}
+
+export interface TasksCreateRequestQuery {
+  include?: TaskInclude;
 }
 
 export interface TasksCreateResponse {
@@ -117,6 +140,14 @@ export interface TasksIndexResponse {
 
 export type TasksIndexResponseBody = { issues?: Issue[] } | { meta?: object; pagination?: PagePagination; tasks?: Task[] };
 
+export interface TasksShowRequest {
+  query: TasksShowRequestQuery;
+}
+
+export interface TasksShowRequestQuery {
+  include?: TaskInclude;
+}
+
 export interface TasksShowResponse {
   body: TasksShowResponseBody;
 }
@@ -124,11 +155,16 @@ export interface TasksShowResponse {
 export type TasksShowResponseBody = { issues?: Issue[] } | { meta?: object; task: Task };
 
 export interface TasksUpdateRequest {
+  query: TasksUpdateRequestQuery;
   body: TasksUpdateRequestBody;
 }
 
 export interface TasksUpdateRequestBody {
   task: TaskUpdatePayload;
+}
+
+export interface TasksUpdateRequestQuery {
+  include?: TaskInclude;
 }
 
 export interface TasksUpdateResponse {

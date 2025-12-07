@@ -1,384 +1,527 @@
 ---
-:openapi: 3.1.0
-:info:
-  :title: "/brave_eagle API"
-  :version: 1.0.0
-:paths:
+openapi: 3.1.0
+info:
+  title: "/brave_eagle API"
+  version: 1.0.0
+paths:
   tasks/:
     get:
-      :operationId: listTasks
-      :summary: List all tasks
-      :description: Returns a paginated list of tasks with optional filtering by status
+      operationId: listTasks
+      summary: List all tasks
+      description: Returns a paginated list of tasks with optional filtering by status
         and priority
-      :tags:
+      tags:
       - Tasks
       - Tasks
       - Core
-      :parameters:
-      - :in: query
-        :name: filter
-        :required: false
-        :schema:
-          :oneOf:
-          - :$ref: "#/components/schemas/taskFilter"
-          - :type: array
-            :items:
-              :$ref: "#/components/schemas/taskFilter"
-      - :in: query
-        :name: include
-        :required: false
-        :schema:
-          :$ref: "#/components/schemas/taskInclude"
-      - :in: query
-        :name: page
-        :required: false
-        :schema:
-          :$ref: "#/components/schemas/taskPage"
-      - :in: query
-        :name: sort
-        :required: false
-        :schema:
-          :oneOf:
-          - :$ref: "#/components/schemas/taskSort"
-          - :type: array
-            :items:
-              :$ref: "#/components/schemas/taskSort"
-      :responses:
-        :200:
-          :description: Successful response
-          :content:
-            :application/json:
-              :schema:
-                :type: object
-                :properties:
+      parameters:
+      - in: query
+        name: filter
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/taskFilter"
+          - type: array
+            items:
+              "$ref": "#/components/schemas/taskFilter"
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/taskInclude"
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/taskPage"
+      - in: query
+        name: sort
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/taskSort"
+          - type: array
+            items:
+              "$ref": "#/components/schemas/taskSort"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   meta:
-                    :type: object
-                    :properties: {}
+                    type: object
+                    properties: {}
                   pagination:
-                    :$ref: "#/components/schemas/pagePagination"
+                    "$ref": "#/components/schemas/pagePagination"
                   tasks:
-                    :type: array
-                    :items:
-                      :$ref: "#/components/schemas/task"
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/task"
     post:
-      :operationId: createTask
-      :summary: Create a new task
-      :description: Creates a task and returns the created resource
-      :tags:
+      operationId: createTask
+      summary: Create a new task
+      description: Creates a task and returns the created resource
+      tags:
       - Tasks
       - Tasks
-      :requestBody:
-        :required: true
-        :content:
-          :application/json:
-            :schema:
-              :type: object
-              :properties:
+      parameters:
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/taskInclude"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
                 task:
-                  :$ref: "#/components/schemas/taskCreatePayload"
-              :required:
+                  "$ref": "#/components/schemas/taskCreatePayload"
+              required:
               - task
-      :responses:
-        :200:
-          :description: Successful response
-          :content:
-            :application/json:
-              :schema:
-                :type: object
-                :properties:
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   meta:
-                    :type: object
-                    :properties: {}
+                    type: object
+                    properties: {}
                   task:
-                    :$ref: "#/components/schemas/task"
-                :required:
+                    "$ref": "#/components/schemas/task"
+                required:
                 - task
-        :422:
-          :description: Unprocessable Entity
-          :content:
-            :application/json:
-              :schema:
-                :type: object
-                :properties:
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   issues:
-                    :type: array
-                    :items:
-                      :$ref: "#/components/schemas/issue"
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/issue"
   tasks/:id:
     get:
-      :operationId: getTask
-      :summary: Get task details
-      :description: Returns a single task by ID
-      :tags:
+      operationId: getTask
+      summary: Get task details
+      description: Returns a single task by ID
+      tags:
       - Tasks
       - Tasks
-      :responses:
-        :200:
-          :description: Successful response
-          :content:
-            :application/json:
-              :schema:
-                :type: object
-                :properties:
+      parameters:
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/taskInclude"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   meta:
-                    :type: object
-                    :properties: {}
+                    type: object
+                    properties: {}
                   task:
-                    :$ref: "#/components/schemas/task"
-                :required:
+                    "$ref": "#/components/schemas/task"
+                required:
                 - task
     patch:
-      :operationId: updateTask
-      :summary: Update a task
-      :description: Updates an existing task
-      :tags:
+      operationId: updateTask
+      summary: Update a task
+      description: Updates an existing task
+      tags:
       - Tasks
       - Tasks
-      :requestBody:
-        :required: true
-        :content:
-          :application/json:
-            :schema:
-              :type: object
-              :properties:
+      parameters:
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/taskInclude"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
                 task:
-                  :$ref: "#/components/schemas/taskUpdatePayload"
-      :responses:
-        :200:
-          :description: Successful response
-          :content:
-            :application/json:
-              :schema:
-                :type: object
-                :properties:
+                  "$ref": "#/components/schemas/taskUpdatePayload"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   meta:
-                    :type: object
-                    :properties: {}
+                    type: object
+                    properties: {}
                   task:
-                    :$ref: "#/components/schemas/task"
-        :422:
-          :description: Unprocessable Entity
-          :content:
-            :application/json:
-              :schema:
-                :type: object
-                :properties:
+                    "$ref": "#/components/schemas/task"
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   issues:
-                    :type: array
-                    :items:
-                      :$ref: "#/components/schemas/issue"
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/issue"
     delete:
-      :operationId: deleteTask
-      :summary: Delete a task
-      :description: Permanently removes a task
-      :tags:
+      operationId: deleteTask
+      summary: Delete a task
+      description: Permanently removes a task
+      tags:
       - Tasks
       - Tasks
-      :responses:
-        :204:
-          :description: No content
+      responses:
+        '204':
+          description: No content
   tasks/:id/archive:
     patch:
-      :operationId: archiveTask
-      :summary: Archive a task
-      :description: Marks a task as archived. Archived tasks are hidden from default
+      operationId: archiveTask
+      summary: Archive a task
+      description: Marks a task as archived. Archived tasks are hidden from default
         listings but can still be retrieved.
-      :tags:
+      tags:
       - Tasks
       - Tasks
       - Lifecycle
-      :deprecated: true
-      :responses:
-        :200:
-          :description: Successful response
-          :content:
-            :application/json:
-              :schema:
-                :type: object
-                :properties:
+      deprecated: true
+      parameters:
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/taskInclude"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   meta:
-                    :type: object
-                    :properties: {}
+                    type: object
+                    properties: {}
                   task:
-                    :$ref: "#/components/schemas/task"
-                :required:
+                    "$ref": "#/components/schemas/task"
+                required:
                 - task
-:components:
-  :schemas:
+components:
+  schemas:
     issue:
-      :type: object
-      :properties:
+      type: object
+      properties:
         code:
-          :type: string
+          type: string
         detail:
-          :type: string
+          type: string
         field:
-          :type: string
+          type: string
         path:
-          :type: array
-          :items:
-            :type: string
-      :required:
+          type: array
+          items:
+            type: string
+      required:
       - code
       - detail
       - field
       - path
     nullableStringFilter:
-      :type: object
-      :properties:
+      type: object
+      properties:
         contains:
-          :type: string
+          type: string
         endsWith:
-          :type: string
+          type: string
         eq:
-          :type: string
+          type: string
         in:
-          :type: array
-          :items:
-            :type: string
+          type: array
+          items:
+            type: string
         'null':
-          :type: boolean
+          type: boolean
         startsWith:
-          :type: string
+          type: string
     pagePagination:
-      :type: object
-      :properties:
+      type: object
+      properties:
         current:
-          :type: integer
+          type: integer
         items:
-          :type: integer
+          type: integer
         next:
-          :type:
+          type:
           - integer
           - 'null'
         prev:
-          :type:
+          type:
           - integer
           - 'null'
         total:
-          :type: integer
-      :required:
+          type: integer
+      required:
       - current
       - items
       - total
     stringFilter:
-      :type: object
-      :properties:
+      type: object
+      properties:
         contains:
-          :type: string
+          type: string
         endsWith:
-          :type: string
+          type: string
         eq:
-          :type: string
+          type: string
         in:
-          :type: array
-          :items:
-            :type: string
+          type: array
+          items:
+            type: string
         startsWith:
-          :type: string
+          type: string
     task:
-      :type: object
-      :properties:
+      type: object
+      properties:
         archived:
-          :type: boolean
+          type: boolean
+          description: Whether the task has been archived
+          deprecated: true
+        assignee:
+          type:
+          - object
+          - 'null'
+          properties: {}
+          description: User responsible for completing this task
+        comments:
+          type: array
+          items:
+            type: string
+          description: Discussion comments on this task
         createdAt:
-          :type: string
+          type: string
+          description: Timestamp when the task was created
         description:
-          :type: string
+          type: string
+          description: Detailed description of what needs to be done
+          example: Add OAuth2 login support for Google and GitHub providers
         dueDate:
-          :type: string
+          type: string
+          description: Target date for task completion
+          example: '2024-02-01T00:00:00Z'
         id:
-          :type: string
+          type: string
+          description: Unique task identifier
         priority:
-          :type: string
+          type: string
+          description: Priority level for task ordering
+          example: high
+          enum:
+          - low
+          - medium
+          - high
+          - critical
         status:
-          :type: string
+          type: string
+          description: Current status of the task
+          example: pending
+          enum:
+          - pending
+          - in_progress
+          - completed
+          - archived
         title:
-          :type: string
+          type: string
+          description: Short title describing the task
+          example: Implement user authentication
         updatedAt:
-          :type: string
+          type: string
+          description: Timestamp of last modification
+      description: A task representing work to be completed
     taskCreatePayload:
-      :type: object
-      :properties:
+      type: object
+      properties:
         description:
-          :type:
+          type:
           - string
           - 'null'
+          description: Detailed description of what needs to be done
+          example: Add OAuth2 login support for Google and GitHub providers
         dueDate:
-          :type:
+          type:
           - string
           - 'null'
+          description: Target date for task completion
+          example: '2024-02-01T00:00:00Z'
         priority:
-          :type:
+          type:
           - string
           - 'null'
+          description: Priority level for task ordering
+          example: high
+          enum:
+          - low
+          - medium
+          - high
+          - critical
         status:
-          :type:
+          type:
           - string
           - 'null'
+          description: Current status of the task
+          example: pending
+          enum:
+          - pending
+          - in_progress
+          - completed
+          - archived
         title:
-          :type: string
-      :required:
+          type: string
+          description: Short title describing the task
+          example: Implement user authentication
+      description: A task representing work to be completed
+      required:
       - title
     taskFilter:
-      :type: object
-      :properties:
+      type: object
+      properties:
         _and:
-          :type: array
-          :items:
-            :$ref: "#/components/schemas/taskFilter"
+          type: array
+          items:
+            "$ref": "#/components/schemas/taskFilter"
         _not:
-          :$ref: "#/components/schemas/taskFilter"
+          "$ref": "#/components/schemas/taskFilter"
         _or:
-          :type: array
-          :items:
-            :$ref: "#/components/schemas/taskFilter"
+          type: array
+          items:
+            "$ref": "#/components/schemas/taskFilter"
         priority:
-          :oneOf:
-          - :type: string
-          - :$ref: "#/components/schemas/nullableStringFilter"
+          "$ref": "#/components/schemas/taskPriorityFilter"
         status:
-          :oneOf:
-          - :type: string
-          - :$ref: "#/components/schemas/nullableStringFilter"
+          "$ref": "#/components/schemas/taskStatusFilter"
+      description: A task representing work to be completed
     taskInclude:
-      :type: object
-      :properties: {}
+      type: object
+      properties: {}
     taskPage:
-      :type: object
-      :properties:
+      type: object
+      properties:
         number:
-          :type: integer
-          :minimum: 1
+          type: integer
+          minimum: 1
         size:
-          :type: integer
-          :minimum: 1
-          :maximum: 100
+          type: integer
+          minimum: 1
+          maximum: 100
+    taskPriorityFilter:
+      oneOf:
+      - type: string
+        enum:
+        - low
+        - medium
+        - high
+        - critical
+      - type: object
+        properties:
+          eq:
+            type: string
+            enum:
+            - low
+            - medium
+            - high
+            - critical
+          in:
+            type: array
+            items:
+              type:
     taskSort:
-      :type: object
-      :properties:
+      type: object
+      properties:
         createdAt: {}
         dueDate: {}
+      description: A task representing work to be completed
+    taskStatusFilter:
+      oneOf:
+      - type: string
+        enum:
+        - pending
+        - in_progress
+        - completed
+        - archived
+      - type: object
+        properties:
+          eq:
+            type: string
+            enum:
+            - pending
+            - in_progress
+            - completed
+            - archived
+          in:
+            type: array
+            items:
+              type:
     taskUpdatePayload:
-      :type: object
-      :properties:
+      type: object
+      properties:
         description:
-          :type:
+          type:
           - string
           - 'null'
+          description: Detailed description of what needs to be done
+          example: Add OAuth2 login support for Google and GitHub providers
         dueDate:
-          :type:
+          type:
           - string
           - 'null'
+          description: Target date for task completion
+          example: '2024-02-01T00:00:00Z'
         priority:
-          :type:
+          type:
           - string
           - 'null'
+          description: Priority level for task ordering
+          example: high
+          enum:
+          - low
+          - medium
+          - high
+          - critical
         status:
-          :type:
+          type:
           - string
           - 'null'
+          description: Current status of the task
+          example: pending
+          enum:
+          - pending
+          - in_progress
+          - completed
+          - archived
         title:
-          :type: string
-      :required:
+          type: string
+          description: Short title describing the task
+          example: Implement user authentication
+      description: A task representing work to be completed
+      required:
       - title

@@ -1,124 +1,124 @@
 ---
-:openapi: 3.1.0
-:info:
-  :title: "/funny_snake API"
-  :version: 1.0.0
-:paths:
+openapi: 3.1.0
+info:
+  title: "/funny_snake API"
+  version: 1.0.0
+paths:
   invoices/:
     get:
-      :operationId: invoicesIndex
-      :tags:
+      operationId: invoicesIndex
+      tags:
       - Invoices
-      :responses:
-        :200:
-          :description: Successful response
-          :content:
-            :application/json:
-              :schema:
-                :type: object
-                :properties:
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   invoices:
-                    :type: array
-                    :items:
-                      :$ref: "#/components/schemas/invoice"
-                :required:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/invoice"
+                required:
                 - invoices
     post:
-      :operationId: invoicesCreate
-      :tags:
+      operationId: invoicesCreate
+      tags:
       - Invoices
-      :requestBody:
-        :required: true
-        :content:
-          :application/json:
-            :schema:
-              :type: object
-              :properties:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
                 invoice:
-                  :$ref: "#/components/schemas/invoicePayload"
-              :required:
+                  "$ref": "#/components/schemas/invoicePayload"
+              required:
               - invoice
-      :responses:
-        :200:
-          :description: Successful response
-          :content:
-            :application/json:
-              :schema:
-                :type: object
-                :properties:
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   invoice:
-                    :$ref: "#/components/schemas/invoice"
-                :required:
+                    "$ref": "#/components/schemas/invoice"
+                required:
                 - invoice
   invoices/:id:
     get:
-      :operationId: invoicesShow
-      :tags:
+      operationId: invoicesShow
+      tags:
       - Invoices
-      :responses:
-        :200:
-          :description: Successful response
-          :content:
-            :application/json:
-              :schema:
-                :type: object
-                :properties:
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   invoice:
-                    :$ref: "#/components/schemas/invoice"
-                :required:
+                    "$ref": "#/components/schemas/invoice"
+                required:
                 - invoice
     patch:
-      :operationId: invoicesUpdate
-      :tags:
+      operationId: invoicesUpdate
+      tags:
       - Invoices
-      :requestBody:
-        :required: true
-        :content:
-          :application/json:
-            :schema:
-              :type: object
-              :properties:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
                 invoice:
-                  :$ref: "#/components/schemas/invoicePayload"
-      :responses:
-        :200:
-          :description: Successful response
-          :content:
-            :application/json:
-              :schema:
-                :type: object
-                :properties:
+                  "$ref": "#/components/schemas/invoicePayload"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   invoice:
-                    :$ref: "#/components/schemas/invoice"
-                :required:
+                    "$ref": "#/components/schemas/invoice"
+                required:
                 - invoice
     delete:
-      :operationId: invoicesDestroy
-      :tags:
+      operationId: invoicesDestroy
+      tags:
       - Invoices
-      :responses:
-        :204:
-          :description: No content
-:components:
-  :schemas:
+      responses:
+        '204':
+          description: No content
+components:
+  schemas:
     invoice:
-      :type: object
-      :properties:
+      type: object
+      properties:
         createdAt:
-          :type: string
+          type: string
         id:
-          :type: string
+          type: string
         issuedOn:
-          :type: string
+          type: string
         notes:
-          :type: string
+          type: string
         number:
-          :type: string
+          type: string
         status:
-          :type: string
+          type: string
         updatedAt:
-          :type: string
-      :required:
+          type: string
+      required:
       - createdAt
       - id
       - issuedOn
@@ -127,35 +127,35 @@
       - status
       - updatedAt
     invoicePayload:
-      :type: object
-      :properties:
+      type: object
+      properties:
         issuedOn:
-          :type: string
+          type: string
         notes:
-          :type: string
+          type: string
         number:
-          :type: string
+          type: string
         status:
-          :type: string
-      :required:
+          type: string
+      required:
       - issuedOn
       - notes
       - number
       - status
     issue:
-      :type: object
-      :properties:
+      type: object
+      properties:
         code:
-          :type: string
+          type: string
         detail:
-          :type: string
+          type: string
         field:
-          :type: string
+          type: string
         path:
-          :type: array
-          :items:
-            :type: string
-      :required:
+          type: array
+          items:
+            type: string
+      required:
       - code
       - detail
       - field

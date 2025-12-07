@@ -109,41 +109,70 @@
       "shape": {
         "archived": {
           "type": "boolean",
-          "optional": true
+          "optional": true,
+          "description": "Whether the task has been archived",
+          "deprecated": true
+        },
+        "assignee": {
+          "type": "object",
+          "nullable": true,
+          "optional": true,
+          "description": "User responsible for completing this task"
+        },
+        "comments": {
+          "type": "array",
+          "optional": true,
+          "description": "Discussion comments on this task"
         },
         "created_at": {
           "type": "datetime",
-          "optional": true
+          "optional": true,
+          "description": "Timestamp when the task was created"
         },
         "description": {
           "type": "string",
-          "optional": true
+          "optional": true,
+          "description": "Detailed description of what needs to be done",
+          "example": "Add OAuth2 login support for Google and GitHub providers"
         },
         "due_date": {
           "type": "datetime",
-          "optional": true
+          "optional": true,
+          "description": "Target date for task completion",
+          "example": "2024-02-01T00:00:00Z"
         },
         "id": {
           "type": "string",
-          "optional": true
+          "optional": true,
+          "description": "Unique task identifier"
         },
         "priority": {
           "type": "string",
-          "optional": true
+          "enum": "task_priority",
+          "optional": true,
+          "description": "Priority level for task ordering",
+          "example": "high"
         },
         "status": {
           "type": "string",
-          "optional": true
+          "enum": "task_status",
+          "optional": true,
+          "description": "Current status of the task",
+          "example": "pending"
         },
         "title": {
           "type": "string",
-          "optional": true
+          "optional": true,
+          "description": "Short title describing the task",
+          "example": "Implement user authentication"
         },
         "updated_at": {
           "type": "datetime",
-          "optional": true
+          "optional": true,
+          "description": "Timestamp of last modification"
         }
-      }
+      },
+      "description": "A task representing work to be completed"
     },
     "task_create_payload": {
       "type": "object",
@@ -151,27 +180,40 @@
         "description": {
           "type": "string",
           "nullable": true,
-          "optional": true
+          "optional": true,
+          "description": "Detailed description of what needs to be done",
+          "example": "Add OAuth2 login support for Google and GitHub providers"
         },
         "due_date": {
           "type": "datetime",
           "nullable": true,
-          "optional": true
+          "optional": true,
+          "description": "Target date for task completion",
+          "example": "2024-02-01T00:00:00Z"
         },
         "priority": {
           "type": "string",
+          "enum": "task_priority",
           "nullable": true,
-          "optional": true
+          "optional": true,
+          "description": "Priority level for task ordering",
+          "example": "high"
         },
         "status": {
           "type": "string",
+          "enum": "task_status",
           "nullable": true,
-          "optional": true
+          "optional": true,
+          "description": "Current status of the task",
+          "example": "pending"
         },
         "title": {
-          "type": "string"
+          "type": "string",
+          "description": "Short title describing the task",
+          "example": "Implement user authentication"
         }
-      }
+      },
+      "description": "A task representing work to be completed"
     },
     "task_filter": {
       "type": "object",
@@ -191,30 +233,15 @@
           "optional": true
         },
         "priority": {
-          "type": "union",
-          "variants": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "nullable_string_filter"
-            }
-          ],
+          "type": "task_priority_filter",
           "optional": true
         },
         "status": {
-          "type": "union",
-          "variants": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "nullable_string_filter"
-            }
-          ],
+          "type": "task_status_filter",
           "optional": true
         }
-      }
+      },
+      "description": "A task representing work to be completed"
     },
     "task_include": {
       "type": "object"
@@ -235,6 +262,34 @@
         }
       }
     },
+    "task_priority_filter": {
+      "type": "union",
+      "required": false,
+      "nullable": false,
+      "variants": [
+        {
+          "type": "task_priority",
+          "of": null,
+          "partial": false
+        },
+        {
+          "type": "object",
+          "of": null,
+          "partial": true,
+          "shape": {
+            "eq": {
+              "type": "task_priority",
+              "optional": true
+            },
+            "in": {
+              "type": "array",
+              "of": "task_priority",
+              "optional": true
+            }
+          }
+        }
+      ]
+    },
     "task_sort": {
       "type": "object",
       "shape": {
@@ -246,7 +301,36 @@
           "type": "task_sort_direction",
           "optional": true
         }
-      }
+      },
+      "description": "A task representing work to be completed"
+    },
+    "task_status_filter": {
+      "type": "union",
+      "required": false,
+      "nullable": false,
+      "variants": [
+        {
+          "type": "task_status",
+          "of": null,
+          "partial": false
+        },
+        {
+          "type": "object",
+          "of": null,
+          "partial": true,
+          "shape": {
+            "eq": {
+              "type": "task_status",
+              "optional": true
+            },
+            "in": {
+              "type": "array",
+              "of": "task_status",
+              "optional": true
+            }
+          }
+        }
+      ]
     },
     "task_update_payload": {
       "type": "object",
@@ -254,27 +338,40 @@
         "description": {
           "type": "string",
           "nullable": true,
-          "optional": true
+          "optional": true,
+          "description": "Detailed description of what needs to be done",
+          "example": "Add OAuth2 login support for Google and GitHub providers"
         },
         "due_date": {
           "type": "datetime",
           "nullable": true,
-          "optional": true
+          "optional": true,
+          "description": "Target date for task completion",
+          "example": "2024-02-01T00:00:00Z"
         },
         "priority": {
           "type": "string",
+          "enum": "task_priority",
           "nullable": true,
-          "optional": true
+          "optional": true,
+          "description": "Priority level for task ordering",
+          "example": "high"
         },
         "status": {
           "type": "string",
+          "enum": "task_status",
           "nullable": true,
-          "optional": true
+          "optional": true,
+          "description": "Current status of the task",
+          "example": "pending"
         },
         "title": {
-          "type": "string"
+          "type": "string",
+          "description": "Short title describing the task",
+          "example": "Implement user authentication"
         }
-      }
+      },
+      "description": "A task representing work to be completed"
     }
   },
   "enums": {
@@ -282,6 +379,22 @@
       "values": [
         "asc",
         "desc"
+      ]
+    },
+    "task_priority": {
+      "values": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    },
+    "task_status": {
+      "values": [
+        "pending",
+        "in_progress",
+        "completed",
+        "archived"
       ]
     }
   },
@@ -303,41 +416,56 @@
         "type": "object",
         "shape": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Unique task identifier"
           },
           "title": {
-            "type": "string"
+            "type": "string",
+            "example": "Implement user authentication",
+            "description": "Short title describing the task"
           },
           "description": {
             "type": "text",
+            "example": "Add OAuth2 login support for Google and GitHub providers",
+            "description": "Detailed description of what needs to be done",
             "nullable": true,
             "optional": true
           },
           "status": {
             "type": "string",
+            "example": "pending",
+            "description": "Current status of the task",
             "nullable": true,
             "optional": true
           },
           "priority": {
             "type": "string",
+            "example": "high",
+            "description": "Priority level for task ordering",
             "nullable": true,
             "optional": true
           },
           "due_date": {
             "type": "datetime",
+            "example": "2024-02-01T00:00:00Z",
+            "description": "Target date for task completion",
             "nullable": true,
             "optional": true
           },
           "archived": {
             "type": "boolean",
+            "description": "Whether the task has been archived",
             "nullable": true,
-            "optional": true
+            "optional": true,
+            "deprecated": true
           },
           "created_at": {
-            "type": "datetime"
+            "type": "datetime",
+            "description": "Timestamp when the task was created"
           },
           "updated_at": {
-            "type": "datetime"
+            "type": "datetime",
+            "description": "Timestamp of last modification"
           }
         }
       },
@@ -435,6 +563,14 @@
             "Tasks"
           ],
           "operation_id": "getTask",
+          "request": {
+            "query": {
+              "include": {
+                "type": "task_include",
+                "optional": true
+              }
+            }
+          },
           "response": {
             "body": {
               "type": "union",
@@ -475,6 +611,12 @@
           ],
           "operation_id": "createTask",
           "request": {
+            "query": {
+              "include": {
+                "type": "task_include",
+                "optional": true
+              }
+            },
             "body": {
               "task": {
                 "type": "task_create_payload"
@@ -524,6 +666,12 @@
           ],
           "operation_id": "updateTask",
           "request": {
+            "query": {
+              "include": {
+                "type": "task_include",
+                "optional": true
+              }
+            },
             "body": {
               "task": {
                 "type": "task_update_payload"
@@ -583,6 +731,14 @@
             "Lifecycle"
           ],
           "operation_id": "archiveTask",
+          "request": {
+            "query": {
+              "include": {
+                "type": "task_include",
+                "optional": true
+              }
+            }
+          },
           "response": {
             "body": {
               "type": "union",

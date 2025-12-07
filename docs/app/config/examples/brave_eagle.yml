@@ -1,30 +1,70 @@
-title: Documenting Your API
-description: Add rich metadata with summaries, descriptions, tags, and operation IDs
+title: API Documentation
+description: Document APIs with descriptions, examples, formats, and deprecation notices at every level
 order: 11
 
 scenarios:
   - title: List all tasks
-    description: Shows documented endpoint with tags
+    description: Returns tasks with documented attributes
     order: 1
     method: GET
     path: /brave_eagle/tasks
     setup:
+      - create: user
+        fields:
+          name: Jane Doe
+          email: jane@example.com
       - create: task
         fields:
           title: Write documentation
+          description: Complete the API reference guide
           status: pending
           priority: high
+          assignee_id: :user_id
       - create: task
         fields:
           title: Review pull request
           status: completed
           priority: medium
 
-  - title: Create a task
-    description: Standard create with metadata
+  - title: Get task details
+    description: Single task with associations
     order: 2
+    method: GET
+    path: /brave_eagle/tasks/:id
+    setup:
+      - create: user
+        fields:
+          name: John Smith
+          email: john@example.com
+      - create: task
+        fields:
+          title: Implement login
+          description: Add OAuth2 support
+          status: in_progress
+          priority: critical
+          due_date: "2024-02-01"
+          assignee_id: :user_id
+      - create: comment
+        fields:
+          task_id: :task_id
+          body: Started working on this
+          author_name: John Smith
+      - create: comment
+        fields:
+          task_id: :task_id
+          body: Looking good so far
+          author_name: Jane Doe
+
+  - title: Create a task
+    description: Create with documented fields
+    order: 3
     method: POST
     path: /brave_eagle/tasks
+    setup:
+      - create: user
+        fields:
+          name: Alice Brown
+          email: alice@example.com
     body:
       task:
         title: New feature implementation
@@ -32,10 +72,11 @@ scenarios:
         status: pending
         priority: high
         due_date: "2024-02-01"
+        assignee_id: :user_id
 
   - title: Archive a task (deprecated)
     description: Deprecated action example
-    order: 3
+    order: 4
     method: PATCH
     path: /brave_eagle/tasks/:id/archive
     setup:

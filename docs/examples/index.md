@@ -27,4 +27,4 @@ Each example includes:
 | [Custom Hash Responses](./custom-hash-responses.md) | Using respond_with with plain hashes instead of ActiveRecord models |
 | [Encode, Decode & Empty](./encode-decode-empty.md) | Transform values on input/output and handle nil/empty string conversion |
 | [Cursor Pagination](./cursor-pagination.md) | Navigate through large datasets using cursor-based pagination |
-| [Documenting Your API](./documenting-your-api.md) | Add rich metadata with summaries, descriptions, tags, and operation IDs |
+| [API Documentation](./api-documentation.md) | Document APIs with descriptions, examples, formats, and deprecation notices at every level |
