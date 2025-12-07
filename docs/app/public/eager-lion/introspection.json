@@ -70,9 +70,6 @@
         }
       }
     },
-    "invoice_customer_include": {
-      "type": "object"
-    },
     "invoice_filter": {
       "type": "object",
       "shape": {
@@ -117,19 +114,6 @@
       }
     },
     "invoice_include": {
-      "type": "object",
-      "shape": {
-        "customer": {
-          "type": "invoice_customer_include",
-          "optional": true
-        },
-        "lines": {
-          "type": "invoice_line_include",
-          "optional": true
-        }
-      }
-    },
-    "invoice_line_include": {
       "type": "object"
     },
     "invoice_page": {

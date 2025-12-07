@@ -7,7 +7,7 @@
         "body": "Very helpful video!",
         "author_name": "Bob Smith",
         "commentable_type": "GentleOwl::Video",
-        "commentable_id": "bbf4a585-a2c5-4625-a14c-aadd7f0b7ec0"
+        "commentable_id": "70ab2ba3-43f3-458e-bec8-fec88c6e6b06"
       }
     }
   },
@@ -15,12 +15,12 @@
     "status": 201,
     "body": {
       "comment": {
-        "id": "8d6ba139-65ec-4a76-a41c-37451b591dd8",
+        "id": "c6c66431-16b6-433f-807c-94661bfea6b9",
         "body": "Very helpful video!",
         "author_name": "Bob Smith",
         "commentable_type": "GentleOwl::Video",
-        "commentable_id": "bbf4a585-a2c5-4625-a14c-aadd7f0b7ec0",
-        "created_at": "2025-12-07T09:41:44.967Z"
+        "commentable_id": "70ab2ba3-43f3-458e-bec8-fec88c6e6b06",
+        "created_at": "2025-12-07T09:46:47.347Z"
       }
     }
   }

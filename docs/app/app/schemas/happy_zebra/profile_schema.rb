@@ -8,6 +8,6 @@ module HappyZebra
     attribute :bio, writable: true
     attribute :website, writable: true
 
-    belongs_to :user, schema: UserSchema
+    belongs_to :user
   end
 end

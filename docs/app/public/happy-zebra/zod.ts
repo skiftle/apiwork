@@ -40,13 +40,13 @@ export const UserCreatePayloadSchema = z.object({
   username: z.string()
 });
 
+export const UserIncludeSchema = z.object({
+
+});
+
 export const UserPageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
-});
-
-export const UserProfileIncludeSchema = z.object({
-  user: z.boolean().optional()
 });
 
 export const UserSortSchema = z.object({
@@ -67,10 +67,6 @@ export const UserFilterSchema: z.ZodType<UserFilter> = z.lazy(() => z.object({
   email: z.union([z.string(), StringFilterSchema]).optional(),
   username: z.union([z.string(), StringFilterSchema]).optional()
 }));
-
-export const UserIncludeSchema = z.object({
-  profile: UserProfileIncludeSchema.optional()
-});
 
 export const UserSchema = z.object({
   created_at: z.iso.datetime(),
@@ -175,20 +171,20 @@ export interface StringFilter {
 }
 
 export interface User {
+  created_at: string;
+  email: string;
+  id: string;
+  updated_at: string;
+  username: string;
+}
+
+export interface User {
   created_at?: string;
   email?: string;
   id?: string;
   profile: object;
   updated_at?: string;
   username?: string;
-}
-
-export interface User {
-  created_at: string;
-  email: string;
-  id: string;
-  updated_at: string;
-  username: string;
 }
 
 export interface UserCreatePayload {
@@ -205,17 +201,11 @@ export interface UserFilter {
   username?: StringFilter | string;
 }
 
-export interface UserInclude {
-  profile?: UserProfileInclude;
-}
+export type UserInclude = object;
 
 export interface UserPage {
   number?: number;
   size?: number;
-}
-
-export interface UserProfileInclude {
-  user?: boolean;
 }
 
 export interface UserSort {

@@ -11,7 +11,7 @@ module EagerLion
     attribute :status, filterable: true, sortable: true
     attribute :customer_id, writable: true
 
-    has_many :lines, schema: LineSchema, writable: true, include: :always
-    belongs_to :customer, schema: CustomerSchema, include: :always
+    has_many :lines, writable: true, include: :always
+    belongs_to :customer, include: :always
   end
 end

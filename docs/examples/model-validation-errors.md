@@ -76,18 +76,12 @@ Content-Type: application/json
 ```json
 {
   "user": {
-    "id": "71daff29-08bb-4f03-b866-484e0f3f131a",
-    "created_at": "2025-12-07T09:41:45.024Z",
-    "updated_at": "2025-12-07T09:41:45.024Z",
+    "id": "287e842a-8920-4625-a5a6-bd06bdb37b22",
+    "created_at": "2025-12-07T09:46:47.401Z",
+    "updated_at": "2025-12-07T09:46:47.401Z",
     "email": "john@example.com",
     "username": "johndoe",
-    "profile": {
-      "id": "30b932de-df28-4bf1-b9b3-7c46ead6e8eb",
-      "created_at": "2025-12-07T09:41:45.025Z",
-      "updated_at": "2025-12-07T09:41:45.025Z",
-      "bio": "Software developer",
-      "website": "https://example.com"
-    }
+    "profile": null
   }
 }
 ```

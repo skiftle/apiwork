@@ -19,8 +19,6 @@ export interface InvoiceCreatePayload {
   number: string;
 }
 
-export type InvoiceCustomerInclude = object;
-
 export interface InvoiceFilter {
   _and?: InvoiceFilter[];
   _not?: InvoiceFilter;
@@ -29,12 +27,7 @@ export interface InvoiceFilter {
   status?: NullableStringFilter | string;
 }
 
-export interface InvoiceInclude {
-  customer?: InvoiceCustomerInclude;
-  lines?: InvoiceLineInclude;
-}
-
-export type InvoiceLineInclude = object;
+export type InvoiceInclude = object;
 
 export interface InvoicePage {
   number?: number;

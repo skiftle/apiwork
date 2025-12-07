@@ -46,17 +46,11 @@ export interface UserFilter {
   username?: StringFilter | string;
 }
 
-export interface UserInclude {
-  profile?: UserProfileInclude;
-}
+export type UserInclude = object;
 
 export interface UserPage {
   number?: number;
   size?: number;
-}
-
-export interface UserProfileInclude {
-  user?: boolean;
 }
 
 export interface UserSort {

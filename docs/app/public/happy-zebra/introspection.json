@@ -157,13 +157,7 @@
       }
     },
     "user_include": {
-      "type": "object",
-      "shape": {
-        "profile": {
-          "type": "user_profile_include",
-          "optional": true
-        }
-      }
+      "type": "object"
     },
     "user_page": {
       "type": "object",
@@ -178,15 +172,6 @@
           "optional": true,
           "min": 1,
           "max": 100
-        }
-      }
-    },
-    "user_profile_include": {
-      "type": "object",
-      "shape": {
-        "user": {
-          "type": "boolean",
-          "optional": true
         }
       }
     },

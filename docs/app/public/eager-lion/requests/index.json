@@ -8,34 +8,28 @@
     "body": {
       "invoices": [
         {
-          "id": "b56d5130-94fc-4b23-abc8-8eb1b1b7f827",
-          "created_at": "2025-12-07T09:41:44.776Z",
-          "updated_at": "2025-12-07T09:41:44.776Z",
+          "id": "73bbbb66-ca6e-483c-a46e-4c5ea248b683",
+          "created_at": "2025-12-07T09:46:47.179Z",
+          "updated_at": "2025-12-07T09:46:47.179Z",
           "number": "INV-001",
           "issued_on": null,
           "notes": null,
           "status": null,
-          "customer_id": "14b042f7-c3d5-4b77-bb4e-c952c3991162",
-          "lines": [],
-          "customer": {
-            "id": "14b042f7-c3d5-4b77-bb4e-c952c3991162",
-            "name": "Acme Corp"
-          }
+          "customer_id": "26b7f035-2e74-4882-80dd-7882be11b77c",
+          "lines": null,
+          "customer": null
         },
         {
-          "id": "0f0832df-75e6-4ba9-91b9-7782fe1f6a38",
-          "created_at": "2025-12-07T09:41:44.779Z",
-          "updated_at": "2025-12-07T09:41:44.779Z",
+          "id": "5c6e322d-7424-4b09-a1d3-b68db95fc460",
+          "created_at": "2025-12-07T09:46:47.181Z",
+          "updated_at": "2025-12-07T09:46:47.181Z",
           "number": "INV-002",
           "issued_on": null,
           "notes": null,
           "status": null,
-          "customer_id": "14b042f7-c3d5-4b77-bb4e-c952c3991162",
-          "lines": [],
-          "customer": {
-            "id": "14b042f7-c3d5-4b77-bb4e-c952c3991162",
-            "name": "Acme Corp"
-          }
+          "customer_id": "26b7f035-2e74-4882-80dd-7882be11b77c",
+          "lines": null,
+          "customer": null
         }
       ],
       "pagination": {

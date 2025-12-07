@@ -23,11 +23,7 @@ export const InvoiceCreatePayloadSchema = z.object({
   number: z.string()
 });
 
-export const InvoiceCustomerIncludeSchema = z.object({
-
-});
-
-export const InvoiceLineIncludeSchema = z.object({
+export const InvoiceIncludeSchema = z.object({
 
 });
 
@@ -81,11 +77,6 @@ export const StringFilterSchema = z.object({
   eq: z.string().optional(),
   in: z.array(z.string()).optional(),
   starts_with: z.string().optional()
-});
-
-export const InvoiceIncludeSchema = z.object({
-  customer: InvoiceCustomerIncludeSchema.optional(),
-  lines: InvoiceLineIncludeSchema.optional()
 });
 
 export const InvoiceFilterSchema: z.ZodType<InvoiceFilter> = z.lazy(() => z.object({
@@ -222,8 +213,6 @@ export interface InvoiceCreatePayload {
   number: string;
 }
 
-export type InvoiceCustomerInclude = object;
-
 export interface InvoiceFilter {
   _and?: InvoiceFilter[];
   _not?: InvoiceFilter;
@@ -232,12 +221,7 @@ export interface InvoiceFilter {
   status?: NullableStringFilter | string;
 }
 
-export interface InvoiceInclude {
-  customer?: InvoiceCustomerInclude;
-  lines?: InvoiceLineInclude;
-}
-
-export type InvoiceLineInclude = object;
+export type InvoiceInclude = object;
 
 export interface InvoicePage {
   number?: number;

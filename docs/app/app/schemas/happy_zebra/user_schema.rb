@@ -8,6 +8,6 @@ module HappyZebra
     attribute :email, writable: true, filterable: true
     attribute :username, writable: true, filterable: true
 
-    has_one :profile, schema: ProfileSchema, writable: true, include: :always
+    has_one :profile, writable: true, include: :always
   end
 end

@@ -7,22 +7,22 @@
     "status": 200,
     "body": [
       {
-        "id": "9ce5ab49-14eb-4a37-8459-76faba2de753",
+        "id": "36377661-73f7-4776-9d48-a472ce12540d",
         "number": "INV-001",
         "issued_on": null,
         "status": "draft",
         "notes": null,
-        "created_at": "2025-12-07T09:41:44.855Z",
-        "updated_at": "2025-12-07T09:41:44.855Z"
+        "created_at": "2025-12-07T09:46:47.243Z",
+        "updated_at": "2025-12-07T09:46:47.243Z"
       },
       {
-        "id": "2e6b9b30-6ad0-40fd-a4c3-c1547f3b6d76",
+        "id": "cad9661e-ca8c-4dd6-b589-4a77e650861f",
         "number": "INV-002",
         "issued_on": null,
         "status": "sent",
         "notes": null,
-        "created_at": "2025-12-07T09:41:44.856Z",
-        "updated_at": "2025-12-07T09:41:44.856Z"
+        "created_at": "2025-12-07T09:46:47.244Z",
+        "updated_at": "2025-12-07T09:46:47.244Z"
       }
     ]
   }

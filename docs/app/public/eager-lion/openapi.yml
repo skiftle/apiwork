@@ -257,9 +257,6 @@
       :required:
       - customer_id
       - number
-    invoice_customer_include:
-      :type: object
-      :properties: {}
     invoice_filter:
       :type: object
       :properties:
@@ -282,13 +279,6 @@
           - :type: string
           - :$ref: "#/components/schemas/nullable_string_filter"
     invoice_include:
-      :type: object
-      :properties:
-        customer:
-          :$ref: "#/components/schemas/invoice_customer_include"
-        lines:
-          :$ref: "#/components/schemas/invoice_line_include"
-    invoice_line_include:
       :type: object
       :properties: {}
     invoice_page:

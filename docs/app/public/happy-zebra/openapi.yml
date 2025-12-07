@@ -288,9 +288,7 @@
           - :$ref: "#/components/schemas/string_filter"
     user_include:
       :type: object
-      :properties:
-        profile:
-          :$ref: "#/components/schemas/user_profile_include"
+      :properties: {}
     user_page:
       :type: object
       :properties:
@@ -301,11 +299,6 @@
           :type: integer
           :minimum: 1
           :maximum: 100
-    user_profile_include:
-      :type: object
-      :properties:
-        user:
-          :type: boolean
     user_sort:
       :type: object
       :properties:
