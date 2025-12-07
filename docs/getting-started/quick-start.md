@@ -8,20 +8,20 @@ This guide walks you through building a complete API endpoint with validation, s
 
 ## The Goal
 
-We'll create a Posts API with:
-- List posts with filtering and pagination
-- Create posts with validation
+We'll create an Invoices API with:
+- List invoices with filtering and pagination
+- Create invoices with validation
 - Auto-generated OpenAPI, TypeScript, and Zod specs
 
 ## 1. Database & Model
 
-<<< @/app/db/migrate/20251201000001_create_swift_fox_tables.rb
+<<< @/app/db/migrate/20251130000004_create_eager_lion_tables.rb
 
-<<< @/app/app/models/swift_fox/post.rb
+<<< @/app/app/models/eager_lion/invoice.rb
 
 ## 2. API Definition
 
-<<< @/app/config/apis/swift_fox.rb
+<<< @/app/config/apis/eager_lion.rb
 
 ## 3. Routes
 
@@ -33,22 +33,22 @@ Mount Apiwork routes in your Rails application:
 
 The schema defines how your model is serialized and what can be filtered/sorted:
 
-<<< @/app/app/schemas/swift_fox/post_schema.rb
+<<< @/app/app/schemas/eager_lion/invoice_schema.rb
 
 ## 5. Contract
 
 The contract imports the schema and can add action-specific rules:
 
-<<< @/app/app/contracts/swift_fox/post_contract.rb
+<<< @/app/app/contracts/eager_lion/invoice_contract.rb
 
-`schema!` imports all attributes from PostSchema. The contract now knows:
+`schema!` imports all attributes from InvoiceSchema. The contract now knows:
 - What fields are writable (for create/update)
 - What fields are filterable/sortable (for index)
 - The types of all fields (for validation)
 
 ## 6. Controller
 
-<<< @/app/app/controllers/swift_fox/posts_controller.rb
+<<< @/app/app/controllers/eager_lion/invoices_controller.rb
 
 ## 7. Try It Out
 
@@ -58,36 +58,36 @@ Start the server:
 rails server
 ```
 
-### Create a post
+### Create an invoice
 
 ```bash
-curl -X POST http://localhost:3000/swift-fox/posts \
+curl -X POST http://localhost:3000/eager-lion/invoices \
   -H "Content-Type: application/json" \
-  -d '{"post": {"title": "Hello World", "body": "My first post"}}'
+  -d '{"invoice": {"number": "INV-001", "issued_on": "2024-01-15", "notes": "First invoice"}}'
 ```
 
-### List posts with filtering
+### List invoices with filtering
 
 ```bash
-# All posts
-curl http://localhost:3000/swift-fox/posts
+# All invoices
+curl http://localhost:3000/eager-lion/invoices
 
-# Filter by status
-curl "http://localhost:3000/swift-fox/posts?filter[status][eq]=published"
+# Filter by number
+curl "http://localhost:3000/eager-lion/invoices?filter[number][eq]=INV-001"
 
 # Sort by created_at descending
-curl "http://localhost:3000/swift-fox/posts?sort[created_at]=desc"
+curl "http://localhost:3000/eager-lion/invoices?sort[created_at]=desc"
 
 # Paginate
-curl "http://localhost:3000/swift-fox/posts?page[number]=1&page[size]=10"
+curl "http://localhost:3000/eager-lion/invoices?page[number]=1&page[size]=10"
 ```
 
 ### Get the specs
 
 ```bash
-curl http://localhost:3000/swift-fox/.spec/openapi
-curl http://localhost:3000/swift-fox/.spec/typescript
-curl http://localhost:3000/swift-fox/.spec/zod
+curl http://localhost:3000/eager-lion/.spec/openapi
+curl http://localhost:3000/eager-lion/.spec/typescript
+curl http://localhost:3000/eager-lion/.spec/zod
 ```
 
 ## What Just Happened?
@@ -101,7 +101,7 @@ With minimal code, you got:
 5. **Pagination** — Built-in page-based pagination
 6. **Documentation** — OpenAPI, TypeScript, and Zod specs generated automatically
 
-See [Quick Start Example](../examples/quick-start.md) for the complete generated output (TypeScript, Zod, OpenAPI).
+See [Schema-Driven Contract Example](../examples/schema-driven-contract.md) for the complete generated output (TypeScript, Zod, OpenAPI).
 
 ## There's More
 

@@ -17,14 +17,9 @@ Each example includes:
 
 | Example | Description |
 |---------|-------------|
-| [Schema-Driven Contract](./schema-driven-contract.md) | Using `schema!` to generate a complete contract from schema definitions |
 | [Manual Contract](./manual-contract.md) | Defining contracts manually without schemas |
-| [Quick Start](./quick-start.md) | The complete example from the Quick Start guide |
+| [Schema-Driven Contract](./schema-driven-contract.md) | Using `schema!` to generate a complete contract from schema definitions |
 | [Nested Saves](./nested-saves.md) | Create, update, and delete nested records in a single request |
 | [Advanced Filtering](./advanced-filtering.md) | Complex queries with string patterns, numeric ranges, and logical operators |
 | [STI with Discriminated Unions](./sti-with-discriminated-unions.md) | Single Table Inheritance with automatic variant serialization and TypeScript union types |
 | [Polymorphic Associations](./polymorphic-associations.md) | Comments that belong to different content types (posts, videos, images) |
-| [Grumpy Panda](./grumpy-panda.md) | Complete example with API, models, schemas, contracts, and controllers. |
-| [Happy Zebra](./happy-zebra.md) | Complete example with API, models, schemas, contracts, and controllers. |
-| [Lazy Cow](./lazy-cow.md) | Complete example with API, models, schemas, contracts, and controllers. |
-| [Friendly Tiger](./friendly-tiger.md) | Complete example with API, models, schemas, contracts, and controllers. |
