@@ -12,11 +12,23 @@ Defining contracts manually without schemas
 
 <<< @/app/config/apis/funny_snake.rb
 
+## Models
+
+<small>`app/models/funny_snake/invoice.rb`</small>
+
+<<< @/app/app/models/funny_snake/invoice.rb
+
 ## Contracts
 
 <small>`app/contracts/funny_snake/invoice_contract.rb`</small>
 
 <<< @/app/app/contracts/funny_snake/invoice_contract.rb
+
+## Controllers
+
+<small>`app/controllers/funny_snake/invoices_controller.rb`</small>
+
+<<< @/app/app/controllers/funny_snake/invoices_controller.rb
 
 ---
 

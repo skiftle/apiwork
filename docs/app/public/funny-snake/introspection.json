@@ -13,9 +13,8 @@
         "issued_on": {
           "type": "date"
         },
-        "lines": {
-          "type": "array",
-          "of": "invoice_line"
+        "notes": {
+          "type": "string"
         },
         "number": {
           "type": "string"
@@ -28,59 +27,19 @@
         }
       }
     },
-    "invoice_line": {
-      "type": "object",
-      "shape": {
-        "created_at": {
-          "type": "datetime"
-        },
-        "description": {
-          "type": "string"
-        },
-        "id": {
-          "type": "uuid"
-        },
-        "price": {
-          "type": "decimal"
-        },
-        "quantity": {
-          "type": "decimal"
-        },
-        "updated_at": {
-          "type": "datetime"
-        }
-      }
-    },
     "invoice_payload": {
       "type": "object",
       "shape": {
         "issued_on": {
           "type": "date"
         },
-        "lines_attributes": {
-          "type": "array",
-          "shape": {
-            "_destroy": {
-              "type": "boolean"
-            },
-            "description": {
-              "type": "string"
-            },
-            "id": {
-              "type": "uuid"
-            },
-            "price": {
-              "type": "decimal"
-            },
-            "quantity": {
-              "type": "integer"
-            }
-          }
-        },
         "notes": {
           "type": "string"
         },
         "number": {
+          "type": "string"
+        },
+        "status": {
           "type": "string"
         }
       }
@@ -118,30 +77,6 @@
         "index": {
           "method": "get",
           "path": "/",
-          "request": {
-            "query": {
-              "filter": {
-                "type": "object",
-                "shape": {
-                  "status": {
-                    "type": "string"
-                  }
-                }
-              },
-              "sort": {
-                "type": "object",
-                "shape": {
-                  "issued_on": {
-                    "type": "string",
-                    "enum": [
-                      "asc",
-                      "desc"
-                    ]
-                  }
-                }
-              }
-            }
-          },
           "response": {
             "body": {
               "type": "object",

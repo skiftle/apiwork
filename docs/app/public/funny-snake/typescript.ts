@@ -2,26 +2,17 @@ export interface Invoice {
   created_at: string;
   id: string;
   issued_on: string;
-  lines: InvoiceLine[];
+  notes: string;
   number: string;
   status: string;
   updated_at: string;
 }
 
-export interface InvoiceLine {
-  created_at: string;
-  description: string;
-  id: string;
-  price: number;
-  quantity: number;
-  updated_at: string;
-}
-
 export interface InvoicePayload {
   issued_on: string;
-  lines_attributes: string[];
   notes: string;
   number: string;
+  status: string;
 }
 
 export interface InvoicesCreateRequest {
@@ -37,15 +28,6 @@ export interface InvoicesCreateResponse {
 }
 
 export type InvoicesCreateResponseBody = { invoice: Invoice };
-
-export interface InvoicesIndexRequest {
-  query: InvoicesIndexRequestQuery;
-}
-
-export interface InvoicesIndexRequestQuery {
-  filter: { status: string };
-  sort: { issued_on: 'asc' | 'desc' };
-}
 
 export interface InvoicesIndexResponse {
   body: InvoicesIndexResponseBody;

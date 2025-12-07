@@ -9,30 +9,6 @@
       :operationId: invoices_index
       :tags:
       - Invoices
-      :parameters:
-      - :in: query
-        :name: filter
-        :required: true
-        :schema:
-          :type: object
-          :properties:
-            status:
-              :type: string
-          :required:
-          - status
-      - :in: query
-        :name: sort
-        :required: true
-        :schema:
-          :type: object
-          :properties:
-            issued_on:
-              :type: string
-              :enum:
-              - asc
-              - desc
-          :required:
-          - issued_on
       :responses:
         :200:
           :description: Successful response
@@ -134,10 +110,8 @@
           :type: string
         issued_on:
           :type: string
-        lines:
-          :type: array
-          :items:
-            :$ref: "#/components/schemas/invoice_line"
+        notes:
+          :type: string
         number:
           :type: string
         status:
@@ -148,50 +122,26 @@
       - created_at
       - id
       - issued_on
-      - lines
+      - notes
       - number
       - status
-      - updated_at
-    invoice_line:
-      :type: object
-      :properties:
-        created_at:
-          :type: string
-        description:
-          :type: string
-        id:
-          :type: string
-        price:
-          :type: number
-        quantity:
-          :type: number
-        updated_at:
-          :type: string
-      :required:
-      - created_at
-      - description
-      - id
-      - price
-      - quantity
       - updated_at
     invoice_payload:
       :type: object
       :properties:
         issued_on:
           :type: string
-        lines_attributes:
-          :type: array
-          :items:
-            :type: string
         notes:
           :type: string
         number:
           :type: string
+        status:
+          :type: string
       :required:
       - issued_on
-      - lines_attributes
       - notes
       - number
+      - status
     issue:
       :type: object
       :properties:

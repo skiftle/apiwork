@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_07_000004) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_07_000005) do
 # Could not dump table "bold_falcon_articles" because of following StandardError
 #   Unknown type 'uuid' for column 'category_id'
 
@@ -53,6 +53,15 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_07_000004) do
     t.string "invoice_id", null: false
     t.decimal "price", precision: 10, scale: 2
     t.integer "quantity"
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "funny_snake_invoices", id: :string, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.date "issued_on"
+    t.string "notes"
+    t.string "number", null: false
+    t.string "status"
     t.datetime "updated_at", null: false
   end
 
