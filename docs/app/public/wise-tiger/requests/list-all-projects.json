@@ -1,0 +1,40 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/wise_tiger/projects"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "projects": [
+        {
+          "id": "da7fe627-539c-4e1c-a16f-22c0becf123d",
+          "name": "Website Redesign",
+          "description": "Complete overhaul of the company website",
+          "status": "active",
+          "priority": "high",
+          "deadline": null,
+          "createdAt": "2025-12-07T17:09:10.288Z",
+          "updatedAt": "2025-12-07T17:09:10.288Z"
+        },
+        {
+          "id": "391ca84d-b191-44a5-b8b2-7e8ce9487cab",
+          "name": "Mobile App",
+          "description": "Native iOS and Android apps",
+          "status": "paused",
+          "priority": "medium",
+          "deadline": null,
+          "createdAt": "2025-12-07T17:09:10.290Z",
+          "updatedAt": "2025-12-07T17:09:10.290Z"
+        }
+      ],
+      "pagination": {
+        "current": 1,
+        "next": null,
+        "prev": null,
+        "total": 1,
+        "items": 2
+      }
+    }
+  }
+}

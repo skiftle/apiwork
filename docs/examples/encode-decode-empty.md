@@ -81,7 +81,7 @@ Content-Type: application/json
 ```json
 {
   "contact": {
-    "id": "508db0dc-b8c4-41c3-9a85-c7b8fac5fa0d",
+    "id": "c1db25b9-857e-46fd-8f09-6b63cbb2430e",
     "name": "John Doe",
     "email": "john.doe@example.com",
     "phone": "",
@@ -98,7 +98,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-GET /swift_fox/contacts/a2ba1c2b-f659-4439-8fed-510f376d4a99
+GET /swift_fox/contacts/10a545ef-a103-4be6-a6b2-1b418995d168
 ```
 
 **Response** `200`
@@ -106,7 +106,7 @@ GET /swift_fox/contacts/a2ba1c2b-f659-4439-8fed-510f376d4a99
 ```json
 {
   "contact": {
-    "id": "a2ba1c2b-f659-4439-8fed-510f376d4a99",
+    "id": "10a545ef-a103-4be6-a6b2-1b418995d168",
     "name": "Jane Doe",
     "email": "jane@example.com",
     "phone": "",

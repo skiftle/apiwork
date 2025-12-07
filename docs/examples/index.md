@@ -28,3 +28,4 @@ Each example includes:
 | [Encode, Decode & Empty](./encode-decode-empty.md) | Transform values on input/output and handle nil/empty string conversion |
 | [Cursor Pagination](./cursor-pagination.md) | Navigate through large datasets using cursor-based pagination |
 | [API Documentation](./api-documentation.md) | Document APIs with descriptions, examples, formats, and deprecation notices at every level |
+| [API Documentation (I18n)](./api-documentation-i18n.md) | Using built-in I18n for translatable API documentation |

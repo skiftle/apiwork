@@ -8,12 +8,12 @@
     "body": {
       "comments": [
         {
-          "id": "c379ccc1-0f43-489b-9424-f18fbaacb620",
+          "id": "a0b2038a-7d98-4b0d-8d06-541a4faa4eb2",
           "body": "Post comment",
           "authorName": "User 1",
           "commentableType": "GentleOwl::Post",
-          "commentableId": "4d530df0-b20e-49ad-bc25-98620caeef0e",
-          "createdAt": "2025-12-07T16:39:26.157Z"
+          "commentableId": "c4daf061-02ef-417f-9eb6-6b684bab41dc",
+          "createdAt": "2025-12-07T17:09:09.899Z"
         }
       ],
       "pagination": {

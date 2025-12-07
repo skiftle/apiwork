@@ -1,0 +1,30 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/wise_tiger/projects",
+    "body": {
+      "project": {
+        "name": "New Feature",
+        "description": "Implement the new dashboard",
+        "status": "active",
+        "priority": "high",
+        "deadline": "2024-03-15"
+      }
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "project": {
+        "id": "8b97e1b2-29d2-48a9-a220-eba3bca9c41d",
+        "name": "New Feature",
+        "description": "Implement the new dashboard",
+        "status": "active",
+        "priority": "high",
+        "deadline": "2024-03-15",
+        "createdAt": "2025-12-07T17:09:10.310Z",
+        "updatedAt": "2025-12-07T17:09:10.310Z"
+      }
+    }
+  }
+}

@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 20_251_207_000_011) do
+ActiveRecord::Schema[8.1].define(version: 20_251_207_000_012) do
   # Could not dump table "bold_falcon_articles" because of following StandardError
   #   Unknown type 'uuid' for column 'category_id'
 
@@ -166,6 +166,16 @@ ActiveRecord::Schema[8.1].define(version: 20_251_207_000_011) do
     t.datetime 'created_at', null: false
     t.string 'status', default: 'draft'
     t.string 'title', null: false
+    t.datetime 'updated_at', null: false
+  end
+
+  create_table 'wise_tiger_projects', id: :string, force: :cascade do |t|
+    t.datetime 'created_at', null: false
+    t.date 'deadline'
+    t.text 'description'
+    t.string 'name', null: false
+    t.string 'priority', default: 'medium'
+    t.string 'status', default: 'active'
     t.datetime 'updated_at', null: false
   end
 

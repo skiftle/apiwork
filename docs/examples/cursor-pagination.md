@@ -70,26 +70,26 @@ GET /grumpy_panda/activities
 {
   "activities": [
     {
-      "id": "67968ddb-d475-48bb-9082-6d872684e221",
+      "id": "38c47e10-4f8f-426b-a98c-d970c7df40d7",
+      "action": "user.logout",
+      "occurredAt": "2024-01-01T11:00:00.000Z",
+      "createdAt": "2025-12-07T17:09:09.936Z"
+    },
+    {
+      "id": "4607634e-1167-4f67-9a8c-38f3cc9907eb",
       "action": "post.update",
       "occurredAt": "2024-01-01T13:00:00.000Z",
-      "createdAt": "2025-12-07T16:39:26.191Z"
+      "createdAt": "2025-12-07T17:09:09.938Z"
     },
     {
-      "id": "a33ae66c-d38e-4129-aa33-2c71766b9775",
+      "id": "c0cd5cdb-8f6b-4a0c-83a9-f720ef8ee9e9",
       "action": "post.create",
       "occurredAt": "2024-01-01T12:00:00.000Z",
-      "createdAt": "2025-12-07T16:39:26.191Z"
-    },
-    {
-      "id": "c24bfdf5-8d76-41b8-aa39-0078e94b536a",
-      "action": "post.delete",
-      "occurredAt": "2024-01-01T14:00:00.000Z",
-      "createdAt": "2025-12-07T16:39:26.192Z"
+      "createdAt": "2025-12-07T17:09:09.937Z"
     }
   ],
   "pagination": {
-    "nextCursor": "eyJpZCI6ImMyNGJmZGY1LThkNzYtNDFiOC1hYTM5LTAwNzhlOTRiNTM2YSJ9",
+    "nextCursor": "eyJpZCI6ImMwY2Q1Y2RiLThmNmItNGEwYy04M2E5LWY3MjBlZjhlZTllOSJ9",
     "prevCursor": null
   }
 }
