@@ -50,7 +50,8 @@ Complex queries with string patterns, numeric ranges, and logical operators
 
 ## Request Examples
 
-### Index
+<details>
+<summary>index</summary>
 
 **Request**
 
@@ -73,12 +74,15 @@ GET /bold-falcon/articles
 }
 ```
 
-### Show
+</details>
+
+<details>
+<summary>show</summary>
 
 **Request**
 
 ```http
-GET /bold-falcon/articles/5ba4f518-88ef-405c-9742-e2b15212c87a
+GET /bold-falcon/articles/22a7d95b-1860-4567-a78d-0f9b0b37e3e0
 ```
 
 **Response** `200`
@@ -86,20 +90,23 @@ GET /bold-falcon/articles/5ba4f518-88ef-405c-9742-e2b15212c87a
 ```json
 {
   "article": {
-    "id": "5ba4f518-88ef-405c-9742-e2b15212c87a",
+    "id": "22a7d95b-1860-4567-a78d-0f9b0b37e3e0",
     "title": "Getting Started with Rails",
     "body": null,
     "status": "published",
     "view_count": 0,
     "rating": null,
     "published_on": null,
-    "created_at": "2025-12-07T08:33:55.419Z",
-    "updated_at": "2025-12-07T08:33:55.419Z"
+    "created_at": "2025-12-07T08:42:27.023Z",
+    "updated_at": "2025-12-07T08:42:27.023Z"
   }
 }
 ```
 
-### Create
+</details>
+
+<details>
+<summary>create</summary>
 
 **Request**
 
@@ -122,20 +129,23 @@ Content-Type: application/json
 ```json
 {
   "article": {
-    "id": "ebabc33b-7491-4e3e-bb09-8ce22b721a12",
+    "id": "73eb77cb-e6b3-468d-a11d-6a82b5dbd526",
     "title": "Getting Started with Rails",
     "body": "A comprehensive guide to Ruby on Rails",
     "status": "draft",
     "view_count": 0,
     "rating": null,
     "published_on": "2024-01-15",
-    "created_at": "2025-12-07T08:33:55.432Z",
-    "updated_at": "2025-12-07T08:33:55.432Z"
+    "created_at": "2025-12-07T08:42:27.037Z",
+    "updated_at": "2025-12-07T08:42:27.037Z"
   }
 }
 ```
 
-### Filter By Status
+</details>
+
+<details>
+<summary>filter_by_status</summary>
 
 **Request**
 
@@ -149,15 +159,15 @@ GET /bold-falcon/articles?filter[status][eq]=published
 {
   "articles": [
     {
-      "id": "d55ab2a7-276c-4c9d-a3c9-941d8e42e9b1",
+      "id": "9352d1fa-b9d5-4abc-b021-0f731d9bcea7",
       "title": "Published Article",
       "body": null,
       "status": "published",
       "view_count": 0,
       "rating": null,
       "published_on": null,
-      "created_at": "2025-12-07T08:33:55.434Z",
-      "updated_at": "2025-12-07T08:33:55.434Z"
+      "created_at": "2025-12-07T08:42:27.040Z",
+      "updated_at": "2025-12-07T08:42:27.040Z"
     }
   ],
   "pagination": {
@@ -170,7 +180,10 @@ GET /bold-falcon/articles?filter[status][eq]=published
 }
 ```
 
-### Filter By Title Contains
+</details>
+
+<details>
+<summary>filter_by_title_contains</summary>
 
 **Request**
 
@@ -184,15 +197,15 @@ GET /bold-falcon/articles?filter[title][contains]=Rails
 {
   "articles": [
     {
-      "id": "318d6c4c-3261-4eb6-9809-d05871522fed",
+      "id": "60aa93c3-7f47-4174-a8e8-609e4c368e59",
       "title": "Getting Started with Rails",
       "body": null,
       "status": "published",
       "view_count": 0,
       "rating": null,
       "published_on": null,
-      "created_at": "2025-12-07T08:33:55.447Z",
-      "updated_at": "2025-12-07T08:33:55.447Z"
+      "created_at": "2025-12-07T08:42:27.052Z",
+      "updated_at": "2025-12-07T08:42:27.052Z"
     }
   ],
   "pagination": {
@@ -204,6 +217,8 @@ GET /bold-falcon/articles?filter[title][contains]=Rails
   }
 }
 ```
+
+</details>
 
 ---
 

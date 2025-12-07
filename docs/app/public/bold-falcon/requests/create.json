@@ -15,15 +15,15 @@
     "status": 201,
     "body": {
       "article": {
-        "id": "ebabc33b-7491-4e3e-bb09-8ce22b721a12",
+        "id": "73eb77cb-e6b3-468d-a11d-6a82b5dbd526",
         "title": "Getting Started with Rails",
         "body": "A comprehensive guide to Ruby on Rails",
         "status": "draft",
         "view_count": 0,
         "rating": null,
         "published_on": "2024-01-15",
-        "created_at": "2025-12-07T08:33:55.432Z",
-        "updated_at": "2025-12-07T08:33:55.432Z"
+        "created_at": "2025-12-07T08:42:27.037Z",
+        "updated_at": "2025-12-07T08:42:27.037Z"
       }
     }
   }

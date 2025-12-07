@@ -12,10 +12,10 @@ scenarios:
     path: /gentle-owl/comments/:id
     setup:
       - create: post
-        attributes:
+        fields:
           title: My First Post
       - create: comment
-        attributes:
+        fields:
           body: Great post!
           author_name: John Doe
           commentable_type: GentleOwl::Post
@@ -26,7 +26,7 @@ scenarios:
     path: /gentle-owl/comments
     setup:
       - create: post
-        attributes:
+        fields:
           title: My First Post
     body:
       comment:
@@ -40,7 +40,7 @@ scenarios:
     path: /gentle-owl/comments
     setup:
       - create: video
-        attributes:
+        fields:
           title: Tutorial Video
           url: https://example.com/video.mp4
     body:
@@ -55,20 +55,20 @@ scenarios:
     path: /gentle-owl/comments?filter[commentable_type][eq]=GentleOwl::Post
     setup:
       - create: post
-        attributes:
+        fields:
           title: A Post
       - create: video
-        attributes:
+        fields:
           title: A Video
           url: https://example.com/v.mp4
       - create: comment
-        attributes:
+        fields:
           body: Post comment
           author_name: User 1
           commentable_type: GentleOwl::Post
           commentable_id: :post_id
       - create: comment
-        attributes:
+        fields:
           body: Video comment
           author_name: User 2
           commentable_type: GentleOwl::Video

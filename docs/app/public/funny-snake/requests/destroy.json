@@ -1,18 +1,18 @@
 {
   "request": {
     "method": "DELETE",
-    "path": "/funny-snake/invoices/de278729-e5f6-46e1-afed-d7aa22b4e0e9"
+    "path": "/funny-snake/invoices/32aa7298-f8a7-4121-8abe-ecb69de3ce17"
   },
   "response": {
     "status": 200,
     "body": {
-      "id": "de278729-e5f6-46e1-afed-d7aa22b4e0e9",
+      "id": "32aa7298-f8a7-4121-8abe-ecb69de3ce17",
       "number": "INV-001",
       "issued_on": null,
       "status": null,
       "notes": null,
-      "created_at": "2025-12-07T08:33:55.758Z",
-      "updated_at": "2025-12-07T08:33:55.758Z"
+      "created_at": "2025-12-07T08:42:27.280Z",
+      "updated_at": "2025-12-07T08:42:27.280Z"
     }
   }
 }

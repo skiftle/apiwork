@@ -12,7 +12,7 @@ scenarios:
     path: /mighty-wolf/vehicles/:id
     setup:
       - create: vehicle
-        attributes:
+        fields:
           type: MightyWolf::Car
           brand: Tesla
           model: Model 3

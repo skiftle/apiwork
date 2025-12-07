@@ -12,7 +12,7 @@ scenarios:
     path: /clever-rabbit/orders/:id
     setup:
       - create: order
-        attributes:
+        fields:
           order_number: ORD-001
 
   create:
@@ -21,14 +21,14 @@ scenarios:
     body:
       order:
         order_number: ORD-001
-        line_items_attributes:
+        line_items_fields:
           - product_name: Widget
             quantity: 2
             unit_price: 29.99
           - product_name: Gadget
             quantity: 1
             unit_price: 49.99
-        shipping_address_attributes:
+        shipping_address_fields:
           street: 123 Main St
           city: Springfield
           postal_code: "12345"
@@ -39,11 +39,11 @@ scenarios:
     path: /clever-rabbit/orders/:id
     setup:
       - create: order
-        attributes:
+        fields:
           order_number: ORD-001
     body:
       order:
-        line_items_attributes:
+        line_items_fields:
           - product_name: New Item
             quantity: 3
             unit_price: 19.99
@@ -53,5 +53,5 @@ scenarios:
     path: /clever-rabbit/orders/:id
     setup:
       - create: order
-        attributes:
+        fields:
           order_number: ORD-001

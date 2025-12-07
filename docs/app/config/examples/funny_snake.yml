@@ -12,7 +12,7 @@ scenarios:
     path: /funny-snake/invoices/:id
     setup:
       - create: invoice
-        attributes:
+        fields:
           number: INV-001
           status: draft
 
@@ -31,7 +31,7 @@ scenarios:
     path: /funny-snake/invoices/:id
     setup:
       - create: invoice
-        attributes:
+        fields:
           number: INV-001
           status: draft
     body:
@@ -43,5 +43,5 @@ scenarios:
     path: /funny-snake/invoices/:id
     setup:
       - create: invoice
-        attributes:
+        fields:
           number: INV-001

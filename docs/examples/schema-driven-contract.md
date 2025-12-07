@@ -58,7 +58,8 @@ Using `schema!` to generate a complete contract from schema definitions
 
 ## Request Examples
 
-### Index
+<details>
+<summary>index</summary>
 
 **Request**
 
@@ -81,12 +82,15 @@ GET /eager-lion/invoices
 }
 ```
 
-### Show
+</details>
+
+<details>
+<summary>show</summary>
 
 **Request**
 
 ```http
-GET /eager-lion/invoices/ae85bb91-4941-4e17-8a0e-a5b8be16719c
+GET /eager-lion/invoices/c9a83474-d844-4f96-883c-c8579ed5e8fb
 ```
 
 **Response** `404`
@@ -98,7 +102,10 @@ GET /eager-lion/invoices/ae85bb91-4941-4e17-8a0e-a5b8be16719c
 }
 ```
 
-### Create
+</details>
+
+<details>
+<summary>create</summary>
 
 **Request**
 
@@ -109,7 +116,7 @@ Content-Type: application/json
 {
   "invoice": {
     "number": "INV-001",
-    "customer_id": "d82240ab-b47b-4e14-9e1f-b346666aa115",
+    "customer_id": "105c87ea-08a7-4fd7-9584-2ca7fe5b10b2",
     "issued_on": "2024-01-15",
     "notes": "First invoice"
   }
@@ -143,12 +150,15 @@ Content-Type: application/json
 }
 ```
 
-### Update
+</details>
+
+<details>
+<summary>update</summary>
 
 **Request**
 
 ```http
-PATCH /eager-lion/invoices/ac4cbb4d-24c4-466d-a0e6-5722d186bdd0
+PATCH /eager-lion/invoices/ad025512-360b-4ead-8984-173f2a964618
 Content-Type: application/json
 
 {
@@ -179,12 +189,15 @@ Content-Type: application/json
 }
 ```
 
-### Destroy
+</details>
+
+<details>
+<summary>destroy</summary>
 
 **Request**
 
 ```http
-DELETE /eager-lion/invoices/6377b713-4c6b-4b31-a7d1-9e3250e05512
+DELETE /eager-lion/invoices/2930cee8-562d-4776-b4fa-0e33d2a40c75
 ```
 
 **Response** `404`
@@ -195,6 +208,8 @@ DELETE /eager-lion/invoices/6377b713-4c6b-4b31-a7d1-9e3250e05512
   "error": "Not Found"
 }
 ```
+
+</details>
 
 ---
 

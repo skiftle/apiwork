@@ -66,7 +66,8 @@ Comments that belong to different content types (posts, videos, images)
 
 ## Request Examples
 
-### Index
+<details>
+<summary>index</summary>
 
 **Request**
 
@@ -89,12 +90,15 @@ GET /gentle-owl/comments
 }
 ```
 
-### Show
+</details>
+
+<details>
+<summary>show</summary>
 
 **Request**
 
 ```http
-GET /gentle-owl/comments/9bbd58a9-045d-4dda-9457-f8191e6f027c
+GET /gentle-owl/comments/326180c7-f431-4d12-a194-daaec734e05a
 ```
 
 **Response** `404`
@@ -106,7 +110,10 @@ GET /gentle-owl/comments/9bbd58a9-045d-4dda-9457-f8191e6f027c
 }
 ```
 
-### Create Post Comment
+</details>
+
+<details>
+<summary>create_post_comment</summary>
 
 **Request**
 
@@ -119,7 +126,7 @@ Content-Type: application/json
     "body": "This is a great article!",
     "author_name": "Jane Doe",
     "commentable_type": "GentleOwl::Post",
-    "commentable_id": "62c2505c-5a4f-4ed6-8456-1601afc9d8dd"
+    "commentable_id": "a643e32a-7d33-434d-991f-046501458672"
   }
 }
 ```
@@ -165,7 +172,10 @@ Content-Type: application/json
 }
 ```
 
-### Create Video Comment
+</details>
+
+<details>
+<summary>create_video_comment</summary>
 
 **Request**
 
@@ -178,7 +188,7 @@ Content-Type: application/json
     "body": "Very helpful video!",
     "author_name": "Bob Smith",
     "commentable_type": "GentleOwl::Video",
-    "commentable_id": "2f2844d5-b84f-48dc-8093-f47dcf477fb3"
+    "commentable_id": "72b18ce4-8cc9-4974-aa65-4980aefaf2fd"
   }
 }
 ```
@@ -224,7 +234,10 @@ Content-Type: application/json
 }
 ```
 
-### Filter By Type
+</details>
+
+<details>
+<summary>filter_by_type</summary>
 
 **Request**
 
@@ -238,12 +251,12 @@ GET /gentle-owl/comments?filter[commentable_type][eq]=GentleOwl::Post
 {
   "comments": [
     {
-      "id": "f326a119-c907-4e27-b15d-e13d722d9cf8",
+      "id": "3abd0494-3d9b-401d-832a-aeb985fdd100",
       "body": "Post comment",
       "author_name": "User 1",
       "commentable_type": "GentleOwl::Post",
-      "commentable_id": "76cdf1e9-38c5-40cb-9104-0e92145dd47b",
-      "created_at": "2025-12-07T08:33:55.881Z"
+      "commentable_id": "0cf025b5-aa04-4336-86cb-b81f28652f2a",
+      "created_at": "2025-12-07T08:42:27.366Z"
     }
   ],
   "pagination": {
@@ -255,6 +268,8 @@ GET /gentle-owl/comments?filter[commentable_type][eq]=GentleOwl::Post
   }
 }
 ```
+
+</details>
 
 ---
 

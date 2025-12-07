@@ -46,17 +46,17 @@ class RequestRunner
       step = step.deep_symbolize_keys
       model_name = step[:create]
       model_class = "#{namespace.camelize}::#{model_name.to_s.camelize}".constantize
-      attrs = resolve_attributes(step[:attributes], ids)
+      attrs = resolve_fields(step[:fields], ids)
       record = model_class.create!(attrs)
       ids[model_name.to_sym] = record.id
     end
     ids
   end
 
-  def resolve_attributes(attributes, ids)
-    return {} unless attributes
+  def resolve_fields(fields, ids)
+    return {} unless fields
 
-    attributes.transform_values do |value|
+    fields.transform_values do |value|
       resolve_reference(value, ids)
     end
   end

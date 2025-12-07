@@ -12,10 +12,10 @@ scenarios:
     path: /eager-lion/invoices/:id
     setup:
       - create: customer
-        attributes:
+        fields:
           name: Acme Corp
       - create: invoice
-        attributes:
+        fields:
           number: INV-001
           customer_id: :customer_id
 
@@ -24,7 +24,7 @@ scenarios:
     path: /eager-lion/invoices
     setup:
       - create: customer
-        attributes:
+        fields:
           name: Acme Corp
     body:
       invoice:
@@ -38,10 +38,10 @@ scenarios:
     path: /eager-lion/invoices/:id
     setup:
       - create: customer
-        attributes:
+        fields:
           name: Acme Corp
       - create: invoice
-        attributes:
+        fields:
           number: INV-001
           customer_id: :customer_id
     body:
@@ -53,9 +53,9 @@ scenarios:
     path: /eager-lion/invoices/:id
     setup:
       - create: customer
-        attributes:
+        fields:
           name: Acme Corp
       - create: invoice
-        attributes:
+        fields:
           number: INV-001
           customer_id: :customer_id

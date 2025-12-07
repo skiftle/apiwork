@@ -58,7 +58,8 @@ Create, update, and delete nested records in a single request
 
 ## Request Examples
 
-### Index
+<details>
+<summary>index</summary>
 
 **Request**
 
@@ -81,12 +82,15 @@ GET /clever-rabbit/orders
 }
 ```
 
-### Show
+</details>
+
+<details>
+<summary>show</summary>
 
 **Request**
 
 ```http
-GET /clever-rabbit/orders/630e6144-a106-4a55-be86-42ef1799f224
+GET /clever-rabbit/orders/53e8ba8c-9300-4b3f-abbe-a74710b5caf8
 ```
 
 **Response** `200`
@@ -94,19 +98,22 @@ GET /clever-rabbit/orders/630e6144-a106-4a55-be86-42ef1799f224
 ```json
 {
   "order": {
-    "id": "630e6144-a106-4a55-be86-42ef1799f224",
+    "id": "53e8ba8c-9300-4b3f-abbe-a74710b5caf8",
     "order_number": "ORD-001",
     "status": "pending",
     "total": null,
-    "created_at": "2025-12-07T08:33:55.516Z",
-    "updated_at": "2025-12-07T08:33:55.516Z",
+    "created_at": "2025-12-07T08:42:27.112Z",
+    "updated_at": "2025-12-07T08:42:27.112Z",
     "line_items": null,
     "shipping_address": null
   }
 }
 ```
 
-### Create
+</details>
+
+<details>
+<summary>create</summary>
 
 **Request**
 
@@ -117,7 +124,7 @@ Content-Type: application/json
 {
   "order": {
     "order_number": "ORD-001",
-    "line_items_attributes": [
+    "line_items_fields": [
       {
         "product_name": "Widget",
         "quantity": 2,
@@ -129,7 +136,7 @@ Content-Type: application/json
         "unit_price": 49.99
       }
     ],
-    "shipping_address_attributes": {
+    "shipping_address_fields": {
       "street": "123 Main St",
       "city": "Springfield",
       "postal_code": "12345",
@@ -149,11 +156,11 @@ Content-Type: application/json
       "detail": "Unknown field",
       "path": [
         "order",
-        "line_items_attributes"
+        "line_items_fields"
       ],
-      "pointer": "/order/line_items_attributes",
+      "pointer": "/order/line_items_fields",
       "meta": {
-        "field": "line_items_attributes",
+        "field": "line_items_fields",
         "allowed": [
           "order_number",
           "line_items",
@@ -166,11 +173,11 @@ Content-Type: application/json
       "detail": "Unknown field",
       "path": [
         "order",
-        "shipping_address_attributes"
+        "shipping_address_fields"
       ],
-      "pointer": "/order/shipping_address_attributes",
+      "pointer": "/order/shipping_address_fields",
       "meta": {
-        "field": "shipping_address_attributes",
+        "field": "shipping_address_fields",
         "allowed": [
           "order_number",
           "line_items",
@@ -182,17 +189,20 @@ Content-Type: application/json
 }
 ```
 
-### Update
+</details>
+
+<details>
+<summary>update</summary>
 
 **Request**
 
 ```http
-PATCH /clever-rabbit/orders/f960a5a2-0f1a-4e2f-9b11-e0bb5905e9fa
+PATCH /clever-rabbit/orders/fa5aaad2-e6cf-4273-b5ca-c8b9af6a28d1
 Content-Type: application/json
 
 {
   "order": {
-    "line_items_attributes": [
+    "line_items_fields": [
       {
         "product_name": "New Item",
         "quantity": 3,
@@ -225,11 +235,11 @@ Content-Type: application/json
       "detail": "Unknown field",
       "path": [
         "order",
-        "line_items_attributes"
+        "line_items_fields"
       ],
-      "pointer": "/order/line_items_attributes",
+      "pointer": "/order/line_items_fields",
       "meta": {
-        "field": "line_items_attributes",
+        "field": "line_items_fields",
         "allowed": [
           "order_number",
           "line_items",
@@ -241,12 +251,15 @@ Content-Type: application/json
 }
 ```
 
-### Destroy
+</details>
+
+<details>
+<summary>destroy</summary>
 
 **Request**
 
 ```http
-DELETE /clever-rabbit/orders/6c4e225a-72ad-4256-bd13-d84bb4d6a0ad
+DELETE /clever-rabbit/orders/9af15b45-638b-44d5-bd1b-bb5d2ec9ce17
 ```
 
 **Response** `200`
@@ -256,6 +269,8 @@ DELETE /clever-rabbit/orders/6c4e225a-72ad-4256-bd13-d84bb4d6a0ad
   "meta": {}
 }
 ```
+
+</details>
 
 ---
 

@@ -5,7 +5,7 @@
     "body": {
       "order": {
         "order_number": "ORD-001",
-        "line_items_attributes": [
+        "line_items_fields": [
           {
             "product_name": "Widget",
             "quantity": 2,
@@ -17,7 +17,7 @@
             "unit_price": 49.99
           }
         ],
-        "shipping_address_attributes": {
+        "shipping_address_fields": {
           "street": "123 Main St",
           "city": "Springfield",
           "postal_code": "12345",
@@ -35,11 +35,11 @@
           "detail": "Unknown field",
           "path": [
             "order",
-            "line_items_attributes"
+            "line_items_fields"
           ],
-          "pointer": "/order/line_items_attributes",
+          "pointer": "/order/line_items_fields",
           "meta": {
-            "field": "line_items_attributes",
+            "field": "line_items_fields",
             "allowed": [
               "order_number",
               "line_items",
@@ -52,11 +52,11 @@
           "detail": "Unknown field",
           "path": [
             "order",
-            "shipping_address_attributes"
+            "shipping_address_fields"
           ],
-          "pointer": "/order/shipping_address_attributes",
+          "pointer": "/order/shipping_address_fields",
           "meta": {
-            "field": "shipping_address_attributes",
+            "field": "shipping_address_fields",
             "allowed": [
               "order_number",
               "line_items",

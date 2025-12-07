@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "PATCH",
-    "path": "/eager-lion/invoices/ac4cbb4d-24c4-466d-a0e6-5722d186bdd0",
+    "path": "/eager-lion/invoices/ad025512-360b-4ead-8984-173f2a964618",
     "body": {
       "invoice": {
         "notes": "Updated notes"

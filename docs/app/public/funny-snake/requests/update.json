@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "PATCH",
-    "path": "/funny-snake/invoices/5b456798-5fc7-4c0d-9e6f-7399c2f73689",
+    "path": "/funny-snake/invoices/93e8965b-f3a0-4339-8543-1d1bc7fccbd4",
     "body": {
       "invoice": {
         "status": "sent"

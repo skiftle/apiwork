@@ -222,27 +222,34 @@ class ExampleGenerator
     request = data[:request]
     response = data[:response]
 
-    title = action.to_s.titleize
     method = request[:method]
     path = request[:path]
     status = response[:status]
 
     parts = []
-    parts << "### #{title}"
+    parts << "<details>"
+    parts << "<summary>#{action}</summary>"
+    parts << ""
 
     parts << "**Request**"
+    parts << ""
     if request[:body]
       parts << "```http\n#{method} #{path}\nContent-Type: application/json\n\n#{JSON.pretty_generate(request[:body])}\n```"
     else
       parts << "```http\n#{method} #{path}\n```"
     end
 
+    parts << ""
     parts << "**Response** `#{status}`"
+    parts << ""
     if response[:body]
       parts << "```json\n#{JSON.pretty_generate(response[:body])}\n```"
     end
 
-    parts.join("\n\n")
+    parts << ""
+    parts << "</details>"
+
+    parts.join("\n")
   end
 
   def generated_output_section(locale_key)

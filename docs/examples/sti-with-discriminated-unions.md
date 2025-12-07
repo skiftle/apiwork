@@ -66,7 +66,8 @@ Single Table Inheritance with automatic variant serialization and TypeScript uni
 
 ## Request Examples
 
-### Index
+<details>
+<summary>index</summary>
 
 **Request**
 
@@ -89,12 +90,15 @@ GET /mighty-wolf/vehicles
 }
 ```
 
-### Show
+</details>
+
+<details>
+<summary>show</summary>
 
 **Request**
 
 ```http
-GET /mighty-wolf/vehicles/021d50ed-e64f-42ea-a0b6-d25556182ad1
+GET /mighty-wolf/vehicles/aeecd6f4-32aa-4261-9170-052d5b71eae4
 ```
 
 **Response** `200`
@@ -103,7 +107,7 @@ GET /mighty-wolf/vehicles/021d50ed-e64f-42ea-a0b6-d25556182ad1
 {
   "vehicle": {
     "kind": "car",
-    "id": "021d50ed-e64f-42ea-a0b6-d25556182ad1",
+    "id": "aeecd6f4-32aa-4261-9170-052d5b71eae4",
     "brand": "Tesla",
     "model": "Model 3",
     "year": 2024,
@@ -113,7 +117,10 @@ GET /mighty-wolf/vehicles/021d50ed-e64f-42ea-a0b6-d25556182ad1
 }
 ```
 
-### Create Car
+</details>
+
+<details>
+<summary>create_car</summary>
 
 **Request**
 
@@ -141,7 +148,10 @@ Content-Type: application/json
 }
 ```
 
-### Create Motorcycle
+</details>
+
+<details>
+<summary>create_motorcycle</summary>
 
 **Request**
 
@@ -169,7 +179,10 @@ Content-Type: application/json
 }
 ```
 
-### Create Truck
+</details>
+
+<details>
+<summary>create_truck</summary>
 
 **Request**
 
@@ -196,6 +209,8 @@ Content-Type: application/json
   "error": "Internal Server Error"
 }
 ```
+
+</details>
 
 ---
 

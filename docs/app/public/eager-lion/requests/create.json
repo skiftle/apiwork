@@ -5,7 +5,7 @@
     "body": {
       "invoice": {
         "number": "INV-001",
-        "customer_id": "d82240ab-b47b-4e14-9e1f-b346666aa115",
+        "customer_id": "105c87ea-08a7-4fd7-9584-2ca7fe5b10b2",
         "issued_on": "2024-01-15",
         "notes": "First invoice"
       }

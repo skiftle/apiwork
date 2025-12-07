@@ -36,7 +36,8 @@ Defining contracts manually without schemas
 
 ## Request Examples
 
-### Index
+<details>
+<summary>index</summary>
 
 **Request**
 
@@ -50,29 +51,35 @@ GET /funny-snake/invoices
 []
 ```
 
-### Show
+</details>
+
+<details>
+<summary>show</summary>
 
 **Request**
 
 ```http
-GET /funny-snake/invoices/ca808985-3c58-4783-a772-3bc22d024740
+GET /funny-snake/invoices/9691df22-fa8c-43f6-b5ad-46ebb338c18f
 ```
 
 **Response** `200`
 
 ```json
 {
-  "id": "ca808985-3c58-4783-a772-3bc22d024740",
+  "id": "9691df22-fa8c-43f6-b5ad-46ebb338c18f",
   "number": "INV-001",
   "issued_on": null,
   "status": "draft",
   "notes": null,
-  "created_at": "2025-12-07T08:33:55.742Z",
-  "updated_at": "2025-12-07T08:33:55.742Z"
+  "created_at": "2025-12-07T08:42:27.260Z",
+  "updated_at": "2025-12-07T08:42:27.260Z"
 }
 ```
 
-### Create
+</details>
+
+<details>
+<summary>create</summary>
 
 **Request**
 
@@ -94,22 +101,25 @@ Content-Type: application/json
 
 ```json
 {
-  "id": "82634cad-7572-41c5-8f3b-763b53858da4",
+  "id": "281bdcdb-cff1-406b-a5f0-16debe55f7a3",
   "number": "INV-001",
   "issued_on": "2024-01-15",
   "status": "draft",
   "notes": "First invoice",
-  "created_at": "2025-12-07T08:33:55.751Z",
-  "updated_at": "2025-12-07T08:33:55.751Z"
+  "created_at": "2025-12-07T08:42:27.272Z",
+  "updated_at": "2025-12-07T08:42:27.272Z"
 }
 ```
 
-### Update
+</details>
+
+<details>
+<summary>update</summary>
 
 **Request**
 
 ```http
-PATCH /funny-snake/invoices/5b456798-5fc7-4c0d-9e6f-7399c2f73689
+PATCH /funny-snake/invoices/93e8965b-f3a0-4339-8543-1d1bc7fccbd4
 Content-Type: application/json
 
 {
@@ -164,27 +174,32 @@ Content-Type: application/json
 }
 ```
 
-### Destroy
+</details>
+
+<details>
+<summary>destroy</summary>
 
 **Request**
 
 ```http
-DELETE /funny-snake/invoices/de278729-e5f6-46e1-afed-d7aa22b4e0e9
+DELETE /funny-snake/invoices/32aa7298-f8a7-4121-8abe-ecb69de3ce17
 ```
 
 **Response** `200`
 
 ```json
 {
-  "id": "de278729-e5f6-46e1-afed-d7aa22b4e0e9",
+  "id": "32aa7298-f8a7-4121-8abe-ecb69de3ce17",
   "number": "INV-001",
   "issued_on": null,
   "status": null,
   "notes": null,
-  "created_at": "2025-12-07T08:33:55.758Z",
-  "updated_at": "2025-12-07T08:33:55.758Z"
+  "created_at": "2025-12-07T08:42:27.280Z",
+  "updated_at": "2025-12-07T08:42:27.280Z"
 }
 ```
+
+</details>
 
 ---
 
