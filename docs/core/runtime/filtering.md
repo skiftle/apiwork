@@ -187,17 +187,46 @@ The `null` operator is only allowed on nullable columns. Non-nullable columns re
 
 ---
 
-## Error Codes
+## Validation
+
+Apiwork validates filter parameters in two layers:
+
+::: info Contract Validates First
+When you use `schema!`, the adapter generates typed filter definitions. The contract validates every request against these types **before the runtime even runs**. Unknown fields, invalid operators, and type mismatches are rejected immediately.
+:::
+
+### What the Contract Catches
+
+The contract layer handles most validation:
+
+- **Unknown fields** — `filter[unknown_field]` rejected if not in schema
+- **Invalid operators** — `filter[title][gt]` rejected (strings don't support `gt`)
+- **Type mismatches** — `filter[amount][eq]=hello` rejected for numeric fields
+- **Structure errors** — malformed filter objects
+
+These errors return standard contract validation issues with codes like `invalid_type` and `field_unknown`.
+
+### Runtime Validation
+
+The runtime only validates edge cases that pass contract validation:
+
+| Code | When It Fires |
+|------|---------------|
+| `invalid_date_format` | Date string couldn't be parsed (e.g., `2024-99-99`) |
+| `invalid_numeric_format` | Number parsing fails at runtime |
+| `invalid_enum_value` | Enum value changed in database after contract was built |
+| `null_not_allowed` | `null` operator on non-nullable column |
+
+These are rare — they only occur when values have the right type but fail parsing or business rules.
+
+### Association Errors
+
+These can occur at runtime when schema configuration is incomplete:
 
 | Code | Cause |
 |------|-------|
-| `field_not_filterable` | Field not marked `filterable: true` |
-| `invalid_operator` | Operator not supported for field type |
-| `invalid_date_format` | Date string couldn't be parsed |
-| `invalid_numeric_format` | Value isn't a valid number |
-| `invalid_enum_value` | Value not in enum list |
-| `null_not_allowed` | `null` operator on non-nullable column |
-| `association_not_found` | Association doesn't exist |
-| `association_resource_not_found` | Association schema not resolvable |
+| `field_not_filterable` | Field exists but not marked `filterable: true` |
+| `association_not_found` | Association doesn't exist on model |
+| `association_resource_not_found` | Association schema couldn't be resolved |
 
 All errors include available options in the response to aid debugging.

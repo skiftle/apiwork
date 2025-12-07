@@ -147,13 +147,23 @@ class InvoiceSchema < Apiwork::Schema::Base
 end
 ```
 
-Add `schema!` to your contract, and Apiwork generates everything — request bodies, response shapes, filter types, sort options:
+Add `schema!` to your contract:
 
 ```ruby
 class InvoiceContract < Apiwork::Contract::Base
   schema!
 end
 ```
+
+This single line activates Apiwork's [built-in adapter](../core/runtime/introduction.md). The adapter reads your schema and generates everything the contract needs:
+
+- **Filter types** — from `filterable: true` attributes
+- **Sort types** — from `sortable: true` attributes
+- **Payload types** — from `writable: true` attributes
+- **Include types** — from associations
+- **Response types** — from all attributes
+
+These generated types power request validation, TypeScript generation, Zod schemas, and OpenAPI specs — all from the same source:
 
 <details>
 <summary>Introspection</summary>
@@ -183,15 +193,7 @@ end
 
 </details>
 
-The adapter reads your database and model to infer:
-
-- Column types
-- Enum values
-- Nullability
-- Associations
-- Default values
-
-You declare what to expose. Apiwork figures out the rest.
+The adapter also reads your database and model to infer column types, enum values, nullability, associations, and defaults. You declare what to expose — Apiwork figures out the rest.
 
 ## One Metadata Model
 

@@ -92,15 +92,27 @@ end
 
 ---
 
-## Error Codes
+## Validation
+
+::: info Contract Validates First
+Like filtering, sort parameters are validated by the contract before reaching the runtime. The adapter generates typed sort definitions from your schema — unknown fields and invalid directions are rejected immediately.
+:::
+
+### What the Contract Catches
+
+- **Unknown fields** — `sort[unknown_field]` rejected if not in schema
+- **Invalid directions** — `sort[title]=sideways` rejected (only `asc`/`desc`)
+- **Non-sortable fields** — `sort[body]` rejected if not marked `sortable: true`
+
+### Runtime Validation
+
+These errors only occur with incomplete schema configuration:
 
 | Code | Cause |
 |------|-------|
-| `field_not_sortable` | Field not marked `sortable: true` |
-| `invalid_sort_direction` | Direction not `asc` or `desc` |
-| `invalid_sort_value_type` | Value isn't a string |
+| `field_not_sortable` | Field exists but not marked `sortable: true` |
 | `association_not_sortable` | Association not marked `sortable: true` |
-| `association_resource_not_found` | Association schema not resolvable |
+| `association_resource_not_found` | Association schema couldn't be resolved |
 
 Example error response:
 
