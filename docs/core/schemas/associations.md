@@ -306,6 +306,10 @@ Query by fields on associated records.
 
 Enable with `filterable: true`:
 
+::: warning ActiveRecord Association Required
+Requires an ActiveRecord association on the model. Custom methods cannot be used for filtering.
+:::
+
 ```ruby
 has_many :comments, schema: CommentSchema, filterable: true
 belongs_to :author, schema: AuthorSchema, filterable: true
@@ -327,6 +331,10 @@ GET /api/v1/posts?filter[author][created_at][gt]=2024-01-01
 ### Sorting
 
 Enable with `sortable: true`:
+
+::: warning ActiveRecord Association Required
+Requires an ActiveRecord association on the model. Custom methods cannot be used for sorting.
+:::
 
 ```ruby
 belongs_to :author, schema: AuthorSchema, sortable: true

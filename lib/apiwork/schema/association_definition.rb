@@ -47,6 +47,7 @@ module Apiwork
         validate_association_exists!
         validate_polymorphic!
         validate_nested_attributes!
+        validate_query_options!
       end
 
       def filterable?
@@ -220,6 +221,21 @@ module Apiwork
 
         nested_options = @model_class.nested_attributes_options[@name]
         @allow_destroy = nested_options[:allow_destroy] || false if nested_options
+      end
+
+      def validate_query_options!
+        return unless @filterable || @sortable
+        return if @owner_schema_class.abstract_class
+        return unless @model_class
+
+        reflection = @model_class.reflect_on_association(@name)
+        return if reflection
+
+        raise ConfigurationError.new(
+          code: :query_option_requires_association,
+          detail: "Association #{@name}: filterable/sortable requires an ActiveRecord association for JOINs",
+          path: [@name]
+        )
       end
     end
   end

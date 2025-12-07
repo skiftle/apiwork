@@ -309,40 +309,38 @@ This sorts by `published` first, then by `created_at` within each group.
 
 ## Encode & Decode
 
-Transform values during serialization (encode) and deserialization (decode).
+Transform values during serialization (`encode`) and deserialization (`decode`). Use for simple presentation transforms — case changes, formatting, normalization.
 
 | Option | When | Direction |
 |--------|------|-----------|
 | `encode` | Response (output) | Database → API |
 | `decode` | Request (input) | API → Database |
 
-### When to Use
-
-Transformers are for presentation — changing how data appears in your API without changing what's stored.
+::: info Serialization-only
+These transformations must preserve the attribute's type. They operate at the serialization layer and are not passed to adapters — invisible to generated TypeScript, Zod, and OpenAPI specs.
+:::
 
 ```ruby
-# Polymorphic type from Rails STI: "Invoice" → "invoice"
+# Case normalization: "Invoice" → "invoice"
 attribute :subjectable_type, encode: ->(v) { v&.underscore }
 
-# Consistent enum format: "pending" → "PENDING" outbound, "PENDING" → "pending" inbound
+# Consistent enum format: "pending" ↔ "PENDING"
 attribute :status,
   encode: ->(v) { v&.upcase },
   decode: ->(v) { v&.downcase }
 ```
 
-For null/empty string conversion, use [`empty: true`](#empty-true) instead.
+For null/empty string conversion, use [`empty: true`](#empty-true) instead — it affects generated types.
 
 ### Prefer ActiveRecord Normalizes
 
-For attributes you control, use Rails' built-in `normalizes`:
+For data integrity, use Rails' built-in `normalizes` instead — it applies everywhere, not just through the API:
 
 ```ruby
 class User < ApplicationRecord
   normalizes :email, with: ->(v) { v&.strip&.downcase }
 end
 ```
-
-Why? Normalization at the model layer is consistent everywhere — not just through the API. Schema transformers are for presentation; model normalizes are for data integrity.
 
 ---
 
