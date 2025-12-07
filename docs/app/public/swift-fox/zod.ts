@@ -15,12 +15,6 @@ export const ContactCreatePayloadSchema = z.object({
   phone: z.string().optional()
 });
 
-export const ContactFilterSchema: z.ZodType<ContactFilter> = z.lazy(() => z.object({
-  _and: z.array(ContactFilterSchema).optional(),
-  _not: ContactFilterSchema.optional(),
-  _or: z.array(ContactFilterSchema).optional()
-}));
-
 export const ContactIncludeSchema = z.object({
 
 });
@@ -28,10 +22,6 @@ export const ContactIncludeSchema = z.object({
 export const ContactPageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
-});
-
-export const ContactSortSchema = z.object({
-
 });
 
 export const ContactUpdatePayloadSchema = z.object({
@@ -65,10 +55,8 @@ export const ContactSchema = z.object({
 });
 
 export const ContactsIndexRequestQuerySchema = z.object({
-  filter: z.union([ContactFilterSchema, z.array(ContactFilterSchema)]).optional(),
   include: ContactIncludeSchema.optional(),
-  page: ContactPageSchema.optional(),
-  sort: z.union([ContactSortSchema, z.array(ContactSortSchema)]).optional()
+  page: ContactPageSchema.optional()
 });
 
 export const ContactsIndexRequestSchema = z.object({
@@ -138,20 +126,12 @@ export interface ContactCreatePayload {
   phone?: string;
 }
 
-export interface ContactFilter {
-  _and?: ContactFilter[];
-  _not?: ContactFilter;
-  _or?: ContactFilter[];
-}
-
 export type ContactInclude = object;
 
 export interface ContactPage {
   number?: number;
   size?: number;
 }
-
-export type ContactSort = object;
 
 export interface ContactUpdatePayload {
   email?: null | string;
@@ -179,10 +159,8 @@ export interface ContactsIndexRequest {
 }
 
 export interface ContactsIndexRequestQuery {
-  filter?: ContactFilter | ContactFilter[];
   include?: ContactInclude;
   page?: ContactPage;
-  sort?: ContactSort | ContactSort[];
 }
 
 export interface ContactsIndexResponse {

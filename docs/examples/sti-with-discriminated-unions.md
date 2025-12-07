@@ -82,7 +82,7 @@ GET /mighty-wolf/vehicles
   "vehicles": [
     {
       "kind": "car",
-      "id": "7dc2a155-4699-4f72-9fe3-0525a38fe661",
+      "id": "bab608b2-e622-42d3-96ed-38854661f74c",
       "brand": "Tesla",
       "model": "Model 3",
       "year": null,
@@ -91,7 +91,7 @@ GET /mighty-wolf/vehicles
     },
     {
       "kind": "motorcycle",
-      "id": "24b247ec-6001-45d9-b7e1-1fc3f942f196",
+      "id": "f328c339-8b2d-43de-9f57-91be505af4ff",
       "brand": "Harley-Davidson",
       "model": "Street Glide",
       "year": null,
@@ -100,7 +100,7 @@ GET /mighty-wolf/vehicles
     },
     {
       "kind": "truck",
-      "id": "3a483938-0d44-44e0-b8a0-98d52395dfa3",
+      "id": "ccf0cb33-9aeb-466a-baf0-dd4a394d2279",
       "brand": "Ford",
       "model": "F-150",
       "year": null,
@@ -126,7 +126,7 @@ GET /mighty-wolf/vehicles
 **Request**
 
 ```http
-GET /mighty-wolf/vehicles/2004b90d-cb03-4dd0-8842-3c9c264f3047
+GET /mighty-wolf/vehicles/c9a7fdea-666c-4ff2-8f42-d5788b19d9c7
 ```
 
 **Response** `200`
@@ -135,7 +135,7 @@ GET /mighty-wolf/vehicles/2004b90d-cb03-4dd0-8842-3c9c264f3047
 {
   "vehicle": {
     "kind": "car",
-    "id": "2004b90d-cb03-4dd0-8842-3c9c264f3047",
+    "id": "c9a7fdea-666c-4ff2-8f42-d5788b19d9c7",
     "brand": "Tesla",
     "model": "Model 3",
     "year": 2024,
@@ -173,7 +173,7 @@ Content-Type: application/json
 {
   "vehicle": {
     "kind": "car",
-    "id": "274c0370-178d-49b9-a6a4-65039e45e810",
+    "id": "cf7dcec4-3a5b-46f8-9ac0-7428b00c9dfb",
     "brand": "Tesla",
     "model": "Model 3",
     "year": 2024,
@@ -211,7 +211,7 @@ Content-Type: application/json
 {
   "vehicle": {
     "kind": "motorcycle",
-    "id": "30ae236c-0ba4-4075-a389-4436e94f9c4a",
+    "id": "217142ae-eb9e-4eb8-847f-9f1b3039f3ab",
     "brand": "Harley-Davidson",
     "model": "Street Glide",
     "year": 2023,
@@ -249,7 +249,7 @@ Content-Type: application/json
 {
   "vehicle": {
     "kind": "truck",
-    "id": "d7e5b9eb-9e58-4447-b509-694e9efb820a",
+    "id": "ee190e41-04e9-465a-ba23-04952fa4cd25",
     "brand": "Ford",
     "model": "F-150",
     "year": 2024,

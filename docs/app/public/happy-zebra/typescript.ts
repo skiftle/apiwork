@@ -9,12 +9,6 @@ export interface CommentCreatePayload {
   body: string;
 }
 
-export interface CommentFilter {
-  _and?: CommentFilter[];
-  _not?: CommentFilter;
-  _or?: CommentFilter[];
-}
-
 export type CommentInclude = object;
 
 export interface CommentNestedCreatePayload {
@@ -35,8 +29,6 @@ export interface CommentPage {
   number?: number;
   size?: number;
 }
-
-export type CommentSort = object;
 
 export interface CommentUpdatePayload {
   author?: string;
@@ -62,10 +54,8 @@ export interface CommentsIndexRequest {
 }
 
 export interface CommentsIndexRequestQuery {
-  filter?: CommentFilter | CommentFilter[];
   include?: CommentInclude;
   page?: CommentPage;
-  sort?: CommentSort | CommentSort[];
 }
 
 export interface CommentsIndexResponse {
@@ -120,12 +110,6 @@ export interface PostCreatePayload {
   title: string;
 }
 
-export interface PostFilter {
-  _and?: PostFilter[];
-  _not?: PostFilter;
-  _or?: PostFilter[];
-}
-
 export interface PostInclude {
   comments?: CommentInclude;
 }
@@ -148,8 +132,6 @@ export interface PostPage {
   number?: number;
   size?: number;
 }
-
-export type PostSort = object;
 
 export interface PostUpdatePayload {
   comments?: CommentNestedPayload[];
@@ -180,10 +162,8 @@ export interface PostsIndexRequest {
 }
 
 export interface PostsIndexRequestQuery {
-  filter?: PostFilter | PostFilter[];
   include?: PostInclude;
   page?: PostPage;
-  sort?: PostSort | PostSort[];
 }
 
 export interface PostsIndexResponse {

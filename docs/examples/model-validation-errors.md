@@ -108,15 +108,15 @@ Content-Type: application/json
 ```json
 {
   "user": {
-    "id": "2d0c6777-f8a6-4a28-a00f-0c26cdb42b1c",
-    "created_at": "2025-12-07T10:13:37.663Z",
-    "updated_at": "2025-12-07T10:13:37.663Z",
+    "id": "5a98f4e4-9800-483e-84d9-4072a7780ae1",
+    "created_at": "2025-12-07T10:25:49.217Z",
+    "updated_at": "2025-12-07T10:25:49.217Z",
     "email": "john@example.com",
     "username": "johndoe",
     "profile": {
-      "id": "72be040b-5c5f-49c7-9886-7430a08e99b8",
-      "created_at": "2025-12-07T10:13:37.664Z",
-      "updated_at": "2025-12-07T10:13:37.664Z",
+      "id": "05aa3091-5bd2-4a0b-9713-328833c2c474",
+      "created_at": "2025-12-07T10:25:49.219Z",
+      "updated_at": "2025-12-07T10:25:49.219Z",
       "bio": "Software developer",
       "website": "https://example.com"
     },
@@ -315,24 +315,24 @@ Content-Type: application/json
 ```json
 {
   "user": {
-    "id": "cbd10ae5-6ce1-465c-8742-676d5951b95a",
-    "created_at": "2025-12-07T10:13:37.715Z",
-    "updated_at": "2025-12-07T10:13:37.715Z",
+    "id": "94b82112-1c44-4f66-adb9-3cee013afc56",
+    "created_at": "2025-12-07T10:25:49.292Z",
+    "updated_at": "2025-12-07T10:25:49.292Z",
     "email": "deep@example.com",
     "username": "deepuser",
     "profile": null,
     "posts": [
       {
-        "id": "813c4072-f7a6-4d51-a9a6-3dbe93bf82be",
+        "id": "04a688c9-0f5b-43be-945c-6a4a999b1605",
         "title": "My First Post",
         "comments": [
           {
-            "id": "f604c45e-99c7-4e7e-9817-a44b14574a71",
+            "id": "7c778ae7-0cb4-45e1-bebc-934f8d36a24a",
             "body": "Great post!",
             "author": "Jane"
           },
           {
-            "id": "d38204d2-9266-4c05-98c0-993bfc0ec4bd",
+            "id": "3a716658-7d85-40f2-9d62-54fc2ee29c74",
             "body": "Thanks for sharing",
             "author": "Bob"
           }

@@ -13,12 +13,6 @@ export const CommentCreatePayloadSchema = z.object({
   body: z.string()
 });
 
-export const CommentFilterSchema: z.ZodType<CommentFilter> = z.lazy(() => z.object({
-  _and: z.array(CommentFilterSchema).optional(),
-  _not: CommentFilterSchema.optional(),
-  _or: z.array(CommentFilterSchema).optional()
-}));
-
 export const CommentIncludeSchema = z.object({
 
 });
@@ -38,10 +32,6 @@ export const CommentNestedUpdatePayloadSchema = z.object({
 export const CommentPageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
-});
-
-export const CommentSortSchema = z.object({
-
 });
 
 export const CommentUpdatePayloadSchema = z.object({
@@ -64,19 +54,9 @@ export const PagePaginationSchema = z.object({
   total: z.number().int()
 });
 
-export const PostFilterSchema: z.ZodType<PostFilter> = z.lazy(() => z.object({
-  _and: z.array(PostFilterSchema).optional(),
-  _not: PostFilterSchema.optional(),
-  _or: z.array(PostFilterSchema).optional()
-}));
-
 export const PostPageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
-});
-
-export const PostSortSchema = z.object({
-
 });
 
 export const StringFilterSchema = z.object({
@@ -269,10 +249,8 @@ export const UsersUpdateResponseSchema = z.object({
 });
 
 export const PostsIndexRequestQuerySchema = z.object({
-  filter: z.union([PostFilterSchema, z.array(PostFilterSchema)]).optional(),
   include: PostIncludeSchema.optional(),
-  page: PostPageSchema.optional(),
-  sort: z.union([PostSortSchema, z.array(PostSortSchema)]).optional()
+  page: PostPageSchema.optional()
 });
 
 export const PostsIndexRequestSchema = z.object({
@@ -338,10 +316,8 @@ export const PostsUpdateResponseSchema = z.object({
 });
 
 export const CommentsIndexRequestQuerySchema = z.object({
-  filter: z.union([CommentFilterSchema, z.array(CommentFilterSchema)]).optional(),
   include: CommentIncludeSchema.optional(),
-  page: CommentPageSchema.optional(),
-  sort: z.union([CommentSortSchema, z.array(CommentSortSchema)]).optional()
+  page: CommentPageSchema.optional()
 });
 
 export const CommentsIndexRequestSchema = z.object({
@@ -389,26 +365,20 @@ export const CommentsUpdateResponseSchema = z.object({
 });
 
 export interface Comment {
-  author?: string;
-  body?: string;
-  id?: string;
-}
-
-export interface Comment {
   author: string;
   body: string;
   id: string;
 }
 
+export interface Comment {
+  author?: string;
+  body?: string;
+  id?: string;
+}
+
 export interface CommentCreatePayload {
   author: string;
   body: string;
-}
-
-export interface CommentFilter {
-  _and?: CommentFilter[];
-  _not?: CommentFilter;
-  _or?: CommentFilter[];
 }
 
 export type CommentInclude = object;
@@ -431,8 +401,6 @@ export interface CommentPage {
   number?: number;
   size?: number;
 }
-
-export type CommentSort = object;
 
 export interface CommentUpdatePayload {
   author?: string;
@@ -458,10 +426,8 @@ export interface CommentsIndexRequest {
 }
 
 export interface CommentsIndexRequestQuery {
-  filter?: CommentFilter | CommentFilter[];
   include?: CommentInclude;
   page?: CommentPage;
-  sort?: CommentSort | CommentSort[];
 }
 
 export interface CommentsIndexResponse {
@@ -506,25 +472,19 @@ export interface PagePagination {
 }
 
 export interface Post {
-  id: string;
-  title: string;
-}
-
-export interface Post {
   comments: Comment[];
   id?: string;
   title?: string;
 }
 
-export interface PostCreatePayload {
-  comments?: CommentNestedPayload[];
+export interface Post {
+  id: string;
   title: string;
 }
 
-export interface PostFilter {
-  _and?: PostFilter[];
-  _not?: PostFilter;
-  _or?: PostFilter[];
+export interface PostCreatePayload {
+  comments?: CommentNestedPayload[];
+  title: string;
 }
 
 export interface PostInclude {
@@ -549,8 +509,6 @@ export interface PostPage {
   number?: number;
   size?: number;
 }
-
-export type PostSort = object;
 
 export interface PostUpdatePayload {
   comments?: CommentNestedPayload[];
@@ -581,10 +539,8 @@ export interface PostsIndexRequest {
 }
 
 export interface PostsIndexRequestQuery {
-  filter?: PostFilter | PostFilter[];
   include?: PostInclude;
   page?: PostPage;
-  sort?: PostSort | PostSort[];
 }
 
 export interface PostsIndexResponse {

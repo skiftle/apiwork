@@ -28,24 +28,24 @@
     "status": 201,
     "body": {
       "user": {
-        "id": "cbd10ae5-6ce1-465c-8742-676d5951b95a",
-        "created_at": "2025-12-07T10:13:37.715Z",
-        "updated_at": "2025-12-07T10:13:37.715Z",
+        "id": "94b82112-1c44-4f66-adb9-3cee013afc56",
+        "created_at": "2025-12-07T10:25:49.292Z",
+        "updated_at": "2025-12-07T10:25:49.292Z",
         "email": "deep@example.com",
         "username": "deepuser",
         "profile": null,
         "posts": [
           {
-            "id": "813c4072-f7a6-4d51-a9a6-3dbe93bf82be",
+            "id": "04a688c9-0f5b-43be-945c-6a4a999b1605",
             "title": "My First Post",
             "comments": [
               {
-                "id": "f604c45e-99c7-4e7e-9817-a44b14574a71",
+                "id": "7c778ae7-0cb4-45e1-bebc-934f8d36a24a",
                 "body": "Great post!",
                 "author": "Jane"
               },
               {
-                "id": "d38204d2-9266-4c05-98c0-993bfc0ec4bd",
+                "id": "3a716658-7d85-40f2-9d62-54fc2ee29c74",
                 "body": "Thanks for sharing",
                 "author": "Bob"
               }

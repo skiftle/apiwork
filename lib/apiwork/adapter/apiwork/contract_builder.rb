@@ -351,6 +351,8 @@ module Apiwork
 
           visited = visited.dup.add(schema_class)
 
+          return nil unless has_filterable_content?(visited)
+
           type_name = type_name(:filter, depth)
 
           existing = contract_class.resolve_type(type_name)
@@ -425,6 +427,8 @@ module Apiwork
           return nil if depth >= MAX_RECURSION_DEPTH
 
           visited = visited.dup.add(schema_class)
+
+          return nil unless has_sortable_content?(visited)
 
           type_name = type_name(:sort, depth)
 
@@ -860,6 +864,36 @@ module Apiwork
           end
 
           alias_name
+        end
+
+        def has_filterable_content?(visited)
+          has_filterable_attributes = schema_class.attribute_definitions.any? do |_, ad|
+            ad.filterable? && ad.type != :unknown
+          end
+
+          return true if has_filterable_attributes
+
+          schema_class.association_definitions.any? do |_, ad|
+            next false unless ad.filterable?
+
+            association_resource = resolve_association_resource(ad)
+            association_resource&.schema && !visited.include?(association_resource.schema)
+          end
+        end
+
+        def has_sortable_content?(visited)
+          has_sortable_attributes = schema_class.attribute_definitions.any? do |_, ad|
+            ad.sortable?
+          end
+
+          return true if has_sortable_attributes
+
+          schema_class.association_definitions.any? do |_, ad|
+            next false unless ad.sortable?
+
+            association_resource = resolve_association_resource(ad)
+            association_resource&.schema && !visited.include?(association_resource.schema)
+          end
         end
 
         def type_name(base_name, depth)

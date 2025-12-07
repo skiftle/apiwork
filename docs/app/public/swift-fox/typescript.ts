@@ -13,20 +13,12 @@ export interface ContactCreatePayload {
   phone?: string;
 }
 
-export interface ContactFilter {
-  _and?: ContactFilter[];
-  _not?: ContactFilter;
-  _or?: ContactFilter[];
-}
-
 export type ContactInclude = object;
 
 export interface ContactPage {
   number?: number;
   size?: number;
 }
-
-export type ContactSort = object;
 
 export interface ContactUpdatePayload {
   email?: null | string;
@@ -54,10 +46,8 @@ export interface ContactsIndexRequest {
 }
 
 export interface ContactsIndexRequestQuery {
-  filter?: ContactFilter | ContactFilter[];
   include?: ContactInclude;
   page?: ContactPage;
-  sort?: ContactSort | ContactSort[];
 }
 
 export interface ContactsIndexResponse {

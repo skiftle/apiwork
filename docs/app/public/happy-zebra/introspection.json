@@ -29,25 +29,6 @@
         }
       }
     },
-    "comment_filter": {
-      "type": "object",
-      "shape": {
-        "_and": {
-          "type": "array",
-          "of": "comment_filter",
-          "optional": true
-        },
-        "_not": {
-          "type": "comment_filter",
-          "optional": true
-        },
-        "_or": {
-          "type": "array",
-          "of": "comment_filter",
-          "optional": true
-        }
-      }
-    },
     "comment_include": {
       "type": "object"
     },
@@ -116,9 +97,6 @@
           "max": 100
         }
       }
-    },
-    "comment_sort": {
-      "type": "object"
     },
     "comment_update_payload": {
       "type": "object",
@@ -204,25 +182,6 @@
         }
       }
     },
-    "post_filter": {
-      "type": "object",
-      "shape": {
-        "_and": {
-          "type": "array",
-          "of": "post_filter",
-          "optional": true
-        },
-        "_not": {
-          "type": "post_filter",
-          "optional": true
-        },
-        "_or": {
-          "type": "array",
-          "of": "post_filter",
-          "optional": true
-        }
-      }
-    },
     "post_include": {
       "type": "object",
       "shape": {
@@ -303,9 +262,6 @@
           "max": 100
         }
       }
-    },
-    "post_sort": {
-      "type": "object"
     },
     "post_update_payload": {
       "type": "object",
@@ -801,38 +757,12 @@
           "path": "/",
           "request": {
             "query": {
-              "filter": {
-                "type": "union",
-                "variants": [
-                  {
-                    "type": "post_filter"
-                  },
-                  {
-                    "type": "array",
-                    "of": "post_filter"
-                  }
-                ],
-                "optional": true
-              },
               "include": {
                 "type": "post_include",
                 "optional": true
               },
               "page": {
                 "type": "post_page",
-                "optional": true
-              },
-              "sort": {
-                "type": "union",
-                "variants": [
-                  {
-                    "type": "post_sort"
-                  },
-                  {
-                    "type": "array",
-                    "of": "post_sort"
-                  }
-                ],
                 "optional": true
               }
             }
@@ -1045,38 +975,12 @@
           "path": "/",
           "request": {
             "query": {
-              "filter": {
-                "type": "union",
-                "variants": [
-                  {
-                    "type": "comment_filter"
-                  },
-                  {
-                    "type": "array",
-                    "of": "comment_filter"
-                  }
-                ],
-                "optional": true
-              },
               "include": {
                 "type": "comment_include",
                 "optional": true
               },
               "page": {
                 "type": "comment_page",
-                "optional": true
-              },
-              "sort": {
-                "type": "union",
-                "variants": [
-                  {
-                    "type": "comment_sort"
-                  },
-                  {
-                    "type": "array",
-                    "of": "comment_sort"
-                  }
-                ],
                 "optional": true
               }
             }

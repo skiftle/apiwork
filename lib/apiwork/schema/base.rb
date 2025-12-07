@@ -38,20 +38,13 @@ module Apiwork
       end
 
       class << self
-        def _model_class
-          @_model_class
-        end
+        attr_accessor :_model_class
 
-        def _model_class=(value)
-          @_model_class = value
-        end
+        attr_writer :_auto_detection_complete,
+                    :type
 
         def _auto_detection_complete
           @_auto_detection_complete || false
-        end
-
-        def _auto_detection_complete=(value)
-          @_auto_detection_complete = value
         end
 
         def resolve_association_schema(reflection, base_schema_class)
@@ -279,8 +272,6 @@ module Apiwork
 
           self._example = value
         end
-
-        attr_writer :type
 
         def type
           @type || model_class&.model_name&.element

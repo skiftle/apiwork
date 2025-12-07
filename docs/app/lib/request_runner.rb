@@ -82,22 +82,22 @@ class RequestRunner
     # Symbol references like :customer_id from YAML
     if value.is_a?(Symbol)
       ref_name = value.to_s
-      if ref_name.end_with?('_id')
-        key = ref_name[0...-3].to_sym
-      else
-        key = ref_name.to_sym
-      end
+      key = if ref_name.end_with?('_id')
+              ref_name[0...-3].to_sym
+            else
+              ref_name.to_sym
+            end
       return ids[key] if ids.key?(key)
     end
 
     # String references like ":customer_id"
     if value.is_a?(String) && value.start_with?(':')
       ref_name = value[1..]
-      if ref_name.end_with?('_id')
-        key = ref_name[0...-3].to_sym
-      else
-        key = ref_name.to_sym
-      end
+      key = if ref_name.end_with?('_id')
+              ref_name[0...-3].to_sym
+            else
+              ref_name.to_sym
+            end
       return ids[key] if ids.key?(key)
     end
 

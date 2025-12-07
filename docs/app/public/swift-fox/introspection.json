@@ -47,25 +47,6 @@
         }
       }
     },
-    "contact_filter": {
-      "type": "object",
-      "shape": {
-        "_and": {
-          "type": "array",
-          "of": "contact_filter",
-          "optional": true
-        },
-        "_not": {
-          "type": "contact_filter",
-          "optional": true
-        },
-        "_or": {
-          "type": "array",
-          "of": "contact_filter",
-          "optional": true
-        }
-      }
-    },
     "contact_include": {
       "type": "object"
     },
@@ -84,9 +65,6 @@
           "max": 100
         }
       }
-    },
-    "contact_sort": {
-      "type": "object"
     },
     "contact_update_payload": {
       "type": "object",
@@ -197,38 +175,12 @@
           "path": "/",
           "request": {
             "query": {
-              "filter": {
-                "type": "union",
-                "variants": [
-                  {
-                    "type": "contact_filter"
-                  },
-                  {
-                    "type": "array",
-                    "of": "contact_filter"
-                  }
-                ],
-                "optional": true
-              },
               "include": {
                 "type": "contact_include",
                 "optional": true
               },
               "page": {
                 "type": "contact_page",
-                "optional": true
-              },
-              "sort": {
-                "type": "union",
-                "variants": [
-                  {
-                    "type": "contact_sort"
-                  },
-                  {
-                    "type": "array",
-                    "of": "contact_sort"
-                  }
-                ],
                 "optional": true
               }
             }

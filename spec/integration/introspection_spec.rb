@@ -24,9 +24,9 @@ RSpec.describe 'Introspection for association-only schemas', type: :request do
       expect(reply_type[:shape]).to have_key(:created_at)
       expect(reply_type[:shape]).to have_key(:updated_at)
 
-      # Also verify filter/sort types exist (these already worked before)
-      expect(introspection[:types]).to have_key(:reply_filter)
-      expect(introspection[:types]).to have_key(:reply_sort)
+      # Filter/sort types should NOT exist since ReplySchema has no filterable/sortable attributes
+      expect(introspection[:types]).not_to have_key(:reply_filter)
+      expect(introspection[:types]).not_to have_key(:reply_sort)
     end
 
     it 'includes nested_payload union for schemas with writable associations' do

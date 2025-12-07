@@ -101,7 +101,7 @@ class ExampleGenerator
   end
 
   def write_requests(namespace, dir, scenarios)
-    Rails.logger.debug "    Running request scenarios..."
+    Rails.logger.debug '    Running request scenarios...'
 
     requests_dir = dir.join('requests')
     FileUtils.mkdir_p(requests_dir)
@@ -159,7 +159,7 @@ class ExampleGenerator
     files = files_in("app/models/#{namespace}")
     return if files.empty?
 
-    content = ["## Models"]
+    content = ['## Models']
     files.each do |file|
       content << file_block(file)
     end
@@ -170,7 +170,7 @@ class ExampleGenerator
     files = files_in("app/schemas/#{namespace}")
     return if files.empty?
 
-    content = ["## Schemas"]
+    content = ['## Schemas']
     files.each do |file|
       content << file_block(file)
     end
@@ -181,7 +181,7 @@ class ExampleGenerator
     files = files_in("app/contracts/#{namespace}")
     return if files.empty?
 
-    content = ["## Contracts"]
+    content = ['## Contracts']
     files.each do |file|
       content << file_block(file)
     end
@@ -192,7 +192,7 @@ class ExampleGenerator
     files = files_in("app/controllers/#{namespace}")
     return if files.empty?
 
-    content = ["## Controllers"]
+    content = ['## Controllers']
     files.each do |file|
       content << file_block(file)
     end
@@ -205,7 +205,7 @@ class ExampleGenerator
     requests_dir = PUBLIC_DIR.join(locale_key, 'requests')
     return unless File.directory?(requests_dir)
 
-    content = ["---", "", "## Request Examples"]
+    content = ['---', '', '## Request Examples']
 
     scenarios.each_key do |action|
       file_path = requests_dir.join("#{action}.json")
@@ -227,27 +227,25 @@ class ExampleGenerator
     status = response[:status]
 
     parts = []
-    parts << "<details>"
+    parts << '<details>'
     parts << "<summary>#{action}</summary>"
-    parts << ""
+    parts << ''
 
-    parts << "**Request**"
-    parts << ""
-    if request[:body]
-      parts << "```http\n#{method} #{path}\nContent-Type: application/json\n\n#{JSON.pretty_generate(request[:body])}\n```"
-    else
-      parts << "```http\n#{method} #{path}\n```"
-    end
+    parts << '**Request**'
+    parts << ''
+    parts << if request[:body]
+               "```http\n#{method} #{path}\nContent-Type: application/json\n\n#{JSON.pretty_generate(request[:body])}\n```"
+             else
+               "```http\n#{method} #{path}\n```"
+             end
 
-    parts << ""
+    parts << ''
     parts << "**Response** `#{status}`"
-    parts << ""
-    if response[:body]
-      parts << "```json\n#{JSON.pretty_generate(response[:body])}\n```"
-    end
+    parts << ''
+    parts << "```json\n#{JSON.pretty_generate(response[:body])}\n```" if response[:body]
 
-    parts << ""
-    parts << "</details>"
+    parts << ''
+    parts << '</details>'
 
     parts.join("\n")
   end

@@ -185,15 +185,6 @@
       - Posts
       :parameters:
       - :in: query
-        :name: filter
-        :required: false
-        :schema:
-          :oneOf:
-          - :$ref: "#/components/schemas/post_filter"
-          - :type: array
-            :items:
-              :$ref: "#/components/schemas/post_filter"
-      - :in: query
         :name: include
         :required: false
         :schema:
@@ -203,15 +194,6 @@
         :required: false
         :schema:
           :$ref: "#/components/schemas/post_page"
-      - :in: query
-        :name: sort
-        :required: false
-        :schema:
-          :oneOf:
-          - :$ref: "#/components/schemas/post_sort"
-          - :type: array
-            :items:
-              :$ref: "#/components/schemas/post_sort"
       :responses:
         :200:
           :description: Successful response
@@ -359,15 +341,6 @@
       - Comments
       :parameters:
       - :in: query
-        :name: filter
-        :required: false
-        :schema:
-          :oneOf:
-          - :$ref: "#/components/schemas/comment_filter"
-          - :type: array
-            :items:
-              :$ref: "#/components/schemas/comment_filter"
-      - :in: query
         :name: include
         :required: false
         :schema:
@@ -377,15 +350,6 @@
         :required: false
         :schema:
           :$ref: "#/components/schemas/comment_page"
-      - :in: query
-        :name: sort
-        :required: false
-        :schema:
-          :oneOf:
-          - :$ref: "#/components/schemas/comment_sort"
-          - :type: array
-            :items:
-              :$ref: "#/components/schemas/comment_sort"
       :responses:
         :200:
           :description: Successful response
@@ -529,19 +493,6 @@
       :required:
       - author
       - body
-    comment_filter:
-      :type: object
-      :properties:
-        _and:
-          :type: array
-          :items:
-            :$ref: "#/components/schemas/comment_filter"
-        _not:
-          :$ref: "#/components/schemas/comment_filter"
-        _or:
-          :type: array
-          :items:
-            :$ref: "#/components/schemas/comment_filter"
     comment_include:
       :type: object
       :properties: {}
@@ -592,9 +543,6 @@
           :type: integer
           :minimum: 1
           :maximum: 100
-    comment_sort:
-      :type: object
-      :properties: {}
     comment_update_payload:
       :type: object
       :properties:
@@ -668,19 +616,6 @@
           :type: string
       :required:
       - title
-    post_filter:
-      :type: object
-      :properties:
-        _and:
-          :type: array
-          :items:
-            :$ref: "#/components/schemas/post_filter"
-        _not:
-          :$ref: "#/components/schemas/post_filter"
-        _or:
-          :type: array
-          :items:
-            :$ref: "#/components/schemas/post_filter"
     post_include:
       :type: object
       :properties:
@@ -735,9 +670,6 @@
           :type: integer
           :minimum: 1
           :maximum: 100
-    post_sort:
-      :type: object
-      :properties: {}
     post_update_payload:
       :type: object
       :properties:

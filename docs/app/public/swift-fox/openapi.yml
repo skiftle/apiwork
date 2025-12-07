@@ -11,15 +11,6 @@
       - Contacts
       :parameters:
       - :in: query
-        :name: filter
-        :required: false
-        :schema:
-          :oneOf:
-          - :$ref: "#/components/schemas/contact_filter"
-          - :type: array
-            :items:
-              :$ref: "#/components/schemas/contact_filter"
-      - :in: query
         :name: include
         :required: false
         :schema:
@@ -29,15 +20,6 @@
         :required: false
         :schema:
           :$ref: "#/components/schemas/contact_page"
-      - :in: query
-        :name: sort
-        :required: false
-        :schema:
-          :oneOf:
-          - :$ref: "#/components/schemas/contact_sort"
-          - :type: array
-            :items:
-              :$ref: "#/components/schemas/contact_sort"
       :responses:
         :200:
           :description: Successful response
@@ -190,19 +172,6 @@
           :type: string
       :required:
       - name
-    contact_filter:
-      :type: object
-      :properties:
-        _and:
-          :type: array
-          :items:
-            :$ref: "#/components/schemas/contact_filter"
-        _not:
-          :$ref: "#/components/schemas/contact_filter"
-        _or:
-          :type: array
-          :items:
-            :$ref: "#/components/schemas/contact_filter"
     contact_include:
       :type: object
       :properties: {}
@@ -216,9 +185,6 @@
           :type: integer
           :minimum: 1
           :maximum: 100
-    contact_sort:
-      :type: object
-      :properties: {}
     contact_update_payload:
       :type: object
       :properties:
