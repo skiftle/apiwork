@@ -23,3 +23,5 @@ Each example includes:
 | [Advanced Filtering](./advanced-filtering.md) | Complex queries with string patterns, numeric ranges, and logical operators |
 | [STI with Discriminated Unions](./sti-with-discriminated-unions.md) | Single Table Inheritance with automatic variant serialization and TypeScript union types |
 | [Polymorphic Associations](./polymorphic-associations.md) | Comments that belong to different content types (posts, videos, images) |
+| [Model Validation Errors](./model-validation-errors.md) | How Apiwork captures ActiveRecord validation errors and presents them in a unified format |
+| [Custom Hash Responses](./custom-hash-responses.md) | Using respond_with with plain hashes instead of ActiveRecord models |

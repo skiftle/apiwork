@@ -1,15 +1,489 @@
 {
   "path": "/happy-zebra",
-  "types": {},
+  "types": {
+    "issue": {
+      "type": "object",
+      "shape": {
+        "code": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "field": {
+          "type": "string"
+        },
+        "path": {
+          "type": "array",
+          "of": "string"
+        }
+      }
+    },
+    "page_pagination": {
+      "type": "object",
+      "shape": {
+        "current": {
+          "type": "integer"
+        },
+        "items": {
+          "type": "integer"
+        },
+        "next": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "prev": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "total": {
+          "type": "integer"
+        }
+      }
+    },
+    "string_filter": {
+      "type": "object",
+      "shape": {
+        "contains": {
+          "type": "string",
+          "optional": true
+        },
+        "ends_with": {
+          "type": "string",
+          "optional": true
+        },
+        "eq": {
+          "type": "string",
+          "optional": true
+        },
+        "in": {
+          "type": "array",
+          "of": "string",
+          "optional": true
+        },
+        "starts_with": {
+          "type": "string",
+          "optional": true
+        }
+      }
+    },
+    "user": {
+      "type": "object",
+      "shape": {
+        "created_at": {
+          "type": "datetime",
+          "optional": true
+        },
+        "email": {
+          "type": "string",
+          "optional": true
+        },
+        "id": {
+          "type": "string",
+          "optional": true
+        },
+        "profile": {
+          "type": "object"
+        },
+        "updated_at": {
+          "type": "datetime",
+          "optional": true
+        },
+        "username": {
+          "type": "string",
+          "optional": true
+        }
+      }
+    },
+    "user_create_payload": {
+      "type": "object",
+      "shape": {
+        "email": {
+          "type": "string"
+        },
+        "profile": {
+          "type": "object",
+          "as": "profile_attributes",
+          "optional": true
+        },
+        "username": {
+          "type": "string"
+        }
+      }
+    },
+    "user_filter": {
+      "type": "object",
+      "shape": {
+        "_and": {
+          "type": "array",
+          "of": "user_filter",
+          "optional": true
+        },
+        "_not": {
+          "type": "user_filter",
+          "optional": true
+        },
+        "_or": {
+          "type": "array",
+          "of": "user_filter",
+          "optional": true
+        },
+        "email": {
+          "type": "union",
+          "variants": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "string_filter"
+            }
+          ],
+          "optional": true
+        },
+        "username": {
+          "type": "union",
+          "variants": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "string_filter"
+            }
+          ],
+          "optional": true
+        }
+      }
+    },
+    "user_include": {
+      "type": "object",
+      "shape": {
+        "profile": {
+          "type": "user_profile_include",
+          "optional": true
+        }
+      }
+    },
+    "user_page": {
+      "type": "object",
+      "shape": {
+        "number": {
+          "type": "integer",
+          "optional": true,
+          "min": 1
+        },
+        "size": {
+          "type": "integer",
+          "optional": true,
+          "min": 1,
+          "max": 100
+        }
+      }
+    },
+    "user_profile_include": {
+      "type": "object",
+      "shape": {
+        "user": {
+          "type": "boolean",
+          "optional": true
+        }
+      }
+    },
+    "user_sort": {
+      "type": "object",
+      "shape": {
+        "created_at": {
+          "type": "user_sort_direction",
+          "optional": true
+        },
+        "updated_at": {
+          "type": "user_sort_direction",
+          "optional": true
+        }
+      }
+    },
+    "user_update_payload": {
+      "type": "object",
+      "shape": {
+        "email": {
+          "type": "string"
+        },
+        "profile": {
+          "type": "object",
+          "as": "profile_attributes",
+          "optional": true
+        },
+        "username": {
+          "type": "string"
+        }
+      }
+    }
+  },
   "enums": {
-    "status": {
+    "sort_direction": {
       "values": [
-        "draft",
-        "published",
-        "archived"
+        "asc",
+        "desc"
       ]
     }
   },
-  "error_codes": {},
-  "resources": {}
+  "error_codes": {
+    "unprocessable_entity": {
+      "status": 422,
+      "description": "Unprocessable Entity"
+    }
+  },
+  "resources": {
+    "users": {
+      "path": "users",
+      "summary": "Users",
+      "description": "Operations for managing users.",
+      "tags": [
+        "Users"
+      ],
+      "schema": {
+        "type": "object",
+        "shape": {
+          "id": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "datetime"
+          },
+          "updated_at": {
+            "type": "datetime"
+          },
+          "email": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        }
+      },
+      "actions": {
+        "index": {
+          "method": "get",
+          "path": "/",
+          "request": {
+            "query": {
+              "filter": {
+                "type": "union",
+                "variants": [
+                  {
+                    "type": "user_filter"
+                  },
+                  {
+                    "type": "array",
+                    "of": "user_filter"
+                  }
+                ],
+                "optional": true
+              },
+              "include": {
+                "type": "user_include",
+                "optional": true
+              },
+              "page": {
+                "type": "user_page",
+                "optional": true
+              },
+              "sort": {
+                "type": "union",
+                "variants": [
+                  {
+                    "type": "user_sort"
+                  },
+                  {
+                    "type": "array",
+                    "of": "user_sort"
+                  }
+                ],
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "pagination": {
+                      "type": "page_pagination",
+                      "optional": true
+                    },
+                    "users": {
+                      "type": "array",
+                      "of": "user",
+                      "optional": true
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "show": {
+          "method": "get",
+          "path": "/:id",
+          "request": {
+            "query": {
+              "include": {
+                "type": "user_include",
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "user": {
+                      "type": "user"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "create": {
+          "method": "post",
+          "path": "/",
+          "request": {
+            "query": {
+              "include": {
+                "type": "user_include",
+                "optional": true
+              }
+            },
+            "body": {
+              "user": {
+                "type": "user_create_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "user": {
+                      "type": "user"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "raises": [
+            "unprocessable_entity"
+          ]
+        },
+        "update": {
+          "method": "patch",
+          "path": "/:id",
+          "request": {
+            "query": {
+              "include": {
+                "type": "user_include",
+                "optional": true
+              }
+            },
+            "body": {
+              "user": {
+                "type": "user_update_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "user": {
+                      "type": "user"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "raises": [
+            "unprocessable_entity"
+          ]
+        },
+        "destroy": {
+          "method": "delete",
+          "path": "/:id"
+        }
+      }
+    }
+  }
 }

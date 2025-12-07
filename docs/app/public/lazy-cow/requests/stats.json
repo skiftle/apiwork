@@ -1,0 +1,14 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/lazy-cow/status/stats"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "users_count": 1234,
+      "posts_count": 5678,
+      "uptime_seconds": 86400
+    }
+  }
+}

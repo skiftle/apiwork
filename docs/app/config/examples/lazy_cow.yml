@@ -1,0 +1,12 @@
+title: Custom Hash Responses
+description: Using respond_with with plain hashes instead of ActiveRecord models
+order: 8
+
+scenarios:
+  health:
+    method: GET
+    path: /lazy-cow/status/health
+
+  stats:
+    method: GET
+    path: /lazy-cow/status/stats

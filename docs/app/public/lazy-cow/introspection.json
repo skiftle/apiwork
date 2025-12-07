@@ -20,45 +20,56 @@
       }
     }
   },
-  "enums": {
-    "post_priority": {
-      "values": [
-        "low",
-        "medium",
-        "high",
-        "critical"
-      ]
-    }
-  },
+  "enums": {},
   "error_codes": {},
   "resources": {
-    "posts": {
-      "path": "posts",
-      "summary": "Posts",
-      "description": "Operations for managing posts.",
+    "status": {
+      "path": "status",
+      "summary": "Status",
+      "description": "Operations for managing status.",
       "tags": [
-        "Posts"
+        "Status"
       ],
       "actions": {
-        "index": {
+        "health": {
           "method": "get",
-          "path": "/"
+          "path": "/health",
+          "response": {
+            "body": {
+              "type": "object",
+              "shape": {
+                "status": {
+                  "type": "string"
+                },
+                "timestamp": {
+                  "type": "datetime"
+                },
+                "version": {
+                  "type": "string"
+                }
+              }
+            }
+          }
         },
-        "show": {
+        "stats": {
           "method": "get",
-          "path": "/:id"
-        },
-        "create": {
-          "method": "post",
-          "path": "/"
-        },
-        "update": {
-          "method": "patch",
-          "path": "/:id"
-        },
-        "destroy": {
-          "method": "delete",
-          "path": "/:id"
+          "path": "/stats",
+          "response": {
+            "body": {
+              "type": "object",
+              "shape": {
+                "posts_count": {
+                  "type": "integer"
+                },
+                "uptime_seconds": {
+                  "type": "integer"
+                },
+                "users_count": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
         }
       }
     }

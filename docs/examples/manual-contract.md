@@ -50,22 +50,22 @@ GET /funny-snake/invoices
 ```json
 [
   {
-    "id": "366f65a5-daec-43ec-8406-b5a902fd6a67",
+    "id": "9ce5ab49-14eb-4a37-8459-76faba2de753",
     "number": "INV-001",
     "issued_on": null,
     "status": "draft",
     "notes": null,
-    "created_at": "2025-12-07T09:01:01.247Z",
-    "updated_at": "2025-12-07T09:01:01.247Z"
+    "created_at": "2025-12-07T09:41:44.855Z",
+    "updated_at": "2025-12-07T09:41:44.855Z"
   },
   {
-    "id": "521f2706-9ac9-4c66-a353-01ed0aadb989",
+    "id": "2e6b9b30-6ad0-40fd-a4c3-c1547f3b6d76",
     "number": "INV-002",
     "issued_on": null,
     "status": "sent",
     "notes": null,
-    "created_at": "2025-12-07T09:01:01.248Z",
-    "updated_at": "2025-12-07T09:01:01.248Z"
+    "created_at": "2025-12-07T09:41:44.856Z",
+    "updated_at": "2025-12-07T09:41:44.856Z"
   }
 ]
 ```
@@ -78,20 +78,20 @@ GET /funny-snake/invoices
 **Request**
 
 ```http
-GET /funny-snake/invoices/5cc17506-1e42-48c6-9f07-81df73f4cf80
+GET /funny-snake/invoices/fa52713b-0c02-464e-b004-80691cda9124
 ```
 
 **Response** `200`
 
 ```json
 {
-  "id": "5cc17506-1e42-48c6-9f07-81df73f4cf80",
+  "id": "fa52713b-0c02-464e-b004-80691cda9124",
   "number": "INV-001",
   "issued_on": null,
   "status": "draft",
   "notes": null,
-  "created_at": "2025-12-07T09:01:01.255Z",
-  "updated_at": "2025-12-07T09:01:01.255Z"
+  "created_at": "2025-12-07T09:41:44.864Z",
+  "updated_at": "2025-12-07T09:41:44.864Z"
 }
 ```
 
@@ -120,13 +120,13 @@ Content-Type: application/json
 
 ```json
 {
-  "id": "ede6a965-80ec-4767-9fb7-89c08a341592",
+  "id": "c87a488a-8fcf-402c-b6cc-caa20e01d513",
   "number": "INV-001",
   "issued_on": "2024-01-15",
   "status": "draft",
   "notes": "First invoice",
-  "created_at": "2025-12-07T09:01:01.264Z",
-  "updated_at": "2025-12-07T09:01:01.264Z"
+  "created_at": "2025-12-07T09:41:44.880Z",
+  "updated_at": "2025-12-07T09:41:44.880Z"
 }
 ```
 
@@ -138,7 +138,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-PATCH /funny-snake/invoices/6455ac4a-5b15-4979-939f-e716ebcd7785
+PATCH /funny-snake/invoices/63b92e33-2f83-4337-9cb3-f0192d105b1c
 Content-Type: application/json
 
 {
@@ -159,9 +159,9 @@ Content-Type: application/json
   "issued_on": "2024-01-15",
   "status": "sent",
   "notes": "Updated invoice",
-  "id": "6455ac4a-5b15-4979-939f-e716ebcd7785",
-  "created_at": "2025-12-07T09:01:01.267Z",
-  "updated_at": "2025-12-07T09:01:01.272Z"
+  "id": "63b92e33-2f83-4337-9cb3-f0192d105b1c",
+  "created_at": "2025-12-07T09:41:44.883Z",
+  "updated_at": "2025-12-07T09:41:44.888Z"
 }
 ```
 
@@ -173,20 +173,20 @@ Content-Type: application/json
 **Request**
 
 ```http
-DELETE /funny-snake/invoices/ccc71d95-418e-48ae-903e-0442bacbab50
+DELETE /funny-snake/invoices/01e201ff-b763-491f-ad09-299ddee27c34
 ```
 
 **Response** `200`
 
 ```json
 {
-  "id": "ccc71d95-418e-48ae-903e-0442bacbab50",
+  "id": "01e201ff-b763-491f-ad09-299ddee27c34",
   "number": "INV-001",
   "issued_on": null,
   "status": null,
   "notes": null,
-  "created_at": "2025-12-07T09:01:01.274Z",
-  "updated_at": "2025-12-07T09:01:01.274Z"
+  "created_at": "2025-12-07T09:41:44.891Z",
+  "updated_at": "2025-12-07T09:41:44.891Z"
 }
 ```
 

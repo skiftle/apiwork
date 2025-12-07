@@ -4,43 +4,52 @@
   :title: "/lazy-cow API"
   :version: 1.0.0
 :paths:
-  posts/:
+  status/health:
     get:
-      :operationId: posts_index
+      :operationId: status_health
       :tags:
-      - Posts
+      - Status
       :responses:
-        :204:
-          :description: No content
-    post:
-      :operationId: posts_create
-      :tags:
-      - Posts
-      :responses:
-        :204:
-          :description: No content
-  posts/:id:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  status:
+                    :type: string
+                  timestamp:
+                    :type: string
+                  version:
+                    :type: string
+                :required:
+                - status
+                - timestamp
+                - version
+  status/stats:
     get:
-      :operationId: posts_show
+      :operationId: status_stats
       :tags:
-      - Posts
+      - Status
       :responses:
-        :204:
-          :description: No content
-    patch:
-      :operationId: posts_update
-      :tags:
-      - Posts
-      :responses:
-        :204:
-          :description: No content
-    delete:
-      :operationId: posts_destroy
-      :tags:
-      - Posts
-      :responses:
-        :204:
-          :description: No content
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  posts_count:
+                    :type: integer
+                  uptime_seconds:
+                    :type: integer
+                  users_count:
+                    :type: integer
+                :required:
+                - posts_count
+                - uptime_seconds
+                - users_count
 :components:
   :schemas:
     issue:

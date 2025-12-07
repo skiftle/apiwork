@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_07_000005) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_07_000006) do
 # Could not dump table "bold_falcon_articles" because of following StandardError
 #   Unknown type 'uuid' for column 'category_id'
 
@@ -81,6 +81,23 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_07_000005) do
 #   Unknown type 'uuid' for column 'id'
 
 
+  create_table "happy_zebra_profiles", id: :string, force: :cascade do |t|
+    t.text "bio"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "user_id", null: false
+    t.string "website"
+  end
+
+  create_table "happy_zebra_users", id: :string, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "email", null: false
+    t.datetime "updated_at", null: false
+    t.string "username", null: false
+    t.index ["email"], name: "index_happy_zebra_users_on_email", unique: true
+    t.index ["username"], name: "index_happy_zebra_users_on_username", unique: true
+  end
+
   create_table "lazy_cow_posts", id: :string, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "priority"
@@ -105,4 +122,5 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_07_000005) do
   add_foreign_key "clever_rabbit_shipping_addresses", "clever_rabbit_orders", column: "order_id"
   add_foreign_key "eager_lion_invoices", "eager_lion_customers", column: "customer_id"
   add_foreign_key "eager_lion_lines", "eager_lion_invoices", column: "invoice_id"
+  add_foreign_key "happy_zebra_profiles", "happy_zebra_users", column: "user_id"
 end
