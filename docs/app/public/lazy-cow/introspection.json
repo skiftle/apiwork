@@ -1,0 +1,66 @@
+{
+  "path": "/lazy-cow",
+  "types": {
+    "issue": {
+      "type": "object",
+      "shape": {
+        "code": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "field": {
+          "type": "string"
+        },
+        "path": {
+          "type": "array",
+          "of": "string"
+        }
+      }
+    }
+  },
+  "enums": {
+    "post_priority": {
+      "values": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    }
+  },
+  "error_codes": {},
+  "resources": {
+    "posts": {
+      "path": "posts",
+      "summary": "Posts",
+      "description": "Operations for managing posts.",
+      "tags": [
+        "Posts"
+      ],
+      "actions": {
+        "index": {
+          "method": "get",
+          "path": "/"
+        },
+        "show": {
+          "method": "get",
+          "path": "/:id"
+        },
+        "create": {
+          "method": "post",
+          "path": "/"
+        },
+        "update": {
+          "method": "patch",
+          "path": "/:id"
+        },
+        "destroy": {
+          "method": "delete",
+          "path": "/:id"
+        }
+      }
+    }
+  }
+}

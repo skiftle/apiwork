@@ -1,0 +1,104 @@
+---
+:openapi: 3.1.0
+:info:
+  :title: "/friendly-tiger API"
+  :version: 1.0.0
+:paths:
+  orders/:
+    get:
+      :operationId: orders_index
+      :tags:
+      - Orders
+      :responses:
+        :204:
+          :description: No content
+    post:
+      :operationId: orders_create
+      :tags:
+      - Orders
+      :requestBody:
+        :required: true
+        :content:
+          :application/json:
+            :schema:
+              :type: object
+              :properties:
+                priority:
+                  :type: string
+                  :enum:
+                  - low
+                  - normal
+                  - high
+                  - urgent
+                shipping_address:
+                  :$ref: "#/components/schemas/order_address"
+              :required:
+              - priority
+              - shipping_address
+      :responses:
+        :200:
+          :description: Successful response
+          :content:
+            :application/json:
+              :schema:
+                :type: object
+                :properties:
+                  id:
+                    :type: integer
+                  status:
+                    :type: string
+                :required:
+                - id
+                - status
+  orders/:id:
+    get:
+      :operationId: orders_show
+      :tags:
+      - Orders
+      :responses:
+        :204:
+          :description: No content
+    patch:
+      :operationId: orders_update
+      :tags:
+      - Orders
+      :responses:
+        :204:
+          :description: No content
+    delete:
+      :operationId: orders_destroy
+      :tags:
+      - Orders
+      :responses:
+        :204:
+          :description: No content
+:components:
+  :schemas:
+    issue:
+      :type: object
+      :properties:
+        code:
+          :type: string
+        detail:
+          :type: string
+        field:
+          :type: string
+        path:
+          :type: array
+          :items:
+            :type: string
+      :required:
+      - code
+      - detail
+      - field
+      - path
+    order_address:
+      :type: object
+      :properties:
+        city:
+          :type: string
+        street:
+          :type: string
+      :required:
+      - city
+      - street

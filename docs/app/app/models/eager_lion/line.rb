@@ -2,8 +2,6 @@
 
 module EagerLion
   class Line < ApplicationRecord
-    self.table_name = 'eager_lion_lines'
-
     belongs_to :invoice
   end
 end

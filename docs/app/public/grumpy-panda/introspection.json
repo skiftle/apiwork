@@ -1,0 +1,85 @@
+{
+  "path": "/grumpy-panda",
+  "types": {
+    "issue": {
+      "type": "object",
+      "shape": {
+        "code": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "field": {
+          "type": "string"
+        },
+        "path": {
+          "type": "array",
+          "of": "string"
+        }
+      }
+    }
+  },
+  "enums": {},
+  "error_codes": {},
+  "resources": {
+    "orders": {
+      "path": "orders",
+      "summary": "Orders",
+      "description": "Operations for managing orders.",
+      "tags": [
+        "Orders"
+      ],
+      "actions": {
+        "index": {
+          "method": "get",
+          "path": "/"
+        },
+        "show": {
+          "method": "get",
+          "path": "/:id"
+        },
+        "create": {
+          "method": "post",
+          "path": "/",
+          "request": {
+            "body": {
+              "shipping_address": {
+                "type": "object",
+                "shape": {
+                  "city": {
+                    "type": "string"
+                  },
+                  "street": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "object",
+              "shape": {
+                "id": {
+                  "type": "integer"
+                },
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "update": {
+          "method": "patch",
+          "path": "/:id"
+        },
+        "destroy": {
+          "method": "delete",
+          "path": "/:id"
+        }
+      }
+    }
+  }
+}

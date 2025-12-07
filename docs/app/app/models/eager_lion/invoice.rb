@@ -2,8 +2,6 @@
 
 module EagerLion
   class Invoice < ApplicationRecord
-    self.table_name = 'eager_lion_invoices'
-
     belongs_to :customer
     has_many :lines, dependent: :destroy
 

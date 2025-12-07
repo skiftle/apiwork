@@ -1,0 +1,15 @@
+{
+  "path": "/happy-zebra",
+  "types": {},
+  "enums": {
+    "status": {
+      "values": [
+        "draft",
+        "published",
+        "archived"
+      ]
+    }
+  },
+  "error_codes": {},
+  "resources": {}
+}

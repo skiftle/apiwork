@@ -2,8 +2,6 @@
 
 module CleverRabbit
   class Order < ApplicationRecord
-    self.table_name = 'clever_rabbit_orders'
-
     has_many :line_items, dependent: :destroy
     has_one :shipping_address, dependent: :destroy
 

@@ -34,10 +34,24 @@ class ExampleGenerator
   private
 
   def each_example
-    Dir.glob(CONFIG_DIR.join('*.yml')).sort.each do |config_file|
-      namespace = File.basename(config_file, '.yml')
-      metadata = YAML.load_file(config_file).symbolize_keys
+    Dir.glob(Rails.root.join('config/apis/*.rb')).sort.each do |api_file|
+      namespace = File.basename(api_file, '.rb')
+      metadata = metadata_for(namespace)
       yield namespace, metadata
+    end
+  end
+
+  def metadata_for(namespace)
+    yml_path = CONFIG_DIR.join("#{namespace}.yml")
+
+    if File.exist?(yml_path)
+      YAML.load_file(yml_path).symbolize_keys
+    else
+      {
+        title: namespace.humanize.titleize,
+        description: 'Complete example with API, models, schemas, contracts, and controllers.',
+        order: 999
+      }
     end
   end
 
