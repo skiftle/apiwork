@@ -5,7 +5,7 @@ module Api
     # SafeCommentSchema - Uses Comment model for safe_comments routes
     # Demonstrates that routing restrictions work with resource inheritance
     class SafeCommentSchema < CommentSchema
-      # Inherits all attributes and configuration from CommentSchema
+      model Comment
     end
   end
 end

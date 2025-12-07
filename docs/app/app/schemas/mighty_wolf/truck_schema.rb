@@ -2,8 +2,7 @@
 
 module MightyWolf
   class TruckSchema < VehicleSchema
-    model Truck
-    variant as: :truck
+    variant
 
     attribute :payload_capacity, writable: true
   end

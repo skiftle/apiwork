@@ -8,9 +8,7 @@ module Apiwork
 
       class_attribute :attribute_definitions, default: {}
       class_attribute :association_definitions, default: {}
-      class_attribute :_model_class
       class_attribute :_root, default: nil
-      class_attribute :_auto_detection_complete, default: false
       class_attribute :_adapter_config, default: {}
       class_attribute :_discriminator_column, default: nil
       class_attribute :_discriminator_name, default: nil
@@ -40,6 +38,22 @@ module Apiwork
       end
 
       class << self
+        def _model_class
+          @_model_class
+        end
+
+        def _model_class=(value)
+          @_model_class = value
+        end
+
+        def _auto_detection_complete
+          @_auto_detection_complete || false
+        end
+
+        def _auto_detection_complete=(value)
+          @_auto_detection_complete = value
+        end
+
         def resolve_association_schema(reflection, base_schema_class)
           return nil unless reflection
           return nil if reflection.polymorphic?
@@ -197,7 +211,7 @@ module Apiwork
 
         def variant(as: nil)
           ensure_auto_detection_complete
-          variant_tag = as || model_class.sti_name
+          variant_tag = as || derive_variant_tag
 
           self._variant_tag = variant_tag.to_sym
           self._sti_type = model_class.sti_name
@@ -205,6 +219,10 @@ module Apiwork
           superclass.register_variant(tag: _variant_tag, schema: self, sti_type: _sti_type) if superclass.respond_to?(:register_variant)
 
           self
+        end
+
+        def derive_variant_tag
+          model_class.name.demodulize.underscore
         end
 
         def register_variant(tag:, schema:, sti_type:)

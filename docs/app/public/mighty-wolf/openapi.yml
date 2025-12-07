@@ -274,10 +274,7 @@
           :type:
           - string
           - 'null'
-        doors:
-          :type:
-          - integer
-          - 'null'
+        doors: {}
         kind:
           :type: string
           :const: car
@@ -289,6 +286,7 @@
           - 'null'
       :required:
       - brand
+      - doors
       - kind
       - model
     vehicle_car_update_payload:
@@ -300,10 +298,7 @@
           :type:
           - string
           - 'null'
-        doors:
-          :type:
-          - integer
-          - 'null'
+        doors: {}
         kind:
           :type: string
           :const: car
@@ -315,6 +310,7 @@
           - 'null'
       :required:
       - brand
+      - doors
       - kind
       - model
     vehicle_create_payload:
@@ -365,10 +361,7 @@
           :type:
           - string
           - 'null'
-        engine_cc:
-          :type:
-          - integer
-          - 'null'
+        engine_cc: {}
         kind:
           :type: string
           :const: motorcycle
@@ -380,6 +373,7 @@
           - 'null'
       :required:
       - brand
+      - engine_cc
       - kind
       - model
     vehicle_motorcycle_update_payload:
@@ -391,10 +385,7 @@
           :type:
           - string
           - 'null'
-        engine_cc:
-          :type:
-          - integer
-          - 'null'
+        engine_cc: {}
         kind:
           :type: string
           :const: motorcycle
@@ -406,6 +397,7 @@
           - 'null'
       :required:
       - brand
+      - engine_cc
       - kind
       - model
     vehicle_page:
@@ -436,10 +428,7 @@
           :const: truck
         model:
           :type: string
-        payload_capacity:
-          :type:
-          - number
-          - 'null'
+        payload_capacity: {}
         year:
           :type:
           - integer
@@ -448,6 +437,7 @@
       - brand
       - kind
       - model
+      - payload_capacity
     vehicle_truck_update_payload:
       :type: object
       :properties:
@@ -462,10 +452,7 @@
           :const: truck
         model:
           :type: string
-        payload_capacity:
-          :type:
-          - number
-          - 'null'
+        payload_capacity: {}
         year:
           :type:
           - integer
@@ -474,6 +461,7 @@
       - brand
       - kind
       - model
+      - payload_capacity
     vehicle_update_payload:
       :oneOf:
       - :$ref: "#/components/schemas/vehicle_car_update_payload"
