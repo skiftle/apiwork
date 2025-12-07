@@ -1,0 +1,29 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/mighty-wolf/vehicles",
+    "body": {
+      "vehicle": {
+        "kind": "car",
+        "brand": "Tesla",
+        "model": "Model 3",
+        "year": 2024,
+        "color": "red"
+      }
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "vehicle": {
+        "kind": "car",
+        "id": "1294fa29-6ee7-4cc0-af01-2ada216d6cb8",
+        "brand": "Tesla",
+        "model": "Model 3",
+        "year": 2024,
+        "color": "red",
+        "doors": null
+      }
+    }
+  }
+}

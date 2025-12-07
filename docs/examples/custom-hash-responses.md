@@ -31,7 +31,7 @@ Using respond_with with plain hashes instead of ActiveRecord models
 ## Request Examples
 
 <details>
-<summary>health</summary>
+<summary>Health check</summary>
 
 **Request**
 
@@ -44,7 +44,7 @@ GET /lazy-cow/status/health
 ```json
 {
   "status": "ok",
-  "timestamp": "2025-12-07T11:45:01.673Z",
+  "timestamp": "2025-12-07T12:02:58.199Z",
   "version": "1.0.0"
 }
 ```
@@ -52,7 +52,7 @@ GET /lazy-cow/status/health
 </details>
 
 <details>
-<summary>stats</summary>
+<summary>System statistics</summary>
 
 **Request**
 

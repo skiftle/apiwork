@@ -246,12 +246,14 @@ class ExampleGenerator
 
     content = ['---', '', '## Request Examples']
 
-    scenarios.each_key do |action|
-      file_path = requests_dir.join("#{action}.json")
+    sorted = scenarios.sort_by { |s| s[:order] || 999 }
+    sorted.each do |scenario|
+      slug = scenario[:title].parameterize
+      file_path = requests_dir.join("#{slug}.json")
       next unless File.exist?(file_path)
 
       data = JSON.parse(File.read(file_path), symbolize_names: true)
-      content << request_example_block(action, data)
+      content << request_example_block(scenario[:title], data)
     end
 
     content.join("\n\n")

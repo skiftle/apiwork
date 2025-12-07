@@ -1,0 +1,26 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/swift-fox/contacts",
+    "body": {
+      "contact": {
+        "name": "John Doe",
+        "email": "John.Doe@Example.COM",
+        "phone": "",
+        "notes": ""
+      }
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "contact": {
+        "id": "78c8b42c-0b70-45a7-9b09-9c1f7617a460",
+        "name": "John Doe",
+        "email": "john.doe@example.com",
+        "phone": "",
+        "notes": ""
+      }
+    }
+  }
+}

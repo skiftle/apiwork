@@ -3,7 +3,9 @@ description: Single Table Inheritance with automatic variant serialization and T
 order: 5
 
 scenarios:
-  index:
+  - title: List all vehicles
+    description: Returns all vehicle types
+    order: 1
     method: GET
     path: /mighty-wolf/vehicles
     setup:
@@ -23,7 +25,9 @@ scenarios:
           brand: Ford
           model: F-150
 
-  show:
+  - title: Get vehicle details
+    description: Fetch vehicle with type-specific fields
+    order: 2
     method: GET
     path: /mighty-wolf/vehicles/:id
     setup:
@@ -35,7 +39,9 @@ scenarios:
           year: 2024
           color: red
 
-  create_car:
+  - title: Create a car
+    description: Create car variant
+    order: 3
     method: POST
     path: /mighty-wolf/vehicles
     body:
@@ -46,7 +52,9 @@ scenarios:
         year: 2024
         color: red
 
-  create_motorcycle:
+  - title: Create a motorcycle
+    description: Create motorcycle variant
+    order: 4
     method: POST
     path: /mighty-wolf/vehicles
     body:
@@ -57,7 +65,9 @@ scenarios:
         year: 2023
         color: black
 
-  create_truck:
+  - title: Create a truck
+    description: Create truck variant
+    order: 5
     method: POST
     path: /mighty-wolf/vehicles
     body:

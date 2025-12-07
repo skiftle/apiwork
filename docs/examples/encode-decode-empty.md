@@ -58,7 +58,7 @@ Transform values on input/output and handle nil/empty string conversion
 ## Request Examples
 
 <details>
-<summary>create_with_transforms</summary>
+<summary>Create with transforms</summary>
 
 **Request**
 
@@ -81,7 +81,7 @@ Content-Type: application/json
 ```json
 {
   "contact": {
-    "id": "241bf4b6-3c98-4849-9163-d72bc18eef1f",
+    "id": "78c8b42c-0b70-45a7-9b09-9c1f7617a460",
     "name": "John Doe",
     "email": "john.doe@example.com",
     "phone": "",
@@ -93,12 +93,12 @@ Content-Type: application/json
 </details>
 
 <details>
-<summary>show_transformed</summary>
+<summary>Show transformed data</summary>
 
 **Request**
 
 ```http
-GET /swift-fox/contacts/cf78952a-9518-4fd0-a44f-b2eafa2dda3d
+GET /swift-fox/contacts/ec37b094-f7a4-4abb-a17c-36583b0e291a
 ```
 
 **Response** `200`
@@ -106,7 +106,7 @@ GET /swift-fox/contacts/cf78952a-9518-4fd0-a44f-b2eafa2dda3d
 ```json
 {
   "contact": {
-    "id": "cf78952a-9518-4fd0-a44f-b2eafa2dda3d",
+    "id": "ec37b094-f7a4-4abb-a17c-36583b0e291a",
     "name": "Jane Doe",
     "email": "jane@example.com",
     "phone": "",

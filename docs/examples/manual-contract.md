@@ -52,7 +52,7 @@ Defining contracts manually without schemas
 ## Request Examples
 
 <details>
-<summary>index</summary>
+<summary>List all invoices</summary>
 
 **Request**
 
@@ -65,22 +65,22 @@ GET /funny-snake/invoices
 ```json
 [
   {
-    "id": "02dc1f29-b681-42e3-99a9-f72ad1399ed9",
+    "id": "300c2bd3-5292-4d66-98cf-8a0769472ff4",
     "number": "INV-001",
     "issued_on": null,
     "status": "draft",
     "notes": null,
-    "created_at": "2025-12-07T11:45:01.386Z",
-    "updated_at": "2025-12-07T11:45:01.386Z"
+    "created_at": "2025-12-07T12:02:57.932Z",
+    "updated_at": "2025-12-07T12:02:57.932Z"
   },
   {
-    "id": "3ab4e240-ac10-4067-b99b-8ec9fbc492d0",
+    "id": "87b486a5-73a0-4fed-ab87-43394fed1c88",
     "number": "INV-002",
     "issued_on": null,
     "status": "sent",
     "notes": null,
-    "created_at": "2025-12-07T11:45:01.387Z",
-    "updated_at": "2025-12-07T11:45:01.387Z"
+    "created_at": "2025-12-07T12:02:57.933Z",
+    "updated_at": "2025-12-07T12:02:57.933Z"
   }
 ]
 ```
@@ -88,32 +88,32 @@ GET /funny-snake/invoices
 </details>
 
 <details>
-<summary>show</summary>
+<summary>Get invoice details</summary>
 
 **Request**
 
 ```http
-GET /funny-snake/invoices/e75bcaa8-327c-4a93-bffc-503dd2691804
+GET /funny-snake/invoices/9a859b3b-b86b-497a-952c-b19ac04979dc
 ```
 
 **Response** `200`
 
 ```json
 {
-  "id": "e75bcaa8-327c-4a93-bffc-503dd2691804",
+  "id": "9a859b3b-b86b-497a-952c-b19ac04979dc",
   "number": "INV-001",
   "issued_on": null,
   "status": "draft",
   "notes": null,
-  "created_at": "2025-12-07T11:45:01.398Z",
-  "updated_at": "2025-12-07T11:45:01.398Z"
+  "created_at": "2025-12-07T12:02:57.941Z",
+  "updated_at": "2025-12-07T12:02:57.941Z"
 }
 ```
 
 </details>
 
 <details>
-<summary>create</summary>
+<summary>Create a new invoice</summary>
 
 **Request**
 
@@ -135,25 +135,25 @@ Content-Type: application/json
 
 ```json
 {
-  "id": "68eda74d-3ba4-4aa9-823a-b0bc42616cec",
+  "id": "4d57f95d-edd6-48df-825b-23e8897604c6",
   "number": "INV-001",
   "issued_on": "2024-01-15",
   "status": "draft",
   "notes": "First invoice",
-  "created_at": "2025-12-07T11:45:01.408Z",
-  "updated_at": "2025-12-07T11:45:01.408Z"
+  "created_at": "2025-12-07T12:02:57.953Z",
+  "updated_at": "2025-12-07T12:02:57.953Z"
 }
 ```
 
 </details>
 
 <details>
-<summary>update</summary>
+<summary>Update an invoice</summary>
 
 **Request**
 
 ```http
-PATCH /funny-snake/invoices/784051b2-4230-4a5e-a2bc-d6594a66ea60
+PATCH /funny-snake/invoices/2b4805aa-4fe9-45d0-9928-1c1e4061b668
 Content-Type: application/json
 
 {
@@ -174,34 +174,34 @@ Content-Type: application/json
   "issued_on": "2024-01-15",
   "status": "sent",
   "notes": "Updated invoice",
-  "id": "784051b2-4230-4a5e-a2bc-d6594a66ea60",
-  "created_at": "2025-12-07T11:45:01.411Z",
-  "updated_at": "2025-12-07T11:45:01.416Z"
+  "id": "2b4805aa-4fe9-45d0-9928-1c1e4061b668",
+  "created_at": "2025-12-07T12:02:57.956Z",
+  "updated_at": "2025-12-07T12:02:57.961Z"
 }
 ```
 
 </details>
 
 <details>
-<summary>destroy</summary>
+<summary>Delete an invoice</summary>
 
 **Request**
 
 ```http
-DELETE /funny-snake/invoices/dede6ab1-dcdc-4738-85c7-874ce49bbbb6
+DELETE /funny-snake/invoices/3e21bad0-14e3-465f-afb7-7b63d963f1e4
 ```
 
 **Response** `200`
 
 ```json
 {
-  "id": "dede6ab1-dcdc-4738-85c7-874ce49bbbb6",
+  "id": "3e21bad0-14e3-465f-afb7-7b63d963f1e4",
   "number": "INV-001",
   "issued_on": null,
   "status": null,
   "notes": null,
-  "created_at": "2025-12-07T11:45:01.419Z",
-  "updated_at": "2025-12-07T11:45:01.419Z"
+  "created_at": "2025-12-07T12:02:57.963Z",
+  "updated_at": "2025-12-07T12:02:57.963Z"
 }
 ```
 

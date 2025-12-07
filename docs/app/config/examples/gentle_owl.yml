@@ -3,7 +3,9 @@ description: Comments that belong to different content types (posts, videos, ima
 order: 6
 
 scenarios:
-  index:
+  - title: List all comments
+    description: Returns comments for all content types
+    order: 1
     method: GET
     path: /gentle-owl/comments
     setup:
@@ -27,7 +29,9 @@ scenarios:
           commentable_type: GentleOwl::Video
           commentable_id: :video_id
 
-  show:
+  - title: Get comment details
+    description: Fetch a single comment
+    order: 2
     method: GET
     path: /gentle-owl/comments/:id
     setup:
@@ -41,7 +45,9 @@ scenarios:
           commentable_type: GentleOwl::Post
           commentable_id: :post_id
 
-  create_post_comment:
+  - title: Create comment on post
+    description: Add comment to a blog post
+    order: 3
     method: POST
     path: /gentle-owl/comments
     setup:
@@ -55,7 +61,9 @@ scenarios:
         commentable_type: GentleOwl::Post
         commentable_id: :post_id
 
-  create_video_comment:
+  - title: Create comment on video
+    description: Add comment to a video
+    order: 4
     method: POST
     path: /gentle-owl/comments
     setup:
@@ -70,7 +78,9 @@ scenarios:
         commentable_type: GentleOwl::Video
         commentable_id: :video_id
 
-  filter_by_type:
+  - title: Filter by content type
+    description: Filter comments by commentable type
+    order: 5
     method: GET
     path: /gentle-owl/comments?filter[commentable_type][eq]=GentleOwl::Post
     setup:

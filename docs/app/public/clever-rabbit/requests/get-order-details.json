@@ -1,0 +1,21 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/clever-rabbit/orders/fbbac020-72d7-4e1c-be6e-d8d3a22f4954"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "order": {
+        "id": "fbbac020-72d7-4e1c-be6e-d8d3a22f4954",
+        "order_number": "ORD-001",
+        "status": "pending",
+        "total": null,
+        "created_at": "2025-12-07T12:02:57.788Z",
+        "updated_at": "2025-12-07T12:02:57.788Z",
+        "line_items": null,
+        "shipping_address": null
+      }
+    }
+  }
+}

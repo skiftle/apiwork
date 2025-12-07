@@ -3,7 +3,9 @@ description: Transform values on input/output and handle nil/empty string conver
 order: 9
 
 scenarios:
-  create_with_transforms:
+  - title: Create with transforms
+    description: Email decoded, empty strings handled
+    order: 1
     method: POST
     path: /swift-fox/contacts
     body:
@@ -13,7 +15,9 @@ scenarios:
         phone: ""
         notes: ""
 
-  show_transformed:
+  - title: Show transformed data
+    description: Email encoded in response
+    order: 2
     method: GET
     path: /swift-fox/contacts/:id
     setup:

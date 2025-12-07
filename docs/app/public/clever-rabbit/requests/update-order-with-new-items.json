@@ -1,0 +1,33 @@
+{
+  "request": {
+    "method": "PATCH",
+    "path": "/clever-rabbit/orders/77fc7d6b-3552-4996-8f6f-e4336764407f",
+    "body": {
+      "order": {
+        "order_number": "ORD-001",
+        "line_items": [
+          {
+            "product_name": "New Item",
+            "quantity": 3,
+            "unit_price": 19.99
+          }
+        ]
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "order": {
+        "id": "77fc7d6b-3552-4996-8f6f-e4336764407f",
+        "order_number": "ORD-001",
+        "status": "pending",
+        "total": null,
+        "created_at": "2025-12-07T12:02:57.809Z",
+        "updated_at": "2025-12-07T12:02:57.809Z",
+        "line_items": null,
+        "shipping_address": null
+      }
+    }
+  }
+}

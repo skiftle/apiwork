@@ -86,7 +86,7 @@ Single Table Inheritance with automatic variant serialization and TypeScript uni
 ## Request Examples
 
 <details>
-<summary>index</summary>
+<summary>List all vehicles</summary>
 
 **Request**
 
@@ -101,7 +101,7 @@ GET /mighty-wolf/vehicles
   "vehicles": [
     {
       "kind": "car",
-      "id": "a6c23b1a-e1b5-45c5-9259-bb68e58de57e",
+      "id": "b9de59b0-ad7f-4301-ba1c-d92eb990560b",
       "brand": "Tesla",
       "model": "Model 3",
       "year": null,
@@ -110,7 +110,7 @@ GET /mighty-wolf/vehicles
     },
     {
       "kind": "motorcycle",
-      "id": "dd7ca974-a304-479c-abaa-167ff40981b4",
+      "id": "e1c32bb1-6c94-4368-8cd2-d19d4d05f5c7",
       "brand": "Harley-Davidson",
       "model": "Street Glide",
       "year": null,
@@ -119,7 +119,7 @@ GET /mighty-wolf/vehicles
     },
     {
       "kind": "truck",
-      "id": "11654a85-dc73-467e-b217-106126ae8508",
+      "id": "e5648f7d-6455-4140-919e-0dcc26357e86",
       "brand": "Ford",
       "model": "F-150",
       "year": null,
@@ -140,12 +140,12 @@ GET /mighty-wolf/vehicles
 </details>
 
 <details>
-<summary>show</summary>
+<summary>Get vehicle details</summary>
 
 **Request**
 
 ```http
-GET /mighty-wolf/vehicles/270a2105-f0fd-47c5-8390-98b49b130386
+GET /mighty-wolf/vehicles/7f810f47-152d-478a-bdfa-aa9d5cbf3e81
 ```
 
 **Response** `200`
@@ -154,7 +154,7 @@ GET /mighty-wolf/vehicles/270a2105-f0fd-47c5-8390-98b49b130386
 {
   "vehicle": {
     "kind": "car",
-    "id": "270a2105-f0fd-47c5-8390-98b49b130386",
+    "id": "7f810f47-152d-478a-bdfa-aa9d5cbf3e81",
     "brand": "Tesla",
     "model": "Model 3",
     "year": 2024,
@@ -167,7 +167,7 @@ GET /mighty-wolf/vehicles/270a2105-f0fd-47c5-8390-98b49b130386
 </details>
 
 <details>
-<summary>create_car</summary>
+<summary>Create a car</summary>
 
 **Request**
 
@@ -192,7 +192,7 @@ Content-Type: application/json
 {
   "vehicle": {
     "kind": "car",
-    "id": "5132abb9-eecc-4c44-8a39-dd4dec0c88da",
+    "id": "1294fa29-6ee7-4cc0-af01-2ada216d6cb8",
     "brand": "Tesla",
     "model": "Model 3",
     "year": 2024,
@@ -205,7 +205,7 @@ Content-Type: application/json
 </details>
 
 <details>
-<summary>create_motorcycle</summary>
+<summary>Create a motorcycle</summary>
 
 **Request**
 
@@ -230,7 +230,7 @@ Content-Type: application/json
 {
   "vehicle": {
     "kind": "motorcycle",
-    "id": "395f450e-18b4-44e8-9bfe-1ee28e19bcc1",
+    "id": "18a73a1c-c0cf-49eb-9f73-ae23751b9b18",
     "brand": "Harley-Davidson",
     "model": "Street Glide",
     "year": 2023,
@@ -243,7 +243,7 @@ Content-Type: application/json
 </details>
 
 <details>
-<summary>create_truck</summary>
+<summary>Create a truck</summary>
 
 **Request**
 
@@ -268,7 +268,7 @@ Content-Type: application/json
 {
   "vehicle": {
     "kind": "truck",
-    "id": "36884188-7871-4803-936d-aa01aed539e1",
+    "id": "c0339fec-fe0a-4342-967a-ce47b41e4a7f",
     "brand": "Ford",
     "model": "F-150",
     "year": 2024,

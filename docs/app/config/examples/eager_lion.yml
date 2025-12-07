@@ -3,7 +3,9 @@ description: Using `schema!` to generate a complete contract from schema definit
 order: 2
 
 scenarios:
-  index:
+  - title: List all invoices
+    description: Returns invoices with customer data
+    order: 1
     method: GET
     path: /eager-lion/invoices
     setup:
@@ -19,7 +21,9 @@ scenarios:
           number: INV-002
           customer_id: :customer_id
 
-  show:
+  - title: Get invoice details
+    description: Fetch invoice with associations
+    order: 2
     method: GET
     path: /eager-lion/invoices/:id
     setup:
@@ -31,7 +35,9 @@ scenarios:
           number: INV-001
           customer_id: :customer_id
 
-  create:
+  - title: Create a new invoice
+    description: Create invoice linked to customer
+    order: 3
     method: POST
     path: /eager-lion/invoices
     setup:
@@ -45,7 +51,9 @@ scenarios:
         issued_on: "2024-01-15"
         notes: First invoice
 
-  update:
+  - title: Update an invoice
+    description: Modify invoice notes
+    order: 4
     method: PATCH
     path: /eager-lion/invoices/:id
     setup:
@@ -62,7 +70,9 @@ scenarios:
         customer_id: :customer_id
         notes: Updated notes
 
-  destroy:
+  - title: Delete an invoice
+    description: Remove invoice from system
+    order: 5
     method: DELETE
     path: /eager-lion/invoices/:id
     setup:

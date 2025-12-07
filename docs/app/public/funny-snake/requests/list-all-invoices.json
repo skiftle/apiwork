@@ -1,0 +1,29 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/funny-snake/invoices"
+  },
+  "response": {
+    "status": 200,
+    "body": [
+      {
+        "id": "300c2bd3-5292-4d66-98cf-8a0769472ff4",
+        "number": "INV-001",
+        "issued_on": null,
+        "status": "draft",
+        "notes": null,
+        "created_at": "2025-12-07T12:02:57.932Z",
+        "updated_at": "2025-12-07T12:02:57.932Z"
+      },
+      {
+        "id": "87b486a5-73a0-4fed-ab87-43394fed1c88",
+        "number": "INV-002",
+        "issued_on": null,
+        "status": "sent",
+        "notes": null,
+        "created_at": "2025-12-07T12:02:57.933Z",
+        "updated_at": "2025-12-07T12:02:57.933Z"
+      }
+    ]
+  }
+}

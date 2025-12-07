@@ -1,0 +1,36 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/gentle-owl/comments"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "comments": [
+        {
+          "id": "51c6047b-e3af-4680-a015-ed9f7dd65af4",
+          "body": "Great post!",
+          "author_name": "John Doe",
+          "commentable_type": "GentleOwl::Post",
+          "commentable_id": "da1202c6-b87b-4d73-9b0e-aa5d3af9542b",
+          "created_at": "2025-12-07T12:02:58.009Z"
+        },
+        {
+          "id": "72488de5-7018-46d0-b052-237123c0e46d",
+          "body": "Helpful video!",
+          "author_name": "Jane Doe",
+          "commentable_type": "GentleOwl::Video",
+          "commentable_id": "ee979791-d06e-4b95-9385-1f07ab300781",
+          "created_at": "2025-12-07T12:02:58.011Z"
+        }
+      ],
+      "pagination": {
+        "current": 1,
+        "next": null,
+        "prev": null,
+        "total": 1,
+        "items": 2
+      }
+    }
+  }
+}

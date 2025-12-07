@@ -1,0 +1,36 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/happy-zebra/users",
+    "body": {
+      "user": {
+        "email": "john@example.com",
+        "username": "johndoe",
+        "profile": {
+          "bio": "Software developer",
+          "website": "https://example.com"
+        }
+      }
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "user": {
+        "id": "63f55eeb-6e3a-4208-9de3-10cf3abe72ba",
+        "created_at": "2025-12-07T12:02:58.138Z",
+        "updated_at": "2025-12-07T12:02:58.138Z",
+        "email": "john@example.com",
+        "username": "johndoe",
+        "profile": {
+          "id": "eaf0e6a3-c7c8-46d8-a22a-9f05c7016b74",
+          "created_at": "2025-12-07T12:02:58.139Z",
+          "updated_at": "2025-12-07T12:02:58.139Z",
+          "bio": "Software developer",
+          "website": "https://example.com"
+        },
+        "posts": []
+      }
+    }
+  }
+}

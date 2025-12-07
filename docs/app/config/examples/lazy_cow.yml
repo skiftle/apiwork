@@ -3,10 +3,14 @@ description: Using respond_with with plain hashes instead of ActiveRecord models
 order: 8
 
 scenarios:
-  health:
+  - title: Health check
+    description: Returns system health status
+    order: 1
     method: GET
     path: /lazy-cow/status/health
 
-  stats:
+  - title: System statistics
+    description: Returns usage metrics
+    order: 2
     method: GET
     path: /lazy-cow/status/stats

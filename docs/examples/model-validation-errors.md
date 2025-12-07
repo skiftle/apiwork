@@ -137,7 +137,7 @@ How Apiwork captures ActiveRecord validation errors and presents them in a unifi
 ## Request Examples
 
 <details>
-<summary>create_valid</summary>
+<summary>Create valid user</summary>
 
 **Request**
 
@@ -162,15 +162,15 @@ Content-Type: application/json
 ```json
 {
   "user": {
-    "id": "5d09b8b6-c257-41ad-858b-90020c51c64c",
-    "created_at": "2025-12-07T11:45:01.609Z",
-    "updated_at": "2025-12-07T11:45:01.609Z",
+    "id": "63f55eeb-6e3a-4208-9de3-10cf3abe72ba",
+    "created_at": "2025-12-07T12:02:58.138Z",
+    "updated_at": "2025-12-07T12:02:58.138Z",
     "email": "john@example.com",
     "username": "johndoe",
     "profile": {
-      "id": "7b4525de-98d5-4c70-a71a-83290acb5064",
-      "created_at": "2025-12-07T11:45:01.610Z",
-      "updated_at": "2025-12-07T11:45:01.610Z",
+      "id": "eaf0e6a3-c7c8-46d8-a22a-9f05c7016b74",
+      "created_at": "2025-12-07T12:02:58.139Z",
+      "updated_at": "2025-12-07T12:02:58.139Z",
       "bio": "Software developer",
       "website": "https://example.com"
     },
@@ -182,7 +182,7 @@ Content-Type: application/json
 </details>
 
 <details>
-<summary>create_invalid_email</summary>
+<summary>Invalid email format</summary>
 
 **Request**
 
@@ -222,7 +222,7 @@ Content-Type: application/json
 </details>
 
 <details>
-<summary>create_missing_fields</summary>
+<summary>Missing required fields</summary>
 
 **Request**
 
@@ -274,7 +274,7 @@ Content-Type: application/json
 </details>
 
 <details>
-<summary>create_nested_invalid</summary>
+<summary>Invalid nested profile</summary>
 
 **Request**
 
@@ -333,7 +333,7 @@ Content-Type: application/json
 </details>
 
 <details>
-<summary>create_deep_nested_valid</summary>
+<summary>Create with deep nesting</summary>
 
 **Request**
 
@@ -369,24 +369,24 @@ Content-Type: application/json
 ```json
 {
   "user": {
-    "id": "fa73c202-93cb-4f29-bfe5-c2fd2b09b18e",
-    "created_at": "2025-12-07T11:45:01.643Z",
-    "updated_at": "2025-12-07T11:45:01.643Z",
+    "id": "4dbdf6a1-67df-4505-953e-be556840deca",
+    "created_at": "2025-12-07T12:02:58.172Z",
+    "updated_at": "2025-12-07T12:02:58.172Z",
     "email": "deep@example.com",
     "username": "deepuser",
     "profile": null,
     "posts": [
       {
-        "id": "61fa09b3-04f1-4cc6-a2fa-8525023eb43b",
+        "id": "80ee2cca-d085-4016-a742-13c33ab4fd9f",
         "title": "My First Post",
         "comments": [
           {
-            "id": "29a0ae13-d2d6-4dc1-9394-60eac98b988d",
+            "id": "5217d2df-5b29-4c51-a8e3-e73986811766",
             "body": "Great post!",
             "author": "Jane"
           },
           {
-            "id": "b1a85bd5-2e24-4d1f-917c-613fe6181e02",
+            "id": "b3f1597f-e29c-49f0-8cf6-273d5ba73355",
             "body": "Thanks for sharing",
             "author": "Bob"
           }
@@ -400,7 +400,7 @@ Content-Type: application/json
 </details>
 
 <details>
-<summary>create_deep_nested_invalid</summary>
+<summary>Deep nested validation error</summary>
 
 **Request**
 

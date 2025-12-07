@@ -12,9 +12,11 @@ class RequestRunner
   def run_all
     results = {}
 
-    @scenarios.each do |action, scenario|
+    @scenarios.each do |scenario|
+      scenario = scenario.deep_symbolize_keys
+      slug = scenario[:title].parameterize
       clear_database
-      results[action.to_sym] = run_scenario(scenario.deep_symbolize_keys)
+      results[slug.to_sym] = run_scenario(scenario)
     end
 
     results

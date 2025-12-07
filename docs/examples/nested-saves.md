@@ -104,7 +104,7 @@ Create, update, and delete nested records in a single request
 ## Request Examples
 
 <details>
-<summary>index</summary>
+<summary>List all orders</summary>
 
 **Request**
 
@@ -118,22 +118,22 @@ GET /clever-rabbit/orders
 {
   "orders": [
     {
-      "id": "1052addb-564e-4e1f-a8cc-e8b61d46608e",
+      "id": "41b0f85e-80d2-40bf-82c2-83c1974a45bf",
       "order_number": "ORD-001",
       "status": "pending",
       "total": null,
-      "created_at": "2025-12-07T11:45:01.089Z",
-      "updated_at": "2025-12-07T11:45:01.089Z",
+      "created_at": "2025-12-07T12:02:57.767Z",
+      "updated_at": "2025-12-07T12:02:57.767Z",
       "line_items": null,
       "shipping_address": null
     },
     {
-      "id": "a942de33-f1ff-44cf-a809-254c0d160ca1",
+      "id": "d167f251-7527-440a-89ed-66f3402c11b7",
       "order_number": "ORD-002",
       "status": "pending",
       "total": null,
-      "created_at": "2025-12-07T11:45:01.091Z",
-      "updated_at": "2025-12-07T11:45:01.091Z",
+      "created_at": "2025-12-07T12:02:57.768Z",
+      "updated_at": "2025-12-07T12:02:57.768Z",
       "line_items": null,
       "shipping_address": null
     }
@@ -151,12 +151,12 @@ GET /clever-rabbit/orders
 </details>
 
 <details>
-<summary>show</summary>
+<summary>Get order details</summary>
 
 **Request**
 
 ```http
-GET /clever-rabbit/orders/3508d31a-98d5-4d21-896c-2e3be0cc7966
+GET /clever-rabbit/orders/fbbac020-72d7-4e1c-be6e-d8d3a22f4954
 ```
 
 **Response** `200`
@@ -164,12 +164,12 @@ GET /clever-rabbit/orders/3508d31a-98d5-4d21-896c-2e3be0cc7966
 ```json
 {
   "order": {
-    "id": "3508d31a-98d5-4d21-896c-2e3be0cc7966",
+    "id": "fbbac020-72d7-4e1c-be6e-d8d3a22f4954",
     "order_number": "ORD-001",
     "status": "pending",
     "total": null,
-    "created_at": "2025-12-07T11:45:01.115Z",
-    "updated_at": "2025-12-07T11:45:01.115Z",
+    "created_at": "2025-12-07T12:02:57.788Z",
+    "updated_at": "2025-12-07T12:02:57.788Z",
     "line_items": null,
     "shipping_address": null
   }
@@ -179,7 +179,7 @@ GET /clever-rabbit/orders/3508d31a-98d5-4d21-896c-2e3be0cc7966
 </details>
 
 <details>
-<summary>create</summary>
+<summary>Create order with nested records</summary>
 
 **Request**
 
@@ -217,12 +217,12 @@ Content-Type: application/json
 ```json
 {
   "order": {
-    "id": "d30f3982-06be-421d-b0bd-821aa946211f",
+    "id": "cb2cadf8-f8f0-41d2-b714-896ad8870acd",
     "order_number": "ORD-001",
     "status": "pending",
     "total": null,
-    "created_at": "2025-12-07T11:45:01.136Z",
-    "updated_at": "2025-12-07T11:45:01.136Z",
+    "created_at": "2025-12-07T12:02:57.805Z",
+    "updated_at": "2025-12-07T12:02:57.805Z",
     "line_items": null,
     "shipping_address": null
   }
@@ -232,12 +232,12 @@ Content-Type: application/json
 </details>
 
 <details>
-<summary>update</summary>
+<summary>Update order with new items</summary>
 
 **Request**
 
 ```http
-PATCH /clever-rabbit/orders/38b74b9e-2ac1-4c0a-80c3-49417558663a
+PATCH /clever-rabbit/orders/77fc7d6b-3552-4996-8f6f-e4336764407f
 Content-Type: application/json
 
 {
@@ -259,12 +259,12 @@ Content-Type: application/json
 ```json
 {
   "order": {
-    "id": "38b74b9e-2ac1-4c0a-80c3-49417558663a",
+    "id": "77fc7d6b-3552-4996-8f6f-e4336764407f",
     "order_number": "ORD-001",
     "status": "pending",
     "total": null,
-    "created_at": "2025-12-07T11:45:01.143Z",
-    "updated_at": "2025-12-07T11:45:01.143Z",
+    "created_at": "2025-12-07T12:02:57.809Z",
+    "updated_at": "2025-12-07T12:02:57.809Z",
     "line_items": null,
     "shipping_address": null
   }
@@ -274,12 +274,12 @@ Content-Type: application/json
 </details>
 
 <details>
-<summary>destroy</summary>
+<summary>Delete an order</summary>
 
 **Request**
 
 ```http
-DELETE /clever-rabbit/orders/8b99bb40-32d2-45cd-a437-1b18e9d5fc72
+DELETE /clever-rabbit/orders/e3edd64f-e75d-4ed0-adc1-ada1763202aa
 ```
 
 **Response** `200`

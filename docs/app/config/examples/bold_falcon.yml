@@ -3,7 +3,9 @@ description: Complex queries with string patterns, numeric ranges, and logical o
 order: 4
 
 scenarios:
-  index:
+  - title: List all articles
+    description: Returns paginated article list
+    order: 1
     method: GET
     path: /bold-falcon/articles
     setup:
@@ -16,7 +18,9 @@ scenarios:
           title: Draft Article
           status: draft
 
-  show:
+  - title: Get article details
+    description: Fetch a single article
+    order: 2
     method: GET
     path: /bold-falcon/articles/:id
     setup:
@@ -25,7 +29,9 @@ scenarios:
           title: Getting Started with Rails
           status: published
 
-  create:
+  - title: Create a new article
+    description: Create article with all fields
+    order: 3
     method: POST
     path: /bold-falcon/articles
     body:
@@ -35,7 +41,9 @@ scenarios:
         status: draft
         published_on: "2024-01-15"
 
-  filter_by_status:
+  - title: Filter by status
+    description: Filter articles where status equals published
+    order: 4
     method: GET
     path: /bold-falcon/articles?filter[status][eq]=published
     setup:
@@ -48,7 +56,9 @@ scenarios:
           title: Draft Article
           status: draft
 
-  filter_by_title_contains:
+  - title: Filter by title pattern
+    description: Filter articles with title containing text
+    order: 5
     method: GET
     path: /bold-falcon/articles?filter[title][contains]=Rails
     setup:
