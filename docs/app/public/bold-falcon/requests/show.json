@@ -1,21 +1,21 @@
 {
   "request": {
     "method": "GET",
-    "path": "/bold-falcon/articles/587ca1f4-a9fe-4fd6-84a7-9e019642f9a5"
+    "path": "/bold-falcon/articles/04524900-4512-4dc2-a3d7-d84a40deef20"
   },
   "response": {
     "status": 200,
     "body": {
       "article": {
-        "id": "587ca1f4-a9fe-4fd6-84a7-9e019642f9a5",
+        "id": "04524900-4512-4dc2-a3d7-d84a40deef20",
         "title": "Getting Started with Rails",
         "body": null,
         "status": "published",
         "view_count": 0,
         "rating": null,
         "published_on": null,
-        "created_at": "2025-12-07T11:20:16.456Z",
-        "updated_at": "2025-12-07T11:20:16.456Z"
+        "created_at": "2025-12-07T11:45:01.004Z",
+        "updated_at": "2025-12-07T11:45:01.004Z"
       }
     }
   }

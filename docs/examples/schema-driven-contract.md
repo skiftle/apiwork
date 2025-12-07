@@ -18,18 +18,54 @@ Using `schema!` to generate a complete contract from schema definitions
 
 <<< @/app/app/models/eager_lion/customer.rb
 
+<details>
+<summary>Database Table</summary>
+
+| Column | Type | Nullable | Default |
+|--------|------|----------|---------|
+| id | string |  |  |
+| created_at | datetime |  |  |
+| name | string |  |  |
+| updated_at | datetime |  |  |
+
+</details>
+
 <small>`app/models/eager_lion/invoice.rb`</small>
 
 <<< @/app/app/models/eager_lion/invoice.rb
+
+<details>
+<summary>Database Table</summary>
+
+| Column | Type | Nullable | Default |
+|--------|------|----------|---------|
+| id | string |  |  |
+| created_at | datetime |  |  |
+| customer_id | string |  |  |
+| issued_on | date | ✓ |  |
+| notes | string | ✓ |  |
+| number | string |  |  |
+| status | string | ✓ |  |
+| updated_at | datetime |  |  |
+
+</details>
 
 <small>`app/models/eager_lion/line.rb`</small>
 
 <<< @/app/app/models/eager_lion/line.rb
 
 <details>
-<summary>Database Schema</summary>
+<summary>Database Table</summary>
 
-<<< @/app/public/eager-lion/schema.md
+| Column | Type | Nullable | Default |
+|--------|------|----------|---------|
+| id | string |  |  |
+| created_at | datetime |  |  |
+| description | string | ✓ |  |
+| invoice_id | string |  |  |
+| price | decimal | ✓ |  |
+| quantity | integer | ✓ |  |
+| updated_at | datetime |  |  |
 
 </details>
 
@@ -80,26 +116,26 @@ GET /eager-lion/invoices
 {
   "invoices": [
     {
-      "id": "b7227c0b-bb52-4ec1-8297-88f5cd7a97fe",
-      "created_at": "2025-12-07T11:20:16.682Z",
-      "updated_at": "2025-12-07T11:20:16.682Z",
+      "id": "13d5b635-9091-4894-aec2-060c32a04e84",
+      "created_at": "2025-12-07T11:45:01.300Z",
+      "updated_at": "2025-12-07T11:45:01.300Z",
       "number": "INV-001",
       "issued_on": null,
       "notes": null,
       "status": null,
-      "customer_id": "542d63f4-c059-4a8e-958e-280c441bc2a9",
+      "customer_id": "b1e334df-78f9-425a-9913-15d76b04b902",
       "lines": null,
       "customer": null
     },
     {
-      "id": "a15946a9-f750-46ac-b215-1353b829366f",
-      "created_at": "2025-12-07T11:20:16.684Z",
-      "updated_at": "2025-12-07T11:20:16.684Z",
+      "id": "3ea5b55d-d8a5-44f0-9535-7cfe7206d124",
+      "created_at": "2025-12-07T11:45:01.302Z",
+      "updated_at": "2025-12-07T11:45:01.302Z",
       "number": "INV-002",
       "issued_on": null,
       "notes": null,
       "status": null,
-      "customer_id": "542d63f4-c059-4a8e-958e-280c441bc2a9",
+      "customer_id": "b1e334df-78f9-425a-9913-15d76b04b902",
       "lines": null,
       "customer": null
     }
@@ -122,7 +158,7 @@ GET /eager-lion/invoices
 **Request**
 
 ```http
-GET /eager-lion/invoices/def2baaa-3063-4388-8173-33c1aa9c62b6
+GET /eager-lion/invoices/ff7c9121-96c6-4db0-9332-200cd3aa207a
 ```
 
 **Response** `200`
@@ -130,14 +166,14 @@ GET /eager-lion/invoices/def2baaa-3063-4388-8173-33c1aa9c62b6
 ```json
 {
   "invoice": {
-    "id": "def2baaa-3063-4388-8173-33c1aa9c62b6",
-    "created_at": "2025-12-07T11:20:16.696Z",
-    "updated_at": "2025-12-07T11:20:16.696Z",
+    "id": "ff7c9121-96c6-4db0-9332-200cd3aa207a",
+    "created_at": "2025-12-07T11:45:01.323Z",
+    "updated_at": "2025-12-07T11:45:01.323Z",
     "number": "INV-001",
     "issued_on": null,
     "notes": null,
     "status": null,
-    "customer_id": "a0f265e2-f75f-4f94-aff2-2f8d9c7951e9",
+    "customer_id": "afa0bcd7-22f2-478d-a475-3d50f263ef54",
     "lines": null,
     "customer": null
   }
@@ -158,7 +194,7 @@ Content-Type: application/json
 {
   "invoice": {
     "number": "INV-001",
-    "customer_id": "87374ed3-8691-4034-afa1-7eb7471dd9ba",
+    "customer_id": "b69da10a-10c5-42f4-bc21-a3568a3e033b",
     "issued_on": "2024-01-15",
     "notes": "First invoice"
   }
@@ -170,14 +206,14 @@ Content-Type: application/json
 ```json
 {
   "invoice": {
-    "id": "94d844b7-d219-4869-bd67-6ef48b76b5ac",
-    "created_at": "2025-12-07T11:20:16.718Z",
-    "updated_at": "2025-12-07T11:20:16.718Z",
+    "id": "5e7b7a72-752f-463d-88da-bc308edabf14",
+    "created_at": "2025-12-07T11:45:01.339Z",
+    "updated_at": "2025-12-07T11:45:01.339Z",
     "number": "INV-001",
     "issued_on": "2024-01-15",
     "notes": "First invoice",
     "status": null,
-    "customer_id": "87374ed3-8691-4034-afa1-7eb7471dd9ba",
+    "customer_id": "b69da10a-10c5-42f4-bc21-a3568a3e033b",
     "lines": null,
     "customer": null
   }
@@ -192,13 +228,13 @@ Content-Type: application/json
 **Request**
 
 ```http
-PATCH /eager-lion/invoices/15c24d45-ff89-49c9-8928-ff847fa69038
+PATCH /eager-lion/invoices/c98443a4-d9d3-4e29-a08e-598610331934
 Content-Type: application/json
 
 {
   "invoice": {
     "number": "INV-001",
-    "customer_id": "ddae5ba5-7cfd-40bc-ad0e-07b4d0d8cb99",
+    "customer_id": "3b12d77b-5150-4e46-9b64-d00d865d236d",
     "notes": "Updated notes"
   }
 }
@@ -209,14 +245,14 @@ Content-Type: application/json
 ```json
 {
   "invoice": {
-    "id": "15c24d45-ff89-49c9-8928-ff847fa69038",
-    "created_at": "2025-12-07T11:20:16.722Z",
-    "updated_at": "2025-12-07T11:20:16.727Z",
+    "id": "c98443a4-d9d3-4e29-a08e-598610331934",
+    "created_at": "2025-12-07T11:45:01.344Z",
+    "updated_at": "2025-12-07T11:45:01.350Z",
     "number": "INV-001",
     "issued_on": null,
     "notes": "Updated notes",
     "status": null,
-    "customer_id": "ddae5ba5-7cfd-40bc-ad0e-07b4d0d8cb99",
+    "customer_id": "3b12d77b-5150-4e46-9b64-d00d865d236d",
     "lines": null,
     "customer": null
   }
@@ -231,7 +267,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-DELETE /eager-lion/invoices/c32f28ce-b796-4932-a321-a5bc7809e2d5
+DELETE /eager-lion/invoices/aab1798b-fa09-4399-8904-3d184e758fea
 ```
 
 **Response** `200`

@@ -44,7 +44,7 @@ GET /lazy-cow/status/health
 ```json
 {
   "status": "ok",
-  "timestamp": "2025-12-07T11:20:17.042Z",
+  "timestamp": "2025-12-07T11:45:01.673Z",
   "version": "1.0.0"
 }
 ```

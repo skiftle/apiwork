@@ -18,22 +18,69 @@ How Apiwork captures ActiveRecord validation errors and presents them in a unifi
 
 <<< @/app/app/models/happy_zebra/comment.rb
 
+<details>
+<summary>Database Table</summary>
+
+| Column | Type | Nullable | Default |
+|--------|------|----------|---------|
+| id | string |  |  |
+| post_id | string |  |  |
+| body | string |  |  |
+| author | string |  |  |
+| created_at | datetime |  |  |
+| updated_at | datetime |  |  |
+
+</details>
+
 <small>`app/models/happy_zebra/post.rb`</small>
 
 <<< @/app/app/models/happy_zebra/post.rb
 
+<details>
+<summary>Database Table</summary>
+
+| Column | Type | Nullable | Default |
+|--------|------|----------|---------|
+| id | string |  |  |
+| user_id | string |  |  |
+| title | string |  |  |
+| created_at | datetime |  |  |
+| updated_at | datetime |  |  |
+
+</details>
+
 <small>`app/models/happy_zebra/profile.rb`</small>
 
 <<< @/app/app/models/happy_zebra/profile.rb
+
+<details>
+<summary>Database Table</summary>
+
+| Column | Type | Nullable | Default |
+|--------|------|----------|---------|
+| id | string |  |  |
+| user_id | string |  |  |
+| bio | text | ✓ |  |
+| website | string | ✓ |  |
+| created_at | datetime |  |  |
+| updated_at | datetime |  |  |
+
+</details>
 
 <small>`app/models/happy_zebra/user.rb`</small>
 
 <<< @/app/app/models/happy_zebra/user.rb
 
 <details>
-<summary>Database Schema</summary>
+<summary>Database Table</summary>
 
-<<< @/app/public/happy-zebra/schema.md
+| Column | Type | Nullable | Default |
+|--------|------|----------|---------|
+| id | string |  |  |
+| email | string |  |  |
+| username | string |  |  |
+| created_at | datetime |  |  |
+| updated_at | datetime |  |  |
 
 </details>
 
@@ -115,15 +162,15 @@ Content-Type: application/json
 ```json
 {
   "user": {
-    "id": "b6f987a6-bc94-4dd1-9ebc-6708d1473c15",
-    "created_at": "2025-12-07T11:20:16.972Z",
-    "updated_at": "2025-12-07T11:20:16.972Z",
+    "id": "5d09b8b6-c257-41ad-858b-90020c51c64c",
+    "created_at": "2025-12-07T11:45:01.609Z",
+    "updated_at": "2025-12-07T11:45:01.609Z",
     "email": "john@example.com",
     "username": "johndoe",
     "profile": {
-      "id": "608e03a8-2032-4595-b949-44837974f459",
-      "created_at": "2025-12-07T11:20:16.973Z",
-      "updated_at": "2025-12-07T11:20:16.973Z",
+      "id": "7b4525de-98d5-4c70-a71a-83290acb5064",
+      "created_at": "2025-12-07T11:45:01.610Z",
+      "updated_at": "2025-12-07T11:45:01.610Z",
       "bio": "Software developer",
       "website": "https://example.com"
     },
@@ -322,24 +369,24 @@ Content-Type: application/json
 ```json
 {
   "user": {
-    "id": "39c9d3ed-fea5-4574-b311-a958997efa6e",
-    "created_at": "2025-12-07T11:20:17.012Z",
-    "updated_at": "2025-12-07T11:20:17.012Z",
+    "id": "fa73c202-93cb-4f29-bfe5-c2fd2b09b18e",
+    "created_at": "2025-12-07T11:45:01.643Z",
+    "updated_at": "2025-12-07T11:45:01.643Z",
     "email": "deep@example.com",
     "username": "deepuser",
     "profile": null,
     "posts": [
       {
-        "id": "a846d349-e4cb-436f-a4b0-02d81925d948",
+        "id": "61fa09b3-04f1-4cc6-a2fa-8525023eb43b",
         "title": "My First Post",
         "comments": [
           {
-            "id": "1f2dcea3-9e3d-47a4-8fc2-53d2a08a4e0b",
+            "id": "29a0ae13-d2d6-4dc1-9394-60eac98b988d",
             "body": "Great post!",
             "author": "Jane"
           },
           {
-            "id": "83430d7c-843d-45cb-8e3c-36bb51057933",
+            "id": "b1a85bd5-2e24-4d1f-917c-613fe6181e02",
             "body": "Thanks for sharing",
             "author": "Bob"
           }

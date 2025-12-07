@@ -162,8 +162,47 @@ class ExampleGenerator
     content = ['## Models']
     files.each do |file|
       content << file_block(file)
+      content << schema_details_for(file, namespace)
     end
-    content.join("\n\n")
+    content.compact.join("\n\n")
+  end
+
+  def schema_details_for(file, namespace)
+    model_name = File.basename(file, '.rb')
+    table_name = "#{namespace}_#{model_name.pluralize}"
+
+    return unless table_exists?(table_name)
+
+    cols = ActiveRecord::Base.connection.columns(table_name)
+
+    lines = []
+    lines << '<details>'
+    lines << '<summary>Database Table</summary>'
+    lines << ''
+    lines << '| Column | Type | Nullable | Default |'
+    lines << '|--------|------|----------|---------|'
+
+    cols.each do |col|
+      type = column_type(col)
+      nullable = col.null ? '✓' : ''
+      default = col.default.present? ? col.default.to_s : ''
+      lines << "| #{col.name} | #{type} | #{nullable} | #{default} |"
+    end
+
+    lines << ''
+    lines << '</details>'
+
+    lines.join("\n")
+  end
+
+  def table_exists?(table_name)
+    ActiveRecord::Base.connection.table_exists?(table_name)
+  end
+
+  def column_type(col)
+    return 'string' if col.name == 'id' || col.name.end_with?('_id')
+
+    col.type.to_s
   end
 
   def schemas_section(namespace)

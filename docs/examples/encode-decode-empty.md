@@ -19,9 +19,17 @@ Transform values on input/output and handle nil/empty string conversion
 <<< @/app/app/models/swift_fox/contact.rb
 
 <details>
-<summary>Database Schema</summary>
+<summary>Database Table</summary>
 
-<<< @/app/public/swift-fox/schema.md
+| Column | Type | Nullable | Default |
+|--------|------|----------|---------|
+| id | string |  |  |
+| name | string |  |  |
+| email | string | ✓ |  |
+| phone | string | ✓ |  |
+| notes | string | ✓ |  |
+| created_at | datetime |  |  |
+| updated_at | datetime |  |  |
 
 </details>
 
@@ -73,7 +81,7 @@ Content-Type: application/json
 ```json
 {
   "contact": {
-    "id": "cf669332-d3b1-4db9-bc19-cdaa635bcffb",
+    "id": "241bf4b6-3c98-4849-9163-d72bc18eef1f",
     "name": "John Doe",
     "email": "john.doe@example.com",
     "phone": "",
@@ -90,7 +98,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-GET /swift-fox/contacts/649b49ef-6b6d-44cb-a804-383d841d5302
+GET /swift-fox/contacts/cf78952a-9518-4fd0-a44f-b2eafa2dda3d
 ```
 
 **Response** `200`
@@ -98,7 +106,7 @@ GET /swift-fox/contacts/649b49ef-6b6d-44cb-a804-383d841d5302
 ```json
 {
   "contact": {
-    "id": "649b49ef-6b6d-44cb-a804-383d841d5302",
+    "id": "cf78952a-9518-4fd0-a44f-b2eafa2dda3d",
     "name": "Jane Doe",
     "email": "jane@example.com",
     "phone": "",

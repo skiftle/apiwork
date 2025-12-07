@@ -18,14 +18,38 @@ Complex queries with string patterns, numeric ranges, and logical operators
 
 <<< @/app/app/models/bold_falcon/article.rb
 
+<details>
+<summary>Database Table</summary>
+
+| Column | Type | Nullable | Default |
+|--------|------|----------|---------|
+| id | string |  |  |
+| category_id | string | ✓ |  |
+| title | string |  |  |
+| body | text | ✓ |  |
+| status | string | ✓ | draft |
+| view_count | integer | ✓ | 0 |
+| rating | decimal | ✓ |  |
+| published_on | date | ✓ |  |
+| created_at | datetime |  |  |
+| updated_at | datetime |  |  |
+
+</details>
+
 <small>`app/models/bold_falcon/category.rb`</small>
 
 <<< @/app/app/models/bold_falcon/category.rb
 
 <details>
-<summary>Database Schema</summary>
+<summary>Database Table</summary>
 
-<<< @/app/public/bold-falcon/schema.md
+| Column | Type | Nullable | Default |
+|--------|------|----------|---------|
+| id | string |  |  |
+| name | string |  |  |
+| slug | string |  |  |
+| created_at | datetime |  |  |
+| updated_at | datetime |  |  |
 
 </details>
 
@@ -72,26 +96,26 @@ GET /bold-falcon/articles
 {
   "articles": [
     {
-      "id": "c6edd138-0d09-462b-b6f8-44bb2ee24e48",
+      "id": "89779802-cdc6-4fdf-8cda-4a79adc3d015",
       "title": "Published Article",
       "body": null,
       "status": "published",
       "view_count": 0,
       "rating": null,
       "published_on": null,
-      "created_at": "2025-12-07T11:20:16.303Z",
-      "updated_at": "2025-12-07T11:20:16.303Z"
+      "created_at": "2025-12-07T11:45:00.783Z",
+      "updated_at": "2025-12-07T11:45:00.783Z"
     },
     {
-      "id": "ca09b315-3c7d-4544-834d-28acc0b57c2e",
+      "id": "cdbc949a-0dfe-4ea9-83ce-57e87e018498",
       "title": "Draft Article",
       "body": null,
       "status": "draft",
       "view_count": 0,
       "rating": null,
       "published_on": null,
-      "created_at": "2025-12-07T11:20:16.316Z",
-      "updated_at": "2025-12-07T11:20:16.316Z"
+      "created_at": "2025-12-07T11:45:00.786Z",
+      "updated_at": "2025-12-07T11:45:00.786Z"
     }
   ],
   "pagination": {
@@ -112,7 +136,7 @@ GET /bold-falcon/articles
 **Request**
 
 ```http
-GET /bold-falcon/articles/587ca1f4-a9fe-4fd6-84a7-9e019642f9a5
+GET /bold-falcon/articles/04524900-4512-4dc2-a3d7-d84a40deef20
 ```
 
 **Response** `200`
@@ -120,15 +144,15 @@ GET /bold-falcon/articles/587ca1f4-a9fe-4fd6-84a7-9e019642f9a5
 ```json
 {
   "article": {
-    "id": "587ca1f4-a9fe-4fd6-84a7-9e019642f9a5",
+    "id": "04524900-4512-4dc2-a3d7-d84a40deef20",
     "title": "Getting Started with Rails",
     "body": null,
     "status": "published",
     "view_count": 0,
     "rating": null,
     "published_on": null,
-    "created_at": "2025-12-07T11:20:16.456Z",
-    "updated_at": "2025-12-07T11:20:16.456Z"
+    "created_at": "2025-12-07T11:45:01.004Z",
+    "updated_at": "2025-12-07T11:45:01.004Z"
   }
 }
 ```
@@ -159,15 +183,15 @@ Content-Type: application/json
 ```json
 {
   "article": {
-    "id": "8645b95a-ed05-4c20-b405-05fdc60f445c",
+    "id": "75957448-08a9-4810-80b9-dd9a674e2d6e",
     "title": "Getting Started with Rails",
     "body": "A comprehensive guide to Ruby on Rails",
     "status": "draft",
     "view_count": 0,
     "rating": null,
     "published_on": "2024-01-15",
-    "created_at": "2025-12-07T11:20:16.469Z",
-    "updated_at": "2025-12-07T11:20:16.469Z"
+    "created_at": "2025-12-07T11:45:01.026Z",
+    "updated_at": "2025-12-07T11:45:01.026Z"
   }
 }
 ```
@@ -189,15 +213,15 @@ GET /bold-falcon/articles?filter[status][eq]=published
 {
   "articles": [
     {
-      "id": "cd92c3ba-cfe0-436c-8612-e75b75ed164e",
+      "id": "9054000c-6cbd-4ea4-a5f6-c436a544720f",
       "title": "Published Article",
       "body": null,
       "status": "published",
       "view_count": 0,
       "rating": null,
       "published_on": null,
-      "created_at": "2025-12-07T11:20:16.472Z",
-      "updated_at": "2025-12-07T11:20:16.472Z"
+      "created_at": "2025-12-07T11:45:01.030Z",
+      "updated_at": "2025-12-07T11:45:01.030Z"
     }
   ],
   "pagination": {
@@ -227,15 +251,15 @@ GET /bold-falcon/articles?filter[title][contains]=Rails
 {
   "articles": [
     {
-      "id": "4a782610-ccfb-4a92-b5aa-06e680576801",
+      "id": "80917b2f-74f8-404f-9549-e6412fd87f92",
       "title": "Getting Started with Rails",
       "body": null,
       "status": "published",
       "view_count": 0,
       "rating": null,
       "published_on": null,
-      "created_at": "2025-12-07T11:20:16.484Z",
-      "updated_at": "2025-12-07T11:20:16.484Z"
+      "created_at": "2025-12-07T11:45:01.045Z",
+      "updated_at": "2025-12-07T11:45:01.045Z"
     }
   ],
   "pagination": {

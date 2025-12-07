@@ -18,22 +18,72 @@ Comments that belong to different content types (posts, videos, images)
 
 <<< @/app/app/models/gentle_owl/comment.rb
 
+<details>
+<summary>Database Table</summary>
+
+| Column | Type | Nullable | Default |
+|--------|------|----------|---------|
+| id | string |  |  |
+| commentable_type | string |  |  |
+| commentable_id | string |  |  |
+| body | text |  |  |
+| author_name | string | ✓ |  |
+| created_at | datetime |  |  |
+| updated_at | datetime |  |  |
+
+</details>
+
 <small>`app/models/gentle_owl/image.rb`</small>
 
 <<< @/app/app/models/gentle_owl/image.rb
 
+<details>
+<summary>Database Table</summary>
+
+| Column | Type | Nullable | Default |
+|--------|------|----------|---------|
+| id | string |  |  |
+| title | string |  |  |
+| url | string |  |  |
+| width | integer | ✓ |  |
+| height | integer | ✓ |  |
+| created_at | datetime |  |  |
+| updated_at | datetime |  |  |
+
+</details>
+
 <small>`app/models/gentle_owl/post.rb`</small>
 
 <<< @/app/app/models/gentle_owl/post.rb
+
+<details>
+<summary>Database Table</summary>
+
+| Column | Type | Nullable | Default |
+|--------|------|----------|---------|
+| id | string |  |  |
+| title | string |  |  |
+| body | text | ✓ |  |
+| created_at | datetime |  |  |
+| updated_at | datetime |  |  |
+
+</details>
 
 <small>`app/models/gentle_owl/video.rb`</small>
 
 <<< @/app/app/models/gentle_owl/video.rb
 
 <details>
-<summary>Database Schema</summary>
+<summary>Database Table</summary>
 
-<<< @/app/public/gentle-owl/schema.md
+| Column | Type | Nullable | Default |
+|--------|------|----------|---------|
+| id | string |  |  |
+| title | string |  |  |
+| url | string |  |  |
+| duration | integer | ✓ |  |
+| created_at | datetime |  |  |
+| updated_at | datetime |  |  |
 
 </details>
 
@@ -88,20 +138,20 @@ GET /gentle-owl/comments
 {
   "comments": [
     {
-      "id": "50b036f5-d938-4abc-9d69-8929c5d315b6",
+      "id": "02d84bfd-e733-435b-8ee7-09cb35f25913",
       "body": "Great post!",
       "author_name": "John Doe",
       "commentable_type": "GentleOwl::Post",
-      "commentable_id": "4c90ce4b-f1c8-44f2-9ce7-508d563c27a7",
-      "created_at": "2025-12-07T11:20:16.838Z"
+      "commentable_id": "1e8dfb54-d3b4-4aea-9ac5-11a31c2bdbb6",
+      "created_at": "2025-12-07T11:45:01.468Z"
     },
     {
-      "id": "6b6f9e7a-b2d3-42eb-b5cf-580d42577eba",
+      "id": "c26f2209-a27a-4564-b6cc-ddcc0c206980",
       "body": "Helpful video!",
       "author_name": "Jane Doe",
       "commentable_type": "GentleOwl::Video",
-      "commentable_id": "f4bb333e-7dd9-4211-8608-90e484dd8929",
-      "created_at": "2025-12-07T11:20:16.841Z"
+      "commentable_id": "cb322209-00b2-43c9-ae5c-248e78a39595",
+      "created_at": "2025-12-07T11:45:01.470Z"
     }
   ],
   "pagination": {
@@ -122,7 +172,7 @@ GET /gentle-owl/comments
 **Request**
 
 ```http
-GET /gentle-owl/comments/effda81c-f881-45da-abc9-83b4c3e1a966
+GET /gentle-owl/comments/9e8b51fd-b620-4af1-a624-a74109f8854b
 ```
 
 **Response** `200`
@@ -130,12 +180,12 @@ GET /gentle-owl/comments/effda81c-f881-45da-abc9-83b4c3e1a966
 ```json
 {
   "comment": {
-    "id": "effda81c-f881-45da-abc9-83b4c3e1a966",
+    "id": "9e8b51fd-b620-4af1-a624-a74109f8854b",
     "body": "Great post!",
     "author_name": "John Doe",
     "commentable_type": "GentleOwl::Post",
-    "commentable_id": "084f87f1-3545-477b-862b-d4a3ee961da4",
-    "created_at": "2025-12-07T11:20:16.851Z"
+    "commentable_id": "2c44d9ec-e37c-48a0-acfa-6c58c8708c92",
+    "created_at": "2025-12-07T11:45:01.482Z"
   }
 }
 ```
@@ -156,7 +206,7 @@ Content-Type: application/json
     "body": "This is a great article!",
     "author_name": "Jane Doe",
     "commentable_type": "GentleOwl::Post",
-    "commentable_id": "dc57a569-d1dc-4389-a45b-6d629eb5f2d4"
+    "commentable_id": "838155b7-6b6d-4570-8175-d5095377e135"
   }
 }
 ```
@@ -166,12 +216,12 @@ Content-Type: application/json
 ```json
 {
   "comment": {
-    "id": "57701dbe-263d-4f4d-90dc-0a03c4005ae6",
+    "id": "2a9f044a-cec3-4ffa-8388-a638538cdc52",
     "body": "This is a great article!",
     "author_name": "Jane Doe",
     "commentable_type": "GentleOwl::Post",
-    "commentable_id": "dc57a569-d1dc-4389-a45b-6d629eb5f2d4",
-    "created_at": "2025-12-07T11:20:16.863Z"
+    "commentable_id": "838155b7-6b6d-4570-8175-d5095377e135",
+    "created_at": "2025-12-07T11:45:01.495Z"
   }
 }
 ```
@@ -192,7 +242,7 @@ Content-Type: application/json
     "body": "Very helpful video!",
     "author_name": "Bob Smith",
     "commentable_type": "GentleOwl::Video",
-    "commentable_id": "b4f6ede3-537e-4cee-98de-8d8808dcce95"
+    "commentable_id": "295907f8-ac94-45ff-aeb1-1a387c521155"
   }
 }
 ```
@@ -202,12 +252,12 @@ Content-Type: application/json
 ```json
 {
   "comment": {
-    "id": "3ea987cf-61a2-4180-a08e-9a254278bf76",
+    "id": "c84d3378-cc85-4395-9fc1-206666f45e66",
     "body": "Very helpful video!",
     "author_name": "Bob Smith",
     "commentable_type": "GentleOwl::Video",
-    "commentable_id": "b4f6ede3-537e-4cee-98de-8d8808dcce95",
-    "created_at": "2025-12-07T11:20:16.870Z"
+    "commentable_id": "295907f8-ac94-45ff-aeb1-1a387c521155",
+    "created_at": "2025-12-07T11:45:01.508Z"
   }
 }
 ```
@@ -229,12 +279,12 @@ GET /gentle-owl/comments?filter[commentable_type][eq]=GentleOwl::Post
 {
   "comments": [
     {
-      "id": "9d2a16d5-f6de-4df3-be85-22b4741d6b8f",
+      "id": "1ebb1e11-0691-46f3-8e76-d423575e9206",
       "body": "Post comment",
       "author_name": "User 1",
       "commentable_type": "GentleOwl::Post",
-      "commentable_id": "32e6a3bf-2ac9-4bee-99fd-c6d143aa57e5",
-      "created_at": "2025-12-07T11:20:16.876Z"
+      "commentable_id": "9f76419b-56c5-48e6-a163-8bee8bd3d5c9",
+      "created_at": "2025-12-07T11:45:01.515Z"
     }
   ],
   "pagination": {
