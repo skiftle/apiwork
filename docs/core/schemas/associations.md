@@ -41,7 +41,7 @@ end
 
 ## Auto-Detection
 
-Schema and nullable are inferred. See [Inference](./inference.md) for details.
+Schema and nullable are inferred from your model and database. [Inference](./inference.md) explains the detection rules.
 
 ```ruby
 # These are equivalent:
@@ -472,3 +472,10 @@ Polymorphic associations have limitations:
 | `sortable` | No | Cannot sort across multiple tables |
 
 If you need filtering or sorting on polymorphic associations, expose the associated models as their own [resources](/core/api-definitions/resources).
+
+---
+
+## Examples
+
+- [Nested Saves](../../examples/nested-saves.md) — Create/update/delete nested records in a single request
+- [Polymorphic Associations](../../examples/polymorphic-associations.md) — Handle belongs_to associations with multiple types

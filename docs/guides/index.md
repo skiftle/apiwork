@@ -5,4 +5,6 @@ order: 3
 
 Step-by-step guides for common tasks.
 
-Authentication, testing, versioning, and other real-world patterns.
+- [Documentation](./documentation.md) — Add descriptions, examples, and metadata to your API
+- [Testing](./testing.md) — Coming soon
+- [Versioning](./versioning.md) — Coming soon

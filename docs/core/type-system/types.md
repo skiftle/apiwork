@@ -43,7 +43,7 @@ Primitive types form the foundation of the type system. Every param and attribut
 | `:array` | Array of items |
 | `:union` | One of several types |
 
-See [Unions](./unions.md) and [Custom Types](./custom-types.md).
+[Unions](./unions.md) covers discriminated and simple unions. [Custom Types](./custom-types.md) shows how to define reusable object types.
 
 ## Usage
 

@@ -77,4 +77,4 @@ end
 
 Appears in the OpenAPI spec as possible responses.
 
-See [Contracts: Actions](../contracts/actions.md#metadata) for how to add metadata like `summary`, `description`, and `tags`.
+[Contracts: Actions](../contracts/actions.md#metadata) shows how to add `summary`, `description`, `tags`, and `operation_id` to your actions.

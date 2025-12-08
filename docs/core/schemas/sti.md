@@ -158,3 +158,7 @@ const ClientSchema = z.discriminatedUnion("kind", [
   CompanyClientSchema,
 ]);
 ```
+
+## Examples
+
+See [Single Table Inheritance (STI)](../../examples/single-table-inheritance-sti.md) for a complete working example with generated TypeScript, Zod, and OpenAPI output.

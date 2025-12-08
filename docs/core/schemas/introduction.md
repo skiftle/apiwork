@@ -70,7 +70,7 @@ class AuthorSchema < Apiwork::Schema::Base
 end
 ```
 
-See [Inference](./inference.md) for complete details.
+[Inference](./inference.md) explains all the detection rules for types, nullability, defaults, and enum values.
 
 ## Connecting to Contract
 
@@ -106,6 +106,26 @@ end
 ```
 
 Responses use `article` for single objects and `articles` for collections.
+
+## Schema Metadata
+
+Add documentation to your schema for spec generation:
+
+```ruby
+class InvoiceSchema < Apiwork::Schema::Base
+  description "Represents a customer invoice with line items"
+  example { id: "inv_123", number: "INV-2024-001", total: "99.00" }
+  deprecated  # Mark the entire type as deprecated
+end
+```
+
+| Method | Description |
+|--------|-------------|
+| `description` | Human-readable description for OpenAPI/TypeScript docs |
+| `example` | Example value shown in generated specs |
+| `deprecated` | Mark the schema type as deprecated |
+
+These appear in the generated `invoice` type definition.
 
 ## No Conditional Fields
 

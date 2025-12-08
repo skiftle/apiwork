@@ -159,7 +159,7 @@ Apiwork::API.draw '/api/v1' do
 end
 ```
 
-See [Execution Layer](../../getting-started/execution-layer.md) for all options.
+[Execution Layer](../../getting-started/execution-layer.md) covers pagination strategies, filtering operators, and sorting options.
 
 ## Spec Endpoints
 
@@ -183,7 +183,7 @@ spec :openapi do
 end
 ```
 
-See [Spec Generation](../spec-generation/introduction.md) for configuration options.
+[Spec Generation](../spec-generation/introduction.md) covers format options, custom paths, and per-spec configuration.
 
 ## Global Types and Enums
 
@@ -201,7 +201,7 @@ Apiwork::API.draw '/api/v1' do
 end
 ```
 
-See [Type System](../type-system/introduction.md) for details.
+[Type System](../type-system/introduction.md) covers type definitions, enums, unions, and scoping rules.
 
 ## with_options
 

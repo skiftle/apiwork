@@ -326,3 +326,9 @@ This is built into the Apiwork adapter. It:
 4. Raises `ValidationError`
 
 Custom adapters need their own implementation.
+
+---
+
+## Examples
+
+See [Model Validation Errors](../../examples/model-validation-errors.md) for complete examples of validation error responses including nested associations.

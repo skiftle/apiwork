@@ -259,3 +259,9 @@ These can occur at runtime when schema configuration is incomplete:
 | `association_resource_not_found` | Association schema couldn't be resolved |
 
 All errors include available options in the response to aid debugging.
+
+---
+
+## Examples
+
+See [Advanced Filtering](../../examples/advanced-filtering.md) for complex query examples including logical operators and association filtering.

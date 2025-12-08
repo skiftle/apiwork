@@ -96,7 +96,7 @@ end
 
 The difference in generated specs: contract-scoped types get prefixed with the contract name. A `:status` type in `OrderContract` becomes `order_status`. API-level types keep their name as-is.
 
-See [Scoping](./scoping.md) for details.
+[Scoping](./scoping.md) explains prefixing rules and how to share types across contracts.
 
 ## Available Types
 

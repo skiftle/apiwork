@@ -105,7 +105,7 @@ These appear in the OpenAPI spec under the resource's operations.
 
 ## Action Documentation
 
-Document individual actions in Contracts. See [Contracts: Actions](../core/contracts/actions.md#metadata) for the full reference.
+Document individual actions in Contracts. [Contracts: Actions](../core/contracts/actions.md#metadata) covers `summary`, `description`, `tags`, `operation_id`, `deprecated`, and error responses.
 
 ```ruby
 class InvoiceContract < Apiwork::Contract::Base
@@ -288,18 +288,23 @@ class InvoiceContract < Apiwork::Contract::Base
 end
 ```
 
-These declarations merge with the auto-generated definitions. See [Type Merging](../core/type-system/type-merging) for details.
+These declarations merge with the auto-generated definitions. [Type Merging](../core/type-system/type-merging.md) explains how to add params to generated types without replacing them.
 
 ## Generated Output
 
-These documentation fields are used by the spec generators. See [Spec Generation](../core/spec-generation/openapi.md) for how to generate OpenAPI specs, TypeScript definitions, and other outputs.
+These documentation fields appear in generated specs. [Spec Generation](../core/spec-generation/openapi.md) covers how to generate OpenAPI, TypeScript, and Zod output.
 
 ## Internationalization
 
 Action metadata — summaries and descriptions — can be translated. Define them in locale files instead of inline, and they'll change with `I18n.locale`.
 
-See [i18n: Action Metadata](../advanced/i18n.md#action-metadata) for the full guide.
+[i18n: Action Metadata](../advanced/i18n.md#action-metadata) shows how to set up locale files for action summaries and descriptions.
 
-Type and enum descriptions can also be translated via i18n. See [i18n: Type Descriptions](../advanced/i18n.md#type-descriptions).
+Type and enum descriptions can also be translated. [i18n: Type Descriptions](../advanced/i18n.md#type-descriptions) covers the lookup keys.
 
-For complex cases where you need to extend auto-generated types, see [Type Merging](../core/type-system/type-merging).
+For complex cases where you need to extend auto-generated types, [Type Merging](../core/type-system/type-merging.md) explains how to add custom params without replacing the generated definition.
+
+## Examples
+
+- [API Documentation](../examples/api-documentation.md) — Complete example of documenting an API
+- [API Documentation i18n](../examples/api-documentation-i18n.md) — Multilingual documentation with locale files

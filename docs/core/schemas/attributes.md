@@ -37,7 +37,7 @@ attribute :title, type: :string, nullable: false
 attribute :status  # Detects Rails enum values automatically
 ```
 
-See [Inference](./inference.md) for complete details.
+[Inference](./inference.md) explains how types, nullability, and enums are detected from your database and models.
 
 ## Options Reference
 
@@ -446,3 +446,9 @@ attribute :ip_address, format: :ipv4
 | `:ipv6` | `format: ipv6` | `z.ipv6()` |
 | `:password` | `format: password` | `z.string()` |
 | `:hostname` | `format: hostname` | `z.string()` |
+
+---
+
+## Examples
+
+- [Encode/Decode/Empty](../../examples/encode-decode-empty.md) — Transform values during serialization and handle nil/empty conversion

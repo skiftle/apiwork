@@ -40,7 +40,7 @@ For detailed documentation, see [Runtime](../core/runtime/introduction.md).
 GET /posts?filter[status][eq]=published&filter[views][gt]=100
 ```
 
-See [Runtime — Filtering](../core/runtime/filtering.md) for all operators.
+[Filtering](../core/runtime/filtering.md) covers operators like `eq`, `contains`, `between`, and logical combinations with `_and`/`_or`.
 
 ### Sorting
 
@@ -48,7 +48,7 @@ See [Runtime — Filtering](../core/runtime/filtering.md) for all operators.
 GET /posts?sort[created_at]=desc&sort[title]=asc
 ```
 
-See [Runtime — Sorting](../core/runtime/sorting.md) for multi-field sorting.
+[Sorting](../core/runtime/sorting.md) covers multi-field ordering and association sorting.
 
 ### Pagination
 
@@ -56,7 +56,7 @@ See [Runtime — Sorting](../core/runtime/sorting.md) for multi-field sorting.
 GET /posts?page[number]=2&page[size]=20
 ```
 
-See [Runtime — Pagination](../core/runtime/pagination.md) for cursor-based pagination.
+[Pagination](../core/runtime/pagination.md) covers offset-based and cursor-based strategies.
 
 ### Eager Loading
 
@@ -64,7 +64,7 @@ See [Runtime — Pagination](../core/runtime/pagination.md) for cursor-based pag
 GET /posts?include[comments]=true&include[author]=true
 ```
 
-See [Runtime — Eager Loading](../core/runtime/eager-loading.md) for nested includes.
+[Eager Loading](../core/runtime/eager-loading.md) covers nested includes and N+1 prevention.
 
 ## Configuration
 
@@ -147,7 +147,7 @@ Response:
 }
 ```
 
-To document the meta structure in your contract, use the `meta` block. See [Actions - meta](../core/contracts/actions.md#meta).
+To document the meta structure in your contract, use the `meta` block. [Actions - meta](../core/contracts/actions.md#meta) shows how to define typed meta fields.
 
 ## Key Transform
 
@@ -171,7 +171,7 @@ end
 
 ## Custom Adapters
 
-For non-ActiveRecord data sources or custom query logic, you can create your own adapter. See [Custom Adapters](../advanced/custom-adapters.md).
+For non-ActiveRecord data sources or custom query logic, you can create your own adapter. [Custom Adapters](../advanced/custom-adapters.md) explains the adapter interface.
 
 ## Next Steps
 

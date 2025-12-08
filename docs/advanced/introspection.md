@@ -86,7 +86,7 @@ Introspection drives all spec generation:
 - **Zod** — runtime validators for JavaScript/TypeScript
 - **Custom generators** — build your own formats
 
-See [Spec Generation](../core/spec-generation/introduction.md) for details.
+[Spec Generation](../core/spec-generation/introduction.md) covers how to enable spec endpoints and configure output formats.
 
 ## Field Types
 

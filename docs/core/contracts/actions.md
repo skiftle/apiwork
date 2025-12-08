@@ -235,4 +235,4 @@ end
 
 Summaries and descriptions can be translated. Define them in locale files instead of inline, and they'll change with `I18n.locale`.
 
-See [i18n: Action Metadata](../../advanced/i18n.md#action-metadata) for the full guide.
+[i18n: Action Metadata](../../advanced/i18n.md#action-metadata) shows how to set up locale files for multilingual documentation.

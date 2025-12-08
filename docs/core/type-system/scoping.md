@@ -105,4 +105,4 @@ class OrderContract < Apiwork::Contract::Base
 end
 ```
 
-See [Imports](../contracts/imports.md).
+[Imports](../contracts/imports.md) shows how to share types between contracts.

@@ -199,3 +199,9 @@ This overrides the API-level configuration for this schema only.
   }]
 }
 ```
+
+---
+
+## Examples
+
+See [Cursor Pagination](../../examples/cursor-pagination.md) for a complete working example with configuration and response format.

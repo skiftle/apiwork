@@ -19,7 +19,7 @@ param :start_time, type: :time
 param :id, type: :uuid
 ```
 
-See [Types](../type-system/types.md) for the complete list of supported types.
+[Types](../type-system/types.md) lists all supported primitives and how to use them.
 
 ## Required & Optional
 
@@ -148,7 +148,7 @@ end
 param :shipping_address, type: :address
 ```
 
-See [Type System](../type-system/introduction.md).
+[Type System](../type-system/introduction.md) covers custom types, enums, unions, and scoping.
 
 ## Type Generation
 

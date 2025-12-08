@@ -119,7 +119,7 @@ class PostsController < ApplicationController
 end
 ```
 
-See [Error Codes](./error-codes) for the full list of built-in codes and how to register custom ones.
+[Error Codes](./error-codes.md) lists all built-in codes and shows how to register custom ones with i18n support.
 
 ## Why This Matters
 
