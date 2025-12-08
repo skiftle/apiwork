@@ -16,7 +16,7 @@ module Apiwork
                   :query
 
       def initialize(query:, body:, action_name:, coerce: false)
-        result = RequestParser.new(self.class, action_name, coerce:).perform(query, body)
+        result = RequestParser.new(self.class, action_name, coerce:).parse(query, body)
         @query = result.query
         @body = result.body
         @issues = result.issues
@@ -193,7 +193,7 @@ module Apiwork
         end
 
         def parse_response(body, action)
-          ResponseParser.new(self, action).perform(body)
+          ResponseParser.new(self, action).parse(body)
         end
 
         def global_type(name, &block)
@@ -213,12 +213,8 @@ module Apiwork
           resolve_imported_enum(enum_name, visited: visited.dup.add(self))
         end
 
-        def scoped_type_name(type_name)
-          api_class.scoped_name(self, type_name)
-        end
-
-        def scoped_enum_name(enum_name)
-          api_class.scoped_name(self, enum_name)
+        def scoped_name(name)
+          api_class.scoped_name(self, name)
         end
 
         def define_action(action_name, &block)

@@ -11,7 +11,7 @@ module Apiwork
         @action_name = action_name.to_sym
       end
 
-      def perform(body)
+      def parse(body)
         definition = body_definition
         return ResponseResult.new(body, []) unless definition&.params&.any?
 

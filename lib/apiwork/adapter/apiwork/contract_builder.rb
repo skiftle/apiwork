@@ -294,7 +294,7 @@ module Apiwork
             build_sti_response_union_type
           else
             root_key = schema_class.root_key.singular.to_sym
-            resource_type_name = contract_class.scoped_type_name(nil)
+            resource_type_name = contract_class.scoped_name(nil)
 
             register_resource_type(root_key) unless contract_class.resolve_type(resource_type_name)
 
@@ -593,8 +593,8 @@ module Apiwork
           nested_payload_type_name = :nested_payload
           return if contract_class.resolve_type(nested_payload_type_name)
 
-          create_qualified_name = contract_class.scoped_type_name(create_type_name)
-          update_qualified_name = contract_class.scoped_type_name(update_type_name)
+          create_qualified_name = contract_class.scoped_name(create_type_name)
+          update_qualified_name = contract_class.scoped_name(update_type_name)
 
           contract_class.union(nested_payload_type_name, discriminator: :_type) do
             variant type: create_qualified_name, tag: 'create'
@@ -610,7 +610,7 @@ module Apiwork
           return if sti_base_schema?
 
           root_key = schema_class.root_key.singular.to_sym
-          resource_type_name = contract_class.scoped_type_name(nil)
+          resource_type_name = contract_class.scoped_name(nil)
 
           return if contract_class.resolve_type(resource_type_name)
 
@@ -799,22 +799,22 @@ module Apiwork
         end
 
         def enum_filter_type(attribute_definition)
-          scoped_enum_name = contract_class.scoped_enum_name(attribute_definition.name)
-          :"#{scoped_enum_name}_filter"
+          scoped_name = contract_class.scoped_name(attribute_definition.name)
+          :"#{scoped_name}_filter"
         end
 
         def register_enum_filter(enum_name)
-          scoped_enum_name = contract_class.scoped_enum_name(enum_name)
-          filter_name = :"#{scoped_enum_name}_filter"
+          scoped_name = contract_class.scoped_name(enum_name)
+          filter_name = :"#{scoped_name}_filter"
 
           api = contract_class.api_class
           return if api.resolve_type(filter_name)
 
           api.union(filter_name) do
-            variant type: scoped_enum_name
+            variant type: scoped_name
             variant type: :object, partial: true do
-              param :eq, type: scoped_enum_name, optional: true
-              param :in, type: :array, of: scoped_enum_name, optional: true
+              param :eq, type: scoped_name, optional: true
+              param :in, type: :array, of: scoped_name, optional: true
             end
           end
         end

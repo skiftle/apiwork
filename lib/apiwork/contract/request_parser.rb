@@ -12,7 +12,7 @@ module Apiwork
         @coerce = coerce
       end
 
-      def perform(query, body)
+      def parse(query, body)
         query_data, query_issues = parse_part(query, :query)
         body_data, body_issues = parse_part(body, :body)
 
