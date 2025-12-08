@@ -7,8 +7,8 @@ module Apiwork
         class Sorter
           attr_reader :schema_class
 
-          def self.perform(relation, schema_class, sort_params, issues)
-            new(relation, schema_class, issues).perform(sort_params)
+          def self.sort(relation, schema_class, sort_params, issues)
+            new(relation, schema_class, issues).sort(sort_params)
           end
 
           def initialize(relation, schema_class, issues)
@@ -17,7 +17,7 @@ module Apiwork
             @issues = issues
           end
 
-          def perform(params)
+          def sort(params)
             return @relation if params.blank?
 
             params = params.reduce({}) { |acc, hash| acc.merge(hash) } if params.is_a?(Array)

@@ -28,8 +28,8 @@ module Apiwork
 
           attr_reader :schema_class
 
-          def self.perform(relation, schema_class, filter_params, issues)
-            new(relation, schema_class, issues).perform(filter_params)
+          def self.filter(relation, schema_class, filter_params, issues)
+            new(relation, schema_class, issues).filter(filter_params)
           end
 
           def initialize(relation, schema_class, issues)
@@ -38,7 +38,7 @@ module Apiwork
             @issues = issues
           end
 
-          def perform(params)
+          def filter(params)
             return @relation if params.blank?
 
             case params
@@ -112,7 +112,7 @@ module Apiwork
             return scope if conditions_array.blank?
 
             conditions_array.reduce(scope) do |current_scope, filter_hash|
-              Filter.perform(current_scope, schema_class, filter_hash, @issues)
+              Filter.filter(current_scope, schema_class, filter_hash, @issues)
             end
           end
 

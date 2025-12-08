@@ -25,15 +25,15 @@ module Apiwork
 
           issues = []
 
-          @data = Filter.perform(@data, @schema_class, params[:filter], issues) if params[:filter].present?
+          @data = Filter.filter(@data, @schema_class, params[:filter], issues) if params[:filter].present?
 
-          @data = Sorter.perform(@data, @schema_class, params[:sort], issues)
+          @data = Sorter.sort(@data, @schema_class, params[:sort], issues)
 
           raise ConstraintError, issues if issues.any?
 
-          @data = EagerLoader.perform(@data, @schema_class, params)
+          @data = EagerLoader.load(@data, @schema_class, params)
 
-          @data, pagination_metadata = Paginator.perform(@data, @schema_class, params[:page] || {})
+          @data, pagination_metadata = Paginator.paginate(@data, @schema_class, params[:page] || {})
           @metadata.merge!(pagination_metadata)
 
           { data: @data, metadata: @metadata }

@@ -5,8 +5,8 @@ module Apiwork
     class Apiwork < Base
       class CollectionLoader
         class CursorPaginator
-          def self.perform(relation, schema_class, params)
-            new(relation, schema_class, params).perform
+          def self.paginate(relation, schema_class, params)
+            new(relation, schema_class, params).paginate
           end
 
           def initialize(relation, schema_class, params)
@@ -15,7 +15,7 @@ module Apiwork
             @params = params
           end
 
-          def perform
+          def paginate
             page_size = resolve_page_size
             records = fetch_records(page_size)
 

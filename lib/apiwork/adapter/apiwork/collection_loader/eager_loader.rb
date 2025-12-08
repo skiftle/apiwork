@@ -7,8 +7,8 @@ module Apiwork
         class EagerLoader
           attr_reader :schema_class
 
-          def self.perform(relation, schema_class, params)
-            new(relation, schema_class).perform(params)
+          def self.load(relation, schema_class, params)
+            new(relation, schema_class).load(params)
           end
 
           def initialize(relation, schema_class)
@@ -16,7 +16,7 @@ module Apiwork
             @schema_class = schema_class
           end
 
-          def perform(params)
+          def load(params)
             return @relation if schema_class.association_definitions.empty?
 
             includes_hash = IncludesResolver.new(schema_class).build(params: params, for_collection: true)
