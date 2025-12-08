@@ -4,9 +4,11 @@ order: 3
 
 # Params
 
-Params define the structure and validation of input data.
+Params define what data your API accepts. When a request comes in, Apiwork validates it against your param definitions and coerces types where possible.
 
 ## Basic Types
+
+Apiwork supports all the common primitives:
 
 ```ruby
 param :title, type: :string
@@ -19,7 +21,7 @@ param :start_time, type: :time
 param :id, type: :uuid
 ```
 
-[Types](../type-system/types.md) lists all supported primitives and how to use them.
+[Types](../type-system/types.md) has the full list with formatting options.
 
 ## Required & Optional
 
@@ -41,6 +43,8 @@ end
 
 ## Default Values
 
+When a param is omitted, use a default:
+
 ```ruby
 param :published, type: :boolean, default: false
 param :status, type: :string, default: 'draft'
@@ -49,7 +53,7 @@ param :tags, type: :array, default: []
 
 ## Nullable
 
-Allow null values:
+Sometimes you want to explicitly accept `null`:
 
 ```ruby
 param :archived_at, type: :datetime, nullable: true
@@ -57,13 +61,13 @@ param :archived_at, type: :datetime, nullable: true
 
 ## Enums
 
-Restrict to specific values:
+Restrict a param to specific values:
 
 ```ruby
 param :status, type: :string, enum: %w[draft published archived]
 ```
 
-Or use a defined enum type:
+Or reference an enum you've defined at the API level:
 
 ```ruby
 # In API definition
@@ -75,20 +79,20 @@ param :status, type: :string, enum: :post_status
 
 ## Min & Max
 
-For numeric values:
+Set boundaries on numeric values:
 
 ```ruby
 param :age, type: :integer, min: 0, max: 150
 param :price, type: :float, min: 0.01
 ```
 
-For string length:
+Or string length:
 
 ```ruby
 param :title, type: :string, min: 1, max: 255
 ```
 
-For array size:
+Or array size:
 
 ```ruby
 param :tags, type: :array, min: 1, max: 10
@@ -96,14 +100,16 @@ param :tags, type: :array, min: 1, max: 10
 
 ## Arrays
 
+Arrays use `of:` to specify element type:
+
 ```ruby
-# Array of strings
 param :tags, type: :array, of: :string
-
-# Array of integers
 param :ids, type: :array, of: :integer
+```
 
-# Array of objects
+For arrays of objects, use a block:
+
+```ruby
 param :posts, type: :array do
   param :title, type: :string
   param :body, type: :string
@@ -111,6 +117,8 @@ end
 ```
 
 ## Nested Objects
+
+Objects can nest as deep as you need:
 
 ```ruby
 param :post, type: :object do
@@ -125,17 +133,17 @@ end
 
 ## Alias
 
-Map external name to internal name:
+When the API name differs from your internal name, use `as:`:
 
 ```ruby
 param :userName, type: :string, as: :user_name
 ```
 
-The API accepts `userName` but the parsed data uses `user_name`.
+Clients send `userName`, but your code receives `user_name`.
 
 ## Custom Types
 
-Reference types defined in the API:
+You can reference types defined at the API level:
 
 ```ruby
 # In API definition
@@ -152,7 +160,7 @@ param :shipping_address, type: :address
 
 ## Type Generation
 
-Params generate types for spec output.
+Your params automatically generate types for spec output. Here's what they look like:
 
 ### Introspection
 

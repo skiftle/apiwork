@@ -4,17 +4,19 @@ order: 1
 
 # Introduction
 
-Apiwork generates API specifications from your definitions.
+Your contracts and schemas already describe your API completely — Apiwork can generate specifications from them automatically.
 
 ## Available Formats
 
-- **OpenAPI** - OpenAPI 3.1 specification
-- **TypeScript** - TypeScript type definitions
-- **Zod** - Zod validation schemas
+Three formats out of the box:
+
+- **OpenAPI** — OpenAPI 3.1 specification
+- **TypeScript** — type definitions for your frontend
+- **Zod** — runtime validation schemas
 
 ## Enabling Specs
 
-In your API definition:
+Enable whichever formats you need in your API definition:
 
 ```ruby
 Apiwork::API.draw '/api/v1' do
@@ -26,7 +28,7 @@ end
 
 ## Endpoints
 
-Specs are served at `/.spec/{format}`:
+Once enabled, specs are served at `/.spec/{format}`:
 
 | Format | Endpoint |
 |--------|----------|
@@ -35,6 +37,8 @@ Specs are served at `/.spec/{format}`:
 | Zod | `GET /api/v1/.spec/zod` |
 
 ## Custom Path
+
+Want a different URL? Override the path:
 
 ```ruby
 spec :openapi do
@@ -46,7 +50,7 @@ Now served at `GET /api/v1/openapi.json`.
 
 ## Key Transformation
 
-Transform JSON keys in the output:
+If your frontend uses camelCase, you can transform keys in the output:
 
 ```ruby
 spec :openapi do
@@ -55,19 +59,16 @@ end
 ```
 
 Options:
-- `:keep` - No transformation (default)
-- `:camel` - `created_at` becomes `createdAt`
-- `:underscore` - All keys use snake_case
+- `:keep` — No transformation (default)
+- `:camel` — `created_at` becomes `createdAt`
+- `:underscore` — All keys use snake_case
 
 ## Programmatic Generation
 
+You can also generate specs in code, useful for CI pipelines or build scripts:
+
 ```ruby
-# Generate OpenAPI spec
 Apiwork::Spec::Openapi.generate(path: '/api/v1')
-
-# Generate TypeScript
 Apiwork::Spec::Typescript.generate(path: '/api/v1')
-
-# Generate Zod
 Apiwork::Spec::Zod.generate(path: '/api/v1')
 ```

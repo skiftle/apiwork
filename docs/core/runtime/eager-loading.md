@@ -4,7 +4,7 @@ order: 5
 
 # Eager Loading
 
-Control which associations are included in responses. The runtime uses ActiveRecord's `includes` to prevent N+1 queries.
+You control which associations are included in responses. When clients request them, the runtime uses ActiveRecord's `includes` to prevent N+1 queries automatically.
 
 ## Query Format
 
@@ -22,7 +22,7 @@ GET /posts?include[comments]=true&include[author]=true
 
 ## Nested Includes
 
-Include associations on associations:
+You can include associations on associations:
 
 ```
 GET /posts?include[comments][author]=true
@@ -32,7 +32,7 @@ This includes comments and each comment's author.
 
 ## Schema Configuration
 
-Control default include behavior:
+You control default include behavior in your schema:
 
 ```ruby
 class PostSchema < Apiwork::Schema::Base
@@ -53,7 +53,7 @@ end
 belongs_to :author, include: :always
 ```
 
-The author is included in every response, even without `include[author]=true`.
+The author shows up in every response, even without `include[author]=true`.
 
 ### Optional Include
 
@@ -72,7 +72,7 @@ GET /posts/1?include[comments]=true   # With comments
 
 ## Auto-Includes
 
-The runtime automatically includes associations when needed:
+Sometimes the runtime includes associations automatically, even if the client didn't ask:
 
 ### Filtering
 
@@ -82,7 +82,7 @@ When you filter by an association, it's automatically included:
 GET /posts?filter[author][name][eq]=Jane
 ```
 
-The `author` association is joined for the filter query.
+The `author` association gets joined automatically for the filter query.
 
 ### Sorting
 
@@ -106,7 +106,7 @@ GET /posts?include[author]=false  # Ignored, author still included
 
 ## N+1 Prevention
 
-The runtime uses different loading strategies:
+The runtime picks the right loading strategy for you:
 
 **Collections (index):**
 
@@ -123,7 +123,7 @@ ActiveRecord::Associations::Preloader.new(
 ).call
 ```
 
-Both approaches prevent N+1 queries by loading all associations in batch queries.
+Both approaches batch-load associations, preventing N+1 queries.
 
 ---
 
@@ -159,7 +159,7 @@ With `include[comments]=true`:
 
 ## Circular Reference Prevention
 
-The runtime tracks visited associations to prevent infinite loops:
+Don't worry about infinite loops — the runtime tracks visited associations:
 
 ```ruby
 class PostSchema < Apiwork::Schema::Base
@@ -171,4 +171,4 @@ class CommentSchema < Apiwork::Schema::Base
 end
 ```
 
-Requesting `include[comments][post][comments]` stops at the circular reference.
+If someone requests `include[comments][post][comments]`, the runtime stops at the circular reference instead of looping forever.

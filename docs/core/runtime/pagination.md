@@ -4,11 +4,13 @@ order: 4
 
 # Pagination
 
-Paginate collections using offset-based or cursor-based strategies.
+Two strategies: offset-based (traditional page numbers) or cursor-based (for large datasets). Pick the one that fits your use case.
+
+**Offset** works well for UIs with page numbers. **Cursor** is better when you have lots of data or real-time updates.
 
 ## Configuration
 
-Set pagination at the API level:
+You set pagination at the API level:
 
 ```ruby
 Apiwork::API.draw '/api/v1' do
@@ -32,7 +34,7 @@ end
 
 ## Offset-Based Pagination
 
-Traditional offset-based pagination. Good for UIs with page numbers.
+The classic approach. Your clients ask for page 1, page 2, etc.
 
 ### Query Format
 
@@ -70,7 +72,7 @@ GET /posts?page[number]=2&page[size]=20
 
 ### Out of Range
 
-Requesting a page beyond the last page returns an empty array with pagination metadata:
+If a client requests a page that doesn't exist, they still get a valid response — just an empty array with pagination metadata:
 
 ```json
 {
@@ -89,7 +91,7 @@ Requesting a page beyond the last page returns an empty array with pagination me
 
 ## Cursor-Based Pagination
 
-Keyset pagination using encoded cursors. Better for large datasets and real-time data.
+For large datasets and real-time feeds, cursor pagination is more efficient. Instead of page numbers, clients navigate using opaque cursor tokens.
 
 ### Configuration
 
@@ -128,7 +130,7 @@ GET /posts?page[size]=20&page[before]=eyJpZCI6ODF9
 | `page[after]` | Cursor for forward pagination |
 | `page[before]` | Cursor for backward pagination |
 
-Cannot use `after` and `before` in the same request.
+You can't use `after` and `before` in the same request.
 
 ### Response
 
@@ -149,24 +151,26 @@ Cannot use `after` and `before` in the same request.
 
 ### Cursor Format
 
-Cursors are base64-encoded JSON containing the primary key:
+Under the hood, cursors are base64-encoded JSON containing the primary key:
 
 ```json
 {"id": 100}
 ```
 
-Cursors are opaque to clients — don't parse or construct them manually.
+But clients should treat them as opaque strings — don't parse or construct them manually.
 
 ### Limitations
 
-- Composite primary keys are not supported
-- No total count (calculating totals defeats the performance benefit)
+Two things to keep in mind:
+
+- Composite primary keys aren't supported
+- No total count — calculating totals defeats the performance benefit
 
 ---
 
 ## Per-Schema Override
 
-Override pagination for specific schemas:
+Need different settings for a specific resource? Override at the schema level:
 
 ```ruby
 class ActivitySchema < Apiwork::Schema::Base
@@ -180,7 +184,7 @@ class ActivitySchema < Apiwork::Schema::Base
 end
 ```
 
-This overrides the API-level configuration for this schema only.
+This takes precedence over the API-level defaults for this schema only.
 
 ---
 

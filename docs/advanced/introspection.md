@@ -18,7 +18,7 @@ Apiwork::API.introspect('/api/v1')
 Apiwork::API.introspect('/api/v1', locale: :sv)
 ```
 
-Returns a hash with your full API structure. Descriptions are localized based on the locale parameter (defaults to Rails' current locale).
+You get back a hash with your full API structure. Descriptions are localized based on the locale parameter (defaults to Rails' current locale).
 
 ## Output Structure
 
@@ -90,7 +90,7 @@ Introspection drives all spec generation:
 
 ## Field Types
 
-Understanding these types is essential if you're building a custom spec generator. The introspection format is the foundation — OpenAPI, TypeScript, and Zod generators all read from this same structure.
+If you're building a custom spec generator, you'll need to understand these types. The introspection format is the foundation — OpenAPI, TypeScript, and Zod generators all read from this same structure.
 
 Every field has a `type`. Here's the complete list:
 
@@ -125,7 +125,7 @@ Every field has a `type`. Here's the complete list:
 
 ## Field Properties
 
-Properties describe the field's behavior. Not all properties apply to all types.
+Properties describe how a field behaves. Not all properties apply to all types.
 
 ### Property Applicability
 
@@ -177,7 +177,7 @@ Properties describe the field's behavior. Not all properties apply to all types.
 
 ## Compact Output
 
-Introspection output is compact by design. Properties are **omitted** when they have no meaningful value:
+The output is compact by design. Properties are **omitted** when they have no meaningful value:
 
 | Property | Omitted when |
 |----------|--------------|
@@ -191,8 +191,8 @@ Introspection output is compact by design. Properties are **omitted** when they 
 | `min` | `nil` |
 | `max` | `nil` |
 
-This means a simple string field appears as just `{ "type": "string" }` rather than including all possible properties with null/false values.
+So a simple string field appears as just `{ "type": "string" }` rather than including all possible properties with null/false values.
 
 ## Building Custom Generators
 
-Ready to build your own spec generator? See [Custom Specs](./custom-specs.md).
+Want to build your own spec generator? See [Custom Specs](./custom-specs.md).

@@ -4,9 +4,11 @@ order: 2
 
 # Custom Adapters
 
-Create your own adapter for custom data sources.
+Apiwork's built-in adapter covers most use cases, but not all. If you have custom data sources, non-ActiveRecord models, or specialized query logic, you can create your own adapter.
 
 ## Creating an Adapter
+
+Here's the basic structure:
 
 ```ruby
 class MyAdapter < Apiwork::Adapter::Base
@@ -38,6 +40,8 @@ end
 ```
 
 ## Required Methods
+
+You need to implement three methods:
 
 ### render_collection
 
@@ -76,6 +80,8 @@ end
 
 ## Optional Methods
 
+These let you hook into the request/response cycle:
+
 ### transform_request
 
 Transform incoming request parameters:
@@ -100,6 +106,8 @@ end
 
 ## Using Your Adapter
 
+Once you've defined your adapter, use it in your API definition:
+
 ```ruby
 Apiwork::API.draw '/api/v1' do
   adapter :myadapter do
@@ -110,7 +118,7 @@ end
 
 ## Defining Options
 
-Use `option` to define configurable settings:
+Make your adapter configurable with `option`:
 
 ```ruby
 class MyAdapter < Apiwork::Adapter::Base
@@ -138,7 +146,7 @@ end
 
 ### Accessing Options
 
-Options are accessed via `resolve_option`:
+Read option values with `resolve_option`:
 
 ```ruby
 def render_collection(collection, schema_class, action_data)

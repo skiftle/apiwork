@@ -4,11 +4,11 @@ order: 1
 
 # Runtime
 
-The runtime is powered by Apiwork's built-in adapter. It reads your schemas, generates typed definitions, executes queries, and serializes responses.
+Once you connect a schema to a contract with `schema!`, Apiwork's runtime takes over. It reads your schema, generates types, handles filtering and sorting, and serializes responses — all from the schema definition.
 
 ## What the Adapter Does
 
-The adapter is the engine behind `schema!`. When you connect a schema to a contract:
+The adapter powers everything behind `schema!`. When you connect a schema to a contract:
 
 ```ruby
 class InvoiceContract < Apiwork::Contract::Base
@@ -16,13 +16,13 @@ class InvoiceContract < Apiwork::Contract::Base
 end
 ```
 
-The adapter:
+Here's what happens:
 
-1. **Reads schema metadata** — filterable, sortable, writable attributes and associations
-2. **Generates types** — filter, sort, include, and payload types for the contract
+1. **Reads your schema** — finds filterable, sortable, writable attributes and associations
+2. **Generates types** — creates filter, sort, include, and payload types for the contract
 3. **Powers code generation** — TypeScript, Zod, and OpenAPI definitions come from these types
-4. **Executes queries** — filtering, sorting, pagination at runtime
-5. **Serializes responses** — formats output according to the schema
+4. **Executes queries** — handles filtering, sorting, and pagination at runtime
+5. **Serializes responses** — formats output according to your schema
 
 ## Architecture
 
@@ -63,7 +63,7 @@ class InvoiceSchema < Apiwork::Schema::Base
 end
 ```
 
-The adapter generates:
+From this, the adapter generates:
 
 | Type | Purpose | Source |
 |------|---------|--------|
@@ -74,14 +74,14 @@ The adapter generates:
 | `invoice_update_payload` | Update request body | `writable: true` attributes |
 | `invoice` | Response serialization | all attributes |
 
-These types power:
+These types power everything:
 - Request validation (is this filter valid?)
 - Code generation (TypeScript interfaces, Zod schemas)
 - Documentation (OpenAPI specs)
 
 ## Configuration
 
-Configure at the API level:
+You configure the adapter at the API level:
 
 ```ruby
 Apiwork::API.draw '/api/v1' do
@@ -95,7 +95,7 @@ Apiwork::API.draw '/api/v1' do
 end
 ```
 
-Override for specific schemas:
+Or override for specific schemas:
 
 ```ruby
 class ActivitySchema < Apiwork::Schema::Base
@@ -110,7 +110,7 @@ end
 
 ## Query Parameters
 
-The adapter handles four query parameter groups:
+The adapter handles four query parameter groups for you:
 
 | Parameter | Purpose | Example |
 |-----------|---------|---------|
@@ -121,7 +121,7 @@ The adapter handles four query parameter groups:
 
 ## Schema Integration
 
-The adapter reads schema options to determine what's allowed:
+Your schema options determine what's allowed:
 
 ```ruby
 class PostSchema < Apiwork::Schema::Base
@@ -142,7 +142,7 @@ end
 
 ## Error Handling
 
-Invalid queries return `400 Bad Request` with structured issues:
+When a client sends an invalid query, they get a `400 Bad Request` with structured issues:
 
 ```json
 {
@@ -156,7 +156,7 @@ Invalid queries return `400 Bad Request` with structured issues:
 }
 ```
 
-Error responses include available options to help developers debug.
+Notice how error responses include available options — this helps developers debug quickly.
 
 ## Next Steps
 
