@@ -63,6 +63,38 @@ end
 
 Settings resolve in this order (first defined wins):
 
-1. Schema `adapter` block
-2. API definition `adapter` block
-3. Adapter defaults
+1. **Schema** `adapter` block — most specific
+2. **API definition** `adapter` block — API-wide defaults
+3. **Adapter defaults** — built-in fallbacks
+
+Example:
+
+```ruby
+# API definition: all resources default to 25 items per page
+Apiwork::API.draw '/api/v1' do
+  adapter do
+    pagination do
+      default_size 25
+      max_size 100
+    end
+  end
+
+  resources :posts
+  resources :activities
+end
+
+# ActivitySchema overrides with cursor pagination and larger page size
+class ActivitySchema < Apiwork::Schema::Base
+  adapter do
+    pagination do
+      strategy :cursor
+      default_size 50
+    end
+  end
+end
+```
+
+In this example:
+- `GET /posts` uses offset pagination with 25 items (from API)
+- `GET /activities` uses cursor pagination with 50 items (from Schema)
+- Both respect the API-level `max_size: 100` since ActivitySchema didn't override it

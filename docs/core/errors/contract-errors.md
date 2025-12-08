@@ -236,3 +236,37 @@ Invalid discriminator value:
 ## HTTP Status
 
 Contract errors return **400 Bad Request**. This indicates a client error — the request was malformed and should be corrected before retrying.
+
+## Output Validation
+
+Responses are also validated against the contract in **development mode**. This catches server-side bugs where your controller returns data that doesn't match the contract.
+
+```ruby
+class PostContract < Apiwork::Contract::Base
+  action :show do
+    response do
+      body do
+        param :status, type: :string, enum: %w[draft published]
+      end
+    end
+  end
+end
+```
+
+If your controller returns a post with `status: "archived"` (not in the enum), Apiwork logs a warning:
+
+```
+[Apiwork] Response validation warning: invalid_value at /post/status
+  Expected one of: draft, published
+  Actual: archived
+```
+
+Output validation:
+- Only runs in `Rails.env.development?`
+- Logs warnings to Rails logger — does not block the response
+- Validates the same constraints as request validation (types, enums, required fields)
+- Helps catch bugs where schema changes haven't been reflected in the contract
+
+::: tip
+If you see output validation warnings, update your contract enum values or fix the data being returned by your controller.
+:::

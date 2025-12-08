@@ -270,6 +270,61 @@ Requires `allow_destroy: true` in Rails model.
 }
 ```
 
+### Deep Nesting
+
+Nested attributes work at multiple levels. For example, Posts → Comments → Replies:
+
+```ruby
+class PostSchema < Apiwork::Schema::Base
+  attribute :title
+  has_many :comments, writable: true
+end
+
+class CommentSchema < Apiwork::Schema::Base
+  attribute :content
+  has_many :replies, writable: true
+end
+
+class ReplySchema < Apiwork::Schema::Base
+  attribute :content
+end
+```
+
+With corresponding Rails models:
+
+```ruby
+class Post < ApplicationRecord
+  has_many :comments
+  accepts_nested_attributes_for :comments, allow_destroy: true
+end
+
+class Comment < ApplicationRecord
+  has_many :replies
+  accepts_nested_attributes_for :replies, allow_destroy: true
+end
+```
+
+**Request:**
+
+```json
+{
+  "post": {
+    "title": "Deep Nesting Example",
+    "comments": [
+      {
+        "content": "Top-level comment",
+        "replies": [
+          { "content": "Reply to comment" },
+          { "content": "Another reply" }
+        ]
+      }
+    ]
+  }
+}
+```
+
+This creates a post with one comment and two replies in a single request. All standard operations (create, update, delete) work at each level.
+
 ### Generated Types
 
 The adapter generates a discriminated union for type-safe client code:

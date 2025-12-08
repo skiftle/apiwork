@@ -130,6 +130,35 @@ Published posts with "Ruby" or "Rails":
 GET /posts?filter[status][eq]=published&filter[_or][0][title][contains]=Ruby&filter[_or][1][title][contains]=Rails
 ```
 
+### Nesting
+
+Logical operators can be nested for complex conditions:
+
+```
+# (status = draft OR status = published) AND views > 100
+GET /posts?filter[_and][0][_or][0][status][eq]=draft&filter[_and][0][_or][1][status][eq]=published&filter[_and][1][views][gt]=100
+```
+
+This generates:
+
+```sql
+WHERE (status = 'draft' OR status = 'published') AND views > 100
+```
+
+**NOT inside OR:**
+
+```
+# title contains "Ruby" OR (NOT status = archived)
+GET /posts?filter[_or][0][title][contains]=Ruby&filter[_or][1][_not][status][eq]=archived
+```
+
+**Multiple levels:**
+
+```
+# (category = tech AND (status = draft OR status = review)) OR featured = true
+GET /posts?filter[_or][0][_and][0][category][eq]=tech&filter[_or][0][_and][1][_or][0][status][eq]=draft&filter[_or][0][_and][1][_or][1][status][eq]=review&filter[_or][1][featured][eq]=true
+```
+
 ---
 
 ## Association Filtering

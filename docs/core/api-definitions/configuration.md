@@ -77,6 +77,37 @@ Options:
 - `:camel` - `created_at` → `createdAt` in responses, `createdAt` → `created_at` in requests
 - `:underscore` - all keys use snake_case
 
+### JSON Columns
+
+Key transformation applies recursively to the entire response, including data from JSON/JSONB columns:
+
+```ruby
+# If a model has a JSON column:
+class User < ApplicationRecord
+  # metadata is a JSON column storing: { "first_name": "John", "last_login": "2024-01-15" }
+end
+
+# With key_format :camel, the response will be:
+{
+  "id": 1,
+  "metadata": {
+    "firstName": "John",    # Keys inside JSON are also transformed
+    "lastLogin": "2024-01-15"
+  }
+}
+```
+
+This is usually the desired behavior. However, if your JSON column stores data with intentional key formats (like external API responses or user-defined schemas), you may need to preserve the original keys.
+
+To prevent transformation of specific JSON columns, use `encode:` to preserve the original structure:
+
+```ruby
+class UserSchema < Apiwork::Schema
+  attribute :id
+  attribute :metadata, type: :json, encode: ->(v) { v.deep_stringify_keys }
+end
+```
+
 ### Custom Transformation
 
 Key transformation happens via two methods on the API class:
