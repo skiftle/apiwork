@@ -16,7 +16,7 @@ module Apiwork
                   :query
 
       def initialize(query:, body:, action:, coerce: true)
-        result = RequestParser.new(self.class, action:, coerce:).perform(query:, body:)
+        result = RequestParser.new(self.class, action, coerce:).perform(query, body)
         @query = result.query
         @body = result.body
         @issues = result.issues
@@ -192,8 +192,8 @@ module Apiwork
           Apiwork::API.find(path)
         end
 
-        def parse_response(body:, action:)
-          ResponseParser.new(self, action:).perform(body:)
+        def parse_response(body, action)
+          ResponseParser.new(self, action).perform(body)
         end
 
         def global_type(name, &block)

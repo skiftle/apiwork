@@ -84,10 +84,7 @@ module Apiwork
       def request(replace: false, &block)
         @reset_request = replace if replace
 
-        @request_definition ||= RequestDefinition.new(
-          contract_class: contract_class,
-          action_name: action_name
-        )
+        @request_definition ||= RequestDefinition.new(contract_class, action_name)
 
         @request_definition.instance_eval(&block) if block
 
@@ -97,10 +94,7 @@ module Apiwork
       def response(replace: false, &block)
         @reset_response = replace if replace
 
-        @response_definition ||= ResponseDefinition.new(
-          contract_class: contract_class,
-          action_name: action_name
-        )
+        @response_definition ||= ResponseDefinition.new(contract_class, action_name)
 
         @response_definition.instance_eval(&block) if block
 

@@ -7,7 +7,7 @@ module Apiwork
                   :body_definition,
                   :contract_class
 
-      def initialize(contract_class:, action_name:)
+      def initialize(contract_class, action_name)
         @contract_class = contract_class
         @action_name = action_name
         @body_definition = nil

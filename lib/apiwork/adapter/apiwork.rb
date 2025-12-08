@@ -31,7 +31,7 @@ module Apiwork
       end
 
       def render_record(record, schema_class, action_data)
-        RecordValidator.validate(record, schema_class:)
+        RecordValidator.validate(record, schema_class)
         data = RecordLoader.load(record, schema_class, action_data.query)
         serialized = schema_class.serialize(data, context: action_data.context, include: action_data.query[:include])
 

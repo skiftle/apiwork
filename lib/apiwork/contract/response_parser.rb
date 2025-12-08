@@ -6,18 +6,18 @@ module Apiwork
       attr_reader :action,
                   :contract_class
 
-      def initialize(contract_class, action:)
+      def initialize(contract_class, action)
         @contract_class = contract_class
         @action = action.to_sym
       end
 
-      def perform(body:)
+      def perform(body)
         definition = body_definition
-        return ResponseResult.new(body:, issues: []) unless definition&.params&.any?
+        return ResponseResult.new(body, []) unless definition&.params&.any?
 
         validated = definition.validate(body) || { params: body, issues: [] }
 
-        ResponseResult.new(body: validated[:params], issues: validated[:issues])
+        ResponseResult.new(validated[:params], validated[:issues])
       end
 
       private

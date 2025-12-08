@@ -6,11 +6,11 @@ module Apiwork
       class RecordValidator
         attr_reader :schema_class
 
-        def self.validate(record, schema_class:)
-          new(record, schema_class:).validate
+        def self.validate(record, schema_class)
+          new(record, schema_class).validate
         end
 
-        def initialize(record, schema_class: nil, root_path: nil)
+        def initialize(record, schema_class = nil, root_path: nil)
           @record = record
           @schema_class = schema_class
 
@@ -54,7 +54,7 @@ module Apiwork
 
             path = [@root_path, attribute_name].flatten
 
-            issue(error, path:)
+            issue(error, path)
           end
         end
 
@@ -101,7 +101,7 @@ module Apiwork
           @belongs_to_names ||= @record.class.reflect_on_all_associations(:belongs_to).map(&:name)
         end
 
-        def issue(rails_error, path:)
+        def issue(rails_error, path)
           meta = { attribute: rails_error.attribute }
 
           if rails_error.options

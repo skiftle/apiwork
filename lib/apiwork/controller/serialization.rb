@@ -23,7 +23,7 @@ module Apiwork
                end
 
         if Rails.env.development?
-          result = contract_class.parse_response(body: json, action: action_name)
+          result = contract_class.parse_response(json, action_name)
           result.issues.each(&:warn)
         end
 

@@ -35,7 +35,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
           first_day_of_week: 'monday'
         }
       }
-      result = contract_class.parse_response(body: valid_output, action: :show)
+      result = contract_class.parse_response(valid_output, :show)
       expect(result.valid?).to be(true), "Expected valid result but got issues: #{result.issues.inspect}"
 
       # Invalid status enum should fail
@@ -47,7 +47,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
           first_day_of_week: 'monday'
         }
       }
-      result = contract_class.parse_response(body: invalid_status, action: :show)
+      result = contract_class.parse_response(invalid_status, :show)
       expect(result.invalid?).to be(true)
       expect(result.issues.first.code).to eq(:invalid_value)
       expect(result.issues.first.detail).to include('Must be one of')
@@ -62,7 +62,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
           first_day_of_week: 'hahahahahaha' # Not in enum
         }
       }
-      result = contract_class.parse_response(body: invalid_fdow, action: :show)
+      result = contract_class.parse_response(invalid_fdow, :show)
       expect(result.invalid?).to be(true)
       expect(result.issues.first.code).to eq(:invalid_value)
       expect(result.issues.first.detail).to include('Must be one of')
@@ -92,7 +92,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
           name: 42 # Should be string
         }
       }
-      result = contract_class.parse_response(body: invalid_output, action: :show)
+      result = contract_class.parse_response(invalid_output, :show)
       expect(result.invalid?).to be(true)
       expect(result.issues.first.code).to eq(:invalid_type)
       expect(result.issues.first.path).to eq([:account, :name])
@@ -129,7 +129,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
           }
         }
       }
-      result = contract_class.parse_response(body: invalid_output, action: :show)
+      result = contract_class.parse_response(invalid_output, :show)
       expect(result.invalid?).to be(true)
       expect(result.issues.first.code).to eq(:invalid_value)
       expect(result.issues.first.path).to eq([:account, :address, :country])

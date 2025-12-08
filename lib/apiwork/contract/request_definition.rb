@@ -8,7 +8,7 @@ module Apiwork
                   :contract_class,
                   :query_definition
 
-      def initialize(contract_class:, action_name:)
+      def initialize(contract_class, action_name)
         @contract_class = contract_class
         @action_name = action_name
         @query_definition = nil
