@@ -23,6 +23,7 @@ loader.inflector.inflect(
   'json_pointer' => 'JSONPointer'
 )
 loader.ignore("#{__dir__}/rubocop")
+loader.ignore("#{__dir__}/generators")
 
 loader.setup
 

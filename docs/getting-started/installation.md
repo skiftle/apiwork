@@ -21,14 +21,22 @@ Then run:
 bundle install
 ```
 
-## Directory Structure
+## Setup
 
-Create the following directories in your Rails app:
+Run the install generator:
+
+```bash
+rails generate apiwork:install
+```
+
+This creates the directory structure Apiwork expects:
 
 ```
 app/
 ├── contracts/
+│   └── application_contract.rb
 └── schemas/
+    └── application_schema.rb
 config/
 └── apis/
 ```
