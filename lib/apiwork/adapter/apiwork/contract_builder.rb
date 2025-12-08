@@ -511,7 +511,7 @@ module Apiwork
 
         def build_pagination_type
           strategy = schema_class.resolve_option(:pagination, :strategy)
-          strategy == :cursor ? :cursor_pagination : :page_pagination
+          strategy == :offset ? :offset_pagination : :cursor_pagination
         end
 
         def build_include_type(visited: Set.new, depth: 0)

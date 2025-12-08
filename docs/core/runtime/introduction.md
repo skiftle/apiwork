@@ -87,7 +87,7 @@ Configure at the API level:
 Apiwork::API.draw '/api/v1' do
   adapter do
     pagination do
-      strategy :page
+      strategy :offset
       default_size 20
       max_size 100
     end
@@ -162,5 +162,5 @@ Error responses include available options to help developers debug.
 
 - [Filtering](./filtering.md) — operators and logical combinations
 - [Sorting](./sorting.md) — multi-field ordering
-- [Pagination](./pagination.md) — page-based and cursor-based
+- [Pagination](./pagination.md) — offset-based and cursor-based
 - [Eager Loading](./eager-loading.md) — includes and N+1 prevention

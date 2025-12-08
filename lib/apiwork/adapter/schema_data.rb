@@ -26,8 +26,8 @@ module Apiwork
         @has_index_actions
       end
 
-      def uses_page_pagination?
-        @pagination_strategies.include?(:page)
+      def uses_offset_pagination?
+        @pagination_strategies.include?(:offset)
       end
 
       def uses_cursor_pagination?

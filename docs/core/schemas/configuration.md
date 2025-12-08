@@ -55,7 +55,7 @@ end
 
 | Option | Values | Default | Description |
 |--------|--------|---------|-------------|
-| `strategy` | `:page`, `:cursor` | `:page` | Pagination style |
+| `strategy` | `:offset`, `:cursor` | `:offset` | Pagination style |
 | `default_size` | Integer | 20 | Items per page when not specified |
 | `max_size` | Integer | 100 | Maximum allowed page size |
 

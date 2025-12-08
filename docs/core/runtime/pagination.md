@@ -4,7 +4,7 @@ order: 4
 
 # Pagination
 
-Paginate collections using page-based or cursor-based strategies.
+Paginate collections using offset-based or cursor-based strategies.
 
 ## Configuration
 
@@ -14,7 +14,7 @@ Set pagination at the API level:
 Apiwork::API.draw '/api/v1' do
   adapter do
     pagination do
-      strategy :page        # or :cursor
+      strategy :offset        # or :cursor
       default_size 20
       max_size 100
     end
@@ -24,13 +24,13 @@ end
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `strategy` | `:page` | `:page` or `:cursor` |
+| `strategy` | `:offset` | `:offset` or `:cursor` |
 | `default_size` | `20` | Items per page when not specified |
 | `max_size` | `100` | Maximum allowed page size |
 
 ---
 
-## Page-Based Pagination
+## Offset-Based Pagination
 
 Traditional offset-based pagination. Good for UIs with page numbers.
 

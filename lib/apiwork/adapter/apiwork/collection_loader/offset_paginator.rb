@@ -4,7 +4,7 @@ module Apiwork
   module Adapter
     class Apiwork < Base
       class CollectionLoader
-        class PagePaginator
+        class OffsetPaginator
           def self.paginate(relation, schema_class, params)
             new(relation, schema_class, params).paginate
           end
@@ -17,28 +17,28 @@ module Apiwork
 
           def paginate
             page_number = @params.fetch(:number, 1).to_i
-            page_size = resolve_page_size
-            offset = (page_number - 1) * page_size
+            limit = resolve_limit
+            offset = (page_number - 1) * limit
 
-            metadata = build_metadata(page_number, page_size)
-            paginated_relation = @relation.limit(page_size).offset(offset)
+            metadata = build_metadata(page_number, limit)
+            paginated_relation = @relation.limit(limit).offset(offset)
 
             [paginated_relation, metadata]
           end
 
           private
 
-          def resolve_page_size
-            @params.fetch(:size, default_page_size).to_i
+          def resolve_limit
+            @params.fetch(:size, default_limit).to_i
           end
 
-          def default_page_size
+          def default_limit
             @schema_class.resolve_option(:pagination, :default_size)
           end
 
-          def build_metadata(page_number, page_size)
+          def build_metadata(page_number, limit)
             items = count_items
-            total = (items.to_f / page_size).ceil
+            total = (items.to_f / limit).ceil
 
             {
               pagination: {

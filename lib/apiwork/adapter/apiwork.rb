@@ -6,7 +6,7 @@ module Apiwork
       identifier :apiwork
 
       option :pagination, type: :hash do
-        option :strategy, type: :symbol, default: :page, enum: %i[page cursor]
+        option :strategy, type: :symbol, default: :offset, enum: %i[offset cursor]
         option :default_size, type: :integer, default: 20
         option :max_size, type: :integer, default: 100
       end

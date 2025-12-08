@@ -98,7 +98,7 @@ With minimal code, you got:
 2. **Serialization** — Responses are automatically formatted using the schema
 3. **Filtering** — `filterable: true` attributes can be filtered via query params
 4. **Sorting** — `sortable: true` attributes can be sorted
-5. **Pagination** — Built-in page-based pagination
+5. **Pagination** — Built-in offset-based pagination
 6. **Documentation** — OpenAPI, TypeScript, and Zod specs generated automatically
 
 See [Schema-Driven Contract Example](../examples/schema-driven-contract.md) for the complete generated output (TypeScript, Zod, OpenAPI).

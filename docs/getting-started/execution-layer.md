@@ -27,7 +27,7 @@ Apiwork includes a built-in runtime that provides:
 
 - **Filtering** — type-aware operators, logical combinations
 - **Sorting** — multi-field ordering
-- **Pagination** — page-based and cursor-based
+- **Pagination** — offset-based and cursor-based
 - **Eager Loading** — automatic N+1 prevention
 
 For detailed documentation, see [Runtime](../core/runtime/introduction.md).
@@ -74,7 +74,7 @@ Configure the runtime in your API definition:
 Apiwork::API.draw '/api/v1' do
   adapter do
     pagination do
-      strategy :page        # or :cursor
+      strategy :offset        # or :cursor
       default_size 20
       max_size 100
     end

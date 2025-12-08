@@ -157,7 +157,7 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
       expect(schema.resolve_option(:pagination, :max_size)).to eq(200)
 
       # Adapter default when not in API or schema
-      expect(schema.resolve_option(:pagination, :strategy)).to eq(:page)
+      expect(schema.resolve_option(:pagination, :strategy)).to eq(:offset)
     end
 
     it 'key_format is at API level' do

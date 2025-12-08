@@ -121,12 +121,12 @@ module Apiwork
                     :schema_data
 
         def register_pagination_types
-          register_page_pagination if schema_data.uses_page_pagination?
+          register_offset_pagination if schema_data.uses_offset_pagination?
           register_cursor_pagination if schema_data.uses_cursor_pagination?
         end
 
-        def register_page_pagination
-          type_registrar.type :page_pagination do
+        def register_offset_pagination
+          type_registrar.type :offset_pagination do
             param :current, type: :integer
             param :next, type: :integer, nullable: true, optional: true
             param :prev, type: :integer, nullable: true, optional: true

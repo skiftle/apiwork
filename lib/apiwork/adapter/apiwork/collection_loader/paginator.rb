@@ -5,14 +5,14 @@ module Apiwork
     class Apiwork < Base
       class CollectionLoader
         class Paginator
-          def self.paginate(relation, schema_class, page_params)
+          def self.paginate(relation, schema_class, pagination_params)
             strategy = schema_class.resolve_option(:pagination, :strategy)
 
             case strategy
-            when :cursor
-              CursorPaginator.paginate(relation, schema_class, page_params)
+            when :offset
+              OffsetPaginator.paginate(relation, schema_class, pagination_params)
             else
-              PagePaginator.paginate(relation, schema_class, page_params)
+              CursorPaginator.paginate(relation, schema_class, pagination_params)
             end
           end
         end

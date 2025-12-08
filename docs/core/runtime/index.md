@@ -10,5 +10,5 @@ The built-in query engine for filtering, sorting, pagination, and eager loading.
 - [Action Defaults](./action-defaults.md) — Default behavior for CRUD actions
 - [Filtering](./filtering.md) — Query operators and logical combinations
 - [Sorting](./sorting.md) — Multi-field ordering
-- [Pagination](./pagination.md) — Page-based and cursor-based
+- [Pagination](./pagination.md) — Offset-based and cursor-based
 - [Eager Loading](./eager-loading.md) — Includes and N+1 prevention
