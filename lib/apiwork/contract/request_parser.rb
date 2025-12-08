@@ -3,12 +3,12 @@
 module Apiwork
   module Contract
     class RequestParser
-      attr_reader :action,
+      attr_reader :action_name,
                   :contract_class
 
-      def initialize(contract_class, action, coerce: true)
+      def initialize(contract_class, action_name, coerce: false)
         @contract_class = contract_class
-        @action = action.to_sym
+        @action_name = action_name.to_sym
         @coerce = coerce
       end
 
@@ -42,7 +42,7 @@ module Apiwork
       end
 
       def action_definition
-        @action_definition ||= contract_class.action_definition(action)
+        @action_definition ||= contract_class.action_definition(action_name)
       end
 
       def definition_for(part_type)

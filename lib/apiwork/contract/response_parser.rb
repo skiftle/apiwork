@@ -3,12 +3,12 @@
 module Apiwork
   module Contract
     class ResponseParser
-      attr_reader :action,
+      attr_reader :action_name,
                   :contract_class
 
-      def initialize(contract_class, action)
+      def initialize(contract_class, action_name)
         @contract_class = contract_class
-        @action = action.to_sym
+        @action_name = action_name.to_sym
       end
 
       def perform(body)
@@ -23,7 +23,7 @@ module Apiwork
       private
 
       def action_definition
-        @action_definition ||= contract_class.action_definition(action)
+        @action_definition ||= contract_class.action_definition(action_name)
       end
 
       def body_definition

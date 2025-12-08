@@ -19,7 +19,8 @@ module Apiwork
         @contract ||= contract_class.new(
           query: transformed_query_parameters,
           body: transformed_body_parameters,
-          action: action_name
+          action_name: action_name,
+          coerce: true
         )
       end
 

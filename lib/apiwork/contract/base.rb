@@ -10,17 +10,17 @@ module Apiwork
       class_attribute :_identifier
       class_attribute :_schema_class
 
-      attr_reader :action,
+      attr_reader :action_name,
                   :body,
                   :issues,
                   :query
 
-      def initialize(query:, body:, action:, coerce: true)
-        result = RequestParser.new(self.class, action, coerce:).perform(query, body)
+      def initialize(query:, body:, action_name:, coerce: false)
+        result = RequestParser.new(self.class, action_name, coerce:).perform(query, body)
         @query = result.query
         @body = result.body
         @issues = result.issues
-        @action = action.to_sym
+        @action_name = action_name.to_sym
       end
 
       def valid?
