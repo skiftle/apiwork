@@ -80,7 +80,7 @@ Accepts: `true`, `false`, `1`, `0`, `'true'`, `'false'`
 
 ### Enum
 
-Enum fields use the same operators as strings. Invalid values return an error with valid options:
+Enum fields support `eq` and `in` operators. You can also pass the value directly. Invalid values return an error with valid options:
 
 ```json
 {
