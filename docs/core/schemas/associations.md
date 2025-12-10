@@ -417,13 +417,24 @@ Handle associations that can belong to multiple model types.
 
 ### Definition
 
-Map each type to its schema:
+Two syntaxes are supported:
+
+**Array shorthand** — infers schema from same namespace:
+
+```ruby
+class CommentSchema < Apiwork::Schema::Base
+  belongs_to :commentable, polymorphic: [:post, :video, :article]
+end
+# Infers PostSchema, VideoSchema, ArticleSchema from same namespace
+```
+
+**Hash with explicit schemas** — when schema names don't follow convention:
 
 ```ruby
 class CommentSchema < Apiwork::Schema::Base
   belongs_to :commentable, polymorphic: {
     post: PostSchema,
-    video: VideoSchema,
+    video: MediaSchema,  # Custom schema
     article: ArticleSchema
   }
 end

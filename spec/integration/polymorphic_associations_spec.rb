@@ -3,20 +3,61 @@
 require 'rails_helper'
 
 RSpec.describe 'Polymorphic associations', type: :integration do
+  # Stub schema classes for testing
+  let(:post_schema_class) { Class.new(Apiwork::Schema::Base) { abstract } }
+  let(:video_schema_class) { Class.new(Apiwork::Schema::Base) { abstract } }
+
   describe 'polymorphic association definition' do
-    it 'accepts polymorphic option with types hash' do
+    it 'accepts polymorphic option with types hash using class references' do
+      post_schema = post_schema_class
+      video_schema = video_schema_class
+
       schema = Class.new(Apiwork::Schema::Base) do
         abstract
 
-        belongs_to :commentable, polymorphic: { post: 'Api::V1::PostSchema', video: 'Api::V1::VideoSchema' }
+        belongs_to :commentable, polymorphic: { post: post_schema, video: video_schema }
       end
 
       association_def = schema.association_definitions[:commentable]
       expect(association_def.polymorphic?).to be true
-      expect(association_def.polymorphic).to eq({ post: 'Api::V1::PostSchema', video: 'Api::V1::VideoSchema' })
+      expect(association_def.polymorphic).to eq({ post: post_schema, video: video_schema })
+    end
+
+    it 'accepts polymorphic option with array shorthand' do
+      stub_const('Api::V1::PostSchema', post_schema_class)
+      stub_const('Api::V1::VideoSchema', video_schema_class)
+
+      schema = Class.new(Apiwork::Schema::Base) do
+        abstract
+
+        def self.name
+          'Api::V1::CommentSchema'
+        end
+
+        belongs_to :commentable, polymorphic: %i[post video]
+      end
+
+      association_def = schema.association_definitions[:commentable]
+      expect(association_def.polymorphic?).to be true
+      expect(association_def.polymorphic).to eq({ post: nil, video: nil })
+      expect(association_def.resolve_polymorphic_schema(:post)).to eq(Api::V1::PostSchema)
+      expect(association_def.resolve_polymorphic_schema(:video)).to eq(Api::V1::VideoSchema)
+    end
+
+    it 'rejects string values in polymorphic hash' do
+      expect do
+        Class.new(Apiwork::Schema::Base) do
+          abstract
+
+          belongs_to :commentable, polymorphic: { post: 'PostSchema' }
+        end
+      end.to raise_error(Apiwork::ConfigurationError, /class references, not strings/)
     end
 
     it 'auto-detects discriminator from reflection' do
+      post_schema = post_schema_class
+      video_schema = video_schema_class
+
       reflection = double(
         'ActiveRecord::Reflection',
         name: :commentable,
@@ -43,7 +84,7 @@ RSpec.describe 'Polymorphic associations', type: :integration do
       schema = Class.new(Apiwork::Schema::Base) do
         model model_class
 
-        belongs_to :commentable, polymorphic: { post: 'Api::V1::PostSchema', video: 'Api::V1::VideoSchema' }
+        belongs_to :commentable, polymorphic: { post: post_schema, video: video_schema }
       end
 
       association_def = schema.association_definitions[:commentable]
@@ -53,60 +94,70 @@ RSpec.describe 'Polymorphic associations', type: :integration do
 
   describe 'polymorphic validation' do
     it 'rejects filterable with polymorphic' do
+      post_schema = post_schema_class
+
       expect do
         Class.new(Apiwork::Schema::Base) do
           abstract
 
           belongs_to :commentable,
-                     polymorphic: { post: 'Api::V1::PostSchema' },
+                     polymorphic: { post: post_schema },
                      filterable: true
         end
       end.to raise_error(Apiwork::ConfigurationError, /cannot use filterable: true/)
     end
 
     it 'rejects sortable with polymorphic' do
+      post_schema = post_schema_class
+
       expect do
         Class.new(Apiwork::Schema::Base) do
           abstract
 
           belongs_to :commentable,
-                     polymorphic: { post: 'Api::V1::PostSchema' },
+                     polymorphic: { post: post_schema },
                      sortable: true
         end
       end.to raise_error(Apiwork::ConfigurationError, /cannot use sortable: true/)
     end
 
     it 'allows include: :optional with polymorphic' do
+      post_schema = post_schema_class
+
       expect do
         Class.new(Apiwork::Schema::Base) do
           abstract
 
           belongs_to :commentable,
-                     polymorphic: { post: 'Api::V1::PostSchema' },
+                     polymorphic: { post: post_schema },
                      include: :optional
         end
       end.not_to raise_error
     end
 
     it 'allows include: :always with polymorphic' do
+      post_schema = post_schema_class
+
       expect do
         Class.new(Apiwork::Schema::Base) do
           abstract
 
           belongs_to :commentable,
-                     polymorphic: { post: 'Api::V1::PostSchema' },
+                     polymorphic: { post: post_schema },
                      include: :always
         end
       end.not_to raise_error
     end
 
     it 'rejects writable with polymorphic' do
+      post_schema = post_schema_class
+
       expect do
         Class.new(Apiwork::Schema::Base) do
           abstract
 
           belongs_to :commentable,
-                     polymorphic: { post: 'Api::V1::PostSchema' },
+                     polymorphic: { post: post_schema },
                      writable: true
         end
       end.to raise_error(Apiwork::ConfigurationError, /cannot use writable: true/)

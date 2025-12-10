@@ -20,7 +20,7 @@ module Apiwork
         @owner_schema_class = schema_class
         @model_class = schema_class.model_class
         @schema_class = options[:schema]
-        @polymorphic = options[:polymorphic] if options[:polymorphic].is_a?(Hash)
+        @polymorphic = normalize_polymorphic(options[:polymorphic])
 
         options = apply_defaults(options)
 
@@ -102,7 +102,55 @@ module Apiwork
         @schema_class_name ||= @owner_schema_class.name.demodulize.underscore.gsub(/_schema$/, '')
       end
 
+      def resolve_polymorphic_schema(tag)
+        return nil unless @polymorphic
+
+        explicit = @polymorphic[tag.to_sym]
+        return explicit if explicit
+
+        infer_polymorphic_schema(tag)
+      end
+
       private
+
+      def normalize_polymorphic(value)
+        return nil unless value
+
+        case value
+        when Array
+          value.each_with_object({}) { |tag, hash| hash[tag.to_sym] = nil }
+        when Hash
+          validate_polymorphic_hash!(value)
+          value.transform_keys(&:to_sym)
+        else
+          raise ConfigurationError.new(
+            code: :invalid_polymorphic_option,
+            detail: "polymorphic must be an Array or Hash, got #{value.class}",
+            path: [@owner_schema_class&.name, :belongs_to, @name, :polymorphic]
+          )
+        end
+      end
+
+      def validate_polymorphic_hash!(hash)
+        hash.each do |tag, schema|
+          next unless schema.is_a?(String)
+
+          raise ConfigurationError.new(
+            code: :invalid_polymorphic_value,
+            detail: "polymorphic values must be class references, not strings. " \
+                    "Use `#{tag}: #{schema.split('::').last}` instead of `#{tag}: '#{schema}'`",
+            path: [@owner_schema_class&.name, :belongs_to, @name, :polymorphic, tag]
+          )
+        end
+      end
+
+      def infer_polymorphic_schema(tag)
+        namespace = @owner_schema_class.name.deconstantize
+        schema_name = "#{tag.to_s.camelize}Schema"
+
+        full_name = namespace.present? ? "#{namespace}::#{schema_name}" : schema_name
+        full_name.safe_constantize
+      end
 
       def column_for(name)
         @model_class.columns_hash[name.to_s]

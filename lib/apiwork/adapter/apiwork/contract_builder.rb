@@ -696,10 +696,13 @@ module Apiwork
 
           builder = self
           discriminator = association_definition.discriminator
-          polymorphic_local = polymorphic
+          association_def_local = association_definition
 
           contract_class.union(union_type_name, discriminator:) do
-            polymorphic_local.each do |tag, schema_class|
+            association_def_local.polymorphic.each_key do |tag|
+              schema_class = association_def_local.resolve_polymorphic_schema(tag)
+              next unless schema_class
+
               import_alias = builder.send(:import_association_contract, schema_class, visited)
               next unless import_alias
 
