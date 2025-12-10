@@ -7,11 +7,14 @@ hero:
   tagline: "Define your API once and get consistency and type-safety everywhere"
   actions:
     - theme: brand
-      text: Getting Started
-      link: /getting-started/introduction
+      text: Introduction
+      link: /guide/getting-started/introduction
     - theme: alt
-      text: Type System
-      link: /type-system/introduction
+      text: Quickstart
+      link: /guide/getting-started/quick-start
+    - theme: alt
+      text: GitHub
+      link: https://github.com/skiftle/apiwork
 
 features:
   - icon: 🧾
