@@ -1,16 +1,20 @@
 <script setup lang="ts">
-import { useData } from 'vitepress'
+import { useData, useRoute } from 'vitepress'
 import ThemeSwitch from './ThemeSwitch.vue'
 
 const { site } = useData()
+const route = useRoute()
 
-// TODO: Get nav from themeConfig or define here
 const navItems = [
-  { text: 'Home', link: '/' },
-  { text: 'Guide', link: '/guide/getting-started/introduction' },
-  { text: 'Reference', link: '/reference/' },
-  { text: 'Blog', link: '/blog/' },
+  { text: 'Home', link: '/', match: /^\/$/ },
+  { text: 'Guide', link: '/guide/getting-started/introduction', match: /^\/guide\// },
+  { text: 'Reference', link: '/reference/', match: /^\/reference\// },
+  { text: 'Blog', link: '/blog/', match: /^\/blog\// },
 ]
+
+function isActive(item: typeof navItems[0]) {
+  return item.match.test(route.path)
+}
 </script>
 
 <template>
@@ -25,7 +29,8 @@ const navItems = [
           v-for="item in navItems"
           :key="item.link"
           :href="item.link"
-          class="nav-link"
+          class="nav-pill"
+          :class="{ active: isActive(item) }"
         >
           {{ item.text }}
         </a>
@@ -83,20 +88,28 @@ const navItems = [
 
 .nav {
   display: flex;
-  gap: var(--space-6);
+  gap: var(--space-2);
 }
 
-.nav-link {
+.nav-pill {
   font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--color-text-muted);
   text-decoration: none;
-  transition: color var(--transition-fast);
+  padding: var(--space-2) var(--space-4);
+  border-radius: 9999px;
+  transition: all var(--transition-fast);
 }
 
-.nav-link:hover {
+.nav-pill:hover {
   color: var(--color-text);
+  background: var(--color-bg-soft);
   text-decoration: none;
+}
+
+.nav-pill.active {
+  color: var(--color-brand);
+  background: var(--color-bg-muted);
 }
 
 .header-actions {
