@@ -1,119 +1,149 @@
 ---
-order: 3
+order: 4
 ---
 
 # Core Concepts
 
-Apiwork has three main pieces: API definitions, contracts, and schemas. Here's how they fit together.
+Apiwork is built around three main ideas: API definitions, contracts,
+and schemas. Each plays a different role, but together they describe the
+shape and behaviour of your API.
 
 ## API Definition
 
-Your API starts with a definition file in `config/apis/`. Think of it like `routes.rb`, but for your API structure:
+Every Apiwork API begins with a definition file in `config/apis/`. It
+lives alongside `routes.rb`: under the hood Apiwork still uses the Rails
+router and regular controllers, but the API definition lets you describe
+your API in a more structured, API-focused way.
 
 ```ruby
-# config/apis/v1.rb
+# config/apis/api_v1.rb
 Apiwork::API.draw '/api/v1' do
   resources :invoices do
-    member do
-      patch :archive
-    end
+    resource :payments
   end
 end
 ```
 
-This declares which resources exist and which actions they support. Under the hood, Apiwork uses the Rails router — `resources` works exactly as you'd expect.
+This defines which resources exist and which actions they expose.
+Internally, Apiwork uses the Rails router, so `resources` behaves
+exactly as you'd expect.
 
-The difference: every resource needs a contract. No contract, no endpoint.
+Every resource is expected to have a contract. If a request reaches a
+resource without one, Apiwork raises an error.
 
 ## Contracts
 
-Contracts define what each action accepts and returns:
+A contract describes what each action accepts and what it returns. It
+defines the shape both sides must follow.
 
 ```ruby
-class InvoiceContract < Apiwork::Contract::Base
-  type :invoice do
-    param :id, type: :uuid
-    param :number, type: :string
-    param :status, type: :string
-  end
+# app/contracts/api/v1/invoice_contract.rb
+module Api
+  module V1
+    class InvoiceContract < ApplicationContract
+      type :invoice do
+        param :id, type: :uuid
+        param :created_at, type: :datetime
+        param :updated_at, type: :datetime
+        param :number, type: :string
+        param :status, type: :string, enum: %w[draft, sent, due, paid]
+      end
 
-  action :index do
-    response do
-      body { param :invoices, type: :array, of: :invoice }
-    end
-  end
+      action :index do
+        request do
+          query do
+            param filter, type: :object do
+              param :number, type: :string
+            end
+            param :sort, type: :string
+          end
+        end
 
-  action :show do
-    response do
-      body { param :invoice, type: :invoice }
+        response do
+          body do
+            param :invoices, type: :array, of: :invoice
+          end
+        end
+      end
+
+      action :show do
+        response do
+          body do
+            param :invoice, type: :invoice
+          end
+        end
+      end
     end
   end
 end
 ```
 
-Request doesn't match? Rejected immediately. Response doesn't match? Logged in development so you catch it early.
+If a request doesn't match the contract, it's rejected before hitting
+your controller.\
+If a response doesn't match, Apiwork logs it in development so you can
+catch it early.
 
-See [Manual Contract Example](../examples/manual-contract.md) for a complete contract with all actions.
+See the [Manual Contract Example](../examples/manual-contract.md) for a
+full contract covering every action.
 
 ## Controllers
 
-Your controllers stay familiar. Two changes:
+Controllers remain familiar. The only changes are:
 
-- Use `contract.query` and `contract.body` instead of `params`
-- Use `respond_with` to serialize responses
-
-::: info Replaces Strong Parameters
-`contract.query` and `contract.body` only include params defined in the contract. Unknown keys are rejected before your controller runs. Pass them directly to `create` and `update` — no `permit` needed.
-:::
+- use `contract.query` and `contract.body` instead of `params`
+- return data with `respond_with` and errors with `respond_with_error`
 
 ```ruby
-before_action :set_invoice, only: %i[show update destroy archive]
+# app/controllers/api/v1/invoices_controller.rb
+module Api
+  module V1
+    class InvoicesController < ApplicationController
+      before_action :set_invoice, only: %i[show update destroy]
 
-def index
-  invoices = Invoice.query(contract.query)
-  respond_with invoices
-end
+      def index
+        invoices = Invoice.query(contract.query)
+        respond_with invoices
+      end
 
-def show
-  respond_with invoice
-end
+      def show
+        respond_with invoice
+      end
 
-def create
-  invoice = Invoice.create(contract.body[:invoice])
-  respond_with invoice
-end
+      def create
+        invoice = Invoice.create(contract.body[:invoice])
+        respond_with invoice
+      end
 
-def update
-  invoice.update(contract.body[:invoice])
-  respond_with invoice
-end
+      def update
+        invoice.update(contract.body[:invoice])
+        respond_with invoice
+      end
 
-def destroy
-  invoice.destroy
-  respond_with invoice
-end
+      def destroy
+        invoice.destroy
+        respond_with invoice
+      end
 
-def archive
-  invoice.archive
-  respond_with invoice
-end
+      private
 
-private
+      attr_reader :invoice
 
-attr_reader :invoice
-
-def set_invoice
-  @invoice = Invoice.find(params[:id])
+      def set_invoice
+        @invoice = Invoice.find(params[:id])
+      end
+    end
+  end
 end
 ```
 
-Same controller patterns. Apiwork just guarantees the data matches the contract.
+::: info
+`contract.query` and `contract.body` effectively replace Strong Parameters. They contain only the fields defined in the contract, and anything unknown is filtered out before your controller runs. That means you can pass them straight into `create` and `update` without any additional permitting.
+:::
 
 ## Schemas
 
-Schemas connect contracts to your models. They're optional, but they save you from writing most contract definitions by hand.
-
-<!-- example: eager-lion -->
+Schemas connect your API to your models. They're optional, but they
+remove most of the manual work involved in defining contracts.
 
 ```ruby
 # app/schemas/line_schema.rb
@@ -139,7 +169,7 @@ class InvoiceSchema < Apiwork::Schema::Base
 end
 ```
 
-Add `schema!` to your contract:
+Add `schema!` to your contract and Apiwork's built-in adapter activates:
 
 ```ruby
 class InvoiceContract < Apiwork::Contract::Base
@@ -147,27 +177,35 @@ class InvoiceContract < Apiwork::Contract::Base
 end
 ```
 
-This single line activates Apiwork's [built-in adapter](../core/runtime/introduction.md). The adapter reads your schema and generates everything the contract needs:
+From your schema, Apiwork can derive everything the contract needs:
 
-- **Filter types** — from `filterable: true` attributes
-- **Sort types** — from `sortable: true` attributes
-- **Payload types** — from `writable: true` attributes
-- **Include types** — from associations
-- **Response types** — from all attributes
+- **Filter types** --- from `filterable: true`
+- **Sort types** --- from `sortable: true`
+- **Writable payloads** --- from `writable: true`
+- **Includes** --- from associations
+- **Response shapes** --- from all attributes
 
-These generated types power request validation, TypeScript generation, Zod schemas, and OpenAPI specs — all from the same source.
+These generated types drive request validation and also power
+TypeScript, Zod, and OpenAPI generation --- all from the same source.
 
-The adapter also reads your database and model to infer column types, enum values, nullability, associations, and defaults. You declare what to expose — Apiwork figures out the rest.
+The adapter also reads your models and database to infer column types,
+enum values, nullability, associations, and defaults. You decide what to
+expose; Apiwork fills in the rest.
 
-See [Schema-Driven Example](../examples/schema-driven-contract.md) for complete generated output.
+See the [Schema-Driven Example](../examples/schema-driven-contract.md)
+to view the full generated output.
 
 ## One Metadata Model
 
-API definitions, contracts, and schemas all feed into the same metadata. That's why generated specs stay perfectly aligned with your server — OpenAPI, TypeScript, Zod all come from the same source.
+API definitions, contracts, and schemas all contribute to the same
+metadata. This is why generated output --- OpenAPI, TypeScript, Zod, and
+more --- always stays aligned with what your server actually does.
 
-Change a type, and the TypeScript updates. Add a filter, and OpenAPI reflects it. One source of truth, multiple outputs.
+Change something once, and everything updates consistently.
 
 ## Next Steps
 
-- [Quick Start](./quick-start.md) — build a complete endpoint from scratch
-- [Execution Layer](./execution-layer.md) — filtering, sorting, pagination, and eager loading
+- [Quick Start](./quick-start.md) --- build a complete endpoint from
+  scratch\
+- [Execution Layer](./execution-layer.md) --- filtering, sorting,
+  pagination, and eager loading

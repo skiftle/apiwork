@@ -4,71 +4,81 @@ order: 5
 
 # Execution Layer
 
-The execution layer sits between your contracts and your data. It handles filtering, sorting, pagination, eager loading, and response formatting.
+The execution layer is the part of Apiwork that takes your validated
+input and turns it into a query. It sits between your contracts and your
+data, and is responsible for things like filtering, sorting, pagination,
+eager loading, and formatting the final response. You don't configure
+this logic directly --- it's derived from the definitions you've already
+written.
 
 ## What It Does
 
-When a request comes in:
+When a request comes in, the flow looks like this:
 
-1. **Contract validates** the request (query params, body)
-2. **Execution layer** applies filters, sorting, pagination
-3. **Schema serializes** the result
-4. **Response** goes back to the client
+1.  **The contract validates** the request (query params and body)
+2.  **The execution layer** applies filtering, sorting, pagination, and
+    includes
+3.  **The schema** serializes the result
+4.  The **response** is returned to the client
 
+```{=html}
+<!-- -->
 ```
-Request → Contract → Execution Layer → Schema → Response
-                          ↓
-                    ActiveRecord
-```
+
+    Request → Contract → Execution Layer → Schema → Response
+                              ↓
+                        ActiveRecord
+
+Apiwork handles these steps automatically. You describe the shape of the
+API; the runtime takes care of the details.
 
 ## Built-in Runtime
 
-Apiwork includes a built-in runtime that provides:
+Apiwork ships with a built-in runtime that supports:
 
-- **Filtering** — type-aware operators, logical combinations
-- **Sorting** — multi-field ordering
-- **Pagination** — offset-based and cursor-based
-- **Eager Loading** — automatic N+1 prevention
+- **Filtering** --- type-aware operators and logical combinations
+- **Sorting** --- ordering by one or many fields
+- **Pagination** --- offset-based or cursor-based
+- **Eager loading** --- automatic N+1 prevention
 
-For detailed documentation, see [Runtime](../core/runtime/introduction.md).
+Each of these features is optional, derived from your schema, and
+explained in detail in the [Runtime](../core/runtime/introduction.md)
+section.
 
 ## Quick Reference
 
 ### Filtering
 
-```
-GET /posts?filter[status][eq]=published&filter[views][gt]=100
-```
+    GET /posts?filter[status][eq]=published&filter[views][gt]=100
 
-[Filtering](../core/runtime/filtering.md) covers operators like `eq`, `contains`, `between`, and logical combinations with `_and`/`_or`.
+[Filtering](../core/runtime/filtering.md) covers operators like `eq`,
+`contains`, `between`, and logical combinations such as `_and` and
+`_or`.
 
 ### Sorting
 
-```
-GET /posts?sort[created_at]=desc&sort[title]=asc
-```
+    GET /posts?sort[created_at]=desc&sort[title]=asc
 
-[Sorting](../core/runtime/sorting.md) covers multi-field ordering and association sorting.
+[Sorting](../core/runtime/sorting.md) covers multi-field ordering and
+sorting across associations.
 
 ### Pagination
 
-```
-GET /posts?page[number]=2&page[size]=20
-```
+    GET /posts?page[number]=2&page[size]=20
 
-[Pagination](../core/runtime/pagination.md) covers offset-based and cursor-based strategies.
+[Pagination](../core/runtime/pagination.md) explains both offset and
+cursor strategies.
 
 ### Eager Loading
 
-```
-GET /posts?include[comments]=true&include[author]=true
-```
+    GET /posts?include[comments]=true&include[author]=true
 
-[Eager Loading](../core/runtime/eager-loading.md) covers nested includes and N+1 prevention.
+[Eager Loading](../core/runtime/eager-loading.md) covers nested includes
+and N+1 prevention.
 
 ## Configuration
 
-Configure the runtime in your API definition:
+You configure runtime behaviour in your API definition:
 
 ```ruby
 Apiwork::API.draw '/api/v1' do
@@ -82,7 +92,7 @@ Apiwork::API.draw '/api/v1' do
 end
 ```
 
-Override for specific schemas:
+And you can override settings for specific schemas:
 
 ```ruby
 class PostSchema < Apiwork::Schema::Base
@@ -105,8 +115,8 @@ def index
   respond_with posts
 end
 
-# Runtime applies: filter → sort → paginate → includes
-# Returns: { posts: [...], pagination: {...} }
+# The runtime applies: filter → sort → paginate → includes
+# Response: { posts: [...], pagination: {...} }
 ```
 
 ### Single Record Request (show, create, update)
@@ -116,13 +126,13 @@ def show
   respond_with Post.find(params[:id])
 end
 
-# Runtime applies: includes (if requested)
-# Returns: { post: {...} }
+# The runtime applies: includes (if requested)
+# Response: { post: {...} }
 ```
 
 ## Response Metadata
 
-Add custom metadata to any response:
+You can attach metadata to any response:
 
 ```ruby
 def index
@@ -133,8 +143,6 @@ def index
   }
 end
 ```
-
-Response:
 
 ```json
 {
@@ -147,11 +155,12 @@ Response:
 }
 ```
 
-To document the meta structure in your contract, use the `meta` block. [Actions - meta](../core/contracts/actions.md#meta) shows how to define typed meta fields.
+To document metadata in your contract, see [Actions --
+meta](../core/contracts/actions.md#meta).
 
 ## Key Transform
 
-The runtime respects the API's key format setting:
+The runtime respects the API's configured key format:
 
 ```ruby
 Apiwork::API.draw '/api/v1' do
@@ -171,10 +180,15 @@ end
 
 ## Custom Adapters
 
-For non-ActiveRecord data sources or custom query logic, you can create your own adapter. [Custom Adapters](../advanced/custom-adapters.md) explains the adapter interface.
+If you're not using ActiveRecord, or if your data source needs custom
+behaviour, you can implement your own adapter. See [Custom
+Adapters](../advanced/custom-adapters.md) for details.
 
 ## Next Steps
 
-- [Runtime](../core/runtime/introduction.md) — detailed query parameter documentation
-- [Contracts](../core/contracts/introduction.md) — define request/response shapes
-- [Schemas](../core/schemas/introduction.md) — auto-generate contracts from models
+- [Runtime](../core/runtime/introduction.md) --- detailed query
+  parameter documentation\
+- [Contracts](../core/contracts/introduction.md) --- define
+  request/response shapes\
+- [Schemas](../core/schemas/introduction.md) --- auto-generate
+  contracts from models

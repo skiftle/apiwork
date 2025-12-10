@@ -4,81 +4,47 @@ order: 1
 
 # Introduction
 
-Apiwork is a contract-driven API layer for Rails. It sits at the boundary — where data comes in and goes out. You describe the shape once, and every client knows what to expect. That’s really the whole idea. Rails handles the inside of your app extremely well; Apiwork helps Rails speak more clearly at the edges.
+Apiwork starts with a simple idea: **define your API once**, and let the
+rest build on that. At the edge of your app — where data comes in and
+goes out — Apiwork adds a small contract‑driven layer. Every request
+is checked against the contract, every response is shaped by it. If the
+data fits, it passes through; if not, it's stopped early.
 
----
+Once that single definition is in place — together with a few
+reasonable assumptions about how APIs tend to behave — Apiwork can do
+quite a lot for you automatically. Filtering, sorting, pagination,
+sideloading, avoiding N+1 queries, and nested writes all follow the same
+pattern. You're not writing this logic yourself; it simply comes from
+the structure you've already defined.
 
-# The Problem
+Apiwork is also meant to feel natural in Rails. You still write your
+controllers, and the whole flow follows the Rails way of doing things,
+so nothing feels out of place. At a high level, your API has a
+**contract** — a clear shape that requests must follow and responses
+must match.
 
-Inside Rails, Ruby’s flexibility is a strength. Conventions carry a lot of weight. You call `post.author` and Rails knows how to find the right object. The types are implicit and Rails doesn’t need them written down.
+The key is that Apiwork doesn't ask you to repeat information you've
+already expressed elsewhere. Rails — and the database underneath it
+— already knows a lot about your domain: attributes, types, enum
+values, associations, defaults, nullability. Apiwork builds on that
+instead of duplicating it. In practice, the database becomes the source
+of truth, and the API stays aligned with it automatically. Since
+everything starts from the same foundation, consistency more or less
+comes for free.
 
-But the moment the data leaves your app, those conventions don’t help anyone. A client has no built-in understanding of what your API returns, so you end up documenting it manually — an OpenAPI file here, some TypeScript interfaces there, maybe a Zod schema to be safe. Now you have two descriptions of the same thing: your models, and the specs you’ve written by hand. They drift. It’s almost unavoidable.
+With a single, explicit definition guiding the boundary of your app, a
+lot of good things become possible. Modern APIs rely on structure and
+predictability — clear shapes, stable behaviour, and types that
+clients can trust. Apiwork gives Rails that structure without changing
+how you work. You keep the productivity and simplicity of Ruby, and at
+the same time you get the clarity and type‑safety expected in modern API
+ecosystems.
 
-## The “alternative”
+From here, the next step is to see how these ideas look in practice —
+how an API is defined, how its structure becomes a contract, and how
+Rails' own knowledge flows through the rest of the system.
 
-You could run your backend in TypeScript instead. It’s a good ecosystem, and the type system does help as a project grows. But the cost isn’t TypeScript itself — it’s everything you lose by stepping away from Rails: migrations, Active Record, background jobs, helpers, caching, test tools, and the simple speed of getting things done with a small team. Rails is good at the things around your API. What it doesn’t have is a structured way to describe the API boundary.
-
----
-
-# The Solution
-
-**Define it once. Use it everywhere.**
-
-Apiwork gives Rails a small, focused language for describing the API boundary. Nothing more. You still write Rails as you always have — models, controllers, business logic — but now the edge of your API has a clear definition.
-
-Apiwork consists of four parts:
-
-### **1. API Definition**
-
-Defines the overall shape: which resources exist and which actions they offer.
-
-### **2. Contracts**
-
-Describe exactly what an action accepts and returns. This alone removes the drift between “what Rails does” and “what the docs say”.
-
-```ruby
-class PostContract < Apiwork::Contract
-  action :index do
-    response { array(:post) }
-  end
-end
-```
-
-### **3. Schemas**
-
-Schemas connect your models to your contracts. Most structure is inherited from the database, so you only specify what you want to expose. This makes it easy to mark fields as filterable, writable, sortable, and so on.
-
-### **4. The Adapter**
-
-Reads your contracts and schemas and handles the common API behaviors — filtering, sorting, pagination, eager loading. You can use the built-in adapter or provide your own. Schemas and adapters are optional; you can start small and add them only when they’re useful.
-
----
-
-# One Source of Truth
-
-When you put these pieces together, you get a single description of your API. That one description powers request and response validation, runtime behavior, and generation of OpenAPI, Zod schemas, and TypeScript types. No duplication. No guessing which version of the truth is correct.
-
----
-
-# Still Rails
-
-Apiwork doesn’t change how you build Rails apps. Controllers stay familiar. Models keep their validations, associations, and callbacks. You work the same way as before — there’s simply more clarity at the boundary.
-
-For example:
-
-```ruby
-respond_with Post.all
-```
-
-…automatically picks up filtering, sorting, pagination and serialization defined by your schema. Mark an attribute as `writable: true` and nested writes work. Mark something `filterable: true` and clients can filter by it. It’s all declarative and fits naturally with Rails conventions.
-
----
-
-# In Short
-
-Apiwork gives Rails a clear, lightweight language for describing the API boundary — something Rails never needed internally, but that becomes essential once your app talks to a wider mix of clients. One boundary. One definition. One source of truth.
-
-## What’s Next
+## What's Next
 
 - [Installation](./installation.md)
 - [Core Concepts](./core-concepts.md)

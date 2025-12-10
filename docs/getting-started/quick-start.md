@@ -1,5 +1,5 @@
 ---
-order: 4
+order: 3
 ---
 
 # Quick Start
@@ -9,6 +9,7 @@ This guide walks you through building a complete API endpoint with validation, s
 ## The Goal
 
 We'll create an Invoices API with:
+
 - List invoices with filtering and pagination
 - Create invoices with validation
 - Auto-generated OpenAPI, TypeScript, and Zod specs
@@ -42,6 +43,7 @@ The contract imports the schema and can add action-specific rules:
 <<< @/app/app/contracts/eager_lion/invoice_contract.rb
 
 `schema!` imports all attributes from InvoiceSchema. The contract now knows:
+
 - What fields are writable (for create/update)
 - What fields are filterable/sortable (for index)
 - The types of all fields (for validation)
