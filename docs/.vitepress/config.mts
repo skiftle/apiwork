@@ -4,6 +4,14 @@ import { generateSidebar } from "vitepress-sidebar";
 export default defineConfig({
   title: "Apiwork",
   description: "The modern API layer for Rails",
+  markdown: {
+    theme: {
+      light: "github-dark",
+      dark: "github-dark",
+    },
+
+    lineNumbers: false,
+  },
   themeConfig: {
     outline: [2, 3],
     nav: [
