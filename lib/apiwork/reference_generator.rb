@@ -3,10 +3,12 @@
 require 'set'
 require 'yard'
 require 'fileutils'
+require 'active_support/core_ext/string/inflections'
 
 module Apiwork
   class ReferenceGenerator
     OUTPUT_DIR = File.expand_path('../../docs/reference', __dir__)
+    GITHUB_URL = 'https://github.com/skiftle/apiwork/blob/main'
 
     def self.run
       new.generate
@@ -61,7 +63,9 @@ module Apiwork
         summary: method.docstring.summary,
         params: extract_params(method),
         returns: extract_return(method),
-        examples: extract_examples(method)
+        examples: extract_examples(method),
+        file: method.file,
+        line: method.line
       }
     end
 
@@ -151,7 +155,7 @@ module Apiwork
 
       # Om denna modul är en parent, blir den index.md i sin egen mapp
       if parents.include?(path)
-        dir = File.join(OUTPUT_DIR, *parts.map(&:downcase))
+        dir = File.join(OUTPUT_DIR, *parts.map { |p| dasherize(p) })
         return File.join(dir, 'index.md')
       end
 
@@ -162,9 +166,9 @@ module Apiwork
       parts.each_with_index do |part, idx|
         prefix = (['Apiwork'] + parts[0..idx]).join('::')
         if parents.include?(prefix)
-          dir_parts << part.downcase
+          dir_parts << dasherize(part)
         else
-          file_parts << part.downcase
+          file_parts << dasherize(part)
         end
       end
 
@@ -177,16 +181,28 @@ module Apiwork
       path.split('::').last
     end
 
+    def dasherize(str)
+      str.underscore.dasherize
+    end
+
     def render_module(mod, order)
       parts = []
 
       parts << <<~FRONTMATTER
         ---
         order: #{order}
+        prev: false
+        next: false
         ---
       FRONTMATTER
 
       parts << "# #{short_title(mod[:path])}\n"
+
+      if mod[:file] && mod[:line]
+        github_link = "#{GITHUB_URL}/#{mod[:file]}#L#{mod[:line]}"
+        parts << "[GitHub](#{github_link})\n"
+      end
+
       parts << "#{mod[:docstring]}\n" unless mod[:docstring].to_s.empty?
 
       if mod[:class_methods].any?
@@ -210,6 +226,12 @@ module Apiwork
       parts = []
 
       parts << "### #{prefix}#{method[:signature]}\n"
+
+      if method[:file] && method[:line]
+        github_link = "#{GITHUB_URL}/#{method[:file]}#L#{method[:line]}"
+        parts << "[GitHub](#{github_link})\n"
+      end
+
       parts << "#{method[:docstring]}\n" unless method[:docstring].to_s.empty?
 
       if method[:params].any?

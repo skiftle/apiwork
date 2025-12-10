@@ -1,0 +1,35 @@
+---
+order: 31
+prev: false
+next: false
+---
+
+# OffsetPaginator
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/apiwork/collection_loader/offset_paginator.rb#L7)
+
+## Class Methods
+
+### .paginate(relation, schema_class, params)
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/apiwork/collection_loader/offset_paginator.rb#L8)
+
+---
+
+## Instance Methods
+
+### #initialize(relation, schema_class, params)
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/apiwork/collection_loader/offset_paginator.rb#L12)
+
+**Returns**
+
+`OffsetPaginator` — a new instance of OffsetPaginator
+
+---
+
+### #paginate()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/apiwork/collection_loader/offset_paginator.rb#L18)
+
+---

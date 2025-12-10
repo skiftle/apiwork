@@ -1,28 +1,42 @@
 ---
 order: 112
+prev: false
+next: false
 ---
 
 # Registry
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/registry.rb#L5)
 
 ## Class Methods
 
 ### .all()
 
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/registry.rb#L27)
+
 ---
 
 ### .clear!()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/registry.rb#L31)
 
 ---
 
 ### .find(name)
 
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/registry.rb#L18)
+
 ---
 
 ### .register(generator_class)
 
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/registry.rb#L11)
+
 ---
 
 ### .registered?(name)
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/registry.rb#L23)
 
 **Returns**
 
@@ -31,5 +45,7 @@ order: 112
 ---
 
 ### .store()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/registry.rb#L7)
 
 ---

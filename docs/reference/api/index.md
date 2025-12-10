@@ -1,16 +1,24 @@
 ---
 order: 1
+prev: false
+next: false
 ---
 
 # API
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L4)
 
 ## Class Methods
 
 ### .all()
 
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L41)
+
 ---
 
 ### .draw(path, &block)
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L28)
 
 Defines a new API at the given path.
 
@@ -51,15 +59,21 @@ end
 
 ### .find(path)
 
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L37)
+
 ---
 
 ### .introspect(path, locale: = nil)
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L46)
 
 DOCUMENTATION
 
 ---
 
 ### .reset!()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L51)
 
 DOCUMENTATION
 

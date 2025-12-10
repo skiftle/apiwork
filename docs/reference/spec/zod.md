@@ -1,20 +1,30 @@
 ---
 order: 116
+prev: false
+next: false
 ---
 
 # Zod
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/zod.rb#L5)
 
 ## Class Methods
 
 ### .content_type(type = nil)
 
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L20)
+
 ---
 
 ### .file_extension()
 
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/zod.rb#L12)
+
 ---
 
 ### .generate(api_path, **options)
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L16)
 
 ---
 
@@ -22,11 +32,15 @@ order: 116
 
 ### #api_path()
 
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L11)
+
 Returns the value of attribute api_path.
 
 ---
 
 ### #data()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L11)
 
 Returns the value of attribute data.
 
@@ -34,9 +48,13 @@ Returns the value of attribute data.
 
 ### #generate()
 
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/zod.rb#L16)
+
 ---
 
 ### #initialize(api_path, **options)
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L30)
 
 **Returns**
 
@@ -46,10 +64,14 @@ Returns the value of attribute data.
 
 ### #options()
 
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L11)
+
 Returns the value of attribute options.
 
 ---
 
 ### #validate_options!()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L43)
 
 ---
