@@ -3,11 +3,16 @@ import { generateSidebar } from "vitepress-sidebar";
 
 export default defineConfig({
   title: "Apiwork",
-  description: "Ruby API Framework",
+  description: "The modern API layer for Rails",
   themeConfig: {
+    outline: [2, 3],
     nav: [
       { text: "Home", link: "/" },
-      { text: "Guide", link: "/guide/getting-started/introduction", activeMatch: "/guide/" },
+      {
+        text: "Guide",
+        link: "/guide/getting-started/introduction",
+        activeMatch: "/guide/",
+      },
       { text: "Reference", link: "/reference/", activeMatch: "/reference/" },
     ],
     sidebar: generateSidebar([
@@ -28,9 +33,10 @@ export default defineConfig({
         resolvePath: "/reference/",
         useTitleFromFileHeading: true,
         useFolderTitleFromIndexFile: true,
+        useFolderLinkFromIndexFile: true,
         sortMenusByFrontmatterOrder: true,
         frontmatterOrderDefaultValue: 999,
-        excludeByGlobPattern: ["index.md"],
+        sortFolderTo: "top",
         collapsed: true,
       },
     ]),

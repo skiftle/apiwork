@@ -1,6 +1,15 @@
 # frozen_string_literal: true
 
 namespace :apiwork do
+  namespace :docs do
+    desc 'Generate API reference documentation from YARD comments'
+    task :reference do
+      require 'apiwork/reference_generator'
+      Apiwork::ReferenceGenerator.run
+      puts 'Reference documentation generated in docs/reference/'
+    end
+  end
+
   namespace :spec do
     desc 'Write specs to files'
     task write: :environment do

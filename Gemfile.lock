@@ -289,6 +289,7 @@ GEM
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    yard (0.9.38)
     zeitwerk (2.7.3)
 
 PLATFORMS
@@ -314,6 +315,7 @@ DEPENDENCIES
   rubocop-rspec (~> 3.0)
   simplecov (~> 0.22)
   sqlite3 (~> 2.0)
+  yard (~> 0.9)
 
 BUNDLED WITH
    2.5.18

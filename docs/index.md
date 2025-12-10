@@ -3,8 +3,8 @@ layout: home
 
 hero:
   name: "Apiwork"
-  text: "A Contract-Driven API Layer for Rails"
-  tagline: "Bring clarity to your API without changing how you write Rails."
+  text: "The modern API layer for Rails"
+  tagline: "Define your API once and get consistency and type-safety everywhere"
   actions:
     - theme: brand
       text: Getting Started
