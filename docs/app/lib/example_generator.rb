@@ -7,7 +7,7 @@ require_relative 'request_runner'
 
 class ExampleGenerator
   PUBLIC_DIR = Rails.root.join('public')
-  EXAMPLES_DIR = Rails.root.join('../examples')
+  EXAMPLES_DIR = Rails.root.join('../guide/examples')
   CONFIG_DIR = Rails.root.join('config/examples')
 
   def self.run

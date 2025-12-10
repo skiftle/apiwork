@@ -482,7 +482,7 @@ Polymorphic associations have limitations:
 | `filterable` | No | Cannot filter across multiple tables |
 | `sortable` | No | Cannot sort across multiple tables |
 
-If you need filtering or sorting on polymorphic associations, expose the associated models as their own [resources](/core/api-definitions/resources).
+If you need filtering or sorting on polymorphic associations, expose the associated models as their own [resources](/guide/core/api-definitions/resources).
 
 ---
 

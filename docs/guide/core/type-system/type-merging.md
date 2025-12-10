@@ -108,7 +108,7 @@ end
 
 ## i18n Alternative
 
-You can also use [i18n](/advanced/i18n) for descriptions:
+You can also use [i18n](/guide/advanced/i18n) for descriptions:
 
 ```yaml
 # config/locales/apiwork.en.yml
