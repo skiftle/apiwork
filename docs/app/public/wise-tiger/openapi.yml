@@ -53,7 +53,7 @@ paths:
                     type: object
                     properties: {}
                   pagination:
-                    "$ref": "#/components/schemas/pagePagination"
+                    "$ref": "#/components/schemas/offsetPagination"
                   projects:
                     type: array
                     items:
@@ -212,7 +212,7 @@ components:
           type: boolean
         startsWith:
           type: string
-    pagePagination:
+    offsetPagination:
       type: object
       properties:
         current:
@@ -355,9 +355,15 @@ components:
       type: object
       properties:
         createdAt:
-          description: Timestamp when project was created
+          type: string
+          enum:
+          - asc
+          - desc
         deadline:
-          description: Target completion date
+          type: string
+          enum:
+          - asc
+          - desc
     projectStatusFilter:
       oneOf:
       - type: string

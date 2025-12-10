@@ -34,11 +34,11 @@ export const ArticlePageSchema = z.object({
 });
 
 export const ArticleSortSchema = z.object({
-  createdAt: z.unknown().optional(),
-  publishedOn: z.unknown().optional(),
-  rating: z.unknown().optional(),
-  status: z.unknown().optional(),
-  viewCount: z.unknown().optional()
+  createdAt: SortDirectionSchema.optional(),
+  publishedOn: SortDirectionSchema.optional(),
+  rating: SortDirectionSchema.optional(),
+  status: SortDirectionSchema.optional(),
+  viewCount: SortDirectionSchema.optional()
 });
 
 export const ArticleStatusFilterSchema = z.union([
@@ -84,7 +84,7 @@ export const NullableStringFilterSchema = z.object({
   startsWith: z.string().optional()
 });
 
-export const PagePaginationSchema = z.object({
+export const OffsetPaginationSchema = z.object({
   current: z.number().int(),
   items: z.number().int(),
   next: z.number().int().nullable().optional(),
@@ -185,7 +185,7 @@ export const ArticlesIndexRequestSchema = z.object({
   query: ArticlesIndexRequestQuerySchema
 });
 
-export const ArticlesIndexResponseBodySchema = z.union([z.object({ articles: z.array(ArticleSchema).optional(), meta: z.object({}).optional(), pagination: PagePaginationSchema.optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const ArticlesIndexResponseBodySchema = z.union([z.object({ articles: z.array(ArticleSchema).optional(), meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
 
 export const ArticlesIndexResponseSchema = z.object({
   body: ArticlesIndexResponseBodySchema
@@ -243,6 +243,8 @@ export const ArticlesUpdateResponseSchema = z.object({
   body: ArticlesUpdateResponseBodySchema
 });
 
+export const ArticlesDestroyResponse = z.never();
+
 export interface Article {
   body?: string;
   category?: null | object;
@@ -282,11 +284,11 @@ export interface ArticlePage {
 }
 
 export interface ArticleSort {
-  createdAt?: unknown;
-  publishedOn?: unknown;
-  rating?: unknown;
-  status?: unknown;
-  viewCount?: unknown;
+  createdAt?: SortDirection;
+  publishedOn?: SortDirection;
+  rating?: SortDirection;
+  status?: SortDirection;
+  viewCount?: SortDirection;
 }
 
 export type ArticleStatus = 'archived' | 'draft' | 'published';
@@ -319,6 +321,8 @@ export interface ArticlesCreateResponse {
 
 export type ArticlesCreateResponseBody = { article: Article; meta?: object } | { issues?: Issue[] };
 
+export type ArticlesDestroyResponse = never;
+
 export interface ArticlesIndexRequest {
   query: ArticlesIndexRequestQuery;
 }
@@ -334,7 +338,7 @@ export interface ArticlesIndexResponse {
   body: ArticlesIndexResponseBody;
 }
 
-export type ArticlesIndexResponseBody = { articles?: Article[]; meta?: object; pagination?: PagePagination } | { issues?: Issue[] };
+export type ArticlesIndexResponseBody = { articles?: Article[]; meta?: object; pagination?: OffsetPagination } | { issues?: Issue[] };
 
 export interface ArticlesShowRequest {
   query: ArticlesShowRequestQuery;
@@ -463,7 +467,7 @@ export interface NullableStringFilter {
   startsWith?: string;
 }
 
-export interface PagePagination {
+export interface OffsetPagination {
   current: number;
   items: number;
   next?: null | number;

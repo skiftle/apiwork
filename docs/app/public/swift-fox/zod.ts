@@ -38,7 +38,7 @@ export const IssueSchema = z.object({
   path: z.array(z.string())
 });
 
-export const PagePaginationSchema = z.object({
+export const OffsetPaginationSchema = z.object({
   current: z.number().int(),
   items: z.number().int(),
   next: z.number().int().nullable().optional(),
@@ -55,7 +55,7 @@ export const ContactsIndexRequestSchema = z.object({
   query: ContactsIndexRequestQuerySchema
 });
 
-export const ContactsIndexResponseBodySchema = z.union([z.object({ contacts: z.array(ContactSchema).optional(), meta: z.object({}).optional(), pagination: PagePaginationSchema.optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const ContactsIndexResponseBodySchema = z.union([z.object({ contacts: z.array(ContactSchema).optional(), meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
 
 export const ContactsIndexResponseSchema = z.object({
   body: ContactsIndexResponseBodySchema
@@ -94,6 +94,8 @@ export const ContactsUpdateResponseBodySchema = z.union([z.object({ contact: Con
 export const ContactsUpdateResponseSchema = z.object({
   body: ContactsUpdateResponseBodySchema
 });
+
+export const ContactsDestroyResponse = z.never();
 
 export interface Contact {
   email?: string;
@@ -138,6 +140,8 @@ export interface ContactsCreateResponse {
 
 export type ContactsCreateResponseBody = { contact: Contact; meta?: object } | { issues?: Issue[] };
 
+export type ContactsDestroyResponse = never;
+
 export interface ContactsIndexRequest {
   query: ContactsIndexRequestQuery;
 }
@@ -151,7 +155,7 @@ export interface ContactsIndexResponse {
   body: ContactsIndexResponseBody;
 }
 
-export type ContactsIndexResponseBody = { contacts?: Contact[]; meta?: object; pagination?: PagePagination } | { issues?: Issue[] };
+export type ContactsIndexResponseBody = { contacts?: Contact[]; meta?: object; pagination?: OffsetPagination } | { issues?: Issue[] };
 
 export interface ContactsShowResponse {
   body: ContactsShowResponseBody;
@@ -180,7 +184,7 @@ export interface Issue {
   path: string[];
 }
 
-export interface PagePagination {
+export interface OffsetPagination {
   current: number;
   items: number;
   next?: null | number;

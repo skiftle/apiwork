@@ -528,6 +528,12 @@ module Apiwork
 
           contract_class.type(type_name) do
             schema_class_local.association_definitions.each do |name, association_definition|
+              # Polymorphic associations only support boolean include (no nested)
+              if association_definition.polymorphic?
+                param name, type: :boolean, optional: true unless association_definition.always_included?
+                next
+              end
+
               association_resource = builder.send(:resolve_association_resource, association_definition)
               next unless association_resource&.schema
 
@@ -689,10 +695,10 @@ module Apiwork
           polymorphic = association_definition.polymorphic
           return nil unless polymorphic&.any?
 
-          union_type_name = :"#{association_definition.name}_polymorphic"
+          union_type_name = association_definition.name
 
           existing = contract_class.resolve_type(union_type_name)
-          return existing if existing
+          return union_type_name if existing
 
           builder = self
           discriminator = association_definition.discriminator
@@ -709,6 +715,8 @@ module Apiwork
               variant type: import_alias, tag: tag.to_s
             end
           end
+
+          union_type_name
         end
 
         def build_sti_union(union_type_name:, visited: Set.new)

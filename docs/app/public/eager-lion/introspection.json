@@ -136,19 +136,19 @@
       "type": "object",
       "shape": {
         "created_at": {
-          "type": "invoice_sort_direction",
+          "type": "sort_direction",
           "optional": true
         },
         "issued_on": {
-          "type": "invoice_sort_direction",
+          "type": "sort_direction",
           "optional": true
         },
         "status": {
-          "type": "invoice_sort_direction",
+          "type": "sort_direction",
           "optional": true
         },
         "updated_at": {
-          "type": "invoice_sort_direction",
+          "type": "sort_direction",
           "optional": true
         }
       }
@@ -227,7 +227,7 @@
         }
       }
     },
-    "page_pagination": {
+    "offset_pagination": {
       "type": "object",
       "shape": {
         "current": {
@@ -394,7 +394,7 @@
                       "optional": true
                     },
                     "pagination": {
-                      "type": "page_pagination",
+                      "type": "offset_pagination",
                       "optional": true
                     }
                   }
@@ -554,7 +554,10 @@
         },
         "destroy": {
           "method": "delete",
-          "path": "/:id"
+          "path": "/:id",
+          "response": {
+            "no_content": true
+          }
         },
         "archive": {
           "method": "patch",

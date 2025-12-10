@@ -14,7 +14,7 @@ export interface NullableStringFilter {
   startsWith?: string;
 }
 
-export interface PagePagination {
+export interface OffsetPagination {
   current: number;
   items: number;
   next?: null | number;
@@ -61,8 +61,8 @@ export type ProjectPriority = 'critical' | 'high' | 'low' | 'medium';
 export type ProjectPriorityFilter = ProjectPriority | { eq?: ProjectPriority; in?: ProjectPriority[] };
 
 export interface ProjectSort {
-  createdAt?: unknown;
-  deadline?: unknown;
+  createdAt?: SortDirection;
+  deadline?: SortDirection;
 }
 
 export type ProjectStatus = 'active' | 'archived' | 'completed' | 'paused';
@@ -91,6 +91,8 @@ export interface ProjectsCreateResponse {
 
 export type ProjectsCreateResponseBody = { issues?: Issue[] } | { meta?: object; project: Project };
 
+export type ProjectsDestroyResponse = never;
+
 export interface ProjectsIndexRequest {
   query: ProjectsIndexRequestQuery;
 }
@@ -106,7 +108,7 @@ export interface ProjectsIndexResponse {
   body: ProjectsIndexResponseBody;
 }
 
-export type ProjectsIndexResponseBody = { issues?: Issue[] } | { meta?: object; pagination?: PagePagination; projects?: Project[] };
+export type ProjectsIndexResponseBody = { issues?: Issue[] } | { meta?: object; pagination?: OffsetPagination; projects?: Project[] };
 
 export interface ProjectsShowResponse {
   body: ProjectsShowResponseBody;

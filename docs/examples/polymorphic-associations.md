@@ -119,12 +119,116 @@ Comments that belong to different content types (posts, videos, images)
 
 ---
 
+## How It Works
 
+The `belongs_to :commentable, polymorphic: [...]` declaration tells Apiwork to:
+
+1. Generate a **discriminated union type** for the association
+2. Allow **including** the associated record via `?include[commentable]=true`
+3. Automatically resolve the correct schema based on `commentable_type`
 
 ## Request Examples
 
 <details>
-<summary>List all comments</summary>
+<summary>List comments with polymorphic association included</summary>
+
+**Request**
+
+```http
+GET /gentle_owl/comments?include[commentable]=true
+```
+
+**Response** `200`
+
+```json
+{
+  "comments": [
+    {
+      "id": "abc123",
+      "body": "Great post!",
+      "authorName": "John Doe",
+      "createdAt": "2025-12-10T10:35:26.529Z",
+      "commentable": {
+        "commentableType": "Post",
+        "id": "post-1",
+        "title": "Hello World",
+        "body": "Welcome to my blog..."
+      }
+    },
+    {
+      "id": "def456",
+      "body": "Nice video!",
+      "authorName": "Jane Doe",
+      "createdAt": "2025-12-10T10:35:26.532Z",
+      "commentable": {
+        "commentableType": "Video",
+        "id": "video-1",
+        "title": "Tutorial",
+        "url": "https://example.com/video.mp4",
+        "duration": 120
+      }
+    },
+    {
+      "id": "ghi789",
+      "body": "Beautiful image!",
+      "authorName": "Bob Smith",
+      "createdAt": "2025-12-10T10:35:26.535Z",
+      "commentable": {
+        "commentableType": "Image",
+        "id": "image-1",
+        "title": "Sunset",
+        "url": "https://example.com/sunset.jpg",
+        "width": 1920,
+        "height": 1080
+      }
+    }
+  ],
+  "pagination": {
+    "current": 1,
+    "next": null,
+    "prev": null,
+    "total": 1,
+    "items": 3
+  }
+}
+```
+
+Note how each `commentable` object includes a `commentableType` discriminator field that identifies the type.
+
+</details>
+
+<details>
+<summary>Get single comment with polymorphic association</summary>
+
+**Request**
+
+```http
+GET /gentle_owl/comments/abc123?include[commentable]=true
+```
+
+**Response** `200`
+
+```json
+{
+  "comment": {
+    "id": "abc123",
+    "body": "Great post!",
+    "authorName": "John Doe",
+    "createdAt": "2025-12-10T10:35:26.543Z",
+    "commentable": {
+      "commentableType": "Post",
+      "id": "post-1",
+      "title": "Hello World",
+      "body": "Welcome to my blog..."
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>List comments without include (association omitted)</summary>
 
 **Request**
 
@@ -138,20 +242,16 @@ GET /gentle_owl/comments
 {
   "comments": [
     {
-      "id": "c8a5010f-751a-48cf-b12e-7f9dcdc6bd11",
+      "id": "abc123",
       "body": "Great post!",
       "authorName": "John Doe",
-      "commentableType": "GentleOwl::Post",
-      "commentableId": "01964a7d-9eba-4c34-babc-5cfbb4add1b1",
-      "createdAt": "2025-12-07T17:20:07.043Z"
+      "createdAt": "2025-12-10T10:35:26.529Z"
     },
     {
-      "id": "873a9b42-b421-4e74-a56d-5c06d3797410",
-      "body": "Helpful video!",
+      "id": "def456",
+      "body": "Nice video!",
       "authorName": "Jane Doe",
-      "commentableType": "GentleOwl::Video",
-      "commentableId": "f65bc6ea-c043-4ec5-a1f8-d00c9252abbf",
-      "createdAt": "2025-12-07T17:20:07.046Z"
+      "createdAt": "2025-12-10T10:35:26.532Z"
     }
   ],
   "pagination": {
@@ -164,140 +264,53 @@ GET /gentle_owl/comments
 }
 ```
 
-</details>
-
-<details>
-<summary>Get comment details</summary>
-
-**Request**
-
-```http
-GET /gentle_owl/comments/abe249f1-7caf-4665-b290-95a0aa73aacc
-```
-
-**Response** `200`
-
-```json
-{
-  "comment": {
-    "id": "abe249f1-7caf-4665-b290-95a0aa73aacc",
-    "body": "Great post!",
-    "authorName": "John Doe",
-    "commentableType": "GentleOwl::Post",
-    "commentableId": "e6b26b12-1878-45c2-9b92-87d7a19ab7fc",
-    "createdAt": "2025-12-07T17:20:07.067Z"
-  }
-}
-```
+Without `include[commentable]=true`, the polymorphic association is not included in the response.
 
 </details>
 
-<details>
-<summary>Create comment on post</summary>
+## Generated TypeScript
 
-**Request**
+The polymorphic association generates a **discriminated union type**:
 
-```http
-POST /gentle_owl/comments
-Content-Type: application/json
+```typescript
+export type CommentCommentable =
+  | { commentableType: 'post' } & Post
+  | { commentableType: 'video' } & Video
+  | { commentableType: 'image' } & Image;
 
-{
-  "comment": {
-    "body": "This is a great article!",
-    "author_name": "Jane Doe",
-    "commentable_type": "GentleOwl::Post",
-    "commentable_id": "9e3d2b01-5d92-4452-a80e-5f2c5add477d"
+export interface Comment {
+  id?: unknown;
+  body?: string;
+  authorName?: string;
+  createdAt?: string;
+  commentable?: CommentCommentable;
+}
+```
+
+This allows TypeScript to narrow the type based on `commentableType`:
+
+```typescript
+function handleComment(comment: Comment) {
+  if (comment.commentable?.commentableType === 'post') {
+    // TypeScript knows this is a Post
+    console.log(comment.commentable.title, comment.commentable.body);
+  } else if (comment.commentable?.commentableType === 'video') {
+    // TypeScript knows this is a Video
+    console.log(comment.commentable.url, comment.commentable.duration);
   }
 }
 ```
 
-**Response** `201`
+## Limitations
 
-```json
-{
-  "comment": {
-    "id": "c67a3b5b-118c-4071-ae04-4ba6fedd5568",
-    "body": "This is a great article!",
-    "authorName": "Jane Doe",
-    "commentableType": "GentleOwl::Post",
-    "commentableId": "9e3d2b01-5d92-4452-a80e-5f2c5add477d",
-    "createdAt": "2025-12-07T17:20:07.092Z"
-  }
-}
-```
+Polymorphic associations have restrictions:
 
-</details>
-
-<details>
-<summary>Create comment on video</summary>
-
-**Request**
-
-```http
-POST /gentle_owl/comments
-Content-Type: application/json
-
-{
-  "comment": {
-    "body": "Very helpful video!",
-    "author_name": "Bob Smith",
-    "commentable_type": "GentleOwl::Video",
-    "commentable_id": "5b40d6ed-9eed-4ae6-a75b-5d24d3eaeb57"
-  }
-}
-```
-
-**Response** `201`
-
-```json
-{
-  "comment": {
-    "id": "03a26e44-7ef0-4058-99d3-448442b74973",
-    "body": "Very helpful video!",
-    "authorName": "Bob Smith",
-    "commentableType": "GentleOwl::Video",
-    "commentableId": "5b40d6ed-9eed-4ae6-a75b-5d24d3eaeb57",
-    "createdAt": "2025-12-07T17:20:07.111Z"
-  }
-}
-```
-
-</details>
-
-<details>
-<summary>Filter by content type</summary>
-
-**Request**
-
-```http
-GET /gentle_owl/comments?filter[commentable_type][eq]=GentleOwl::Post
-```
-
-**Response** `200`
-
-```json
-{
-  "comments": [
-    {
-      "id": "3990fae7-6296-43b1-8db4-1390d5508727",
-      "body": "Post comment",
-      "authorName": "User 1",
-      "commentableType": "GentleOwl::Post",
-      "commentableId": "aaa77568-192e-42a2-bc50-910f6983ad07",
-      "createdAt": "2025-12-07T17:20:07.121Z"
-    }
-  ],
-  "pagination": {
-    "current": 1,
-    "next": null,
-    "prev": null,
-    "total": 1,
-    "items": 1
-  }
-}
-```
-
-</details>
+| Feature | Supported | Reason |
+|---------|-----------|--------|
+| `include` | ✓ | Works with discriminated unions |
+| `writable` | ✗ | Rails doesn't support nested attributes for polymorphic |
+| `filterable` | ✗ | Cannot JOIN across multiple tables |
+| `sortable` | ✗ | Cannot JOIN across multiple tables |
 
 ---
 

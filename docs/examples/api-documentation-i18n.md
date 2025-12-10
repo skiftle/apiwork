@@ -79,24 +79,24 @@ GET /wise_tiger/projects
 {
   "projects": [
     {
-      "id": "b42766d2-419e-4bad-8020-fe78c45ce50d",
+      "id": "412aea8f-7fad-4955-8f3a-c4f706c11693",
       "name": "Website Redesign",
       "description": "Complete overhaul of the company website",
       "status": "active",
       "priority": "high",
       "deadline": null,
-      "createdAt": "2025-12-07T17:20:07.594Z",
-      "updatedAt": "2025-12-07T17:20:07.594Z"
+      "createdAt": "2025-12-10T10:35:26.951Z",
+      "updatedAt": "2025-12-10T10:35:26.951Z"
     },
     {
-      "id": "1118b8cc-37f7-45b3-9b2b-7b631825c655",
+      "id": "62424e42-0a01-4940-addb-43774e3dce01",
       "name": "Mobile App",
       "description": "Native iOS and Android apps",
       "status": "paused",
       "priority": "medium",
       "deadline": null,
-      "createdAt": "2025-12-07T17:20:07.595Z",
-      "updatedAt": "2025-12-07T17:20:07.595Z"
+      "createdAt": "2025-12-10T10:35:26.952Z",
+      "updatedAt": "2025-12-10T10:35:26.952Z"
     }
   ],
   "pagination": {
@@ -117,7 +117,7 @@ GET /wise_tiger/projects
 **Request**
 
 ```http
-GET /wise_tiger/projects/7348f45d-b276-429b-8fbc-38651e417d5f
+GET /wise_tiger/projects/7a0fa960-99cb-4d7d-9b56-9a01e432fd20
 ```
 
 **Response** `200`
@@ -125,14 +125,14 @@ GET /wise_tiger/projects/7348f45d-b276-429b-8fbc-38651e417d5f
 ```json
 {
   "project": {
-    "id": "7348f45d-b276-429b-8fbc-38651e417d5f",
+    "id": "7a0fa960-99cb-4d7d-9b56-9a01e432fd20",
     "name": "API Integration",
     "description": "Connect to third-party services",
     "status": "active",
     "priority": "critical",
     "deadline": "2024-06-01",
-    "createdAt": "2025-12-07T17:20:07.611Z",
-    "updatedAt": "2025-12-07T17:20:07.611Z"
+    "createdAt": "2025-12-10T10:35:26.961Z",
+    "updatedAt": "2025-12-10T10:35:26.961Z"
   }
 }
 ```
@@ -164,14 +164,14 @@ Content-Type: application/json
 ```json
 {
   "project": {
-    "id": "b154668c-4b64-4443-b56d-cb8c02a3add4",
+    "id": "3622ffac-4225-41cb-a7fd-38ae26d37e47",
     "name": "New Feature",
     "description": "Implement the new dashboard",
     "status": "active",
     "priority": "high",
     "deadline": "2024-03-15",
-    "createdAt": "2025-12-07T17:20:07.625Z",
-    "updatedAt": "2025-12-07T17:20:07.625Z"
+    "createdAt": "2025-12-10T10:35:26.971Z",
+    "updatedAt": "2025-12-10T10:35:26.971Z"
   }
 }
 ```

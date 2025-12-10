@@ -87,7 +87,7 @@ export interface NullableIntegerFilter {
   null?: boolean;
 }
 
-export interface PagePagination {
+export interface OffsetPagination {
   current: number;
   items: number;
   next?: null | number;
@@ -133,9 +133,9 @@ export interface TruckUpdatePayload {
   year?: null | number;
 }
 
-export type Vehicle = Car | Motorcycle | Truck;
+export type Vehicle = { type: 'car' } & Car | { type: 'motorcycle' } & Motorcycle | { type: 'truck' } & Truck;
 
-export type VehicleCreatePayload = CarCreatePayload | MotorcycleCreatePayload | TruckCreatePayload;
+export type VehicleCreatePayload = { type: 'car' } & CarCreatePayload | { type: 'motorcycle' } & MotorcycleCreatePayload | { type: 'truck' } & TruckCreatePayload;
 
 export interface VehicleFilter {
   _and?: VehicleFilter[];
@@ -154,10 +154,10 @@ export interface VehiclePage {
 }
 
 export interface VehicleSort {
-  year?: unknown;
+  year?: SortDirection;
 }
 
-export type VehicleUpdatePayload = CarUpdatePayload | MotorcycleUpdatePayload | TruckUpdatePayload;
+export type VehicleUpdatePayload = { type: 'car' } & CarUpdatePayload | { type: 'motorcycle' } & MotorcycleUpdatePayload | { type: 'truck' } & TruckUpdatePayload;
 
 export interface VehiclesCreateRequest {
   body: VehiclesCreateRequestBody;
@@ -172,6 +172,8 @@ export interface VehiclesCreateResponse {
 }
 
 export type VehiclesCreateResponseBody = { issues?: Issue[] } | { meta?: object; vehicle: Vehicle };
+
+export type VehiclesDestroyResponse = never;
 
 export interface VehiclesIndexRequest {
   query: VehiclesIndexRequestQuery;
@@ -188,7 +190,7 @@ export interface VehiclesIndexResponse {
   body: VehiclesIndexResponseBody;
 }
 
-export type VehiclesIndexResponseBody = { issues?: Issue[] } | { meta?: object; pagination?: PagePagination; vehicles?: Vehicle[] };
+export type VehiclesIndexResponseBody = { issues?: Issue[] } | { meta?: object; pagination?: OffsetPagination; vehicles?: Vehicle[] };
 
 export interface VehiclesShowResponse {
   body: VehiclesShowResponseBody;

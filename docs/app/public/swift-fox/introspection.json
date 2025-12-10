@@ -105,7 +105,7 @@
         }
       }
     },
-    "page_pagination": {
+    "offset_pagination": {
       "type": "object",
       "shape": {
         "current": {
@@ -202,7 +202,7 @@
                       "optional": true
                     },
                     "pagination": {
-                      "type": "page_pagination",
+                      "type": "offset_pagination",
                       "optional": true
                     }
                   }
@@ -342,7 +342,10 @@
         },
         "destroy": {
           "method": "delete",
-          "path": "/:id"
+          "path": "/:id",
+          "response": {
+            "no_content": true
+          }
         }
       }
     }

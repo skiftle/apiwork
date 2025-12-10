@@ -22,7 +22,7 @@ export const NullableStringFilterSchema = z.object({
   startsWith: z.string().optional()
 });
 
-export const PagePaginationSchema = z.object({
+export const OffsetPaginationSchema = z.object({
   current: z.number().int(),
   items: z.number().int(),
   next: z.number().int().nullable().optional(),
@@ -75,8 +75,8 @@ export const TaskPriorityFilterSchema = z.union([
 ]);
 
 export const TaskSortSchema = z.object({
-  createdAt: z.unknown().optional(),
-  dueDate: z.unknown().optional()
+  createdAt: SortDirectionSchema.optional(),
+  dueDate: SortDirectionSchema.optional()
 });
 
 export const TaskStatusFilterSchema = z.union([
@@ -111,7 +111,7 @@ export const TasksIndexRequestSchema = z.object({
   query: TasksIndexRequestQuerySchema
 });
 
-export const TasksIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: PagePaginationSchema.optional(), tasks: z.array(TaskSchema).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const TasksIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional(), tasks: z.array(TaskSchema).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
 
 export const TasksIndexResponseSchema = z.object({
   body: TasksIndexResponseBodySchema
@@ -169,6 +169,8 @@ export const TasksUpdateResponseSchema = z.object({
   body: TasksUpdateResponseBodySchema
 });
 
+export const TasksDestroyResponse = z.never();
+
 export const TasksArchiveRequestQuerySchema = z.object({
   include: TaskIncludeSchema.optional()
 });
@@ -199,7 +201,7 @@ export interface NullableStringFilter {
   startsWith?: string;
 }
 
-export interface PagePagination {
+export interface OffsetPagination {
   current: number;
   items: number;
   next?: null | number;
@@ -259,8 +261,8 @@ export type TaskPriority = 'critical' | 'high' | 'low' | 'medium';
 export type TaskPriorityFilter = TaskPriority | { eq?: TaskPriority; in?: TaskPriority[] };
 
 export interface TaskSort {
-  createdAt?: unknown;
-  dueDate?: unknown;
+  createdAt?: SortDirection;
+  dueDate?: SortDirection;
 }
 
 export type TaskStatus = 'archived' | 'completed' | 'in_progress' | 'pending';
@@ -308,6 +310,8 @@ export interface TasksCreateResponse {
 
 export type TasksCreateResponseBody = { issues?: Issue[] } | { meta?: object; task: Task };
 
+export type TasksDestroyResponse = never;
+
 export interface TasksIndexRequest {
   query: TasksIndexRequestQuery;
 }
@@ -323,7 +327,7 @@ export interface TasksIndexResponse {
   body: TasksIndexResponseBody;
 }
 
-export type TasksIndexResponseBody = { issues?: Issue[] } | { meta?: object; pagination?: PagePagination; tasks?: Task[] };
+export type TasksIndexResponseBody = { issues?: Issue[] } | { meta?: object; pagination?: OffsetPagination; tasks?: Task[] };
 
 export interface TasksShowRequest {
   query: TasksShowRequestQuery;

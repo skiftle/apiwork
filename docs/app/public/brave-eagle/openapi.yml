@@ -55,7 +55,7 @@ paths:
                     type: object
                     properties: {}
                   pagination:
-                    "$ref": "#/components/schemas/pagePagination"
+                    "$ref": "#/components/schemas/offsetPagination"
                   tasks:
                     type: array
                     items:
@@ -264,7 +264,7 @@ components:
           type: boolean
         startsWith:
           type: string
-    pagePagination:
+    offsetPagination:
       type: object
       properties:
         current:
@@ -457,8 +457,16 @@ components:
     taskSort:
       type: object
       properties:
-        createdAt: {}
-        dueDate: {}
+        createdAt:
+          type: string
+          enum:
+          - asc
+          - desc
+        dueDate:
+          type: string
+          enum:
+          - asc
+          - desc
       description: A task representing work to be completed
     taskStatusFilter:
       oneOf:

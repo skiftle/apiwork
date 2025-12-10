@@ -50,7 +50,7 @@ paths:
                     type: object
                     properties: {}
                   pagination:
-                    "$ref": "#/components/schemas/pagePagination"
+                    "$ref": "#/components/schemas/offsetPagination"
                   users:
                     type: array
                     items:
@@ -206,7 +206,7 @@ paths:
                     type: object
                     properties: {}
                   pagination:
-                    "$ref": "#/components/schemas/pagePagination"
+                    "$ref": "#/components/schemas/offsetPagination"
                   posts:
                     type: array
                     items:
@@ -366,7 +366,7 @@ paths:
                     type: object
                     properties: {}
                   pagination:
-                    "$ref": "#/components/schemas/pagePagination"
+                    "$ref": "#/components/schemas/offsetPagination"
     post:
       operationId: commentsCreate
       tags:
@@ -571,7 +571,7 @@ components:
       - detail
       - field
       - path
-    pagePagination:
+    offsetPagination:
       type: object
       properties:
         current:
@@ -780,8 +780,16 @@ components:
     userSort:
       type: object
       properties:
-        createdAt: {}
-        updatedAt: {}
+        createdAt:
+          type: string
+          enum:
+          - asc
+          - desc
+        updatedAt:
+          type: string
+          enum:
+          - asc
+          - desc
     userUpdatePayload:
       type: object
       properties:

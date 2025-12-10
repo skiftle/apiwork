@@ -4,25 +4,26 @@
     "path": "/gentle_owl/comments?filter[commentable_type][eq]=GentleOwl::Post"
   },
   "response": {
-    "status": 200,
+    "status": 400,
     "body": {
-      "comments": [
+      "issues": [
         {
-          "id": "3990fae7-6296-43b1-8db4-1390d5508727",
-          "body": "Post comment",
-          "authorName": "User 1",
-          "commentableType": "GentleOwl::Post",
-          "commentableId": "aaa77568-192e-42a2-bc50-910f6983ad07",
-          "createdAt": "2025-12-07T17:20:07.121Z"
+          "code": "field_unknown",
+          "detail": "Unknown field",
+          "path": [
+            "filter"
+          ],
+          "pointer": "/filter",
+          "meta": {
+            "field": "filter",
+            "allowed": [
+              "sort",
+              "page",
+              "include"
+            ]
+          }
         }
-      ],
-      "pagination": {
-        "current": 1,
-        "next": null,
-        "prev": null,
-        "total": 1,
-        "items": 1
-      }
+      ]
     }
   }
 }

@@ -36,7 +36,7 @@ paths:
                     type: object
                     properties: {}
                   pagination:
-                    "$ref": "#/components/schemas/pagePagination"
+                    "$ref": "#/components/schemas/offsetPagination"
     post:
       operationId: contactsCreate
       tags:
@@ -218,7 +218,7 @@ components:
       - detail
       - field
       - path
-    pagePagination:
+    offsetPagination:
       type: object
       properties:
         current:

@@ -41,6 +41,8 @@ export interface ContactsCreateResponse {
 
 export type ContactsCreateResponseBody = { contact: Contact; meta?: object } | { issues?: Issue[] };
 
+export type ContactsDestroyResponse = never;
+
 export interface ContactsIndexRequest {
   query: ContactsIndexRequestQuery;
 }
@@ -54,7 +56,7 @@ export interface ContactsIndexResponse {
   body: ContactsIndexResponseBody;
 }
 
-export type ContactsIndexResponseBody = { contacts?: Contact[]; meta?: object; pagination?: PagePagination } | { issues?: Issue[] };
+export type ContactsIndexResponseBody = { contacts?: Contact[]; meta?: object; pagination?: OffsetPagination } | { issues?: Issue[] };
 
 export interface ContactsShowResponse {
   body: ContactsShowResponseBody;
@@ -83,7 +85,7 @@ export interface Issue {
   path: string[];
 }
 
-export interface PagePagination {
+export interface OffsetPagination {
   current: number;
   items: number;
   next?: null | number;

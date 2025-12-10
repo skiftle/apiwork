@@ -54,7 +54,7 @@
         }
       }
     },
-    "page_pagination": {
+    "offset_pagination": {
       "type": "object",
       "shape": {
         "current": {
@@ -294,11 +294,11 @@
       "type": "object",
       "shape": {
         "created_at": {
-          "type": "task_sort_direction",
+          "type": "sort_direction",
           "optional": true
         },
         "due_date": {
-          "type": "task_sort_direction",
+          "type": "sort_direction",
           "optional": true
         }
       },
@@ -530,7 +530,7 @@
                       "optional": true
                     },
                     "pagination": {
-                      "type": "page_pagination",
+                      "type": "offset_pagination",
                       "optional": true
                     },
                     "tasks": {
@@ -719,7 +719,10 @@
           "tags": [
             "Tasks"
           ],
-          "operation_id": "deleteTask"
+          "operation_id": "deleteTask",
+          "response": {
+            "no_content": true
+          }
         },
         "archive": {
           "method": "patch",

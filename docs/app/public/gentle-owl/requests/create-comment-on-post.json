@@ -7,21 +7,47 @@
         "body": "This is a great article!",
         "author_name": "Jane Doe",
         "commentable_type": "GentleOwl::Post",
-        "commentable_id": "9e3d2b01-5d92-4452-a80e-5f2c5add477d"
+        "commentable_id": "31ce635d-bf3f-4c6f-8470-e0fd132841c6"
       }
     }
   },
   "response": {
-    "status": 201,
+    "status": 400,
     "body": {
-      "comment": {
-        "id": "c67a3b5b-118c-4071-ae04-4ba6fedd5568",
-        "body": "This is a great article!",
-        "authorName": "Jane Doe",
-        "commentableType": "GentleOwl::Post",
-        "commentableId": "9e3d2b01-5d92-4452-a80e-5f2c5add477d",
-        "createdAt": "2025-12-07T17:20:07.092Z"
-      }
+      "issues": [
+        {
+          "code": "field_unknown",
+          "detail": "Unknown field",
+          "path": [
+            "comment",
+            "commentable_type"
+          ],
+          "pointer": "/comment/commentable_type",
+          "meta": {
+            "field": "commentable_type",
+            "allowed": [
+              "body",
+              "author_name"
+            ]
+          }
+        },
+        {
+          "code": "field_unknown",
+          "detail": "Unknown field",
+          "path": [
+            "comment",
+            "commentable_id"
+          ],
+          "pointer": "/comment/commentable_id",
+          "meta": {
+            "field": "commentable_id",
+            "allowed": [
+              "body",
+              "author_name"
+            ]
+          }
+        }
+      ]
     }
   }
 }

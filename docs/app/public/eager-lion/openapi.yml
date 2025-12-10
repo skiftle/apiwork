@@ -54,7 +54,7 @@ paths:
                     type: object
                     properties: {}
                   pagination:
-                    "$ref": "#/components/schemas/pagePagination"
+                    "$ref": "#/components/schemas/offsetPagination"
     post:
       operationId: invoicesCreate
       tags:
@@ -294,10 +294,26 @@ components:
     invoiceSort:
       type: object
       properties:
-        createdAt: {}
-        issuedOn: {}
-        status: {}
-        updatedAt: {}
+        createdAt:
+          type: string
+          enum:
+          - asc
+          - desc
+        issuedOn:
+          type: string
+          enum:
+          - asc
+          - desc
+        status:
+          type: string
+          enum:
+          - asc
+          - desc
+        updatedAt:
+          type: string
+          enum:
+          - asc
+          - desc
     invoiceUpdatePayload:
       type: object
       properties:
@@ -355,7 +371,7 @@ components:
           type: boolean
         startsWith:
           type: string
-    pagePagination:
+    offsetPagination:
       type: object
       properties:
         current:

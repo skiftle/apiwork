@@ -11,15 +11,6 @@ paths:
       - Comments
       parameters:
       - in: query
-        name: filter
-        required: false
-        schema:
-          oneOf:
-          - "$ref": "#/components/schemas/commentFilter"
-          - type: array
-            items:
-              "$ref": "#/components/schemas/commentFilter"
-      - in: query
         name: include
         required: false
         schema:
@@ -54,11 +45,17 @@ paths:
                     type: object
                     properties: {}
                   pagination:
-                    "$ref": "#/components/schemas/pagePagination"
+                    "$ref": "#/components/schemas/offsetPagination"
     post:
       operationId: commentsCreate
       tags:
       - Comments
+      parameters:
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/commentInclude"
       requestBody:
         required: true
         content:
@@ -101,6 +98,12 @@ paths:
       operationId: commentsShow
       tags:
       - Comments
+      parameters:
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/commentInclude"
       responses:
         '200':
           description: Successful response
@@ -120,6 +123,12 @@ paths:
       operationId: commentsUpdate
       tags:
       - Comments
+      parameters:
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/commentInclude"
       requestBody:
         required: true
         content:
@@ -169,12 +178,22 @@ components:
           type: string
         body:
           type: string
-        commentableId: {}
-        commentableType:
-          type: string
+        commentable:
+          "$ref": "#/components/schemas/commentCommentable"
         createdAt:
           type: string
         id: {}
+    commentCommentable:
+      oneOf:
+      - "$ref": "#/components/schemas/post"
+      - "$ref": "#/components/schemas/video"
+      - "$ref": "#/components/schemas/image"
+      discriminator:
+        propertyName: commentable_type
+        mapping:
+          post: "#/components/schemas/post"
+          video: "#/components/schemas/video"
+          image: "#/components/schemas/image"
     commentCreatePayload:
       type: object
       properties:
@@ -184,33 +203,13 @@ components:
           - 'null'
         body:
           type: string
-        commentableId: {}
-        commentableType:
-          type: string
       required:
       - body
-      - commentableId
-      - commentableType
-    commentFilter:
-      type: object
-      properties:
-        _and:
-          type: array
-          items:
-            "$ref": "#/components/schemas/commentFilter"
-        _not:
-          "$ref": "#/components/schemas/commentFilter"
-        _or:
-          type: array
-          items:
-            "$ref": "#/components/schemas/commentFilter"
-        commentableType:
-          oneOf:
-          - type: string
-          - "$ref": "#/components/schemas/stringFilter"
     commentInclude:
       type: object
-      properties: {}
+      properties:
+        commentable:
+          type: boolean
     commentPage:
       type: object
       properties:
@@ -224,7 +223,11 @@ components:
     commentSort:
       type: object
       properties:
-        createdAt: {}
+        createdAt:
+          type: string
+          enum:
+          - asc
+          - desc
     commentUpdatePayload:
       type: object
       properties:
@@ -234,13 +237,107 @@ components:
           - 'null'
         body:
           type: string
-        commentableId: {}
-        commentableType:
-          type: string
       required:
       - body
-      - commentableId
-      - commentableType
+    image:
+      type: object
+      properties:
+        comments:
+          type: array
+          items:
+            type:
+        createdAt:
+          type: string
+        height:
+          type: integer
+        id: {}
+        title:
+          type: string
+        url:
+          type: string
+        width:
+          type: integer
+    imageFilter:
+      type: object
+      properties:
+        _and:
+          type: array
+          items:
+            "$ref": "#/components/schemas/imageFilter"
+        _not:
+          "$ref": "#/components/schemas/imageFilter"
+        _or:
+          type: array
+          items:
+            "$ref": "#/components/schemas/imageFilter"
+        title:
+          oneOf:
+          - type: string
+          - {}
+    imageInclude:
+      type: object
+      properties: {}
+    imageNestedCreatePayload:
+      type: object
+      properties:
+        _type:
+          type: string
+          const: create
+        height:
+          type:
+          - integer
+          - 'null'
+        title:
+          type: string
+        url:
+          type: string
+        width:
+          type:
+          - integer
+          - 'null'
+      required:
+      - _type
+      - title
+      - url
+    imageNestedPayload:
+      oneOf:
+      - "$ref": "#/components/schemas/imageNestedCreatePayload"
+      - "$ref": "#/components/schemas/imageNestedUpdatePayload"
+      discriminator:
+        propertyName: _type
+        mapping:
+          create: "#/components/schemas/imageNestedCreatePayload"
+          update: "#/components/schemas/imageNestedUpdatePayload"
+    imageNestedUpdatePayload:
+      type: object
+      properties:
+        _type:
+          type: string
+          const: update
+        height:
+          type:
+          - integer
+          - 'null'
+        title:
+          type: string
+        url:
+          type: string
+        width:
+          type:
+          - integer
+          - 'null'
+      required:
+      - _type
+      - title
+      - url
+    imageSort:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          enum:
+          - asc
+          - desc
     issue:
       type: object
       properties:
@@ -259,7 +356,7 @@ components:
       - detail
       - field
       - path
-    pagePagination:
+    offsetPagination:
       type: object
       properties:
         current:
@@ -280,18 +377,173 @@ components:
       - current
       - items
       - total
-    stringFilter:
+    post:
       type: object
       properties:
-        contains:
+        body:
           type: string
-        endsWith:
-          type: string
-        eq:
-          type: string
-        in:
+        comments:
           type: array
           items:
-            type: string
-        startsWith:
+            type:
+        createdAt:
           type: string
+        id: {}
+        title:
+          type: string
+    postFilter:
+      type: object
+      properties:
+        _and:
+          type: array
+          items:
+            "$ref": "#/components/schemas/postFilter"
+        _not:
+          "$ref": "#/components/schemas/postFilter"
+        _or:
+          type: array
+          items:
+            "$ref": "#/components/schemas/postFilter"
+        title:
+          oneOf:
+          - type: string
+          - {}
+    postInclude:
+      type: object
+      properties: {}
+    postNestedCreatePayload:
+      type: object
+      properties:
+        _type:
+          type: string
+          const: create
+        body:
+          type:
+          - string
+          - 'null'
+        title:
+          type: string
+      required:
+      - _type
+      - title
+    postNestedPayload:
+      oneOf:
+      - "$ref": "#/components/schemas/postNestedCreatePayload"
+      - "$ref": "#/components/schemas/postNestedUpdatePayload"
+      discriminator:
+        propertyName: _type
+        mapping:
+          create: "#/components/schemas/postNestedCreatePayload"
+          update: "#/components/schemas/postNestedUpdatePayload"
+    postNestedUpdatePayload:
+      type: object
+      properties:
+        _type:
+          type: string
+          const: update
+        body:
+          type:
+          - string
+          - 'null'
+        title:
+          type: string
+      required:
+      - _type
+      - title
+    postSort:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          enum:
+          - asc
+          - desc
+    video:
+      type: object
+      properties:
+        comments:
+          type: array
+          items:
+            type:
+        createdAt:
+          type: string
+        duration:
+          type: integer
+        id: {}
+        title:
+          type: string
+        url:
+          type: string
+    videoFilter:
+      type: object
+      properties:
+        _and:
+          type: array
+          items:
+            "$ref": "#/components/schemas/videoFilter"
+        _not:
+          "$ref": "#/components/schemas/videoFilter"
+        _or:
+          type: array
+          items:
+            "$ref": "#/components/schemas/videoFilter"
+        title:
+          oneOf:
+          - type: string
+          - {}
+    videoInclude:
+      type: object
+      properties: {}
+    videoNestedCreatePayload:
+      type: object
+      properties:
+        _type:
+          type: string
+          const: create
+        duration:
+          type:
+          - integer
+          - 'null'
+        title:
+          type: string
+        url:
+          type: string
+      required:
+      - _type
+      - title
+      - url
+    videoNestedPayload:
+      oneOf:
+      - "$ref": "#/components/schemas/videoNestedCreatePayload"
+      - "$ref": "#/components/schemas/videoNestedUpdatePayload"
+      discriminator:
+        propertyName: _type
+        mapping:
+          create: "#/components/schemas/videoNestedCreatePayload"
+          update: "#/components/schemas/videoNestedUpdatePayload"
+    videoNestedUpdatePayload:
+      type: object
+      properties:
+        _type:
+          type: string
+          const: update
+        duration:
+          type:
+          - integer
+          - 'null'
+        title:
+          type: string
+        url:
+          type: string
+      required:
+      - _type
+      - title
+      - url
+    videoSort:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          enum:
+          - asc
+          - desc

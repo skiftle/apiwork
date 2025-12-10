@@ -88,6 +88,8 @@ export const ActivitiesUpdateResponseSchema = z.object({
   body: ActivitiesUpdateResponseBodySchema
 });
 
+export const ActivitiesDestroyResponse = z.never();
+
 export interface ActivitiesCreateRequest {
   body: ActivitiesCreateRequestBody;
 }
@@ -101,6 +103,8 @@ export interface ActivitiesCreateResponse {
 }
 
 export type ActivitiesCreateResponseBody = { activity: Activity; meta?: object } | { issues?: Issue[] };
+
+export type ActivitiesDestroyResponse = never;
 
 export interface ActivitiesIndexRequest {
   query: ActivitiesIndexRequestQuery;

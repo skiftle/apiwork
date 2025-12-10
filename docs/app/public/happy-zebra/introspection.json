@@ -127,7 +127,7 @@
         }
       }
     },
-    "page_pagination": {
+    "offset_pagination": {
       "type": "object",
       "shape": {
         "current": {
@@ -436,11 +436,11 @@
       "type": "object",
       "shape": {
         "created_at": {
-          "type": "user_sort_direction",
+          "type": "sort_direction",
           "optional": true
         },
         "updated_at": {
-          "type": "user_sort_direction",
+          "type": "sort_direction",
           "optional": true
         }
       }
@@ -564,7 +564,7 @@
                       "optional": true
                     },
                     "pagination": {
-                      "type": "page_pagination",
+                      "type": "offset_pagination",
                       "optional": true
                     },
                     "users": {
@@ -729,7 +729,10 @@
         },
         "destroy": {
           "method": "delete",
-          "path": "/:id"
+          "path": "/:id",
+          "response": {
+            "no_content": true
+          }
         }
       }
     },
@@ -779,7 +782,7 @@
                       "optional": true
                     },
                     "pagination": {
-                      "type": "page_pagination",
+                      "type": "offset_pagination",
                       "optional": true
                     },
                     "posts": {
@@ -944,7 +947,10 @@
         },
         "destroy": {
           "method": "delete",
-          "path": "/:id"
+          "path": "/:id",
+          "response": {
+            "no_content": true
+          }
         }
       }
     },
@@ -1002,7 +1008,7 @@
                       "optional": true
                     },
                     "pagination": {
-                      "type": "page_pagination",
+                      "type": "offset_pagination",
                       "optional": true
                     }
                   }
@@ -1142,7 +1148,10 @@
         },
         "destroy": {
           "method": "delete",
-          "path": "/:id"
+          "path": "/:id",
+          "response": {
+            "no_content": true
+          }
         }
       }
     }

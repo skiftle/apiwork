@@ -12,12 +12,8 @@
           "type": "string",
           "optional": true
         },
-        "commentable_id": {
-          "type": "unknown",
-          "optional": true
-        },
-        "commentable_type": {
-          "type": "string",
+        "commentable": {
+          "type": "comment_commentable",
           "optional": true
         },
         "created_at": {
@@ -30,6 +26,32 @@
         }
       }
     },
+    "comment_commentable": {
+      "type": "union",
+      "required": false,
+      "nullable": false,
+      "variants": [
+        {
+          "type": "post",
+          "of": null,
+          "tag": "post",
+          "partial": false
+        },
+        {
+          "type": "video",
+          "of": null,
+          "tag": "video",
+          "partial": false
+        },
+        {
+          "type": "image",
+          "of": null,
+          "tag": "image",
+          "partial": false
+        }
+      ],
+      "discriminator": "commentable_type"
+    },
     "comment_create_payload": {
       "type": "object",
       "shape": {
@@ -40,48 +62,17 @@
         },
         "body": {
           "type": "string"
-        },
-        "commentable_id": {
-          "type": "unknown"
-        },
-        "commentable_type": {
-          "type": "string"
-        }
-      }
-    },
-    "comment_filter": {
-      "type": "object",
-      "shape": {
-        "_and": {
-          "type": "array",
-          "of": "comment_filter",
-          "optional": true
-        },
-        "_not": {
-          "type": "comment_filter",
-          "optional": true
-        },
-        "_or": {
-          "type": "array",
-          "of": "comment_filter",
-          "optional": true
-        },
-        "commentable_type": {
-          "type": "union",
-          "variants": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "string_filter"
-            }
-          ],
-          "optional": true
         }
       }
     },
     "comment_include": {
-      "type": "object"
+      "type": "object",
+      "shape": {
+        "commentable": {
+          "type": "boolean",
+          "optional": true
+        }
+      }
     },
     "comment_page": {
       "type": "object",
@@ -103,7 +94,7 @@
       "type": "object",
       "shape": {
         "created_at": {
-          "type": "comment_sort_direction",
+          "type": "sort_direction",
           "optional": true
         }
       }
@@ -118,12 +109,153 @@
         },
         "body": {
           "type": "string"
+        }
+      }
+    },
+    "image": {
+      "type": "object",
+      "shape": {
+        "comments": {
+          "type": "array",
+          "of": "object",
+          "optional": true
         },
-        "commentable_id": {
-          "type": "unknown"
+        "created_at": {
+          "type": "datetime",
+          "optional": true
         },
-        "commentable_type": {
+        "height": {
+          "type": "integer",
+          "optional": true
+        },
+        "id": {
+          "type": "unknown",
+          "optional": true
+        },
+        "title": {
+          "type": "string",
+          "optional": true
+        },
+        "url": {
+          "type": "string",
+          "optional": true
+        },
+        "width": {
+          "type": "integer",
+          "optional": true
+        }
+      }
+    },
+    "image_filter": {
+      "type": "object",
+      "shape": {
+        "_and": {
+          "type": "array",
+          "of": "image_filter",
+          "optional": true
+        },
+        "_not": {
+          "type": "image_filter",
+          "optional": true
+        },
+        "_or": {
+          "type": "array",
+          "of": "image_filter",
+          "optional": true
+        },
+        "title": {
+          "type": "union",
+          "variants": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "string_filter"
+            }
+          ],
+          "optional": true
+        }
+      }
+    },
+    "image_include": {
+      "type": "object"
+    },
+    "image_nested_create_payload": {
+      "type": "object",
+      "shape": {
+        "_type": {
+          "type": "literal",
+          "value": "create"
+        },
+        "height": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "title": {
           "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "width": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        }
+      }
+    },
+    "image_nested_payload": {
+      "type": "union",
+      "required": false,
+      "nullable": false,
+      "variants": [
+        {
+          "type": "image_nested_create_payload",
+          "of": null,
+          "tag": "create",
+          "partial": false
+        },
+        {
+          "type": "image_nested_update_payload",
+          "of": null,
+          "tag": "update",
+          "partial": false
+        }
+      ],
+      "discriminator": "_type"
+    },
+    "image_nested_update_payload": {
+      "type": "object",
+      "shape": {
+        "_type": {
+          "type": "literal",
+          "value": "update"
+        },
+        "height": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "width": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        }
+      }
+    },
+    "image_sort": {
+      "type": "object",
+      "shape": {
+        "created_at": {
+          "type": "sort_direction",
+          "optional": true
         }
       }
     },
@@ -145,7 +277,7 @@
         }
       }
     },
-    "page_pagination": {
+    "offset_pagination": {
       "type": "object",
       "shape": {
         "current": {
@@ -169,28 +301,258 @@
         }
       }
     },
-    "string_filter": {
+    "post": {
       "type": "object",
       "shape": {
-        "contains": {
+        "body": {
           "type": "string",
           "optional": true
         },
-        "ends_with": {
-          "type": "string",
-          "optional": true
-        },
-        "eq": {
-          "type": "string",
-          "optional": true
-        },
-        "in": {
+        "comments": {
           "type": "array",
-          "of": "string",
+          "of": "object",
           "optional": true
         },
-        "starts_with": {
+        "created_at": {
+          "type": "datetime",
+          "optional": true
+        },
+        "id": {
+          "type": "unknown",
+          "optional": true
+        },
+        "title": {
           "type": "string",
+          "optional": true
+        }
+      }
+    },
+    "post_filter": {
+      "type": "object",
+      "shape": {
+        "_and": {
+          "type": "array",
+          "of": "post_filter",
+          "optional": true
+        },
+        "_not": {
+          "type": "post_filter",
+          "optional": true
+        },
+        "_or": {
+          "type": "array",
+          "of": "post_filter",
+          "optional": true
+        },
+        "title": {
+          "type": "union",
+          "variants": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "string_filter"
+            }
+          ],
+          "optional": true
+        }
+      }
+    },
+    "post_include": {
+      "type": "object"
+    },
+    "post_nested_create_payload": {
+      "type": "object",
+      "shape": {
+        "_type": {
+          "type": "literal",
+          "value": "create"
+        },
+        "body": {
+          "type": "string",
+          "nullable": true,
+          "optional": true
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "post_nested_payload": {
+      "type": "union",
+      "required": false,
+      "nullable": false,
+      "variants": [
+        {
+          "type": "post_nested_create_payload",
+          "of": null,
+          "tag": "create",
+          "partial": false
+        },
+        {
+          "type": "post_nested_update_payload",
+          "of": null,
+          "tag": "update",
+          "partial": false
+        }
+      ],
+      "discriminator": "_type"
+    },
+    "post_nested_update_payload": {
+      "type": "object",
+      "shape": {
+        "_type": {
+          "type": "literal",
+          "value": "update"
+        },
+        "body": {
+          "type": "string",
+          "nullable": true,
+          "optional": true
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "post_sort": {
+      "type": "object",
+      "shape": {
+        "created_at": {
+          "type": "sort_direction",
+          "optional": true
+        }
+      }
+    },
+    "video": {
+      "type": "object",
+      "shape": {
+        "comments": {
+          "type": "array",
+          "of": "object",
+          "optional": true
+        },
+        "created_at": {
+          "type": "datetime",
+          "optional": true
+        },
+        "duration": {
+          "type": "integer",
+          "optional": true
+        },
+        "id": {
+          "type": "unknown",
+          "optional": true
+        },
+        "title": {
+          "type": "string",
+          "optional": true
+        },
+        "url": {
+          "type": "string",
+          "optional": true
+        }
+      }
+    },
+    "video_filter": {
+      "type": "object",
+      "shape": {
+        "_and": {
+          "type": "array",
+          "of": "video_filter",
+          "optional": true
+        },
+        "_not": {
+          "type": "video_filter",
+          "optional": true
+        },
+        "_or": {
+          "type": "array",
+          "of": "video_filter",
+          "optional": true
+        },
+        "title": {
+          "type": "union",
+          "variants": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "string_filter"
+            }
+          ],
+          "optional": true
+        }
+      }
+    },
+    "video_include": {
+      "type": "object"
+    },
+    "video_nested_create_payload": {
+      "type": "object",
+      "shape": {
+        "_type": {
+          "type": "literal",
+          "value": "create"
+        },
+        "duration": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "video_nested_payload": {
+      "type": "union",
+      "required": false,
+      "nullable": false,
+      "variants": [
+        {
+          "type": "video_nested_create_payload",
+          "of": null,
+          "tag": "create",
+          "partial": false
+        },
+        {
+          "type": "video_nested_update_payload",
+          "of": null,
+          "tag": "update",
+          "partial": false
+        }
+      ],
+      "discriminator": "_type"
+    },
+    "video_nested_update_payload": {
+      "type": "object",
+      "shape": {
+        "_type": {
+          "type": "literal",
+          "value": "update"
+        },
+        "duration": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "video_sort": {
+      "type": "object",
+      "shape": {
+        "created_at": {
+          "type": "sort_direction",
           "optional": true
         }
       }
@@ -230,10 +592,6 @@
             "nullable": true,
             "optional": true
           },
-          "commentable_type": {
-            "type": "string"
-          },
-          "commentable_id": {},
           "created_at": {
             "type": "datetime"
           }
@@ -245,19 +603,6 @@
           "path": "/",
           "request": {
             "query": {
-              "filter": {
-                "type": "union",
-                "variants": [
-                  {
-                    "type": "comment_filter"
-                  },
-                  {
-                    "type": "array",
-                    "of": "comment_filter"
-                  }
-                ],
-                "optional": true
-              },
               "include": {
                 "type": "comment_include",
                 "optional": true
@@ -298,7 +643,7 @@
                       "optional": true
                     },
                     "pagination": {
-                      "type": "page_pagination",
+                      "type": "offset_pagination",
                       "optional": true
                     }
                   }
@@ -320,6 +665,14 @@
         "show": {
           "method": "get",
           "path": "/:id",
+          "request": {
+            "query": {
+              "include": {
+                "type": "comment_include",
+                "optional": true
+              }
+            }
+          },
           "response": {
             "body": {
               "type": "union",
@@ -354,6 +707,12 @@
           "method": "post",
           "path": "/",
           "request": {
+            "query": {
+              "include": {
+                "type": "comment_include",
+                "optional": true
+              }
+            },
             "body": {
               "comment": {
                 "type": "comment_create_payload"
@@ -397,6 +756,12 @@
           "method": "patch",
           "path": "/:id",
           "request": {
+            "query": {
+              "include": {
+                "type": "comment_include",
+                "optional": true
+              }
+            },
             "body": {
               "comment": {
                 "type": "comment_update_payload"
@@ -438,7 +803,10 @@
         },
         "destroy": {
           "method": "delete",
-          "path": "/:id"
+          "path": "/:id",
+          "response": {
+            "no_content": true
+          }
         }
       }
     }

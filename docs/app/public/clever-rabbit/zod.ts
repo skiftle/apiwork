@@ -18,6 +18,14 @@ export const NullableStringFilterSchema = z.object({
   startsWith: z.string().optional()
 });
 
+export const OffsetPaginationSchema = z.object({
+  current: z.number().int(),
+  items: z.number().int(),
+  next: z.number().int().nullable().optional(),
+  prev: z.number().int().nullable().optional(),
+  total: z.number().int()
+});
+
 export const OrderSchema = z.object({
   createdAt: z.iso.datetime().optional(),
   id: z.unknown().optional(),
@@ -45,22 +53,14 @@ export const OrderPageSchema = z.object({
 });
 
 export const OrderSortSchema = z.object({
-  createdAt: z.unknown().optional(),
-  status: z.unknown().optional()
+  createdAt: SortDirectionSchema.optional(),
+  status: SortDirectionSchema.optional()
 });
 
 export const OrderUpdatePayloadSchema = z.object({
   lineItems: z.array(z.string()).optional(),
   orderNumber: z.string().optional(),
   shippingAddress: z.object({}).optional()
-});
-
-export const PagePaginationSchema = z.object({
-  current: z.number().int(),
-  items: z.number().int(),
-  next: z.number().int().nullable().optional(),
-  prev: z.number().int().nullable().optional(),
-  total: z.number().int()
 });
 
 export const StringFilterSchema = z.object({
@@ -89,7 +89,7 @@ export const OrdersIndexRequestSchema = z.object({
   query: OrdersIndexRequestQuerySchema
 });
 
-export const OrdersIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), orders: z.array(OrderSchema).optional(), pagination: PagePaginationSchema.optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const OrdersIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), orders: z.array(OrderSchema).optional(), pagination: OffsetPaginationSchema.optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
 
 export const OrdersIndexResponseSchema = z.object({
   body: OrdersIndexResponseBodySchema
@@ -147,6 +147,8 @@ export const OrdersUpdateResponseSchema = z.object({
   body: OrdersUpdateResponseBodySchema
 });
 
+export const OrdersDestroyResponse = z.never();
+
 export interface Issue {
   code: string;
   detail: string;
@@ -161,6 +163,14 @@ export interface NullableStringFilter {
   in?: string[];
   null?: boolean;
   startsWith?: string;
+}
+
+export interface OffsetPagination {
+  current: number;
+  items: number;
+  next?: null | number;
+  prev?: null | number;
+  total: number;
 }
 
 export interface Order {
@@ -195,8 +205,8 @@ export interface OrderPage {
 }
 
 export interface OrderSort {
-  createdAt?: unknown;
-  status?: unknown;
+  createdAt?: SortDirection;
+  status?: SortDirection;
 }
 
 export interface OrderUpdatePayload {
@@ -224,6 +234,8 @@ export interface OrdersCreateResponse {
 
 export type OrdersCreateResponseBody = { issues?: Issue[] } | { meta?: object; order: Order };
 
+export type OrdersDestroyResponse = never;
+
 export interface OrdersIndexRequest {
   query: OrdersIndexRequestQuery;
 }
@@ -239,7 +251,7 @@ export interface OrdersIndexResponse {
   body: OrdersIndexResponseBody;
 }
 
-export type OrdersIndexResponseBody = { issues?: Issue[] } | { meta?: object; orders?: Order[]; pagination?: PagePagination };
+export type OrdersIndexResponseBody = { issues?: Issue[] } | { meta?: object; orders?: Order[]; pagination?: OffsetPagination };
 
 export interface OrdersShowRequest {
   query: OrdersShowRequestQuery;
@@ -273,14 +285,6 @@ export interface OrdersUpdateResponse {
 }
 
 export type OrdersUpdateResponseBody = { issues?: Issue[] } | { meta?: object; order: Order };
-
-export interface PagePagination {
-  current: number;
-  items: number;
-  next?: null | number;
-  prev?: null | number;
-  total: number;
-}
 
 export type SortDirection = 'asc' | 'desc';
 

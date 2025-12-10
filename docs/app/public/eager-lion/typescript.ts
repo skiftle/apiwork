@@ -35,10 +35,10 @@ export interface InvoicePage {
 }
 
 export interface InvoiceSort {
-  createdAt?: unknown;
-  issuedOn?: unknown;
-  status?: unknown;
-  updatedAt?: unknown;
+  createdAt?: SortDirection;
+  issuedOn?: SortDirection;
+  status?: SortDirection;
+  updatedAt?: SortDirection;
 }
 
 export interface InvoiceUpdatePayload {
@@ -82,6 +82,8 @@ export interface InvoicesCreateResponse {
 
 export type InvoicesCreateResponseBody = { invoice: Invoice; meta?: object } | { issues?: Issue[] };
 
+export type InvoicesDestroyResponse = never;
+
 export interface InvoicesIndexRequest {
   query: InvoicesIndexRequestQuery;
 }
@@ -97,7 +99,7 @@ export interface InvoicesIndexResponse {
   body: InvoicesIndexResponseBody;
 }
 
-export type InvoicesIndexResponseBody = { invoices?: Invoice[]; meta?: object; pagination?: PagePagination } | { issues?: Issue[] };
+export type InvoicesIndexResponseBody = { invoices?: Invoice[]; meta?: object; pagination?: OffsetPagination } | { issues?: Issue[] };
 
 export interface InvoicesShowRequest {
   query: InvoicesShowRequestQuery;
@@ -148,7 +150,7 @@ export interface NullableStringFilter {
   startsWith?: string;
 }
 
-export interface PagePagination {
+export interface OffsetPagination {
   current: number;
   items: number;
   next?: null | number;

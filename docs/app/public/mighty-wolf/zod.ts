@@ -70,7 +70,7 @@ export const MotorcycleUpdatePayloadSchema = z.object({
   year: z.number().int().nullable().optional()
 });
 
-export const PagePaginationSchema = z.object({
+export const OffsetPaginationSchema = z.object({
   current: z.number().int(),
   items: z.number().int(),
   next: z.number().int().nullable().optional(),
@@ -124,7 +124,7 @@ export const VehiclePageSchema = z.object({
 });
 
 export const VehicleSortSchema = z.object({
-  year: z.unknown().optional()
+  year: SortDirectionSchema.optional()
 });
 
 export const IntegerFilterSchema = z.object({
@@ -186,7 +186,7 @@ export const VehiclesIndexRequestSchema = z.object({
   query: VehiclesIndexRequestQuerySchema
 });
 
-export const VehiclesIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: PagePaginationSchema.optional(), vehicles: z.array(VehicleSchema).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const VehiclesIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional(), vehicles: z.array(VehicleSchema).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
 
 export const VehiclesIndexResponseSchema = z.object({
   body: VehiclesIndexResponseBodySchema
@@ -225,6 +225,8 @@ export const VehiclesUpdateResponseBodySchema = z.union([z.object({ meta: z.obje
 export const VehiclesUpdateResponseSchema = z.object({
   body: VehiclesUpdateResponseBodySchema
 });
+
+export const VehiclesDestroyResponse = z.never();
 
 export interface Car {
   brand?: string;
@@ -315,7 +317,7 @@ export interface NullableIntegerFilter {
   null?: boolean;
 }
 
-export interface PagePagination {
+export interface OffsetPagination {
   current: number;
   items: number;
   next?: null | number;
@@ -361,9 +363,9 @@ export interface TruckUpdatePayload {
   year?: null | number;
 }
 
-export type Vehicle = Car | Motorcycle | Truck;
+export type Vehicle = { type: 'car' } & Car | { type: 'motorcycle' } & Motorcycle | { type: 'truck' } & Truck;
 
-export type VehicleCreatePayload = CarCreatePayload | MotorcycleCreatePayload | TruckCreatePayload;
+export type VehicleCreatePayload = { type: 'car' } & CarCreatePayload | { type: 'motorcycle' } & MotorcycleCreatePayload | { type: 'truck' } & TruckCreatePayload;
 
 export interface VehicleFilter {
   _and?: VehicleFilter[];
@@ -382,10 +384,10 @@ export interface VehiclePage {
 }
 
 export interface VehicleSort {
-  year?: unknown;
+  year?: SortDirection;
 }
 
-export type VehicleUpdatePayload = CarUpdatePayload | MotorcycleUpdatePayload | TruckUpdatePayload;
+export type VehicleUpdatePayload = { type: 'car' } & CarUpdatePayload | { type: 'motorcycle' } & MotorcycleUpdatePayload | { type: 'truck' } & TruckUpdatePayload;
 
 export interface VehiclesCreateRequest {
   body: VehiclesCreateRequestBody;
@@ -400,6 +402,8 @@ export interface VehiclesCreateResponse {
 }
 
 export type VehiclesCreateResponseBody = { issues?: Issue[] } | { meta?: object; vehicle: Vehicle };
+
+export type VehiclesDestroyResponse = never;
 
 export interface VehiclesIndexRequest {
   query: VehiclesIndexRequestQuery;
@@ -416,7 +420,7 @@ export interface VehiclesIndexResponse {
   body: VehiclesIndexResponseBody;
 }
 
-export type VehiclesIndexResponseBody = { issues?: Issue[] } | { meta?: object; pagination?: PagePagination; vehicles?: Vehicle[] };
+export type VehiclesIndexResponseBody = { issues?: Issue[] } | { meta?: object; pagination?: OffsetPagination; vehicles?: Vehicle[] };
 
 export interface VehiclesShowResponse {
   body: VehiclesShowResponseBody;

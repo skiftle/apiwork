@@ -2,24 +2,13 @@ import { z } from 'zod';
 
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
-export const CommentSchema = z.object({
-  authorName: z.string().optional(),
-  body: z.string().optional(),
-  commentableId: z.unknown().optional(),
-  commentableType: z.string().optional(),
-  createdAt: z.iso.datetime().optional(),
-  id: z.unknown().optional()
-});
-
 export const CommentCreatePayloadSchema = z.object({
   authorName: z.string().nullable().optional(),
-  body: z.string(),
-  commentableId: z.unknown(),
-  commentableType: z.string()
+  body: z.string()
 });
 
 export const CommentIncludeSchema = z.object({
-
+  commentable: z.boolean().optional()
 });
 
 export const CommentPageSchema = z.object({
@@ -28,14 +17,53 @@ export const CommentPageSchema = z.object({
 });
 
 export const CommentSortSchema = z.object({
-  createdAt: z.unknown().optional()
+  createdAt: SortDirectionSchema.optional()
 });
 
 export const CommentUpdatePayloadSchema = z.object({
   authorName: z.string().nullable().optional(),
-  body: z.string().optional(),
-  commentableId: z.unknown().optional(),
-  commentableType: z.string().optional()
+  body: z.string().optional()
+});
+
+export const ImageSchema = z.object({
+  comments: z.array(z.unknown()).optional(),
+  createdAt: z.iso.datetime().optional(),
+  height: z.number().int().optional(),
+  id: z.unknown().optional(),
+  title: z.string().optional(),
+  url: z.string().optional(),
+  width: z.number().int().optional()
+});
+
+export const ImageFilterSchema: z.ZodType<ImageFilter> = z.lazy(() => z.object({
+  _and: z.array(ImageFilterSchema).optional(),
+  _not: ImageFilterSchema.optional(),
+  _or: z.array(ImageFilterSchema).optional(),
+  title: z.union([z.string(), z.unknown()]).optional()
+}));
+
+export const ImageIncludeSchema = z.object({
+
+});
+
+export const ImageNestedCreatePayloadSchema = z.object({
+  _type: z.literal('create'),
+  height: z.number().int().nullable().optional(),
+  title: z.string(),
+  url: z.string(),
+  width: z.number().int().nullable().optional()
+});
+
+export const ImageNestedUpdatePayloadSchema = z.object({
+  _type: z.literal('update'),
+  height: z.number().int().nullable().optional(),
+  title: z.string().optional(),
+  url: z.string().optional(),
+  width: z.number().int().nullable().optional()
+});
+
+export const ImageSortSchema = z.object({
+  createdAt: SortDirectionSchema.optional()
 });
 
 export const IssueSchema = z.object({
@@ -45,7 +73,7 @@ export const IssueSchema = z.object({
   path: z.array(z.string())
 });
 
-export const PagePaginationSchema = z.object({
+export const OffsetPaginationSchema = z.object({
   current: z.number().int(),
   items: z.number().int(),
   next: z.number().int().nullable().optional(),
@@ -53,23 +81,109 @@ export const PagePaginationSchema = z.object({
   total: z.number().int()
 });
 
-export const StringFilterSchema = z.object({
-  contains: z.string().optional(),
-  endsWith: z.string().optional(),
-  eq: z.string().optional(),
-  in: z.array(z.string()).optional(),
-  startsWith: z.string().optional()
+export const PostSchema = z.object({
+  body: z.string().optional(),
+  comments: z.array(z.unknown()).optional(),
+  createdAt: z.iso.datetime().optional(),
+  id: z.unknown().optional(),
+  title: z.string().optional()
 });
 
-export const CommentFilterSchema: z.ZodType<CommentFilter> = z.lazy(() => z.object({
-  _and: z.array(CommentFilterSchema).optional(),
-  _not: CommentFilterSchema.optional(),
-  _or: z.array(CommentFilterSchema).optional(),
-  commentableType: z.union([z.string(), StringFilterSchema]).optional()
+export const PostFilterSchema: z.ZodType<PostFilter> = z.lazy(() => z.object({
+  _and: z.array(PostFilterSchema).optional(),
+  _not: PostFilterSchema.optional(),
+  _or: z.array(PostFilterSchema).optional(),
+  title: z.union([z.string(), z.unknown()]).optional()
 }));
 
+export const PostIncludeSchema = z.object({
+
+});
+
+export const PostNestedCreatePayloadSchema = z.object({
+  _type: z.literal('create'),
+  body: z.string().nullable().optional(),
+  title: z.string()
+});
+
+export const PostNestedUpdatePayloadSchema = z.object({
+  _type: z.literal('update'),
+  body: z.string().nullable().optional(),
+  title: z.string().optional()
+});
+
+export const PostSortSchema = z.object({
+  createdAt: SortDirectionSchema.optional()
+});
+
+export const VideoSchema = z.object({
+  comments: z.array(z.unknown()).optional(),
+  createdAt: z.iso.datetime().optional(),
+  duration: z.number().int().optional(),
+  id: z.unknown().optional(),
+  title: z.string().optional(),
+  url: z.string().optional()
+});
+
+export const VideoFilterSchema: z.ZodType<VideoFilter> = z.lazy(() => z.object({
+  _and: z.array(VideoFilterSchema).optional(),
+  _not: VideoFilterSchema.optional(),
+  _or: z.array(VideoFilterSchema).optional(),
+  title: z.union([z.string(), z.unknown()]).optional()
+}));
+
+export const VideoIncludeSchema = z.object({
+
+});
+
+export const VideoNestedCreatePayloadSchema = z.object({
+  _type: z.literal('create'),
+  duration: z.number().int().nullable().optional(),
+  title: z.string(),
+  url: z.string()
+});
+
+export const VideoNestedUpdatePayloadSchema = z.object({
+  _type: z.literal('update'),
+  duration: z.number().int().nullable().optional(),
+  title: z.string().optional(),
+  url: z.string().optional()
+});
+
+export const VideoSortSchema = z.object({
+  createdAt: SortDirectionSchema.optional()
+});
+
+export const ImageNestedPayloadSchema = z.discriminatedUnion('_type', [
+  ImageNestedCreatePayloadSchema,
+  ImageNestedUpdatePayloadSchema
+]);
+
+export const PostNestedPayloadSchema = z.discriminatedUnion('_type', [
+  PostNestedCreatePayloadSchema,
+  PostNestedUpdatePayloadSchema
+]);
+
+export const CommentCommentableSchema = z.discriminatedUnion('commentableType', [
+  PostSchema,
+  VideoSchema,
+  ImageSchema
+]);
+
+export const VideoNestedPayloadSchema = z.discriminatedUnion('_type', [
+  VideoNestedCreatePayloadSchema,
+  VideoNestedUpdatePayloadSchema
+]);
+
+export const CommentSchema = z.object({
+  authorName: z.string().optional(),
+  body: z.string().optional(),
+  commentable: CommentCommentableSchema.optional(),
+  createdAt: z.iso.datetime().optional(),
+  id: z.unknown().optional()
+});
+
 export const CommentsIndexRequestQuerySchema = z.object({
-  filter: z.union([CommentFilterSchema, z.array(CommentFilterSchema)]).optional(),
   include: CommentIncludeSchema.optional(),
   page: CommentPageSchema.optional(),
   sort: z.union([CommentSortSchema, z.array(CommentSortSchema)]).optional()
@@ -79,10 +193,18 @@ export const CommentsIndexRequestSchema = z.object({
   query: CommentsIndexRequestQuerySchema
 });
 
-export const CommentsIndexResponseBodySchema = z.union([z.object({ comments: z.array(CommentSchema).optional(), meta: z.object({}).optional(), pagination: PagePaginationSchema.optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const CommentsIndexResponseBodySchema = z.union([z.object({ comments: z.array(CommentSchema).optional(), meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
 
 export const CommentsIndexResponseSchema = z.object({
   body: CommentsIndexResponseBodySchema
+});
+
+export const CommentsShowRequestQuerySchema = z.object({
+  include: CommentIncludeSchema.optional()
+});
+
+export const CommentsShowRequestSchema = z.object({
+  query: CommentsShowRequestQuerySchema
 });
 
 export const CommentsShowResponseBodySchema = z.union([z.object({ comment: CommentSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
@@ -91,11 +213,16 @@ export const CommentsShowResponseSchema = z.object({
   body: CommentsShowResponseBodySchema
 });
 
+export const CommentsCreateRequestQuerySchema = z.object({
+  include: CommentIncludeSchema.optional()
+});
+
 export const CommentsCreateRequestBodySchema = z.object({
   comment: CommentCreatePayloadSchema
 });
 
 export const CommentsCreateRequestSchema = z.object({
+  query: CommentsCreateRequestQuerySchema,
   body: CommentsCreateRequestBodySchema
 });
 
@@ -105,11 +232,16 @@ export const CommentsCreateResponseSchema = z.object({
   body: CommentsCreateResponseBodySchema
 });
 
+export const CommentsUpdateRequestQuerySchema = z.object({
+  include: CommentIncludeSchema.optional()
+});
+
 export const CommentsUpdateRequestBodySchema = z.object({
   comment: CommentUpdatePayloadSchema
 });
 
 export const CommentsUpdateRequestSchema = z.object({
+  query: CommentsUpdateRequestQuerySchema,
   body: CommentsUpdateRequestBodySchema
 });
 
@@ -119,30 +251,26 @@ export const CommentsUpdateResponseSchema = z.object({
   body: CommentsUpdateResponseBodySchema
 });
 
+export const CommentsDestroyResponse = z.never();
+
 export interface Comment {
   authorName?: string;
   body?: string;
-  commentableId?: unknown;
-  commentableType?: string;
+  commentable?: CommentCommentable;
   createdAt?: string;
   id?: unknown;
 }
 
+export type CommentCommentable = { commentableType: 'post' } & Post | { commentableType: 'video' } & Video | { commentableType: 'image' } & Image;
+
 export interface CommentCreatePayload {
   authorName?: null | string;
   body: string;
-  commentableId: unknown;
-  commentableType: string;
 }
 
-export interface CommentFilter {
-  _and?: CommentFilter[];
-  _not?: CommentFilter;
-  _or?: CommentFilter[];
-  commentableType?: StringFilter | string;
+export interface CommentInclude {
+  commentable?: boolean;
 }
-
-export type CommentInclude = object;
 
 export interface CommentPage {
   number?: number;
@@ -150,22 +278,25 @@ export interface CommentPage {
 }
 
 export interface CommentSort {
-  createdAt?: unknown;
+  createdAt?: SortDirection;
 }
 
 export interface CommentUpdatePayload {
   authorName?: null | string;
   body?: string;
-  commentableId?: unknown;
-  commentableType?: string;
 }
 
 export interface CommentsCreateRequest {
+  query: CommentsCreateRequestQuery;
   body: CommentsCreateRequestBody;
 }
 
 export interface CommentsCreateRequestBody {
   comment: CommentCreatePayload;
+}
+
+export interface CommentsCreateRequestQuery {
+  include?: CommentInclude;
 }
 
 export interface CommentsCreateResponse {
@@ -174,12 +305,13 @@ export interface CommentsCreateResponse {
 
 export type CommentsCreateResponseBody = { comment: Comment; meta?: object } | { issues?: Issue[] };
 
+export type CommentsDestroyResponse = never;
+
 export interface CommentsIndexRequest {
   query: CommentsIndexRequestQuery;
 }
 
 export interface CommentsIndexRequestQuery {
-  filter?: CommentFilter | CommentFilter[];
   include?: CommentInclude;
   page?: CommentPage;
   sort?: CommentSort | CommentSort[];
@@ -189,7 +321,15 @@ export interface CommentsIndexResponse {
   body: CommentsIndexResponseBody;
 }
 
-export type CommentsIndexResponseBody = { comments?: Comment[]; meta?: object; pagination?: PagePagination } | { issues?: Issue[] };
+export type CommentsIndexResponseBody = { comments?: Comment[]; meta?: object; pagination?: OffsetPagination } | { issues?: Issue[] };
+
+export interface CommentsShowRequest {
+  query: CommentsShowRequestQuery;
+}
+
+export interface CommentsShowRequestQuery {
+  include?: CommentInclude;
+}
 
 export interface CommentsShowResponse {
   body: CommentsShowResponseBody;
@@ -198,11 +338,16 @@ export interface CommentsShowResponse {
 export type CommentsShowResponseBody = { comment: Comment; meta?: object } | { issues?: Issue[] };
 
 export interface CommentsUpdateRequest {
+  query: CommentsUpdateRequestQuery;
   body: CommentsUpdateRequestBody;
 }
 
 export interface CommentsUpdateRequestBody {
   comment: CommentUpdatePayload;
+}
+
+export interface CommentsUpdateRequestQuery {
+  include?: CommentInclude;
 }
 
 export interface CommentsUpdateResponse {
@@ -211,6 +356,47 @@ export interface CommentsUpdateResponse {
 
 export type CommentsUpdateResponseBody = { comment: Comment; meta?: object } | { issues?: Issue[] };
 
+export interface Image {
+  comments?: unknown[];
+  createdAt?: string;
+  height?: number;
+  id?: unknown;
+  title?: string;
+  url?: string;
+  width?: number;
+}
+
+export interface ImageFilter {
+  _and?: ImageFilter[];
+  _not?: ImageFilter;
+  _or?: ImageFilter[];
+  title?: string | unknown;
+}
+
+export type ImageInclude = object;
+
+export interface ImageNestedCreatePayload {
+  _type: 'create';
+  height?: null | number;
+  title: string;
+  url: string;
+  width?: null | number;
+}
+
+export type ImageNestedPayload = { _type: 'create' } & ImageNestedCreatePayload | { _type: 'update' } & ImageNestedUpdatePayload;
+
+export interface ImageNestedUpdatePayload {
+  _type?: 'update';
+  height?: null | number;
+  title?: string;
+  url?: string;
+  width?: null | number;
+}
+
+export interface ImageSort {
+  createdAt?: SortDirection;
+}
+
 export interface Issue {
   code: string;
   detail: string;
@@ -218,7 +404,7 @@ export interface Issue {
   path: string[];
 }
 
-export interface PagePagination {
+export interface OffsetPagination {
   current: number;
   items: number;
   next?: null | number;
@@ -226,12 +412,77 @@ export interface PagePagination {
   total: number;
 }
 
+export interface Post {
+  body?: string;
+  comments?: unknown[];
+  createdAt?: string;
+  id?: unknown;
+  title?: string;
+}
+
+export interface PostFilter {
+  _and?: PostFilter[];
+  _not?: PostFilter;
+  _or?: PostFilter[];
+  title?: string | unknown;
+}
+
+export type PostInclude = object;
+
+export interface PostNestedCreatePayload {
+  _type: 'create';
+  body?: null | string;
+  title: string;
+}
+
+export type PostNestedPayload = { _type: 'create' } & PostNestedCreatePayload | { _type: 'update' } & PostNestedUpdatePayload;
+
+export interface PostNestedUpdatePayload {
+  _type?: 'update';
+  body?: null | string;
+  title?: string;
+}
+
+export interface PostSort {
+  createdAt?: SortDirection;
+}
+
 export type SortDirection = 'asc' | 'desc';
 
-export interface StringFilter {
-  contains?: string;
-  endsWith?: string;
-  eq?: string;
-  in?: string[];
-  startsWith?: string;
+export interface Video {
+  comments?: unknown[];
+  createdAt?: string;
+  duration?: number;
+  id?: unknown;
+  title?: string;
+  url?: string;
+}
+
+export interface VideoFilter {
+  _and?: VideoFilter[];
+  _not?: VideoFilter;
+  _or?: VideoFilter[];
+  title?: string | unknown;
+}
+
+export type VideoInclude = object;
+
+export interface VideoNestedCreatePayload {
+  _type: 'create';
+  duration?: null | number;
+  title: string;
+  url: string;
+}
+
+export type VideoNestedPayload = { _type: 'create' } & VideoNestedCreatePayload | { _type: 'update' } & VideoNestedUpdatePayload;
+
+export interface VideoNestedUpdatePayload {
+  _type?: 'update';
+  duration?: null | number;
+  title?: string;
+  url?: string;
+}
+
+export interface VideoSort {
+  createdAt?: SortDirection;
 }

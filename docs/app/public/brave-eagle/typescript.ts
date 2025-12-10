@@ -14,7 +14,7 @@ export interface NullableStringFilter {
   startsWith?: string;
 }
 
-export interface PagePagination {
+export interface OffsetPagination {
   current: number;
   items: number;
   next?: null | number;
@@ -74,8 +74,8 @@ export type TaskPriority = 'critical' | 'high' | 'low' | 'medium';
 export type TaskPriorityFilter = TaskPriority | { eq?: TaskPriority; in?: TaskPriority[] };
 
 export interface TaskSort {
-  createdAt?: unknown;
-  dueDate?: unknown;
+  createdAt?: SortDirection;
+  dueDate?: SortDirection;
 }
 
 export type TaskStatus = 'archived' | 'completed' | 'in_progress' | 'pending';
@@ -123,6 +123,8 @@ export interface TasksCreateResponse {
 
 export type TasksCreateResponseBody = { issues?: Issue[] } | { meta?: object; task: Task };
 
+export type TasksDestroyResponse = never;
+
 export interface TasksIndexRequest {
   query: TasksIndexRequestQuery;
 }
@@ -138,7 +140,7 @@ export interface TasksIndexResponse {
   body: TasksIndexResponseBody;
 }
 
-export type TasksIndexResponseBody = { issues?: Issue[] } | { meta?: object; pagination?: PagePagination; tasks?: Task[] };
+export type TasksIndexResponseBody = { issues?: Issue[] } | { meta?: object; pagination?: OffsetPagination; tasks?: Task[] };
 
 export interface TasksShowRequest {
   query: TasksShowRequestQuery;

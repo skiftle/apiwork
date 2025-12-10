@@ -290,7 +290,7 @@
         }
       }
     },
-    "page_pagination": {
+    "offset_pagination": {
       "type": "object",
       "shape": {
         "current": {
@@ -563,7 +563,7 @@
       "type": "object",
       "shape": {
         "year": {
-          "type": "vehicle_sort_direction",
+          "type": "sort_direction",
           "optional": true
         }
       }
@@ -693,7 +693,7 @@
                       "optional": true
                     },
                     "pagination": {
-                      "type": "page_pagination",
+                      "type": "offset_pagination",
                       "optional": true
                     },
                     "vehicles": {
@@ -838,7 +838,10 @@
         },
         "destroy": {
           "method": "delete",
-          "path": "/:id"
+          "path": "/:id",
+          "response": {
+            "no_content": true
+          }
         }
       }
     }

@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "PATCH",
-    "path": "/funny_snake/invoices/cd305d44-de8a-4777-a79c-c84dfa2e9944",
+    "path": "/funny_snake/invoices/f0373ec9-fd3c-41fe-971e-ea2ad76dc4ba",
     "body": {
       "invoice": {
         "number": "INV-001",

@@ -166,23 +166,23 @@
       "type": "object",
       "shape": {
         "created_at": {
-          "type": "article_sort_direction",
+          "type": "sort_direction",
           "optional": true
         },
         "published_on": {
-          "type": "article_sort_direction",
+          "type": "sort_direction",
           "optional": true
         },
         "rating": {
-          "type": "article_sort_direction",
+          "type": "sort_direction",
           "optional": true
         },
         "status": {
-          "type": "article_sort_direction",
+          "type": "sort_direction",
           "optional": true
         },
         "view_count": {
-          "type": "article_sort_direction",
+          "type": "sort_direction",
           "optional": true
         }
       }
@@ -542,7 +542,7 @@
         }
       }
     },
-    "page_pagination": {
+    "offset_pagination": {
       "type": "object",
       "shape": {
         "current": {
@@ -721,7 +721,7 @@
                       "optional": true
                     },
                     "pagination": {
-                      "type": "page_pagination",
+                      "type": "offset_pagination",
                       "optional": true
                     }
                   }
@@ -881,7 +881,10 @@
         },
         "destroy": {
           "method": "delete",
-          "path": "/:id"
+          "path": "/:id",
+          "response": {
+            "no_content": true
+          }
         }
       }
     }

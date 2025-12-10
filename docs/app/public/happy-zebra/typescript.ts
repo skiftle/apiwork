@@ -17,7 +17,7 @@ export interface CommentNestedCreatePayload {
   body: string;
 }
 
-export type CommentNestedPayload = CommentNestedCreatePayload | CommentNestedUpdatePayload;
+export type CommentNestedPayload = { _type: 'create' } & CommentNestedCreatePayload | { _type: 'update' } & CommentNestedUpdatePayload;
 
 export interface CommentNestedUpdatePayload {
   _type?: 'update';
@@ -49,6 +49,8 @@ export interface CommentsCreateResponse {
 
 export type CommentsCreateResponseBody = { comment: Comment; meta?: object } | { issues?: Issue[] };
 
+export type CommentsDestroyResponse = never;
+
 export interface CommentsIndexRequest {
   query: CommentsIndexRequestQuery;
 }
@@ -62,7 +64,7 @@ export interface CommentsIndexResponse {
   body: CommentsIndexResponseBody;
 }
 
-export type CommentsIndexResponseBody = { comments?: Comment[]; meta?: object; pagination?: PagePagination } | { issues?: Issue[] };
+export type CommentsIndexResponseBody = { comments?: Comment[]; meta?: object; pagination?: OffsetPagination } | { issues?: Issue[] };
 
 export interface CommentsShowResponse {
   body: CommentsShowResponseBody;
@@ -91,7 +93,7 @@ export interface Issue {
   path: string[];
 }
 
-export interface PagePagination {
+export interface OffsetPagination {
   current: number;
   items: number;
   next?: null | number;
@@ -120,7 +122,7 @@ export interface PostNestedCreatePayload {
   title: string;
 }
 
-export type PostNestedPayload = PostNestedCreatePayload | PostNestedUpdatePayload;
+export type PostNestedPayload = { _type: 'create' } & PostNestedCreatePayload | { _type: 'update' } & PostNestedUpdatePayload;
 
 export interface PostNestedUpdatePayload {
   _type?: 'update';
@@ -157,6 +159,8 @@ export interface PostsCreateResponse {
 
 export type PostsCreateResponseBody = { issues?: Issue[] } | { meta?: object; post: Post };
 
+export type PostsDestroyResponse = never;
+
 export interface PostsIndexRequest {
   query: PostsIndexRequestQuery;
 }
@@ -170,7 +174,7 @@ export interface PostsIndexResponse {
   body: PostsIndexResponseBody;
 }
 
-export type PostsIndexResponseBody = { issues?: Issue[] } | { meta?: object; pagination?: PagePagination; posts?: Post[] };
+export type PostsIndexResponseBody = { issues?: Issue[] } | { meta?: object; pagination?: OffsetPagination; posts?: Post[] };
 
 export interface PostsShowRequest {
   query: PostsShowRequestQuery;
@@ -253,8 +257,8 @@ export interface UserPage {
 export type UserProfileInclude = object;
 
 export interface UserSort {
-  createdAt?: unknown;
-  updatedAt?: unknown;
+  createdAt?: SortDirection;
+  updatedAt?: SortDirection;
 }
 
 export interface UserUpdatePayload {
@@ -283,6 +287,8 @@ export interface UsersCreateResponse {
 
 export type UsersCreateResponseBody = { issues?: Issue[] } | { meta?: object; user: User };
 
+export type UsersDestroyResponse = never;
+
 export interface UsersIndexRequest {
   query: UsersIndexRequestQuery;
 }
@@ -298,7 +304,7 @@ export interface UsersIndexResponse {
   body: UsersIndexResponseBody;
 }
 
-export type UsersIndexResponseBody = { issues?: Issue[] } | { meta?: object; pagination?: PagePagination; users?: User[] };
+export type UsersIndexResponseBody = { issues?: Issue[] } | { meta?: object; pagination?: OffsetPagination; users?: User[] };
 
 export interface UsersShowRequest {
   query: UsersShowRequestQuery;

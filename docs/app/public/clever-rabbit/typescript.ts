@@ -14,6 +14,14 @@ export interface NullableStringFilter {
   startsWith?: string;
 }
 
+export interface OffsetPagination {
+  current: number;
+  items: number;
+  next?: null | number;
+  prev?: null | number;
+  total: number;
+}
+
 export interface Order {
   createdAt?: string;
   id?: unknown;
@@ -46,8 +54,8 @@ export interface OrderPage {
 }
 
 export interface OrderSort {
-  createdAt?: unknown;
-  status?: unknown;
+  createdAt?: SortDirection;
+  status?: SortDirection;
 }
 
 export interface OrderUpdatePayload {
@@ -75,6 +83,8 @@ export interface OrdersCreateResponse {
 
 export type OrdersCreateResponseBody = { issues?: Issue[] } | { meta?: object; order: Order };
 
+export type OrdersDestroyResponse = never;
+
 export interface OrdersIndexRequest {
   query: OrdersIndexRequestQuery;
 }
@@ -90,7 +100,7 @@ export interface OrdersIndexResponse {
   body: OrdersIndexResponseBody;
 }
 
-export type OrdersIndexResponseBody = { issues?: Issue[] } | { meta?: object; orders?: Order[]; pagination?: PagePagination };
+export type OrdersIndexResponseBody = { issues?: Issue[] } | { meta?: object; orders?: Order[]; pagination?: OffsetPagination };
 
 export interface OrdersShowRequest {
   query: OrdersShowRequestQuery;
@@ -124,14 +134,6 @@ export interface OrdersUpdateResponse {
 }
 
 export type OrdersUpdateResponseBody = { issues?: Issue[] } | { meta?: object; order: Order };
-
-export interface PagePagination {
-  current: number;
-  items: number;
-  next?: null | number;
-  prev?: null | number;
-  total: number;
-}
 
 export type SortDirection = 'asc' | 'desc';
 

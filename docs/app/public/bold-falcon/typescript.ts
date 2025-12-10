@@ -37,11 +37,11 @@ export interface ArticlePage {
 }
 
 export interface ArticleSort {
-  createdAt?: unknown;
-  publishedOn?: unknown;
-  rating?: unknown;
-  status?: unknown;
-  viewCount?: unknown;
+  createdAt?: SortDirection;
+  publishedOn?: SortDirection;
+  rating?: SortDirection;
+  status?: SortDirection;
+  viewCount?: SortDirection;
 }
 
 export type ArticleStatus = 'archived' | 'draft' | 'published';
@@ -74,6 +74,8 @@ export interface ArticlesCreateResponse {
 
 export type ArticlesCreateResponseBody = { article: Article; meta?: object } | { issues?: Issue[] };
 
+export type ArticlesDestroyResponse = never;
+
 export interface ArticlesIndexRequest {
   query: ArticlesIndexRequestQuery;
 }
@@ -89,7 +91,7 @@ export interface ArticlesIndexResponse {
   body: ArticlesIndexResponseBody;
 }
 
-export type ArticlesIndexResponseBody = { articles?: Article[]; meta?: object; pagination?: PagePagination } | { issues?: Issue[] };
+export type ArticlesIndexResponseBody = { articles?: Article[]; meta?: object; pagination?: OffsetPagination } | { issues?: Issue[] };
 
 export interface ArticlesShowRequest {
   query: ArticlesShowRequestQuery;
@@ -218,7 +220,7 @@ export interface NullableStringFilter {
   startsWith?: string;
 }
 
-export interface PagePagination {
+export interface OffsetPagination {
   current: number;
   items: number;
   next?: null | number;

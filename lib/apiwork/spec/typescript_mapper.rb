@@ -36,8 +36,18 @@ module Apiwork
       def build_union_type(type_name, type_shape)
         type_name_pascal = pascal_case(type_name)
         variants = type_shape[:variants]
+        discriminator = type_shape[:discriminator]
 
-        variant_types = variants.map { |variant| map_type_definition(variant, action_name: nil) }
+        variant_types = variants.map do |variant|
+          base_type = map_type_definition(variant, action_name: nil)
+
+          if discriminator && variant[:tag]
+            discriminator_key = transform_key(discriminator)
+            "{ #{discriminator_key}: '#{variant[:tag]}' } & #{base_type}"
+          else
+            base_type
+          end
+        end
 
         "export type #{type_name_pascal} = #{variant_types.join(' | ')};"
       end

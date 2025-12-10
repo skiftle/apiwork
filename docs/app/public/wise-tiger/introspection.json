@@ -54,7 +54,7 @@
         }
       }
     },
-    "page_pagination": {
+    "offset_pagination": {
       "type": "object",
       "shape": {
         "current": {
@@ -232,12 +232,12 @@
       "type": "object",
       "shape": {
         "created_at": {
-          "type": "project_sort_direction",
+          "type": "sort_direction",
           "optional": true,
           "description": "Timestamp when project was created"
         },
         "deadline": {
-          "type": "project_sort_direction",
+          "type": "sort_direction",
           "optional": true,
           "description": "Target completion date"
         }
@@ -468,7 +468,7 @@
                       "optional": true
                     },
                     "pagination": {
-                      "type": "page_pagination",
+                      "type": "offset_pagination",
                       "optional": true
                     },
                     "projects": {
@@ -637,7 +637,10 @@
           "tags": [
             "Projects"
           ],
-          "operation_id": "deleteProject"
+          "operation_id": "deleteProject",
+          "response": {
+            "no_content": true
+          }
         }
       }
     }

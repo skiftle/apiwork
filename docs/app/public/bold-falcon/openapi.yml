@@ -54,7 +54,7 @@ paths:
                     type: object
                     properties: {}
                   pagination:
-                    "$ref": "#/components/schemas/pagePagination"
+                    "$ref": "#/components/schemas/offsetPagination"
     post:
       operationId: articlesCreate
       tags:
@@ -279,11 +279,31 @@ components:
     articleSort:
       type: object
       properties:
-        createdAt: {}
-        publishedOn: {}
-        rating: {}
-        status: {}
-        viewCount: {}
+        createdAt:
+          type: string
+          enum:
+          - asc
+          - desc
+        publishedOn:
+          type: string
+          enum:
+          - asc
+          - desc
+        rating:
+          type: string
+          enum:
+          - asc
+          - desc
+        status:
+          type: string
+          enum:
+          - asc
+          - desc
+        viewCount:
+          type: string
+          enum:
+          - asc
+          - desc
     articleStatusFilter:
       oneOf:
       - type: string
@@ -502,7 +522,7 @@ components:
           type: boolean
         startsWith:
           type: string
-    pagePagination:
+    offsetPagination:
       type: object
       properties:
         current:

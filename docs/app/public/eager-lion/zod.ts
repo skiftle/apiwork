@@ -33,10 +33,10 @@ export const InvoicePageSchema = z.object({
 });
 
 export const InvoiceSortSchema = z.object({
-  createdAt: z.unknown().optional(),
-  issuedOn: z.unknown().optional(),
-  status: z.unknown().optional(),
-  updatedAt: z.unknown().optional()
+  createdAt: SortDirectionSchema.optional(),
+  issuedOn: SortDirectionSchema.optional(),
+  status: SortDirectionSchema.optional(),
+  updatedAt: SortDirectionSchema.optional()
 });
 
 export const InvoiceUpdatePayloadSchema = z.object({
@@ -63,7 +63,7 @@ export const NullableStringFilterSchema = z.object({
   startsWith: z.string().optional()
 });
 
-export const PagePaginationSchema = z.object({
+export const OffsetPaginationSchema = z.object({
   current: z.number().int(),
   items: z.number().int(),
   next: z.number().int().nullable().optional(),
@@ -98,7 +98,7 @@ export const InvoicesIndexRequestSchema = z.object({
   query: InvoicesIndexRequestQuerySchema
 });
 
-export const InvoicesIndexResponseBodySchema = z.union([z.object({ invoices: z.array(InvoiceSchema).optional(), meta: z.object({}).optional(), pagination: PagePaginationSchema.optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const InvoicesIndexResponseBodySchema = z.union([z.object({ invoices: z.array(InvoiceSchema).optional(), meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
 
 export const InvoicesIndexResponseSchema = z.object({
   body: InvoicesIndexResponseBodySchema
@@ -156,6 +156,8 @@ export const InvoicesUpdateResponseSchema = z.object({
   body: InvoicesUpdateResponseBodySchema
 });
 
+export const InvoicesDestroyResponse = z.never();
+
 export const InvoicesArchiveRequestQuerySchema = z.object({
   include: InvoiceIncludeSchema.optional()
 });
@@ -207,10 +209,10 @@ export interface InvoicePage {
 }
 
 export interface InvoiceSort {
-  createdAt?: unknown;
-  issuedOn?: unknown;
-  status?: unknown;
-  updatedAt?: unknown;
+  createdAt?: SortDirection;
+  issuedOn?: SortDirection;
+  status?: SortDirection;
+  updatedAt?: SortDirection;
 }
 
 export interface InvoiceUpdatePayload {
@@ -254,6 +256,8 @@ export interface InvoicesCreateResponse {
 
 export type InvoicesCreateResponseBody = { invoice: Invoice; meta?: object } | { issues?: Issue[] };
 
+export type InvoicesDestroyResponse = never;
+
 export interface InvoicesIndexRequest {
   query: InvoicesIndexRequestQuery;
 }
@@ -269,7 +273,7 @@ export interface InvoicesIndexResponse {
   body: InvoicesIndexResponseBody;
 }
 
-export type InvoicesIndexResponseBody = { invoices?: Invoice[]; meta?: object; pagination?: PagePagination } | { issues?: Issue[] };
+export type InvoicesIndexResponseBody = { invoices?: Invoice[]; meta?: object; pagination?: OffsetPagination } | { issues?: Issue[] };
 
 export interface InvoicesShowRequest {
   query: InvoicesShowRequestQuery;
@@ -320,7 +324,7 @@ export interface NullableStringFilter {
   startsWith?: string;
 }
 
-export interface PagePagination {
+export interface OffsetPagination {
   current: number;
   items: number;
   next?: null | number;

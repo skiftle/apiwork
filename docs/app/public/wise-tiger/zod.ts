@@ -22,7 +22,7 @@ export const NullableStringFilterSchema = z.object({
   startsWith: z.string().optional()
 });
 
-export const PagePaginationSchema = z.object({
+export const OffsetPaginationSchema = z.object({
   current: z.number().int(),
   items: z.number().int(),
   next: z.number().int().nullable().optional(),
@@ -64,8 +64,8 @@ export const ProjectPriorityFilterSchema = z.union([
 ]);
 
 export const ProjectSortSchema = z.object({
-  createdAt: z.unknown().optional(),
-  deadline: z.unknown().optional()
+  createdAt: SortDirectionSchema.optional(),
+  deadline: SortDirectionSchema.optional()
 });
 
 export const ProjectStatusFilterSchema = z.union([
@@ -108,7 +108,7 @@ export const ProjectsIndexRequestSchema = z.object({
   query: ProjectsIndexRequestQuerySchema
 });
 
-export const ProjectsIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: PagePaginationSchema.optional(), projects: z.array(ProjectSchema).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const ProjectsIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional(), projects: z.array(ProjectSchema).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
 
 export const ProjectsIndexResponseSchema = z.object({
   body: ProjectsIndexResponseBodySchema
@@ -148,6 +148,8 @@ export const ProjectsUpdateResponseSchema = z.object({
   body: ProjectsUpdateResponseBodySchema
 });
 
+export const ProjectsDestroyResponse = z.never();
+
 export interface Issue {
   code: string;
   detail: string;
@@ -164,7 +166,7 @@ export interface NullableStringFilter {
   startsWith?: string;
 }
 
-export interface PagePagination {
+export interface OffsetPagination {
   current: number;
   items: number;
   next?: null | number;
@@ -211,8 +213,8 @@ export type ProjectPriority = 'critical' | 'high' | 'low' | 'medium';
 export type ProjectPriorityFilter = ProjectPriority | { eq?: ProjectPriority; in?: ProjectPriority[] };
 
 export interface ProjectSort {
-  createdAt?: unknown;
-  deadline?: unknown;
+  createdAt?: SortDirection;
+  deadline?: SortDirection;
 }
 
 export type ProjectStatus = 'active' | 'archived' | 'completed' | 'paused';
@@ -241,6 +243,8 @@ export interface ProjectsCreateResponse {
 
 export type ProjectsCreateResponseBody = { issues?: Issue[] } | { meta?: object; project: Project };
 
+export type ProjectsDestroyResponse = never;
+
 export interface ProjectsIndexRequest {
   query: ProjectsIndexRequestQuery;
 }
@@ -256,7 +260,7 @@ export interface ProjectsIndexResponse {
   body: ProjectsIndexResponseBody;
 }
 
-export type ProjectsIndexResponseBody = { issues?: Issue[] } | { meta?: object; pagination?: PagePagination; projects?: Project[] };
+export type ProjectsIndexResponseBody = { issues?: Issue[] } | { meta?: object; pagination?: OffsetPagination; projects?: Project[] };
 
 export interface ProjectsShowResponse {
   body: ProjectsShowResponseBody;

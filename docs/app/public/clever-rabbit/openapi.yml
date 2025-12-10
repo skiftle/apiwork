@@ -54,7 +54,7 @@ paths:
                     items:
                       "$ref": "#/components/schemas/order"
                   pagination:
-                    "$ref": "#/components/schemas/pagePagination"
+                    "$ref": "#/components/schemas/offsetPagination"
     post:
       operationId: ordersCreate
       tags:
@@ -215,6 +215,27 @@ components:
           type: boolean
         startsWith:
           type: string
+    offsetPagination:
+      type: object
+      properties:
+        current:
+          type: integer
+        items:
+          type: integer
+        next:
+          type:
+          - integer
+          - 'null'
+        prev:
+          type:
+          - integer
+          - 'null'
+        total:
+          type: integer
+      required:
+      - current
+      - items
+      - total
     order:
       type: object
       properties:
@@ -286,8 +307,16 @@ components:
     orderSort:
       type: object
       properties:
-        createdAt: {}
-        status: {}
+        createdAt:
+          type: string
+          enum:
+          - asc
+          - desc
+        status:
+          type: string
+          enum:
+          - asc
+          - desc
     orderUpdatePayload:
       type: object
       properties:
@@ -302,27 +331,6 @@ components:
           properties: {}
       required:
       - orderNumber
-    pagePagination:
-      type: object
-      properties:
-        current:
-          type: integer
-        items:
-          type: integer
-        next:
-          type:
-          - integer
-          - 'null'
-        prev:
-          type:
-          - integer
-          - 'null'
-        total:
-          type: integer
-      required:
-      - current
-      - items
-      - total
     stringFilter:
       type: object
       properties:
