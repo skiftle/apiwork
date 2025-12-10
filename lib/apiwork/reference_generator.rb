@@ -27,12 +27,26 @@ module Apiwork
       YARD.parse('lib/**/*.rb')
     end
 
+    # Modules excluded from public API reference
+    EXCLUDED_MODULES = %w[
+      Generators
+      ReferenceGenerator
+    ].freeze
+
     def extract_modules
       YARD::Registry.all(:class, :module)
         .select { |obj| obj.path.start_with?('Apiwork::') }
-        .reject { |obj| obj.path.include?('Private') }
+        .reject { |obj| excluded?(obj.path) }
         .sort_by(&:path)
         .map { |obj| serialize_module(obj) }
+    end
+
+    def excluded?(path)
+      # Exclude Private modules
+      return true if path.include?('Private')
+
+      # Exclude specific internal modules
+      EXCLUDED_MODULES.any? { |name| path.include?("::#{name}") || path.end_with?(name) }
     end
 
     def serialize_module(obj)
@@ -111,8 +125,7 @@ module Apiwork
     end
 
     def write_files(modules)
-      # Rensa gamla mappar (alla utom index.md)
-      cleanup_old_directories
+      cleanup_old_files
 
       # Bygg en set av alla paths som har children
       all_paths = modules.map { |m| m[:path] }
@@ -128,11 +141,11 @@ module Apiwork
       end
     end
 
-    def cleanup_old_directories
-      Dir.glob(File.join(OUTPUT_DIR, '*')).each do |entry|
-        next if entry.end_with?('index.md')
+    def cleanup_old_files
+      Dir.glob(File.join(OUTPUT_DIR, '**/*')).each do |entry|
+        next if entry.end_with?('/index.md') || entry == File.join(OUTPUT_DIR, 'index.md')
 
-        FileUtils.rm_rf(entry) if File.directory?(entry)
+        FileUtils.rm_rf(entry)
       end
     end
 
