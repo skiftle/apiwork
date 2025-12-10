@@ -31,6 +31,13 @@ module Apiwork
         metadata[:scope].nil?
       end
 
+      def enum_global_for_api?(enum_name, api_class:)
+        metadata = api_class.type_system.enum_metadata(enum_name)
+        return false unless metadata
+
+        metadata[:scope].nil?
+      end
+
       def imported_type?(type_name, definition)
         return false unless definition.contract_class.respond_to?(:imports)
 
@@ -44,11 +51,21 @@ module Apiwork
 
       def qualified_name(type_name, definition)
         return type_name if global_type?(type_name, definition)
+        return type_name if global_enum?(type_name, definition)
         return type_name if imported_type?(type_name, definition)
 
         scope = scope_for_type(definition)
         api_class = definition.contract_class.api_class
         api_class&.scoped_name(scope, type_name) || type_name
+      end
+
+      def global_enum?(enum_name, definition)
+        return false unless definition.contract_class.respond_to?(:api_class)
+
+        api_class = definition.contract_class.api_class
+        return false unless api_class
+
+        enum_global_for_api?(enum_name, api_class: api_class)
       end
 
       private

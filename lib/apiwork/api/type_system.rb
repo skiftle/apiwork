@@ -44,6 +44,10 @@ module Apiwork
         @types[name]
       end
 
+      def enum_metadata(name)
+        @enums[name]
+      end
+
       def scoped_name(scope, name)
         return name unless scope
 
