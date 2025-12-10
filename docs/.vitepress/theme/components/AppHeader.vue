@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
+import ThemeSwitch from './ThemeSwitch.vue'
 
-const { site, theme } = useData()
+const { site } = useData()
 
 // TODO: Get nav from themeConfig or define here
 const navItems = [
@@ -31,7 +32,7 @@ const navItems = [
       </nav>
 
       <div class="header-actions">
-        <!-- TODO: Add GitHub link, search, theme toggle -->
+        <ThemeSwitch />
         <a
           href="https://github.com/skiftle/apiwork"
           class="github-link"
