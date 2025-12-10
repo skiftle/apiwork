@@ -1,19 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useData, useRoute } from 'vitepress'
-import SidebarItem from './SidebarItem.vue'
-
-interface SidebarItemData {
-  text: string
-  link?: string
-  items?: SidebarItemData[]
-  collapsed?: boolean
-}
-
-interface SidebarSection {
-  base: string
-  items: SidebarItemData[]
-}
+import type { SidebarItem, SidebarMultiItem } from 'vitepress-sidebar/types'
+import SidebarItemComponent from './SidebarItem.vue'
 
 const { theme } = useData()
 const route = useRoute()
@@ -22,7 +11,7 @@ const route = useRoute()
 const expanded = ref<Set<string>>(new Set())
 
 // Get the correct sidebar based on current path
-const currentSidebar = computed<SidebarSection>(() => {
+const currentSidebar = computed<SidebarMultiItem>(() => {
   const sidebar = theme.value.sidebar
   if (!sidebar) return { base: '', items: [] }
 
@@ -67,7 +56,7 @@ function isActive(link: string | undefined): boolean {
 }
 
 // Check if an item or any of its descendants is active
-function hasActiveDescendant(item: SidebarItemData): boolean {
+function hasActiveDescendant(item: SidebarItem): boolean {
   if (isActive(item.link)) return true
   if (item.items) {
     return item.items.some(child => hasActiveDescendant(child))
@@ -79,7 +68,7 @@ function hasActiveDescendant(item: SidebarItemData): boolean {
 function initializeExpanded() {
   const newExpanded = new Set<string>()
 
-  function checkItem(item: SidebarItemData, depth: number, ancestors: string[]) {
+  function checkItem(item: SidebarItem, depth: number, ancestors: string[]) {
     const key = `${depth}-${item.text}`
 
     if (item.items?.length) {
@@ -118,7 +107,7 @@ watch(() => route.path, initializeExpanded, { immediate: true })
 <template>
   <aside class="sidebar">
     <nav class="sidebar-nav">
-      <SidebarItem
+      <SidebarItemComponent
         v-for="item in currentSidebar.items"
         :key="item.text"
         :item="item"

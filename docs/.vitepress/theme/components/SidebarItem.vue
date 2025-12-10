@@ -1,15 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-
-interface SidebarItemData {
-  text: string
-  link?: string
-  items?: SidebarItemData[]
-  collapsed?: boolean
-}
+import type { SidebarItem } from 'vitepress-sidebar/types'
 
 const props = defineProps<{
-  item: SidebarItemData
+  item: SidebarItem
   depth: number
   expanded: Set<string>
   buildLink: (link: string | undefined) => string
