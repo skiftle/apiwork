@@ -836,7 +836,7 @@ module Apiwork
         end
 
         def resolve_schema_from_definition(association_definition)
-          return resolve_schema_class(association_definition.schema_class) if association_definition.schema_class
+          return association_definition.schema_class if association_definition.schema_class
 
           model_class = association_definition.model_class
           return nil unless model_class
@@ -844,15 +844,14 @@ module Apiwork
           reflection = model_class.reflect_on_association(association_definition.name)
           return nil unless reflection
 
-          Schema::Base.resolve_association_schema(reflection, schema_class)
+          infer_association_schema(reflection)
         end
 
-        def resolve_schema_class(schema_class_ref)
-          return schema_class_ref if schema_class_ref.is_a?(Class)
+        def infer_association_schema(reflection)
+          return nil if reflection.polymorphic?
 
-          schema_class_ref.constantize
-        rescue NameError
-          nil
+          namespace = schema_class.name.deconstantize
+          "#{namespace}::#{reflection.klass.name}Schema".safe_constantize
         end
 
         def import_association_contract(association_schema, visited)

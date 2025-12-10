@@ -111,8 +111,6 @@ module Apiwork
                   next
                 end
 
-                association_resource = association_resource.constantize if association_resource.is_a?(String)
-
                 nested_query = Sorter.new(association.klass.all, association_resource, @issues)
                 nested_orders, nested_joins = nested_query.send(:build_order_clauses, value, association.klass)
                 orders.concat(nested_orders)

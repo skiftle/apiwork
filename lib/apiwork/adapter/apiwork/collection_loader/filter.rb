@@ -281,9 +281,7 @@ module Apiwork
 
           def build_join_conditions(key, value, association)
             reflection = schema_class.model_class.reflect_on_association(key)
-            association_resource = association.schema_class || ::Apiwork::Schema::Base.resolve_association_schema(reflection, schema)
-
-            association_resource = association_resource.constantize if association_resource.is_a?(String)
+            association_resource = association.schema_class || infer_association_schema(reflection)
 
             unless association_resource
               @issues << Issue.new(
@@ -578,6 +576,13 @@ module Apiwork
           def with_joins_and_distinct(scope, joins)
             result = yield(joins.present? ? scope.joins(joins) : scope)
             joins.present? ? result.distinct : result
+          end
+
+          def infer_association_schema(reflection)
+            return nil if reflection.polymorphic?
+
+            namespace = schema_class.name.deconstantize
+            "#{namespace}::#{reflection.klass.name}Schema".safe_constantize
           end
         end
       end

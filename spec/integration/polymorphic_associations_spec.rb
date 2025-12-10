@@ -54,6 +54,16 @@ RSpec.describe 'Polymorphic associations', type: :integration do
       end.to raise_error(Apiwork::ConfigurationError, /class references, not strings/)
     end
 
+    it 'rejects string values for schema option' do
+      expect do
+        Class.new(Apiwork::Schema::Base) do
+          abstract
+
+          has_many :comments, schema: 'CommentSchema'
+        end
+      end.to raise_error(Apiwork::ConfigurationError, /class reference, not a string/)
+    end
+
     it 'auto-detects discriminator from reflection' do
       post_schema = post_schema_class
       video_schema = video_schema_class

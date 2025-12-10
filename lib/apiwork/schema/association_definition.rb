@@ -20,6 +20,7 @@ module Apiwork
         @owner_schema_class = schema_class
         @model_class = schema_class.model_class
         @schema_class = options[:schema]
+        validate_schema!
         @polymorphic = normalize_polymorphic(options[:polymorphic])
 
         options = apply_defaults(options)
@@ -123,11 +124,7 @@ module Apiwork
           validate_polymorphic_hash!(value)
           value.transform_keys(&:to_sym)
         else
-          raise ConfigurationError.new(
-            code: :invalid_polymorphic_option,
-            detail: "polymorphic must be an Array or Hash, got #{value.class}",
-            path: [@owner_schema_class&.name, :belongs_to, @name, :polymorphic]
-          )
+          raise ConfigurationError, "polymorphic must be an Array or Hash, got #{value.class}"
         end
       end
 
@@ -135,13 +132,19 @@ module Apiwork
         hash.each do |tag, schema|
           next unless schema.is_a?(String)
 
-          raise ConfigurationError.new(
-            code: :invalid_polymorphic_value,
-            detail: "polymorphic values must be class references, not strings. " \
-                    "Use `#{tag}: #{schema.split('::').last}` instead of `#{tag}: '#{schema}'`",
-            path: [@owner_schema_class&.name, :belongs_to, @name, :polymorphic, tag]
-          )
+          raise ConfigurationError,
+                'polymorphic values must be class references, not strings. ' \
+                "Use `#{tag}: #{schema.split('::').last}` instead of `#{tag}: '#{schema}'`"
         end
+      end
+
+      def validate_schema!
+        return unless @schema_class
+        return unless @schema_class.is_a?(String)
+
+        raise ConfigurationError,
+              'schema must be a class reference, not a string. ' \
+              "Use `schema: #{@schema_class.split('::').last}` instead of `schema: '#{@schema_class}'`"
       end
 
       def infer_polymorphic_schema(tag)

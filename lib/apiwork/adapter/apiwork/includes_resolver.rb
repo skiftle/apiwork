@@ -135,21 +135,14 @@ module Apiwork
         end
 
         def resolve_schema_class(definition, association)
-          resolved_class = definition.schema_class || ::Apiwork::Schema::Base.resolve_association_schema(association, schema_class)
-
-          resolved_class = constantize_safe(resolved_class) if resolved_class.is_a?(String)
-
-          resolved_class
+          definition.schema_class || infer_association_schema(association)
         end
 
-        def constantize_safe(class_name)
-          self.class.constantize_safe(class_name)
-        end
+        def infer_association_schema(association)
+          return nil if association.polymorphic?
 
-        def self.constantize_safe(class_name)
-          class_name.constantize
-        rescue NameError
-          nil
+          namespace = schema_class.name.deconstantize
+          "#{namespace}::#{association.klass.name}Schema".safe_constantize
         end
       end
     end

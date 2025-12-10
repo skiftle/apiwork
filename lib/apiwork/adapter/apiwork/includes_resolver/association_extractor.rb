@@ -49,7 +49,7 @@ module Apiwork
 
               next unless value.is_a?(Hash)
 
-              nested_schema_class = resolve_nested_schema_class(association_definition)
+              nested_schema_class = association_definition.schema_class
 
               next unless nested_schema_class.respond_to?(:association_definitions)
 
@@ -83,7 +83,7 @@ module Apiwork
 
                 next unless value.is_a?(Hash)
 
-                nested_schema_class = resolve_nested_schema_class(association_definition)
+                nested_schema_class = association_definition.schema_class
 
                 next unless nested_schema_class.respond_to?(:association_definitions)
 
@@ -94,16 +94,6 @@ module Apiwork
             end
 
             result
-          end
-
-          private
-
-          def resolve_nested_schema_class(association_definition)
-            nested_schema_class = association_definition.schema_class
-
-            nested_schema_class = IncludesResolver.constantize_safe(nested_schema_class) if nested_schema_class.is_a?(String)
-
-            nested_schema_class
           end
         end
       end
