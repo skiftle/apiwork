@@ -43,5 +43,9 @@ export default defineConfig({
     socialLinks: [
       { icon: "github", link: "https://github.com/skiftle/apiwork" },
     ],
+    footer: {
+      message: "Released under the MIT License.",
+      copyright: "Copyright © 2025 Skiftle",
+    },
   },
 });
