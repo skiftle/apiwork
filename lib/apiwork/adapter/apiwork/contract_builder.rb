@@ -730,13 +730,10 @@ module Apiwork
         end
 
         def build_sti_association_type(association_definition, schema_class_arg, visited: Set.new)
-          union_type_name = :"#{association_definition.name}_sti"
+          import_alias = import_association_contract(schema_class_arg, visited)
+          return nil unless import_alias
 
-          sub_builder = self.class.for_schema(type_registrar, schema_class_arg)
-
-          sub_builder.send(:build_sti_union, union_type_name:, visited:) do |_contract, variant_schema, _tag, visit_set|
-            sub_builder.send(:import_association_contract, variant_schema, visit_set)
-          end
+          import_alias
         end
 
         def build_sti_response_union_type(visited: Set.new)

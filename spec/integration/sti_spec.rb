@@ -274,5 +274,29 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
       expect(company_payload[:shape].keys).to include(:industry)
       expect(company_payload[:shape].keys).to include(:registration_number)
     end
+
+    it 'references imported STI union type in belongs_to associations' do
+      introspection = Apiwork::API.introspect('/api/v1')
+
+      service_type = introspection[:types][:service]
+      expect(service_type).to be_present
+
+      client_param = service_type[:shape][:client]
+      expect(client_param[:type]).to eq(:client)
+    end
+
+    it 'generates TypeScript without unknown for STI associations' do
+      output = Apiwork::Spec::Typescript.new('/api/v1').generate
+
+      expect(output).to match(/export interface Service \{[^}]*client\?: Client/m)
+      expect(output).not_to include('client_sti')
+    end
+
+    it 'generates Zod without unknown for STI associations' do
+      output = Apiwork::Spec::Zod.new('/api/v1').generate
+
+      expect(output).to match(/ServiceSchema = z\.object\(\{[^}]*client: ClientSchema/m)
+      expect(output).not_to include('client_sti')
+    end
   end
 end
