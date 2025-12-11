@@ -23,7 +23,18 @@ const layoutType = computed(() => {
 </script>
 
 <template>
-  <div class="app">
+  <div class="app" :class="{ 'app--home': layoutType === 'home' }">
+    <div v-if="layoutType === 'home'" class="home-bg-wrapper">
+      <svg class="home-bg" viewBox="0 0 1440 600" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
+        <!-- Koncentriska bågar med twist -->
+        <g transform="rotate(-8, 400, 550)">
+          <ellipse cx="400" cy="550" rx="900" ry="600" fill="var(--color-brand)" fill-opacity="0.03" />
+          <ellipse cx="400" cy="550" rx="700" ry="470" fill="var(--color-brand)" fill-opacity="0.05" />
+          <ellipse cx="400" cy="550" rx="520" ry="350" fill="var(--color-brand)" fill-opacity="0.07" />
+          <ellipse cx="400" cy="550" rx="360" ry="250" fill="var(--color-brand)" fill-opacity="0.09" />
+        </g>
+      </svg>
+    </div>
     <AppHeader />
     <main>
       <NotFound v-if="layoutType === 'not-found'" />
@@ -35,3 +46,38 @@ const layoutType = computed(() => {
     <AppFooter />
   </div>
 </template>
+
+<style>
+.app--home {
+  position: relative;
+  background:
+    linear-gradient(
+      to bottom,
+      var(--color-bg) 0%,
+      var(--color-bg) 600px,
+      var(--color-hero-gradient-start) 600px,
+      var(--color-bg) 100%
+    );
+}
+
+.home-bg-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 650px;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.home-bg {
+  width: 100%;
+  height: 100%;
+}
+
+.app--home > :not(.home-bg-wrapper) {
+  position: relative;
+  z-index: 1;
+}
+</style>

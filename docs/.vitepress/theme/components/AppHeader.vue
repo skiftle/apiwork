@@ -6,10 +6,10 @@ const { site } = useData()
 const route = useRoute()
 
 const navItems = [
-  { text: 'Home', link: '/', match: /^\/$/ },
-  { text: 'Guide', link: '/guide/getting-started/introduction', match: /^\/guide\// },
-  { text: 'Reference', link: '/reference/', match: /^\/reference\// },
-  { text: 'Blog', link: '/blog/', match: /^\/blog\// },
+  { text: 'Home', link: '/', match: /^\/$/, badge: null },
+  { text: 'Guide', link: '/guide/getting-started/introduction', match: /^\/guide\// , badge: null },
+  { text: 'Reference', link: '/reference/', match: /^\/reference\// , badge: null },
+  { text: 'Blog', link: '/blog/', match: /^\/blog\// , badge: 'NEW' },
 ]
 
 function isActive(item: typeof navItems[0]) {
@@ -33,6 +33,7 @@ function isActive(item: typeof navItems[0]) {
           :class="{ active: isActive(item) }"
         >
           {{ item.text }}
+          <span v-if="item.badge" class="nav-badge">{{ item.badge }}</span>
         </a>
       </nav>
 
@@ -57,8 +58,7 @@ function isActive(item: typeof navItems[0]) {
   top: 0;
   z-index: 100;
   height: var(--header-height);
-  background: var(--color-bg);
-  border-bottom: 1px solid var(--color-border);
+  background: transparent;
 }
 
 .header-container {
@@ -92,6 +92,7 @@ function isActive(item: typeof navItems[0]) {
 }
 
 .nav-pill {
+  position: relative;
   font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--color-text-muted);
@@ -110,6 +111,20 @@ function isActive(item: typeof navItems[0]) {
 .nav-pill.active {
   color: var(--color-brand);
   background: var(--color-bg-muted);
+}
+
+.nav-badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  font-size: 9px;
+  font-weight: 600;
+  padding: 2px 5px;
+  background: #f97316;
+  color: white;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .header-actions {

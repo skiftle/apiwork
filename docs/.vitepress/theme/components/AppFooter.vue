@@ -13,8 +13,7 @@
 
 <style scoped>
 .app-footer {
-  border-top: 1px solid var(--color-border);
-  background: var(--color-bg-soft);
+  background: var(--color-footer-bg);
 }
 
 .footer-container {
@@ -26,13 +25,13 @@
 
 .footer-message {
   font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
+  color: rgba(255, 255, 255, 0.7);
   margin-bottom: var(--space-2);
 }
 
 .footer-copyright {
   font-size: var(--font-size-sm);
-  color: var(--color-text-light);
+  color: rgba(255, 255, 255, 0.5);
   margin-bottom: 0;
 }
 </style>
