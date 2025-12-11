@@ -25,13 +25,16 @@ const layoutType = computed(() => {
 <template>
   <div class="app" :class="{ 'app--home': layoutType === 'home' }">
     <div v-if="layoutType === 'home'" class="home-bg-wrapper">
-      <svg class="home-bg" viewBox="0 0 1440 600" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
-        <!-- Koncentriska bågar med twist -->
-        <g transform="rotate(-8, 400, 550)">
-          <ellipse cx="400" cy="550" rx="900" ry="600" fill="var(--color-brand)" fill-opacity="0.03" />
-          <ellipse cx="400" cy="550" rx="700" ry="470" fill="var(--color-brand)" fill-opacity="0.05" />
-          <ellipse cx="400" cy="550" rx="520" ry="350" fill="var(--color-brand)" fill-opacity="0.07" />
-          <ellipse cx="400" cy="550" rx="360" ry="250" fill="var(--color-brand)" fill-opacity="0.09" />
+      <svg class="home-bg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <!-- Premium koncentriska bågar - fyllda -->
+        <g transform="rotate(-12, 20, 110)">
+          <ellipse cx="20" cy="110" rx="110" ry="70" fill="var(--color-brand)" fill-opacity="0.02" />
+          <ellipse cx="20" cy="110" rx="95" ry="60" fill="var(--color-brand)" fill-opacity="0.03" />
+          <ellipse cx="20" cy="110" rx="80" ry="50" fill="var(--color-brand)" fill-opacity="0.04" />
+          <ellipse cx="20" cy="110" rx="65" ry="40" fill="var(--color-brand)" fill-opacity="0.05" />
+          <ellipse cx="20" cy="110" rx="50" ry="31" fill="var(--color-brand)" fill-opacity="0.06" />
+          <ellipse cx="20" cy="110" rx="35" ry="22" fill="var(--color-brand)" fill-opacity="0.07" />
+          <ellipse cx="20" cy="110" rx="20" ry="13" fill="var(--color-brand)" fill-opacity="0.08" />
         </g>
       </svg>
     </div>
@@ -50,14 +53,7 @@ const layoutType = computed(() => {
 <style>
 .app--home {
   position: relative;
-  background:
-    linear-gradient(
-      to bottom,
-      var(--color-bg) 0%,
-      var(--color-bg) 600px,
-      var(--color-hero-gradient-start) 600px,
-      var(--color-bg) 100%
-    );
+  background: var(--color-bg);
 }
 
 .home-bg-wrapper {

@@ -24,19 +24,12 @@
     <section class="generators">
       <p class="generators-text">
         Built-in generators for
-        <span class="text-openapi">OpenAPI</span>,
-        <span class="text-typescript">TypeScript</span>, and
-        <span class="text-zod">Zod</span>
+        <strong>OpenAPI</strong>, <strong>TypeScript</strong>, and
+        <strong>Zod</strong>
       </p>
       <div class="generators-logos">
         <div class="logo-item">
-          <svg
-            viewBox="0 0 24 24"
-            width="64"
-            height="64"
-            fill="currentColor"
-            class="logo-openapi"
-          >
+          <svg viewBox="0 0 24 24" width="64" height="64" fill="currentColor">
             <path
               d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-.281 4.323c.281-.052.52.152.52.434v14.487c0 .282-.239.486-.52.434-3.098-.576-5.453-3.318-5.453-6.619v-2.118c0-3.301 2.355-6.043 5.453-6.618zm1.062 0c3.098.575 5.453 3.317 5.453 6.618v2.118c0 3.301-2.355 6.043-5.453 6.619-.281.052-.52-.152-.52-.434V4.757c0-.282.239-.486.52-.434z"
             />
@@ -44,13 +37,7 @@
           <span>OpenAPI</span>
         </div>
         <div class="logo-item">
-          <svg
-            viewBox="0 0 24 24"
-            width="64"
-            height="64"
-            fill="currentColor"
-            class="logo-typescript"
-          >
+          <svg viewBox="0 0 24 24" width="64" height="64" fill="currentColor">
             <path
               d="M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0zm17.363 9.75c.612 0 1.154.037 1.627.111a6.38 6.38 0 0 1 1.306.34v2.458a3.95 3.95 0 0 0-.643-.361 5.093 5.093 0 0 0-.717-.26 5.453 5.453 0 0 0-1.426-.2c-.3 0-.573.028-.819.086a2.1 2.1 0 0 0-.623.242c-.17.104-.3.229-.393.374a.888.888 0 0 0-.14.49c0 .196.053.373.156.529.104.156.252.304.443.444s.423.276.696.41c.273.135.582.274.926.416.47.197.892.407 1.266.628.374.222.695.473.963.753.268.279.472.598.614.957.142.359.214.776.214 1.253 0 .657-.125 1.21-.373 1.656a3.033 3.033 0 0 1-1.012 1.085 4.38 4.38 0 0 1-1.487.596c-.566.12-1.163.18-1.79.18a9.916 9.916 0 0 1-1.84-.164 5.544 5.544 0 0 1-1.512-.493v-2.63a5.033 5.033 0 0 0 3.237 1.2c.333 0 .624-.03.872-.09.249-.06.456-.144.623-.25.166-.108.29-.234.373-.38a1.023 1.023 0 0 0-.074-1.089 2.12 2.12 0 0 0-.537-.5 5.597 5.597 0 0 0-.807-.444 27.72 27.72 0 0 0-1.007-.436c-.918-.383-1.602-.852-2.053-1.405-.45-.553-.676-1.222-.676-2.005 0-.614.123-1.141.369-1.582.246-.441.58-.804 1.004-1.089a4.494 4.494 0 0 1 1.47-.629 7.536 7.536 0 0 1 1.77-.201zm-15.113.188h9.563v2.166H9.506v9.646H6.789v-9.646H3.375z"
             />
@@ -58,13 +45,7 @@
           <span>TypeScript</span>
         </div>
         <div class="logo-item">
-          <svg
-            viewBox="0 0 24 24"
-            width="64"
-            height="64"
-            fill="currentColor"
-            class="logo-zod"
-          >
+          <svg viewBox="0 0 24 24" width="64" height="64" fill="currentColor">
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
           </svg>
           <span>Zod</span>
@@ -231,18 +212,18 @@
 .btn {
   display: inline-flex;
   align-items: center;
-  padding: var(--space-3) var(--space-8);
+  padding: var(--space-2) var(--space-8);
   font-size: var(--font-size-base);
   font-weight: 500;
   text-decoration: none;
   border-radius: 9999px;
   transition: all var(--transition-fast);
+  box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.2);
 }
 
 .btn-outline {
   background: var(--color-bg);
   color: var(--color-text);
-  box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.2);
 }
 
 .btn-outline:hover {
@@ -254,7 +235,6 @@
 .btn-primary {
   background: var(--color-brand);
   color: white;
-  border: 1px solid var(--color-brand);
 }
 
 .btn-primary:hover {
@@ -267,32 +247,12 @@
 .generators {
   text-align: center;
   padding: var(--space-16) var(--space-6);
-  background: radial-gradient(
-    ellipse 80% 80% at 50% 120%,
-    var(--color-hero-gradient-start),
-    var(--color-hero-gradient-end)
-  );
 }
 
 .generators-text {
   font-size: var(--font-size-xl);
   color: var(--color-text-muted);
   margin-bottom: var(--space-10);
-}
-
-.text-openapi {
-  color: var(--color-openapi);
-  font-weight: 600;
-}
-
-.text-typescript {
-  color: var(--color-typescript);
-  font-weight: 600;
-}
-
-.text-zod {
-  color: var(--color-zod);
-  font-weight: 600;
 }
 
 .generators-logos {
@@ -307,20 +267,9 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-3);
-  color: var(--color-text-muted);
+  color: var(--color-text);
   font-size: var(--font-size-sm);
-}
-
-.logo-openapi {
-  color: var(--color-openapi);
-}
-
-.logo-typescript {
-  color: var(--color-typescript);
-}
-
-.logo-zod {
-  color: var(--color-zod);
+  opacity: 0.7;
 }
 
 /* Code Showcase Section */
