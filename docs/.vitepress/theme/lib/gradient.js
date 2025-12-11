@@ -51,12 +51,12 @@ void main() {
   vec2 uv = v_uv;
   float t = u_time;
 
-  // Animated blur - temporarily disabled
-  float blur1 = 0.0;
-  float blur2 = 0.0;
-  float blur3 = 0.0;
-  float blur4 = 0.0;
-  float blur5 = 0.0;
+  // Animated blur - phases spread so at least one is sharp at any time
+  float blur1 = pow(sin(t * 0.025 + 0.0), 2.0) * 0.08;
+  float blur2 = pow(sin(t * 0.025 + 1.26), 2.0) * 0.08;
+  float blur3 = pow(sin(t * 0.025 + 2.51), 2.0) * 0.08;
+  float blur4 = pow(sin(t * 0.025 + 3.77), 2.0) * 0.08;
+  float blur5 = pow(sin(t * 0.025 + 5.03), 2.0) * 0.08;
 
   // Start with base color (lightest)
   vec3 color = u_color1;
