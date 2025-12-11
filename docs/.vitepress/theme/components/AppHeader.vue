@@ -120,7 +120,7 @@ function isActive(item: (typeof navItems)[0]) {
 
 .nav-pill.active {
   color: var(--color-brand);
-  background: color-mix(in srgb, var(--color-brand) 10%, transparent);
+  background: var(--color-bg-soft);
 }
 
 .nav-badge {
