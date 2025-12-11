@@ -12,6 +12,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "vue": "3.5.25"
+  },
   "devDependencies": {
     "vitepress": "2.0.0-alpha.15",
     "vitepress-sidebar": "^1.33.1"

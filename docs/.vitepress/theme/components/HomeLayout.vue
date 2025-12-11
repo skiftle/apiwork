@@ -286,15 +286,17 @@
 }
 
 .btn-outline {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.6);
   color: var(--color-text);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 12px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.004),
+    0 8px 24px -6px rgba(0, 0, 0, 0.04), 0 2px 12px -1px rgba(0, 0, 0, 0.1);
 }
 
 .btn-outline:hover {
-  background: rgba(255, 255, 255, 1);
+  background: rgba(255, 255, 255, 0.8);
   text-decoration: none;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 18px -1px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.004),
+    0 8px 24px -6px rgba(0, 0, 0, 0.04), 0 2px 12px -1px rgba(0, 0, 0, 0.1);
   transform: translateY(-1px);
 }
 

@@ -11,6 +11,25 @@ const route = useRoute();
   <header class="app-header">
     <div class="header-container">
       <a href="/" class="logo">
+        <svg class="logo-icon" viewBox="0 0 24 24" fill="none">
+          <defs>
+            <linearGradient id="grad-top" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="var(--color-brand-light)" />
+              <stop offset="100%" stop-color="var(--color-brand-dark)" />
+            </linearGradient>
+            <linearGradient id="grad-mid" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#9ca3af" />
+              <stop offset="100%" stop-color="#6b7280" />
+            </linearGradient>
+            <linearGradient id="grad-bottom" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#d1d5db" />
+              <stop offset="100%" stop-color="#9ca3af" />
+            </linearGradient>
+          </defs>
+          <path class="layer-bottom" d="M12 22 Q8.5 18.5 5 15 Q8.5 11.5 12 8 Q15.5 11.5 19 15 Q15.5 18.5 12 22 Z" />
+          <path class="layer-mid" d="M12 16 Q8.5 12.5 5 9 Q8.5 5.5 12 2 Q15.5 5.5 19 9 Q15.5 12.5 12 16 Z" />
+          <path class="layer-top" d="M12 10 Q9.5 7.5 7 5 Q9.5 2.5 12 0 Q14.5 2.5 17 5 Q14.5 7.5 12 10 Z" transform="translate(0, 2)" />
+        </svg>
         <span class="logo-text">{{ site.title }}</span>
       </a>
 
@@ -68,6 +87,24 @@ const route = useRoute();
 .logo:hover {
   color: var(--color-brand);
   text-decoration: none;
+}
+
+.logo-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.layer-top {
+  fill: url(#grad-top);
+}
+
+.layer-mid {
+  fill: url(#grad-mid);
+}
+
+.layer-bottom {
+  fill: url(#grad-bottom);
 }
 
 .nav {
