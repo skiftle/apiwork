@@ -94,16 +94,16 @@ const layoutType = computed(() => {
   z-index: 1;
 }
 
-/* P3 wide-gamut gradient colors - Rails Ruby palette */
-.gradient-rose { fill: #cc0f35; }
-.gradient-coral { fill: #ea580c; }
-.gradient-violet { fill: #9f1239; }
-.gradient-cyan { fill: #ca8a04; }
+/* P3 wide-gamut gradient colors - Rose/Ruby monochrome palette */
+.gradient-rose { fill: #e11d48; }
+.gradient-coral { fill: #f43f5e; }
+.gradient-violet { fill: #be123c; }
+.gradient-cyan { fill: #fb7185; }
 
 @supports (color: color(display-p3 1 0 0)) {
-  .gradient-rose { fill: color(display-p3 0.85 0.05 0.25); }
-  .gradient-coral { fill: color(display-p3 0.95 0.35 0.08); }
-  .gradient-violet { fill: color(display-p3 0.7 0.08 0.28); }
-  .gradient-cyan { fill: color(display-p3 0.85 0.58 0.05); }
+  .gradient-rose { fill: color(display-p3 0.92 0.12 0.32); }
+  .gradient-coral { fill: color(display-p3 1 0.28 0.42); }
+  .gradient-violet { fill: color(display-p3 0.78 0.08 0.28); }
+  .gradient-cyan { fill: color(display-p3 1 0.48 0.56); }
 }
 </style>
