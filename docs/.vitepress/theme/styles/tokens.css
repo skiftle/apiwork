@@ -22,11 +22,11 @@
   /* Hero gradient */
   --color-hero-gradient-start: rgba(185, 28, 28, 0.15);
 
-  /* Mesh gradient colors - light mode (light coral) */
-  --gradient-color-1: #fef7f7;
-  --gradient-color-2: #fde8e8;
-  --gradient-color-3: #fcd4d4;
-  --gradient-color-4: #fab5b5;
+  /* Mesh gradient colors - light mode (lighter coral) */
+  --gradient-color-1: #fefafa;
+  --gradient-color-2: #fef0f0;
+  --gradient-color-3: #fde4e4;
+  --gradient-color-4: #fcd0d0;
 
   /* Typography */
   --font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
