@@ -119,6 +119,7 @@ const route = useRoute();
   z-index: 100;
   height: var(--header-height);
   background: transparent;
+  border-bottom: solid 1px rgba(0, 0, 0, 0.04);
 }
 
 .header-container {
