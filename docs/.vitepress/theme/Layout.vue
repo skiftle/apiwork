@@ -59,7 +59,8 @@ const layoutType = computed(() => {
   -webkit-mask-image: linear-gradient(to bottom, black 0%, black 85%, transparent 100%);
 }
 
-.app--home > :not(.home-bg-wrapper) {
+.app--home > main,
+.app--home > footer {
   position: relative;
   z-index: 1;
 }

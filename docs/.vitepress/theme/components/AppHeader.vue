@@ -118,7 +118,9 @@ const route = useRoute();
   top: 0;
   z-index: 100;
   height: var(--header-height);
-  background: transparent;
+  background: color-mix(in srgb, var(--color-bg) 85%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: solid 1px rgba(0, 0, 0, 0.04);
 }
 
@@ -171,9 +173,7 @@ const route = useRoute();
 }
 
 .nav-link {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  line-height: 1.2;
   font-size: var(--font-size-base);
   font-weight: 500;
   color: var(--color-text);
