@@ -103,8 +103,8 @@ const route = useRoute();
   z-index: 100;
   height: var(--header-height);
   background: color-mix(in srgb, var(--color-bg) 85%, transparent);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
   border-bottom: solid 1px rgba(0, 0, 0, 0.04);
 }
 
