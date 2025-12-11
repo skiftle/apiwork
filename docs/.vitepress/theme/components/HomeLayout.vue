@@ -284,15 +284,23 @@
 }
 
 .btn-primary {
-  background: var(--color-brand);
+  background: linear-gradient(
+    90deg,
+    var(--color-brand) 0%,
+    var(--color-brand) 40%,
+    #ff8a8a 50%,
+    var(--color-brand) 60%,
+    var(--color-brand) 100%
+  );
+  background-size: 400% auto;
   color: white;
   box-shadow:
     0 1px 2px rgba(185, 28, 28, 0.1),
     0 2px 6px -1px rgba(185, 28, 28, 0.15);
+  animation: shimmer 45s ease-in-out infinite;
 }
 
 .btn-primary:hover {
-  background: var(--color-brand-dark);
   text-decoration: none;
   box-shadow:
     0 1px 2px rgba(185, 28, 28, 0.1),
