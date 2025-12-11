@@ -26,16 +26,31 @@ const layoutType = computed(() => {
   <div class="app" :class="{ 'app--home': layoutType === 'home' }">
     <div v-if="layoutType === 'home'" class="home-bg-wrapper">
       <svg class="home-bg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        <!-- Premium koncentriska bågar - fyllda -->
-        <g transform="rotate(-12, 20, 110)">
-          <ellipse cx="20" cy="110" rx="110" ry="70" fill="var(--color-brand)" fill-opacity="0.02" />
-          <ellipse cx="20" cy="110" rx="95" ry="60" fill="var(--color-brand)" fill-opacity="0.03" />
-          <ellipse cx="20" cy="110" rx="80" ry="50" fill="var(--color-brand)" fill-opacity="0.04" />
-          <ellipse cx="20" cy="110" rx="65" ry="40" fill="var(--color-brand)" fill-opacity="0.05" />
-          <ellipse cx="20" cy="110" rx="50" ry="31" fill="var(--color-brand)" fill-opacity="0.06" />
-          <ellipse cx="20" cy="110" rx="35" ry="22" fill="var(--color-brand)" fill-opacity="0.07" />
-          <ellipse cx="20" cy="110" rx="20" ry="13" fill="var(--color-brand)" fill-opacity="0.08" />
+        <!-- Primary: Rosa/röd från vänster-nedre -->
+        <g transform="rotate(-8, 15, 120)">
+          <ellipse cx="15" cy="120" rx="120" ry="75" fill="#e11d48" fill-opacity="0.025" />
+          <ellipse cx="15" cy="120" rx="100" ry="62" fill="#e11d48" fill-opacity="0.035" />
+          <ellipse cx="15" cy="120" rx="80" ry="50" fill="#e11d48" fill-opacity="0.045" />
+          <ellipse cx="15" cy="120" rx="60" ry="38" fill="#e11d48" fill-opacity="0.055" />
+          <ellipse cx="15" cy="120" rx="40" ry="25" fill="#e11d48" fill-opacity="0.065" />
+          <ellipse cx="15" cy="120" rx="22" ry="14" fill="#e11d48" fill-opacity="0.08" />
         </g>
+        <!-- Secondary: Orange/peach från höger-övre -->
+        <g transform="rotate(15, 95, -10)">
+          <ellipse cx="95" cy="-10" rx="90" ry="55" fill="#f97316" fill-opacity="0.02" />
+          <ellipse cx="95" cy="-10" rx="70" ry="42" fill="#f97316" fill-opacity="0.03" />
+          <ellipse cx="95" cy="-10" rx="50" ry="30" fill="#f97316" fill-opacity="0.04" />
+          <ellipse cx="95" cy="-10" rx="30" ry="18" fill="#f97316" fill-opacity="0.05" />
+        </g>
+        <!-- Tertiary: Lila accent från mitten-höger -->
+        <g transform="rotate(-5, 110, 60)">
+          <ellipse cx="110" cy="60" rx="70" ry="45" fill="#8b5cf6" fill-opacity="0.015" />
+          <ellipse cx="110" cy="60" rx="50" ry="32" fill="#8b5cf6" fill-opacity="0.025" />
+          <ellipse cx="110" cy="60" rx="30" ry="20" fill="#8b5cf6" fill-opacity="0.035" />
+        </g>
+        <!-- Subtle blue glow top-left -->
+        <ellipse cx="5" cy="10" rx="45" ry="35" fill="#3b82f6" fill-opacity="0.02" />
+        <ellipse cx="5" cy="10" rx="25" ry="20" fill="#3b82f6" fill-opacity="0.03" />
       </svg>
     </div>
     <AppHeader />
