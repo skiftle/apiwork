@@ -60,7 +60,7 @@ void main() {
     -0.2 + cos(t * 0.04) * 0.08
   );
   float c1 = ellipse(uv, c1_center, vec2(1.2, 1.0), 0.0);
-  color = mix(color, u_color2, c1 * 0.6);
+  color = mix(color, u_color2, c1 * 0.75);
 
   // Layer 2: Large circle, slightly offset, gets blurry over time
   float blur2 = 0.1 + sin(t * 0.08) * 0.1;
@@ -69,7 +69,7 @@ void main() {
     0.0 + cos(t * 0.05) * 0.1
   );
   float c2 = ellipse(uv, c2_center, vec2(0.9, 0.8), blur2);
-  color = mix(color, u_color3, c2 * 0.5);
+  color = mix(color, u_color3, c2 * 0.65);
 
   // Layer 3: Medium circle, more blur variation
   float blur3 = 0.2 + sin(t * 0.1) * 0.15;
@@ -78,7 +78,7 @@ void main() {
     0.15 + cos(t * 0.06) * 0.12
   );
   float c3 = ellipse(uv, c3_center, vec2(0.7, 0.6), blur3);
-  color = mix(color, u_color4, c3 * 0.45);
+  color = mix(color, u_color4, c3 * 0.55);
 
   // Layer 4: Smaller accent, sharp
   vec2 c4_center = vec2(
@@ -86,7 +86,7 @@ void main() {
     0.3 + cos(t * 0.07) * 0.08
   );
   float c4 = ellipse(uv, c4_center, vec2(0.5, 0.45), 0.0);
-  color = mix(color, u_color2, c4 * 0.4);
+  color = mix(color, u_color2, c4 * 0.5);
 
   // Layer 5: Bottom accent that drifts, blur varies
   float blur5 = 0.15 + cos(t * 0.12) * 0.15;
@@ -95,7 +95,7 @@ void main() {
     0.5 + cos(t * 0.06) * 0.1
   );
   float c5 = ellipse(uv, c5_center, vec2(0.4, 0.35), blur5);
-  color = mix(color, u_color3, c5 * 0.35);
+  color = mix(color, u_color3, c5 * 0.45);
 
   gl_FragColor = vec4(color, 1.0);
 }
