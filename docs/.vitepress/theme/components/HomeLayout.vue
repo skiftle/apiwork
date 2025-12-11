@@ -189,17 +189,13 @@
   line-height: 1.08;
   letter-spacing: -0.04em;
   margin-bottom: var(--space-6);
-  text-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.04),
-    0 4px 16px rgba(185, 28, 28, 0.08),
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(185, 28, 28, 0.08),
     0 8px 40px rgba(252, 208, 208, 0.4);
 }
 
 .dark .hero-title {
   color: rgba(248, 250, 252, 0.96);
-  text-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.2),
-    0 4px 16px rgba(239, 68, 68, 0.12),
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 4px 16px rgba(239, 68, 68, 0.12),
     0 8px 40px rgba(61, 32, 32, 0.5);
 }
 
@@ -225,7 +221,8 @@
 }
 
 @keyframes shimmer {
-  0%, 100% {
+  0%,
+  100% {
     background-position: 0% center;
   }
   50% {
@@ -255,32 +252,27 @@
   font-weight: 500;
   text-decoration: none;
   border-radius: 9999px;
-  transition: all var(--transition-fast);
+  transition: all 200ms;
   cursor: pointer;
   user-select: none;
 }
 
 .btn-outline {
-  background: var(--color-bg);
+  background: rgba(255, 255, 255, 0.9);
   color: var(--color-text);
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.04),
-    0 2px 6px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 12px -1px rgba(0, 0, 0, 0.06);
 }
 
 .btn-outline:hover {
-  background: var(--color-bg-soft);
+  background: rgba(255, 255, 255, 1);
   text-decoration: none;
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.04),
-    0 4px 10px -2px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 18px -1px rgba(0, 0, 0, 0.08);
   transform: translateY(-1px);
 }
 
 .btn-outline:active {
   transform: translateY(1px);
-  box-shadow:
-    0 1px 1px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 }
 
 .btn-primary {
@@ -294,24 +286,21 @@
   );
   background-size: 400% auto;
   color: white;
-  box-shadow:
-    0 1px 2px rgba(185, 28, 28, 0.1),
+  box-shadow: 0 1px 2px rgba(185, 28, 28, 0.1),
     0 2px 6px -1px rgba(185, 28, 28, 0.15);
   animation: shimmer 45s ease-in-out infinite;
 }
 
 .btn-primary:hover {
   text-decoration: none;
-  box-shadow:
-    0 1px 2px rgba(185, 28, 28, 0.1),
+  box-shadow: 0 1px 2px rgba(185, 28, 28, 0.1),
     0 4px 10px -2px rgba(185, 28, 28, 0.18);
   transform: translateY(-1px);
 }
 
 .btn-primary:active {
   transform: translateY(1px);
-  box-shadow:
-    0 1px 1px rgba(185, 28, 28, 0.1);
+  box-shadow: 0 1px 1px rgba(185, 28, 28, 0.1);
 }
 
 /* Generators Section */
