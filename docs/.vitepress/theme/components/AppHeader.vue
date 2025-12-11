@@ -10,42 +10,55 @@ const route = useRoute();
   <header class="app-header">
     <div class="header-container">
       <a href="/" class="logo">
-        <svg class="logo-icon" viewBox="0 0 24 24" fill="none">
-          <defs>
-            <linearGradient id="grad-top" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="var(--color-brand-light)" />
-              <stop offset="100%" stop-color="var(--color-brand-dark)" />
-            </linearGradient>
-            <linearGradient id="grad-mid" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#9ca3af" />
-              <stop offset="100%" stop-color="#6b7280" />
-            </linearGradient>
-            <linearGradient
-              id="grad-bottom"
-              x1="0%"
-              y1="0%"
-              x2="100%"
-              y2="100%"
-            >
-              <stop offset="0%" stop-color="#d1d5db" />
-              <stop offset="100%" stop-color="#9ca3af" />
-            </linearGradient>
-          </defs>
-          <path
-            class="layer-bottom"
-            d="M12 22 Q8.5 18.5 5 15 Q8.5 11.5 12 8 Q15.5 11.5 19 15 Q15.5 18.5 12 22 Z"
-          />
-          <path
-            class="layer-mid"
-            d="M12 16 Q8.5 12.5 5 9 Q8.5 5.5 12 2 Q15.5 5.5 19 9 Q15.5 12.5 12 16 Z"
-          />
-          <path
-            class="layer-top"
-            d="M12 10 Q9.5 7.5 7 5 Q9.5 2.5 12 0 Q14.5 2.5 17 5 Q14.5 7.5 12 10 Z"
-            transform="translate(0, 2)"
-          />
+        <svg
+          width="140px"
+          height="32px"
+          viewBox="0 0 140 32"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+        >
+          <g
+            id="Page-1"
+            stroke="none"
+            stroke-width="1"
+            fill="none"
+            fill-rule="evenodd"
+          >
+            <g id="Desktop-HD" transform="translate(-21.000000, -35.000000)">
+              <text
+                id="Apiwork"
+                font-family="SFUIDisplay-Medium, SF UI Display"
+                font-size="26"
+                font-weight="400"
+                letter-spacing="-0.288888889"
+              >
+                <tspan x="70.3319119" y="60" fill="#353535">Api</tspan>
+                <tspan
+                  x="106.751378"
+                  y="60"
+                  fill="#E30F0F"
+                  fill-opacity="0.803378018"
+                >
+                  work
+                </tspan>
+              </text>
+              <path
+                d="M36.4142136,49.5857864 L49.5857864,36.4142136 C50.366835,35.633165 51.633165,35.633165 52.4142136,36.4142136 L65.5857864,49.5857864 C66.366835,50.366835 66.366835,51.633165 65.5857864,52.4142136 L52.4142136,65.5857864 C51.633165,66.366835 50.366835,66.366835 49.5857864,65.5857864 L36.4142136,52.4142136 C35.633165,51.633165 35.633165,50.366835 36.4142136,49.5857864 Z"
+                id="Path-3"
+                fill-opacity="0.501927516"
+                fill="#000000"
+                opacity="0.386736189"
+              ></path>
+              <path
+                d="M22.4142136,49.5857864 L35.5857864,36.4142136 C36.366835,35.633165 37.633165,35.633165 38.4142136,36.4142136 L51.5857864,49.5857864 C52.366835,50.366835 52.366835,51.633165 51.5857864,52.4142136 L38.4142136,65.5857864 C37.633165,66.366835 36.366835,66.366835 35.5857864,65.5857864 L22.4142136,52.4142136 C21.633165,51.633165 21.633165,50.366835 22.4142136,49.5857864 Z"
+                id="Path-3"
+                fill="#E30F0F"
+                opacity="0.795767648"
+              ></path>
+            </g>
+          </g>
         </svg>
-        <span class="logo-text">{{ site.title }}</span>
       </a>
 
       <nav class="nav">

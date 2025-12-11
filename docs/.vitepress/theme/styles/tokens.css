@@ -1,6 +1,6 @@
 :root {
   /* Colors - warm rose-tinted baseline */
-  --color-bg: #fff6f6;
+  --color-bg: #f8f4f4;
   --color-bg-soft: #f5f2f0;
   --color-bg-muted: #efe9e6;
   --color-text: #1f2937;
@@ -9,10 +9,10 @@
   --color-border: #e5e7eb;
   --color-border-light: #f3f4f6;
 
-  /* Brand colors - Red/Coral */
-  --color-brand: #b91c1c;
-  --color-brand-light: #dc2626;
-  --color-brand-dark: #991b1b;
+  /* Brand colors - Red */
+  --color-brand: #e30f0f;
+  --color-brand-light: #f43f3f;
+  --color-brand-dark: #c10d0d;
 
   /* Accent colors for tech logos */
   --color-openapi: #6b9f3a;

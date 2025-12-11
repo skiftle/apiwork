@@ -205,34 +205,11 @@
 }
 
 .hero-title .highlight {
-  background: linear-gradient(
-    90deg,
-    var(--color-brand) 0%,
-    var(--color-brand-light) 25%,
-    var(--color-brand) 50%,
-    var(--color-brand-light) 75%,
-    var(--color-brand) 100%
-  );
-  background-size: 300% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shimmer 8s ease-in-out infinite;
-  filter: drop-shadow(0 2px 8px rgba(185, 28, 28, 0.25));
+  color: color-mix(in srgb, var(--color-brand) 80%, transparent);
 }
 
 .dark .hero-title .highlight {
-  filter: drop-shadow(0 2px 12px rgba(239, 68, 68, 0.35));
-}
-
-@keyframes shimmer {
-  0%,
-  100% {
-    background-position: 0% center;
-  }
-  50% {
-    background-position: 100% center;
-  }
+  color: color-mix(in srgb, var(--color-brand) 90%, transparent);
 }
 
 .hero-tagline {
@@ -263,6 +240,7 @@
 .btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: var(--space-2);
   padding: var(--space-2) var(--space-6);
   font-size: var(--font-size-base);
@@ -272,26 +250,13 @@
   transition: all 200ms;
   cursor: pointer;
   user-select: none;
+  min-width: 160px;
 }
 
 .btn-icon {
   width: 0.85em;
   height: 0.85em;
   transition: transform 200ms;
-}
-
-.btn-icon-circle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  background: #272727;
-  border-radius: 50%;
-  margin-left: var(--space-2);
-  margin-top: -4px;
-  margin-bottom: -4px;
-  margin-right: -4px;
 }
 
 .btn:hover .btn-icon {
@@ -301,8 +266,9 @@
 .btn-outline {
   background: rgba(255, 255, 255, 0.8);
   color: var(--color-text);
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 8px 24px -6px rgba(0, 0, 0, 0.04),
-    0 2px 12px -1px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 18px 0 rgba(0, 0, 0, 0.06);
+  border-radius: 20.5px;
 }
 
 .btn-outline:hover {
@@ -319,10 +285,10 @@
 }
 
 .btn-primary {
-  background: var(--color-brand);
-  color: white;
-  box-shadow: 0 1px 2px rgba(185, 28, 28, 0.1),
-    0 2px 6px -1px rgba(185, 28, 28, 0.15);
+  color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(227, 15, 15, 0.8);
+  box-shadow: 0 8px 18px 0 rgba(227, 15, 15, 0.1);
+  border-radius: 9999px;
 }
 
 .btn-primary:hover {
