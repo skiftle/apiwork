@@ -23,10 +23,10 @@
   --color-hero-gradient-start: rgba(185, 28, 28, 0.15);
 
   /* Mesh gradient colors - light mode (lighter coral) */
-  --gradient-color-1: #fefafa;
-  --gradient-color-2: #fef0f0;
-  --gradient-color-3: #fde4e4;
-  --gradient-color-4: #fcd0d0;
+  --gradient-color-1: #fef6f6;
+  --gradient-color-2: #fee4e4;
+  --gradient-color-3: #fdd0d0;
+  --gradient-color-4: #fde2e2;
 
   /* Typography */
   --font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -93,10 +93,10 @@
   --color-hero-gradient-start: rgba(239, 68, 68, 0.2);
 
   /* Mesh gradient colors - dark mode (inverted, dark coral) */
-  --gradient-color-1: #0f0808;
-  --gradient-color-2: #1a0e0e;
-  --gradient-color-3: #2b1717;
-  --gradient-color-4: #3d2020;
+  --gradient-color-1: #100909;
+  --gradient-color-2: #1c0f0f;
+  --gradient-color-3: #2e1818;
+  --gradient-color-4: #241414;
 
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
   --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.3);
