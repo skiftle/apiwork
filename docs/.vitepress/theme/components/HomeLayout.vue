@@ -35,26 +35,25 @@
       </p>
       <div class="generators-logos">
         <div class="logo-item">
-          <svg viewBox="0 0 24 24" width="64" height="64" fill="currentColor">
+          <svg viewBox="0 0 24 24" width="48" height="48" fill="#6BA539">
             <path
               d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-.281 4.323c.281-.052.52.152.52.434v14.487c0 .282-.239.486-.52.434-3.098-.576-5.453-3.318-5.453-6.619v-2.118c0-3.301 2.355-6.043 5.453-6.618zm1.062 0c3.098.575 5.453 3.317 5.453 6.618v2.118c0 3.301-2.355 6.043-5.453 6.619-.281.052-.52-.152-.52-.434V4.757c0-.282.239-.486.52-.434z"
             />
           </svg>
-          <span>OpenAPI</span>
         </div>
         <div class="logo-item">
-          <svg viewBox="0 0 24 24" width="64" height="64" fill="currentColor">
+          <svg viewBox="0 0 24 24" width="48" height="48" fill="#3178C6">
             <path
               d="M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0zm17.363 9.75c.612 0 1.154.037 1.627.111a6.38 6.38 0 0 1 1.306.34v2.458a3.95 3.95 0 0 0-.643-.361 5.093 5.093 0 0 0-.717-.26 5.453 5.453 0 0 0-1.426-.2c-.3 0-.573.028-.819.086a2.1 2.1 0 0 0-.623.242c-.17.104-.3.229-.393.374a.888.888 0 0 0-.14.49c0 .196.053.373.156.529.104.156.252.304.443.444s.423.276.696.41c.273.135.582.274.926.416.47.197.892.407 1.266.628.374.222.695.473.963.753.268.279.472.598.614.957.142.359.214.776.214 1.253 0 .657-.125 1.21-.373 1.656a3.033 3.033 0 0 1-1.012 1.085 4.38 4.38 0 0 1-1.487.596c-.566.12-1.163.18-1.79.18a9.916 9.916 0 0 1-1.84-.164 5.544 5.544 0 0 1-1.512-.493v-2.63a5.033 5.033 0 0 0 3.237 1.2c.333 0 .624-.03.872-.09.249-.06.456-.144.623-.25.166-.108.29-.234.373-.38a1.023 1.023 0 0 0-.074-1.089 2.12 2.12 0 0 0-.537-.5 5.597 5.597 0 0 0-.807-.444 27.72 27.72 0 0 0-1.007-.436c-.918-.383-1.602-.852-2.053-1.405-.45-.553-.676-1.222-.676-2.005 0-.614.123-1.141.369-1.582.246-.441.58-.804 1.004-1.089a4.494 4.494 0 0 1 1.47-.629 7.536 7.536 0 0 1 1.77-.201zm-15.113.188h9.563v2.166H9.506v9.646H6.789v-9.646H3.375z"
             />
           </svg>
-          <span>TypeScript</span>
         </div>
         <div class="logo-item">
-          <svg viewBox="0 0 24 24" width="64" height="64" fill="currentColor">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+          <svg viewBox="0 0 24 24" width="48" height="48" fill="#3E67B1">
+            <path
+              d="M2.584 3.582a2.247 2.247 0 0 1 2.112-1.479h14.617c.948 0 1.794.595 2.115 1.487l2.44 6.777a2.248 2.248 0 0 1-.624 2.443l-9.61 8.52a2.247 2.247 0 0 1-2.963.018L.776 12.773a2.248 2.248 0 0 1-.64-2.467Zm12.038 4.887-9.11 5.537 5.74 5.007c.456.399 1.139.396 1.593-.006l5.643-5.001H14.4l6.239-3.957c.488-.328.69-.947.491-1.5l-1.24-3.446a1.535 1.535 0 0 0-1.456-1.015H5.545a1.535 1.535 0 0 0-1.431 1.01l-1.228 3.37z"
+            />
           </svg>
-          <span>Zod</span>
         </div>
       </div>
     </section>
@@ -276,24 +275,38 @@
 }
 
 .btn-icon {
-  width: 1em;
-  height: 1em;
+  width: 0.85em;
+  height: 0.85em;
   transition: transform 200ms;
 }
 
+.btn-icon-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: #272727;
+  border-radius: 50%;
+  margin-left: var(--space-2);
+  margin-top: -4px;
+  margin-bottom: -4px;
+  margin-right: -4px;
+}
+
 .btn:hover .btn-icon {
-  transform: translateX(3px);
+  transform: translateX(2px);
 }
 
 .btn-outline {
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.8);
   color: var(--color-text);
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.004),
-    0 8px 24px -6px rgba(0, 0, 0, 0.04), 0 2px 12px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 8px 24px -6px rgba(0, 0, 0, 0.04),
+    0 2px 12px -1px rgba(0, 0, 0, 0.1);
 }
 
 .btn-outline:hover {
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.9);
   text-decoration: none;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.004),
     0 8px 24px -6px rgba(0, 0, 0, 0.04), 0 2px 12px -1px rgba(0, 0, 0, 0.1);
@@ -332,25 +345,31 @@
 
 .generators-text {
   font-size: var(--font-size-xl);
-  color: var(--color-text-muted);
+  font-weight: 500;
+  color: var(--color-text);
   margin-bottom: var(--space-10);
+}
+
+.generators-text strong {
+  font-weight: 600;
+  color: var(--color-brand);
 }
 
 .generators-logos {
   display: flex;
   justify-content: center;
-  gap: var(--space-16);
+  gap: var(--space-12);
   flex-wrap: wrap;
 }
 
 .logo-item {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: var(--space-3);
-  color: var(--color-text);
-  font-size: var(--font-size-sm);
-  opacity: 0.7;
+  transition: transform 200ms;
+}
+
+.logo-item:hover {
+  transform: scale(1.1);
 }
 
 /* Code Showcase Section */
@@ -396,7 +415,7 @@
 }
 
 .showcase-code {
-  background: rgba(31, 20, 24, 0.95);
+  background: #272727;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: var(--border-radius-lg);
@@ -490,7 +509,7 @@
 }
 
 .example-code {
-  background: rgba(31, 20, 24, 0.95);
+  background: #272727;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: var(--border-radius-lg);
@@ -526,7 +545,7 @@
 }
 
 .output-item {
-  background: rgba(31, 20, 24, 0.95);
+  background: #272727;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: var(--border-radius-lg);

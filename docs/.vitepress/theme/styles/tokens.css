@@ -1,6 +1,6 @@
 :root {
   /* Colors - warm rose-tinted baseline */
-  --color-bg: #faf8f7;
+  --color-bg: #fff6f6;
   --color-bg-soft: #f5f2f0;
   --color-bg-muted: #efe9e6;
   --color-text: #1f2937;
@@ -70,7 +70,7 @@
   --transition-base: 200ms ease;
 
   /* Footer */
-  --color-footer-bg: #353535;
+  --color-footer-bg: #272727;
 }
 
 /* Dark mode - activated by VitePress via .dark class on html */
