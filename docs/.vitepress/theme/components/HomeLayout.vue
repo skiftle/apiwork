@@ -184,15 +184,41 @@
 
 .hero-title {
   font-size: 3rem;
-  font-weight: 700;
-  color: var(--color-text);
+  font-weight: 500;
+  color: rgba(17, 24, 39, 0.92);
   line-height: var(--line-height-tight);
   margin-bottom: var(--space-6);
-  font-weight: 500;
+  text-shadow: 0 0 60px rgba(252, 208, 208, 0.6);
+}
+
+.dark .hero-title {
+  color: rgba(248, 250, 252, 0.92);
+  text-shadow: 0 0 60px rgba(61, 32, 32, 0.7);
 }
 
 .hero-title .highlight {
-  color: var(--color-brand);
+  background: linear-gradient(
+    90deg,
+    var(--color-brand) 0%,
+    var(--color-brand-dark) 25%,
+    var(--color-brand-light) 50%,
+    var(--color-brand-dark) 75%,
+    var(--color-brand) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 12s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
 }
 
 .hero-tagline {
