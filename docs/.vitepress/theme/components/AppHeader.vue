@@ -1,19 +1,29 @@
 <script setup lang="ts">
-import { useData, useRoute } from 'vitepress'
-import ThemeSwitch from './ThemeSwitch.vue'
+import { useData, useRoute } from "vitepress";
+import ThemeSwitch from "./ThemeSwitch.vue";
 
-const { site } = useData()
-const route = useRoute()
+const { site } = useData();
+const route = useRoute();
 
 const navItems = [
-  { text: 'Home', link: '/', match: /^\/$/, badge: null },
-  { text: 'Guide', link: '/guide/getting-started/introduction', match: /^\/guide\// , badge: null },
-  { text: 'Reference', link: '/reference/', match: /^\/reference\// , badge: null },
-  { text: 'Blog', link: '/blog/', match: /^\/blog\// , badge: 'NEW' },
-]
+  { text: "Home", link: "/", match: /^\/$/, badge: null },
+  {
+    text: "Guide",
+    link: "/guide/getting-started/introduction",
+    match: /^\/guide\//,
+    badge: null,
+  },
+  {
+    text: "Reference",
+    link: "/reference/",
+    match: /^\/reference\//,
+    badge: null,
+  },
+  { text: "Blog", link: "/blog/", match: /^\/blog\//, badge: "NEW" },
+];
 
-function isActive(item: typeof navItems[0]) {
-  return item.match.test(route.path)
+function isActive(item: (typeof navItems)[0]) {
+  return item.match.test(route.path);
 }
 </script>
 
@@ -93,11 +103,11 @@ function isActive(item: typeof navItems[0]) {
 
 .nav-pill {
   position: relative;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-md);
   font-weight: 500;
-  color: var(--color-text-muted);
+  color: #353535;
   text-decoration: none;
-  padding: var(--space-2) var(--space-4);
+  padding: var(--space-1) var(--space-6);
   border-radius: 9999px;
   transition: all var(--transition-fast);
 }
@@ -110,7 +120,7 @@ function isActive(item: typeof navItems[0]) {
 
 .nav-pill.active {
   color: var(--color-brand);
-  background: var(--color-bg-muted);
+  background: color-mix(in srgb, var(--color-brand) 10%, transparent);
 }
 
 .nav-badge {
