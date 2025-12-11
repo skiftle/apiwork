@@ -64,7 +64,7 @@ void main() {
   // Layer 1: Huge circle from top-left
   vec2 c1_center = vec2(
     -0.3 + sin(t * 0.05) * 0.2,
-    -0.2 + cos(t * 0.04) * 0.15
+    -0.6 + cos(t * 0.04) * 0.15
   );
   float c1 = ellipse(uv, c1_center, vec2(1.2, 1.0), blur1);
   color = mix(color, u_color2, c1 * 0.75);
@@ -72,7 +72,7 @@ void main() {
   // Layer 2: Large circle, slightly offset
   vec2 c2_center = vec2(
     -0.1 + sin(t * 0.06) * 0.22,
-    0.0 + cos(t * 0.05) * 0.18
+    -0.4 + cos(t * 0.05) * 0.18
   );
   float c2 = ellipse(uv, c2_center, vec2(0.9, 0.8), blur2);
   color = mix(color, u_color3, c2 * 0.65);
@@ -80,7 +80,7 @@ void main() {
   // Layer 3: Medium circle
   vec2 c3_center = vec2(
     0.1 + sin(t * 0.07) * 0.25,
-    0.15 + cos(t * 0.06) * 0.2
+    -0.3 + cos(t * 0.06) * 0.2
   );
   float c3 = ellipse(uv, c3_center, vec2(0.7, 0.6), blur3);
   color = mix(color, u_color4, c3 * 0.55);
@@ -88,7 +88,7 @@ void main() {
   // Layer 4: Smaller accent
   vec2 c4_center = vec2(
     0.25 + sin(t * 0.08) * 0.18,
-    0.3 + cos(t * 0.07) * 0.15
+    -0.2 + cos(t * 0.07) * 0.15
   );
   float c4 = ellipse(uv, c4_center, vec2(0.5, 0.45), blur4);
   color = mix(color, u_color2, c4 * 0.5);
@@ -96,7 +96,7 @@ void main() {
   // Layer 5: Circle peeking from right edge
   vec2 c5_center = vec2(
     1.2 + sin(t * 0.05) * 0.15,
-    0.0 + cos(t * 0.06) * 0.18
+    -0.4 + cos(t * 0.06) * 0.18
   );
   float c5 = ellipse(uv, c5_center, vec2(0.65, 0.55), blur5 * 0.25);
   color = mix(color, u_color3, c5 * 0.45);
