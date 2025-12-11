@@ -27,15 +27,29 @@ const layoutType = computed(() => {
     <div v-if="layoutType === 'home'" class="home-bg-wrapper">
       <svg class="home-bg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
         <defs>
-          <!-- Bakgrunds-gradient: mjuk rose toning -->
-          <radialGradient id="bg-gradient" cx="20%" cy="80%" r="80%">
-            <stop offset="0%" class="stop-rose" stop-opacity="0.18" />
-            <stop offset="40%" class="stop-rose" stop-opacity="0.08" />
+          <!-- Bakgrund 1: rose från vänster-nedre -->
+          <radialGradient id="bg-rose" cx="10%" cy="90%" r="90%">
+            <stop offset="0%" class="stop-rose" stop-opacity="0.20" />
+            <stop offset="35%" class="stop-rose" stop-opacity="0.10" />
             <stop offset="100%" class="stop-rose" stop-opacity="0" />
           </radialGradient>
+          <!-- Bakgrund 2: coral från höger-övre -->
+          <radialGradient id="bg-coral" cx="90%" cy="10%" r="70%">
+            <stop offset="0%" class="stop-coral" stop-opacity="0.14" />
+            <stop offset="40%" class="stop-coral" stop-opacity="0.06" />
+            <stop offset="100%" class="stop-coral" stop-opacity="0" />
+          </radialGradient>
+          <!-- Bakgrund 3: magenta accent höger -->
+          <radialGradient id="bg-magenta" cx="100%" cy="50%" r="50%">
+            <stop offset="0%" class="stop-magenta" stop-opacity="0.08" />
+            <stop offset="50%" class="stop-magenta" stop-opacity="0.03" />
+            <stop offset="100%" class="stop-magenta" stop-opacity="0" />
+          </radialGradient>
         </defs>
-        <!-- Bakgrund: mjuk gradient -->
-        <rect x="0" y="0" width="100" height="100" fill="url(#bg-gradient)" />
+        <!-- Bakgrunds-gradienter -->
+        <rect x="0" y="0" width="100" height="100" fill="url(#bg-rose)" />
+        <rect x="0" y="0" width="100" height="100" fill="url(#bg-coral)" />
+        <rect x="0" y="0" width="100" height="100" fill="url(#bg-magenta)" />
         <!-- Mjukare cirklar ovanpå -->
         <!-- Rose: vänster-nedre -->
         <g transform="rotate(-8, 15, 120)" class="solid-rose">
@@ -106,10 +120,12 @@ const layoutType = computed(() => {
 }
 
 /* P3 wide-gamut colors */
-/* Gradient stop (bakgrund) */
+/* Gradient stops (bakgrund) */
 .stop-rose { stop-color: #e11d48; }
+.stop-coral { stop-color: #ff6b4a; }
+.stop-magenta { stop-color: #c026d3; }
 
-/* Solida fills (skarpa cirklar) */
+/* Solida fills (cirklar) */
 .solid-rose { fill: #e11d48; }
 .solid-coral { fill: #ff6b4a; }
 .solid-magenta { fill: #c026d3; }
@@ -117,6 +133,8 @@ const layoutType = computed(() => {
 
 @supports (color: color(display-p3 1 0 0)) {
   .stop-rose { stop-color: color(display-p3 0.92 0.12 0.32); }
+  .stop-coral { stop-color: color(display-p3 1 0.45 0.30); }
+  .stop-magenta { stop-color: color(display-p3 0.80 0.15 0.85); }
   .solid-rose { fill: color(display-p3 0.92 0.12 0.32); }
   .solid-coral { fill: color(display-p3 1 0.45 0.30); }
   .solid-magenta { fill: color(display-p3 0.80 0.15 0.85); }
