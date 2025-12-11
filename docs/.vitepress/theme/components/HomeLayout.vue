@@ -9,7 +9,7 @@
           The modern API layer for <span class="highlight">Rails</span>
         </h1>
         <p class="hero-tagline">
-          Define your API once and get consistency and type-safety everywhere
+          Define your API <em>once</em> — consistency and type-safety everywhere
         </p>
         <div class="hero-actions">
           <a href="/guide/examples" class="btn btn-outline">Examples</a>
@@ -237,10 +237,21 @@
 }
 
 .hero-tagline {
-  font-size: var(--font-size-xl);
+  font-size: 1.35rem;
   font-weight: 500;
-  color: var(--color-text-muted);
+  color: rgba(17, 24, 39, 0.75);
+  letter-spacing: -0.01em;
   margin-bottom: var(--space-10);
+}
+
+.dark .hero-tagline {
+  color: rgba(248, 250, 252, 0.7);
+}
+
+.hero-tagline em {
+  font-style: normal;
+  color: var(--color-brand);
+  font-weight: 600;
 }
 
 .hero-actions {
@@ -293,19 +304,10 @@
 }
 
 .btn-primary {
-  background: linear-gradient(
-    90deg,
-    var(--color-brand) 0%,
-    var(--color-brand) 40%,
-    #ff8a8a 50%,
-    var(--color-brand) 60%,
-    var(--color-brand) 100%
-  );
-  background-size: 400% auto;
+  background: var(--color-brand);
   color: white;
   box-shadow: 0 1px 2px rgba(185, 28, 28, 0.1),
     0 2px 6px -1px rgba(185, 28, 28, 0.15);
-  animation: shimmer 45s ease-in-out infinite;
 }
 
 .btn-primary:hover {

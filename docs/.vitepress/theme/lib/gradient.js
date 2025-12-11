@@ -51,52 +51,54 @@ void main() {
   vec2 uv = v_uv;
   float t = u_time;
 
+  // Animated blur - phases spread so at least one is sharp at any time
+  float blur1 = pow(sin(t * 0.025 + 0.0), 2.0) * 0.2;
+  float blur2 = pow(sin(t * 0.025 + 1.26), 2.0) * 0.2;
+  float blur3 = pow(sin(t * 0.025 + 2.51), 2.0) * 0.2;
+  float blur4 = pow(sin(t * 0.025 + 3.77), 2.0) * 0.2;
+  float blur5 = pow(sin(t * 0.025 + 5.03), 2.0) * 0.2;
+
   // Start with base color (lightest)
   vec3 color = u_color1;
 
-  // Layer 1: Huge circle from top-left, always soft
-  float blur1 = 0.15 + sin(t * 0.03) * 0.05;
+  // Layer 1: Huge circle from top-left
   vec2 c1_center = vec2(
-    -0.3 + sin(t * 0.05) * 0.1,
-    -0.2 + cos(t * 0.04) * 0.08
+    -0.3 + sin(t * 0.05) * 0.2,
+    -0.2 + cos(t * 0.04) * 0.15
   );
   float c1 = ellipse(uv, c1_center, vec2(1.2, 1.0), blur1);
   color = mix(color, u_color2, c1 * 0.75);
 
-  // Layer 2: Large circle, slightly offset, subtle blur variation
-  float blur2 = 0.18 + sin(t * 0.08) * 0.06;
+  // Layer 2: Large circle, slightly offset
   vec2 c2_center = vec2(
-    -0.1 + sin(t * 0.06) * 0.12,
-    0.0 + cos(t * 0.05) * 0.1
+    -0.1 + sin(t * 0.06) * 0.22,
+    0.0 + cos(t * 0.05) * 0.18
   );
   float c2 = ellipse(uv, c2_center, vec2(0.9, 0.8), blur2);
   color = mix(color, u_color3, c2 * 0.65);
 
-  // Layer 3: Medium circle, gentle blur variation
-  float blur3 = 0.22 + sin(t * 0.1) * 0.08;
+  // Layer 3: Medium circle
   vec2 c3_center = vec2(
-    0.1 + sin(t * 0.07) * 0.15,
-    0.15 + cos(t * 0.06) * 0.12
+    0.1 + sin(t * 0.07) * 0.25,
+    0.15 + cos(t * 0.06) * 0.2
   );
   float c3 = ellipse(uv, c3_center, vec2(0.7, 0.6), blur3);
   color = mix(color, u_color4, c3 * 0.55);
 
-  // Layer 4: Smaller accent, soft edge
-  float blur4 = 0.12 + sin(t * 0.09) * 0.04;
+  // Layer 4: Smaller accent
   vec2 c4_center = vec2(
-    0.25 + sin(t * 0.08) * 0.1,
-    0.3 + cos(t * 0.07) * 0.08
+    0.25 + sin(t * 0.08) * 0.18,
+    0.3 + cos(t * 0.07) * 0.15
   );
   float c4 = ellipse(uv, c4_center, vec2(0.5, 0.45), blur4);
   color = mix(color, u_color2, c4 * 0.5);
 
-  // Layer 5: Bottom accent that drifts, soft blur
-  float blur5 = 0.2 + cos(t * 0.12) * 0.06;
+  // Layer 5: Circle peeking from right edge
   vec2 c5_center = vec2(
-    0.4 + sin(t * 0.05) * 0.08,
-    0.5 + cos(t * 0.06) * 0.1
+    1.2 + sin(t * 0.05) * 0.15,
+    0.0 + cos(t * 0.06) * 0.18
   );
-  float c5 = ellipse(uv, c5_center, vec2(0.4, 0.35), blur5);
+  float c5 = ellipse(uv, c5_center, vec2(0.65, 0.55), blur5 * 0.25);
   color = mix(color, u_color3, c5 * 0.45);
 
   gl_FragColor = vec4(color, 1.0);
