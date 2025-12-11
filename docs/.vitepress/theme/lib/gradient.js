@@ -37,10 +37,13 @@ uniform vec2 u_resolution;
 
 varying vec2 v_uv;
 
-// Soft ellipse with blur
+// Soft ellipse with blur (blur=0 for sharp edge)
 float ellipse(vec2 uv, vec2 center, vec2 radius, float blur) {
   vec2 d = (uv - center) / radius;
   float dist = length(d);
+  if (blur <= 0.0) {
+    return dist < 1.0 ? 1.0 : 0.0;
+  }
   return 1.0 - smoothstep(1.0 - blur, 1.0 + blur, dist);
 }
 
@@ -51,57 +54,48 @@ void main() {
   // Start with base color (lightest)
   vec3 color = u_color1;
 
-  // Circle 1: Large, bottom-left, rose - slow drift
+  // Layer 1: Huge circle from bottom-left, sharp, very slow
   vec2 c1_center = vec2(
-    0.15 + sin(t * 0.15) * 0.08,
-    1.1 + cos(t * 0.12) * 0.06
+    -0.3 + sin(t * 0.05) * 0.1,
+    1.2 + cos(t * 0.04) * 0.08
   );
-  float c1 = ellipse(uv, c1_center, vec2(1.0, 0.65), 0.5);
-  color = mix(color, u_color2, c1 * 0.12);
+  float c1 = ellipse(uv, c1_center, vec2(1.2, 1.0), 0.0);
+  color = mix(color, u_color2, c1 * 0.7);
 
-  // Circle 1b: Inner layer
-  float c1b = ellipse(uv, c1_center + vec2(0.02, -0.02), vec2(0.75, 0.5), 0.4);
-  color = mix(color, u_color2, c1b * 0.15);
-
-  // Circle 1c: Core
-  float c1c = ellipse(uv, c1_center + vec2(0.04, -0.04), vec2(0.5, 0.35), 0.35);
-  color = mix(color, u_color3, c1c * 0.1);
-
-  // Circle 2: Top-right, coral - different rhythm
+  // Layer 2: Large circle, slightly offset, gets blurry over time
+  float blur2 = 0.1 + sin(t * 0.08) * 0.1;
   vec2 c2_center = vec2(
-    0.9 + cos(t * 0.18) * 0.06,
-    -0.1 + sin(t * 0.14) * 0.05
+    -0.1 + sin(t * 0.06) * 0.12,
+    1.0 + cos(t * 0.05) * 0.1
   );
-  float c2 = ellipse(uv, c2_center, vec2(0.7, 0.5), 0.45);
-  color = mix(color, u_color3, c2 * 0.1);
+  float c2 = ellipse(uv, c2_center, vec2(0.9, 0.8), blur2);
+  color = mix(color, u_color3, c2 * 0.6);
 
-  // Circle 2b: Inner
-  float c2b = ellipse(uv, c2_center + vec2(-0.02, 0.02), vec2(0.5, 0.35), 0.4);
-  color = mix(color, u_color3, c2b * 0.12);
-
-  // Circle 3: Right-middle, magenta accent
+  // Layer 3: Medium circle, more blur variation
+  float blur3 = 0.2 + sin(t * 0.1) * 0.15;
   vec2 c3_center = vec2(
-    1.05 + sin(t * 0.1) * 0.04,
-    0.5 + cos(t * 0.16) * 0.08
+    0.1 + sin(t * 0.07) * 0.15,
+    0.85 + cos(t * 0.06) * 0.12
   );
-  float c3 = ellipse(uv, c3_center, vec2(0.55, 0.4), 0.5);
-  color = mix(color, u_color4, c3 * 0.08);
+  float c3 = ellipse(uv, c3_center, vec2(0.7, 0.6), blur3);
+  color = mix(color, u_color4, c3 * 0.5);
 
-  // Circle 4: Top-left, pink glow
+  // Layer 4: Smaller accent, sharp
   vec2 c4_center = vec2(
-    0.0 + cos(t * 0.13) * 0.05,
-    0.1 + sin(t * 0.17) * 0.04
+    0.25 + sin(t * 0.08) * 0.1,
+    0.7 + cos(t * 0.07) * 0.08
   );
-  float c4 = ellipse(uv, c4_center, vec2(0.45, 0.35), 0.5);
-  color = mix(color, u_color4, c4 * 0.06);
+  float c4 = ellipse(uv, c4_center, vec2(0.5, 0.45), 0.0);
+  color = mix(color, u_color2, c4 * 0.5);
 
-  // Circle 5: Floating accent - moves more
+  // Layer 5: Top accent that drifts, blur varies
+  float blur5 = 0.15 + cos(t * 0.12) * 0.15;
   vec2 c5_center = vec2(
-    0.5 + sin(t * 0.2) * 0.15,
-    0.6 + cos(t * 0.15) * 0.12
+    0.4 + sin(t * 0.05) * 0.08,
+    0.5 + cos(t * 0.06) * 0.1
   );
-  float c5 = ellipse(uv, c5_center, vec2(0.35, 0.25), 0.6);
-  color = mix(color, u_color2, c5 * 0.08);
+  float c5 = ellipse(uv, c5_center, vec2(0.4, 0.35), blur5);
+  color = mix(color, u_color3, c5 * 0.4);
 
   gl_FragColor = vec4(color, 1.0);
 }
@@ -247,10 +241,10 @@ class Mesh {
 export class Gradient {
   constructor(options = {}) {
     this.colors = options.colors || [
-      '#fdf2f8', // very light pink (almost white)
-      '#fce7f3', // light pink
-      '#fbcfe8', // soft pink
-      '#f9a8d4'  // medium pink
+      '#fef7f7', // very light coral (almost white)
+      '#fde8e8', // light coral
+      '#fcd4d4', // soft coral
+      '#fab5b5'  // medium coral
     ]
     this.amplitude = options.amplitude || 200
     this.seed = options.seed || 5
@@ -321,6 +315,16 @@ export class Gradient {
         this.mesh.setUniform('u_resolution', '2f', [this.width, this.height])
       }
     }
+  }
+
+  updateColors(newColors) {
+    if (!this.mesh) return
+    this.colors = newColors
+    const colors = this.colors.map(normalizeColor)
+    this.mesh.setUniform('u_color1', '3f', colors[0])
+    this.mesh.setUniform('u_color2', '3f', colors[1])
+    this.mesh.setUniform('u_color3', '3f', colors[2])
+    this.mesh.setUniform('u_color4', '3f', colors[3])
   }
 
   play() {
