@@ -5,26 +5,6 @@ import ThemeSwitch from "./ThemeSwitch.vue";
 const { site } = useData();
 const route = useRoute();
 
-const navItems = [
-  { text: "Home", link: "/", match: /^\/$/, badge: null },
-  {
-    text: "Guide",
-    link: "/guide/getting-started/introduction",
-    match: /^\/guide\//,
-    badge: null,
-  },
-  {
-    text: "Reference",
-    link: "/reference/",
-    match: /^\/reference\//,
-    badge: null,
-  },
-  { text: "Blog", link: "/blog/", match: /^\/blog\//, badge: "NEW" },
-];
-
-function isActive(item: (typeof navItems)[0]) {
-  return item.match.test(route.path);
-}
 </script>
 
 <template>
@@ -35,16 +15,10 @@ function isActive(item: (typeof navItems)[0]) {
       </a>
 
       <nav class="nav">
-        <a
-          v-for="item in navItems"
-          :key="item.link"
-          :href="item.link"
-          class="nav-pill"
-          :class="{ active: isActive(item) }"
-        >
-          {{ item.text }}
-          <span v-if="item.badge" class="nav-badge">{{ item.badge }}</span>
-        </a>
+        <a href="/" class="nav-pill" :class="{ active: route.path === '/' }">Home</a>
+        <a href="/guide/getting-started/introduction" class="nav-pill" :class="{ active: /^\/guide\//.test(route.path) }">Guide</a>
+        <a href="/reference/" class="nav-pill" :class="{ active: /^\/reference\//.test(route.path) }">Reference</a>
+        <a href="/blog/" class="nav-pill" :class="{ active: /^\/blog\//.test(route.path) }">Blog</a>
       </nav>
 
       <div class="header-actions">
@@ -102,7 +76,6 @@ function isActive(item: (typeof navItems)[0]) {
 }
 
 .nav-pill {
-  position: relative;
   font-size: var(--font-size-md);
   font-weight: 500;
   color: #353535;
@@ -121,20 +94,6 @@ function isActive(item: (typeof navItems)[0]) {
 .nav-pill.active {
   color: var(--color-brand);
   background-color: rgba(104, 98, 98, 0.062);
-}
-
-.nav-badge {
-  position: absolute;
-  top: -6px;
-  right: -8px;
-  font-size: 9px;
-  font-weight: 600;
-  padding: 2px 5px;
-  background: #f97316;
-  color: white;
-  border-radius: 4px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 .header-actions {

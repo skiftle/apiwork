@@ -14,8 +14,14 @@
         <div class="hero-actions">
           <a href="/guide/examples" class="btn btn-outline">Examples</a>
           <a href="/guide/getting-started/introduction" class="btn btn-primary"
-            >Getting Started</a
-          >
+            >Getting Started
+            <svg class="btn-icon" viewBox="0 0 20 20" fill="currentColor">
+              <path
+                fill-rule="evenodd"
+                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                clip-rule="evenodd"
+              /></svg
+          ></a>
         </div>
       </div>
     </section>
@@ -247,6 +253,7 @@
 .btn {
   display: inline-flex;
   align-items: center;
+  gap: var(--space-2);
   padding: var(--space-2) var(--space-6);
   font-size: var(--font-size-base);
   font-weight: 500;
@@ -255,6 +262,16 @@
   transition: all 200ms;
   cursor: pointer;
   user-select: none;
+}
+
+.btn-icon {
+  width: 1em;
+  height: 1em;
+  transition: transform 200ms;
+}
+
+.btn:hover .btn-icon {
+  transform: translateX(3px);
 }
 
 .btn-outline {
