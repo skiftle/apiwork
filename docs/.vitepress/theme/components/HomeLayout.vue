@@ -141,7 +141,7 @@
         </div>
         <div class="output-grid">
           <div class="output-item">
-            <span class="output-label text-typescript">TypeScript</span>
+            <span class="output-label">TypeScript</span>
             <pre><code><span class="code-keyword">interface</span> <span class="code-class">Invoice</span> {
   id: <span class="code-type">number</span>;
   number: <span class="code-type">string</span>;

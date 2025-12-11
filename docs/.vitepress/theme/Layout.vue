@@ -26,31 +26,33 @@ const layoutType = computed(() => {
   <div class="app" :class="{ 'app--home': layoutType === 'home' }">
     <div v-if="layoutType === 'home'" class="home-bg-wrapper">
       <svg class="home-bg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        <!-- Primary: Rosa/röd från vänster-nedre -->
-        <g transform="rotate(-8, 15, 120)">
-          <ellipse cx="15" cy="120" rx="120" ry="75" fill="#e11d48" fill-opacity="0.025" />
-          <ellipse cx="15" cy="120" rx="100" ry="62" fill="#e11d48" fill-opacity="0.035" />
-          <ellipse cx="15" cy="120" rx="80" ry="50" fill="#e11d48" fill-opacity="0.045" />
-          <ellipse cx="15" cy="120" rx="60" ry="38" fill="#e11d48" fill-opacity="0.055" />
-          <ellipse cx="15" cy="120" rx="40" ry="25" fill="#e11d48" fill-opacity="0.065" />
-          <ellipse cx="15" cy="120" rx="22" ry="14" fill="#e11d48" fill-opacity="0.08" />
+        <!-- Primary: Vivid rose från vänster-nedre -->
+        <g transform="rotate(-8, 15, 120)" class="gradient-rose">
+          <ellipse cx="15" cy="120" rx="130" ry="80" fill-opacity="0.02" />
+          <ellipse cx="15" cy="120" rx="105" ry="65" fill-opacity="0.03" />
+          <ellipse cx="15" cy="120" rx="82" ry="51" fill-opacity="0.04" />
+          <ellipse cx="15" cy="120" rx="60" ry="38" fill-opacity="0.05" />
+          <ellipse cx="15" cy="120" rx="40" ry="25" fill-opacity="0.06" />
+          <ellipse cx="15" cy="120" rx="22" ry="14" fill-opacity="0.075" />
         </g>
-        <!-- Secondary: Orange/peach från höger-övre -->
-        <g transform="rotate(15, 95, -10)">
-          <ellipse cx="95" cy="-10" rx="90" ry="55" fill="#f97316" fill-opacity="0.02" />
-          <ellipse cx="95" cy="-10" rx="70" ry="42" fill="#f97316" fill-opacity="0.03" />
-          <ellipse cx="95" cy="-10" rx="50" ry="30" fill="#f97316" fill-opacity="0.04" />
-          <ellipse cx="95" cy="-10" rx="30" ry="18" fill="#f97316" fill-opacity="0.05" />
+        <!-- Secondary: Electric coral från höger-övre -->
+        <g transform="rotate(12, 100, -15)" class="gradient-coral">
+          <ellipse cx="100" cy="-15" rx="95" ry="60" fill-opacity="0.018" />
+          <ellipse cx="100" cy="-15" rx="72" ry="45" fill-opacity="0.028" />
+          <ellipse cx="100" cy="-15" rx="50" ry="32" fill-opacity="0.038" />
+          <ellipse cx="100" cy="-15" rx="30" ry="19" fill-opacity="0.05" />
         </g>
-        <!-- Tertiary: Lila accent från mitten-höger -->
-        <g transform="rotate(-5, 110, 60)">
-          <ellipse cx="110" cy="60" rx="70" ry="45" fill="#8b5cf6" fill-opacity="0.015" />
-          <ellipse cx="110" cy="60" rx="50" ry="32" fill="#8b5cf6" fill-opacity="0.025" />
-          <ellipse cx="110" cy="60" rx="30" ry="20" fill="#8b5cf6" fill-opacity="0.035" />
+        <!-- Tertiary: Ultra violet från mitten-höger -->
+        <g transform="rotate(-6, 115, 55)" class="gradient-violet">
+          <ellipse cx="115" cy="55" rx="75" ry="48" fill-opacity="0.015" />
+          <ellipse cx="115" cy="55" rx="52" ry="33" fill-opacity="0.025" />
+          <ellipse cx="115" cy="55" rx="32" ry="20" fill-opacity="0.035" />
         </g>
-        <!-- Subtle blue glow top-left -->
-        <ellipse cx="5" cy="10" rx="45" ry="35" fill="#3b82f6" fill-opacity="0.02" />
-        <ellipse cx="5" cy="10" rx="25" ry="20" fill="#3b82f6" fill-opacity="0.03" />
+        <!-- Accent: Cyan glow top-left -->
+        <g transform="rotate(8, 0, 5)" class="gradient-cyan">
+          <ellipse cx="0" cy="5" rx="50" ry="38" fill-opacity="0.015" />
+          <ellipse cx="0" cy="5" rx="30" ry="23" fill-opacity="0.025" />
+        </g>
       </svg>
     </div>
     <AppHeader />
@@ -90,5 +92,18 @@ const layoutType = computed(() => {
 .app--home > :not(.home-bg-wrapper) {
   position: relative;
   z-index: 1;
+}
+
+/* P3 wide-gamut gradient colors - Rails Ruby palette */
+.gradient-rose { fill: #cc0f35; }
+.gradient-coral { fill: #ea580c; }
+.gradient-violet { fill: #9f1239; }
+.gradient-cyan { fill: #ca8a04; }
+
+@supports (color: color(display-p3 1 0 0)) {
+  .gradient-rose { fill: color(display-p3 0.85 0.05 0.25); }
+  .gradient-coral { fill: color(display-p3 0.95 0.35 0.08); }
+  .gradient-violet { fill: color(display-p3 0.7 0.08 0.28); }
+  .gradient-cyan { fill: color(display-p3 0.85 0.58 0.05); }
 }
 </style>
