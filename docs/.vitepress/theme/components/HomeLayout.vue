@@ -58,19 +58,30 @@
       </div>
     </section>
 
-    <!-- Code Showcase Section -->
-    <section class="showcase">
-      <div class="showcase-container">
-        <div class="showcase-text">
-          <h2 class="showcase-title">Describe it once</h2>
-          <p class="showcase-description">
+    <!-- Feature 1: Describe it once -->
+    <section class="feature">
+      <div class="feature-container">
+        <div class="feature-content">
+          <span class="feature-step">01</span>
+          <h2 class="feature-title">
+            Describe it <span class="accent">once</span>
+          </h2>
+          <p class="feature-description">
             Apiwork starts with contracts. They let you describe the shapes,
             types, enums and structures your API uses in a clear and explicit
             way — all in one place.
           </p>
         </div>
-        <div class="showcase-code">
-          <pre><code><span class="code-class">Apiwork</span>::<span class="code-class">API</span>.<span class="code-method">draw</span> <span class="code-string">'/eager_lion'</span> <span class="code-keyword">do</span>
+        <div class="feature-code">
+          <div class="code-window">
+            <div class="code-window-header">
+              <span class="code-window-dot code-window-dot--red"></span>
+              <span class="code-window-dot code-window-dot--yellow"></span>
+              <span class="code-window-dot code-window-dot--green"></span>
+              <span class="code-window-filename">config/apis/invoices.rb</span>
+            </div>
+            <div class="code-window-body">
+              <pre><code><span class="code-class">Apiwork</span>::<span class="code-class">API</span>.<span class="code-method">draw</span> <span class="code-string">'/api/v1'</span> <span class="code-keyword">do</span>
   key_format <span class="code-symbol">:camel</span>
 
   resources <span class="code-symbol">:invoices</span> <span class="code-keyword">do</span>
@@ -79,46 +90,72 @@
     <span class="code-keyword">end</span>
   <span class="code-keyword">end</span>
 <span class="code-keyword">end</span></code></pre>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Contract Example Section -->
-    <section class="example-section">
-      <div class="example-container">
-        <div class="example-code">
-          <pre><code><span class="code-keyword">class</span> <span class="code-class">InvoiceContract</span> < <span class="code-class">Apiwork</span>::<span class="code-class">Contract</span>
+    <!-- Feature 2: Define your contract -->
+    <section class="feature feature--alt">
+      <div class="feature-container">
+        <div class="feature-content">
+          <span class="feature-step">02</span>
+          <h2 class="feature-title">
+            Define your <span class="accent">contract</span>
+          </h2>
+          <p class="feature-description">
+            Contracts describe your API's data structures with types,
+            validations, and enums. They become the single source of truth for
+            serialization, validation, and documentation.
+          </p>
+        </div>
+        <div class="feature-code">
+          <div class="code-window">
+            <div class="code-window-header">
+              <span class="code-window-dot code-window-dot--red"></span>
+              <span class="code-window-dot code-window-dot--yellow"></span>
+              <span class="code-window-dot code-window-dot--green"></span>
+              <span class="code-window-filename">app/contracts/invoice_contract.rb</span>
+            </div>
+            <div class="code-window-body">
+              <pre><code><span class="code-keyword">class</span> <span class="code-class">InvoiceContract</span> < <span class="code-class">Apiwork</span>::<span class="code-class">Contract</span>
   attribute <span class="code-symbol">:id</span>, <span class="code-class">Integer</span>
   attribute <span class="code-symbol">:number</span>, <span class="code-class">String</span>
   attribute <span class="code-symbol">:amount</span>, <span class="code-class">BigDecimal</span>
   attribute <span class="code-symbol">:status</span>, <span class="code-class">String</span>, enum: <span class="code-symbol">%w[draft sent paid]</span>
   attribute <span class="code-symbol">:due_date</span>, <span class="code-class">Date</span>
 <span class="code-keyword">end</span></code></pre>
-        </div>
-        <div class="example-text">
-          <h2 class="example-title">Define your contract</h2>
-          <p class="example-description">
-            Contracts describe your API's data structures with types,
-            validations, and enums. They become the single source of truth for
-            serialization, validation, and documentation.
-          </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Controller Example Section -->
-    <section class="example-section example-section--alt">
-      <div class="example-container">
-        <div class="example-text">
-          <h2 class="example-title">Use it in your controller</h2>
-          <p class="example-description">
+    <!-- Feature 3: Use it in your controller -->
+    <section class="feature">
+      <div class="feature-container">
+        <div class="feature-content">
+          <span class="feature-step">03</span>
+          <h2 class="feature-title">
+            Use it in your <span class="accent">controller</span>
+          </h2>
+          <p class="feature-description">
             Your controllers stay clean and focused. Apiwork handles
             serialization automatically based on your contract, transforming
             keys, formatting dates, and validating data.
           </p>
         </div>
-        <div class="example-code">
-          <pre><code><span class="code-keyword">class</span> <span class="code-class">InvoicesController</span> < <span class="code-class">ApplicationController</span>
+        <div class="feature-code">
+          <div class="code-window">
+            <div class="code-window-header">
+              <span class="code-window-dot code-window-dot--red"></span>
+              <span class="code-window-dot code-window-dot--yellow"></span>
+              <span class="code-window-dot code-window-dot--green"></span>
+              <span class="code-window-filename">app/controllers/invoices_controller.rb</span>
+            </div>
+            <div class="code-window-body">
+              <pre><code><span class="code-keyword">class</span> <span class="code-class">InvoicesController</span> < <span class="code-class">ApplicationController</span>
   <span class="code-keyword">def</span> <span class="code-method">show</span>
     invoice = <span class="code-class">Invoice</span>.find(params[<span class="code-symbol">:id</span>])
     render_resource invoice
@@ -129,41 +166,155 @@
     render_resource invoice, status: <span class="code-symbol">:created</span>
   <span class="code-keyword">end</span>
 <span class="code-keyword">end</span></code></pre>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Output Section -->
-    <section class="example-section">
-      <div class="example-container example-container--wide">
-        <div class="output-header">
-          <h2 class="example-title">Get consistent output everywhere</h2>
-          <p class="example-description">
+    <!-- Feature 4: Get consistent output -->
+    <section class="feature feature--alt">
+      <div class="feature-container feature-container--wide">
+        <div class="feature-content feature-content--centered">
+          <span class="feature-step">04</span>
+          <h2 class="feature-title">
+            Get consistent <span class="accent">output</span> everywhere
+          </h2>
+          <p class="feature-description">
             From a single contract, Apiwork generates OpenAPI documentation,
             TypeScript types, and Zod schemas. Your frontend and backend always
             stay in sync.
           </p>
         </div>
         <div class="output-grid">
-          <div class="output-item">
-            <span class="output-label">TypeScript</span>
-            <pre><code><span class="code-keyword">interface</span> <span class="code-class">Invoice</span> {
+          <div class="code-window">
+            <div class="code-window-header">
+              <span class="code-window-dot code-window-dot--red"></span>
+              <span class="code-window-dot code-window-dot--yellow"></span>
+              <span class="code-window-dot code-window-dot--green"></span>
+              <span class="code-window-filename">types.ts</span>
+            </div>
+            <div class="code-window-body">
+              <pre><code><span class="code-keyword">interface</span> <span class="code-class">Invoice</span> {
   id: <span class="code-type">number</span>;
   number: <span class="code-type">string</span>;
   amount: <span class="code-type">string</span>;
   status: <span class="code-string">'draft'</span> | <span class="code-string">'sent'</span> | <span class="code-string">'paid'</span>;
   dueDate: <span class="code-type">string</span>;
 }</code></pre>
+            </div>
           </div>
-          <div class="output-item">
-            <span class="output-label text-zod">Zod</span>
-            <pre><code><span class="code-keyword">const</span> InvoiceSchema = z.object({
+          <div class="code-window">
+            <div class="code-window-header">
+              <span class="code-window-dot code-window-dot--red"></span>
+              <span class="code-window-dot code-window-dot--yellow"></span>
+              <span class="code-window-dot code-window-dot--green"></span>
+              <span class="code-window-filename">schemas.ts</span>
+            </div>
+            <div class="code-window-body">
+              <pre><code><span class="code-keyword">const</span> InvoiceSchema = z.object({
   id: z.number(),
   number: z.string(),
   amount: z.string(),
   status: z.enum([<span class="code-string">'draft'</span>, <span class="code-string">'sent'</span>, <span class="code-string">'paid'</span>]),
   dueDate: z.string(),
 });</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- More Features Section -->
+    <section class="more-features">
+      <div class="more-features-container">
+        <div class="more-features-header">
+          <h2 class="more-features-title">And so much more</h2>
+          <p class="more-features-subtitle">
+            Everything you need to build production-ready APIs
+          </p>
+        </div>
+        <div class="more-features-grid">
+          <div class="more-feature-card">
+            <h3 class="more-feature-name">Rich Filtering</h3>
+            <p class="more-feature-desc">
+              Filter by any attribute with operators like eq, gt, lt, contains,
+              between, and more.
+            </p>
+          </div>
+          <div class="more-feature-card">
+            <h3 class="more-feature-name">Multi-field Sorting</h3>
+            <p class="more-feature-desc">
+              Sort by multiple fields with priority ordering and nested
+              association support.
+            </p>
+          </div>
+          <div class="more-feature-card">
+            <h3 class="more-feature-name">Offset Pagination</h3>
+            <p class="more-feature-desc">
+              Traditional page-based pagination with total counts and page
+              metadata.
+            </p>
+          </div>
+          <div class="more-feature-card">
+            <h3 class="more-feature-name">Cursor Pagination</h3>
+            <p class="more-feature-desc">
+              Efficient cursor-based pagination for large datasets without total
+              counts.
+            </p>
+          </div>
+          <div class="more-feature-card">
+            <h3 class="more-feature-name">Eager Loading</h3>
+            <p class="more-feature-desc">
+              Automatic N+1 query prevention with smart association preloading.
+            </p>
+          </div>
+          <div class="more-feature-card">
+            <h3 class="more-feature-name">STI Support</h3>
+            <p class="more-feature-desc">
+              Single Table Inheritance with automatic type inference and
+              discriminated unions.
+            </p>
+          </div>
+          <div class="more-feature-card">
+            <h3 class="more-feature-name">Polymorphic</h3>
+            <p class="more-feature-desc">
+              Full polymorphic association support with discriminated union type
+              generation.
+            </p>
+          </div>
+          <div class="more-feature-card">
+            <h3 class="more-feature-name">Nested Resources</h3>
+            <p class="more-feature-desc">
+              Deep association traversal with circular reference prevention.
+            </p>
+          </div>
+          <div class="more-feature-card">
+            <h3 class="more-feature-name">i18n Ready</h3>
+            <p class="more-feature-desc">
+              Localized error messages, descriptions, and multi-language
+              documentation.
+            </p>
+          </div>
+          <div class="more-feature-card">
+            <h3 class="more-feature-name">Error Handling</h3>
+            <p class="more-feature-desc">
+              Structured, machine-readable errors with codes, paths, and
+              detailed messages.
+            </p>
+          </div>
+          <div class="more-feature-card">
+            <h3 class="more-feature-name">Key Transform</h3>
+            <p class="more-feature-desc">
+              Automatic key case conversion between camelCase and snake_case.
+            </p>
+          </div>
+          <div class="more-feature-card">
+            <h3 class="more-feature-name">Partial Updates</h3>
+            <p class="more-feature-desc">
+              PATCH operations with automatically generated partial types for
+              updates.
+            </p>
           </div>
         </div>
       </div>
@@ -205,11 +356,33 @@
 }
 
 .hero-title .highlight {
-  color: color-mix(in srgb, var(--color-brand) 80%, transparent);
+  background: linear-gradient(
+    90deg,
+    var(--color-brand) 0%,
+    var(--color-brand-dark) 25%,
+    var(--color-brand-light) 50%,
+    var(--color-brand-dark) 75%,
+    var(--color-brand) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 12s ease-in-out infinite;
 }
 
 .dark .hero-title .highlight {
-  color: color-mix(in srgb, var(--color-brand) 90%, transparent);
+  filter: drop-shadow(0 2px 12px rgba(239, 68, 68, 0.35));
+}
+
+@keyframes shimmer {
+  0%,
+  100% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
 }
 
 .hero-tagline {
@@ -337,72 +510,177 @@
   transform: scale(1.1);
 }
 
-/* Code Showcase Section */
-.showcase {
-  padding: var(--space-16) var(--space-6);
+/* Feature Sections */
+.feature {
+  padding: 100px 24px;
+  position: relative;
+}
+
+.feature--alt {
   background: linear-gradient(
-    135deg,
-    rgba(255, 250, 250, 0.95) 0%,
-    rgba(254, 242, 242, 0.8) 50%,
-    rgba(254, 235, 235, 0.6) 100%
+    180deg,
+    transparent 0%,
+    rgba(254, 242, 242, 0.4) 50%,
+    transparent 100%
   );
 }
 
-.dark .showcase {
+.dark .feature--alt {
   background: linear-gradient(
-    135deg,
-    rgba(20, 14, 16, 0.95) 0%,
-    rgba(28, 18, 20, 0.8) 50%,
-    rgba(38, 22, 24, 0.6) 100%
+    180deg,
+    transparent 0%,
+    rgba(30, 20, 22, 0.5) 50%,
+    transparent 100%
   );
 }
 
-.showcase-container {
+.feature-container {
   display: grid;
-  grid-template-columns: 1fr 1.5fr;
-  gap: var(--space-12);
-  max-width: 1100px;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 64px;
+  max-width: 1200px;
   margin: 0 auto;
   align-items: center;
 }
 
-.showcase-title {
-  font-size: var(--font-size-2xl);
+.feature--alt .feature-container {
+  direction: rtl;
+}
+
+.feature--alt .feature-container > * {
+  direction: ltr;
+}
+
+.feature-container--wide {
+  grid-template-columns: 1fr;
+  max-width: 1000px;
+}
+
+.feature-container--wide .feature-content {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.feature-content--centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.feature-content--centered .feature-description {
+  text-align: center;
+}
+
+.feature-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-brand);
+  border: 2px solid var(--color-brand);
+  border-radius: 50%;
+  margin-bottom: 20px;
+  opacity: 0.85;
+}
+
+.feature-title {
+  font-size: 2.25rem;
   font-weight: 700;
   color: var(--color-text);
-  margin-bottom: var(--space-4);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin-bottom: 20px;
 }
 
-.showcase-description {
-  font-size: var(--font-size-base);
+.feature-title .accent {
+  color: var(--color-brand);
+}
+
+.feature-description {
+  font-size: 1.1rem;
   color: var(--color-text-muted);
-  line-height: var(--line-height);
+  line-height: 1.7;
+  max-width: 480px;
 }
 
-.showcase-code {
-  background: #272727;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: var(--border-radius-lg);
-  padding: var(--space-6);
-  overflow-x: auto;
-  box-shadow: 0 4px 24px -4px rgba(185, 28, 28, 0.15);
+/* Code Window */
+.code-window {
+  border-radius: 12px;
+  overflow: hidden;
+  background: #1e1e1e;
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.07),
+    0 12px 28px rgba(0, 0, 0, 0.12),
+    0 20px 48px rgba(0, 0, 0, 0.08);
+  transition:
+    transform 400ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 400ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.showcase-code pre {
+.code-window:hover {
+  transform: translateY(-6px) scale(1.005);
+  box-shadow:
+    0 8px 16px rgba(0, 0, 0, 0.1),
+    0 24px 48px rgba(0, 0, 0, 0.15),
+    0 32px 64px rgba(0, 0, 0, 0.1);
+}
+
+.code-window-header {
+  background: #2d2d2d;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.code-window-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.code-window-dot--red {
+  background: #ff5f57;
+}
+
+.code-window-dot--yellow {
+  background: #febc2e;
+}
+
+.code-window-dot--green {
+  background: #28c840;
+}
+
+.code-window-filename {
+  margin-left: auto;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.35);
+  font-family: var(--font-mono);
+}
+
+.code-window-body {
+  padding: 20px 24px;
+}
+
+.code-window-body pre {
   margin: 0;
   background: transparent;
   border: none;
   padding: 0;
 }
 
-.showcase-code code {
+.code-window-body code {
   font-family: var(--font-mono);
-  font-size: var(--font-size-sm);
+  font-size: 0.875rem;
   line-height: 1.7;
   color: #e2e8f0;
 }
 
+/* Code syntax colors */
 .code-class {
   color: #fbbf24;
 }
@@ -423,149 +701,145 @@
   color: #7dd3fc;
 }
 
-/* Example Sections */
-.example-section {
-  padding: var(--space-16) var(--space-6);
-}
-
-.example-section--alt {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 252, 252, 0.9) 0%,
-    rgba(255, 248, 248, 0.7) 50%,
-    rgba(254, 244, 244, 0.5) 100%
-  );
-}
-
-.dark .example-section--alt {
-  background: linear-gradient(
-    135deg,
-    rgba(18, 12, 14, 0.9) 0%,
-    rgba(24, 16, 18, 0.7) 50%,
-    rgba(32, 20, 22, 0.5) 100%
-  );
-}
-
-.example-container {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: var(--space-12);
-  max-width: 1100px;
-  margin: 0 auto;
-  align-items: center;
-}
-
-.example-container--wide {
-  grid-template-columns: 1fr;
-  max-width: 900px;
-}
-
-.example-title {
-  font-size: var(--font-size-2xl);
-  font-weight: 700;
-  color: var(--color-text);
-  margin-bottom: var(--space-4);
-}
-
-.example-description {
-  font-size: var(--font-size-base);
-  color: var(--color-text-muted);
-  line-height: var(--line-height);
-}
-
-.example-code {
-  background: #272727;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: var(--border-radius-lg);
-  padding: var(--space-6);
-  overflow-x: auto;
-  box-shadow: 0 4px 24px -4px rgba(185, 28, 28, 0.15);
-}
-
-.example-code pre {
-  margin: 0;
-  background: transparent;
-  border: none;
-  padding: 0;
-}
-
-.example-code code {
-  font-family: var(--font-mono);
-  font-size: var(--font-size-sm);
-  line-height: 1.7;
-  color: #e2e8f0;
-}
-
-/* Output Grid */
-.output-header {
-  text-align: center;
-  margin-bottom: var(--space-10);
-}
-
-.output-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-6);
-}
-
-.output-item {
-  background: #272727;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: var(--border-radius-lg);
-  padding: var(--space-6);
-  overflow-x: auto;
-  box-shadow: 0 4px 24px -4px rgba(185, 28, 28, 0.15);
-}
-
-.output-item pre {
-  margin: 0;
-  background: transparent;
-  border: none;
-  padding: 0;
-}
-
-.output-item code {
-  font-family: var(--font-mono);
-  font-size: var(--font-size-sm);
-  line-height: 1.7;
-  color: #e2e8f0;
-}
-
-.output-label {
-  display: inline-block;
-  font-size: var(--font-size-xs);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: var(--space-3);
-}
-
 .code-type {
   color: #7dd3fc;
 }
 
+/* Output Grid */
+.output-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+/* More Features Section */
+.more-features {
+  background: #1a1a1a;
+  padding: 100px 24px;
+}
+
+.more-features-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.more-features-header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.more-features-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.03em;
+  margin-bottom: 12px;
+}
+
+.more-features-subtitle {
+  font-size: 1.15rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.more-features-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.more-feature-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 24px;
+  transition:
+    background 300ms,
+    border-color 300ms,
+    transform 300ms;
+}
+
+.more-feature-card:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-3px);
+}
+
+.more-feature-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.more-feature-desc {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.55;
+  margin: 0;
+}
+
 /* Responsive */
-@media (max-width: 768px) {
-  .hero-title {
-    font-size: 2rem;
+@media (max-width: 900px) {
+  .feature {
+    padding: 64px 20px;
   }
 
-  .showcase-container {
+  .feature-container {
     grid-template-columns: 1fr;
+    gap: 40px;
   }
 
-  .example-container {
-    grid-template-columns: 1fr;
+  .feature--alt .feature-container {
+    direction: ltr;
+  }
+
+  .feature-title {
+    font-size: 1.75rem;
+  }
+
+  .feature-description {
+    font-size: 1rem;
   }
 
   .output-grid {
     grid-template-columns: 1fr;
   }
 
+  .more-features {
+    padding: 64px 20px;
+  }
+
+  .more-features-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .more-features-title {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+
   .generators-logos {
     gap: var(--space-8);
+  }
+
+  .code-window-body {
+    padding: 16px;
+  }
+
+  .code-window-body code {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .more-features-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>
