@@ -62,27 +62,34 @@ const route = useRoute();
       </a>
 
       <nav class="nav">
-        <a href="/" class="nav-pill" :class="{ active: route.path === '/' }"
-          >Home</a
-        >
+        <a href="/" class="nav-link" :class="{ active: route.path === '/' }">
+          Home
+          <span class="indicator"></span>
+        </a>
         <a
           href="/guide/getting-started/introduction"
-          class="nav-pill"
+          class="nav-link"
           :class="{ active: /^\/guide\//.test(route.path) }"
-          >Guide</a
         >
+          Guide
+          <span class="indicator"></span>
+        </a>
         <a
           href="/reference/"
-          class="nav-pill"
+          class="nav-link"
           :class="{ active: /^\/reference\//.test(route.path) }"
-          >Reference</a
         >
+          Reference
+          <span class="indicator"></span>
+        </a>
         <a
           href="/blog/"
-          class="nav-pill"
+          class="nav-link"
           :class="{ active: /^\/blog\//.test(route.path) }"
-          >Blog</a
         >
+          Blog
+          <span class="indicator"></span>
+        </a>
       </nav>
 
       <div class="header-actions">
@@ -159,32 +166,41 @@ const route = useRoute();
 
 .nav {
   display: flex;
-  gap: var(--space-1);
+  gap: var(--space-8);
 }
 
-.nav-pill {
-  display: inline-flex;
+.nav-link {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-
-  min-width: 100px;
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-base);
   font-weight: 500;
-  color: #353535;
-  text-decoration: none;
-  padding: var(--space-1) var(--space-6);
-  border-radius: 9999px;
-  transition: background-color 300ms, color 300ms;
-}
-
-.nav-pill:hover {
   color: var(--color-text);
-  background-color: rgba(0, 0, 0, 0.07);
+  text-decoration: none;
+  transition: color 200ms;
+}
+
+.nav-link:hover {
+  color: color-mix(in srgb, var(--color-brand) 80%, transparent);
   text-decoration: none;
 }
 
-.nav-pill.active {
-  background-color: rgba(0, 0, 0, 0.07);
+.nav-link.active {
+  color: color-mix(in srgb, var(--color-brand) 80%, transparent);
+}
+
+.indicator {
+  display: block;
+  width: 100%;
+  height: 2px;
+  margin-top: 4px;
+  background: transparent;
+  border-radius: 2px;
+  transition: background 200ms;
+}
+
+.nav-link.active .indicator {
+  background: color-mix(in srgb, var(--color-brand) 80%, transparent);
 }
 
 .header-actions {
