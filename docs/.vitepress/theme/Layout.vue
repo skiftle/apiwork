@@ -26,32 +26,43 @@ const layoutType = computed(() => {
   <div class="app" :class="{ 'app--home': layoutType === 'home' }">
     <div v-if="layoutType === 'home'" class="home-bg-wrapper">
       <svg class="home-bg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        <!-- Primary: Vivid rose från vänster-nedre -->
-        <g transform="rotate(-8, 15, 120)" class="gradient-rose">
-          <ellipse cx="15" cy="120" rx="130" ry="80" fill-opacity="0.03" />
-          <ellipse cx="15" cy="120" rx="105" ry="65" fill-opacity="0.05" />
-          <ellipse cx="15" cy="120" rx="82" ry="51" fill-opacity="0.07" />
-          <ellipse cx="15" cy="120" rx="60" ry="38" fill-opacity="0.09" />
-          <ellipse cx="15" cy="120" rx="40" ry="25" fill-opacity="0.11" />
-          <ellipse cx="15" cy="120" rx="22" ry="14" fill-opacity="0.14" />
+        <defs>
+          <!-- Bakgrunds-gradient: mjuk rose toning -->
+          <radialGradient id="bg-gradient" cx="20%" cy="80%" r="80%">
+            <stop offset="0%" class="stop-rose" stop-opacity="0.18" />
+            <stop offset="40%" class="stop-rose" stop-opacity="0.08" />
+            <stop offset="100%" class="stop-rose" stop-opacity="0" />
+          </radialGradient>
+        </defs>
+        <!-- Bakgrund: mjuk gradient -->
+        <rect x="0" y="0" width="100" height="100" fill="url(#bg-gradient)" />
+        <!-- Mjukare cirklar ovanpå -->
+        <!-- Rose: vänster-nedre -->
+        <g transform="rotate(-8, 15, 120)" class="solid-rose">
+          <ellipse cx="15" cy="120" rx="130" ry="80" fill-opacity="0.02" />
+          <ellipse cx="15" cy="120" rx="105" ry="65" fill-opacity="0.03" />
+          <ellipse cx="15" cy="120" rx="82" ry="51" fill-opacity="0.04" />
+          <ellipse cx="15" cy="120" rx="60" ry="38" fill-opacity="0.05" />
+          <ellipse cx="15" cy="120" rx="40" ry="25" fill-opacity="0.07" />
+          <ellipse cx="15" cy="120" rx="22" ry="14" fill-opacity="0.09" />
         </g>
-        <!-- Secondary: Electric coral från höger-övre -->
-        <g transform="rotate(12, 100, -15)" class="gradient-coral">
-          <ellipse cx="100" cy="-15" rx="95" ry="60" fill-opacity="0.03" />
-          <ellipse cx="100" cy="-15" rx="72" ry="45" fill-opacity="0.05" />
-          <ellipse cx="100" cy="-15" rx="50" ry="32" fill-opacity="0.07" />
-          <ellipse cx="100" cy="-15" rx="30" ry="19" fill-opacity="0.10" />
+        <!-- Coral: höger-övre -->
+        <g transform="rotate(12, 100, -15)" class="solid-coral">
+          <ellipse cx="100" cy="-15" rx="95" ry="60" fill-opacity="0.02" />
+          <ellipse cx="100" cy="-15" rx="72" ry="45" fill-opacity="0.04" />
+          <ellipse cx="100" cy="-15" rx="50" ry="32" fill-opacity="0.06" />
+          <ellipse cx="100" cy="-15" rx="30" ry="19" fill-opacity="0.08" />
         </g>
-        <!-- Tertiary: Deep magenta från mitten-höger -->
-        <g transform="rotate(-6, 115, 55)" class="gradient-magenta">
-          <ellipse cx="115" cy="55" rx="75" ry="48" fill-opacity="0.025" />
-          <ellipse cx="115" cy="55" rx="52" ry="33" fill-opacity="0.04" />
-          <ellipse cx="115" cy="55" rx="32" ry="20" fill-opacity="0.06" />
+        <!-- Magenta: mitten-höger -->
+        <g transform="rotate(-6, 115, 55)" class="solid-magenta">
+          <ellipse cx="115" cy="55" rx="75" ry="48" fill-opacity="0.015" />
+          <ellipse cx="115" cy="55" rx="52" ry="33" fill-opacity="0.03" />
+          <ellipse cx="115" cy="55" rx="32" ry="20" fill-opacity="0.05" />
         </g>
-        <!-- Accent: Hot pink glow top-left -->
-        <g transform="rotate(8, 0, 5)" class="gradient-pink">
-          <ellipse cx="0" cy="5" rx="50" ry="38" fill-opacity="0.025" />
-          <ellipse cx="0" cy="5" rx="30" ry="23" fill-opacity="0.045" />
+        <!-- Pink: topp-vänster -->
+        <g transform="rotate(8, 0, 5)" class="solid-pink">
+          <ellipse cx="0" cy="5" rx="50" ry="38" fill-opacity="0.02" />
+          <ellipse cx="0" cy="5" rx="30" ry="23" fill-opacity="0.04" />
         </g>
       </svg>
     </div>
@@ -94,16 +105,21 @@ const layoutType = computed(() => {
   z-index: 1;
 }
 
-/* P3 wide-gamut colors - Vivid rose/coral palette */
-.gradient-rose { fill: #e11d48; }
-.gradient-coral { fill: #ff6b4a; }
-.gradient-magenta { fill: #c026d3; }
-.gradient-pink { fill: #ec4899; }
+/* P3 wide-gamut colors */
+/* Gradient stop (bakgrund) */
+.stop-rose { stop-color: #e11d48; }
+
+/* Solida fills (skarpa cirklar) */
+.solid-rose { fill: #e11d48; }
+.solid-coral { fill: #ff6b4a; }
+.solid-magenta { fill: #c026d3; }
+.solid-pink { fill: #ec4899; }
 
 @supports (color: color(display-p3 1 0 0)) {
-  .gradient-rose { fill: color(display-p3 0.92 0.12 0.32); }
-  .gradient-coral { fill: color(display-p3 1 0.45 0.30); }
-  .gradient-magenta { fill: color(display-p3 0.80 0.15 0.85); }
-  .gradient-pink { fill: color(display-p3 0.95 0.30 0.62); }
+  .stop-rose { stop-color: color(display-p3 0.92 0.12 0.32); }
+  .solid-rose { fill: color(display-p3 0.92 0.12 0.32); }
+  .solid-coral { fill: color(display-p3 1 0.45 0.30); }
+  .solid-magenta { fill: color(display-p3 0.80 0.15 0.85); }
+  .solid-pink { fill: color(display-p3 0.95 0.30 0.62); }
 }
 </style>
