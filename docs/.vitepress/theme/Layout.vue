@@ -51,10 +51,12 @@ const layoutType = computed(() => {
   top: 0;
   left: 0;
   width: 100%;
-  height: 650px;
+  height: 700px;
   overflow: hidden;
   z-index: 0;
   pointer-events: none;
+  mask-image: linear-gradient(to bottom, black 0%, black 85%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 85%, transparent 100%);
 }
 
 .app--home > :not(.home-bg-wrapper) {

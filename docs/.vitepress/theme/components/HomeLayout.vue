@@ -297,7 +297,7 @@
 /* Generators Section */
 .generators {
   text-align: center;
-  padding: var(--space-16) var(--space-6);
+  padding: var(--space-8) var(--space-6) var(--space-16);
 }
 
 .generators-text {
@@ -326,13 +326,21 @@
 /* Code Showcase Section */
 .showcase {
   padding: var(--space-16) var(--space-6);
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(20px) saturate(1.2);
-  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 250, 250, 0.95) 0%,
+    rgba(254, 242, 242, 0.8) 50%,
+    rgba(254, 235, 235, 0.6) 100%
+  );
 }
 
 .dark .showcase {
-  background: rgba(15, 23, 42, 0.4);
+  background: linear-gradient(
+    135deg,
+    rgba(20, 14, 16, 0.95) 0%,
+    rgba(28, 18, 20, 0.8) 50%,
+    rgba(38, 22, 24, 0.6) 100%
+  );
 }
 
 .showcase-container {
@@ -358,12 +366,13 @@
 }
 
 .showcase-code {
-  background: rgba(30, 41, 59, 0.9);
+  background: rgba(31, 20, 24, 0.95);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: var(--border-radius-lg);
   padding: var(--space-6);
   overflow-x: auto;
+  box-shadow: 0 4px 24px -4px rgba(185, 28, 28, 0.15);
 }
 
 .showcase-code pre {
@@ -406,7 +415,21 @@
 }
 
 .example-section--alt {
-  background: var(--color-bg-soft);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 252, 252, 0.9) 0%,
+    rgba(255, 248, 248, 0.7) 50%,
+    rgba(254, 244, 244, 0.5) 100%
+  );
+}
+
+.dark .example-section--alt {
+  background: linear-gradient(
+    135deg,
+    rgba(18, 12, 14, 0.9) 0%,
+    rgba(24, 16, 18, 0.7) 50%,
+    rgba(32, 20, 22, 0.5) 100%
+  );
 }
 
 .example-container {
@@ -437,12 +460,13 @@
 }
 
 .example-code {
-  background: rgba(30, 41, 59, 0.9);
+  background: rgba(31, 20, 24, 0.95);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: var(--border-radius-lg);
   padding: var(--space-6);
   overflow-x: auto;
+  box-shadow: 0 4px 24px -4px rgba(185, 28, 28, 0.15);
 }
 
 .example-code pre {
@@ -472,12 +496,13 @@
 }
 
 .output-item {
-  background: rgba(30, 41, 59, 0.9);
+  background: rgba(31, 20, 24, 0.95);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: var(--border-radius-lg);
   padding: var(--space-6);
   overflow-x: auto;
+  box-shadow: 0 4px 24px -4px rgba(185, 28, 28, 0.15);
 }
 
 .output-item pre {

@@ -109,18 +109,18 @@ function isActive(item: (typeof navItems)[0]) {
   text-decoration: none;
   padding: var(--space-1) var(--space-6);
   border-radius: 9999px;
-  transition: all var(--transition-fast);
+  transition: background-color 300ms, color 300ms;
 }
 
 .nav-pill:hover {
   color: var(--color-text);
-  background: var(--color-bg-soft);
+  background-color: rgba(0, 0, 0, 0.07);
   text-decoration: none;
 }
 
 .nav-pill.active {
   color: var(--color-brand);
-  background: var(--color-bg-soft);
+  background-color: rgba(104, 98, 98, 0.062);
 }
 
 .nav-badge {
