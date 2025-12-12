@@ -42,6 +42,7 @@
     margin-bottom: var(--space-6);
     text-shadow: 0 1px 2px var(--color-overlay-4), 0 4px 16px var(--color-brand-8),
       0 8px 40px var(--color-brand-15);
+    animation: hero-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 
     .dark & {
       color: var(--color-text);
@@ -64,6 +65,8 @@
     color: var(--color-text-body);
     letter-spacing: -0.01em;
     margin-bottom: var(--space-10);
+    opacity: 0;
+    animation: hero-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
 
     .dark & {
       color: var(--color-text-muted);
@@ -81,6 +84,8 @@
     justify-content: center;
     gap: var(--space-4);
     flex-wrap: wrap;
+    opacity: 0;
+    animation: hero-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
   }
 
   .btn {
@@ -160,6 +165,17 @@
         box-shadow: 0 1px 1px var(--color-brand-10);
       }
     }
+  }
+}
+
+@keyframes hero-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 </style>

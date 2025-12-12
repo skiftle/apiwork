@@ -71,7 +71,7 @@
   --color-code-bg: #fafafa;
   --color-code-header: #f0f0f0;
   --color-code-header-border: rgba(0, 0, 0, 0.1);
-  --color-code-border: rgba(0, 0, 0, 0.08);
+  --color-code-border: rgba(0, 0, 0, 0.02);
   --color-code-filename: rgba(0, 0, 0, 0.4);
 
   /* Syntax highlighting - Light mode */
@@ -128,7 +128,7 @@
   /* Layout */
   --sidebar-width: 280px;
   --content-max-width: 768px;
-  --header-height: 60px;
+  --header-height: 80px;
   --border-radius: 6px;
   --border-radius-lg: 8px;
 

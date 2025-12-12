@@ -19,19 +19,12 @@ function toggle() {
   >
     <span class="switch-track">
       <span class="switch-thumb">
-        <svg v-if="isDark" class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+        <svg v-if="isDark" class="icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
         </svg>
-        <svg v-else class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="5" />
-          <line x1="12" y1="1" x2="12" y2="3" />
-          <line x1="12" y1="21" x2="12" y2="23" />
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-          <line x1="1" y1="12" x2="3" y2="12" />
-          <line x1="21" y1="12" x2="23" y2="12" />
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+        <svg v-else class="icon" viewBox="0 0 24 24" fill="currentColor">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none" />
         </svg>
       </span>
     </span>
@@ -43,23 +36,31 @@ function toggle() {
   position: relative;
   display: flex;
   align-items: center;
-  width: 40px;
-  height: 22px;
-  padding: 0;
-  border: 1px solid var(--color-border);
-  border-radius: 11px;
-  background: var(--color-bg-soft);
+  width: 52px;
+  height: 28px;
+  padding: 3px;
+  border: none;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.12);
   cursor: pointer;
-  transition: border-color var(--transition-fast), background var(--transition-fast);
-}
+  transition: background 200ms;
 
-.theme-switch:hover {
-  border-color: var(--color-brand);
-}
+  .dark & {
+    background: rgba(255, 255, 255, 0.1);
+  }
 
-.theme-switch:focus-visible {
-  outline: 2px solid var(--color-brand);
-  outline-offset: 2px;
+  &:hover {
+    background: rgba(0, 0, 0, 0.16);
+
+    .dark & {
+      background: rgba(255, 255, 255, 0.14);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-brand-70);
+    outline-offset: 2px;
+  }
 }
 
 .switch-track {
@@ -70,24 +71,26 @@ function toggle() {
 
 .switch-thumb {
   position: absolute;
-  top: 1px;
-  left: 1px;
+  top: 0;
+  left: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
-  background: var(--color-bg);
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.25s ease;
-}
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 
-.dark .switch-thumb {
-  transform: translateX(18px);
+  .dark & {
+    transform: translateX(24px);
+  }
 }
 
 .icon {
   color: var(--color-text-muted);
+  width: 14px;
+  height: 14px;
 }
 </style>

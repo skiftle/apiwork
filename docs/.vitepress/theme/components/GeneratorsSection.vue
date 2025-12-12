@@ -35,6 +35,8 @@
 .generators {
   text-align: center;
   padding: var(--space-8) var(--space-6) var(--space-16);
+  opacity: 0;
+  animation: hero-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
 
   .text {
     font-size: var(--font-size-lg);
@@ -66,6 +68,17 @@
     &:hover {
       transform: scale(1.1);
     }
+  }
+}
+
+@keyframes hero-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 </style>
