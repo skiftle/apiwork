@@ -1,4 +1,29 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { onMounted, onUnmounted } from 'vue'
+
+let observer: IntersectionObserver | null = null
+
+onMounted(() => {
+  observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible')
+        }
+      })
+    },
+    { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+  )
+
+  document.querySelectorAll('.animate-on-scroll').forEach((el) => {
+    observer?.observe(el)
+  })
+})
+
+onUnmounted(() => {
+  observer?.disconnect()
+})
+</script>
 
 <template>
   <div class="home-layout">
@@ -59,11 +84,18 @@
     </section>
 
     <!-- Feature 1: Describe it once -->
-    <section class="feature">
+    <section class="feature animate-on-scroll">
       <div class="feature-container">
         <div class="feature-content">
           <span class="feature-step">01</span>
           <h2 class="feature-title">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10 9 9 9 8 9"/>
+            </svg>
             Describe it <span class="accent">once</span>
           </h2>
           <p class="feature-description">
@@ -97,11 +129,16 @@
     </section>
 
     <!-- Feature 2: Define your contract -->
-    <section class="feature feature--alt">
+    <section class="feature feature--alt animate-on-scroll">
       <div class="feature-container">
         <div class="feature-content">
           <span class="feature-step">02</span>
           <h2 class="feature-title">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <line x1="3" y1="9" x2="21" y2="9"/>
+              <line x1="9" y1="21" x2="9" y2="9"/>
+            </svg>
             Define your <span class="accent">contract</span>
           </h2>
           <p class="feature-description">
@@ -135,11 +172,15 @@
     </section>
 
     <!-- Feature 3: Use it in your controller -->
-    <section class="feature">
+    <section class="feature animate-on-scroll">
       <div class="feature-container">
         <div class="feature-content">
           <span class="feature-step">03</span>
           <h2 class="feature-title">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="16 18 22 12 16 6"/>
+              <polyline points="8 6 2 12 8 18"/>
+            </svg>
             Use it in your <span class="accent">controller</span>
           </h2>
           <p class="feature-description">
@@ -177,11 +218,16 @@
     </section>
 
     <!-- Feature 4: Get consistent output -->
-    <section class="feature feature--alt">
+    <section class="feature feature--alt animate-on-scroll">
       <div class="feature-container feature-container--wide">
         <div class="feature-content feature-content--centered">
           <span class="feature-step">04</span>
           <h2 class="feature-title">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+              <line x1="12" y1="22.08" x2="12" y2="12"/>
+            </svg>
             Get consistent <span class="accent">output</span> everywhere
           </h2>
           <p class="feature-description">
@@ -229,9 +275,12 @@
       </div>
     </section>
 
+    <!-- Transition to dark -->
+    <div class="section-transition"></div>
+
     <!-- More Features Section -->
     <section class="more-features">
-      <div class="more-features-container">
+      <div class="more-features-container animate-on-scroll">
         <div class="more-features-header">
           <h2 class="more-features-title">And so much more</h2>
           <p class="more-features-subtitle">
@@ -549,18 +598,20 @@
 }
 
 .feature-step {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: var(--color-brand);
-  border: 2px solid var(--color-brand);
-  border-radius: 50%;
-  margin-bottom: 12px;
-  opacity: 0.85;
+  display: inline-block;
+  font-size: 4rem;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  background: linear-gradient(
+    135deg,
+    rgba(185, 28, 28, 0.15) 0%,
+    rgba(185, 28, 28, 0.05) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 16px;
+  line-height: 1;
 }
 
 .feature-title {
@@ -575,6 +626,16 @@
 
 .feature-title .accent {
   color: var(--color-brand);
+}
+
+.feature-icon {
+  width: 32px;
+  height: 32px;
+  color: var(--color-brand);
+  opacity: 0.7;
+  margin-right: 12px;
+  vertical-align: middle;
+  margin-top: -4px;
 }
 
 .feature-description {
@@ -683,6 +744,19 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
+}
+
+/* Section Transition */
+.section-transition {
+  height: 200px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(19, 19, 19, 0.3) 30%,
+    rgba(19, 19, 19, 0.7) 60%,
+    #131313 100%
+  );
+  position: relative;
 }
 
 /* More Features Section */
@@ -893,5 +967,30 @@
   .more-feature-card:last-child {
     border-bottom: none;
   }
+}
+
+/* Scroll Animations */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.animate-on-scroll .feature-code {
+  opacity: 0;
+  transform: translateY(20px) scale(0.98);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s,
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+}
+
+.animate-on-scroll.is-visible .feature-code {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 </style>
