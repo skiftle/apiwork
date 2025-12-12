@@ -205,47 +205,47 @@ onUnmounted(() => {
   min-height: calc(100vh - var(--header-height));
 
   .code-class {
-    color: var(--color-syntax-class);
+    color: var(--shiki-token-constant);
   }
 
   .code-method {
-    color: var(--color-syntax-method);
+    color: var(--shiki-token-function);
   }
 
   .code-string {
-    color: var(--color-syntax-string);
+    color: var(--shiki-token-string);
   }
 
   .code-keyword {
-    color: var(--color-syntax-keyword);
+    color: var(--shiki-token-keyword);
   }
 
   .code-symbol {
-    color: var(--color-syntax-symbol);
+    color: var(--shiki-token-parameter);
   }
 
   .code-type {
-    color: var(--color-syntax-type);
+    color: var(--shiki-token-keyword);
   }
 
   .code-variable {
-    color: var(--color-syntax-variable);
+    color: var(--shiki-token-function);
   }
 
   .code-function {
-    color: var(--color-syntax-function);
+    color: var(--shiki-token-function);
   }
 
   .code-property {
-    color: var(--color-syntax-property);
+    color: var(--shiki-token-constant);
   }
 
   .code-number {
-    color: var(--color-syntax-number);
+    color: var(--shiki-token-constant);
   }
 
   .code-punctuation {
-    color: var(--color-syntax-punctuation);
+    color: var(--shiki-token-punctuation);
   }
 }
 

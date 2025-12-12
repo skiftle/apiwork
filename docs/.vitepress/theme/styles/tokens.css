@@ -199,20 +199,6 @@
   --color-code-border: rgba(255, 255, 255, 0.06);
   --color-code-filename: rgba(255, 255, 255, 0.35);
 
-  /* Syntax highlighting - Dark mode */
-  --color-syntax-class: #fbbf24;
-  --color-syntax-method: #60a5fa;
-  --color-syntax-string: #a5d6a7;
-  --color-syntax-keyword: #f472b6;
-  --color-syntax-symbol: #7dd3fc;
-  --color-syntax-type: #7dd3fc;
-  --color-syntax-text: #e4e4e7;
-  --color-syntax-variable: #93c5fd;
-  --color-syntax-function: #c4b5fd;
-  --color-syntax-property: #fca5a5;
-  --color-syntax-number: #fdba74;
-  --color-syntax-punctuation: #9ca3af;
-
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
   --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.3);
 }

@@ -104,7 +104,7 @@ defineProps<{
   font-family: var(--font-mono);
   font-size: 0.875rem;
   line-height: 1.7;
-  color: var(--color-syntax-text);
+  color: var(--shiki-foreground);
   background: transparent;
   padding: 0;
 }
