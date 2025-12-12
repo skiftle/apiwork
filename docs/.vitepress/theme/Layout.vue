@@ -47,16 +47,14 @@ const layoutType = computed(() => {
 }
 
 .home-bg-wrapper {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 700px;
+  height: 100vh;
   overflow: hidden;
   z-index: 0;
   pointer-events: none;
-  mask-image: linear-gradient(to bottom, black 0%, black 85%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 85%, transparent 100%);
 }
 
 .app--home > main,

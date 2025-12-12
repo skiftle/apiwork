@@ -33,6 +33,7 @@ h5,
 h6 {
   font-weight: 600;
   line-height: var(--line-height-tight);
+  letter-spacing: -0.015em;
   color: var(--color-text);
 }
 

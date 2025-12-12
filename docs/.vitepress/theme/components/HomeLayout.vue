@@ -116,7 +116,9 @@
               <span class="code-window-dot code-window-dot--red"></span>
               <span class="code-window-dot code-window-dot--yellow"></span>
               <span class="code-window-dot code-window-dot--green"></span>
-              <span class="code-window-filename">app/contracts/invoice_contract.rb</span>
+              <span class="code-window-filename"
+                >app/contracts/invoice_contract.rb</span
+              >
             </div>
             <div class="code-window-body">
               <pre><code><span class="code-keyword">class</span> <span class="code-class">InvoiceContract</span> < <span class="code-class">Apiwork</span>::<span class="code-class">Contract</span>
@@ -152,7 +154,9 @@
               <span class="code-window-dot code-window-dot--red"></span>
               <span class="code-window-dot code-window-dot--yellow"></span>
               <span class="code-window-dot code-window-dot--green"></span>
-              <span class="code-window-filename">app/controllers/invoices_controller.rb</span>
+              <span class="code-window-filename"
+                >app/controllers/invoices_controller.rb</span
+              >
             </div>
             <div class="code-window-body">
               <pre><code><span class="code-keyword">class</span> <span class="code-class">InvoicesController</span> < <span class="code-class">ApplicationController</span>
@@ -343,7 +347,6 @@
   font-weight: 600;
   color: rgba(17, 24, 39, 0.94);
   line-height: 1.08;
-  letter-spacing: -0.04em;
   margin-bottom: var(--space-6);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(185, 28, 28, 0.08),
     0 8px 40px rgba(252, 208, 208, 0.4);
@@ -356,7 +359,7 @@
 }
 
 .hero-title .highlight {
-  color: var(--color-brand);
+  color: color-mix(in srgb, var(--color-brand) 80%, transparent 20%);
 }
 
 .hero-tagline {
@@ -586,20 +589,15 @@
   border-radius: 12px;
   overflow: hidden;
   background: #1e1e1e;
-  box-shadow:
-    0 4px 6px rgba(0, 0, 0, 0.07),
-    0 12px 28px rgba(0, 0, 0, 0.12),
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07), 0 12px 28px rgba(0, 0, 0, 0.12),
     0 20px 48px rgba(0, 0, 0, 0.08);
-  transition:
-    transform 400ms cubic-bezier(0.16, 1, 0.3, 1),
+  transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 400ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .code-window:hover {
   transform: translateY(-6px) scale(1.005);
-  box-shadow:
-    0 8px 16px rgba(0, 0, 0, 0.1),
-    0 24px 48px rgba(0, 0, 0, 0.15),
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 24px 48px rgba(0, 0, 0, 0.15),
     0 32px 64px rgba(0, 0, 0, 0.1);
 }
 
@@ -695,13 +693,18 @@
 }
 
 .more-features::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
 }
 
 .more-features-container {
