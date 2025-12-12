@@ -8,7 +8,7 @@ const route = useRoute();
 
 <template>
   <header class="app-header">
-    <div class="header-container">
+    <div class="container">
       <a href="/" class="logo">
         <svg
           width="46px"
@@ -42,17 +42,17 @@ const route = useRoute();
             </g>
           </g>
         </svg>
-        <span class="logo-text">{{ site.title }}</span>
+        <span class="text">{{ site.title }}</span>
       </a>
 
       <nav class="nav">
-        <a href="/" class="nav-link" :class="{ active: route.path === '/' }">
+        <a href="/" class="link" :class="{ active: route.path === '/' }">
           Home
           <span class="indicator"></span>
         </a>
         <a
           href="/guide/getting-started/introduction"
-          class="nav-link"
+          class="link"
           :class="{ active: /^\/guide\//.test(route.path) }"
         >
           Guide
@@ -60,7 +60,7 @@ const route = useRoute();
         </a>
         <a
           href="/reference/"
-          class="nav-link"
+          class="link"
           :class="{ active: /^\/reference\//.test(route.path) }"
         >
           Reference
@@ -68,7 +68,7 @@ const route = useRoute();
         </a>
         <a
           href="/blog/"
-          class="nav-link"
+          class="link"
           :class="{ active: /^\/blog\//.test(route.path) }"
         >
           Blog
@@ -76,7 +76,7 @@ const route = useRoute();
         </a>
       </nav>
 
-      <div class="header-actions">
+      <div class="actions">
         <ThemeSwitch />
         <a
           href="https://github.com/skiftle/apiwork"
@@ -106,109 +106,106 @@ const route = useRoute();
   backdrop-filter: blur(18px) saturate(180%);
   -webkit-backdrop-filter: blur(18px) saturate(180%);
   border-bottom: 1px solid var(--color-border-light);
+
+  .dark & {
+    border-bottom-color: rgba(255, 255, 255, 0.04);
+  }
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1400px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 var(--space-6);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-weight: 600;
+    font-size: var(--font-size-lg);
+    color: var(--color-text);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--color-brand-70);
+      text-decoration: none;
+    }
+
+    .icon {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+
+    .layer-top {
+      fill: url(#grad-top);
+    }
+
+    .layer-mid {
+      fill: url(#grad-mid);
+    }
+
+    .layer-bottom {
+      fill: url(#grad-bottom);
+    }
+  }
+
+  .nav {
+    display: flex;
+    gap: var(--space-8);
+
+    .link {
+      position: relative;
+      font-size: var(--font-size-base);
+      font-weight: 600;
+      color: var(--color-text);
+      text-decoration: none;
+      transition: color 200ms;
+
+      &:hover {
+        color: var(--color-brand-70);
+        text-decoration: none;
+      }
+
+      &.active {
+        color: var(--color-brand-70);
+
+        .indicator {
+          background: var(--color-brand-70);
+        }
+      }
+
+      .indicator {
+        position: absolute;
+        display: block;
+        width: 100%;
+        height: 2px;
+        background: transparent;
+        border-radius: 2px;
+        transition: background 200ms;
+      }
+    }
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .github-link {
+    display: flex;
+    align-items: center;
+    color: var(--color-text-muted);
+    transition: color 200ms;
+
+    &:hover {
+      color: var(--color-text);
+    }
+  }
 }
-
-.dark .app-header {
-  border-bottom-color: rgba(255, 255, 255, 0.04);
-}
-
-.header-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 1400px;
-  height: 100%;
-  margin: 0 auto;
-  padding: 0 var(--space-6);
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-weight: 600;
-  font-size: var(--font-size-lg);
-  color: var(--color-text);
-  text-decoration: none;
-}
-
-.logo:hover {
-  color: var(--color-brand-70);
-  text-decoration: none;
-}
-
-.logo-icon {
-  width: 22px;
-  height: 22px;
-  flex-shrink: 0;
-}
-
-.layer-top {
-  fill: url(#grad-top);
-}
-
-.layer-mid {
-  fill: url(#grad-mid);
-}
-
-.layer-bottom {
-  fill: url(#grad-bottom);
-}
-
-.nav {
-  display: flex;
-  gap: var(--space-8);
-}
-
-.nav-link {
-  position: relative;
-  font-size: var(--font-size-base);
-  font-weight: 600;
-  color: var(--color-text);
-  text-decoration: none;
-  transition: color 200ms;
-}
-
-.nav-link:hover {
-  color: var(--color-brand-70);
-  text-decoration: none;
-}
-
-.nav-link.active {
-  color: var(--color-brand-70);
-}
-
-.indicator {
-  position: absolute;
-  display: block;
-  width: 100%;
-  height: 2px;
-
-  background: transparent;
-  border-radius: 2px;
-  transition: background 200ms;
-}
-
-.nav-link.active .indicator {
-  background: var(--color-brand-70);
-}
-
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-}
-
-.github-link {
-  display: flex;
-  align-items: center;
-  color: var(--color-text-muted);
-  transition: color 200ms;
-}
-
-.github-link:hover {
-  color: var(--color-text);
-}
-
-/* TODO: Add responsive styles */
 </style>

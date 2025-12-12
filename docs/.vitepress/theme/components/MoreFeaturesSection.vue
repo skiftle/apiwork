@@ -3,9 +3,9 @@ import FeatureCard from "./FeatureCard.vue";
 </script>
 
 <template>
-  <div class="section-curve-wrapper">
+  <div class="curve-wrapper">
     <svg
-      class="section-curve"
+      class="curve"
       viewBox="0 0 1440 120"
       preserveAspectRatio="none"
     >
@@ -17,14 +17,14 @@ import FeatureCard from "./FeatureCard.vue";
   </div>
 
   <section class="more-features">
-    <div class="more-features-container">
-      <div class="more-features-header">
-        <h2 class="more-features-title">And so much more</h2>
-        <p class="more-features-subtitle">
+    <div class="container">
+      <div class="header">
+        <h2 class="title">And so much more</h2>
+        <p class="subtitle">
           Everything you need to build production-ready APIs
         </p>
       </div>
-      <div class="more-features-grid">
+      <div class="grid">
         <FeatureCard
           name="Rich Filtering"
           description="Filter by any attribute with operators like eq, gt, lt, contains, between, and more."
@@ -146,15 +146,15 @@ import FeatureCard from "./FeatureCard.vue";
 </template>
 
 <style scoped>
-.section-curve-wrapper {
+.curve-wrapper {
   color: var(--color-bg-dark-section);
-}
 
-.section-curve {
-  display: block;
-  width: 100%;
-  height: 120px;
-  margin-bottom: -1px;
+  .curve {
+    display: block;
+    width: 100%;
+    height: 120px;
+    margin-bottom: -1px;
+  }
 }
 
 .more-features {
@@ -163,39 +163,73 @@ import FeatureCard from "./FeatureCard.vue";
   overflow: hidden;
   background: var(--color-bg-dark-section);
   border-bottom: 1px solid rgba(255, 255, 255, 0.02);
-}
 
-.more-features-container {
-  position: relative;
-  z-index: 1;
-  max-width: 1100px;
-  margin: 0 auto;
-}
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
 
-.more-features-header {
-  text-align: center;
-  margin-bottom: 64px;
-}
+  .header {
+    text-align: center;
+    margin-bottom: 64px;
+  }
 
-.more-features-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  margin-bottom: 16px;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.7) 0%,
-    rgba(170, 175, 185, 0.6) 20%,
-    rgba(255, 255, 255, 1) 40%,
-    rgba(170, 175, 185, 0.6) 60%,
-    rgba(255, 255, 255, 0.7) 80%,
-    rgba(170, 175, 185, 0.6) 100%
-  );
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shimmer 8s ease-in-out infinite;
+  .title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.7) 0%,
+      rgba(170, 175, 185, 0.6) 20%,
+      rgba(255, 255, 255, 1) 40%,
+      rgba(170, 175, 185, 0.6) 60%,
+      rgba(255, 255, 255, 0.7) 80%,
+      rgba(170, 175, 185, 0.6) 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 8s ease-in-out infinite;
+  }
+
+  .subtitle {
+    font-size: 1.125rem;
+    color: rgba(255, 255, 255, 0.5);
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media (max-width: 900px) {
+    padding: 80px 20px;
+
+    .header {
+      margin-bottom: 48px;
+    }
+
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .title {
+      font-size: 2rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
 }
 
 @keyframes shimmer {
@@ -207,42 +241,6 @@ import FeatureCard from "./FeatureCard.vue";
   45%,
   55% {
     background-position: 0% 0;
-  }
-}
-
-.more-features-subtitle {
-  font-size: 1.125rem;
-  color: rgba(255, 255, 255, 0.5);
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-.more-features-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-}
-
-@media (max-width: 900px) {
-  .more-features {
-    padding: 80px 20px;
-  }
-
-  .more-features-header {
-    margin-bottom: 48px;
-  }
-
-  .more-features-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .more-features-title {
-    font-size: 2rem;
-  }
-}
-
-@media (max-width: 600px) {
-  .more-features-grid {
-    grid-template-columns: 1fr;
   }
 }
 </style>

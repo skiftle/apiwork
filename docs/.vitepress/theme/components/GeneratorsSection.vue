@@ -1,11 +1,11 @@
 <template>
   <section class="generators">
-    <p class="generators-text">
+    <p class="text">
       Built-in generators for
       <strong>OpenAPI</strong>, <strong>TypeScript</strong>, and
       <strong>Zod</strong>
     </p>
-    <div class="generators-logos">
+    <div class="logos">
       <div class="logo-item">
         <svg viewBox="0 0 24 24" width="48" height="48" fill="#6BA539">
           <path
@@ -35,40 +35,38 @@
 .generators {
   text-align: center;
   padding: var(--space-8) var(--space-6) var(--space-16);
-}
 
-.generators-text {
-  font-size: var(--font-size-xl);
-  font-weight: 500;
-  color: var(--color-text);
-  margin-bottom: var(--space-10);
-}
+  .text {
+    font-size: var(--font-size-xl);
+    font-weight: 500;
+    color: var(--color-text);
+    margin-bottom: var(--space-10);
 
-.generators-text strong {
-  font-weight: 600;
-  color: var(--color-brand-70);
-}
+    strong {
+      font-weight: 600;
+      color: var(--color-brand-70);
+    }
+  }
 
-.generators-logos {
-  display: flex;
-  justify-content: center;
-  gap: var(--space-12);
-  flex-wrap: wrap;
-}
+  .logos {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-12);
+    flex-wrap: wrap;
 
-.logo-item {
-  display: flex;
-  align-items: center;
-  transition: transform 200ms;
-}
+    @media (max-width: 768px) {
+      gap: var(--space-8);
+    }
+  }
 
-.logo-item:hover {
-  transform: scale(1.1);
-}
+  .logo-item {
+    display: flex;
+    align-items: center;
+    transition: transform 200ms;
 
-@media (max-width: 768px) {
-  .generators-logos {
-    gap: var(--space-8);
+    &:hover {
+      transform: scale(1.1);
+    }
   }
 }
 </style>

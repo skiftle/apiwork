@@ -38,7 +38,7 @@
   /* Code windows - Light theme */
   --color-code-bg: #fafafa;
   --color-code-header: #f0f0f0;
-  --color-code-header-border: rgba(0, 0, 0, 0.06);
+  --color-code-header-border: rgba(0, 0, 0, 0.1);
   --color-code-border: rgba(0, 0, 0, 0.08);
   --color-code-filename: rgba(0, 0, 0, 0.4);
 
@@ -50,6 +50,11 @@
   --color-syntax-symbol: #0891b2;
   --color-syntax-type: #0891b2;
   --color-syntax-text: #1f2937;
+  --color-syntax-variable: #1e40af;
+  --color-syntax-function: #7c3aed;
+  --color-syntax-property: #b91c1c;
+  --color-syntax-number: #c2410c;
+  --color-syntax-punctuation: #6b7280;
 
   /* Hero gradient */
   --color-hero-gradient-start: var(--color-brand-15);
@@ -61,8 +66,10 @@
   --gradient-color-4: #fde2e2;
 
   /* Typography */
-  --font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', 'Source Code Pro', Menlo, monospace;
+  --font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "Source Code Pro",
+    Menlo, monospace;
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
   --font-size-base: 1rem;
@@ -131,7 +138,11 @@
   --color-bg-dark-section: #140a0b;
 
   /* Hero gradient - dark mode */
-  --color-hero-gradient-start: color-mix(in srgb, var(--color-brand), transparent 80%);
+  --color-hero-gradient-start: color-mix(
+    in srgb,
+    var(--color-brand),
+    transparent 80%
+  );
 
   /* Mesh gradient colors - dark mode (inverted, dark coral) */
   --gradient-color-1: #100909;
@@ -140,8 +151,8 @@
   --gradient-color-4: #241414;
 
   /* Code windows - Dark theme */
-  --color-code-bg: #18181b;
-  --color-code-header: #27272a;
+  --color-code-bg: #1a1214;
+  --color-code-header: #241a1c;
   --color-code-header-border: rgba(255, 255, 255, 0.06);
   --color-code-border: rgba(255, 255, 255, 0.06);
   --color-code-filename: rgba(255, 255, 255, 0.35);
@@ -154,6 +165,11 @@
   --color-syntax-symbol: #7dd3fc;
   --color-syntax-type: #7dd3fc;
   --color-syntax-text: #e4e4e7;
+  --color-syntax-variable: #93c5fd;
+  --color-syntax-function: #c4b5fd;
+  --color-syntax-property: #fca5a5;
+  --color-syntax-number: #fdba74;
+  --color-syntax-punctuation: #9ca3af;
 
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
   --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.3);

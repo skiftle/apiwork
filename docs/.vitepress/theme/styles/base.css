@@ -9,6 +9,11 @@
   padding: 0;
 }
 
+/* Selection */
+::selection {
+  background: var(--color-brand-30);
+}
+
 html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;

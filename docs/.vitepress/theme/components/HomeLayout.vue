@@ -53,12 +53,12 @@ onUnmounted(() => {
       <template #title>Describe it <span class="accent">once</span></template>
       <template #code>
         <CodeWindow filename="config/apis/invoices.rb">
-          <pre><code><span class="code-class">Apiwork</span>::<span class="code-class">API</span>.<span class="code-method">draw</span> <span class="code-string">'/api/v1'</span> <span class="code-keyword">do</span>
-  key_format <span class="code-symbol">:camel</span>
+          <pre><code><span class="code-class">Apiwork</span><span class="code-punctuation">::</span><span class="code-class">API</span><span class="code-punctuation">.</span><span class="code-function">draw</span> <span class="code-string">'/api/v1'</span> <span class="code-keyword">do</span>
+  <span class="code-function">key_format</span> <span class="code-symbol">:camel</span>
 
-  resources <span class="code-symbol">:invoices</span> <span class="code-keyword">do</span>
-    member <span class="code-keyword">do</span>
-      patch <span class="code-symbol">:archive</span>
+  <span class="code-function">resources</span> <span class="code-symbol">:invoices</span> <span class="code-keyword">do</span>
+    <span class="code-function">member</span> <span class="code-keyword">do</span>
+      <span class="code-function">patch</span> <span class="code-symbol">:archive</span>
     <span class="code-keyword">end</span>
   <span class="code-keyword">end</span>
 <span class="code-keyword">end</span></code></pre>
@@ -83,12 +83,12 @@ onUnmounted(() => {
       <template #title>Define your <span class="accent">contract</span></template>
       <template #code>
         <CodeWindow filename="app/contracts/invoice_contract.rb">
-          <pre><code><span class="code-keyword">class</span> <span class="code-class">InvoiceContract</span> < <span class="code-class">Apiwork</span>::<span class="code-class">Contract</span>
-  attribute <span class="code-symbol">:id</span>, <span class="code-class">Integer</span>
-  attribute <span class="code-symbol">:number</span>, <span class="code-class">String</span>
-  attribute <span class="code-symbol">:amount</span>, <span class="code-class">BigDecimal</span>
-  attribute <span class="code-symbol">:status</span>, <span class="code-class">String</span>, enum: <span class="code-symbol">%w[draft sent paid]</span>
-  attribute <span class="code-symbol">:due_date</span>, <span class="code-class">Date</span>
+          <pre><code><span class="code-keyword">class</span> <span class="code-class">InvoiceContract</span> <span class="code-punctuation">&lt;</span> <span class="code-class">Apiwork</span><span class="code-punctuation">::</span><span class="code-class">Contract</span>
+  <span class="code-function">attribute</span> <span class="code-symbol">:id</span><span class="code-punctuation">,</span> <span class="code-class">Integer</span>
+  <span class="code-function">attribute</span> <span class="code-symbol">:number</span><span class="code-punctuation">,</span> <span class="code-class">String</span>
+  <span class="code-function">attribute</span> <span class="code-symbol">:amount</span><span class="code-punctuation">,</span> <span class="code-class">BigDecimal</span>
+  <span class="code-function">attribute</span> <span class="code-symbol">:status</span><span class="code-punctuation">,</span> <span class="code-class">String</span><span class="code-punctuation">,</span> <span class="code-symbol">enum:</span> <span class="code-symbol">%w[draft sent paid]</span>
+  <span class="code-function">attribute</span> <span class="code-symbol">:due_date</span><span class="code-punctuation">,</span> <span class="code-class">Date</span>
 <span class="code-keyword">end</span></code></pre>
         </CodeWindow>
       </template>
@@ -109,15 +109,15 @@ onUnmounted(() => {
       <template #title>Use it in your <span class="accent">controller</span></template>
       <template #code>
         <CodeWindow filename="app/controllers/invoices_controller.rb">
-          <pre><code><span class="code-keyword">class</span> <span class="code-class">InvoicesController</span> < <span class="code-class">ApplicationController</span>
+          <pre><code><span class="code-keyword">class</span> <span class="code-class">InvoicesController</span> <span class="code-punctuation">&lt;</span> <span class="code-class">ApplicationController</span>
   <span class="code-keyword">def</span> <span class="code-method">show</span>
-    invoice = <span class="code-class">Invoice</span>.find(params[<span class="code-symbol">:id</span>])
-    render_resource invoice
+    <span class="code-variable">invoice</span> <span class="code-punctuation">=</span> <span class="code-class">Invoice</span><span class="code-punctuation">.</span><span class="code-function">find</span><span class="code-punctuation">(</span><span class="code-variable">params</span><span class="code-punctuation">[</span><span class="code-symbol">:id</span><span class="code-punctuation">])</span>
+    <span class="code-function">respond_with</span> <span class="code-variable">invoice</span>
   <span class="code-keyword">end</span>
 
   <span class="code-keyword">def</span> <span class="code-method">create</span>
-    invoice = <span class="code-class">Invoice</span>.create!(resource_params)
-    render_resource invoice, status: <span class="code-symbol">:created</span>
+    <span class="code-variable">invoice</span> <span class="code-punctuation">=</span> <span class="code-class">Invoice</span><span class="code-punctuation">.</span><span class="code-function">create!</span><span class="code-punctuation">(</span><span class="code-function">resource_params</span><span class="code-punctuation">)</span>
+    <span class="code-function">respond_with</span> <span class="code-variable">invoice</span><span class="code-punctuation">,</span> <span class="code-symbol">status:</span> <span class="code-symbol">:created</span>
   <span class="code-keyword">end</span>
 <span class="code-keyword">end</span></code></pre>
         </CodeWindow>
@@ -142,22 +142,22 @@ onUnmounted(() => {
       <template #title>Get consistent <span class="accent">output</span> everywhere</template>
       <template #code>
         <CodeWindow filename="types.ts">
-          <pre><code><span class="code-keyword">interface</span> <span class="code-class">Invoice</span> {
-  id: <span class="code-type">number</span>;
-  number: <span class="code-type">string</span>;
-  amount: <span class="code-type">string</span>;
-  status: <span class="code-string">'draft'</span> | <span class="code-string">'sent'</span> | <span class="code-string">'paid'</span>;
-  dueDate: <span class="code-type">string</span>;
-}</code></pre>
+          <pre><code><span class="code-keyword">interface</span> <span class="code-class">Invoice</span> <span class="code-punctuation">{</span>
+  <span class="code-property">id</span><span class="code-punctuation">:</span> <span class="code-type">number</span><span class="code-punctuation">;</span>
+  <span class="code-property">number</span><span class="code-punctuation">:</span> <span class="code-type">string</span><span class="code-punctuation">;</span>
+  <span class="code-property">amount</span><span class="code-punctuation">:</span> <span class="code-type">string</span><span class="code-punctuation">;</span>
+  <span class="code-property">status</span><span class="code-punctuation">:</span> <span class="code-string">'draft'</span> <span class="code-punctuation">|</span> <span class="code-string">'sent'</span> <span class="code-punctuation">|</span> <span class="code-string">'paid'</span><span class="code-punctuation">;</span>
+  <span class="code-property">dueDate</span><span class="code-punctuation">:</span> <span class="code-type">string</span><span class="code-punctuation">;</span>
+<span class="code-punctuation">}</span></code></pre>
         </CodeWindow>
         <CodeWindow filename="schemas.ts">
-          <pre><code><span class="code-keyword">const</span> InvoiceSchema = z.object({
-  id: z.number(),
-  number: z.string(),
-  amount: z.string(),
-  status: z.enum([<span class="code-string">'draft'</span>, <span class="code-string">'sent'</span>, <span class="code-string">'paid'</span>]),
-  dueDate: z.string(),
-});</code></pre>
+          <pre><code><span class="code-keyword">const</span> <span class="code-variable">InvoiceSchema</span> <span class="code-punctuation">=</span> <span class="code-variable">z</span><span class="code-punctuation">.</span><span class="code-function">object</span><span class="code-punctuation">({</span>
+  <span class="code-property">id</span><span class="code-punctuation">:</span> <span class="code-variable">z</span><span class="code-punctuation">.</span><span class="code-function">number</span><span class="code-punctuation">(),</span>
+  <span class="code-property">number</span><span class="code-punctuation">:</span> <span class="code-variable">z</span><span class="code-punctuation">.</span><span class="code-function">string</span><span class="code-punctuation">(),</span>
+  <span class="code-property">amount</span><span class="code-punctuation">:</span> <span class="code-variable">z</span><span class="code-punctuation">.</span><span class="code-function">string</span><span class="code-punctuation">(),</span>
+  <span class="code-property">status</span><span class="code-punctuation">:</span> <span class="code-variable">z</span><span class="code-punctuation">.</span><span class="code-function">enum</span><span class="code-punctuation">([</span><span class="code-string">'draft'</span><span class="code-punctuation">,</span> <span class="code-string">'sent'</span><span class="code-punctuation">,</span> <span class="code-string">'paid'</span><span class="code-punctuation">]),</span>
+  <span class="code-property">dueDate</span><span class="code-punctuation">:</span> <span class="code-variable">z</span><span class="code-punctuation">.</span><span class="code-function">string</span><span class="code-punctuation">(),</span>
+<span class="code-punctuation">});</span></code></pre>
         </CodeWindow>
       </template>
     </FeatureSection>
@@ -169,54 +169,72 @@ onUnmounted(() => {
 <style scoped>
 .home-layout {
   min-height: calc(100vh - var(--header-height));
+
+  .code-class {
+    color: var(--color-syntax-class);
+  }
+
+  .code-method {
+    color: var(--color-syntax-method);
+  }
+
+  .code-string {
+    color: var(--color-syntax-string);
+  }
+
+  .code-keyword {
+    color: var(--color-syntax-keyword);
+  }
+
+  .code-symbol {
+    color: var(--color-syntax-symbol);
+  }
+
+  .code-type {
+    color: var(--color-syntax-type);
+  }
+
+  .code-variable {
+    color: var(--color-syntax-variable);
+  }
+
+  .code-function {
+    color: var(--color-syntax-function);
+  }
+
+  .code-property {
+    color: var(--color-syntax-property);
+  }
+
+  .code-number {
+    color: var(--color-syntax-number);
+  }
+
+  .code-punctuation {
+    color: var(--color-syntax-punctuation);
+  }
 }
 
-/* Code syntax colors */
-.code-class {
-  color: var(--color-syntax-class);
-}
-
-.code-method {
-  color: var(--color-syntax-method);
-}
-
-.code-string {
-  color: var(--color-syntax-string);
-}
-
-.code-keyword {
-  color: var(--color-syntax-keyword);
-}
-
-.code-symbol {
-  color: var(--color-syntax-symbol);
-}
-
-.code-type {
-  color: var(--color-syntax-type);
-}
-
-/* Scroll Animations */
 .animate-on-scroll {
   opacity: 0;
   transform: translateY(40px);
   transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.animate-on-scroll.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.animate-on-scroll :deep(.feature-code) {
+.animate-on-scroll :deep(.code) {
   opacity: 0;
   transform: translateY(20px) scale(0.98);
   transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s,
     transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
 }
 
-.animate-on-scroll.is-visible :deep(.feature-code) {
+.animate-on-scroll.is-visible :deep(.code) {
   opacity: 1;
   transform: translateY(0) scale(1);
 }

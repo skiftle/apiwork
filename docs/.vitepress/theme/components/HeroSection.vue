@@ -1,17 +1,17 @@
 <template>
   <section class="hero">
-    <div class="hero-container">
-      <h1 class="hero-title">
+    <div class="container">
+      <h1 class="title">
         The modern API layer for <span class="highlight">Rails</span>
       </h1>
-      <p class="hero-tagline">
+      <p class="tagline">
         Define your API <em>once</em> — consistency and type-safety everywhere
       </p>
-      <div class="hero-actions">
-        <a href="/guide/examples" class="btn btn-outline">Examples</a>
-        <a href="/guide/getting-started/introduction" class="btn btn-primary">
+      <div class="actions">
+        <a href="/guide/examples" class="btn outline">Examples</a>
+        <a href="/guide/getting-started/introduction" class="btn primary">
           Getting Started
-          <svg class="btn-icon" viewBox="0 0 20 20" fill="currentColor">
+          <svg class="icon" viewBox="0 0 20 20" fill="currentColor">
             <path
               fill-rule="evenodd"
               d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
@@ -28,137 +28,134 @@
 .hero {
   text-align: center;
   padding: var(--space-16) var(--space-6);
-}
 
-.hero-container {
-  max-width: 800px;
-  margin: 0 auto;
-}
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
 
-.hero-title {
-  font-size: 3.5rem;
-  font-weight: 600;
-  color: rgba(17, 24, 39, 0.94);
-  line-height: 1.08;
-  margin-bottom: var(--space-6);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px var(--color-brand-8),
-    0 8px 40px rgba(252, 208, 208, 0.4);
-}
+  .title {
+    font-size: 3.5rem;
+    font-weight: 600;
+    color: rgba(17, 24, 39, 0.94);
+    line-height: 1.08;
+    margin-bottom: var(--space-6);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px var(--color-brand-8),
+      0 8px 40px rgba(252, 208, 208, 0.4);
 
-.dark .hero-title {
-  color: var(--color-text);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 4px 16px rgba(239, 68, 68, 0.12),
-    0 8px 40px rgba(61, 32, 32, 0.5);
-}
+    .dark & {
+      color: var(--color-text);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 4px 16px rgba(239, 68, 68, 0.12),
+        0 8px 40px rgba(61, 32, 32, 0.5);
+    }
 
-.hero-title .highlight {
-  color: var(--color-brand-70);
-}
+    .highlight {
+      color: var(--color-brand-70);
+    }
 
-.hero-tagline {
-  font-size: 1.35rem;
-  font-weight: 500;
-  color: rgba(17, 24, 39, 0.75);
-  letter-spacing: -0.01em;
-  margin-bottom: var(--space-10);
-}
+    @media (max-width: 768px) {
+      font-size: 2rem;
+    }
+  }
 
-.dark .hero-tagline {
-  color: var(--color-text-muted);
-}
+  .tagline {
+    font-size: 1.35rem;
+    font-weight: 500;
+    color: rgba(17, 24, 39, 0.75);
+    letter-spacing: -0.01em;
+    margin-bottom: var(--space-10);
 
-.hero-tagline em {
-  font-style: normal;
-  color: var(--color-brand-70);
-  font-weight: 600;
-}
+    .dark & {
+      color: var(--color-text-muted);
+    }
 
-.hero-actions {
-  display: flex;
-  justify-content: center;
-  gap: var(--space-4);
-  flex-wrap: wrap;
-}
+    em {
+      font-style: normal;
+      color: var(--color-brand-70);
+      font-weight: 600;
+    }
+  }
 
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-6);
-  font-size: var(--font-size-base);
-  font-weight: 500;
-  text-decoration: none;
-  border-radius: 9999px;
-  transition: all 200ms;
-  cursor: pointer;
-  user-select: none;
-  min-width: 160px;
-}
+  .actions {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
 
-.btn-icon {
-  width: 0.85em;
-  height: 0.85em;
-  transition: transform 200ms;
-}
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-6);
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 9999px;
+    transition: all 200ms;
+    cursor: pointer;
+    user-select: none;
+    min-width: 160px;
 
-.btn:hover .btn-icon {
-  transform: translateX(2px);
-}
+    .icon {
+      width: 0.85em;
+      height: 0.85em;
+      transition: transform 200ms;
+    }
 
-.btn-outline {
-  background: rgba(255, 255, 255, 0.8);
-  color: var(--color-text);
-  box-shadow: 0 8px 18px 0 rgba(0, 0, 0, 0.06);
-  border-radius: 20.5px;
-}
+    &:hover .icon {
+      transform: translateX(2px);
+    }
 
-.btn-outline:hover {
-  background: rgba(255, 255, 255, 0.9);
-  text-decoration: none;
-  box-shadow: 0 12px 22px 0 rgba(0, 0, 0, 0.06);
-  transform: translateY(-1px);
-}
+    &.outline {
+      background: rgba(255, 255, 255, 0.8);
+      color: var(--color-text);
+      box-shadow: 0 8px 18px 0 rgba(0, 0, 0, 0.06);
+      border-radius: 20.5px;
 
-.btn-outline:active {
-  transform: translateY(1px);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
-}
+      &:hover {
+        background: rgba(255, 255, 255, 0.9);
+        text-decoration: none;
+        box-shadow: 0 12px 22px 0 rgba(0, 0, 0, 0.06);
+        transform: translateY(-1px);
+      }
 
-.dark .btn-outline {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--color-text);
-  border: 1px solid var(--color-border);
-  box-shadow: 0 8px 18px 0 rgba(0, 0, 0, 0.2);
-}
+      &:active {
+        transform: translateY(1px);
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+      }
 
-.dark .btn-outline:hover {
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 12px 22px 0 rgba(0, 0, 0, 0.25);
-}
+      .dark & {
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--color-text);
+        border: 1px solid var(--color-border);
+        box-shadow: 0 8px 18px 0 rgba(0, 0, 0, 0.2);
 
-.btn-primary {
-  color: rgba(255, 255, 255, 0.9);
-  background-color: var(--color-brand-70);
-  box-shadow: 0 8px 18px 0 var(--color-brand-10);
-  border-radius: 9999px;
-}
+        &:hover {
+          background: rgba(255, 255, 255, 0.08);
+          box-shadow: 0 12px 22px 0 rgba(0, 0, 0, 0.25);
+        }
+      }
+    }
 
-.btn-primary:hover {
-  text-decoration: none;
-  box-shadow: 0 1px 2px var(--color-brand-10),
-    0 4px 10px -2px var(--color-brand-18);
-  transform: translateY(-1px);
-}
+    &.primary {
+      color: rgba(255, 255, 255, 0.9);
+      background-color: var(--color-brand-70);
+      box-shadow: 0 8px 18px 0 var(--color-brand-10);
 
-.btn-primary:active {
-  transform: translateY(1px);
-  box-shadow: 0 1px 1px var(--color-brand-10);
-}
+      &:hover {
+        text-decoration: none;
+        box-shadow: 0 1px 2px var(--color-brand-10),
+          0 4px 10px -2px var(--color-brand-18);
+        transform: translateY(-1px);
+      }
 
-@media (max-width: 768px) {
-  .hero-title {
-    font-size: 2rem;
+      &:active {
+        transform: translateY(1px);
+        box-shadow: 0 1px 1px var(--color-brand-10);
+      }
+    }
   }
 }
 </style>
