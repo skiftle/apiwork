@@ -32,8 +32,8 @@
   --color-typescript: #3178c6;
   --color-zod: #3b82f6;
 
-  /* Dark sections (footer, more-features) - same in light mode */
-  --color-bg-dark-section: #131313;
+  /* Dark sections (footer, more-features) - subtle red-black */
+  --color-bg-dark-section: #140a0b;
 
   /* Code windows - Light theme */
   --color-code-bg: #fafafa;
