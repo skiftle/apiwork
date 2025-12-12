@@ -10,9 +10,9 @@
   --color-border-light: #f3f4f6;
 
   /* Brand colors - Red (P3 wide gamut) */
-  --color-brand: color(display-p3 0.95 0.1 0.1);
-  --color-brand-light: color(display-p3 0.98 0.3 0.3);
-  --color-brand-dark: color(display-p3 0.8 0.08 0.08);
+  --color-brand: color(display-p3 0.9 0.05 0.05);
+  --color-brand-light: color(display-p3 0.95 0.25 0.25);
+  --color-brand-dark: color(display-p3 0.75 0.04 0.04);
 
   /* Brand with opacity (för glows, shadows, etc) */
   --color-brand-5: color-mix(in srgb, var(--color-brand) 5%, transparent);
@@ -96,9 +96,9 @@
   --color-border-light: #1e293b;
 
   /* Brand colors - Red for dark mode (P3 wide gamut) */
-  --color-brand: color(display-p3 0.98 0.3 0.3);
-  --color-brand-light: color(display-p3 1 0.45 0.45);
-  --color-brand-dark: color(display-p3 0.9 0.18 0.18);
+  --color-brand: color(display-p3 0.95 0.27 0.27);
+  --color-brand-light: color(display-p3 0.98 0.45 0.45);
+  --color-brand-dark: color(display-p3 0.88 0.15 0.15);
 
   /* Hero gradient - dark mode */
   --color-hero-gradient-start: color-mix(in srgb, var(--color-brand) 20%, transparent);
