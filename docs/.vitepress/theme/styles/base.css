@@ -289,12 +289,16 @@ div[class*="language-"] > .lang {
   position: absolute;
   top: var(--space-2);
   right: var(--space-3);
+  z-index: 2;
   font-size: var(--font-size-xs);
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.5);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  z-index: 2;
+  padding: var(--space-1) var(--space-2);
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  user-select: none;
   pointer-events: none;
   transition: opacity var(--transition-fast);
 }
@@ -304,19 +308,19 @@ div[class*="language-"] > .copy {
   position: absolute;
   top: var(--space-2);
   right: var(--space-3);
-  width: 32px;
-  height: 32px;
+  z-index: 3;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--border-radius);
-  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.06);
   color: rgba(255, 255, 255, 0.5);
   cursor: pointer;
   opacity: 0;
   transition: all var(--transition-fast);
-  z-index: 3;
 }
 
 div[class*="language-"]:hover > .copy {
@@ -347,23 +351,12 @@ div[class*="language-"] pre {
 div[class*="language-"] .shiki,
 .shiki {
   padding: var(--space-4);
-  padding-top: var(--space-10);
-  background: var(--color-code-bg);
+  background: var(--shiki-background);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: var(--border-radius);
   overflow-x: auto;
   font-size: var(--font-size-sm);
   line-height: 1.6;
-}
-
-/* Shiki color variables */
-html:not(.dark) .shiki span {
-  color: var(--shiki-light, inherit);
-}
-
-html.dark .shiki span,
-.dark .shiki span {
-  color: var(--shiki-dark, inherit);
 }
 
 /* Empty line fix */

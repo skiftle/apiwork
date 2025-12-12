@@ -74,19 +74,17 @@
   --color-code-border: rgba(0, 0, 0, 0.08);
   --color-code-filename: rgba(0, 0, 0, 0.4);
 
-  /* Syntax highlighting - Light mode */
-  --color-syntax-class: #b45309;
-  --color-syntax-method: #2563eb;
-  --color-syntax-string: #16a34a;
-  --color-syntax-keyword: #c026d3;
-  --color-syntax-symbol: #0891b2;
-  --color-syntax-type: #0891b2;
-  --color-syntax-text: #1f2937;
-  --color-syntax-variable: #1e40af;
-  --color-syntax-function: #7c3aed;
-  --color-syntax-property: #b91c1c;
-  --color-syntax-number: #c2410c;
-  --color-syntax-punctuation: #6b7280;
+  /* Shiki css-variables theme (P3 wide gamut) */
+  --shiki-foreground: #e4e4e7;
+  --shiki-background: #1a1214;
+  --shiki-token-constant: color(display-p3 0.99 0.73 0.45);
+  --shiki-token-string: color(display-p3 0.4 0.95 0.6);
+  --shiki-token-comment: #6b7280;
+  --shiki-token-keyword: color(display-p3 0.65 0.55 0.98);
+  --shiki-token-parameter: color(display-p3 0.99 0.83 0.3);
+  --shiki-token-function: color(display-p3 0.75 0.7 0.99);
+  --shiki-token-string-expression: color(display-p3 0.4 0.95 0.6);
+  --shiki-token-punctuation: #9ca3af;
 
   /* Hero gradient */
   --color-hero-gradient-start: var(--color-brand-15);
