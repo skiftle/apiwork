@@ -37,14 +37,13 @@
   padding: var(--space-8) var(--space-6) var(--space-16);
 
   .text {
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-lg);
     font-weight: 500;
-    color: var(--color-text);
+    color: var(--color-text-muted);
     margin-bottom: var(--space-10);
 
     strong {
       font-weight: 600;
-      color: var(--color-brand-70);
     }
   }
 
