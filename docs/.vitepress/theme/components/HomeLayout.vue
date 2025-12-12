@@ -276,7 +276,9 @@ onUnmounted(() => {
     </section>
 
     <!-- Transition to dark -->
-    <div class="section-transition"></div>
+    <svg class="section-curve" viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <path d="M0,120 C480,20 960,20 1440,120 L1440,120 L0,120 Z" fill="#131313"/>
+    </svg>
 
     <!-- More Features Section -->
     <section class="more-features">
@@ -746,17 +748,12 @@ onUnmounted(() => {
   gap: 24px;
 }
 
-/* Section Transition */
-.section-transition {
-  height: 200px;
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    rgba(19, 19, 19, 0.3) 30%,
-    rgba(19, 19, 19, 0.7) 60%,
-    #131313 100%
-  );
-  position: relative;
+/* Section Curve */
+.section-curve {
+  display: block;
+  width: 100%;
+  height: 120px;
+  margin-bottom: -1px;
 }
 
 /* More Features Section */
