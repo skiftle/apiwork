@@ -2,6 +2,10 @@
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 
 const props = defineProps({
+  colors: {
+    type: Array,
+    default: null
+  },
   amplitude: {
     type: Number,
     default: 200
@@ -16,7 +20,10 @@ const canvas = ref(null)
 let gradient = null
 let themeObserver = null
 
-function getColorsFromCSS() {
+function getColors() {
+  if (props.colors && props.colors.length >= 4) {
+    return props.colors
+  }
   const style = getComputedStyle(document.documentElement)
   return [
     style.getPropertyValue('--gradient-color-1').trim() || '#fef7f7',
@@ -27,8 +34,8 @@ function getColorsFromCSS() {
 }
 
 function handleThemeChange() {
-  if (gradient) {
-    gradient.updateColors(getColorsFromCSS())
+  if (gradient && !props.colors) {
+    gradient.updateColors(getColors())
   }
 }
 
@@ -43,7 +50,7 @@ onMounted(async () => {
   const { Gradient } = await import('../lib/gradient')
 
   gradient = new Gradient({
-    colors: getColorsFromCSS(),
+    colors: getColors(),
     amplitude: props.amplitude,
     speed: props.speed
   })
