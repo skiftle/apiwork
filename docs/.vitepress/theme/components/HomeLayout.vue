@@ -295,6 +295,9 @@ onUnmounted(() => {
         </div>
         <div class="more-features-grid">
           <div class="more-feature-card">
+            <svg class="more-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+            </svg>
             <h3 class="more-feature-name">Rich Filtering</h3>
             <p class="more-feature-desc">
               Filter by any attribute with operators like eq, gt, lt, contains,
@@ -302,6 +305,10 @@ onUnmounted(() => {
             </p>
           </div>
           <div class="more-feature-card">
+            <svg class="more-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"/>
+              <polyline points="19 12 12 19 5 12"/>
+            </svg>
             <h3 class="more-feature-name">Multi-field Sorting</h3>
             <p class="more-feature-desc">
               Sort by multiple fields with priority ordering and nested
@@ -309,6 +316,11 @@ onUnmounted(() => {
             </p>
           </div>
           <div class="more-feature-card">
+            <svg class="more-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <line x1="3" y1="9" x2="21" y2="9"/>
+              <line x1="3" y1="15" x2="21" y2="15"/>
+            </svg>
             <h3 class="more-feature-name">Offset Pagination</h3>
             <p class="more-feature-desc">
               Traditional page-based pagination with total counts and page
@@ -316,6 +328,10 @@ onUnmounted(() => {
             </p>
           </div>
           <div class="more-feature-card">
+            <svg class="more-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
             <h3 class="more-feature-name">Cursor Pagination</h3>
             <p class="more-feature-desc">
               Efficient cursor-based pagination for large datasets without total
@@ -323,12 +339,21 @@ onUnmounted(() => {
             </p>
           </div>
           <div class="more-feature-card">
+            <svg class="more-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
             <h3 class="more-feature-name">Eager Loading</h3>
             <p class="more-feature-desc">
               Automatic N+1 query prevention with smart association preloading.
             </p>
           </div>
           <div class="more-feature-card">
+            <svg class="more-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="6" y1="3" x2="6" y2="15"/>
+              <circle cx="18" cy="6" r="3"/>
+              <circle cx="6" cy="18" r="3"/>
+              <path d="M18 9a9 9 0 0 1-9 9"/>
+            </svg>
             <h3 class="more-feature-name">STI Support</h3>
             <p class="more-feature-desc">
               Single Table Inheritance with automatic type inference and
@@ -336,6 +361,12 @@ onUnmounted(() => {
             </p>
           </div>
           <div class="more-feature-card">
+            <svg class="more-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"/>
+              <rect x="14" y="3" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/>
+              <rect x="3" y="14" width="7" height="7"/>
+            </svg>
             <h3 class="more-feature-name">Polymorphic</h3>
             <p class="more-feature-desc">
               Full polymorphic association support with discriminated union type
@@ -343,12 +374,22 @@ onUnmounted(() => {
             </p>
           </div>
           <div class="more-feature-card">
+            <svg class="more-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+              <line x1="12" y1="11" x2="12" y2="17"/>
+              <line x1="9" y1="14" x2="15" y2="14"/>
+            </svg>
             <h3 class="more-feature-name">Nested Resources</h3>
             <p class="more-feature-desc">
               Deep association traversal with circular reference prevention.
             </p>
           </div>
           <div class="more-feature-card">
+            <svg class="more-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="2" y1="12" x2="22" y2="12"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
             <h3 class="more-feature-name">i18n Ready</h3>
             <p class="more-feature-desc">
               Localized error messages, descriptions, and multi-language
@@ -356,6 +397,11 @@ onUnmounted(() => {
             </p>
           </div>
           <div class="more-feature-card">
+            <svg class="more-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+              <line x1="12" y1="9" x2="12" y2="13"/>
+              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
             <h3 class="more-feature-name">Error Handling</h3>
             <p class="more-feature-desc">
               Structured, machine-readable errors with codes, paths, and
@@ -363,12 +409,21 @@ onUnmounted(() => {
             </p>
           </div>
           <div class="more-feature-card">
+            <svg class="more-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="23 4 23 10 17 10"/>
+              <polyline points="1 20 1 14 7 14"/>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+            </svg>
             <h3 class="more-feature-name">Key Transform</h3>
             <p class="more-feature-desc">
               Automatic key case conversion between camelCase and snake_case.
             </p>
           </div>
           <div class="more-feature-card">
+            <svg class="more-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
             <h3 class="more-feature-name">Partial Updates</h3>
             <p class="more-feature-desc">
               PATCH operations with automatically generated partial types for
@@ -852,7 +907,6 @@ onUnmounted(() => {
   border-bottom: 1px solid rgba(255, 255, 255, 0.02);
 }
 
-
 .more-features-container {
   position: relative;
   z-index: 1;
@@ -925,6 +979,14 @@ onUnmounted(() => {
 
 .more-feature-card:hover {
   background: rgba(255, 255, 255, 0.03);
+}
+
+.more-feature-icon {
+  width: 20px;
+  height: 20px;
+  color: rgba(185, 28, 28, 0.6);
+  margin-bottom: 12px;
+  stroke-width: 1.5;
 }
 
 .more-feature-name {
