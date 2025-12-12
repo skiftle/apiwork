@@ -458,7 +458,7 @@ onUnmounted(() => {
   color: rgba(17, 24, 39, 0.94);
   line-height: 1.08;
   margin-bottom: var(--space-6);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(185, 28, 28, 0.08),
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px var(--color-brand-8),
     0 8px 40px rgba(252, 208, 208, 0.4);
 }
 
@@ -545,21 +545,21 @@ onUnmounted(() => {
 
 .btn-primary {
   color: rgba(255, 255, 255, 0.9);
-  background-color: rgba(227, 15, 15, 0.8);
-  box-shadow: 0 8px 18px 0 rgba(227, 15, 15, 0.1);
+  background-color: color-mix(in srgb, var(--color-brand) 80%, transparent);
+  box-shadow: 0 8px 18px 0 var(--color-brand-10);
   border-radius: 9999px;
 }
 
 .btn-primary:hover {
   text-decoration: none;
-  box-shadow: 0 1px 2px rgba(185, 28, 28, 0.1),
-    0 4px 10px -2px rgba(185, 28, 28, 0.18);
+  box-shadow: 0 1px 2px var(--color-brand-10),
+    0 4px 10px -2px var(--color-brand-18);
   transform: translateY(-1px);
 }
 
 .btn-primary:active {
   transform: translateY(1px);
-  box-shadow: 0 1px 1px rgba(185, 28, 28, 0.1);
+  box-shadow: 0 1px 1px var(--color-brand-10);
 }
 
 /* Generators Section */
@@ -671,7 +671,7 @@ onUnmounted(() => {
 .feature-blob--1 {
   width: 200px;
   height: 200px;
-  background: radial-gradient(circle, rgba(185, 28, 28, 0.35) 0%, transparent 70%);
+  background: radial-gradient(circle, var(--color-brand-35) 0%, transparent 70%);
   top: -40px;
   left: -60px;
 }
@@ -679,7 +679,7 @@ onUnmounted(() => {
 .feature-blob--2 {
   width: 180px;
   height: 180px;
-  background: radial-gradient(circle, rgba(185, 28, 28, 0.3) 0%, transparent 70%);
+  background: radial-gradient(circle, var(--color-brand-30) 0%, transparent 70%);
   top: -30px;
   left: -40px;
 }
@@ -687,7 +687,7 @@ onUnmounted(() => {
 .feature-blob--3 {
   width: 220px;
   height: 220px;
-  background: radial-gradient(circle, rgba(185, 28, 28, 0.35) 0%, transparent 70%);
+  background: radial-gradient(circle, var(--color-brand-35) 0%, transparent 70%);
   top: -50px;
   left: -70px;
 }
@@ -695,7 +695,7 @@ onUnmounted(() => {
 .feature-blob--4 {
   width: 160px;
   height: 160px;
-  background: radial-gradient(circle, rgba(185, 28, 28, 0.3) 0%, transparent 70%);
+  background: radial-gradient(circle, var(--color-brand-30) 0%, transparent 70%);
   top: -20px;
   left: 50%;
   transform: translateX(-50%);
@@ -712,8 +712,8 @@ onUnmounted(() => {
   letter-spacing: -0.05em;
   background: linear-gradient(
     135deg,
-    rgba(185, 28, 28, 0.15) 0%,
-    rgba(185, 28, 28, 0.05) 100%
+    var(--color-brand-15) 0%,
+    var(--color-brand-5) 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
@@ -765,7 +765,7 @@ onUnmounted(() => {
   left: -10%;
   width: 50%;
   height: 60%;
-  background: radial-gradient(ellipse, rgba(185, 28, 28, 0.15) 0%, transparent 70%);
+  background: radial-gradient(ellipse, var(--color-brand-15) 0%, transparent 70%);
   filter: blur(40px);
   pointer-events: none;
   z-index: -1;
@@ -778,7 +778,7 @@ onUnmounted(() => {
   right: -5%;
   width: 40%;
   height: 50%;
-  background: radial-gradient(ellipse, rgba(185, 28, 28, 0.1) 0%, transparent 70%);
+  background: radial-gradient(ellipse, var(--color-brand-10) 0%, transparent 70%);
   filter: blur(50px);
   pointer-events: none;
   z-index: -1;
@@ -792,7 +792,7 @@ onUnmounted(() => {
     0 4px 6px rgba(0, 0, 0, 0.07),
     0 12px 28px rgba(0, 0, 0, 0.12),
     0 20px 48px rgba(0, 0, 0, 0.08),
-    0 0 80px rgba(185, 28, 28, 0.06);
+    0 0 80px var(--color-brand-6);
   transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 400ms cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -803,7 +803,7 @@ onUnmounted(() => {
     0 8px 16px rgba(0, 0, 0, 0.1),
     0 24px 48px rgba(0, 0, 0, 0.15),
     0 32px 64px rgba(0, 0, 0, 0.1),
-    0 0 100px rgba(185, 28, 28, 0.1);
+    0 0 100px var(--color-brand-10);
 }
 
 .code-window-header {
@@ -984,7 +984,7 @@ onUnmounted(() => {
 .more-feature-icon {
   width: 20px;
   height: 20px;
-  color: rgba(185, 28, 28, 0.6);
+  color: var(--color-brand-60);
   margin-bottom: 12px;
   stroke-width: 1.5;
 }
