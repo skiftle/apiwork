@@ -1,14 +1,12 @@
 import { defineConfig } from "vitepress";
 import { generateSidebar } from "vitepress-sidebar";
+import apiworkTheme from "./theme/apiwork-theme.json";
 
 export default defineConfig({
   title: "Apiwork",
   description: "The modern API layer for Rails",
   markdown: {
-    theme: {
-      light: "github-dark",
-      dark: "github-dark",
-    },
+    theme: apiworkTheme,
     lineNumbers: false,
     headers: {
       level: [2, 3],

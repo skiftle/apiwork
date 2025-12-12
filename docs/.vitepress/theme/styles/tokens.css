@@ -67,11 +67,11 @@
   /* Logo shadow */
   --color-logo-shadow: rgba(0, 0, 0, 0.2);
 
-  /* Code windows - Light theme */
-  --color-code-bg: #fafafa;
+  /* Code windows - Light theme header, always-dark code area */
+  --color-code-bg: #1a1214;
   --color-code-header: #f0f0f0;
   --color-code-header-border: rgba(0, 0, 0, 0.1);
-  --color-code-border: rgba(0, 0, 0, 0.02);
+  --color-code-border: rgba(0, 0, 0, 0.08);
   --color-code-filename: rgba(0, 0, 0, 0.4);
 
   /* Syntax highlighting - Light mode */
