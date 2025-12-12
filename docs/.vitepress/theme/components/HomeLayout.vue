@@ -87,6 +87,7 @@ onUnmounted(() => {
     <section class="feature animate-on-scroll">
       <div class="feature-container">
         <div class="feature-content">
+          <div class="feature-blob feature-blob--1"></div>
           <span class="feature-step">01</span>
           <h2 class="feature-title">
             <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -132,6 +133,7 @@ onUnmounted(() => {
     <section class="feature feature--alt animate-on-scroll">
       <div class="feature-container">
         <div class="feature-content">
+          <div class="feature-blob feature-blob--2"></div>
           <span class="feature-step">02</span>
           <h2 class="feature-title">
             <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -175,6 +177,7 @@ onUnmounted(() => {
     <section class="feature animate-on-scroll">
       <div class="feature-container">
         <div class="feature-content">
+          <div class="feature-blob feature-blob--3"></div>
           <span class="feature-step">03</span>
           <h2 class="feature-title">
             <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -221,6 +224,7 @@ onUnmounted(() => {
     <section class="feature feature--alt animate-on-scroll">
       <div class="feature-container feature-container--wide">
         <div class="feature-content feature-content--centered">
+          <div class="feature-blob feature-blob--4"></div>
           <span class="feature-step">04</span>
           <h2 class="feature-title">
             <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -599,6 +603,53 @@ onUnmounted(() => {
   text-align: center;
 }
 
+/* Decorative blobs */
+.feature-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.feature-blob--1 {
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(185, 28, 28, 0.35) 0%, transparent 70%);
+  top: -40px;
+  left: -60px;
+}
+
+.feature-blob--2 {
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(185, 28, 28, 0.3) 0%, transparent 70%);
+  top: -30px;
+  left: -40px;
+}
+
+.feature-blob--3 {
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(185, 28, 28, 0.35) 0%, transparent 70%);
+  top: -50px;
+  left: -70px;
+}
+
+.feature-blob--4 {
+  width: 160px;
+  height: 160px;
+  background: radial-gradient(circle, rgba(185, 28, 28, 0.3) 0%, transparent 70%);
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.feature-content {
+  position: relative;
+}
+
 .feature-step {
   display: inline-block;
   font-size: 4rem;
@@ -648,20 +699,56 @@ onUnmounted(() => {
 }
 
 /* Code Window */
+.feature-code {
+  position: relative;
+}
+
+.feature-code::before {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: -10%;
+  width: 50%;
+  height: 60%;
+  background: radial-gradient(ellipse, rgba(185, 28, 28, 0.15) 0%, transparent 70%);
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.feature-code::after {
+  content: '';
+  position: absolute;
+  bottom: 10%;
+  right: -5%;
+  width: 40%;
+  height: 50%;
+  background: radial-gradient(ellipse, rgba(185, 28, 28, 0.1) 0%, transparent 70%);
+  filter: blur(50px);
+  pointer-events: none;
+  z-index: -1;
+}
+
 .code-window {
   border-radius: 12px;
   overflow: hidden;
   background: #1e1e1e;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07), 0 12px 28px rgba(0, 0, 0, 0.12),
-    0 20px 48px rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.07),
+    0 12px 28px rgba(0, 0, 0, 0.12),
+    0 20px 48px rgba(0, 0, 0, 0.08),
+    0 0 80px rgba(185, 28, 28, 0.06);
   transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 400ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .code-window:hover {
   transform: translateY(-6px) scale(1.005);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 24px 48px rgba(0, 0, 0, 0.15),
-    0 32px 64px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 8px 16px rgba(0, 0, 0, 0.1),
+    0 24px 48px rgba(0, 0, 0, 0.15),
+    0 32px 64px rgba(0, 0, 0, 0.1),
+    0 0 100px rgba(185, 28, 28, 0.1);
 }
 
 .code-window-header {
