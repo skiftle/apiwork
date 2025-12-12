@@ -32,6 +32,25 @@
   --color-typescript: #3178c6;
   --color-zod: #3b82f6;
 
+  /* Dark sections (footer, more-features) - same in light mode */
+  --color-bg-dark-section: #131313;
+
+  /* Code windows - Light theme */
+  --color-code-bg: #fafafa;
+  --color-code-header: #f0f0f0;
+  --color-code-header-border: rgba(0, 0, 0, 0.06);
+  --color-code-border: rgba(0, 0, 0, 0.08);
+  --color-code-filename: rgba(0, 0, 0, 0.4);
+
+  /* Syntax highlighting - Light mode */
+  --color-syntax-class: #b45309;
+  --color-syntax-method: #2563eb;
+  --color-syntax-string: #16a34a;
+  --color-syntax-keyword: #c026d3;
+  --color-syntax-symbol: #0891b2;
+  --color-syntax-type: #0891b2;
+  --color-syntax-text: #1f2937;
+
   /* Hero gradient */
   --color-hero-gradient-start: var(--color-brand-15);
 
@@ -88,19 +107,28 @@
 
 /* Dark mode - activated by VitePress via .dark class on html */
 .dark {
-  --color-bg: #0f172a;
-  --color-bg-soft: #1e293b;
-  --color-bg-muted: #334155;
-  --color-text: #f1f5f9;
-  --color-text-muted: #94a3b8;
-  --color-text-light: #64748b;
-  --color-border: #334155;
-  --color-border-light: #1e293b;
+  /* Backgrounds - sophisticated dark palette */
+  --color-bg: #0a0a0b;
+  --color-bg-soft: #141416;
+  --color-bg-muted: #1c1c1f;
+  --color-bg-elevated: #222225;
+
+  /* Text - warmer white for better readability */
+  --color-text: #f4f4f5;
+  --color-text-muted: #a1a1aa;
+  --color-text-light: #71717a;
+
+  /* Borders - subtle but visible */
+  --color-border: #27272a;
+  --color-border-light: #18181b;
 
   /* Brand colors - Red for dark mode (P3 wide gamut) */
   --color-brand: color(display-p3 0.95 0.27 0.27);
   --color-brand-light: color(display-p3 0.98 0.45 0.45);
   --color-brand-dark: color(display-p3 0.88 0.15 0.15);
+
+  /* Dark sections */
+  --color-bg-dark-section: #0d0d0e;
 
   /* Hero gradient - dark mode */
   --color-hero-gradient-start: color-mix(in srgb, var(--color-brand), transparent 80%);
@@ -110,6 +138,22 @@
   --gradient-color-2: #1c0f0f;
   --gradient-color-3: #2e1818;
   --gradient-color-4: #241414;
+
+  /* Code windows - Dark theme */
+  --color-code-bg: #18181b;
+  --color-code-header: #27272a;
+  --color-code-header-border: rgba(255, 255, 255, 0.06);
+  --color-code-border: rgba(255, 255, 255, 0.06);
+  --color-code-filename: rgba(255, 255, 255, 0.35);
+
+  /* Syntax highlighting - Dark mode */
+  --color-syntax-class: #fbbf24;
+  --color-syntax-method: #60a5fa;
+  --color-syntax-string: #a5d6a7;
+  --color-syntax-keyword: #f472b6;
+  --color-syntax-symbol: #7dd3fc;
+  --color-syntax-type: #7dd3fc;
+  --color-syntax-text: #e4e4e7;
 
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
   --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.3);

@@ -280,9 +280,11 @@ onUnmounted(() => {
     </section>
 
     <!-- Transition to dark -->
-    <svg class="section-curve" viewBox="0 0 1440 120" preserveAspectRatio="none">
-      <path d="M0,120 C480,20 960,20 1440,120 L1440,120 L0,120 Z" fill="#131313"/>
-    </svg>
+    <div class="section-curve-wrapper">
+      <svg class="section-curve" viewBox="0 0 1440 120" preserveAspectRatio="none">
+        <path d="M0,120 C480,20 960,20 1440,120 L1440,120 L0,120 Z" fill="currentColor"/>
+      </svg>
+    </div>
 
     <!-- More Features Section -->
     <section class="more-features">
@@ -543,6 +545,18 @@ onUnmounted(() => {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 }
 
+.dark .btn-outline {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 8px 18px 0 rgba(0, 0, 0, 0.2);
+}
+
+.dark .btn-outline:hover {
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 22px 0 rgba(0, 0, 0, 0.25);
+}
+
 .btn-primary {
   color: rgba(255, 255, 255, 0.9);
   background-color: var(--color-brand-70);
@@ -701,6 +715,16 @@ onUnmounted(() => {
   transform: translateX(-50%);
 }
 
+/* Subtler decorative elements in dark mode */
+.dark .feature-blob {
+  opacity: 0.3;
+}
+
+.dark .feature-code::before,
+.dark .feature-code::after {
+  opacity: 0.5;
+}
+
 .feature-content {
   position: relative;
 }
@@ -786,32 +810,50 @@ onUnmounted(() => {
 .code-window {
   border-radius: 12px;
   overflow: hidden;
-  background: #1e1e1e;
+  background: var(--color-code-bg);
+  border: 1px solid var(--color-code-border);
   box-shadow:
-    0 4px 6px rgba(0, 0, 0, 0.07),
-    0 12px 28px rgba(0, 0, 0, 0.12),
-    0 20px 48px rgba(0, 0, 0, 0.08),
+    0 4px 6px rgba(0, 0, 0, 0.04),
+    0 12px 28px rgba(0, 0, 0, 0.06),
+    0 20px 48px rgba(0, 0, 0, 0.04),
     0 0 80px var(--color-brand-6);
   transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 400ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.dark .code-window {
+  border-color: transparent;
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.15),
+    0 12px 28px rgba(0, 0, 0, 0.2),
+    0 20px 48px rgba(0, 0, 0, 0.15),
+    0 0 80px var(--color-brand-6);
+}
+
 .code-window:hover {
   transform: translateY(-6px) scale(1.005);
   box-shadow:
-    0 8px 16px rgba(0, 0, 0, 0.1),
-    0 24px 48px rgba(0, 0, 0, 0.15),
-    0 32px 64px rgba(0, 0, 0, 0.1),
+    0 8px 16px rgba(0, 0, 0, 0.06),
+    0 24px 48px rgba(0, 0, 0, 0.08),
+    0 32px 64px rgba(0, 0, 0, 0.06),
+    0 0 100px var(--color-brand-10);
+}
+
+.dark .code-window:hover {
+  box-shadow:
+    0 8px 16px rgba(0, 0, 0, 0.2),
+    0 24px 48px rgba(0, 0, 0, 0.25),
+    0 32px 64px rgba(0, 0, 0, 0.2),
     0 0 100px var(--color-brand-10);
 }
 
 .code-window-header {
-  background: #2d2d2d;
+  background: var(--color-code-header);
   padding: 12px 16px;
   display: flex;
   align-items: center;
   gap: 8px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid var(--color-code-header-border);
 }
 
 .code-window-dot {
@@ -835,7 +877,7 @@ onUnmounted(() => {
 .code-window-filename {
   margin-left: auto;
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.35);
+  color: var(--color-code-filename);
   font-family: var(--font-mono);
 }
 
@@ -854,32 +896,32 @@ onUnmounted(() => {
   font-family: var(--font-mono);
   font-size: 0.875rem;
   line-height: 1.7;
-  color: #e2e8f0;
+  color: var(--color-syntax-text);
 }
 
 /* Code syntax colors */
 .code-class {
-  color: #fbbf24;
+  color: var(--color-syntax-class);
 }
 
 .code-method {
-  color: #60a5fa;
+  color: var(--color-syntax-method);
 }
 
 .code-string {
-  color: #a5d6a7;
+  color: var(--color-syntax-string);
 }
 
 .code-keyword {
-  color: #f472b6;
+  color: var(--color-syntax-keyword);
 }
 
 .code-symbol {
-  color: #7dd3fc;
+  color: var(--color-syntax-symbol);
 }
 
 .code-type {
-  color: #7dd3fc;
+  color: var(--color-syntax-type);
 }
 
 /* Output Grid */
@@ -890,6 +932,10 @@ onUnmounted(() => {
 }
 
 /* Section Curve */
+.section-curve-wrapper {
+  color: var(--color-bg-dark-section);
+}
+
 .section-curve {
   display: block;
   width: 100%;
@@ -902,7 +948,7 @@ onUnmounted(() => {
   position: relative;
   padding: 120px 24px;
   overflow: hidden;
-  background: #131313;
+  background: var(--color-bg-dark-section);
   border-bottom: 1px solid rgba(255, 255, 255, 0.02);
 }
 
