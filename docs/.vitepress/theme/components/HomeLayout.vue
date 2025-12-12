@@ -1,28 +1,28 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted } from "vue";
 
-let observer: IntersectionObserver | null = null
+let observer: IntersectionObserver | null = null;
 
 onMounted(() => {
   observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible')
+          entry.target.classList.add("is-visible");
         }
-      })
+      });
     },
-    { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-  )
+    { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
+  );
 
-  document.querySelectorAll('.animate-on-scroll').forEach((el) => {
-    observer?.observe(el)
-  })
-})
+  document.querySelectorAll(".animate-on-scroll").forEach((el) => {
+    observer?.observe(el);
+  });
+});
 
 onUnmounted(() => {
-  observer?.disconnect()
-})
+  observer?.disconnect();
+});
 </script>
 
 <template>
@@ -90,12 +90,20 @@ onUnmounted(() => {
           <div class="feature-blob feature-blob--1"></div>
           <span class="feature-step">01</span>
           <h2 class="feature-title">
-            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/>
-              <line x1="16" y1="13" x2="8" y2="13"/>
-              <line x1="16" y1="17" x2="8" y2="17"/>
-              <polyline points="10 9 9 9 8 9"/>
+            <svg
+              class="feature-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+              />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="16" y1="13" x2="8" y2="13" />
+              <line x1="16" y1="17" x2="8" y2="17" />
+              <polyline points="10 9 9 9 8 9" />
             </svg>
             Describe it <span class="accent">once</span>
           </h2>
@@ -136,10 +144,16 @@ onUnmounted(() => {
           <div class="feature-blob feature-blob--2"></div>
           <span class="feature-step">02</span>
           <h2 class="feature-title">
-            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-              <line x1="3" y1="9" x2="21" y2="9"/>
-              <line x1="9" y1="21" x2="9" y2="9"/>
+            <svg
+              class="feature-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+              <line x1="3" y1="9" x2="21" y2="9" />
+              <line x1="9" y1="21" x2="9" y2="9" />
             </svg>
             Define your <span class="accent">contract</span>
           </h2>
@@ -180,9 +194,15 @@ onUnmounted(() => {
           <div class="feature-blob feature-blob--3"></div>
           <span class="feature-step">03</span>
           <h2 class="feature-title">
-            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="16 18 22 12 16 6"/>
-              <polyline points="8 6 2 12 8 18"/>
+            <svg
+              class="feature-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="16 18 22 12 16 6" />
+              <polyline points="8 6 2 12 8 18" />
             </svg>
             Use it in your <span class="accent">controller</span>
           </h2>
@@ -227,10 +247,18 @@ onUnmounted(() => {
           <div class="feature-blob feature-blob--4"></div>
           <span class="feature-step">04</span>
           <h2 class="feature-title">
-            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-              <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
-              <line x1="12" y1="22.08" x2="12" y2="12"/>
+            <svg
+              class="feature-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+              />
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+              <line x1="12" y1="22.08" x2="12" y2="12" />
             </svg>
             Get consistent <span class="accent">output</span> everywhere
           </h2>
@@ -281,8 +309,15 @@ onUnmounted(() => {
 
     <!-- Transition to dark -->
     <div class="section-curve-wrapper">
-      <svg class="section-curve" viewBox="0 0 1440 120" preserveAspectRatio="none">
-        <path d="M0,120 C480,20 960,20 1440,120 L1440,120 L0,120 Z" fill="currentColor"/>
+      <svg
+        class="section-curve"
+        viewBox="0 0 1440 120"
+        preserveAspectRatio="none"
+      >
+        <path
+          d="M0,120 C480,20 960,20 1440,120 L1440,120 L0,120 Z"
+          fill="currentColor"
+        />
       </svg>
     </div>
 
@@ -297,8 +332,14 @@ onUnmounted(() => {
         </div>
         <div class="more-features-grid">
           <div class="more-feature-card">
-            <svg class="more-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+            <svg
+              class="more-feature-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
             </svg>
             <h3 class="more-feature-name">Rich Filtering</h3>
             <p class="more-feature-desc">
@@ -307,9 +348,15 @@ onUnmounted(() => {
             </p>
           </div>
           <div class="more-feature-card">
-            <svg class="more-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="12" y1="5" x2="12" y2="19"/>
-              <polyline points="19 12 12 19 5 12"/>
+            <svg
+              class="more-feature-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <polyline points="19 12 12 19 5 12" />
             </svg>
             <h3 class="more-feature-name">Multi-field Sorting</h3>
             <p class="more-feature-desc">
@@ -318,10 +365,16 @@ onUnmounted(() => {
             </p>
           </div>
           <div class="more-feature-card">
-            <svg class="more-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-              <line x1="3" y1="9" x2="21" y2="9"/>
-              <line x1="3" y1="15" x2="21" y2="15"/>
+            <svg
+              class="more-feature-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+              <line x1="3" y1="9" x2="21" y2="9" />
+              <line x1="3" y1="15" x2="21" y2="15" />
             </svg>
             <h3 class="more-feature-name">Offset Pagination</h3>
             <p class="more-feature-desc">
@@ -330,9 +383,15 @@ onUnmounted(() => {
             </p>
           </div>
           <div class="more-feature-card">
-            <svg class="more-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="5" y1="12" x2="19" y2="12"/>
-              <polyline points="12 5 19 12 12 19"/>
+            <svg
+              class="more-feature-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
             </svg>
             <h3 class="more-feature-name">Cursor Pagination</h3>
             <p class="more-feature-desc">
@@ -341,8 +400,14 @@ onUnmounted(() => {
             </p>
           </div>
           <div class="more-feature-card">
-            <svg class="more-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            <svg
+              class="more-feature-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
             </svg>
             <h3 class="more-feature-name">Eager Loading</h3>
             <p class="more-feature-desc">
@@ -350,11 +415,17 @@ onUnmounted(() => {
             </p>
           </div>
           <div class="more-feature-card">
-            <svg class="more-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="6" y1="3" x2="6" y2="15"/>
-              <circle cx="18" cy="6" r="3"/>
-              <circle cx="6" cy="18" r="3"/>
-              <path d="M18 9a9 9 0 0 1-9 9"/>
+            <svg
+              class="more-feature-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="6" y1="3" x2="6" y2="15" />
+              <circle cx="18" cy="6" r="3" />
+              <circle cx="6" cy="18" r="3" />
+              <path d="M18 9a9 9 0 0 1-9 9" />
             </svg>
             <h3 class="more-feature-name">STI Support</h3>
             <p class="more-feature-desc">
@@ -363,11 +434,17 @@ onUnmounted(() => {
             </p>
           </div>
           <div class="more-feature-card">
-            <svg class="more-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="3" width="7" height="7"/>
-              <rect x="14" y="3" width="7" height="7"/>
-              <rect x="14" y="14" width="7" height="7"/>
-              <rect x="3" y="14" width="7" height="7"/>
+            <svg
+              class="more-feature-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="3" y="3" width="7" height="7" />
+              <rect x="14" y="3" width="7" height="7" />
+              <rect x="14" y="14" width="7" height="7" />
+              <rect x="3" y="14" width="7" height="7" />
             </svg>
             <h3 class="more-feature-name">Polymorphic</h3>
             <p class="more-feature-desc">
@@ -376,10 +453,18 @@ onUnmounted(() => {
             </p>
           </div>
           <div class="more-feature-card">
-            <svg class="more-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
-              <line x1="12" y1="11" x2="12" y2="17"/>
-              <line x1="9" y1="14" x2="15" y2="14"/>
+            <svg
+              class="more-feature-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"
+              />
+              <line x1="12" y1="11" x2="12" y2="17" />
+              <line x1="9" y1="14" x2="15" y2="14" />
             </svg>
             <h3 class="more-feature-name">Nested Resources</h3>
             <p class="more-feature-desc">
@@ -387,10 +472,18 @@ onUnmounted(() => {
             </p>
           </div>
           <div class="more-feature-card">
-            <svg class="more-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"/>
-              <line x1="2" y1="12" x2="22" y2="12"/>
-              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            <svg
+              class="more-feature-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <line x1="2" y1="12" x2="22" y2="12" />
+              <path
+                d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+              />
             </svg>
             <h3 class="more-feature-name">i18n Ready</h3>
             <p class="more-feature-desc">
@@ -399,10 +492,18 @@ onUnmounted(() => {
             </p>
           </div>
           <div class="more-feature-card">
-            <svg class="more-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-              <line x1="12" y1="9" x2="12" y2="13"/>
-              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            <svg
+              class="more-feature-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+              />
+              <line x1="12" y1="9" x2="12" y2="13" />
+              <line x1="12" y1="17" x2="12.01" y2="17" />
             </svg>
             <h3 class="more-feature-name">Error Handling</h3>
             <p class="more-feature-desc">
@@ -411,10 +512,18 @@ onUnmounted(() => {
             </p>
           </div>
           <div class="more-feature-card">
-            <svg class="more-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="23 4 23 10 17 10"/>
-              <polyline points="1 20 1 14 7 14"/>
-              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+            <svg
+              class="more-feature-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="23 4 23 10 17 10" />
+              <polyline points="1 20 1 14 7 14" />
+              <path
+                d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"
+              />
             </svg>
             <h3 class="more-feature-name">Key Transform</h3>
             <p class="more-feature-desc">
@@ -422,9 +531,19 @@ onUnmounted(() => {
             </p>
           </div>
           <div class="more-feature-card">
-            <svg class="more-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            <svg
+              class="more-feature-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+              />
+              <path
+                d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+              />
             </svg>
             <h3 class="more-feature-name">Partial Updates</h3>
             <p class="more-feature-desc">
@@ -465,7 +584,7 @@ onUnmounted(() => {
 }
 
 .dark .hero-title {
-  color: rgba(248, 250, 252, 0.96);
+  color: var(--color-text);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 4px 16px rgba(239, 68, 68, 0.12),
     0 8px 40px rgba(61, 32, 32, 0.5);
 }
@@ -483,7 +602,7 @@ onUnmounted(() => {
 }
 
 .dark .hero-tagline {
-  color: rgba(248, 250, 252, 0.7);
+  color: var(--color-text-muted);
 }
 
 .hero-tagline em {
@@ -685,7 +804,11 @@ onUnmounted(() => {
 .feature-blob--1 {
   width: 200px;
   height: 200px;
-  background: radial-gradient(circle, var(--color-brand-35) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    var(--color-brand-35) 0%,
+    transparent 70%
+  );
   top: -40px;
   left: -60px;
 }
@@ -693,7 +816,11 @@ onUnmounted(() => {
 .feature-blob--2 {
   width: 180px;
   height: 180px;
-  background: radial-gradient(circle, var(--color-brand-30) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    var(--color-brand-30) 0%,
+    transparent 70%
+  );
   top: -30px;
   left: -40px;
 }
@@ -701,7 +828,11 @@ onUnmounted(() => {
 .feature-blob--3 {
   width: 220px;
   height: 220px;
-  background: radial-gradient(circle, var(--color-brand-35) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    var(--color-brand-35) 0%,
+    transparent 70%
+  );
   top: -50px;
   left: -70px;
 }
@@ -709,7 +840,11 @@ onUnmounted(() => {
 .feature-blob--4 {
   width: 160px;
   height: 160px;
-  background: radial-gradient(circle, var(--color-brand-30) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    var(--color-brand-30) 0%,
+    transparent 70%
+  );
   top: -20px;
   left: 50%;
   transform: translateX(-50%);
@@ -782,26 +917,34 @@ onUnmounted(() => {
 }
 
 .feature-code::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 20%;
   left: -10%;
   width: 50%;
   height: 60%;
-  background: radial-gradient(ellipse, var(--color-brand-15) 0%, transparent 70%);
+  background: radial-gradient(
+    ellipse,
+    var(--color-brand-15) 0%,
+    transparent 70%
+  );
   filter: blur(40px);
   pointer-events: none;
   z-index: -1;
 }
 
 .feature-code::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 10%;
   right: -5%;
   width: 40%;
   height: 50%;
-  background: radial-gradient(ellipse, var(--color-brand-10) 0%, transparent 70%);
+  background: radial-gradient(
+    ellipse,
+    var(--color-brand-10) 0%,
+    transparent 70%
+  );
   filter: blur(50px);
   pointer-events: none;
   z-index: -1;
@@ -810,41 +953,31 @@ onUnmounted(() => {
 .code-window {
   border-radius: 12px;
   overflow: hidden;
-  background: var(--color-code-bg);
+  background: color-mix(in srgb, var(--color-code-bg), transparent 10%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
   border: 1px solid var(--color-code-border);
-  box-shadow:
-    0 4px 6px rgba(0, 0, 0, 0.04),
-    0 12px 28px rgba(0, 0, 0, 0.06),
-    0 20px 48px rgba(0, 0, 0, 0.04),
-    0 0 80px var(--color-brand-6);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04), 0 12px 28px rgba(0, 0, 0, 0.06),
+    0 20px 48px rgba(0, 0, 0, 0.04), 0 0 80px var(--color-brand-6);
   transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 400ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .dark .code-window {
   border-color: transparent;
-  box-shadow:
-    0 4px 6px rgba(0, 0, 0, 0.15),
-    0 12px 28px rgba(0, 0, 0, 0.2),
-    0 20px 48px rgba(0, 0, 0, 0.15),
-    0 0 80px var(--color-brand-6);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15), 0 12px 28px rgba(0, 0, 0, 0.2),
+    0 20px 48px rgba(0, 0, 0, 0.15), 0 0 80px var(--color-brand-6);
 }
 
 .code-window:hover {
   transform: translateY(-6px) scale(1.005);
-  box-shadow:
-    0 8px 16px rgba(0, 0, 0, 0.06),
-    0 24px 48px rgba(0, 0, 0, 0.08),
-    0 32px 64px rgba(0, 0, 0, 0.06),
-    0 0 100px var(--color-brand-10);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06), 0 24px 48px rgba(0, 0, 0, 0.08),
+    0 32px 64px rgba(0, 0, 0, 0.06), 0 0 100px var(--color-brand-10);
 }
 
 .dark .code-window:hover {
-  box-shadow:
-    0 8px 16px rgba(0, 0, 0, 0.2),
-    0 24px 48px rgba(0, 0, 0, 0.25),
-    0 32px 64px rgba(0, 0, 0, 0.2),
-    0 0 100px var(--color-brand-10);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 24px 48px rgba(0, 0, 0, 0.25),
+    0 32px 64px rgba(0, 0, 0, 0.2), 0 0 100px var(--color-brand-10);
 }
 
 .code-window-header {
@@ -986,10 +1119,13 @@ onUnmounted(() => {
 }
 
 @keyframes shimmer {
-  0%, 90%, 100% {
+  0%,
+  90%,
+  100% {
     background-position: 100% 0;
   }
-  45%, 55% {
+  45%,
+  55% {
     background-position: 0% 0;
   }
 }
@@ -1018,7 +1154,7 @@ onUnmounted(() => {
   border-right: none;
 }
 
-.more-feature-card:nth-last-child(-n+4) {
+.more-feature-card:nth-last-child(-n + 4) {
   border-bottom: none;
 }
 
@@ -1105,11 +1241,11 @@ onUnmounted(() => {
     border-right: none;
   }
 
-  .more-feature-card:nth-last-child(-n+4) {
+  .more-feature-card:nth-last-child(-n + 4) {
     border-bottom: 1px solid rgba(255, 255, 255, 0.02);
   }
 
-  .more-feature-card:nth-last-child(-n+2) {
+  .more-feature-card:nth-last-child(-n + 2) {
     border-bottom: none;
   }
 
@@ -1150,8 +1286,8 @@ onUnmounted(() => {
     border-right: none;
   }
 
-  .more-feature-card:nth-last-child(-n+2),
-  .more-feature-card:nth-last-child(-n+4) {
+  .more-feature-card:nth-last-child(-n + 2),
+  .more-feature-card:nth-last-child(-n + 4) {
     border-bottom: 1px solid rgba(255, 255, 255, 0.02);
   }
 
@@ -1165,7 +1301,7 @@ onUnmounted(() => {
   opacity: 0;
   transform: translateY(40px);
   transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .animate-on-scroll.is-visible {
@@ -1177,7 +1313,7 @@ onUnmounted(() => {
   opacity: 0;
   transform: translateY(20px) scale(0.98);
   transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s,
-              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
 }
 
 .animate-on-scroll.is-visible .feature-code {

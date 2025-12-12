@@ -7,7 +7,7 @@
   --color-text-muted: #6b7280;
   --color-text-light: #9ca3af;
   --color-border: #e5e7eb;
-  --color-border-light: #f3f4f6;
+  --color-border-light: #e5e7eb;
 
   /* Brand colors - Red (P3 wide gamut) */
   --color-brand: color(display-p3 0.9 0.05 0.05);
@@ -113,8 +113,8 @@
   --color-bg-muted: #1c1c1f;
   --color-bg-elevated: #222225;
 
-  /* Text - warmer white for better readability */
-  --color-text: #f4f4f5;
+  /* Text - softer, not pure white */
+  --color-text: #d4d4d8;
   --color-text-muted: #a1a1aa;
   --color-text-light: #71717a;
 
@@ -127,8 +127,8 @@
   --color-brand-light: color(display-p3 0.98 0.45 0.45);
   --color-brand-dark: color(display-p3 0.88 0.15 0.15);
 
-  /* Dark sections */
-  --color-bg-dark-section: #0d0d0e;
+  /* Dark sections - subtle red-black for contrast */
+  --color-bg-dark-section: #140a0b;
 
   /* Hero gradient - dark mode */
   --color-hero-gradient-start: color-mix(in srgb, var(--color-brand), transparent 80%);
