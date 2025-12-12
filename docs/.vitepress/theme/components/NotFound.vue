@@ -53,7 +53,7 @@
 .not-found-link {
   display: inline-block;
   padding: var(--space-3) var(--space-6);
-  background: var(--color-brand-70);
+  background: var(--color-brand-80);
   color: white;
   font-weight: 500;
   text-decoration: none;

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useData } from 'vitepress'
+import { useData } from "vitepress";
 
-const { isDark } = useData()
+const { isDark } = useData();
 
 function toggle() {
-  isDark.value = !isDark.value
+  isDark.value = !isDark.value;
 }
 </script>
 
@@ -20,7 +20,9 @@ function toggle() {
     <span class="switch-track">
       <span class="switch-thumb">
         <svg v-if="isDark" class="icon" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+          <path
+            d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"
+          />
         </svg>
         <svg v-else class="icon" viewBox="0 0 24 24" fill="currentColor">
           <circle cx="12" cy="12" r="5.5" />
@@ -28,10 +30,38 @@ function toggle() {
           <rect x="10.75" y="19" width="2.5" height="4" rx="1.25" />
           <rect x="1" y="10.75" width="4" height="2.5" rx="1.25" />
           <rect x="19" y="10.75" width="4" height="2.5" rx="1.25" />
-          <rect x="17.5" y="4" width="2.5" height="4" rx="1.25" transform="rotate(45 18.75 6)" />
-          <rect x="4" y="17.5" width="2.5" height="4" rx="1.25" transform="rotate(45 5.25 19.5)" />
-          <rect x="17.5" y="17.5" width="2.5" height="4" rx="1.25" transform="rotate(-45 18.75 19.5)" />
-          <rect x="4" y="4" width="2.5" height="4" rx="1.25" transform="rotate(-45 5.25 6)" />
+          <rect
+            x="17.5"
+            y="4"
+            width="2.5"
+            height="4"
+            rx="1.25"
+            transform="rotate(45 18.75 6)"
+          />
+          <rect
+            x="4"
+            y="17.5"
+            width="2.5"
+            height="4"
+            rx="1.25"
+            transform="rotate(45 5.25 19.5)"
+          />
+          <rect
+            x="17.5"
+            y="17.5"
+            width="2.5"
+            height="4"
+            rx="1.25"
+            transform="rotate(-45 18.75 19.5)"
+          />
+          <rect
+            x="4"
+            y="4"
+            width="2.5"
+            height="4"
+            rx="1.25"
+            transform="rotate(-45 5.25 6)"
+          />
         </svg>
       </span>
     </span>
@@ -65,7 +95,7 @@ function toggle() {
   }
 
   &:focus-visible {
-    outline: 2px solid var(--color-brand-70);
+    outline: 2px solid var(--color-brand-80);
     outline-offset: 2px;
   }
 }

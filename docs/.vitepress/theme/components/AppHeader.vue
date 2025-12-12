@@ -41,22 +41,27 @@ const route = useRoute();
       </a>
 
       <nav class="nav">
-        <a href="/" class="link" :class="{ active: route.path === '/' }">Home</a>
+        <a href="/" class="link" :class="{ active: route.path === '/' }"
+          >Home</a
+        >
         <a
           href="/guide/getting-started/introduction"
           class="link"
           :class="{ active: /^\/guide\//.test(route.path) }"
-        >Guide</a>
+          >Guide</a
+        >
         <a
           href="/reference/"
           class="link"
           :class="{ active: /^\/reference\//.test(route.path) }"
-        >Reference</a>
+          >Reference</a
+        >
         <a
           href="/blog/"
           class="link"
           :class="{ active: /^\/blog\//.test(route.path) }"
-        >Blog</a>
+          >Blog</a
+        >
       </nav>
 
       <div class="actions">
@@ -108,7 +113,7 @@ const route = useRoute();
     text-decoration: none;
 
     &:hover {
-      color: var(--color-brand-70);
+      color: var(--color-brand-80);
       text-decoration: none;
     }
 
@@ -117,7 +122,7 @@ const route = useRoute();
     }
 
     .logo-primary {
-      fill: var(--color-brand-70);
+      fill: var(--color-brand-80);
     }
   }
 
@@ -133,24 +138,25 @@ const route = useRoute();
       text-decoration: none;
 
       &::after {
-        content: '';
+        content: "";
         position: absolute;
         bottom: -6px;
         left: 0;
         width: 100%;
         height: 2px;
-        background: var(--color-brand-70);
+        background: var(--color-brand-80);
         border-radius: 1px;
         opacity: 0;
         transition: opacity 200ms;
       }
 
       &:hover {
+        color: var(--color-brand-80);
         text-decoration: none;
       }
 
       &.active {
-        color: var(--color-brand-70);
+        color: var(--color-brand-80);
 
         &::after {
           opacity: 1;

@@ -100,7 +100,11 @@ defineProps<{
     &.v1 {
       width: 200px;
       height: 200px;
-      background: radial-gradient(circle, var(--color-brand-35) 0%, transparent 70%);
+      background: radial-gradient(
+        circle,
+        var(--color-brand-35) 0%,
+        transparent 70%
+      );
       top: -40px;
       left: -60px;
     }
@@ -108,7 +112,11 @@ defineProps<{
     &.v2 {
       width: 180px;
       height: 180px;
-      background: radial-gradient(circle, var(--color-brand-30) 0%, transparent 70%);
+      background: radial-gradient(
+        circle,
+        var(--color-brand-30) 0%,
+        transparent 70%
+      );
       top: -30px;
       left: -40px;
     }
@@ -116,7 +124,11 @@ defineProps<{
     &.v3 {
       width: 220px;
       height: 220px;
-      background: radial-gradient(circle, var(--color-brand-35) 0%, transparent 70%);
+      background: radial-gradient(
+        circle,
+        var(--color-brand-35) 0%,
+        transparent 70%
+      );
       top: -50px;
       left: -70px;
     }
@@ -124,7 +136,11 @@ defineProps<{
     &.v4 {
       width: 160px;
       height: 160px;
-      background: radial-gradient(circle, var(--color-brand-30) 0%, transparent 70%);
+      background: radial-gradient(
+        circle,
+        var(--color-brand-30) 0%,
+        transparent 70%
+      );
       top: -20px;
       left: 50%;
       transform: translateX(-50%);
@@ -136,7 +152,11 @@ defineProps<{
     font-size: 4rem;
     font-weight: 800;
     letter-spacing: -0.05em;
-    background: linear-gradient(135deg, var(--color-brand-15) 0%, var(--color-brand-5) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--color-brand-15) 0%,
+      var(--color-brand-5) 100%
+    );
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -171,7 +191,11 @@ defineProps<{
       left: -10%;
       width: 50%;
       height: 60%;
-      background: radial-gradient(ellipse, var(--color-brand-15) 0%, transparent 70%);
+      background: radial-gradient(
+        ellipse,
+        var(--color-brand-15) 0%,
+        transparent 70%
+      );
       filter: blur(40px);
       pointer-events: none;
       z-index: -1;
@@ -184,7 +208,11 @@ defineProps<{
       right: -5%;
       width: 40%;
       height: 50%;
-      background: radial-gradient(ellipse, var(--color-brand-10) 0%, transparent 70%);
+      background: radial-gradient(
+        ellipse,
+        var(--color-brand-10) 0%,
+        transparent 70%
+      );
       filter: blur(50px);
       pointer-events: none;
       z-index: -1;
@@ -229,13 +257,13 @@ defineProps<{
 }
 
 .feature .title :deep(.accent) {
-  color: var(--color-brand-70);
+  color: var(--color-brand-80);
 }
 
 .feature .title :deep(.feature-icon) {
   width: 32px;
   height: 32px;
-  color: var(--color-brand-70);
+  color: var(--color-brand-80);
   margin-right: 12px;
   vertical-align: middle;
   margin-top: -4px;

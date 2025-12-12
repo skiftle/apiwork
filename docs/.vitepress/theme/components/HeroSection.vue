@@ -40,18 +40,18 @@
     color: var(--color-text-strong);
     line-height: 1.08;
     margin-bottom: var(--space-6);
-    text-shadow: 0 1px 2px var(--color-overlay-4), 0 4px 16px var(--color-brand-8),
-      0 8px 40px var(--color-brand-15);
+    text-shadow: 0 1px 2px var(--color-overlay-4),
+      0 4px 16px var(--color-brand-8), 0 8px 40px var(--color-brand-15);
     animation: hero-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 
     .dark & {
       color: var(--color-text);
-      text-shadow: 0 1px 2px var(--color-overlay-20), 0 4px 16px var(--color-brand-10),
-        0 8px 40px var(--color-brand-15);
+      text-shadow: 0 1px 2px var(--color-overlay-20),
+        0 4px 16px var(--color-brand-10), 0 8px 40px var(--color-brand-15);
     }
 
     .highlight {
-      color: var(--color-brand-70);
+      color: var(--color-brand-80);
     }
 
     @media (max-width: 768px) {
@@ -74,7 +74,7 @@
 
     em {
       font-style: normal;
-      color: var(--color-brand-70);
+      color: var(--color-brand-80);
       font-weight: 600;
     }
   }
@@ -103,20 +103,25 @@
     user-select: none;
     min-width: 160px;
 
+    box-shadow: 0 8px 18px 0 var(--color-overlay-6);
+
     .icon {
       width: 0.85em;
       height: 0.85em;
       transition: transform 200ms;
     }
 
-    &:hover .icon {
-      transform: translateX(2px);
+    &:hover {
+      box-shadow: 0 12px 22px 0 var(--color-overlay-6);
+      .icon {
+        transform: translateX(2px);
+      }
     }
 
     &.outline {
       background: rgba(255, 255, 255, 0.8);
       color: var(--color-text);
-      box-shadow: 0 8px 18px 0 var(--color-overlay-6);
+
       border-radius: 20.5px;
       -webkit-backdrop-filter: blur(12px);
       backdrop-filter: blur(12px);
@@ -124,7 +129,7 @@
       &:hover {
         background: rgba(255, 255, 255, 0.9);
         text-decoration: none;
-        box-shadow: 0 12px 22px 0 var(--color-overlay-6);
+
         transform: translateY(-1px);
       }
 
@@ -148,7 +153,7 @@
 
     &.primary {
       color: var(--color-dark-text-primary);
-      background-color: var(--color-brand-70);
+      background-color: var(--color-brand-80);
       box-shadow: 0 8px 18px 0 var(--color-brand-10);
       -webkit-backdrop-filter: blur(12px);
       backdrop-filter: blur(12px);

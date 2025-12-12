@@ -1,31 +1,33 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { SidebarItem } from 'vitepress-sidebar/types'
+import { computed } from "vue";
+import type { SidebarItem } from "vitepress-sidebar/types";
 
 const props = defineProps<{
-  item: SidebarItem
-  depth: number
-  expanded: Set<string>
-  buildLink: (link: string | undefined) => string
-  isActive: (link: string | undefined) => boolean
-}>()
+  item: SidebarItem;
+  depth: number;
+  expanded: Set<string>;
+  buildLink: (link: string | undefined) => string;
+  isActive: (link: string | undefined) => boolean;
+}>();
 
 const emit = defineEmits<{
-  toggle: [key: string]
-}>()
+  toggle: [key: string];
+}>();
 
-const itemKey = computed(() => `${props.depth}-${props.item.text}`)
-const hasChildren = computed(() => props.item.items && props.item.items.length > 0)
-const isExpanded = computed(() => props.expanded.has(itemKey.value))
-const fullLink = computed(() => props.buildLink(props.item.link))
-const isItemActive = computed(() => props.isActive(props.item.link))
+const itemKey = computed(() => `${props.depth}-${props.item.text}`);
+const hasChildren = computed(
+  () => props.item.items && props.item.items.length > 0
+);
+const isExpanded = computed(() => props.expanded.has(itemKey.value));
+const fullLink = computed(() => props.buildLink(props.item.link));
+const isItemActive = computed(() => props.isActive(props.item.link));
 
 function toggle() {
-  emit('toggle', itemKey.value)
+  emit("toggle", itemKey.value);
 }
 
 function onToggle(key: string) {
-  emit('toggle', key)
+  emit("toggle", key);
 }
 </script>
 
@@ -140,7 +142,7 @@ function onToggle(key: string) {
 }
 
 .sidebar-toggle:focus-visible {
-  outline: 2px solid var(--color-brand-70);
+  outline: 2px solid var(--color-brand-80);
   outline-offset: 2px;
 }
 
@@ -165,12 +167,11 @@ function onToggle(key: string) {
   padding-left: var(--space-4);
   margin-left: var(--space-3);
   overflow: hidden;
-  transition: max-height 250ms cubic-bezier(0.16, 1, 0.3, 1),
-              opacity 200ms ease;
+  transition: max-height 250ms cubic-bezier(0.16, 1, 0.3, 1), opacity 200ms ease;
 
   /* Vertical guide line */
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     top: 4px;
@@ -221,7 +222,7 @@ function onToggle(key: string) {
 
 /* Active state with left accent */
 .sidebar-link.active {
-  color: var(--color-brand-70);
+  color: var(--color-brand-80);
   font-weight: 600;
 }
 
@@ -229,13 +230,13 @@ function onToggle(key: string) {
   background: var(--color-bg-muted);
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     top: 6px;
     bottom: 6px;
     width: 2px;
-    background: var(--color-brand-70);
+    background: var(--color-brand-80);
     border-radius: 1px;
   }
 }
