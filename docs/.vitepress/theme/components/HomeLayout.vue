@@ -469,7 +469,7 @@ onUnmounted(() => {
 }
 
 .hero-title .highlight {
-  color: color-mix(in srgb, var(--color-brand) 80%, transparent 20%);
+  color: var(--color-brand-70);
 }
 
 .hero-tagline {
@@ -486,7 +486,7 @@ onUnmounted(() => {
 
 .hero-tagline em {
   font-style: normal;
-  color: var(--color-brand);
+  color: var(--color-brand-70);
   font-weight: 600;
 }
 
@@ -545,7 +545,7 @@ onUnmounted(() => {
 
 .btn-primary {
   color: rgba(255, 255, 255, 0.9);
-  background-color: color-mix(in srgb, var(--color-brand) 80%, transparent);
+  background-color: var(--color-brand-70);
   box-shadow: 0 8px 18px 0 var(--color-brand-10);
   border-radius: 9999px;
 }
@@ -577,7 +577,7 @@ onUnmounted(() => {
 
 .generators-text strong {
   font-weight: 600;
-  color: var(--color-brand);
+  color: var(--color-brand-70);
 }
 
 .generators-logos {
@@ -733,14 +733,13 @@ onUnmounted(() => {
 }
 
 .feature-title .accent {
-  color: var(--color-brand);
+  color: var(--color-brand-70);
 }
 
 .feature-icon {
   width: 32px;
   height: 32px;
-  color: var(--color-brand);
-  opacity: 0.7;
+  color: var(--color-brand-70);
   margin-right: 12px;
   vertical-align: middle;
   margin-top: -4px;

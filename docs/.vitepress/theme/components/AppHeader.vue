@@ -129,7 +129,7 @@ const route = useRoute();
 }
 
 .logo:hover {
-  color: var(--color-brand);
+  color: var(--color-brand-70);
   text-decoration: none;
 }
 
@@ -166,12 +166,12 @@ const route = useRoute();
 }
 
 .nav-link:hover {
-  color: color-mix(in srgb, var(--color-brand) 80%, transparent);
+  color: var(--color-brand-70);
   text-decoration: none;
 }
 
 .nav-link.active {
-  color: color-mix(in srgb, var(--color-brand) 80%, transparent);
+  color: var(--color-brand-70);
 }
 
 .indicator {
@@ -186,7 +186,7 @@ const route = useRoute();
 }
 
 .nav-link.active .indicator {
-  background: color-mix(in srgb, var(--color-brand) 80%, transparent);
+  background: var(--color-brand-70);
 }
 
 .header-actions {

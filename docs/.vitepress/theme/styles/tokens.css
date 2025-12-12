@@ -15,15 +15,17 @@
   --color-brand-dark: color(display-p3 0.75 0.04 0.04);
 
   /* Brand with opacity (för glows, shadows, etc) */
-  --color-brand-5: color-mix(in srgb, var(--color-brand) 5%, transparent);
-  --color-brand-6: color-mix(in srgb, var(--color-brand) 6%, transparent);
-  --color-brand-8: color-mix(in srgb, var(--color-brand) 8%, transparent);
-  --color-brand-10: color-mix(in srgb, var(--color-brand) 10%, transparent);
-  --color-brand-15: color-mix(in srgb, var(--color-brand) 15%, transparent);
-  --color-brand-18: color-mix(in srgb, var(--color-brand) 18%, transparent);
-  --color-brand-30: color-mix(in srgb, var(--color-brand) 30%, transparent);
-  --color-brand-35: color-mix(in srgb, var(--color-brand) 35%, transparent);
-  --color-brand-60: color-mix(in srgb, var(--color-brand) 60%, transparent);
+  --color-brand-5: color-mix(in srgb, var(--color-brand), transparent 95%);
+  --color-brand-6: color-mix(in srgb, var(--color-brand), transparent 94%);
+  --color-brand-8: color-mix(in srgb, var(--color-brand), transparent 92%);
+  --color-brand-10: color-mix(in srgb, var(--color-brand), transparent 90%);
+  --color-brand-15: color-mix(in srgb, var(--color-brand), transparent 85%);
+  --color-brand-18: color-mix(in srgb, var(--color-brand), transparent 82%);
+  --color-brand-30: color-mix(in srgb, var(--color-brand), transparent 70%);
+  --color-brand-35: color-mix(in srgb, var(--color-brand), transparent 65%);
+  --color-brand-60: color-mix(in srgb, var(--color-brand), transparent 40%);
+  --color-brand-70: color-mix(in srgb, var(--color-brand), transparent 30%);
+  --color-brand-80: color-mix(in srgb, var(--color-brand), transparent 20%);
 
   /* Accent colors for tech logos */
   --color-openapi: #6b9f3a;
@@ -101,7 +103,7 @@
   --color-brand-dark: color(display-p3 0.88 0.15 0.15);
 
   /* Hero gradient - dark mode */
-  --color-hero-gradient-start: color-mix(in srgb, var(--color-brand) 20%, transparent);
+  --color-hero-gradient-start: color-mix(in srgb, var(--color-brand), transparent 80%);
 
   /* Mesh gradient colors - dark mode (inverted, dark coral) */
   --gradient-color-1: #100909;

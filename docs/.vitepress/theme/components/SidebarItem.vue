@@ -182,7 +182,7 @@ function onToggle(key: string) {
 }
 
 .sidebar-link.active {
-  color: var(--color-brand);
+  color: var(--color-brand-70);
   font-weight: 500;
 }
 
