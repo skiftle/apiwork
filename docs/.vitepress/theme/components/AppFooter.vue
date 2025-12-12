@@ -13,7 +13,7 @@
 
 <style scoped>
 .app-footer {
-  background: var(--color-footer-bg);
+  background: #131313;
 }
 
 .footer-container {

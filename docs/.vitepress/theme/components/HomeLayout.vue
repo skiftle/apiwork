@@ -691,6 +691,7 @@
   padding: 120px 24px;
   overflow: hidden;
   background: #131313;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
 }
 
 
@@ -709,9 +710,31 @@
 .more-features-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #fff;
   letter-spacing: -0.03em;
   margin-bottom: 16px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.7) 0%,
+    rgba(170, 175, 185, 0.6) 20%,
+    rgba(255, 255, 255, 1) 40%,
+    rgba(170, 175, 185, 0.6) 60%,
+    rgba(255, 255, 255, 0.7) 80%,
+    rgba(170, 175, 185, 0.6) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 8s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 90%, 100% {
+    background-position: 100% 0;
+  }
+  45%, 55% {
+    background-position: 0% 0;
+  }
 }
 
 .more-features-subtitle {
@@ -730,8 +753,8 @@
   background: transparent;
   padding: 28px 24px;
   transition: background 300ms ease;
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-right: 1px solid rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
 }
 
 .more-feature-card:nth-child(4n) {
@@ -749,8 +772,18 @@
 .more-feature-name {
   font-size: 0.9375rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.85);
   margin-bottom: 10px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(170, 175, 185, 0.85) 25%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(170, 175, 185, 0.85) 75%,
+    rgba(255, 255, 255, 0.95) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .more-feature-desc {
@@ -800,7 +833,7 @@
   }
 
   .more-feature-card:nth-child(4n) {
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    border-right: 1px solid rgba(255, 255, 255, 0.02);
   }
 
   .more-feature-card:nth-child(2n) {
@@ -808,7 +841,7 @@
   }
 
   .more-feature-card:nth-last-child(-n+4) {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02);
   }
 
   .more-feature-card:nth-last-child(-n+2) {
@@ -854,7 +887,7 @@
 
   .more-feature-card:nth-last-child(-n+2),
   .more-feature-card:nth-last-child(-n+4) {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02);
   }
 
   .more-feature-card:last-child {
