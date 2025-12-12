@@ -356,33 +356,7 @@
 }
 
 .hero-title .highlight {
-  background: linear-gradient(
-    90deg,
-    var(--color-brand) 0%,
-    var(--color-brand-dark) 25%,
-    var(--color-brand-light) 50%,
-    var(--color-brand-dark) 75%,
-    var(--color-brand) 100%
-  );
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shimmer 12s ease-in-out infinite;
-}
-
-.dark .hero-title .highlight {
-  filter: drop-shadow(0 2px 12px rgba(239, 68, 68, 0.35));
-}
-
-@keyframes shimmer {
-  0%,
-  100% {
-    background-position: 0% center;
-  }
-  50% {
-    background-position: 100% center;
-  }
+  color: var(--color-brand);
 }
 
 .hero-tagline {
@@ -582,7 +556,7 @@
   color: var(--color-brand);
   border: 2px solid var(--color-brand);
   border-radius: 50%;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
   opacity: 0.85;
 }
 
@@ -592,6 +566,7 @@
   color: var(--color-text);
   line-height: 1.15;
   letter-spacing: -0.03em;
+  margin-top: 0;
   margin-bottom: 20px;
 }
 
@@ -714,67 +689,77 @@
 
 /* More Features Section */
 .more-features {
-  background: #1a1a1a;
-  padding: 100px 24px;
+  background: linear-gradient(180deg, #0c0c0c 0%, #151515 100%);
+  padding: 120px 24px;
+  position: relative;
+}
+
+.more-features::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
 }
 
 .more-features-container {
-  max-width: 1200px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
 .more-features-header {
   text-align: center;
-  margin-bottom: 56px;
+  margin-bottom: 64px;
 }
 
 .more-features-title {
-  font-size: 2.25rem;
+  font-size: 2.5rem;
   font-weight: 700;
   color: #fff;
   letter-spacing: -0.03em;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .more-features-subtitle {
-  font-size: 1.15rem;
+  font-size: 1.125rem;
   color: rgba(255, 255, 255, 0.5);
+  max-width: 500px;
+  margin: 0 auto;
 }
 
 .more-features-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  gap: 16px;
 }
 
 .more-feature-card {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
-  padding: 24px;
-  transition:
-    background 300ms,
-    border-color 300ms,
-    transform 300ms;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 28px 24px;
+  transition: all 300ms ease;
 }
 
 .more-feature-card:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(255, 255, 255, 0.12);
-  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
 }
 
 .more-feature-name {
-  font-size: 0.95rem;
+  font-size: 0.9375rem;
   font-weight: 600;
   color: #fff;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .more-feature-desc {
-  font-size: 0.85rem;
+  font-size: 0.8125rem;
   color: rgba(255, 255, 255, 0.45);
-  line-height: 1.55;
+  line-height: 1.6;
   margin: 0;
 }
 
@@ -806,16 +791,24 @@
   }
 
   .more-features {
-    padding: 64px 20px;
+    padding: 80px 20px;
+  }
+
+  .more-features-header {
+    margin-bottom: 48px;
   }
 
   .more-features-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    gap: 12px;
   }
 
   .more-features-title {
-    font-size: 1.75rem;
+    font-size: 2rem;
+  }
+
+  .more-feature-card {
+    padding: 24px 20px;
   }
 }
 
