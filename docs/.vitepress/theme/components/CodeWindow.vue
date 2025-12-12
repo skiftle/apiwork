@@ -26,7 +26,7 @@ defineProps<{
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
 
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.02), 0 1px 0 rgba(0, 0, 0, 0.06),
+  box-shadow: 0 0 0 1px var(--color-code-border), 0 1px 0 rgba(0, 0, 0, 0.06),
     0 4px 6px rgba(0, 0, 0, 0.04), 0 12px 28px rgba(0, 0, 0, 0.06),
     0 20px 48px rgba(0, 0, 0, 0.04), 0 0 80px var(--color-brand-6);
 
