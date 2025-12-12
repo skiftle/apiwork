@@ -76,7 +76,7 @@
 
   /* Shiki css-variables theme (P3 wide gamut) */
   --shiki-foreground: #e4e4e7;
-  --shiki-background: #1a1214;
+  --shiki-background: color-mix(in srgb, #1a1214, transparent 10%);
   --shiki-token-constant: color(display-p3 0.99 0.73 0.45);
   --shiki-token-string: color(display-p3 0.4 0.95 0.6);
   --shiki-token-comment: #6b7280;
