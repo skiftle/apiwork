@@ -27,17 +27,12 @@ const route = useRoute();
           >
             <g id="Desktop-HD" transform="translate(-21.000000, -21.000000)">
               <path
+                class="logo-shadow"
                 d="M36.4142136,35.5857864 L49.5857864,22.4142136 C50.366835,21.633165 51.633165,21.633165 52.4142136,22.4142136 L65.5857864,35.5857864 C66.366835,36.366835 66.366835,37.633165 65.5857864,38.4142136 L52.4142136,51.5857864 C51.633165,52.366835 50.366835,52.366835 49.5857864,51.5857864 L36.4142136,38.4142136 C35.633165,37.633165 35.633165,36.366835 36.4142136,35.5857864 Z"
-                id="Path-3"
-                fill-opacity="0.501927516"
-                fill="#000000"
-                opacity="0.386736189"
               ></path>
               <path
+                class="logo-primary"
                 d="M22.4142136,35.5857864 L35.5857864,22.4142136 C36.366835,21.633165 37.633165,21.633165 38.4142136,22.4142136 L51.5857864,35.5857864 C52.366835,36.366835 52.366835,37.633165 51.5857864,38.4142136 L38.4142136,51.5857864 C37.633165,52.366835 36.366835,52.366835 35.5857864,51.5857864 L22.4142136,38.4142136 C21.633165,37.633165 21.633165,36.366835 22.4142136,35.5857864 Z"
-                id="Path-3"
-                fill="#E30F0F"
-                opacity="0.795767648"
               ></path>
             </g>
           </g>
@@ -129,22 +124,12 @@ const route = useRoute();
       text-decoration: none;
     }
 
-    .icon {
-      width: 22px;
-      height: 22px;
-      flex-shrink: 0;
+    .logo-shadow {
+      fill: var(--color-logo-shadow);
     }
 
-    .layer-top {
-      fill: url(#grad-top);
-    }
-
-    .layer-mid {
-      fill: url(#grad-mid);
-    }
-
-    .layer-bottom {
-      fill: url(#grad-bottom);
+    .logo-primary {
+      fill: var(--color-brand-70);
     }
   }
 
@@ -153,34 +138,17 @@ const route = useRoute();
     gap: var(--space-8);
 
     .link {
-      position: relative;
       font-size: var(--font-size-base);
       font-weight: 600;
       color: var(--color-text);
       text-decoration: none;
-      transition: color 200ms;
 
       &:hover {
-        color: var(--color-brand-70);
         text-decoration: none;
       }
 
       &.active {
         color: var(--color-brand-70);
-
-        .indicator {
-          background: var(--color-brand-70);
-        }
-      }
-
-      .indicator {
-        position: absolute;
-        display: block;
-        width: 100%;
-        height: 2px;
-        background: transparent;
-        border-radius: 2px;
-        transition: background 200ms;
       }
     }
   }

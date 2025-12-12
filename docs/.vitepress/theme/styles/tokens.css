@@ -64,6 +64,9 @@
   --color-dark-bg-subtle: rgba(255, 255, 255, 0.05);
   --color-dark-bg-elevated: rgba(255, 255, 255, 0.08);
 
+  /* Logo shadow */
+  --color-logo-shadow: rgba(0, 0, 0, 0.2);
+
   /* Code windows - Light theme */
   --color-code-bg: #fafafa;
   --color-code-header: #f0f0f0;
@@ -174,6 +177,9 @@
 
   /* Alt section background */
   --color-section-alt: rgba(30, 20, 22, 0.5);
+
+  /* Logo shadow */
+  --color-logo-shadow: rgba(255, 255, 255, 0.25);
 
   /* Hero gradient - dark mode */
   --color-hero-gradient-start: color-mix(
