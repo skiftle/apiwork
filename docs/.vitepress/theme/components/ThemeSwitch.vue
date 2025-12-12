@@ -23,8 +23,15 @@ function toggle() {
           <path d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
         </svg>
         <svg v-else class="icon" viewBox="0 0 24 24" fill="currentColor">
-          <circle cx="12" cy="12" r="4" />
-          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none" />
+          <circle cx="12" cy="12" r="5.5" />
+          <rect x="10.75" y="1" width="2.5" height="4" rx="1.25" />
+          <rect x="10.75" y="19" width="2.5" height="4" rx="1.25" />
+          <rect x="1" y="10.75" width="4" height="2.5" rx="1.25" />
+          <rect x="19" y="10.75" width="4" height="2.5" rx="1.25" />
+          <rect x="17.5" y="4" width="2.5" height="4" rx="1.25" transform="rotate(45 18.75 6)" />
+          <rect x="4" y="17.5" width="2.5" height="4" rx="1.25" transform="rotate(45 5.25 19.5)" />
+          <rect x="17.5" y="17.5" width="2.5" height="4" rx="1.25" transform="rotate(-45 18.75 19.5)" />
+          <rect x="4" y="4" width="2.5" height="4" rx="1.25" transform="rotate(-45 5.25 6)" />
         </svg>
       </span>
     </span>
@@ -36,11 +43,11 @@ function toggle() {
   position: relative;
   display: flex;
   align-items: center;
-  width: 52px;
-  height: 28px;
-  padding: 3px;
+  width: 44px;
+  height: 24px;
+  padding: 2px;
   border: none;
-  border-radius: 14px;
+  border-radius: 12px;
   background: rgba(0, 0, 0, 0.12);
   cursor: pointer;
   transition: background 200ms;
@@ -76,21 +83,21 @@ function toggle() {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: white;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 
   .dark & {
-    transform: translateX(24px);
+    transform: translateX(20px);
   }
 }
 
 .icon {
-  color: var(--color-text-muted);
-  width: 14px;
-  height: 14px;
+  color: #374151;
+  width: 12px;
+  height: 12px;
 }
 </style>

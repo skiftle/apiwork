@@ -136,13 +136,12 @@ const route = useRoute();
         content: '';
         position: absolute;
         bottom: -6px;
-        left: 50%;
-        width: 16px;
+        left: 0;
+        width: 100%;
         height: 2px;
         background: var(--color-brand-70);
         border-radius: 1px;
         opacity: 0;
-        transform: translateX(-50%);
         transition: opacity 200ms;
       }
 
@@ -171,6 +170,11 @@ const route = useRoute();
     align-items: center;
     color: var(--color-text-muted);
     transition: color 200ms;
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
 
     &:hover {
       color: var(--color-text);
