@@ -128,15 +128,38 @@ watch(() => route.path, initializeExpanded, { immediate: true })
   width: var(--sidebar-width);
   height: calc(100vh - var(--header-height));
   overflow-y: auto;
-  padding: var(--space-6);
-  border-right: 1px solid var(--color-border);
+  padding: var(--space-6) var(--space-4);
   background: var(--color-bg);
   flex-shrink: 0;
+  box-shadow: 1px 0 0 var(--color-border);
+
+  /* Custom scrollbar */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 3px;
+    transition: background 200ms;
+  }
+
+  &:hover::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--color-text-light);
+  }
 }
 
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-1);
 }
 </style>
