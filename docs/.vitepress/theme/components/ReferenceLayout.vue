@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { Content } from 'vitepress'
-import AppSidebar from './AppSidebar.vue'
+import { Content } from "vitepress";
+import AppSidebar from "./AppSidebar.vue";
+import PageOutline from "./PageOutline.vue";
 </script>
 
 <template>
@@ -11,6 +12,7 @@ import AppSidebar from './AppSidebar.vue'
         <Content />
       </div>
     </article>
+    <PageOutline />
   </div>
 </template>
 
@@ -31,7 +33,4 @@ import AppSidebar from './AppSidebar.vue'
   max-width: var(--content-max-width);
   margin: 0 auto;
 }
-
-/* TODO: Add outline/TOC sidebar on the right */
-/* TODO: Add responsive styles */
 </style>

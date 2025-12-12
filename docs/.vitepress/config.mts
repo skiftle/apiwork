@@ -9,8 +9,10 @@ export default defineConfig({
       light: "github-dark",
       dark: "github-dark",
     },
-
     lineNumbers: false,
+    headers: {
+      level: [2, 3],
+    },
   },
   themeConfig: {
     outline: [2, 3],
