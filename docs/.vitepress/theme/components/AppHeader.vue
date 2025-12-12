@@ -105,12 +105,6 @@ const route = useRoute();
   background: color-mix(in srgb, var(--color-bg) 85%, transparent);
   backdrop-filter: blur(18px) saturate(180%);
   -webkit-backdrop-filter: blur(18px) saturate(180%);
-  border-bottom: 1px solid var(--color-border-light);
-
-  .dark & {
-    border-bottom-color: rgba(255, 255, 255, 0.04);
-  }
-
   .container {
     display: flex;
     align-items: center;

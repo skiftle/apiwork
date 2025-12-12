@@ -26,8 +26,8 @@ defineProps<{
   background: transparent;
   padding: 28px 24px;
   transition: background 300ms ease;
-  border-right: 1px solid rgba(255, 255, 255, 0.02);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+  border-right: 1px solid var(--color-dark-border-subtle);
+  border-bottom: 1px solid var(--color-dark-border-subtle);
 
   &:nth-child(4n) {
     border-right: none;
@@ -38,7 +38,7 @@ defineProps<{
   }
 
   &:hover {
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--color-dark-bg-hover);
   }
 
   .icon {
@@ -68,7 +68,7 @@ defineProps<{
 
   .desc {
     font-size: 0.8125rem;
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--color-dark-text-muted);
     line-height: 1.6;
     margin: 0;
   }
@@ -77,7 +77,7 @@ defineProps<{
     padding: 24px 20px;
 
     &:nth-child(4n) {
-      border-right: 1px solid rgba(255, 255, 255, 0.02);
+      border-right: 1px solid var(--color-dark-border-subtle);
     }
 
     &:nth-child(2n) {
@@ -85,7 +85,7 @@ defineProps<{
     }
 
     &:nth-last-child(-n + 4) {
-      border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--color-dark-border-subtle);
     }
 
     &:nth-last-child(-n + 2) {
@@ -101,7 +101,7 @@ defineProps<{
 
     &:nth-last-child(-n + 2),
     &:nth-last-child(-n + 4) {
-      border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--color-dark-border-subtle);
     }
 
     &:last-child {

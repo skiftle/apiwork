@@ -162,7 +162,7 @@ import FeatureCard from "./FeatureCard.vue";
   padding: 120px 24px;
   overflow: hidden;
   background: var(--color-bg-dark-section);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid var(--color-dark-border-subtle);
 
   .container {
     position: relative;
@@ -199,7 +199,7 @@ import FeatureCard from "./FeatureCard.vue";
 
   .subtitle {
     font-size: 1.125rem;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--color-dark-text-secondary);
     max-width: 500px;
     margin: 0 auto;
   }

@@ -37,16 +37,16 @@
   .title {
     font-size: 3.5rem;
     font-weight: 600;
-    color: rgba(17, 24, 39, 0.94);
+    color: var(--color-text-strong);
     line-height: 1.08;
     margin-bottom: var(--space-6);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px var(--color-brand-8),
-      0 8px 40px rgba(252, 208, 208, 0.4);
+    text-shadow: 0 1px 2px var(--color-overlay-4), 0 4px 16px var(--color-brand-8),
+      0 8px 40px var(--color-brand-15);
 
     .dark & {
       color: var(--color-text);
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 4px 16px rgba(239, 68, 68, 0.12),
-        0 8px 40px rgba(61, 32, 32, 0.5);
+      text-shadow: 0 1px 2px var(--color-overlay-20), 0 4px 16px var(--color-brand-10),
+        0 8px 40px var(--color-brand-15);
     }
 
     .highlight {
@@ -61,7 +61,7 @@
   .tagline {
     font-size: 1.35rem;
     font-weight: 500;
-    color: rgba(17, 24, 39, 0.75);
+    color: var(--color-text-body);
     letter-spacing: -0.01em;
     margin-bottom: var(--space-10);
 
@@ -111,38 +111,42 @@
     &.outline {
       background: rgba(255, 255, 255, 0.8);
       color: var(--color-text);
-      box-shadow: 0 8px 18px 0 rgba(0, 0, 0, 0.06);
+      box-shadow: 0 8px 18px 0 var(--color-overlay-6);
       border-radius: 20.5px;
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
 
       &:hover {
         background: rgba(255, 255, 255, 0.9);
         text-decoration: none;
-        box-shadow: 0 12px 22px 0 rgba(0, 0, 0, 0.06);
+        box-shadow: 0 12px 22px 0 var(--color-overlay-6);
         transform: translateY(-1px);
       }
 
       &:active {
         transform: translateY(1px);
-        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+        box-shadow: 0 1px 1px var(--color-overlay-4);
       }
 
       .dark & {
-        background: rgba(255, 255, 255, 0.05);
+        background: var(--color-dark-bg-subtle);
         color: var(--color-text);
-        border: 1px solid var(--color-border);
-        box-shadow: 0 8px 18px 0 rgba(0, 0, 0, 0.2);
+        border: 1px solid var(--color-dark-border-subtle);
+        box-shadow: 0 8px 18px 0 var(--color-overlay-20);
 
         &:hover {
-          background: rgba(255, 255, 255, 0.08);
-          box-shadow: 0 12px 22px 0 rgba(0, 0, 0, 0.25);
+          background: var(--color-dark-bg-elevated);
+          box-shadow: 0 12px 22px 0 var(--color-overlay-25);
         }
       }
     }
 
     &.primary {
-      color: rgba(255, 255, 255, 0.9);
+      color: var(--color-dark-text-primary);
       background-color: var(--color-brand-70);
       box-shadow: 0 8px 18px 0 var(--color-brand-10);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
 
       &:hover {
         text-decoration: none;

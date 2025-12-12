@@ -23,13 +23,13 @@
 
   .message {
     font-size: var(--font-size-sm);
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--color-dark-text-body);
     margin-bottom: var(--space-2);
   }
 
   .copyright {
     font-size: var(--font-size-sm);
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--color-dark-text-secondary);
     margin-bottom: 0;
   }
 }

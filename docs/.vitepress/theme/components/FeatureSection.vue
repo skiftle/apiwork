@@ -39,18 +39,9 @@ defineProps<{
     background: linear-gradient(
       180deg,
       transparent 0%,
-      rgba(254, 242, 242, 0.4) 50%,
+      var(--color-section-alt) 50%,
       transparent 100%
     );
-
-    .dark & {
-      background: linear-gradient(
-        180deg,
-        transparent 0%,
-        rgba(30, 20, 22, 0.5) 50%,
-        transparent 100%
-      );
-    }
 
     .container {
       direction: rtl;

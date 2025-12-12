@@ -35,6 +35,35 @@
   /* Dark sections (footer, more-features) - subtle red-black */
   --color-bg-dark-section: #140a0b;
 
+  /* Overlay/shadow opacity scale (black for light mode) */
+  --color-overlay-2: rgba(0, 0, 0, 0.02);
+  --color-overlay-4: rgba(0, 0, 0, 0.04);
+  --color-overlay-6: rgba(0, 0, 0, 0.06);
+  --color-overlay-8: rgba(0, 0, 0, 0.08);
+  --color-overlay-15: rgba(0, 0, 0, 0.15);
+  --color-overlay-20: rgba(0, 0, 0, 0.2);
+  --color-overlay-25: rgba(0, 0, 0, 0.25);
+
+  /* Text opacity variants for hero */
+  --color-text-strong: rgba(17, 24, 39, 0.94);
+  --color-text-body: rgba(17, 24, 39, 0.75);
+
+  /* Alt section background */
+  --color-section-alt: rgba(254, 242, 242, 0.4);
+
+  /* Dark section text (white with opacity) */
+  --color-dark-text-muted: rgba(255, 255, 255, 0.4);
+  --color-dark-text-secondary: rgba(255, 255, 255, 0.5);
+  --color-dark-text-body: rgba(255, 255, 255, 0.7);
+  --color-dark-text-primary: rgba(255, 255, 255, 0.9);
+
+  /* Dark section borders/backgrounds (white with low opacity) */
+  --color-dark-border-subtle: rgba(255, 255, 255, 0.02);
+  --color-dark-border: rgba(255, 255, 255, 0.04);
+  --color-dark-bg-hover: rgba(255, 255, 255, 0.03);
+  --color-dark-bg-subtle: rgba(255, 255, 255, 0.05);
+  --color-dark-bg-elevated: rgba(255, 255, 255, 0.08);
+
   /* Code windows - Light theme */
   --color-code-bg: #fafafa;
   --color-code-header: #f0f0f0;
@@ -136,6 +165,15 @@
 
   /* Dark sections - subtle red-black for contrast */
   --color-bg-dark-section: #140a0b;
+
+  /* Overlay/shadow opacity scale (inverted for dark mode borders) */
+  --color-overlay-2: rgba(255, 255, 255, 0.02);
+  --color-overlay-4: rgba(255, 255, 255, 0.04);
+  --color-overlay-6: rgba(255, 255, 255, 0.06);
+  --color-overlay-8: rgba(255, 255, 255, 0.08);
+
+  /* Alt section background */
+  --color-section-alt: rgba(30, 20, 22, 0.5);
 
   /* Hero gradient - dark mode */
   --color-hero-gradient-start: color-mix(
