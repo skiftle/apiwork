@@ -4,7 +4,7 @@ order: 8
 
 # Custom Hash Responses
 
-Using respond_with with plain hashes instead of ActiveRecord models
+Using render_with_contract with plain hashes instead of ActiveRecord models
 
 ## API Definition
 
@@ -25,8 +25,6 @@ Using respond_with with plain hashes instead of ActiveRecord models
 <<< @/app/app/controllers/lazy_cow/statuses_controller.rb
 
 ---
-
-
 
 ## Request Examples
 

@@ -16,7 +16,7 @@ next: false
 
 ---
 
-### #respond_with(data, meta: = {}, status: = nil)
+### #render_with_contract(data, meta: = {}, status: = nil)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/serialization.rb#L8)
 

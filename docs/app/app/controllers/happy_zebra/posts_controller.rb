@@ -4,7 +4,7 @@ module HappyZebra
   class PostsController < ApplicationController
     def index
       posts = Post.all
-      respond_with posts
+      render_with_contract posts
     end
   end
 end

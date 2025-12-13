@@ -6,26 +6,26 @@ module SwiftFox
 
     def index
       contacts = Contact.all
-      respond_with contacts
+      render_with_contract contacts
     end
 
     def show
-      respond_with contact
+      render_with_contract contact
     end
 
     def create
       contact = Contact.create(contract.body[:contact])
-      respond_with contact
+      render_with_contract contact
     end
 
     def update
       contact.update(contract.body[:contact])
-      respond_with contact
+      render_with_contract contact
     end
 
     def destroy
       contact.destroy
-      respond_with contact
+      render_with_contract contact
     end
 
     private

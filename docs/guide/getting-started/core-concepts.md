@@ -102,26 +102,26 @@ module Api
 
       def index
         invoices = Invoice.query(contract.query)
-        respond_with invoices
+        render_with_contract invoices
       end
 
       def show
-        respond_with invoice
+        render_with_contract invoice
       end
 
       def create
         invoice = Invoice.create(contract.body[:invoice])
-        respond_with invoice
+        render_with_contract invoice
       end
 
       def update
         invoice.update(contract.body[:invoice])
-        respond_with invoice
+        render_with_contract invoice
       end
 
       def destroy
         invoice.destroy
-        respond_with invoice
+        render_with_contract invoice
       end
 
       private

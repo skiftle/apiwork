@@ -12,7 +12,7 @@ module Api
           account.define_singleton_method(:first_day_of_week) { 'hahahahahaha' }
         end
 
-        respond_with account
+        render_with_contract account
       end
     end
   end

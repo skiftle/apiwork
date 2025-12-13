@@ -7,6 +7,7 @@ order: 3
 ActiveRecord validation errors become Issues automatically. Same format as contract errors. Your API returns consistent errors whether they come from contracts, models, or nested associations.
 
 Requires:
+
 - A schema (`schema!`)
 - The built-in adapter (default)
 - ActiveRecord
@@ -16,7 +17,7 @@ Requires:
 ```ruby
 def create
   invoice = Invoice.create(contract.body[:invoice])
-  respond_with invoice
+  render_with_contract invoice
 end
 ```
 
@@ -34,25 +35,25 @@ If validation fails, the adapter sees `invoice.errors`, converts each to an Issu
 }
 ```
 
-| Field | Source |
-|-------|--------|
-| `code` | Rails error type (`:blank`, `:too_short`, `:taken`) |
-| `detail` | Human-readable message |
-| `path` | Schema root key + attribute |
-| `pointer` | JSON Pointer from path |
-| `meta` | Constraints and context |
+| Field     | Source                                              |
+| --------- | --------------------------------------------------- |
+| `code`    | Rails error type (`:blank`, `:too_short`, `:taken`) |
+| `detail`  | Human-readable message                              |
+| `path`    | Schema root key + attribute                         |
+| `pointer` | JSON Pointer from path                              |
+| `meta`    | Constraints and context                             |
 
 ## Error Mapping
 
-| Rails Validation | Code | Detail |
-|-----------------|------|--------|
-| `presence: true` | `blank` | "can't be blank" |
-| `uniqueness: true` | `taken` | "has already been taken" |
-| `length: { minimum: 3 }` | `too_short` | "is too short (minimum is 3 characters)" |
-| `length: { maximum: 100 }` | `too_long` | "is too long (maximum is 100 characters)" |
-| `numericality: { greater_than: 0 }` | `greater_than` | "must be greater than 0" |
-| `format: { with: /.../ }` | `invalid` | "is invalid" |
-| `inclusion: { in: [...] }` | `inclusion` | "is not included in the list" |
+| Rails Validation                    | Code           | Detail                                    |
+| ----------------------------------- | -------------- | ----------------------------------------- |
+| `presence: true`                    | `blank`        | "can't be blank"                          |
+| `uniqueness: true`                  | `taken`        | "has already been taken"                  |
+| `length: { minimum: 3 }`            | `too_short`    | "is too short (minimum is 3 characters)"  |
+| `length: { maximum: 100 }`          | `too_long`     | "is too long (maximum is 100 characters)" |
+| `numericality: { greater_than: 0 }` | `greater_than` | "must be greater than 0"                  |
+| `format: { with: /.../ }`           | `invalid`      | "is invalid"                              |
+| `inclusion: { in: [...] }`          | `inclusion`    | "is not included in the list"             |
 
 ## Metadata
 
@@ -76,13 +77,13 @@ validates :number, length: { minimum: 3, maximum: 50 }
 
 `count` is the actual length. The client can show "1 character entered, 3 required."
 
-| Validation | Meta |
-|------------|------|
-| `length: { minimum: X }` | `minimum`, `count` |
-| `length: { maximum: X }` | `maximum`, `count` |
-| `length: { is: X }` | `is`, `count` |
-| `numericality` | `count` (actual value) |
-| `inclusion: { in: [...] }` | `in` |
+| Validation                 | Meta                   |
+| -------------------------- | ---------------------- |
+| `length: { minimum: X }`   | `minimum`, `count`     |
+| `length: { maximum: X }`   | `maximum`, `count`     |
+| `length: { is: X }`        | `is`, `count`          |
+| `numericality`             | `count` (actual value) |
+| `inclusion: { in: [...] }` | `in`                   |
 
 ## Paths
 
@@ -169,17 +170,20 @@ Response:
 ### Association Types
 
 **has_many** — indexed:
+
 ```
 ["invoice", "lines", 0, "description"]
 ["invoice", "lines", 1, "description"]
 ```
 
 **has_one** — no index:
+
 ```
 ["user", "profile", "bio"]
 ```
 
 **belongs_to** — foreign key:
+
 ```
 ["line", "invoice_id"]
 ```
@@ -212,6 +216,7 @@ First line, third adjustment, reason field.
 For nested errors:
 
 1. Schema association is writable:
+
    ```ruby
    has_many :lines, writable: true
    ```
@@ -259,7 +264,7 @@ end
 def publish
   invoice.status = 'published'
   invoice.save(context: :publish)
-  respond_with invoice
+  render_with_contract invoice
 end
 ```
 
@@ -283,7 +288,7 @@ end
 ```ruby
 def ship
   order.ship!
-  respond_with order
+  render_with_contract order
 end
 ```
 
@@ -302,7 +307,7 @@ def transfer
     account.errors.add(:balance, "insufficient funds")
   end
 
-  respond_with account
+  render_with_contract account
 end
 ```
 

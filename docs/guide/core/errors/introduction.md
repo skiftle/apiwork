@@ -21,13 +21,13 @@ Apiwork::Issue.new(
 
 Every issue contains:
 
-| Field | Description |
-|-------|-------------|
-| `code` | A machine-readable symbol (`:field_missing`, `:invalid_type`, etc.) |
-| `detail` | A human-readable message |
-| `path` | An array representing the location in the request body |
-| `pointer` | A JSON Pointer string derived from the path |
-| `meta` | Additional context (constraints, expected values, etc.) |
+| Field     | Description                                                         |
+| --------- | ------------------------------------------------------------------- |
+| `code`    | A machine-readable symbol (`:field_missing`, `:invalid_type`, etc.) |
+| `detail`  | A human-readable message                                            |
+| `path`    | An array representing the location in the request body              |
+| `pointer` | A JSON Pointer string derived from the path                         |
+| `meta`    | Additional context (constraints, expected values, etc.)             |
 
 ## JSON Response
 
@@ -53,11 +53,11 @@ The `issues` array contains all problems found. Clients can iterate through them
 
 Apiwork distinguishes between different error categories:
 
-| Error | HTTP Status | When |
-|-------|-------------|------|
-| `ContractError` | 400 Bad Request | Request doesn't match the contract |
-| `ValidationError` | 422 Unprocessable Entity | Model validation failed |
-| `respond_with_error` | Varies | HTTP errors (not found, forbidden, etc.) |
+| Error                | HTTP Status              | When                                     |
+| -------------------- | ------------------------ | ---------------------------------------- |
+| `ContractError`      | 400 Bad Request          | Request doesn't match the contract       |
+| `ValidationError`    | 422 Unprocessable Entity | Model validation failed                  |
+| `respond_with_error` | Varies                   | HTTP errors (not found, forbidden, etc.) |
 
 `ContractError` and `ValidationError` inherit from `ConstraintError` and carry an array of issues. The controller automatically catches these and renders the appropriate response.
 
@@ -89,7 +89,7 @@ class PostsController < ApplicationController
 
   def create
     post = Post.create(contract.body[:post])
-    respond_with post  # Automatically handles validation errors
+    render_with_contract post  # Automatically handles validation errors
   end
 end
 ```
@@ -114,7 +114,7 @@ class PostsController < ApplicationController
     end
 
     post.publish!
-    respond_with post
+    render_with_contract post
   end
 end
 ```

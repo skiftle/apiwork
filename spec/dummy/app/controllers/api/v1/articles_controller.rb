@@ -10,12 +10,12 @@ module Api
     class ArticlesController < V1Controller
 
       def index
-        respond_with Post.all
+        render_with_contract Post.all
       end
 
       def show
         article = Post.find(params[:id])
-        respond_with article
+        render_with_contract article
       end
 
       def create
@@ -24,19 +24,19 @@ module Api
         article.body = "Auto-generated body"
         article.published = false
         article.save
-        respond_with article
+        render_with_contract article
       end
 
       def update
         article = Post.find(params[:id])
         article.update(contract.body[:article])
-        respond_with article
+        render_with_contract article
       end
 
       def destroy
         article = Post.find(params[:id])
         article.destroy
-        respond_with article
+        render_with_contract article
       end
     end
   end

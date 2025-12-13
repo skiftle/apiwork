@@ -6,26 +6,26 @@ module HappyZebra
 
     def index
       users = User.all
-      respond_with users
+      render_with_contract users
     end
 
     def show
-      respond_with user
+      render_with_contract user
     end
 
     def create
       user = User.create(contract.body[:user])
-      respond_with user
+      render_with_contract user
     end
 
     def update
       user.update(contract.body[:user])
-      respond_with user
+      render_with_contract user
     end
 
     def destroy
       user.destroy
-      respond_with user
+      render_with_contract user
     end
 
     private

@@ -6,26 +6,26 @@ module WiseTiger
 
     def index
       projects = Project.all
-      respond_with projects
+      render_with_contract projects
     end
 
     def show
-      respond_with project
+      render_with_contract project
     end
 
     def create
       project = Project.create(contract.body[:project])
-      respond_with project
+      render_with_contract project
     end
 
     def update
       project.update(contract.body[:project])
-      respond_with project
+      render_with_contract project
     end
 
     def destroy
       project.destroy
-      respond_with project
+      render_with_contract project
     end
 
     private

@@ -96,7 +96,7 @@ In your controller, pass the values:
 ```ruby
 def index
   posts = Post.all
-  respond_with posts, meta: {
+  render_with_contract posts, meta: {
     generated_at: Time.current,
     api_version: 'v1'
   }
@@ -154,6 +154,7 @@ end
 This is the **default for DELETE method actions** (including `destroy`).
 
 **Generated output:**
+
 - OpenAPI: `204 No Content` (no `content` key)
 - TypeScript: `never`
 - Zod: `z.never()`
@@ -223,13 +224,13 @@ end
 
 ### Metadata Fields
 
-| Field | Description |
-|-------|-------------|
-| `summary` | One-line description. Shows in endpoint lists. |
-| `description` | Longer description. Supports markdown. |
-| `tags` | Action-specific tags for grouping. |
-| `deprecated` | Marks the action as deprecated. |
-| `operation_id` | Explicit operation ID for OpenAPI. |
+| Field          | Description                                    |
+| -------------- | ---------------------------------------------- |
+| `summary`      | One-line description. Shows in endpoint lists. |
+| `description`  | Longer description. Supports markdown.         |
+| `tags`         | Action-specific tags for grouping.             |
+| `deprecated`   | Marks the action as deprecated.                |
+| `operation_id` | Explicit operation ID for OpenAPI.             |
 
 ### Translations
 

@@ -45,7 +45,7 @@ def create
   end
 
   order.save!
-  respond_with order
+  render_with_contract order
 end
 ```
 
@@ -64,7 +64,7 @@ def destroy
   end
 
   post.destroy
-  respond_with post
+  render_with_contract post
 end
 ```
 
@@ -112,7 +112,7 @@ def transfer
   return render_error issues, status: :unprocessable_entity if issues.any?
 
   Transfer.execute(from: from_account, to: to_account, amount: amount)
-  respond_with from_account
+  render_with_contract from_account
 end
 ```
 
@@ -120,15 +120,15 @@ end
 
 Choose the appropriate status for your error type:
 
-| Status | When to Use |
-|--------|-------------|
-| `400 Bad Request` | Malformed request (rare for custom errors) |
-| `401 Unauthorized` | Authentication required |
-| `403 Forbidden` | Authenticated but not authorized |
-| `404 Not Found` | Resource doesn't exist |
-| `409 Conflict` | State conflict (out of stock, already processed) |
-| `422 Unprocessable Entity` | Business rule violation |
-| `429 Too Many Requests` | Rate limiting |
+| Status                     | When to Use                                      |
+| -------------------------- | ------------------------------------------------ |
+| `400 Bad Request`          | Malformed request (rare for custom errors)       |
+| `401 Unauthorized`         | Authentication required                          |
+| `403 Forbidden`            | Authenticated but not authorized                 |
+| `404 Not Found`            | Resource doesn't exist                           |
+| `409 Conflict`             | State conflict (out of stock, already processed) |
+| `422 Unprocessable Entity` | Business rule violation                          |
+| `429 Too Many Requests`    | Rate limiting                                    |
 
 ## Combining Error Sources
 
@@ -161,7 +161,7 @@ def create
   return render_error issues, status: :unprocessable_entity if issues.any?
 
   invoice.save!
-  respond_with invoice
+  render_with_contract invoice
 end
 ```
 

@@ -6,26 +6,26 @@ module Api
       before_action :set_author, only: %i[show update destroy]
 
       def index
-        respond_with Author.all
+        render_with_contract Author.all
       end
 
       def show
-        respond_with author
+        render_with_contract author
       end
 
       def create
         author = Author.create(contract.body[:author])
-        respond_with author
+        render_with_contract author
       end
 
       def update
         author.update(contract.body[:author])
-        respond_with author
+        render_with_contract author
       end
 
       def destroy
         author.destroy
-        respond_with author
+        render_with_contract author
       end
 
       private

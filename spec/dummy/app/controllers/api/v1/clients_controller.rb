@@ -6,26 +6,26 @@ module Api
       before_action :set_client, only: %i[show update destroy]
 
       def index
-        respond_with Client.all
+        render_with_contract Client.all
       end
 
       def show
-        respond_with client
+        render_with_contract client
       end
 
       def create
         client = Client.create(contract.body[:client])
-        respond_with client
+        render_with_contract client
       end
 
       def update
         client.update(contract.body[:client])
-        respond_with client
+        render_with_contract client
       end
 
       def destroy
         client.destroy
-        respond_with client
+        render_with_contract client
       end
 
       private

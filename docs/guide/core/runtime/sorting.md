@@ -86,7 +86,7 @@ To enforce a default in your controller:
 ```ruby
 def index
   posts = Post.order(created_at: :desc)
-  respond_with posts
+  render_with_contract posts
 end
 ```
 
@@ -108,20 +108,22 @@ Like filtering, sort parameters are validated by the contract before reaching th
 
 These errors only occur with incomplete schema configuration:
 
-| Code | Cause |
-|------|-------|
-| `field_not_sortable` | Field exists but not marked `sortable: true` |
-| `association_not_sortable` | Association not marked `sortable: true` |
-| `association_resource_not_found` | Association schema couldn't be resolved |
+| Code                             | Cause                                        |
+| -------------------------------- | -------------------------------------------- |
+| `field_not_sortable`             | Field exists but not marked `sortable: true` |
+| `association_not_sortable`       | Association not marked `sortable: true`      |
+| `association_resource_not_found` | Association schema couldn't be resolved      |
 
 Example error response:
 
 ```json
 {
-  "issues": [{
-    "code": "field_not_sortable",
-    "detail": "body is not sortable. Available: title, created_at, views",
-    "path": ["sort", "body"]
-  }]
+  "issues": [
+    {
+      "code": "field_not_sortable",
+      "detail": "body is not sortable. Available: title, created_at, views",
+      "path": ["sort", "body"]
+    }
+  ]
 }
 ```

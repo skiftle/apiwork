@@ -6,26 +6,26 @@ module Api
       before_action :set_activity, only: %i[show update destroy]
 
       def index
-        respond_with Activity.all
+        render_with_contract Activity.all
       end
 
       def show
-        respond_with activity
+        render_with_contract activity
       end
 
       def create
         activity = Activity.create(contract.body[:activity])
-        respond_with activity
+        render_with_contract activity
       end
 
       def update
         activity.update(contract.body[:activity])
-        respond_with activity
+        render_with_contract activity
       end
 
       def destroy
         activity.destroy
-        respond_with activity
+        render_with_contract activity
       end
 
       private

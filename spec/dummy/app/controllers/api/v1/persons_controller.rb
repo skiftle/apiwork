@@ -8,30 +8,30 @@ module Api
       include Apiwork::Controller
 
       def index
-        respond_with Post.all
+        render_with_contract Post.all
       end
 
       def show
         person = Post.find(params[:id])
-        respond_with person
+        render_with_contract person
       end
 
       def create
         person = Post.new(contract.body[:person])
         person.save
-        respond_with person
+        render_with_contract person
       end
 
       def update
         person = Post.find(params[:id])
         person.update(contract.body[:person])
-        respond_with person
+        render_with_contract person
       end
 
       def destroy
         person = Post.find(params[:id])
         person.destroy
-        respond_with person
+        render_with_contract person
       end
     end
   end
