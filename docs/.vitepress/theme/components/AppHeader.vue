@@ -2,12 +2,16 @@
 import { useData, useRoute } from "vitepress";
 import ThemeSwitch from "./ThemeSwitch.vue";
 
+defineProps<{
+  hasSidebar?: boolean;
+}>();
+
 const { site } = useData();
 const route = useRoute();
 </script>
 
 <template>
-  <header class="app-header">
+  <header class="app-header" :class="{ 'has-sidebar': hasSidebar }">
     <div class="container">
       <a href="/" class="logo">
         <svg
@@ -93,6 +97,10 @@ const route = useRoute();
   background: color-mix(in srgb, var(--color-bg) 85%, transparent);
   backdrop-filter: blur(18px) saturate(180%);
   -webkit-backdrop-filter: blur(18px) saturate(180%);
+
+  &.has-sidebar {
+    border-bottom: 1px solid var(--color-border);
+  }
   .container {
     display: flex;
     align-items: center;

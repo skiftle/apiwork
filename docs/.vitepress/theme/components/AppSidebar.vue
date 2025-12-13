@@ -1,107 +1,107 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
-import { useData, useRoute } from 'vitepress'
-import type { SidebarItem, SidebarMultiItem } from 'vitepress-sidebar/types'
-import SidebarItemComponent from './SidebarItem.vue'
+import { computed, ref, watch } from "vue";
+import { useData, useRoute } from "vitepress";
+import type { SidebarItem, SidebarMultiItem } from "vitepress-sidebar/types";
+import SidebarItemComponent from "./SidebarItem.vue";
 
-const { theme } = useData()
-const route = useRoute()
+const { theme } = useData();
+const route = useRoute();
 
 // State for expanded sections
-const expanded = ref<Set<string>>(new Set())
+const expanded = ref<Set<string>>(new Set());
 
 // Get the correct sidebar based on current path
 const currentSidebar = computed<SidebarMultiItem>(() => {
-  const sidebar = theme.value.sidebar
-  if (!sidebar) return { base: '', items: [] }
+  const sidebar = theme.value.sidebar;
+  if (!sidebar) return { base: "", items: [] };
 
   for (const path of Object.keys(sidebar)) {
     if (route.path.startsWith(path)) {
-      const section = sidebar[path]
-      if (section && typeof section === 'object' && 'items' in section) {
+      const section = sidebar[path];
+      if (section && typeof section === "object" && "items" in section) {
         return {
           base: section.base || path,
-          items: section.items || []
-        }
+          items: section.items || [],
+        };
       }
       if (Array.isArray(section)) {
-        return { base: path, items: section }
+        return { base: path, items: section };
       }
     }
   }
 
-  return { base: '', items: [] }
-})
+  return { base: "", items: [] };
+});
 
 function normalizeLink(link: string): string {
-  let normalized = link.replace(/\.md$/, '')
-  normalized = normalized.replace(/\/index$/, '/')
-  if (normalized === 'index') normalized = ''
-  return normalized
+  let normalized = link.replace(/\.md$/, "");
+  normalized = normalized.replace(/\/index$/, "/");
+  if (normalized === "index") normalized = "";
+  return normalized;
 }
 
 function buildLink(link: string | undefined): string {
-  if (!link) return ''
-  const normalized = normalizeLink(link)
-  if (normalized.startsWith('/')) return normalized
-  return currentSidebar.value.base + normalized
+  if (!link) return "";
+  const normalized = normalizeLink(link);
+  if (normalized.startsWith("/")) return normalized;
+  return currentSidebar.value.base + normalized;
 }
 
 function isActive(link: string | undefined): boolean {
-  if (!link) return false
-  const fullLink = buildLink(link)
-  const currentPath = route.path.replace(/\.html$/, '')
-  const targetPath = fullLink.replace(/\.html$/, '')
-  return currentPath === targetPath
+  if (!link) return false;
+  const fullLink = buildLink(link);
+  const currentPath = route.path.replace(/\.html$/, "");
+  const targetPath = fullLink.replace(/\.html$/, "");
+  return currentPath === targetPath;
 }
 
 // Check if an item or any of its descendants is active
 function hasActiveDescendant(item: SidebarItem): boolean {
-  if (isActive(item.link)) return true
+  if (isActive(item.link)) return true;
   if (item.items) {
-    return item.items.some(child => hasActiveDescendant(child))
+    return item.items.some((child) => hasActiveDescendant(child));
   }
-  return false
+  return false;
 }
 
 // Initialize expanded state based on active page
 function initializeExpanded() {
-  const newExpanded = new Set<string>()
+  const newExpanded = new Set<string>();
 
   function checkItem(item: SidebarItem, depth: number, ancestors: string[]) {
-    const key = `${depth}-${item.text}`
+    const key = `${depth}-${item.text}`;
 
     if (item.items?.length) {
-      const isActiveOrHasActive = hasActiveDescendant(item)
+      const isActiveOrHasActive = hasActiveDescendant(item);
 
       if (isActiveOrHasActive) {
-        newExpanded.add(key)
-        ancestors.forEach(a => newExpanded.add(a))
+        newExpanded.add(key);
+        ancestors.forEach((a) => newExpanded.add(a));
       }
 
       for (const child of item.items) {
-        checkItem(child, depth + 1, [...ancestors, key])
+        checkItem(child, depth + 1, [...ancestors, key]);
       }
     }
   }
 
-  currentSidebar.value.items.forEach(item => checkItem(item, 0, []))
-  expanded.value = newExpanded
+  currentSidebar.value.items.forEach((item) => checkItem(item, 0, []));
+  expanded.value = newExpanded;
 }
 
 // Toggle a section
 function toggleSection(key: string) {
-  const newExpanded = new Set(expanded.value)
+  const newExpanded = new Set(expanded.value);
   if (newExpanded.has(key)) {
-    newExpanded.delete(key)
+    newExpanded.delete(key);
   } else {
-    newExpanded.add(key)
+    newExpanded.add(key);
   }
-  expanded.value = newExpanded
+  expanded.value = newExpanded;
 }
 
 // Watch for route changes to auto-expand
-watch(() => route.path, initializeExpanded, { immediate: true })
+watch(() => route.path, initializeExpanded, { immediate: true });
 </script>
 
 <template>
@@ -125,6 +125,7 @@ watch(() => route.path, initializeExpanded, { immediate: true })
 .sidebar {
   position: sticky;
   top: var(--header-height);
+  align-self: flex-start;
   width: var(--sidebar-width);
   height: calc(100vh - var(--header-height));
   overflow-y: auto;

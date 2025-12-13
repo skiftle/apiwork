@@ -28,7 +28,7 @@ const layoutType = computed(() => {
     <div v-if="layoutType === 'home'" class="home-bg-wrapper">
       <MeshGradient />
     </div>
-    <AppHeader />
+    <AppHeader :has-sidebar="layoutType === 'guide' || layoutType === 'reference'" />
     <main>
       <NotFound v-if="layoutType === 'not-found'" />
       <HomeLayout v-else-if="layoutType === 'home'" />

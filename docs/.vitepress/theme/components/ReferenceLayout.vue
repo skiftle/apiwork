@@ -26,7 +26,7 @@ import PageOutline from "./PageOutline.vue";
 .reference-content {
   flex: 1;
   min-width: 0;
-  padding: var(--space-8) var(--space-8) var(--space-16);
+  padding: var(--space-8) var(--space-12) 100px;
 }
 
 .reference-content-container {
