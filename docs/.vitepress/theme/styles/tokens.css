@@ -1,8 +1,8 @@
 :root {
-  /* Colors - warm rose-tinted baseline */
-  --color-bg: #f8f4f4;
-  --color-bg-soft: #f5f2f0;
-  --color-bg-muted: #efe9e6;
+  /* Colors - neutral gray baseline */
+  --color-bg: #ffffff;
+  --color-bg-soft: #fafafa;
+  --color-bg-muted: #f5f5f5;
   --color-text: #1f2937;
   --color-text-muted: #6b7280;
   --color-text-light: #9ca3af;
@@ -89,8 +89,8 @@
   /* Hero gradient */
   --color-hero-gradient-start: var(--color-brand-15);
 
-  /* Mesh gradient colors - light mode (lighter coral) */
-  --gradient-color-1: #f8f4f4;
+  /* Mesh gradient colors - light mode (coral blobs on bg) */
+  --gradient-color-1: var(--color-bg);
   --gradient-color-2: #fee4e4;
   --gradient-color-3: #fdd0d0;
   --gradient-color-4: #fde2e2;

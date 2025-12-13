@@ -133,29 +133,6 @@ watch(() => route.path, initializeExpanded, { immediate: true });
   background: var(--color-bg);
   flex-shrink: 0;
   box-shadow: 1px 0 0 var(--color-border);
-
-  /* Custom scrollbar */
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: transparent;
-    border-radius: 3px;
-    transition: background 200ms;
-  }
-
-  &:hover::-webkit-scrollbar-thumb {
-    background: var(--color-border);
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: var(--color-text-light);
-  }
 }
 
 .sidebar-nav {
