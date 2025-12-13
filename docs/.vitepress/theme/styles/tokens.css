@@ -1,8 +1,8 @@
 :root {
   /* Colors - neutral gray baseline */
   --color-bg: #fafafa;
-  --color-bg-soft: #fafafa;
-  --color-bg-muted: #f5f5f5;
+  --color-bg-soft: #f5f5f5;
+  --color-bg-muted: #f0f0f0;
   --color-text: #1f2937;
   --color-text-muted: #6b7280;
   --color-text-light: #9ca3af;
