@@ -24,7 +24,7 @@ void main() {
 }
 `
 
-// Fragment shader - animated blurry circles
+// Fragment shader - animated rounded diamonds (logo shape)
 const fragmentShader = `
 precision highp float;
 
@@ -37,69 +37,86 @@ uniform vec2 u_resolution;
 
 varying vec2 v_uv;
 
-// Soft ellipse with blur (blur=0 for sharp edge)
-float ellipse(vec2 uv, vec2 center, vec2 radius, float blur) {
-  vec2 d = (uv - center) / radius;
-  float dist = length(d);
+// Rhombus SDF (Inigo Quilez)
+float ndot(vec2 a, vec2 b) { return a.x*b.x - a.y*b.y; }
+
+float sdRhombus(vec2 p, vec2 b) {
+  p = abs(p);
+  float h = clamp(ndot(b - 2.0*p, b) / dot(b, b), -1.0, 1.0);
+  float d = length(p - 0.5*b*vec2(1.0-h, 1.0+h));
+  return d * sign(p.x*b.y + p.y*b.x - b.x*b.y);
+}
+
+// Rounded rhombus - subtract radius for rounding
+float diamond(vec2 p, vec2 size) {
+  float r = size.x * 0.10;
+  return sdRhombus(p, size) - r;
+}
+
+// Premium soft diamond with smoother falloff
+float softDiamond(vec2 uv, vec2 center, vec2 size, float blur) {
+  vec2 p = uv - center;
+  float d = diamond(p, size);
+
   if (blur <= 0.0) {
-    return dist < 1.0 ? 1.0 : 0.0;
+    return d < 0.0 ? 1.0 : 0.0;
   }
-  return 1.0 - smoothstep(1.0 - blur, 1.0 + blur, dist);
+
+  // Smoother hermite falloff
+  float edge = clamp(1.0 - d / (blur * size.x * 2.0), 0.0, 1.0);
+  return edge * edge * (3.0 - 2.0 * edge);
+}
+
+// Fast noise for grain (Interleaved Gradient Noise)
+float noise(vec2 n) {
+  return fract(52.9829189 * fract(dot(n, vec2(0.06711056, 0.00583715))));
 }
 
 void main() {
   vec2 uv = v_uv;
   float t = u_time;
 
-  // Animated blur - phases spread so at least one is sharp at any time
-  float blur1 = pow(sin(t * 0.025 + 0.0), 2.0) * 0.04;
-  float blur2 = pow(sin(t * 0.025 + 1.26), 2.0) * 0.04;
-  float blur3 = pow(sin(t * 0.025 + 2.51), 2.0) * 0.04;
-  float blur4 = pow(sin(t * 0.025 + 3.77), 2.0) * 0.04;
-  float blur5 = pow(sin(t * 0.025 + 5.03), 2.0) * 0.04;
+  // Animated blur - subtle pulsing
+  float blur1 = 0.006 + pow(sin(t * 0.02 + 0.0), 2.0) * 0.012;
+  float blur2 = 0.006 + pow(sin(t * 0.02 + 1.26), 2.0) * 0.012;
+  float blur3 = 0.006 + pow(sin(t * 0.02 + 2.51), 2.0) * 0.012;
+  float blur4 = 0.006 + pow(sin(t * 0.02 + 3.77), 2.0) * 0.012;
+  float blur5 = 0.006 + pow(sin(t * 0.02 + 5.03), 2.0) * 0.012;
+
+  // Animated opacity - subtle breathing
+  float op1 = 0.6 + sin(t * 0.015 + 0.0) * 0.1;
+  float op2 = 0.5 + sin(t * 0.018 + 1.5) * 0.1;
+  float op3 = 0.45 + sin(t * 0.02 + 3.0) * 0.08;
+  float op4 = 0.4 + sin(t * 0.022 + 4.5) * 0.08;
+  float op5 = 0.35 + sin(t * 0.016 + 6.0) * 0.08;
 
   // Start with base color (lightest)
   vec3 color = u_color1;
 
-  // Layer 1: Huge circle bottom-left
-  vec2 c1_center = vec2(
-    -0.5 + sin(t * 0.05) * 0.2,
-    -0.5 + cos(t * 0.04) * 0.15
-  );
-  float c1 = ellipse(uv, c1_center, vec2(1.2, 1.0), blur1);
-  color = mix(color, u_color2, c1 * 0.75);
+  // Diamond layers (positions in aspect-corrected space)
+  vec2 c1 = vec2(-0.3 + sin(t * 0.02) * 0.06, -0.3 + cos(t * 0.018) * 0.04);
+  color = mix(color, u_color2, softDiamond(uv, c1, vec2(0.9), blur1) * op1);
 
-  // Layer 2: Large circle left side
-  vec2 c2_center = vec2(
-    -0.3 + sin(t * 0.06) * 0.22,
-    -0.2 + cos(t * 0.05) * 0.18
-  );
-  float c2 = ellipse(uv, c2_center, vec2(0.9, 0.8), blur2);
-  color = mix(color, u_color3, c2 * 0.65);
+  vec2 c2 = vec2(-0.1 + sin(t * 0.025) * 0.07, -0.1 + cos(t * 0.02) * 0.05);
+  color = mix(color, u_color3, softDiamond(uv, c2, vec2(0.7), blur2) * op2);
 
-  // Layer 3: Medium circle center
-  vec2 c3_center = vec2(
-    0.4 + sin(t * 0.07) * 0.25,
-    0.0 + cos(t * 0.06) * 0.2
-  );
-  float c3 = ellipse(uv, c3_center, vec2(0.7, 0.6), blur3);
-  color = mix(color, u_color4, c3 * 0.55);
+  vec2 c3 = vec2(0.55 + sin(t * 0.028) * 0.07, 0.0 + cos(t * 0.024) * 0.05);
+  color = mix(color, u_color4, softDiamond(uv, c3, vec2(0.55), blur3) * op3);
 
-  // Layer 4: Smaller accent right side
-  vec2 c4_center = vec2(
-    0.7 + sin(t * 0.08) * 0.18,
-    -0.2 + cos(t * 0.07) * 0.15
-  );
-  float c4 = ellipse(uv, c4_center, vec2(0.5, 0.45), blur4);
-  color = mix(color, u_color2, c4 * 0.5);
+  vec2 c4 = vec2(0.8 + sin(t * 0.03) * 0.05, -0.15 + cos(t * 0.026) * 0.04);
+  color = mix(color, u_color2, softDiamond(uv, c4, vec2(0.4), blur4) * op4);
 
-  // Layer 5: Circle peeking from right edge
-  vec2 c5_center = vec2(
-    1.3 + sin(t * 0.05) * 0.15,
-    -0.3 + cos(t * 0.06) * 0.18
-  );
-  float c5 = ellipse(uv, c5_center, vec2(0.65, 0.55), blur5 * 0.25);
-  color = mix(color, u_color3, c5 * 0.45);
+  vec2 c5 = vec2(1.15 + sin(t * 0.022) * 0.04, -0.2 + cos(t * 0.024) * 0.04);
+  color = mix(color, u_color3, softDiamond(uv, c5, vec2(0.5), blur5) * op5);
+
+  // Subtle vignette for depth
+  float vignette = 1.0 - length(v_uv - 0.5) * 0.6;
+  vignette = smoothstep(0.0, 1.0, vignette);
+  color = mix(color * 0.94, color, vignette);
+
+  // Fine grain (removes banding, adds sophistication)
+  float grain = (noise(gl_FragCoord.xy) - 0.5) * 0.012;
+  color += vec3(grain);
 
   gl_FragColor = vec4(color, 1.0);
 }
