@@ -36,7 +36,6 @@ onUnmounted(() => {
     <GeneratorsSection />
 
     <FeatureSection
-      step="01"
       description="One declarative block defines your entire API surface. Resources, key format, routing — all in one place. Think routes.rb, but for your entire API layer."
       :blob-variant="1"
       class="animate-on-scroll"
@@ -65,9 +64,7 @@ onUnmounted(() => {
   <span class="code-function">key_format</span> <span class="code-symbol">:camel</span>
 
   <span class="code-function">resources</span> <span class="code-symbol">:invoices</span> <span class="code-keyword">do</span>
-    <span class="code-function">member</span> <span class="code-keyword">do</span>
-      <span class="code-function">patch</span> <span class="code-symbol">:archive</span>
-    <span class="code-keyword">end</span>
+    <span class="code-function">resources</span> <span class="code-symbol">:payments</span>
   <span class="code-keyword">end</span>
 <span class="code-keyword">end</span></code></pre>
         </CodeWindow>
@@ -75,8 +72,7 @@ onUnmounted(() => {
     </FeatureSection>
 
     <FeatureSection
-      step="02"
-      description="Contracts are your single source of truth. They validate requests, shape responses, and power your documentation — all from one definition."
+      description="One definition validates requests, shapes responses, and generates documentation. The type system handles everything — dates, enums, nested objects, discriminated unions — and maps perfectly to every output format."
       alt
       :blob-variant="2"
       class="animate-on-scroll"
@@ -95,17 +91,29 @@ onUnmounted(() => {
         </svg>
       </template>
       <template #title
-        >Define your <span class="accent">contract</span></template
+        >Define your <span class="accent">contracts</span></template
       >
       <template #code>
         <CodeWindow filename="app/contracts/invoice_contract.rb">
           <pre><code><span class="code-keyword">class</span> <span class="code-class">InvoiceContract</span> <span class="code-punctuation">&lt;</span> <span class="code-class">Apiwork</span><span class="code-punctuation">::</span><span class="code-class">Contract</span><span class="code-punctuation">::</span><span class="code-class">Base</span>
-  <span class="code-function">type</span> <span class="code-symbol">:invoice</span> <span class="code-keyword">do</span>
-    <span class="code-function">param</span> <span class="code-symbol">:id</span><span class="code-punctuation">,</span> <span class="code-symbol">type:</span> <span class="code-symbol">:uuid</span>
-    <span class="code-function">param</span> <span class="code-symbol">:number</span><span class="code-punctuation">,</span> <span class="code-symbol">type:</span> <span class="code-symbol">:string</span>
-    <span class="code-function">param</span> <span class="code-symbol">:amount</span><span class="code-punctuation">,</span> <span class="code-symbol">type:</span> <span class="code-symbol">:decimal</span>
-    <span class="code-function">param</span> <span class="code-symbol">:status</span><span class="code-punctuation">,</span> <span class="code-symbol">type:</span> <span class="code-symbol">:string</span><span class="code-punctuation">,</span> <span class="code-symbol">enum:</span> <span class="code-symbol">%w[draft sent paid]</span>
-    <span class="code-function">param</span> <span class="code-symbol">:due_date</span><span class="code-punctuation">,</span> <span class="code-symbol">type:</span> <span class="code-symbol">:date</span>
+  <span class="code-function">enum</span> <span class="code-symbol">:status</span><span class="code-punctuation">,</span> <span class="code-symbol">values:</span> <span class="code-symbol">%i[draft sent due paid]</span>
+
+  <span class="code-function">action</span> <span class="code-symbol">:index</span> <span class="code-keyword">do</span>
+    <span class="code-function">request</span> <span class="code-keyword">do</span>
+      <span class="code-function">query</span> <span class="code-keyword">do</span>
+        <span class="code-function">param</span> <span class="code-symbol">:status</span><span class="code-punctuation">,</span> <span class="code-symbol">type:</span> <span class="code-symbol">:string</span><span class="code-punctuation">,</span> <span class="code-symbol">enum:</span> <span class="code-symbol">:status</span>
+      <span class="code-keyword">end</span>
+    <span class="code-keyword">end</span>
+
+    <span class="code-function">response</span> <span class="code-keyword">do</span>
+      <span class="code-function">body</span> <span class="code-keyword">do</span>
+        <span class="code-function">param</span> <span class="code-symbol">:invoices</span><span class="code-punctuation">,</span> <span class="code-symbol">type:</span> <span class="code-symbol">:array</span> <span class="code-keyword">do</span>
+          <span class="code-function">param</span> <span class="code-symbol">:id</span><span class="code-punctuation">,</span> <span class="code-symbol">type:</span> <span class="code-symbol">:uuid</span>
+          <span class="code-function">param</span> <span class="code-symbol">:number</span><span class="code-punctuation">,</span> <span class="code-symbol">type:</span> <span class="code-symbol">:string</span>
+          <span class="code-function">param</span> <span class="code-symbol">:status</span><span class="code-punctuation">,</span> <span class="code-symbol">type:</span> <span class="code-symbol">:string</span><span class="code-punctuation">,</span> <span class="code-symbol">enum:</span> <span class="code-symbol">:status</span>
+        <span class="code-keyword">end</span>
+      <span class="code-keyword">end</span>
+    <span class="code-keyword">end</span>
   <span class="code-keyword">end</span>
 <span class="code-keyword">end</span></code></pre>
         </CodeWindow>
@@ -113,9 +121,52 @@ onUnmounted(() => {
     </FeatureSection>
 
     <FeatureSection
-      step="03"
-      description="Your controllers stay focused on what matters. Apiwork handles serialization, key transformation, and validation at the boundaries. Just respond with your data."
+      description="But why write contracts manually? Your database already knows. Column types, enums, nullability — inherited automatically. Apiwork handles filtering, sorting, and pagination. You just say what to expose."
       :blob-variant="3"
+      class="animate-on-scroll"
+    >
+      <template #icon>
+        <svg
+          class="feature-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <ellipse cx="12" cy="5" rx="9" ry="3" />
+          <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+        </svg>
+      </template>
+      <template #title
+        >Let your models <span class="accent">speak</span></template
+      >
+      <template #code>
+        <div class="code-stack">
+          <CodeWindow filename="app/schemas/invoice_schema.rb">
+            <pre><code><span class="code-keyword">class</span> <span class="code-class">InvoiceSchema</span> <span class="code-punctuation">&lt;</span> <span class="code-class">Apiwork</span><span class="code-punctuation">::</span><span class="code-class">Schema</span><span class="code-punctuation">::</span><span class="code-class">Base</span>
+  <span class="code-function">attribute</span> <span class="code-symbol">:id</span>
+  <span class="code-function">attribute</span> <span class="code-symbol">:number</span><span class="code-punctuation">,</span> <span class="code-symbol">sortable:</span> <span class="code-keyword">true</span>
+  <span class="code-function">attribute</span> <span class="code-symbol">:issued_on</span>
+  <span class="code-function">attribute</span> <span class="code-symbol">:status</span><span class="code-punctuation">,</span> <span class="code-symbol">filterable:</span> <span class="code-keyword">true</span>
+
+  <span class="code-function">belongs_to</span> <span class="code-symbol">:customer</span>
+  <span class="code-function">has_many</span> <span class="code-symbol">:lines</span><span class="code-punctuation">,</span> <span class="code-symbol">writable:</span> <span class="code-keyword">true</span>
+<span class="code-keyword">end</span></code></pre>
+          </CodeWindow>
+          <CodeWindow filename="app/contracts/invoice_contract.rb">
+            <pre><code><span class="code-keyword">class</span> <span class="code-class">InvoiceContract</span> <span class="code-punctuation">&lt;</span> <span class="code-class">Apiwork</span><span class="code-punctuation">::</span><span class="code-class">Contract</span><span class="code-punctuation">::</span><span class="code-class">Base</span>
+  <span class="code-function">schema!</span> <span class="code-comment"># That's it.</span>
+<span class="code-keyword">end</span></code></pre>
+          </CodeWindow>
+        </div>
+      </template>
+    </FeatureSection>
+
+    <FeatureSection
+      description="Your controllers stay focused on what matters. Apiwork handles the boundaries — requests are validated before they reach you, responses serialized on the way out. Just use your params and respond with data."
+      alt
+      :blob-variant="4"
       class="animate-on-scroll"
     >
       <template #icon>
@@ -151,11 +202,10 @@ onUnmounted(() => {
     </FeatureSection>
 
     <FeatureSection
-      step="04"
       description="TypeScript types, Zod schemas, and OpenAPI specs — all generated from your contracts. When your API changes, your frontend types update automatically. They can never go stale."
       alt
       wide
-      :blob-variant="4"
+      :blob-variant="1"
       class="animate-on-scroll"
     >
       <template #icon>
@@ -249,6 +299,16 @@ onUnmounted(() => {
   .code-punctuation {
     color: var(--shiki-token-punctuation);
   }
+
+  .code-comment {
+    color: var(--shiki-token-comment);
+  }
+}
+
+.code-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
 }
 
 .animate-on-scroll {

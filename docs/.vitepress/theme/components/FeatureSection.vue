@@ -1,6 +1,5 @@
 <script setup lang="ts">
 defineProps<{
-  step: string;
   description: string;
   alt?: boolean;
   wide?: boolean;
@@ -13,7 +12,6 @@ defineProps<{
     <div class="container" :class="{ wide }">
       <div class="content" :class="{ centered: wide }">
         <div class="blob" :class="`v${blobVariant || 1}`"></div>
-        <div class="step">{{ step }}</div>
         <h2 class="title">
           <slot name="icon" />
           <slot name="title" />
@@ -138,14 +136,6 @@ defineProps<{
       left: 50%;
       transform: translateX(-50%);
     }
-  }
-
-  .step {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--color-brand-80);
-    margin-bottom: 16px;
-    letter-spacing: 0.05em;
   }
 
   .title {

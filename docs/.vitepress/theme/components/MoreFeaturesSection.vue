@@ -83,7 +83,9 @@ import FeatureCard from "./FeatureCard.vue";
           description="Deep association traversal with circular reference prevention."
         >
           <template #icon>
-            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+            <path
+              d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"
+            />
             <line x1="12" y1="11" x2="12" y2="17" />
             <line x1="9" y1="14" x2="15" y2="14" />
           </template>
@@ -95,7 +97,9 @@ import FeatureCard from "./FeatureCard.vue";
           <template #icon>
             <circle cx="12" cy="12" r="10" />
             <line x1="2" y1="12" x2="22" y2="12" />
-            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+            <path
+              d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+            />
           </template>
         </FeatureCard>
         <FeatureCard
@@ -103,7 +107,9 @@ import FeatureCard from "./FeatureCard.vue";
           description="Structured, machine-readable errors with codes, paths, and detailed messages."
         >
           <template #icon>
-            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+            <path
+              d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+            />
             <line x1="12" y1="9" x2="12" y2="13" />
             <line x1="12" y1="17" x2="12.01" y2="17" />
           </template>
@@ -115,7 +121,9 @@ import FeatureCard from "./FeatureCard.vue";
           <template #icon>
             <polyline points="23 4 23 10 17 10" />
             <polyline points="1 20 1 14 7 14" />
-            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+            <path
+              d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"
+            />
           </template>
         </FeatureCard>
         <FeatureCard
@@ -123,7 +131,9 @@ import FeatureCard from "./FeatureCard.vue";
           description="PATCH operations with automatically generated partial types for updates."
         >
           <template #icon>
-            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+            <path
+              d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+            />
             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
           </template>
         </FeatureCard>
@@ -157,20 +167,7 @@ import FeatureCard from "./FeatureCard.vue";
     font-weight: 700;
     letter-spacing: -0.03em;
     margin-bottom: 16px;
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.7) 0%,
-      rgba(170, 175, 185, 0.6) 20%,
-      rgba(255, 255, 255, 1) 40%,
-      rgba(170, 175, 185, 0.6) 60%,
-      rgba(255, 255, 255, 0.7) 80%,
-      rgba(170, 175, 185, 0.6) 100%
-    );
-    background-size: 200% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: shimmer 8s ease-in-out infinite;
+    color: var(--color-dark-text-primary);
   }
 
   .subtitle {
@@ -205,18 +202,6 @@ import FeatureCard from "./FeatureCard.vue";
     .grid {
       grid-template-columns: 1fr;
     }
-  }
-}
-
-@keyframes shimmer {
-  0%,
-  90%,
-  100% {
-    background-position: 100% 0;
-  }
-  45%,
-  55% {
-    background-position: 0% 0;
   }
 }
 </style>

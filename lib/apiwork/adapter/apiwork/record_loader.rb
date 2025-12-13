@@ -18,11 +18,9 @@ module Apiwork
 
         def load
           return @record unless @record.is_a?(ActiveRecord::Base)
+          return @record if @query[:include].blank?
 
-          includes_param = @query[:include]
-          return @record if includes_param.blank?
-
-          includes_hash_value = build_includes_hash(includes_param)
+          includes_hash_value = build_includes_hash(@query[:include])
           return @record if includes_hash_value.empty?
 
           ActiveRecord::Associations::Preloader.new(records: [@record], associations: includes_hash_value).call

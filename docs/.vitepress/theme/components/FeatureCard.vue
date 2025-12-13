@@ -53,17 +53,7 @@ defineProps<{
     font-size: 0.9375rem;
     font-weight: 600;
     margin-bottom: 10px;
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.95) 0%,
-      rgba(170, 175, 185, 0.85) 25%,
-      rgba(255, 255, 255, 1) 50%,
-      rgba(170, 175, 185, 0.85) 75%,
-      rgba(255, 255, 255, 0.95) 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--color-dark-text-primary);
   }
 
   .desc {

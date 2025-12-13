@@ -114,8 +114,7 @@ module Apiwork
         parent_names = extract_parent_resource_names(parent_path)
         base_parts = parent_names + [resource_name.to_s, action_name.to_s]
         base_name = pascal_case(base_parts.join('_'))
-        suffix_pascal = suffix.split(/(?=[A-Z])/).map(&:capitalize).join
-        "#{base_name}#{suffix_pascal}"
+        "#{base_name}#{suffix.camelize}"
       end
 
       def map_field(definition, action_name: nil)

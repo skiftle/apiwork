@@ -20,12 +20,11 @@ module Apiwork
 
         variant_definition = {
           type: type,
-          of: of
-        }
-
-        variant_definition[:enum] = enum if enum
-        variant_definition[:tag] = tag if tag
-        variant_definition[:partial] = partial ? true : false
+          of: of,
+          enum: enum,
+          tag: tag,
+          partial: partial.present?
+        }.compact
 
         if block_given?
           shape_definition = Definition.new(type: :body, contract_class: @contract_class)
