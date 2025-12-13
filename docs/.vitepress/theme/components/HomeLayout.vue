@@ -48,18 +48,13 @@ onUnmounted(() => {
           stroke="currentColor"
           stroke-width="2"
         >
-          <path
-            d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
-          />
-          <polyline points="14 2 14 8 20 8" />
-          <line x1="16" y1="13" x2="8" y2="13" />
-          <line x1="16" y1="17" x2="8" y2="17" />
-          <polyline points="10 9 9 9 8 9" />
+          <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+          <path d="m15 5 4 4" />
         </svg>
       </template>
       <template #title>Draw your <span class="accent">API</span></template>
       <template #code>
-        <CodeWindow filename="config/apis/invoices.rb">
+        <CodeWindow>
           <pre><code><span class="code-class">Apiwork</span><span class="code-punctuation">::</span><span class="code-class">API</span><span class="code-punctuation">.</span><span class="code-function">draw</span> <span class="code-string">'/api/v1'</span> <span class="code-keyword">do</span>
   <span class="code-function">key_format</span> <span class="code-symbol">:camel</span>
 
@@ -94,7 +89,7 @@ onUnmounted(() => {
         >Define your <span class="accent">contracts</span></template
       >
       <template #code>
-        <CodeWindow filename="app/contracts/invoice_contract.rb">
+        <CodeWindow>
           <pre><code><span class="code-keyword">class</span> <span class="code-class">InvoiceContract</span> <span class="code-punctuation">&lt;</span> <span class="code-class">Apiwork</span><span class="code-punctuation">::</span><span class="code-class">Contract</span><span class="code-punctuation">::</span><span class="code-class">Base</span>
   <span class="code-function">enum</span> <span class="code-symbol">:status</span><span class="code-punctuation">,</span> <span class="code-symbol">values:</span> <span class="code-symbol">%i[draft sent due paid]</span>
 
@@ -143,7 +138,7 @@ onUnmounted(() => {
       >
       <template #code>
         <div class="code-stack">
-          <CodeWindow filename="app/schemas/invoice_schema.rb">
+          <CodeWindow>
             <pre><code><span class="code-keyword">class</span> <span class="code-class">InvoiceSchema</span> <span class="code-punctuation">&lt;</span> <span class="code-class">Apiwork</span><span class="code-punctuation">::</span><span class="code-class">Schema</span><span class="code-punctuation">::</span><span class="code-class">Base</span>
   <span class="code-function">attribute</span> <span class="code-symbol">:id</span>
   <span class="code-function">attribute</span> <span class="code-symbol">:number</span><span class="code-punctuation">,</span> <span class="code-symbol">sortable:</span> <span class="code-keyword">true</span>
@@ -154,7 +149,7 @@ onUnmounted(() => {
   <span class="code-function">has_many</span> <span class="code-symbol">:lines</span><span class="code-punctuation">,</span> <span class="code-symbol">writable:</span> <span class="code-keyword">true</span>
 <span class="code-keyword">end</span></code></pre>
           </CodeWindow>
-          <CodeWindow filename="app/contracts/invoice_contract.rb">
+          <CodeWindow>
             <pre><code><span class="code-keyword">class</span> <span class="code-class">InvoiceContract</span> <span class="code-punctuation">&lt;</span> <span class="code-class">Apiwork</span><span class="code-punctuation">::</span><span class="code-class">Contract</span><span class="code-punctuation">::</span><span class="code-class">Base</span>
   <span class="code-function">schema!</span> <span class="code-comment"># That's it.</span>
 <span class="code-keyword">end</span></code></pre>
@@ -185,7 +180,7 @@ onUnmounted(() => {
         >Focus on <span class="accent">business logic</span></template
       >
       <template #code>
-        <CodeWindow filename="app/controllers/invoices_controller.rb">
+        <CodeWindow>
           <pre><code><span class="code-keyword">class</span> <span class="code-class">InvoicesController</span> <span class="code-punctuation">&lt;</span> <span class="code-class">ApplicationController</span>
   <span class="code-keyword">def</span> <span class="code-method">show</span>
     <span class="code-variable">invoice</span> <span class="code-punctuation">=</span> <span class="code-class">Invoice</span><span class="code-punctuation">.</span><span class="code-function">find</span><span class="code-punctuation">(</span><span class="code-variable">params</span><span class="code-punctuation">[</span><span class="code-symbol">:id</span><span class="code-punctuation">])</span>
@@ -197,6 +192,54 @@ onUnmounted(() => {
     <span class="code-function">respond</span> <span class="code-variable">invoice</span>
   <span class="code-keyword">end</span>
 <span class="code-keyword">end</span></code></pre>
+        </CodeWindow>
+      </template>
+    </FeatureSection>
+
+    <FeatureSection
+      description="Validation errors, model errors, nested association errors — all reported the same way. JSON Pointers pinpoint exact fields, even deep in arrays. Your frontend knows exactly what went wrong and where."
+      :blob-variant="2"
+      class="animate-on-scroll"
+    >
+      <template #icon>
+        <svg
+          class="feature-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+          />
+          <line x1="12" y1="9" x2="12" y2="13" />
+          <circle cx="12" cy="17" r="0.5" fill="currentColor" />
+        </svg>
+      </template>
+      <template #title
+        >Errors that <span class="accent">make sense</span></template
+      >
+      <template #code>
+        <CodeWindow>
+          <pre><code><span class="code-punctuation">{</span>
+  <span class="code-property">"issues"</span><span class="code-punctuation">:</span> <span class="code-punctuation">[</span>
+    <span class="code-punctuation">{</span>
+      <span class="code-property">"code"</span><span class="code-punctuation">:</span> <span class="code-string">"field_missing"</span><span class="code-punctuation">,</span>
+      <span class="code-property">"detail"</span><span class="code-punctuation">:</span> <span class="code-string">"Field required"</span><span class="code-punctuation">,</span>
+      <span class="code-property">"pointer"</span><span class="code-punctuation">:</span> <span class="code-string">"/invoice/number"</span>
+    <span class="code-punctuation">},</span>
+    <span class="code-punctuation">{</span>
+      <span class="code-property">"code"</span><span class="code-punctuation">:</span> <span class="code-string">"blank"</span><span class="code-punctuation">,</span>
+      <span class="code-property">"detail"</span><span class="code-punctuation">:</span> <span class="code-string">"can't be blank"</span><span class="code-punctuation">,</span>
+      <span class="code-property">"pointer"</span><span class="code-punctuation">:</span> <span class="code-string">"/invoice/lines/0/description"</span>
+    <span class="code-punctuation">},</span>
+    <span class="code-punctuation">{</span>
+      <span class="code-property">"code"</span><span class="code-punctuation">:</span> <span class="code-string">"invalid_value"</span><span class="code-punctuation">,</span>
+      <span class="code-property">"detail"</span><span class="code-punctuation">:</span> <span class="code-string">"Must be one of: draft, sent, paid"</span><span class="code-punctuation">,</span>
+      <span class="code-property">"pointer"</span><span class="code-punctuation">:</span> <span class="code-string">"/invoice/lines/1/status"</span>
+    <span class="code-punctuation">}</span>
+  <span class="code-punctuation">]</span>
+<span class="code-punctuation">}</span></code></pre>
         </CodeWindow>
       </template>
     </FeatureSection>
@@ -227,7 +270,7 @@ onUnmounted(() => {
         >Zero <span class="accent">drift</span></template
       >
       <template #code>
-        <CodeWindow filename="types.ts">
+        <CodeWindow>
           <pre><code><span class="code-keyword">interface</span> <span class="code-class">Invoice</span> <span class="code-punctuation">{</span>
   <span class="code-property">id</span><span class="code-punctuation">:</span> <span class="code-type">string</span><span class="code-punctuation">;</span>
   <span class="code-property">number</span><span class="code-punctuation">:</span> <span class="code-type">string</span><span class="code-punctuation">;</span>
@@ -236,7 +279,7 @@ onUnmounted(() => {
   <span class="code-property">dueDate</span><span class="code-punctuation">:</span> <span class="code-type">string</span><span class="code-punctuation">;</span>
 <span class="code-punctuation">}</span></code></pre>
         </CodeWindow>
-        <CodeWindow filename="schemas.ts">
+        <CodeWindow>
           <pre><code><span class="code-keyword">const</span> <span class="code-variable">InvoiceSchema</span> <span class="code-punctuation">=</span> <span class="code-variable">z</span><span class="code-punctuation">.</span><span class="code-function">object</span><span class="code-punctuation">({</span>
   <span class="code-property">id</span><span class="code-punctuation">:</span> <span class="code-variable">z</span><span class="code-punctuation">.</span><span class="code-function">string</span><span class="code-punctuation">().</span><span class="code-function">uuid</span><span class="code-punctuation">(),</span>
   <span class="code-property">number</span><span class="code-punctuation">:</span> <span class="code-variable">z</span><span class="code-punctuation">.</span><span class="code-function">string</span><span class="code-punctuation">(),</span>

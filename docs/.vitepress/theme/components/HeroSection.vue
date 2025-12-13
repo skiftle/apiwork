@@ -2,15 +2,15 @@
   <section class="hero">
     <div class="container">
       <h1 class="title">
-        The modern API layer for <span class="highlight">Rails</span>
+        A contract-driven API layer for <span class="highlight">Rails</span>
       </h1>
       <p class="tagline">
-        Define your API <em>once</em> — consistency and type-safety everywhere
+        Define your API <em>once</em> — and stop fixing drift everywhere else
       </p>
       <div class="actions">
-        <a href="/guide/examples" class="btn outline">Examples</a>
+        <a href="/guide/examples" class="btn outline">See Examples</a>
         <a href="/guide/getting-started/introduction" class="btn primary">
-          Getting Started
+          Get Started
           <svg class="icon" viewBox="0 0 20 20" fill="currentColor">
             <path
               fill-rule="evenodd"
@@ -35,7 +35,7 @@
   }
 
   .title {
-    font-size: 3.5rem;
+    font-size: 3rem;
     font-weight: 600;
     color: var(--color-text-strong);
     line-height: 1.08;
