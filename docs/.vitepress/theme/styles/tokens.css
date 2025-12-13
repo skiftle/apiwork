@@ -32,8 +32,8 @@
   --color-typescript: #3178c6;
   --color-zod: #3b82f6;
 
-  /* Dark sections (footer, more-features) - subtle red-black */
-  --color-bg-dark-section: #140a0b;
+  /* Dark sections (footer, more-features) */
+  --color-bg-dark-section: #141414;
 
   /* Overlay/shadow opacity scale (black for light mode) */
   --color-overlay-2: rgba(0, 0, 0, 0.02);
@@ -68,7 +68,7 @@
   --color-logo-shadow: rgba(0, 0, 0, 0.2);
 
   /* Code windows - Light theme header, always-dark code area */
-  --color-code-bg: #1a1214;
+  --color-code-bg: #1e1e1e;
   --color-code-header: #f0f0f0;
   --color-code-header-border: rgba(0, 0, 0, 0.1);
   --color-code-border: rgba(0, 0, 0, 0.08);
@@ -76,7 +76,7 @@
 
   /* Shiki css-variables theme (P3 wide gamut) */
   --shiki-foreground: #e4e4e7;
-  --shiki-background: color-mix(in srgb, #1a1214, transparent 10%);
+  --shiki-background: color-mix(in srgb, #1e1e1e, transparent 10%);
   --shiki-token-constant: color(display-p3 0.99 0.73 0.45);
   --shiki-token-string: color(display-p3 0.4 0.95 0.6);
   --shiki-token-comment: #6b7280;
@@ -159,8 +159,8 @@
   --color-border: #252525;
   --color-border-light: #2a2a2a;
 
-  /* Dark sections - subtle red-black for contrast */
-  --color-bg-dark-section: #140a0b;
+  /* Dark sections - darker neutral for contrast */
+  --color-bg-dark-section: #141414;
 
   /* Overlay/shadow opacity scale (inverted for dark mode borders) */
   --color-overlay-2: rgba(255, 255, 255, 0.02);
@@ -188,8 +188,8 @@
   --gradient-color-4: #262423;
 
   /* Code windows - Dark theme */
-  --color-code-bg: #1a1214;
-  --color-code-header: #241a1c;
+  --color-code-bg: #1a1a1a;
+  --color-code-header: #242424;
   --color-code-header-border: rgba(255, 255, 255, 0.06);
   --color-code-border: rgba(255, 255, 255, 0.06);
   --color-code-filename: rgba(255, 255, 255, 0.35);

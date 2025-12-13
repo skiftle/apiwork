@@ -13,7 +13,7 @@ defineProps<{
     <div class="container" :class="{ wide }">
       <div class="content" :class="{ centered: wide }">
         <div class="blob" :class="`v${blobVariant || 1}`"></div>
-        <div class="step"><span>{{ step }}</span></div>
+        <div class="step">{{ step }}</div>
         <h2 class="title">
           <slot name="icon" />
           <slot name="title" />
@@ -36,13 +36,6 @@ defineProps<{
   position: relative;
 
   &.alt {
-    background: linear-gradient(
-      180deg,
-      transparent 0%,
-      var(--color-section-alt) 50%,
-      transparent 100%
-    );
-
     .container {
       direction: rtl;
 
@@ -148,46 +141,11 @@ defineProps<{
   }
 
   .step {
-    /* Diamond shape */
-    width: 64px;
-    height: 64px;
-    transform: rotate(45deg);
-    border-radius: 12px;
-    margin-bottom: 24px;
-    position: relative;
-    z-index: 1;
-
-    /* Glassmorphism */
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.06),
-      0 2px 8px rgba(0, 0, 0, 0.03),
-      inset 0 1px 0 rgba(255, 255, 255, 0.4);
-
-    /* Center the number */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    span {
-      transform: rotate(-45deg);
-      font-size: 1.25rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: var(--color-brand-80);
-    }
-
-    .dark & {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.15);
-      box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.3),
-        0 2px 8px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15);
-    }
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-brand-80);
+    margin-bottom: 16px;
+    letter-spacing: 0.05em;
   }
 
   .title {

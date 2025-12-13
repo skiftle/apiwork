@@ -28,7 +28,7 @@ defineProps<{
 
   box-shadow: 0 0 0 1px var(--color-code-border), 0 1px 0 var(--color-overlay-6),
     0 4px 6px var(--color-overlay-4), 0 12px 28px var(--color-overlay-6),
-    0 20px 48px var(--color-overlay-4), 0 0 80px var(--color-brand-6);
+    0 20px 48px var(--color-overlay-4);
 
   transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 400ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -36,17 +36,17 @@ defineProps<{
   .dark & {
     border-color: transparent;
     box-shadow: 0 4px 6px var(--color-overlay-15), 0 12px 28px var(--color-overlay-20),
-      0 20px 48px var(--color-overlay-15), 0 0 80px var(--color-brand-6);
+      0 20px 48px var(--color-overlay-15);
   }
 
   &:hover {
     transform: translateY(-6px) scale(1.005);
     box-shadow: 0 8px 16px var(--color-overlay-6), 0 24px 48px var(--color-overlay-8),
-      0 32px 64px var(--color-overlay-6), 0 0 100px var(--color-brand-10);
+      0 32px 64px var(--color-overlay-6);
 
     .dark & {
       box-shadow: 0 8px 16px var(--color-overlay-20), 0 24px 48px var(--color-overlay-25),
-        0 32px 64px var(--color-overlay-20), 0 0 100px var(--color-brand-10);
+        0 32px 64px var(--color-overlay-20);
     }
   }
 
