@@ -179,6 +179,7 @@ defineProps<{
     color: var(--color-text-muted);
     line-height: 1.7;
     max-width: 480px;
+    font-weight: 500;
   }
 
   .code {
