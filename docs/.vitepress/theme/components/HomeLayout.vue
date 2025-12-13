@@ -2,6 +2,7 @@
 import { onMounted, onUnmounted } from "vue";
 import CodeWindow from "./CodeWindow.vue";
 import HeroSection from "./HeroSection.vue";
+import WhySection from "./WhySection.vue";
 import GeneratorsSection from "./GeneratorsSection.vue";
 import FeatureSection from "./FeatureSection.vue";
 import MoreFeaturesSection from "./MoreFeaturesSection.vue";
@@ -33,6 +34,7 @@ onUnmounted(() => {
 <template>
   <div class="home-layout">
     <HeroSection />
+    <WhySection class="animate-on-scroll" />
     <GeneratorsSection />
 
     <FeatureSection
