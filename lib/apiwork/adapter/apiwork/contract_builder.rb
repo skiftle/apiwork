@@ -203,21 +203,21 @@ module Apiwork
               query { builder.send(:query_params, self) }
             end
           when :show
-            add_include_query_param_if_needed(action_definition)
+            build_member_query_params(action_definition)
           when :create
             action_definition.request do
               body { builder.send(:writable_request, self, :create) }
             end
-            add_include_query_param_if_needed(action_definition)
+            build_member_query_params(action_definition)
           when :update
             action_definition.request do
               body { builder.send(:writable_request, self, :update) }
             end
-            add_include_query_param_if_needed(action_definition)
+            build_member_query_params(action_definition)
           when :destroy
-            nil
+            build_member_query_params(action_definition)
           else
-            add_include_query_param_if_needed(action_definition) if action_metadata[:type] == :member
+            build_member_query_params(action_definition) if action_metadata[:type] == :member
           end
         end
 
@@ -250,16 +250,15 @@ module Apiwork
           end
         end
 
-        def add_include_query_param_if_needed(action_definition)
-          return unless schema_class.association_definitions.any?
-
-          schema_class
+        def build_member_query_params(action_definition)
           builder = self
 
           action_definition.request do
             query do
-              include_type = builder.send(:build_include_type)
-              param :include, type: include_type, optional: true
+              if builder.send(:schema_class).association_definitions.any?
+                include_type = builder.send(:build_include_type)
+                param :include, type: include_type, optional: true
+              end
             end
           end
         end
