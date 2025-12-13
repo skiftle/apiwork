@@ -438,19 +438,20 @@ module Apiwork
           tag = variant[:tag]
           next unless tag
 
-          mapping[tag.to_s] = "#/components/schemas/#{schema_name(variant[:type])}" if variant[:type].is_a?(Symbol) && types.key?(variant[:type])
+          transformed_tag = transform_key(tag.to_s)
+          mapping[transformed_tag] = "#/components/schemas/#{schema_name(variant[:type])}" if variant[:type].is_a?(Symbol) && types.key?(variant[:type])
         end
 
         result = { oneOf: one_of_schemas }
 
         result[:discriminator] = if mapping.any?
                                    {
-                                     propertyName: discriminator_field.to_s,
+                                     propertyName: transform_key(discriminator_field),
                                      mapping:
                                    }
                                  else
                                    {
-                                     propertyName: discriminator_field.to_s
+                                     propertyName: transform_key(discriminator_field)
                                    }
                                  end
 
