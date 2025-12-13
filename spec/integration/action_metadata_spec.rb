@@ -54,15 +54,15 @@ RSpec.describe 'Action Metadata', type: :integration do
     end
 
     it 'marks operation as deprecated' do
-      expect(spec[:paths]['posts/:id']['delete'][:deprecated]).to be true
+      expect(spec[:paths]['posts/{id}']['delete'][:deprecated]).to be true
     end
 
     it 'uses custom operationId' do
-      expect(spec[:paths]['posts/:id']['delete'][:operationId]).to eq('deletePost')
+      expect(spec[:paths]['posts/{id}']['delete'][:operationId]).to eq('deletePost')
     end
 
     it 'generates error responses from raises' do
-      show_op = spec[:paths]['posts/:id']['get']
+      show_op = spec[:paths]['posts/{id}']['get']
       expect(show_op[:responses]).to have_key(:'404')
       expect(show_op[:responses]).to have_key(:'403')
     end

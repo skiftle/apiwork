@@ -51,21 +51,23 @@ module Apiwork
 
         each_action(resource_data) do |action_name, action_data|
           full_path = build_full_action_path(resource_data, action_data, parent_path)
+          openapi_formatted_path = openapi_path(full_path)
           method = action_data[:method].to_s.downcase
 
-          paths[full_path] ||= {}
-          paths[full_path][method] = build_operation(
+          paths[openapi_formatted_path] ||= {}
+          paths[openapi_formatted_path][method] = build_operation(
             resource_name,
             resource_data[:path],
             action_name,
             action_data,
             resource_data,
-            parent_paths
+            parent_paths,
+            full_path
           )
         end
       end
 
-      def build_operation(resource_name, resource_path, action_name, action_data, resource_metadata, parent_paths = [])
+      def build_operation(resource_name, resource_path, action_name, action_data, resource_metadata, parent_paths = [], full_path = nil)
         operation = {
           operationId: action_data[:operation_id] || operation_id(resource_name, resource_path, action_name, parent_paths),
           summary: action_data[:summary],
@@ -74,10 +76,16 @@ module Apiwork
           deprecated: action_data[:deprecated] || nil
         }
 
+        path_params = extract_path_parameters(full_path)
+
         request_data = action_data[:request]
         if request_data
-          operation[:parameters] = build_query_parameters(request_data[:query]) if request_data[:query]&.any?
+          query_params = request_data[:query]&.any? ? build_query_parameters(request_data[:query]) : []
+          all_params = path_params + query_params
+          operation[:parameters] = all_params if all_params.any?
           operation[:requestBody] = build_request_body(request_data[:body], action_name) if request_data[:body]&.any?
+        elsif path_params.any?
+          operation[:parameters] = path_params
         end
 
         response_data = action_data[:response]
@@ -125,6 +133,23 @@ module Apiwork
         end
 
         parent_paths
+      end
+
+      def openapi_path(path)
+        path.to_s.gsub(/:(\w+)/, '{\1}')
+      end
+
+      def extract_path_parameters(path)
+        return [] unless path
+
+        path.to_s.scan(/:(\w+)/).flatten.map do |param_name|
+          {
+            name: param_name,
+            in: 'path',
+            required: true,
+            schema: { type: 'string' }
+          }
+        end
       end
 
       def build_query_parameters(query_params)
