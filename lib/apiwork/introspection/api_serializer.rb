@@ -71,7 +71,16 @@ module Apiwork
         info = @api_class.metadata.info
         return nil unless info
 
-        { title: info[:title], version: info[:version], description: info[:description] }.compact.presence
+        {
+          title: info[:title],
+          version: info[:version],
+          description: info[:description],
+          summary: info[:summary],
+          terms_of_service: info[:terms_of_service],
+          contact: info[:contact],
+          license: info[:license],
+          servers: info[:servers]
+        }.compact.presence
       end
     end
   end

@@ -17,6 +17,7 @@ module Apiwork
         {
           openapi: version,
           info: build_info,
+          servers: build_servers,
           paths: build_paths,
           components: {
             schemas: build_schemas
@@ -27,13 +28,45 @@ module Apiwork
       private
 
       def build_info
-        info_data = metadata&.dig(:info) || {}
+        info_data = @data[:info] || {}
 
         {
           title: info_data[:title] || "#{api_path} API",
           version: info_data[:version] || '1.0.0',
-          description: info_data[:description]
+          summary: info_data[:summary],
+          description: info_data[:description],
+          termsOfService: info_data[:terms_of_service],
+          contact: build_contact(info_data[:contact]),
+          license: build_license(info_data[:license])
         }.compact
+      end
+
+      def build_servers
+        servers_data = @data.dig(:info, :servers)
+        return nil unless servers_data&.any?
+
+        servers_data.map do |server|
+          { url: server[:url], description: server[:description] }.compact
+        end
+      end
+
+      def build_contact(contact_data)
+        return nil unless contact_data
+
+        {
+          name: contact_data[:name],
+          email: contact_data[:email],
+          url: contact_data[:url]
+        }.compact.presence
+      end
+
+      def build_license(license_data)
+        return nil unless license_data
+
+        {
+          name: license_data[:name],
+          url: license_data[:url]
+        }.compact.presence
       end
 
       def build_paths
@@ -439,7 +472,10 @@ module Apiwork
           next unless tag
 
           transformed_tag = transform_key(tag.to_s)
-          mapping[transformed_tag] = "#/components/schemas/#{schema_name(variant[:type])}" if variant[:type].is_a?(Symbol) && types.key?(variant[:type])
+          if variant[:type].is_a?(Symbol) && types.key?(variant[:type])
+            mapping[transformed_tag] =
+              "#/components/schemas/#{schema_name(variant[:type])}"
+          end
         end
 
         result = { oneOf: one_of_schemas }

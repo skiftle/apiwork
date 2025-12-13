@@ -31,12 +31,30 @@ Apiwork::API.draw '/api/v1' do
   info do
     title 'My API'
     version '1.0.0'
-    description 'Public API'
+    summary 'Short summary'
+    description 'Longer description of the API'
+    terms_of_service 'https://example.com/terms'
+
+    contact do
+      name 'API Support'
+      email 'api@example.com'
+      url 'https://example.com/support'
+    end
+
+    license do
+      name 'MIT'
+      url 'https://opensource.org/licenses/MIT'
+    end
+
+    server url: 'https://api.example.com', description: 'Production'
+    server url: 'https://staging.example.com', description: 'Staging'
   end
 
   spec :openapi
 end
 ```
+
+All fields are optional. If `title` is not provided, it defaults to the API path. If `version` is not provided, it defaults to `"1.0.0"`.
 
 ## Output Structure
 
@@ -46,8 +64,29 @@ end
   "info": {
     "title": "My API",
     "version": "1.0.0",
-    "description": "Public API"
+    "summary": "Short summary",
+    "description": "Longer description of the API",
+    "termsOfService": "https://example.com/terms",
+    "contact": {
+      "name": "API Support",
+      "email": "api@example.com",
+      "url": "https://example.com/support"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
   },
+  "servers": [
+    {
+      "url": "https://api.example.com",
+      "description": "Production"
+    },
+    {
+      "url": "https://staging.example.com",
+      "description": "Staging"
+    }
+  ],
   "paths": {
     "/posts": {
       "get": { ... },

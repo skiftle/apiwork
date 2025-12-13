@@ -11,7 +11,23 @@ Apiwork::API.draw '/api/v1' do
   info do
     title 'Test API'
     version '1.0.0'
+    summary 'A test API for Apiwork'
     description 'Dummy API for the Apiwork gem'
+    terms_of_service 'https://example.com/terms'
+
+    contact do
+      name 'API Support'
+      email 'support@example.com'
+      url 'https://example.com/support'
+    end
+
+    license do
+      name 'MIT'
+      url 'https://opensource.org/licenses/MIT'
+    end
+
+    server url: 'https://api.example.com', description: 'Production'
+    server url: 'https://staging-api.example.com', description: 'Staging'
   end
 
   # API-level key format

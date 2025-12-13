@@ -28,6 +28,35 @@ RSpec.describe 'OpenAPI Generation', type: :integration do
       expect(spec[:info][:title]).to be_present
       expect(spec[:info][:version]).to be_present
     end
+
+    it 'includes summary when provided' do
+      expect(spec[:info][:summary]).to eq('A test API for Apiwork')
+    end
+
+    it 'includes termsOfService when provided' do
+      expect(spec[:info][:termsOfService]).to eq('https://example.com/terms')
+    end
+
+    it 'includes contact when provided' do
+      contact = spec[:info][:contact]
+      expect(contact[:name]).to eq('API Support')
+      expect(contact[:email]).to eq('support@example.com')
+      expect(contact[:url]).to eq('https://example.com/support')
+    end
+
+    it 'includes license when provided' do
+      license = spec[:info][:license]
+      expect(license[:name]).to eq('MIT')
+      expect(license[:url]).to eq('https://opensource.org/licenses/MIT')
+    end
+
+    it 'includes servers when provided' do
+      expect(spec[:servers]).to be_an(Array)
+      expect(spec[:servers].length).to eq(2)
+      expect(spec[:servers][0][:url]).to eq('https://api.example.com')
+      expect(spec[:servers][0][:description]).to eq('Production')
+      expect(spec[:servers][1][:url]).to eq('https://staging-api.example.com')
+    end
   end
 
   describe 'Paths generation' do
