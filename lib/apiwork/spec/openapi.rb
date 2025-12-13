@@ -136,7 +136,7 @@ module Apiwork
       end
 
       def openapi_path(path)
-        path.to_s.gsub(/:(\w+)/, '{\1}')
+        path.to_s.gsub(/:(\w+)/) { "{#{transform_key(Regexp.last_match(1))}}" }
       end
 
       def extract_path_parameters(path)
@@ -144,7 +144,7 @@ module Apiwork
 
         path.to_s.scan(/:(\w+)/).flatten.map do |param_name|
           {
-            name: param_name,
+            name: transform_key(param_name),
             in: 'path',
             required: true,
             schema: { type: 'string' }
