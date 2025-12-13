@@ -109,11 +109,6 @@ void main() {
   vec2 c5 = vec2(1.15 + sin(t * 0.022) * 0.04, -0.2 + cos(t * 0.024) * 0.04);
   color = mix(color, u_color3, softDiamond(uv, c5, vec2(0.5), blur5) * op5);
 
-  // Subtle vignette for depth
-  float vignette = 1.0 - length(v_uv - 0.5) * 0.6;
-  vignette = smoothstep(0.0, 1.0, vignette);
-  color = mix(color * 0.94, color, vignette);
-
   // Fine grain (removes banding, adds sophistication)
   float grain = (noise(gl_FragCoord.xy) - 0.5) * 0.012;
   color += vec3(grain);

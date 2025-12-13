@@ -3,19 +3,6 @@ import FeatureCard from "./FeatureCard.vue";
 </script>
 
 <template>
-  <div class="curve-wrapper">
-    <svg
-      class="curve"
-      viewBox="0 0 1440 120"
-      preserveAspectRatio="none"
-    >
-      <path
-        d="M0,120 C480,20 960,20 1440,120 L1440,120 L0,120 Z"
-        fill="currentColor"
-      />
-    </svg>
-  </div>
-
   <section class="more-features">
     <div class="container">
       <div class="header">
@@ -146,17 +133,6 @@ import FeatureCard from "./FeatureCard.vue";
 </template>
 
 <style scoped>
-.curve-wrapper {
-  color: var(--color-bg-dark-section);
-
-  .curve {
-    display: block;
-    width: 100%;
-    height: 120px;
-    margin-bottom: -1px;
-  }
-}
-
 .more-features {
   position: relative;
   padding: 120px 24px;
