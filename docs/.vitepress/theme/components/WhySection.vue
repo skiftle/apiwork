@@ -58,7 +58,7 @@
 
 <style scoped>
 .why-section {
-  padding: 80px 24px 100px;
+  padding: 40px 24px 100px;
   position: relative;
 }
 
@@ -69,11 +69,10 @@
 
 .section-title {
   text-align: center;
-  font-size: 2.5rem;
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  font-size: 1.75rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
   margin-bottom: 56px;
-  color: var(--color-text);
 
   .accent {
     color: var(--color-brand-80);
@@ -123,7 +122,7 @@
   }
 
   .section-title {
-    font-size: 2rem;
+    font-size: 1.375rem;
     margin-bottom: 40px;
   }
 
@@ -135,7 +134,7 @@
 
 @media (max-width: 480px) {
   .section-title {
-    font-size: 1.75rem;
+    font-size: 1.25rem;
   }
 
   .point .icon {
