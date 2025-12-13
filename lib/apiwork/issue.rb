@@ -35,9 +35,5 @@ module Apiwork
     def to_s
       "[#{code}]#{path.any? ? " at #{pointer}" : ''} #{detail}"
     end
-
-    def warn
-      Rails.logger.warn("[Apiwork] #{self}")
-    end
   end
 end

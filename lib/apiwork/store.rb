@@ -40,10 +40,6 @@ module Apiwork
       @items.each_pair(&block)
     end
 
-    def each_value(&block)
-      @items.each_value(&block)
-    end
-
     def clear!
       @items = Concurrent::Map.new
     end
