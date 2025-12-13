@@ -70,15 +70,15 @@ class Api::V1::PostsController < ApplicationController
   include Apiwork::Controller
 
   def index
-    render_with_contract Post.all
+    respond Post.all
   end
 
   def show
-    render_with_contract Post.find(params[:id])
+    respond Post.find(params[:id])
   end
 
   def create
-    render_with_contract Post.create!(contract.body), status: :created
+    respond Post.create!(contract.body), status: :created
   end
 end
 ```

@@ -6,26 +6,26 @@ module Api
       before_action :set_user, only: %i[show update destroy]
 
       def index
-        render_with_contract User.all
+        respond User.all
       end
 
       def show
-        render_with_contract user
+        respond user
       end
 
       def create
         user = User.create(contract.body[:user])
-        render_with_contract user
+        respond user
       end
 
       def update
         user.update(contract.body[:user])
-        render_with_contract user
+        respond user
       end
 
       def destroy
         user.destroy
-        render_with_contract user
+        respond user
       end
 
       private

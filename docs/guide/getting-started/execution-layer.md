@@ -112,7 +112,7 @@ end
 ```ruby
 def index
   posts = Post.all
-  render_with_contract posts
+  respond posts
 end
 
 # The runtime applies: filter → sort → paginate → includes
@@ -123,7 +123,7 @@ end
 
 ```ruby
 def show
-  render_with_contract Post.find(params[:id])
+  respond Post.find(params[:id])
 end
 
 # The runtime applies: includes (if requested)
@@ -137,7 +137,7 @@ You can attach metadata to any response:
 ```ruby
 def index
   posts = Post.all
-  render_with_contract posts, meta: {
+  respond posts, meta: {
     generated_at: Time.current,
     api_version: 'v1'
   }

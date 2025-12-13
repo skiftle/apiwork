@@ -89,7 +89,7 @@ class PostsController < ApplicationController
 
   def create
     post = Post.create(contract.body[:post])
-    render_with_contract post  # Automatically handles validation errors
+    respond post  # Automatically handles validation errors
   end
 end
 ```
@@ -114,7 +114,7 @@ class PostsController < ApplicationController
     end
 
     post.publish!
-    render_with_contract post
+    respond post
   end
 end
 ```

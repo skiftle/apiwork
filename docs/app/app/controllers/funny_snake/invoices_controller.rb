@@ -6,26 +6,26 @@ module FunnySnake
 
     def index
       invoices = Invoice.all
-      render_with_contract invoices
+      respond invoices
     end
 
     def show
-      render_with_contract invoice
+      respond invoice
     end
 
     def create
       invoice = Invoice.create(contract.body[:invoice])
-      render_with_contract invoice
+      respond invoice
     end
 
     def update
       invoice.update(contract.body[:invoice])
-      render_with_contract invoice
+      respond invoice
     end
 
     def destroy
       invoice.destroy
-      render_with_contract invoice
+      respond invoice
     end
 
     private

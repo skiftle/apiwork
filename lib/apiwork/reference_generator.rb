@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'set'
 require 'yard'
 require 'fileutils'
 require 'active_support/core_ext/string/inflections'
@@ -35,10 +34,10 @@ module Apiwork
 
     def extract_modules
       YARD::Registry.all(:class, :module)
-        .select { |obj| obj.path.start_with?('Apiwork::') }
-        .reject { |obj| excluded?(obj.path) }
-        .sort_by(&:path)
-        .map { |obj| serialize_module(obj) }
+                    .select { |obj| obj.path.start_with?('Apiwork::') }
+                    .reject { |obj| excluded?(obj.path) }
+                    .sort_by(&:path)
+                    .map { |obj| serialize_module(obj) }
     end
 
     def excluded?(path)
@@ -64,9 +63,9 @@ module Apiwork
 
     def extract_methods(obj, scope)
       obj.meths(visibility: :public, scope:)
-        .reject { |m| m.name.to_s.start_with?('_') }
-        .sort_by(&:name)
-        .map { |m| serialize_method(m) }
+         .reject { |m| m.name.to_s.start_with?('_') }
+         .sort_by(&:name)
+         .map { |m| serialize_method(m) }
     end
 
     def serialize_method(method)
@@ -249,13 +248,13 @@ module Apiwork
 
       if method[:params].any?
         parts << "**Parameters**\n"
-        parts << "| Name | Type | Description |"
-        parts << "|------|------|-------------|"
+        parts << '| Name | Type | Description |'
+        parts << '|------|------|-------------|'
         method[:params].each do |param|
           types = param[:types].join(', ')
           parts << "| `#{param[:name]}` | `#{types}` | #{param[:description]} |"
         end
-        parts << ""
+        parts << ''
       end
 
       if method[:returns]
@@ -268,7 +267,7 @@ module Apiwork
         method[:examples].each do |example|
           title_suffix = example[:title].to_s.empty? ? '' : ": #{example[:title]}"
           parts << "**Example#{title_suffix}**\n"
-          parts << "```ruby"
+          parts << '```ruby'
           parts << example[:code]
           parts << "```\n"
         end

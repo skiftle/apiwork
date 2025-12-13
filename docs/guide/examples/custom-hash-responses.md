@@ -4,7 +4,7 @@ order: 8
 
 # Custom Hash Responses
 
-Using render_with_contract with plain hashes instead of ActiveRecord models
+Using respond with plain hashes instead of ActiveRecord models
 
 ## API Definition
 

@@ -6,26 +6,26 @@ module Api
       before_action :set_service, only: %i[show update destroy]
 
       def index
-        render_with_contract Service.all
+        respond Service.all
       end
 
       def show
-        render_with_contract service
+        respond service
       end
 
       def create
         service = Service.create(contract.body[:service])
-        render_with_contract service
+        respond service
       end
 
       def update
         service.update(contract.body[:service])
-        render_with_contract service
+        respond service
       end
 
       def destroy
         service.destroy
-        render_with_contract service
+        respond service
       end
 
       private

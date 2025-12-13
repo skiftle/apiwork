@@ -1,5 +1,5 @@
 title: Custom Hash Responses
-description: Using render_with_contract with plain hashes instead of ActiveRecord models
+description: Using respond with plain hashes instead of ActiveRecord models
 order: 8
 
 sections:

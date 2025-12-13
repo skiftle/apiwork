@@ -96,7 +96,7 @@ In your controller, pass the values:
 ```ruby
 def index
   posts = Post.all
-  render_with_contract posts, meta: {
+  respond posts, meta: {
     generated_at: Time.current,
     api_version: 'v1'
   }

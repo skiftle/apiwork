@@ -6,31 +6,31 @@ module BraveEagle
 
     def index
       tasks = Task.all
-      render_with_contract tasks
+      respond tasks
     end
 
     def show
-      render_with_contract task
+      respond task
     end
 
     def create
       task = Task.create(contract.body[:task])
-      render_with_contract task
+      respond task
     end
 
     def update
       task.update(contract.body[:task])
-      render_with_contract task
+      respond task
     end
 
     def destroy
       task.destroy
-      render_with_contract task
+      respond task
     end
 
     def archive
       task.archive!
-      render_with_contract task
+      respond task
     end
 
     private

@@ -12,11 +12,11 @@ module Api
         else
           Comment.all
         end
-        render_with_contract comments
+        respond comments
       end
 
       def show
-        render_with_contract comment
+        respond comment
       end
 
       def create
@@ -27,23 +27,23 @@ module Api
           contract.body[:comment]
         end
         comment = Comment.create(params_with_post)
-        render_with_contract comment
+        respond comment
       end
 
       def update
         comment.update(contract.body[:comment])
-        render_with_contract comment
+        respond comment
       end
 
       def destroy
         comment.destroy
-        render_with_contract comment
+        respond comment
       end
 
       # Member action for nested resources
       def approve
         # Dummy implementation - just return the comment
-        render_with_contract comment
+        respond comment
       end
 
       # Collection action for nested resources
@@ -54,7 +54,7 @@ module Api
         else
           Comment.order(created_at: :desc).limit(5)
         end
-        render_with_contract comments
+        respond comments
       end
 
       private

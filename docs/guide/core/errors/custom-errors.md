@@ -45,7 +45,7 @@ def create
   end
 
   order.save!
-  render_with_contract order
+  respond order
 end
 ```
 
@@ -64,7 +64,7 @@ def destroy
   end
 
   post.destroy
-  render_with_contract post
+  respond post
 end
 ```
 
@@ -112,7 +112,7 @@ def transfer
   return render_error issues, status: :unprocessable_entity if issues.any?
 
   Transfer.execute(from: from_account, to: to_account, amount: amount)
-  render_with_contract from_account
+  respond from_account
 end
 ```
 
@@ -161,7 +161,7 @@ def create
   return render_error issues, status: :unprocessable_entity if issues.any?
 
   invoice.save!
-  render_with_contract invoice
+  respond invoice
 end
 ```
 

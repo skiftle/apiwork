@@ -17,7 +17,7 @@ Requires:
 ```ruby
 def create
   invoice = Invoice.create(contract.body[:invoice])
-  render_with_contract invoice
+  respond invoice
 end
 ```
 
@@ -264,7 +264,7 @@ end
 def publish
   invoice.status = 'published'
   invoice.save(context: :publish)
-  render_with_contract invoice
+  respond invoice
 end
 ```
 
@@ -288,7 +288,7 @@ end
 ```ruby
 def ship
   order.ship!
-  render_with_contract order
+  respond order
 end
 ```
 
@@ -307,7 +307,7 @@ def transfer
     account.errors.add(:balance, "insufficient funds")
   end
 
-  render_with_contract account
+  respond account
 end
 ```
 
