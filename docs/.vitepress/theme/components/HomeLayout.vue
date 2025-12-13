@@ -138,12 +138,12 @@ onUnmounted(() => {
           <pre><code><span class="code-keyword">class</span> <span class="code-class">InvoicesController</span> <span class="code-punctuation">&lt;</span> <span class="code-class">ApplicationController</span>
   <span class="code-keyword">def</span> <span class="code-method">show</span>
     <span class="code-variable">invoice</span> <span class="code-punctuation">=</span> <span class="code-class">Invoice</span><span class="code-punctuation">.</span><span class="code-function">find</span><span class="code-punctuation">(</span><span class="code-variable">params</span><span class="code-punctuation">[</span><span class="code-symbol">:id</span><span class="code-punctuation">])</span>
-    <span class="code-function">respond</span><span class="code-punctuation">(</span><span class="code-symbol">invoice:</span><span class="code-punctuation">)</span>
+    <span class="code-function">respond</span> <span class="code-variable">invoice</span>
   <span class="code-keyword">end</span>
 
   <span class="code-keyword">def</span> <span class="code-method">create</span>
-    <span class="code-variable">invoice</span> <span class="code-punctuation">=</span> <span class="code-class">Invoice</span><span class="code-punctuation">.</span><span class="code-function">create!</span><span class="code-punctuation">(</span><span class="code-function">request_params</span><span class="code-punctuation">)</span>
-    <span class="code-function">respond</span><span class="code-punctuation">(</span><span class="code-symbol">invoice:</span><span class="code-punctuation">,</span> <span class="code-symbol">status:</span> <span class="code-symbol">:created</span><span class="code-punctuation">)</span>
+    <span class="code-variable">invoice</span> <span class="code-punctuation">=</span> <span class="code-class">Invoice</span><span class="code-punctuation">.</span><span class="code-function">create</span><span class="code-punctuation">(</span><span class="code-variable">contract</span><span class="code-punctuation">.</span><span class="code-function">body</span><span class="code-punctuation">[</span><span class="code-symbol">:invoice</span><span class="code-punctuation">])</span>
+    <span class="code-function">respond</span> <span class="code-variable">invoice</span>
   <span class="code-keyword">end</span>
 <span class="code-keyword">end</span></code></pre>
         </CodeWindow>

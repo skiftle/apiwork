@@ -6,7 +6,7 @@
   --color-text: #1f2937;
   --color-text-muted: #6b7280;
   --color-text-light: #9ca3af;
-  --color-border: #e5e7eb;
+  --color-border: rgba(0, 0, 0, 0.04);
   --color-border-light: #e5e7eb;
 
   /* Brand colors - Red (P3 wide gamut) */
@@ -144,25 +144,20 @@
 
 /* Dark mode - activated by VitePress via .dark class on html */
 .dark {
-  /* Backgrounds - sophisticated dark palette */
-  --color-bg: #0a0a0b;
-  --color-bg-soft: #141416;
-  --color-bg-muted: #1c1c1f;
-  --color-bg-elevated: #222225;
+  /* Backgrounds - lighter dark palette */
+  --color-bg: #202020;
+  --color-bg-soft: #282828;
+  --color-bg-muted: #303030;
+  --color-bg-elevated: #383838;
 
   /* Text - softer, not pure white */
   --color-text: #d4d4d8;
   --color-text-muted: #a1a1aa;
   --color-text-light: #71717a;
 
-  /* Borders - subtle but visible */
-  --color-border: #27272a;
-  --color-border-light: #18181b;
-
-  /* Brand colors - Red for dark mode (P3 wide gamut) */
-  --color-brand: color(display-p3 0.77 0.05 0.05);
-  --color-brand-light: color(display-p3 0.98 0.45 0.45);
-  --color-brand-dark: color(display-p3 0.88 0.15 0.15);
+  /* Borders - adjusted for lighter bg */
+  --color-border: #252525;
+  --color-border-light: #2a2a2a;
 
   /* Dark sections - subtle red-black for contrast */
   --color-bg-dark-section: #140a0b;
@@ -186,11 +181,11 @@
     transparent 80%
   );
 
-  /* Mesh gradient colors - dark mode (inverted, dark coral) */
-  --gradient-color-1: #100909;
-  --gradient-color-2: #1c0f0f;
-  --gradient-color-3: #2e1818;
-  --gradient-color-4: #241414;
+  /* Mesh gradient colors - dark mode (minimal warmth) */
+  --gradient-color-1: var(--color-bg);
+  --gradient-color-2: #242221;
+  --gradient-color-3: #282524;
+  --gradient-color-4: #262423;
 
   /* Code windows - Dark theme */
   --color-code-bg: #1a1214;

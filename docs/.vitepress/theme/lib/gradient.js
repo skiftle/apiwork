@@ -94,19 +94,19 @@ void main() {
   vec3 color = u_color1;
 
   // Diamond layers (positions in aspect-corrected space)
-  vec2 c1 = vec2(-0.3 + sin(t * 0.02) * 0.06, -0.3 + cos(t * 0.018) * 0.04);
+  vec2 c1 = vec2(-0.3 + sin(t * 0.02) * 0.06, -0.2 + cos(t * 0.018) * 0.04);
   color = mix(color, u_color2, softDiamond(uv, c1, vec2(0.9), blur1) * op1);
 
-  vec2 c2 = vec2(-0.1 + sin(t * 0.025) * 0.07, -0.1 + cos(t * 0.02) * 0.05);
+  vec2 c2 = vec2(-0.1 + sin(t * 0.025) * 0.07, 0.0 + cos(t * 0.02) * 0.05);
   color = mix(color, u_color3, softDiamond(uv, c2, vec2(0.7), blur2) * op2);
 
-  vec2 c3 = vec2(0.55 + sin(t * 0.028) * 0.07, 0.0 + cos(t * 0.024) * 0.05);
+  vec2 c3 = vec2(0.55 + sin(t * 0.028) * 0.07, 0.1 + cos(t * 0.024) * 0.05);
   color = mix(color, u_color4, softDiamond(uv, c3, vec2(0.55), blur3) * op3);
 
-  vec2 c4 = vec2(0.8 + sin(t * 0.03) * 0.05, -0.15 + cos(t * 0.026) * 0.04);
+  vec2 c4 = vec2(0.8 + sin(t * 0.03) * 0.05, -0.05 + cos(t * 0.026) * 0.04);
   color = mix(color, u_color2, softDiamond(uv, c4, vec2(0.4), blur4) * op4);
 
-  vec2 c5 = vec2(1.15 + sin(t * 0.022) * 0.04, -0.2 + cos(t * 0.024) * 0.04);
+  vec2 c5 = vec2(1.15 + sin(t * 0.022) * 0.04, -0.1 + cos(t * 0.024) * 0.04);
   color = mix(color, u_color3, softDiamond(uv, c5, vec2(0.5), blur5) * op5);
 
   // Fine grain (removes banding, adds sophistication)
