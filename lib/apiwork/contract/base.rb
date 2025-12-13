@@ -72,13 +72,11 @@ module Apiwork
 
         def register_sti_variants(*variant_schema_classes)
           variant_schema_classes.each do |variant_class|
-            unless variant_class.is_a?(Class) && variant_class < Apiwork::Schema::Base
-              raise ArgumentError,
-                    "Expected Schema class, got #{variant_class.inspect}. " \
-                    'Use: register_sti_variants PersonSchema, CompanySchema'
-            end
+            next if variant_class.is_a?(Class) && variant_class < Apiwork::Schema::Base
 
-            variant_class.name
+            raise ArgumentError,
+                  "Expected Schema class, got #{variant_class.inspect}. " \
+                  'Use: register_sti_variants PersonSchema, CompanySchema'
           end
         end
 
