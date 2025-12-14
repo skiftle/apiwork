@@ -75,9 +75,3 @@ Returns the value of attribute path.
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L35)
 
 ---
-
-### #warn()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L39)
-
----

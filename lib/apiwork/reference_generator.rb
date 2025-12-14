@@ -6,7 +6,8 @@ require 'active_support/core_ext/string/inflections'
 
 module Apiwork
   class ReferenceGenerator
-    OUTPUT_DIR = File.expand_path('../../docs/reference', __dir__)
+    GEM_ROOT = File.expand_path('../..', __dir__)
+    OUTPUT_DIR = File.join(GEM_ROOT, 'docs/reference')
     GITHUB_URL = 'https://github.com/skiftle/apiwork/blob/main'
 
     def self.run
@@ -23,7 +24,7 @@ module Apiwork
 
     def parse_source
       YARD::Registry.clear
-      YARD.parse('lib/**/*.rb')
+      YARD.parse(File.join(GEM_ROOT, 'lib/**/*.rb'))
     end
 
     # Modules excluded from public API reference
@@ -54,11 +55,17 @@ module Apiwork
         path: obj.path,
         type: obj.type,
         docstring: obj.docstring.to_s,
-        file: obj.file,
+        file: relative_path(obj.file),
         line: obj.line,
         class_methods: extract_methods(obj, :class),
         instance_methods: extract_methods(obj, :instance)
       }
+    end
+
+    def relative_path(file)
+      return nil unless file
+
+      file.sub("#{GEM_ROOT}/", '')
     end
 
     def extract_methods(obj, scope)
@@ -77,7 +84,7 @@ module Apiwork
         params: extract_params(method),
         returns: extract_return(method),
         examples: extract_examples(method),
-        file: method.file,
+        file: relative_path(method.file),
         line: method.line
       }
     end

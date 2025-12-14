@@ -86,54 +86,54 @@ Returns the value of attribute key_format.
 
 ### #map_array_type(definition, action_name: = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/typescript_mapper.rb#L186)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/typescript_mapper.rb#L185)
 
 ---
 
 ### #map_field(definition, action_name: = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/typescript_mapper.rb#L121)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/typescript_mapper.rb#L120)
 
 ---
 
 ### #map_literal_type(definition)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/typescript_mapper.rb#L212)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/typescript_mapper.rb#L211)
 
 ---
 
 ### #map_object_type(definition, action_name: = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/typescript_mapper.rb#L170)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/typescript_mapper.rb#L169)
 
 ---
 
 ### #map_primitive(type)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/typescript_mapper.rb#L221)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/typescript_mapper.rb#L220)
 
 ---
 
 ### #map_type_definition(definition, action_name: = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/typescript_mapper.rb#L149)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/typescript_mapper.rb#L148)
 
 ---
 
 ### #map_union_type(definition, action_name: = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/typescript_mapper.rb#L205)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/typescript_mapper.rb#L204)
 
 ---
 
 ### #pascal_case(name)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/typescript_mapper.rb#L242)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/typescript_mapper.rb#L241)
 
 ---
 
 ### #type_reference(symbol)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/typescript_mapper.rb#L238)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/typescript_mapper.rb#L237)
 
 ---

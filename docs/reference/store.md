@@ -24,7 +24,7 @@ next: false
 
 ### #clear!()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/store.rb#L47)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/store.rb#L43)
 
 ---
 
@@ -37,12 +37,6 @@ next: false
 ### #each_pair(&block)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/store.rb#L39)
-
----
-
-### #each_value(&block)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/store.rb#L43)
 
 ---
 

@@ -213,6 +213,7 @@ GEM
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    yard (0.9.38)
     zeitwerk (2.7.3)
 
 PLATFORMS
@@ -229,6 +230,7 @@ DEPENDENCIES
   apiwork!
   rails (~> 8.0)
   sqlite3
+  yard
 
 BUNDLED WITH
    2.5.18

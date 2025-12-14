@@ -38,7 +38,7 @@ Returns the value of attribute discriminator.
 
 ### #serialize()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/union_definition.rb#L39)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/union_definition.rb#L38)
 
 ---
 

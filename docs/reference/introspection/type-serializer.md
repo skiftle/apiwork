@@ -22,13 +22,13 @@ next: false
 
 ### #serialize_enum(qualified_name, metadata)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type_serializer.rb#L44)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type_serializer.rb#L45)
 
 ---
 
 ### #serialize_enums()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type_serializer.rb#L36)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type_serializer.rb#L37)
 
 ---
 
