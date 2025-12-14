@@ -136,7 +136,7 @@ module Apiwork
       end
 
       def validate_attribute_exists!
-        return if @owner_schema_class.abstract_class
+        return if @owner_schema_class.abstract?
 
         return if @model_class && (@is_db_column || @model_class.instance_methods.include?(@name.to_sym))
 
@@ -256,7 +256,7 @@ module Apiwork
 
       def validate_column_required_options!
         return if @is_db_column
-        return if @owner_schema_class.abstract_class
+        return if @owner_schema_class.abstract?
 
         if filterable?
           raise ConfigurationError.new(

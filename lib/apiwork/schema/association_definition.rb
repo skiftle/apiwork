@@ -238,7 +238,9 @@ module Apiwork
       end
 
       def validate_association_exists!
-        return if @owner_schema_class.abstract_class || @model_class.nil? || @schema_class
+        return if @owner_schema_class.abstract?
+        return if @model_class.nil?
+        return if @schema_class
 
         reflection = @model_class.reflect_on_association(@name)
         return if reflection
@@ -276,7 +278,7 @@ module Apiwork
 
       def validate_query_options!
         return unless @filterable || @sortable
-        return if @owner_schema_class.abstract_class
+        return if @owner_schema_class.abstract?
         return unless @model_class
 
         reflection = @model_class.reflect_on_association(@name)

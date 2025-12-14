@@ -28,6 +28,7 @@ export default defineConfig({
         link: "/guide/getting-started/introduction",
         activeMatch: "/guide/",
       },
+      { text: "Examples", link: "/examples/", activeMatch: "/examples/" },
       { text: "Reference", link: "/reference/", activeMatch: "/reference/" },
     ],
     sidebar: generateSidebar([
@@ -40,6 +41,16 @@ export default defineConfig({
         sortMenusByFrontmatterOrder: true,
         frontmatterOrderDefaultValue: 999,
         excludeByGlobPattern: ["index.md"],
+        collapsed: true,
+      },
+      {
+        documentRootPath: ".",
+        scanStartPath: "examples",
+        resolvePath: "/examples/",
+        useTitleFromFileHeading: true,
+        useFolderTitleFromIndexFile: true,
+        sortMenusByFrontmatterOrder: true,
+        frontmatterOrderDefaultValue: 999,
         collapsed: true,
       },
       {

@@ -85,7 +85,7 @@ module Apiwork
               code: :model_not_found,
               detail: "Could not find model '#{model_name}' for #{name}. " \
                       "Either create the model, declare it explicitly with 'model YourModel', " \
-                      "or mark this schema as abstract with 'abstract'",
+                      "or mark this schema as abstract with 'abstract!'",
               path: []
             )
           end
@@ -220,7 +220,7 @@ module Apiwork
 
         def register_variant(tag:, schema:, sti_type:)
           self._variants = _variants.merge(tag => { schema: schema, sti_type: sti_type })
-          self.abstract_class = true # Auto-mark as abstract
+          self._abstract = true
         end
 
         def discriminator_column

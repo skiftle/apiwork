@@ -6,7 +6,7 @@ RSpec.describe 'Abstract Contract' do
   describe 'abstract behavior' do
     let(:abstract_contract) do
       create_test_contract do
-        abstract
+        abstract!
       end
     end
 
@@ -24,7 +24,7 @@ RSpec.describe 'Abstract Contract' do
 
     it 'subclass can explicitly be marked as abstract again' do
       another_abstract = Class.new(concrete_contract) do
-        abstract
+        abstract!
       end
 
       expect(another_abstract.abstract?).to be true
@@ -42,7 +42,7 @@ RSpec.describe 'Abstract Contract' do
         end
 
         class BaseContract < Apiwork::Contract::Base
-          abstract
+          abstract!
         end
 
         class PostContract < BaseContract

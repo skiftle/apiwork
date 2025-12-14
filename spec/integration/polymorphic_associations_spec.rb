@@ -4,8 +4,8 @@ require 'rails_helper'
 
 RSpec.describe 'Polymorphic associations', type: :integration do
   # Stub schema classes for testing
-  let(:post_schema_class) { Class.new(Apiwork::Schema::Base) { abstract } }
-  let(:video_schema_class) { Class.new(Apiwork::Schema::Base) { abstract } }
+  let(:post_schema_class) { Class.new(Apiwork::Schema::Base) { abstract! } }
+  let(:video_schema_class) { Class.new(Apiwork::Schema::Base) { abstract! } }
 
   describe 'polymorphic association definition' do
     it 'accepts polymorphic option with types hash using class references' do
@@ -13,7 +13,7 @@ RSpec.describe 'Polymorphic associations', type: :integration do
       video_schema = video_schema_class
 
       schema = Class.new(Apiwork::Schema::Base) do
-        abstract
+        abstract!
 
         belongs_to :commentable, polymorphic: { post: post_schema, video: video_schema }
       end
@@ -28,7 +28,7 @@ RSpec.describe 'Polymorphic associations', type: :integration do
       stub_const('Api::V1::VideoSchema', video_schema_class)
 
       schema = Class.new(Apiwork::Schema::Base) do
-        abstract
+        abstract!
 
         def self.name
           'Api::V1::CommentSchema'
@@ -47,7 +47,7 @@ RSpec.describe 'Polymorphic associations', type: :integration do
     it 'rejects string values in polymorphic hash' do
       expect do
         Class.new(Apiwork::Schema::Base) do
-          abstract
+          abstract!
 
           belongs_to :commentable, polymorphic: { post: 'PostSchema' }
         end
@@ -57,7 +57,7 @@ RSpec.describe 'Polymorphic associations', type: :integration do
     it 'rejects string values for schema option' do
       expect do
         Class.new(Apiwork::Schema::Base) do
-          abstract
+          abstract!
 
           has_many :comments, schema: 'CommentSchema'
         end
@@ -108,7 +108,7 @@ RSpec.describe 'Polymorphic associations', type: :integration do
 
       expect do
         Class.new(Apiwork::Schema::Base) do
-          abstract
+          abstract!
 
           belongs_to :commentable,
                      polymorphic: { post: post_schema },
@@ -122,7 +122,7 @@ RSpec.describe 'Polymorphic associations', type: :integration do
 
       expect do
         Class.new(Apiwork::Schema::Base) do
-          abstract
+          abstract!
 
           belongs_to :commentable,
                      polymorphic: { post: post_schema },
@@ -136,7 +136,7 @@ RSpec.describe 'Polymorphic associations', type: :integration do
 
       expect do
         Class.new(Apiwork::Schema::Base) do
-          abstract
+          abstract!
 
           belongs_to :commentable,
                      polymorphic: { post: post_schema },
@@ -150,7 +150,7 @@ RSpec.describe 'Polymorphic associations', type: :integration do
 
       expect do
         Class.new(Apiwork::Schema::Base) do
-          abstract
+          abstract!
 
           belongs_to :commentable,
                      polymorphic: { post: post_schema },
@@ -164,7 +164,7 @@ RSpec.describe 'Polymorphic associations', type: :integration do
 
       expect do
         Class.new(Apiwork::Schema::Base) do
-          abstract
+          abstract!
 
           belongs_to :commentable,
                      polymorphic: { post: post_schema },

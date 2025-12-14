@@ -21,14 +21,14 @@ Creates the base structure:
 ```ruby
 # app/contracts/application_contract.rb
 class ApplicationContract < Apiwork::Contract::Base
-  abstract
+  abstract!
 end
 ```
 
 ```ruby
 # app/schemas/application_schema.rb
 class ApplicationSchema < Apiwork::Schema::Base
-  abstract
+  abstract!
 end
 ```
 

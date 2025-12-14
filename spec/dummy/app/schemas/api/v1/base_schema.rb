@@ -5,7 +5,7 @@ module Api
     # Abstract base schema for V1 API
     # Tests that auto-detection works correctly with abstract base classes
     class BaseSchema < Apiwork::Schema::Base
-      abstract
+      abstract!
     end
   end
 end

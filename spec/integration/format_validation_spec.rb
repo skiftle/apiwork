@@ -22,7 +22,7 @@ RSpec.describe 'Format validation', type: :integration do
         def self.name
           'TestFormatSchema'
         end
-        abstract
+        abstract!
       end
 
       %i[email uuid uri url date date_time ipv4 ipv6 password hostname].each do |format|
@@ -39,7 +39,7 @@ RSpec.describe 'Format validation', type: :integration do
         def self.name
           'TestFormatSchema'
         end
-        abstract
+        abstract!
       end
 
       %i[int32 int64].each do |format|
@@ -56,7 +56,7 @@ RSpec.describe 'Format validation', type: :integration do
         def self.name
           'TestFormatSchema'
         end
-        abstract
+        abstract!
       end
 
       %i[float double].each do |format|
@@ -73,7 +73,7 @@ RSpec.describe 'Format validation', type: :integration do
         def self.name
           'TestFormatSchema'
         end
-        abstract
+        abstract!
       end
 
       expect do
@@ -90,7 +90,7 @@ RSpec.describe 'Format validation', type: :integration do
         def self.name
           'TestFormatSchema'
         end
-        abstract
+        abstract!
       end
 
       expect do
@@ -105,7 +105,7 @@ RSpec.describe 'Format validation', type: :integration do
         def self.name
           'TestFormatSchema'
         end
-        abstract
+        abstract!
       end
 
       expect do
@@ -120,7 +120,7 @@ RSpec.describe 'Format validation', type: :integration do
         def self.name
           'TestFormatSchema'
         end
-        abstract
+        abstract!
       end
 
       expect do
@@ -135,7 +135,7 @@ RSpec.describe 'Format validation', type: :integration do
         def self.name
           'TestFormatSchema'
         end
-        abstract
+        abstract!
       end
 
       expect do
