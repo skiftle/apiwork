@@ -1,0 +1,44 @@
+name: Generate Docs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'lib/**'
+      - 'docs/playground/**'
+      - '!docs/playground/public/**'
+      - '!docs/reference/**'
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+
+      - name: Generate API reference (YARD)
+        run: bundle exec rake apiwork:docs:reference
+
+      - name: Generate examples
+        run: |
+          cd docs/playground
+          bundle install
+          RAILS_ENV=test bundle exec rake db:migrate
+          bundle exec rake docs:generate
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/reference/ docs/playground/public/
+          git diff --staged --quiet || git commit -m "chore: regenerate docs"
+          git push
