@@ -1,13 +1,11 @@
 name: Generate Docs
 
 on:
-  push:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
     branches: [main]
-    paths:
-      - 'lib/**'
-      - 'docs/playground/**'
-      - '!docs/playground/public/**'
-      - '!docs/reference/**'
 
 permissions:
   contents: write
@@ -15,6 +13,7 @@ permissions:
 jobs:
   generate:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -24,15 +23,14 @@ jobs:
         with:
           ruby-version: '3.2'
           bundler-cache: true
+          working-directory: docs/playground
 
-      - name: Generate API reference (YARD)
-        run: bundle exec rake apiwork:docs:reference
-
-      - name: Generate examples
+      - name: Generate docs
         run: |
           cd docs/playground
           bundle install
           RAILS_ENV=test bundle exec rake db:migrate
+          bundle exec rake apiwork:docs:reference
           bundle exec rake docs:generate
 
       - name: Commit and push
