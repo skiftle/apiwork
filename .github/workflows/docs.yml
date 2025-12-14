@@ -38,7 +38,6 @@ jobs:
         with:
           ruby-version: '3.2'
           bundler-cache: true
-          working-directory: docs/playground
 
       - name: Cache YARD
         if: steps.changes.outputs.skip != 'true'
@@ -47,13 +46,16 @@ jobs:
           path: .yardoc
           key: yard-${{ hashFiles('lib/**/*.rb') }}
 
-      - name: Generate docs
+      - name: Generate API reference (YARD)
+        if: steps.changes.outputs.skip != 'true'
+        run: bundle exec rake apiwork:docs:reference
+
+      - name: Generate examples
         if: steps.changes.outputs.skip != 'true'
         run: |
           cd docs/playground
           bundle install
           RAILS_ENV=test bundle exec rake db:reset
-          bundle exec rake apiwork:docs:reference
           bundle exec rake docs:generate
 
       - name: Commit and push
