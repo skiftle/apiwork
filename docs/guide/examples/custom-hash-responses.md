@@ -10,19 +10,19 @@ Using respond with plain hashes instead of ActiveRecord models
 
 <small>`config/apis/lazy_cow.rb`</small>
 
-<<< @/app/config/apis/lazy_cow.rb
+<<< @/playground/config/apis/lazy_cow.rb
 
 ## Contracts
 
 <small>`app/contracts/lazy_cow/status_contract.rb`</small>
 
-<<< @/app/app/contracts/lazy_cow/status_contract.rb
+<<< @/playground/app/contracts/lazy_cow/status_contract.rb
 
 ## Controllers
 
 <small>`app/controllers/lazy_cow/statuses_controller.rb`</small>
 
-<<< @/app/app/controllers/lazy_cow/statuses_controller.rb
+<<< @/playground/app/controllers/lazy_cow/statuses_controller.rb
 
 ---
 
@@ -77,27 +77,27 @@ GET /lazy_cow/status/stats
 <details>
 <summary>Introspection</summary>
 
-<<< @/app/public/lazy-cow/introspection.json
+<<< @/playground/public/lazy-cow/introspection.json
 
 </details>
 
 <details>
 <summary>TypeScript</summary>
 
-<<< @/app/public/lazy-cow/typescript.ts
+<<< @/playground/public/lazy-cow/typescript.ts
 
 </details>
 
 <details>
 <summary>Zod</summary>
 
-<<< @/app/public/lazy-cow/zod.ts
+<<< @/playground/public/lazy-cow/zod.ts
 
 </details>
 
 <details>
 <summary>OpenAPI</summary>
 
-<<< @/app/public/lazy-cow/openapi.yml
+<<< @/playground/public/lazy-cow/openapi.yml
 
 </details>

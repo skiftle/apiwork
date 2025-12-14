@@ -10,13 +10,13 @@ Navigate through large datasets using cursor-based pagination
 
 <small>`config/apis/grumpy_panda.rb`</small>
 
-<<< @/app/config/apis/grumpy_panda.rb
+<<< @/playground/config/apis/grumpy_panda.rb
 
 ## Models
 
 <small>`app/models/grumpy_panda/activity.rb`</small>
 
-<<< @/app/app/models/grumpy_panda/activity.rb
+<<< @/playground/app/models/grumpy_panda/activity.rb
 
 <details>
 <summary>Database Table</summary>
@@ -35,19 +35,19 @@ Navigate through large datasets using cursor-based pagination
 
 <small>`app/schemas/grumpy_panda/activity_schema.rb`</small>
 
-<<< @/app/app/schemas/grumpy_panda/activity_schema.rb
+<<< @/playground/app/schemas/grumpy_panda/activity_schema.rb
 
 ## Contracts
 
 <small>`app/contracts/grumpy_panda/activity_contract.rb`</small>
 
-<<< @/app/app/contracts/grumpy_panda/activity_contract.rb
+<<< @/playground/app/contracts/grumpy_panda/activity_contract.rb
 
 ## Controllers
 
 <small>`app/controllers/grumpy_panda/activities_controller.rb`</small>
 
-<<< @/app/app/controllers/grumpy_panda/activities_controller.rb
+<<< @/playground/app/controllers/grumpy_panda/activities_controller.rb
 
 ---
 
@@ -104,27 +104,27 @@ GET /grumpy_panda/activities
 <details>
 <summary>Introspection</summary>
 
-<<< @/app/public/grumpy-panda/introspection.json
+<<< @/playground/public/grumpy-panda/introspection.json
 
 </details>
 
 <details>
 <summary>TypeScript</summary>
 
-<<< @/app/public/grumpy-panda/typescript.ts
+<<< @/playground/public/grumpy-panda/typescript.ts
 
 </details>
 
 <details>
 <summary>Zod</summary>
 
-<<< @/app/public/grumpy-panda/zod.ts
+<<< @/playground/public/grumpy-panda/zod.ts
 
 </details>
 
 <details>
 <summary>OpenAPI</summary>
 
-<<< @/app/public/grumpy-panda/openapi.yml
+<<< @/playground/public/grumpy-panda/openapi.yml
 
 </details>

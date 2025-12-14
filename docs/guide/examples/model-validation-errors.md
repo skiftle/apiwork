@@ -10,13 +10,13 @@ How Apiwork captures ActiveRecord validation errors and presents them in a unifi
 
 <small>`config/apis/happy_zebra.rb`</small>
 
-<<< @/app/config/apis/happy_zebra.rb
+<<< @/playground/config/apis/happy_zebra.rb
 
 ## Models
 
 <small>`app/models/happy_zebra/user.rb`</small>
 
-<<< @/app/app/models/happy_zebra/user.rb
+<<< @/playground/app/models/happy_zebra/user.rb
 
 <details>
 <summary>Database Table</summary>
@@ -33,7 +33,7 @@ How Apiwork captures ActiveRecord validation errors and presents them in a unifi
 
 <small>`app/models/happy_zebra/profile.rb`</small>
 
-<<< @/app/app/models/happy_zebra/profile.rb
+<<< @/playground/app/models/happy_zebra/profile.rb
 
 <details>
 <summary>Database Table</summary>
@@ -51,7 +51,7 @@ How Apiwork captures ActiveRecord validation errors and presents them in a unifi
 
 <small>`app/models/happy_zebra/post.rb`</small>
 
-<<< @/app/app/models/happy_zebra/post.rb
+<<< @/playground/app/models/happy_zebra/post.rb
 
 <details>
 <summary>Database Table</summary>
@@ -68,7 +68,7 @@ How Apiwork captures ActiveRecord validation errors and presents them in a unifi
 
 <small>`app/models/happy_zebra/comment.rb`</small>
 
-<<< @/app/app/models/happy_zebra/comment.rb
+<<< @/playground/app/models/happy_zebra/comment.rb
 
 <details>
 <summary>Database Table</summary>
@@ -88,47 +88,47 @@ How Apiwork captures ActiveRecord validation errors and presents them in a unifi
 
 <small>`app/schemas/happy_zebra/user_schema.rb`</small>
 
-<<< @/app/app/schemas/happy_zebra/user_schema.rb
+<<< @/playground/app/schemas/happy_zebra/user_schema.rb
 
 <small>`app/schemas/happy_zebra/profile_schema.rb`</small>
 
-<<< @/app/app/schemas/happy_zebra/profile_schema.rb
+<<< @/playground/app/schemas/happy_zebra/profile_schema.rb
 
 <small>`app/schemas/happy_zebra/post_schema.rb`</small>
 
-<<< @/app/app/schemas/happy_zebra/post_schema.rb
+<<< @/playground/app/schemas/happy_zebra/post_schema.rb
 
 <small>`app/schemas/happy_zebra/comment_schema.rb`</small>
 
-<<< @/app/app/schemas/happy_zebra/comment_schema.rb
+<<< @/playground/app/schemas/happy_zebra/comment_schema.rb
 
 ## Contracts
 
 <small>`app/contracts/happy_zebra/user_contract.rb`</small>
 
-<<< @/app/app/contracts/happy_zebra/user_contract.rb
+<<< @/playground/app/contracts/happy_zebra/user_contract.rb
 
 <small>`app/contracts/happy_zebra/post_contract.rb`</small>
 
-<<< @/app/app/contracts/happy_zebra/post_contract.rb
+<<< @/playground/app/contracts/happy_zebra/post_contract.rb
 
 <small>`app/contracts/happy_zebra/comment_contract.rb`</small>
 
-<<< @/app/app/contracts/happy_zebra/comment_contract.rb
+<<< @/playground/app/contracts/happy_zebra/comment_contract.rb
 
 ## Controllers
 
 <small>`app/controllers/happy_zebra/users_controller.rb`</small>
 
-<<< @/app/app/controllers/happy_zebra/users_controller.rb
+<<< @/playground/app/controllers/happy_zebra/users_controller.rb
 
 <small>`app/controllers/happy_zebra/posts_controller.rb`</small>
 
-<<< @/app/app/controllers/happy_zebra/posts_controller.rb
+<<< @/playground/app/controllers/happy_zebra/posts_controller.rb
 
 <small>`app/controllers/happy_zebra/comments_controller.rb`</small>
 
-<<< @/app/app/controllers/happy_zebra/comments_controller.rb
+<<< @/playground/app/controllers/happy_zebra/comments_controller.rb
 
 ---
 
@@ -494,27 +494,27 @@ Content-Type: application/json
 <details>
 <summary>Introspection</summary>
 
-<<< @/app/public/happy-zebra/introspection.json
+<<< @/playground/public/happy-zebra/introspection.json
 
 </details>
 
 <details>
 <summary>TypeScript</summary>
 
-<<< @/app/public/happy-zebra/typescript.ts
+<<< @/playground/public/happy-zebra/typescript.ts
 
 </details>
 
 <details>
 <summary>Zod</summary>
 
-<<< @/app/public/happy-zebra/zod.ts
+<<< @/playground/public/happy-zebra/zod.ts
 
 </details>
 
 <details>
 <summary>OpenAPI</summary>
 
-<<< @/app/public/happy-zebra/openapi.yml
+<<< @/playground/public/happy-zebra/openapi.yml
 
 </details>

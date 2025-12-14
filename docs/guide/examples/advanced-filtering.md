@@ -10,13 +10,13 @@ Complex queries with string patterns, numeric ranges, and logical operators
 
 <small>`config/apis/bold_falcon.rb`</small>
 
-<<< @/app/config/apis/bold_falcon.rb
+<<< @/playground/config/apis/bold_falcon.rb
 
 ## Models
 
 <small>`app/models/bold_falcon/category.rb`</small>
 
-<<< @/app/app/models/bold_falcon/category.rb
+<<< @/playground/app/models/bold_falcon/category.rb
 
 <details>
 <summary>Database Table</summary>
@@ -33,7 +33,7 @@ Complex queries with string patterns, numeric ranges, and logical operators
 
 <small>`app/models/bold_falcon/article.rb`</small>
 
-<<< @/app/app/models/bold_falcon/article.rb
+<<< @/playground/app/models/bold_falcon/article.rb
 
 <details>
 <summary>Database Table</summary>
@@ -57,23 +57,23 @@ Complex queries with string patterns, numeric ranges, and logical operators
 
 <small>`app/schemas/bold_falcon/category_schema.rb`</small>
 
-<<< @/app/app/schemas/bold_falcon/category_schema.rb
+<<< @/playground/app/schemas/bold_falcon/category_schema.rb
 
 <small>`app/schemas/bold_falcon/article_schema.rb`</small>
 
-<<< @/app/app/schemas/bold_falcon/article_schema.rb
+<<< @/playground/app/schemas/bold_falcon/article_schema.rb
 
 ## Contracts
 
 <small>`app/contracts/bold_falcon/article_contract.rb`</small>
 
-<<< @/app/app/contracts/bold_falcon/article_contract.rb
+<<< @/playground/app/contracts/bold_falcon/article_contract.rb
 
 ## Controllers
 
 <small>`app/controllers/bold_falcon/articles_controller.rb`</small>
 
-<<< @/app/app/controllers/bold_falcon/articles_controller.rb
+<<< @/playground/app/controllers/bold_falcon/articles_controller.rb
 
 ---
 
@@ -557,27 +557,27 @@ GET /bold_falcon/articles?filter[category][name][eq]=Technology
 <details>
 <summary>Introspection</summary>
 
-<<< @/app/public/bold-falcon/introspection.json
+<<< @/playground/public/bold-falcon/introspection.json
 
 </details>
 
 <details>
 <summary>TypeScript</summary>
 
-<<< @/app/public/bold-falcon/typescript.ts
+<<< @/playground/public/bold-falcon/typescript.ts
 
 </details>
 
 <details>
 <summary>Zod</summary>
 
-<<< @/app/public/bold-falcon/zod.ts
+<<< @/playground/public/bold-falcon/zod.ts
 
 </details>
 
 <details>
 <summary>OpenAPI</summary>
 
-<<< @/app/public/bold-falcon/openapi.yml
+<<< @/playground/public/bold-falcon/openapi.yml
 
 </details>

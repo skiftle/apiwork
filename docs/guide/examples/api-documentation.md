@@ -10,13 +10,13 @@ Document APIs with descriptions, examples, formats, and deprecation notices at e
 
 <small>`config/apis/brave_eagle.rb`</small>
 
-<<< @/app/config/apis/brave_eagle.rb
+<<< @/playground/config/apis/brave_eagle.rb
 
 ## Models
 
 <small>`app/models/brave_eagle/user.rb`</small>
 
-<<< @/app/app/models/brave_eagle/user.rb
+<<< @/playground/app/models/brave_eagle/user.rb
 
 <details>
 <summary>Database Table</summary>
@@ -33,7 +33,7 @@ Document APIs with descriptions, examples, formats, and deprecation notices at e
 
 <small>`app/models/brave_eagle/task.rb`</small>
 
-<<< @/app/app/models/brave_eagle/task.rb
+<<< @/playground/app/models/brave_eagle/task.rb
 
 <details>
 <summary>Database Table</summary>
@@ -55,7 +55,7 @@ Document APIs with descriptions, examples, formats, and deprecation notices at e
 
 <small>`app/models/brave_eagle/comment.rb`</small>
 
-<<< @/app/app/models/brave_eagle/comment.rb
+<<< @/playground/app/models/brave_eagle/comment.rb
 
 <details>
 <summary>Database Table</summary>
@@ -75,27 +75,27 @@ Document APIs with descriptions, examples, formats, and deprecation notices at e
 
 <small>`app/schemas/brave_eagle/user_schema.rb`</small>
 
-<<< @/app/app/schemas/brave_eagle/user_schema.rb
+<<< @/playground/app/schemas/brave_eagle/user_schema.rb
 
 <small>`app/schemas/brave_eagle/task_schema.rb`</small>
 
-<<< @/app/app/schemas/brave_eagle/task_schema.rb
+<<< @/playground/app/schemas/brave_eagle/task_schema.rb
 
 <small>`app/schemas/brave_eagle/comment_schema.rb`</small>
 
-<<< @/app/app/schemas/brave_eagle/comment_schema.rb
+<<< @/playground/app/schemas/brave_eagle/comment_schema.rb
 
 ## Contracts
 
 <small>`app/contracts/brave_eagle/task_contract.rb`</small>
 
-<<< @/app/app/contracts/brave_eagle/task_contract.rb
+<<< @/playground/app/contracts/brave_eagle/task_contract.rb
 
 ## Controllers
 
 <small>`app/controllers/brave_eagle/tasks_controller.rb`</small>
 
-<<< @/app/app/controllers/brave_eagle/tasks_controller.rb
+<<< @/playground/app/controllers/brave_eagle/tasks_controller.rb
 
 ---
 
@@ -259,27 +259,27 @@ PATCH /brave_eagle/tasks/8719fd49-4ec3-4e35-8610-f9c24d3783f3/archive
 <details>
 <summary>Introspection</summary>
 
-<<< @/app/public/brave-eagle/introspection.json
+<<< @/playground/public/brave-eagle/introspection.json
 
 </details>
 
 <details>
 <summary>TypeScript</summary>
 
-<<< @/app/public/brave-eagle/typescript.ts
+<<< @/playground/public/brave-eagle/typescript.ts
 
 </details>
 
 <details>
 <summary>Zod</summary>
 
-<<< @/app/public/brave-eagle/zod.ts
+<<< @/playground/public/brave-eagle/zod.ts
 
 </details>
 
 <details>
 <summary>OpenAPI</summary>
 
-<<< @/app/public/brave-eagle/openapi.yml
+<<< @/playground/public/brave-eagle/openapi.yml
 
 </details>

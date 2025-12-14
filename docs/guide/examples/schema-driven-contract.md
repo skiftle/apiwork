@@ -10,13 +10,13 @@ Using `schema!` to generate a complete contract from schema definitions
 
 <small>`config/apis/eager_lion.rb`</small>
 
-<<< @/app/config/apis/eager_lion.rb
+<<< @/playground/config/apis/eager_lion.rb
 
 ## Models
 
 <small>`app/models/eager_lion/customer.rb`</small>
 
-<<< @/app/app/models/eager_lion/customer.rb
+<<< @/playground/app/models/eager_lion/customer.rb
 
 <details>
 <summary>Database Table</summary>
@@ -32,7 +32,7 @@ Using `schema!` to generate a complete contract from schema definitions
 
 <small>`app/models/eager_lion/invoice.rb`</small>
 
-<<< @/app/app/models/eager_lion/invoice.rb
+<<< @/playground/app/models/eager_lion/invoice.rb
 
 <details>
 <summary>Database Table</summary>
@@ -52,7 +52,7 @@ Using `schema!` to generate a complete contract from schema definitions
 
 <small>`app/models/eager_lion/line.rb`</small>
 
-<<< @/app/app/models/eager_lion/line.rb
+<<< @/playground/app/models/eager_lion/line.rb
 
 <details>
 <summary>Database Table</summary>
@@ -73,27 +73,27 @@ Using `schema!` to generate a complete contract from schema definitions
 
 <small>`app/schemas/eager_lion/customer_schema.rb`</small>
 
-<<< @/app/app/schemas/eager_lion/customer_schema.rb
+<<< @/playground/app/schemas/eager_lion/customer_schema.rb
 
 <small>`app/schemas/eager_lion/invoice_schema.rb`</small>
 
-<<< @/app/app/schemas/eager_lion/invoice_schema.rb
+<<< @/playground/app/schemas/eager_lion/invoice_schema.rb
 
 <small>`app/schemas/eager_lion/line_schema.rb`</small>
 
-<<< @/app/app/schemas/eager_lion/line_schema.rb
+<<< @/playground/app/schemas/eager_lion/line_schema.rb
 
 ## Contracts
 
 <small>`app/contracts/eager_lion/invoice_contract.rb`</small>
 
-<<< @/app/app/contracts/eager_lion/invoice_contract.rb
+<<< @/playground/app/contracts/eager_lion/invoice_contract.rb
 
 ## Controllers
 
 <small>`app/controllers/eager_lion/invoices_controller.rb`</small>
 
-<<< @/app/app/controllers/eager_lion/invoices_controller.rb
+<<< @/playground/app/controllers/eager_lion/invoices_controller.rb
 
 ---
 
@@ -282,27 +282,27 @@ DELETE /eager_lion/invoices/2900a284-1819-4180-a76b-e0a3d21b11d9
 <details>
 <summary>Introspection</summary>
 
-<<< @/app/public/eager-lion/introspection.json
+<<< @/playground/public/eager-lion/introspection.json
 
 </details>
 
 <details>
 <summary>TypeScript</summary>
 
-<<< @/app/public/eager-lion/typescript.ts
+<<< @/playground/public/eager-lion/typescript.ts
 
 </details>
 
 <details>
 <summary>Zod</summary>
 
-<<< @/app/public/eager-lion/zod.ts
+<<< @/playground/public/eager-lion/zod.ts
 
 </details>
 
 <details>
 <summary>OpenAPI</summary>
 
-<<< @/app/public/eager-lion/openapi.yml
+<<< @/playground/public/eager-lion/openapi.yml
 
 </details>

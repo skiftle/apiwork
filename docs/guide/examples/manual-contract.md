@@ -10,13 +10,13 @@ Defining contracts manually without schemas
 
 <small>`config/apis/funny_snake.rb`</small>
 
-<<< @/app/config/apis/funny_snake.rb
+<<< @/playground/config/apis/funny_snake.rb
 
 ## Models
 
 <small>`app/models/funny_snake/invoice.rb`</small>
 
-<<< @/app/app/models/funny_snake/invoice.rb
+<<< @/playground/app/models/funny_snake/invoice.rb
 
 <details>
 <summary>Database Table</summary>
@@ -37,13 +37,13 @@ Defining contracts manually without schemas
 
 <small>`app/contracts/funny_snake/invoice_contract.rb`</small>
 
-<<< @/app/app/contracts/funny_snake/invoice_contract.rb
+<<< @/playground/app/contracts/funny_snake/invoice_contract.rb
 
 ## Controllers
 
 <small>`app/controllers/funny_snake/invoices_controller.rb`</small>
 
-<<< @/app/app/controllers/funny_snake/invoices_controller.rb
+<<< @/playground/app/controllers/funny_snake/invoices_controller.rb
 
 ---
 
@@ -178,27 +178,27 @@ DELETE /funny_snake/invoices/10942eed-24b6-4bb0-aca7-7f4fb726ecc8
 <details>
 <summary>Introspection</summary>
 
-<<< @/app/public/funny-snake/introspection.json
+<<< @/playground/public/funny-snake/introspection.json
 
 </details>
 
 <details>
 <summary>TypeScript</summary>
 
-<<< @/app/public/funny-snake/typescript.ts
+<<< @/playground/public/funny-snake/typescript.ts
 
 </details>
 
 <details>
 <summary>Zod</summary>
 
-<<< @/app/public/funny-snake/zod.ts
+<<< @/playground/public/funny-snake/zod.ts
 
 </details>
 
 <details>
 <summary>OpenAPI</summary>
 
-<<< @/app/public/funny-snake/openapi.yml
+<<< @/playground/public/funny-snake/openapi.yml
 
 </details>

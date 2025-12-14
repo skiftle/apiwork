@@ -10,13 +10,13 @@ Create, update, and delete nested records in a single request
 
 <small>`config/apis/clever_rabbit.rb`</small>
 
-<<< @/app/config/apis/clever_rabbit.rb
+<<< @/playground/config/apis/clever_rabbit.rb
 
 ## Models
 
 <small>`app/models/clever_rabbit/order.rb`</small>
 
-<<< @/app/app/models/clever_rabbit/order.rb
+<<< @/playground/app/models/clever_rabbit/order.rb
 
 <details>
 <summary>Database Table</summary>
@@ -34,7 +34,7 @@ Create, update, and delete nested records in a single request
 
 <small>`app/models/clever_rabbit/line_item.rb`</small>
 
-<<< @/app/app/models/clever_rabbit/line_item.rb
+<<< @/playground/app/models/clever_rabbit/line_item.rb
 
 <details>
 <summary>Database Table</summary>
@@ -53,7 +53,7 @@ Create, update, and delete nested records in a single request
 
 <small>`app/models/clever_rabbit/shipping_address.rb`</small>
 
-<<< @/app/app/models/clever_rabbit/shipping_address.rb
+<<< @/playground/app/models/clever_rabbit/shipping_address.rb
 
 <details>
 <summary>Database Table</summary>
@@ -75,27 +75,27 @@ Create, update, and delete nested records in a single request
 
 <small>`app/schemas/clever_rabbit/order_schema.rb`</small>
 
-<<< @/app/app/schemas/clever_rabbit/order_schema.rb
+<<< @/playground/app/schemas/clever_rabbit/order_schema.rb
 
 <small>`app/schemas/clever_rabbit/line_item_schema.rb`</small>
 
-<<< @/app/app/schemas/clever_rabbit/line_item_schema.rb
+<<< @/playground/app/schemas/clever_rabbit/line_item_schema.rb
 
 <small>`app/schemas/clever_rabbit/shipping_address_schema.rb`</small>
 
-<<< @/app/app/schemas/clever_rabbit/shipping_address_schema.rb
+<<< @/playground/app/schemas/clever_rabbit/shipping_address_schema.rb
 
 ## Contracts
 
 <small>`app/contracts/clever_rabbit/order_contract.rb`</small>
 
-<<< @/app/app/contracts/clever_rabbit/order_contract.rb
+<<< @/playground/app/contracts/clever_rabbit/order_contract.rb
 
 ## Controllers
 
 <small>`app/controllers/clever_rabbit/orders_controller.rb`</small>
 
-<<< @/app/app/controllers/clever_rabbit/orders_controller.rb
+<<< @/playground/app/controllers/clever_rabbit/orders_controller.rb
 
 ---
 
@@ -338,27 +338,27 @@ Content-Type: application/json
 <details>
 <summary>Introspection</summary>
 
-<<< @/app/public/clever-rabbit/introspection.json
+<<< @/playground/public/clever-rabbit/introspection.json
 
 </details>
 
 <details>
 <summary>TypeScript</summary>
 
-<<< @/app/public/clever-rabbit/typescript.ts
+<<< @/playground/public/clever-rabbit/typescript.ts
 
 </details>
 
 <details>
 <summary>Zod</summary>
 
-<<< @/app/public/clever-rabbit/zod.ts
+<<< @/playground/public/clever-rabbit/zod.ts
 
 </details>
 
 <details>
 <summary>OpenAPI</summary>
 
-<<< @/app/public/clever-rabbit/openapi.yml
+<<< @/playground/public/clever-rabbit/openapi.yml
 
 </details>

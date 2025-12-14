@@ -10,13 +10,13 @@ Transform values on input/output and handle nil/empty string conversion
 
 <small>`config/apis/swift_fox.rb`</small>
 
-<<< @/app/config/apis/swift_fox.rb
+<<< @/playground/config/apis/swift_fox.rb
 
 ## Models
 
 <small>`app/models/swift_fox/contact.rb`</small>
 
-<<< @/app/app/models/swift_fox/contact.rb
+<<< @/playground/app/models/swift_fox/contact.rb
 
 <details>
 <summary>Database Table</summary>
@@ -37,19 +37,19 @@ Transform values on input/output and handle nil/empty string conversion
 
 <small>`app/schemas/swift_fox/contact_schema.rb`</small>
 
-<<< @/app/app/schemas/swift_fox/contact_schema.rb
+<<< @/playground/app/schemas/swift_fox/contact_schema.rb
 
 ## Contracts
 
 <small>`app/contracts/swift_fox/contact_contract.rb`</small>
 
-<<< @/app/app/contracts/swift_fox/contact_contract.rb
+<<< @/playground/app/contracts/swift_fox/contact_contract.rb
 
 ## Controllers
 
 <small>`app/controllers/swift_fox/contacts_controller.rb`</small>
 
-<<< @/app/app/controllers/swift_fox/contacts_controller.rb
+<<< @/playground/app/controllers/swift_fox/contacts_controller.rb
 
 ---
 
@@ -124,27 +124,27 @@ GET /swift_fox/contacts/32888976-7e30-4f0d-b615-4c2a6872ef53
 <details>
 <summary>Introspection</summary>
 
-<<< @/app/public/swift-fox/introspection.json
+<<< @/playground/public/swift-fox/introspection.json
 
 </details>
 
 <details>
 <summary>TypeScript</summary>
 
-<<< @/app/public/swift-fox/typescript.ts
+<<< @/playground/public/swift-fox/typescript.ts
 
 </details>
 
 <details>
 <summary>Zod</summary>
 
-<<< @/app/public/swift-fox/zod.ts
+<<< @/playground/public/swift-fox/zod.ts
 
 </details>
 
 <details>
 <summary>OpenAPI</summary>
 
-<<< @/app/public/swift-fox/openapi.yml
+<<< @/playground/public/swift-fox/openapi.yml
 
 </details>

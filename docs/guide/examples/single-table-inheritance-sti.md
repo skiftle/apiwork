@@ -10,13 +10,13 @@ Single Table Inheritance with automatic variant serialization and TypeScript uni
 
 <small>`config/apis/mighty_wolf.rb`</small>
 
-<<< @/app/config/apis/mighty_wolf.rb
+<<< @/playground/config/apis/mighty_wolf.rb
 
 ## Models
 
 <small>`app/models/mighty_wolf/vehicle.rb`</small>
 
-<<< @/app/app/models/mighty_wolf/vehicle.rb
+<<< @/playground/app/models/mighty_wolf/vehicle.rb
 
 <details>
 <summary>Database Table</summary>
@@ -39,45 +39,45 @@ Single Table Inheritance with automatic variant serialization and TypeScript uni
 
 <small>`app/models/mighty_wolf/car.rb`</small>
 
-<<< @/app/app/models/mighty_wolf/car.rb
+<<< @/playground/app/models/mighty_wolf/car.rb
 
 <small>`app/models/mighty_wolf/truck.rb`</small>
 
-<<< @/app/app/models/mighty_wolf/truck.rb
+<<< @/playground/app/models/mighty_wolf/truck.rb
 
 <small>`app/models/mighty_wolf/motorcycle.rb`</small>
 
-<<< @/app/app/models/mighty_wolf/motorcycle.rb
+<<< @/playground/app/models/mighty_wolf/motorcycle.rb
 
 ## Schemas
 
 <small>`app/schemas/mighty_wolf/vehicle_schema.rb`</small>
 
-<<< @/app/app/schemas/mighty_wolf/vehicle_schema.rb
+<<< @/playground/app/schemas/mighty_wolf/vehicle_schema.rb
 
 <small>`app/schemas/mighty_wolf/car_schema.rb`</small>
 
-<<< @/app/app/schemas/mighty_wolf/car_schema.rb
+<<< @/playground/app/schemas/mighty_wolf/car_schema.rb
 
 <small>`app/schemas/mighty_wolf/truck_schema.rb`</small>
 
-<<< @/app/app/schemas/mighty_wolf/truck_schema.rb
+<<< @/playground/app/schemas/mighty_wolf/truck_schema.rb
 
 <small>`app/schemas/mighty_wolf/motorcycle_schema.rb`</small>
 
-<<< @/app/app/schemas/mighty_wolf/motorcycle_schema.rb
+<<< @/playground/app/schemas/mighty_wolf/motorcycle_schema.rb
 
 ## Contracts
 
 <small>`app/contracts/mighty_wolf/vehicle_contract.rb`</small>
 
-<<< @/app/app/contracts/mighty_wolf/vehicle_contract.rb
+<<< @/playground/app/contracts/mighty_wolf/vehicle_contract.rb
 
 ## Controllers
 
 <small>`app/controllers/mighty_wolf/vehicles_controller.rb`</small>
 
-<<< @/app/app/controllers/mighty_wolf/vehicles_controller.rb
+<<< @/playground/app/controllers/mighty_wolf/vehicles_controller.rb
 
 ---
 
@@ -287,27 +287,27 @@ Content-Type: application/json
 <details>
 <summary>Introspection</summary>
 
-<<< @/app/public/mighty-wolf/introspection.json
+<<< @/playground/public/mighty-wolf/introspection.json
 
 </details>
 
 <details>
 <summary>TypeScript</summary>
 
-<<< @/app/public/mighty-wolf/typescript.ts
+<<< @/playground/public/mighty-wolf/typescript.ts
 
 </details>
 
 <details>
 <summary>Zod</summary>
 
-<<< @/app/public/mighty-wolf/zod.ts
+<<< @/playground/public/mighty-wolf/zod.ts
 
 </details>
 
 <details>
 <summary>OpenAPI</summary>
 
-<<< @/app/public/mighty-wolf/openapi.yml
+<<< @/playground/public/mighty-wolf/openapi.yml
 
 </details>

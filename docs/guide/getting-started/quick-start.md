@@ -16,31 +16,31 @@ We'll create an Invoices API with:
 
 ## 1. Database & Model
 
-<<< @/app/db/migrate/20251130000004_create_eager_lion_tables.rb
+<<< @/playground/db/migrate/20251130000004_create_eager_lion_tables.rb
 
-<<< @/app/app/models/eager_lion/invoice.rb
+<<< @/playground/app/models/eager_lion/invoice.rb
 
 ## 2. API Definition
 
-<<< @/app/config/apis/eager_lion.rb
+<<< @/playground/config/apis/eager_lion.rb
 
 ## 3. Routes
 
 Mount Apiwork routes in your Rails application:
 
-<<< @/app/config/routes.rb
+<<< @/playground/config/routes.rb
 
 ## 4. Schema
 
 The schema defines how your model is serialized and what can be filtered/sorted:
 
-<<< @/app/app/schemas/eager_lion/invoice_schema.rb
+<<< @/playground/app/schemas/eager_lion/invoice_schema.rb
 
 ## 5. Contract
 
 The contract imports the schema and can add action-specific rules:
 
-<<< @/app/app/contracts/eager_lion/invoice_contract.rb
+<<< @/playground/app/contracts/eager_lion/invoice_contract.rb
 
 `schema!` imports all attributes from InvoiceSchema. The contract now knows:
 
@@ -50,7 +50,7 @@ The contract imports the schema and can add action-specific rules:
 
 ## 6. Controller
 
-<<< @/app/app/controllers/eager_lion/invoices_controller.rb
+<<< @/playground/app/controllers/eager_lion/invoices_controller.rb
 
 ## 7. Try It Out
 

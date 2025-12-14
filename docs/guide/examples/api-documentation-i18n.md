@@ -10,13 +10,13 @@ Using built-in I18n for translatable API documentation
 
 <small>`config/apis/wise_tiger.rb`</small>
 
-<<< @/app/config/apis/wise_tiger.rb
+<<< @/playground/config/apis/wise_tiger.rb
 
 ## Models
 
 <small>`app/models/wise_tiger/project.rb`</small>
 
-<<< @/app/app/models/wise_tiger/project.rb
+<<< @/playground/app/models/wise_tiger/project.rb
 
 <details>
 <summary>Database Table</summary>
@@ -38,25 +38,25 @@ Using built-in I18n for translatable API documentation
 
 <small>`app/schemas/wise_tiger/project_schema.rb`</small>
 
-<<< @/app/app/schemas/wise_tiger/project_schema.rb
+<<< @/playground/app/schemas/wise_tiger/project_schema.rb
 
 ## Contracts
 
 <small>`app/contracts/wise_tiger/project_contract.rb`</small>
 
-<<< @/app/app/contracts/wise_tiger/project_contract.rb
+<<< @/playground/app/contracts/wise_tiger/project_contract.rb
 
 ## Controllers
 
 <small>`app/controllers/wise_tiger/projects_controller.rb`</small>
 
-<<< @/app/app/controllers/wise_tiger/projects_controller.rb
+<<< @/playground/app/controllers/wise_tiger/projects_controller.rb
 
 ## Locales
 
 <small>`config/locales/wise_tiger.en.yml`</small>
 
-<<< @/app/config/locales/wise_tiger.en.yml
+<<< @/playground/config/locales/wise_tiger.en.yml
 
 ---
 
@@ -185,27 +185,27 @@ Content-Type: application/json
 <details>
 <summary>Introspection</summary>
 
-<<< @/app/public/wise-tiger/introspection.json
+<<< @/playground/public/wise-tiger/introspection.json
 
 </details>
 
 <details>
 <summary>TypeScript</summary>
 
-<<< @/app/public/wise-tiger/typescript.ts
+<<< @/playground/public/wise-tiger/typescript.ts
 
 </details>
 
 <details>
 <summary>Zod</summary>
 
-<<< @/app/public/wise-tiger/zod.ts
+<<< @/playground/public/wise-tiger/zod.ts
 
 </details>
 
 <details>
 <summary>OpenAPI</summary>
 
-<<< @/app/public/wise-tiger/openapi.yml
+<<< @/playground/public/wise-tiger/openapi.yml
 
 </details>
