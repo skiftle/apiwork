@@ -5,6 +5,7 @@ require_relative 'apiwork/version'
 
 module Apiwork
   class << self
+    # DOCUMENTATION
     def routes
       @routes ||= API::RackApp.new
     end
