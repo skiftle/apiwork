@@ -29,7 +29,7 @@ jobs:
         run: |
           cd docs/playground
           bundle install
-          RAILS_ENV=test bundle exec rake db:migrate
+          RAILS_ENV=test bundle exec rake db:reset
           bundle exec rake apiwork:docs:reference
           bundle exec rake docs:generate
 
