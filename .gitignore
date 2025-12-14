@@ -27,6 +27,9 @@
 # Gem files
 *.gem
 
+# RSpec status file
+.rspec_status
+
 # Claude Code - local files
 /.claude/*.local.json
 /.claude/plans/
