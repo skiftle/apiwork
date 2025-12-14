@@ -57,7 +57,7 @@ Rails/Delegate:
 # Schema files use class constants, not strings
 Rails/ReflectionClassName:
   Exclude:
-    - "docs/app/app/schemas/**/*"
+    - "docs/playground/app/schemas/**/*"
 
 # Disable symbol array cop - breaks validation logic
 Style/SymbolArray:
