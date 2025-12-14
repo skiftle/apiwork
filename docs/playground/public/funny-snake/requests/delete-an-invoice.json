@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "DELETE",
+    "path": "/funny_snake/invoices/10942eed-24b6-4bb0-aca7-7f4fb726ecc8"
+  },
+  "response": {
+    "status": 500,
+    "body": {
+      "status": 500,
+      "error": "Internal Server Error"
+    }
+  }
+}

@@ -1,0 +1,83 @@
+title: Manual Contract
+description: Defining contracts manually without schemas
+order: 1
+
+sections:
+  - title: API Definition
+    files:
+      - config/apis/funny_snake.rb
+  - title: Models
+    files:
+      - app/models/funny_snake/invoice.rb
+  - title: Contracts
+    files:
+      - app/contracts/funny_snake/invoice_contract.rb
+  - title: Controllers
+    files:
+      - app/controllers/funny_snake/invoices_controller.rb
+
+scenarios:
+  - title: List all invoices
+    description: Returns paginated list of invoices
+    order: 1
+    method: GET
+    path: /funny_snake/invoices
+    setup:
+      - create: invoice
+        fields:
+          number: INV-001
+          status: draft
+      - create: invoice
+        fields:
+          number: INV-002
+          status: sent
+
+  - title: Get invoice details
+    description: Fetch a single invoice by ID
+    order: 2
+    method: GET
+    path: /funny_snake/invoices/:id
+    setup:
+      - create: invoice
+        fields:
+          number: INV-001
+          status: draft
+
+  - title: Create a new invoice
+    description: Create invoice with all fields
+    order: 3
+    method: POST
+    path: /funny_snake/invoices
+    body:
+      invoice:
+        number: INV-001
+        issued_on: "2024-01-15"
+        status: draft
+        notes: First invoice
+
+  - title: Update an invoice
+    description: Modify existing invoice status
+    order: 4
+    method: PATCH
+    path: /funny_snake/invoices/:id
+    setup:
+      - create: invoice
+        fields:
+          number: INV-001
+          status: draft
+    body:
+      invoice:
+        number: INV-001
+        issued_on: "2024-01-15"
+        status: sent
+        notes: Updated invoice
+
+  - title: Delete an invoice
+    description: Remove invoice from system
+    order: 5
+    method: DELETE
+    path: /funny_snake/invoices/:id
+    setup:
+      - create: invoice
+        fields:
+          number: INV-001

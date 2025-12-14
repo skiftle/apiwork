@@ -1,0 +1,58 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/happy_zebra/users",
+    "body": {
+      "user": {
+        "email": "deep@example.com",
+        "username": "deepuser",
+        "posts": [
+          {
+            "title": "My First Post",
+            "comments": [
+              {
+                "body": "Great post!",
+                "author": "Jane"
+              },
+              {
+                "body": "Thanks for sharing",
+                "author": "Bob"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "user": {
+        "id": "e35cfee8-beb8-4156-8e94-d1ffcbb7e66e",
+        "createdAt": "2025-12-10T10:35:26.725Z",
+        "updatedAt": "2025-12-10T10:35:26.725Z",
+        "email": "deep@example.com",
+        "username": "deepuser",
+        "profile": null,
+        "posts": [
+          {
+            "id": "5642878b-6b8c-4011-a713-26e52f669f34",
+            "title": "My First Post",
+            "comments": [
+              {
+                "id": "dcf5266a-52ee-44f3-8f8b-60a61ed08ef7",
+                "body": "Great post!",
+                "author": "Jane"
+              },
+              {
+                "id": "5acba403-fa07-49c7-b622-56e20d7a6f0e",
+                "body": "Thanks for sharing",
+                "author": "Bob"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

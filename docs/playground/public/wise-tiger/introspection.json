@@ -1,0 +1,648 @@
+{
+  "path": "/wise_tiger",
+  "info": {
+    "title": "Project Management API",
+    "version": "1.0.0",
+    "description": "API for managing projects with I18n-powered documentation"
+  },
+  "types": {
+    "issue": {
+      "type": "object",
+      "shape": {
+        "code": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "field": {
+          "type": "string"
+        },
+        "path": {
+          "type": "array",
+          "of": "string"
+        }
+      }
+    },
+    "nullable_string_filter": {
+      "type": "object",
+      "shape": {
+        "contains": {
+          "type": "string",
+          "optional": true
+        },
+        "ends_with": {
+          "type": "string",
+          "optional": true
+        },
+        "eq": {
+          "type": "string",
+          "optional": true
+        },
+        "in": {
+          "type": "array",
+          "of": "string",
+          "optional": true
+        },
+        "null": {
+          "type": "boolean",
+          "optional": true
+        },
+        "starts_with": {
+          "type": "string",
+          "optional": true
+        }
+      }
+    },
+    "offset_pagination": {
+      "type": "object",
+      "shape": {
+        "current": {
+          "type": "integer"
+        },
+        "items": {
+          "type": "integer"
+        },
+        "next": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "prev": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "total": {
+          "type": "integer"
+        }
+      }
+    },
+    "project": {
+      "type": "object",
+      "shape": {
+        "created_at": {
+          "type": "datetime",
+          "optional": true
+        },
+        "deadline": {
+          "type": "date",
+          "optional": true
+        },
+        "description": {
+          "type": "string",
+          "optional": true
+        },
+        "id": {
+          "type": "string",
+          "optional": true
+        },
+        "name": {
+          "type": "string",
+          "optional": true
+        },
+        "priority": {
+          "type": "string",
+          "enum": "project_priority",
+          "optional": true
+        },
+        "status": {
+          "type": "string",
+          "enum": "project_status",
+          "optional": true
+        },
+        "updated_at": {
+          "type": "datetime",
+          "optional": true
+        }
+      }
+    },
+    "project_create_payload": {
+      "type": "object",
+      "shape": {
+        "deadline": {
+          "type": "date",
+          "nullable": true,
+          "optional": true,
+          "description": "Target completion date"
+        },
+        "description": {
+          "type": "string",
+          "nullable": true,
+          "optional": true,
+          "description": "Detailed project description"
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable project name"
+        },
+        "priority": {
+          "type": "string",
+          "enum": "project_priority",
+          "nullable": true,
+          "optional": true,
+          "description": "Project priority for resource allocation"
+        },
+        "status": {
+          "type": "string",
+          "enum": "project_status",
+          "nullable": true,
+          "optional": true,
+          "description": "Current project lifecycle status"
+        }
+      }
+    },
+    "project_filter": {
+      "type": "object",
+      "shape": {
+        "_and": {
+          "type": "array",
+          "of": "project_filter",
+          "optional": true
+        },
+        "_not": {
+          "type": "project_filter",
+          "optional": true
+        },
+        "_or": {
+          "type": "array",
+          "of": "project_filter",
+          "optional": true
+        },
+        "priority": {
+          "type": "project_priority_filter",
+          "optional": true,
+          "description": "Project priority for resource allocation"
+        },
+        "status": {
+          "type": "project_status_filter",
+          "optional": true,
+          "description": "Current project lifecycle status"
+        }
+      }
+    },
+    "project_include": {
+      "type": "object"
+    },
+    "project_page": {
+      "type": "object",
+      "shape": {
+        "number": {
+          "type": "integer",
+          "optional": true,
+          "min": 1
+        },
+        "size": {
+          "type": "integer",
+          "optional": true,
+          "min": 1,
+          "max": 100
+        }
+      }
+    },
+    "project_priority_filter": {
+      "type": "union",
+      "required": false,
+      "nullable": false,
+      "variants": [
+        {
+          "type": "project_priority",
+          "of": null,
+          "partial": false
+        },
+        {
+          "type": "object",
+          "of": null,
+          "partial": true,
+          "shape": {
+            "eq": {
+              "type": "project_priority",
+              "optional": true
+            },
+            "in": {
+              "type": "array",
+              "of": "project_priority",
+              "optional": true
+            }
+          }
+        }
+      ]
+    },
+    "project_sort": {
+      "type": "object",
+      "shape": {
+        "created_at": {
+          "type": "sort_direction",
+          "optional": true,
+          "description": "Timestamp when project was created"
+        },
+        "deadline": {
+          "type": "sort_direction",
+          "optional": true,
+          "description": "Target completion date"
+        }
+      }
+    },
+    "project_status_filter": {
+      "type": "union",
+      "required": false,
+      "nullable": false,
+      "variants": [
+        {
+          "type": "project_status",
+          "of": null,
+          "partial": false
+        },
+        {
+          "type": "object",
+          "of": null,
+          "partial": true,
+          "shape": {
+            "eq": {
+              "type": "project_status",
+              "optional": true
+            },
+            "in": {
+              "type": "array",
+              "of": "project_status",
+              "optional": true
+            }
+          }
+        }
+      ]
+    },
+    "project_update_payload": {
+      "type": "object",
+      "shape": {
+        "deadline": {
+          "type": "date",
+          "nullable": true,
+          "optional": true,
+          "description": "Target completion date"
+        },
+        "description": {
+          "type": "string",
+          "nullable": true,
+          "optional": true,
+          "description": "Detailed project description"
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable project name"
+        },
+        "priority": {
+          "type": "string",
+          "enum": "project_priority",
+          "nullable": true,
+          "optional": true,
+          "description": "Project priority for resource allocation"
+        },
+        "status": {
+          "type": "string",
+          "enum": "project_status",
+          "nullable": true,
+          "optional": true,
+          "description": "Current project lifecycle status"
+        }
+      }
+    },
+    "string_filter": {
+      "type": "object",
+      "shape": {
+        "contains": {
+          "type": "string",
+          "optional": true
+        },
+        "ends_with": {
+          "type": "string",
+          "optional": true
+        },
+        "eq": {
+          "type": "string",
+          "optional": true
+        },
+        "in": {
+          "type": "array",
+          "of": "string",
+          "optional": true
+        },
+        "starts_with": {
+          "type": "string",
+          "optional": true
+        }
+      }
+    }
+  },
+  "enums": {
+    "project_priority": {
+      "values": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    },
+    "project_status": {
+      "values": [
+        "active",
+        "paused",
+        "completed",
+        "archived"
+      ]
+    },
+    "sort_direction": {
+      "values": [
+        "asc",
+        "desc"
+      ]
+    }
+  },
+  "error_codes": {
+    "unprocessable_entity": {
+      "status": 422,
+      "description": "Unprocessable Entity"
+    }
+  },
+  "resources": {
+    "projects": {
+      "path": "projects",
+      "summary": "Projects",
+      "description": "Operations for managing projects.",
+      "tags": [
+        "Projects"
+      ],
+      "schema": {
+        "type": "object",
+        "shape": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "text",
+            "nullable": true,
+            "optional": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true,
+            "optional": true
+          },
+          "priority": {
+            "type": "string",
+            "nullable": true,
+            "optional": true
+          },
+          "deadline": {
+            "type": "date",
+            "nullable": true,
+            "optional": true
+          },
+          "created_at": {
+            "type": "datetime"
+          },
+          "updated_at": {
+            "type": "datetime"
+          }
+        }
+      },
+      "actions": {
+        "index": {
+          "method": "get",
+          "path": "/",
+          "summary": "List all projects",
+          "description": "Returns a paginated list of projects with optional filtering",
+          "tags": [
+            "Projects"
+          ],
+          "operation_id": "listProjects",
+          "request": {
+            "query": {
+              "filter": {
+                "type": "union",
+                "variants": [
+                  {
+                    "type": "project_filter"
+                  },
+                  {
+                    "type": "array",
+                    "of": "project_filter"
+                  }
+                ],
+                "optional": true
+              },
+              "include": {
+                "type": "project_include",
+                "optional": true
+              },
+              "page": {
+                "type": "project_page",
+                "optional": true
+              },
+              "sort": {
+                "type": "union",
+                "variants": [
+                  {
+                    "type": "project_sort"
+                  },
+                  {
+                    "type": "array",
+                    "of": "project_sort"
+                  }
+                ],
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "pagination": {
+                      "type": "offset_pagination",
+                      "optional": true
+                    },
+                    "projects": {
+                      "type": "array",
+                      "of": "project",
+                      "optional": true
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "show": {
+          "method": "get",
+          "path": "/:id",
+          "summary": "Get project details",
+          "description": "Returns a single project by ID with all attributes",
+          "tags": [
+            "Projects"
+          ],
+          "operation_id": "getProject",
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "project": {
+                      "type": "project"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "create": {
+          "method": "post",
+          "path": "/",
+          "summary": "Create a new project",
+          "description": "Creates a project and returns the created resource",
+          "tags": [
+            "Projects"
+          ],
+          "operation_id": "createProject",
+          "request": {
+            "body": {
+              "project": {
+                "type": "project_create_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "project": {
+                      "type": "project"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "raises": [
+            "unprocessable_entity"
+          ]
+        },
+        "update": {
+          "method": "patch",
+          "path": "/:id",
+          "summary": "Update a project",
+          "description": "Updates an existing project with the provided attributes",
+          "tags": [
+            "Projects"
+          ],
+          "operation_id": "updateProject",
+          "request": {
+            "body": {
+              "project": {
+                "type": "project_update_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "project": {
+                      "type": "project"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "raises": [
+            "unprocessable_entity"
+          ]
+        },
+        "destroy": {
+          "method": "delete",
+          "path": "/:id",
+          "summary": "Delete a project",
+          "description": "Permanently removes a project from the system",
+          "tags": [
+            "Projects"
+          ],
+          "operation_id": "deleteProject",
+          "response": {
+            "no_content": true
+          }
+        }
+      }
+    }
+  }
+}

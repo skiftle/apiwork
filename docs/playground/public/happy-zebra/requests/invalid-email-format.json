@@ -1,0 +1,31 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/happy_zebra/users",
+    "body": {
+      "user": {
+        "email": "not-an-email",
+        "username": "johndoe"
+      }
+    }
+  },
+  "response": {
+    "status": 422,
+    "body": {
+      "issues": [
+        {
+          "code": "invalid",
+          "detail": "is invalid",
+          "path": [
+            "user",
+            "email"
+          ],
+          "pointer": "/user/email",
+          "meta": {
+            "attribute": "email"
+          }
+        }
+      ]
+    }
+  }
+}

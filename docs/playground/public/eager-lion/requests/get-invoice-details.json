@@ -1,0 +1,23 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/eager_lion/invoices/d5cfac63-8db1-4aed-9bfe-fd2816361041"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "invoice": {
+        "id": "d5cfac63-8db1-4aed-9bfe-fd2816361041",
+        "createdAt": "2025-12-10T10:35:26.293Z",
+        "updatedAt": "2025-12-10T10:35:26.293Z",
+        "number": "INV-001",
+        "issuedOn": null,
+        "notes": null,
+        "status": null,
+        "customerId": "a11bce3c-4541-4c89-8cd4-019771c5d760",
+        "lines": null,
+        "customer": null
+      }
+    }
+  }
+}

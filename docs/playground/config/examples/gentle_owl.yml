@@ -1,0 +1,128 @@
+title: Polymorphic Associations
+description: Comments that belong to different content types (posts, videos, images)
+order: 6
+
+sections:
+  - title: API Definition
+    files:
+      - config/apis/gentle_owl.rb
+  - title: Models
+    files:
+      - app/models/gentle_owl/post.rb
+      - app/models/gentle_owl/video.rb
+      - app/models/gentle_owl/image.rb
+      - app/models/gentle_owl/comment.rb
+  - title: Schemas
+    files:
+      - app/schemas/gentle_owl/post_schema.rb
+      - app/schemas/gentle_owl/video_schema.rb
+      - app/schemas/gentle_owl/image_schema.rb
+      - app/schemas/gentle_owl/comment_schema.rb
+  - title: Contracts
+    files:
+      - app/contracts/gentle_owl/comment_contract.rb
+  - title: Controllers
+    files:
+      - app/controllers/gentle_owl/comments_controller.rb
+
+scenarios:
+  - title: List all comments
+    description: Returns comments for all content types
+    order: 1
+    method: GET
+    path: /gentle_owl/comments
+    setup:
+      - create: post
+        fields:
+          title: My First Post
+      - create: video
+        fields:
+          title: Tutorial Video
+          url: https://example.com/video.mp4
+      - create: comment
+        fields:
+          body: Great post!
+          author_name: John Doe
+          commentable_type: GentleOwl::Post
+          commentable_id: :post_id
+      - create: comment
+        fields:
+          body: Helpful video!
+          author_name: Jane Doe
+          commentable_type: GentleOwl::Video
+          commentable_id: :video_id
+
+  - title: Get comment details
+    description: Fetch a single comment
+    order: 2
+    method: GET
+    path: /gentle_owl/comments/:id
+    setup:
+      - create: post
+        fields:
+          title: My First Post
+      - create: comment
+        fields:
+          body: Great post!
+          author_name: John Doe
+          commentable_type: GentleOwl::Post
+          commentable_id: :post_id
+
+  - title: Create comment on post
+    description: Add comment to a blog post
+    order: 3
+    method: POST
+    path: /gentle_owl/comments
+    setup:
+      - create: post
+        fields:
+          title: My First Post
+    body:
+      comment:
+        body: This is a great article!
+        author_name: Jane Doe
+        commentable_type: GentleOwl::Post
+        commentable_id: :post_id
+
+  - title: Create comment on video
+    description: Add comment to a video
+    order: 4
+    method: POST
+    path: /gentle_owl/comments
+    setup:
+      - create: video
+        fields:
+          title: Tutorial Video
+          url: https://example.com/video.mp4
+    body:
+      comment:
+        body: Very helpful video!
+        author_name: Bob Smith
+        commentable_type: GentleOwl::Video
+        commentable_id: :video_id
+
+  - title: Filter by content type
+    description: Filter comments by commentable type
+    order: 5
+    method: GET
+    path: /gentle_owl/comments?filter[commentable_type][eq]=GentleOwl::Post
+    setup:
+      - create: post
+        fields:
+          title: A Post
+      - create: video
+        fields:
+          title: A Video
+          url: https://example.com/v.mp4
+      - create: comment
+        fields:
+          body: Post comment
+          author_name: User 1
+          commentable_type: GentleOwl::Post
+          commentable_id: :post_id
+      - create: comment
+        fields:
+          body: Video comment
+          author_name: User 2
+          commentable_type: GentleOwl::Video
+          commentable_id: :video_id

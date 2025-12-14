@@ -1,0 +1,44 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/clever_rabbit/orders",
+    "body": {
+      "order": {
+        "order_number": "ORD-001",
+        "line_items": [
+          {
+            "product_name": "Widget",
+            "quantity": 2,
+            "unit_price": 29.99
+          },
+          {
+            "product_name": "Gadget",
+            "quantity": 1,
+            "unit_price": 49.99
+          }
+        ],
+        "shipping_address": {
+          "street": "123 Main St",
+          "city": "Springfield",
+          "postal_code": "12345",
+          "country": "USA"
+        }
+      }
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "order": {
+        "id": "5d86a89b-f091-4f47-ab7e-4a77d9efca95",
+        "orderNumber": "ORD-001",
+        "status": "pending",
+        "total": null,
+        "createdAt": "2025-12-10T10:35:26.186Z",
+        "updatedAt": "2025-12-10T10:35:26.186Z",
+        "lineItems": null,
+        "shippingAddress": null
+      }
+    }
+  }
+}

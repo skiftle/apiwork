@@ -1,0 +1,1159 @@
+{
+  "path": "/happy_zebra",
+  "types": {
+    "comment": {
+      "type": "object",
+      "shape": {
+        "author": {
+          "type": "string",
+          "optional": true
+        },
+        "body": {
+          "type": "string",
+          "optional": true
+        },
+        "id": {
+          "type": "string",
+          "optional": true
+        }
+      }
+    },
+    "comment_create_payload": {
+      "type": "object",
+      "shape": {
+        "author": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        }
+      }
+    },
+    "comment_include": {
+      "type": "object"
+    },
+    "comment_nested_create_payload": {
+      "type": "object",
+      "shape": {
+        "_type": {
+          "type": "literal",
+          "value": "create"
+        },
+        "author": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        }
+      }
+    },
+    "comment_nested_payload": {
+      "type": "union",
+      "required": false,
+      "nullable": false,
+      "variants": [
+        {
+          "type": "comment_nested_create_payload",
+          "of": null,
+          "tag": "create",
+          "partial": false
+        },
+        {
+          "type": "comment_nested_update_payload",
+          "of": null,
+          "tag": "update",
+          "partial": false
+        }
+      ],
+      "discriminator": "_type"
+    },
+    "comment_nested_update_payload": {
+      "type": "object",
+      "shape": {
+        "_type": {
+          "type": "literal",
+          "value": "update"
+        },
+        "author": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        }
+      }
+    },
+    "comment_page": {
+      "type": "object",
+      "shape": {
+        "number": {
+          "type": "integer",
+          "optional": true,
+          "min": 1
+        },
+        "size": {
+          "type": "integer",
+          "optional": true,
+          "min": 1,
+          "max": 100
+        }
+      }
+    },
+    "comment_update_payload": {
+      "type": "object",
+      "shape": {
+        "author": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        }
+      }
+    },
+    "issue": {
+      "type": "object",
+      "shape": {
+        "code": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "field": {
+          "type": "string"
+        },
+        "path": {
+          "type": "array",
+          "of": "string"
+        }
+      }
+    },
+    "offset_pagination": {
+      "type": "object",
+      "shape": {
+        "current": {
+          "type": "integer"
+        },
+        "items": {
+          "type": "integer"
+        },
+        "next": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "prev": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "total": {
+          "type": "integer"
+        }
+      }
+    },
+    "post": {
+      "type": "object",
+      "shape": {
+        "comments": {
+          "type": "array",
+          "of": "comment"
+        },
+        "id": {
+          "type": "string",
+          "optional": true
+        },
+        "title": {
+          "type": "string",
+          "optional": true
+        }
+      }
+    },
+    "post_create_payload": {
+      "type": "object",
+      "shape": {
+        "comments": {
+          "type": "array",
+          "as": "comments_attributes",
+          "of": "comment_nested_payload",
+          "optional": true
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "post_include": {
+      "type": "object",
+      "shape": {
+        "comments": {
+          "type": "comment_include",
+          "optional": true
+        }
+      }
+    },
+    "post_nested_create_payload": {
+      "type": "object",
+      "shape": {
+        "_type": {
+          "type": "literal",
+          "value": "create"
+        },
+        "comments": {
+          "type": "array",
+          "as": "comments_attributes",
+          "of": "comment_nested_payload",
+          "optional": true
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "post_nested_payload": {
+      "type": "union",
+      "required": false,
+      "nullable": false,
+      "variants": [
+        {
+          "type": "post_nested_create_payload",
+          "of": null,
+          "tag": "create",
+          "partial": false
+        },
+        {
+          "type": "post_nested_update_payload",
+          "of": null,
+          "tag": "update",
+          "partial": false
+        }
+      ],
+      "discriminator": "_type"
+    },
+    "post_nested_update_payload": {
+      "type": "object",
+      "shape": {
+        "_type": {
+          "type": "literal",
+          "value": "update"
+        },
+        "comments": {
+          "type": "array",
+          "as": "comments_attributes",
+          "of": "comment_nested_payload",
+          "optional": true
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "post_page": {
+      "type": "object",
+      "shape": {
+        "number": {
+          "type": "integer",
+          "optional": true,
+          "min": 1
+        },
+        "size": {
+          "type": "integer",
+          "optional": true,
+          "min": 1,
+          "max": 100
+        }
+      }
+    },
+    "post_update_payload": {
+      "type": "object",
+      "shape": {
+        "comments": {
+          "type": "array",
+          "as": "comments_attributes",
+          "of": "comment_nested_payload",
+          "optional": true
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "string_filter": {
+      "type": "object",
+      "shape": {
+        "contains": {
+          "type": "string",
+          "optional": true
+        },
+        "ends_with": {
+          "type": "string",
+          "optional": true
+        },
+        "eq": {
+          "type": "string",
+          "optional": true
+        },
+        "in": {
+          "type": "array",
+          "of": "string",
+          "optional": true
+        },
+        "starts_with": {
+          "type": "string",
+          "optional": true
+        }
+      }
+    },
+    "user": {
+      "type": "object",
+      "shape": {
+        "created_at": {
+          "type": "datetime",
+          "optional": true
+        },
+        "email": {
+          "type": "string",
+          "optional": true
+        },
+        "id": {
+          "type": "string",
+          "optional": true
+        },
+        "posts": {
+          "type": "array",
+          "of": "post"
+        },
+        "profile": {
+          "type": "object"
+        },
+        "updated_at": {
+          "type": "datetime",
+          "optional": true
+        },
+        "username": {
+          "type": "string",
+          "optional": true
+        }
+      }
+    },
+    "user_create_payload": {
+      "type": "object",
+      "shape": {
+        "email": {
+          "type": "string"
+        },
+        "posts": {
+          "type": "array",
+          "as": "posts_attributes",
+          "of": "post_nested_payload",
+          "optional": true
+        },
+        "profile": {
+          "type": "object",
+          "as": "profile_attributes",
+          "optional": true
+        },
+        "username": {
+          "type": "string"
+        }
+      }
+    },
+    "user_filter": {
+      "type": "object",
+      "shape": {
+        "_and": {
+          "type": "array",
+          "of": "user_filter",
+          "optional": true
+        },
+        "_not": {
+          "type": "user_filter",
+          "optional": true
+        },
+        "_or": {
+          "type": "array",
+          "of": "user_filter",
+          "optional": true
+        },
+        "email": {
+          "type": "union",
+          "variants": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "string_filter"
+            }
+          ],
+          "optional": true
+        },
+        "username": {
+          "type": "union",
+          "variants": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "string_filter"
+            }
+          ],
+          "optional": true
+        }
+      }
+    },
+    "user_include": {
+      "type": "object",
+      "shape": {
+        "posts": {
+          "type": "post_include",
+          "optional": true
+        },
+        "profile": {
+          "type": "user_profile_include",
+          "optional": true
+        }
+      }
+    },
+    "user_page": {
+      "type": "object",
+      "shape": {
+        "number": {
+          "type": "integer",
+          "optional": true,
+          "min": 1
+        },
+        "size": {
+          "type": "integer",
+          "optional": true,
+          "min": 1,
+          "max": 100
+        }
+      }
+    },
+    "user_profile_include": {
+      "type": "object"
+    },
+    "user_sort": {
+      "type": "object",
+      "shape": {
+        "created_at": {
+          "type": "sort_direction",
+          "optional": true
+        },
+        "updated_at": {
+          "type": "sort_direction",
+          "optional": true
+        }
+      }
+    },
+    "user_update_payload": {
+      "type": "object",
+      "shape": {
+        "email": {
+          "type": "string"
+        },
+        "posts": {
+          "type": "array",
+          "as": "posts_attributes",
+          "of": "post_nested_payload",
+          "optional": true
+        },
+        "profile": {
+          "type": "object",
+          "as": "profile_attributes",
+          "optional": true
+        },
+        "username": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "enums": {
+    "sort_direction": {
+      "values": [
+        "asc",
+        "desc"
+      ]
+    }
+  },
+  "error_codes": {
+    "unprocessable_entity": {
+      "status": 422,
+      "description": "Unprocessable Entity"
+    }
+  },
+  "resources": {
+    "users": {
+      "path": "users",
+      "summary": "Users",
+      "description": "Operations for managing users.",
+      "tags": [
+        "Users"
+      ],
+      "schema": {
+        "type": "object",
+        "shape": {
+          "id": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "datetime"
+          },
+          "updated_at": {
+            "type": "datetime"
+          },
+          "email": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        }
+      },
+      "actions": {
+        "index": {
+          "method": "get",
+          "path": "/",
+          "request": {
+            "query": {
+              "filter": {
+                "type": "union",
+                "variants": [
+                  {
+                    "type": "user_filter"
+                  },
+                  {
+                    "type": "array",
+                    "of": "user_filter"
+                  }
+                ],
+                "optional": true
+              },
+              "include": {
+                "type": "user_include",
+                "optional": true
+              },
+              "page": {
+                "type": "user_page",
+                "optional": true
+              },
+              "sort": {
+                "type": "union",
+                "variants": [
+                  {
+                    "type": "user_sort"
+                  },
+                  {
+                    "type": "array",
+                    "of": "user_sort"
+                  }
+                ],
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "pagination": {
+                      "type": "offset_pagination",
+                      "optional": true
+                    },
+                    "users": {
+                      "type": "array",
+                      "of": "user",
+                      "optional": true
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "show": {
+          "method": "get",
+          "path": "/:id",
+          "request": {
+            "query": {
+              "include": {
+                "type": "user_include",
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "user": {
+                      "type": "user"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "create": {
+          "method": "post",
+          "path": "/",
+          "request": {
+            "query": {
+              "include": {
+                "type": "user_include",
+                "optional": true
+              }
+            },
+            "body": {
+              "user": {
+                "type": "user_create_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "user": {
+                      "type": "user"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "raises": [
+            "unprocessable_entity"
+          ]
+        },
+        "update": {
+          "method": "patch",
+          "path": "/:id",
+          "request": {
+            "query": {
+              "include": {
+                "type": "user_include",
+                "optional": true
+              }
+            },
+            "body": {
+              "user": {
+                "type": "user_update_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "user": {
+                      "type": "user"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "raises": [
+            "unprocessable_entity"
+          ]
+        },
+        "destroy": {
+          "method": "delete",
+          "path": "/:id",
+          "response": {
+            "no_content": true
+          }
+        }
+      }
+    },
+    "posts": {
+      "path": "posts",
+      "summary": "Posts",
+      "description": "Operations for managing posts.",
+      "tags": [
+        "Posts"
+      ],
+      "schema": {
+        "type": "object",
+        "shape": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        }
+      },
+      "actions": {
+        "index": {
+          "method": "get",
+          "path": "/",
+          "request": {
+            "query": {
+              "include": {
+                "type": "post_include",
+                "optional": true
+              },
+              "page": {
+                "type": "post_page",
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "pagination": {
+                      "type": "offset_pagination",
+                      "optional": true
+                    },
+                    "posts": {
+                      "type": "array",
+                      "of": "post",
+                      "optional": true
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "show": {
+          "method": "get",
+          "path": "/:id",
+          "request": {
+            "query": {
+              "include": {
+                "type": "post_include",
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "post": {
+                      "type": "post"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "create": {
+          "method": "post",
+          "path": "/",
+          "request": {
+            "query": {
+              "include": {
+                "type": "post_include",
+                "optional": true
+              }
+            },
+            "body": {
+              "post": {
+                "type": "post_create_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "post": {
+                      "type": "post"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "raises": [
+            "unprocessable_entity"
+          ]
+        },
+        "update": {
+          "method": "patch",
+          "path": "/:id",
+          "request": {
+            "query": {
+              "include": {
+                "type": "post_include",
+                "optional": true
+              }
+            },
+            "body": {
+              "post": {
+                "type": "post_update_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "post": {
+                      "type": "post"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "raises": [
+            "unprocessable_entity"
+          ]
+        },
+        "destroy": {
+          "method": "delete",
+          "path": "/:id",
+          "response": {
+            "no_content": true
+          }
+        }
+      }
+    },
+    "comments": {
+      "path": "comments",
+      "summary": "Comments",
+      "description": "Operations for managing comments.",
+      "tags": [
+        "Comments"
+      ],
+      "schema": {
+        "type": "object",
+        "shape": {
+          "id": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          },
+          "author": {
+            "type": "string"
+          }
+        }
+      },
+      "actions": {
+        "index": {
+          "method": "get",
+          "path": "/",
+          "request": {
+            "query": {
+              "include": {
+                "type": "comment_include",
+                "optional": true
+              },
+              "page": {
+                "type": "comment_page",
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "comments": {
+                      "type": "array",
+                      "of": "comment",
+                      "optional": true
+                    },
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "pagination": {
+                      "type": "offset_pagination",
+                      "optional": true
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "show": {
+          "method": "get",
+          "path": "/:id",
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "comment": {
+                      "type": "comment"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "create": {
+          "method": "post",
+          "path": "/",
+          "request": {
+            "body": {
+              "comment": {
+                "type": "comment_create_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "comment": {
+                      "type": "comment"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "raises": [
+            "unprocessable_entity"
+          ]
+        },
+        "update": {
+          "method": "patch",
+          "path": "/:id",
+          "request": {
+            "body": {
+              "comment": {
+                "type": "comment_update_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "comment": {
+                      "type": "comment"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "raises": [
+            "unprocessable_entity"
+          ]
+        },
+        "destroy": {
+          "method": "delete",
+          "path": "/:id",
+          "response": {
+            "no_content": true
+          }
+        }
+      }
+    }
+  }
+}

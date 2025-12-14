@@ -1,0 +1,21 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/funny_snake/invoices",
+    "body": {
+      "invoice": {
+        "number": "INV-001",
+        "issued_on": "2024-01-15",
+        "status": "draft",
+        "notes": "First invoice"
+      }
+    }
+  },
+  "response": {
+    "status": 500,
+    "body": {
+      "status": 500,
+      "error": "Internal Server Error"
+    }
+  }
+}

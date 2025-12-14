@@ -1,0 +1,43 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/happy_zebra/users",
+    "body": {
+      "user": {
+        "email": "",
+        "username": ""
+      }
+    }
+  },
+  "response": {
+    "status": 400,
+    "body": {
+      "issues": [
+        {
+          "code": "field_missing",
+          "detail": "Field required",
+          "path": [
+            "user",
+            "email"
+          ],
+          "pointer": "/user/email",
+          "meta": {
+            "field": "email"
+          }
+        },
+        {
+          "code": "field_missing",
+          "detail": "Field required",
+          "path": [
+            "user",
+            "username"
+          ],
+          "pointer": "/user/username",
+          "meta": {
+            "field": "username"
+          }
+        }
+      ]
+    }
+  }
+}

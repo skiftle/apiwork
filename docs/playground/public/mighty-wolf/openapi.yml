@@ -1,0 +1,557 @@
+---
+openapi: 3.1.0
+info:
+  title: "/mighty_wolf API"
+  version: 1.0.0
+paths:
+  vehicles/:
+    get:
+      operationId: vehiclesIndex
+      tags:
+      - Vehicles
+      parameters:
+      - in: query
+        name: filter
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/vehicleFilter"
+          - type: array
+            items:
+              "$ref": "#/components/schemas/vehicleFilter"
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/vehicleInclude"
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/vehiclePage"
+      - in: query
+        name: sort
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/vehicleSort"
+          - type: array
+            items:
+              "$ref": "#/components/schemas/vehicleSort"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    type: object
+                    properties: {}
+                  pagination:
+                    "$ref": "#/components/schemas/offsetPagination"
+                  vehicles:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/vehicle"
+    post:
+      operationId: vehiclesCreate
+      tags:
+      - Vehicles
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                vehicle:
+                  "$ref": "#/components/schemas/vehicleCreatePayload"
+              required:
+              - vehicle
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    type: object
+                    properties: {}
+                  vehicle:
+                    "$ref": "#/components/schemas/vehicle"
+                required:
+                - vehicle
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  issues:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/issue"
+  vehicles/:id:
+    get:
+      operationId: vehiclesShow
+      tags:
+      - Vehicles
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    type: object
+                    properties: {}
+                  vehicle:
+                    "$ref": "#/components/schemas/vehicle"
+                required:
+                - vehicle
+    patch:
+      operationId: vehiclesUpdate
+      tags:
+      - Vehicles
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                vehicle:
+                  "$ref": "#/components/schemas/vehicleUpdatePayload"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    type: object
+                    properties: {}
+                  vehicle:
+                    "$ref": "#/components/schemas/vehicle"
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  issues:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/issue"
+    delete:
+      operationId: vehiclesDestroy
+      tags:
+      - Vehicles
+      responses:
+        '204':
+          description: No content
+components:
+  schemas:
+    car:
+      type: object
+      properties:
+        brand:
+          type: string
+        color:
+          type: string
+        doors:
+          type: integer
+        id: {}
+        model:
+          type: string
+        type:
+          type: string
+          const: car
+        year:
+          type: integer
+      required:
+      - type
+    carCreatePayload:
+      type: object
+      properties:
+        brand:
+          type: string
+        color:
+          type:
+          - string
+          - 'null'
+        doors:
+          type:
+          - integer
+          - 'null'
+        model:
+          type: string
+        type:
+          type: string
+          const: car
+        year:
+          type:
+          - integer
+          - 'null'
+      required:
+      - brand
+      - model
+      - type
+    carUpdatePayload:
+      type: object
+      properties:
+        brand:
+          type: string
+        color:
+          type:
+          - string
+          - 'null'
+        doors:
+          type:
+          - integer
+          - 'null'
+        model:
+          type: string
+        type:
+          type: string
+          const: car
+        year:
+          type:
+          - integer
+          - 'null'
+      required:
+      - brand
+      - model
+      - type
+    integerFilter:
+      type: object
+      properties:
+        between:
+          "$ref": "#/components/schemas/integerFilterBetween"
+        eq:
+          type: integer
+        gt:
+          type: integer
+        gte:
+          type: integer
+        in:
+          type: array
+          items:
+            type: integer
+        lt:
+          type: integer
+        lte:
+          type: integer
+    integerFilterBetween:
+      type: object
+      properties:
+        from:
+          type: integer
+        to:
+          type: integer
+    issue:
+      type: object
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+        field:
+          type: string
+        path:
+          type: array
+          items:
+            type: string
+      required:
+      - code
+      - detail
+      - field
+      - path
+    motorcycle:
+      type: object
+      properties:
+        brand:
+          type: string
+        color:
+          type: string
+        engineCc:
+          type: integer
+        id: {}
+        model:
+          type: string
+        type:
+          type: string
+          const: motorcycle
+        year:
+          type: integer
+      required:
+      - type
+    motorcycleCreatePayload:
+      type: object
+      properties:
+        brand:
+          type: string
+        color:
+          type:
+          - string
+          - 'null'
+        engineCc:
+          type:
+          - integer
+          - 'null'
+        model:
+          type: string
+        type:
+          type: string
+          const: motorcycle
+        year:
+          type:
+          - integer
+          - 'null'
+      required:
+      - brand
+      - model
+      - type
+    motorcycleUpdatePayload:
+      type: object
+      properties:
+        brand:
+          type: string
+        color:
+          type:
+          - string
+          - 'null'
+        engineCc:
+          type:
+          - integer
+          - 'null'
+        model:
+          type: string
+        type:
+          type: string
+          const: motorcycle
+        year:
+          type:
+          - integer
+          - 'null'
+      required:
+      - brand
+      - model
+      - type
+    nullableIntegerFilter:
+      type: object
+      properties:
+        between:
+          "$ref": "#/components/schemas/integerFilterBetween"
+        eq:
+          type: integer
+        gt:
+          type: integer
+        gte:
+          type: integer
+        in:
+          type: array
+          items:
+            type: integer
+        lt:
+          type: integer
+        lte:
+          type: integer
+        'null':
+          type: boolean
+    offsetPagination:
+      type: object
+      properties:
+        current:
+          type: integer
+        items:
+          type: integer
+        next:
+          type:
+          - integer
+          - 'null'
+        prev:
+          type:
+          - integer
+          - 'null'
+        total:
+          type: integer
+      required:
+      - current
+      - items
+      - total
+    stringFilter:
+      type: object
+      properties:
+        contains:
+          type: string
+        endsWith:
+          type: string
+        eq:
+          type: string
+        in:
+          type: array
+          items:
+            type: string
+        startsWith:
+          type: string
+    truck:
+      type: object
+      properties:
+        brand:
+          type: string
+        color:
+          type: string
+        id: {}
+        model:
+          type: string
+        payloadCapacity:
+          type: number
+        type:
+          type: string
+          const: truck
+        year:
+          type: integer
+      required:
+      - type
+    truckCreatePayload:
+      type: object
+      properties:
+        brand:
+          type: string
+        color:
+          type:
+          - string
+          - 'null'
+        model:
+          type: string
+        payloadCapacity:
+          type:
+          - number
+          - 'null'
+        type:
+          type: string
+          const: truck
+        year:
+          type:
+          - integer
+          - 'null'
+      required:
+      - brand
+      - model
+      - type
+    truckUpdatePayload:
+      type: object
+      properties:
+        brand:
+          type: string
+        color:
+          type:
+          - string
+          - 'null'
+        model:
+          type: string
+        payloadCapacity:
+          type:
+          - number
+          - 'null'
+        type:
+          type: string
+          const: truck
+        year:
+          type:
+          - integer
+          - 'null'
+      required:
+      - brand
+      - model
+      - type
+    vehicle:
+      oneOf:
+      - "$ref": "#/components/schemas/car"
+      - "$ref": "#/components/schemas/motorcycle"
+      - "$ref": "#/components/schemas/truck"
+      discriminator:
+        propertyName: type
+        mapping:
+          car: "#/components/schemas/car"
+          motorcycle: "#/components/schemas/motorcycle"
+          truck: "#/components/schemas/truck"
+    vehicleCreatePayload:
+      oneOf:
+      - "$ref": "#/components/schemas/carCreatePayload"
+      - "$ref": "#/components/schemas/motorcycleCreatePayload"
+      - "$ref": "#/components/schemas/truckCreatePayload"
+      discriminator:
+        propertyName: type
+        mapping:
+          car: "#/components/schemas/carCreatePayload"
+          motorcycle: "#/components/schemas/motorcycleCreatePayload"
+          truck: "#/components/schemas/truckCreatePayload"
+    vehicleFilter:
+      type: object
+      properties:
+        _and:
+          type: array
+          items:
+            "$ref": "#/components/schemas/vehicleFilter"
+        _not:
+          "$ref": "#/components/schemas/vehicleFilter"
+        _or:
+          type: array
+          items:
+            "$ref": "#/components/schemas/vehicleFilter"
+        brand:
+          oneOf:
+          - type: string
+          - "$ref": "#/components/schemas/stringFilter"
+        model:
+          oneOf:
+          - type: string
+          - "$ref": "#/components/schemas/stringFilter"
+        year:
+          oneOf:
+          - type: integer
+          - "$ref": "#/components/schemas/nullableIntegerFilter"
+    vehicleInclude:
+      type: object
+      properties: {}
+    vehiclePage:
+      type: object
+      properties:
+        number:
+          type: integer
+          minimum: 1
+        size:
+          type: integer
+          minimum: 1
+          maximum: 100
+    vehicleSort:
+      type: object
+      properties:
+        year:
+          type: string
+          enum:
+          - asc
+          - desc
+    vehicleUpdatePayload:
+      oneOf:
+      - "$ref": "#/components/schemas/carUpdatePayload"
+      - "$ref": "#/components/schemas/motorcycleUpdatePayload"
+      - "$ref": "#/components/schemas/truckUpdatePayload"
+      discriminator:
+        propertyName: type
+        mapping:
+          car: "#/components/schemas/carUpdatePayload"
+          motorcycle: "#/components/schemas/motorcycleUpdatePayload"
+          truck: "#/components/schemas/truckUpdatePayload"

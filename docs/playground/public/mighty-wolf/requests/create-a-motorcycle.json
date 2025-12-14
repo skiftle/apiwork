@@ -1,0 +1,29 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/mighty_wolf/vehicles",
+    "body": {
+      "vehicle": {
+        "type": "motorcycle",
+        "brand": "Harley-Davidson",
+        "model": "Street Glide",
+        "year": 2023,
+        "color": "black"
+      }
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "vehicle": {
+        "type": "motorcycle",
+        "id": "4eb469ad-d418-4d41-93da-3862c4b42fe2",
+        "brand": "Harley-Davidson",
+        "model": "Street Glide",
+        "year": 2023,
+        "color": "black",
+        "engineCc": null
+      }
+    }
+  }
+}

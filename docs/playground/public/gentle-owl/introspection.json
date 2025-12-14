@@ -1,0 +1,814 @@
+{
+  "path": "/gentle_owl",
+  "types": {
+    "comment": {
+      "type": "object",
+      "shape": {
+        "author_name": {
+          "type": "string",
+          "optional": true
+        },
+        "body": {
+          "type": "string",
+          "optional": true
+        },
+        "commentable": {
+          "type": "comment_commentable",
+          "optional": true
+        },
+        "created_at": {
+          "type": "datetime",
+          "optional": true
+        },
+        "id": {
+          "type": "unknown",
+          "optional": true
+        }
+      }
+    },
+    "comment_commentable": {
+      "type": "union",
+      "required": false,
+      "nullable": false,
+      "variants": [
+        {
+          "type": "post",
+          "of": null,
+          "tag": "post",
+          "partial": false
+        },
+        {
+          "type": "video",
+          "of": null,
+          "tag": "video",
+          "partial": false
+        },
+        {
+          "type": "image",
+          "of": null,
+          "tag": "image",
+          "partial": false
+        }
+      ],
+      "discriminator": "commentable_type"
+    },
+    "comment_create_payload": {
+      "type": "object",
+      "shape": {
+        "author_name": {
+          "type": "string",
+          "nullable": true,
+          "optional": true
+        },
+        "body": {
+          "type": "string"
+        }
+      }
+    },
+    "comment_include": {
+      "type": "object",
+      "shape": {
+        "commentable": {
+          "type": "boolean",
+          "optional": true
+        }
+      }
+    },
+    "comment_page": {
+      "type": "object",
+      "shape": {
+        "number": {
+          "type": "integer",
+          "optional": true,
+          "min": 1
+        },
+        "size": {
+          "type": "integer",
+          "optional": true,
+          "min": 1,
+          "max": 100
+        }
+      }
+    },
+    "comment_sort": {
+      "type": "object",
+      "shape": {
+        "created_at": {
+          "type": "sort_direction",
+          "optional": true
+        }
+      }
+    },
+    "comment_update_payload": {
+      "type": "object",
+      "shape": {
+        "author_name": {
+          "type": "string",
+          "nullable": true,
+          "optional": true
+        },
+        "body": {
+          "type": "string"
+        }
+      }
+    },
+    "image": {
+      "type": "object",
+      "shape": {
+        "comments": {
+          "type": "array",
+          "of": "object",
+          "optional": true
+        },
+        "created_at": {
+          "type": "datetime",
+          "optional": true
+        },
+        "height": {
+          "type": "integer",
+          "optional": true
+        },
+        "id": {
+          "type": "unknown",
+          "optional": true
+        },
+        "title": {
+          "type": "string",
+          "optional": true
+        },
+        "url": {
+          "type": "string",
+          "optional": true
+        },
+        "width": {
+          "type": "integer",
+          "optional": true
+        }
+      }
+    },
+    "image_filter": {
+      "type": "object",
+      "shape": {
+        "_and": {
+          "type": "array",
+          "of": "image_filter",
+          "optional": true
+        },
+        "_not": {
+          "type": "image_filter",
+          "optional": true
+        },
+        "_or": {
+          "type": "array",
+          "of": "image_filter",
+          "optional": true
+        },
+        "title": {
+          "type": "union",
+          "variants": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "string_filter"
+            }
+          ],
+          "optional": true
+        }
+      }
+    },
+    "image_include": {
+      "type": "object"
+    },
+    "image_nested_create_payload": {
+      "type": "object",
+      "shape": {
+        "_type": {
+          "type": "literal",
+          "value": "create"
+        },
+        "height": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "width": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        }
+      }
+    },
+    "image_nested_payload": {
+      "type": "union",
+      "required": false,
+      "nullable": false,
+      "variants": [
+        {
+          "type": "image_nested_create_payload",
+          "of": null,
+          "tag": "create",
+          "partial": false
+        },
+        {
+          "type": "image_nested_update_payload",
+          "of": null,
+          "tag": "update",
+          "partial": false
+        }
+      ],
+      "discriminator": "_type"
+    },
+    "image_nested_update_payload": {
+      "type": "object",
+      "shape": {
+        "_type": {
+          "type": "literal",
+          "value": "update"
+        },
+        "height": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "width": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        }
+      }
+    },
+    "image_sort": {
+      "type": "object",
+      "shape": {
+        "created_at": {
+          "type": "sort_direction",
+          "optional": true
+        }
+      }
+    },
+    "issue": {
+      "type": "object",
+      "shape": {
+        "code": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "field": {
+          "type": "string"
+        },
+        "path": {
+          "type": "array",
+          "of": "string"
+        }
+      }
+    },
+    "offset_pagination": {
+      "type": "object",
+      "shape": {
+        "current": {
+          "type": "integer"
+        },
+        "items": {
+          "type": "integer"
+        },
+        "next": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "prev": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "total": {
+          "type": "integer"
+        }
+      }
+    },
+    "post": {
+      "type": "object",
+      "shape": {
+        "body": {
+          "type": "string",
+          "optional": true
+        },
+        "comments": {
+          "type": "array",
+          "of": "object",
+          "optional": true
+        },
+        "created_at": {
+          "type": "datetime",
+          "optional": true
+        },
+        "id": {
+          "type": "unknown",
+          "optional": true
+        },
+        "title": {
+          "type": "string",
+          "optional": true
+        }
+      }
+    },
+    "post_filter": {
+      "type": "object",
+      "shape": {
+        "_and": {
+          "type": "array",
+          "of": "post_filter",
+          "optional": true
+        },
+        "_not": {
+          "type": "post_filter",
+          "optional": true
+        },
+        "_or": {
+          "type": "array",
+          "of": "post_filter",
+          "optional": true
+        },
+        "title": {
+          "type": "union",
+          "variants": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "string_filter"
+            }
+          ],
+          "optional": true
+        }
+      }
+    },
+    "post_include": {
+      "type": "object"
+    },
+    "post_nested_create_payload": {
+      "type": "object",
+      "shape": {
+        "_type": {
+          "type": "literal",
+          "value": "create"
+        },
+        "body": {
+          "type": "string",
+          "nullable": true,
+          "optional": true
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "post_nested_payload": {
+      "type": "union",
+      "required": false,
+      "nullable": false,
+      "variants": [
+        {
+          "type": "post_nested_create_payload",
+          "of": null,
+          "tag": "create",
+          "partial": false
+        },
+        {
+          "type": "post_nested_update_payload",
+          "of": null,
+          "tag": "update",
+          "partial": false
+        }
+      ],
+      "discriminator": "_type"
+    },
+    "post_nested_update_payload": {
+      "type": "object",
+      "shape": {
+        "_type": {
+          "type": "literal",
+          "value": "update"
+        },
+        "body": {
+          "type": "string",
+          "nullable": true,
+          "optional": true
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "post_sort": {
+      "type": "object",
+      "shape": {
+        "created_at": {
+          "type": "sort_direction",
+          "optional": true
+        }
+      }
+    },
+    "video": {
+      "type": "object",
+      "shape": {
+        "comments": {
+          "type": "array",
+          "of": "object",
+          "optional": true
+        },
+        "created_at": {
+          "type": "datetime",
+          "optional": true
+        },
+        "duration": {
+          "type": "integer",
+          "optional": true
+        },
+        "id": {
+          "type": "unknown",
+          "optional": true
+        },
+        "title": {
+          "type": "string",
+          "optional": true
+        },
+        "url": {
+          "type": "string",
+          "optional": true
+        }
+      }
+    },
+    "video_filter": {
+      "type": "object",
+      "shape": {
+        "_and": {
+          "type": "array",
+          "of": "video_filter",
+          "optional": true
+        },
+        "_not": {
+          "type": "video_filter",
+          "optional": true
+        },
+        "_or": {
+          "type": "array",
+          "of": "video_filter",
+          "optional": true
+        },
+        "title": {
+          "type": "union",
+          "variants": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "string_filter"
+            }
+          ],
+          "optional": true
+        }
+      }
+    },
+    "video_include": {
+      "type": "object"
+    },
+    "video_nested_create_payload": {
+      "type": "object",
+      "shape": {
+        "_type": {
+          "type": "literal",
+          "value": "create"
+        },
+        "duration": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "video_nested_payload": {
+      "type": "union",
+      "required": false,
+      "nullable": false,
+      "variants": [
+        {
+          "type": "video_nested_create_payload",
+          "of": null,
+          "tag": "create",
+          "partial": false
+        },
+        {
+          "type": "video_nested_update_payload",
+          "of": null,
+          "tag": "update",
+          "partial": false
+        }
+      ],
+      "discriminator": "_type"
+    },
+    "video_nested_update_payload": {
+      "type": "object",
+      "shape": {
+        "_type": {
+          "type": "literal",
+          "value": "update"
+        },
+        "duration": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "video_sort": {
+      "type": "object",
+      "shape": {
+        "created_at": {
+          "type": "sort_direction",
+          "optional": true
+        }
+      }
+    }
+  },
+  "enums": {
+    "sort_direction": {
+      "values": [
+        "asc",
+        "desc"
+      ]
+    }
+  },
+  "error_codes": {
+    "unprocessable_entity": {
+      "status": 422,
+      "description": "Unprocessable Entity"
+    }
+  },
+  "resources": {
+    "comments": {
+      "path": "comments",
+      "summary": "Comments",
+      "description": "Operations for managing comments.",
+      "tags": [
+        "Comments"
+      ],
+      "schema": {
+        "type": "object",
+        "shape": {
+          "id": {},
+          "body": {
+            "type": "text"
+          },
+          "author_name": {
+            "type": "string",
+            "nullable": true,
+            "optional": true
+          },
+          "created_at": {
+            "type": "datetime"
+          }
+        }
+      },
+      "actions": {
+        "index": {
+          "method": "get",
+          "path": "/",
+          "request": {
+            "query": {
+              "include": {
+                "type": "comment_include",
+                "optional": true
+              },
+              "page": {
+                "type": "comment_page",
+                "optional": true
+              },
+              "sort": {
+                "type": "union",
+                "variants": [
+                  {
+                    "type": "comment_sort"
+                  },
+                  {
+                    "type": "array",
+                    "of": "comment_sort"
+                  }
+                ],
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "comments": {
+                      "type": "array",
+                      "of": "comment",
+                      "optional": true
+                    },
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "pagination": {
+                      "type": "offset_pagination",
+                      "optional": true
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "show": {
+          "method": "get",
+          "path": "/:id",
+          "request": {
+            "query": {
+              "include": {
+                "type": "comment_include",
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "comment": {
+                      "type": "comment"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "create": {
+          "method": "post",
+          "path": "/",
+          "request": {
+            "query": {
+              "include": {
+                "type": "comment_include",
+                "optional": true
+              }
+            },
+            "body": {
+              "comment": {
+                "type": "comment_create_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "comment": {
+                      "type": "comment"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "raises": [
+            "unprocessable_entity"
+          ]
+        },
+        "update": {
+          "method": "patch",
+          "path": "/:id",
+          "request": {
+            "query": {
+              "include": {
+                "type": "comment_include",
+                "optional": true
+              }
+            },
+            "body": {
+              "comment": {
+                "type": "comment_update_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "comment": {
+                      "type": "comment"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "issues": {
+                      "type": "array",
+                      "of": "issue",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "raises": [
+            "unprocessable_entity"
+          ]
+        },
+        "destroy": {
+          "method": "delete",
+          "path": "/:id",
+          "response": {
+            "no_content": true
+          }
+        }
+      }
+    }
+  }
+}

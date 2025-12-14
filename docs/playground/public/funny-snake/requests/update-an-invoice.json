@@ -1,0 +1,21 @@
+{
+  "request": {
+    "method": "PATCH",
+    "path": "/funny_snake/invoices/f0373ec9-fd3c-41fe-971e-ea2ad76dc4ba",
+    "body": {
+      "invoice": {
+        "number": "INV-001",
+        "issued_on": "2024-01-15",
+        "status": "sent",
+        "notes": "Updated invoice"
+      }
+    }
+  },
+  "response": {
+    "status": 500,
+    "body": {
+      "status": 500,
+      "error": "Internal Server Error"
+    }
+  }
+}

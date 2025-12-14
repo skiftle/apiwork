@@ -1,0 +1,77 @@
+{
+  "path": "/lazy_cow",
+  "types": {
+    "issue": {
+      "type": "object",
+      "shape": {
+        "code": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "field": {
+          "type": "string"
+        },
+        "path": {
+          "type": "array",
+          "of": "string"
+        }
+      }
+    }
+  },
+  "enums": {},
+  "error_codes": {},
+  "resources": {
+    "status": {
+      "path": "status",
+      "summary": "Status",
+      "description": "Operations for managing status.",
+      "tags": [
+        "Status"
+      ],
+      "actions": {
+        "health": {
+          "method": "get",
+          "path": "/health",
+          "response": {
+            "body": {
+              "type": "object",
+              "shape": {
+                "status": {
+                  "type": "string"
+                },
+                "timestamp": {
+                  "type": "datetime"
+                },
+                "version": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "stats": {
+          "method": "get",
+          "path": "/stats",
+          "response": {
+            "body": {
+              "type": "object",
+              "shape": {
+                "posts_count": {
+                  "type": "integer"
+                },
+                "uptime_seconds": {
+                  "type": "integer"
+                },
+                "users_count": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

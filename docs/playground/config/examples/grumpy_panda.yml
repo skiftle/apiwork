@@ -1,0 +1,48 @@
+title: Cursor Pagination
+description: Navigate through large datasets using cursor-based pagination
+order: 10
+
+sections:
+  - title: API Definition
+    files:
+      - config/apis/grumpy_panda.rb
+  - title: Models
+    files:
+      - app/models/grumpy_panda/activity.rb
+  - title: Schemas
+    files:
+      - app/schemas/grumpy_panda/activity_schema.rb
+  - title: Contracts
+    files:
+      - app/contracts/grumpy_panda/activity_contract.rb
+  - title: Controllers
+    files:
+      - app/controllers/grumpy_panda/activities_controller.rb
+
+scenarios:
+  - title: First page
+    description: Returns first page with next_cursor
+    order: 1
+    method: GET
+    path: /grumpy_panda/activities
+    setup:
+      - create: activity
+        fields:
+          action: user.login
+          occurred_at: "2024-01-01T10:00:00Z"
+      - create: activity
+        fields:
+          action: user.logout
+          occurred_at: "2024-01-01T11:00:00Z"
+      - create: activity
+        fields:
+          action: post.create
+          occurred_at: "2024-01-01T12:00:00Z"
+      - create: activity
+        fields:
+          action: post.update
+          occurred_at: "2024-01-01T13:00:00Z"
+      - create: activity
+        fields:
+          action: post.delete
+          occurred_at: "2024-01-01T14:00:00Z"

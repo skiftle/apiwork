@@ -1,0 +1,31 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/bold_falcon/articles?filter[published_on][gte]=2024-01-01&filter[published_on][lt]=2024-02-01"
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "articles": [
+        {
+          "id": "35f157b0-6d13-45a3-bd79-3e0384ad274f",
+          "title": "January Article",
+          "body": null,
+          "status": "published",
+          "viewCount": 0,
+          "rating": null,
+          "publishedOn": "2024-01-15",
+          "createdAt": "2025-12-10T10:35:25.972Z",
+          "updatedAt": "2025-12-10T10:35:25.972Z"
+        }
+      ],
+      "pagination": {
+        "current": 1,
+        "next": null,
+        "prev": null,
+        "total": 1,
+        "items": 1
+      }
+    }
+  }
+}

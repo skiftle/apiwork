@@ -1,0 +1,30 @@
+{
+  "request": {
+    "method": "PATCH",
+    "path": "/eager_lion/invoices/5feae561-e10b-424d-943e-44dd51a229e0",
+    "body": {
+      "invoice": {
+        "number": "INV-001",
+        "customer_id": "b9062e7c-4d62-486e-a303-93d2518a7860",
+        "notes": "Updated notes"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "invoice": {
+        "id": "5feae561-e10b-424d-943e-44dd51a229e0",
+        "createdAt": "2025-12-10T10:35:26.327Z",
+        "updatedAt": "2025-12-10T10:35:26.335Z",
+        "number": "INV-001",
+        "issuedOn": null,
+        "notes": "Updated notes",
+        "status": null,
+        "customerId": "b9062e7c-4d62-486e-a303-93d2518a7860",
+        "lines": null,
+        "customer": null
+      }
+    }
+  }
+}

@@ -1,0 +1,549 @@
+---
+openapi: 3.1.0
+info:
+  title: "/gentle_owl API"
+  version: 1.0.0
+paths:
+  comments/:
+    get:
+      operationId: commentsIndex
+      tags:
+      - Comments
+      parameters:
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/commentInclude"
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/commentPage"
+      - in: query
+        name: sort
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/commentSort"
+          - type: array
+            items:
+              "$ref": "#/components/schemas/commentSort"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  comments:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/comment"
+                  meta:
+                    type: object
+                    properties: {}
+                  pagination:
+                    "$ref": "#/components/schemas/offsetPagination"
+    post:
+      operationId: commentsCreate
+      tags:
+      - Comments
+      parameters:
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/commentInclude"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comment:
+                  "$ref": "#/components/schemas/commentCreatePayload"
+              required:
+              - comment
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  comment:
+                    "$ref": "#/components/schemas/comment"
+                  meta:
+                    type: object
+                    properties: {}
+                required:
+                - comment
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  issues:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/issue"
+  comments/:id:
+    get:
+      operationId: commentsShow
+      tags:
+      - Comments
+      parameters:
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/commentInclude"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  comment:
+                    "$ref": "#/components/schemas/comment"
+                  meta:
+                    type: object
+                    properties: {}
+                required:
+                - comment
+    patch:
+      operationId: commentsUpdate
+      tags:
+      - Comments
+      parameters:
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/commentInclude"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comment:
+                  "$ref": "#/components/schemas/commentUpdatePayload"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  comment:
+                    "$ref": "#/components/schemas/comment"
+                  meta:
+                    type: object
+                    properties: {}
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  issues:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/issue"
+    delete:
+      operationId: commentsDestroy
+      tags:
+      - Comments
+      responses:
+        '204':
+          description: No content
+components:
+  schemas:
+    comment:
+      type: object
+      properties:
+        authorName:
+          type: string
+        body:
+          type: string
+        commentable:
+          "$ref": "#/components/schemas/commentCommentable"
+        createdAt:
+          type: string
+        id: {}
+    commentCommentable:
+      oneOf:
+      - "$ref": "#/components/schemas/post"
+      - "$ref": "#/components/schemas/video"
+      - "$ref": "#/components/schemas/image"
+      discriminator:
+        propertyName: commentable_type
+        mapping:
+          post: "#/components/schemas/post"
+          video: "#/components/schemas/video"
+          image: "#/components/schemas/image"
+    commentCreatePayload:
+      type: object
+      properties:
+        authorName:
+          type:
+          - string
+          - 'null'
+        body:
+          type: string
+      required:
+      - body
+    commentInclude:
+      type: object
+      properties:
+        commentable:
+          type: boolean
+    commentPage:
+      type: object
+      properties:
+        number:
+          type: integer
+          minimum: 1
+        size:
+          type: integer
+          minimum: 1
+          maximum: 100
+    commentSort:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          enum:
+          - asc
+          - desc
+    commentUpdatePayload:
+      type: object
+      properties:
+        authorName:
+          type:
+          - string
+          - 'null'
+        body:
+          type: string
+      required:
+      - body
+    image:
+      type: object
+      properties:
+        comments:
+          type: array
+          items:
+            type:
+        createdAt:
+          type: string
+        height:
+          type: integer
+        id: {}
+        title:
+          type: string
+        url:
+          type: string
+        width:
+          type: integer
+    imageFilter:
+      type: object
+      properties:
+        _and:
+          type: array
+          items:
+            "$ref": "#/components/schemas/imageFilter"
+        _not:
+          "$ref": "#/components/schemas/imageFilter"
+        _or:
+          type: array
+          items:
+            "$ref": "#/components/schemas/imageFilter"
+        title:
+          oneOf:
+          - type: string
+          - {}
+    imageInclude:
+      type: object
+      properties: {}
+    imageNestedCreatePayload:
+      type: object
+      properties:
+        _type:
+          type: string
+          const: create
+        height:
+          type:
+          - integer
+          - 'null'
+        title:
+          type: string
+        url:
+          type: string
+        width:
+          type:
+          - integer
+          - 'null'
+      required:
+      - _type
+      - title
+      - url
+    imageNestedPayload:
+      oneOf:
+      - "$ref": "#/components/schemas/imageNestedCreatePayload"
+      - "$ref": "#/components/schemas/imageNestedUpdatePayload"
+      discriminator:
+        propertyName: _type
+        mapping:
+          create: "#/components/schemas/imageNestedCreatePayload"
+          update: "#/components/schemas/imageNestedUpdatePayload"
+    imageNestedUpdatePayload:
+      type: object
+      properties:
+        _type:
+          type: string
+          const: update
+        height:
+          type:
+          - integer
+          - 'null'
+        title:
+          type: string
+        url:
+          type: string
+        width:
+          type:
+          - integer
+          - 'null'
+      required:
+      - _type
+      - title
+      - url
+    imageSort:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          enum:
+          - asc
+          - desc
+    issue:
+      type: object
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+        field:
+          type: string
+        path:
+          type: array
+          items:
+            type: string
+      required:
+      - code
+      - detail
+      - field
+      - path
+    offsetPagination:
+      type: object
+      properties:
+        current:
+          type: integer
+        items:
+          type: integer
+        next:
+          type:
+          - integer
+          - 'null'
+        prev:
+          type:
+          - integer
+          - 'null'
+        total:
+          type: integer
+      required:
+      - current
+      - items
+      - total
+    post:
+      type: object
+      properties:
+        body:
+          type: string
+        comments:
+          type: array
+          items:
+            type:
+        createdAt:
+          type: string
+        id: {}
+        title:
+          type: string
+    postFilter:
+      type: object
+      properties:
+        _and:
+          type: array
+          items:
+            "$ref": "#/components/schemas/postFilter"
+        _not:
+          "$ref": "#/components/schemas/postFilter"
+        _or:
+          type: array
+          items:
+            "$ref": "#/components/schemas/postFilter"
+        title:
+          oneOf:
+          - type: string
+          - {}
+    postInclude:
+      type: object
+      properties: {}
+    postNestedCreatePayload:
+      type: object
+      properties:
+        _type:
+          type: string
+          const: create
+        body:
+          type:
+          - string
+          - 'null'
+        title:
+          type: string
+      required:
+      - _type
+      - title
+    postNestedPayload:
+      oneOf:
+      - "$ref": "#/components/schemas/postNestedCreatePayload"
+      - "$ref": "#/components/schemas/postNestedUpdatePayload"
+      discriminator:
+        propertyName: _type
+        mapping:
+          create: "#/components/schemas/postNestedCreatePayload"
+          update: "#/components/schemas/postNestedUpdatePayload"
+    postNestedUpdatePayload:
+      type: object
+      properties:
+        _type:
+          type: string
+          const: update
+        body:
+          type:
+          - string
+          - 'null'
+        title:
+          type: string
+      required:
+      - _type
+      - title
+    postSort:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          enum:
+          - asc
+          - desc
+    video:
+      type: object
+      properties:
+        comments:
+          type: array
+          items:
+            type:
+        createdAt:
+          type: string
+        duration:
+          type: integer
+        id: {}
+        title:
+          type: string
+        url:
+          type: string
+    videoFilter:
+      type: object
+      properties:
+        _and:
+          type: array
+          items:
+            "$ref": "#/components/schemas/videoFilter"
+        _not:
+          "$ref": "#/components/schemas/videoFilter"
+        _or:
+          type: array
+          items:
+            "$ref": "#/components/schemas/videoFilter"
+        title:
+          oneOf:
+          - type: string
+          - {}
+    videoInclude:
+      type: object
+      properties: {}
+    videoNestedCreatePayload:
+      type: object
+      properties:
+        _type:
+          type: string
+          const: create
+        duration:
+          type:
+          - integer
+          - 'null'
+        title:
+          type: string
+        url:
+          type: string
+      required:
+      - _type
+      - title
+      - url
+    videoNestedPayload:
+      oneOf:
+      - "$ref": "#/components/schemas/videoNestedCreatePayload"
+      - "$ref": "#/components/schemas/videoNestedUpdatePayload"
+      discriminator:
+        propertyName: _type
+        mapping:
+          create: "#/components/schemas/videoNestedCreatePayload"
+          update: "#/components/schemas/videoNestedUpdatePayload"
+    videoNestedUpdatePayload:
+      type: object
+      properties:
+        _type:
+          type: string
+          const: update
+        duration:
+          type:
+          - integer
+          - 'null'
+        title:
+          type: string
+        url:
+          type: string
+      required:
+      - _type
+      - title
+      - url
+    videoSort:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          enum:
+          - asc
+          - desc

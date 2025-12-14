@@ -1,0 +1,106 @@
+title: Schema-Driven Contract
+description: Using `schema!` to generate a complete contract from schema definitions
+order: 2
+
+sections:
+  - title: API Definition
+    files:
+      - config/apis/eager_lion.rb
+  - title: Models
+    files:
+      - app/models/eager_lion/customer.rb
+      - app/models/eager_lion/invoice.rb
+      - app/models/eager_lion/line.rb
+  - title: Schemas
+    files:
+      - app/schemas/eager_lion/customer_schema.rb
+      - app/schemas/eager_lion/invoice_schema.rb
+      - app/schemas/eager_lion/line_schema.rb
+  - title: Contracts
+    files:
+      - app/contracts/eager_lion/invoice_contract.rb
+  - title: Controllers
+    files:
+      - app/controllers/eager_lion/invoices_controller.rb
+
+scenarios:
+  - title: List all invoices
+    description: Returns invoices with customer data
+    order: 1
+    method: GET
+    path: /eager_lion/invoices
+    setup:
+      - create: customer
+        fields:
+          name: Acme Corp
+      - create: invoice
+        fields:
+          number: INV-001
+          customer_id: :customer_id
+      - create: invoice
+        fields:
+          number: INV-002
+          customer_id: :customer_id
+
+  - title: Get invoice details
+    description: Fetch invoice with associations
+    order: 2
+    method: GET
+    path: /eager_lion/invoices/:id
+    setup:
+      - create: customer
+        fields:
+          name: Acme Corp
+      - create: invoice
+        fields:
+          number: INV-001
+          customer_id: :customer_id
+
+  - title: Create a new invoice
+    description: Create invoice linked to customer
+    order: 3
+    method: POST
+    path: /eager_lion/invoices
+    setup:
+      - create: customer
+        fields:
+          name: Acme Corp
+    body:
+      invoice:
+        number: INV-001
+        customer_id: :customer_id
+        issued_on: "2024-01-15"
+        notes: First invoice
+
+  - title: Update an invoice
+    description: Modify invoice notes
+    order: 4
+    method: PATCH
+    path: /eager_lion/invoices/:id
+    setup:
+      - create: customer
+        fields:
+          name: Acme Corp
+      - create: invoice
+        fields:
+          number: INV-001
+          customer_id: :customer_id
+    body:
+      invoice:
+        number: INV-001
+        customer_id: :customer_id
+        notes: Updated notes
+
+  - title: Delete an invoice
+    description: Remove invoice from system
+    order: 5
+    method: DELETE
+    path: /eager_lion/invoices/:id
+    setup:
+      - create: customer
+        fields:
+          name: Acme Corp
+      - create: invoice
+        fields:
+          number: INV-001
+          customer_id: :customer_id

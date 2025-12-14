@@ -1,0 +1,31 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/eager_lion/invoices",
+    "body": {
+      "invoice": {
+        "number": "INV-001",
+        "customer_id": "7376025e-bfd4-4693-b6c0-bd0fb439a81b",
+        "issued_on": "2024-01-15",
+        "notes": "First invoice"
+      }
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "invoice": {
+        "id": "4e16ccec-7ba9-4fee-94e6-55d6a2651920",
+        "createdAt": "2025-12-10T10:35:26.319Z",
+        "updatedAt": "2025-12-10T10:35:26.319Z",
+        "number": "INV-001",
+        "issuedOn": "2024-01-15",
+        "notes": "First invoice",
+        "status": null,
+        "customerId": "7376025e-bfd4-4693-b6c0-bd0fb439a81b",
+        "lines": null,
+        "customer": null
+      }
+    }
+  }
+}
