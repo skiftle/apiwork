@@ -351,46 +351,46 @@ Before writing documentation:
 
 ### Example Linking System
 
-Documentation examples are linked to real implementations in `docs/app/` using HTML comments and VitePress inline embeds.
+Documentation examples are linked to real implementations in `docs/playground/` using HTML comments and VitePress inline embeds.
 
 **Format:**
 ```markdown
 <!-- example: eager-lion -->
 
-<<< @/app/app/contracts/eager_lion/invoice_contract.rb
+<<< @/playground/app/contracts/eager_lion/invoice_contract.rb
 
 <details>
 <summary>Introspection</summary>
 
-<<< @/examples/eager-lion/introspection.json
+<<< @/playground/public/eager-lion/introspection.json
 
 </details>
 
 <details>
 <summary>TypeScript</summary>
 
-<<< @/examples/eager-lion/typescript.ts
+<<< @/playground/public/eager-lion/typescript.ts
 
 </details>
 
 <details>
 <summary>Zod</summary>
 
-<<< @/examples/eager-lion/zod.ts
+<<< @/playground/public/eager-lion/zod.ts
 
 </details>
 
 <details>
 <summary>OpenAPI</summary>
 
-<<< @/examples/eager-lion/openapi.yml
+<<< @/playground/public/eager-lion/openapi.yml
 
 </details>
 ```
 
 **Single Source of Truth:**
-- Source code is embedded from `docs/app/` using `<<< @/app/...`
-- Generated output is embedded from `docs/examples/` using `<<< @/examples/...`
+- Source code is embedded from `docs/playground/` using `<<< @/playground/...`
+- Generated output is embedded from `docs/examples/` using `<<< @/playground/public/...`
 - **Never duplicate code** in markdown - always embed from source files
 - VitePress automatically applies syntax highlighting based on file extension
 
@@ -424,47 +424,53 @@ Documentation examples are linked to real implementations in `docs/app/` using H
 | Ruby namespace | PascalCase | `EagerLion::Invoice` |
 | App folder | snake_case | `app/models/eager_lion/` |
 | API mount path | dash-case | `/eager-lion` |
-| Examples folder | dash-case | `docs/examples/eager-lion/` |
+| Generated output | dash-case | `docs/playground/public/eager-lion/` |
 | Table name | snake_case prefix | `eager_lion_invoices` |
 
 ### Directory Structure
 
 ```
 docs/
-├── app/                              # Rails app for generating examples
+├── .vitepress/                       # VitePress config (hidden)
+├── playground/                       # Rails app for examples
 │   ├── app/
 │   │   ├── models/eager_lion/
 │   │   ├── schemas/eager_lion/
 │   │   └── contracts/eager_lion/
 │   ├── config/apis/eager_lion.rb
-│   └── db/migrate/
-└── examples/
-    └── eager-lion/                   # Generated output (dasherized)
-        ├── introspection.json
-        ├── typescript.ts
-        ├── zod.ts
-        └── openapi.yml
+│   ├── db/migrate/
+│   └── public/
+│       └── eager-lion/               # Generated output (dasherized)
+│           ├── introspection.json
+│           ├── typescript.ts
+│           ├── zod.ts
+│           └── openapi.yml
+├── guide/
+├── reference/
+├── blog/
+├── index.md
+└── package.json
 ```
 
 ### Generating Examples
 
-Run `rake docs:generate` from `docs/app/` to regenerate all example files:
+Run `rake docs:generate` from `docs/playground/` to regenerate all example files:
 
 ```bash
-cd docs/app && RAILS_ENV=test rake docs:generate
+cd docs/playground && RAILS_ENV=test rake docs:generate
 ```
 
-This regenerates all files in `docs/examples/` from the playground APIs. Run this after every change that affects output formats.
+This regenerates all files in `docs/playground/public/` and `docs/guide/examples/`. Run this after every change that affects output formats.
 
 ### Synchronization Rules
 
 **ALWAYS keep these in sync. This is non-negotiable.**
 
 **When writing or changing documentation:**
-1. Create/update corresponding code in `docs/app/`
+1. Create/update corresponding code in `docs/playground/`
 2. Run `rake docs:generate` to produce REAL output
 3. Verify files in `docs/examples/<namespace>/`
-4. Add individual `<details>` blocks for each format using `<<< @/examples/<name>/file`
+4. Add individual `<details>` blocks for each format using `<<< @/playground/public/<name>/file`
 5. NEVER invent, abbreviate, or guess output
 
 **When changing code that affects output formats:**
@@ -473,7 +479,7 @@ This regenerates all files in `docs/examples/` from the playground APIs. Run thi
 3. Include updated `docs/examples/` files in the SAME commit
 
 **The fundamental rule:**
-Code → docs/app → `rake docs:generate` → docs/examples/ → VitePress inline embeds.
+Code → docs/playground → `rake docs:generate` → docs/examples/ → VitePress inline embeds.
 They are ONE system. Change one, change all. Same commit. No exceptions.
 
 Style:
@@ -494,28 +500,28 @@ Type system examples must show all four formats in this order, each in its own `
 <details>
 <summary>Introspection</summary>
 
-<<< @/examples/example-name/introspection.json
+<<< @/playground/public/example-name/introspection.json
 
 </details>
 
 <details>
 <summary>TypeScript</summary>
 
-<<< @/examples/example-name/typescript.ts
+<<< @/playground/public/example-name/typescript.ts
 
 </details>
 
 <details>
 <summary>Zod</summary>
 
-<<< @/examples/example-name/zod.ts
+<<< @/playground/public/example-name/zod.ts
 
 </details>
 
 <details>
 <summary>OpenAPI</summary>
 
-<<< @/examples/example-name/openapi.yml
+<<< @/playground/public/example-name/openapi.yml
 
 </details>
 ```
