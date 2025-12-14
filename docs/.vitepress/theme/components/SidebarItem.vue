@@ -54,6 +54,12 @@ function toggle() {
   emit("toggle", itemKey.value);
 }
 
+function expand() {
+  if (!isExpanded.value) {
+    emit("toggle", itemKey.value);
+  }
+}
+
 function onToggle(key: string) {
   emit("toggle", key);
 }
@@ -75,7 +81,7 @@ function onToggle(key: string) {
           :href="item.link ? fullLink : firstChildLink"
           class="sidebar-link"
           :class="{ active: isItemActive }"
-          @click.stop
+          @click.stop="expand"
         >
           <!-- Section icons for top-level -->
           <svg v-if="sectionIcon === 'rocket'" class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

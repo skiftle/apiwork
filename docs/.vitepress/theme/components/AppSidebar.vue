@@ -64,19 +64,16 @@ function hasActiveDescendant(item: SidebarItem): boolean {
   return false;
 }
 
-// Initialize expanded state based on active page
-function initializeExpanded() {
-  const newExpanded = new Set<string>();
+// Find keys that should be expanded for current active page
+function findActiveKeys(): string[] {
+  const keys: string[] = [];
 
   function checkItem(item: SidebarItem, depth: number, ancestors: string[]) {
     const key = `${depth}-${item.text}`;
 
     if (item.items?.length) {
-      const isActiveOrHasActive = hasActiveDescendant(item);
-
-      if (isActiveOrHasActive) {
-        newExpanded.add(key);
-        ancestors.forEach((a) => newExpanded.add(a));
+      if (hasActiveDescendant(item)) {
+        keys.push(key, ...ancestors);
       }
 
       for (const child of item.items) {
@@ -86,22 +83,27 @@ function initializeExpanded() {
   }
 
   currentSidebar.value.items.forEach((item) => checkItem(item, 0, []));
-  expanded.value = newExpanded;
+  return keys;
 }
 
 // Toggle a section
 function toggleSection(key: string) {
-  const newExpanded = new Set(expanded.value);
-  if (newExpanded.has(key)) {
-    newExpanded.delete(key);
+  if (expanded.value.has(key)) {
+    expanded.value.delete(key);
   } else {
-    newExpanded.add(key);
+    expanded.value.add(key);
   }
-  expanded.value = newExpanded;
 }
 
-// Watch for route changes to auto-expand
-watch(() => route.path, initializeExpanded, { immediate: true });
+// Watch for route changes - only expand active sections, don't close others
+watch(
+  () => route.path,
+  () => {
+    const activeKeys = findActiveKeys();
+    activeKeys.forEach((key) => expanded.value.add(key));
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
