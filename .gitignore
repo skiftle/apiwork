@@ -35,3 +35,9 @@
 docs/node_modules
 docs/.vitepress/cache
 docs/.vitepress/dist
+
+# Docs playground - logs, tmp, databases
+docs/playground/log/
+docs/playground/tmp/
+docs/playground/db/*.sqlite3
+docs/playground/db/*.sqlite3-*
