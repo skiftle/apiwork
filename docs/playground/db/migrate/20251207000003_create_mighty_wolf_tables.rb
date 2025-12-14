@@ -2,7 +2,7 @@
 
 class CreateMightyWolfTables < ActiveRecord::Migration[7.1]
   def change
-    create_table :mighty_wolf_vehicles, id: :uuid do |t|
+    create_table :mighty_wolf_vehicles, id: :string do |t|
       t.string :type, null: false
       t.string :brand, null: false
       t.string :model, null: false
