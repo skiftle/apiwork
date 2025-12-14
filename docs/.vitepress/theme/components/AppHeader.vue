@@ -55,11 +55,18 @@ const route = useRoute();
           >Guide</a
         >
         <a
+          href="/examples/"
+          class="link"
+          :class="{ active: /^\/examples\//.test(route.path) }"
+          >Examples</a
+        >
+        <a
           href="/reference/"
           class="link"
           :class="{ active: /^\/reference\//.test(route.path) }"
           >Reference</a
         >
+
         <a
           href="/blog/"
           class="link"

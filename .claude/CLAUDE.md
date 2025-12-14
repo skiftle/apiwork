@@ -119,6 +119,7 @@ Allowed: magic comments, RuboCop directives, temporary TODOs.
 - Small, focused objects with one responsibility
 - Explicit over implicit — no magic or monkey patching
 - Guard clauses over deep nesting
+- One guard per line — separate returns are easier to scan
 - Positive conditions — avoid `unless` with compound logic, `!`, `== false`
 - Full names — `attribute` not `attr` (exception: `param`, `attr_reader`)
 - Don't repeat namespace context: `CaseTransformer.hash`, not `transform_keys`
@@ -147,6 +148,42 @@ end
 Exception: External context conditions can stay at call site:
 ```ruby
 send_notification if user.opted_in?
+```
+
+### One Guard Per Line
+
+Separate guard clauses are easier to scan than combined conditions:
+
+```ruby
+# ❌ Bad — combined guards
+def validate!
+  return if abstract? || @model_class.nil? || @schema_class
+  # ...
+end
+
+# ✅ Good — one per line
+def validate!
+  return if abstract?
+  return if @model_class.nil?
+  return if @schema_class
+  # ...
+end
+```
+
+Each condition gets its own line. Faster to read, easier to modify.
+
+**Exception:** When conditions logically belong together, extract to a predicate method:
+
+```ruby
+# ✅ OK — logically connected, extracted to predicate
+return unless range_defined?
+
+def range_defined?
+  @min && @max
+end
+
+# ✅ Also OK — tightly coupled check
+return unless @record.respond_to?(:errors) && @record.errors.any?
 ```
 
 ---

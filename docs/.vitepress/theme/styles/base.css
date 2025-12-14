@@ -134,18 +134,6 @@ li::marker {
   color: var(--color-text-muted);
 }
 
-/* Inline code - More distinct */
-code {
-  font-family: var(--font-mono);
-  font-size: 0.875em;
-  background: var(--color-bg-muted);
-  padding: 0.2em 0.4em;
-  border-radius: 4px;
-  border: 1px solid var(--color-border);
-  color: var(--color-text);
-  font-weight: 500;
-}
-
 /* Code in table cells - smaller */
 td code {
   font-size: 0.8em;
@@ -163,14 +151,6 @@ pre {
   padding: var(--space-4);
   overflow-x: auto;
   margin: var(--space-5) 0;
-}
-
-pre code {
-  background: none;
-  padding: 0;
-  font-size: inherit;
-  border: none;
-  font-weight: normal;
 }
 
 /* Tables - Modern, clean look */
