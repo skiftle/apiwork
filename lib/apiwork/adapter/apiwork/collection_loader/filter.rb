@@ -467,7 +467,7 @@ module Apiwork
                   column.between(number..number)
                 end
               when :in
-                numbers = Array(compare).map { |v| parse_numeric(v, key) }.compact
+                numbers = Array(compare).filter_map { |v| parse_numeric(v, key) }
                 next if numbers.empty?
 
                 column.in(numbers)

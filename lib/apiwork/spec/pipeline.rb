@@ -57,7 +57,7 @@ module Apiwork
           end
 
           unless api_class
-            available = API::Registry.all.map { |k| k.metadata&.path }.compact
+            available = API::Registry.all.filter_map { |k| k.metadata&.path }
             raise ArgumentError,
                   "API not found: #{api_path}. Available APIs: #{available.join(', ')}"
           end

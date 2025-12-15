@@ -661,7 +661,7 @@ module Apiwork
         end
 
         unless matching_variant
-          valid_tags = variants.map { |v| v[:tag] }.compact
+          valid_tags = variants.filter_map { |v| v[:tag] }
           error = Issue.new(
             code: :invalid_value,
             detail: "Invalid discriminator value. Must be one of: #{valid_tags.join(', ')}",
