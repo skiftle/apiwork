@@ -7,7 +7,6 @@
   --color-text-muted: #6b7280;
   --color-text-light: #9ca3af;
   --color-border: rgba(0, 0, 0, 0.04);
-  --color-border-light: #e5e7eb;
 
   /* Brand colors - Red (P3 wide gamut) */
   --color-brand: color(display-p3 0.77 0.05 0.05);
@@ -15,8 +14,6 @@
   --color-brand-dark: color(display-p3 0.75 0.04 0.04);
 
   /* Brand with opacity (för glows, shadows, etc) */
-  --color-brand-5: color-mix(in srgb, var(--color-brand), transparent 95%);
-  --color-brand-6: color-mix(in srgb, var(--color-brand), transparent 94%);
   --color-brand-8: color-mix(in srgb, var(--color-brand), transparent 92%);
   --color-brand-10: color-mix(in srgb, var(--color-brand), transparent 90%);
   --color-brand-15: color-mix(in srgb, var(--color-brand), transparent 85%);
@@ -26,11 +23,6 @@
   --color-brand-60: color-mix(in srgb, var(--color-brand), transparent 40%);
   --color-brand-70: color-mix(in srgb, var(--color-brand), transparent 30%);
   --color-brand-80: color-mix(in srgb, var(--color-brand), transparent 20%);
-
-  /* Accent colors for tech logos */
-  --color-openapi: #6b9f3a;
-  --color-typescript: #3178c6;
-  --color-zod: #3b82f6;
 
   /* Dark sections (footer, more-features) */
   --color-bg-dark-section: #141414;
@@ -48,9 +40,6 @@
   --color-text-strong: rgba(17, 24, 39, 0.94);
   --color-text-body: rgba(17, 24, 39, 0.75);
 
-  /* Alt section background */
-  --color-section-alt: rgba(254, 242, 242, 0.4);
-
   /* Dark section text (white with opacity) */
   --color-dark-text-muted: rgba(255, 255, 255, 0.4);
   --color-dark-text-secondary: rgba(255, 255, 255, 0.5);
@@ -67,13 +56,6 @@
   /* Logo shadow */
   --color-logo-shadow: rgba(0, 0, 0, 0.2);
 
-  /* Code windows - Light theme header, always-dark code area */
-  --color-code-bg: #1e1e1e;
-  --color-code-header: #f0f0f0;
-  --color-code-header-border: rgba(0, 0, 0, 0.1);
-  --color-code-border: rgba(0, 0, 0, 0.08);
-  --color-code-filename: rgba(0, 0, 0, 0.4);
-
   /* Shiki css-variables theme (P3 wide gamut) */
   --shiki-foreground: #e4e4e7;
   --shiki-background: #2a2a2a;
@@ -85,9 +67,6 @@
   --shiki-token-function: color(display-p3 0.6 0.85 0.95);
   --shiki-token-string-expression: color(display-p3 0.4 0.95 0.6);
   --shiki-token-punctuation: #9ca3af;
-
-  /* Hero gradient */
-  --color-hero-gradient-start: var(--color-brand-15);
 
   /* Mesh gradient colors - light mode (coral blobs on bg) */
   --gradient-color-1: var(--color-bg);
@@ -107,7 +86,6 @@
   --font-size-xl: 1.25rem;
   --font-size-2xl: 1.5rem;
   --font-size-3xl: 1.875rem;
-  --font-size-4xl: 2.25rem;
   --line-height: 1.6;
   --line-height-tight: 1.25;
 
@@ -136,10 +114,6 @@
 
   /* Transitions */
   --transition-fast: 150ms ease;
-  --transition-base: 200ms ease;
-
-  /* Footer */
-  --color-footer-bg: #272727;
 }
 
 /* Dark mode - activated by VitePress via .dark class on html */
@@ -148,7 +122,6 @@
   --color-bg: #202020;
   --color-bg-soft: #282828;
   --color-bg-muted: #303030;
-  --color-bg-elevated: #383838;
 
   /* Text - softer, not pure white */
   --color-text: #d4d4d8;
@@ -157,7 +130,6 @@
 
   /* Borders - adjusted for lighter bg */
   --color-border: #252525;
-  --color-border-light: #2a2a2a;
 
   /* Dark sections - darker neutral for contrast */
   --color-bg-dark-section: #141414;
@@ -168,31 +140,14 @@
   --color-overlay-6: rgba(255, 255, 255, 0.06);
   --color-overlay-8: rgba(255, 255, 255, 0.08);
 
-  /* Alt section background */
-  --color-section-alt: rgba(30, 20, 22, 0.5);
-
   /* Logo shadow */
   --color-logo-shadow: rgba(255, 255, 255, 0.25);
-
-  /* Hero gradient - dark mode */
-  --color-hero-gradient-start: color-mix(
-    in srgb,
-    var(--color-brand),
-    transparent 80%
-  );
 
   /* Mesh gradient colors - dark mode (minimal warmth) */
   --gradient-color-1: var(--color-bg);
   --gradient-color-2: #242221;
   --gradient-color-3: #282524;
   --gradient-color-4: #262423;
-
-  /* Code windows - Dark theme */
-  --color-code-bg: #1a1a1a;
-  --color-code-header: #242424;
-  --color-code-header-border: rgba(255, 255, 255, 0.06);
-  --color-code-border: rgba(255, 255, 255, 0.06);
-  --color-code-filename: rgba(255, 255, 255, 0.35);
 
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
   --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.3);
