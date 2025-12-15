@@ -4,22 +4,26 @@ module Apiwork
   module Configurable
     extend ActiveSupport::Concern
 
+    included do
+      class_attribute :_options, instance_predicate: false, default: {}
+    end
+
     class_methods do
       def options
-        @options ||= {}
+        _options
       end
 
       def inherited(subclass)
         super
-        subclass.instance_variable_set(:@options, options.dup)
+        subclass._options = _options.dup
       end
 
       def option(name, type:, default: nil, enum: nil, &block)
-        options[name] = Configuration::Option.new(name, type, default:, enum:, &block)
+        _options[name] = Configuration::Option.new(name, type, default:, enum:, &block)
       end
 
       def default_options
-        options.transform_values(&:default).compact
+        _options.transform_values(&:default).compact
       end
     end
   end

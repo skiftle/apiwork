@@ -22,7 +22,7 @@ module Apiwork
       # @example With configuration
       #   Apiwork::API.draw '/api/v1' do
       #     key_format :camel
-      #     pagination :offset, default_limit: 25
+      #
       #     resources :invoices
       #   end
       def draw(path, &block)
