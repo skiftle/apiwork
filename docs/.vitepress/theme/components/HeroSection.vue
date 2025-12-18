@@ -8,7 +8,7 @@
         Define your API <em>once</em> — and stop fixing drift everywhere else
       </p>
       <div class="actions">
-        <a href="/guide/examples" class="btn outline">See Examples</a>
+        <a href="/examples/" class="btn outline">See Examples</a>
         <a href="/guide/getting-started/introduction" class="btn primary">
           Get Started
           <svg class="icon" viewBox="0 0 20 20" fill="currentColor">
