@@ -2,6 +2,7 @@
 
 class RequestRunner
   include ActionDispatch::Integration::Runner
+  include ActiveSupport::Testing::TimeHelpers
 
   def initialize(namespace, scenarios)
     @namespace = namespace
@@ -27,17 +28,19 @@ class RequestRunner
   attr_reader :namespace
 
   def run_scenario(scenario)
-    ids = run_setup(scenario[:setup])
-    path = build_path(scenario[:path], ids)
-    body = resolve_body_references(scenario[:body], ids)
-    method = scenario[:method].downcase.to_sym
+    travel_to(Time.utc(2024, 1, 1, 12, 0, 0)) do
+      ids = run_setup(scenario[:setup])
+      path = build_path(scenario[:path], ids)
+      body = resolve_body_references(scenario[:body], ids)
+      method = scenario[:method].downcase.to_sym
 
-    execute_request(method, path, body)
+      execute_request(method, path, body)
 
-    {
-      request: build_request_data(scenario[:method], path, body),
-      response: build_response_data
-    }
+      {
+        request: build_request_data(scenario[:method], path, body),
+        response: build_response_data
+      }
+    end
   end
 
   def run_setup(setup)
