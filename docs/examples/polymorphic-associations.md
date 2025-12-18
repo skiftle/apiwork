@@ -141,13 +141,13 @@ GET /gentle_owl/comments
       "id": "d1ff1866-6fad-545c-839e-2d972eb5729c",
       "body": "Great post!",
       "authorName": "John Doe",
-      "createdAt": "2025-12-18T14:09:26.853Z"
+      "createdAt": "2024-01-01T12:00:00.000Z"
     },
     {
       "id": "6027b33b-0a17-5c68-bcc1-527ae6105f2c",
       "body": "Helpful video!",
       "authorName": "Jane Doe",
-      "createdAt": "2025-12-18T14:09:26.855Z"
+      "createdAt": "2024-01-01T12:00:00.000Z"
     }
   ],
   "pagination": {
@@ -179,7 +179,7 @@ GET /gentle_owl/comments/b90c16e5-a438-5967-a734-10adf687faa5
     "id": "b90c16e5-a438-5967-a734-10adf687faa5",
     "body": "Great post!",
     "authorName": "John Doe",
-    "createdAt": "2025-12-18T14:09:26.866Z"
+    "createdAt": "2024-01-01T12:00:00.000Z"
   }
 }
 ```

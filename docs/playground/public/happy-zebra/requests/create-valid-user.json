@@ -18,14 +18,14 @@
     "body": {
       "user": {
         "id": "571466c2-02cb-52cb-a9d1-7bd5f8e21034",
-        "createdAt": "2025-12-18T14:09:27.014Z",
-        "updatedAt": "2025-12-18T14:09:27.014Z",
+        "createdAt": "2024-01-01T12:00:00.000Z",
+        "updatedAt": "2024-01-01T12:00:00.000Z",
         "email": "john@example.com",
         "username": "johndoe",
         "profile": {
           "id": "c8f3124b-cf0c-55c4-b8e7-106c58c6a686",
-          "createdAt": "2025-12-18T14:09:27.015Z",
-          "updatedAt": "2025-12-18T14:09:27.015Z",
+          "createdAt": "2024-01-01T12:00:00.000Z",
+          "updatedAt": "2024-01-01T12:00:00.000Z",
           "bio": "Software developer",
           "website": "https://example.com"
         },

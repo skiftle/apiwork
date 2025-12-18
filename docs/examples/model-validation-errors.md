@@ -163,14 +163,14 @@ Content-Type: application/json
 {
   "user": {
     "id": "571466c2-02cb-52cb-a9d1-7bd5f8e21034",
-    "createdAt": "2025-12-18T14:09:27.014Z",
-    "updatedAt": "2025-12-18T14:09:27.014Z",
+    "createdAt": "2024-01-01T12:00:00.000Z",
+    "updatedAt": "2024-01-01T12:00:00.000Z",
     "email": "john@example.com",
     "username": "johndoe",
     "profile": {
       "id": "c8f3124b-cf0c-55c4-b8e7-106c58c6a686",
-      "createdAt": "2025-12-18T14:09:27.015Z",
-      "updatedAt": "2025-12-18T14:09:27.015Z",
+      "createdAt": "2024-01-01T12:00:00.000Z",
+      "updatedAt": "2024-01-01T12:00:00.000Z",
       "bio": "Software developer",
       "website": "https://example.com"
     },
@@ -370,8 +370,8 @@ Content-Type: application/json
 {
   "user": {
     "id": "4448fe72-0e01-5b7d-962d-1a20ce251a01",
-    "createdAt": "2025-12-18T14:09:27.049Z",
-    "updatedAt": "2025-12-18T14:09:27.049Z",
+    "createdAt": "2024-01-01T12:00:00.000Z",
+    "updatedAt": "2024-01-01T12:00:00.000Z",
     "email": "deep@example.com",
     "username": "deepuser",
     "profile": null,

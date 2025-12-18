@@ -125,8 +125,8 @@ GET /brave_eagle/tasks
       "priority": "high",
       "dueDate": null,
       "archived": false,
-      "createdAt": "2025-12-18T14:09:26.469Z",
-      "updatedAt": "2025-12-18T14:09:26.469Z"
+      "createdAt": "2024-01-01T12:00:00.000Z",
+      "updatedAt": "2024-01-01T12:00:00.000Z"
     },
     {
       "id": "87bd2ab1-033b-5369-b8e7-687307ff4f1b",
@@ -136,8 +136,8 @@ GET /brave_eagle/tasks
       "priority": "medium",
       "dueDate": null,
       "archived": false,
-      "createdAt": "2025-12-18T14:09:26.470Z",
-      "updatedAt": "2025-12-18T14:09:26.470Z"
+      "createdAt": "2024-01-01T12:00:00.000Z",
+      "updatedAt": "2024-01-01T12:00:00.000Z"
     }
   ],
   "pagination": {
@@ -244,8 +244,8 @@ PATCH /brave_eagle/tasks/124b619e-579b-5c5b-bb61-d502076d1d45/archive
     "priority": "medium",
     "dueDate": null,
     "archived": true,
-    "createdAt": "2025-12-18T14:09:26.507Z",
-    "updatedAt": "2025-12-18T14:09:26.512Z"
+    "createdAt": "2024-01-01T12:00:00.000Z",
+    "updatedAt": "2024-01-01T12:00:00.000Z"
   }
 }
 ```

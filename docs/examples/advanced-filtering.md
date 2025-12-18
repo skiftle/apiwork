@@ -103,8 +103,8 @@ GET /bold_falcon/articles
       "viewCount": 0,
       "rating": null,
       "publishedOn": null,
-      "createdAt": "2025-12-18T14:09:26.171Z",
-      "updatedAt": "2025-12-18T14:09:26.171Z"
+      "createdAt": "2024-01-01T12:00:00.000Z",
+      "updatedAt": "2024-01-01T12:00:00.000Z"
     },
     {
       "id": "66187cb1-6c7d-57b9-95bb-6de6ad564dad",
@@ -114,8 +114,8 @@ GET /bold_falcon/articles
       "viewCount": 0,
       "rating": null,
       "publishedOn": null,
-      "createdAt": "2025-12-18T14:09:26.176Z",
-      "updatedAt": "2025-12-18T14:09:26.176Z"
+      "createdAt": "2024-01-01T12:00:00.000Z",
+      "updatedAt": "2024-01-01T12:00:00.000Z"
     }
   ],
   "pagination": {
@@ -151,8 +151,8 @@ GET /bold_falcon/articles/e8c30b71-ec2b-5287-ba57-5143a67ded78
     "viewCount": 0,
     "rating": null,
     "publishedOn": null,
-    "createdAt": "2025-12-18T14:09:26.307Z",
-    "updatedAt": "2025-12-18T14:09:26.307Z"
+    "createdAt": "2024-01-01T12:00:00.000Z",
+    "updatedAt": "2024-01-01T12:00:00.000Z"
   }
 }
 ```
@@ -190,8 +190,8 @@ Content-Type: application/json
     "viewCount": 0,
     "rating": null,
     "publishedOn": "2024-01-15",
-    "createdAt": "2025-12-18T14:09:26.321Z",
-    "updatedAt": "2025-12-18T14:09:26.321Z"
+    "createdAt": "2024-01-01T12:00:00.000Z",
+    "updatedAt": "2024-01-01T12:00:00.000Z"
   }
 }
 ```
@@ -220,8 +220,8 @@ GET /bold_falcon/articles?filter[status][eq]=published
       "viewCount": 0,
       "rating": null,
       "publishedOn": null,
-      "createdAt": "2025-12-18T14:09:26.324Z",
-      "updatedAt": "2025-12-18T14:09:26.324Z"
+      "createdAt": "2024-01-01T12:00:00.000Z",
+      "updatedAt": "2024-01-01T12:00:00.000Z"
     }
   ],
   "pagination": {
@@ -258,8 +258,8 @@ GET /bold_falcon/articles?filter[title][contains]=Rails
       "viewCount": 0,
       "rating": null,
       "publishedOn": null,
-      "createdAt": "2025-12-18T14:09:26.338Z",
-      "updatedAt": "2025-12-18T14:09:26.338Z"
+      "createdAt": "2024-01-01T12:00:00.000Z",
+      "updatedAt": "2024-01-01T12:00:00.000Z"
     }
   ],
   "pagination": {
@@ -296,8 +296,8 @@ GET /bold_falcon/articles?sort[published_on]=desc
       "viewCount": 0,
       "rating": null,
       "publishedOn": "2024-06-01",
-      "createdAt": "2025-12-18T14:09:26.350Z",
-      "updatedAt": "2025-12-18T14:09:26.350Z"
+      "createdAt": "2024-01-01T12:00:00.000Z",
+      "updatedAt": "2024-01-01T12:00:00.000Z"
     },
     {
       "id": "4927d610-8859-576f-a595-fa2b9ec5a4e0",
@@ -307,8 +307,8 @@ GET /bold_falcon/articles?sort[published_on]=desc
       "viewCount": 0,
       "rating": null,
       "publishedOn": "2024-01-01",
-      "createdAt": "2025-12-18T14:09:26.349Z",
-      "updatedAt": "2025-12-18T14:09:26.349Z"
+      "createdAt": "2024-01-01T12:00:00.000Z",
+      "updatedAt": "2024-01-01T12:00:00.000Z"
     }
   ],
   "pagination": {
@@ -345,8 +345,8 @@ GET /bold_falcon/articles?sort[status]=asc&sort[published_on]=desc
       "viewCount": 0,
       "rating": null,
       "publishedOn": "2024-03-01",
-      "createdAt": "2025-12-18T14:09:26.359Z",
-      "updatedAt": "2025-12-18T14:09:26.359Z"
+      "createdAt": "2024-01-01T12:00:00.000Z",
+      "updatedAt": "2024-01-01T12:00:00.000Z"
     },
     {
       "id": "3e4f8c34-7b92-5de6-a69c-4c7a2436bfd7",
@@ -356,8 +356,8 @@ GET /bold_falcon/articles?sort[status]=asc&sort[published_on]=desc
       "viewCount": 0,
       "rating": null,
       "publishedOn": "2024-01-01",
-      "createdAt": "2025-12-18T14:09:26.357Z",
-      "updatedAt": "2025-12-18T14:09:26.357Z"
+      "createdAt": "2024-01-01T12:00:00.000Z",
+      "updatedAt": "2024-01-01T12:00:00.000Z"
     },
     {
       "id": "7a18e4a4-1c8e-5d55-8453-5a34f0f49f83",
@@ -367,8 +367,8 @@ GET /bold_falcon/articles?sort[status]=asc&sort[published_on]=desc
       "viewCount": 0,
       "rating": null,
       "publishedOn": "2024-02-01",
-      "createdAt": "2025-12-18T14:09:26.358Z",
-      "updatedAt": "2025-12-18T14:09:26.358Z"
+      "createdAt": "2024-01-01T12:00:00.000Z",
+      "updatedAt": "2024-01-01T12:00:00.000Z"
     }
   ],
   "pagination": {
@@ -405,8 +405,8 @@ GET /bold_falcon/articles?filter[published_on][gte]=2024-01-01&filter[published_
       "viewCount": 0,
       "rating": null,
       "publishedOn": "2024-01-15",
-      "createdAt": "2025-12-18T14:09:26.368Z",
-      "updatedAt": "2025-12-18T14:09:26.368Z"
+      "createdAt": "2024-01-01T12:00:00.000Z",
+      "updatedAt": "2024-01-01T12:00:00.000Z"
     }
   ],
   "pagination": {
@@ -443,8 +443,8 @@ GET /bold_falcon/articles?filter[view_count][gt]=100
       "viewCount": 500,
       "rating": null,
       "publishedOn": null,
-      "createdAt": "2025-12-18T14:09:26.390Z",
-      "updatedAt": "2025-12-18T14:09:26.390Z"
+      "createdAt": "2024-01-01T12:00:00.000Z",
+      "updatedAt": "2024-01-01T12:00:00.000Z"
     }
   ],
   "pagination": {
@@ -481,8 +481,8 @@ GET /bold_falcon/articles?filter[status][eq]=published&sort[view_count]=desc
       "viewCount": 1000,
       "rating": null,
       "publishedOn": null,
-      "createdAt": "2025-12-18T14:09:26.407Z",
-      "updatedAt": "2025-12-18T14:09:26.407Z"
+      "createdAt": "2024-01-01T12:00:00.000Z",
+      "updatedAt": "2024-01-01T12:00:00.000Z"
     },
     {
       "id": "d33b1b6c-7d36-58ff-8512-bdbeb74ad459",
@@ -492,8 +492,8 @@ GET /bold_falcon/articles?filter[status][eq]=published&sort[view_count]=desc
       "viewCount": 100,
       "rating": null,
       "publishedOn": null,
-      "createdAt": "2025-12-18T14:09:26.408Z",
-      "updatedAt": "2025-12-18T14:09:26.408Z"
+      "createdAt": "2024-01-01T12:00:00.000Z",
+      "updatedAt": "2024-01-01T12:00:00.000Z"
     }
   ],
   "pagination": {

@@ -29,8 +29,8 @@
     "body": {
       "user": {
         "id": "4448fe72-0e01-5b7d-962d-1a20ce251a01",
-        "createdAt": "2025-12-18T14:09:27.049Z",
-        "updatedAt": "2025-12-18T14:09:27.049Z",
+        "createdAt": "2024-01-01T12:00:00.000Z",
+        "updatedAt": "2024-01-01T12:00:00.000Z",
         "email": "deep@example.com",
         "username": "deepuser",
         "profile": null,

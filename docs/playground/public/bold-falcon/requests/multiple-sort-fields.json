@@ -15,8 +15,8 @@
           "viewCount": 0,
           "rating": null,
           "publishedOn": "2024-03-01",
-          "createdAt": "2025-12-18T14:09:26.359Z",
-          "updatedAt": "2025-12-18T14:09:26.359Z"
+          "createdAt": "2024-01-01T12:00:00.000Z",
+          "updatedAt": "2024-01-01T12:00:00.000Z"
         },
         {
           "id": "3e4f8c34-7b92-5de6-a69c-4c7a2436bfd7",
@@ -26,8 +26,8 @@
           "viewCount": 0,
           "rating": null,
           "publishedOn": "2024-01-01",
-          "createdAt": "2025-12-18T14:09:26.357Z",
-          "updatedAt": "2025-12-18T14:09:26.357Z"
+          "createdAt": "2024-01-01T12:00:00.000Z",
+          "updatedAt": "2024-01-01T12:00:00.000Z"
         },
         {
           "id": "7a18e4a4-1c8e-5d55-8453-5a34f0f49f83",
@@ -37,8 +37,8 @@
           "viewCount": 0,
           "rating": null,
           "publishedOn": "2024-02-01",
-          "createdAt": "2025-12-18T14:09:26.358Z",
-          "updatedAt": "2025-12-18T14:09:26.358Z"
+          "createdAt": "2024-01-01T12:00:00.000Z",
+          "updatedAt": "2024-01-01T12:00:00.000Z"
         }
       ],
       "pagination": {

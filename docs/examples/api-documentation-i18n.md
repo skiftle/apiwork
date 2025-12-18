@@ -85,8 +85,8 @@ GET /wise_tiger/projects
       "status": "active",
       "priority": "high",
       "deadline": null,
-      "createdAt": "2025-12-18T14:09:27.248Z",
-      "updatedAt": "2025-12-18T14:09:27.248Z"
+      "createdAt": "2024-01-01T12:00:00.000Z",
+      "updatedAt": "2024-01-01T12:00:00.000Z"
     },
     {
       "id": "37e7aaed-3cb7-5641-b7be-3e698b300b7c",
@@ -95,8 +95,8 @@ GET /wise_tiger/projects
       "status": "paused",
       "priority": "medium",
       "deadline": null,
-      "createdAt": "2025-12-18T14:09:27.250Z",
-      "updatedAt": "2025-12-18T14:09:27.250Z"
+      "createdAt": "2024-01-01T12:00:00.000Z",
+      "updatedAt": "2024-01-01T12:00:00.000Z"
     }
   ],
   "pagination": {
@@ -131,8 +131,8 @@ GET /wise_tiger/projects/7ce6e5ed-28f5-52ba-83bc-a726660c12bc
     "status": "active",
     "priority": "critical",
     "deadline": "2024-06-01",
-    "createdAt": "2025-12-18T14:09:27.260Z",
-    "updatedAt": "2025-12-18T14:09:27.260Z"
+    "createdAt": "2024-01-01T12:00:00.000Z",
+    "updatedAt": "2024-01-01T12:00:00.000Z"
   }
 }
 ```
@@ -170,8 +170,8 @@ Content-Type: application/json
     "status": "active",
     "priority": "high",
     "deadline": "2024-03-15",
-    "createdAt": "2025-12-18T14:09:27.277Z",
-    "updatedAt": "2025-12-18T14:09:27.277Z"
+    "createdAt": "2024-01-01T12:00:00.000Z",
+    "updatedAt": "2024-01-01T12:00:00.000Z"
   }
 }
 ```

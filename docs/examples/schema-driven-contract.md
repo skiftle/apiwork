@@ -117,8 +117,8 @@ GET /eager_lion/invoices
   "invoices": [
     {
       "id": "534ec78b-1e57-5f61-ae31-cd61470deb95",
-      "createdAt": "2025-12-18T14:09:26.672Z",
-      "updatedAt": "2025-12-18T14:09:26.672Z",
+      "createdAt": "2024-01-01T12:00:00.000Z",
+      "updatedAt": "2024-01-01T12:00:00.000Z",
       "number": "INV-001",
       "issuedOn": null,
       "notes": null,
@@ -129,8 +129,8 @@ GET /eager_lion/invoices
     },
     {
       "id": "beeed37c-a296-52da-9206-364418ea6f8e",
-      "createdAt": "2025-12-18T14:09:26.674Z",
-      "updatedAt": "2025-12-18T14:09:26.674Z",
+      "createdAt": "2024-01-01T12:00:00.000Z",
+      "updatedAt": "2024-01-01T12:00:00.000Z",
       "number": "INV-002",
       "issuedOn": null,
       "notes": null,
@@ -167,8 +167,8 @@ GET /eager_lion/invoices/67bdd1df-79bb-5b50-9eaf-b17edac86b61
 {
   "invoice": {
     "id": "67bdd1df-79bb-5b50-9eaf-b17edac86b61",
-    "createdAt": "2025-12-18T14:09:26.688Z",
-    "updatedAt": "2025-12-18T14:09:26.688Z",
+    "createdAt": "2024-01-01T12:00:00.000Z",
+    "updatedAt": "2024-01-01T12:00:00.000Z",
     "number": "INV-001",
     "issuedOn": null,
     "notes": null,
@@ -207,8 +207,8 @@ Content-Type: application/json
 {
   "invoice": {
     "id": "a8820bf3-8c01-50aa-9940-cad599d88a67",
-    "createdAt": "2025-12-18T14:09:26.706Z",
-    "updatedAt": "2025-12-18T14:09:26.706Z",
+    "createdAt": "2024-01-01T12:00:00.000Z",
+    "updatedAt": "2024-01-01T12:00:00.000Z",
     "number": "INV-001",
     "issuedOn": "2024-01-15",
     "notes": "First invoice",
@@ -246,8 +246,8 @@ Content-Type: application/json
 {
   "invoice": {
     "id": "baf90ee7-f2b9-5d5c-ad6a-8a4536fb1005",
-    "createdAt": "2025-12-18T14:09:26.712Z",
-    "updatedAt": "2025-12-18T14:09:26.718Z",
+    "createdAt": "2024-01-01T12:00:00.000Z",
+    "updatedAt": "2024-01-01T12:00:00.000Z",
     "number": "INV-001",
     "issuedOn": null,
     "notes": "Updated notes",
