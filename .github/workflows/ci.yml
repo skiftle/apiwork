@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -18,7 +18,7 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -48,7 +48,7 @@ jobs:
             experimental: true
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -62,15 +62,80 @@ jobs:
       - name: Run tests
         run: bundle exec rspec
 
+  generate-docs:
+    name: Generate Docs
+    needs: [lint, test]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check for relevant changes
+        id: changes
+        run: |
+          CHANGED=$(git diff --name-only HEAD~1 HEAD | grep -E '^(lib/|docs/playground/)' | grep -v 'docs/playground/public/' | grep -v 'docs/reference/' || true)
+          if [ -z "$CHANGED" ]; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+            echo "No relevant changes, skipping generation"
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+            echo "Changed files:"
+            echo "$CHANGED"
+          fi
+
+      - uses: ruby/setup-ruby@v1
+        if: steps.changes.outputs.skip != 'true'
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+          working-directory: docs/playground
+
+      - name: Cache YARD
+        if: steps.changes.outputs.skip != 'true'
+        uses: actions/cache@v4
+        with:
+          path: .yardoc
+          key: yard-${{ hashFiles('lib/**/*.rb') }}
+
+      - name: Generate docs
+        if: steps.changes.outputs.skip != 'true'
+        env:
+          RAILS_ENV: test
+        run: |
+          cd docs/playground
+          bundle exec rake db:setup
+          bundle exec rake apiwork:docs:reference
+          bundle exec rake docs:generate
+
+      - name: Commit and push
+        if: steps.changes.outputs.skip != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/reference/ docs/playground/public/ docs/examples/
+          git diff --staged --quiet || git commit -m "chore: regenerate docs [skip ci]"
+          git push
+
   all-green:
     name: All tests passing
     if: always()
-    needs: [lint, test]
+    needs: [lint, test, generate-docs]
     runs-on: ubuntu-latest
     steps:
       - name: Check status
         run: |
-          if [ "${{ needs.lint.result }}" != "success" ] || [ "${{ needs.test.result }}" != "success" ]; then
-            echo "One or more jobs failed"
+          if [ "${{ needs.lint.result }}" != "success" ]; then
+            echo "Lint failed"
+            exit 1
+          fi
+          if [ "${{ needs.test.result }}" != "success" ]; then
+            echo "Tests failed"
+            exit 1
+          fi
+          if [ "${{ needs.generate-docs.result }}" != "success" ] && [ "${{ needs.generate-docs.result }}" != "skipped" ]; then
+            echo "Docs generation failed"
             exit 1
           fi
