@@ -77,7 +77,7 @@ GET /funny_snake/invoices
 **Request**
 
 ```http
-GET /funny_snake/invoices/8e4e2eae-1dec-4b21-a633-a90081e04fc3
+GET /funny_snake/invoices/631ce73f-de80-4748-8ff7-e08be4276649
 ```
 
 **Response** `500`
@@ -127,7 +127,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-PATCH /funny_snake/invoices/9cd1ea70-27ae-48d9-a2bd-4196a0a1094a
+PATCH /funny_snake/invoices/cddd7175-4923-4e30-9423-c222db2e6b78
 Content-Type: application/json
 
 {
@@ -157,7 +157,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-DELETE /funny_snake/invoices/7d25a31d-7774-4e68-bc0a-50e7f7a6873d
+DELETE /funny_snake/invoices/841de6c0-a8fb-4274-9f06-b8d5a33f128a
 ```
 
 **Response** `500`

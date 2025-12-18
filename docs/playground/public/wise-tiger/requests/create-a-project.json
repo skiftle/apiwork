@@ -16,14 +16,14 @@
     "status": 201,
     "body": {
       "project": {
-        "id": "8d4a5f7e-7e35-4be9-a3d3-071041d7e533",
+        "id": "1326bb0c-bf0a-4953-a752-65f064afc820",
         "name": "New Feature",
         "description": "Implement the new dashboard",
         "status": "active",
         "priority": "high",
         "deadline": "2024-03-15",
-        "createdAt": "2025-12-18T13:21:02.625Z",
-        "updatedAt": "2025-12-18T13:21:02.625Z"
+        "createdAt": "2025-12-18T13:29:04.666Z",
+        "updatedAt": "2025-12-18T13:29:04.666Z"
       }
     }
   }

@@ -8,37 +8,37 @@
     "body": {
       "articles": [
         {
-          "id": "9681d3bc-fcb8-4cb5-a2cc-703f1bc22d4e",
+          "id": "9536d1a5-b0eb-42e9-8e06-d5fc766d39dd",
           "title": "Draft 2",
           "body": null,
           "status": "draft",
           "viewCount": 0,
           "rating": null,
           "publishedOn": "2024-03-01",
-          "createdAt": "2025-12-18T13:21:01.677Z",
-          "updatedAt": "2025-12-18T13:21:01.677Z"
+          "createdAt": "2025-12-18T13:29:03.596Z",
+          "updatedAt": "2025-12-18T13:29:03.596Z"
         },
         {
-          "id": "edfc5837-b147-4db9-88de-e3429a6d6de6",
+          "id": "7d4aab16-2e18-4f0e-ad29-3215ffc7d6a7",
           "title": "Draft 1",
           "body": null,
           "status": "draft",
           "viewCount": 0,
           "rating": null,
           "publishedOn": "2024-01-01",
-          "createdAt": "2025-12-18T13:21:01.675Z",
-          "updatedAt": "2025-12-18T13:21:01.675Z"
+          "createdAt": "2025-12-18T13:29:03.594Z",
+          "updatedAt": "2025-12-18T13:29:03.594Z"
         },
         {
-          "id": "21fb81df-9997-4b3e-8379-b650f51f2159",
+          "id": "11776d81-db8c-4818-924b-2f1140239b70",
           "title": "Published 1",
           "body": null,
           "status": "published",
           "viewCount": 0,
           "rating": null,
           "publishedOn": "2024-02-01",
-          "createdAt": "2025-12-18T13:21:01.676Z",
-          "updatedAt": "2025-12-18T13:21:01.676Z"
+          "createdAt": "2025-12-18T13:29:03.595Z",
+          "updatedAt": "2025-12-18T13:29:03.595Z"
         }
       ],
       "pagination": {

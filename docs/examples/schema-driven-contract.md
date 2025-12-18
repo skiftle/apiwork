@@ -116,26 +116,26 @@ GET /eager_lion/invoices
 {
   "invoices": [
     {
-      "id": "1e95ddb5-0c0f-4955-818c-d10def21d5ea",
-      "createdAt": "2025-12-18T13:21:01.982Z",
-      "updatedAt": "2025-12-18T13:21:01.982Z",
+      "id": "5441fa6e-07c4-4545-8623-c5366105b0db",
+      "createdAt": "2025-12-18T13:29:03.919Z",
+      "updatedAt": "2025-12-18T13:29:03.919Z",
       "number": "INV-001",
       "issuedOn": null,
       "notes": null,
       "status": null,
-      "customerId": "906d3968-7d34-42de-aeea-a2d8ab79b7f1",
+      "customerId": "62e53928-1197-401e-ad64-82dd20138288",
       "lines": null,
       "customer": null
     },
     {
-      "id": "e5192285-276b-447a-9974-d49b4b5c12ec",
-      "createdAt": "2025-12-18T13:21:01.984Z",
-      "updatedAt": "2025-12-18T13:21:01.984Z",
+      "id": "22054fbd-f3bf-479e-a275-9f4eb78fde7b",
+      "createdAt": "2025-12-18T13:29:03.920Z",
+      "updatedAt": "2025-12-18T13:29:03.920Z",
       "number": "INV-002",
       "issuedOn": null,
       "notes": null,
       "status": null,
-      "customerId": "906d3968-7d34-42de-aeea-a2d8ab79b7f1",
+      "customerId": "62e53928-1197-401e-ad64-82dd20138288",
       "lines": null,
       "customer": null
     }
@@ -158,7 +158,7 @@ GET /eager_lion/invoices
 **Request**
 
 ```http
-GET /eager_lion/invoices/23d78059-7006-48fb-91b8-8c78182df3c3
+GET /eager_lion/invoices/de291757-3ee3-480d-948d-c920a42f0161
 ```
 
 **Response** `200`
@@ -166,14 +166,14 @@ GET /eager_lion/invoices/23d78059-7006-48fb-91b8-8c78182df3c3
 ```json
 {
   "invoice": {
-    "id": "23d78059-7006-48fb-91b8-8c78182df3c3",
-    "createdAt": "2025-12-18T13:21:01.997Z",
-    "updatedAt": "2025-12-18T13:21:01.997Z",
+    "id": "de291757-3ee3-480d-948d-c920a42f0161",
+    "createdAt": "2025-12-18T13:29:03.934Z",
+    "updatedAt": "2025-12-18T13:29:03.934Z",
     "number": "INV-001",
     "issuedOn": null,
     "notes": null,
     "status": null,
-    "customerId": "27a34149-db90-410b-ba82-dbdb354727d2",
+    "customerId": "24e970d1-c77c-4cd6-b656-54a54492724c",
     "lines": null,
     "customer": null
   }
@@ -194,7 +194,7 @@ Content-Type: application/json
 {
   "invoice": {
     "number": "INV-001",
-    "customer_id": "c88b2539-3d15-41f8-ab01-d46483a3d9cd",
+    "customer_id": "544588cb-d5c4-4c3e-89ae-b8f919d5500e",
     "issued_on": "2024-01-15",
     "notes": "First invoice"
   }
@@ -206,14 +206,14 @@ Content-Type: application/json
 ```json
 {
   "invoice": {
-    "id": "43f1f6b4-cbfe-46b4-90ec-c2230a66699c",
-    "createdAt": "2025-12-18T13:21:02.012Z",
-    "updatedAt": "2025-12-18T13:21:02.012Z",
+    "id": "6498b8f0-d20f-4b82-9fdf-25e9edef50c3",
+    "createdAt": "2025-12-18T13:29:03.947Z",
+    "updatedAt": "2025-12-18T13:29:03.947Z",
     "number": "INV-001",
     "issuedOn": "2024-01-15",
     "notes": "First invoice",
     "status": null,
-    "customerId": "c88b2539-3d15-41f8-ab01-d46483a3d9cd",
+    "customerId": "544588cb-d5c4-4c3e-89ae-b8f919d5500e",
     "lines": null,
     "customer": null
   }
@@ -228,13 +228,13 @@ Content-Type: application/json
 **Request**
 
 ```http
-PATCH /eager_lion/invoices/be14c3fb-eba3-4ff1-bd67-434e8ee3f2b0
+PATCH /eager_lion/invoices/ea9ec7bb-8244-4f50-aeb8-591f79d6a2e6
 Content-Type: application/json
 
 {
   "invoice": {
     "number": "INV-001",
-    "customer_id": "dad8af87-1fcb-48d0-8238-1534dd649a44",
+    "customer_id": "cc82d365-8dc2-41b0-b40d-11deddb45552",
     "notes": "Updated notes"
   }
 }
@@ -245,14 +245,14 @@ Content-Type: application/json
 ```json
 {
   "invoice": {
-    "id": "be14c3fb-eba3-4ff1-bd67-434e8ee3f2b0",
-    "createdAt": "2025-12-18T13:21:02.016Z",
-    "updatedAt": "2025-12-18T13:21:02.021Z",
+    "id": "ea9ec7bb-8244-4f50-aeb8-591f79d6a2e6",
+    "createdAt": "2025-12-18T13:29:03.951Z",
+    "updatedAt": "2025-12-18T13:29:03.956Z",
     "number": "INV-001",
     "issuedOn": null,
     "notes": "Updated notes",
     "status": null,
-    "customerId": "dad8af87-1fcb-48d0-8238-1534dd649a44",
+    "customerId": "cc82d365-8dc2-41b0-b40d-11deddb45552",
     "lines": null,
     "customer": null
   }
@@ -267,7 +267,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-DELETE /eager_lion/invoices/eb88657d-daa6-42fd-943f-9c4cfb2a4d93
+DELETE /eager_lion/invoices/94bcea75-d181-4fd4-baf3-1067d25f5405
 ```
 
 **Response** `204`

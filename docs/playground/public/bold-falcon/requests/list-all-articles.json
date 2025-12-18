@@ -8,26 +8,26 @@
     "body": {
       "articles": [
         {
-          "id": "4bcb2785-9a76-49ea-a1b8-05f7af56f7ab",
+          "id": "72b0277e-4cf8-4fa4-acf6-8dec9dca4d75",
           "title": "Published Article",
           "body": null,
           "status": "published",
           "viewCount": 0,
           "rating": null,
           "publishedOn": null,
-          "createdAt": "2025-12-18T13:21:01.494Z",
-          "updatedAt": "2025-12-18T13:21:01.494Z"
+          "createdAt": "2025-12-18T13:29:03.416Z",
+          "updatedAt": "2025-12-18T13:29:03.416Z"
         },
         {
-          "id": "4a90e9d0-baa6-49d5-91d5-88be29185734",
+          "id": "ca34dda5-f62e-4e54-93ab-6f55631a6877",
           "title": "Draft Article",
           "body": null,
           "status": "draft",
           "viewCount": 0,
           "rating": null,
           "publishedOn": null,
-          "createdAt": "2025-12-18T13:21:01.495Z",
-          "updatedAt": "2025-12-18T13:21:01.495Z"
+          "createdAt": "2025-12-18T13:29:03.420Z",
+          "updatedAt": "2025-12-18T13:29:03.420Z"
         }
       ],
       "pagination": {

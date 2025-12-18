@@ -60,6 +60,7 @@ module Apiwork
 
         validate_min_max_range!
         validate_format!
+        validate_empty!
         apply_empty_transformers! if @empty
       end
 
@@ -253,6 +254,15 @@ module Apiwork
         raise ConfigurationError,
               "Attribute #{@name}: format :#{@format} is not valid for type :#{@type}. " \
               "Allowed formats: #{allowed_formats.join(', ')}"
+      end
+
+      def validate_empty!
+        return unless @empty
+        return if @type == :unknown
+        return if @type == :string
+
+        raise ConfigurationError,
+              "Attribute #{@name}: empty option is only supported for type :string"
       end
 
       def validate_column_required_options!

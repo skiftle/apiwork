@@ -1,16 +1,16 @@
 {
   "request": {
     "method": "GET",
-    "path": "/gentle_owl/comments/28f9bd95-565f-4a8c-8e43-afad88c5cddf"
+    "path": "/gentle_owl/comments/bab11a68-14dc-4533-9348-1f2c56ede258"
   },
   "response": {
     "status": 200,
     "body": {
       "comment": {
-        "id": "28f9bd95-565f-4a8c-8e43-afad88c5cddf",
+        "id": "bab11a68-14dc-4533-9348-1f2c56ede258",
         "body": "Great post!",
         "authorName": "John Doe",
-        "createdAt": "2025-12-18T13:21:02.194Z"
+        "createdAt": "2025-12-18T13:29:04.190Z"
       }
     }
   }

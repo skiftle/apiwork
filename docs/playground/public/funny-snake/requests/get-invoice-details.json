@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "path": "/funny_snake/invoices/8e4e2eae-1dec-4b21-a633-a90081e04fc3"
+    "path": "/funny_snake/invoices/631ce73f-de80-4748-8ff7-e08be4276649"
   },
   "response": {
     "status": 500,
