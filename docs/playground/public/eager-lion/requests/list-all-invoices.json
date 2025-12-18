@@ -8,26 +8,26 @@
     "body": {
       "invoices": [
         {
-          "id": "5441fa6e-07c4-4545-8623-c5366105b0db",
-          "createdAt": "2025-12-18T13:29:03.919Z",
-          "updatedAt": "2025-12-18T13:29:03.919Z",
+          "id": "534ec78b-1e57-5f61-ae31-cd61470deb95",
+          "createdAt": "2025-12-18T14:05:59.465Z",
+          "updatedAt": "2025-12-18T14:05:59.465Z",
           "number": "INV-001",
           "issuedOn": null,
           "notes": null,
           "status": null,
-          "customerId": "62e53928-1197-401e-ad64-82dd20138288",
+          "customerId": "9428d849-05a5-5c52-a90a-906eac07ecd2",
           "lines": null,
           "customer": null
         },
         {
-          "id": "22054fbd-f3bf-479e-a275-9f4eb78fde7b",
-          "createdAt": "2025-12-18T13:29:03.920Z",
-          "updatedAt": "2025-12-18T13:29:03.920Z",
+          "id": "beeed37c-a296-52da-9206-364418ea6f8e",
+          "createdAt": "2025-12-18T14:05:59.466Z",
+          "updatedAt": "2025-12-18T14:05:59.466Z",
           "number": "INV-002",
           "issuedOn": null,
           "notes": null,
           "status": null,
-          "customerId": "62e53928-1197-401e-ad64-82dd20138288",
+          "customerId": "9428d849-05a5-5c52-a90a-906eac07ecd2",
           "lines": null,
           "customer": null
         }

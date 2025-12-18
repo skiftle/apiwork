@@ -1,11 +1,11 @@
 {
   "request": {
     "method": "PATCH",
-    "path": "/eager_lion/invoices/ea9ec7bb-8244-4f50-aeb8-591f79d6a2e6",
+    "path": "/eager_lion/invoices/baf90ee7-f2b9-5d5c-ad6a-8a4536fb1005",
     "body": {
       "invoice": {
         "number": "INV-001",
-        "customer_id": "cc82d365-8dc2-41b0-b40d-11deddb45552",
+        "customer_id": "68015de3-44bf-5dc5-8e6b-9199fa3ac62e",
         "notes": "Updated notes"
       }
     }
@@ -14,14 +14,14 @@
     "status": 200,
     "body": {
       "invoice": {
-        "id": "ea9ec7bb-8244-4f50-aeb8-591f79d6a2e6",
-        "createdAt": "2025-12-18T13:29:03.951Z",
-        "updatedAt": "2025-12-18T13:29:03.956Z",
+        "id": "baf90ee7-f2b9-5d5c-ad6a-8a4536fb1005",
+        "createdAt": "2025-12-18T14:05:59.500Z",
+        "updatedAt": "2025-12-18T14:05:59.506Z",
         "number": "INV-001",
         "issuedOn": null,
         "notes": "Updated notes",
         "status": null,
-        "customerId": "cc82d365-8dc2-41b0-b40d-11deddb45552",
+        "customerId": "68015de3-44bf-5dc5-8e6b-9199fa3ac62e",
         "lines": null,
         "customer": null
       }

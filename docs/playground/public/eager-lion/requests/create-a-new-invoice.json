@@ -5,7 +5,7 @@
     "body": {
       "invoice": {
         "number": "INV-001",
-        "customer_id": "544588cb-d5c4-4c3e-89ae-b8f919d5500e",
+        "customer_id": "37edd0f2-8741-5638-adf9-7b1141702642",
         "issued_on": "2024-01-15",
         "notes": "First invoice"
       }
@@ -15,14 +15,14 @@
     "status": 201,
     "body": {
       "invoice": {
-        "id": "6498b8f0-d20f-4b82-9fdf-25e9edef50c3",
-        "createdAt": "2025-12-18T13:29:03.947Z",
-        "updatedAt": "2025-12-18T13:29:03.947Z",
+        "id": "a8820bf3-8c01-50aa-9940-cad599d88a67",
+        "createdAt": "2025-12-18T14:05:59.495Z",
+        "updatedAt": "2025-12-18T14:05:59.495Z",
         "number": "INV-001",
         "issuedOn": "2024-01-15",
         "notes": "First invoice",
         "status": null,
-        "customerId": "544588cb-d5c4-4c3e-89ae-b8f919d5500e",
+        "customerId": "37edd0f2-8741-5638-adf9-7b1141702642",
         "lines": null,
         "customer": null
       }

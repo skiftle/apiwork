@@ -1,20 +1,20 @@
 {
   "request": {
     "method": "GET",
-    "path": "/wise_tiger/projects/07ff7948-5326-4236-9cbc-d7b44222bd51"
+    "path": "/wise_tiger/projects/7ce6e5ed-28f5-52ba-83bc-a726660c12bc"
   },
   "response": {
     "status": 200,
     "body": {
       "project": {
-        "id": "07ff7948-5326-4236-9cbc-d7b44222bd51",
+        "id": "7ce6e5ed-28f5-52ba-83bc-a726660c12bc",
         "name": "API Integration",
         "description": "Connect to third-party services",
         "status": "active",
         "priority": "critical",
         "deadline": "2024-06-01",
-        "createdAt": "2025-12-18T13:29:04.655Z",
-        "updatedAt": "2025-12-18T13:29:04.655Z"
+        "createdAt": "2025-12-18T14:06:00.029Z",
+        "updatedAt": "2025-12-18T14:06:00.029Z"
       }
     }
   }

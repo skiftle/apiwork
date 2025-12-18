@@ -30,12 +30,12 @@
     "status": 201,
     "body": {
       "order": {
-        "id": "b5e64b77-eb8d-43f8-b1a1-9742b9929e0c",
+        "id": "3870eeb2-49db-5e22-857a-ca2bcd2e4612",
         "orderNumber": "ORD-001",
         "status": "pending",
         "total": null,
-        "createdAt": "2025-12-18T13:29:03.841Z",
-        "updatedAt": "2025-12-18T13:29:03.841Z",
+        "createdAt": "2025-12-18T14:05:59.393Z",
+        "updatedAt": "2025-12-18T14:05:59.393Z",
         "lineItems": null,
         "shippingAddress": null
       }

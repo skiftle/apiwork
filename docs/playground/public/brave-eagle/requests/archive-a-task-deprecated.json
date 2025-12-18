@@ -1,21 +1,21 @@
 {
   "request": {
     "method": "PATCH",
-    "path": "/brave_eagle/tasks/7819549c-2dcd-41bc-ad57-d5d1775b9fd0/archive"
+    "path": "/brave_eagle/tasks/124b619e-579b-5c5b-bb61-d502076d1d45/archive"
   },
   "response": {
     "status": 200,
     "body": {
       "task": {
-        "id": "7819549c-2dcd-41bc-ad57-d5d1775b9fd0",
+        "id": "124b619e-579b-5c5b-bb61-d502076d1d45",
         "title": "Old task to archive",
         "description": null,
         "status": "completed",
         "priority": "medium",
         "dueDate": null,
         "archived": true,
-        "createdAt": "2025-12-18T13:29:03.754Z",
-        "updatedAt": "2025-12-18T13:29:03.760Z"
+        "createdAt": "2025-12-18T14:05:59.316Z",
+        "updatedAt": "2025-12-18T14:05:59.320Z"
       }
     }
   }
