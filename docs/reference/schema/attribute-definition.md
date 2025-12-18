@@ -12,7 +12,7 @@ next: false
 
 ### #decode(value)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute_definition.rb#L107)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute_definition.rb#L108)
 
 ---
 
@@ -42,7 +42,7 @@ Returns the value of attribute empty.
 
 ### #encode(value)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute_definition.rb#L101)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute_definition.rb#L102)
 
 ---
 
@@ -64,7 +64,7 @@ Returns the value of attribute example.
 
 ### #filterable?()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute_definition.rb#L71)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute_definition.rb#L72)
 
 **Returns**
 
@@ -116,7 +116,7 @@ Returns the value of attribute name.
 
 ### #nullable?()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute_definition.rb#L83)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute_definition.rb#L84)
 
 **Returns**
 
@@ -134,7 +134,7 @@ Returns the value of attribute optional.
 
 ### #optional?()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute_definition.rb#L79)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute_definition.rb#L80)
 
 **Returns**
 
@@ -144,13 +144,13 @@ Returns the value of attribute optional.
 
 ### #schema_class_name()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute_definition.rb#L111)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute_definition.rb#L112)
 
 ---
 
 ### #sortable?()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute_definition.rb#L75)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute_definition.rb#L76)
 
 **Returns**
 
@@ -168,13 +168,13 @@ Returns the value of attribute type.
 
 ### #validate!()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute_definition.rb#L66)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute_definition.rb#L67)
 
 ---
 
 ### #writable?()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute_definition.rb#L89)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute_definition.rb#L90)
 
 **Returns**
 
@@ -184,7 +184,7 @@ Returns the value of attribute type.
 
 ### #writable_for?(action)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute_definition.rb#L93)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute_definition.rb#L94)
 
 **Returns**
 
@@ -194,6 +194,6 @@ Returns the value of attribute type.
 
 ### #writable_on()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute_definition.rb#L97)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/attribute_definition.rb#L98)
 
 ---
