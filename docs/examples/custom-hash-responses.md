@@ -26,6 +26,8 @@ Using respond with plain hashes instead of ActiveRecord models
 
 ---
 
+
+
 ## Request Examples
 
 <details>
@@ -42,7 +44,7 @@ GET /lazy_cow/status/health
 ```json
 {
   "status": "ok",
-  "timestamp": "2025-12-10T10:35:26.755Z",
+  "timestamp": "2025-12-18T13:21:02.434Z",
   "version": "1.0.0"
 }
 ```

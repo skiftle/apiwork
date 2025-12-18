@@ -239,6 +239,7 @@ module Apiwork
 
       def validate_format!
         return if @format.nil?
+        return if @type == :unknown
 
         allowed_formats = ALLOWED_FORMATS[@type]
 

@@ -18,7 +18,7 @@
           "optional": true
         },
         "id": {
-          "type": "unknown",
+          "type": "string",
           "optional": true
         },
         "published_on": {
@@ -625,7 +625,9 @@
       "schema": {
         "type": "object",
         "shape": {
-          "id": {},
+          "id": {
+            "type": "string"
+          },
           "title": {
             "type": "string"
           },
@@ -882,6 +884,14 @@
         "destroy": {
           "method": "delete",
           "path": "/:id",
+          "request": {
+            "query": {
+              "include": {
+                "type": "article_include",
+                "optional": true
+              }
+            }
+          },
           "response": {
             "no_content": true
           }

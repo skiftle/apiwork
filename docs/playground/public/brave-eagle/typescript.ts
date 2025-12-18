@@ -123,6 +123,14 @@ export interface TasksCreateResponse {
 
 export type TasksCreateResponseBody = { issues?: Issue[] } | { meta?: object; task: Task };
 
+export interface TasksDestroyRequest {
+  query: TasksDestroyRequestQuery;
+}
+
+export interface TasksDestroyRequestQuery {
+  include?: TaskInclude;
+}
+
 export type TasksDestroyResponse = never;
 
 export interface TasksIndexRequest {

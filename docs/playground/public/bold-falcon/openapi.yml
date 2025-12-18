@@ -102,12 +102,17 @@ paths:
                     type: array
                     items:
                       "$ref": "#/components/schemas/issue"
-  articles/:id:
+  articles/{id}:
     get:
       operationId: articlesShow
       tags:
       - Articles
       parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       - in: query
         name: include
         required: false
@@ -133,6 +138,11 @@ paths:
       tags:
       - Articles
       parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       - in: query
         name: include
         required: false
@@ -175,6 +185,17 @@ paths:
       operationId: articlesDestroy
       tags:
       - Articles
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/articleInclude"
       responses:
         '204':
           description: No content
@@ -192,7 +213,8 @@ components:
           properties: {}
         createdAt:
           type: string
-        id: {}
+        id:
+          type: string
         publishedOn:
           type: string
         rating:

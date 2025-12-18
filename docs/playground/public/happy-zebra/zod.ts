@@ -229,6 +229,14 @@ export const UsersUpdateResponseSchema = z.object({
   body: UsersUpdateResponseBodySchema
 });
 
+export const UsersDestroyRequestQuerySchema = z.object({
+  include: UserIncludeSchema.optional()
+});
+
+export const UsersDestroyRequestSchema = z.object({
+  query: UsersDestroyRequestQuerySchema
+});
+
 export const UsersDestroyResponse = z.never();
 
 export const PostsIndexRequestQuerySchema = z.object({
@@ -296,6 +304,14 @@ export const PostsUpdateResponseBodySchema = z.union([z.object({ meta: z.object(
 
 export const PostsUpdateResponseSchema = z.object({
   body: PostsUpdateResponseBodySchema
+});
+
+export const PostsDestroyRequestQuerySchema = z.object({
+  include: PostIncludeSchema.optional()
+});
+
+export const PostsDestroyRequestSchema = z.object({
+  query: PostsDestroyRequestQuerySchema
 });
 
 export const PostsDestroyResponse = z.never();
@@ -512,6 +528,14 @@ export interface PostsCreateResponse {
 
 export type PostsCreateResponseBody = { issues?: Issue[] } | { meta?: object; post: Post };
 
+export interface PostsDestroyRequest {
+  query: PostsDestroyRequestQuery;
+}
+
+export interface PostsDestroyRequestQuery {
+  include?: PostInclude;
+}
+
 export type PostsDestroyResponse = never;
 
 export interface PostsIndexRequest {
@@ -639,6 +663,14 @@ export interface UsersCreateResponse {
 }
 
 export type UsersCreateResponseBody = { issues?: Issue[] } | { meta?: object; user: User };
+
+export interface UsersDestroyRequest {
+  query: UsersDestroyRequestQuery;
+}
+
+export interface UsersDestroyRequestQuery {
+  include?: UserInclude;
+}
 
 export type UsersDestroyResponse = never;
 

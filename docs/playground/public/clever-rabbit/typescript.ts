@@ -24,7 +24,7 @@ export interface OffsetPagination {
 
 export interface Order {
   createdAt?: string;
-  id?: unknown;
+  id?: string;
   lineItems: string[];
   orderNumber?: string;
   shippingAddress: object;
@@ -82,6 +82,14 @@ export interface OrdersCreateResponse {
 }
 
 export type OrdersCreateResponseBody = { issues?: Issue[] } | { meta?: object; order: Order };
+
+export interface OrdersDestroyRequest {
+  query: OrdersDestroyRequestQuery;
+}
+
+export interface OrdersDestroyRequestQuery {
+  include?: OrderInclude;
+}
 
 export type OrdersDestroyResponse = never;
 

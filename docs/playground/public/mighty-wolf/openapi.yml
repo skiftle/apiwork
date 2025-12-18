@@ -96,11 +96,17 @@ paths:
                     type: array
                     items:
                       "$ref": "#/components/schemas/issue"
-  vehicles/:id:
+  vehicles/{id}:
     get:
       operationId: vehiclesShow
       tags:
       - Vehicles
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: Successful response
@@ -120,6 +126,12 @@ paths:
       operationId: vehiclesUpdate
       tags:
       - Vehicles
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         required: true
         content:
@@ -157,6 +169,12 @@ paths:
       operationId: vehiclesDestroy
       tags:
       - Vehicles
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         '204':
           description: No content
@@ -171,7 +189,8 @@ components:
           type: string
         doors:
           type: integer
-        id: {}
+        id:
+          type: string
         model:
           type: string
         type:
@@ -286,7 +305,8 @@ components:
           type: string
         engineCc:
           type: integer
-        id: {}
+        id:
+          type: string
         model:
           type: string
         type:
@@ -412,7 +432,8 @@ components:
           type: string
         color:
           type: string
-        id: {}
+        id:
+          type: string
         model:
           type: string
         payloadCapacity:

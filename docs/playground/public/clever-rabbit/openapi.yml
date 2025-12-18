@@ -102,12 +102,17 @@ paths:
                     type: array
                     items:
                       "$ref": "#/components/schemas/issue"
-  orders/:id:
+  orders/{id}:
     get:
       operationId: ordersShow
       tags:
       - Orders
       parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       - in: query
         name: include
         required: false
@@ -133,6 +138,11 @@ paths:
       tags:
       - Orders
       parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       - in: query
         name: include
         required: false
@@ -175,6 +185,17 @@ paths:
       operationId: ordersDestroy
       tags:
       - Orders
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/orderInclude"
       responses:
         '204':
           description: No content
@@ -241,7 +262,8 @@ components:
       properties:
         createdAt:
           type: string
-        id: {}
+        id:
+          type: string
         lineItems:
           type: array
           items:

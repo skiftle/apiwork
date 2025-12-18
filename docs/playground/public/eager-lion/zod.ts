@@ -156,6 +156,14 @@ export const InvoicesUpdateResponseSchema = z.object({
   body: InvoicesUpdateResponseBodySchema
 });
 
+export const InvoicesDestroyRequestQuerySchema = z.object({
+  include: InvoiceIncludeSchema.optional()
+});
+
+export const InvoicesDestroyRequestSchema = z.object({
+  query: InvoicesDestroyRequestQuerySchema
+});
+
 export const InvoicesDestroyResponse = z.never();
 
 export const InvoicesArchiveRequestQuerySchema = z.object({
@@ -255,6 +263,14 @@ export interface InvoicesCreateResponse {
 }
 
 export type InvoicesCreateResponseBody = { invoice: Invoice; meta?: object } | { issues?: Issue[] };
+
+export interface InvoicesDestroyRequest {
+  query: InvoicesDestroyRequestQuery;
+}
+
+export interface InvoicesDestroyRequestQuery {
+  include?: InvoiceInclude;
+}
 
 export type InvoicesDestroyResponse = never;
 

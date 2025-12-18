@@ -24,11 +24,11 @@ Defining contracts manually without schemas
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| number | string |  |  |
-| issued_on | date | ✓ |  |
-| status | string | ✓ |  |
-| notes | string | ✓ |  |
 | created_at | datetime |  |  |
+| issued_on | date | ✓ |  |
+| notes | string | ✓ |  |
+| number | string |  |  |
+| status | string | ✓ |  |
 | updated_at | datetime |  |  |
 
 </details>
@@ -77,7 +77,7 @@ GET /funny_snake/invoices
 **Request**
 
 ```http
-GET /funny_snake/invoices/df96d5b6-65f3-406e-ba24-d047c0711604
+GET /funny_snake/invoices/8e4e2eae-1dec-4b21-a633-a90081e04fc3
 ```
 
 **Response** `500`
@@ -127,7 +127,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-PATCH /funny_snake/invoices/f0373ec9-fd3c-41fe-971e-ea2ad76dc4ba
+PATCH /funny_snake/invoices/9cd1ea70-27ae-48d9-a2bd-4196a0a1094a
 Content-Type: application/json
 
 {
@@ -157,7 +157,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-DELETE /funny_snake/invoices/10942eed-24b6-4bb0-aca7-7f4fb726ecc8
+DELETE /funny_snake/invoices/7d25a31d-7774-4e68-bc0a-50e7f7a6873d
 ```
 
 **Response** `500`

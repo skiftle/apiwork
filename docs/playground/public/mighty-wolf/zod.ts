@@ -6,7 +6,7 @@ export const CarSchema = z.object({
   brand: z.string().optional(),
   color: z.string().optional(),
   doors: z.number().int().optional(),
-  id: z.unknown().optional(),
+  id: z.string().optional(),
   model: z.string().optional(),
   type: z.literal('car'),
   year: z.number().int().optional()
@@ -46,7 +46,7 @@ export const MotorcycleSchema = z.object({
   brand: z.string().optional(),
   color: z.string().optional(),
   engineCc: z.number().int().optional(),
-  id: z.unknown().optional(),
+  id: z.string().optional(),
   model: z.string().optional(),
   type: z.literal('motorcycle'),
   year: z.number().int().optional()
@@ -89,7 +89,7 @@ export const StringFilterSchema = z.object({
 export const TruckSchema = z.object({
   brand: z.string().optional(),
   color: z.string().optional(),
-  id: z.unknown().optional(),
+  id: z.string().optional(),
   model: z.string().optional(),
   payloadCapacity: z.number().optional(),
   type: z.literal('truck'),
@@ -232,7 +232,7 @@ export interface Car {
   brand?: string;
   color?: string;
   doors?: number;
-  id?: unknown;
+  id?: string;
   model?: string;
   type: 'car';
   year?: number;
@@ -282,7 +282,7 @@ export interface Motorcycle {
   brand?: string;
   color?: string;
   engineCc?: number;
-  id?: unknown;
+  id?: string;
   model?: string;
   type: 'motorcycle';
   year?: number;
@@ -338,7 +338,7 @@ export interface StringFilter {
 export interface Truck {
   brand?: string;
   color?: string;
-  id?: unknown;
+  id?: string;
   model?: string;
   payloadCapacity?: number;
   type: 'truck';

@@ -28,7 +28,7 @@ export const OffsetPaginationSchema = z.object({
 
 export const OrderSchema = z.object({
   createdAt: z.iso.datetime().optional(),
-  id: z.unknown().optional(),
+  id: z.string().optional(),
   lineItems: z.array(z.string()),
   orderNumber: z.string().optional(),
   shippingAddress: z.object({}),
@@ -147,6 +147,14 @@ export const OrdersUpdateResponseSchema = z.object({
   body: OrdersUpdateResponseBodySchema
 });
 
+export const OrdersDestroyRequestQuerySchema = z.object({
+  include: OrderIncludeSchema.optional()
+});
+
+export const OrdersDestroyRequestSchema = z.object({
+  query: OrdersDestroyRequestQuerySchema
+});
+
 export const OrdersDestroyResponse = z.never();
 
 export interface Issue {
@@ -175,7 +183,7 @@ export interface OffsetPagination {
 
 export interface Order {
   createdAt?: string;
-  id?: unknown;
+  id?: string;
   lineItems: string[];
   orderNumber?: string;
   shippingAddress: object;
@@ -233,6 +241,14 @@ export interface OrdersCreateResponse {
 }
 
 export type OrdersCreateResponseBody = { issues?: Issue[] } | { meta?: object; order: Order };
+
+export interface OrdersDestroyRequest {
+  query: OrdersDestroyRequestQuery;
+}
+
+export interface OrdersDestroyRequestQuery {
+  include?: OrderInclude;
+}
 
 export type OrdersDestroyResponse = never;
 

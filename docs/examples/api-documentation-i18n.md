@@ -24,12 +24,12 @@ Using built-in I18n for translatable API documentation
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| name | string |  |  |
-| description | text | ✓ |  |
-| status | string | ✓ | active |
-| priority | string | ✓ | medium |
-| deadline | date | ✓ |  |
 | created_at | datetime |  |  |
+| deadline | date | ✓ |  |
+| description | text | ✓ |  |
+| name | string |  |  |
+| priority | string | ✓ | medium |
+| status | string | ✓ | active |
 | updated_at | datetime |  |  |
 
 </details>
@@ -79,24 +79,24 @@ GET /wise_tiger/projects
 {
   "projects": [
     {
-      "id": "412aea8f-7fad-4955-8f3a-c4f706c11693",
+      "id": "4079e8f6-a46b-4463-875a-8f832c64d554",
       "name": "Website Redesign",
       "description": "Complete overhaul of the company website",
       "status": "active",
       "priority": "high",
       "deadline": null,
-      "createdAt": "2025-12-10T10:35:26.951Z",
-      "updatedAt": "2025-12-10T10:35:26.951Z"
+      "createdAt": "2025-12-18T13:21:02.604Z",
+      "updatedAt": "2025-12-18T13:21:02.604Z"
     },
     {
-      "id": "62424e42-0a01-4940-addb-43774e3dce01",
+      "id": "80cf6b0b-eb1d-47dd-8932-5124eefcf026",
       "name": "Mobile App",
       "description": "Native iOS and Android apps",
       "status": "paused",
       "priority": "medium",
       "deadline": null,
-      "createdAt": "2025-12-10T10:35:26.952Z",
-      "updatedAt": "2025-12-10T10:35:26.952Z"
+      "createdAt": "2025-12-18T13:21:02.605Z",
+      "updatedAt": "2025-12-18T13:21:02.605Z"
     }
   ],
   "pagination": {
@@ -117,7 +117,7 @@ GET /wise_tiger/projects
 **Request**
 
 ```http
-GET /wise_tiger/projects/7a0fa960-99cb-4d7d-9b56-9a01e432fd20
+GET /wise_tiger/projects/61e4608d-1201-48f5-ab03-c0d53d1e14bd
 ```
 
 **Response** `200`
@@ -125,14 +125,14 @@ GET /wise_tiger/projects/7a0fa960-99cb-4d7d-9b56-9a01e432fd20
 ```json
 {
   "project": {
-    "id": "7a0fa960-99cb-4d7d-9b56-9a01e432fd20",
+    "id": "61e4608d-1201-48f5-ab03-c0d53d1e14bd",
     "name": "API Integration",
     "description": "Connect to third-party services",
     "status": "active",
     "priority": "critical",
     "deadline": "2024-06-01",
-    "createdAt": "2025-12-10T10:35:26.961Z",
-    "updatedAt": "2025-12-10T10:35:26.961Z"
+    "createdAt": "2025-12-18T13:21:02.613Z",
+    "updatedAt": "2025-12-18T13:21:02.613Z"
   }
 }
 ```
@@ -164,14 +164,14 @@ Content-Type: application/json
 ```json
 {
   "project": {
-    "id": "3622ffac-4225-41cb-a7fd-38ae26d37e47",
+    "id": "8d4a5f7e-7e35-4be9-a3d3-071041d7e533",
     "name": "New Feature",
     "description": "Implement the new dashboard",
     "status": "active",
     "priority": "high",
     "deadline": "2024-03-15",
-    "createdAt": "2025-12-10T10:35:26.971Z",
-    "updatedAt": "2025-12-10T10:35:26.971Z"
+    "createdAt": "2025-12-18T13:21:02.625Z",
+    "updatedAt": "2025-12-18T13:21:02.625Z"
   }
 }
 ```

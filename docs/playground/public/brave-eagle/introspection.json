@@ -3,7 +3,15 @@
   "info": {
     "title": "Task Management API",
     "version": "1.0.0",
-    "description": "API for managing tasks and projects"
+    "description": "API for managing tasks and projects",
+    "contact": {
+      "name": "API Support",
+      "email": "support@example.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
   },
   "types": {
     "issue": {
@@ -720,6 +728,14 @@
             "Tasks"
           ],
           "operation_id": "deleteTask",
+          "request": {
+            "query": {
+              "include": {
+                "type": "task_include",
+                "optional": true
+              }
+            }
+          },
           "response": {
             "no_content": true
           }

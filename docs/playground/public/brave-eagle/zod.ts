@@ -169,6 +169,14 @@ export const TasksUpdateResponseSchema = z.object({
   body: TasksUpdateResponseBodySchema
 });
 
+export const TasksDestroyRequestQuerySchema = z.object({
+  include: TaskIncludeSchema.optional()
+});
+
+export const TasksDestroyRequestSchema = z.object({
+  query: TasksDestroyRequestQuerySchema
+});
+
 export const TasksDestroyResponse = z.never();
 
 export const TasksArchiveRequestQuerySchema = z.object({
@@ -309,6 +317,14 @@ export interface TasksCreateResponse {
 }
 
 export type TasksCreateResponseBody = { issues?: Issue[] } | { meta?: object; task: Task };
+
+export interface TasksDestroyRequest {
+  query: TasksDestroyRequestQuery;
+}
+
+export interface TasksDestroyRequestQuery {
+  include?: TaskInclude;
+}
 
 export type TasksDestroyResponse = never;
 

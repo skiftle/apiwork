@@ -3,7 +3,7 @@ export interface Comment {
   body?: string;
   commentable?: CommentCommentable;
   createdAt?: string;
-  id?: unknown;
+  id?: string;
 }
 
 export type CommentCommentable = { commentableType: 'post' } & Post | { commentableType: 'video' } & Video | { commentableType: 'image' } & Image;
@@ -49,6 +49,14 @@ export interface CommentsCreateResponse {
 }
 
 export type CommentsCreateResponseBody = { comment: Comment; meta?: object } | { issues?: Issue[] };
+
+export interface CommentsDestroyRequest {
+  query: CommentsDestroyRequestQuery;
+}
+
+export interface CommentsDestroyRequestQuery {
+  include?: CommentInclude;
+}
 
 export type CommentsDestroyResponse = never;
 
@@ -105,7 +113,7 @@ export interface Image {
   comments?: unknown[];
   createdAt?: string;
   height?: number;
-  id?: unknown;
+  id?: string;
   title?: string;
   url?: string;
   width?: number;
@@ -161,7 +169,7 @@ export interface Post {
   body?: string;
   comments?: unknown[];
   createdAt?: string;
-  id?: unknown;
+  id?: string;
   title?: string;
 }
 
@@ -198,7 +206,7 @@ export interface Video {
   comments?: unknown[];
   createdAt?: string;
   duration?: number;
-  id?: unknown;
+  id?: string;
   title?: string;
   url?: string;
 }

@@ -24,16 +24,16 @@ Single Table Inheritance with automatic variant serialization and TypeScript uni
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| type | string |  |  |
 | brand | string |  |  |
-| model | string |  |  |
-| year | integer | ✓ |  |
 | color | string | ✓ |  |
+| created_at | datetime |  |  |
 | doors | integer | ✓ |  |
 | engine_cc | integer | ✓ |  |
+| model | string |  |  |
 | payload_capacity | decimal | ✓ |  |
-| created_at | datetime |  |  |
+| type | string |  |  |
 | updated_at | datetime |  |  |
+| year | integer | ✓ |  |
 
 </details>
 
@@ -101,7 +101,7 @@ GET /mighty_wolf/vehicles
   "vehicles": [
     {
       "type": "car",
-      "id": "213a6756-9f68-4a9c-89f1-645656493fd4",
+      "id": "8f56fbba-c86e-4a2e-8716-6829339d9d58",
       "brand": "Volvo",
       "model": "EX30",
       "year": null,
@@ -110,7 +110,7 @@ GET /mighty_wolf/vehicles
     },
     {
       "type": "motorcycle",
-      "id": "632912b9-87da-4b93-87aa-3cff910e6dfa",
+      "id": "5584c7fd-8eb8-444f-89ab-1cfc5dc331a7",
       "brand": "Harley-Davidson",
       "model": "Street Glide",
       "year": null,
@@ -119,7 +119,7 @@ GET /mighty_wolf/vehicles
     },
     {
       "type": "truck",
-      "id": "49b1c1ed-ac43-4714-aec3-651f5ff972b9",
+      "id": "bac70bfd-4630-460f-94d7-929e337b68cd",
       "brand": "Ford",
       "model": "F-150",
       "year": null,
@@ -145,7 +145,7 @@ GET /mighty_wolf/vehicles
 **Request**
 
 ```http
-GET /mighty_wolf/vehicles/f68fc3e3-41f0-4c9c-a0c2-812b991fb63d
+GET /mighty_wolf/vehicles/e3bc32e9-4fc5-4013-aaff-4e4b08919673
 ```
 
 **Response** `200`
@@ -154,7 +154,7 @@ GET /mighty_wolf/vehicles/f68fc3e3-41f0-4c9c-a0c2-812b991fb63d
 {
   "vehicle": {
     "type": "car",
-    "id": "f68fc3e3-41f0-4c9c-a0c2-812b991fb63d",
+    "id": "e3bc32e9-4fc5-4013-aaff-4e4b08919673",
     "brand": "Volvo",
     "model": "EX30",
     "year": 2024,
@@ -192,7 +192,7 @@ Content-Type: application/json
 {
   "vehicle": {
     "type": "car",
-    "id": "8aeb5fba-c6ca-4b49-a712-0ab1dab5a5c1",
+    "id": "a266376e-65ae-4a17-87a6-ab6afc694347",
     "brand": "Volvo",
     "model": "EX30",
     "year": 2024,
@@ -230,7 +230,7 @@ Content-Type: application/json
 {
   "vehicle": {
     "type": "motorcycle",
-    "id": "4eb469ad-d418-4d41-93da-3862c4b42fe2",
+    "id": "cecac8e1-0b63-4887-976e-5f86c4430ad6",
     "brand": "Harley-Davidson",
     "model": "Street Glide",
     "year": 2023,
@@ -268,7 +268,7 @@ Content-Type: application/json
 {
   "vehicle": {
     "type": "truck",
-    "id": "dde42286-4b1e-4cb8-9d34-5d39f1db9bf2",
+    "id": "23f48441-f5eb-4b9c-9b9a-ccf088ea7aa4",
     "brand": "Ford",
     "model": "F-150",
     "year": 2024,

@@ -50,11 +50,17 @@ paths:
                     "$ref": "#/components/schemas/invoice"
                 required:
                 - invoice
-  invoices/:id:
+  invoices/{id}:
     get:
       operationId: invoicesShow
       tags:
       - Invoices
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: Successful response
@@ -71,6 +77,12 @@ paths:
       operationId: invoicesUpdate
       tags:
       - Invoices
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         required: true
         content:
@@ -96,6 +108,12 @@ paths:
       operationId: invoicesDestroy
       tags:
       - Invoices
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         '204':
           description: No content

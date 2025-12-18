@@ -730,6 +730,14 @@
         "destroy": {
           "method": "delete",
           "path": "/:id",
+          "request": {
+            "query": {
+              "include": {
+                "type": "user_include",
+                "optional": true
+              }
+            }
+          },
           "response": {
             "no_content": true
           }
@@ -948,6 +956,14 @@
         "destroy": {
           "method": "delete",
           "path": "/:id",
+          "request": {
+            "query": {
+              "include": {
+                "type": "post_include",
+                "optional": true
+              }
+            }
+          },
           "response": {
             "no_content": true
           }

@@ -2,7 +2,7 @@ export interface Article {
   body?: string;
   category?: null | object;
   createdAt?: string;
-  id?: unknown;
+  id?: string;
   publishedOn?: string;
   rating?: number;
   status?: ArticleStatus;
@@ -73,6 +73,14 @@ export interface ArticlesCreateResponse {
 }
 
 export type ArticlesCreateResponseBody = { article: Article; meta?: object } | { issues?: Issue[] };
+
+export interface ArticlesDestroyRequest {
+  query: ArticlesDestroyRequestQuery;
+}
+
+export interface ArticlesDestroyRequestQuery {
+  include?: ArticleInclude;
+}
 
 export type ArticlesDestroyResponse = never;
 

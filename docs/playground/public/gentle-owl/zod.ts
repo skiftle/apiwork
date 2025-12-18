@@ -29,7 +29,7 @@ export const ImageSchema = z.object({
   comments: z.array(z.unknown()).optional(),
   createdAt: z.iso.datetime().optional(),
   height: z.number().int().optional(),
-  id: z.unknown().optional(),
+  id: z.string().optional(),
   title: z.string().optional(),
   url: z.string().optional(),
   width: z.number().int().optional()
@@ -85,7 +85,7 @@ export const PostSchema = z.object({
   body: z.string().optional(),
   comments: z.array(z.unknown()).optional(),
   createdAt: z.iso.datetime().optional(),
-  id: z.unknown().optional(),
+  id: z.string().optional(),
   title: z.string().optional()
 });
 
@@ -120,7 +120,7 @@ export const VideoSchema = z.object({
   comments: z.array(z.unknown()).optional(),
   createdAt: z.iso.datetime().optional(),
   duration: z.number().int().optional(),
-  id: z.unknown().optional(),
+  id: z.string().optional(),
   title: z.string().optional(),
   url: z.string().optional()
 });
@@ -180,7 +180,7 @@ export const CommentSchema = z.object({
   body: z.string().optional(),
   commentable: CommentCommentableSchema.optional(),
   createdAt: z.iso.datetime().optional(),
-  id: z.unknown().optional()
+  id: z.string().optional()
 });
 
 export const CommentsIndexRequestQuerySchema = z.object({
@@ -251,6 +251,14 @@ export const CommentsUpdateResponseSchema = z.object({
   body: CommentsUpdateResponseBodySchema
 });
 
+export const CommentsDestroyRequestQuerySchema = z.object({
+  include: CommentIncludeSchema.optional()
+});
+
+export const CommentsDestroyRequestSchema = z.object({
+  query: CommentsDestroyRequestQuerySchema
+});
+
 export const CommentsDestroyResponse = z.never();
 
 export interface Comment {
@@ -258,7 +266,7 @@ export interface Comment {
   body?: string;
   commentable?: CommentCommentable;
   createdAt?: string;
-  id?: unknown;
+  id?: string;
 }
 
 export type CommentCommentable = { commentableType: 'post' } & Post | { commentableType: 'video' } & Video | { commentableType: 'image' } & Image;
@@ -304,6 +312,14 @@ export interface CommentsCreateResponse {
 }
 
 export type CommentsCreateResponseBody = { comment: Comment; meta?: object } | { issues?: Issue[] };
+
+export interface CommentsDestroyRequest {
+  query: CommentsDestroyRequestQuery;
+}
+
+export interface CommentsDestroyRequestQuery {
+  include?: CommentInclude;
+}
 
 export type CommentsDestroyResponse = never;
 
@@ -360,7 +376,7 @@ export interface Image {
   comments?: unknown[];
   createdAt?: string;
   height?: number;
-  id?: unknown;
+  id?: string;
   title?: string;
   url?: string;
   width?: number;
@@ -416,7 +432,7 @@ export interface Post {
   body?: string;
   comments?: unknown[];
   createdAt?: string;
-  id?: unknown;
+  id?: string;
   title?: string;
 }
 
@@ -453,7 +469,7 @@ export interface Video {
   comments?: unknown[];
   createdAt?: string;
   duration?: number;
-  id?: unknown;
+  id?: string;
   title?: string;
   url?: string;
 }

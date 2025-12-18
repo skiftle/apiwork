@@ -24,10 +24,10 @@ How Apiwork captures ActiveRecord validation errors and presents them in a unifi
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| email | string |  |  |
-| username | string |  |  |
 | created_at | datetime |  |  |
+| email | string |  |  |
 | updated_at | datetime |  |  |
+| username | string |  |  |
 
 </details>
 
@@ -41,11 +41,11 @@ How Apiwork captures ActiveRecord validation errors and presents them in a unifi
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| user_id | string |  |  |
 | bio | text | ✓ |  |
-| website | string | ✓ |  |
 | created_at | datetime |  |  |
 | updated_at | datetime |  |  |
+| user_id | string |  |  |
+| website | string | ✓ |  |
 
 </details>
 
@@ -59,10 +59,10 @@ How Apiwork captures ActiveRecord validation errors and presents them in a unifi
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| user_id | string |  |  |
-| title | string |  |  |
 | created_at | datetime |  |  |
+| title | string |  |  |
 | updated_at | datetime |  |  |
+| user_id | string |  |  |
 
 </details>
 
@@ -76,10 +76,10 @@ How Apiwork captures ActiveRecord validation errors and presents them in a unifi
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| post_id | string |  |  |
-| body | string |  |  |
 | author | string |  |  |
+| body | string |  |  |
 | created_at | datetime |  |  |
+| post_id | string |  |  |
 | updated_at | datetime |  |  |
 
 </details>
@@ -162,15 +162,15 @@ Content-Type: application/json
 ```json
 {
   "user": {
-    "id": "39a5cfed-69fb-4202-837c-9ed8f5f0eb04",
-    "createdAt": "2025-12-10T10:35:26.691Z",
-    "updatedAt": "2025-12-10T10:35:26.691Z",
+    "id": "34a61b6a-7f27-4eb2-aeda-e00733bab25f",
+    "createdAt": "2025-12-18T13:21:02.345Z",
+    "updatedAt": "2025-12-18T13:21:02.345Z",
     "email": "john@example.com",
     "username": "johndoe",
     "profile": {
-      "id": "b6140b35-8a84-4c11-ad09-8a91d32507cf",
-      "createdAt": "2025-12-10T10:35:26.692Z",
-      "updatedAt": "2025-12-10T10:35:26.692Z",
+      "id": "eeab8a00-4361-4c8b-9d5f-1c7f5db8f5f2",
+      "createdAt": "2025-12-18T13:21:02.346Z",
+      "updatedAt": "2025-12-18T13:21:02.346Z",
       "bio": "Software developer",
       "website": "https://example.com"
     },
@@ -369,24 +369,24 @@ Content-Type: application/json
 ```json
 {
   "user": {
-    "id": "e35cfee8-beb8-4156-8e94-d1ffcbb7e66e",
-    "createdAt": "2025-12-10T10:35:26.725Z",
-    "updatedAt": "2025-12-10T10:35:26.725Z",
+    "id": "be4e8f11-c31e-4a86-a091-982230346f73",
+    "createdAt": "2025-12-18T13:21:02.382Z",
+    "updatedAt": "2025-12-18T13:21:02.382Z",
     "email": "deep@example.com",
     "username": "deepuser",
     "profile": null,
     "posts": [
       {
-        "id": "5642878b-6b8c-4011-a713-26e52f669f34",
+        "id": "c8c03f13-f0e1-496e-b439-11f819aaca73",
         "title": "My First Post",
         "comments": [
           {
-            "id": "dcf5266a-52ee-44f3-8f8b-60a61ed08ef7",
+            "id": "c960a76f-8a12-42b8-a346-b8390d210ef0",
             "body": "Great post!",
             "author": "Jane"
           },
           {
-            "id": "5acba403-fa07-49c7-b622-56e20d7a6f0e",
+            "id": "18a414da-5ec2-437d-ab3f-00dd316df0f8",
             "body": "Thanks for sharing",
             "author": "Bob"
           }

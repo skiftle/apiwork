@@ -24,9 +24,9 @@ Complex queries with string patterns, numeric ranges, and logical operators
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
+| created_at | datetime |  |  |
 | name | string |  |  |
 | slug | string |  |  |
-| created_at | datetime |  |  |
 | updated_at | datetime |  |  |
 
 </details>
@@ -41,15 +41,15 @@ Complex queries with string patterns, numeric ranges, and logical operators
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| category_id | string | ✓ |  |
-| title | string |  |  |
 | body | text | ✓ |  |
-| status | string | ✓ | draft |
-| view_count | integer | ✓ | 0 |
-| rating | decimal | ✓ |  |
-| published_on | date | ✓ |  |
+| category_id | string | ✓ |  |
 | created_at | datetime |  |  |
+| published_on | date | ✓ |  |
+| rating | decimal | ✓ |  |
+| status | string | ✓ | draft |
+| title | string |  |  |
 | updated_at | datetime |  |  |
+| view_count | integer | ✓ | 0 |
 
 </details>
 
@@ -96,26 +96,26 @@ GET /bold_falcon/articles
 {
   "articles": [
     {
-      "id": "d05ea2f2-7863-4425-9793-3aacc13a2fce",
+      "id": "4bcb2785-9a76-49ea-a1b8-05f7af56f7ab",
       "title": "Published Article",
       "body": null,
       "status": "published",
       "viewCount": 0,
       "rating": null,
       "publishedOn": null,
-      "createdAt": "2025-12-10T10:35:25.766Z",
-      "updatedAt": "2025-12-10T10:35:25.766Z"
+      "createdAt": "2025-12-18T13:21:01.494Z",
+      "updatedAt": "2025-12-18T13:21:01.494Z"
     },
     {
-      "id": "c12cfb48-7b35-4b71-a714-98bce4772626",
+      "id": "4a90e9d0-baa6-49d5-91d5-88be29185734",
       "title": "Draft Article",
       "body": null,
       "status": "draft",
       "viewCount": 0,
       "rating": null,
       "publishedOn": null,
-      "createdAt": "2025-12-10T10:35:25.770Z",
-      "updatedAt": "2025-12-10T10:35:25.770Z"
+      "createdAt": "2025-12-18T13:21:01.495Z",
+      "updatedAt": "2025-12-18T13:21:01.495Z"
     }
   ],
   "pagination": {
@@ -136,7 +136,7 @@ GET /bold_falcon/articles
 **Request**
 
 ```http
-GET /bold_falcon/articles/d8f8b51d-97aa-4899-b5f7-5772f4e10299
+GET /bold_falcon/articles/3714030a-4383-4436-82fb-e22325e238fa
 ```
 
 **Response** `200`
@@ -144,15 +144,15 @@ GET /bold_falcon/articles/d8f8b51d-97aa-4899-b5f7-5772f4e10299
 ```json
 {
   "article": {
-    "id": "d8f8b51d-97aa-4899-b5f7-5772f4e10299",
+    "id": "3714030a-4383-4436-82fb-e22325e238fa",
     "title": "Getting Started with Rails",
     "body": null,
     "status": "published",
     "viewCount": 0,
     "rating": null,
     "publishedOn": null,
-    "createdAt": "2025-12-10T10:35:25.911Z",
-    "updatedAt": "2025-12-10T10:35:25.911Z"
+    "createdAt": "2025-12-18T13:21:01.623Z",
+    "updatedAt": "2025-12-18T13:21:01.623Z"
   }
 }
 ```
@@ -183,15 +183,15 @@ Content-Type: application/json
 ```json
 {
   "article": {
-    "id": "914dd912-cca8-4c71-8427-416f9243eb5f",
+    "id": "aa89ce1c-c6c8-4fb2-9c2c-85478a0d1e4c",
     "title": "Getting Started with Rails",
     "body": "A comprehensive guide to Ruby on Rails",
     "status": "draft",
     "viewCount": 0,
     "rating": null,
     "publishedOn": "2024-01-15",
-    "createdAt": "2025-12-10T10:35:25.926Z",
-    "updatedAt": "2025-12-10T10:35:25.926Z"
+    "createdAt": "2025-12-18T13:21:01.639Z",
+    "updatedAt": "2025-12-18T13:21:01.639Z"
   }
 }
 ```
@@ -213,15 +213,15 @@ GET /bold_falcon/articles?filter[status][eq]=published
 {
   "articles": [
     {
-      "id": "471b1a7c-ad2f-4d58-89e9-ca0a43ae33a5",
+      "id": "dabb2895-4638-4022-8032-59c347c30f9c",
       "title": "Published Article",
       "body": null,
       "status": "published",
       "viewCount": 0,
       "rating": null,
       "publishedOn": null,
-      "createdAt": "2025-12-10T10:35:25.929Z",
-      "updatedAt": "2025-12-10T10:35:25.929Z"
+      "createdAt": "2025-12-18T13:21:01.642Z",
+      "updatedAt": "2025-12-18T13:21:01.642Z"
     }
   ],
   "pagination": {
@@ -251,15 +251,15 @@ GET /bold_falcon/articles?filter[title][contains]=Rails
 {
   "articles": [
     {
-      "id": "57e21e3c-2e1b-4526-bde4-0cc593cf7037",
+      "id": "c8d8842c-eea9-42f7-9d50-19f4da2fe1a4",
       "title": "Getting Started with Rails",
       "body": null,
       "status": "published",
       "viewCount": 0,
       "rating": null,
       "publishedOn": null,
-      "createdAt": "2025-12-10T10:35:25.944Z",
-      "updatedAt": "2025-12-10T10:35:25.944Z"
+      "createdAt": "2025-12-18T13:21:01.655Z",
+      "updatedAt": "2025-12-18T13:21:01.655Z"
     }
   ],
   "pagination": {
@@ -289,26 +289,26 @@ GET /bold_falcon/articles?sort[published_on]=desc
 {
   "articles": [
     {
-      "id": "36823fd9-842c-44c0-99c3-8685d034ae9f",
+      "id": "f530be96-b0c3-4884-96e8-a75114fbe1bf",
       "title": "New Article",
       "body": null,
       "status": "published",
       "viewCount": 0,
       "rating": null,
       "publishedOn": "2024-06-01",
-      "createdAt": "2025-12-10T10:35:25.956Z",
-      "updatedAt": "2025-12-10T10:35:25.956Z"
+      "createdAt": "2025-12-18T13:21:01.668Z",
+      "updatedAt": "2025-12-18T13:21:01.668Z"
     },
     {
-      "id": "57e753b5-7aa0-47a1-ac81-fa8e08a0d737",
+      "id": "77c1d9c2-fb02-4c25-9e9f-78dec328b39f",
       "title": "Old Article",
       "body": null,
       "status": "published",
       "viewCount": 0,
       "rating": null,
       "publishedOn": "2024-01-01",
-      "createdAt": "2025-12-10T10:35:25.955Z",
-      "updatedAt": "2025-12-10T10:35:25.955Z"
+      "createdAt": "2025-12-18T13:21:01.666Z",
+      "updatedAt": "2025-12-18T13:21:01.666Z"
     }
   ],
   "pagination": {
@@ -338,37 +338,37 @@ GET /bold_falcon/articles?sort[status]=asc&sort[published_on]=desc
 {
   "articles": [
     {
-      "id": "ca605bc7-f00f-454a-941e-7354184000e1",
+      "id": "9681d3bc-fcb8-4cb5-a2cc-703f1bc22d4e",
       "title": "Draft 2",
       "body": null,
       "status": "draft",
       "viewCount": 0,
       "rating": null,
       "publishedOn": "2024-03-01",
-      "createdAt": "2025-12-10T10:35:25.965Z",
-      "updatedAt": "2025-12-10T10:35:25.965Z"
+      "createdAt": "2025-12-18T13:21:01.677Z",
+      "updatedAt": "2025-12-18T13:21:01.677Z"
     },
     {
-      "id": "3d1680d8-57dd-4734-b19b-e34db9c592e4",
+      "id": "edfc5837-b147-4db9-88de-e3429a6d6de6",
       "title": "Draft 1",
       "body": null,
       "status": "draft",
       "viewCount": 0,
       "rating": null,
       "publishedOn": "2024-01-01",
-      "createdAt": "2025-12-10T10:35:25.963Z",
-      "updatedAt": "2025-12-10T10:35:25.963Z"
+      "createdAt": "2025-12-18T13:21:01.675Z",
+      "updatedAt": "2025-12-18T13:21:01.675Z"
     },
     {
-      "id": "672b3489-5163-4a10-b40b-eccd93a5227c",
+      "id": "21fb81df-9997-4b3e-8379-b650f51f2159",
       "title": "Published 1",
       "body": null,
       "status": "published",
       "viewCount": 0,
       "rating": null,
       "publishedOn": "2024-02-01",
-      "createdAt": "2025-12-10T10:35:25.964Z",
-      "updatedAt": "2025-12-10T10:35:25.964Z"
+      "createdAt": "2025-12-18T13:21:01.676Z",
+      "updatedAt": "2025-12-18T13:21:01.676Z"
     }
   ],
   "pagination": {
@@ -398,15 +398,15 @@ GET /bold_falcon/articles?filter[published_on][gte]=2024-01-01&filter[published_
 {
   "articles": [
     {
-      "id": "35f157b0-6d13-45a3-bd79-3e0384ad274f",
+      "id": "5ca02d34-c4ad-4b44-b72f-834e95fcc4c7",
       "title": "January Article",
       "body": null,
       "status": "published",
       "viewCount": 0,
       "rating": null,
       "publishedOn": "2024-01-15",
-      "createdAt": "2025-12-10T10:35:25.972Z",
-      "updatedAt": "2025-12-10T10:35:25.972Z"
+      "createdAt": "2025-12-18T13:21:01.685Z",
+      "updatedAt": "2025-12-18T13:21:01.685Z"
     }
   ],
   "pagination": {
@@ -436,15 +436,15 @@ GET /bold_falcon/articles?filter[view_count][gt]=100
 {
   "articles": [
     {
-      "id": "f0448885-cefa-45d8-a3a2-2d20e6fbf7d0",
+      "id": "e89461be-4dbe-4485-9c29-3176e0d2f713",
       "title": "Popular Article",
       "body": null,
       "status": "published",
       "viewCount": 500,
       "rating": null,
       "publishedOn": null,
-      "createdAt": "2025-12-10T10:35:25.986Z",
-      "updatedAt": "2025-12-10T10:35:25.986Z"
+      "createdAt": "2025-12-18T13:21:01.701Z",
+      "updatedAt": "2025-12-18T13:21:01.701Z"
     }
   ],
   "pagination": {
@@ -474,26 +474,26 @@ GET /bold_falcon/articles?filter[status][eq]=published&sort[view_count]=desc
 {
   "articles": [
     {
-      "id": "211347f9-68cb-44a8-b3a8-e45f62958b2d",
+      "id": "0020a5a3-b04c-4ac6-b892-13413e43c700",
       "title": "Popular Published",
       "body": null,
       "status": "published",
       "viewCount": 1000,
       "rating": null,
       "publishedOn": null,
-      "createdAt": "2025-12-10T10:35:26.000Z",
-      "updatedAt": "2025-12-10T10:35:26.000Z"
+      "createdAt": "2025-12-18T13:21:01.716Z",
+      "updatedAt": "2025-12-18T13:21:01.716Z"
     },
     {
-      "id": "e5f434de-df0d-4b17-85b0-08ce55b01f22",
+      "id": "9c0eb673-267f-435b-94d6-16453ad4f0e0",
       "title": "Less Popular Published",
       "body": null,
       "status": "published",
       "viewCount": 100,
       "rating": null,
       "publishedOn": null,
-      "createdAt": "2025-12-10T10:35:26.002Z",
-      "updatedAt": "2025-12-10T10:35:26.002Z"
+      "createdAt": "2025-12-18T13:21:01.718Z",
+      "updatedAt": "2025-12-18T13:21:01.718Z"
     }
   ],
   "pagination": {

@@ -555,6 +555,14 @@
         "destroy": {
           "method": "delete",
           "path": "/:id",
+          "request": {
+            "query": {
+              "include": {
+                "type": "invoice_include",
+                "optional": true
+              }
+            }
+          },
           "response": {
             "no_content": true
           }

@@ -24,11 +24,11 @@ Transform values on input/output and handle nil/empty string conversion
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| name | string |  |  |
-| email | string | ✓ |  |
-| phone | string | ✓ |  |
-| notes | string | ✓ |  |
 | created_at | datetime |  |  |
+| email | string | ✓ |  |
+| name | string |  |  |
+| notes | string | ✓ |  |
+| phone | string | ✓ |  |
 | updated_at | datetime |  |  |
 
 </details>
@@ -81,7 +81,7 @@ Content-Type: application/json
 ```json
 {
   "contact": {
-    "id": "1c8debbd-77aa-4b6e-a4e9-ee2e1b80d366",
+    "id": "cae60423-7490-48b8-b8dc-2f669620a664",
     "name": "John Doe",
     "email": "john.doe@example.com",
     "phone": "",
@@ -98,7 +98,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-GET /swift_fox/contacts/32888976-7e30-4f0d-b615-4c2a6872ef53
+GET /swift_fox/contacts/650e800b-1e7e-4dec-8a58-2e65f68a5a30
 ```
 
 **Response** `200`
@@ -106,7 +106,7 @@ GET /swift_fox/contacts/32888976-7e30-4f0d-b615-4c2a6872ef53
 ```json
 {
   "contact": {
-    "id": "32888976-7e30-4f0d-b615-4c2a6872ef53",
+    "id": "650e800b-1e7e-4dec-8a58-2e65f68a5a30",
     "name": "Jane Doe",
     "email": "jane@example.com",
     "phone": "",

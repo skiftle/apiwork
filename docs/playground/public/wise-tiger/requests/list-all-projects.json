@@ -8,24 +8,24 @@
     "body": {
       "projects": [
         {
-          "id": "412aea8f-7fad-4955-8f3a-c4f706c11693",
+          "id": "4079e8f6-a46b-4463-875a-8f832c64d554",
           "name": "Website Redesign",
           "description": "Complete overhaul of the company website",
           "status": "active",
           "priority": "high",
           "deadline": null,
-          "createdAt": "2025-12-10T10:35:26.951Z",
-          "updatedAt": "2025-12-10T10:35:26.951Z"
+          "createdAt": "2025-12-18T13:21:02.604Z",
+          "updatedAt": "2025-12-18T13:21:02.604Z"
         },
         {
-          "id": "62424e42-0a01-4940-addb-43774e3dce01",
+          "id": "80cf6b0b-eb1d-47dd-8932-5124eefcf026",
           "name": "Mobile App",
           "description": "Native iOS and Android apps",
           "status": "paused",
           "priority": "medium",
           "deadline": null,
-          "createdAt": "2025-12-10T10:35:26.952Z",
-          "updatedAt": "2025-12-10T10:35:26.952Z"
+          "createdAt": "2025-12-18T13:21:02.605Z",
+          "updatedAt": "2025-12-18T13:21:02.605Z"
         }
       ],
       "pagination": {

@@ -159,6 +159,14 @@ export interface PostsCreateResponse {
 
 export type PostsCreateResponseBody = { issues?: Issue[] } | { meta?: object; post: Post };
 
+export interface PostsDestroyRequest {
+  query: PostsDestroyRequestQuery;
+}
+
+export interface PostsDestroyRequestQuery {
+  include?: PostInclude;
+}
+
 export type PostsDestroyResponse = never;
 
 export interface PostsIndexRequest {
@@ -286,6 +294,14 @@ export interface UsersCreateResponse {
 }
 
 export type UsersCreateResponseBody = { issues?: Issue[] } | { meta?: object; user: User };
+
+export interface UsersDestroyRequest {
+  query: UsersDestroyRequestQuery;
+}
+
+export interface UsersDestroyRequestQuery {
+  include?: UserInclude;
+}
 
 export type UsersDestroyResponse = never;
 

@@ -21,7 +21,7 @@
           "optional": true
         },
         "id": {
-          "type": "unknown",
+          "type": "string",
           "optional": true
         }
       }
@@ -129,7 +129,7 @@
           "optional": true
         },
         "id": {
-          "type": "unknown",
+          "type": "string",
           "optional": true
         },
         "title": {
@@ -318,7 +318,7 @@
           "optional": true
         },
         "id": {
-          "type": "unknown",
+          "type": "string",
           "optional": true
         },
         "title": {
@@ -441,7 +441,7 @@
           "optional": true
         },
         "id": {
-          "type": "unknown",
+          "type": "string",
           "optional": true
         },
         "title": {
@@ -583,7 +583,9 @@
       "schema": {
         "type": "object",
         "shape": {
-          "id": {},
+          "id": {
+            "type": "string"
+          },
           "body": {
             "type": "text"
           },
@@ -804,6 +806,14 @@
         "destroy": {
           "method": "delete",
           "path": "/:id",
+          "request": {
+            "query": {
+              "include": {
+                "type": "comment_include",
+                "optional": true
+              }
+            }
+          },
           "response": {
             "no_content": true
           }

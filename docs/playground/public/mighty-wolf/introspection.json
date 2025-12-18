@@ -17,7 +17,7 @@
           "optional": true
         },
         "id": {
-          "type": "unknown",
+          "type": "string",
           "optional": true
         },
         "model": {
@@ -175,7 +175,7 @@
           "optional": true
         },
         "id": {
-          "type": "unknown",
+          "type": "string",
           "optional": true
         },
         "model": {
@@ -352,7 +352,7 @@
           "optional": true
         },
         "id": {
-          "type": "unknown",
+          "type": "string",
           "optional": true
         },
         "model": {
@@ -620,7 +620,9 @@
       "schema": {
         "type": "object",
         "shape": {
-          "id": {},
+          "id": {
+            "type": "string"
+          },
           "brand": {
             "type": "string"
           },

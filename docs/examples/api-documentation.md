@@ -24,9 +24,9 @@ Document APIs with descriptions, examples, formats, and deprecation notices at e
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| name | string |  |  |
-| email | string |  |  |
 | created_at | datetime |  |  |
+| email | string |  |  |
+| name | string |  |  |
 | updated_at | datetime |  |  |
 
 </details>
@@ -41,15 +41,15 @@ Document APIs with descriptions, examples, formats, and deprecation notices at e
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| title | string |  |  |
-| description | text | ✓ |  |
-| status | string | ✓ | pending |
-| priority | string | ✓ | medium |
-| due_date | datetime | ✓ |  |
 | archived | boolean | ✓ |  |
-| created_at | datetime |  |  |
-| updated_at | datetime |  |  |
 | assignee_id | string | ✓ |  |
+| created_at | datetime |  |  |
+| description | text | ✓ |  |
+| due_date | datetime | ✓ |  |
+| priority | string | ✓ | medium |
+| status | string | ✓ | pending |
+| title | string |  |  |
+| updated_at | datetime |  |  |
 
 </details>
 
@@ -63,10 +63,10 @@ Document APIs with descriptions, examples, formats, and deprecation notices at e
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| task_id | string |  |  |
-| body | text |  |  |
 | author_name | string | ✓ |  |
+| body | text |  |  |
 | created_at | datetime |  |  |
+| task_id | string |  |  |
 | updated_at | datetime |  |  |
 
 </details>
@@ -118,26 +118,26 @@ GET /brave_eagle/tasks
 {
   "tasks": [
     {
-      "id": "d5269b50-123f-40a8-9aa5-4c2fd3952dcc",
+      "id": "460a1f36-4bce-4ac3-b942-65db2d0cbc7d",
       "title": "Write documentation",
       "description": "Complete the API reference guide",
       "status": "pending",
       "priority": "high",
       "dueDate": null,
       "archived": false,
-      "createdAt": "2025-12-10T10:35:26.069Z",
-      "updatedAt": "2025-12-10T10:35:26.069Z"
+      "createdAt": "2025-12-18T13:21:01.781Z",
+      "updatedAt": "2025-12-18T13:21:01.781Z"
     },
     {
-      "id": "43a7a1b6-5082-4e45-b1a5-f8d3f0d4d316",
+      "id": "10faa176-bee5-4a08-8771-df6e125f8621",
       "title": "Review pull request",
       "description": null,
       "status": "completed",
       "priority": "medium",
       "dueDate": null,
       "archived": false,
-      "createdAt": "2025-12-10T10:35:26.070Z",
-      "updatedAt": "2025-12-10T10:35:26.070Z"
+      "createdAt": "2025-12-18T13:21:01.783Z",
+      "updatedAt": "2025-12-18T13:21:01.783Z"
     }
   ],
   "pagination": {
@@ -158,7 +158,7 @@ GET /brave_eagle/tasks
 **Request**
 
 ```http
-GET /brave_eagle/tasks/9d5a79c8-7e83-406b-a493-09c5a5901572
+GET /brave_eagle/tasks/ff62888a-f7ae-48ea-a915-66cce57698df
 ```
 
 **Response** `404`
@@ -188,7 +188,7 @@ Content-Type: application/json
     "status": "pending",
     "priority": "high",
     "due_date": "2024-02-01",
-    "assignee_id": "f69f07c8-5775-4475-900c-6a72c26c5791"
+    "assignee_id": "c259cc03-6e9a-452a-ad78-c038a911fd06"
   }
 }
 ```
@@ -229,7 +229,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-PATCH /brave_eagle/tasks/8719fd49-4ec3-4e35-8610-f9c24d3783f3/archive
+PATCH /brave_eagle/tasks/0594f912-1524-46a7-a89f-b1d60b1dad63/archive
 ```
 
 **Response** `200`
@@ -237,15 +237,15 @@ PATCH /brave_eagle/tasks/8719fd49-4ec3-4e35-8610-f9c24d3783f3/archive
 ```json
 {
   "task": {
-    "id": "8719fd49-4ec3-4e35-8610-f9c24d3783f3",
+    "id": "0594f912-1524-46a7-a89f-b1d60b1dad63",
     "title": "Old task to archive",
     "description": null,
     "status": "completed",
     "priority": "medium",
     "dueDate": null,
     "archived": true,
-    "createdAt": "2025-12-10T10:35:26.107Z",
-    "updatedAt": "2025-12-10T10:35:26.112Z"
+    "createdAt": "2025-12-18T13:21:01.822Z",
+    "updatedAt": "2025-12-18T13:21:01.826Z"
   }
 }
 ```

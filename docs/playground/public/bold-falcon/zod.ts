@@ -8,7 +8,7 @@ export const ArticleSchema = z.object({
   body: z.string().optional(),
   category: z.object({}).nullable().optional(),
   createdAt: z.iso.datetime().optional(),
-  id: z.unknown().optional(),
+  id: z.string().optional(),
   publishedOn: z.iso.date().optional(),
   rating: z.number().optional(),
   status: ArticleStatusSchema.optional(),
@@ -243,13 +243,21 @@ export const ArticlesUpdateResponseSchema = z.object({
   body: ArticlesUpdateResponseBodySchema
 });
 
+export const ArticlesDestroyRequestQuerySchema = z.object({
+  include: ArticleIncludeSchema.optional()
+});
+
+export const ArticlesDestroyRequestSchema = z.object({
+  query: ArticlesDestroyRequestQuerySchema
+});
+
 export const ArticlesDestroyResponse = z.never();
 
 export interface Article {
   body?: string;
   category?: null | object;
   createdAt?: string;
-  id?: unknown;
+  id?: string;
   publishedOn?: string;
   rating?: number;
   status?: ArticleStatus;
@@ -320,6 +328,14 @@ export interface ArticlesCreateResponse {
 }
 
 export type ArticlesCreateResponseBody = { article: Article; meta?: object } | { issues?: Issue[] };
+
+export interface ArticlesDestroyRequest {
+  query: ArticlesDestroyRequestQuery;
+}
+
+export interface ArticlesDestroyRequestQuery {
+  include?: ArticleInclude;
+}
 
 export type ArticlesDestroyResponse = never;
 

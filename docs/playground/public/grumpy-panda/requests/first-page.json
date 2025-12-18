@@ -8,26 +8,26 @@
     "body": {
       "activities": [
         {
-          "id": "098ab9f8-a0c8-4717-9613-5d796d20a669",
-          "action": "post.delete",
-          "occurredAt": "2024-01-01T14:00:00.000Z",
-          "createdAt": "2025-12-10T10:35:26.606Z"
+          "id": "1dc81f7a-b9de-42a3-8c2a-06c5cc099751",
+          "action": "user.logout",
+          "occurredAt": "2024-01-01T11:00:00.000Z",
+          "createdAt": "2025-12-18T13:21:02.253Z"
         },
         {
-          "id": "9bdf793a-38db-404d-a3a3-c3dedbdebd5f",
+          "id": "5db4a993-502e-40b9-9f21-743a36375539",
+          "action": "post.create",
+          "occurredAt": "2024-01-01T12:00:00.000Z",
+          "createdAt": "2025-12-18T13:21:02.253Z"
+        },
+        {
+          "id": "78ce5077-2596-4126-a076-9f15ca5e9903",
           "action": "post.update",
           "occurredAt": "2024-01-01T13:00:00.000Z",
-          "createdAt": "2025-12-10T10:35:26.605Z"
-        },
-        {
-          "id": "cbd01aed-0ccf-4ebf-ba12-7870a8a71702",
-          "action": "user.login",
-          "occurredAt": "2024-01-01T10:00:00.000Z",
-          "createdAt": "2025-12-10T10:35:26.601Z"
+          "createdAt": "2025-12-18T13:21:02.254Z"
         }
       ],
       "pagination": {
-        "nextCursor": "eyJpZCI6ImNiZDAxYWVkLTBjY2YtNGViZi1iYTEyLTc4NzBhOGE3MTcwMiJ9",
+        "nextCursor": "eyJpZCI6Ijc4Y2U1MDc3LTI1OTYtNDEyNi1hMDc2LTlmMTVjYTVlOTkwMyJ9",
         "prevCursor": null
       }
     }

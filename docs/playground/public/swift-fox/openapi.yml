@@ -78,11 +78,17 @@ paths:
                     type: array
                     items:
                       "$ref": "#/components/schemas/issue"
-  contacts/:id:
+  contacts/{id}:
     get:
       operationId: contactsShow
       tags:
       - Contacts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: Successful response
@@ -102,6 +108,12 @@ paths:
       operationId: contactsUpdate
       tags:
       - Contacts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         required: true
         content:
@@ -139,6 +151,12 @@ paths:
       operationId: contactsDestroy
       tags:
       - Contacts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         '204':
           description: No content

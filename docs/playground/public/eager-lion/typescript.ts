@@ -82,6 +82,14 @@ export interface InvoicesCreateResponse {
 
 export type InvoicesCreateResponseBody = { invoice: Invoice; meta?: object } | { issues?: Issue[] };
 
+export interface InvoicesDestroyRequest {
+  query: InvoicesDestroyRequestQuery;
+}
+
+export interface InvoicesDestroyRequestQuery {
+  include?: InvoiceInclude;
+}
+
 export type InvoicesDestroyResponse = never;
 
 export interface InvoicesIndexRequest {
