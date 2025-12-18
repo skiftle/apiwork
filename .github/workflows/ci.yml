@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
@@ -18,19 +18,13 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
           bundler-cache: true
-
-      - name: Security audit dependencies
-        run: bundle exec bundler-audit --update
-
-      - name: Run RuboCop
-        run: bundle exec rubocop --parallel
+      - run: bundle exec bundler-audit --update
+      - run: bundle exec rubocop --parallel
 
   test:
     name: Test (Ruby ${{ matrix.ruby }})
@@ -46,21 +40,14 @@ jobs:
             experimental: false
           - ruby: '3.4'
             experimental: true
-
     steps:
-      - uses: actions/checkout@v6
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
-
-      - name: Set up database
-        run: RAILS_ENV=test bundle exec rake -f spec/dummy/Rakefile db:schema:load
-
-      - name: Run tests
-        run: bundle exec rspec
+      - run: RAILS_ENV=test bundle exec rake -f spec/dummy/Rakefile db:schema:load
+      - run: bundle exec rspec
 
   generate-docs:
     name: Generate Docs
@@ -68,7 +55,7 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 2
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -76,14 +63,10 @@ jobs:
       - name: Check for relevant changes
         id: changes
         run: |
-          CHANGED=$(git diff --name-only HEAD~1 HEAD | grep -E '^(lib/|docs/playground/)' | grep -v 'docs/playground/public/' | grep -v 'docs/reference/' || true)
-          if [ -z "$CHANGED" ]; then
-            echo "skip=true" >> $GITHUB_OUTPUT
-            echo "No relevant changes, skipping generation"
-          else
+          if git diff --name-only HEAD~1 HEAD | grep -qE '^(lib/|docs/playground/(app|config|db)/)'; then
             echo "skip=false" >> $GITHUB_OUTPUT
-            echo "Changed files:"
-            echo "$CHANGED"
+          else
+            echo "skip=true" >> $GITHUB_OUTPUT
           fi
 
       - uses: ruby/setup-ruby@v1
@@ -93,14 +76,7 @@ jobs:
           bundler-cache: true
           working-directory: docs/playground
 
-      - name: Cache YARD
-        if: steps.changes.outputs.skip != 'true'
-        uses: actions/cache@v5
-        with:
-          path: .yardoc
-          key: yard-${{ hashFiles('lib/**/*.rb') }}
-
-      - name: Generate docs
+      - name: Generate and commit
         if: steps.changes.outputs.skip != 'true'
         env:
           RAILS_ENV: test
@@ -109,10 +85,7 @@ jobs:
           bundle exec rake db:setup
           bundle exec rake apiwork:docs:reference
           bundle exec rake docs:generate
-
-      - name: Commit and push
-        if: steps.changes.outputs.skip != 'true'
-        run: |
+          cd ../..
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add docs/reference/ docs/playground/public/ docs/examples/
@@ -125,17 +98,7 @@ jobs:
     needs: [lint, test, generate-docs]
     runs-on: ubuntu-latest
     steps:
-      - name: Check status
-        run: |
-          if [ "${{ needs.lint.result }}" != "success" ]; then
-            echo "Lint failed"
-            exit 1
-          fi
-          if [ "${{ needs.test.result }}" != "success" ]; then
-            echo "Tests failed"
-            exit 1
-          fi
-          if [ "${{ needs.generate-docs.result }}" != "success" ] && [ "${{ needs.generate-docs.result }}" != "skipped" ]; then
-            echo "Docs generation failed"
-            exit 1
-          fi
+      - run: |
+          [[ "${{ needs.lint.result }}" == "success" ]] || exit 1
+          [[ "${{ needs.test.result }}" == "success" ]] || exit 1
+          [[ "${{ needs.generate-docs.result }}" =~ ^(success|skipped)$ ]] || exit 1
