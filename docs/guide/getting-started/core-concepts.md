@@ -83,7 +83,7 @@ your controller.\
 If a response doesn't match, Apiwork logs it in development so you can
 catch it early.
 
-See the [Manual Contract Example](../examples/manual-contract.md) for a
+See the [Manual Contract Example](/examples/manual-contract.md) for a
 full contract covering every action.
 
 ## Controllers
@@ -192,7 +192,7 @@ The adapter also reads your models and database to infer column types,
 enum values, nullability, associations, and defaults. You decide what to
 expose; Apiwork fills in the rest.
 
-See the [Schema-Driven Example](../examples/schema-driven-contract.md)
+See the [Schema-Driven Example](/examples/schema-driven-contract.md)
 to view the full generated output.
 
 ## One Metadata Model

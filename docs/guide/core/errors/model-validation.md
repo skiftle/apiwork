@@ -336,4 +336,4 @@ Custom adapters need their own implementation.
 
 ## Examples
 
-See [Model Validation Errors](../../examples/model-validation-errors.md) for complete examples of validation error responses including nested associations.
+See [Model Validation Errors](/examples/model-validation-errors.md) for complete examples of validation error responses including nested associations.

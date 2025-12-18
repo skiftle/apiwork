@@ -306,5 +306,5 @@ For complex cases where you need to extend auto-generated types, [Type Merging](
 
 ## Examples
 
-- [API Documentation](../examples/api-documentation.md) — Complete example of documenting an API
-- [API Documentation i18n](../examples/api-documentation-i18n.md) — Multilingual documentation with locale files
+- [API Documentation](/examples/api-documentation.md) — Complete example of documenting an API
+- [API Documentation i18n](/examples/api-documentation-i18n.md) — Multilingual documentation with locale files

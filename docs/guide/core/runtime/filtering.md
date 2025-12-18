@@ -264,4 +264,4 @@ All errors include available options in the response to aid debugging.
 
 ## Examples
 
-See [Advanced Filtering](../../examples/advanced-filtering.md) for complex query examples including logical operators and association filtering.
+See [Advanced Filtering](/examples/advanced-filtering.md) for complex query examples including logical operators and association filtering.

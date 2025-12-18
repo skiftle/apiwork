@@ -488,5 +488,5 @@ If you need filtering or sorting on polymorphic associations, expose the associa
 
 ## Examples
 
-- [Nested Saves](../../examples/nested-saves.md) — Create/update/delete nested records in a single request
-- [Polymorphic Associations](../../examples/polymorphic-associations.md) — Handle belongs_to associations with multiple types
+- [Nested Saves](/examples/nested-saves.md) — Create/update/delete nested records in a single request
+- [Polymorphic Associations](/examples/polymorphic-associations.md) — Handle belongs_to associations with multiple types

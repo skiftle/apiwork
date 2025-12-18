@@ -451,4 +451,4 @@ attribute :ip_address, format: :ipv4
 
 ## Examples
 
-- [Encode/Decode/Empty](../../examples/encode-decode-empty.md) — Transform values during serialization and handle nil/empty conversion
+- [Encode/Decode/Empty](/examples/encode-decode-empty.md) — Transform values during serialization and handle nil/empty conversion

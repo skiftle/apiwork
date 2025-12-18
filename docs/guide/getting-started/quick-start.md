@@ -103,7 +103,7 @@ With minimal code, you got:
 5. **Pagination** — Built-in offset-based pagination
 6. **Documentation** — OpenAPI, TypeScript, and Zod specs generated automatically
 
-See [Schema-Driven Contract Example](../examples/schema-driven-contract.md) for the complete generated output (TypeScript, Zod, OpenAPI).
+See [Schema-Driven Contract Example](/examples/schema-driven-contract.md) for the complete generated output (TypeScript, Zod, OpenAPI).
 
 ## There's More
 
