@@ -122,8 +122,8 @@ GET /clever_rabbit/orders
       "orderNumber": "ORD-001",
       "status": "pending",
       "total": null,
-      "createdAt": "2025-12-18T14:05:59.357Z",
-      "updatedAt": "2025-12-18T14:05:59.357Z",
+      "createdAt": "2025-12-18T14:09:26.550Z",
+      "updatedAt": "2025-12-18T14:09:26.550Z",
       "lineItems": null,
       "shippingAddress": null
     },
@@ -132,8 +132,8 @@ GET /clever_rabbit/orders
       "orderNumber": "ORD-002",
       "status": "pending",
       "total": null,
-      "createdAt": "2025-12-18T14:05:59.359Z",
-      "updatedAt": "2025-12-18T14:05:59.359Z",
+      "createdAt": "2025-12-18T14:09:26.551Z",
+      "updatedAt": "2025-12-18T14:09:26.551Z",
       "lineItems": null,
       "shippingAddress": null
     }
@@ -168,8 +168,8 @@ GET /clever_rabbit/orders/d6afdfea-1e99-5a7c-98e0-f05896dbe62f
     "orderNumber": "ORD-001",
     "status": "pending",
     "total": null,
-    "createdAt": "2025-12-18T14:05:59.375Z",
-    "updatedAt": "2025-12-18T14:05:59.375Z",
+    "createdAt": "2025-12-18T14:09:26.569Z",
+    "updatedAt": "2025-12-18T14:09:26.569Z",
     "lineItems": null,
     "shippingAddress": null
   }
@@ -221,8 +221,8 @@ Content-Type: application/json
     "orderNumber": "ORD-001",
     "status": "pending",
     "total": null,
-    "createdAt": "2025-12-18T14:05:59.393Z",
-    "updatedAt": "2025-12-18T14:05:59.393Z",
+    "createdAt": "2025-12-18T14:09:26.587Z",
+    "updatedAt": "2025-12-18T14:09:26.587Z",
     "lineItems": null,
     "shippingAddress": null
   }
@@ -263,8 +263,8 @@ Content-Type: application/json
     "orderNumber": "ORD-001",
     "status": "pending",
     "total": null,
-    "createdAt": "2025-12-18T14:05:59.398Z",
-    "updatedAt": "2025-12-18T14:05:59.398Z",
+    "createdAt": "2025-12-18T14:09:26.593Z",
+    "updatedAt": "2025-12-18T14:09:26.593Z",
     "lineItems": null,
     "shippingAddress": null
   }

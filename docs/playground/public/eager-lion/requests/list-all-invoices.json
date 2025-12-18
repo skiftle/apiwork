@@ -9,8 +9,8 @@
       "invoices": [
         {
           "id": "534ec78b-1e57-5f61-ae31-cd61470deb95",
-          "createdAt": "2025-12-18T14:05:59.465Z",
-          "updatedAt": "2025-12-18T14:05:59.465Z",
+          "createdAt": "2025-12-18T14:09:26.672Z",
+          "updatedAt": "2025-12-18T14:09:26.672Z",
           "number": "INV-001",
           "issuedOn": null,
           "notes": null,
@@ -21,8 +21,8 @@
         },
         {
           "id": "beeed37c-a296-52da-9206-364418ea6f8e",
-          "createdAt": "2025-12-18T14:05:59.466Z",
-          "updatedAt": "2025-12-18T14:05:59.466Z",
+          "createdAt": "2025-12-18T14:09:26.674Z",
+          "updatedAt": "2025-12-18T14:09:26.674Z",
           "number": "INV-002",
           "issuedOn": null,
           "notes": null,

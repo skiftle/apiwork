@@ -16,8 +16,8 @@
     "body": {
       "invoice": {
         "id": "a8820bf3-8c01-50aa-9940-cad599d88a67",
-        "createdAt": "2025-12-18T14:05:59.495Z",
-        "updatedAt": "2025-12-18T14:05:59.495Z",
+        "createdAt": "2025-12-18T14:09:26.706Z",
+        "updatedAt": "2025-12-18T14:09:26.706Z",
         "number": "INV-001",
         "issuedOn": "2024-01-15",
         "notes": "First invoice",
