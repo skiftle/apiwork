@@ -633,7 +633,7 @@
           "method": "delete",
           "path": "/:id",
           "summary": "Delete a project",
-          "description": "Permanently removes a project from the system",
+          "description": "Permanently removes a project",
           "tags": [
             "Projects"
           ],
