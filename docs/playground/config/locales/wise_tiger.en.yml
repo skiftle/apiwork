@@ -38,4 +38,4 @@ en:
                 description: Updates an existing project with the provided attributes
               destroy:
                 summary: Delete a project
-                description: Permanently removes a project from the system
+                description: Permanently removes a project
