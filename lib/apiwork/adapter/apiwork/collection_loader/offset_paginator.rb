@@ -29,7 +29,7 @@ module Apiwork
           private
 
           def resolve_limit
-            @params.fetch(:size, default_limit).to_i
+            [@params.fetch(:size, default_limit).to_i, 1].max
           end
 
           def default_limit
