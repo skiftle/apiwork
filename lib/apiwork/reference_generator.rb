@@ -27,7 +27,6 @@ module Apiwork
       YARD.parse(File.join(GEM_ROOT, 'lib/**/*.rb'))
     end
 
-    # Modules excluded from public API reference
     EXCLUDED_MODULES = %w[
       Generators
       ReferenceGenerator
@@ -42,10 +41,8 @@ module Apiwork
     end
 
     def excluded?(path)
-      # Exclude Private modules
       return true if path.include?('Private')
 
-      # Exclude specific internal modules
       EXCLUDED_MODULES.any? { |name| path.include?("::#{name}") || path.end_with?(name) }
     end
 
@@ -133,7 +130,6 @@ module Apiwork
     def write_files(modules)
       cleanup_old_files
 
-      # Bygg en set av alla paths som har children
       all_paths = modules.map { |m| m[:path] }
       parents = find_parent_paths(all_paths)
 
@@ -159,7 +155,7 @@ module Apiwork
       parents = Set.new
       all_paths.each do |path|
         parts = path.split('::')
-        # Varje prefix som har children är en parent
+
         (1...parts.size).each do |i|
           prefix = parts[0...i].join('::')
           parents.add(prefix) if all_paths.any? { |p| p != prefix && p.start_with?("#{prefix}::") }
@@ -169,16 +165,13 @@ module Apiwork
     end
 
     def module_filepath(path, parents)
-      # Ta bort Apiwork:: prefix
       parts = path.sub('Apiwork::', '').split('::')
 
-      # Om denna modul är en parent, blir den index.md i sin egen mapp
       if parents.include?(path)
         dir = File.join(OUTPUT_DIR, *parts.map { |p| dasherize(p) })
         return File.join(dir, 'index.md')
       end
 
-      # Annars: hitta närmaste parent och placera filen där
       dir_parts = []
       file_parts = []
 

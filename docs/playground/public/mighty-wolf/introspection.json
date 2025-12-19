@@ -540,9 +540,6 @@
         }
       }
     },
-    "vehicle_include": {
-      "type": "object"
-    },
     "vehicle_page": {
       "type": "object",
       "shape": {
@@ -653,10 +650,6 @@
                     "of": "vehicle_filter"
                   }
                 ],
-                "optional": true
-              },
-              "include": {
-                "type": "vehicle_include",
                 "optional": true
               },
               "page": {

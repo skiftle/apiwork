@@ -146,8 +146,6 @@ export interface VehicleFilter {
   year?: NullableIntegerFilter | number;
 }
 
-export type VehicleInclude = object;
-
 export interface VehiclePage {
   number?: number;
   size?: number;
@@ -181,7 +179,6 @@ export interface VehiclesIndexRequest {
 
 export interface VehiclesIndexRequestQuery {
   filter?: VehicleFilter | VehicleFilter[];
-  include?: VehicleInclude;
   page?: VehiclePage;
   sort?: VehicleSort | VehicleSort[];
 }

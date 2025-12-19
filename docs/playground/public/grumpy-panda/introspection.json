@@ -35,9 +35,6 @@
         }
       }
     },
-    "activity_include": {
-      "type": "object"
-    },
     "activity_page": {
       "type": "object",
       "shape": {
@@ -139,10 +136,6 @@
           "path": "/",
           "request": {
             "query": {
-              "include": {
-                "type": "activity_include",
-                "optional": true
-              },
               "page": {
                 "type": "activity_page",
                 "optional": true

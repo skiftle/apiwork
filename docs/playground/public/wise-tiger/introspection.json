@@ -181,9 +181,6 @@
         }
       }
     },
-    "project_include": {
-      "type": "object"
-    },
     "project_page": {
       "type": "object",
       "shape": {
@@ -426,10 +423,6 @@
                     "of": "project_filter"
                   }
                 ],
-                "optional": true
-              },
-              "include": {
-                "type": "project_include",
                 "optional": true
               },
               "page": {

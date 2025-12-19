@@ -13,8 +13,6 @@ export interface ContactCreatePayload {
   phone?: string;
 }
 
-export type ContactInclude = object;
-
 export interface ContactPage {
   number?: number;
   size?: number;
@@ -48,7 +46,6 @@ export interface ContactsIndexRequest {
 }
 
 export interface ContactsIndexRequestQuery {
-  include?: ContactInclude;
   page?: ContactPage;
 }
 

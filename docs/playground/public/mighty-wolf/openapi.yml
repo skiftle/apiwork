@@ -18,11 +18,6 @@ paths:
             items:
               "$ref": "#/components/schemas/vehicleFilter"
       - in: query
-        name: include
-        required: false
-        schema:
-          "$ref": "#/components/schemas/vehicleInclude"
-      - in: query
         name: page
         required: false
         schema:
@@ -534,9 +529,6 @@ components:
           oneOf:
           - type: integer
           - "$ref": "#/components/schemas/nullableIntegerFilter"
-    vehicleInclude:
-      type: object
-      properties: {}
     vehiclePage:
       type: object
       properties:

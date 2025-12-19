@@ -49,8 +49,6 @@ export interface ProjectFilter {
   status?: ProjectStatusFilter;
 }
 
-export type ProjectInclude = object;
-
 export interface ProjectPage {
   number?: number;
   size?: number;
@@ -99,7 +97,6 @@ export interface ProjectsIndexRequest {
 
 export interface ProjectsIndexRequestQuery {
   filter?: ProjectFilter | ProjectFilter[];
-  include?: ProjectInclude;
   page?: ProjectPage;
   sort?: ProjectSort | ProjectSort[];
 }

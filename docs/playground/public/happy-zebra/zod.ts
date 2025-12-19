@@ -13,10 +13,6 @@ export const CommentCreatePayloadSchema = z.object({
   body: z.string()
 });
 
-export const CommentIncludeSchema = z.object({
-
-});
-
 export const CommentNestedCreatePayloadSchema = z.object({
   _type: z.literal('create'),
   author: z.string(),
@@ -54,6 +50,10 @@ export const OffsetPaginationSchema = z.object({
   total: z.number().int()
 });
 
+export const PostIncludeSchema = z.object({
+
+});
+
 export const PostPageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
@@ -87,10 +87,6 @@ export const PostSchema = z.object({
   title: z.string().optional()
 });
 
-export const PostIncludeSchema = z.object({
-  comments: CommentIncludeSchema.optional()
-});
-
 export const CommentNestedPayloadSchema = z.discriminatedUnion('_type', [
   CommentNestedCreatePayloadSchema,
   CommentNestedUpdatePayloadSchema
@@ -104,6 +100,11 @@ export const UserFilterSchema: z.ZodType<UserFilter> = z.lazy(() => z.object({
   username: z.union([z.string(), StringFilterSchema]).optional()
 }));
 
+export const UserIncludeSchema = z.object({
+  posts: PostIncludeSchema.optional(),
+  profile: UserProfileIncludeSchema.optional()
+});
+
 export const UserSchema = z.object({
   createdAt: z.iso.datetime().optional(),
   email: z.string().optional(),
@@ -112,11 +113,6 @@ export const UserSchema = z.object({
   profile: z.object({}),
   updatedAt: z.iso.datetime().optional(),
   username: z.string().optional()
-});
-
-export const UserIncludeSchema = z.object({
-  posts: PostIncludeSchema.optional(),
-  profile: UserProfileIncludeSchema.optional()
 });
 
 export const PostCreatePayloadSchema = z.object({
@@ -317,7 +313,6 @@ export const PostsDestroyRequestSchema = z.object({
 export const PostsDestroyResponse = z.never();
 
 export const CommentsIndexRequestQuerySchema = z.object({
-  include: CommentIncludeSchema.optional(),
   page: CommentPageSchema.optional()
 });
 
@@ -378,8 +373,6 @@ export interface CommentCreatePayload {
   body: string;
 }
 
-export type CommentInclude = object;
-
 export interface CommentNestedCreatePayload {
   _type: 'create';
   author: string;
@@ -425,7 +418,6 @@ export interface CommentsIndexRequest {
 }
 
 export interface CommentsIndexRequestQuery {
-  include?: CommentInclude;
   page?: CommentPage;
 }
 
@@ -481,9 +473,7 @@ export interface PostCreatePayload {
   title: string;
 }
 
-export interface PostInclude {
-  comments?: CommentInclude;
-}
+export type PostInclude = object;
 
 export interface PostNestedCreatePayload {
   _type: 'create';

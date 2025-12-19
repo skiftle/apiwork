@@ -49,10 +49,6 @@ export const ProjectCreatePayloadSchema = z.object({
   status: ProjectStatusSchema.nullable().optional()
 });
 
-export const ProjectIncludeSchema = z.object({
-
-});
-
 export const ProjectPageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
@@ -99,7 +95,6 @@ export const ProjectFilterSchema: z.ZodType<ProjectFilter> = z.lazy(() => z.obje
 
 export const ProjectsIndexRequestQuerySchema = z.object({
   filter: z.union([ProjectFilterSchema, z.array(ProjectFilterSchema)]).optional(),
-  include: ProjectIncludeSchema.optional(),
   page: ProjectPageSchema.optional(),
   sort: z.union([ProjectSortSchema, z.array(ProjectSortSchema)]).optional()
 });
@@ -201,8 +196,6 @@ export interface ProjectFilter {
   status?: ProjectStatusFilter;
 }
 
-export type ProjectInclude = object;
-
 export interface ProjectPage {
   number?: number;
   size?: number;
@@ -251,7 +244,6 @@ export interface ProjectsIndexRequest {
 
 export interface ProjectsIndexRequestQuery {
   filter?: ProjectFilter | ProjectFilter[];
-  include?: ProjectInclude;
   page?: ProjectPage;
   sort?: ProjectSort | ProjectSort[];
 }

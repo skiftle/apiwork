@@ -12,10 +12,6 @@ export const ActivityCreatePayloadSchema = z.object({
   occurredAt: z.iso.datetime().nullable().optional()
 });
 
-export const ActivityIncludeSchema = z.object({
-
-});
-
 export const ActivityPageSchema = z.object({
   after: z.string().optional(),
   before: z.string().optional(),
@@ -40,7 +36,6 @@ export const ErrorSchema = z.object({
 });
 
 export const ActivitiesIndexRequestQuerySchema = z.object({
-  include: ActivityIncludeSchema.optional(),
   page: ActivityPageSchema.optional()
 });
 
@@ -111,7 +106,6 @@ export interface ActivitiesIndexRequest {
 }
 
 export interface ActivitiesIndexRequestQuery {
-  include?: ActivityInclude;
   page?: ActivityPage;
 }
 
@@ -152,8 +146,6 @@ export interface ActivityCreatePayload {
   action: string;
   occurredAt?: null | string;
 }
-
-export type ActivityInclude = object;
 
 export interface ActivityPage {
   after?: string;

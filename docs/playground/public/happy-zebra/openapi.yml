@@ -361,11 +361,6 @@ paths:
       operationId: commentsIndex
       parameters:
       - in: query
-        name: include
-        required: false
-        schema:
-          "$ref": "#/components/schemas/commentInclude"
-      - in: query
         name: page
         required: false
         schema:
@@ -523,9 +518,6 @@ components:
       required:
       - author
       - body
-    commentInclude:
-      type: object
-      properties: {}
     commentNestedCreatePayload:
       type: object
       properties:
@@ -648,9 +640,7 @@ components:
       - title
     postInclude:
       type: object
-      properties:
-        comments:
-          "$ref": "#/components/schemas/commentInclude"
+      properties: {}
     postNestedCreatePayload:
       type: object
       properties:

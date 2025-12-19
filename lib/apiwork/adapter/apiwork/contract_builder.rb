@@ -56,8 +56,10 @@ module Apiwork
           page_type = build_page_type
           definition.param :page, type: page_type, optional: true
 
-          include_type = build_include_type
-          definition.param :include, type: include_type, optional: true
+          if schema_class.association_definitions.any?
+            include_type = build_include_type
+            definition.param :include, type: include_type, optional: true
+          end
         end
 
         def writable_request(definition, context_symbol)
@@ -514,6 +516,8 @@ module Apiwork
         end
 
         def build_include_type(visited: Set.new, depth: 0)
+          return nil unless schema_class.association_definitions.any?
+
           type_name = type_name(:include, depth)
 
           existing = contract_class.resolve_type(type_name)
@@ -542,7 +546,8 @@ module Apiwork
                 import_alias = builder.send(:import_association_contract, association_resource.schema, visited)
 
                 association_include_type = if import_alias
-                                             :"#{import_alias}_include"
+                                             imported_type = :"#{import_alias}_include"
+                                             contract_class.resolve_type(imported_type) ? imported_type : nil
                                            else
                                              builder.send(:build_include_type_for_schema,
                                                           association_resource.schema,
@@ -550,7 +555,9 @@ module Apiwork
                                                           depth: depth + 1)
                                            end
 
-                if association_definition.always_included?
+                if association_include_type.nil?
+                  param name, type: :boolean, optional: true unless association_definition.always_included?
+                elsif association_definition.always_included?
                   param name, type: association_include_type, optional: true
                 else
                   param name, type: :union, optional: true do

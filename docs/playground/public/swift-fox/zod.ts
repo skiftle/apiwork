@@ -15,10 +15,6 @@ export const ContactCreatePayloadSchema = z.object({
   phone: z.string().optional()
 });
 
-export const ContactIncludeSchema = z.object({
-
-});
-
 export const ContactPageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
@@ -47,7 +43,6 @@ export const OffsetPaginationSchema = z.object({
 });
 
 export const ContactsIndexRequestQuerySchema = z.object({
-  include: ContactIncludeSchema.optional(),
   page: ContactPageSchema.optional()
 });
 
@@ -112,8 +107,6 @@ export interface ContactCreatePayload {
   phone?: string;
 }
 
-export type ContactInclude = object;
-
 export interface ContactPage {
   number?: number;
   size?: number;
@@ -147,7 +140,6 @@ export interface ContactsIndexRequest {
 }
 
 export interface ContactsIndexRequestQuery {
-  include?: ContactInclude;
   page?: ContactPage;
 }
 

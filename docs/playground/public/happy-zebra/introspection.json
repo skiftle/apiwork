@@ -29,9 +29,6 @@
         }
       }
     },
-    "comment_include": {
-      "type": "object"
-    },
     "comment_nested_create_payload": {
       "type": "object",
       "shape": {
@@ -183,13 +180,7 @@
       }
     },
     "post_include": {
-      "type": "object",
-      "shape": {
-        "comments": {
-          "type": "comment_include",
-          "optional": true
-        }
-      }
+      "type": "object"
     },
     "post_nested_create_payload": {
       "type": "object",
@@ -982,10 +973,6 @@
           "path": "/",
           "request": {
             "query": {
-              "include": {
-                "type": "comment_include",
-                "optional": true
-              },
               "page": {
                 "type": "comment_page",
                 "optional": true

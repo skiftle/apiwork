@@ -23,11 +23,6 @@ paths:
             items:
               "$ref": "#/components/schemas/projectFilter"
       - in: query
-        name: include
-        required: false
-        schema:
-          "$ref": "#/components/schemas/projectInclude"
-      - in: query
         name: page
         required: false
         schema:
@@ -331,9 +326,6 @@ components:
           "$ref": "#/components/schemas/projectPriorityFilter"
         status:
           "$ref": "#/components/schemas/projectStatusFilter"
-    projectInclude:
-      type: object
-      properties: {}
     projectPage:
       type: object
       properties:

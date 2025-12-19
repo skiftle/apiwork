@@ -9,8 +9,6 @@ export interface CommentCreatePayload {
   body: string;
 }
 
-export type CommentInclude = object;
-
 export interface CommentNestedCreatePayload {
   _type: 'create';
   author: string;
@@ -56,7 +54,6 @@ export interface CommentsIndexRequest {
 }
 
 export interface CommentsIndexRequestQuery {
-  include?: CommentInclude;
   page?: CommentPage;
 }
 
@@ -112,9 +109,7 @@ export interface PostCreatePayload {
   title: string;
 }
 
-export interface PostInclude {
-  comments?: CommentInclude;
-}
+export type PostInclude = object;
 
 export interface PostNestedCreatePayload {
   _type: 'create';

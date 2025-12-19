@@ -9,11 +9,6 @@ paths:
       operationId: activitiesIndex
       parameters:
       - in: query
-        name: include
-        required: false
-        schema:
-          "$ref": "#/components/schemas/activityInclude"
-      - in: query
         name: page
         required: false
         schema:
@@ -174,9 +169,6 @@ components:
           - 'null'
       required:
       - action
-    activityInclude:
-      type: object
-      properties: {}
     activityPage:
       type: object
       properties:

@@ -114,10 +114,6 @@ export const TruckUpdatePayloadSchema = z.object({
   year: z.number().int().nullable().optional()
 });
 
-export const VehicleIncludeSchema = z.object({
-
-});
-
 export const VehiclePageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
@@ -177,7 +173,6 @@ export const VehicleFilterSchema: z.ZodType<VehicleFilter> = z.lazy(() => z.obje
 
 export const VehiclesIndexRequestQuerySchema = z.object({
   filter: z.union([VehicleFilterSchema, z.array(VehicleFilterSchema)]).optional(),
-  include: VehicleIncludeSchema.optional(),
   page: VehiclePageSchema.optional(),
   sort: z.union([VehicleSortSchema, z.array(VehicleSortSchema)]).optional()
 });
@@ -376,8 +371,6 @@ export interface VehicleFilter {
   year?: NullableIntegerFilter | number;
 }
 
-export type VehicleInclude = object;
-
 export interface VehiclePage {
   number?: number;
   size?: number;
@@ -411,7 +404,6 @@ export interface VehiclesIndexRequest {
 
 export interface VehiclesIndexRequestQuery {
   filter?: VehicleFilter | VehicleFilter[];
-  include?: VehicleInclude;
   page?: VehiclePage;
   sort?: VehicleSort | VehicleSort[];
 }

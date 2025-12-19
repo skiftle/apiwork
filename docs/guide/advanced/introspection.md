@@ -193,6 +193,38 @@ The output is compact by design. Properties are **omitted** when they have no me
 
 So a simple string field appears as just `{ "type": "string" }` rather than including all possible properties with null/false values.
 
+## Conditional Type Generation
+
+Types are only generated when needed. The introspection output won't include types that serve no purpose. This keeps the output minimal.
+
+### Global Types
+
+| Type | Generated when |
+|------|---------------|
+| `error` | API has at least one resource |
+| `offset_pagination` | At least one resource uses offset pagination |
+| `cursor_pagination` | At least one resource uses cursor pagination |
+| `sort_direction` | At least one attribute is sortable |
+| Filter types (`string_filter`, etc.) | At least one attribute is filterable |
+
+### Per-Schema Types
+
+| Type | Generated when |
+|------|---------------|
+| `*_filter` | Schema has filterable attributes or associations |
+| `*_sort` | Schema has sortable attributes or associations |
+| `*_include` | Schema has associations (for client to request includes) |
+| `*_create_payload` | Schema has writable attributes and a create action |
+| `*_update_payload` | Schema has writable attributes and an update action |
+
+This means:
+
+- A schema with no filterable attributes won't have a `*_filter` type
+- A schema with no associations won't have a `*_include` type
+- Helper types like `string_filter_between` are only generated if a parent type references them
+
+If you add `filterable: true` to an attribute, the filter type appears. Remove it, and the type is gone. The output always reflects your current schema configuration.
+
 ## Building Custom Generators
 
 Want to build your own spec generator? See [Custom Specs](./custom-specs.md).

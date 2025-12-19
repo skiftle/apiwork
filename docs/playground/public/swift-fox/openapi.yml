@@ -9,11 +9,6 @@ paths:
       operationId: contactsIndex
       parameters:
       - in: query
-        name: include
-        required: false
-        schema:
-          "$ref": "#/components/schemas/contactInclude"
-      - in: query
         name: page
         required: false
         schema:
@@ -180,9 +175,6 @@ components:
           type: string
       required:
       - name
-    contactInclude:
-      type: object
-      properties: {}
     contactPage:
       type: object
       properties:

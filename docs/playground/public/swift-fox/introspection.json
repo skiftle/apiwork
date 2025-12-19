@@ -47,9 +47,6 @@
         }
       }
     },
-    "contact_include": {
-      "type": "object"
-    },
     "contact_page": {
       "type": "object",
       "shape": {
@@ -170,10 +167,6 @@
           "path": "/",
           "request": {
             "query": {
-              "include": {
-                "type": "contact_include",
-                "optional": true
-              },
               "page": {
                 "type": "contact_page",
                 "optional": true

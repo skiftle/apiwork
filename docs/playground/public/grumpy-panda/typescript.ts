@@ -19,7 +19,6 @@ export interface ActivitiesIndexRequest {
 }
 
 export interface ActivitiesIndexRequestQuery {
-  include?: ActivityInclude;
   page?: ActivityPage;
 }
 
@@ -60,8 +59,6 @@ export interface ActivityCreatePayload {
   action: string;
   occurredAt?: null | string;
 }
-
-export type ActivityInclude = object;
 
 export interface ActivityPage {
   after?: string;
