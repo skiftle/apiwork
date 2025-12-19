@@ -202,7 +202,16 @@ module Apiwork
       end
 
       def detect_type(name)
-        @model_class.type_for_attribute(name).type
+        raw_type = @model_class.type_for_attribute(name).type
+        normalize_db_type(raw_type)
+      end
+
+      def normalize_db_type(type)
+        case type
+        when :text then :string
+        when :jsonb then :json
+        else type
+        end
       end
 
       def detect_optional(name)
