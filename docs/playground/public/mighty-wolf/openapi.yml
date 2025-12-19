@@ -184,6 +184,9 @@ components:
         year:
           type: integer
       required:
+      - brand
+      - id
+      - model
       - type
     carCreatePayload:
       type: object
@@ -300,6 +303,9 @@ components:
         year:
           type: integer
       required:
+      - brand
+      - id
+      - model
       - type
     motorcycleCreatePayload:
       type: object
@@ -429,6 +435,9 @@ components:
         year:
           type: integer
       required:
+      - brand
+      - id
+      - model
       - type
     truckCreatePayload:
       type: object

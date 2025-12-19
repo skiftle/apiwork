@@ -1,13 +1,13 @@
 export interface Article {
   body?: string;
   category?: null | object;
-  createdAt?: string;
-  id?: string;
+  createdAt: string;
+  id: string;
   publishedOn?: string;
   rating?: number;
   status?: ArticleStatus;
-  title?: string;
-  updatedAt?: string;
+  title: string;
+  updatedAt: string;
   viewCount?: number;
 }
 

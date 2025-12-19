@@ -9,12 +9,10 @@
           "optional": true
         },
         "id": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "notes": {
           "type": "string",

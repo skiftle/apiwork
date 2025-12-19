@@ -1,7 +1,7 @@
 export interface Comment {
-  author?: string;
-  body?: string;
-  id?: string;
+  author: string;
+  body: string;
+  id: string;
 }
 
 export interface CommentCreatePayload {
@@ -100,8 +100,8 @@ export interface OffsetPagination {
 
 export interface Post {
   comments: Comment[];
-  id?: string;
-  title?: string;
+  id: string;
+  title: string;
 }
 
 export interface PostCreatePayload {
@@ -194,13 +194,13 @@ export interface StringFilter {
 }
 
 export interface User {
-  createdAt?: string;
-  email?: string;
-  id?: string;
+  createdAt: string;
+  email: string;
+  id: string;
   posts: Post[];
   profile: object;
-  updatedAt?: string;
-  username?: string;
+  updatedAt: string;
+  username: string;
 }
 
 export interface UserCreatePayload {

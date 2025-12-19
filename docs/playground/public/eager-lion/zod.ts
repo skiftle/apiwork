@@ -10,16 +10,16 @@ export const ErrorSchema = z.object({
 });
 
 export const InvoiceSchema = z.object({
-  createdAt: z.iso.datetime().optional(),
+  createdAt: z.iso.datetime(),
   customer: z.object({}),
-  customerId: z.string().optional(),
-  id: z.string().optional(),
+  customerId: z.string(),
+  id: z.string(),
   issuedOn: z.iso.date().optional(),
   lines: z.array(z.string()),
   notes: z.string().optional(),
-  number: z.string().optional(),
+  number: z.string(),
   status: z.string().optional(),
-  updatedAt: z.iso.datetime().optional()
+  updatedAt: z.iso.datetime()
 });
 
 export const InvoiceCreatePayloadSchema = z.object({
@@ -149,16 +149,16 @@ export interface Error {
 }
 
 export interface Invoice {
-  createdAt?: string;
+  createdAt: string;
   customer: object;
-  customerId?: string;
-  id?: string;
+  customerId: string;
+  id: string;
   issuedOn?: string;
   lines: string[];
   notes?: string;
-  number?: string;
+  number: string;
   status?: string;
-  updatedAt?: string;
+  updatedAt: string;
 }
 
 export interface InvoiceCreatePayload {

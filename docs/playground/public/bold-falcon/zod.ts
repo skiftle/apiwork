@@ -7,13 +7,13 @@ export const SortDirectionSchema = z.enum(['asc', 'desc']);
 export const ArticleSchema = z.object({
   body: z.string().optional(),
   category: z.object({}).nullable().optional(),
-  createdAt: z.iso.datetime().optional(),
-  id: z.string().optional(),
+  createdAt: z.iso.datetime(),
+  id: z.string(),
   publishedOn: z.iso.date().optional(),
   rating: z.number().optional(),
   status: ArticleStatusSchema.optional(),
-  title: z.string().optional(),
-  updatedAt: z.iso.datetime().optional(),
+  title: z.string(),
+  updatedAt: z.iso.datetime(),
   viewCount: z.number().int().optional()
 });
 
@@ -225,13 +225,13 @@ export const ArticlesDestroyResponse = z.never();
 export interface Article {
   body?: string;
   category?: null | object;
-  createdAt?: string;
-  id?: string;
+  createdAt: string;
+  id: string;
   publishedOn?: string;
   rating?: number;
   status?: ArticleStatus;
-  title?: string;
-  updatedAt?: string;
+  title: string;
+  updatedAt: string;
   viewCount?: number;
 }
 

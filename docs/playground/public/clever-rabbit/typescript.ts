@@ -23,14 +23,14 @@ export interface OffsetPagination {
 }
 
 export interface Order {
-  createdAt?: string;
-  id?: string;
+  createdAt: string;
+  id: string;
   lineItems: string[];
-  orderNumber?: string;
+  orderNumber: string;
   shippingAddress: object;
   status?: string;
   total?: number;
-  updatedAt?: string;
+  updatedAt: string;
 }
 
 export interface OrderCreatePayload {

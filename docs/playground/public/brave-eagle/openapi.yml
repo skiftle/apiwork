@@ -354,6 +354,11 @@ components:
           type: string
           description: Timestamp of last modification
       description: A task representing work to be completed
+      required:
+      - createdAt
+      - id
+      - title
+      - updatedAt
     taskCreatePayload:
       type: object
       properties:

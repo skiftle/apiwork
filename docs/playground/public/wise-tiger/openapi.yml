@@ -271,6 +271,11 @@ components:
           - archived
         updatedAt:
           type: string
+      required:
+      - createdAt
+      - id
+      - name
+      - updatedAt
     projectCreatePayload:
       type: object
       properties:

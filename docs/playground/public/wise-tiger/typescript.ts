@@ -23,14 +23,14 @@ export interface OffsetPagination {
 }
 
 export interface Project {
-  createdAt?: string;
+  createdAt: string;
   deadline?: string;
   description?: string;
-  id?: string;
-  name?: string;
+  id: string;
+  name: string;
   priority?: ProjectPriority;
   status?: ProjectStatus;
-  updatedAt?: string;
+  updatedAt: string;
 }
 
 export interface ProjectCreatePayload {

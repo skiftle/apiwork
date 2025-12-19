@@ -1,9 +1,9 @@
 export interface Comment {
   authorName?: string;
-  body?: string;
+  body: string;
   commentable?: CommentCommentable;
-  createdAt?: string;
-  id?: string;
+  createdAt: string;
+  id: string;
 }
 
 export type CommentCommentable = { commentableType: 'post' } & Post | { commentableType: 'video' } & Video | { commentableType: 'image' } & Image;
@@ -118,11 +118,11 @@ export interface Error {
 
 export interface Image {
   comments?: unknown[];
-  createdAt?: string;
+  createdAt: string;
   height?: number;
-  id?: string;
-  title?: string;
-  url?: string;
+  id: string;
+  title: string;
+  url: string;
   width?: number;
 }
 
@@ -166,9 +166,9 @@ export interface OffsetPagination {
 export interface Post {
   body?: string;
   comments?: unknown[];
-  createdAt?: string;
-  id?: string;
-  title?: string;
+  createdAt: string;
+  id: string;
+  title: string;
 }
 
 export interface PostFilter {
@@ -200,11 +200,11 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface Video {
   comments?: unknown[];
-  createdAt?: string;
+  createdAt: string;
   duration?: number;
-  id?: string;
-  title?: string;
-  url?: string;
+  id: string;
+  title: string;
+  url: string;
 }
 
 export interface VideoFilter {

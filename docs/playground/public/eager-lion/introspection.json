@@ -23,19 +23,16 @@
       "type": "object",
       "shape": {
         "created_at": {
-          "type": "datetime",
-          "optional": true
+          "type": "datetime"
         },
         "customer": {
           "type": "object"
         },
         "customer_id": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "id": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "issued_on": {
           "type": "date",
@@ -49,16 +46,14 @@
           "optional": true
         },
         "number": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "status": {
           "type": "string",
           "optional": true
         },
         "updated_at": {
-          "type": "datetime",
-          "optional": true
+          "type": "datetime"
         }
       }
     },

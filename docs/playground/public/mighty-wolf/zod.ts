@@ -3,11 +3,11 @@ import { z } from 'zod';
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
 export const CarSchema = z.object({
-  brand: z.string().optional(),
+  brand: z.string(),
   color: z.string().optional(),
   doors: z.number().int().optional(),
-  id: z.string().optional(),
-  model: z.string().optional(),
+  id: z.string(),
+  model: z.string(),
   type: z.literal('car'),
   year: z.number().int().optional()
 });
@@ -43,11 +43,11 @@ export const IntegerFilterBetweenSchema = z.object({
 });
 
 export const MotorcycleSchema = z.object({
-  brand: z.string().optional(),
+  brand: z.string(),
   color: z.string().optional(),
   engineCc: z.number().int().optional(),
-  id: z.string().optional(),
-  model: z.string().optional(),
+  id: z.string(),
+  model: z.string(),
   type: z.literal('motorcycle'),
   year: z.number().int().optional()
 });
@@ -87,10 +87,10 @@ export const StringFilterSchema = z.object({
 });
 
 export const TruckSchema = z.object({
-  brand: z.string().optional(),
+  brand: z.string(),
   color: z.string().optional(),
-  id: z.string().optional(),
-  model: z.string().optional(),
+  id: z.string(),
+  model: z.string(),
   payloadCapacity: z.number().optional(),
   type: z.literal('truck'),
   year: z.number().int().optional()
@@ -224,11 +224,11 @@ export const VehiclesUpdateResponseSchema = z.object({
 export const VehiclesDestroyResponse = z.never();
 
 export interface Car {
-  brand?: string;
+  brand: string;
   color?: string;
   doors?: number;
-  id?: string;
-  model?: string;
+  id: string;
+  model: string;
   type: 'car';
   year?: number;
 }
@@ -274,11 +274,11 @@ export interface IntegerFilterBetween {
 }
 
 export interface Motorcycle {
-  brand?: string;
+  brand: string;
   color?: string;
   engineCc?: number;
-  id?: string;
-  model?: string;
+  id: string;
+  model: string;
   type: 'motorcycle';
   year?: number;
 }
@@ -331,10 +331,10 @@ export interface StringFilter {
 }
 
 export interface Truck {
-  brand?: string;
+  brand: string;
   color?: string;
-  id?: string;
-  model?: string;
+  id: string;
+  model: string;
   payloadCapacity?: number;
   type: 'truck';
   year?: number;

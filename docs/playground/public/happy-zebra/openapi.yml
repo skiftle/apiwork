@@ -456,6 +456,10 @@ components:
           type: string
         id:
           type: string
+      required:
+      - author
+      - body
+      - id
     commentCreatePayload:
       type: object
       properties:
@@ -575,6 +579,8 @@ components:
           type: string
       required:
       - comments
+      - id
+      - title
     postCreatePayload:
       type: object
       properties:
@@ -682,8 +688,13 @@ components:
         username:
           type: string
       required:
+      - createdAt
+      - email
+      - id
       - posts
       - profile
+      - updatedAt
+      - username
     userCreatePayload:
       type: object
       properties:

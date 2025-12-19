@@ -27,14 +27,14 @@ export const OffsetPaginationSchema = z.object({
 });
 
 export const OrderSchema = z.object({
-  createdAt: z.iso.datetime().optional(),
-  id: z.string().optional(),
+  createdAt: z.iso.datetime(),
+  id: z.string(),
   lineItems: z.array(z.string()),
-  orderNumber: z.string().optional(),
+  orderNumber: z.string(),
   shippingAddress: z.object({}),
   status: z.string().optional(),
   total: z.number().optional(),
-  updatedAt: z.iso.datetime().optional()
+  updatedAt: z.iso.datetime()
 });
 
 export const OrderCreatePayloadSchema = z.object({
@@ -151,14 +151,14 @@ export interface OffsetPagination {
 }
 
 export interface Order {
-  createdAt?: string;
-  id?: string;
+  createdAt: string;
+  id: string;
   lineItems: string[];
-  orderNumber?: string;
+  orderNumber: string;
   shippingAddress: object;
   status?: string;
   total?: number;
-  updatedAt?: string;
+  updatedAt: string;
 }
 
 export interface OrderCreatePayload {

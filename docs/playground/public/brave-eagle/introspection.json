@@ -134,7 +134,6 @@
         },
         "created_at": {
           "type": "datetime",
-          "optional": true,
           "description": "Timestamp when the task was created"
         },
         "description": {
@@ -151,7 +150,6 @@
         },
         "id": {
           "type": "string",
-          "optional": true,
           "description": "Unique task identifier"
         },
         "priority": {
@@ -170,13 +168,11 @@
         },
         "title": {
           "type": "string",
-          "optional": true,
           "description": "Short title describing the task",
           "example": "Implement user authentication"
         },
         "updated_at": {
           "type": "datetime",
-          "optional": true,
           "description": "Timestamp of last modification"
         }
       },

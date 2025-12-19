@@ -1,9 +1,9 @@
 export interface Car {
-  brand?: string;
+  brand: string;
   color?: string;
   doors?: number;
-  id?: string;
-  model?: string;
+  id: string;
+  model: string;
   type: 'car';
   year?: number;
 }
@@ -49,11 +49,11 @@ export interface IntegerFilterBetween {
 }
 
 export interface Motorcycle {
-  brand?: string;
+  brand: string;
   color?: string;
   engineCc?: number;
-  id?: string;
-  model?: string;
+  id: string;
+  model: string;
   type: 'motorcycle';
   year?: number;
 }
@@ -106,10 +106,10 @@ export interface StringFilter {
 }
 
 export interface Truck {
-  brand?: string;
+  brand: string;
   color?: string;
-  id?: string;
-  model?: string;
+  id: string;
+  model: string;
   payloadCapacity?: number;
   type: 'truck';
   year?: number;

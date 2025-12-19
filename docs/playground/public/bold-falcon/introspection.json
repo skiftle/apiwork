@@ -14,12 +14,10 @@
           "optional": true
         },
         "created_at": {
-          "type": "datetime",
-          "optional": true
+          "type": "datetime"
         },
         "id": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "published_on": {
           "type": "date",
@@ -35,12 +33,10 @@
           "optional": true
         },
         "title": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "updated_at": {
-          "type": "datetime",
-          "optional": true
+          "type": "datetime"
         },
         "view_count": {
           "type": "integer",

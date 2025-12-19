@@ -160,6 +160,9 @@ components:
           type: string
         phone:
           type: string
+      required:
+      - id
+      - name
     contactCreatePayload:
       type: object
       properties:

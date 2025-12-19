@@ -42,14 +42,14 @@ export const TaskSchema = z.object({
   archived: z.boolean().optional(),
   assignee: z.object({}).nullable().optional(),
   comments: z.array(z.string()).optional(),
-  createdAt: z.iso.datetime().optional(),
+  createdAt: z.iso.datetime(),
   description: z.string().optional(),
   dueDate: z.iso.datetime().optional(),
-  id: z.string().optional(),
+  id: z.string(),
   priority: TaskPrioritySchema.optional(),
   status: TaskStatusSchema.optional(),
-  title: z.string().optional(),
-  updatedAt: z.iso.datetime().optional()
+  title: z.string(),
+  updatedAt: z.iso.datetime()
 });
 
 export const TaskCreatePayloadSchema = z.object({
@@ -192,14 +192,14 @@ export interface Task {
   archived?: boolean;
   assignee?: null | object;
   comments?: string[];
-  createdAt?: string;
+  createdAt: string;
   description?: string;
   dueDate?: string;
-  id?: string;
+  id: string;
   priority?: TaskPriority;
   status?: TaskStatus;
-  title?: string;
-  updatedAt?: string;
+  title: string;
+  updatedAt: string;
 }
 
 export interface TaskCreatePayload {

@@ -82,8 +82,7 @@
       "type": "object",
       "shape": {
         "created_at": {
-          "type": "datetime",
-          "optional": true
+          "type": "datetime"
         },
         "deadline": {
           "type": "date",
@@ -94,12 +93,10 @@
           "optional": true
         },
         "id": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "priority": {
           "type": "string",
@@ -112,8 +109,7 @@
           "optional": true
         },
         "updated_at": {
-          "type": "datetime",
-          "optional": true
+          "type": "datetime"
         }
       }
     },

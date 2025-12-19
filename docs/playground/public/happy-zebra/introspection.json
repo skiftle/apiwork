@@ -5,16 +5,13 @@
       "type": "object",
       "shape": {
         "author": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "body": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "id": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         }
       }
     },
@@ -150,12 +147,10 @@
           "of": "comment"
         },
         "id": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "title": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         }
       }
     },
@@ -283,16 +278,13 @@
       "type": "object",
       "shape": {
         "created_at": {
-          "type": "datetime",
-          "optional": true
+          "type": "datetime"
         },
         "email": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "id": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "posts": {
           "type": "array",
@@ -302,12 +294,10 @@
           "type": "object"
         },
         "updated_at": {
-          "type": "datetime",
-          "optional": true
+          "type": "datetime"
         },
         "username": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         }
       }
     },

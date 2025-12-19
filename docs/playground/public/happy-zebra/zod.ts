@@ -3,9 +3,9 @@ import { z } from 'zod';
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
 export const CommentSchema = z.object({
-  author: z.string().optional(),
-  body: z.string().optional(),
-  id: z.string().optional()
+  author: z.string(),
+  body: z.string(),
+  id: z.string()
 });
 
 export const CommentCreatePayloadSchema = z.object({
@@ -75,8 +75,8 @@ export const UserSortSchema = z.object({
 
 export const PostSchema = z.object({
   comments: z.array(CommentSchema),
-  id: z.string().optional(),
-  title: z.string().optional()
+  id: z.string(),
+  title: z.string()
 });
 
 export const CommentNestedPayloadSchema = z.discriminatedUnion('_type', [
@@ -93,13 +93,13 @@ export const UserFilterSchema: z.ZodType<UserFilter> = z.lazy(() => z.object({
 }));
 
 export const UserSchema = z.object({
-  createdAt: z.iso.datetime().optional(),
-  email: z.string().optional(),
-  id: z.string().optional(),
+  createdAt: z.iso.datetime(),
+  email: z.string(),
+  id: z.string(),
   posts: z.array(PostSchema),
   profile: z.object({}),
-  updatedAt: z.iso.datetime().optional(),
-  username: z.string().optional()
+  updatedAt: z.iso.datetime(),
+  username: z.string()
 });
 
 export const PostCreatePayloadSchema = z.object({
@@ -296,9 +296,9 @@ export const CommentsUpdateResponseSchema = z.object({
 export const CommentsDestroyResponse = z.never();
 
 export interface Comment {
-  author?: string;
-  body?: string;
-  id?: string;
+  author: string;
+  body: string;
+  id: string;
 }
 
 export interface CommentCreatePayload {
@@ -397,8 +397,8 @@ export interface OffsetPagination {
 
 export interface Post {
   comments: Comment[];
-  id?: string;
-  title?: string;
+  id: string;
+  title: string;
 }
 
 export interface PostCreatePayload {
@@ -491,13 +491,13 @@ export interface StringFilter {
 }
 
 export interface User {
-  createdAt?: string;
-  email?: string;
-  id?: string;
+  createdAt: string;
+  email: string;
+  id: string;
   posts: Post[];
   profile: object;
-  updatedAt?: string;
-  username?: string;
+  updatedAt: string;
+  username: string;
 }
 
 export interface UserCreatePayload {

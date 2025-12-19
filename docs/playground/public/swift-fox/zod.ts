@@ -2,8 +2,8 @@ import { z } from 'zod';
 
 export const ContactSchema = z.object({
   email: z.string().optional(),
-  id: z.string().optional(),
-  name: z.string().optional(),
+  id: z.string(),
+  name: z.string(),
   notes: z.string().optional(),
   phone: z.string().optional()
 });
@@ -94,8 +94,8 @@ export const ContactsDestroyResponse = z.never();
 
 export interface Contact {
   email?: string;
-  id?: string;
-  name?: string;
+  id: string;
+  name: string;
   notes?: string;
   phone?: string;
 }

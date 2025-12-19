@@ -49,9 +49,9 @@ export interface ActivitiesUpdateResponse {
 export type ActivitiesUpdateResponseBody = { activity: Activity; meta?: object } | { errors?: Error[] };
 
 export interface Activity {
-  action?: string;
-  createdAt?: string;
-  id?: string;
+  action: string;
+  createdAt: string;
+  id: string;
   occurredAt?: string;
 }
 

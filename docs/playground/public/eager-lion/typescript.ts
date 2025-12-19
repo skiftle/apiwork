@@ -6,16 +6,16 @@ export interface Error {
 }
 
 export interface Invoice {
-  createdAt?: string;
+  createdAt: string;
   customer: object;
-  customerId?: string;
-  id?: string;
+  customerId: string;
+  id: string;
   issuedOn?: string;
   lines: string[];
   notes?: string;
-  number?: string;
+  number: string;
   status?: string;
-  updatedAt?: string;
+  updatedAt: string;
 }
 
 export interface InvoiceCreatePayload {

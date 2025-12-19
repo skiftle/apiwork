@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
 export const ActivitySchema = z.object({
-  action: z.string().optional(),
-  createdAt: z.iso.datetime().optional(),
-  id: z.string().optional(),
+  action: z.string(),
+  createdAt: z.iso.datetime(),
+  id: z.string(),
   occurredAt: z.iso.datetime().optional()
 });
 
@@ -136,9 +136,9 @@ export interface ActivitiesUpdateResponse {
 export type ActivitiesUpdateResponseBody = { activity: Activity; meta?: object } | { errors?: Error[] };
 
 export interface Activity {
-  action?: string;
-  createdAt?: string;
-  id?: string;
+  action: string;
+  createdAt: string;
+  id: string;
   occurredAt?: string;
 }
 

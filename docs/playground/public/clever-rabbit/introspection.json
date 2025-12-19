@@ -77,19 +77,16 @@
       "type": "object",
       "shape": {
         "created_at": {
-          "type": "datetime",
-          "optional": true
+          "type": "datetime"
         },
         "id": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "line_items": {
           "type": "array"
         },
         "order_number": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "shipping_address": {
           "type": "object"
@@ -103,8 +100,7 @@
           "optional": true
         },
         "updated_at": {
-          "type": "datetime",
-          "optional": true
+          "type": "datetime"
         }
       }
     },

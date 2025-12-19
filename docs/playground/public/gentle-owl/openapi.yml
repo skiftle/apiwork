@@ -195,6 +195,10 @@ components:
           type: string
         id:
           type: string
+      required:
+      - body
+      - createdAt
+      - id
     commentCommentable:
       oneOf:
       - "$ref": "#/components/schemas/post"
@@ -288,6 +292,11 @@ components:
           type: string
         width:
           type: integer
+      required:
+      - createdAt
+      - id
+      - title
+      - url
     imageFilter:
       type: object
       properties:
@@ -402,6 +411,10 @@ components:
           type: string
         title:
           type: string
+      required:
+      - createdAt
+      - id
+      - title
     postFilter:
       type: object
       properties:
@@ -483,6 +496,11 @@ components:
           type: string
         url:
           type: string
+      required:
+      - createdAt
+      - id
+      - title
+      - url
     videoFilter:
       type: object
       properties:

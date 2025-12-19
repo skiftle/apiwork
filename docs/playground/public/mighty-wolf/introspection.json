@@ -5,8 +5,7 @@
       "type": "object",
       "shape": {
         "brand": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "color": {
           "type": "string",
@@ -17,12 +16,10 @@
           "optional": true
         },
         "id": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "model": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "type": {
           "type": "literal",
@@ -163,8 +160,7 @@
       "type": "object",
       "shape": {
         "brand": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "color": {
           "type": "string",
@@ -175,12 +171,10 @@
           "optional": true
         },
         "id": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "model": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "type": {
           "type": "literal",
@@ -344,20 +338,17 @@
       "type": "object",
       "shape": {
         "brand": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "color": {
           "type": "string",
           "optional": true
         },
         "id": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "model": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "payload_capacity": {
           "type": "decimal",

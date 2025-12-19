@@ -244,8 +244,12 @@ components:
         updatedAt:
           type: string
       required:
+      - createdAt
+      - id
       - lineItems
+      - orderNumber
       - shippingAddress
+      - updatedAt
     orderCreatePayload:
       type: object
       properties:

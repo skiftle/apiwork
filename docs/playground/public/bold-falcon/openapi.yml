@@ -195,6 +195,11 @@ components:
           type: string
         viewCount:
           type: integer
+      required:
+      - createdAt
+      - id
+      - title
+      - updatedAt
     articleCreatePayload:
       type: object
       properties:

@@ -5,16 +5,13 @@
       "type": "object",
       "shape": {
         "action": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "created_at": {
-          "type": "datetime",
-          "optional": true
+          "type": "datetime"
         },
         "id": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "occurred_at": {
           "type": "datetime",

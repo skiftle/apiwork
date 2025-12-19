@@ -9,20 +9,17 @@
           "optional": true
         },
         "body": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "commentable": {
           "type": "comment_commentable",
           "optional": true
         },
         "created_at": {
-          "type": "datetime",
-          "optional": true
+          "type": "datetime"
         },
         "id": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         }
       }
     },
@@ -131,24 +128,20 @@
           "optional": true
         },
         "created_at": {
-          "type": "datetime",
-          "optional": true
+          "type": "datetime"
         },
         "height": {
           "type": "integer",
           "optional": true
         },
         "id": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "title": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "url": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "width": {
           "type": "integer",
@@ -297,16 +290,13 @@
           "optional": true
         },
         "created_at": {
-          "type": "datetime",
-          "optional": true
+          "type": "datetime"
         },
         "id": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "title": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         }
       }
     },
@@ -407,24 +397,20 @@
           "optional": true
         },
         "created_at": {
-          "type": "datetime",
-          "optional": true
+          "type": "datetime"
         },
         "duration": {
           "type": "integer",
           "optional": true
         },
         "id": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "title": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "url": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         }
       }
     },

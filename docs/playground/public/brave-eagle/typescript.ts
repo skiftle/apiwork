@@ -36,14 +36,14 @@ export interface Task {
   archived?: boolean;
   assignee?: null | object;
   comments?: string[];
-  createdAt?: string;
+  createdAt: string;
   description?: string;
   dueDate?: string;
-  id?: string;
+  id: string;
   priority?: TaskPriority;
   status?: TaskStatus;
-  title?: string;
-  updatedAt?: string;
+  title: string;
+  updatedAt: string;
 }
 
 export interface TaskCreatePayload {

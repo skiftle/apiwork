@@ -158,6 +158,10 @@ components:
           type: string
         occurredAt:
           type: string
+      required:
+      - action
+      - createdAt
+      - id
     activityCreatePayload:
       type: object
       properties:

@@ -34,11 +34,11 @@ export const ErrorSchema = z.object({
 
 export const ImageSchema = z.object({
   comments: z.array(z.unknown()).optional(),
-  createdAt: z.iso.datetime().optional(),
+  createdAt: z.iso.datetime(),
   height: z.number().int().optional(),
-  id: z.string().optional(),
-  title: z.string().optional(),
-  url: z.string().optional(),
+  id: z.string(),
+  title: z.string(),
+  url: z.string(),
   width: z.number().int().optional()
 });
 
@@ -80,9 +80,9 @@ export const OffsetPaginationSchema = z.object({
 export const PostSchema = z.object({
   body: z.string().optional(),
   comments: z.array(z.unknown()).optional(),
-  createdAt: z.iso.datetime().optional(),
-  id: z.string().optional(),
-  title: z.string().optional()
+  createdAt: z.iso.datetime(),
+  id: z.string(),
+  title: z.string()
 });
 
 export const PostFilterSchema: z.ZodType<PostFilter> = z.lazy(() => z.object({
@@ -110,11 +110,11 @@ export const PostSortSchema = z.object({
 
 export const VideoSchema = z.object({
   comments: z.array(z.unknown()).optional(),
-  createdAt: z.iso.datetime().optional(),
+  createdAt: z.iso.datetime(),
   duration: z.number().int().optional(),
-  id: z.string().optional(),
-  title: z.string().optional(),
-  url: z.string().optional()
+  id: z.string(),
+  title: z.string(),
+  url: z.string()
 });
 
 export const VideoFilterSchema: z.ZodType<VideoFilter> = z.lazy(() => z.object({
@@ -165,10 +165,10 @@ export const VideoNestedPayloadSchema = z.discriminatedUnion('_type', [
 
 export const CommentSchema = z.object({
   authorName: z.string().optional(),
-  body: z.string().optional(),
+  body: z.string(),
   commentable: CommentCommentableSchema.optional(),
-  createdAt: z.iso.datetime().optional(),
-  id: z.string().optional()
+  createdAt: z.iso.datetime(),
+  id: z.string()
 });
 
 export const CommentsIndexRequestQuerySchema = z.object({
@@ -251,10 +251,10 @@ export const CommentsDestroyResponse = z.never();
 
 export interface Comment {
   authorName?: string;
-  body?: string;
+  body: string;
   commentable?: CommentCommentable;
-  createdAt?: string;
-  id?: string;
+  createdAt: string;
+  id: string;
 }
 
 export type CommentCommentable = { commentableType: 'post' } & Post | { commentableType: 'video' } & Video | { commentableType: 'image' } & Image;
@@ -369,11 +369,11 @@ export interface Error {
 
 export interface Image {
   comments?: unknown[];
-  createdAt?: string;
+  createdAt: string;
   height?: number;
-  id?: string;
-  title?: string;
-  url?: string;
+  id: string;
+  title: string;
+  url: string;
   width?: number;
 }
 
@@ -417,9 +417,9 @@ export interface OffsetPagination {
 export interface Post {
   body?: string;
   comments?: unknown[];
-  createdAt?: string;
-  id?: string;
-  title?: string;
+  createdAt: string;
+  id: string;
+  title: string;
 }
 
 export interface PostFilter {
@@ -451,11 +451,11 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface Video {
   comments?: unknown[];
-  createdAt?: string;
+  createdAt: string;
   duration?: number;
-  id?: string;
-  title?: string;
-  url?: string;
+  id: string;
+  title: string;
+  url: string;
 }
 
 export interface VideoFilter {
