@@ -1,5 +1,5 @@
 ---
-order: 16
+order: 11
 prev: false
 next: false
 ---
@@ -15,28 +15,6 @@ next: false
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/type_system/union_builder.rb#L7)
 
 Returns the value of attribute discriminator.
-
----
-
-### #initialize(discriminator: = nil)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/type_system/union_builder.rb#L10)
-
-**Returns**
-
-`UnionBuilder` — a new instance of UnionBuilder
-
----
-
-### #serialize()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/type_system/union_builder.rb#L28)
-
----
-
-### #variant(type:, of: = nil, enum: = nil, tag: = nil, partial: = nil, &block)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/type_system/union_builder.rb#L15)
 
 ---
 

@@ -1,5 +1,5 @@
 ---
-order: 100
+order: 53
 prev: false
 next: false
 ---
@@ -7,26 +7,6 @@ next: false
 # Openapi
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/openapi.rb#L5)
-
-## Class Methods
-
-### .content_type(type = nil)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L20)
-
----
-
-### .file_extension()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/openapi.rb#L12)
-
----
-
-### .generate(api_path, **options)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L16)
-
----
 
 ## Instance Methods
 
@@ -46,32 +26,10 @@ Returns the value of attribute data.
 
 ---
 
-### #generate()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/openapi.rb#L16)
-
----
-
-### #initialize(api_path, **options)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L30)
-
-**Returns**
-
-`Base` — a new instance of Base
-
----
-
 ### #options()
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L11)
 
 Returns the value of attribute options.
-
----
-
-### #validate_options!()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L43)
 
 ---

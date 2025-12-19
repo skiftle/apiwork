@@ -1,5 +1,5 @@
 ---
-order: 8
+order: 7
 prev: false
 next: false
 ---
@@ -30,18 +30,6 @@ resources :invoices do
 end
 # Routes: GET /invoices/search, POST /invoices/bulk_create
 ```
-
----
-
-### #concern(name, callable = nil, &block)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/recorder/concern.rb#L7)
-
----
-
-### #concerns(*names, **options)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/recorder/concern.rb#L12)
 
 ---
 
@@ -90,16 +78,6 @@ member { get :status }
 ```ruby
 get :status, on: :member
 ```
-
----
-
-### #initialize(metadata, namespaces)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/recorder.rb#L13)
-
-**Returns**
-
-`Recorder` — a new instance of Recorder
 
 ---
 
@@ -267,11 +245,5 @@ resources :invoices do
   resources :line_items
 end
 ```
-
----
-
-### #with_options(options = {}, &block)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/recorder/resource.rb#L93)
 
 ---

@@ -36,8 +36,9 @@ module Apiwork
       YARD::Registry.all(:class, :module)
                     .select { |obj| obj.path.start_with?('Apiwork::') }
                     .reject { |obj| excluded?(obj.path) }
-                    .sort_by(&:path)
                     .map { |obj| serialize_module(obj) }
+                    .reject { |mod| mod[:class_methods].empty? && mod[:instance_methods].empty? }
+                    .sort_by { |mod| mod[:path] }
     end
 
     def excluded?(path)
@@ -68,6 +69,7 @@ module Apiwork
     def extract_methods(obj, scope)
       obj.meths(visibility: :public, scope:)
          .reject { |m| m.name.to_s.start_with?('_') }
+         .reject { |m| m.docstring.empty? }
          .sort_by(&:name)
          .map { |m| serialize_method(m) }
     end

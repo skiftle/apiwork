@@ -1,5 +1,5 @@
 ---
-order: 26
+order: 17
 prev: false
 next: false
 ---
@@ -8,31 +8,7 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/apiwork/collection_loader/filter.rb#L7)
 
-## Class Methods
-
-### .filter(relation, schema_class, filter_params, issues)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/apiwork/collection_loader/filter.rb#L31)
-
----
-
 ## Instance Methods
-
-### #filter(params)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/apiwork/collection_loader/filter.rb#L41)
-
----
-
-### #initialize(relation, schema_class, issues)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/apiwork/collection_loader/filter.rb#L35)
-
-**Returns**
-
-`Filter` — a new instance of Filter
-
----
 
 ### #schema_class()
 

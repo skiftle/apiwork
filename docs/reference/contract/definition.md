@@ -1,5 +1,5 @@
 ---
-order: 56
+order: 32
 prev: false
 next: false
 ---
@@ -18,33 +18,11 @@ Returns the value of attribute action_name.
 
 ---
 
-### #as_json()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/definition.rb#L35)
-
----
-
 ### #contract_class()
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/definition.rb#L6)
 
 Returns the value of attribute contract_class.
-
----
-
-### #initialize(type:, contract_class:, action_name: = nil)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/definition.rb#L11)
-
-**Returns**
-
-`Definition` — a new instance of Definition
-
----
-
-### #introspect(locale: = nil)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/definition.rb#L31)
 
 ---
 
@@ -138,32 +116,10 @@ Returns the value of attribute params.
 
 ---
 
-### #resolve_option(name, subkey = nil)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/definition.rb#L18)
-
----
-
 ### #type()
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/definition.rb#L6)
 
 Returns the value of attribute type.
-
----
-
-### #unwrapped_union?()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/definition.rb#L39)
-
-**Returns**
-
-`Boolean` — 
-
----
-
-### #validate(data, options = {})
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/definition.rb#L297)
 
 ---

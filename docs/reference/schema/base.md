@@ -1,5 +1,5 @@
 ---
-order: 94
+order: 50
 prev: false
 next: false
 ---
@@ -31,12 +31,6 @@ class ActivitySchema < Apiwork::Schema::Base
   end
 end
 ```
-
----
-
-### .api_class()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L95)
 
 ---
 
@@ -131,16 +125,6 @@ end
 
 ---
 
-### .deprecated?()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L373)
-
-**Returns**
-
-`Boolean` — 
-
----
-
 ### .description(value = nil)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L352)
@@ -203,12 +187,6 @@ class CarSchema < VehicleSchema
   attribute :doors
 end
 ```
-
----
-
-### .discriminator_sti_mapping()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L336)
 
 ---
 
@@ -354,34 +332,6 @@ end
 
 ---
 
-### .model_class()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L73)
-
----
-
-### .needs_discriminator_transform?()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L332)
-
-**Returns**
-
-`Boolean` — 
-
----
-
-### .register_variant(tag:, schema:, sti_type:)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L317)
-
----
-
-### .resolve_option(name, subkey = nil)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L129)
-
----
-
 ### .root(singular, plural = nil)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L89)
@@ -404,38 +354,6 @@ class InvoiceSchema < Apiwork::Schema::Base
   root :bill, :bills
 end
 ```
-
----
-
-### .root_key()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L398)
-
----
-
-### .sti_base?()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L322)
-
-**Returns**
-
-`Boolean` — 
-
----
-
-### .sti_variant?()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L328)
-
-**Returns**
-
-`Boolean` — 
-
----
-
-### .type()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L394)
 
 ---
 
@@ -487,12 +405,6 @@ end
 
 ## Instance Methods
 
-### #as_json()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/serialization.rb#L36)
-
----
-
 ### #context()
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L22)
@@ -506,16 +418,6 @@ Returns the value of attribute context.
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L22)
 
 Returns the value of attribute include.
-
----
-
-### #initialize(object, context: = {}, include: = nil)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L26)
-
-**Returns**
-
-`Base` — a new instance of Base
 
 ---
 

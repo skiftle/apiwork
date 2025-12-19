@@ -1,5 +1,5 @@
 ---
-order: 77
+order: 45
 prev: false
 next: false
 ---
@@ -9,12 +9,6 @@ next: false
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L4)
 
 ## Class Methods
-
-### .key_for_status(status)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L51)
-
----
 
 ### .register(key, status:, attach_path: = false)
 
@@ -48,11 +42,5 @@ Apiwork::ErrorCode.register :resource_locked, status: 423
 ```ruby
 Apiwork::ErrorCode.register :not_found, status: 404, attach_path: true
 ```
-
----
-
-### .reset!()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L55)
 
 ---

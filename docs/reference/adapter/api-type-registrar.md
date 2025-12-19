@@ -1,5 +1,5 @@
 ---
-order: 20
+order: 13
 prev: false
 next: false
 ---
@@ -15,15 +15,5 @@ next: false
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_type_registrar.rb#L6)
 
 Returns the value of attribute api_class.
-
----
-
-### #initialize(api_class)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_type_registrar.rb#L8)
-
-**Returns**
-
-`ApiTypeRegistrar` — a new instance of ApiTypeRegistrar
 
 ---

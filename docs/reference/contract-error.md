@@ -1,5 +1,5 @@
 ---
-order: 70
+order: 41
 prev: false
 next: false
 ---
@@ -9,22 +9,6 @@ next: false
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract_error.rb#L4)
 
 ## Instance Methods
-
-### #error_code()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/constraint_error.rb#L12)
-
----
-
-### #initialize(issues)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/constraint_error.rb#L7)
-
-**Returns**
-
-`ConstraintError` — a new instance of ConstraintError
-
----
 
 ### #issues()
 

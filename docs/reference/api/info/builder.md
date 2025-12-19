@@ -1,5 +1,5 @@
 ---
-order: 4
+order: 3
 prev: false
 next: false
 ---
@@ -65,16 +65,6 @@ Supports Markdown formatting.
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L7)
 
 Returns the value of attribute info.
-
----
-
-### #initialize()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L9)
-
-**Returns**
-
-`Builder` — a new instance of Builder
 
 ---
 

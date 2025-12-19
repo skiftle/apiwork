@@ -49,12 +49,6 @@ Returns the value of attribute adapter_config.
 
 ---
 
-### .as_json()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L390)
-
----
-
 ### .built_contracts()
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L7)
@@ -93,18 +87,6 @@ Apiwork::API.define '/api/v1' do
   resources :comments, concerns: [:archivable]
 end
 ```
-
----
-
-### .ensure_all_contracts_built!()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L414)
-
----
-
-### .ensure_contract_built!(contract_class)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L398)
 
 ---
 
@@ -165,12 +147,6 @@ end
 
 ---
 
-### .introspect(locale: = nil)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L384)
-
----
-
 ### .key_format(format = nil)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L48)
@@ -206,12 +182,6 @@ end
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L7)
 
 Returns the value of attribute metadata.
-
----
-
-### .mount(path)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L17)
 
 ---
 
@@ -261,24 +231,6 @@ end
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L7)
 
 Returns the value of attribute recorder.
-
----
-
-### .reset_contracts!()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L394)
-
----
-
-### .resolve_enum(name, scope:)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L263)
-
----
-
-### .resolve_type(name, scope: = nil)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L259)
 
 ---
 
@@ -345,12 +297,6 @@ end
 
 ---
 
-### .scoped_name(scope, name)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L267)
-
----
-
 ### .spec(type, &block)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L82)
@@ -384,12 +330,6 @@ end
 
 ---
 
-### .spec_config(type)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L108)
-
----
-
 ### .spec_configs()
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L7)
@@ -398,39 +338,11 @@ Returns the value of attribute spec_configs.
 
 ---
 
-### .spec_path(type)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L104)
-
----
-
 ### .specs()
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L7)
 
 Returns the value of attribute specs.
-
----
-
-### .specs?()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L112)
-
-**Returns**
-
-`Boolean` — 
-
----
-
-### .transform_request(hash)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L57)
-
----
-
-### .transform_response(hash)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L61)
 
 ---
 

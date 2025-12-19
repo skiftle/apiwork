@@ -1,5 +1,5 @@
 ---
-order: 65
+order: 36
 prev: false
 next: false
 ---
@@ -61,16 +61,6 @@ Returns the value of attribute contract_class.
 
 ---
 
-### #initialize(contract_class, action_name)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L10)
-
-**Returns**
-
-`ResponseDefinition` — a new instance of ResponseDefinition
-
----
-
 ### #no_content!()
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L35)
@@ -95,15 +85,5 @@ action :archive do
   response { no_content! }
 end
 ```
-
----
-
-### #no_content?()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L17)
-
-**Returns**
-
-`Boolean` — 
 
 ---

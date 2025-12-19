@@ -1,5 +1,5 @@
 ---
-order: 12
+order: 9
 prev: false
 next: false
 ---
@@ -79,11 +79,5 @@ resources :invoices do
   resources :line_items
 end
 ```
-
----
-
-### #with_options(options = {}, &block)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/recorder/resource.rb#L93)
 
 ---

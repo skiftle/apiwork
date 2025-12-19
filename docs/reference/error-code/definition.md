@@ -1,5 +1,5 @@
 ---
-order: 78
+order: 46
 prev: false
 next: false
 ---
@@ -37,22 +37,6 @@ Sets the attribute attach_path
 **Returns**
 
 `Object` — the newly set value
-
----
-
-### #attach_path?()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L6)
-
-**Returns**
-
-`Boolean` — 
-
----
-
-### #description(api_path: = nil, options: = {})
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code/definition.rb#L10)
 
 ---
 

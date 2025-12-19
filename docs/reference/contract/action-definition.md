@@ -1,5 +1,5 @@
 ---
-order: 54
+order: 30
 prev: false
 next: false
 ---
@@ -15,12 +15,6 @@ next: false
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L6)
 
 Returns the value of attribute action_name.
-
----
-
-### #as_json()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L38)
 
 ---
 
@@ -86,22 +80,6 @@ action :create do
   description 'Creates a new invoice and sends notification email.'
 end
 ```
-
----
-
-### #initialize(action_name:, contract_class:, replace: = false)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L11)
-
-**Returns**
-
-`ActionDefinition` — a new instance of ActionDefinition
-
----
-
-### #introspect(locale: = nil)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L34)
 
 ---
 
@@ -197,26 +175,6 @@ Returns the value of attribute request_definition.
 
 ---
 
-### #resets_request?()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L26)
-
-**Returns**
-
-`Boolean` — 
-
----
-
-### #resets_response?()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L30)
-
-**Returns**
-
-`Boolean` — 
-
----
-
 ### #response(replace: = false, &block)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L196)
@@ -260,12 +218,6 @@ end
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L6)
 
 Returns the value of attribute response_definition.
-
----
-
-### #serialize_data(data, context: = {}, include: = nil)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L206)
 
 ---
 

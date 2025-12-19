@@ -1,5 +1,5 @@
 ---
-order: 55
+order: 31
 prev: false
 next: false
 ---
@@ -70,30 +70,6 @@ end
 
 ---
 
-### .action_definition(action_name)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L329)
-
----
-
-### .api_class()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L344)
-
----
-
-### .as_json()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L340)
-
----
-
-### .define_action(action_name, &block)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L375)
-
----
-
 ### .enum(name, values: = nil, description: = nil, example: = nil, deprecated: = false)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L199)
@@ -124,12 +100,6 @@ class InvoiceContract < Apiwork::Contract::Base
   end
 end
 ```
-
----
-
-### .find_contract_for_schema(schema_class)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L103)
 
 ---
 
@@ -207,54 +177,6 @@ end
 
 ---
 
-### .inherited(subclass)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L35)
-
----
-
-### .introspect(action: = nil, locale: = nil)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L336)
-
----
-
-### .parse_response(body, action)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L354)
-
----
-
-### .register_sti_variants(*variant_schema_classes)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L112)
-
----
-
-### .reset_build_state!()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L130)
-
----
-
-### .resolve_custom_type(type_name, visited: = Set.new)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L320)
-
----
-
-### .resolve_enum(enum_name, visited: = Set.new)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L362)
-
----
-
-### .resolve_type(name)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L358)
-
----
-
 ### .schema!()
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L88)
@@ -284,34 +206,6 @@ class UserContract < Apiwork::Contract::Base
   end
 end
 ```
-
----
-
-### .schema?()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L126)
-
-**Returns**
-
-`Boolean` — 
-
----
-
-### .schema_class()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L122)
-
----
-
-### .scope_prefix()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L135)
-
----
-
-### .scoped_name(name)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L371)
 
 ---
 
@@ -410,26 +304,6 @@ Returns the value of attribute body.
 
 ---
 
-### #initialize(query:, body:, action_name:, coerce: = false)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L18)
-
-**Returns**
-
-`Base` — a new instance of Base
-
----
-
-### #invalid?()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L30)
-
-**Returns**
-
-`Boolean` — 
-
----
-
 ### #issues()
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L13)
@@ -443,15 +317,5 @@ Returns the value of attribute issues.
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L13)
 
 Returns the value of attribute query.
-
----
-
-### #valid?()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L26)
-
-**Returns**
-
-`Boolean` — 
 
 ---

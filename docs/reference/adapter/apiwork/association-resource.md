@@ -1,5 +1,5 @@
 ---
-order: 22
+order: 14
 prev: false
 next: false
 ---
@@ -7,20 +7,6 @@ next: false
 # AssociationResource
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/apiwork/association_resource.rb#L6)
-
-## Class Methods
-
-### .for(schema, sti: = false)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/apiwork/association_resource.rb#L15)
-
----
-
-### .polymorphic()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/apiwork/association_resource.rb#L11)
-
----
 
 ## Instance Methods
 
@@ -81,15 +67,5 @@ Sets the attribute sti
 **Returns**
 
 `Object` — the newly set value
-
----
-
-### #sti?()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/apiwork/association_resource.rb#L7)
-
-**Returns**
-
-`Boolean` — 
 
 ---

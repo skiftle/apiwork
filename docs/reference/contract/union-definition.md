@@ -1,5 +1,5 @@
 ---
-order: 68
+order: 39
 prev: false
 next: false
 ---
@@ -23,22 +23,6 @@ Returns the value of attribute contract_class.
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/union_definition.rb#L6)
 
 Returns the value of attribute discriminator.
-
----
-
-### #initialize(contract_class, discriminator: = nil)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/union_definition.rb#L10)
-
-**Returns**
-
-`UnionDefinition` — a new instance of UnionDefinition
-
----
-
-### #serialize()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/union_definition.rb#L65)
 
 ---
 

@@ -10,12 +10,6 @@ next: false
 
 ## Class Methods
 
-### .all()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L41)
-
----
-
 ### .define(path, &block)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L28)
@@ -54,29 +48,5 @@ Apiwork::API.define '/api/v1' do
   resources :invoices
 end
 ```
-
----
-
-### .find(path)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L37)
-
----
-
-### .introspect(path, locale: = nil)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L49)
-
----
-
-### .reset!()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L53)
-
----
-
-### .unregister(path)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L45)
 
 ---

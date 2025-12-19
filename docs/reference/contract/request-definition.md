@@ -1,5 +1,5 @@
 ---
-order: 58
+order: 33
 prev: false
 next: false
 ---
@@ -57,16 +57,6 @@ Returns the value of attribute body_definition.
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_definition.rb#L6)
 
 Returns the value of attribute contract_class.
-
----
-
-### #initialize(contract_class, action_name)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_definition.rb#L11)
-
-**Returns**
-
-`RequestDefinition` — a new instance of RequestDefinition
 
 ---
 
