@@ -14,7 +14,7 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L46)
 
-Defines contact information for OpenAPI spec.
+Defines contact information.
 
 **Example**
 
@@ -48,7 +48,7 @@ Marks the entire API as deprecated.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L98)
 
-Sets a detailed API description for OpenAPI spec.
+Sets a detailed API description.
 
 Supports Markdown formatting.
 
@@ -82,7 +82,7 @@ Returns the value of attribute info.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L63)
 
-Defines license information for OpenAPI spec.
+Defines license information.
 
 **Example**
 
@@ -101,7 +101,7 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L81)
 
-Adds a server URL to OpenAPI spec.
+Adds a server URL.
 
 Multiple servers can be added by calling this method multiple times.
 
@@ -127,7 +127,7 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L89)
 
-Sets a short API summary for OpenAPI spec.
+Sets a short API summary.
 
 **Parameters**
 
@@ -155,7 +155,7 @@ Sets default tags for the API.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L30)
 
-Sets the terms of service URL for OpenAPI spec.
+Sets the terms of service URL.
 
 **Parameters**
 
@@ -169,7 +169,7 @@ Sets the terms of service URL for OpenAPI spec.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L16)
 
-Sets the API title for OpenAPI spec.
+Sets the API title.
 
 **Parameters**
 
@@ -183,7 +183,7 @@ Sets the API title for OpenAPI spec.
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L23)
 
-Sets the API version for OpenAPI spec.
+Sets the API version.
 
 **Parameters**
 

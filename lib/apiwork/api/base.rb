@@ -62,28 +62,6 @@ module Apiwork
           transform_response_keys(hash)
         end
 
-        private
-
-        def transform_request_keys(hash)
-          case @key_format
-          when :camel
-            hash.deep_transform_keys { |key| key.to_s.underscore.to_sym }
-          else
-            hash
-          end
-        end
-
-        def transform_response_keys(hash)
-          case @key_format
-          when :camel
-            hash.deep_transform_keys { |key| key.to_s.camelize(:lower).to_sym }
-          else
-            hash
-          end
-        end
-
-        public
-
         # Enables a spec generator for this API.
         #
         # Specs generate client code and documentation from your contracts.
@@ -290,16 +268,73 @@ module Apiwork
           type_system.scoped_name(scope, name)
         end
 
+        # Defines information about this API.
+        #
+        # Used to set title, version, contact, license,
+        # and other API information for generated specs.
+        #
+        # @yield block with info methods (title, version, contact, license, server, etc.)
+        #
+        # @example
+        #   Apiwork::API.define '/api/v1' do
+        #     info do
+        #       title 'My API'
+        #       version '1.0.0'
+        #       contact do
+        #         name 'Support'
+        #         email 'support@example.com'
+        #       end
+        #     end
+        #   end
         def info(&block)
           builder = Info::Builder.new
           builder.instance_eval(&block)
           @metadata.info = builder.info
         end
 
+        # Defines a RESTful resource with standard CRUD actions.
+        #
+        # This is the main method for declaring API endpoints. Creates
+        # routes for index, show, create, update, destroy actions.
+        # Nested resources and custom actions can be defined in the block.
+        #
+        # @param name [Symbol] resource name (plural)
+        # @param options [Hash] resource options
+        # @option options [Array<Symbol>] :only limit to specific CRUD actions
+        # @option options [Array<Symbol>] :except exclude specific CRUD actions
+        # @option options [String] :contract custom contract path
+        # @option options [String] :controller custom controller path
+        # @option options [Array<Symbol>] :concerns concerns to include
+        # @yield block for nested resources and custom actions
+        #
+        # @example Basic resource
+        #   Apiwork::API.define '/api/v1' do
+        #     resources :invoices
+        #   end
+        #
+        # @example With options and nested resources
+        #   resources :invoices, only: [:index, :show] do
+        #     member { post :archive }
+        #     resources :line_items
+        #   end
         def resources(name, **options, &block)
           @recorder.resources(name, **options, &block)
         end
 
+        # Defines a singular resource (no index action, no :id in URL).
+        #
+        # Useful for resources where only one instance exists,
+        # like user profile or application settings.
+        #
+        # @param name [Symbol] resource name (singular)
+        # @param options [Hash] resource options (same as resources)
+        # @yield block for nested resources and custom actions
+        #
+        # @example
+        #   Apiwork::API.define '/api/v1' do
+        #     resource :profile
+        #     # Routes: GET /profile, PATCH /profile (no index, no :id)
+        #   end
         def resource(name, **options, &block)
           @recorder.resource(name, **options, &block)
         end
@@ -392,6 +427,24 @@ module Apiwork
         end
 
         private
+
+        def transform_request_keys(hash)
+          case @key_format
+          when :camel
+            hash.deep_transform_keys { |key| key.to_s.underscore.to_sym }
+          else
+            hash
+          end
+        end
+
+        def transform_response_keys(hash)
+          case @key_format
+          when :camel
+            hash.deep_transform_keys { |key| key.to_s.camelize(:lower).to_sym }
+          else
+            hash
+          end
+        end
 
         def find_resource_for_contract(contract_class)
           @metadata&.search_resources do |resource_data|

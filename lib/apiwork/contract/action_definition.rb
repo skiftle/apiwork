@@ -41,7 +41,7 @@ module Apiwork
 
       # Sets a short summary for this action.
       #
-      # Used in OpenAPI specs as the operation summary.
+      # Used in generated specs as the operation summary.
       #
       # @param text [String] summary text (optional)
       # @return [String, nil] the summary
@@ -57,7 +57,7 @@ module Apiwork
 
       # Sets a detailed description for this action.
       #
-      # Used in OpenAPI specs as the operation description.
+      # Used in generated specs as the operation description.
       # Supports Markdown formatting.
       #
       # @param text [String] description text (optional)
@@ -72,7 +72,7 @@ module Apiwork
         @description
       end
 
-      # Sets OpenAPI tags for grouping this action.
+      # Sets tags for grouping this action.
       #
       # Tags help organize actions in generated documentation.
       #
@@ -90,7 +90,7 @@ module Apiwork
 
       # Marks this action as deprecated.
       #
-      # Deprecated actions are flagged in OpenAPI specs.
+      # Deprecated actions are flagged in generated specs.
       #
       # @param value [Boolean] deprecation status (optional)
       # @return [Boolean, nil] whether deprecated
@@ -104,9 +104,9 @@ module Apiwork
         @deprecated
       end
 
-      # Sets a custom OpenAPI operationId.
+      # Sets a custom operation ID.
       #
-      # By default, operationId is auto-generated from resource and action name.
+      # By default, operation ID is auto-generated from resource and action name.
       #
       # @param value [String] custom operation ID (optional)
       # @return [String, nil] the operation ID
@@ -123,7 +123,7 @@ module Apiwork
       # Declares error codes this action may return.
       #
       # Error codes must be registered via ErrorCode.register.
-      # These appear in OpenAPI specs as possible error responses.
+      # These appear in generated specs as possible error responses.
       #
       # @param error_code_keys [Array<Symbol>] error code keys
       # @raise [ConfigurationError] if error code is not registered

@@ -12,7 +12,13 @@ module Apiwork
       end
 
       def serialize
-        resource_path = build_resource_path
+        resource_segment = @resource_metadata[:singular] ? @resource_name.to_s.singularize : @resource_name.to_s
+        resource_path = if @parent_path
+                          ":#{@parent_resource_name.to_s.singularize}_id/#{resource_segment}"
+                        else
+                          resource_segment
+                        end
+
         metadata = @resource_metadata[:metadata] || {}
         contract_class = resolve_contract_class
 
@@ -29,21 +35,6 @@ module Apiwork
 
       private
 
-      def build_resource_path
-        resource_segment = if @resource_metadata[:singular]
-                             @resource_name.to_s.singularize
-                           else
-                             @resource_name.to_s
-                           end
-
-        if @parent_path
-          parent_id_param = ":#{@parent_resource_name.to_s.singularize}_id"
-          "#{parent_id_param}/#{resource_segment}"
-        else
-          resource_segment
-        end
-      end
-
       def build_actions(contract_class)
         actions = {}
         add_actions(actions, @resource_metadata[:actions], :standard, contract_class)
@@ -57,7 +48,15 @@ module Apiwork
 
         action_source.each do |action_name, action_data|
           path_type = action_type == :standard ? action_name.to_sym : action_type
-          add_action(actions, action_name, action_data[:method], action_path(action_name, path_type), contract_class)
+          path = action_path(action_name, path_type)
+
+          actions[action_name] = { method: action_data[:method], path: }
+
+          action_definition = contract_class&.action_definition(action_name)
+          next unless action_definition
+
+          actions[action_name].merge!(ActionSerializer.new(action_definition).serialize.except(:deprecated).compact)
+          actions[action_name][:deprecated] = true if action_definition.deprecated
         end
       end
 
@@ -88,16 +87,6 @@ module Apiwork
         else
           '/'
         end
-      end
-
-      def add_action(actions, name, method, path, contract_class)
-        actions[name] = { method:, path: }
-
-        action_definition = contract_class&.action_definition(name)
-        return unless action_definition
-
-        actions[name].merge!(ActionSerializer.new(action_definition).serialize.except(:deprecated).compact)
-        actions[name][:deprecated] = true if action_definition.deprecated
       end
 
       def resolve_contract_class

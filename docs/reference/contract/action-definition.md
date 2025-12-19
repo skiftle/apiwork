@@ -38,7 +38,7 @@ Returns the value of attribute contract_class.
 
 Marks this action as deprecated.
 
-Deprecated actions are flagged in OpenAPI specs.
+Deprecated actions are flagged in generated specs.
 
 **Parameters**
 
@@ -66,7 +66,7 @@ end
 
 Sets a detailed description for this action.
 
-Used in OpenAPI specs as the operation description.
+Used in generated specs as the operation description.
 Supports Markdown formatting.
 
 **Parameters**
@@ -109,9 +109,9 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L118)
 
-Sets a custom OpenAPI operationId.
+Sets a custom operation ID.
 
-By default, operationId is auto-generated from resource and action name.
+By default, operation ID is auto-generated from resource and action name.
 
 **Parameters**
 
@@ -140,7 +140,7 @@ end
 Declares error codes this action may return.
 
 Error codes must be registered via ErrorCode.register.
-These appear in OpenAPI specs as possible error responses.
+These appear in generated specs as possible error responses.
 
 **Parameters**
 
@@ -275,7 +275,7 @@ Returns the value of attribute response_definition.
 
 Sets a short summary for this action.
 
-Used in OpenAPI specs as the operation summary.
+Used in generated specs as the operation summary.
 
 **Parameters**
 
@@ -301,7 +301,7 @@ end
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L86)
 
-Sets OpenAPI tags for grouping this action.
+Sets tags for grouping this action.
 
 Tags help organize actions in generated documentation.
 

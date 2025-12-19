@@ -67,17 +67,13 @@ module Apiwork
           return schema_description if schema_description
         end
 
-        i18n_type_description(type_name)
+        @api_class.metadata.i18n_lookup(:types, type_name, :description)
       end
 
       def resolve_type_example(metadata)
         return metadata[:example] if metadata[:example]
 
         metadata[:schema_class]&.example
-      end
-
-      def i18n_type_description(type_name)
-        @api_class.metadata.i18n_lookup(:types, type_name, :description)
       end
 
       def resolve_enum_description(enum_name, metadata)

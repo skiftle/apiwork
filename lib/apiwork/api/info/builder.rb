@@ -10,28 +10,28 @@ module Apiwork
           @info = {}
         end
 
-        # Sets the API title for OpenAPI spec.
+        # Sets the API title.
         #
         # @param text [String] API title
         def title(text)
           @info[:title] = text
         end
 
-        # Sets the API version for OpenAPI spec.
+        # Sets the API version.
         #
         # @param text [String] API version (e.g., '1.0.0')
         def version(text)
           @info[:version] = text
         end
 
-        # Sets the terms of service URL for OpenAPI spec.
+        # Sets the terms of service URL.
         #
         # @param url [String] URL to terms of service
         def terms_of_service(url)
           @info[:terms_of_service] = url
         end
 
-        # Defines contact information for OpenAPI spec.
+        # Defines contact information.
         #
         # @yield block with name, email, url methods
         #
@@ -49,7 +49,7 @@ module Apiwork
           @info[:contact] = builder.data
         end
 
-        # Defines license information for OpenAPI spec.
+        # Defines license information.
         #
         # @yield block with name, url methods
         #
@@ -66,7 +66,7 @@ module Apiwork
           @info[:license] = builder.data
         end
 
-        # Adds a server URL to OpenAPI spec.
+        # Adds a server URL.
         #
         # Multiple servers can be added by calling this method multiple times.
         #
@@ -83,14 +83,14 @@ module Apiwork
           @info[:servers] << { url: url, description: description }.compact
         end
 
-        # Sets a short API summary for OpenAPI spec.
+        # Sets a short API summary.
         #
         # @param text [String] API summary
         def summary(text)
           @info[:summary] = text
         end
 
-        # Sets a detailed API description for OpenAPI spec.
+        # Sets a detailed API description.
         #
         # Supports Markdown formatting.
         #

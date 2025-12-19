@@ -12,7 +12,7 @@ next: false
 
 ### .adapter(name = nil, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L185)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L163)
 
 Configures the adapter for this API.
 
@@ -51,7 +51,7 @@ Returns the value of attribute adapter_config.
 
 ### .as_json()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L355)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L390)
 
 ---
 
@@ -65,7 +65,7 @@ Returns the value of attribute built_contracts.
 
 ### .concern(name, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L327)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L362)
 
 Defines a reusable concern for resources.
 
@@ -98,19 +98,19 @@ end
 
 ### .ensure_all_contracts_built!()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L379)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L414)
 
 ---
 
 ### .ensure_contract_built!(contract_class)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L363)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L398)
 
 ---
 
 ### .enum(name, values: = nil, scope: = nil, description: = nil, example: = nil, deprecated: = false)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L248)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L226)
 
 Defines a reusable enumeration type.
 
@@ -141,13 +141,33 @@ param :status, enum: :status
 
 ### .info(&block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L293)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L289)
+
+Defines information about this API.
+
+Used to set title, version, contact, license,
+and other API information for generated specs.
+
+**Example**
+
+```ruby
+Apiwork::API.define '/api/v1' do
+  info do
+    title 'My API'
+    version '1.0.0'
+    contact do
+      name 'Support'
+      email 'support@example.com'
+    end
+  end
+end
+```
 
 ---
 
 ### .introspect(locale: = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L349)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L384)
 
 ---
 
@@ -213,7 +233,7 @@ Returns the value of attribute namespaces.
 
 ### .raises(*error_code_keys)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L150)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L128)
 
 Declares error codes that any action in this API may raise.
 
@@ -246,43 +266,94 @@ Returns the value of attribute recorder.
 
 ### .reset_contracts!()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L359)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L394)
 
 ---
 
 ### .resolve_enum(name, scope:)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L285)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L263)
 
 ---
 
 ### .resolve_type(name, scope: = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L281)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L259)
 
 ---
 
 ### .resource(name, **options, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L303)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L338)
+
+Defines a singular resource (no index action, no :id in URL).
+
+Useful for resources where only one instance exists,
+like user profile or application settings.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `Symbol` | resource name (singular) |
+| `options` | `Hash` | resource options (same as resources) |
+
+**Example**
+
+```ruby
+Apiwork::API.define '/api/v1' do
+  resource :profile
+  # Routes: GET /profile, PATCH /profile (no index, no :id)
+end
+```
 
 ---
 
 ### .resources(name, **options, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L299)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L320)
+
+Defines a RESTful resource with standard CRUD actions.
+
+This is the main method for declaring API endpoints. Creates
+routes for index, show, create, update, destroy actions.
+Nested resources and custom actions can be defined in the block.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `Symbol` | resource name (plural) |
+| `options` | `Hash` | resource options |
+
+**Example: Basic resource**
+
+```ruby
+Apiwork::API.define '/api/v1' do
+  resources :invoices
+end
+```
+
+**Example: With options and nested resources**
+
+```ruby
+resources :invoices, only: [:index, :show] do
+  member { post :archive }
+  resources :line_items
+end
+```
 
 ---
 
 ### .scoped_name(scope, name)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L289)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L267)
 
 ---
 
 ### .spec(type, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L104)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L82)
 
 Enables a spec generator for this API.
 
@@ -315,7 +386,7 @@ end
 
 ### .spec_config(type)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L130)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L108)
 
 ---
 
@@ -329,7 +400,7 @@ Returns the value of attribute spec_configs.
 
 ### .spec_path(type)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L126)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L104)
 
 ---
 
@@ -343,7 +414,7 @@ Returns the value of attribute specs.
 
 ### .specs?()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L134)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L112)
 
 **Returns**
 
@@ -365,7 +436,7 @@ Returns the value of attribute specs.
 
 ### .type(name, scope: = nil, description: = nil, example: = nil, format: = nil, deprecated: = false, schema_class: = nil, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L225)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L203)
 
 Defines a reusable custom type (object shape).
 
@@ -412,7 +483,7 @@ Returns the value of attribute type_system.
 
 ### .union(name, scope: = nil, discriminator: = nil, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L273)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L251)
 
 Defines a discriminated union type.
 
@@ -444,7 +515,7 @@ end
 
 ### .with_options(options = {}, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L345)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L380)
 
 Applies options to all nested resource definitions.
 

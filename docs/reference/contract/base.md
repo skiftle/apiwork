@@ -90,7 +90,7 @@ end
 
 ### .define_action(action_name, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L379)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L375)
 
 ---
 
@@ -245,13 +245,13 @@ end
 
 ### .resolve_enum(enum_name, visited: = Set.new)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L366)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L362)
 
 ---
 
 ### .resolve_type(name)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L362)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L358)
 
 ---
 
@@ -311,7 +311,7 @@ end
 
 ### .scoped_name(name)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L375)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L371)
 
 ---
 

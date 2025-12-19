@@ -65,22 +65,18 @@ module Apiwork
         key = key.to_s
         strategy ||= key_format
 
-        return transform_string(key, strategy) unless key.start_with?('_')
+        transform = lambda do |s|
+          case strategy
+          when :camel then s.camelize(:lower)
+          when :underscore then s.underscore
+          else s
+          end
+        end
+
+        return transform.call(key) unless key.start_with?('_')
 
         prefix = key[/^_+/]
-        "#{prefix}#{transform_string(key.delete_prefix(prefix), strategy)}"
-      end
-
-      def transform_string(string, strategy)
-        string_value = string.to_s
-        case strategy
-        when :camel
-          string_value.camelize(:lower)
-        when :underscore
-          string_value.underscore
-        else
-          string_value
-        end
+        "#{prefix}#{transform.call(key.delete_prefix(prefix))}"
       end
 
       def metadata
