@@ -43,10 +43,6 @@ export const OrderCreatePayloadSchema = z.object({
   shippingAddress: z.object({}).optional()
 });
 
-export const OrderIncludeSchema = z.object({
-
-});
-
 export const OrderPageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
@@ -80,7 +76,6 @@ export const OrderFilterSchema: z.ZodType<OrderFilter> = z.lazy(() => z.object({
 
 export const OrdersIndexRequestQuerySchema = z.object({
   filter: z.union([OrderFilterSchema, z.array(OrderFilterSchema)]).optional(),
-  include: OrderIncludeSchema.optional(),
   page: OrderPageSchema.optional(),
   sort: z.union([OrderSortSchema, z.array(OrderSortSchema)]).optional()
 });
@@ -95,22 +90,10 @@ export const OrdersIndexResponseSchema = z.object({
   body: OrdersIndexResponseBodySchema
 });
 
-export const OrdersShowRequestQuerySchema = z.object({
-  include: OrderIncludeSchema.optional()
-});
-
-export const OrdersShowRequestSchema = z.object({
-  query: OrdersShowRequestQuerySchema
-});
-
 export const OrdersShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), order: OrderSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const OrdersShowResponseSchema = z.object({
   body: OrdersShowResponseBodySchema
-});
-
-export const OrdersCreateRequestQuerySchema = z.object({
-  include: OrderIncludeSchema.optional()
 });
 
 export const OrdersCreateRequestBodySchema = z.object({
@@ -118,7 +101,6 @@ export const OrdersCreateRequestBodySchema = z.object({
 });
 
 export const OrdersCreateRequestSchema = z.object({
-  query: OrdersCreateRequestQuerySchema,
   body: OrdersCreateRequestBodySchema
 });
 
@@ -128,16 +110,11 @@ export const OrdersCreateResponseSchema = z.object({
   body: OrdersCreateResponseBodySchema
 });
 
-export const OrdersUpdateRequestQuerySchema = z.object({
-  include: OrderIncludeSchema.optional()
-});
-
 export const OrdersUpdateRequestBodySchema = z.object({
   order: OrderUpdatePayloadSchema
 });
 
 export const OrdersUpdateRequestSchema = z.object({
-  query: OrdersUpdateRequestQuerySchema,
   body: OrdersUpdateRequestBodySchema
 });
 
@@ -145,14 +122,6 @@ export const OrdersUpdateResponseBodySchema = z.union([z.object({ meta: z.object
 
 export const OrdersUpdateResponseSchema = z.object({
   body: OrdersUpdateResponseBodySchema
-});
-
-export const OrdersDestroyRequestQuerySchema = z.object({
-  include: OrderIncludeSchema.optional()
-});
-
-export const OrdersDestroyRequestSchema = z.object({
-  query: OrdersDestroyRequestQuerySchema
 });
 
 export const OrdersDestroyResponse = z.never();
@@ -205,8 +174,6 @@ export interface OrderFilter {
   status?: NullableStringFilter | string;
 }
 
-export type OrderInclude = object;
-
 export interface OrderPage {
   number?: number;
   size?: number;
@@ -224,7 +191,6 @@ export interface OrderUpdatePayload {
 }
 
 export interface OrdersCreateRequest {
-  query: OrdersCreateRequestQuery;
   body: OrdersCreateRequestBody;
 }
 
@@ -232,23 +198,11 @@ export interface OrdersCreateRequestBody {
   order: OrderCreatePayload;
 }
 
-export interface OrdersCreateRequestQuery {
-  include?: OrderInclude;
-}
-
 export interface OrdersCreateResponse {
   body: OrdersCreateResponseBody;
 }
 
 export type OrdersCreateResponseBody = { errors?: Error[] } | { meta?: object; order: Order };
-
-export interface OrdersDestroyRequest {
-  query: OrdersDestroyRequestQuery;
-}
-
-export interface OrdersDestroyRequestQuery {
-  include?: OrderInclude;
-}
 
 export type OrdersDestroyResponse = never;
 
@@ -258,7 +212,6 @@ export interface OrdersIndexRequest {
 
 export interface OrdersIndexRequestQuery {
   filter?: OrderFilter | OrderFilter[];
-  include?: OrderInclude;
   page?: OrderPage;
   sort?: OrderSort | OrderSort[];
 }
@@ -269,14 +222,6 @@ export interface OrdersIndexResponse {
 
 export type OrdersIndexResponseBody = { errors?: Error[] } | { meta?: object; orders?: Order[]; pagination?: OffsetPagination };
 
-export interface OrdersShowRequest {
-  query: OrdersShowRequestQuery;
-}
-
-export interface OrdersShowRequestQuery {
-  include?: OrderInclude;
-}
-
 export interface OrdersShowResponse {
   body: OrdersShowResponseBody;
 }
@@ -284,16 +229,11 @@ export interface OrdersShowResponse {
 export type OrdersShowResponseBody = { errors?: Error[] } | { meta?: object; order: Order };
 
 export interface OrdersUpdateRequest {
-  query: OrdersUpdateRequestQuery;
   body: OrdersUpdateRequestBody;
 }
 
 export interface OrdersUpdateRequestBody {
   order: OrderUpdatePayload;
-}
-
-export interface OrdersUpdateRequestQuery {
-  include?: OrderInclude;
 }
 
 export interface OrdersUpdateResponse {

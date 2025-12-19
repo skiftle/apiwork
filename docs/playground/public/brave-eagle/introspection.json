@@ -251,9 +251,6 @@
       },
       "description": "A task representing work to be completed"
     },
-    "task_include": {
-      "type": "object"
-    },
     "task_page": {
       "type": "object",
       "shape": {
@@ -488,10 +485,6 @@
                 ],
                 "optional": true
               },
-              "include": {
-                "type": "task_include",
-                "optional": true
-              },
               "page": {
                 "type": "task_page",
                 "optional": true
@@ -556,14 +549,6 @@
             "Tasks"
           ],
           "operation_id": "getTask",
-          "request": {
-            "query": {
-              "include": {
-                "type": "task_include",
-                "optional": true
-              }
-            }
-          },
           "response": {
             "body": {
               "type": "union",
@@ -604,12 +589,6 @@
           ],
           "operation_id": "createTask",
           "request": {
-            "query": {
-              "include": {
-                "type": "task_include",
-                "optional": true
-              }
-            },
             "body": {
               "task": {
                 "type": "task_create_payload"
@@ -659,12 +638,6 @@
           ],
           "operation_id": "updateTask",
           "request": {
-            "query": {
-              "include": {
-                "type": "task_include",
-                "optional": true
-              }
-            },
             "body": {
               "task": {
                 "type": "task_update_payload"
@@ -713,14 +686,6 @@
             "Tasks"
           ],
           "operation_id": "deleteTask",
-          "request": {
-            "query": {
-              "include": {
-                "type": "task_include",
-                "optional": true
-              }
-            }
-          },
           "response": {
             "no_content": true
           }
@@ -735,14 +700,6 @@
             "Lifecycle"
           ],
           "operation_id": "archiveTask",
-          "request": {
-            "query": {
-              "include": {
-                "type": "task_include",
-                "optional": true
-              }
-            }
-          },
           "response": {
             "body": {
               "type": "union",

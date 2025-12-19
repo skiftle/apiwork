@@ -62,8 +62,6 @@ export interface TaskFilter {
   status?: TaskStatusFilter;
 }
 
-export type TaskInclude = object;
-
 export interface TaskPage {
   number?: number;
   size?: number;
@@ -90,14 +88,6 @@ export interface TaskUpdatePayload {
   title?: string;
 }
 
-export interface TasksArchiveRequest {
-  query: TasksArchiveRequestQuery;
-}
-
-export interface TasksArchiveRequestQuery {
-  include?: TaskInclude;
-}
-
 export interface TasksArchiveResponse {
   body: TasksArchiveResponseBody;
 }
@@ -105,7 +95,6 @@ export interface TasksArchiveResponse {
 export type TasksArchiveResponseBody = { errors?: Error[] } | { meta?: object; task: Task };
 
 export interface TasksCreateRequest {
-  query: TasksCreateRequestQuery;
   body: TasksCreateRequestBody;
 }
 
@@ -113,23 +102,11 @@ export interface TasksCreateRequestBody {
   task: TaskCreatePayload;
 }
 
-export interface TasksCreateRequestQuery {
-  include?: TaskInclude;
-}
-
 export interface TasksCreateResponse {
   body: TasksCreateResponseBody;
 }
 
 export type TasksCreateResponseBody = { errors?: Error[] } | { meta?: object; task: Task };
-
-export interface TasksDestroyRequest {
-  query: TasksDestroyRequestQuery;
-}
-
-export interface TasksDestroyRequestQuery {
-  include?: TaskInclude;
-}
 
 export type TasksDestroyResponse = never;
 
@@ -139,7 +116,6 @@ export interface TasksIndexRequest {
 
 export interface TasksIndexRequestQuery {
   filter?: TaskFilter | TaskFilter[];
-  include?: TaskInclude;
   page?: TaskPage;
   sort?: TaskSort | TaskSort[];
 }
@@ -150,14 +126,6 @@ export interface TasksIndexResponse {
 
 export type TasksIndexResponseBody = { errors?: Error[] } | { meta?: object; pagination?: OffsetPagination; tasks?: Task[] };
 
-export interface TasksShowRequest {
-  query: TasksShowRequestQuery;
-}
-
-export interface TasksShowRequestQuery {
-  include?: TaskInclude;
-}
-
 export interface TasksShowResponse {
   body: TasksShowResponseBody;
 }
@@ -165,16 +133,11 @@ export interface TasksShowResponse {
 export type TasksShowResponseBody = { errors?: Error[] } | { meta?: object; task: Task };
 
 export interface TasksUpdateRequest {
-  query: TasksUpdateRequestQuery;
   body: TasksUpdateRequestBody;
 }
 
 export interface TasksUpdateRequestBody {
   task: TaskUpdatePayload;
-}
-
-export interface TasksUpdateRequestQuery {
-  include?: TaskInclude;
 }
 
 export interface TasksUpdateResponse {

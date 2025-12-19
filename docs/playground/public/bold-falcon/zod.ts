@@ -24,10 +24,6 @@ export const ArticleCreatePayloadSchema = z.object({
   title: z.string()
 });
 
-export const ArticleIncludeSchema = z.object({
-
-});
-
 export const ArticlePageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
@@ -176,7 +172,6 @@ export const ArticleFilterSchema: z.ZodType<ArticleFilter> = z.lazy(() => z.obje
 
 export const ArticlesIndexRequestQuerySchema = z.object({
   filter: z.union([ArticleFilterSchema, z.array(ArticleFilterSchema)]).optional(),
-  include: ArticleIncludeSchema.optional(),
   page: ArticlePageSchema.optional(),
   sort: z.union([ArticleSortSchema, z.array(ArticleSortSchema)]).optional()
 });
@@ -191,22 +186,10 @@ export const ArticlesIndexResponseSchema = z.object({
   body: ArticlesIndexResponseBodySchema
 });
 
-export const ArticlesShowRequestQuerySchema = z.object({
-  include: ArticleIncludeSchema.optional()
-});
-
-export const ArticlesShowRequestSchema = z.object({
-  query: ArticlesShowRequestQuerySchema
-});
-
 export const ArticlesShowResponseBodySchema = z.union([z.object({ article: ArticleSchema, meta: z.object({}).optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const ArticlesShowResponseSchema = z.object({
   body: ArticlesShowResponseBodySchema
-});
-
-export const ArticlesCreateRequestQuerySchema = z.object({
-  include: ArticleIncludeSchema.optional()
 });
 
 export const ArticlesCreateRequestBodySchema = z.object({
@@ -214,7 +197,6 @@ export const ArticlesCreateRequestBodySchema = z.object({
 });
 
 export const ArticlesCreateRequestSchema = z.object({
-  query: ArticlesCreateRequestQuerySchema,
   body: ArticlesCreateRequestBodySchema
 });
 
@@ -224,16 +206,11 @@ export const ArticlesCreateResponseSchema = z.object({
   body: ArticlesCreateResponseBodySchema
 });
 
-export const ArticlesUpdateRequestQuerySchema = z.object({
-  include: ArticleIncludeSchema.optional()
-});
-
 export const ArticlesUpdateRequestBodySchema = z.object({
   article: ArticleUpdatePayloadSchema
 });
 
 export const ArticlesUpdateRequestSchema = z.object({
-  query: ArticlesUpdateRequestQuerySchema,
   body: ArticlesUpdateRequestBodySchema
 });
 
@@ -241,14 +218,6 @@ export const ArticlesUpdateResponseBodySchema = z.union([z.object({ article: Art
 
 export const ArticlesUpdateResponseSchema = z.object({
   body: ArticlesUpdateResponseBodySchema
-});
-
-export const ArticlesDestroyRequestQuerySchema = z.object({
-  include: ArticleIncludeSchema.optional()
-});
-
-export const ArticlesDestroyRequestSchema = z.object({
-  query: ArticlesDestroyRequestQuerySchema
 });
 
 export const ArticlesDestroyResponse = z.never();
@@ -284,8 +253,6 @@ export interface ArticleFilter {
   viewCount?: NullableIntegerFilter | number;
 }
 
-export type ArticleInclude = object;
-
 export interface ArticlePage {
   number?: number;
   size?: number;
@@ -311,7 +278,6 @@ export interface ArticleUpdatePayload {
 }
 
 export interface ArticlesCreateRequest {
-  query: ArticlesCreateRequestQuery;
   body: ArticlesCreateRequestBody;
 }
 
@@ -319,23 +285,11 @@ export interface ArticlesCreateRequestBody {
   article: ArticleCreatePayload;
 }
 
-export interface ArticlesCreateRequestQuery {
-  include?: ArticleInclude;
-}
-
 export interface ArticlesCreateResponse {
   body: ArticlesCreateResponseBody;
 }
 
 export type ArticlesCreateResponseBody = { article: Article; meta?: object } | { errors?: Error[] };
-
-export interface ArticlesDestroyRequest {
-  query: ArticlesDestroyRequestQuery;
-}
-
-export interface ArticlesDestroyRequestQuery {
-  include?: ArticleInclude;
-}
 
 export type ArticlesDestroyResponse = never;
 
@@ -345,7 +299,6 @@ export interface ArticlesIndexRequest {
 
 export interface ArticlesIndexRequestQuery {
   filter?: ArticleFilter | ArticleFilter[];
-  include?: ArticleInclude;
   page?: ArticlePage;
   sort?: ArticleSort | ArticleSort[];
 }
@@ -356,14 +309,6 @@ export interface ArticlesIndexResponse {
 
 export type ArticlesIndexResponseBody = { articles?: Article[]; meta?: object; pagination?: OffsetPagination } | { errors?: Error[] };
 
-export interface ArticlesShowRequest {
-  query: ArticlesShowRequestQuery;
-}
-
-export interface ArticlesShowRequestQuery {
-  include?: ArticleInclude;
-}
-
 export interface ArticlesShowResponse {
   body: ArticlesShowResponseBody;
 }
@@ -371,16 +316,11 @@ export interface ArticlesShowResponse {
 export type ArticlesShowResponseBody = { article: Article; meta?: object } | { errors?: Error[] };
 
 export interface ArticlesUpdateRequest {
-  query: ArticlesUpdateRequestQuery;
   body: ArticlesUpdateRequestBody;
 }
 
 export interface ArticlesUpdateRequestBody {
   article: ArticleUpdatePayload;
-}
-
-export interface ArticlesUpdateRequestQuery {
-  include?: ArticleInclude;
 }
 
 export interface ArticlesUpdateResponse {

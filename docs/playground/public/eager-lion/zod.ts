@@ -30,10 +30,6 @@ export const InvoiceCreatePayloadSchema = z.object({
   number: z.string()
 });
 
-export const InvoiceIncludeSchema = z.object({
-
-});
-
 export const InvoicePageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
@@ -89,7 +85,6 @@ export const InvoiceFilterSchema: z.ZodType<InvoiceFilter> = z.lazy(() => z.obje
 
 export const InvoicesIndexRequestQuerySchema = z.object({
   filter: z.union([InvoiceFilterSchema, z.array(InvoiceFilterSchema)]).optional(),
-  include: InvoiceIncludeSchema.optional(),
   page: InvoicePageSchema.optional(),
   sort: z.union([InvoiceSortSchema, z.array(InvoiceSortSchema)]).optional()
 });
@@ -104,22 +99,10 @@ export const InvoicesIndexResponseSchema = z.object({
   body: InvoicesIndexResponseBodySchema
 });
 
-export const InvoicesShowRequestQuerySchema = z.object({
-  include: InvoiceIncludeSchema.optional()
-});
-
-export const InvoicesShowRequestSchema = z.object({
-  query: InvoicesShowRequestQuerySchema
-});
-
 export const InvoicesShowResponseBodySchema = z.union([z.object({ invoice: InvoiceSchema, meta: z.object({}).optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const InvoicesShowResponseSchema = z.object({
   body: InvoicesShowResponseBodySchema
-});
-
-export const InvoicesCreateRequestQuerySchema = z.object({
-  include: InvoiceIncludeSchema.optional()
 });
 
 export const InvoicesCreateRequestBodySchema = z.object({
@@ -127,7 +110,6 @@ export const InvoicesCreateRequestBodySchema = z.object({
 });
 
 export const InvoicesCreateRequestSchema = z.object({
-  query: InvoicesCreateRequestQuerySchema,
   body: InvoicesCreateRequestBodySchema
 });
 
@@ -137,16 +119,11 @@ export const InvoicesCreateResponseSchema = z.object({
   body: InvoicesCreateResponseBodySchema
 });
 
-export const InvoicesUpdateRequestQuerySchema = z.object({
-  include: InvoiceIncludeSchema.optional()
-});
-
 export const InvoicesUpdateRequestBodySchema = z.object({
   invoice: InvoiceUpdatePayloadSchema
 });
 
 export const InvoicesUpdateRequestSchema = z.object({
-  query: InvoicesUpdateRequestQuerySchema,
   body: InvoicesUpdateRequestBodySchema
 });
 
@@ -156,23 +133,7 @@ export const InvoicesUpdateResponseSchema = z.object({
   body: InvoicesUpdateResponseBodySchema
 });
 
-export const InvoicesDestroyRequestQuerySchema = z.object({
-  include: InvoiceIncludeSchema.optional()
-});
-
-export const InvoicesDestroyRequestSchema = z.object({
-  query: InvoicesDestroyRequestQuerySchema
-});
-
 export const InvoicesDestroyResponse = z.never();
-
-export const InvoicesArchiveRequestQuerySchema = z.object({
-  include: InvoiceIncludeSchema.optional()
-});
-
-export const InvoicesArchiveRequestSchema = z.object({
-  query: InvoicesArchiveRequestQuerySchema
-});
 
 export const InvoicesArchiveResponseBodySchema = z.union([z.object({ invoice: InvoiceSchema, meta: z.object({}).optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
@@ -216,8 +177,6 @@ export interface InvoiceFilter {
   status?: NullableStringFilter | string;
 }
 
-export type InvoiceInclude = object;
-
 export interface InvoicePage {
   number?: number;
   size?: number;
@@ -238,14 +197,6 @@ export interface InvoiceUpdatePayload {
   number?: string;
 }
 
-export interface InvoicesArchiveRequest {
-  query: InvoicesArchiveRequestQuery;
-}
-
-export interface InvoicesArchiveRequestQuery {
-  include?: InvoiceInclude;
-}
-
 export interface InvoicesArchiveResponse {
   body: InvoicesArchiveResponseBody;
 }
@@ -253,7 +204,6 @@ export interface InvoicesArchiveResponse {
 export type InvoicesArchiveResponseBody = { errors?: Error[] } | { invoice: Invoice; meta?: object };
 
 export interface InvoicesCreateRequest {
-  query: InvoicesCreateRequestQuery;
   body: InvoicesCreateRequestBody;
 }
 
@@ -261,23 +211,11 @@ export interface InvoicesCreateRequestBody {
   invoice: InvoiceCreatePayload;
 }
 
-export interface InvoicesCreateRequestQuery {
-  include?: InvoiceInclude;
-}
-
 export interface InvoicesCreateResponse {
   body: InvoicesCreateResponseBody;
 }
 
 export type InvoicesCreateResponseBody = { errors?: Error[] } | { invoice: Invoice; meta?: object };
-
-export interface InvoicesDestroyRequest {
-  query: InvoicesDestroyRequestQuery;
-}
-
-export interface InvoicesDestroyRequestQuery {
-  include?: InvoiceInclude;
-}
 
 export type InvoicesDestroyResponse = never;
 
@@ -287,7 +225,6 @@ export interface InvoicesIndexRequest {
 
 export interface InvoicesIndexRequestQuery {
   filter?: InvoiceFilter | InvoiceFilter[];
-  include?: InvoiceInclude;
   page?: InvoicePage;
   sort?: InvoiceSort | InvoiceSort[];
 }
@@ -298,14 +235,6 @@ export interface InvoicesIndexResponse {
 
 export type InvoicesIndexResponseBody = { errors?: Error[] } | { invoices?: Invoice[]; meta?: object; pagination?: OffsetPagination };
 
-export interface InvoicesShowRequest {
-  query: InvoicesShowRequestQuery;
-}
-
-export interface InvoicesShowRequestQuery {
-  include?: InvoiceInclude;
-}
-
 export interface InvoicesShowResponse {
   body: InvoicesShowResponseBody;
 }
@@ -313,16 +242,11 @@ export interface InvoicesShowResponse {
 export type InvoicesShowResponseBody = { errors?: Error[] } | { invoice: Invoice; meta?: object };
 
 export interface InvoicesUpdateRequest {
-  query: InvoicesUpdateRequestQuery;
   body: InvoicesUpdateRequestBody;
 }
 
 export interface InvoicesUpdateRequestBody {
   invoice: InvoiceUpdatePayload;
-}
-
-export interface InvoicesUpdateRequestQuery {
-  include?: InvoiceInclude;
 }
 
 export interface InvoicesUpdateResponse {

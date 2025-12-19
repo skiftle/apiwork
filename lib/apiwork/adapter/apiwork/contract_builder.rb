@@ -58,7 +58,7 @@ module Apiwork
 
           if schema_class.association_definitions.any?
             include_type = build_include_type
-            definition.param :include, type: include_type, optional: true
+            definition.param :include, type: include_type, optional: true if include_type
           end
         end
 
@@ -259,7 +259,7 @@ module Apiwork
             query do
               if builder.send(:schema_class).association_definitions.any?
                 include_type = builder.send(:build_include_type)
-                param :include, type: include_type, optional: true
+                param :include, type: include_type, optional: true if include_type
               end
             end
           end
@@ -517,6 +517,7 @@ module Apiwork
 
         def build_include_type(visited: Set.new, depth: 0)
           return nil unless schema_class.association_definitions.any?
+          return nil unless has_includable_params?(visited:, depth:)
 
           type_name = type_name(:include, depth)
 
@@ -531,7 +532,6 @@ module Apiwork
 
           contract_class.type(type_name) do
             schema_class_local.association_definitions.each do |name, association_definition|
-              # Polymorphic associations only support boolean include (no nested)
               if association_definition.polymorphic?
                 param name, type: :boolean, optional: true unless association_definition.always_included?
                 next
@@ -570,6 +570,30 @@ module Apiwork
           end
 
           type_name
+        end
+
+        def has_includable_params?(visited:, depth:)
+          return false if depth >= MAX_RECURSION_DEPTH
+
+          new_visited = visited.dup.add(schema_class)
+
+          schema_class.association_definitions.any? do |_name, association_definition|
+            if association_definition.polymorphic?
+              !association_definition.always_included?
+            else
+              association_resource = resolve_association_resource(association_definition)
+              next false unless association_resource&.schema
+
+              if new_visited.include?(association_resource.schema)
+                !association_definition.always_included?
+              elsif association_definition.always_included?
+                nested_builder = self.class.for_schema(type_registrar, association_resource.schema)
+                nested_builder.send(:has_includable_params?, visited: new_visited, depth: depth + 1)
+              else
+                true
+              end
+            end
+          end
         end
 
         def build_include_type_for_schema(association_schema, visited:, depth:)

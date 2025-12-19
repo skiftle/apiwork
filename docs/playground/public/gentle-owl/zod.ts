@@ -49,10 +49,6 @@ export const ImageFilterSchema: z.ZodType<ImageFilter> = z.lazy(() => z.object({
   title: z.union([z.string(), z.unknown()]).optional()
 }));
 
-export const ImageIncludeSchema = z.object({
-
-});
-
 export const ImageNestedCreatePayloadSchema = z.object({
   _type: z.literal('create'),
   height: z.number().int().nullable().optional(),
@@ -96,10 +92,6 @@ export const PostFilterSchema: z.ZodType<PostFilter> = z.lazy(() => z.object({
   title: z.union([z.string(), z.unknown()]).optional()
 }));
 
-export const PostIncludeSchema = z.object({
-
-});
-
 export const PostNestedCreatePayloadSchema = z.object({
   _type: z.literal('create'),
   body: z.string().nullable().optional(),
@@ -131,10 +123,6 @@ export const VideoFilterSchema: z.ZodType<VideoFilter> = z.lazy(() => z.object({
   _or: z.array(VideoFilterSchema).optional(),
   title: z.union([z.string(), z.unknown()]).optional()
 }));
-
-export const VideoIncludeSchema = z.object({
-
-});
 
 export const VideoNestedCreatePayloadSchema = z.object({
   _type: z.literal('create'),
@@ -396,8 +384,6 @@ export interface ImageFilter {
   title?: string | unknown;
 }
 
-export type ImageInclude = object;
-
 export interface ImageNestedCreatePayload {
   _type: 'create';
   height?: null | number;
@@ -443,8 +429,6 @@ export interface PostFilter {
   title?: string | unknown;
 }
 
-export type PostInclude = object;
-
 export interface PostNestedCreatePayload {
   _type: 'create';
   body?: null | string;
@@ -480,8 +464,6 @@ export interface VideoFilter {
   _or?: VideoFilter[];
   title?: string | unknown;
 }
-
-export type VideoInclude = object;
 
 export interface VideoNestedCreatePayload {
   _type: 'create';

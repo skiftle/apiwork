@@ -82,6 +82,10 @@ module Apiwork
         @enums.clear!
       end
 
+      def unregister_type(name)
+        @types.delete(name)
+      end
+
       private
 
       def merge_type(key, description:, example:, format:, deprecated:, schema_class:, block:)

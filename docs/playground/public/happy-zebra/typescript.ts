@@ -109,8 +109,6 @@ export interface PostCreatePayload {
   title: string;
 }
 
-export type PostInclude = object;
-
 export interface PostNestedCreatePayload {
   _type: 'create';
   comments?: CommentNestedPayload[];
@@ -136,16 +134,11 @@ export interface PostUpdatePayload {
 }
 
 export interface PostsCreateRequest {
-  query: PostsCreateRequestQuery;
   body: PostsCreateRequestBody;
 }
 
 export interface PostsCreateRequestBody {
   post: PostCreatePayload;
-}
-
-export interface PostsCreateRequestQuery {
-  include?: PostInclude;
 }
 
 export interface PostsCreateResponse {
@@ -154,14 +147,6 @@ export interface PostsCreateResponse {
 
 export type PostsCreateResponseBody = { errors?: Error[] } | { meta?: object; post: Post };
 
-export interface PostsDestroyRequest {
-  query: PostsDestroyRequestQuery;
-}
-
-export interface PostsDestroyRequestQuery {
-  include?: PostInclude;
-}
-
 export type PostsDestroyResponse = never;
 
 export interface PostsIndexRequest {
@@ -169,7 +154,6 @@ export interface PostsIndexRequest {
 }
 
 export interface PostsIndexRequestQuery {
-  include?: PostInclude;
   page?: PostPage;
 }
 
@@ -179,14 +163,6 @@ export interface PostsIndexResponse {
 
 export type PostsIndexResponseBody = { errors?: Error[] } | { meta?: object; pagination?: OffsetPagination; posts?: Post[] };
 
-export interface PostsShowRequest {
-  query: PostsShowRequestQuery;
-}
-
-export interface PostsShowRequestQuery {
-  include?: PostInclude;
-}
-
 export interface PostsShowResponse {
   body: PostsShowResponseBody;
 }
@@ -194,16 +170,11 @@ export interface PostsShowResponse {
 export type PostsShowResponseBody = { errors?: Error[] } | { meta?: object; post: Post };
 
 export interface PostsUpdateRequest {
-  query: PostsUpdateRequestQuery;
   body: PostsUpdateRequestBody;
 }
 
 export interface PostsUpdateRequestBody {
   post: PostUpdatePayload;
-}
-
-export interface PostsUpdateRequestQuery {
-  include?: PostInclude;
 }
 
 export interface PostsUpdateResponse {
@@ -247,17 +218,10 @@ export interface UserFilter {
   username?: StringFilter | string;
 }
 
-export interface UserInclude {
-  posts?: PostInclude;
-  profile?: UserProfileInclude;
-}
-
 export interface UserPage {
   number?: number;
   size?: number;
 }
-
-export type UserProfileInclude = object;
 
 export interface UserSort {
   createdAt?: SortDirection;
@@ -272,7 +236,6 @@ export interface UserUpdatePayload {
 }
 
 export interface UsersCreateRequest {
-  query: UsersCreateRequestQuery;
   body: UsersCreateRequestBody;
 }
 
@@ -280,23 +243,11 @@ export interface UsersCreateRequestBody {
   user: UserCreatePayload;
 }
 
-export interface UsersCreateRequestQuery {
-  include?: UserInclude;
-}
-
 export interface UsersCreateResponse {
   body: UsersCreateResponseBody;
 }
 
 export type UsersCreateResponseBody = { errors?: Error[] } | { meta?: object; user: User };
-
-export interface UsersDestroyRequest {
-  query: UsersDestroyRequestQuery;
-}
-
-export interface UsersDestroyRequestQuery {
-  include?: UserInclude;
-}
 
 export type UsersDestroyResponse = never;
 
@@ -306,7 +257,6 @@ export interface UsersIndexRequest {
 
 export interface UsersIndexRequestQuery {
   filter?: UserFilter | UserFilter[];
-  include?: UserInclude;
   page?: UserPage;
   sort?: UserSort | UserSort[];
 }
@@ -317,14 +267,6 @@ export interface UsersIndexResponse {
 
 export type UsersIndexResponseBody = { errors?: Error[] } | { meta?: object; pagination?: OffsetPagination; users?: User[] };
 
-export interface UsersShowRequest {
-  query: UsersShowRequestQuery;
-}
-
-export interface UsersShowRequestQuery {
-  include?: UserInclude;
-}
-
 export interface UsersShowResponse {
   body: UsersShowResponseBody;
 }
@@ -332,16 +274,11 @@ export interface UsersShowResponse {
 export type UsersShowResponseBody = { errors?: Error[] } | { meta?: object; user: User };
 
 export interface UsersUpdateRequest {
-  query: UsersUpdateRequestQuery;
   body: UsersUpdateRequestBody;
 }
 
 export interface UsersUpdateRequestBody {
   user: UserUpdatePayload;
-}
-
-export interface UsersUpdateRequestQuery {
-  include?: UserInclude;
 }
 
 export interface UsersUpdateResponse {

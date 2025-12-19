@@ -305,9 +305,6 @@ components:
           oneOf:
           - type: string
           - {}
-    imageInclude:
-      type: object
-      properties: {}
     imageNestedCreatePayload:
       type: object
       properties:
@@ -422,9 +419,6 @@ components:
           oneOf:
           - type: string
           - {}
-    postInclude:
-      type: object
-      properties: {}
     postNestedCreatePayload:
       type: object
       properties:
@@ -506,9 +500,6 @@ components:
           oneOf:
           - type: string
           - {}
-    videoInclude:
-      type: object
-      properties: {}
     videoNestedCreatePayload:
       type: object
       properties:

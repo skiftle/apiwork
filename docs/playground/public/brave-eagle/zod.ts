@@ -60,10 +60,6 @@ export const TaskCreatePayloadSchema = z.object({
   title: z.string()
 });
 
-export const TaskIncludeSchema = z.object({
-
-});
-
 export const TaskPageSchema = z.object({
   number: z.number().int().min(1).optional(),
   size: z.number().int().min(1).max(100).optional()
@@ -102,7 +98,6 @@ export const TaskFilterSchema: z.ZodType<TaskFilter> = z.lazy(() => z.object({
 
 export const TasksIndexRequestQuerySchema = z.object({
   filter: z.union([TaskFilterSchema, z.array(TaskFilterSchema)]).optional(),
-  include: TaskIncludeSchema.optional(),
   page: TaskPageSchema.optional(),
   sort: z.union([TaskSortSchema, z.array(TaskSortSchema)]).optional()
 });
@@ -117,22 +112,10 @@ export const TasksIndexResponseSchema = z.object({
   body: TasksIndexResponseBodySchema
 });
 
-export const TasksShowRequestQuerySchema = z.object({
-  include: TaskIncludeSchema.optional()
-});
-
-export const TasksShowRequestSchema = z.object({
-  query: TasksShowRequestQuerySchema
-});
-
 export const TasksShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), task: TaskSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const TasksShowResponseSchema = z.object({
   body: TasksShowResponseBodySchema
-});
-
-export const TasksCreateRequestQuerySchema = z.object({
-  include: TaskIncludeSchema.optional()
 });
 
 export const TasksCreateRequestBodySchema = z.object({
@@ -140,7 +123,6 @@ export const TasksCreateRequestBodySchema = z.object({
 });
 
 export const TasksCreateRequestSchema = z.object({
-  query: TasksCreateRequestQuerySchema,
   body: TasksCreateRequestBodySchema
 });
 
@@ -150,16 +132,11 @@ export const TasksCreateResponseSchema = z.object({
   body: TasksCreateResponseBodySchema
 });
 
-export const TasksUpdateRequestQuerySchema = z.object({
-  include: TaskIncludeSchema.optional()
-});
-
 export const TasksUpdateRequestBodySchema = z.object({
   task: TaskUpdatePayloadSchema
 });
 
 export const TasksUpdateRequestSchema = z.object({
-  query: TasksUpdateRequestQuerySchema,
   body: TasksUpdateRequestBodySchema
 });
 
@@ -169,23 +146,7 @@ export const TasksUpdateResponseSchema = z.object({
   body: TasksUpdateResponseBodySchema
 });
 
-export const TasksDestroyRequestQuerySchema = z.object({
-  include: TaskIncludeSchema.optional()
-});
-
-export const TasksDestroyRequestSchema = z.object({
-  query: TasksDestroyRequestQuerySchema
-});
-
 export const TasksDestroyResponse = z.never();
-
-export const TasksArchiveRequestQuerySchema = z.object({
-  include: TaskIncludeSchema.optional()
-});
-
-export const TasksArchiveRequestSchema = z.object({
-  query: TasksArchiveRequestQuerySchema
-});
 
 export const TasksArchiveResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), task: TaskSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
@@ -257,8 +218,6 @@ export interface TaskFilter {
   status?: TaskStatusFilter;
 }
 
-export type TaskInclude = object;
-
 export interface TaskPage {
   number?: number;
   size?: number;
@@ -285,14 +244,6 @@ export interface TaskUpdatePayload {
   title?: string;
 }
 
-export interface TasksArchiveRequest {
-  query: TasksArchiveRequestQuery;
-}
-
-export interface TasksArchiveRequestQuery {
-  include?: TaskInclude;
-}
-
 export interface TasksArchiveResponse {
   body: TasksArchiveResponseBody;
 }
@@ -300,7 +251,6 @@ export interface TasksArchiveResponse {
 export type TasksArchiveResponseBody = { errors?: Error[] } | { meta?: object; task: Task };
 
 export interface TasksCreateRequest {
-  query: TasksCreateRequestQuery;
   body: TasksCreateRequestBody;
 }
 
@@ -308,23 +258,11 @@ export interface TasksCreateRequestBody {
   task: TaskCreatePayload;
 }
 
-export interface TasksCreateRequestQuery {
-  include?: TaskInclude;
-}
-
 export interface TasksCreateResponse {
   body: TasksCreateResponseBody;
 }
 
 export type TasksCreateResponseBody = { errors?: Error[] } | { meta?: object; task: Task };
-
-export interface TasksDestroyRequest {
-  query: TasksDestroyRequestQuery;
-}
-
-export interface TasksDestroyRequestQuery {
-  include?: TaskInclude;
-}
 
 export type TasksDestroyResponse = never;
 
@@ -334,7 +272,6 @@ export interface TasksIndexRequest {
 
 export interface TasksIndexRequestQuery {
   filter?: TaskFilter | TaskFilter[];
-  include?: TaskInclude;
   page?: TaskPage;
   sort?: TaskSort | TaskSort[];
 }
@@ -345,14 +282,6 @@ export interface TasksIndexResponse {
 
 export type TasksIndexResponseBody = { errors?: Error[] } | { meta?: object; pagination?: OffsetPagination; tasks?: Task[] };
 
-export interface TasksShowRequest {
-  query: TasksShowRequestQuery;
-}
-
-export interface TasksShowRequestQuery {
-  include?: TaskInclude;
-}
-
 export interface TasksShowResponse {
   body: TasksShowResponseBody;
 }
@@ -360,16 +289,11 @@ export interface TasksShowResponse {
 export type TasksShowResponseBody = { errors?: Error[] } | { meta?: object; task: Task };
 
 export interface TasksUpdateRequest {
-  query: TasksUpdateRequestQuery;
   body: TasksUpdateRequestBody;
 }
 
 export interface TasksUpdateRequestBody {
   task: TaskUpdatePayload;
-}
-
-export interface TasksUpdateRequestQuery {
-  include?: TaskInclude;
 }
 
 export interface TasksUpdateResponse {

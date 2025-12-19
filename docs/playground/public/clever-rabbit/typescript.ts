@@ -46,8 +46,6 @@ export interface OrderFilter {
   status?: NullableStringFilter | string;
 }
 
-export type OrderInclude = object;
-
 export interface OrderPage {
   number?: number;
   size?: number;
@@ -65,7 +63,6 @@ export interface OrderUpdatePayload {
 }
 
 export interface OrdersCreateRequest {
-  query: OrdersCreateRequestQuery;
   body: OrdersCreateRequestBody;
 }
 
@@ -73,23 +70,11 @@ export interface OrdersCreateRequestBody {
   order: OrderCreatePayload;
 }
 
-export interface OrdersCreateRequestQuery {
-  include?: OrderInclude;
-}
-
 export interface OrdersCreateResponse {
   body: OrdersCreateResponseBody;
 }
 
 export type OrdersCreateResponseBody = { errors?: Error[] } | { meta?: object; order: Order };
-
-export interface OrdersDestroyRequest {
-  query: OrdersDestroyRequestQuery;
-}
-
-export interface OrdersDestroyRequestQuery {
-  include?: OrderInclude;
-}
 
 export type OrdersDestroyResponse = never;
 
@@ -99,7 +84,6 @@ export interface OrdersIndexRequest {
 
 export interface OrdersIndexRequestQuery {
   filter?: OrderFilter | OrderFilter[];
-  include?: OrderInclude;
   page?: OrderPage;
   sort?: OrderSort | OrderSort[];
 }
@@ -110,14 +94,6 @@ export interface OrdersIndexResponse {
 
 export type OrdersIndexResponseBody = { errors?: Error[] } | { meta?: object; orders?: Order[]; pagination?: OffsetPagination };
 
-export interface OrdersShowRequest {
-  query: OrdersShowRequestQuery;
-}
-
-export interface OrdersShowRequestQuery {
-  include?: OrderInclude;
-}
-
 export interface OrdersShowResponse {
   body: OrdersShowResponseBody;
 }
@@ -125,16 +101,11 @@ export interface OrdersShowResponse {
 export type OrdersShowResponseBody = { errors?: Error[] } | { meta?: object; order: Order };
 
 export interface OrdersUpdateRequest {
-  query: OrdersUpdateRequestQuery;
   body: OrdersUpdateRequestBody;
 }
 
 export interface OrdersUpdateRequestBody {
   order: OrderUpdatePayload;
-}
-
-export interface OrdersUpdateRequestQuery {
-  include?: OrderInclude;
 }
 
 export interface OrdersUpdateResponse {

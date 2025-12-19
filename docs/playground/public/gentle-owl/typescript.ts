@@ -133,8 +133,6 @@ export interface ImageFilter {
   title?: string | unknown;
 }
 
-export type ImageInclude = object;
-
 export interface ImageNestedCreatePayload {
   _type: 'create';
   height?: null | number;
@@ -180,8 +178,6 @@ export interface PostFilter {
   title?: string | unknown;
 }
 
-export type PostInclude = object;
-
 export interface PostNestedCreatePayload {
   _type: 'create';
   body?: null | string;
@@ -217,8 +213,6 @@ export interface VideoFilter {
   _or?: VideoFilter[];
   title?: string | unknown;
 }
-
-export type VideoInclude = object;
 
 export interface VideoNestedCreatePayload {
   _type: 'create';

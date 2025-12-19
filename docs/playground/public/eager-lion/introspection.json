@@ -131,9 +131,6 @@
         }
       }
     },
-    "invoice_include": {
-      "type": "object"
-    },
     "invoice_page": {
       "type": "object",
       "shape": {
@@ -349,10 +346,6 @@
                 ],
                 "optional": true
               },
-              "include": {
-                "type": "invoice_include",
-                "optional": true
-              },
               "page": {
                 "type": "invoice_page",
                 "optional": true
@@ -411,14 +404,6 @@
         "show": {
           "method": "get",
           "path": "/:id",
-          "request": {
-            "query": {
-              "include": {
-                "type": "invoice_include",
-                "optional": true
-              }
-            }
-          },
           "response": {
             "body": {
               "type": "union",
@@ -453,12 +438,6 @@
           "method": "post",
           "path": "/",
           "request": {
-            "query": {
-              "include": {
-                "type": "invoice_include",
-                "optional": true
-              }
-            },
             "body": {
               "invoice": {
                 "type": "invoice_create_payload"
@@ -502,12 +481,6 @@
           "method": "patch",
           "path": "/:id",
           "request": {
-            "query": {
-              "include": {
-                "type": "invoice_include",
-                "optional": true
-              }
-            },
             "body": {
               "invoice": {
                 "type": "invoice_update_payload"
@@ -550,14 +523,6 @@
         "destroy": {
           "method": "delete",
           "path": "/:id",
-          "request": {
-            "query": {
-              "include": {
-                "type": "invoice_include",
-                "optional": true
-              }
-            }
-          },
           "response": {
             "no_content": true
           }
@@ -565,14 +530,6 @@
         "archive": {
           "method": "patch",
           "path": "/:id/archive",
-          "request": {
-            "query": {
-              "include": {
-                "type": "invoice_include",
-                "optional": true
-              }
-            }
-          },
           "response": {
             "body": {
               "type": "union",

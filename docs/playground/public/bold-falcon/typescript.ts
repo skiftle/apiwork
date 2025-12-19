@@ -29,8 +29,6 @@ export interface ArticleFilter {
   viewCount?: NullableIntegerFilter | number;
 }
 
-export type ArticleInclude = object;
-
 export interface ArticlePage {
   number?: number;
   size?: number;
@@ -56,7 +54,6 @@ export interface ArticleUpdatePayload {
 }
 
 export interface ArticlesCreateRequest {
-  query: ArticlesCreateRequestQuery;
   body: ArticlesCreateRequestBody;
 }
 
@@ -64,23 +61,11 @@ export interface ArticlesCreateRequestBody {
   article: ArticleCreatePayload;
 }
 
-export interface ArticlesCreateRequestQuery {
-  include?: ArticleInclude;
-}
-
 export interface ArticlesCreateResponse {
   body: ArticlesCreateResponseBody;
 }
 
 export type ArticlesCreateResponseBody = { article: Article; meta?: object } | { errors?: Error[] };
-
-export interface ArticlesDestroyRequest {
-  query: ArticlesDestroyRequestQuery;
-}
-
-export interface ArticlesDestroyRequestQuery {
-  include?: ArticleInclude;
-}
 
 export type ArticlesDestroyResponse = never;
 
@@ -90,7 +75,6 @@ export interface ArticlesIndexRequest {
 
 export interface ArticlesIndexRequestQuery {
   filter?: ArticleFilter | ArticleFilter[];
-  include?: ArticleInclude;
   page?: ArticlePage;
   sort?: ArticleSort | ArticleSort[];
 }
@@ -101,14 +85,6 @@ export interface ArticlesIndexResponse {
 
 export type ArticlesIndexResponseBody = { articles?: Article[]; meta?: object; pagination?: OffsetPagination } | { errors?: Error[] };
 
-export interface ArticlesShowRequest {
-  query: ArticlesShowRequestQuery;
-}
-
-export interface ArticlesShowRequestQuery {
-  include?: ArticleInclude;
-}
-
 export interface ArticlesShowResponse {
   body: ArticlesShowResponseBody;
 }
@@ -116,16 +92,11 @@ export interface ArticlesShowResponse {
 export type ArticlesShowResponseBody = { article: Article; meta?: object } | { errors?: Error[] };
 
 export interface ArticlesUpdateRequest {
-  query: ArticlesUpdateRequestQuery;
   body: ArticlesUpdateRequestBody;
 }
 
 export interface ArticlesUpdateRequestBody {
   article: ArticleUpdatePayload;
-}
-
-export interface ArticlesUpdateRequestQuery {
-  include?: ArticleInclude;
 }
 
 export interface ArticlesUpdateResponse {

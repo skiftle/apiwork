@@ -187,9 +187,6 @@
         }
       }
     },
-    "image_include": {
-      "type": "object"
-    },
     "image_nested_create_payload": {
       "type": "object",
       "shape": {
@@ -344,9 +341,6 @@
         }
       }
     },
-    "post_include": {
-      "type": "object"
-    },
     "post_nested_create_payload": {
       "type": "object",
       "shape": {
@@ -464,9 +458,6 @@
           "optional": true
         }
       }
-    },
-    "video_include": {
-      "type": "object"
     },
     "video_nested_create_payload": {
       "type": "object",

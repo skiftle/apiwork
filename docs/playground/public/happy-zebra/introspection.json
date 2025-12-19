@@ -173,9 +173,6 @@
         }
       }
     },
-    "post_include": {
-      "type": "object"
-    },
     "post_nested_create_payload": {
       "type": "object",
       "shape": {
@@ -379,19 +376,6 @@
         }
       }
     },
-    "user_include": {
-      "type": "object",
-      "shape": {
-        "posts": {
-          "type": "post_include",
-          "optional": true
-        },
-        "profile": {
-          "type": "user_profile_include",
-          "optional": true
-        }
-      }
-    },
     "user_page": {
       "type": "object",
       "shape": {
@@ -407,9 +391,6 @@
           "max": 100
         }
       }
-    },
-    "user_profile_include": {
-      "type": "object"
     },
     "user_sort": {
       "type": "object",
@@ -503,10 +484,6 @@
                 ],
                 "optional": true
               },
-              "include": {
-                "type": "user_include",
-                "optional": true
-              },
               "page": {
                 "type": "user_page",
                 "optional": true
@@ -565,14 +542,6 @@
         "show": {
           "method": "get",
           "path": "/:id",
-          "request": {
-            "query": {
-              "include": {
-                "type": "user_include",
-                "optional": true
-              }
-            }
-          },
           "response": {
             "body": {
               "type": "union",
@@ -607,12 +576,6 @@
           "method": "post",
           "path": "/",
           "request": {
-            "query": {
-              "include": {
-                "type": "user_include",
-                "optional": true
-              }
-            },
             "body": {
               "user": {
                 "type": "user_create_payload"
@@ -656,12 +619,6 @@
           "method": "patch",
           "path": "/:id",
           "request": {
-            "query": {
-              "include": {
-                "type": "user_include",
-                "optional": true
-              }
-            },
             "body": {
               "user": {
                 "type": "user_update_payload"
@@ -704,14 +661,6 @@
         "destroy": {
           "method": "delete",
           "path": "/:id",
-          "request": {
-            "query": {
-              "include": {
-                "type": "user_include",
-                "optional": true
-              }
-            }
-          },
           "response": {
             "no_content": true
           }
@@ -737,10 +686,6 @@
           "path": "/",
           "request": {
             "query": {
-              "include": {
-                "type": "post_include",
-                "optional": true
-              },
               "page": {
                 "type": "post_page",
                 "optional": true
@@ -786,14 +731,6 @@
         "show": {
           "method": "get",
           "path": "/:id",
-          "request": {
-            "query": {
-              "include": {
-                "type": "post_include",
-                "optional": true
-              }
-            }
-          },
           "response": {
             "body": {
               "type": "union",
@@ -828,12 +765,6 @@
           "method": "post",
           "path": "/",
           "request": {
-            "query": {
-              "include": {
-                "type": "post_include",
-                "optional": true
-              }
-            },
             "body": {
               "post": {
                 "type": "post_create_payload"
@@ -877,12 +808,6 @@
           "method": "patch",
           "path": "/:id",
           "request": {
-            "query": {
-              "include": {
-                "type": "post_include",
-                "optional": true
-              }
-            },
             "body": {
               "post": {
                 "type": "post_update_payload"
@@ -925,14 +850,6 @@
         "destroy": {
           "method": "delete",
           "path": "/:id",
-          "request": {
-            "query": {
-              "include": {
-                "type": "post_include",
-                "optional": true
-              }
-            }
-          },
           "response": {
             "no_content": true
           }

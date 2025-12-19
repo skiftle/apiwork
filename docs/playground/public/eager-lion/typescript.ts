@@ -34,8 +34,6 @@ export interface InvoiceFilter {
   status?: NullableStringFilter | string;
 }
 
-export type InvoiceInclude = object;
-
 export interface InvoicePage {
   number?: number;
   size?: number;
@@ -56,14 +54,6 @@ export interface InvoiceUpdatePayload {
   number?: string;
 }
 
-export interface InvoicesArchiveRequest {
-  query: InvoicesArchiveRequestQuery;
-}
-
-export interface InvoicesArchiveRequestQuery {
-  include?: InvoiceInclude;
-}
-
 export interface InvoicesArchiveResponse {
   body: InvoicesArchiveResponseBody;
 }
@@ -71,7 +61,6 @@ export interface InvoicesArchiveResponse {
 export type InvoicesArchiveResponseBody = { errors?: Error[] } | { invoice: Invoice; meta?: object };
 
 export interface InvoicesCreateRequest {
-  query: InvoicesCreateRequestQuery;
   body: InvoicesCreateRequestBody;
 }
 
@@ -79,23 +68,11 @@ export interface InvoicesCreateRequestBody {
   invoice: InvoiceCreatePayload;
 }
 
-export interface InvoicesCreateRequestQuery {
-  include?: InvoiceInclude;
-}
-
 export interface InvoicesCreateResponse {
   body: InvoicesCreateResponseBody;
 }
 
 export type InvoicesCreateResponseBody = { errors?: Error[] } | { invoice: Invoice; meta?: object };
-
-export interface InvoicesDestroyRequest {
-  query: InvoicesDestroyRequestQuery;
-}
-
-export interface InvoicesDestroyRequestQuery {
-  include?: InvoiceInclude;
-}
 
 export type InvoicesDestroyResponse = never;
 
@@ -105,7 +82,6 @@ export interface InvoicesIndexRequest {
 
 export interface InvoicesIndexRequestQuery {
   filter?: InvoiceFilter | InvoiceFilter[];
-  include?: InvoiceInclude;
   page?: InvoicePage;
   sort?: InvoiceSort | InvoiceSort[];
 }
@@ -116,14 +92,6 @@ export interface InvoicesIndexResponse {
 
 export type InvoicesIndexResponseBody = { errors?: Error[] } | { invoices?: Invoice[]; meta?: object; pagination?: OffsetPagination };
 
-export interface InvoicesShowRequest {
-  query: InvoicesShowRequestQuery;
-}
-
-export interface InvoicesShowRequestQuery {
-  include?: InvoiceInclude;
-}
-
 export interface InvoicesShowResponse {
   body: InvoicesShowResponseBody;
 }
@@ -131,16 +99,11 @@ export interface InvoicesShowResponse {
 export type InvoicesShowResponseBody = { errors?: Error[] } | { invoice: Invoice; meta?: object };
 
 export interface InvoicesUpdateRequest {
-  query: InvoicesUpdateRequestQuery;
   body: InvoicesUpdateRequestBody;
 }
 
 export interface InvoicesUpdateRequestBody {
   invoice: InvoiceUpdatePayload;
-}
-
-export interface InvoicesUpdateRequestQuery {
-  include?: InvoiceInclude;
 }
 
 export interface InvoicesUpdateResponse {

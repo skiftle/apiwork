@@ -157,9 +157,6 @@
         }
       }
     },
-    "order_include": {
-      "type": "object"
-    },
     "order_page": {
       "type": "object",
       "shape": {
@@ -297,10 +294,6 @@
                 ],
                 "optional": true
               },
-              "include": {
-                "type": "order_include",
-                "optional": true
-              },
               "page": {
                 "type": "order_page",
                 "optional": true
@@ -359,14 +352,6 @@
         "show": {
           "method": "get",
           "path": "/:id",
-          "request": {
-            "query": {
-              "include": {
-                "type": "order_include",
-                "optional": true
-              }
-            }
-          },
           "response": {
             "body": {
               "type": "union",
@@ -401,12 +386,6 @@
           "method": "post",
           "path": "/",
           "request": {
-            "query": {
-              "include": {
-                "type": "order_include",
-                "optional": true
-              }
-            },
             "body": {
               "order": {
                 "type": "order_create_payload"
@@ -450,12 +429,6 @@
           "method": "patch",
           "path": "/:id",
           "request": {
-            "query": {
-              "include": {
-                "type": "order_include",
-                "optional": true
-              }
-            },
             "body": {
               "order": {
                 "type": "order_update_payload"
@@ -498,14 +471,6 @@
         "destroy": {
           "method": "delete",
           "path": "/:id",
-          "request": {
-            "query": {
-              "include": {
-                "type": "order_include",
-                "optional": true
-              }
-            }
-          },
           "response": {
             "no_content": true
           }
