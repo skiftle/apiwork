@@ -22,9 +22,9 @@ module Apiwork
           type: type,
           of: of,
           enum: enum,
-          tag: tag,
-          partial: partial.present?
+          tag: tag
         }.compact
+        variant_definition[:partial] = true if partial
 
         if block_given?
           shape_definition = Definition.new(type: :body, contract_class: @contract_class)
@@ -44,11 +44,9 @@ module Apiwork
 
         {
           type: :union,
-          required: false,
-          nullable: false,
           variants: serialized_variants,
           discriminator: @discriminator
-        }.compact # Remove nil discriminator if not set
+        }.compact
       end
     end
   end

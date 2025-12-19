@@ -435,52 +435,36 @@
     },
     "vehicle": {
       "type": "union",
-      "required": false,
-      "nullable": false,
       "variants": [
         {
           "type": "car",
-          "of": null,
-          "tag": "car",
-          "partial": false
+          "tag": "car"
         },
         {
           "type": "motorcycle",
-          "of": null,
-          "tag": "motorcycle",
-          "partial": false
+          "tag": "motorcycle"
         },
         {
           "type": "truck",
-          "of": null,
-          "tag": "truck",
-          "partial": false
+          "tag": "truck"
         }
       ],
       "discriminator": "type"
     },
     "vehicle_create_payload": {
       "type": "union",
-      "required": false,
-      "nullable": false,
       "variants": [
         {
           "type": "car_create_payload",
-          "of": null,
-          "tag": "car",
-          "partial": false
+          "tag": "car"
         },
         {
           "type": "motorcycle_create_payload",
-          "of": null,
-          "tag": "motorcycle",
-          "partial": false
+          "tag": "motorcycle"
         },
         {
           "type": "truck_create_payload",
-          "of": null,
-          "tag": "truck",
-          "partial": false
+          "tag": "truck"
         }
       ],
       "discriminator": "type"
@@ -567,26 +551,18 @@
     },
     "vehicle_update_payload": {
       "type": "union",
-      "required": false,
-      "nullable": false,
       "variants": [
         {
           "type": "car_update_payload",
-          "of": null,
-          "tag": "car",
-          "partial": false
+          "tag": "car"
         },
         {
           "type": "motorcycle_update_payload",
-          "of": null,
-          "tag": "motorcycle",
-          "partial": false
+          "tag": "motorcycle"
         },
         {
           "type": "truck_update_payload",
-          "of": null,
-          "tag": "truck",
-          "partial": false
+          "tag": "truck"
         }
       ],
       "discriminator": "type"

@@ -15,14 +15,11 @@ module Apiwork
         def variant(type:, of: nil, enum: nil, tag: nil, partial: nil, &block)
           validate_tag!(tag)
 
-          variant_data = {
-            type:,
-            of:
-          }
-
+          variant_data = { type: }
+          variant_data[:of] = of if of
           variant_data[:enum] = enum if enum
           variant_data[:tag] = tag if tag
-          variant_data[:partial] = partial ? true : false
+          variant_data[:partial] = true if partial
           variant_data[:shape_block] = block if block_given?
 
           @variants << variant_data
@@ -31,8 +28,6 @@ module Apiwork
         def serialize
           {
             type: :union,
-            required: false,
-            nullable: false,
             variants: @variants.dup,
             discriminator: @discriminator
           }.compact

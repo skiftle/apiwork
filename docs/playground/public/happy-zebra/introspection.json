@@ -46,20 +46,14 @@
     },
     "comment_nested_payload": {
       "type": "union",
-      "required": false,
-      "nullable": false,
       "variants": [
         {
           "type": "comment_nested_create_payload",
-          "of": null,
-          "tag": "create",
-          "partial": false
+          "tag": "create"
         },
         {
           "type": "comment_nested_update_payload",
-          "of": null,
-          "tag": "update",
-          "partial": false
+          "tag": "update"
         }
       ],
       "discriminator": "_type"
@@ -202,20 +196,14 @@
     },
     "post_nested_payload": {
       "type": "union",
-      "required": false,
-      "nullable": false,
       "variants": [
         {
           "type": "post_nested_create_payload",
-          "of": null,
-          "tag": "create",
-          "partial": false
+          "tag": "create"
         },
         {
           "type": "post_nested_update_payload",
-          "of": null,
-          "tag": "update",
-          "partial": false
+          "tag": "update"
         }
       ],
       "discriminator": "_type"

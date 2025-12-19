@@ -272,17 +272,12 @@
     },
     "task_priority_filter": {
       "type": "union",
-      "required": false,
-      "nullable": false,
       "variants": [
         {
-          "type": "task_priority",
-          "of": null,
-          "partial": false
+          "type": "task_priority"
         },
         {
           "type": "object",
-          "of": null,
           "partial": true,
           "shape": {
             "eq": {
@@ -314,17 +309,12 @@
     },
     "task_status_filter": {
       "type": "union",
-      "required": false,
-      "nullable": false,
       "variants": [
         {
-          "type": "task_status",
-          "of": null,
-          "partial": false
+          "type": "task_status"
         },
         {
           "type": "object",
-          "of": null,
           "partial": true,
           "shape": {
             "eq": {

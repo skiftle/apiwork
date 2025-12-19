@@ -28,26 +28,18 @@
     },
     "comment_commentable": {
       "type": "union",
-      "required": false,
-      "nullable": false,
       "variants": [
         {
           "type": "post",
-          "of": null,
-          "tag": "post",
-          "partial": false
+          "tag": "post"
         },
         {
           "type": "video",
-          "of": null,
-          "tag": "video",
-          "partial": false
+          "tag": "video"
         },
         {
           "type": "image",
-          "of": null,
-          "tag": "image",
-          "partial": false
+          "tag": "image"
         }
       ],
       "discriminator": "commentable_type"
@@ -225,20 +217,14 @@
     },
     "image_nested_payload": {
       "type": "union",
-      "required": false,
-      "nullable": false,
       "variants": [
         {
           "type": "image_nested_create_payload",
-          "of": null,
-          "tag": "create",
-          "partial": false
+          "tag": "create"
         },
         {
           "type": "image_nested_update_payload",
-          "of": null,
-          "tag": "update",
-          "partial": false
+          "tag": "update"
         }
       ],
       "discriminator": "_type"
@@ -380,20 +366,14 @@
     },
     "post_nested_payload": {
       "type": "union",
-      "required": false,
-      "nullable": false,
       "variants": [
         {
           "type": "post_nested_create_payload",
-          "of": null,
-          "tag": "create",
-          "partial": false
+          "tag": "create"
         },
         {
           "type": "post_nested_update_payload",
-          "of": null,
-          "tag": "update",
-          "partial": false
+          "tag": "update"
         }
       ],
       "discriminator": "_type"
@@ -510,20 +490,14 @@
     },
     "video_nested_payload": {
       "type": "union",
-      "required": false,
-      "nullable": false,
       "variants": [
         {
           "type": "video_nested_create_payload",
-          "of": null,
-          "tag": "create",
-          "partial": false
+          "tag": "create"
         },
         {
           "type": "video_nested_update_payload",
-          "of": null,
-          "tag": "update",
-          "partial": false
+          "tag": "update"
         }
       ],
       "discriminator": "_type"

@@ -189,17 +189,12 @@
     },
     "article_status_filter": {
       "type": "union",
-      "required": false,
-      "nullable": false,
       "variants": [
         {
-          "type": "article_status",
-          "of": null,
-          "partial": false
+          "type": "article_status"
         },
         {
           "type": "object",
-          "of": null,
           "partial": true,
           "shape": {
             "eq": {

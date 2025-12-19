@@ -26,12 +26,15 @@ module Apiwork
                  { type: :object }
                end
 
-        base.merge({
+        result = base.merge({
           description: resolve_type_description(qualified_name, metadata),
           example: resolve_type_example(metadata),
-          format: metadata[:format],
-          deprecated: metadata[:deprecated] || nil
+          format: metadata[:format]
         }.compact)
+
+        result[:deprecated] = true if metadata[:deprecated]
+
+        result
       end
 
       def serialize_enums
