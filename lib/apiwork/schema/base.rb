@@ -55,6 +55,24 @@ module Apiwork
           "#{namespace}::#{reflection.klass.name}Schema".safe_constantize
         end
 
+        # Sets or gets the model class for this schema.
+        #
+        # By default, the model is auto-detected from the schema name
+        # (e.g., InvoiceSchema → Invoice). Use this to override.
+        #
+        # @param value [Class] the ActiveRecord model class (optional)
+        # @return [Class, nil] the model class
+        # @raise [ArgumentError] if value is not a Class
+        #
+        # @example Explicit model
+        #   class InvoiceSchema < Apiwork::Schema::Base
+        #     model Invoice
+        #   end
+        #
+        # @example Namespaced model
+        #   class InvoiceSchema < Apiwork::Schema::Base
+        #     model Billing::Invoice
+        #   end
         def model(value = nil)
           if value
             unless value.is_a?(Class)
@@ -123,6 +141,17 @@ module Apiwork
           auto_detect_model
         end
 
+        # Declares the JSON root key for this schema.
+        #
+        # Adapters can use this to wrap responses in a root key.
+        #
+        # @param singular [String, Symbol] root key for single records
+        # @param plural [String, Symbol] root key for collections (default: singular.pluralize)
+        #
+        # @example Custom root key
+        #   class InvoiceSchema < Apiwork::Schema::Base
+        #     root :bill, :bills
+        #   end
         def root(singular, plural = nil)
           singular = singular.to_s
           plural = plural ? plural.to_s : singular.pluralize
@@ -145,6 +174,22 @@ module Apiwork
           "/#{namespace_parts.map(&:underscore).join('/')}"
         end
 
+        # Configures adapter options for this schema.
+        #
+        # Use this to override API-level adapter settings for a specific
+        # resource. Available options depend on the adapter being used.
+        #
+        # @yield block for adapter configuration
+        #
+        # @example Custom pagination for this resource
+        #   class ActivitySchema < Apiwork::Schema::Base
+        #     adapter do
+        #       pagination do
+        #         strategy :cursor
+        #         default_size 50
+        #       end
+        #     end
+        #   end
         def adapter(&block)
           return unless block
 
@@ -210,18 +255,78 @@ module Apiwork
           )
         end
 
+        # Defines a has_one association for serialization and contracts.
+        #
+        # The association is auto-detected from the model. Use options to
+        # control serialization behavior, nested attributes, and querying.
+        #
+        # @param name [Symbol] association name (must match model association)
+        # @option options [Class] :schema explicit schema class for the association
+        # @option options [Array, Hash] :polymorphic enable polymorphic association
+        #   with allowed types (Array) or explicit mappings (Hash)
+        # @option options [Symbol] :include :always or :optional (default: :optional)
+        # @option options [Boolean, Hash] :writable enable nested attributes
+        #   (true, false, or { on: [:create, :update] })
+        # @option options [Boolean] :filterable enable filtering on this association
+        # @option options [Boolean] :sortable enable sorting on this association
+        # @option options [Boolean] :nullable whether null is allowed (auto-detect from DB)
+        # @option options [String] :description documentation description
+        # @option options [Object] :example example value for docs
+        # @option options [Boolean] :deprecated mark as deprecated
+        #
+        # @example Basic association
+        #   has_one :profile
+        #
+        # @example With explicit schema
+        #   has_one :author, schema: UserSchema
+        #
+        # @example Nested attributes
+        #   has_one :address, writable: true
+        #
+        # @example Polymorphic
+        #   has_one :imageable, polymorphic: [:product, :user]
         def has_one(name, **options)
           self.association_definitions = association_definitions.merge(
             name => AssociationDefinition.new(name, :has_one, self, **options)
           )
         end
 
+        # Defines a has_many association for serialization and contracts.
+        #
+        # See {#has_one} for shared options. Additionally supports:
+        #
+        # @param name [Symbol] association name (must match model association)
+        # @option options [Boolean] :allow_destroy allow destroying nested records
+        #   (requires accepts_nested_attributes_for with allow_destroy: true)
+        # @option options (see #has_one)
+        #
+        # @example Basic collection
+        #   has_many :line_items
+        #
+        # @example With nested attributes and destroy
+        #   has_many :line_items, writable: true, allow_destroy: true
+        #
+        # @example Always include
+        #   has_many :tags, include: :always
         def has_many(name, **options)
           self.association_definitions = association_definitions.merge(
             name => AssociationDefinition.new(name, :has_many, self, **options)
           )
         end
 
+        # Defines a belongs_to association for serialization and contracts.
+        #
+        # Nullability is auto-detected from the foreign key column.
+        # See {#has_one} for all available options.
+        #
+        # @param name [Symbol] association name (must match model association)
+        # @option options (see #has_one)
+        #
+        # @example Basic belongs_to
+        #   belongs_to :customer
+        #
+        # @example Filterable
+        #   belongs_to :category, filterable: true
         def belongs_to(name, **options)
           self.association_definitions = association_definitions.merge(
             name => AssociationDefinition.new(name, :belongs_to, self, **options)
@@ -329,12 +434,35 @@ module Apiwork
           variants.transform_values { |data| data[:sti_type] }
         end
 
+        # Sets or gets a description for this schema.
+        #
+        # Used in generated documentation (OpenAPI, etc.) to describe
+        # what this resource represents.
+        #
+        # @param value [String] description text (optional)
+        # @return [String, nil] the description
+        #
+        # @example
+        #   class InvoiceSchema < Apiwork::Schema::Base
+        #     description 'Represents a customer invoice'
+        #   end
         def description(value = nil)
           return _description if value.nil?
 
           self._description = value
         end
 
+        # Marks this schema as deprecated.
+        #
+        # Deprecated schemas are included in generated documentation
+        # with a deprecation notice.
+        #
+        # @param value [Boolean] whether deprecated (default: true)
+        #
+        # @example
+        #   class LegacyOrderSchema < Apiwork::Schema::Base
+        #     deprecated
+        #   end
         def deprecated(value = true)
           self._deprecated = value
         end
@@ -343,6 +471,17 @@ module Apiwork
           _deprecated
         end
 
+        # Sets or gets an example value for this schema.
+        #
+        # Used in generated documentation to show example responses.
+        #
+        # @param value [Hash] example data (optional)
+        # @return [Hash, nil] the example
+        #
+        # @example
+        #   class InvoiceSchema < Apiwork::Schema::Base
+        #     example { id: 1, total: 99.00, status: 'paid' }
+        #   end
         def example(value = nil)
           return _example if value.nil?
 

@@ -12,25 +12,43 @@ next: false
 
 ### .adapter(&block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L148)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L193)
+
+Configures adapter options for this schema.
+
+Use this to override API-level adapter settings for a specific
+resource. Available options depend on the adapter being used.
+
+**Example: Custom pagination for this resource**
+
+```ruby
+class ActivitySchema < Apiwork::Schema::Base
+  adapter do
+    pagination do
+      strategy :cursor
+      default_size 50
+    end
+  end
+end
+```
 
 ---
 
 ### .api_class()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L132)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L161)
 
 ---
 
 ### .api_path()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L139)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L168)
 
 ---
 
 ### .attribute(name, **options)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L207)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L252)
 
 Defines an attribute for serialization and API contracts.
 
@@ -67,31 +85,73 @@ attribute :email, writable: { on: [:create] }
 
 ### .auto_detect_model()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L71)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L89)
 
 ---
 
 ### .belongs_to(name, **options)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L225)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L330)
+
+Defines a belongs_to association for serialization and contracts.
+
+Nullability is auto-detected from the foreign key column.
+See {#has_one} for all available options.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `Symbol` | association name (must match model association) |
+
+**Example: Basic belongs_to**
+
+```ruby
+belongs_to :customer
+```
+
+**Example: Filterable**
+
+```ruby
+belongs_to :category, filterable: true
+```
 
 ---
 
 ### .column_for(attribute_name)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L397)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L536)
 
 ---
 
 ### .deprecated(value = true)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L338)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L466)
+
+Marks this schema as deprecated.
+
+Deprecated schemas are included in generated documentation
+with a deprecation notice.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `value` | `Boolean` | whether deprecated (default: true) |
+
+**Example**
+
+```ruby
+class LegacyOrderSchema < Apiwork::Schema::Base
+  deprecated
+end
+```
 
 ---
 
 ### .deprecated?()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L342)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L470)
 
 **Returns**
 
@@ -101,19 +161,42 @@ attribute :email, writable: { on: [:create] }
 
 ### .derive_variant_tag()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L285)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L390)
 
 ---
 
 ### .description(value = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L332)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L449)
+
+Sets or gets a description for this schema.
+
+Used in generated documentation (OpenAPI, etc.) to describe
+what this resource represents.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `value` | `String` | description text (optional) |
+
+**Returns**
+
+`String, nil` — the description
+
+**Example**
+
+```ruby
+class InvoiceSchema < Apiwork::Schema::Base
+  description 'Represents a customer invoice'
+end
+```
 
 ---
 
 ### .discriminator(name = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L250)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L355)
 
 Enables STI (Single Table Inheritance) polymorphism for this schema.
 
@@ -149,61 +232,179 @@ end
 
 ### .discriminator_column()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L294)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L399)
 
 ---
 
 ### .discriminator_name()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L298)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L403)
 
 ---
 
 ### .discriminator_sti_mapping()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L328)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L433)
 
 ---
 
 ### .ensure_auto_detection_complete()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L119)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L137)
 
 ---
 
 ### .example(value = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L346)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L485)
+
+Sets or gets an example value for this schema.
+
+Used in generated documentation to show example responses.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `value` | `Hash` | example data (optional) |
+
+**Returns**
+
+`Hash, nil` — the example
+
+**Example**
+
+```ruby
+class InvoiceSchema < Apiwork::Schema::Base
+  example { id: 1, total: 99.00, status: 'paid' }
+end
+```
 
 ---
 
 ### .filterable_attributes()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L369)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L508)
 
 ---
 
 ### .has_many(name, **options)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L219)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L311)
+
+Defines a has_many association for serialization and contracts.
+
+See {#has_one} for shared options. Additionally supports:
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `Symbol` | association name (must match model association) |
+| `options` | `Hash` | a customizable set of options |
+
+**Example: Basic collection**
+
+```ruby
+has_many :line_items
+```
+
+**Example: With nested attributes and destroy**
+
+```ruby
+has_many :line_items, writable: true, allow_destroy: true
+```
+
+**Example: Always include**
+
+```ruby
+has_many :tags, include: :always
+```
 
 ---
 
 ### .has_one(name, **options)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L213)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L288)
+
+Defines a has_one association for serialization and contracts.
+
+The association is auto-detected from the model. Use options to
+control serialization behavior, nested attributes, and querying.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `Symbol` | association name (must match model association) |
+| `options` | `Hash` | a customizable set of options |
+
+**Example: Basic association**
+
+```ruby
+has_one :profile
+```
+
+**Example: With explicit schema**
+
+```ruby
+has_one :author, schema: UserSchema
+```
+
+**Example: Nested attributes**
+
+```ruby
+has_one :address, writable: true
+```
+
+**Example: Polymorphic**
+
+```ruby
+has_one :imageable, polymorphic: [:product, :user]
+```
 
 ---
 
 ### .model(value = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L58)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L76)
+
+Sets or gets the model class for this schema.
+
+By default, the model is auto-detected from the schema name
+(e.g., InvoiceSchema → Invoice). Use this to override.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `value` | `Class` | the ActiveRecord model class (optional) |
+
+**Returns**
+
+`Class, nil` — the model class
+
+**Example: Explicit model**
+
+```ruby
+class InvoiceSchema < Apiwork::Schema::Base
+  model Invoice
+end
+```
+
+**Example: Namespaced model**
+
+```ruby
+class InvoiceSchema < Apiwork::Schema::Base
+  model Billing::Invoice
+end
+```
 
 ---
 
 ### .model?()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L114)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L132)
 
 **Returns**
 
@@ -213,13 +414,13 @@ end
 
 ### .model_class()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L109)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L127)
 
 ---
 
 ### .needs_discriminator_transform?()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L324)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L429)
 
 **Returns**
 
@@ -229,19 +430,19 @@ end
 
 ### .register_variant(tag:, schema:, sti_type:)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L289)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L394)
 
 ---
 
 ### .required_attributes_for(action)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L387)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L526)
 
 ---
 
 ### .required_columns()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L401)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L540)
 
 ---
 
@@ -253,31 +454,50 @@ end
 
 ### .resolve_option(name, subkey = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L157)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L202)
 
 ---
 
 ### .root(singular, plural = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L126)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L155)
+
+Declares the JSON root key for this schema.
+
+Adapters can use this to wrap responses in a root key.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `singular` | `String, Symbol` | root key for single records |
+| `plural` | `String, Symbol` | root key for collections (default: singular.pluralize) |
+
+**Example: Custom root key**
+
+```ruby
+class InvoiceSchema < Apiwork::Schema::Base
+  root :bill, :bills
+end
+```
 
 ---
 
 ### .root_key()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L360)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L499)
 
 ---
 
 ### .sortable_attributes()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L373)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L512)
 
 ---
 
 ### .sti_base?()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L314)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L419)
 
 **Returns**
 
@@ -287,13 +507,13 @@ end
 
 ### .sti_type()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L306)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L411)
 
 ---
 
 ### .sti_variant?()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L320)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L425)
 
 **Returns**
 
@@ -303,13 +523,13 @@ end
 
 ### .try_constantize_model(namespace, model_name)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L94)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L112)
 
 ---
 
 ### .type()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L352)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L491)
 
 ---
 
@@ -329,13 +549,13 @@ Sets the attribute type
 
 ### .validate!()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L356)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L495)
 
 ---
 
 ### .variant(as: = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L273)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L378)
 
 Registers this schema as an STI variant of its parent.
 
@@ -367,19 +587,19 @@ end
 
 ### .variant_tag()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L302)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L407)
 
 ---
 
 ### .variants()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L310)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L415)
 
 ---
 
 ### .writable_attributes_for(action)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L377)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L516)
 
 ---
 
