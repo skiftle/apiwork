@@ -35,7 +35,7 @@ namespace :apiwork do
         puts '  rake apiwork:spec:write OUTPUT=public/specs LOCALE=sv'
         puts ''
         puts 'Available formats:'
-        puts "  #{Apiwork::Spec::Registry.all.join(', ')}"
+        puts "  #{Apiwork::Spec.all.join(', ')}"
         puts ''
         puts 'Available key formats:'
         puts '  keep, camel, underscore'

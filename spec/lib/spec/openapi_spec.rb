@@ -39,11 +39,11 @@ RSpec.describe Apiwork::Spec::Openapi do
 
   describe 'generator registration' do
     it 'is registered in the registry' do
-      expect(Apiwork::Spec::Registry.registered?(:openapi)).to be true
+      expect(Apiwork::Spec.registered?(:openapi)).to be true
     end
 
     it 'can be retrieved from the registry' do
-      expect(Apiwork::Spec::Registry.find(:openapi)).to eq(described_class)
+      expect(Apiwork::Spec.find(:openapi)).to eq(described_class)
     end
   end
 

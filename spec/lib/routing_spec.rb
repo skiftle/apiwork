@@ -38,11 +38,11 @@ RSpec.describe 'Apiwork Rack Application' do
 
   describe '.reset!' do
     it 'clears API registry' do
-      expect(Apiwork::API::Registry.all).not_to be_empty
+      expect(Apiwork::API.all).not_to be_empty
 
       Apiwork.reset!
 
-      expect(Apiwork::API::Registry.all).to be_empty
+      expect(Apiwork::API.all).to be_empty
     end
 
     it 'clears ErrorCode registry and re-registers defaults' do

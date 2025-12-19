@@ -72,8 +72,8 @@ module Apiwork
         public
 
         def spec(type, &block)
-          unless Spec::Registry.registered?(type)
-            available = Spec::Registry.all.join(', ')
+          unless Spec.registered?(type)
+            available = Spec.all.join(', ')
             raise ConfigurationError,
                   "Unknown spec: :#{type}. " \
                   "Available: #{available}"
@@ -88,7 +88,7 @@ module Apiwork
 
           return unless block
 
-          spec_class = Spec::Registry.find(type)
+          spec_class = Spec.find(type)
           builder = Configuration::Builder.new(spec_class, @spec_configs[type])
           builder.instance_eval(&block)
         end

@@ -52,12 +52,12 @@ module Apiwork
         private
 
         def find_api(api_path)
-          api_class = API::Registry.all.find do |klass|
+          api_class = API.all.find do |klass|
             klass.metadata&.path == api_path
           end
 
           unless api_class
-            available = API::Registry.all.filter_map { |k| k.metadata&.path }
+            available = API.all.filter_map { |k| k.metadata&.path }
             raise ArgumentError,
                   "API not found: #{api_path}. Available APIs: #{available.join(', ')}"
           end
@@ -66,7 +66,7 @@ module Apiwork
         end
 
         def find_all_apis
-          API::Registry.all.select(&:metadata)
+          API.all.select(&:metadata)
         end
 
         def generate_file(api_class:, identifier:, output:, options:)

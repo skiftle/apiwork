@@ -9,7 +9,7 @@ RSpec.describe Apiwork::Spec::Zod do
 
   let(:path) { '/api/v1' }
   let(:generator) { described_class.new(path) }
-  let(:api) { Apiwork::API::Registry.find(path) }
+  let(:api) { Apiwork::API.find(path) }
   let(:introspect) { api.introspect }
 
   describe 'default options' do

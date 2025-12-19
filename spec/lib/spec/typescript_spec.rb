@@ -9,7 +9,7 @@ RSpec.describe Apiwork::Spec::Typescript do
 
   let(:path) { '/api/v1' }
   let(:generator) { described_class.new(path) }
-  let(:api) { Apiwork::API::Registry.find(path) }
+  let(:api) { Apiwork::API.find(path) }
   let(:introspect) { api.introspect }
 
   describe 'default options' do
@@ -298,11 +298,11 @@ RSpec.describe Apiwork::Spec::Typescript do
 
   describe 'generator registration' do
     it 'is registered in the registry' do
-      expect(Apiwork::Spec::Registry.registered?(:typescript)).to be true
+      expect(Apiwork::Spec.registered?(:typescript)).to be true
     end
 
     it 'can be retrieved from the registry' do
-      expect(Apiwork::Spec::Registry.find(:typescript)).to eq(described_class)
+      expect(Apiwork::Spec.find(:typescript)).to eq(described_class)
     end
 
     it 'can be used via Apiwork::Spec.generate' do
@@ -339,7 +339,7 @@ RSpec.describe Apiwork::Spec::Typescript do
     attr_reader :metadata_output
 
     after(:all) do
-      Apiwork::API::Registry.unregister('/api/ts_metadata_test')
+      Apiwork::API.unregister('/api/ts_metadata_test')
     end
 
     it 'generates type correctly even with metadata' do
@@ -377,7 +377,7 @@ RSpec.describe Apiwork::Spec::Typescript do
       expect(output).to include('export interface FullMeta')
       expect(output).to include('x: number')
 
-      Apiwork::API::Registry.unregister('/api/ts_full_metadata')
+      Apiwork::API.unregister('/api/ts_full_metadata')
     end
 
     it 'generates correct output for enum with all metadata fields' do
@@ -389,7 +389,7 @@ RSpec.describe Apiwork::Spec::Typescript do
 
       expect(output).to include("export type Color = 'blue' | 'green' | 'red'")
 
-      Apiwork::API::Registry.unregister('/api/ts_enum_meta')
+      Apiwork::API.unregister('/api/ts_enum_meta')
     end
 
     it 'maintains enum value sorting with metadata present' do

@@ -42,6 +42,10 @@ module Apiwork
         Registry.all
       end
 
+      def unregister(path)
+        Registry.unregister(path)
+      end
+
       # DOCUMENTATION
       def introspect(path, locale: nil)
         find(path)&.introspect(locale:)

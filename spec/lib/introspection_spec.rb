@@ -9,7 +9,7 @@ RSpec.describe Apiwork::Introspection do
 
   describe 'global type qualification' do
     it 'does not qualify global filter types in introspect output' do
-      api = Apiwork::API::Registry.find('/api/v1')
+      api = Apiwork::API.find('/api/v1')
       introspect = api.introspect
 
       # Check post_filter type has string_filter as a variant (not post_string_filter)
@@ -44,7 +44,7 @@ RSpec.describe Apiwork::Introspection do
     end
 
     it 'does not qualify other global types like datetime_filter' do
-      api = Apiwork::API::Registry.find('/api/v1')
+      api = Apiwork::API.find('/api/v1')
       introspect = api.introspect
 
       post_filter = introspect[:types][:post_filter]
@@ -57,7 +57,7 @@ RSpec.describe Apiwork::Introspection do
     end
 
     it 'still qualifies contract-scoped custom types' do
-      api = Apiwork::API::Registry.find('/api/v1')
+      api = Apiwork::API.find('/api/v1')
       introspect = api.introspect
 
       # post_filter itself should still be qualified as post_filter (not just filter)

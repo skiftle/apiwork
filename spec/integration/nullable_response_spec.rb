@@ -8,7 +8,7 @@ RSpec.describe 'Response nullable vs optional semantics' do
     load File.expand_path('../dummy/config/apis/v1.rb', __dir__)
   end
 
-  let(:api) { Apiwork::API::Registry.find('/api/v1') }
+  let(:api) { Apiwork::API.find('/api/v1') }
   let(:introspection) { api.introspect }
   let(:types) { introspection[:types] }
 

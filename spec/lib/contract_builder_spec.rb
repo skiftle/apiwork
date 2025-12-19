@@ -7,7 +7,7 @@ RSpec.describe Apiwork::Adapter::Apiwork::ContractBuilder do
     load File.expand_path('../dummy/config/apis/v1.rb', __dir__)
   end
 
-  let(:api) { Apiwork::API::Registry.find('/api/v1') }
+  let(:api) { Apiwork::API.find('/api/v1') }
   let(:post_contract) { api.contracts[:post] }
 
   describe 'response type building' do
