@@ -26,6 +26,8 @@ module Apiwork
     }.freeze
 
     class << self
+      delegate :fetch, :registered?, :all, to: Registry
+
       # Registers a custom error code for use in API responses.
       #
       # Error codes are used with `raises` declarations and `respond_with_error`
@@ -42,7 +44,9 @@ module Apiwork
       #
       # @example With path attachment
       #   Apiwork::ErrorCode.register :not_found, status: 404, attach_path: true
-      delegate :register, :fetch, :registered?, :all, to: Registry
+      def register(key, status:, attach_path: false)
+        Registry.register(key, status:, attach_path:)
+      end
 
       def key_for_status(status)
         DEFAULTS.find { |_, config| config[:status] == status }&.first
