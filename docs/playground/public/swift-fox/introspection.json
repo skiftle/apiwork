@@ -6,8 +6,7 @@
       "shape": {
         "email": {
           "type": "string",
-          "nullable": true,
-          "optional": true
+          "nullable": true
         },
         "id": {
           "type": "string"
@@ -16,12 +15,10 @@
           "type": "string"
         },
         "notes": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         },
         "phone": {
-          "type": "string",
-          "optional": true
+          "type": "string"
         }
       }
     },

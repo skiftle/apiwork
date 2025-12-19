@@ -164,6 +164,7 @@ components:
       - action
       - createdAt
       - id
+      - occurredAt
     activityCreatePayload:
       type: object
       properties:

@@ -5,16 +5,16 @@ export const ArticleStatusSchema = z.enum(['archived', 'draft', 'published']);
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
 export const ArticleSchema = z.object({
-  body: z.string().nullable().optional(),
+  body: z.string().nullable(),
   category: z.object({}).nullable().optional(),
   createdAt: z.iso.datetime(),
   id: z.string(),
-  publishedOn: z.iso.date().nullable().optional(),
-  rating: z.number().nullable().optional(),
-  status: ArticleStatusSchema.nullable().optional(),
+  publishedOn: z.iso.date().nullable(),
+  rating: z.number().nullable(),
+  status: ArticleStatusSchema.nullable(),
   title: z.string(),
   updatedAt: z.iso.datetime(),
-  viewCount: z.number().int().nullable().optional()
+  viewCount: z.number().int().nullable()
 });
 
 export const ArticleCreatePayloadSchema = z.object({
@@ -223,16 +223,16 @@ export const ArticlesUpdateResponseSchema = z.object({
 export const ArticlesDestroyResponse = z.never();
 
 export interface Article {
-  body?: null | string;
+  body: null | string;
   category?: null | object;
   createdAt: string;
   id: string;
-  publishedOn?: null | string;
-  rating?: null | number;
-  status?: ArticleStatus | null;
+  publishedOn: null | string;
+  rating: null | number;
+  status: ArticleStatus | null;
   title: string;
   updatedAt: string;
-  viewCount?: null | number;
+  viewCount: null | number;
 }
 
 export interface ArticleCreatePayload {

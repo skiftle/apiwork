@@ -163,8 +163,11 @@ components:
         phone:
           type: string
       required:
+      - email
       - id
       - name
+      - notes
+      - phone
     contactCreatePayload:
       type: object
       properties:

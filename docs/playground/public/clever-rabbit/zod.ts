@@ -32,8 +32,8 @@ export const OrderSchema = z.object({
   lineItems: z.array(z.string()),
   orderNumber: z.string(),
   shippingAddress: z.object({}),
-  status: z.string().nullable().optional(),
-  total: z.number().nullable().optional(),
+  status: z.string().nullable(),
+  total: z.number().nullable(),
   updatedAt: z.iso.datetime()
 });
 
@@ -156,8 +156,8 @@ export interface Order {
   lineItems: string[];
   orderNumber: string;
   shippingAddress: object;
-  status?: null | string;
-  total?: null | number;
+  status: null | string;
+  total: null | number;
   updatedAt: string;
 }
 

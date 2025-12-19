@@ -6,8 +6,7 @@
       "shape": {
         "body": {
           "type": "string",
-          "nullable": true,
-          "optional": true
+          "nullable": true
         },
         "category": {
           "type": "object",
@@ -22,19 +21,16 @@
         },
         "published_on": {
           "type": "date",
-          "nullable": true,
-          "optional": true
+          "nullable": true
         },
         "rating": {
           "type": "decimal",
-          "nullable": true,
-          "optional": true
+          "nullable": true
         },
         "status": {
           "type": "string",
           "enum": "article_status",
-          "nullable": true,
-          "optional": true
+          "nullable": true
         },
         "title": {
           "type": "string"
@@ -44,8 +40,7 @@
         },
         "view_count": {
           "type": "integer",
-          "nullable": true,
-          "optional": true
+          "nullable": true
         }
       }
     },

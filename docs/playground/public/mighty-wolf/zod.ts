@@ -4,12 +4,12 @@ export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
 export const CarSchema = z.object({
   brand: z.string(),
-  color: z.string().nullable().optional(),
-  doors: z.number().int().nullable().optional(),
+  color: z.string().nullable(),
+  doors: z.number().int().nullable(),
   id: z.string(),
   model: z.string(),
   type: z.literal('car'),
-  year: z.number().int().nullable().optional()
+  year: z.number().int().nullable()
 });
 
 export const CarCreatePayloadSchema = z.object({
@@ -44,12 +44,12 @@ export const IntegerFilterBetweenSchema = z.object({
 
 export const MotorcycleSchema = z.object({
   brand: z.string(),
-  color: z.string().nullable().optional(),
-  engineCc: z.number().int().nullable().optional(),
+  color: z.string().nullable(),
+  engineCc: z.number().int().nullable(),
   id: z.string(),
   model: z.string(),
   type: z.literal('motorcycle'),
-  year: z.number().int().nullable().optional()
+  year: z.number().int().nullable()
 });
 
 export const MotorcycleCreatePayloadSchema = z.object({
@@ -88,12 +88,12 @@ export const StringFilterSchema = z.object({
 
 export const TruckSchema = z.object({
   brand: z.string(),
-  color: z.string().nullable().optional(),
+  color: z.string().nullable(),
   id: z.string(),
   model: z.string(),
-  payloadCapacity: z.number().nullable().optional(),
+  payloadCapacity: z.number().nullable(),
   type: z.literal('truck'),
-  year: z.number().int().nullable().optional()
+  year: z.number().int().nullable()
 });
 
 export const TruckCreatePayloadSchema = z.object({
@@ -225,12 +225,12 @@ export const VehiclesDestroyResponse = z.never();
 
 export interface Car {
   brand: string;
-  color?: null | string;
-  doors?: null | number;
+  color: null | string;
+  doors: null | number;
   id: string;
   model: string;
   type: 'car';
-  year?: null | number;
+  year: null | number;
 }
 
 export interface CarCreatePayload {
@@ -275,12 +275,12 @@ export interface IntegerFilterBetween {
 
 export interface Motorcycle {
   brand: string;
-  color?: null | string;
-  engineCc?: null | number;
+  color: null | string;
+  engineCc: null | number;
   id: string;
   model: string;
   type: 'motorcycle';
-  year?: null | number;
+  year: null | number;
 }
 
 export interface MotorcycleCreatePayload {
@@ -332,12 +332,12 @@ export interface StringFilter {
 
 export interface Truck {
   brand: string;
-  color?: null | string;
+  color: null | string;
   id: string;
   model: string;
-  payloadCapacity?: null | number;
+  payloadCapacity: null | number;
   type: 'truck';
-  year?: null | number;
+  year: null | number;
 }
 
 export interface TruckCreatePayload {

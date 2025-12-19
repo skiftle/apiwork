@@ -9,13 +9,11 @@
         },
         "color": {
           "type": "string",
-          "nullable": true,
-          "optional": true
+          "nullable": true
         },
         "doors": {
           "type": "integer",
-          "nullable": true,
-          "optional": true
+          "nullable": true
         },
         "id": {
           "type": "string"
@@ -29,8 +27,7 @@
         },
         "year": {
           "type": "integer",
-          "nullable": true,
-          "optional": true
+          "nullable": true
         }
       }
     },
@@ -167,13 +164,11 @@
         },
         "color": {
           "type": "string",
-          "nullable": true,
-          "optional": true
+          "nullable": true
         },
         "engine_cc": {
           "type": "integer",
-          "nullable": true,
-          "optional": true
+          "nullable": true
         },
         "id": {
           "type": "string"
@@ -187,8 +182,7 @@
         },
         "year": {
           "type": "integer",
-          "nullable": true,
-          "optional": true
+          "nullable": true
         }
       }
     },
@@ -348,8 +342,7 @@
         },
         "color": {
           "type": "string",
-          "nullable": true,
-          "optional": true
+          "nullable": true
         },
         "id": {
           "type": "string"
@@ -359,8 +352,7 @@
         },
         "payload_capacity": {
           "type": "decimal",
-          "nullable": true,
-          "optional": true
+          "nullable": true
         },
         "type": {
           "type": "literal",
@@ -368,8 +360,7 @@
         },
         "year": {
           "type": "integer",
-          "nullable": true,
-          "optional": true
+          "nullable": true
         }
       }
     },

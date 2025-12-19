@@ -36,24 +36,21 @@
         },
         "issued_on": {
           "type": "date",
-          "nullable": true,
-          "optional": true
+          "nullable": true
         },
         "lines": {
           "type": "array"
         },
         "notes": {
           "type": "string",
-          "nullable": true,
-          "optional": true
+          "nullable": true
         },
         "number": {
           "type": "string"
         },
         "status": {
           "type": "string",
-          "nullable": true,
-          "optional": true
+          "nullable": true
         },
         "updated_at": {
           "type": "datetime"

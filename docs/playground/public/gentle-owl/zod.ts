@@ -35,11 +35,11 @@ export const ErrorSchema = z.object({
 export const ImageSchema = z.object({
   comments: z.array(z.unknown()).optional(),
   createdAt: z.iso.datetime(),
-  height: z.number().int().nullable().optional(),
+  height: z.number().int().nullable(),
   id: z.string(),
   title: z.string(),
   url: z.string(),
-  width: z.number().int().nullable().optional()
+  width: z.number().int().nullable()
 });
 
 export const ImageFilterSchema: z.ZodType<ImageFilter> = z.lazy(() => z.object({
@@ -78,7 +78,7 @@ export const OffsetPaginationSchema = z.object({
 });
 
 export const PostSchema = z.object({
-  body: z.string().nullable().optional(),
+  body: z.string().nullable(),
   comments: z.array(z.unknown()).optional(),
   createdAt: z.iso.datetime(),
   id: z.string(),
@@ -111,7 +111,7 @@ export const PostSortSchema = z.object({
 export const VideoSchema = z.object({
   comments: z.array(z.unknown()).optional(),
   createdAt: z.iso.datetime(),
-  duration: z.number().int().nullable().optional(),
+  duration: z.number().int().nullable(),
   id: z.string(),
   title: z.string(),
   url: z.string()
@@ -164,7 +164,7 @@ export const VideoNestedPayloadSchema = z.discriminatedUnion('_type', [
 ]);
 
 export const CommentSchema = z.object({
-  authorName: z.string().nullable().optional(),
+  authorName: z.string().nullable(),
   body: z.string(),
   commentable: CommentCommentableSchema.optional(),
   createdAt: z.iso.datetime(),
@@ -250,7 +250,7 @@ export const CommentsDestroyRequestSchema = z.object({
 export const CommentsDestroyResponse = z.never();
 
 export interface Comment {
-  authorName?: null | string;
+  authorName: null | string;
   body: string;
   commentable?: CommentCommentable;
   createdAt: string;
@@ -370,11 +370,11 @@ export interface Error {
 export interface Image {
   comments?: unknown[];
   createdAt: string;
-  height?: null | number;
+  height: null | number;
   id: string;
   title: string;
   url: string;
-  width?: null | number;
+  width: null | number;
 }
 
 export interface ImageFilter {
@@ -415,7 +415,7 @@ export interface OffsetPagination {
 }
 
 export interface Post {
-  body?: null | string;
+  body: null | string;
   comments?: unknown[];
   createdAt: string;
   id: string;
@@ -452,7 +452,7 @@ export type SortDirection = 'asc' | 'desc';
 export interface Video {
   comments?: unknown[];
   createdAt: string;
-  duration?: null | number;
+  duration: null | number;
   id: string;
   title: string;
   url: string;

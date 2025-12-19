@@ -365,8 +365,13 @@ components:
           description: Timestamp of last modification
       description: A task representing work to be completed
       required:
+      - archived
       - createdAt
+      - description
+      - dueDate
       - id
+      - priority
+      - status
       - title
       - updatedAt
     taskCreatePayload:

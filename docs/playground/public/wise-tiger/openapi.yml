@@ -289,8 +289,12 @@ components:
           description: Timestamp of last modification
       required:
       - createdAt
+      - deadline
+      - description
       - id
       - name
+      - priority
+      - status
       - updatedAt
     projectCreatePayload:
       type: object

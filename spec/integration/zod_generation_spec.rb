@@ -326,13 +326,14 @@ RSpec.describe 'Zod Generation for Associations', type: :integration do
       expect(post_schema).to match(/metadata: z\.object\(\{\}\)/)
     end
 
-    it 'makes JSON columns optional by default' do
+    it 'makes JSON columns nullable but not optional in response types' do
       post_schema_match = output.match(/export const PostSchema\b.*?\n\}\);/m)
       expect(post_schema_match).not_to be_nil
       post_schema = post_schema_match[0]
 
-      # JSON columns are nullable by default, should be .optional()
-      expect(post_schema).to match(/metadata:.*\.optional\(\)/)
+      # JSON columns are nullable (can be null) but not optional (always present in response)
+      expect(post_schema).to match(/metadata: z\.object\(\{\}\)\.nullable\(\)/)
+      expect(post_schema).not_to match(/metadata:.*\.optional\(\)/)
     end
   end
 end

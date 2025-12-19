@@ -93,13 +93,11 @@
         },
         "status": {
           "type": "string",
-          "nullable": true,
-          "optional": true
+          "nullable": true
         },
         "total": {
           "type": "decimal",
-          "nullable": true,
-          "optional": true
+          "nullable": true
         },
         "updated_at": {
           "type": "datetime"

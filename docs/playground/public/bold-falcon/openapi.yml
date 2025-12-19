@@ -206,10 +206,15 @@ components:
           - integer
           - 'null'
       required:
+      - body
       - createdAt
       - id
+      - publishedOn
+      - rating
+      - status
       - title
       - updatedAt
+      - viewCount
     articleCreatePayload:
       type: object
       properties:

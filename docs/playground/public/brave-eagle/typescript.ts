@@ -33,15 +33,15 @@ export interface StringFilter {
 }
 
 export interface Task {
-  archived?: boolean | null;
+  archived: boolean | null;
   assignee?: null | object;
   comments?: string[];
   createdAt: string;
-  description?: null | string;
-  dueDate?: null | string;
+  description: null | string;
+  dueDate: null | string;
   id: string;
-  priority?: TaskPriority | null;
-  status?: TaskStatus | null;
+  priority: TaskPriority | null;
+  status: TaskStatus | null;
   title: string;
   updatedAt: string;
 }

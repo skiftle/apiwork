@@ -253,6 +253,8 @@ components:
       - lineItems
       - orderNumber
       - shippingAddress
+      - status
+      - total
       - updatedAt
     orderCreatePayload:
       type: object

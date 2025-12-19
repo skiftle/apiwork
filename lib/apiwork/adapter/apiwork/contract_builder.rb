@@ -319,7 +319,6 @@ module Apiwork
 
               param name,
                     type: builder.send(:map_type, attribute_definition.type),
-                    optional: attribute_definition.optional?,
                     nullable: attribute_definition.nullable?,
                     description: attribute_definition.description,
                     example: attribute_definition.example,
@@ -676,7 +675,6 @@ module Apiwork
               enum_option = attribute_definition.enum ? { enum: name } : {}
               param name,
                     type: builder.send(:map_type, attribute_definition.type),
-                    optional: attribute_definition.optional?,
                     nullable: attribute_definition.nullable?,
                     description: attribute_definition.description,
                     example: attribute_definition.example,
@@ -797,7 +795,6 @@ module Apiwork
                   enum_option = attribute_definition.enum ? { enum: name } : {}
                   param name,
                         type: builder.send(:map_type, attribute_definition.type),
-                        optional: attribute_definition.optional?,
                         nullable: attribute_definition.nullable?,
                         description: attribute_definition.description,
                         example: attribute_definition.example,

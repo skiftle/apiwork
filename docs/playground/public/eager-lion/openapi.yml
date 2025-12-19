@@ -244,8 +244,11 @@ components:
       - customer
       - customerId
       - id
+      - issuedOn
       - lines
+      - notes
       - number
+      - status
       - updatedAt
     invoiceCreatePayload:
       type: object

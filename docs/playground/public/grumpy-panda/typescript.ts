@@ -52,7 +52,7 @@ export interface Activity {
   action: string;
   createdAt: string;
   id: string;
-  occurredAt?: null | string;
+  occurredAt: null | string;
 }
 
 export interface ActivityCreatePayload {

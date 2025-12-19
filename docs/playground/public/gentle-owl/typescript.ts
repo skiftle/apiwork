@@ -1,5 +1,5 @@
 export interface Comment {
-  authorName?: null | string;
+  authorName: null | string;
   body: string;
   commentable?: CommentCommentable;
   createdAt: string;
@@ -119,11 +119,11 @@ export interface Error {
 export interface Image {
   comments?: unknown[];
   createdAt: string;
-  height?: null | number;
+  height: null | number;
   id: string;
   title: string;
   url: string;
-  width?: null | number;
+  width: null | number;
 }
 
 export interface ImageFilter {
@@ -164,7 +164,7 @@ export interface OffsetPagination {
 }
 
 export interface Post {
-  body?: null | string;
+  body: null | string;
   comments?: unknown[];
   createdAt: string;
   id: string;
@@ -201,7 +201,7 @@ export type SortDirection = 'asc' | 'desc';
 export interface Video {
   comments?: unknown[];
   createdAt: string;
-  duration?: null | number;
+  duration: null | number;
   id: string;
   title: string;
   url: string;

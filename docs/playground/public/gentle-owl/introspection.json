@@ -6,8 +6,7 @@
       "shape": {
         "author_name": {
           "type": "string",
-          "nullable": true,
-          "optional": true
+          "nullable": true
         },
         "body": {
           "type": "string"
@@ -133,8 +132,7 @@
         },
         "height": {
           "type": "integer",
-          "nullable": true,
-          "optional": true
+          "nullable": true
         },
         "id": {
           "type": "string"
@@ -147,8 +145,7 @@
         },
         "width": {
           "type": "integer",
-          "nullable": true,
-          "optional": true
+          "nullable": true
         }
       }
     },
@@ -285,8 +282,7 @@
       "shape": {
         "body": {
           "type": "string",
-          "nullable": true,
-          "optional": true
+          "nullable": true
         },
         "comments": {
           "type": "array",
@@ -405,8 +401,7 @@
         },
         "duration": {
           "type": "integer",
-          "nullable": true,
-          "optional": true
+          "nullable": true
         },
         "id": {
           "type": "string"

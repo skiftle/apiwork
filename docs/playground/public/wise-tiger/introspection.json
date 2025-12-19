@@ -88,13 +88,11 @@
         "deadline": {
           "type": "date",
           "nullable": true,
-          "optional": true,
           "description": "Target completion date"
         },
         "description": {
           "type": "string",
           "nullable": true,
-          "optional": true,
           "description": "Detailed project description"
         },
         "id": {
@@ -109,14 +107,12 @@
           "type": "string",
           "enum": "project_priority",
           "nullable": true,
-          "optional": true,
           "description": "Project priority for resource allocation"
         },
         "status": {
           "type": "string",
           "enum": "project_status",
           "nullable": true,
-          "optional": true,
           "description": "Current project lifecycle status"
         },
         "updated_at": {

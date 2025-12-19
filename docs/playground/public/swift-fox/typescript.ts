@@ -1,9 +1,9 @@
 export interface Contact {
-  email?: null | string;
+  email: null | string;
   id: string;
   name: string;
-  notes?: string;
-  phone?: string;
+  notes: string;
+  phone: string;
 }
 
 export interface ContactCreatePayload {

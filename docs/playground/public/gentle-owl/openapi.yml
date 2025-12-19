@@ -198,6 +198,7 @@ components:
         id:
           type: string
       required:
+      - authorName
       - body
       - createdAt
       - id
@@ -300,9 +301,11 @@ components:
           - 'null'
       required:
       - createdAt
+      - height
       - id
       - title
       - url
+      - width
     imageFilter:
       type: object
       properties:
@@ -420,6 +423,7 @@ components:
         title:
           type: string
       required:
+      - body
       - createdAt
       - id
       - title
@@ -508,6 +512,7 @@ components:
           type: string
       required:
       - createdAt
+      - duration
       - id
       - title
       - url

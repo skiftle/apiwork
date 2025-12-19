@@ -28,8 +28,8 @@ export interface Order {
   lineItems: string[];
   orderNumber: string;
   shippingAddress: object;
-  status?: null | string;
-  total?: null | number;
+  status: null | string;
+  total: null | number;
   updatedAt: string;
 }
 

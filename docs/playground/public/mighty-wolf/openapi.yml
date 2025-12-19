@@ -191,9 +191,12 @@ components:
           - 'null'
       required:
       - brand
+      - color
+      - doors
       - id
       - model
       - type
+      - year
     carCreatePayload:
       type: object
       properties:
@@ -316,9 +319,12 @@ components:
           - 'null'
       required:
       - brand
+      - color
+      - engineCc
       - id
       - model
       - type
+      - year
     motorcycleCreatePayload:
       type: object
       properties:
@@ -454,9 +460,12 @@ components:
           - 'null'
       required:
       - brand
+      - color
       - id
       - model
+      - payloadCapacity
       - type
+      - year
     truckCreatePayload:
       type: object
       properties:

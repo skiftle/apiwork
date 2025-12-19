@@ -1,11 +1,11 @@
 import { z } from 'zod';
 
 export const ContactSchema = z.object({
-  email: z.string().nullable().optional(),
+  email: z.string().nullable(),
   id: z.string(),
   name: z.string(),
-  notes: z.string().optional(),
-  phone: z.string().optional()
+  notes: z.string(),
+  phone: z.string()
 });
 
 export const ContactCreatePayloadSchema = z.object({
@@ -93,11 +93,11 @@ export const ContactsUpdateResponseSchema = z.object({
 export const ContactsDestroyResponse = z.never();
 
 export interface Contact {
-  email?: null | string;
+  email: null | string;
   id: string;
   name: string;
-  notes?: string;
-  phone?: string;
+  notes: string;
+  phone: string;
 }
 
 export interface ContactCreatePayload {

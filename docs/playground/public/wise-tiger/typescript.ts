@@ -24,12 +24,12 @@ export interface OffsetPagination {
 
 export interface Project {
   createdAt: string;
-  deadline?: null | string;
-  description?: null | string;
+  deadline: null | string;
+  description: null | string;
   id: string;
   name: string;
-  priority?: ProjectPriority | null;
-  status?: ProjectStatus | null;
+  priority: ProjectPriority | null;
+  status: ProjectStatus | null;
   updatedAt: string;
 }
 

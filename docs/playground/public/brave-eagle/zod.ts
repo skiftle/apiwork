@@ -39,15 +39,15 @@ export const StringFilterSchema = z.object({
 });
 
 export const TaskSchema = z.object({
-  archived: z.boolean().nullable().optional(),
+  archived: z.boolean().nullable(),
   assignee: z.object({}).nullable().optional(),
   comments: z.array(z.string()).optional(),
   createdAt: z.iso.datetime(),
-  description: z.string().nullable().optional(),
-  dueDate: z.iso.datetime().nullable().optional(),
+  description: z.string().nullable(),
+  dueDate: z.iso.datetime().nullable(),
   id: z.string(),
-  priority: TaskPrioritySchema.nullable().optional(),
-  status: TaskStatusSchema.nullable().optional(),
+  priority: TaskPrioritySchema.nullable(),
+  status: TaskStatusSchema.nullable(),
   title: z.string(),
   updatedAt: z.iso.datetime()
 });
@@ -189,15 +189,15 @@ export interface StringFilter {
 }
 
 export interface Task {
-  archived?: boolean | null;
+  archived: boolean | null;
   assignee?: null | object;
   comments?: string[];
   createdAt: string;
-  description?: null | string;
-  dueDate?: null | string;
+  description: null | string;
+  dueDate: null | string;
   id: string;
-  priority?: TaskPriority | null;
-  status?: TaskStatus | null;
+  priority: TaskPriority | null;
+  status: TaskStatus | null;
   title: string;
   updatedAt: string;
 }
