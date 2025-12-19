@@ -39,7 +39,7 @@ types, and configuration.
 **Example: Basic API**
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   resources :users
   resources :posts
 end
@@ -48,7 +48,7 @@ end
 **Example: With configuration**
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   key_format :camel
 
   resources :invoices

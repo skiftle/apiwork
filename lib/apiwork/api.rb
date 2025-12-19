@@ -14,18 +14,18 @@ module Apiwork
       # @return [Class] the created API class (subclass of API::Base)
       #
       # @example Basic API
-      #   Apiwork::API.draw '/api/v1' do
+      #   Apiwork::API.define '/api/v1' do
       #     resources :users
       #     resources :posts
       #   end
       #
       # @example With configuration
-      #   Apiwork::API.draw '/api/v1' do
+      #   Apiwork::API.define '/api/v1' do
       #     key_format :camel
       #
       #     resources :invoices
       #   end
-      def draw(path, &block)
+      def define(path, &block)
         return unless block
 
         Class.new(Base).tap do |klass|

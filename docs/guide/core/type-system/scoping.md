@@ -11,7 +11,7 @@ Types can be global (API-level) or scoped to a contract.
 Defined in the API draw block:
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   type :address do
     param :street, type: :string
     param :city, type: :string

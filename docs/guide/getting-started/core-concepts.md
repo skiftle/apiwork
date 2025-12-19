@@ -17,7 +17,7 @@ your API in a more structured, API-focused way.
 
 ```ruby
 # config/apis/api_v1.rb
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   resources :invoices do
     resource :payments
   end

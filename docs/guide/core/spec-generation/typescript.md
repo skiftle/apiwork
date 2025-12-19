@@ -9,7 +9,7 @@ Generates TypeScript type definitions.
 ## Configuration
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   spec :typescript
 end
 ```

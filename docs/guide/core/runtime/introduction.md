@@ -84,7 +84,7 @@ These types power everything:
 You configure the adapter at the API level:
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   adapter do
     pagination do
       strategy :offset

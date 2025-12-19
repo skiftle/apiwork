@@ -11,7 +11,7 @@ Apiwork can expose your API specifications directly from your Rails application.
 In your API definition:
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   spec :openapi
   spec :typescript
   spec :zod
@@ -56,7 +56,7 @@ Now served at:
 Specs inherit `key_format` from the API definition by default:
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   key_format :camel  # All specs will use camelCase
 
   spec :openapi      # Inherits :camel
@@ -68,7 +68,7 @@ end
 Override per spec using a block:
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   key_format :camel
 
   spec :openapi      # Inherits :camel

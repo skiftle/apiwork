@@ -4,7 +4,6 @@ require 'rails_helper'
 
 RSpec.describe Apiwork::Spec::Typescript do
   before do
-    Apiwork.reset!
     load File.expand_path('../../dummy/config/apis/v1.rb', __dir__)
   end
 
@@ -327,7 +326,7 @@ RSpec.describe Apiwork::Spec::Typescript do
 
   describe 'metadata support' do
     before(:all) do
-      Apiwork::API.draw '/api/ts_metadata_test' do
+      Apiwork::API.define '/api/ts_metadata_test' do
         type :documented_type, description: 'Type with description' do
           param :value, type: :string
         end
@@ -367,7 +366,7 @@ RSpec.describe Apiwork::Spec::Typescript do
     end
 
     it 'generates correct output for type with all metadata fields' do
-      Apiwork::API.draw '/api/ts_full_metadata' do
+      Apiwork::API.define '/api/ts_full_metadata' do
         type :full_meta, description: 'desc', example: { x: 1 }, format: 'fmt', deprecated: false do
           param :x, type: :integer
         end
@@ -382,7 +381,7 @@ RSpec.describe Apiwork::Spec::Typescript do
     end
 
     it 'generates correct output for enum with all metadata fields' do
-      Apiwork::API.draw '/api/ts_enum_meta' do
+      Apiwork::API.define '/api/ts_enum_meta' do
         enum :color, values: %w[red green blue], description: 'desc', example: 'red', deprecated: false
       end
 

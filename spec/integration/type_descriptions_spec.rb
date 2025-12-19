@@ -22,7 +22,7 @@ RSpec.describe 'Type Descriptions', type: :integration do
 
   describe 'i18n API-specific overrides' do
     before(:all) do
-      @override_api = Apiwork::API.draw '/api/override_test' do
+      @override_api = Apiwork::API.define '/api/override_test' do
         spec :openapi
 
         resources :posts
@@ -56,7 +56,7 @@ RSpec.describe 'Type Descriptions', type: :integration do
 
   describe 'Type merging' do
     before(:all) do
-      @merge_api = Apiwork::API.draw '/api/merge_test' do
+      @merge_api = Apiwork::API.define '/api/merge_test' do
         spec :openapi
 
         type :base_type do
@@ -110,7 +110,7 @@ RSpec.describe 'Type Descriptions', type: :integration do
 
   describe 'Nested object merging' do
     before(:all) do
-      @nested_api = Apiwork::API.draw '/api/nested_test' do
+      @nested_api = Apiwork::API.define '/api/nested_test' do
         spec :openapi
 
         type :address do

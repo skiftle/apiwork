@@ -55,7 +55,7 @@ Or create the file manually in `config/apis/`:
 
 ```ruby
 # config/apis/api_v1.rb
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   resources :posts
 end
 ```

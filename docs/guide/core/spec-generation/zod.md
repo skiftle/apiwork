@@ -9,7 +9,7 @@ Generates Zod validation schemas for runtime validation.
 ## Configuration
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   spec :zod
 end
 ```

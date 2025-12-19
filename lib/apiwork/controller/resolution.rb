@@ -71,7 +71,7 @@ module Apiwork
 
         raise ConfigurationError,
               "No API found for #{self.class.name}. " \
-              "Create the API: #{api_file} (Apiwork::API.draw '#{api_path}')"
+              "Create the API: #{api_file} (Apiwork::API.define '#{api_path}')"
       end
 
       def raise_contract_not_found_error

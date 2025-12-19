@@ -9,7 +9,7 @@ Generates OpenAPI 3.1 specifications.
 ## Configuration
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   spec :openapi
 end
 ```
@@ -27,7 +27,7 @@ spec :openapi,
 Provide metadata in the `info` block:
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   info do
     title 'My API'
     version '1.0.0'

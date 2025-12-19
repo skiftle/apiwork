@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   spec :openapi
   spec :zod
   spec :typescript

@@ -85,7 +85,7 @@ my_option  # Returns the configured value
 The spec is automatically available when the class is loaded. Use in your API:
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   spec :myspec
 end
 ```

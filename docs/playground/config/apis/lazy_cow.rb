@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Apiwork::API.draw '/lazy_cow' do
+Apiwork::API.define '/lazy_cow' do
   key_format :camel
 
   resource :status, only: [] do

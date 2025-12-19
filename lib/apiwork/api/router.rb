@@ -3,7 +3,7 @@
 module Apiwork
   module API
     class Router
-      def build
+      def draw
         api_classes = Registry.all
         router_instance = self
 

@@ -71,7 +71,7 @@ Example:
 
 ```ruby
 # API definition: all resources default to 25 items per page
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   adapter do
     pagination do
       default_size 25

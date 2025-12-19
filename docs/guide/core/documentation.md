@@ -7,7 +7,7 @@ order: 3
 Your API definition can include documentation at every level — from the API itself down to individual attributes. These fields are picked up by generators to produce OpenAPI specs, TypeScript definitions, and other outputs.
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   info do
     title "Billing API"
     description "Manage invoices and payments"
@@ -26,7 +26,7 @@ end
 The `info` block documents your entire API:
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   info do
     title "Acme API"
     version "1.0.0"
@@ -179,7 +179,7 @@ attribute :id, format: :uuid
 Document custom types when you define them:
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   type :money,
     description: "A monetary amount with currency",
     example: { amount: "99.99", currency: "USD" } do
@@ -214,7 +214,7 @@ end
 Document enums at definition:
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   enum :invoice_status,
     values: [:draft, :sent, :paid, :void],
     description: "Current state of an invoice",

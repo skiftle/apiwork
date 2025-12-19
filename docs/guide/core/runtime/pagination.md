@@ -13,7 +13,7 @@ Two strategies: offset-based (traditional page numbers) or cursor-based (for lar
 You set pagination at the API level:
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   adapter do
     pagination do
       strategy :offset        # or :cursor

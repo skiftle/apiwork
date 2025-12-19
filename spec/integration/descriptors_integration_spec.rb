@@ -195,7 +195,7 @@ RSpec.describe 'TypeSystem Integration', type: :request do
   describe 'API isolation' do
     before(:all) do
       # Create a second API for isolation testing
-      @second_api = Apiwork::API.draw '/api/v2' do
+      @second_api = Apiwork::API.define '/api/v2' do
         type :v2_specific_type do
           param :v2_field, type: :string
         end
@@ -244,7 +244,7 @@ RSpec.describe 'TypeSystem Integration', type: :request do
   describe 'Contract-scoped types' do
     before(:all) do
       # Create an API with contract-scoped types
-      @contract_api = Apiwork::API.draw '/api/contracts' do
+      @contract_api = Apiwork::API.define '/api/contracts' do
         # No resources, just contracts for testing
       end
 
@@ -396,7 +396,7 @@ RSpec.describe 'TypeSystem Integration', type: :request do
 
   describe 'Custom type and enum metadata in introspection' do
     before(:all) do
-      @metadata_api = Apiwork::API.draw '/api/metadata_test' do
+      @metadata_api = Apiwork::API.define '/api/metadata_test' do
         type :documented_type,
              description: 'A well-documented type',
              example: { value: 'example' },

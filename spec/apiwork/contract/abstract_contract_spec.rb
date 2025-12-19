@@ -33,7 +33,7 @@ RSpec.describe 'Abstract Contract' do
 
   describe 'BaseContract pattern' do
     before(:all) do
-      @test_api = Apiwork::API.draw '/test_namespace' do
+      @test_api = Apiwork::API.define '/test_namespace' do
         resources :posts
       end
 

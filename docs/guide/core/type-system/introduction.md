@@ -77,7 +77,7 @@ Types can live at two levels:
 
 **API-level** — available to all contracts:
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   type :address do
     param :street, type: :string
   end

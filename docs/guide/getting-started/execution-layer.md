@@ -81,7 +81,7 @@ and N+1 prevention.
 You configure runtime behaviour in your API definition:
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   adapter do
     pagination do
       strategy :offset        # or :cursor
@@ -163,7 +163,7 @@ meta](../core/contracts/actions.md#meta).
 The runtime respects the API's configured key format:
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   key_format :camel
 end
 ```

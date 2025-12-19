@@ -186,7 +186,7 @@ Concerns allow you to extract reusable routing patterns and apply them to multip
 ### Defining a Concern
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   concern :auditable do
     member do
       get :audit_log

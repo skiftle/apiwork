@@ -109,7 +109,7 @@ end
 Once you've defined your adapter, use it in your API definition:
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   adapter :myadapter do
     my_option 'custom_value'
   end

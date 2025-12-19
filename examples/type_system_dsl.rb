@@ -3,7 +3,7 @@
 # Example: Using the type system DSL to define API-global types and enums
 # These are registered as unprefixed (scope: nil) and available across all contracts in the API
 
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   # Define a global error type
   type :error do
     param :error, type: :string

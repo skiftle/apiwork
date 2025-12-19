@@ -13,7 +13,7 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
 
   describe 'API-level adapter configuration' do
     let(:config_test_api) do
-      Apiwork::API.draw '/api/config_test' do
+      Apiwork::API.define '/api/config_test' do
         key_format :camel
 
         adapter do
@@ -55,7 +55,7 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
 
   describe 'Schema-level adapter configuration override' do
     let(:schema_override_api) do
-      Apiwork::API.draw '/api/schema_override' do
+      Apiwork::API.define '/api/schema_override' do
         key_format :camel
 
         adapter do
@@ -107,7 +107,7 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
 
   describe 'Resolution chain: Schema -> API -> Adapter default' do
     let(:resolution_api) do
-      Apiwork::API.draw '/api/resolution' do
+      Apiwork::API.define '/api/resolution' do
         key_format :camel
 
         adapter do
@@ -169,7 +169,7 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
   describe 'Validation' do
     it 'validates key_format enum values' do
       expect do
-        Apiwork::API.draw '/api/invalid_transform' do
+        Apiwork::API.define '/api/invalid_transform' do
           key_format :invalid_strategy
         end
       end.to raise_error(Apiwork::ConfigurationError, /must be one of/)
@@ -177,7 +177,7 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
 
     it 'validates type for integer options' do
       expect do
-        Apiwork::API.draw '/api/invalid_type' do
+        Apiwork::API.define '/api/invalid_type' do
           adapter do
             pagination do
               default_size 'not_an_integer'
@@ -189,7 +189,7 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
 
     it 'raises for unknown options' do
       expect do
-        Apiwork::API.draw '/api/unknown_option' do
+        Apiwork::API.define '/api/unknown_option' do
           adapter do
             unknown_option 'value'
           end
@@ -200,7 +200,7 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
 
   describe 'API adapter method is both getter and DSL' do
     let(:dual_purpose_api) do
-      Apiwork::API.draw '/api/dual_purpose' do
+      Apiwork::API.define '/api/dual_purpose' do
         key_format :camel
 
         adapter do

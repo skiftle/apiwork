@@ -58,7 +58,7 @@ module Apiwork
 
             if regular_attrs.present?
               conditions, joins = build_where_conditions(regular_attrs, schema_class.model_class)
-              scope = with_joins_and_distinct(scope, joins) { |s| s.where(conditions.reduce(:and)) }
+              scope = with_joins_and_distinct(scope, joins) { |s| s.where(conditions.reduce(:and)) } if conditions.any?
             end
 
             scope = apply_not(scope, logical_ops[:_not]) if logical_ops.key?(:_not)
@@ -69,6 +69,8 @@ module Apiwork
           end
 
           def apply_array_filter(params)
+            return @relation if params.empty?
+
             individual_conditions = params.map do |filter_hash|
               conditions, _joins = build_where_conditions(filter_hash, schema_class.model_class)
               conditions.compact.reduce(:and) if conditions.any?

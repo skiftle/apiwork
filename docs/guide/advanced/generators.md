@@ -46,13 +46,13 @@ Creates an API definition:
 
 ```ruby
 # config/apis/api_v1.rb
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
 end
 ```
 
 ```ruby
 # config/apis/root.rb
-Apiwork::API.draw '/' do
+Apiwork::API.define '/' do
 end
 ```
 

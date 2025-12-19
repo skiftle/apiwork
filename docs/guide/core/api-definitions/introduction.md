@@ -7,7 +7,7 @@ order: 1
 The API definition describes the overall shape of your API — which resources exist, which actions they offer and how everything is organised. It also serves as the configuration point for that specific API. Here you decide the key format, which specifications should be generated, which adapter to use and any options that control how the API behaves. These settings are defined at the API level rather than globally. This is intentional: API versioning is common in Rails applications, and different versions may require different behaviour. By keeping the configuration inside each API definition, Apiwork allows every version to define its own rules without affecting the others.
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   resources :posts
   resources :comments
 end
@@ -23,7 +23,7 @@ The path you pass to `draw` determines two things:
 2. **Namespace** - where Apiwork looks for controllers and contracts
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   resources :posts
 end
 
@@ -40,7 +40,7 @@ The conversion is straightforward: `/api/v1` becomes `Api::V1`.
 For APIs without a prefix:
 
 ```ruby
-Apiwork::API.draw '/' do
+Apiwork::API.define '/' do
   resources :posts
 end
 
@@ -54,12 +54,12 @@ You can define multiple APIs, each completely independent:
 
 ```ruby
 # config/apis/v1.rb
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   resources :posts, only: [:index, :show]
 end
 
 # config/apis/v2.rb
-Apiwork::API.draw '/api/v2' do
+Apiwork::API.define '/api/v2' do
   resources :posts
   resources :articles
 end

@@ -13,7 +13,7 @@ RSpec.describe 'TypeSystem Metadata' do
 
   describe 'Type metadata' do
     it 'stores and serializes type with description' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         type :user_status, description: 'Current status of user account' do
           param :active, type: :boolean
         end
@@ -25,7 +25,7 @@ RSpec.describe 'TypeSystem Metadata' do
     end
 
     it 'stores and serializes type with example' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         type :address, example: { street: '123 Main St', city: 'NYC' } do
           param :street, type: :string
           param :city, type: :string
@@ -38,7 +38,7 @@ RSpec.describe 'TypeSystem Metadata' do
     end
 
     it 'stores and serializes type with format' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         type :email_field, format: 'email' do
           param :value, type: :string
         end
@@ -50,7 +50,7 @@ RSpec.describe 'TypeSystem Metadata' do
     end
 
     it 'stores and serializes type with deprecated: true' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         type :legacy_response, deprecated: true do
           param :old_field, type: :string
         end
@@ -62,7 +62,7 @@ RSpec.describe 'TypeSystem Metadata' do
     end
 
     it 'omits deprecated when false' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         type :current_response, deprecated: false do
           param :field, type: :string
         end
@@ -74,7 +74,7 @@ RSpec.describe 'TypeSystem Metadata' do
     end
 
     it 'stores and serializes type with all metadata fields' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         type :payment_info,
              description: 'Payment information structure',
              example: { amount: 100, currency: 'USD' },
@@ -96,7 +96,7 @@ RSpec.describe 'TypeSystem Metadata' do
     end
 
     it 'omits metadata fields when not set' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         type :simple_type do
           param :field, type: :string
         end
@@ -112,7 +112,7 @@ RSpec.describe 'TypeSystem Metadata' do
     end
 
     it 'omits deprecated: false (only includes when true)' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         type :normal_type, deprecated: false do
           param :field, type: :string
         end
@@ -125,7 +125,7 @@ RSpec.describe 'TypeSystem Metadata' do
     end
 
     it 'preserves empty string description' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         type :empty_desc_type, description: '' do
           param :field, type: :string
         end
@@ -141,7 +141,7 @@ RSpec.describe 'TypeSystem Metadata' do
 
   describe 'Enum metadata' do
     it 'stores and serializes enum with description' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         enum :role, values: %w[admin user guest], description: 'User role in the system'
       end
 
@@ -151,7 +151,7 @@ RSpec.describe 'TypeSystem Metadata' do
     end
 
     it 'stores and serializes enum with example' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         enum :priority, values: %i[low medium high], example: :medium
       end
 
@@ -161,7 +161,7 @@ RSpec.describe 'TypeSystem Metadata' do
     end
 
     it 'stores and serializes enum with deprecated: true' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         enum :old_status, values: %w[active inactive], deprecated: true
       end
 
@@ -171,7 +171,7 @@ RSpec.describe 'TypeSystem Metadata' do
     end
 
     it 'omits deprecated: false for enums' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         enum :current_status, values: %w[active inactive], deprecated: false
       end
 
@@ -182,7 +182,7 @@ RSpec.describe 'TypeSystem Metadata' do
     end
 
     it 'stores and serializes enum with all metadata fields' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         enum :color,
              values: %w[red green blue],
              description: 'Available color options',
@@ -201,7 +201,7 @@ RSpec.describe 'TypeSystem Metadata' do
     end
 
     it 'serializes enum as hash with values key' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         enum :simple_enum, values: %i[a b c]
       end
 
@@ -214,7 +214,7 @@ RSpec.describe 'TypeSystem Metadata' do
     end
 
     it 'omits metadata fields when not set' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         enum :minimal_enum, values: %i[x y z]
       end
 
@@ -231,7 +231,7 @@ RSpec.describe 'TypeSystem Metadata' do
     end
 
     it 'omits deprecated: false even when explicitly set' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         enum :normal_enum, values: %i[a b], deprecated: false
       end
 
@@ -242,7 +242,7 @@ RSpec.describe 'TypeSystem Metadata' do
     end
 
     it 'preserves empty string description' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         enum :empty_desc_enum, values: %i[a b], description: ''
       end
 
@@ -256,13 +256,13 @@ RSpec.describe 'TypeSystem Metadata' do
 
   describe 'Metadata isolation and scoping' do
     it 'keeps type metadata isolated between different APIs' do
-      api1 = Apiwork::API.draw '/api/v1' do
+      api1 = Apiwork::API.define '/api/v1' do
         type :shared_name, description: 'API v1 version' do
           param :field, type: :string
         end
       end
 
-      api2 = Apiwork::API.draw '/api/v2' do
+      api2 = Apiwork::API.define '/api/v2' do
         type :shared_name, description: 'API v2 version' do
           param :field, type: :integer
         end
@@ -280,11 +280,11 @@ RSpec.describe 'TypeSystem Metadata' do
     end
 
     it 'keeps enum metadata isolated between different APIs' do
-      api1 = Apiwork::API.draw '/api/v1' do
+      api1 = Apiwork::API.define '/api/v1' do
         enum :status, values: %w[active inactive], description: 'V1 status'
       end
 
-      api2 = Apiwork::API.draw '/api/v2' do
+      api2 = Apiwork::API.define '/api/v2' do
         enum :status, values: %w[pending approved], description: 'V2 status'
       end
 
@@ -303,7 +303,7 @@ RSpec.describe 'TypeSystem Metadata' do
     end
 
     it 'preserves metadata on contract-scoped types' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         # No resources, just for testing
       end
 
@@ -337,7 +337,7 @@ RSpec.describe 'TypeSystem Metadata' do
     end
 
     it 'preserves metadata on contract-scoped enums' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         # No resources, just for testing
       end
 
@@ -371,7 +371,7 @@ RSpec.describe 'TypeSystem Metadata' do
 
   describe 'Edge cases' do
     it 'handles example value that does not match type schema' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         type :user, example: 'not_a_hash' do
           param :name, type: :string
         end
@@ -384,7 +384,7 @@ RSpec.describe 'TypeSystem Metadata' do
     end
 
     it 'handles enum example that is not in values list' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         enum :status, values: %w[active inactive], example: 'pending'
       end
 
@@ -395,7 +395,7 @@ RSpec.describe 'TypeSystem Metadata' do
     end
 
     it 'handles format on non-string type gracefully' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         type :weird_format, format: 'email' do
           param :count, type: :integer
         end

@@ -54,10 +54,10 @@ onUnmounted(() => {
           <path d="m15 5 4 4" />
         </svg>
       </template>
-      <template #title>Draw your <span class="accent">API</span></template>
+      <template #title>Define your <span class="accent">API</span></template>
       <template #code>
         <CodeWindow>
-          <pre><code><span class="code-class">Apiwork</span><span class="code-punctuation">::</span><span class="code-class">API</span><span class="code-punctuation">.</span><span class="code-function">draw</span> <span class="code-string">'/api/v1'</span> <span class="code-keyword">do</span>
+          <pre><code><span class="code-class">Apiwork</span><span class="code-punctuation">::</span><span class="code-class">API</span><span class="code-punctuation">.</span><span class="code-function">define</span> <span class="code-string">'/api/v1'</span> <span class="code-keyword">do</span>
   <span class="code-function">key_format</span> <span class="code-symbol">:camel</span>
 
   <span class="code-function">resources</span> <span class="code-symbol">:invoices</span> <span class="code-keyword">do</span>
@@ -88,7 +88,7 @@ onUnmounted(() => {
         </svg>
       </template>
       <template #title
-        >Define your <span class="accent">contracts</span></template
+        >Shape your <span class="accent">contracts</span></template
       >
       <template #code>
         <CodeWindow>
@@ -224,7 +224,7 @@ onUnmounted(() => {
       <template #code>
         <CodeWindow>
           <pre><code><span class="code-punctuation">{</span>
-  <span class="code-property">"issues"</span><span class="code-punctuation">:</span> <span class="code-punctuation">[</span>
+  <span class="code-property">"errors"</span><span class="code-punctuation">:</span> <span class="code-punctuation">[</span>
     <span class="code-punctuation">{</span>
       <span class="code-property">"code"</span><span class="code-punctuation">:</span> <span class="code-string">"field_missing"</span><span class="code-punctuation">,</span>
       <span class="code-property">"detail"</span><span class="code-punctuation">:</span> <span class="code-string">"Field required"</span><span class="code-punctuation">,</span>
@@ -268,9 +268,7 @@ onUnmounted(() => {
           <line x1="12" y1="22.08" x2="12" y2="12" />
         </svg>
       </template>
-      <template #title
-        >Zero <span class="accent">drift</span></template
-      >
+      <template #title>Zero <span class="accent">drift</span></template>
       <template #code>
         <CodeWindow>
           <pre><code><span class="code-keyword">interface</span> <span class="code-class">Invoice</span> <span class="code-punctuation">{</span>

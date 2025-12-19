@@ -3,16 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe 'API TypeSystem Builder' do
-  before do
-    Apiwork.reset!
-  end
-
-  after do
-    Apiwork.reset!
-  end
-
   it 'allows defining types via descriptors block' do
-    api = Apiwork::API.draw '/api/test' do
+    api = Apiwork::API.define '/api/test' do
       type :error do
         param :error, type: :string
         param :code, type: :integer
@@ -32,7 +24,7 @@ RSpec.describe 'API TypeSystem Builder' do
   end
 
   it 'allows defining enums via descriptors block' do
-    api = Apiwork::API.draw '/api/test' do
+    api = Apiwork::API.define '/api/test' do
       enum :sort_direction, values: %i[asc desc]
     end
 
@@ -43,7 +35,7 @@ RSpec.describe 'API TypeSystem Builder' do
   end
 
   it 'does NOT auto-generate enum filter types for enums without filterable schema attribute' do
-    api = Apiwork::API.draw '/api/test' do
+    api = Apiwork::API.define '/api/test' do
       enum :status, values: %i[active inactive pending]
     end
 
@@ -55,7 +47,7 @@ RSpec.describe 'API TypeSystem Builder' do
   end
 
   it 'registers descriptors as unprefixed (API-global)' do
-    api = Apiwork::API.draw '/api/test' do
+    api = Apiwork::API.define '/api/test' do
       type :global_type do
         param :value, type: :string
       end
@@ -69,7 +61,7 @@ RSpec.describe 'API TypeSystem Builder' do
   end
 
   it 'allows multiple descriptors blocks' do
-    api = Apiwork::API.draw '/api/test' do
+    api = Apiwork::API.define '/api/test' do
       type :error do
         param :message, type: :string
       end
@@ -86,7 +78,7 @@ RSpec.describe 'API TypeSystem Builder' do
 
   describe 'Metadata support' do
     it 'allows defining type with description' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         type :documented_type, description: 'A type with description' do
           param :field, type: :string
         end
@@ -98,7 +90,7 @@ RSpec.describe 'API TypeSystem Builder' do
     end
 
     it 'allows defining type with example' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         type :example_type, example: { field: 'value' } do
           param :field, type: :string
         end
@@ -110,7 +102,7 @@ RSpec.describe 'API TypeSystem Builder' do
     end
 
     it 'allows defining type with format' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         type :formatted_type, format: 'email' do
           param :email, type: :string
         end
@@ -122,7 +114,7 @@ RSpec.describe 'API TypeSystem Builder' do
     end
 
     it 'allows defining type with deprecated: true' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         type :legacy_type, deprecated: true do
           param :old_field, type: :string
         end
@@ -134,7 +126,7 @@ RSpec.describe 'API TypeSystem Builder' do
     end
 
     it 'allows defining type with all metadata fields' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         type :full_metadata_type,
              description: 'Comprehensive metadata',
              example: { data: 'example' },
@@ -155,7 +147,7 @@ RSpec.describe 'API TypeSystem Builder' do
     end
 
     it 'allows defining enum with description' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         enum :documented_enum, values: %i[a b c], description: 'An enum with description'
       end
 
@@ -165,7 +157,7 @@ RSpec.describe 'API TypeSystem Builder' do
     end
 
     it 'allows defining enum with example' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         enum :example_enum, values: %i[red green blue], example: :red
       end
 
@@ -175,7 +167,7 @@ RSpec.describe 'API TypeSystem Builder' do
     end
 
     it 'allows defining enum with deprecated: true' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         enum :legacy_enum, values: %i[old new], deprecated: true
       end
 
@@ -185,7 +177,7 @@ RSpec.describe 'API TypeSystem Builder' do
     end
 
     it 'allows defining enum with all metadata fields' do
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         enum :full_metadata_enum,
              values: %w[option1 option2],
              description: 'Complete enum metadata',
@@ -205,7 +197,7 @@ RSpec.describe 'API TypeSystem Builder' do
 
     it 'passes metadata through to Registry' do
       # This test verifies the integration between Builder and Registry
-      api = Apiwork::API.draw '/api/test' do
+      api = Apiwork::API.define '/api/test' do
         type :chained_type, description: 'Metadata flows through' do
           param :value, type: :string
         end

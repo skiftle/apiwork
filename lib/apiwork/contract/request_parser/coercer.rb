@@ -13,6 +13,7 @@ module Apiwork
 
           float: lambda { |value|
             return value if value.is_a?(Float) || value.is_a?(Integer)
+            return nil if value.is_a?(String) && value.blank?
 
             Float(value) if value.is_a?(String)
           },

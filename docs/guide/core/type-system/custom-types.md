@@ -9,7 +9,7 @@ Define reusable object structures once, use them everywhere.
 ## Defining a Type
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   type :address do
     param :street, type: :string
     param :city, type: :string

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Apiwork::API.draw '/funny_snake' do
+Apiwork::API.define '/funny_snake' do
   key_format :camel
 
   resources :invoices

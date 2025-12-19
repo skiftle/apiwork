@@ -1,4 +1,4 @@
 # frozen_string_literal: true
 
-Apiwork::API.draw '<%= api_mount_path %>' do
+Apiwork::API.define '<%= api_mount_path %>' do
 end

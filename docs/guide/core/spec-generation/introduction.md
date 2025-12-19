@@ -19,7 +19,7 @@ Three formats out of the box:
 Enable whichever formats you need in your API definition:
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   spec :openapi
   spec :typescript
   spec :zod

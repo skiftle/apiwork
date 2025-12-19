@@ -11,7 +11,7 @@ RSpec.describe 'API Concerns', type: :integration do
   end
 
   it 'applies member actions from concern' do
-    api = Apiwork::API.draw '/api/concerns_test' do
+    api = Apiwork::API.define '/api/concerns_test' do
       concern :auditable do
         member do
           get :audit_log
@@ -27,7 +27,7 @@ RSpec.describe 'API Concerns', type: :integration do
   end
 
   it 'applies collection actions from concern' do
-    api = Apiwork::API.draw '/api/concerns_test2' do
+    api = Apiwork::API.define '/api/concerns_test2' do
       concern :searchable do
         collection do
           get :search
@@ -43,7 +43,7 @@ RSpec.describe 'API Concerns', type: :integration do
   end
 
   it 'applies multiple concerns' do
-    api = Apiwork::API.draw '/api/concerns_test3' do
+    api = Apiwork::API.define '/api/concerns_test3' do
       concern :auditable do
         member do
           get :audit_log
@@ -66,7 +66,7 @@ RSpec.describe 'API Concerns', type: :integration do
 
   it 'raises error for unknown concern' do
     expect do
-      Apiwork::API.draw '/api/concerns_error' do
+      Apiwork::API.define '/api/concerns_error' do
         resources :posts, concerns: [:unknown]
       end
     end.to raise_error(Apiwork::ConfigurationError, /No concern named :unknown/)

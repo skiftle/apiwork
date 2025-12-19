@@ -11,7 +11,7 @@ Enums restrict a value to a predefined set.
 Define enums at the API level to share across contracts:
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   enum :status, values: %w[draft published archived]
 
   resources :posts

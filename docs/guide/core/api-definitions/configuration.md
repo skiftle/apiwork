@@ -11,7 +11,7 @@ API-level configuration applies to all resources within the API.
 Metadata for documentation and spec generation:
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   info do
     title 'My API'
     version '1.0.0'
@@ -55,7 +55,7 @@ end
 Declare which errors all endpoints can raise:
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   raises :bad_request, :unauthorized, :forbidden, :not_found, :internal_server_error
 end
 ```
@@ -67,7 +67,7 @@ These appear in generated OpenAPI specs as possible responses for all endpoints.
 Control how JSON keys are transformed:
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   key_format :camel
 end
 ```
@@ -149,7 +149,7 @@ For more advanced customization, consider [creating a custom adapter](../../adva
 Configure the built-in adapter:
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   adapter do
     pagination do
       default_size 20
@@ -166,7 +166,7 @@ end
 Enable generated spec endpoints:
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   spec :openapi
   spec :zod
   spec :typescript
@@ -190,7 +190,7 @@ end
 Define types available to all contracts in this API:
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   type :address do
     param :street, type: :string
     param :city, type: :string
@@ -208,7 +208,7 @@ end
 Apply options to multiple resources:
 
 ```ruby
-Apiwork::API.draw '/api/v1' do
+Apiwork::API.define '/api/v1' do
   with_options only: [:index, :show] do
     resources :posts
     resources :comments

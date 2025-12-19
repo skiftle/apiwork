@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Apiwork::API.draw '/eager_lion' do
+Apiwork::API.define '/eager_lion' do
   key_format :camel
 
   resources :invoices do

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Apiwork::API.draw '/wise_tiger' do
+Apiwork::API.define '/wise_tiger' do
   key_format :camel
 
   info do

@@ -8,7 +8,7 @@ module TestApiHelper
   end
 
   def self.create_test_api
-    Apiwork::API.draw TEST_API_PATH do
+    Apiwork::API.define TEST_API_PATH do
       resources :tests
     end
   end
