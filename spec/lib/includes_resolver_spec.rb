@@ -4,7 +4,6 @@ require 'rails_helper'
 
 RSpec.describe Apiwork::Adapter::Apiwork::IncludesResolver do
   before do
-    Apiwork.reset!
     load File.expand_path('../dummy/config/apis/v1.rb', __dir__)
   end
 

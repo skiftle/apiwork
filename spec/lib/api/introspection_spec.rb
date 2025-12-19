@@ -4,8 +4,6 @@ require 'rails_helper'
 
 RSpec.describe 'API Introspection' do
   before do
-    Apiwork.reset!
-
     # Load API first so Contracts can find their api_class
     load File.expand_path('../../dummy/config/apis/v1.rb', __dir__)
 

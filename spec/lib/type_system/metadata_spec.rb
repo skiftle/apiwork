@@ -3,14 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'TypeSystem Metadata' do
-  before do
-    Apiwork.reset!
-  end
-
-  after do
-    Apiwork.reset!
-  end
-
   describe 'Type metadata' do
     it 'stores and serializes type with description' do
       api = Apiwork::API.define '/api/test' do
