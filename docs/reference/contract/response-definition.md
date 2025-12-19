@@ -10,17 +10,9 @@ next: false
 
 ## Instance Methods
 
-### #action_name()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L6)
-
-Returns the value of attribute action_name.
-
----
-
 ### #body(&block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L55)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L57)
 
 Defines the response body for this response.
 
@@ -45,25 +37,9 @@ end
 
 ---
 
-### #body_definition()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L6)
-
-Returns the value of attribute body_definition.
-
----
-
-### #contract_class()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L6)
-
-Returns the value of attribute contract_class.
-
----
-
 ### #no_content!()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L35)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L37)
 
 Declares this action returns 204 No Content.
 

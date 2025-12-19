@@ -19,6 +19,7 @@ module Apiwork
       class_attribute :_deprecated, default: false
       class_attribute :_example, default: nil
 
+      # @api private
       attr_reader :context,
                   :include,
                   :object
@@ -30,8 +31,10 @@ module Apiwork
       end
 
       class << self
+        # @api private
         attr_accessor :_model_class
 
+        # @api private
         attr_writer :_auto_detection_complete,
                     :type
 
@@ -70,6 +73,7 @@ module Apiwork
           end
         end
 
+        # @api private
         def model_class
           ensure_auto_detection_complete
           _model_class
@@ -92,6 +96,7 @@ module Apiwork
           self._root = { singular:, plural: }
         end
 
+        # @api private
         def api_class
           return nil unless name
 
@@ -126,6 +131,7 @@ module Apiwork
           builder.instance_eval(&block)
         end
 
+        # @api private
         def resolve_option(name, subkey = nil)
           adapter_class = api_class&.adapter&.class || Adapter::Apiwork
           opt = adapter_class.options[name]
@@ -314,25 +320,30 @@ module Apiwork
           self
         end
 
+        # @api private
         def register_variant(tag:, schema:, sti_type:)
           self.variants = variants.merge(tag => { schema: schema, sti_type: sti_type })
           self._abstract = true
         end
 
+        # @api private
         def sti_base?
           return false if sti_variant?
 
           discriminator_column.present? && variants.any?
         end
 
+        # @api private
         def sti_variant?
           variant_tag.present?
         end
 
+        # @api private
         def needs_discriminator_transform?
           variants.any? { |tag, data| tag.to_s != data[:sti_type] }
         end
 
+        # @api private
         def discriminator_sti_mapping
           variants.transform_values { |data| data[:sti_type] }
         end
@@ -370,6 +381,7 @@ module Apiwork
           self._deprecated = value
         end
 
+        # @api private
         def deprecated?
           _deprecated
         end
@@ -391,10 +403,12 @@ module Apiwork
           self._example = value
         end
 
+        # @api private
         def type
           @type || model_class&.model_name&.element
         end
 
+        # @api private
         def root_key
           if _root
             RootKey.new(_root[:singular], _root[:plural])

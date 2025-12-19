@@ -10,6 +10,7 @@ module Apiwork
       class_attribute :_identifier
       class_attribute :_schema_class
 
+      # @api private
       attr_reader :action_name,
                   :body,
                   :issues,
@@ -100,6 +101,7 @@ module Apiwork
                 'Contract and Schema must follow convention: XContract ↔ XSchema'
         end
 
+        # @api private
         def find_contract_for_schema(schema_class)
           return nil unless schema_class
 
@@ -109,6 +111,7 @@ module Apiwork
           nil
         end
 
+        # @api private
         def register_sti_variants(*variant_schema_classes)
           variant_schema_classes.each do |variant_class|
             next if variant_class.is_a?(Class) && variant_class < Apiwork::Schema::Base
@@ -119,19 +122,23 @@ module Apiwork
           end
         end
 
+        # @api private
         def schema_class
           _schema_class
         end
 
+        # @api private
         def schema?
           _schema_class.present?
         end
 
+        # @api private
         def reset_build_state!
           self.action_definitions = {}
           self.imports = {}
         end
 
+        # @api private
         def scope_prefix
           return _identifier if _identifier
           return schema_class.root_key.singular if schema_class
@@ -317,6 +324,7 @@ module Apiwork
           action_definitions[action_name] = action_definition
         end
 
+        # @api private
         def resolve_custom_type(type_name, visited: Set.new)
           raise ConfigurationError, "Circular import detected while resolving :#{type_name}" if visited.include?(self)
 
@@ -326,6 +334,7 @@ module Apiwork
           resolve_imported_type(type_name, visited: visited.dup.add(self))
         end
 
+        # @api private
         def action_definition(action_name)
           api_class&.ensure_contract_built!(self)
 
@@ -333,14 +342,17 @@ module Apiwork
           action_definitions[action_name]
         end
 
+        # @api private
         def introspect(action: nil, locale: nil)
           Apiwork::Introspection.contract(self, action:, locale:)
         end
 
+        # @api private
         def as_json
           introspect
         end
 
+        # @api private
         def api_class
           return @api_class if instance_variable_defined?(:@api_class)
           return nil unless name
@@ -351,14 +363,17 @@ module Apiwork
           Apiwork::API.find("/#{namespace_parts.map(&:underscore).join('/')}")
         end
 
+        # @api private
         def parse_response(body, action)
           ResponseParser.new(self, action).parse(body)
         end
 
+        # @api private
         def resolve_type(name)
           resolve_custom_type(name)
         end
 
+        # @api private
         def resolve_enum(enum_name, visited: Set.new)
           return nil if visited.include?(self)
 
@@ -368,10 +383,12 @@ module Apiwork
           resolve_imported_enum(enum_name, visited: visited.dup.add(self))
         end
 
+        # @api private
         def scoped_name(name)
           api_class.scoped_name(self, name)
         end
 
+        # @api private
         def define_action(action_name, &block)
           action_name = action_name.to_sym
 

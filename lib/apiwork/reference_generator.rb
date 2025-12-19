@@ -70,6 +70,7 @@ module Apiwork
       obj.meths(visibility: :public, scope:)
          .reject { |m| m.name.to_s.start_with?('_') }
          .reject { |m| m.docstring.empty? }
+         .reject { |m| m.docstring.has_tag?(:api) && m.docstring.tag(:api).text == 'private' }
          .sort_by(&:name)
          .map { |m| serialize_method(m) }
     end

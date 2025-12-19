@@ -12,7 +12,7 @@ next: false
 
 ### .adapter(&block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L120)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L125)
 
 Configures adapter options for this schema.
 
@@ -36,7 +36,7 @@ end
 
 ### .attribute(name, **options)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L179)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L185)
 
 Defines an attribute for serialization and API contracts.
 
@@ -73,7 +73,7 @@ attribute :email, writable: { on: [:create] }
 
 ### .belongs_to(name, **options)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L257)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L263)
 
 Defines a belongs_to association for serialization and contracts.
 
@@ -102,7 +102,7 @@ belongs_to :category, filterable: true
 
 ### .deprecated(value = true)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L369)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L380)
 
 Marks this schema as deprecated.
 
@@ -127,7 +127,7 @@ end
 
 ### .description(value = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L352)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L363)
 
 Sets or gets a description for this schema.
 
@@ -156,7 +156,7 @@ end
 
 ### .discriminator(name = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L282)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L288)
 
 Enables STI (Single Table Inheritance) polymorphism for this schema.
 
@@ -192,7 +192,7 @@ end
 
 ### .example(value = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L388)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L400)
 
 Sets or gets an example value for this schema.
 
@@ -220,7 +220,7 @@ end
 
 ### .has_many(name, **options)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L238)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L244)
 
 Defines a has_many association for serialization and contracts.
 
@@ -255,7 +255,7 @@ has_many :tags, include: :always
 
 ### .has_one(name, **options)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L215)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L221)
 
 Defines a has_one association for serialization and contracts.
 
@@ -297,7 +297,7 @@ has_one :imageable, polymorphic: [:product, :user]
 
 ### .model(value = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L60)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L63)
 
 Sets or gets the model class for this schema.
 
@@ -334,7 +334,7 @@ end
 
 ### .root(singular, plural = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L89)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L93)
 
 Declares the JSON root key for this schema.
 
@@ -357,23 +357,9 @@ end
 
 ---
 
-### .type=(value)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L35)
-
-Sets the attribute type
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `value` | `` | the value to set the attribute type to. |
-
----
-
 ### .variant(as: = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L305)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L311)
 
 Registers this schema as an STI variant of its parent.
 
@@ -400,31 +386,5 @@ class CarSchema < VehicleSchema
   attribute :doors
 end
 ```
-
----
-
-## Instance Methods
-
-### #context()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L22)
-
-Returns the value of attribute context.
-
----
-
-### #include()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L22)
-
-Returns the value of attribute include.
-
----
-
-### #object()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L22)
-
-Returns the value of attribute object.
 
 ---

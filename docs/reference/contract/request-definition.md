@@ -10,17 +10,9 @@ next: false
 
 ## Instance Methods
 
-### #action_name()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_definition.rb#L6)
-
-Returns the value of attribute action_name.
-
----
-
 ### #body(&block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_definition.rb#L61)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_definition.rb#L62)
 
 Defines the request body for this request.
 
@@ -44,25 +36,9 @@ end
 
 ---
 
-### #body_definition()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_definition.rb#L6)
-
-Returns the value of attribute body_definition.
-
----
-
-### #contract_class()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_definition.rb#L6)
-
-Returns the value of attribute contract_class.
-
----
-
 ### #query(&block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_definition.rb#L34)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_definition.rb#L35)
 
 Defines query parameters for this request.
 
@@ -84,13 +60,5 @@ request do
   end
 end
 ```
-
----
-
-### #query_definition()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_definition.rb#L6)
-
-Returns the value of attribute query_definition.
 
 ---

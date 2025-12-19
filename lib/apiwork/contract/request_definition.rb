@@ -3,6 +3,7 @@
 module Apiwork
   module Contract
     class RequestDefinition
+      # @api private
       attr_reader :action_name,
                   :body_definition,
                   :contract_class,

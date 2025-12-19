@@ -12,7 +12,7 @@ next: false
 
 ### #contact(&block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L46)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L47)
 
 Defines contact information.
 
@@ -32,7 +32,7 @@ end
 
 ### #deprecated(value = true)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L112)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L113)
 
 Marks the entire API as deprecated.
 
@@ -46,7 +46,7 @@ Marks the entire API as deprecated.
 
 ### #description(text)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L98)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L99)
 
 Sets a detailed API description.
 
@@ -60,17 +60,9 @@ Supports Markdown formatting.
 
 ---
 
-### #info()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L7)
-
-Returns the value of attribute info.
-
----
-
 ### #license(&block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L63)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L64)
 
 Defines license information.
 
@@ -89,7 +81,7 @@ end
 
 ### #server(url:, description: = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L81)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L82)
 
 Adds a server URL.
 
@@ -115,7 +107,7 @@ end
 
 ### #summary(text)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L89)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L90)
 
 Sets a short API summary.
 
@@ -129,7 +121,7 @@ Sets a short API summary.
 
 ### #tags(*tags_list)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L105)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L106)
 
 Sets default tags for the API.
 
@@ -143,7 +135,7 @@ Sets default tags for the API.
 
 ### #terms_of_service(url)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L30)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L31)
 
 Sets the terms of service URL.
 
@@ -157,7 +149,7 @@ Sets the terms of service URL.
 
 ### #title(text)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L16)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L17)
 
 Sets the API title.
 
@@ -171,7 +163,7 @@ Sets the API title.
 
 ### #version(text)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L23)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/info/builder.rb#L24)
 
 Sets the API version.
 

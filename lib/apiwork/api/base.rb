@@ -4,6 +4,7 @@ module Apiwork
   module API
     class Base
       class << self
+        # @api private
         attr_reader :adapter_config,
                     :built_contracts,
                     :metadata,
@@ -54,10 +55,12 @@ module Apiwork
           @key_format = format
         end
 
+        # @api private
         def transform_request(hash)
           transform_request_keys(hash)
         end
 
+        # @api private
         def transform_response(hash)
           transform_response_keys(hash)
         end
@@ -101,14 +104,17 @@ module Apiwork
           builder.instance_eval(&block)
         end
 
+        # @api private
         def spec_path(type)
           @spec_configs&.dig(type, :path) || "/.spec/#{type}"
         end
 
+        # @api private
         def spec_config(type)
           @spec_configs&.[](type) || {}
         end
 
+        # @api private
         def specs?
           @specs&.any?
         end
@@ -256,14 +262,17 @@ module Apiwork
           type_system.register_union(name, union_builder.serialize, scope:)
         end
 
+        # @api private
         def resolve_type(name, scope: nil)
           type_system.resolve_type(name, scope:)
         end
 
+        # @api private
         def resolve_enum(name, scope:)
           type_system.resolve_enum(name, scope:)
         end
 
+        # @api private
         def scoped_name(scope, name)
           type_system.scoped_name(scope, name)
         end
@@ -381,20 +390,24 @@ module Apiwork
           @recorder.with_options(options, &block)
         end
 
+        # @api private
         def introspect(locale: nil)
           ensure_all_contracts_built!
           @introspect_cache ||= {}
           @introspect_cache[locale] ||= Apiwork::Introspection.api(self, locale:)
         end
 
+        # @api private
         def as_json
           introspect
         end
 
+        # @api private
         def reset_contracts!
           @built_contracts = Set.new
         end
 
+        # @api private
         def ensure_contract_built!(contract_class)
           return if built_contracts.include?(contract_class)
 
@@ -411,6 +424,7 @@ module Apiwork
           adapter.register_contract_types(type_registrar, schema_class, actions: actions)
         end
 
+        # @api private
         def ensure_all_contracts_built!
           return unless @metadata
 

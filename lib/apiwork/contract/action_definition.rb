@@ -3,6 +3,7 @@
 module Apiwork
   module Contract
     class ActionDefinition
+      # @api private
       attr_reader :action_name,
                   :contract_class,
                   :request_definition,
@@ -23,18 +24,22 @@ module Apiwork
         @operation_id = nil
       end
 
+      # @api private
       def resets_request?
         @reset_request
       end
 
+      # @api private
       def resets_response?
         @reset_response
       end
 
+      # @api private
       def introspect(locale: nil)
         Apiwork::Introspection.action_definition(self, locale:)
       end
 
+      # @api private
       def as_json
         introspect
       end
@@ -203,6 +208,7 @@ module Apiwork
         @response_definition
       end
 
+      # @api private
       def serialize_data(data, context: {}, include: nil)
         needs_serialization = if data.is_a?(Hash)
                                 false

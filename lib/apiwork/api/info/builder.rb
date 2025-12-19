@@ -4,6 +4,7 @@ module Apiwork
   module API
     module Info
       class Builder
+        # @api private
         attr_reader :info
 
         def initialize
