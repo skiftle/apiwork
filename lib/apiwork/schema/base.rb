@@ -10,11 +10,11 @@ module Apiwork
       class_attribute :association_definitions, default: {}
       class_attribute :_root, default: nil
       class_attribute :_adapter_config, default: {}
-      class_attribute :_discriminator_column, default: nil
-      class_attribute :_discriminator_name, default: nil
-      class_attribute :_variant_tag, default: nil
+      class_attribute :discriminator_column, default: nil
+      class_attribute :discriminator_name, default: nil
+      class_attribute :variant_tag, default: nil
       class_attribute :_sti_type, default: nil
-      class_attribute :_variants, default: {}
+      class_attribute :variants, default: {}
       class_attribute :_description, default: nil
       class_attribute :_deprecated, default: false
       class_attribute :_example, default: nil
@@ -282,8 +282,8 @@ module Apiwork
         def discriminator(name = nil)
           ensure_auto_detection_complete
           column = model_class.inheritance_column.to_sym
-          self._discriminator_column = column
-          self._discriminator_name = name || column
+          self.discriminator_column = column
+          self.discriminator_name = name || column
           self
         end
 
@@ -304,45 +304,29 @@ module Apiwork
         #   end
         def variant(as: nil)
           ensure_auto_detection_complete
-          variant_tag = as || derive_variant_tag
+          tag = as || derive_variant_tag
 
-          self._variant_tag = variant_tag.to_sym
+          self.variant_tag = tag.to_sym
           self._sti_type = model_class.sti_name
 
-          superclass.register_variant(tag: _variant_tag, schema: self, sti_type: _sti_type) if superclass.respond_to?(:register_variant)
+          superclass.register_variant(tag: variant_tag, schema: self, sti_type: _sti_type) if superclass.respond_to?(:register_variant)
 
           self
         end
 
         def register_variant(tag:, schema:, sti_type:)
-          self._variants = _variants.merge(tag => { schema: schema, sti_type: sti_type })
+          self.variants = variants.merge(tag => { schema: schema, sti_type: sti_type })
           self._abstract = true
-        end
-
-        def discriminator_column
-          _discriminator_column
-        end
-
-        def discriminator_name
-          _discriminator_name
-        end
-
-        def variant_tag
-          _variant_tag
-        end
-
-        def variants
-          _variants
         end
 
         def sti_base?
           return false if sti_variant?
 
-          _discriminator_column.present? && _variants.any?
+          discriminator_column.present? && variants.any?
         end
 
         def sti_variant?
-          _variant_tag.present?
+          variant_tag.present?
         end
 
         def needs_discriminator_transform?
