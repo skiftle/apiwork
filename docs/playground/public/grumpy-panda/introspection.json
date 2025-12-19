@@ -101,7 +101,6 @@
       }
     }
   },
-  "enums": {},
   "error_codes": {
     "unprocessable_entity": {
       "status": 422,

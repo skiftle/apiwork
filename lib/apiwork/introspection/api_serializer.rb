@@ -15,10 +15,10 @@ module Apiwork
         {
           path: @api_class.mount_path,
           info: serialize_info.presence,
-          types: TypeSerializer.new(@api_class).serialize_types,
-          enums: TypeSerializer.new(@api_class).serialize_enums,
+          types: TypeSerializer.new(@api_class).serialize_types.presence,
+          enums: TypeSerializer.new(@api_class).serialize_enums.presence,
           raises: @api_class.metadata.raises.presence,
-          error_codes: serialize_error_codes(collect_all_error_codes(resources)),
+          error_codes: serialize_error_codes(collect_all_error_codes(resources)).presence,
           resources:
         }.compact
       end

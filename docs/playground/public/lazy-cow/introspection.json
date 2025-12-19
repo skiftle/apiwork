@@ -20,8 +20,6 @@
       }
     }
   },
-  "enums": {},
-  "error_codes": {},
   "resources": {
     "status": {
       "path": "status",
