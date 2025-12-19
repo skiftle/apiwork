@@ -96,15 +96,9 @@ RSpec.describe 'OpenAPI Generation', type: :integration do
       expect(posts_index[:operationId]).to be_present
     end
 
-    it 'allows summary to be optional' do
+    it 'includes tags when explicitly set' do
       posts_index = spec[:paths]['posts/']['get']
-      # Summary is optional - only present if set in Contract or i18n
-      expect(posts_index[:summary]).to be_nil.or be_a(String)
-    end
-
-    it 'includes tags for resource grouping' do
-      posts_index = spec[:paths]['posts/']['get']
-      expect(posts_index[:tags]).to be_an(Array)
+      expect(posts_index[:tags]).to be_nil.or be_an(Array)
     end
   end
 

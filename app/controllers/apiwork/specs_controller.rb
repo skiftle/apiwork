@@ -62,7 +62,6 @@ module Apiwork
       raise "No API found for path: #{request.path}"
     end
 
-    # Render spec with appropriate content type
     def render_spec(spec, content_type)
       if content_type.start_with?('application/json')
         render json: spec
@@ -71,15 +70,13 @@ module Apiwork
       end
     end
 
-    # Handle generation errors
     def handle_generation_error(error)
       if ::Rails.env.production?
-        # Log error but don't expose details in production
+
         ::Rails.logger.error("Spec generation failed: #{error.message}")
         ::Rails.logger.error(error.backtrace.join("\n"))
         render json: { error: 'Spec generation failed' }, status: :internal_server_error
       else
-        # Show details in development for debugging
         render json: {
           error: error.message,
           backtrace: error.backtrace.take(10)

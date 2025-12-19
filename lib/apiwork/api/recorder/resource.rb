@@ -68,18 +68,10 @@ module Apiwork
           return unless resource
 
           resource[:metadata] = {
-            summary: @pending_metadata[:summary] || default_summary(name),
-            description: @pending_metadata[:description] || default_description(name),
-            tags: @pending_metadata[:tags] || [name.to_s.camelize]
-          }
-        end
-
-        def default_summary(name)
-          name.to_s.titleize
-        end
-
-        def default_description(name)
-          "Operations for managing #{name}."
+            summary: @pending_metadata[:summary],
+            description: @pending_metadata[:description],
+            tags: @pending_metadata[:tags]
+          }.compact
         end
 
         def apply_crud_action_metadata(name)
