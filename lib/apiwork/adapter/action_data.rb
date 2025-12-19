@@ -2,6 +2,7 @@
 
 module Apiwork
   module Adapter
+    # @api private
     class ActionData
       attr_reader :name,
                   :method,

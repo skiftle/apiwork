@@ -3,6 +3,7 @@
 module Apiwork
   module Contract
     class RequestParser
+      # @api private
       class Deserialization
         class << self
           def deserialize_hash(hash, definition)

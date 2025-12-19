@@ -3,6 +3,7 @@
 module Apiwork
   module Contract
     class RequestParser
+      # @api private
       class Coercion
         class << self
           def coerce_hash(hash, definition, type_cache: nil)

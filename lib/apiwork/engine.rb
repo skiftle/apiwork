@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Apiwork
+  # @api private
   class Engine < ::Rails::Engine
     isolate_namespace Apiwork
     engine_name 'apiwork'

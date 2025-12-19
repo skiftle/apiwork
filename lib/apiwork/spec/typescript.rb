@@ -2,6 +2,7 @@
 
 module Apiwork
   module Spec
+    # @api private
     class Typescript < Base
       identifier :typescript
       content_type 'text/plain; charset=utf-8'

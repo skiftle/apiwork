@@ -2,6 +2,7 @@
 
 module Apiwork
   module API
+    # @api private
     class Metadata
       attr_reader :namespaces,
                   :path,

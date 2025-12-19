@@ -2,6 +2,7 @@
 
 module Apiwork
   module Contract
+    # @api private
     class ValidationResult
       attr_reader :issues,
                   :value,

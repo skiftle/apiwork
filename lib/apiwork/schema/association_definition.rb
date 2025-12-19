@@ -2,6 +2,7 @@
 
 module Apiwork
   module Schema
+    # @api private
     class AssociationDefinition
       attr_reader :name,
                   :type,

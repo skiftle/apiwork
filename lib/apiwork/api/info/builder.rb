@@ -3,6 +3,7 @@
 module Apiwork
   module API
     module Info
+      # @api private
       class Builder
         # @api private
         attr_reader :info

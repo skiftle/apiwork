@@ -2,6 +2,7 @@
 
 module Apiwork
   module Controller
+    # @api private
     module Serialization
       extend ActiveSupport::Concern
 

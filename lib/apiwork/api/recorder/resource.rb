@@ -3,6 +3,7 @@
 module Apiwork
   module API
     class Recorder
+      # @api private
       module Resource
         # Defines a RESTful resource with standard CRUD actions.
         #

@@ -5,6 +5,7 @@ module Apiwork
     class Apiwork < Base
       class CollectionLoader
         class Filter
+          # @api private
           class Builder
             attr_reader :allowed_types,
                         :column,

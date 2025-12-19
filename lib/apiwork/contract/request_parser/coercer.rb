@@ -3,6 +3,7 @@
 module Apiwork
   module Contract
     class RequestParser
+      # @api private
       class Coercer
         COERCERS = {
           integer: lambda { |value|

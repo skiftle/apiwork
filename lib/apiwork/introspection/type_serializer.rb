@@ -2,6 +2,7 @@
 
 module Apiwork
   module Introspection
+    # @api private
     class TypeSerializer
       def initialize(api_class)
         @api_class = api_class

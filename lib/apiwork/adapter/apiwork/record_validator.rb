@@ -3,6 +3,7 @@
 module Apiwork
   module Adapter
     class Apiwork < Base
+      # @api private
       class RecordValidator
         attr_reader :schema_class
 

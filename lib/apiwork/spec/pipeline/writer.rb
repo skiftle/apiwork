@@ -6,6 +6,7 @@ require 'tempfile'
 module Apiwork
   module Spec
     class Pipeline
+      # @api private
       class Writer
         class << self
           def write(content:, output:, extension:, api_path: nil, identifier: nil)

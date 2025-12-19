@@ -3,6 +3,7 @@
 module Apiwork
   module API
     module Info
+      # @api private
       class LicenseBuilder
         attr_reader :data
 

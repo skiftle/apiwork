@@ -2,6 +2,7 @@
 
 module Apiwork
   module Introspection
+    # @api private
     class DefinitionSerializer
       def initialize(definition, visited: Set.new)
         @definition = definition

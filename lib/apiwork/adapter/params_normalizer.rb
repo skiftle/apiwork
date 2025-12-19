@@ -2,6 +2,7 @@
 
 module Apiwork
   module Adapter
+    # @api private
     class ParamsNormalizer
       NUMERIC_KEY_PATTERN = /^\d+$/
 

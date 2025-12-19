@@ -3,6 +3,7 @@
 require 'concurrent/map'
 
 module Apiwork
+  # @api private
   class Store
     def initialize
       @items = Concurrent::Map.new

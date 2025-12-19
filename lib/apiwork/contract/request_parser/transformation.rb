@@ -3,6 +3,7 @@
 module Apiwork
   module Contract
     class RequestParser
+      # @api private
       class Transformation
         class << self
           def apply(params, definition)

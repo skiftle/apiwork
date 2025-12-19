@@ -2,6 +2,7 @@
 
 module Apiwork
   module Spec
+    # @api private
     class ZodMapper
       TYPE_MAP = {
         string: 'z.string()',

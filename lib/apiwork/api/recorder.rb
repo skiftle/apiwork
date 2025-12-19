@@ -2,6 +2,7 @@
 
 module Apiwork
   module API
+    # @api private
     class Recorder
       include Recorder::Resource     # Handles resources/resource calls
       include Recorder::Action       # Handles member/collection actions

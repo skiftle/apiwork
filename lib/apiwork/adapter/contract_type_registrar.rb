@@ -2,6 +2,7 @@
 
 module Apiwork
   module Adapter
+    # @api private
     class ContractTypeRegistrar
       attr_reader :contract_class
 

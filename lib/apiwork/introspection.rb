@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Apiwork
+  # @api private
   module Introspection
     class << self
       def api(api_class, locale: nil)

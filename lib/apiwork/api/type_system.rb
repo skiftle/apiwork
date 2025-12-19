@@ -2,6 +2,7 @@
 
 module Apiwork
   module API
+    # @api private
     class TypeSystem
       attr_reader :enums,
                   :types

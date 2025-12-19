@@ -4,6 +4,7 @@ module Apiwork
   module Adapter
     class Apiwork < Base
       class CollectionLoader
+        # @api private
         class Filter
           EQUALITY_OPERATORS = %i[eq].freeze
           COMPARISON_OPERATORS = %i[gt gte lt lte].freeze

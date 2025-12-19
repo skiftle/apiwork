@@ -4,6 +4,7 @@ module Apiwork
   module Adapter
     class Apiwork < Base
       class CollectionLoader
+        # @api private
         class Paginator
           def self.paginate(relation, schema_class, pagination_params)
             strategy = schema_class.resolve_option(:pagination, :strategy)

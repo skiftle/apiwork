@@ -2,6 +2,7 @@
 
 module Apiwork
   module Contract
+    # @api private
     class ResponseParser
       attr_reader :action_name,
                   :contract_class

@@ -2,6 +2,7 @@
 
 module Apiwork
   module Configuration
+    # @api private
     class NestedBuilder
       def initialize(parent_option, storage)
         @parent_option = parent_option

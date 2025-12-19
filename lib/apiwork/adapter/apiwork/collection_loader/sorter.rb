@@ -4,6 +4,7 @@ module Apiwork
   module Adapter
     class Apiwork < Base
       class CollectionLoader
+        # @api private
         class Sorter
           attr_reader :schema_class
 

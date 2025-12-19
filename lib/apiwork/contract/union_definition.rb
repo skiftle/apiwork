@@ -2,6 +2,7 @@
 
 module Apiwork
   module Contract
+    # @api private
     class UnionDefinition
       attr_reader :contract_class,
                   :discriminator,

@@ -2,6 +2,7 @@
 
 module Apiwork
   module API
+    # @api private
     class Router
       def draw
         api_classes = Registry.all

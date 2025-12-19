@@ -35,16 +35,19 @@ module Apiwork
     def extract_modules
       YARD::Registry.all(:class, :module)
                     .select { |obj| obj.path.start_with?('Apiwork::') }
-                    .reject { |obj| excluded?(obj.path) }
+                    .reject { |obj| excluded?(obj) }
                     .map { |obj| serialize_module(obj) }
                     .reject { |mod| mod[:class_methods].empty? && mod[:instance_methods].empty? }
                     .sort_by { |mod| mod[:path] }
     end
 
-    def excluded?(path)
+    def excluded?(obj)
+      path = obj.path
       return true if path.include?('Private')
+      return true if EXCLUDED_MODULES.any? { |name| path.include?("::#{name}") || path.end_with?(name) }
+      return true if obj.docstring.has_tag?(:api) && obj.docstring.tag(:api).text == 'private'
 
-      EXCLUDED_MODULES.any? { |name| path.include?("::#{name}") || path.end_with?(name) }
+      false
     end
 
     def serialize_module(obj)

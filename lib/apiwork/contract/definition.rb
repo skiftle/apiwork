@@ -2,6 +2,7 @@
 
 module Apiwork
   module Contract
+    # @api private
     class Definition
       attr_reader :action_name,
                   :contract_class,

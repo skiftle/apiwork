@@ -2,6 +2,7 @@
 
 module Apiwork
   module ErrorCode
+    # @api private
     class Registry
       class << self
         def store

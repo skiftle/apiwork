@@ -2,6 +2,7 @@
 
 module Apiwork
   module Spec
+    # @api private
     class Zod < Base
       identifier :zod
       content_type 'text/plain; charset=utf-8'

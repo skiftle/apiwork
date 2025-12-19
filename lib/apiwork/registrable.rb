@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Apiwork
+  # @api private
   module Registrable
     extend ActiveSupport::Concern
 

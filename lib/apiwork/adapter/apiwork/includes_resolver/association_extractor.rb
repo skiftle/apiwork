@@ -4,6 +4,7 @@ module Apiwork
   module Adapter
     class Apiwork < Base
       class IncludesResolver
+        # @api private
         class AssociationExtractor
           attr_reader :schema_class
 

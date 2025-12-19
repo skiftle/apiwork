@@ -2,6 +2,7 @@
 
 module Apiwork
   module Adapter
+    # @api private
     class ApiTypeRegistrar
       attr_reader :api_class
 

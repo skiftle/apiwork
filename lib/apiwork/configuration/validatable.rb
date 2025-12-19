@@ -2,6 +2,7 @@
 
 module Apiwork
   module Configuration
+    # @api private
     module Validatable
       private
 

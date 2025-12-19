@@ -2,6 +2,7 @@
 
 module Apiwork
   module ErrorCode
+    # @api private
     Definition = Struct.new(:key, :status, :attach_path, keyword_init: true) do
       def attach_path?
         attach_path

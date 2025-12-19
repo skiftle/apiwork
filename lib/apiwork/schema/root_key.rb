@@ -2,6 +2,7 @@
 
 module Apiwork
   module Schema
+    # @api private
     class RootKey
       attr_reader :plural,
                   :singular
