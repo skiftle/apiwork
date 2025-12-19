@@ -41,11 +41,9 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
   describe 'DSL and Schema Configuration' do
     it 'variant schemas have variant metadata' do
       expect(Api::V1::PersonClientSchema.variant_tag).to eq(:person)
-      expect(Api::V1::PersonClientSchema.sti_type).to eq('PersonClient')
       expect(Api::V1::PersonClientSchema.sti_variant?).to be(true)
 
       expect(Api::V1::CompanyClientSchema.variant_tag).to eq(:company)
-      expect(Api::V1::CompanyClientSchema.sti_type).to eq('CompanyClient')
       expect(Api::V1::CompanyClientSchema.sti_variant?).to be(true)
     end
 

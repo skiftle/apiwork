@@ -29,14 +29,6 @@ module Apiwork
         @include = include
       end
 
-      def detect_association_resource(association_name)
-        return nil unless self.class.respond_to?(:model_class)
-        return nil unless self.class.model_class
-
-        reflection = object.class.reflect_on_association(association_name)
-        self.class.resolve_association_schema(reflection, self.class)
-      end
-
       class << self
         attr_accessor :_model_class
 
@@ -45,14 +37,6 @@ module Apiwork
 
         def _auto_detection_complete
           @_auto_detection_complete || false
-        end
-
-        def resolve_association_schema(reflection, base_schema_class)
-          return nil unless reflection
-          return nil if reflection.polymorphic?
-
-          namespace = base_schema_class.name.deconstantize
-          "#{namespace}::#{reflection.klass.name}Schema".safe_constantize
         end
 
         # Sets or gets the model class for this schema.
@@ -109,16 +93,12 @@ module Apiwork
         end
 
         def api_class
-          Apiwork::API.find(api_path)
-        end
-
-        def api_path
           return nil unless name
 
           namespace_parts = name.deconstantize.split('::')
           return nil if namespace_parts.empty?
 
-          "/#{namespace_parts.map(&:underscore).join('/')}"
+          Apiwork::API.find("/#{namespace_parts.map(&:underscore).join('/')}")
         end
 
         # Configures adapter options for this schema.
@@ -351,10 +331,6 @@ module Apiwork
           _variant_tag
         end
 
-        def sti_type
-          _sti_type
-        end
-
         def variants
           _variants
         end
@@ -435,10 +411,6 @@ module Apiwork
           @type || model_class&.model_name&.element
         end
 
-        def validate!
-          attribute_definitions.each_value(&:validate!)
-        end
-
         def root_key
           if _root
             RootKey.new(_root[:singular], _root[:plural])
@@ -448,57 +420,7 @@ module Apiwork
           end
         end
 
-        def filterable_attributes
-          @filterable_attributes ||= attributes_with_option(:filterable)
-        end
-
-        def sortable_attributes
-          @sortable_attributes ||= attributes_with_option(:sortable)
-        end
-
-        def writable_attributes_for(action)
-          @writable_attributes_cache ||= {}
-          @writable_attributes_cache[action] ||= begin
-            writable = attribute_definitions.select do |_, definition|
-              definition.writable_for?(action)
-            end
-            writable.keys.freeze
-          end
-        end
-
-        def required_attributes_for(action)
-          @required_attributes_cache ||= {}
-          @required_attributes_cache[action] ||= begin
-            return [].freeze if model_class.nil?
-
-            writable_attrs = writable_attributes_for(action)
-            (required_columns & writable_attrs).freeze
-          end
-        end
-
-        def column_for(attribute_name)
-          model_class&.columns_hash&.[](attribute_name.to_s)
-        end
-
-        def required_columns
-          return [] unless model_class
-
-          model_class.columns
-                     .reject(&:null)
-                     .select { |col| col.default.nil? }
-                     .map(&:name)
-                     .map(&:to_sym)
-        end
-
         private
-
-        def attributes_with_option(option)
-          selected = attribute_definitions.select do |_, definition|
-            value = definition.public_send("#{option}?")
-            value.is_a?(TrueClass) || (value.is_a?(Proc) && value)
-          end
-          selected.keys.freeze
-        end
 
         def auto_detect_model
           return if _model_class.present?

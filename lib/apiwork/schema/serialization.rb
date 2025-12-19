@@ -69,7 +69,7 @@ module Apiwork
         associated = object.public_send(name)
         return nil if associated.nil?
 
-        resource_class = definition.schema_class || detect_association_resource(name)
+        resource_class = definition.schema_class || resolve_association_schema(name)
         return nil unless resource_class
 
         resource_class = resource_class.constantize if resource_class.is_a?(String)
@@ -81,6 +81,18 @@ module Apiwork
         else
           serialize_sti_aware(associated, resource_class, nested_includes)
         end
+      end
+
+      def resolve_association_schema(association_name)
+        return nil unless self.class.respond_to?(:model_class)
+        return nil unless self.class.model_class
+
+        reflection = object.class.reflect_on_association(association_name)
+        return nil unless reflection
+        return nil if reflection.polymorphic?
+
+        namespace = self.class.name.deconstantize
+        "#{namespace}::#{reflection.klass.name}Schema".safe_constantize
       end
 
       def serialize_sti_aware(item, resource_class, nested_includes)
