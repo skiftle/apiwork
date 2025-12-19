@@ -5,6 +5,12 @@ module Apiwork
     module ErrorResponse
       extend ActiveSupport::Concern
 
+      included do
+        rescue_from Apiwork::ConstraintError do |error|
+          render_error error.issues, status: error.error_code.status
+        end
+      end
+
       def respond_with_error(code_key, detail: nil, path: nil, meta: {}, i18n: {})
         error_code = ErrorCode.fetch(code_key)
 

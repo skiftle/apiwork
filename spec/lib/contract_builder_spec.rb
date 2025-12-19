@@ -22,10 +22,10 @@ RSpec.describe Apiwork::Adapter::Apiwork::ContractBuilder do
       expect(post_shape).to be_a(Hash)
 
       post_shape.each do |attr_name, attr_def|
-        next if attr_name == :author || attr_name == :comments || attr_name == :tags || attr_name == :taggings
+        next if [:author, :comments, :tags, :taggings].include?(attr_name)
 
         expect(attr_def).not_to have_key(:optional),
-          "Response attribute #{attr_name} should not have optional key, but got: #{attr_def.inspect}"
+                                "Response attribute #{attr_name} should not have optional key, but got: #{attr_def.inspect}"
       end
     end
 
@@ -75,7 +75,7 @@ RSpec.describe Apiwork::Adapter::Apiwork::ContractBuilder do
         next if [:author, :comments, :tags, :taggings].include?(attr_name)
 
         expect(attr_def[:optional]).to be_falsy,
-          "Response attribute #{attr_name} should not be optional"
+                                       "Response attribute #{attr_name} should not be optional"
       end
     end
 
@@ -87,7 +87,7 @@ RSpec.describe Apiwork::Adapter::Apiwork::ContractBuilder do
       optional_associations = association_attrs.select { |_, v| v[:optional] == true }
 
       expect(optional_associations).not_to be_empty,
-        'Some associations should be optional when not always included'
+                                           'Some associations should be optional when not always included'
     end
   end
 end

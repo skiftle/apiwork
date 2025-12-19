@@ -6,6 +6,7 @@ module Apiwork
       extend ActiveSupport::Concern
 
       included do
+        wrap_parameters false
         before_action :validate_contract
       end
 

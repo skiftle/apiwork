@@ -24,7 +24,7 @@ RSpec.describe 'Response nullable vs optional semantics' do
         next if [:author, :comments, :tags, :taggings].include?(attr_name)
 
         expect(attr_def[:optional]).to be_falsey,
-          "Response attribute :#{attr_name} should not be optional but was: #{attr_def.inspect}"
+                                       "Response attribute :#{attr_name} should not be optional but was: #{attr_def.inspect}"
       end
     end
 
@@ -91,14 +91,12 @@ RSpec.describe 'Response nullable vs optional semantics' do
         next unless in_post_schema
 
         # Stop when we hit the next export
-        if line.match?(/^export const \w+ =/) && !line.include?('Post =')
-          break
-        end
+        break if line.match?(/^export const \w+ =/) && !line.include?('Post =')
 
         # Regular attributes (id, title, body, etc.) should not have .optional()
         if line.match?(/^\s+(id|title|body|published|created_at|updated_at):/)
           expect(line).not_to include('.optional()'),
-            "Regular attribute should not have .optional(): #{line}"
+                              "Regular attribute should not have .optional(): #{line}"
         end
       end
     end

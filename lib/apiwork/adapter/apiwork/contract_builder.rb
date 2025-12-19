@@ -56,10 +56,10 @@ module Apiwork
           page_type = build_page_type
           definition.param :page, type: page_type, optional: true
 
-          if schema_class.association_definitions.any?
-            include_type = build_include_type
-            definition.param :include, type: include_type, optional: true if include_type
-          end
+          return unless schema_class.association_definitions.any?
+
+          include_type = build_include_type
+          definition.param :include, type: include_type, optional: true if include_type
         end
 
         def writable_request(definition, context_symbol)
