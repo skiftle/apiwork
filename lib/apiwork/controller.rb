@@ -4,8 +4,8 @@ module Apiwork
   module Controller
     extend ActiveSupport::Concern
 
-    include Resolution
     include Deserialization
+    include Resolution
     include Serialization
   end
 end
