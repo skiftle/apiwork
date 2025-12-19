@@ -7,6 +7,5 @@ module Apiwork
     include Resolution
     include Deserialization
     include Serialization
-    include ErrorResponse
   end
 end
