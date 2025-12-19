@@ -2,8 +2,8 @@
 
 module Apiwork
   class ValidationError < ConstraintError
-    def http_status
-      :unprocessable_entity
+    def error_code
+      @error_code ||= ErrorCode.fetch(:unprocessable_entity)
     end
   end
 end

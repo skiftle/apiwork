@@ -9,8 +9,8 @@ module Apiwork
       super(@issues.map(&:detail).join('; '))
     end
 
-    def http_status
-      :bad_request
+    def error_code
+      @error_code ||= ErrorCode.fetch(:bad_request)
     end
   end
 end
