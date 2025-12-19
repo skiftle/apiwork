@@ -26,6 +26,22 @@ module Apiwork
     }.freeze
 
     class << self
+      # Registers a custom error code for use in API responses.
+      #
+      # Error codes are used with `raises` declarations and `respond_with_error`
+      # in controllers. Built-in codes (400-504) are pre-registered.
+      #
+      # @param key [Symbol] unique identifier for the error code
+      # @param status [Integer] HTTP status code (must be 400-599)
+      # @param attach_path [Boolean] include request path in error response (default: false)
+      # @return [ErrorCode::Definition] the registered error code
+      # @raise [ArgumentError] if status is outside 400-599 range
+      #
+      # @example Register custom error code
+      #   Apiwork::ErrorCode.register :resource_locked, status: 423
+      #
+      # @example With path attachment
+      #   Apiwork::ErrorCode.register :not_found, status: 404, attach_path: true
       delegate :register, :fetch, :registered?, :all, to: Registry
 
       def key_for_status(status)

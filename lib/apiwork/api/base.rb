@@ -139,18 +139,77 @@ module Apiwork
           @adapter ||= Adapter.find(@adapter_name || :apiwork).new
         end
 
+        # Defines a reusable custom type (object shape).
+        #
+        # Custom types can be referenced by name in `param` definitions.
+        # Scoped types are namespaced to a contract class.
+        #
+        # @param name [Symbol] type name for referencing
+        # @param scope [Class] contract class for scoping (nil for global)
+        # @param description [String] documentation description
+        # @param example [Object] example value for docs
+        # @param format [String] format hint for docs
+        # @param deprecated [Boolean] mark as deprecated
+        # @param schema_class [Class] associate with a schema for type inference
+        # @yield block defining the type's params
+        #
+        # @example Global type
+        #   type :address do
+        #     param :street, type: :string
+        #     param :city, type: :string
+        #     param :zip, type: :string
+        #   end
+        #
+        # @example Using in a contract
+        #   param :shipping_address, type: :address
         def type(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false,
                  schema_class: nil, &block)
           type_system.register_type(name, scope:, description:, example:, format:, deprecated:,
                                           schema_class:, &block)
         end
 
+        # Defines a reusable enumeration type.
+        #
+        # Enums can be referenced by name in `param` definitions using
+        # the `enum:` option.
+        #
+        # @param name [Symbol] enum name for referencing
+        # @param values [Array<String>] allowed values
+        # @param scope [Class] contract class for scoping (nil for global)
+        # @param description [String] documentation description
+        # @param example [String] example value for docs
+        # @param deprecated [Boolean] mark as deprecated
+        #
+        # @example
+        #   enum :status, values: %w[draft published archived]
+        #
+        #   # Later in contract:
+        #   param :status, enum: :status
         def enum(name, values: nil, scope: nil, description: nil, example: nil, deprecated: false)
           raise ArgumentError, 'Values must be an array' if values && !values.is_a?(Array)
 
           type_system.register_enum(name, values, scope:, description:, example:, deprecated:)
         end
 
+        # Defines a discriminated union type.
+        #
+        # Unions allow a field to accept one of several shapes, distinguished
+        # by a discriminator field.
+        #
+        # @param name [Symbol] union name for referencing
+        # @param scope [Class] contract class for scoping (nil for global)
+        # @param discriminator [Symbol] field name that identifies the variant
+        # @yield block defining variants using `variant`
+        #
+        # @example
+        #   union :payment_method, discriminator: :type do
+        #     variant type: :card, tag: 'card' do
+        #       param :last_four, type: :string
+        #     end
+        #     variant type: :bank, tag: 'bank' do
+        #       param :account_number, type: :string
+        #     end
+        #   end
         def union(name, scope: nil, discriminator: nil, &block)
           raise ArgumentError, 'Union requires a block' unless block_given?
 

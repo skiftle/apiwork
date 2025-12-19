@@ -46,12 +46,10 @@ module Apiwork
         Registry.unregister(path)
       end
 
-      # DOCUMENTATION
       def introspect(path, locale: nil)
         find(path)&.introspect(locale:)
       end
 
-      # DOCUMENTATION
       def reset!
         Registry.clear!
       end

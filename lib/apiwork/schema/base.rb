@@ -170,6 +170,40 @@ module Apiwork
           end
         end
 
+        # Defines an attribute for serialization and API contracts.
+        #
+        # Types and nullability are auto-detected from the model's database
+        # columns when available.
+        #
+        # @param name [Symbol] attribute name (must match model attribute)
+        # @option options [Symbol] :type data type (:string, :integer, :boolean,
+        #   :datetime, :date, :uuid, :decimal, :float, :object, :array)
+        # @option options [Array] :enum allowed values
+        # @option options [Boolean] :optional field can be omitted in responses
+        # @option options [Boolean] :nullable field can be null
+        # @option options [Boolean] :filterable enable filtering on this field
+        # @option options [Boolean] :sortable enable sorting on this field
+        # @option options [Boolean, Hash] :writable allow in create/update payloads.
+        #   Use {on: [:create]} to limit to specific actions
+        # @option options [Proc] :encode transform value during serialization
+        # @option options [Proc] :decode transform value during deserialization
+        # @option options [Symbol] :empty how to handle empty strings (:null, :keep)
+        # @option options [Integer] :min minimum value (numeric) or length (string)
+        # @option options [Integer] :max maximum value (numeric) or length (string)
+        # @option options [String] :description documentation description
+        # @option options [Object] :example example value for docs
+        # @option options [Symbol] :format format hint (:email, :uri, :uuid, etc.)
+        # @option options [Boolean] :deprecated mark as deprecated
+        #
+        # @example Basic attribute
+        #   attribute :title
+        #   attribute :price, type: :decimal, min: 0
+        #
+        # @example With filtering and sorting
+        #   attribute :status, filterable: true, sortable: true
+        #
+        # @example Writable only on create
+        #   attribute :email, writable: { on: [:create] }
         def attribute(name, **options)
           self.attribute_definitions = attribute_definitions.merge(
             name => AttributeDefinition.new(name, self, **options)
@@ -194,6 +228,25 @@ module Apiwork
           )
         end
 
+        # Enables STI (Single Table Inheritance) polymorphism for this schema.
+        #
+        # Call on the base schema to enable discriminated responses. Variant
+        # schemas must call `variant` to register themselves.
+        #
+        # @param name [Symbol] discriminator field name in API responses
+        #   (defaults to Rails inheritance_column, usually :type)
+        # @return [self]
+        #
+        # @example Base schema with STI
+        #   class VehicleSchema < Apiwork::Schema::Base
+        #     discriminator :vehicle_type
+        #     attribute :name
+        #   end
+        #
+        #   class CarSchema < VehicleSchema
+        #     variant as: :car
+        #     attribute :doors
+        #   end
         def discriminator(name = nil)
           ensure_auto_detection_complete
           column = model_class.inheritance_column.to_sym
@@ -202,6 +255,21 @@ module Apiwork
           self
         end
 
+        # Registers this schema as an STI variant of its parent.
+        #
+        # The parent schema must have called `discriminator` first.
+        # Responses will use the variant's attributes based on the
+        # record's actual type.
+        #
+        # @param as [Symbol] discriminator value in API responses
+        #   (defaults to model's sti_name)
+        # @return [self]
+        #
+        # @example
+        #   class CarSchema < VehicleSchema
+        #     variant as: :car
+        #     attribute :doors
+        #   end
         def variant(as: nil)
           ensure_auto_detection_complete
           variant_tag = as || derive_variant_tag

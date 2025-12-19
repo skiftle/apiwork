@@ -38,14 +38,33 @@ module Apiwork
           subclass.imports = {}
         end
 
-        # DOCUMENTATION
         def identifier(value = nil)
           return _identifier if value.nil?
 
           self._identifier = value.to_s
         end
 
-        # DOCUMENTATION
+        # Links this contract to its schema using naming convention.
+        #
+        # Looks up the schema class by replacing "Contract" with "Schema"
+        # in the class name. For example, `UserContract.schema!` finds
+        # `UserSchema`.
+        #
+        # Call this method to enable auto-generation of request/response
+        # types based on the schema's attributes.
+        #
+        # @return [Class] the associated schema class
+        # @raise [ArgumentError] if schema class not found
+        #
+        # @example
+        #   class UserContract < Apiwork::Contract::Base
+        #     schema!  # Links to UserSchema
+        #
+        #     action :create do
+        #       request { body { param :name } }
+        #       response { body { param :id } }
+        #     end
+        #   end
         def schema!
           return _schema_class if _schema_class
 
@@ -84,7 +103,6 @@ module Apiwork
           _schema_class
         end
 
-        # DOCUMENTATION
         def schema?
           _schema_class.present?
         end
@@ -117,7 +135,27 @@ module Apiwork
           api_class.union(name, scope: self, discriminator:, &block)
         end
 
-        # DOCUMENTATION
+        # Imports types from another contract for reuse.
+        #
+        # This allows referencing types defined in another contract by
+        # prefixing them with the alias. Useful for sharing common types
+        # like addresses or monetary values.
+        #
+        # @param contract_class [Class] the contract class to import from
+        # @param as [Symbol] alias prefix for imported types
+        #
+        # @example
+        #   class OrderContract < Apiwork::Contract::Base
+        #     import AddressContract, as: :address
+        #
+        #     action :create do
+        #       request do
+        #         body do
+        #           param :shipping, type: :address  # Uses AddressContract's type
+        #         end
+        #       end
+        #     end
+        #   end
         def import(contract_class, as:)
           unless contract_class.is_a?(Class)
             raise ArgumentError, "import must be a Class constant, got #{contract_class.class}. " \
@@ -137,7 +175,6 @@ module Apiwork
           imports[as] = contract_class
         end
 
-        # DOCUMENTATION
         def action(action_name, replace: false, &block)
           action_name = action_name.to_sym
 
@@ -163,7 +200,6 @@ module Apiwork
           action_definitions[action_name]
         end
 
-        # DOCUMENTATION
         def introspect(action: nil, locale: nil)
           Apiwork::Introspection.contract(self, action:, locale:)
         end

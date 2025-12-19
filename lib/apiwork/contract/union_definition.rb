@@ -13,6 +13,33 @@ module Apiwork
         @variants = []
       end
 
+      # Defines a variant in a union type.
+      #
+      # Each variant represents one possible shape the union can take.
+      # For discriminated unions, each variant must have a unique tag.
+      #
+      # @param type [Symbol] variant type (:string, :integer, :object, :array, or custom type)
+      # @param of [Symbol] element type for :array variants
+      # @param enum [Array] allowed values for primitive variants
+      # @param tag [String, Symbol] discriminator value (required for discriminated unions)
+      # @param partial [Boolean] mark as partial variant
+      # @yield block defining nested params for object variants
+      #
+      # @example Discriminated union
+      #   union :result, discriminator: :status do
+      #     variant type: :object, tag: 'success' do
+      #       param :data, type: :object
+      #     end
+      #     variant type: :object, tag: 'error' do
+      #       param :message, type: :string
+      #     end
+      #   end
+      #
+      # @example Simple type union
+      #   union :id do
+      #     variant type: :string
+      #     variant type: :integer
+      #   end
       def variant(type:, of: nil, enum: nil, tag: nil, partial: nil, &block)
         raise ArgumentError, 'tag can only be used when union has a discriminator' if tag.present? && @discriminator.blank?
 

@@ -40,6 +40,47 @@ module Apiwork
         @unwrapped_union
       end
 
+      # Defines a parameter/field in a request or response body.
+      #
+      # @param name [Symbol] field name
+      # @param type [Symbol] data type (:string, :integer, :boolean, :datetime, :date,
+      #   :uuid, :object, :array, :decimal, :float, :literal, :union, or custom type)
+      # @param optional [Boolean] whether field can be omitted (default: false)
+      # @param default [Object] value when field is nil
+      # @param enum [Array, Symbol] allowed values, or reference to registered enum
+      # @param of [Symbol] element type for :array
+      # @param as [Symbol] serialize field under different name
+      # @param discriminator [Symbol] discriminator field for :union type
+      # @param value [Object] exact value for :literal type
+      # @option options [Boolean] :nullable whether null is allowed
+      # @option options [Integer] :min minimum value (numeric) or length (string/array)
+      # @option options [Integer] :max maximum value (numeric) or length (string/array)
+      # @option options [String] :description field description for docs
+      # @option options [Object] :example example value for docs
+      # @option options [String] :format format hint (e.g. 'email', 'uri')
+      # @option options [Boolean] :deprecated mark field as deprecated
+      # @yield nested params for :object or :array of objects
+      #
+      # @example Basic types
+      #   param :title, type: :string
+      #   param :count, type: :integer, min: 0
+      #   param :active, type: :boolean, default: true
+      #
+      # @example With enum
+      #   param :status, enum: %w[draft published archived]
+      #   param :role, enum: :user_role  # reference to registered enum
+      #
+      # @example Nested object
+      #   param :address, type: :object do
+      #     param :street, type: :string
+      #     param :city, type: :string
+      #   end
+      #
+      # @example Array of objects
+      #   param :items, type: :array, of: :line_item do
+      #     param :product_id, type: :integer
+      #     param :quantity, type: :integer, min: 1
+      #   end
       # rubocop:disable Metrics/ParameterLists
       def param(name, type: nil, optional: nil, default: nil, enum: nil, of: nil, as: nil,
                 discriminator: nil, value: nil, visited_types: nil, **options, &block)
@@ -71,16 +112,29 @@ module Apiwork
         end
       end
 
+      # Defines a metadata object for request payloads.
+      #
+      # Meta is an optional object for request-level metadata like
+      # request IDs, client info, or idempotency keys. The adapter
+      # may pre-populate common meta fields.
+      #
+      # @yield block defining metadata params
+      #
+      # @example
+      #   request do
+      #     meta do
+      #       param :request_id, type: :uuid
+      #       param :client_version, type: :string, optional: true
+      #     end
+      #   end
       def meta(&block)
         return unless block
 
         existing_meta = @params[:meta]
 
         if existing_meta && existing_meta[:shape]
-          # Meta already exists (from adapter) - extend its shape
           existing_meta[:shape].instance_eval(&block)
         else
-          # First definition of meta - create it
           param :meta, type: :object, optional: true, &block
         end
       end
