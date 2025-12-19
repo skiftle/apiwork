@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   post '/webhooks/stripe', to: 'webhooks#stripe'
 
   # Apiwork handles the API
-  mount Apiwork.routes => '/'
+  mount Apiwork => '/'
 end
 ```
 

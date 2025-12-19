@@ -72,7 +72,7 @@ Add Apiwork routes to your `config/routes.rb`:
 
 ```ruby
 Rails.application.routes.draw do
-  mount Apiwork.routes => '/'
+  mount Apiwork => '/'
 end
 ```
 

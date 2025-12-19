@@ -1,4 +1,4 @@
 Rails.application.routes.draw do
   # Mount Apiwork engine
-  mount Apiwork.routes => '/'
+  mount Apiwork => '/'
 end

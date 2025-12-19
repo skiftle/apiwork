@@ -5,14 +5,21 @@ require_relative 'apiwork/version'
 
 module Apiwork
   class << self
-    # DOCUMENTATION
-    def routes
-      @routes ||= API::RackApp.new
+    def call(env)
+      route_set.call(env)
     end
 
     def reset!
       API.reset!
       ErrorCode.reset!
+    end
+
+    private
+
+    def route_set
+      return API::Routing::Builder.new.build if Rails.env.development?
+
+      @route_set ||= API::Routing::Builder.new.build
     end
   end
 end
