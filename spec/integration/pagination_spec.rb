@@ -137,9 +137,9 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
-      expect(json['issues']).to be_an(Array)
-      expect(json['issues'].first['code']).to eq('invalid_value')
-      expect(json['issues'].first['pointer']).to eq('/page/number')
+      expect(json['errors']).to be_an(Array)
+      expect(json['errors'].first['code']).to eq('invalid_value')
+      expect(json['errors'].first['pointer']).to eq('/page/number')
     end
 
     it 'rejects zero page size' do
@@ -147,9 +147,9 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
-      expect(json['issues']).to be_an(Array)
-      expect(json['issues'].first['code']).to eq('invalid_value')
-      expect(json['issues'].first['pointer']).to eq('/page/size')
+      expect(json['errors']).to be_an(Array)
+      expect(json['errors'].first['code']).to eq('invalid_value')
+      expect(json['errors'].first['pointer']).to eq('/page/size')
     end
 
     it 'enforces maximum page size' do
@@ -157,9 +157,9 @@ RSpec.describe 'Pagination API', type: :request do
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
-      expect(json['issues']).to be_an(Array)
-      expect(json['issues'].first['code']).to eq('invalid_value')
-      expect(json['issues'].first['pointer']).to eq('/page/size')
+      expect(json['errors']).to be_an(Array)
+      expect(json['errors'].first['code']).to eq('invalid_value')
+      expect(json['errors'].first['pointer']).to eq('/page/size')
     end
   end
 end

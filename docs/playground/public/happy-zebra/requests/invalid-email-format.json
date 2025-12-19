@@ -12,7 +12,7 @@
   "response": {
     "status": 422,
     "body": {
-      "issues": [
+      "errors": [
         {
           "code": "invalid",
           "detail": "is invalid",

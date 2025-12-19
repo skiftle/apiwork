@@ -6,9 +6,9 @@ order: 1
 
 Apiwork uses a unified error system. Every error — whether from contract validation, model validation, or business logic — follows the same structure. Clients receive consistent, predictable responses regardless of where the failure occurred.
 
-## The Issue
+## The Error Object
 
-At the center of Apiwork's error handling is the **Issue**. An issue represents a single problem with a request or response:
+At the center of Apiwork's error handling is the **Issue** class. Each issue represents a single problem with a request or response:
 
 ```ruby
 Apiwork::Issue.new(
@@ -19,7 +19,7 @@ Apiwork::Issue.new(
 )
 ```
 
-Every issue contains:
+Every error contains:
 
 | Field     | Description                                                         |
 | --------- | ------------------------------------------------------------------- |
@@ -35,7 +35,7 @@ When errors occur, Apiwork renders them as JSON:
 
 ```json
 {
-  "issues": [
+  "errors": [
     {
       "code": "field_missing",
       "detail": "Field required",
@@ -47,7 +47,7 @@ When errors occur, Apiwork renders them as JSON:
 }
 ```
 
-The `issues` array contains all problems found. Clients can iterate through them, display messages to users, or highlight specific fields using the path or pointer.
+The `errors` array contains all problems found. Clients can iterate through them, display messages to users, or highlight specific fields using the path or pointer.
 
 ## Error Types
 
@@ -59,7 +59,7 @@ Apiwork distinguishes between different error categories:
 | `ValidationError`    | 422 Unprocessable Entity | Model validation failed                  |
 | `respond_with_error` | Varies                   | HTTP errors (not found, forbidden, etc.) |
 
-`ContractError` and `ValidationError` inherit from `ConstraintError` and carry an array of issues. The controller automatically catches these and renders the appropriate response.
+`ContractError` and `ValidationError` inherit from `ConstraintError` and carry an array of errors. The controller automatically catches these and renders the appropriate response.
 
 For HTTP errors like "not found" or "forbidden", use `respond_with_error`.
 
@@ -94,7 +94,7 @@ class PostsController < ApplicationController
 end
 ```
 
-If `Post.create` fails validation, `respond_with` detects the errors and raises a `ValidationError`. The concern catches it and renders the issues with a 422 status.
+If `Post.create` fails validation, `respond_with` detects the errors and raises a `ValidationError`. The concern catches it and renders the errors with a 422 status.
 
 For HTTP errors, use `respond_with_error`:
 

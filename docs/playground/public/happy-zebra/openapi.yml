@@ -7,8 +7,6 @@ paths:
   users/:
     get:
       operationId: usersIndex
-      tags:
-      - Users
       parameters:
       - in: query
         name: filter
@@ -57,8 +55,6 @@ paths:
                       "$ref": "#/components/schemas/user"
     post:
       operationId: usersCreate
-      tags:
-      - Users
       parameters:
       - in: query
         name: include
@@ -98,15 +94,13 @@ paths:
               schema:
                 type: object
                 properties:
-                  issues:
+                  errors:
                     type: array
                     items:
-                      "$ref": "#/components/schemas/issue"
+                      "$ref": "#/components/schemas/error"
   users/{id}:
     get:
       operationId: usersShow
-      tags:
-      - Users
       parameters:
       - name: id
         in: path
@@ -135,8 +129,6 @@ paths:
                 - user
     patch:
       operationId: usersUpdate
-      tags:
-      - Users
       parameters:
       - name: id
         in: path
@@ -177,14 +169,12 @@ paths:
               schema:
                 type: object
                 properties:
-                  issues:
+                  errors:
                     type: array
                     items:
-                      "$ref": "#/components/schemas/issue"
+                      "$ref": "#/components/schemas/error"
     delete:
       operationId: usersDestroy
-      tags:
-      - Users
       parameters:
       - name: id
         in: path
@@ -202,8 +192,6 @@ paths:
   posts/:
     get:
       operationId: postsIndex
-      tags:
-      - Posts
       parameters:
       - in: query
         name: include
@@ -234,8 +222,6 @@ paths:
                       "$ref": "#/components/schemas/post"
     post:
       operationId: postsCreate
-      tags:
-      - Posts
       parameters:
       - in: query
         name: include
@@ -275,15 +261,13 @@ paths:
               schema:
                 type: object
                 properties:
-                  issues:
+                  errors:
                     type: array
                     items:
-                      "$ref": "#/components/schemas/issue"
+                      "$ref": "#/components/schemas/error"
   posts/{id}:
     get:
       operationId: postsShow
-      tags:
-      - Posts
       parameters:
       - name: id
         in: path
@@ -312,8 +296,6 @@ paths:
                 - post
     patch:
       operationId: postsUpdate
-      tags:
-      - Posts
       parameters:
       - name: id
         in: path
@@ -354,14 +336,12 @@ paths:
               schema:
                 type: object
                 properties:
-                  issues:
+                  errors:
                     type: array
                     items:
-                      "$ref": "#/components/schemas/issue"
+                      "$ref": "#/components/schemas/error"
     delete:
       operationId: postsDestroy
-      tags:
-      - Posts
       parameters:
       - name: id
         in: path
@@ -379,8 +359,6 @@ paths:
   comments/:
     get:
       operationId: commentsIndex
-      tags:
-      - Comments
       parameters:
       - in: query
         name: include
@@ -411,8 +389,6 @@ paths:
                     "$ref": "#/components/schemas/offsetPagination"
     post:
       operationId: commentsCreate
-      tags:
-      - Comments
       requestBody:
         required: true
         content:
@@ -446,15 +422,13 @@ paths:
               schema:
                 type: object
                 properties:
-                  issues:
+                  errors:
                     type: array
                     items:
-                      "$ref": "#/components/schemas/issue"
+                      "$ref": "#/components/schemas/error"
   comments/{id}:
     get:
       operationId: commentsShow
-      tags:
-      - Comments
       parameters:
       - name: id
         in: path
@@ -478,8 +452,6 @@ paths:
                 - comment
     patch:
       operationId: commentsUpdate
-      tags:
-      - Comments
       parameters:
       - name: id
         in: path
@@ -515,14 +487,12 @@ paths:
               schema:
                 type: object
                 properties:
-                  issues:
+                  errors:
                     type: array
                     items:
-                      "$ref": "#/components/schemas/issue"
+                      "$ref": "#/components/schemas/error"
     delete:
       operationId: commentsDestroy
-      tags:
-      - Comments
       parameters:
       - name: id
         in: path
@@ -613,7 +583,7 @@ components:
       required:
       - author
       - body
-    issue:
+    error:
       type: object
       properties:
         code:

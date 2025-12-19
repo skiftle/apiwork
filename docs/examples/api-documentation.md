@@ -197,7 +197,7 @@ Content-Type: application/json
 
 ```json
 {
-  "issues": [
+  "errors": [
     {
       "code": "field_unknown",
       "detail": "Unknown field",

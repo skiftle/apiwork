@@ -85,7 +85,7 @@
         }
       }
     },
-    "issue": {
+    "error": {
       "type": "object",
       "shape": {
         "code": {
@@ -114,11 +114,6 @@
   "resources": {
     "activities": {
       "path": "activities",
-      "summary": "Activities",
-      "description": "Operations for managing activities.",
-      "tags": [
-        "Activities"
-      ],
       "schema": {
         "type": "object",
         "shape": {
@@ -179,9 +174,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -212,9 +207,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -252,9 +247,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -295,9 +290,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }

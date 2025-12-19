@@ -32,7 +32,7 @@ export const CursorPaginationSchema = z.object({
   prevCursor: z.string().nullable().optional()
 });
 
-export const IssueSchema = z.object({
+export const ErrorSchema = z.object({
   code: z.string(),
   detail: z.string(),
   field: z.string(),
@@ -48,13 +48,13 @@ export const ActivitiesIndexRequestSchema = z.object({
   query: ActivitiesIndexRequestQuerySchema
 });
 
-export const ActivitiesIndexResponseBodySchema = z.union([z.object({ activities: z.array(ActivitySchema).optional(), meta: z.object({}).optional(), pagination: CursorPaginationSchema.optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const ActivitiesIndexResponseBodySchema = z.union([z.object({ activities: z.array(ActivitySchema).optional(), meta: z.object({}).optional(), pagination: CursorPaginationSchema.optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const ActivitiesIndexResponseSchema = z.object({
   body: ActivitiesIndexResponseBodySchema
 });
 
-export const ActivitiesShowResponseBodySchema = z.union([z.object({ activity: ActivitySchema, meta: z.object({}).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const ActivitiesShowResponseBodySchema = z.union([z.object({ activity: ActivitySchema, meta: z.object({}).optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const ActivitiesShowResponseSchema = z.object({
   body: ActivitiesShowResponseBodySchema
@@ -68,7 +68,7 @@ export const ActivitiesCreateRequestSchema = z.object({
   body: ActivitiesCreateRequestBodySchema
 });
 
-export const ActivitiesCreateResponseBodySchema = z.union([z.object({ activity: ActivitySchema, meta: z.object({}).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const ActivitiesCreateResponseBodySchema = z.union([z.object({ activity: ActivitySchema, meta: z.object({}).optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const ActivitiesCreateResponseSchema = z.object({
   body: ActivitiesCreateResponseBodySchema
@@ -82,7 +82,7 @@ export const ActivitiesUpdateRequestSchema = z.object({
   body: ActivitiesUpdateRequestBodySchema
 });
 
-export const ActivitiesUpdateResponseBodySchema = z.union([z.object({ activity: ActivitySchema, meta: z.object({}).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const ActivitiesUpdateResponseBodySchema = z.union([z.object({ activity: ActivitySchema, meta: z.object({}).optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const ActivitiesUpdateResponseSchema = z.object({
   body: ActivitiesUpdateResponseBodySchema
@@ -102,7 +102,7 @@ export interface ActivitiesCreateResponse {
   body: ActivitiesCreateResponseBody;
 }
 
-export type ActivitiesCreateResponseBody = { activity: Activity; meta?: object } | { issues?: Issue[] };
+export type ActivitiesCreateResponseBody = { activity: Activity; meta?: object } | { errors?: Error[] };
 
 export type ActivitiesDestroyResponse = never;
 
@@ -119,13 +119,13 @@ export interface ActivitiesIndexResponse {
   body: ActivitiesIndexResponseBody;
 }
 
-export type ActivitiesIndexResponseBody = { activities?: Activity[]; meta?: object; pagination?: CursorPagination } | { issues?: Issue[] };
+export type ActivitiesIndexResponseBody = { activities?: Activity[]; meta?: object; pagination?: CursorPagination } | { errors?: Error[] };
 
 export interface ActivitiesShowResponse {
   body: ActivitiesShowResponseBody;
 }
 
-export type ActivitiesShowResponseBody = { activity: Activity; meta?: object } | { issues?: Issue[] };
+export type ActivitiesShowResponseBody = { activity: Activity; meta?: object } | { errors?: Error[] };
 
 export interface ActivitiesUpdateRequest {
   body: ActivitiesUpdateRequestBody;
@@ -139,7 +139,7 @@ export interface ActivitiesUpdateResponse {
   body: ActivitiesUpdateResponseBody;
 }
 
-export type ActivitiesUpdateResponseBody = { activity: Activity; meta?: object } | { issues?: Issue[] };
+export type ActivitiesUpdateResponseBody = { activity: Activity; meta?: object } | { errors?: Error[] };
 
 export interface Activity {
   action?: string;
@@ -171,7 +171,7 @@ export interface CursorPagination {
   prevCursor?: null | string;
 }
 
-export interface Issue {
+export interface Error {
   code: string;
   detail: string;
   field: string;

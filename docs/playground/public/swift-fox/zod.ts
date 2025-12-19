@@ -31,7 +31,7 @@ export const ContactUpdatePayloadSchema = z.object({
   phone: z.string().optional()
 });
 
-export const IssueSchema = z.object({
+export const ErrorSchema = z.object({
   code: z.string(),
   detail: z.string(),
   field: z.string(),
@@ -55,13 +55,13 @@ export const ContactsIndexRequestSchema = z.object({
   query: ContactsIndexRequestQuerySchema
 });
 
-export const ContactsIndexResponseBodySchema = z.union([z.object({ contacts: z.array(ContactSchema).optional(), meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const ContactsIndexResponseBodySchema = z.union([z.object({ contacts: z.array(ContactSchema).optional(), meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const ContactsIndexResponseSchema = z.object({
   body: ContactsIndexResponseBodySchema
 });
 
-export const ContactsShowResponseBodySchema = z.union([z.object({ contact: ContactSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const ContactsShowResponseBodySchema = z.union([z.object({ contact: ContactSchema, meta: z.object({}).optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const ContactsShowResponseSchema = z.object({
   body: ContactsShowResponseBodySchema
@@ -75,7 +75,7 @@ export const ContactsCreateRequestSchema = z.object({
   body: ContactsCreateRequestBodySchema
 });
 
-export const ContactsCreateResponseBodySchema = z.union([z.object({ contact: ContactSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const ContactsCreateResponseBodySchema = z.union([z.object({ contact: ContactSchema, meta: z.object({}).optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const ContactsCreateResponseSchema = z.object({
   body: ContactsCreateResponseBodySchema
@@ -89,7 +89,7 @@ export const ContactsUpdateRequestSchema = z.object({
   body: ContactsUpdateRequestBodySchema
 });
 
-export const ContactsUpdateResponseBodySchema = z.union([z.object({ contact: ContactSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const ContactsUpdateResponseBodySchema = z.union([z.object({ contact: ContactSchema, meta: z.object({}).optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const ContactsUpdateResponseSchema = z.object({
   body: ContactsUpdateResponseBodySchema
@@ -138,7 +138,7 @@ export interface ContactsCreateResponse {
   body: ContactsCreateResponseBody;
 }
 
-export type ContactsCreateResponseBody = { contact: Contact; meta?: object } | { issues?: Issue[] };
+export type ContactsCreateResponseBody = { contact: Contact; meta?: object } | { errors?: Error[] };
 
 export type ContactsDestroyResponse = never;
 
@@ -155,13 +155,13 @@ export interface ContactsIndexResponse {
   body: ContactsIndexResponseBody;
 }
 
-export type ContactsIndexResponseBody = { contacts?: Contact[]; meta?: object; pagination?: OffsetPagination } | { issues?: Issue[] };
+export type ContactsIndexResponseBody = { contacts?: Contact[]; meta?: object; pagination?: OffsetPagination } | { errors?: Error[] };
 
 export interface ContactsShowResponse {
   body: ContactsShowResponseBody;
 }
 
-export type ContactsShowResponseBody = { contact: Contact; meta?: object } | { issues?: Issue[] };
+export type ContactsShowResponseBody = { contact: Contact; meta?: object } | { errors?: Error[] };
 
 export interface ContactsUpdateRequest {
   body: ContactsUpdateRequestBody;
@@ -175,9 +175,9 @@ export interface ContactsUpdateResponse {
   body: ContactsUpdateResponseBody;
 }
 
-export type ContactsUpdateResponseBody = { contact: Contact; meta?: object } | { issues?: Issue[] };
+export type ContactsUpdateResponseBody = { contact: Contact; meta?: object } | { errors?: Error[] };
 
-export interface Issue {
+export interface Error {
   code: string;
   detail: string;
   field: string;

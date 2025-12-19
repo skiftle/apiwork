@@ -1,4 +1,4 @@
-export interface Issue {
+export interface Error {
   code: string;
   detail: string;
   field: string;
@@ -81,7 +81,7 @@ export interface OrdersCreateResponse {
   body: OrdersCreateResponseBody;
 }
 
-export type OrdersCreateResponseBody = { issues?: Issue[] } | { meta?: object; order: Order };
+export type OrdersCreateResponseBody = { errors?: Error[] } | { meta?: object; order: Order };
 
 export interface OrdersDestroyRequest {
   query: OrdersDestroyRequestQuery;
@@ -108,7 +108,7 @@ export interface OrdersIndexResponse {
   body: OrdersIndexResponseBody;
 }
 
-export type OrdersIndexResponseBody = { issues?: Issue[] } | { meta?: object; orders?: Order[]; pagination?: OffsetPagination };
+export type OrdersIndexResponseBody = { errors?: Error[] } | { meta?: object; orders?: Order[]; pagination?: OffsetPagination };
 
 export interface OrdersShowRequest {
   query: OrdersShowRequestQuery;
@@ -122,7 +122,7 @@ export interface OrdersShowResponse {
   body: OrdersShowResponseBody;
 }
 
-export type OrdersShowResponseBody = { issues?: Issue[] } | { meta?: object; order: Order };
+export type OrdersShowResponseBody = { errors?: Error[] } | { meta?: object; order: Order };
 
 export interface OrdersUpdateRequest {
   query: OrdersUpdateRequestQuery;
@@ -141,7 +141,7 @@ export interface OrdersUpdateResponse {
   body: OrdersUpdateResponseBody;
 }
 
-export type OrdersUpdateResponseBody = { issues?: Issue[] } | { meta?: object; order: Order };
+export type OrdersUpdateResponseBody = { errors?: Error[] } | { meta?: object; order: Order };
 
 export type SortDirection = 'asc' | 'desc';
 

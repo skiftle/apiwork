@@ -1,6 +1,24 @@
 {
   "path": "/funny_snake",
   "types": {
+    "error": {
+      "type": "object",
+      "shape": {
+        "code": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "field": {
+          "type": "string"
+        },
+        "path": {
+          "type": "array",
+          "of": "string"
+        }
+      }
+    },
     "invoice": {
       "type": "object",
       "shape": {
@@ -43,24 +61,6 @@
           "type": "string"
         }
       }
-    },
-    "issue": {
-      "type": "object",
-      "shape": {
-        "code": {
-          "type": "string"
-        },
-        "detail": {
-          "type": "string"
-        },
-        "field": {
-          "type": "string"
-        },
-        "path": {
-          "type": "array",
-          "of": "string"
-        }
-      }
     }
   },
   "enums": {},
@@ -68,11 +68,6 @@
   "resources": {
     "invoices": {
       "path": "invoices",
-      "summary": "Invoices",
-      "description": "Operations for managing invoices.",
-      "tags": [
-        "Invoices"
-      ],
       "actions": {
         "index": {
           "method": "get",

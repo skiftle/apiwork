@@ -72,7 +72,7 @@ export interface ArticlesCreateResponse {
   body: ArticlesCreateResponseBody;
 }
 
-export type ArticlesCreateResponseBody = { article: Article; meta?: object } | { issues?: Issue[] };
+export type ArticlesCreateResponseBody = { article: Article; meta?: object } | { errors?: Error[] };
 
 export interface ArticlesDestroyRequest {
   query: ArticlesDestroyRequestQuery;
@@ -99,7 +99,7 @@ export interface ArticlesIndexResponse {
   body: ArticlesIndexResponseBody;
 }
 
-export type ArticlesIndexResponseBody = { articles?: Article[]; meta?: object; pagination?: OffsetPagination } | { issues?: Issue[] };
+export type ArticlesIndexResponseBody = { articles?: Article[]; meta?: object; pagination?: OffsetPagination } | { errors?: Error[] };
 
 export interface ArticlesShowRequest {
   query: ArticlesShowRequestQuery;
@@ -113,7 +113,7 @@ export interface ArticlesShowResponse {
   body: ArticlesShowResponseBody;
 }
 
-export type ArticlesShowResponseBody = { article: Article; meta?: object } | { issues?: Issue[] };
+export type ArticlesShowResponseBody = { article: Article; meta?: object } | { errors?: Error[] };
 
 export interface ArticlesUpdateRequest {
   query: ArticlesUpdateRequestQuery;
@@ -132,7 +132,7 @@ export interface ArticlesUpdateResponse {
   body: ArticlesUpdateResponseBody;
 }
 
-export type ArticlesUpdateResponseBody = { article: Article; meta?: object } | { issues?: Issue[] };
+export type ArticlesUpdateResponseBody = { article: Article; meta?: object } | { errors?: Error[] };
 
 export interface DateFilter {
   between?: DateFilterBetween;
@@ -164,6 +164,13 @@ export interface DecimalFilterBetween {
   to?: number;
 }
 
+export interface Error {
+  code: string;
+  detail: string;
+  field: string;
+  path: string[];
+}
+
 export interface IntegerFilter {
   between?: IntegerFilterBetween;
   eq?: number;
@@ -177,13 +184,6 @@ export interface IntegerFilter {
 export interface IntegerFilterBetween {
   from?: number;
   to?: number;
-}
-
-export interface Issue {
-  code: string;
-  detail: string;
-  field: string;
-  path: string[];
 }
 
 export interface NullableDateFilter {

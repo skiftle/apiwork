@@ -142,11 +142,11 @@ end
 
 ## Error Handling
 
-When a client sends an invalid query, they get a `400 Bad Request` with structured issues:
+When a client sends an invalid query, they get a `400 Bad Request` with structured errors:
 
 ```json
 {
-  "issues": [
+  "errors": [
     {
       "code": "field_not_filterable",
       "detail": "title is not filterable. Available: status, published_at",

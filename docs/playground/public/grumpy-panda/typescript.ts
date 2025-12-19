@@ -10,7 +10,7 @@ export interface ActivitiesCreateResponse {
   body: ActivitiesCreateResponseBody;
 }
 
-export type ActivitiesCreateResponseBody = { activity: Activity; meta?: object } | { issues?: Issue[] };
+export type ActivitiesCreateResponseBody = { activity: Activity; meta?: object } | { errors?: Error[] };
 
 export type ActivitiesDestroyResponse = never;
 
@@ -27,13 +27,13 @@ export interface ActivitiesIndexResponse {
   body: ActivitiesIndexResponseBody;
 }
 
-export type ActivitiesIndexResponseBody = { activities?: Activity[]; meta?: object; pagination?: CursorPagination } | { issues?: Issue[] };
+export type ActivitiesIndexResponseBody = { activities?: Activity[]; meta?: object; pagination?: CursorPagination } | { errors?: Error[] };
 
 export interface ActivitiesShowResponse {
   body: ActivitiesShowResponseBody;
 }
 
-export type ActivitiesShowResponseBody = { activity: Activity; meta?: object } | { issues?: Issue[] };
+export type ActivitiesShowResponseBody = { activity: Activity; meta?: object } | { errors?: Error[] };
 
 export interface ActivitiesUpdateRequest {
   body: ActivitiesUpdateRequestBody;
@@ -47,7 +47,7 @@ export interface ActivitiesUpdateResponse {
   body: ActivitiesUpdateResponseBody;
 }
 
-export type ActivitiesUpdateResponseBody = { activity: Activity; meta?: object } | { issues?: Issue[] };
+export type ActivitiesUpdateResponseBody = { activity: Activity; meta?: object } | { errors?: Error[] };
 
 export interface Activity {
   action?: string;
@@ -79,7 +79,7 @@ export interface CursorPagination {
   prevCursor?: null | string;
 }
 
-export interface Issue {
+export interface Error {
   code: string;
   detail: string;
   field: string;

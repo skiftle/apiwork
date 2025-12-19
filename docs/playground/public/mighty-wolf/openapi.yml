@@ -7,8 +7,6 @@ paths:
   vehicles/:
     get:
       operationId: vehiclesIndex
-      tags:
-      - Vehicles
       parameters:
       - in: query
         name: filter
@@ -57,8 +55,6 @@ paths:
                       "$ref": "#/components/schemas/vehicle"
     post:
       operationId: vehiclesCreate
-      tags:
-      - Vehicles
       requestBody:
         required: true
         content:
@@ -92,15 +88,13 @@ paths:
               schema:
                 type: object
                 properties:
-                  issues:
+                  errors:
                     type: array
                     items:
-                      "$ref": "#/components/schemas/issue"
+                      "$ref": "#/components/schemas/error"
   vehicles/{id}:
     get:
       operationId: vehiclesShow
-      tags:
-      - Vehicles
       parameters:
       - name: id
         in: path
@@ -124,8 +118,6 @@ paths:
                 - vehicle
     patch:
       operationId: vehiclesUpdate
-      tags:
-      - Vehicles
       parameters:
       - name: id
         in: path
@@ -161,14 +153,12 @@ paths:
               schema:
                 type: object
                 properties:
-                  issues:
+                  errors:
                     type: array
                     items:
-                      "$ref": "#/components/schemas/issue"
+                      "$ref": "#/components/schemas/error"
     delete:
       operationId: vehiclesDestroy
-      tags:
-      - Vehicles
       parameters:
       - name: id
         in: path
@@ -252,6 +242,24 @@ components:
       - brand
       - model
       - type
+    error:
+      type: object
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+        field:
+          type: string
+        path:
+          type: array
+          items:
+            type: string
+      required:
+      - code
+      - detail
+      - field
+      - path
     integerFilter:
       type: object
       properties:
@@ -278,24 +286,6 @@ components:
           type: integer
         to:
           type: integer
-    issue:
-      type: object
-      properties:
-        code:
-          type: string
-        detail:
-          type: string
-        field:
-          type: string
-        path:
-          type: array
-          items:
-            type: string
-      required:
-      - code
-      - detail
-      - field
-      - path
     motorcycle:
       type: object
       properties:

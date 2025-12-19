@@ -48,7 +48,7 @@ export interface CommentsCreateResponse {
   body: CommentsCreateResponseBody;
 }
 
-export type CommentsCreateResponseBody = { comment: Comment; meta?: object } | { issues?: Issue[] };
+export type CommentsCreateResponseBody = { comment: Comment; meta?: object } | { errors?: Error[] };
 
 export interface CommentsDestroyRequest {
   query: CommentsDestroyRequestQuery;
@@ -74,7 +74,7 @@ export interface CommentsIndexResponse {
   body: CommentsIndexResponseBody;
 }
 
-export type CommentsIndexResponseBody = { comments?: Comment[]; meta?: object; pagination?: OffsetPagination } | { issues?: Issue[] };
+export type CommentsIndexResponseBody = { comments?: Comment[]; meta?: object; pagination?: OffsetPagination } | { errors?: Error[] };
 
 export interface CommentsShowRequest {
   query: CommentsShowRequestQuery;
@@ -88,7 +88,7 @@ export interface CommentsShowResponse {
   body: CommentsShowResponseBody;
 }
 
-export type CommentsShowResponseBody = { comment: Comment; meta?: object } | { issues?: Issue[] };
+export type CommentsShowResponseBody = { comment: Comment; meta?: object } | { errors?: Error[] };
 
 export interface CommentsUpdateRequest {
   query: CommentsUpdateRequestQuery;
@@ -107,7 +107,14 @@ export interface CommentsUpdateResponse {
   body: CommentsUpdateResponseBody;
 }
 
-export type CommentsUpdateResponseBody = { comment: Comment; meta?: object } | { issues?: Issue[] };
+export type CommentsUpdateResponseBody = { comment: Comment; meta?: object } | { errors?: Error[] };
+
+export interface Error {
+  code: string;
+  detail: string;
+  field: string;
+  path: string[];
+}
 
 export interface Image {
   comments?: unknown[];
@@ -148,13 +155,6 @@ export interface ImageNestedUpdatePayload {
 
 export interface ImageSort {
   createdAt?: SortDirection;
-}
-
-export interface Issue {
-  code: string;
-  detail: string;
-  field: string;
-  path: string[];
 }
 
 export interface OffsetPagination {

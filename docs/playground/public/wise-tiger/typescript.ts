@@ -1,4 +1,4 @@
-export interface Issue {
+export interface Error {
   code: string;
   detail: string;
   field: string;
@@ -89,7 +89,7 @@ export interface ProjectsCreateResponse {
   body: ProjectsCreateResponseBody;
 }
 
-export type ProjectsCreateResponseBody = { issues?: Issue[] } | { meta?: object; project: Project };
+export type ProjectsCreateResponseBody = { errors?: Error[] } | { meta?: object; project: Project };
 
 export type ProjectsDestroyResponse = never;
 
@@ -108,13 +108,13 @@ export interface ProjectsIndexResponse {
   body: ProjectsIndexResponseBody;
 }
 
-export type ProjectsIndexResponseBody = { issues?: Issue[] } | { meta?: object; pagination?: OffsetPagination; projects?: Project[] };
+export type ProjectsIndexResponseBody = { errors?: Error[] } | { meta?: object; pagination?: OffsetPagination; projects?: Project[] };
 
 export interface ProjectsShowResponse {
   body: ProjectsShowResponseBody;
 }
 
-export type ProjectsShowResponseBody = { issues?: Issue[] } | { meta?: object; project: Project };
+export type ProjectsShowResponseBody = { errors?: Error[] } | { meta?: object; project: Project };
 
 export interface ProjectsUpdateRequest {
   body: ProjectsUpdateRequestBody;
@@ -128,7 +128,7 @@ export interface ProjectsUpdateResponse {
   body: ProjectsUpdateResponseBody;
 }
 
-export type ProjectsUpdateResponseBody = { issues?: Issue[] } | { meta?: object; project: Project };
+export type ProjectsUpdateResponseBody = { errors?: Error[] } | { meta?: object; project: Project };
 
 export type SortDirection = 'asc' | 'desc';
 

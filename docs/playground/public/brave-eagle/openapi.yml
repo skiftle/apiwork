@@ -19,7 +19,6 @@ paths:
         and priority
       tags:
       - Tasks
-      - Tasks
       - Core
       parameters:
       - in: query
@@ -73,7 +72,6 @@ paths:
       description: Creates a task and returns the created resource
       tags:
       - Tasks
-      - Tasks
       parameters:
       - in: query
         name: include
@@ -113,17 +111,16 @@ paths:
               schema:
                 type: object
                 properties:
-                  issues:
+                  errors:
                     type: array
                     items:
-                      "$ref": "#/components/schemas/issue"
+                      "$ref": "#/components/schemas/error"
   tasks/{id}:
     get:
       operationId: getTask
       summary: Get task details
       description: Returns a single task by ID
       tags:
-      - Tasks
       - Tasks
       parameters:
       - name: id
@@ -156,7 +153,6 @@ paths:
       summary: Update a task
       description: Updates an existing task
       tags:
-      - Tasks
       - Tasks
       parameters:
       - name: id
@@ -198,16 +194,15 @@ paths:
               schema:
                 type: object
                 properties:
-                  issues:
+                  errors:
                     type: array
                     items:
-                      "$ref": "#/components/schemas/issue"
+                      "$ref": "#/components/schemas/error"
     delete:
       operationId: deleteTask
       summary: Delete a task
       description: Permanently removes a task
       tags:
-      - Tasks
       - Tasks
       parameters:
       - name: id
@@ -230,7 +225,6 @@ paths:
       description: Marks a task as archived. Archived tasks are hidden from default
         listings but can still be retrieved.
       tags:
-      - Tasks
       - Tasks
       - Lifecycle
       deprecated: true
@@ -262,7 +256,7 @@ paths:
                 - task
 components:
   schemas:
-    issue:
+    error:
       type: object
       properties:
         code:

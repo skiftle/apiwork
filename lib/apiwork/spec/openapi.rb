@@ -294,14 +294,14 @@ module Apiwork
               schema: {
                 type: 'object',
                 properties: {
-                  issues: {
+                  errors: {
                     type: 'array',
                     items: {
-                      '$ref': "#/components/schemas/#{schema_name(:issue)}"
+                      '$ref': "#/components/schemas/#{schema_name(:error)}"
                     }
                   }
                 },
-                required: ['issues']
+                required: ['errors']
               }
             }
           }

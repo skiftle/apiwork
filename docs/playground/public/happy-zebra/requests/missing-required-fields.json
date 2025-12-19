@@ -12,7 +12,7 @@
   "response": {
     "status": 400,
     "body": {
-      "issues": [
+      "errors": [
         {
           "code": "field_missing",
           "detail": "Field required",

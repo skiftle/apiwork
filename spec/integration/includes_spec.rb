@@ -177,7 +177,7 @@ RSpec.describe 'Includes API', type: :request do
         # because the IncludeType only has nested hash, no boolean variant
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
-        expect(json['issues']).to be_present
+        expect(json['errors']).to be_present
       end
     end
 

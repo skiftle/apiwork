@@ -21,9 +21,9 @@ def create
 end
 ```
 
-If validation fails, the adapter sees `invoice.errors`, converts each to an Issue, and raises `ValidationError`. You get a 422 with all issues. No conditionals needed.
+If validation fails, the adapter sees `invoice.errors`, converts each to an error and raises `ValidationError`. You get a 422 with all errors. No conditionals needed.
 
-## Issue Format
+## Error Format
 
 ```json
 {
@@ -145,7 +145,7 @@ Response:
 
 ```json
 {
-  "issues": [
+  "errors": [
     {
       "code": "blank",
       "path": ["invoice", "number"],
@@ -241,7 +241,7 @@ The adapter checks `respond_with` every time. Not just `create` or `update`.
 return unless record.respond_to?(:errors) && record.errors.any?
 ```
 
-If the record has errors, they become issues. Doesn't matter which action.
+If the record has errors, they become API errors. Doesn't matter which action.
 
 ### Custom Actions
 
@@ -268,7 +268,7 @@ def publish
 end
 ```
 
-If `save` fails, errors are there. `respond_with` returns 422 with issues.
+If `save` fails, errors are there. `respond_with` returns 422 with errors.
 
 ### State Transitions
 
@@ -319,7 +319,7 @@ No conditionals. Add errors, call `respond_with`.
 2. Add errors if something fails
 3. Call `respond_with`
 
-Errors exist? 422 with issues. No errors? Serialized record.
+Errors exist? 422 with errors. No errors? Serialized record.
 
 ## Adapter-Specific
 

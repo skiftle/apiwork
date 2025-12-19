@@ -14,7 +14,7 @@
     }
   },
   "types": {
-    "issue": {
+    "error": {
       "type": "object",
       "shape": {
         "code": {
@@ -415,11 +415,6 @@
   "resources": {
     "tasks": {
       "path": "tasks",
-      "summary": "Tasks",
-      "description": "Operations for managing tasks.",
-      "tags": [
-        "Tasks"
-      ],
       "schema": {
         "type": "object",
         "shape": {
@@ -433,7 +428,7 @@
             "description": "Short title describing the task"
           },
           "description": {
-            "type": "text",
+            "type": "string",
             "example": "Add OAuth2 login support for Google and GitHub providers",
             "description": "Detailed description of what needs to be done",
             "nullable": true,
@@ -551,9 +546,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -598,9 +593,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -650,9 +645,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -705,9 +700,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -777,9 +772,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }

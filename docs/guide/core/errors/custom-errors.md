@@ -6,9 +6,9 @@ order: 4
 
 Beyond contract and model validation, you can create custom errors for business logic, authorization, and domain-specific rules.
 
-## Creating Issues
+## Creating Errors
 
-Build issues directly when you need custom error handling:
+Build errors directly when you need custom error handling:
 
 ```ruby
 issue = Apiwork::Issue.new(
@@ -23,7 +23,7 @@ The `code` should be a symbol that clients can use programmatically. The `detail
 
 ## Rendering Errors
 
-Use `render_error` to return custom issues:
+Use `render_error` to return custom errors:
 
 ```ruby
 def create
@@ -132,7 +132,7 @@ Choose the appropriate status for your error type:
 
 ## Combining Error Sources
 
-You can mix custom issues with validation issues:
+You can mix custom errors with validation errors:
 
 ```ruby
 def create

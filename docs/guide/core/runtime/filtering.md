@@ -84,7 +84,7 @@ Enum fields support `eq` and `in` operators. You can also pass the value directl
 
 ```json
 {
-  "issues": [{
+  "errors": [{
     "code": "invalid_enum_value",
     "detail": "Invalid value 'unknown' for status. Valid: draft, published, archived",
     "path": ["filter", "status", "eq"]
@@ -206,7 +206,7 @@ The `null` operator is only allowed on nullable columns. Non-nullable columns re
 
 ```json
 {
-  "issues": [{
+  "errors": [{
     "code": "null_not_allowed",
     "detail": "title does not allow null values",
     "path": ["filter", "title", "null"]
@@ -233,7 +233,7 @@ The contract layer handles most validation:
 - **Type mismatches** — `filter[amount][eq]=hello` rejected for numeric fields
 - **Structure errors** — malformed filter objects
 
-These errors return standard contract validation issues with codes like `invalid_type` and `field_unknown`.
+These errors return standard contract validation errors with codes like `invalid_type` and `field_unknown`.
 
 ### Runtime Validation
 

@@ -34,7 +34,7 @@ class MyAdapter < Apiwork::Adapter::Base
 
   def render_error(issues, action_data)
     # Format error response
-    { issues: issues.map(&:to_h) }
+    { errors: issues.map(&:to_h) }
   end
 end
 ```

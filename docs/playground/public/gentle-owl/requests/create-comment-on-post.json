@@ -14,7 +14,7 @@
   "response": {
     "status": 400,
     "body": {
-      "issues": [
+      "errors": [
         {
           "code": "field_unknown",
           "detail": "Unknown field",

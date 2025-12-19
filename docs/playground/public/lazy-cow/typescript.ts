@@ -1,4 +1,4 @@
-export interface Issue {
+export interface Error {
   code: string;
   detail: string;
   field: string;

@@ -7,8 +7,6 @@ paths:
   articles/:
     get:
       operationId: articlesIndex
-      tags:
-      - Articles
       parameters:
       - in: query
         name: filter
@@ -57,8 +55,6 @@ paths:
                     "$ref": "#/components/schemas/offsetPagination"
     post:
       operationId: articlesCreate
-      tags:
-      - Articles
       parameters:
       - in: query
         name: include
@@ -98,15 +94,13 @@ paths:
               schema:
                 type: object
                 properties:
-                  issues:
+                  errors:
                     type: array
                     items:
-                      "$ref": "#/components/schemas/issue"
+                      "$ref": "#/components/schemas/error"
   articles/{id}:
     get:
       operationId: articlesShow
-      tags:
-      - Articles
       parameters:
       - name: id
         in: path
@@ -135,8 +129,6 @@ paths:
                 - article
     patch:
       operationId: articlesUpdate
-      tags:
-      - Articles
       parameters:
       - name: id
         in: path
@@ -177,14 +169,12 @@ paths:
               schema:
                 type: object
                 properties:
-                  issues:
+                  errors:
                     type: array
                     items:
-                      "$ref": "#/components/schemas/issue"
+                      "$ref": "#/components/schemas/error"
     delete:
       operationId: articlesDestroy
-      tags:
-      - Articles
       parameters:
       - name: id
         in: path
@@ -420,6 +410,24 @@ components:
           type: number
         to:
           type: number
+    error:
+      type: object
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+        field:
+          type: string
+        path:
+          type: array
+          items:
+            type: string
+      required:
+      - code
+      - detail
+      - field
+      - path
     integerFilter:
       type: object
       properties:
@@ -446,24 +454,6 @@ components:
           type: integer
         to:
           type: integer
-    issue:
-      type: object
-      properties:
-        code:
-          type: string
-        detail:
-          type: string
-        field:
-          type: string
-        path:
-          type: array
-          items:
-            type: string
-      required:
-      - code
-      - detail
-      - field
-      - path
     nullableDateFilter:
       type: object
       properties:

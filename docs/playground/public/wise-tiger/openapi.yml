@@ -12,7 +12,6 @@ paths:
       description: Returns a paginated list of projects with optional filtering
       tags:
       - Projects
-      - Projects
       parameters:
       - in: query
         name: filter
@@ -65,7 +64,6 @@ paths:
       description: Creates a project and returns the created resource
       tags:
       - Projects
-      - Projects
       requestBody:
         required: true
         content:
@@ -99,17 +97,16 @@ paths:
               schema:
                 type: object
                 properties:
-                  issues:
+                  errors:
                     type: array
                     items:
-                      "$ref": "#/components/schemas/issue"
+                      "$ref": "#/components/schemas/error"
   projects/{id}:
     get:
       operationId: getProject
       summary: Get project details
       description: Returns a single project by ID with all attributes
       tags:
-      - Projects
       - Projects
       parameters:
       - name: id
@@ -137,7 +134,6 @@ paths:
       summary: Update a project
       description: Updates an existing project with the provided attributes
       tags:
-      - Projects
       - Projects
       parameters:
       - name: id
@@ -174,16 +170,15 @@ paths:
               schema:
                 type: object
                 properties:
-                  issues:
+                  errors:
                     type: array
                     items:
-                      "$ref": "#/components/schemas/issue"
+                      "$ref": "#/components/schemas/error"
     delete:
       operationId: deleteProject
       summary: Delete a project
-      description: Permanently removes a project from the system
+      description: Permanently removes a project
       tags:
-      - Projects
       - Projects
       parameters:
       - name: id
@@ -196,7 +191,7 @@ paths:
           description: No content
 components:
   schemas:
-    issue:
+    error:
       type: object
       properties:
         code:

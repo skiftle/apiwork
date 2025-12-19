@@ -1,7 +1,7 @@
 {
   "path": "/clever_rabbit",
   "types": {
-    "issue": {
+    "error": {
       "type": "object",
       "shape": {
         "code": {
@@ -251,11 +251,6 @@
   "resources": {
     "orders": {
       "path": "orders",
-      "summary": "Orders",
-      "description": "Operations for managing orders.",
-      "tags": [
-        "Orders"
-      ],
       "schema": {
         "type": "object",
         "shape": {
@@ -350,9 +345,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -391,9 +386,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -437,9 +432,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -486,9 +481,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }

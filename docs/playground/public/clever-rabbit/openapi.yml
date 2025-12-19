@@ -7,8 +7,6 @@ paths:
   orders/:
     get:
       operationId: ordersIndex
-      tags:
-      - Orders
       parameters:
       - in: query
         name: filter
@@ -57,8 +55,6 @@ paths:
                     "$ref": "#/components/schemas/offsetPagination"
     post:
       operationId: ordersCreate
-      tags:
-      - Orders
       parameters:
       - in: query
         name: include
@@ -98,15 +94,13 @@ paths:
               schema:
                 type: object
                 properties:
-                  issues:
+                  errors:
                     type: array
                     items:
-                      "$ref": "#/components/schemas/issue"
+                      "$ref": "#/components/schemas/error"
   orders/{id}:
     get:
       operationId: ordersShow
-      tags:
-      - Orders
       parameters:
       - name: id
         in: path
@@ -135,8 +129,6 @@ paths:
                 - order
     patch:
       operationId: ordersUpdate
-      tags:
-      - Orders
       parameters:
       - name: id
         in: path
@@ -177,14 +169,12 @@ paths:
               schema:
                 type: object
                 properties:
-                  issues:
+                  errors:
                     type: array
                     items:
-                      "$ref": "#/components/schemas/issue"
+                      "$ref": "#/components/schemas/error"
     delete:
       operationId: ordersDestroy
-      tags:
-      - Orders
       parameters:
       - name: id
         in: path
@@ -201,7 +191,7 @@ paths:
           description: No content
 components:
   schemas:
-    issue:
+    error:
       type: object
       properties:
         code:

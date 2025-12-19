@@ -196,7 +196,7 @@ This takes precedence over the API-level defaults for this schema only.
 
 ```json
 {
-  "issues": [{
+  "errors": [{
     "code": "invalid_cursor",
     "detail": "Invalid pagination cursor",
     "path": ["page", "after"]

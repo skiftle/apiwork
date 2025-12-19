@@ -209,7 +209,7 @@ Content-Type: application/json
 
 ```json
 {
-  "issues": [
+  "errors": [
     {
       "code": "field_unknown",
       "detail": "Unknown field",
@@ -271,7 +271,7 @@ Content-Type: application/json
 
 ```json
 {
-  "issues": [
+  "errors": [
     {
       "code": "field_unknown",
       "detail": "Unknown field",
@@ -323,7 +323,7 @@ GET /gentle_owl/comments?filter[commentable_type][eq]=GentleOwl::Post
 
 ```json
 {
-  "issues": [
+  "errors": [
     {
       "code": "field_unknown",
       "detail": "Unknown field",

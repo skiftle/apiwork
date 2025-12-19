@@ -7,8 +7,6 @@ paths:
   invoices/:
     get:
       operationId: invoicesIndex
-      tags:
-      - Invoices
       parameters:
       - in: query
         name: filter
@@ -57,8 +55,6 @@ paths:
                     "$ref": "#/components/schemas/offsetPagination"
     post:
       operationId: invoicesCreate
-      tags:
-      - Invoices
       parameters:
       - in: query
         name: include
@@ -98,15 +94,13 @@ paths:
               schema:
                 type: object
                 properties:
-                  issues:
+                  errors:
                     type: array
                     items:
-                      "$ref": "#/components/schemas/issue"
+                      "$ref": "#/components/schemas/error"
   invoices/{id}:
     get:
       operationId: invoicesShow
-      tags:
-      - Invoices
       parameters:
       - name: id
         in: path
@@ -135,8 +129,6 @@ paths:
                 - invoice
     patch:
       operationId: invoicesUpdate
-      tags:
-      - Invoices
       parameters:
       - name: id
         in: path
@@ -177,14 +169,12 @@ paths:
               schema:
                 type: object
                 properties:
-                  issues:
+                  errors:
                     type: array
                     items:
-                      "$ref": "#/components/schemas/issue"
+                      "$ref": "#/components/schemas/error"
     delete:
       operationId: invoicesDestroy
-      tags:
-      - Invoices
       parameters:
       - name: id
         in: path
@@ -202,8 +192,6 @@ paths:
   invoices/{id}/archive:
     patch:
       operationId: invoicesArchive
-      tags:
-      - Invoices
       parameters:
       - name: id
         in: path
@@ -232,6 +220,24 @@ paths:
                 - invoice
 components:
   schemas:
+    error:
+      type: object
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+        field:
+          type: string
+        path:
+          type: array
+          items:
+            type: string
+      required:
+      - code
+      - detail
+      - field
+      - path
     invoice:
       type: object
       properties:
@@ -362,24 +368,6 @@ components:
       required:
       - customerId
       - number
-    issue:
-      type: object
-      properties:
-        code:
-          type: string
-        detail:
-          type: string
-        field:
-          type: string
-        path:
-          type: array
-          items:
-            type: string
-      required:
-      - code
-      - detail
-      - field
-      - path
     nullableStringFilter:
       type: object
       properties:

@@ -6,7 +6,7 @@ export const TaskPrioritySchema = z.enum(['critical', 'high', 'low', 'medium']);
 
 export const TaskStatusSchema = z.enum(['archived', 'completed', 'in_progress', 'pending']);
 
-export const IssueSchema = z.object({
+export const ErrorSchema = z.object({
   code: z.string(),
   detail: z.string(),
   field: z.string(),
@@ -111,7 +111,7 @@ export const TasksIndexRequestSchema = z.object({
   query: TasksIndexRequestQuerySchema
 });
 
-export const TasksIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional(), tasks: z.array(TaskSchema).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const TasksIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional(), tasks: z.array(TaskSchema).optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const TasksIndexResponseSchema = z.object({
   body: TasksIndexResponseBodySchema
@@ -125,7 +125,7 @@ export const TasksShowRequestSchema = z.object({
   query: TasksShowRequestQuerySchema
 });
 
-export const TasksShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), task: TaskSchema }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const TasksShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), task: TaskSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const TasksShowResponseSchema = z.object({
   body: TasksShowResponseBodySchema
@@ -144,7 +144,7 @@ export const TasksCreateRequestSchema = z.object({
   body: TasksCreateRequestBodySchema
 });
 
-export const TasksCreateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), task: TaskSchema }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const TasksCreateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), task: TaskSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const TasksCreateResponseSchema = z.object({
   body: TasksCreateResponseBodySchema
@@ -163,7 +163,7 @@ export const TasksUpdateRequestSchema = z.object({
   body: TasksUpdateRequestBodySchema
 });
 
-export const TasksUpdateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), task: TaskSchema }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const TasksUpdateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), task: TaskSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const TasksUpdateResponseSchema = z.object({
   body: TasksUpdateResponseBodySchema
@@ -187,13 +187,13 @@ export const TasksArchiveRequestSchema = z.object({
   query: TasksArchiveRequestQuerySchema
 });
 
-export const TasksArchiveResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), task: TaskSchema }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const TasksArchiveResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), task: TaskSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const TasksArchiveResponseSchema = z.object({
   body: TasksArchiveResponseBodySchema
 });
 
-export interface Issue {
+export interface Error {
   code: string;
   detail: string;
   field: string;
@@ -297,7 +297,7 @@ export interface TasksArchiveResponse {
   body: TasksArchiveResponseBody;
 }
 
-export type TasksArchiveResponseBody = { issues?: Issue[] } | { meta?: object; task: Task };
+export type TasksArchiveResponseBody = { errors?: Error[] } | { meta?: object; task: Task };
 
 export interface TasksCreateRequest {
   query: TasksCreateRequestQuery;
@@ -316,7 +316,7 @@ export interface TasksCreateResponse {
   body: TasksCreateResponseBody;
 }
 
-export type TasksCreateResponseBody = { issues?: Issue[] } | { meta?: object; task: Task };
+export type TasksCreateResponseBody = { errors?: Error[] } | { meta?: object; task: Task };
 
 export interface TasksDestroyRequest {
   query: TasksDestroyRequestQuery;
@@ -343,7 +343,7 @@ export interface TasksIndexResponse {
   body: TasksIndexResponseBody;
 }
 
-export type TasksIndexResponseBody = { issues?: Issue[] } | { meta?: object; pagination?: OffsetPagination; tasks?: Task[] };
+export type TasksIndexResponseBody = { errors?: Error[] } | { meta?: object; pagination?: OffsetPagination; tasks?: Task[] };
 
 export interface TasksShowRequest {
   query: TasksShowRequestQuery;
@@ -357,7 +357,7 @@ export interface TasksShowResponse {
   body: TasksShowResponseBody;
 }
 
-export type TasksShowResponseBody = { issues?: Issue[] } | { meta?: object; task: Task };
+export type TasksShowResponseBody = { errors?: Error[] } | { meta?: object; task: Task };
 
 export interface TasksUpdateRequest {
   query: TasksUpdateRequestQuery;
@@ -376,4 +376,4 @@ export interface TasksUpdateResponse {
   body: TasksUpdateResponseBody;
 }
 
-export type TasksUpdateResponseBody = { issues?: Issue[] } | { meta?: object; task: Task };
+export type TasksUpdateResponseBody = { errors?: Error[] } | { meta?: object; task: Task };

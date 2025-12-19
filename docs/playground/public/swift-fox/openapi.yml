@@ -7,8 +7,6 @@ paths:
   contacts/:
     get:
       operationId: contactsIndex
-      tags:
-      - Contacts
       parameters:
       - in: query
         name: include
@@ -39,8 +37,6 @@ paths:
                     "$ref": "#/components/schemas/offsetPagination"
     post:
       operationId: contactsCreate
-      tags:
-      - Contacts
       requestBody:
         required: true
         content:
@@ -74,15 +70,13 @@ paths:
               schema:
                 type: object
                 properties:
-                  issues:
+                  errors:
                     type: array
                     items:
-                      "$ref": "#/components/schemas/issue"
+                      "$ref": "#/components/schemas/error"
   contacts/{id}:
     get:
       operationId: contactsShow
-      tags:
-      - Contacts
       parameters:
       - name: id
         in: path
@@ -106,8 +100,6 @@ paths:
                 - contact
     patch:
       operationId: contactsUpdate
-      tags:
-      - Contacts
       parameters:
       - name: id
         in: path
@@ -143,14 +135,12 @@ paths:
               schema:
                 type: object
                 properties:
-                  issues:
+                  errors:
                     type: array
                     items:
-                      "$ref": "#/components/schemas/issue"
+                      "$ref": "#/components/schemas/error"
     delete:
       operationId: contactsDestroy
-      tags:
-      - Contacts
       parameters:
       - name: id
         in: path
@@ -218,7 +208,7 @@ components:
           type: string
       required:
       - name
-    issue:
+    error:
       type: object
       properties:
         code:

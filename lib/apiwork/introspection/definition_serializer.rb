@@ -36,7 +36,7 @@ module Apiwork
 
         @definition.params.sort_by { |name, _| name.to_s }.each do |name, param_options|
           case name
-          when :issues
+          when :errors
             issue_params[name] = serialize_param(name, param_options)
           else
             serialized = serialize_param(name, param_options)

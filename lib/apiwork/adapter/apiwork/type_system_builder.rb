@@ -110,7 +110,7 @@ module Apiwork
           @schema_data = schema_data
 
           register_pagination_types if schema_data.has_index_actions?
-          register_issue_type if schema_data.has_resources?
+          register_error_type if schema_data.has_resources?
           register_global_filter_types if schema_data.filterable_types.any?
           register_sort_direction if schema_data.sortable?
         end
@@ -142,8 +142,8 @@ module Apiwork
           end
         end
 
-        def register_issue_type
-          type_registrar.type :issue do
+        def register_error_type
+          type_registrar.type :error do
             param :code, type: :string
             param :field, type: :string
             param :detail, type: :string

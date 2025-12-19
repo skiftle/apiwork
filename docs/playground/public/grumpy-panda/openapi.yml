@@ -7,8 +7,6 @@ paths:
   activities/:
     get:
       operationId: activitiesIndex
-      tags:
-      - Activities
       parameters:
       - in: query
         name: include
@@ -39,8 +37,6 @@ paths:
                     "$ref": "#/components/schemas/cursorPagination"
     post:
       operationId: activitiesCreate
-      tags:
-      - Activities
       requestBody:
         required: true
         content:
@@ -74,15 +70,13 @@ paths:
               schema:
                 type: object
                 properties:
-                  issues:
+                  errors:
                     type: array
                     items:
-                      "$ref": "#/components/schemas/issue"
+                      "$ref": "#/components/schemas/error"
   activities/{id}:
     get:
       operationId: activitiesShow
-      tags:
-      - Activities
       parameters:
       - name: id
         in: path
@@ -106,8 +100,6 @@ paths:
                 - activity
     patch:
       operationId: activitiesUpdate
-      tags:
-      - Activities
       parameters:
       - name: id
         in: path
@@ -143,14 +135,12 @@ paths:
               schema:
                 type: object
                 properties:
-                  issues:
+                  errors:
                     type: array
                     items:
-                      "$ref": "#/components/schemas/issue"
+                      "$ref": "#/components/schemas/error"
     delete:
       operationId: activitiesDestroy
-      tags:
-      - Activities
       parameters:
       - name: id
         in: path
@@ -220,7 +210,7 @@ components:
           type:
           - string
           - 'null'
-    issue:
+    error:
       type: object
       properties:
         code:

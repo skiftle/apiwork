@@ -26,6 +26,13 @@ export interface CarUpdatePayload {
   year?: null | number;
 }
 
+export interface Error {
+  code: string;
+  detail: string;
+  field: string;
+  path: string[];
+}
+
 export interface IntegerFilter {
   between?: IntegerFilterBetween;
   eq?: number;
@@ -39,13 +46,6 @@ export interface IntegerFilter {
 export interface IntegerFilterBetween {
   from?: number;
   to?: number;
-}
-
-export interface Issue {
-  code: string;
-  detail: string;
-  field: string;
-  path: string[];
 }
 
 export interface Motorcycle {
@@ -171,7 +171,7 @@ export interface VehiclesCreateResponse {
   body: VehiclesCreateResponseBody;
 }
 
-export type VehiclesCreateResponseBody = { issues?: Issue[] } | { meta?: object; vehicle: Vehicle };
+export type VehiclesCreateResponseBody = { errors?: Error[] } | { meta?: object; vehicle: Vehicle };
 
 export type VehiclesDestroyResponse = never;
 
@@ -190,13 +190,13 @@ export interface VehiclesIndexResponse {
   body: VehiclesIndexResponseBody;
 }
 
-export type VehiclesIndexResponseBody = { issues?: Issue[] } | { meta?: object; pagination?: OffsetPagination; vehicles?: Vehicle[] };
+export type VehiclesIndexResponseBody = { errors?: Error[] } | { meta?: object; pagination?: OffsetPagination; vehicles?: Vehicle[] };
 
 export interface VehiclesShowResponse {
   body: VehiclesShowResponseBody;
 }
 
-export type VehiclesShowResponseBody = { issues?: Issue[] } | { meta?: object; vehicle: Vehicle };
+export type VehiclesShowResponseBody = { errors?: Error[] } | { meta?: object; vehicle: Vehicle };
 
 export interface VehiclesUpdateRequest {
   body: VehiclesUpdateRequestBody;
@@ -210,4 +210,4 @@ export interface VehiclesUpdateResponse {
   body: VehiclesUpdateResponseBody;
 }
 
-export type VehiclesUpdateResponseBody = { issues?: Issue[] } | { meta?: object; vehicle: Vehicle };
+export type VehiclesUpdateResponseBody = { errors?: Error[] } | { meta?: object; vehicle: Vehicle };

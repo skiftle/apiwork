@@ -1,5 +1,12 @@
 import { z } from 'zod';
 
+export const ErrorSchema = z.object({
+  code: z.string(),
+  detail: z.string(),
+  field: z.string(),
+  path: z.array(z.string())
+});
+
 export const InvoiceSchema = z.object({
   createdAt: z.iso.datetime(),
   id: z.uuid(),
@@ -15,13 +22,6 @@ export const InvoicePayloadSchema = z.object({
   notes: z.string(),
   number: z.string(),
   status: z.string()
-});
-
-export const IssueSchema = z.object({
-  code: z.string(),
-  detail: z.string(),
-  field: z.string(),
-  path: z.array(z.string())
 });
 
 export const InvoicesIndexResponseBodySchema = z.object({ invoices: z.array(InvoiceSchema) });
@@ -64,6 +64,13 @@ export const InvoicesUpdateResponseSchema = z.object({
   body: InvoicesUpdateResponseBodySchema
 });
 
+export interface Error {
+  code: string;
+  detail: string;
+  field: string;
+  path: string[];
+}
+
 export interface Invoice {
   createdAt: string;
   id: string;
@@ -79,11 +86,4 @@ export interface InvoicePayload {
   notes: string;
   number: string;
   status: string;
-}
-
-export interface Issue {
-  code: string;
-  detail: string;
-  field: string;
-  path: string[];
 }

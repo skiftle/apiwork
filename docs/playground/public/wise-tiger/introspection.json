@@ -6,7 +6,7 @@
     "description": "API for managing projects with I18n-powered documentation"
   },
   "types": {
-    "issue": {
+    "error": {
       "type": "object",
       "shape": {
         "code": {
@@ -366,11 +366,6 @@
   "resources": {
     "projects": {
       "path": "projects",
-      "summary": "Projects",
-      "description": "Operations for managing projects.",
-      "tags": [
-        "Projects"
-      ],
       "schema": {
         "type": "object",
         "shape": {
@@ -381,7 +376,7 @@
             "type": "string"
           },
           "description": {
-            "type": "text",
+            "type": "string",
             "nullable": true,
             "optional": true
           },
@@ -481,9 +476,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -520,9 +515,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -566,9 +561,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -615,9 +610,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -633,7 +628,7 @@
           "method": "delete",
           "path": "/:id",
           "summary": "Delete a project",
-          "description": "Permanently removes a project from the system",
+          "description": "Permanently removes a project",
           "tags": [
             "Projects"
           ],

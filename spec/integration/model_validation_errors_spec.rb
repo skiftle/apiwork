@@ -19,8 +19,8 @@ RSpec.describe 'Model Validation Errors', type: :request do
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      expect(json['issues']).to be_an(Array)
-      title_issue = json['issues'].find { |i| i['pointer'] == '/post/title' }
+      expect(json['errors']).to be_an(Array)
+      title_issue = json['errors'].find { |i| i['pointer'] == '/post/title' }
       expect(title_issue).to be_present
       expect(title_issue['code']).to eq('field_missing')
     end
@@ -31,8 +31,8 @@ RSpec.describe 'Model Validation Errors', type: :request do
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      expect(json['issues']).to be_an(Array)
-      published_issue = json['issues'].find { |i| i['pointer'] == '/post/published' }
+      expect(json['errors']).to be_an(Array)
+      published_issue = json['errors'].find { |i| i['pointer'] == '/post/published' }
       expect(published_issue).to be_present
       expect(published_issue['code']).to eq('invalid_type')
     end
@@ -45,7 +45,7 @@ RSpec.describe 'Model Validation Errors', type: :request do
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      issue = json['issues'].first
+      issue = json['errors'].first
       expect(issue).to have_key('code')
       expect(issue).to have_key('detail')
       expect(issue).to have_key('pointer')
@@ -57,7 +57,7 @@ RSpec.describe 'Model Validation Errors', type: :request do
       post '/api/v1/posts', params: { post: { title: '' } }, as: :json
 
       json = JSON.parse(response.body)
-      issue = json['issues'].first
+      issue = json['errors'].first
 
       expect(issue['pointer']).to eq('/post/title')
       expect(issue['path']).to eq(%w[post title])
@@ -67,7 +67,7 @@ RSpec.describe 'Model Validation Errors', type: :request do
       post '/api/v1/posts', params: { post: { title: '' } }, as: :json
 
       json = JSON.parse(response.body)
-      issue = json['issues'].first
+      issue = json['errors'].first
 
       expect(issue['meta']['field']).to eq('title')
     end
@@ -88,8 +88,8 @@ RSpec.describe 'Model Validation Errors', type: :request do
       json = JSON.parse(response.body)
 
       # Contract validation catches missing required content field
-      if json['issues'].present?
-        nested_issue = json['issues'].find { |i| i['pointer']&.include?('comments') }
+      if json['errors'].present?
+        nested_issue = json['errors'].find { |i| i['pointer']&.include?('comments') }
         expect(nested_issue['code']).to be_present if nested_issue
       end
     end
@@ -113,8 +113,8 @@ RSpec.describe 'Model Validation Errors', type: :request do
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      expect(json['issues']).to be_an(Array)
-      published_issue = json['issues'].find { |i| i['pointer'] == '/post/published' }
+      expect(json['errors']).to be_an(Array)
+      published_issue = json['errors'].find { |i| i['pointer'] == '/post/published' }
       expect(published_issue).to be_present
       expect(published_issue['code']).to eq('invalid_type')
     end
@@ -132,9 +132,9 @@ RSpec.describe 'Model Validation Errors', type: :request do
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      expect(json['issues'].length).to be >= 2
+      expect(json['errors'].length).to be >= 2
 
-      pointers = json['issues'].map { |i| i['pointer'] }
+      pointers = json['errors'].map { |i| i['pointer'] }
       expect(pointers).to include('/post/title')
       expect(pointers).to include('/post/published')
     end

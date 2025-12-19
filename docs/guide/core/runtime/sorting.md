@@ -118,7 +118,7 @@ Example error response:
 
 ```json
 {
-  "issues": [
+  "errors": [
     {
       "code": "field_not_sortable",
       "detail": "body is not sortable. Available: title, created_at, views",

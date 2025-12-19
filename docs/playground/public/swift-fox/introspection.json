@@ -87,7 +87,7 @@
         }
       }
     },
-    "issue": {
+    "error": {
       "type": "object",
       "shape": {
         "code": {
@@ -140,11 +140,6 @@
   "resources": {
     "contacts": {
       "path": "contacts",
-      "summary": "Contacts",
-      "description": "Operations for managing contacts.",
-      "tags": [
-        "Contacts"
-      ],
       "schema": {
         "type": "object",
         "shape": {
@@ -210,9 +205,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -243,9 +238,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -283,9 +278,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -326,9 +321,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }

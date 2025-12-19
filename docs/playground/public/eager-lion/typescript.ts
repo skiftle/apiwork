@@ -1,3 +1,10 @@
+export interface Error {
+  code: string;
+  detail: string;
+  field: string;
+  path: string[];
+}
+
 export interface Invoice {
   createdAt?: string;
   customer: object;
@@ -61,7 +68,7 @@ export interface InvoicesArchiveResponse {
   body: InvoicesArchiveResponseBody;
 }
 
-export type InvoicesArchiveResponseBody = { invoice: Invoice; meta?: object } | { issues?: Issue[] };
+export type InvoicesArchiveResponseBody = { errors?: Error[] } | { invoice: Invoice; meta?: object };
 
 export interface InvoicesCreateRequest {
   query: InvoicesCreateRequestQuery;
@@ -80,7 +87,7 @@ export interface InvoicesCreateResponse {
   body: InvoicesCreateResponseBody;
 }
 
-export type InvoicesCreateResponseBody = { invoice: Invoice; meta?: object } | { issues?: Issue[] };
+export type InvoicesCreateResponseBody = { errors?: Error[] } | { invoice: Invoice; meta?: object };
 
 export interface InvoicesDestroyRequest {
   query: InvoicesDestroyRequestQuery;
@@ -107,7 +114,7 @@ export interface InvoicesIndexResponse {
   body: InvoicesIndexResponseBody;
 }
 
-export type InvoicesIndexResponseBody = { invoices?: Invoice[]; meta?: object; pagination?: OffsetPagination } | { issues?: Issue[] };
+export type InvoicesIndexResponseBody = { errors?: Error[] } | { invoices?: Invoice[]; meta?: object; pagination?: OffsetPagination };
 
 export interface InvoicesShowRequest {
   query: InvoicesShowRequestQuery;
@@ -121,7 +128,7 @@ export interface InvoicesShowResponse {
   body: InvoicesShowResponseBody;
 }
 
-export type InvoicesShowResponseBody = { invoice: Invoice; meta?: object } | { issues?: Issue[] };
+export type InvoicesShowResponseBody = { errors?: Error[] } | { invoice: Invoice; meta?: object };
 
 export interface InvoicesUpdateRequest {
   query: InvoicesUpdateRequestQuery;
@@ -140,14 +147,7 @@ export interface InvoicesUpdateResponse {
   body: InvoicesUpdateResponseBody;
 }
 
-export type InvoicesUpdateResponseBody = { invoice: Invoice; meta?: object } | { issues?: Issue[] };
-
-export interface Issue {
-  code: string;
-  detail: string;
-  field: string;
-  path: string[];
-}
+export type InvoicesUpdateResponseBody = { errors?: Error[] } | { invoice: Invoice; meta?: object };
 
 export interface NullableStringFilter {
   contains?: string;

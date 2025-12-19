@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const IssueSchema = z.object({
+export const ErrorSchema = z.object({
   code: z.string(),
   detail: z.string(),
   field: z.string(),
@@ -19,7 +19,7 @@ export const StatusStatsResponseSchema = z.object({
   body: StatusStatsResponseBodySchema
 });
 
-export interface Issue {
+export interface Error {
   code: string;
   detail: string;
   field: string;

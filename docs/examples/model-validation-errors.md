@@ -202,7 +202,7 @@ Content-Type: application/json
 
 ```json
 {
-  "issues": [
+  "errors": [
     {
       "code": "invalid",
       "detail": "is invalid",
@@ -242,7 +242,7 @@ Content-Type: application/json
 
 ```json
 {
-  "issues": [
+  "errors": [
     {
       "code": "field_missing",
       "detail": "Field required",
@@ -298,7 +298,7 @@ Content-Type: application/json
 
 ```json
 {
-  "issues": [
+  "errors": [
     {
       "code": "too_long",
       "detail": "is too long (maximum is 500 characters)",
@@ -431,7 +431,7 @@ Content-Type: application/json
 
 ```json
 {
-  "issues": [
+  "errors": [
     {
       "code": "blank",
       "detail": "can't be blank",

@@ -94,6 +94,24 @@
         }
       }
     },
+    "error": {
+      "type": "object",
+      "shape": {
+        "code": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "field": {
+          "type": "string"
+        },
+        "path": {
+          "type": "array",
+          "of": "string"
+        }
+      }
+    },
     "integer_filter": {
       "type": "object",
       "shape": {
@@ -138,24 +156,6 @@
         "to": {
           "type": "integer",
           "optional": true
-        }
-      }
-    },
-    "issue": {
-      "type": "object",
-      "shape": {
-        "code": {
-          "type": "string"
-        },
-        "detail": {
-          "type": "string"
-        },
-        "field": {
-          "type": "string"
-        },
-        "path": {
-          "type": "array",
-          "of": "string"
         }
       }
     },
@@ -612,11 +612,6 @@
   "resources": {
     "vehicles": {
       "path": "vehicles",
-      "summary": "Vehicles",
-      "description": "Operations for managing vehicles.",
-      "tags": [
-        "Vehicles"
-      ],
       "schema": {
         "type": "object",
         "shape": {
@@ -708,9 +703,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -741,9 +736,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -781,9 +776,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -824,9 +819,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }

@@ -156,7 +156,7 @@ module Apiwork
           definition.param root_key, type: resource_type_name
           definition.param :meta, type: :object, optional: true
 
-          definition.param :issues, type: :array, of: :issue, optional: true
+          definition.param :errors, type: :array, of: :error, optional: true
         end
 
         def collection_response(definition)
@@ -170,7 +170,7 @@ module Apiwork
           definition.param :pagination, type: pagination_type, optional: true
           definition.param :meta, type: :object, optional: true
 
-          definition.param :issues, type: :array, of: :issue, optional: true
+          definition.param :errors, type: :array, of: :error, optional: true
         end
 
         def build_enums

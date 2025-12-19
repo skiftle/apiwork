@@ -6,7 +6,7 @@ order: 5
 
 HTTP errors like "not found" or "forbidden" are part of every API. How you handle them is up to you — but consistency matters. Returning the same error format everywhere makes clients easier to build.
 
-Apiwork provides `respond_with_error` for this. It returns errors in the same Issue format as contract and validation errors. One parser handles everything.
+Apiwork provides `respond_with_error` for this. It returns errors in the same format as contract and validation errors. One parser handles everything.
 
 ## rescue_from
 
@@ -30,7 +30,7 @@ This is optional. You decide how to structure error handling in your app.
 
 ## respond_with_error
 
-Returns an error response in Issue format:
+Returns an error response:
 
 ```ruby
 respond_with_error :forbidden
@@ -38,7 +38,7 @@ respond_with_error :forbidden
 
 ```json
 {
-  "issues": [
+  "errors": [
     {
       "code": "forbidden",
       "detail": "Access denied",

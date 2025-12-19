@@ -312,7 +312,7 @@ Content-Type: application/json
 
 ```json
 {
-  "issues": [
+  "errors": [
     {
       "code": "field_missing",
       "detail": "Field required",

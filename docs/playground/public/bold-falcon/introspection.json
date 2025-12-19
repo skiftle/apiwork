@@ -333,6 +333,24 @@
         }
       }
     },
+    "error": {
+      "type": "object",
+      "shape": {
+        "code": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "field": {
+          "type": "string"
+        },
+        "path": {
+          "type": "array",
+          "of": "string"
+        }
+      }
+    },
     "integer_filter": {
       "type": "object",
       "shape": {
@@ -377,24 +395,6 @@
         "to": {
           "type": "integer",
           "optional": true
-        }
-      }
-    },
-    "issue": {
-      "type": "object",
-      "shape": {
-        "code": {
-          "type": "string"
-        },
-        "detail": {
-          "type": "string"
-        },
-        "field": {
-          "type": "string"
-        },
-        "path": {
-          "type": "array",
-          "of": "string"
         }
       }
     },
@@ -617,11 +617,6 @@
   "resources": {
     "articles": {
       "path": "articles",
-      "summary": "Articles",
-      "description": "Operations for managing articles.",
-      "tags": [
-        "Articles"
-      ],
       "schema": {
         "type": "object",
         "shape": {
@@ -632,7 +627,7 @@
             "type": "string"
           },
           "body": {
-            "type": "text",
+            "type": "string",
             "nullable": true,
             "optional": true
           },
@@ -731,9 +726,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -772,9 +767,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -818,9 +813,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -867,9 +862,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }

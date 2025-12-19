@@ -1,6 +1,24 @@
 {
   "path": "/eager_lion",
   "types": {
+    "error": {
+      "type": "object",
+      "shape": {
+        "code": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "field": {
+          "type": "string"
+        },
+        "path": {
+          "type": "array",
+          "of": "string"
+        }
+      }
+    },
     "invoice": {
       "type": "object",
       "shape": {
@@ -179,24 +197,6 @@
         }
       }
     },
-    "issue": {
-      "type": "object",
-      "shape": {
-        "code": {
-          "type": "string"
-        },
-        "detail": {
-          "type": "string"
-        },
-        "field": {
-          "type": "string"
-        },
-        "path": {
-          "type": "array",
-          "of": "string"
-        }
-      }
-    },
     "nullable_string_filter": {
       "type": "object",
       "shape": {
@@ -295,11 +295,6 @@
   "resources": {
     "invoices": {
       "path": "invoices",
-      "summary": "Invoices",
-      "description": "Operations for managing invoices.",
-      "tags": [
-        "Invoices"
-      ],
       "schema": {
         "type": "object",
         "shape": {
@@ -402,9 +397,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -443,9 +438,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -489,9 +484,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -538,9 +533,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -597,9 +592,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }

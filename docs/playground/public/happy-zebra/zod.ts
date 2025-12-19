@@ -39,7 +39,7 @@ export const CommentUpdatePayloadSchema = z.object({
   body: z.string().optional()
 });
 
-export const IssueSchema = z.object({
+export const ErrorSchema = z.object({
   code: z.string(),
   detail: z.string(),
   field: z.string(),
@@ -171,7 +171,7 @@ export const UsersIndexRequestSchema = z.object({
   query: UsersIndexRequestQuerySchema
 });
 
-export const UsersIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional(), users: z.array(UserSchema).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const UsersIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional(), users: z.array(UserSchema).optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const UsersIndexResponseSchema = z.object({
   body: UsersIndexResponseBodySchema
@@ -185,7 +185,7 @@ export const UsersShowRequestSchema = z.object({
   query: UsersShowRequestQuerySchema
 });
 
-export const UsersShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), user: UserSchema }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const UsersShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), user: UserSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const UsersShowResponseSchema = z.object({
   body: UsersShowResponseBodySchema
@@ -204,7 +204,7 @@ export const UsersCreateRequestSchema = z.object({
   body: UsersCreateRequestBodySchema
 });
 
-export const UsersCreateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), user: UserSchema }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const UsersCreateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), user: UserSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const UsersCreateResponseSchema = z.object({
   body: UsersCreateResponseBodySchema
@@ -223,7 +223,7 @@ export const UsersUpdateRequestSchema = z.object({
   body: UsersUpdateRequestBodySchema
 });
 
-export const UsersUpdateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), user: UserSchema }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const UsersUpdateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), user: UserSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const UsersUpdateResponseSchema = z.object({
   body: UsersUpdateResponseBodySchema
@@ -248,7 +248,7 @@ export const PostsIndexRequestSchema = z.object({
   query: PostsIndexRequestQuerySchema
 });
 
-export const PostsIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional(), posts: z.array(PostSchema).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const PostsIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional(), posts: z.array(PostSchema).optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const PostsIndexResponseSchema = z.object({
   body: PostsIndexResponseBodySchema
@@ -262,7 +262,7 @@ export const PostsShowRequestSchema = z.object({
   query: PostsShowRequestQuerySchema
 });
 
-export const PostsShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), post: PostSchema }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const PostsShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), post: PostSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const PostsShowResponseSchema = z.object({
   body: PostsShowResponseBodySchema
@@ -281,7 +281,7 @@ export const PostsCreateRequestSchema = z.object({
   body: PostsCreateRequestBodySchema
 });
 
-export const PostsCreateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), post: PostSchema }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const PostsCreateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), post: PostSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const PostsCreateResponseSchema = z.object({
   body: PostsCreateResponseBodySchema
@@ -300,7 +300,7 @@ export const PostsUpdateRequestSchema = z.object({
   body: PostsUpdateRequestBodySchema
 });
 
-export const PostsUpdateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), post: PostSchema }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const PostsUpdateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), post: PostSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const PostsUpdateResponseSchema = z.object({
   body: PostsUpdateResponseBodySchema
@@ -325,13 +325,13 @@ export const CommentsIndexRequestSchema = z.object({
   query: CommentsIndexRequestQuerySchema
 });
 
-export const CommentsIndexResponseBodySchema = z.union([z.object({ comments: z.array(CommentSchema).optional(), meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const CommentsIndexResponseBodySchema = z.union([z.object({ comments: z.array(CommentSchema).optional(), meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const CommentsIndexResponseSchema = z.object({
   body: CommentsIndexResponseBodySchema
 });
 
-export const CommentsShowResponseBodySchema = z.union([z.object({ comment: CommentSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const CommentsShowResponseBodySchema = z.union([z.object({ comment: CommentSchema, meta: z.object({}).optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const CommentsShowResponseSchema = z.object({
   body: CommentsShowResponseBodySchema
@@ -345,7 +345,7 @@ export const CommentsCreateRequestSchema = z.object({
   body: CommentsCreateRequestBodySchema
 });
 
-export const CommentsCreateResponseBodySchema = z.union([z.object({ comment: CommentSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const CommentsCreateResponseBodySchema = z.union([z.object({ comment: CommentSchema, meta: z.object({}).optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const CommentsCreateResponseSchema = z.object({
   body: CommentsCreateResponseBodySchema
@@ -359,7 +359,7 @@ export const CommentsUpdateRequestSchema = z.object({
   body: CommentsUpdateRequestBodySchema
 });
 
-export const CommentsUpdateResponseBodySchema = z.union([z.object({ comment: CommentSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const CommentsUpdateResponseBodySchema = z.union([z.object({ comment: CommentSchema, meta: z.object({}).optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const CommentsUpdateResponseSchema = z.object({
   body: CommentsUpdateResponseBodySchema
@@ -416,7 +416,7 @@ export interface CommentsCreateResponse {
   body: CommentsCreateResponseBody;
 }
 
-export type CommentsCreateResponseBody = { comment: Comment; meta?: object } | { issues?: Issue[] };
+export type CommentsCreateResponseBody = { comment: Comment; meta?: object } | { errors?: Error[] };
 
 export type CommentsDestroyResponse = never;
 
@@ -433,13 +433,13 @@ export interface CommentsIndexResponse {
   body: CommentsIndexResponseBody;
 }
 
-export type CommentsIndexResponseBody = { comments?: Comment[]; meta?: object; pagination?: OffsetPagination } | { issues?: Issue[] };
+export type CommentsIndexResponseBody = { comments?: Comment[]; meta?: object; pagination?: OffsetPagination } | { errors?: Error[] };
 
 export interface CommentsShowResponse {
   body: CommentsShowResponseBody;
 }
 
-export type CommentsShowResponseBody = { comment: Comment; meta?: object } | { issues?: Issue[] };
+export type CommentsShowResponseBody = { comment: Comment; meta?: object } | { errors?: Error[] };
 
 export interface CommentsUpdateRequest {
   body: CommentsUpdateRequestBody;
@@ -453,9 +453,9 @@ export interface CommentsUpdateResponse {
   body: CommentsUpdateResponseBody;
 }
 
-export type CommentsUpdateResponseBody = { comment: Comment; meta?: object } | { issues?: Issue[] };
+export type CommentsUpdateResponseBody = { comment: Comment; meta?: object } | { errors?: Error[] };
 
-export interface Issue {
+export interface Error {
   code: string;
   detail: string;
   field: string;
@@ -526,7 +526,7 @@ export interface PostsCreateResponse {
   body: PostsCreateResponseBody;
 }
 
-export type PostsCreateResponseBody = { issues?: Issue[] } | { meta?: object; post: Post };
+export type PostsCreateResponseBody = { errors?: Error[] } | { meta?: object; post: Post };
 
 export interface PostsDestroyRequest {
   query: PostsDestroyRequestQuery;
@@ -551,7 +551,7 @@ export interface PostsIndexResponse {
   body: PostsIndexResponseBody;
 }
 
-export type PostsIndexResponseBody = { issues?: Issue[] } | { meta?: object; pagination?: OffsetPagination; posts?: Post[] };
+export type PostsIndexResponseBody = { errors?: Error[] } | { meta?: object; pagination?: OffsetPagination; posts?: Post[] };
 
 export interface PostsShowRequest {
   query: PostsShowRequestQuery;
@@ -565,7 +565,7 @@ export interface PostsShowResponse {
   body: PostsShowResponseBody;
 }
 
-export type PostsShowResponseBody = { issues?: Issue[] } | { meta?: object; post: Post };
+export type PostsShowResponseBody = { errors?: Error[] } | { meta?: object; post: Post };
 
 export interface PostsUpdateRequest {
   query: PostsUpdateRequestQuery;
@@ -584,7 +584,7 @@ export interface PostsUpdateResponse {
   body: PostsUpdateResponseBody;
 }
 
-export type PostsUpdateResponseBody = { issues?: Issue[] } | { meta?: object; post: Post };
+export type PostsUpdateResponseBody = { errors?: Error[] } | { meta?: object; post: Post };
 
 export type SortDirection = 'asc' | 'desc';
 
@@ -662,7 +662,7 @@ export interface UsersCreateResponse {
   body: UsersCreateResponseBody;
 }
 
-export type UsersCreateResponseBody = { issues?: Issue[] } | { meta?: object; user: User };
+export type UsersCreateResponseBody = { errors?: Error[] } | { meta?: object; user: User };
 
 export interface UsersDestroyRequest {
   query: UsersDestroyRequestQuery;
@@ -689,7 +689,7 @@ export interface UsersIndexResponse {
   body: UsersIndexResponseBody;
 }
 
-export type UsersIndexResponseBody = { issues?: Issue[] } | { meta?: object; pagination?: OffsetPagination; users?: User[] };
+export type UsersIndexResponseBody = { errors?: Error[] } | { meta?: object; pagination?: OffsetPagination; users?: User[] };
 
 export interface UsersShowRequest {
   query: UsersShowRequestQuery;
@@ -703,7 +703,7 @@ export interface UsersShowResponse {
   body: UsersShowResponseBody;
 }
 
-export type UsersShowResponseBody = { issues?: Issue[] } | { meta?: object; user: User };
+export type UsersShowResponseBody = { errors?: Error[] } | { meta?: object; user: User };
 
 export interface UsersUpdateRequest {
   query: UsersUpdateRequestQuery;
@@ -722,4 +722,4 @@ export interface UsersUpdateResponse {
   body: UsersUpdateResponseBody;
 }
 
-export type UsersUpdateResponseBody = { issues?: Issue[] } | { meta?: object; user: User };
+export type UsersUpdateResponseBody = { errors?: Error[] } | { meta?: object; user: User };

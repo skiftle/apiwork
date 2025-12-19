@@ -7,8 +7,6 @@ paths:
   status/health:
     get:
       operationId: statusHealth
-      tags:
-      - Status
       responses:
         '200':
           description: Successful response
@@ -30,8 +28,6 @@ paths:
   status/stats:
     get:
       operationId: statusStats
-      tags:
-      - Status
       responses:
         '200':
           description: Successful response
@@ -52,7 +48,7 @@ paths:
                 - usersCount
 components:
   schemas:
-    issue:
+    error:
       type: object
       properties:
         code:

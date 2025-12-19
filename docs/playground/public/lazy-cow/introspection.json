@@ -1,7 +1,7 @@
 {
   "path": "/lazy_cow",
   "types": {
-    "issue": {
+    "error": {
       "type": "object",
       "shape": {
         "code": {
@@ -25,11 +25,6 @@
   "resources": {
     "status": {
       "path": "status",
-      "summary": "Status",
-      "description": "Operations for managing status.",
-      "tags": [
-        "Status"
-      ],
       "actions": {
         "health": {
           "method": "get",

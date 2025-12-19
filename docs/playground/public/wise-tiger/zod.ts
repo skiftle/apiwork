@@ -6,7 +6,7 @@ export const ProjectStatusSchema = z.enum(['active', 'archived', 'completed', 'p
 
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
-export const IssueSchema = z.object({
+export const ErrorSchema = z.object({
   code: z.string(),
   detail: z.string(),
   field: z.string(),
@@ -108,13 +108,13 @@ export const ProjectsIndexRequestSchema = z.object({
   query: ProjectsIndexRequestQuerySchema
 });
 
-export const ProjectsIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional(), projects: z.array(ProjectSchema).optional() }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const ProjectsIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional(), projects: z.array(ProjectSchema).optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const ProjectsIndexResponseSchema = z.object({
   body: ProjectsIndexResponseBodySchema
 });
 
-export const ProjectsShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), project: ProjectSchema }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const ProjectsShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), project: ProjectSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const ProjectsShowResponseSchema = z.object({
   body: ProjectsShowResponseBodySchema
@@ -128,7 +128,7 @@ export const ProjectsCreateRequestSchema = z.object({
   body: ProjectsCreateRequestBodySchema
 });
 
-export const ProjectsCreateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), project: ProjectSchema }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const ProjectsCreateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), project: ProjectSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const ProjectsCreateResponseSchema = z.object({
   body: ProjectsCreateResponseBodySchema
@@ -142,7 +142,7 @@ export const ProjectsUpdateRequestSchema = z.object({
   body: ProjectsUpdateRequestBodySchema
 });
 
-export const ProjectsUpdateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), project: ProjectSchema }), z.object({ issues: z.array(IssueSchema).optional() })]);
+export const ProjectsUpdateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), project: ProjectSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
 
 export const ProjectsUpdateResponseSchema = z.object({
   body: ProjectsUpdateResponseBodySchema
@@ -150,7 +150,7 @@ export const ProjectsUpdateResponseSchema = z.object({
 
 export const ProjectsDestroyResponse = z.never();
 
-export interface Issue {
+export interface Error {
   code: string;
   detail: string;
   field: string;
@@ -241,7 +241,7 @@ export interface ProjectsCreateResponse {
   body: ProjectsCreateResponseBody;
 }
 
-export type ProjectsCreateResponseBody = { issues?: Issue[] } | { meta?: object; project: Project };
+export type ProjectsCreateResponseBody = { errors?: Error[] } | { meta?: object; project: Project };
 
 export type ProjectsDestroyResponse = never;
 
@@ -260,13 +260,13 @@ export interface ProjectsIndexResponse {
   body: ProjectsIndexResponseBody;
 }
 
-export type ProjectsIndexResponseBody = { issues?: Issue[] } | { meta?: object; pagination?: OffsetPagination; projects?: Project[] };
+export type ProjectsIndexResponseBody = { errors?: Error[] } | { meta?: object; pagination?: OffsetPagination; projects?: Project[] };
 
 export interface ProjectsShowResponse {
   body: ProjectsShowResponseBody;
 }
 
-export type ProjectsShowResponseBody = { issues?: Issue[] } | { meta?: object; project: Project };
+export type ProjectsShowResponseBody = { errors?: Error[] } | { meta?: object; project: Project };
 
 export interface ProjectsUpdateRequest {
   body: ProjectsUpdateRequestBody;
@@ -280,7 +280,7 @@ export interface ProjectsUpdateResponse {
   body: ProjectsUpdateResponseBody;
 }
 
-export type ProjectsUpdateResponseBody = { issues?: Issue[] } | { meta?: object; project: Project };
+export type ProjectsUpdateResponseBody = { errors?: Error[] } | { meta?: object; project: Project };
 
 export type SortDirection = 'asc' | 'desc';
 

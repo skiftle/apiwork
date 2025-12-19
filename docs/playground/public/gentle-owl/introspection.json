@@ -112,6 +112,24 @@
         }
       }
     },
+    "error": {
+      "type": "object",
+      "shape": {
+        "code": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "field": {
+          "type": "string"
+        },
+        "path": {
+          "type": "array",
+          "of": "string"
+        }
+      }
+    },
     "image": {
       "type": "object",
       "shape": {
@@ -256,24 +274,6 @@
         "created_at": {
           "type": "sort_direction",
           "optional": true
-        }
-      }
-    },
-    "issue": {
-      "type": "object",
-      "shape": {
-        "code": {
-          "type": "string"
-        },
-        "detail": {
-          "type": "string"
-        },
-        "field": {
-          "type": "string"
-        },
-        "path": {
-          "type": "array",
-          "of": "string"
         }
       }
     },
@@ -575,11 +575,6 @@
   "resources": {
     "comments": {
       "path": "comments",
-      "summary": "Comments",
-      "description": "Operations for managing comments.",
-      "tags": [
-        "Comments"
-      ],
       "schema": {
         "type": "object",
         "shape": {
@@ -587,7 +582,7 @@
             "type": "string"
           },
           "body": {
-            "type": "text"
+            "type": "string"
           },
           "author_name": {
             "type": "string",
@@ -653,9 +648,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -694,9 +689,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -740,9 +735,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }
@@ -789,9 +784,9 @@
                 {
                   "type": "object",
                   "shape": {
-                    "issues": {
+                    "errors": {
                       "type": "array",
-                      "of": "issue",
+                      "of": "error",
                       "optional": true
                     }
                   }

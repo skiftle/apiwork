@@ -10,8 +10,8 @@ RSpec.describe 'Filter and Sort Validation Errors', type: :request do
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      expect(json['issues']).to be_an(Array)
-      expect(json['issues']).not_to be_empty
+      expect(json['errors']).to be_an(Array)
+      expect(json['errors']).not_to be_empty
     end
 
     it 'returns descriptive error for unknown filter field' do
@@ -20,7 +20,7 @@ RSpec.describe 'Filter and Sort Validation Errors', type: :request do
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      issue = json['issues'].first
+      issue = json['errors'].first
       expect(issue['code']).to be_present
       expect(issue['detail']).to be_present
     end
@@ -31,7 +31,7 @@ RSpec.describe 'Filter and Sort Validation Errors', type: :request do
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      expect(json['issues']).to be_an(Array)
+      expect(json['errors']).to be_an(Array)
     end
   end
 
@@ -43,8 +43,8 @@ RSpec.describe 'Filter and Sort Validation Errors', type: :request do
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      expect(json['issues']).to be_an(Array)
-      expect(json['issues']).not_to be_empty
+      expect(json['errors']).to be_an(Array)
+      expect(json['errors']).not_to be_empty
     end
 
     it 'returns descriptive error for unknown sort field' do
@@ -53,7 +53,7 @@ RSpec.describe 'Filter and Sort Validation Errors', type: :request do
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      issue = json['issues'].first
+      issue = json['errors'].first
       expect(issue['code']).to be_present
       expect(issue['detail']).to be_present
     end
@@ -99,10 +99,10 @@ RSpec.describe 'Filter and Sort Validation Errors', type: :request do
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      expect(json).to have_key('issues')
-      expect(json['issues']).to be_an(Array)
+      expect(json).to have_key('errors')
+      expect(json['errors']).to be_an(Array)
 
-      issue = json['issues'].first
+      issue = json['errors'].first
       expect(issue).to have_key('code')
       expect(issue).to have_key('detail')
     end
@@ -113,8 +113,8 @@ RSpec.describe 'Filter and Sort Validation Errors', type: :request do
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      expect(json).to have_key('issues')
-      expect(json['issues']).to be_an(Array)
+      expect(json).to have_key('errors')
+      expect(json['errors']).to be_an(Array)
     end
   end
 end

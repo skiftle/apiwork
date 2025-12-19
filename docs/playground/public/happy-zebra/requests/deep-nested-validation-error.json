@@ -23,7 +23,7 @@
   "response": {
     "status": 422,
     "body": {
-      "issues": [
+      "errors": [
         {
           "code": "blank",
           "detail": "can't be blank",

@@ -7,8 +7,6 @@ paths:
   comments/:
     get:
       operationId: commentsIndex
-      tags:
-      - Comments
       parameters:
       - in: query
         name: include
@@ -48,8 +46,6 @@ paths:
                     "$ref": "#/components/schemas/offsetPagination"
     post:
       operationId: commentsCreate
-      tags:
-      - Comments
       parameters:
       - in: query
         name: include
@@ -89,15 +85,13 @@ paths:
               schema:
                 type: object
                 properties:
-                  issues:
+                  errors:
                     type: array
                     items:
-                      "$ref": "#/components/schemas/issue"
+                      "$ref": "#/components/schemas/error"
   comments/{id}:
     get:
       operationId: commentsShow
-      tags:
-      - Comments
       parameters:
       - name: id
         in: path
@@ -126,8 +120,6 @@ paths:
                 - comment
     patch:
       operationId: commentsUpdate
-      tags:
-      - Comments
       parameters:
       - name: id
         in: path
@@ -168,14 +160,12 @@ paths:
               schema:
                 type: object
                 properties:
-                  issues:
+                  errors:
                     type: array
                     items:
-                      "$ref": "#/components/schemas/issue"
+                      "$ref": "#/components/schemas/error"
     delete:
       operationId: commentsDestroy
-      tags:
-      - Comments
       parameters:
       - name: id
         in: path
@@ -261,6 +251,24 @@ components:
           type: string
       required:
       - body
+    error:
+      type: object
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+        field:
+          type: string
+        path:
+          type: array
+          items:
+            type: string
+      required:
+      - code
+      - detail
+      - field
+      - path
     image:
       type: object
       properties:
@@ -361,24 +369,6 @@ components:
           enum:
           - asc
           - desc
-    issue:
-      type: object
-      properties:
-        code:
-          type: string
-        detail:
-          type: string
-        field:
-          type: string
-        path:
-          type: array
-          items:
-            type: string
-      required:
-      - code
-      - detail
-      - field
-      - path
     offsetPagination:
       type: object
       properties:

@@ -42,7 +42,7 @@ module Apiwork
       end
 
       def render_error(issues, action_data)
-        { issues: issues.map(&:to_h) }
+        { errors: issues.map(&:to_h) }
       end
 
       def transform_request(hash)

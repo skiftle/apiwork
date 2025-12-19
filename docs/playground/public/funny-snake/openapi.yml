@@ -7,8 +7,6 @@ paths:
   invoices/:
     get:
       operationId: invoicesIndex
-      tags:
-      - Invoices
       responses:
         '200':
           description: Successful response
@@ -25,8 +23,6 @@ paths:
                 - invoices
     post:
       operationId: invoicesCreate
-      tags:
-      - Invoices
       requestBody:
         required: true
         content:
@@ -53,8 +49,6 @@ paths:
   invoices/{id}:
     get:
       operationId: invoicesShow
-      tags:
-      - Invoices
       parameters:
       - name: id
         in: path
@@ -75,8 +69,6 @@ paths:
                 - invoice
     patch:
       operationId: invoicesUpdate
-      tags:
-      - Invoices
       parameters:
       - name: id
         in: path
@@ -106,8 +98,6 @@ paths:
                 - invoice
     delete:
       operationId: invoicesDestroy
-      tags:
-      - Invoices
       parameters:
       - name: id
         in: path
@@ -119,6 +109,24 @@ paths:
           description: No content
 components:
   schemas:
+    error:
+      type: object
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+        field:
+          type: string
+        path:
+          type: array
+          items:
+            type: string
+      required:
+      - code
+      - detail
+      - field
+      - path
     invoice:
       type: object
       properties:
@@ -160,21 +168,3 @@ components:
       - notes
       - number
       - status
-    issue:
-      type: object
-      properties:
-        code:
-          type: string
-        detail:
-          type: string
-        field:
-          type: string
-        path:
-          type: array
-          items:
-            type: string
-      required:
-      - code
-      - detail
-      - field
-      - path

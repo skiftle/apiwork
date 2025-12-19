@@ -1,3 +1,10 @@
+export interface Error {
+  code: string;
+  detail: string;
+  field: string;
+  path: string[];
+}
+
 export interface Invoice {
   createdAt: string;
   id: string;
@@ -54,10 +61,3 @@ export interface InvoicesUpdateResponse {
 }
 
 export type InvoicesUpdateResponseBody = { invoice: Invoice };
-
-export interface Issue {
-  code: string;
-  detail: string;
-  field: string;
-  path: string[];
-}
