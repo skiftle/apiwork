@@ -18,9 +18,7 @@ RSpec.describe 'Abstract Base Schema with Auto-Detection' do
 
   describe 'UserSchema inheriting from abstract BaseSchema' do
     it 'auto-detects User model without explicit model declaration' do
-      # UserSchema should have auto-detected User model
       expect(Api::V1::UserSchema.model_class).to eq(User)
-      expect(Api::V1::UserSchema.model?).to be true
     end
 
     it 'auto-detects attribute types from DB' do

@@ -12,73 +12,185 @@ next: false
 
 ### .action(action_name, replace: = false, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L178)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L311)
+
+Defines an action (endpoint) for this contract.
+
+Actions describe the request/response contract for a specific
+controller action. Use the block to define request parameters,
+response format, and documentation.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `action_name` | `Symbol` | the controller action name (:index, :show, :create, :update, :destroy, or custom) |
+| `replace` | `Boolean` | replace existing action definition (default: false) |
+
+**Returns**
+
+`ActionDefinition` — the action definition
+
+**Example: Basic CRUD action**
+
+```ruby
+class InvoiceContract < Apiwork::Contract::Base
+  action :show do
+    request { query { param :include, type: :string, optional: true } }
+    response { body { param :id } }
+  end
+end
+```
+
+**Example: Action with full request/response**
+
+```ruby
+action :create do
+  summary 'Create a new invoice'
+  tags :billing
+
+  request do
+    body do
+      param :customer_id, type: :integer
+      param :amount, type: :decimal
+    end
+  end
+
+  response do
+    body do
+      param :id
+      param :status
+    end
+  end
+
+  raises :not_found
+  raises :unprocessable_entity
+end
+```
 
 ---
 
 ### .action_definition(action_name)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L196)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L329)
 
 ---
 
 ### .api_class()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L220)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L353)
 
 ---
 
 ### .api_path()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L211)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L344)
 
 ---
 
 ### .as_json()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L207)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L340)
 
 ---
 
 ### .define_action(action_name, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L254)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L387)
 
 ---
 
 ### .enum(name, values: = nil, description: = nil, example: = nil, deprecated: = false)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L130)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L199)
+
+Defines an enum scoped to this contract.
+
+Enums define a set of allowed string values. In introspection
+output, enums are namespaced with the contract's scope prefix.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `Symbol` | enum name |
+| `values` | `Array<String>` | allowed string values |
+| `description` | `String` | documentation description |
+| `example` | `String` | example value for docs |
+| `deprecated` | `Boolean` | mark as deprecated |
+
+**Example: Status enum**
+
+```ruby
+class InvoiceContract < Apiwork::Contract::Base
+  enum :status, values: %w[draft sent paid]
+
+  action :update do
+    request { body { param :status, enum: :status } }
+  end
+end
+```
 
 ---
 
 ### .find_contract_for_schema(schema_class)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L83)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L103)
 
 ---
 
 ### .global_type(name, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L233)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L366)
 
 ---
 
 ### .identifier(value = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L41)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L61)
+
+Sets the scope prefix for contract-scoped types.
+
+Types, enums, and unions defined in this contract are namespaced
+with this prefix in introspection output. For example, a type
+`:address` becomes `:invoice_address` when identifier is `:invoice`.
+
+If not set, prefix is derived from schema's root_key or class name.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `value` | `Symbol, String` | scope prefix (optional) |
+
+**Returns**
+
+`String, nil` — the scope prefix
+
+**Example: Custom scope prefix**
+
+```ruby
+class InvoiceContract < Apiwork::Contract::Base
+  identifier :billing
+
+  type :address do
+    param :street, type: :string
+  end
+  # In introspection: type is named :billing_address
+end
+```
 
 ---
 
 ### .import(contract_class, as:)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L159)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L251)
 
 Imports types from another contract for reuse.
 
-This allows referencing types defined in another contract by
-prefixing them with the alias. Useful for sharing common types
-like addresses or monetary values.
+Imported types are accessed with a prefix matching the alias.
+If UserContract defines a type `:address`, importing it as `:user`
+makes it available as `:user_address`.
 
 **Parameters**
 
@@ -87,16 +199,18 @@ like addresses or monetary values.
 | `contract_class` | `Class` | the contract class to import from |
 | `as` | `Symbol` | alias prefix for imported types |
 
-**Example**
+**Example: Import types from another contract**
 
 ```ruby
+# UserContract has: type :address, enum :role
 class OrderContract < Apiwork::Contract::Base
-  import AddressContract, as: :address
+  import UserContract, as: :user
 
   action :create do
     request do
       body do
-        param :shipping, type: :address  # Uses AddressContract's type
+        param :shipping, type: :user_address   # user_ prefix
+        param :role, enum: :user_role          # user_ prefix
       end
     end
   end
@@ -113,49 +227,49 @@ end
 
 ### .introspect(action: = nil, locale: = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L203)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L336)
 
 ---
 
 ### .parse_response(body, action)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L229)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L362)
 
 ---
 
 ### .register_sti_variants(*variant_schema_classes)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L92)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L112)
 
 ---
 
 ### .reset_build_state!()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L110)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L130)
 
 ---
 
 ### .resolve_custom_type(type_name, visited: = Set.new)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L187)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L320)
 
 ---
 
 ### .resolve_enum(enum_name, visited: = Set.new)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L241)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L374)
 
 ---
 
 ### .resolve_type(name)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L237)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L370)
 
 ---
 
 ### .schema!()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L68)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L88)
 
 Links this contract to its schema using naming convention.
 
@@ -187,7 +301,7 @@ end
 
 ### .schema?()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L106)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L126)
 
 **Returns**
 
@@ -197,31 +311,96 @@ end
 
 ### .schema_class()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L102)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L122)
 
 ---
 
 ### .scope_prefix()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L115)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L135)
 
 ---
 
 ### .scoped_name(name)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L250)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L383)
 
 ---
 
 ### .type(name, description: = nil, example: = nil, format: = nil, deprecated: = false, schema_class: = nil, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L124)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L174)
+
+Defines a reusable type scoped to this contract.
+
+Types are named parameter structures that can be referenced in
+param definitions. In introspection output, types are namespaced
+with the contract's scope prefix (e.g., `:order_address`).
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `Symbol` | type name |
+| `description` | `String` | documentation description |
+| `example` | `Object` | example value for docs |
+| `format` | `String` | format hint for docs |
+| `deprecated` | `Boolean` | mark as deprecated |
+| `schema_class` | `Class` | associate with schema for inference |
+
+**Example: Reusable address type**
+
+```ruby
+class OrderContract < Apiwork::Contract::Base
+  type :address do
+    param :street, type: :string
+    param :city, type: :string
+  end
+
+  action :create do
+    request do
+      body do
+        param :shipping, type: :address
+        param :billing, type: :address  # Reuse same type
+      end
+    end
+  end
+end
+```
 
 ---
 
 ### .union(name, discriminator: = nil, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L134)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L224)
+
+Defines a discriminated union type scoped to this contract.
+
+A union is a type that can be one of several variants,
+distinguished by a discriminator field. In introspection
+output, unions are namespaced with the contract's scope prefix.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `Symbol` | union name |
+| `discriminator` | `Symbol` | field that identifies the variant |
+
+**Example: Payment method union**
+
+```ruby
+class PaymentContract < Apiwork::Contract::Base
+  union :method, discriminator: :type do
+    variant tag: 'card', type: :object do
+      param :last_four, type: :string
+    end
+    variant tag: 'bank', type: :object do
+      param :account_number, type: :string
+    end
+  end
+end
+```
 
 ---
 

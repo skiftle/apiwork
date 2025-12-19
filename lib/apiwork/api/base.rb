@@ -32,6 +32,19 @@ module Apiwork
           @adapter_config = {}
         end
 
+        # Sets the key format for request/response transformation.
+        #
+        # Controls how JSON keys are transformed between client and server.
+        # Useful for JavaScript clients that prefer camelCase.
+        #
+        # @param format [Symbol] :keep (no transform), :camel (to/from camelCase), :underscore
+        # @return [Symbol] the current key format
+        #
+        # @example camelCase for JavaScript clients
+        #   Apiwork::API.define '/api/v1' do
+        #     key_format :camel
+        #     # { firstName: 'John' } ↔ { first_name: 'John' }
+        #   end
         def key_format(format = nil)
           return @key_format if format.nil?
 
@@ -71,6 +84,23 @@ module Apiwork
 
         public
 
+        # Enables a spec generator for this API.
+        #
+        # Specs generate client code and documentation from your contracts.
+        # Available specs: :openapi, :typescript, :zod, :introspection.
+        #
+        # @param type [Symbol] spec type to enable
+        # @yield optional configuration block
+        #
+        # @example Enable OpenAPI spec
+        #   Apiwork::API.define '/api/v1' do
+        #     spec :openapi
+        #   end
+        #
+        # @example With custom path
+        #   spec :typescript do
+        #     path '/types.ts'
+        #   end
         def spec(type, &block)
           unless Spec.registered?(type)
             available = Spec.all.join(', ')
@@ -105,6 +135,18 @@ module Apiwork
           @specs&.any?
         end
 
+        # Declares error codes that any action in this API may raise.
+        #
+        # These are included in generated specs (OpenAPI, etc.) as possible
+        # error responses. Use `raises` in action definitions for action-specific errors.
+        #
+        # @param error_code_keys [Array<Symbol>] registered error code keys
+        # @raise [ConfigurationError] if error code is not registered
+        #
+        # @example Common API-wide errors
+        #   Apiwork::API.define '/api/v1' do
+        #     raises :unauthorized, :forbidden, :not_found
+        #   end
         def raises(*error_code_keys)
           error_code_keys = error_code_keys.flatten.uniq
           error_code_keys.each do |error_code_key|
@@ -122,6 +164,24 @@ module Apiwork
           @metadata.raises = error_code_keys
         end
 
+        # Configures the adapter for this API.
+        #
+        # Adapters control serialization, pagination, filtering, and response
+        # formatting. Default adapter is :apiwork.
+        #
+        # @param name [Symbol] adapter name (:apiwork, or custom)
+        # @yield optional configuration block
+        #
+        # @example Configure pagination
+        #   Apiwork::API.define '/api/v1' do
+        #     adapter do
+        #       pagination do
+        #         strategy :offset
+        #         default_size 25
+        #         max_size 100
+        #       end
+        #     end
+        #   end
         def adapter(name = nil, &block)
           if name.is_a?(Symbol)
             @adapter_name = name
@@ -244,10 +304,44 @@ module Apiwork
           @recorder.resource(name, **options, &block)
         end
 
+        # Defines a reusable concern for resources.
+        #
+        # Concerns are reusable blocks of resource configuration that can
+        # be included in multiple resources via the `concerns` option.
+        #
+        # @param name [Symbol] concern name
+        # @yield block defining shared actions/configuration
+        #
+        # @example Define and use a concern
+        #   Apiwork::API.define '/api/v1' do
+        #     concern :archivable do
+        #       member do
+        #         post :archive
+        #         post :unarchive
+        #       end
+        #     end
+        #
+        #     resources :posts, concerns: [:archivable]
+        #     resources :comments, concerns: [:archivable]
+        #   end
         def concern(name, &block)
           @recorder.concern(name, &block)
         end
 
+        # Applies options to all nested resource definitions.
+        #
+        # Useful for applying common configuration to a group of resources.
+        #
+        # @param options [Hash] options to apply to nested resources
+        # @yield block containing resource definitions
+        #
+        # @example Namespace resources
+        #   Apiwork::API.define '/api/v1' do
+        #     with_options namespace: :admin do
+        #       resources :users
+        #       resources :settings
+        #     end
+        #   end
         def with_options(options = {}, &block)
           @recorder.with_options(options, &block)
         end

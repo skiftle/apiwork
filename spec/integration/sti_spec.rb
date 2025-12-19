@@ -49,11 +49,6 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
       expect(Api::V1::CompanyClientSchema.sti_variant?).to be(true)
     end
 
-    it 'derive_variant_tag returns sti_name (full class name)' do
-      expect(Api::V1::PersonClientSchema.derive_variant_tag).to eq('PersonClient')
-      expect(Api::V1::CompanyClientSchema.derive_variant_tag).to eq('CompanyClient')
-    end
-
     it 'variant schemas detect their own model_class (not inherited from parent)' do
       expect(Api::V1::PersonClientSchema.model_class).to eq(PersonClient)
       expect(Api::V1::CompanyClientSchema.model_class).to eq(CompanyClient)

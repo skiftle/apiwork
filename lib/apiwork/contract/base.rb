@@ -38,6 +38,26 @@ module Apiwork
           subclass.imports = {}
         end
 
+        # Sets the scope prefix for contract-scoped types.
+        #
+        # Types, enums, and unions defined in this contract are namespaced
+        # with this prefix in introspection output. For example, a type
+        # `:address` becomes `:invoice_address` when identifier is `:invoice`.
+        #
+        # If not set, prefix is derived from schema's root_key or class name.
+        #
+        # @param value [Symbol, String] scope prefix (optional)
+        # @return [String, nil] the scope prefix
+        #
+        # @example Custom scope prefix
+        #   class InvoiceContract < Apiwork::Contract::Base
+        #     identifier :billing
+        #
+        #     type :address do
+        #       param :street, type: :string
+        #     end
+        #     # In introspection: type is named :billing_address
+        #   end
         def identifier(value = nil)
           return _identifier if value.nil?
 
@@ -121,37 +141,109 @@ module Apiwork
           name.demodulize.underscore.gsub(/_(contract|schema)$/, '')
         end
 
+        # Defines a reusable type scoped to this contract.
+        #
+        # Types are named parameter structures that can be referenced in
+        # param definitions. In introspection output, types are namespaced
+        # with the contract's scope prefix (e.g., `:order_address`).
+        #
+        # @param name [Symbol] type name
+        # @param description [String] documentation description
+        # @param example [Object] example value for docs
+        # @param format [String] format hint for docs
+        # @param deprecated [Boolean] mark as deprecated
+        # @param schema_class [Class] associate with schema for inference
+        # @yield block defining the type's params
+        #
+        # @example Reusable address type
+        #   class OrderContract < Apiwork::Contract::Base
+        #     type :address do
+        #       param :street, type: :string
+        #       param :city, type: :string
+        #     end
+        #
+        #     action :create do
+        #       request do
+        #         body do
+        #           param :shipping, type: :address
+        #           param :billing, type: :address  # Reuse same type
+        #         end
+        #       end
+        #     end
+        #   end
         def type(name, description: nil, example: nil, format: nil, deprecated: false,
                  schema_class: nil, &block)
           api_class.type(name, scope: self, description:, example:, format:, deprecated:,
                                schema_class:, &block)
         end
 
+        # Defines an enum scoped to this contract.
+        #
+        # Enums define a set of allowed string values. In introspection
+        # output, enums are namespaced with the contract's scope prefix.
+        #
+        # @param name [Symbol] enum name
+        # @param values [Array<String>] allowed string values
+        # @param description [String] documentation description
+        # @param example [String] example value for docs
+        # @param deprecated [Boolean] mark as deprecated
+        #
+        # @example Status enum
+        #   class InvoiceContract < Apiwork::Contract::Base
+        #     enum :status, values: %w[draft sent paid]
+        #
+        #     action :update do
+        #       request { body { param :status, enum: :status } }
+        #     end
+        #   end
         def enum(name, values: nil, description: nil, example: nil, deprecated: false)
           api_class.enum(name, values:, scope: self, description:, example:, deprecated:)
         end
 
+        # Defines a discriminated union type scoped to this contract.
+        #
+        # A union is a type that can be one of several variants,
+        # distinguished by a discriminator field. In introspection
+        # output, unions are namespaced with the contract's scope prefix.
+        #
+        # @param name [Symbol] union name
+        # @param discriminator [Symbol] field that identifies the variant
+        # @yield block defining variants
+        #
+        # @example Payment method union
+        #   class PaymentContract < Apiwork::Contract::Base
+        #     union :method, discriminator: :type do
+        #       variant tag: 'card', type: :object do
+        #         param :last_four, type: :string
+        #       end
+        #       variant tag: 'bank', type: :object do
+        #         param :account_number, type: :string
+        #       end
+        #     end
+        #   end
         def union(name, discriminator: nil, &block)
           api_class.union(name, scope: self, discriminator:, &block)
         end
 
         # Imports types from another contract for reuse.
         #
-        # This allows referencing types defined in another contract by
-        # prefixing them with the alias. Useful for sharing common types
-        # like addresses or monetary values.
+        # Imported types are accessed with a prefix matching the alias.
+        # If UserContract defines a type `:address`, importing it as `:user`
+        # makes it available as `:user_address`.
         #
         # @param contract_class [Class] the contract class to import from
         # @param as [Symbol] alias prefix for imported types
         #
-        # @example
+        # @example Import types from another contract
+        #   # UserContract has: type :address, enum :role
         #   class OrderContract < Apiwork::Contract::Base
-        #     import AddressContract, as: :address
+        #     import UserContract, as: :user
         #
         #     action :create do
         #       request do
         #         body do
-        #           param :shipping, type: :address  # Uses AddressContract's type
+        #           param :shipping, type: :user_address   # user_ prefix
+        #           param :role, enum: :user_role          # user_ prefix
         #         end
         #       end
         #     end
@@ -175,6 +267,47 @@ module Apiwork
           imports[as] = contract_class
         end
 
+        # Defines an action (endpoint) for this contract.
+        #
+        # Actions describe the request/response contract for a specific
+        # controller action. Use the block to define request parameters,
+        # response format, and documentation.
+        #
+        # @param action_name [Symbol] the controller action name (:index, :show, :create, :update, :destroy, or custom)
+        # @param replace [Boolean] replace existing action definition (default: false)
+        # @yield block for defining request/response contract
+        # @return [ActionDefinition] the action definition
+        #
+        # @example Basic CRUD action
+        #   class InvoiceContract < Apiwork::Contract::Base
+        #     action :show do
+        #       request { query { param :include, type: :string, optional: true } }
+        #       response { body { param :id } }
+        #     end
+        #   end
+        #
+        # @example Action with full request/response
+        #   action :create do
+        #     summary 'Create a new invoice'
+        #     tags :billing
+        #
+        #     request do
+        #       body do
+        #         param :customer_id, type: :integer
+        #         param :amount, type: :decimal
+        #       end
+        #     end
+        #
+        #     response do
+        #       body do
+        #         param :id
+        #         param :status
+        #       end
+        #     end
+        #
+        #     raises :not_found
+        #     raises :unprocessable_entity
+        #   end
         def action(action_name, replace: false, &block)
           action_name = action_name.to_sym
 

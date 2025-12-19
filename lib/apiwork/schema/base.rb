@@ -86,59 +86,9 @@ module Apiwork
           end
         end
 
-        def auto_detect_model
-          return if _model_class.present?
-          return if abstract?
-
-          schema_name = name.demodulize
-          model_name = schema_name.sub(/Schema$/, '')
-          return if model_name.blank?
-
-          model_class = try_constantize_model(name.deconstantize, model_name)
-
-          if model_class.present?
-            self._model_class = model_class
-          else
-            raise ConfigurationError.new(
-              code: :model_not_found,
-              detail: "Could not find model '#{model_name}' for #{name}. " \
-                      "Either create the model, declare it explicitly with 'model YourModel', " \
-                      "or mark this schema as abstract with 'abstract!'",
-              path: []
-            )
-          end
-        end
-
-        def try_constantize_model(namespace, model_name)
-          if namespace.present?
-            full_name = "#{namespace}::#{model_name}"
-            begin
-              return full_name.constantize
-            rescue NameError
-              # Try without namespace prefix as fallback
-            end
-          end
-
-          model_name.constantize
-        rescue NameError
-          nil
-        end
-
         def model_class
           ensure_auto_detection_complete
           _model_class
-        end
-
-        def model?
-          ensure_auto_detection_complete
-          _model_class.present?
-        end
-
-        def ensure_auto_detection_complete
-          return if _auto_detection_complete
-
-          self._auto_detection_complete = true
-          auto_detect_model
         end
 
         # Declares the JSON root key for this schema.
@@ -159,10 +109,7 @@ module Apiwork
         end
 
         def api_class
-          path = api_path
-          return nil unless path
-
-          Apiwork::API.find(path)
+          Apiwork::API.find(api_path)
         end
 
         def api_path
@@ -387,10 +334,6 @@ module Apiwork
           self
         end
 
-        def derive_variant_tag
-          model_class.sti_name
-        end
-
         def register_variant(tag:, schema:, sti_type:)
           self._variants = _variants.merge(tag => { schema: schema, sti_type: sti_type })
           self._abstract = true
@@ -555,6 +498,55 @@ module Apiwork
             value.is_a?(TrueClass) || (value.is_a?(Proc) && value)
           end
           selected.keys.freeze
+        end
+
+        def auto_detect_model
+          return if _model_class.present?
+          return if abstract?
+
+          schema_name = name.demodulize
+          model_name = schema_name.sub(/Schema$/, '')
+          return if model_name.blank?
+
+          detected = try_constantize_model(name.deconstantize, model_name)
+
+          if detected.present?
+            self._model_class = detected
+          else
+            raise ConfigurationError.new(
+              code: :model_not_found,
+              detail: "Could not find model '#{model_name}' for #{name}. " \
+                      "Either create the model, declare it explicitly with 'model YourModel', " \
+                      "or mark this schema as abstract with 'abstract!'",
+              path: []
+            )
+          end
+        end
+
+        def derive_variant_tag
+          model_class.sti_name
+        end
+
+        def ensure_auto_detection_complete
+          return if _auto_detection_complete
+
+          self._auto_detection_complete = true
+          auto_detect_model
+        end
+
+        def try_constantize_model(namespace, model_name)
+          if namespace.present?
+            full_name = "#{namespace}::#{model_name}"
+            begin
+              return full_name.constantize
+            rescue NameError
+              # Fallback to non-namespaced
+            end
+          end
+
+          model_name.constantize
+        rescue NameError
+          nil
         end
       end
     end

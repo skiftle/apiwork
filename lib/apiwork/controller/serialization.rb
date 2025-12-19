@@ -11,6 +11,33 @@ module Apiwork
         end
       end
 
+      # Renders a successful API response.
+      #
+      # When a schema is linked via `schema!`, data is serialized through
+      # the schema. Otherwise, data is rendered as-is. The adapter applies
+      # response transformations (key casing, wrapping, etc.).
+      #
+      # @param data [Object, Array] the record(s) to render
+      # @param meta [Hash] metadata to include in response (pagination, etc.)
+      # @param status [Symbol, Integer] HTTP status (default: :ok, or :created for create action)
+      #
+      # @example Render a single record
+      #   def show
+      #     invoice = Invoice.find(params[:id])
+      #     respond invoice
+      #   end
+      #
+      # @example Render a collection with metadata
+      #   def index
+      #     invoices = Invoice.all
+      #     respond invoices, meta: { total: invoices.count }
+      #   end
+      #
+      # @example Custom status
+      #   def create
+      #     invoice = Invoice.create!(contract.body)
+      #     respond invoice, status: :created
+      #   end
       def respond(data, meta: {}, status: nil)
         action_def = contract_class.action_definitions[action_name.to_sym]
 
@@ -38,11 +65,51 @@ module Apiwork
         render json: json, status: status || (action_name.to_sym == :create ? :created : :ok)
       end
 
+      # Renders an error response with validation issues.
+      #
+      # Use this for validation errors where you have a list of issues.
+      # For standard HTTP errors, use `respond_with_error` instead.
+      #
+      # @param issues [Array<Apiwork::Issue>] list of validation issues
+      # @param status [Symbol, Integer] HTTP status (default: :bad_request)
+      #
+      # @example Render validation errors
+      #   def create
+      #     unless record.valid?
+      #       issues = record.errors.map do |error|
+      #         Apiwork::Issue.new(code: :invalid, detail: error.message, path: [error.attribute])
+      #       end
+      #       render_error issues, status: :unprocessable_entity
+      #     end
+      #   end
       def render_error(issues, status: :bad_request)
         json = adapter.render_error(issues, build_action_data)
         render json: json, status: status
       end
 
+      # Renders an error response using a registered error code.
+      #
+      # Error codes are registered via `Apiwork::ErrorCode.register`.
+      # The detail message is looked up from I18n if not provided.
+      #
+      # @param code_key [Symbol] registered error code (:not_found, :unauthorized, etc.)
+      # @param detail [String] custom error message (optional, uses I18n lookup)
+      # @param path [Array<String,Symbol>] JSON path to the error (optional)
+      # @param meta [Hash] additional metadata to include (optional)
+      # @param i18n [Hash] interpolation values for I18n lookup (optional)
+      #
+      # @example Not found error
+      #   def show
+      #     invoice = Invoice.find_by(id: params[:id])
+      #     return respond_with_error :not_found unless invoice
+      #     respond invoice
+      #   end
+      #
+      # @example With custom message
+      #   respond_with_error :forbidden, detail: 'You cannot access this invoice'
+      #
+      # @example With I18n interpolation
+      #   respond_with_error :not_found, i18n: { resource: 'Invoice' }
       def respond_with_error(code_key, detail: nil, path: nil, meta: {}, i18n: {})
         error_code = ErrorCode.fetch(code_key)
 
@@ -76,6 +143,26 @@ module Apiwork
         )
       end
 
+      # Returns the serialization context passed to schemas.
+      #
+      # Override this method to provide context data to your schemas.
+      # Common uses: current user, permissions, locale, feature flags.
+      #
+      # @return [Hash] context data available in schema serialization
+      #
+      # @example Provide current user context
+      #   def context
+      #     { current_user: current_user }
+      #   end
+      #
+      # @example Multiple context values
+      #   def context
+      #     {
+      #       current_user: current_user,
+      #       locale: I18n.locale,
+      #       feature_flags: FeatureFlags.for(current_user)
+      #     }
+      #   end
       def context
         {}
       end
