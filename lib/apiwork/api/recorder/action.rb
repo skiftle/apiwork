@@ -4,34 +4,113 @@ module Apiwork
   module API
     class Recorder
       module Action
+        # Defines member actions (operate on a specific resource).
+        #
+        # Member actions include :id in the URL path.
+        # Use inside a resources block.
+        #
+        # @yield block containing HTTP method declarations
+        #
+        # @example
+        #   resources :invoices do
+        #     member do
+        #       post :archive
+        #       post :send_reminder
+        #     end
+        #   end
+        #   # Routes: POST /invoices/:id/archive, POST /invoices/:id/send_reminder
         def member(&block)
           @in_member_block = true
           instance_eval(&block)
           @in_member_block = false
         end
 
+        # Defines collection actions (operate on the resource collection).
+        #
+        # Collection actions don't include :id in the URL path.
+        # Use inside a resources block.
+        #
+        # @yield block containing HTTP method declarations
+        #
+        # @example
+        #   resources :invoices do
+        #     collection do
+        #       get :search
+        #       post :bulk_create
+        #     end
+        #   end
+        #   # Routes: GET /invoices/search, POST /invoices/bulk_create
         def collection(&block)
           @in_collection_block = true
           instance_eval(&block)
           @in_collection_block = false
         end
 
+        # Declares a PATCH action.
+        #
+        # @param actions [Symbol, Array<Symbol>] action name(s)
+        # @param options [Hash] action options
+        # @option options [Symbol] :on :member or :collection (required outside block)
+        # @option options [String] :contract custom contract path
+        #
+        # @example
+        #   member { patch :partial_update }
         def patch(actions, **options)
           capture_actions(actions, method: :patch, options: options)
         end
 
+        # Declares a GET action.
+        #
+        # @param actions [Symbol, Array<Symbol>] action name(s)
+        # @param options [Hash] action options
+        # @option options [Symbol] :on :member or :collection (required outside block)
+        # @option options [String] :contract custom contract path
+        #
+        # @example Inside member block
+        #   member { get :status }
+        #
+        # @example With :on option
+        #   get :status, on: :member
         def get(actions, **options)
           capture_actions(actions, method: :get, options: options)
         end
 
+        # Declares a POST action.
+        #
+        # @param actions [Symbol, Array<Symbol>] action name(s)
+        # @param options [Hash] action options
+        # @option options [Symbol] :on :member or :collection (required outside block)
+        # @option options [String] :contract custom contract path
+        #
+        # @example
+        #   member { post :archive }
+        #   collection { post :bulk_create }
         def post(actions, **options)
           capture_actions(actions, method: :post, options: options)
         end
 
+        # Declares a PUT action.
+        #
+        # @param actions [Symbol, Array<Symbol>] action name(s)
+        # @param options [Hash] action options
+        # @option options [Symbol] :on :member or :collection (required outside block)
+        # @option options [String] :contract custom contract path
+        #
+        # @example
+        #   member { put :replace }
         def put(actions, **options)
           capture_actions(actions, method: :put, options: options)
         end
 
+        # Declares a DELETE action.
+        #
+        # @param actions [Symbol, Array<Symbol>] action name(s)
+        # @param options [Hash] action options
+        # @option options [Symbol] :on :member or :collection (required outside block)
+        # @option options [String] :contract custom contract path
+        #
+        # @example
+        #   member { delete :remove_attachment }
         def delete(actions, **options)
           capture_actions(actions, method: :delete, options: options)
         end

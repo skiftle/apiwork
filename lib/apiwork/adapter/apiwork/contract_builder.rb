@@ -496,13 +496,13 @@ module Apiwork
           return type_name if existing
 
           if strategy == :cursor
-            contract_class.global_type(type_name) do
+            contract_class.api_class.type(type_name, scope: nil) do
               param :after, type: :string, optional: true
               param :before, type: :string, optional: true
               param :size, type: :integer, optional: true, min: 1, max: max_size
             end
           else
-            contract_class.global_type(type_name) do
+            contract_class.api_class.type(type_name, scope: nil) do
               param :number, type: :integer, optional: true, min: 1
               param :size, type: :integer, optional: true, min: 1, max: max_size
             end

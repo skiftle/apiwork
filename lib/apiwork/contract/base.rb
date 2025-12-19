@@ -341,30 +341,18 @@ module Apiwork
           introspect
         end
 
-        def api_path
+        def api_class
+          return @api_class if instance_variable_defined?(:@api_class)
           return nil unless name
 
           namespace_parts = name.deconstantize.split('::')
           return nil if namespace_parts.empty?
 
-          "/#{namespace_parts.map(&:underscore).join('/')}"
-        end
-
-        def api_class
-          return @api_class if instance_variable_defined?(:@api_class)
-
-          path = api_path
-          return nil unless path
-
-          Apiwork::API.find(path)
+          Apiwork::API.find("/#{namespace_parts.map(&:underscore).join('/')}")
         end
 
         def parse_response(body, action)
           ResponseParser.new(self, action).parse(body)
-        end
-
-        def global_type(name, &block)
-          api_class.type(name, scope: nil, &block)
         end
 
         def resolve_type(name)
