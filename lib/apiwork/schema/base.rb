@@ -8,13 +8,13 @@ module Apiwork
 
       class_attribute :attribute_definitions, default: {}
       class_attribute :association_definitions, default: {}
-      class_attribute :_root, default: nil
-      class_attribute :_adapter_config, default: {}
       class_attribute :discriminator_column, default: nil
       class_attribute :discriminator_name, default: nil
       class_attribute :variant_tag, default: nil
-      class_attribute :_sti_type, default: nil
       class_attribute :variants, default: {}
+      class_attribute :_root, default: nil
+      class_attribute :_adapter_config, default: {}
+      class_attribute :_sti_type, default: nil
       class_attribute :_description, default: nil
       class_attribute :_deprecated, default: false
       class_attribute :_example, default: nil
@@ -304,7 +304,7 @@ module Apiwork
         #   end
         def variant(as: nil)
           ensure_auto_detection_complete
-          tag = as || derive_variant_tag
+          tag = as || model_class.sti_name
 
           self.variant_tag = tag.to_sym
           self._sti_type = model_class.sti_name
@@ -406,7 +406,11 @@ module Apiwork
 
         private
 
-        def auto_detect_model
+        def ensure_auto_detection_complete
+          return if _auto_detection_complete
+
+          self._auto_detection_complete = true
+
           return if _model_class.present?
           return if abstract?
 
@@ -414,7 +418,12 @@ module Apiwork
           model_name = schema_name.sub(/Schema$/, '')
           return if model_name.blank?
 
-          detected = try_constantize_model(name.deconstantize, model_name)
+          namespace = name.deconstantize
+          detected = if namespace.present?
+                       "#{namespace}::#{model_name}".safe_constantize || model_name.safe_constantize
+                     else
+                       model_name.safe_constantize
+                     end
 
           if detected.present?
             self._model_class = detected
@@ -427,32 +436,6 @@ module Apiwork
               path: []
             )
           end
-        end
-
-        def derive_variant_tag
-          model_class.sti_name
-        end
-
-        def ensure_auto_detection_complete
-          return if _auto_detection_complete
-
-          self._auto_detection_complete = true
-          auto_detect_model
-        end
-
-        def try_constantize_model(namespace, model_name)
-          if namespace.present?
-            full_name = "#{namespace}::#{model_name}"
-            begin
-              return full_name.constantize
-            rescue NameError
-              # Fallback to non-namespaced
-            end
-          end
-
-          model_name.constantize
-        rescue NameError
-          nil
         end
       end
     end
