@@ -220,17 +220,23 @@ components:
         id:
           type: string
         issuedOn:
-          type: string
+          type:
+          - string
+          - 'null'
         lines:
           type: array
           items:
             type: string
         notes:
-          type: string
+          type:
+          - string
+          - 'null'
         number:
           type: string
         status:
-          type: string
+          type:
+          - string
+          - 'null'
         updatedAt:
           type: string
       required:

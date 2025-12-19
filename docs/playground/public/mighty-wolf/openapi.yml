@@ -171,9 +171,13 @@ components:
         brand:
           type: string
         color:
-          type: string
+          type:
+          - string
+          - 'null'
         doors:
-          type: integer
+          type:
+          - integer
+          - 'null'
         id:
           type: string
         model:
@@ -182,7 +186,9 @@ components:
           type: string
           const: car
         year:
-          type: integer
+          type:
+          - integer
+          - 'null'
       required:
       - brand
       - id
@@ -290,9 +296,13 @@ components:
         brand:
           type: string
         color:
-          type: string
+          type:
+          - string
+          - 'null'
         engineCc:
-          type: integer
+          type:
+          - integer
+          - 'null'
         id:
           type: string
         model:
@@ -301,7 +311,9 @@ components:
           type: string
           const: motorcycle
         year:
-          type: integer
+          type:
+          - integer
+          - 'null'
       required:
       - brand
       - id
@@ -422,18 +434,24 @@ components:
         brand:
           type: string
         color:
-          type: string
+          type:
+          - string
+          - 'null'
         id:
           type: string
         model:
           type: string
         payloadCapacity:
-          type: number
+          type:
+          - number
+          - 'null'
         type:
           type: string
           const: truck
         year:
-          type: integer
+          type:
+          - integer
+          - 'null'
       required:
       - brand
       - id

@@ -247,23 +247,38 @@ components:
       properties:
         createdAt:
           type: string
+          description: Timestamp when project was created
         deadline:
-          type: string
+          type:
+          - string
+          - 'null'
+          description: Target completion date
         description:
-          type: string
+          type:
+          - string
+          - 'null'
+          description: Detailed project description
         id:
           type: string
+          description: Unique project identifier
         name:
           type: string
+          description: Human-readable project name
         priority:
-          type: string
+          type:
+          - string
+          - 'null'
+          description: Project priority for resource allocation
           enum:
           - low
           - medium
           - high
           - critical
         status:
-          type: string
+          type:
+          - string
+          - 'null'
+          description: Current project lifecycle status
           enum:
           - active
           - paused
@@ -271,6 +286,7 @@ components:
           - archived
         updatedAt:
           type: string
+          description: Timestamp of last modification
       required:
       - createdAt
       - id

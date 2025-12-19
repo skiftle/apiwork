@@ -300,7 +300,9 @@ components:
       type: object
       properties:
         archived:
-          type: boolean
+          type:
+          - boolean
+          - 'null'
           description: Whether the task has been archived
           deprecated: true
         assignee:
@@ -318,18 +320,24 @@ components:
           type: string
           description: Timestamp when the task was created
         description:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Detailed description of what needs to be done
           example: Add OAuth2 login support for Google and GitHub providers
         dueDate:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Target date for task completion
           example: '2024-02-01T00:00:00Z'
         id:
           type: string
           description: Unique task identifier
         priority:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Priority level for task ordering
           example: high
           enum:
@@ -338,7 +346,9 @@ components:
           - high
           - critical
         status:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Current status of the task
           example: pending
           enum:

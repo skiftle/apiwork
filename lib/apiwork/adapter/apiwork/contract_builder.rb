@@ -320,10 +320,12 @@ module Apiwork
               param name,
                     type: builder.send(:map_type, attribute_definition.type),
                     optional: attribute_definition.optional?,
+                    nullable: attribute_definition.nullable?,
                     description: attribute_definition.description,
                     example: attribute_definition.example,
                     format: attribute_definition.format,
                     deprecated: attribute_definition.deprecated,
+                    attribute_definition: attribute_definition,
                     **enum_option
             end
 
@@ -675,10 +677,12 @@ module Apiwork
               param name,
                     type: builder.send(:map_type, attribute_definition.type),
                     optional: attribute_definition.optional?,
+                    nullable: attribute_definition.nullable?,
                     description: attribute_definition.description,
                     example: attribute_definition.example,
                     format: attribute_definition.format,
                     deprecated: attribute_definition.deprecated,
+                    attribute_definition: attribute_definition,
                     **enum_option
             end
 
@@ -794,10 +798,12 @@ module Apiwork
                   param name,
                         type: builder.send(:map_type, attribute_definition.type),
                         optional: attribute_definition.optional?,
+                        nullable: attribute_definition.nullable?,
                         description: attribute_definition.description,
                         example: attribute_definition.example,
                         format: attribute_definition.format,
                         deprecated: attribute_definition.deprecated,
+                        attribute_definition: attribute_definition,
                         **enum_option
                 end
               end

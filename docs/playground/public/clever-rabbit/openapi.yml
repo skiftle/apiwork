@@ -238,9 +238,13 @@ components:
           type: object
           properties: {}
         status:
-          type: string
+          type:
+          - string
+          - 'null'
         total:
-          type: number
+          type:
+          - number
+          - 'null'
         updatedAt:
           type: string
       required:

@@ -4,7 +4,7 @@ export const ActivitySchema = z.object({
   action: z.string(),
   createdAt: z.iso.datetime(),
   id: z.string(),
-  occurredAt: z.iso.datetime().optional()
+  occurredAt: z.iso.datetime().nullable().optional()
 });
 
 export const ActivityCreatePayloadSchema = z.object({
@@ -139,7 +139,7 @@ export interface Activity {
   action: string;
   createdAt: string;
   id: string;
-  occurredAt?: string;
+  occurredAt?: null | string;
 }
 
 export interface ActivityCreatePayload {

@@ -14,11 +14,11 @@ export const InvoiceSchema = z.object({
   customer: z.object({}),
   customerId: z.string(),
   id: z.string(),
-  issuedOn: z.iso.date().optional(),
+  issuedOn: z.iso.date().nullable().optional(),
   lines: z.array(z.string()),
-  notes: z.string().optional(),
+  notes: z.string().nullable().optional(),
   number: z.string(),
-  status: z.string().optional(),
+  status: z.string().nullable().optional(),
   updatedAt: z.iso.datetime()
 });
 
@@ -153,11 +153,11 @@ export interface Invoice {
   customer: object;
   customerId: string;
   id: string;
-  issuedOn?: string;
+  issuedOn?: null | string;
   lines: string[];
-  notes?: string;
+  notes?: null | string;
   number: string;
-  status?: string;
+  status?: null | string;
   updatedAt: string;
 }
 

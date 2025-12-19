@@ -186,7 +186,9 @@ components:
       type: object
       properties:
         authorName:
-          type: string
+          type:
+          - string
+          - 'null'
         body:
           type: string
         commentable:
@@ -283,7 +285,9 @@ components:
         createdAt:
           type: string
         height:
-          type: integer
+          type:
+          - integer
+          - 'null'
         id:
           type: string
         title:
@@ -291,7 +295,9 @@ components:
         url:
           type: string
         width:
-          type: integer
+          type:
+          - integer
+          - 'null'
       required:
       - createdAt
       - id
@@ -400,7 +406,9 @@ components:
       type: object
       properties:
         body:
-          type: string
+          type:
+          - string
+          - 'null'
         comments:
           type: array
           items:
@@ -489,7 +497,9 @@ components:
         createdAt:
           type: string
         duration:
-          type: integer
+          type:
+          - integer
+          - 'null'
         id:
           type: string
         title:

@@ -10,11 +10,11 @@ export interface Invoice {
   customer: object;
   customerId: string;
   id: string;
-  issuedOn?: string;
+  issuedOn?: null | string;
   lines: string[];
-  notes?: string;
+  notes?: null | string;
   number: string;
-  status?: string;
+  status?: null | string;
   updatedAt: string;
 }
 

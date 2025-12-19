@@ -228,8 +228,8 @@ RSpec.describe Apiwork::Spec::Typescript do
     describe 'JSON column type mapping' do
       it 'generates object type for :json columns' do
         # Post has metadata :json column, which maps to :object type
-        # :object without shape generates: metadata?: object
-        expect(output).to match(/metadata\?: object/)
+        # Since the column is nullable, it generates: metadata?: null | object
+        expect(output).to match(/metadata\?: null \| object/)
       end
     end
 

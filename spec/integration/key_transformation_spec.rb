@@ -160,7 +160,8 @@ RSpec.describe 'Key Transformation in Spec Generation', type: :integration do
 
       it 'keeps single word properties unchanged' do
         expect(output).to match(/title\??: string/)
-        expect(output).to match(/body\??: string/)
+        # body is nullable, so it includes null in the type union
+        expect(output).to match(/body\??: (null \| )?string/)
       end
     end
 

@@ -15,6 +15,7 @@
         },
         "occurred_at": {
           "type": "datetime",
+          "nullable": true,
           "optional": true
         }
       }

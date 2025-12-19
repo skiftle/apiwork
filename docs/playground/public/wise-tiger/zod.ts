@@ -32,12 +32,12 @@ export const OffsetPaginationSchema = z.object({
 
 export const ProjectSchema = z.object({
   createdAt: z.iso.datetime(),
-  deadline: z.iso.date().optional(),
-  description: z.string().optional(),
+  deadline: z.iso.date().nullable().optional(),
+  description: z.string().nullable().optional(),
   id: z.string(),
   name: z.string(),
-  priority: ProjectPrioritySchema.optional(),
-  status: ProjectStatusSchema.optional(),
+  priority: ProjectPrioritySchema.nullable().optional(),
+  status: ProjectStatusSchema.nullable().optional(),
   updatedAt: z.iso.datetime()
 });
 
@@ -171,12 +171,12 @@ export interface OffsetPagination {
 
 export interface Project {
   createdAt: string;
-  deadline?: string;
-  description?: string;
+  deadline?: null | string;
+  description?: null | string;
   id: string;
   name: string;
-  priority?: ProjectPriority;
-  status?: ProjectStatus;
+  priority?: ProjectPriority | null;
+  status?: ProjectStatus | null;
   updatedAt: string;
 }
 

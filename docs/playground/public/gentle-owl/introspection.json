@@ -6,6 +6,7 @@
       "shape": {
         "author_name": {
           "type": "string",
+          "nullable": true,
           "optional": true
         },
         "body": {
@@ -132,6 +133,7 @@
         },
         "height": {
           "type": "integer",
+          "nullable": true,
           "optional": true
         },
         "id": {
@@ -145,6 +147,7 @@
         },
         "width": {
           "type": "integer",
+          "nullable": true,
           "optional": true
         }
       }
@@ -282,6 +285,7 @@
       "shape": {
         "body": {
           "type": "string",
+          "nullable": true,
           "optional": true
         },
         "comments": {
@@ -401,6 +405,7 @@
         },
         "duration": {
           "type": "integer",
+          "nullable": true,
           "optional": true
         },
         "id": {

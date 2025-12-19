@@ -151,7 +151,9 @@ components:
       type: object
       properties:
         email:
-          type: string
+          type:
+          - string
+          - 'null'
         id:
           type: string
         name:

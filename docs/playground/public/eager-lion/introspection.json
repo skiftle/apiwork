@@ -36,6 +36,7 @@
         },
         "issued_on": {
           "type": "date",
+          "nullable": true,
           "optional": true
         },
         "lines": {
@@ -43,6 +44,7 @@
         },
         "notes": {
           "type": "string",
+          "nullable": true,
           "optional": true
         },
         "number": {
@@ -50,6 +52,7 @@
         },
         "status": {
           "type": "string",
+          "nullable": true,
           "optional": true
         },
         "updated_at": {

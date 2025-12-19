@@ -157,7 +157,9 @@ components:
         id:
           type: string
         occurredAt:
-          type: string
+          type:
+          - string
+          - 'null'
       required:
       - action
       - createdAt

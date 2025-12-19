@@ -1,14 +1,14 @@
 export interface Article {
-  body?: string;
+  body?: null | string;
   category?: null | object;
   createdAt: string;
   id: string;
-  publishedOn?: string;
-  rating?: number;
-  status?: ArticleStatus;
+  publishedOn?: null | string;
+  rating?: null | number;
+  status?: ArticleStatus | null;
   title: string;
   updatedAt: string;
-  viewCount?: number;
+  viewCount?: null | number;
 }
 
 export interface ArticleCreatePayload {

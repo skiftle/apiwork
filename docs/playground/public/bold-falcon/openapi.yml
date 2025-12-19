@@ -169,7 +169,9 @@ components:
       type: object
       properties:
         body:
-          type: string
+          type:
+          - string
+          - 'null'
         category:
           type:
           - object
@@ -180,11 +182,17 @@ components:
         id:
           type: string
         publishedOn:
-          type: string
+          type:
+          - string
+          - 'null'
         rating:
-          type: number
+          type:
+          - number
+          - 'null'
         status:
-          type: string
+          type:
+          - string
+          - 'null'
           enum:
           - draft
           - published
@@ -194,7 +202,9 @@ components:
         updatedAt:
           type: string
         viewCount:
-          type: integer
+          type:
+          - integer
+          - 'null'
       required:
       - createdAt
       - id

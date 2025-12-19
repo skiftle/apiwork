@@ -6,6 +6,7 @@
       "shape": {
         "body": {
           "type": "string",
+          "nullable": true,
           "optional": true
         },
         "category": {
@@ -21,15 +22,18 @@
         },
         "published_on": {
           "type": "date",
+          "nullable": true,
           "optional": true
         },
         "rating": {
           "type": "decimal",
+          "nullable": true,
           "optional": true
         },
         "status": {
           "type": "string",
           "enum": "article_status",
+          "nullable": true,
           "optional": true
         },
         "title": {
@@ -40,6 +44,7 @@
         },
         "view_count": {
           "type": "integer",
+          "nullable": true,
           "optional": true
         }
       }

@@ -82,34 +82,46 @@
       "type": "object",
       "shape": {
         "created_at": {
-          "type": "datetime"
+          "type": "datetime",
+          "description": "Timestamp when project was created"
         },
         "deadline": {
           "type": "date",
-          "optional": true
+          "nullable": true,
+          "optional": true,
+          "description": "Target completion date"
         },
         "description": {
           "type": "string",
-          "optional": true
+          "nullable": true,
+          "optional": true,
+          "description": "Detailed project description"
         },
         "id": {
-          "type": "string"
+          "type": "string",
+          "description": "Unique project identifier"
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "Human-readable project name"
         },
         "priority": {
           "type": "string",
           "enum": "project_priority",
-          "optional": true
+          "nullable": true,
+          "optional": true,
+          "description": "Project priority for resource allocation"
         },
         "status": {
           "type": "string",
           "enum": "project_status",
-          "optional": true
+          "nullable": true,
+          "optional": true,
+          "description": "Current project lifecycle status"
         },
         "updated_at": {
-          "type": "datetime"
+          "type": "datetime",
+          "description": "Timestamp of last modification"
         }
       }
     },
