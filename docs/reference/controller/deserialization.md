@@ -1,5 +1,5 @@
 ---
-order: 74
+order: 72
 prev: false
 next: false
 ---
@@ -12,6 +12,6 @@ next: false
 
 ### #contract()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/deserialization.rb#L18)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/deserialization.rb#L19)
 
 ---

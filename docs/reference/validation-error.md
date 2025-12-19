@@ -1,5 +1,5 @@
 ---
-order: 113
+order: 110
 prev: false
 next: false
 ---
@@ -10,7 +10,7 @@ next: false
 
 ## Instance Methods
 
-### #http_status()
+### #error_code()
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/validation_error.rb#L5)
 

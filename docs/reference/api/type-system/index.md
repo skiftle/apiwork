@@ -1,5 +1,5 @@
 ---
-order: 17
+order: 15
 prev: false
 next: false
 ---
@@ -87,5 +87,11 @@ Returns the value of attribute enums.
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/type_system.rb#L6)
 
 Returns the value of attribute types.
+
+---
+
+### #unregister_type(name)
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/type_system.rb#L85)
 
 ---

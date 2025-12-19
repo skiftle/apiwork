@@ -1,5 +1,5 @@
 ---
-order: 80
+order: 77
 prev: false
 next: false
 ---
@@ -12,12 +12,47 @@ next: false
 
 ### .key_for_status(status)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L31)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L51)
+
+---
+
+### .register(key, status:, attach_path: = false)
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L47)
+
+Registers a custom error code for use in API responses.
+
+Error codes are used with `raises` declarations and `respond_with_error`
+in controllers. Built-in codes (400-504) are pre-registered.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `key` | `Symbol` | unique identifier for the error code |
+| `status` | `Integer` | HTTP status code (must be 400-599) |
+| `attach_path` | `Boolean` | include request path in error response (default: false) |
+
+**Returns**
+
+`ErrorCode::Definition` — the registered error code
+
+**Example: Register custom error code**
+
+```ruby
+Apiwork::ErrorCode.register :resource_locked, status: 423
+```
+
+**Example: With path attachment**
+
+```ruby
+Apiwork::ErrorCode.register :not_found, status: 404, attach_path: true
+```
 
 ---
 
 ### .reset!()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L35)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L55)
 
 ---

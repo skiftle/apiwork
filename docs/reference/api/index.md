@@ -16,7 +16,7 @@ next: false
 
 ---
 
-### .draw(path, &block)
+### .define(path, &block)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L28)
 
@@ -65,16 +65,18 @@ end
 
 ### .introspect(path, locale: = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L46)
-
-DOCUMENTATION
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L49)
 
 ---
 
 ### .reset!()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L51)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L53)
 
-DOCUMENTATION
+---
+
+### .unregister(path)
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L45)
 
 ---

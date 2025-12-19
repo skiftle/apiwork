@@ -1,5 +1,5 @@
 ---
-order: 91
+order: 88
 prev: false
 next: false
 ---
@@ -73,5 +73,11 @@ Returns the value of attribute path.
 ### #to_s()
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L35)
+
+---
+
+### #warn()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L39)
 
 ---

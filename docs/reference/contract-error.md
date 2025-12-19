@@ -1,5 +1,5 @@
 ---
-order: 72
+order: 70
 prev: false
 next: false
 ---
@@ -10,7 +10,7 @@ next: false
 
 ## Instance Methods
 
-### #http_status()
+### #error_code()
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/constraint_error.rb#L12)
 

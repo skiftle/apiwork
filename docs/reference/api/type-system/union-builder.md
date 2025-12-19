@@ -1,5 +1,5 @@
 ---
-order: 18
+order: 16
 prev: false
 next: false
 ---
@@ -30,7 +30,7 @@ Returns the value of attribute discriminator.
 
 ### #serialize()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/type_system/union_builder.rb#L31)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/type_system/union_builder.rb#L28)
 
 ---
 

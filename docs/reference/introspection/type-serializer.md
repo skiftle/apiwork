@@ -1,5 +1,5 @@
 ---
-order: 90
+order: 87
 prev: false
 next: false
 ---
@@ -22,13 +22,13 @@ next: false
 
 ### #serialize_enum(qualified_name, metadata)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type_serializer.rb#L45)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type_serializer.rb#L48)
 
 ---
 
 ### #serialize_enums()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type_serializer.rb#L37)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/introspection/type_serializer.rb#L40)
 
 ---
 

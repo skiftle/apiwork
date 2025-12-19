@@ -1,5 +1,5 @@
 ---
-order: 62
+order: 60
 prev: false
 next: false
 ---
@@ -12,13 +12,13 @@ next: false
 
 ### .perform(value, type)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_parser/coercer.rb#L60)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_parser/coercer.rb#L61)
 
 ---
 
 ### .performable?(type)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_parser/coercer.rb#L73)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_parser/coercer.rb#L74)
 
 **Returns**
 
