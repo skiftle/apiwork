@@ -357,43 +357,6 @@
   "resources": {
     "projects": {
       "path": "projects",
-      "schema": {
-        "type": "object",
-        "shape": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string",
-            "nullable": true,
-            "optional": true
-          },
-          "status": {
-            "type": "string",
-            "nullable": true,
-            "optional": true
-          },
-          "priority": {
-            "type": "string",
-            "nullable": true,
-            "optional": true
-          },
-          "deadline": {
-            "type": "date",
-            "nullable": true,
-            "optional": true
-          },
-          "created_at": {
-            "type": "datetime"
-          },
-          "updated_at": {
-            "type": "datetime"
-          }
-        }
-      },
       "actions": {
         "index": {
           "method": "get",

@@ -435,26 +435,6 @@
   "resources": {
     "users": {
       "path": "users",
-      "schema": {
-        "type": "object",
-        "shape": {
-          "id": {
-            "type": "string"
-          },
-          "created_at": {
-            "type": "datetime"
-          },
-          "updated_at": {
-            "type": "datetime"
-          },
-          "email": {
-            "type": "string"
-          },
-          "username": {
-            "type": "string"
-          }
-        }
-      },
       "actions": {
         "index": {
           "method": "get",
@@ -659,17 +639,6 @@
     },
     "posts": {
       "path": "posts",
-      "schema": {
-        "type": "object",
-        "shape": {
-          "id": {
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          }
-        }
-      },
       "actions": {
         "index": {
           "method": "get",
@@ -848,20 +817,6 @@
     },
     "comments": {
       "path": "comments",
-      "schema": {
-        "type": "object",
-        "shape": {
-          "id": {
-            "type": "string"
-          },
-          "body": {
-            "type": "string"
-          },
-          "author": {
-            "type": "string"
-          }
-        }
-      },
       "actions": {
         "index": {
           "method": "get",

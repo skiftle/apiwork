@@ -398,63 +398,6 @@
   "resources": {
     "tasks": {
       "path": "tasks",
-      "schema": {
-        "type": "object",
-        "shape": {
-          "id": {
-            "type": "string",
-            "description": "Unique task identifier"
-          },
-          "title": {
-            "type": "string",
-            "example": "Implement user authentication",
-            "description": "Short title describing the task"
-          },
-          "description": {
-            "type": "string",
-            "example": "Add OAuth2 login support for Google and GitHub providers",
-            "description": "Detailed description of what needs to be done",
-            "nullable": true,
-            "optional": true
-          },
-          "status": {
-            "type": "string",
-            "example": "pending",
-            "description": "Current status of the task",
-            "nullable": true,
-            "optional": true
-          },
-          "priority": {
-            "type": "string",
-            "example": "high",
-            "description": "Priority level for task ordering",
-            "nullable": true,
-            "optional": true
-          },
-          "due_date": {
-            "type": "datetime",
-            "example": "2024-02-01T00:00:00Z",
-            "description": "Target date for task completion",
-            "nullable": true,
-            "optional": true
-          },
-          "archived": {
-            "type": "boolean",
-            "description": "Whether the task has been archived",
-            "nullable": true,
-            "optional": true,
-            "deprecated": true
-          },
-          "created_at": {
-            "type": "datetime",
-            "description": "Timestamp when the task was created"
-          },
-          "updated_at": {
-            "type": "datetime",
-            "description": "Timestamp of last modification"
-          }
-        }
-      },
       "actions": {
         "index": {
           "method": "get",

@@ -8,17 +8,19 @@ sections:
       - config/apis/eager_lion.rb
   - title: Models
     files:
-      - app/models/eager_lion/customer.rb
       - app/models/eager_lion/invoice.rb
+      - app/models/eager_lion/customer.rb
       - app/models/eager_lion/line.rb
   - title: Schemas
     files:
-      - app/schemas/eager_lion/customer_schema.rb
       - app/schemas/eager_lion/invoice_schema.rb
+      - app/schemas/eager_lion/customer_schema.rb
       - app/schemas/eager_lion/line_schema.rb
   - title: Contracts
     files:
       - app/contracts/eager_lion/invoice_contract.rb
+      - app/contracts/eager_lion/customer_contract.rb
+      - app/contracts/eager_lion/line_contract.rb
   - title: Controllers
     files:
       - app/controllers/eager_lion/invoices_controller.rb

@@ -576,30 +576,6 @@
   "resources": {
     "vehicles": {
       "path": "vehicles",
-      "schema": {
-        "type": "object",
-        "shape": {
-          "id": {
-            "type": "string"
-          },
-          "brand": {
-            "type": "string"
-          },
-          "model": {
-            "type": "string"
-          },
-          "year": {
-            "type": "integer",
-            "nullable": true,
-            "optional": true
-          },
-          "color": {
-            "type": "string",
-            "nullable": true,
-            "optional": true
-          }
-        }
-      },
       "actions": {
         "index": {
           "method": "get",

@@ -5,7 +5,8 @@ module FunnySnake
     before_action :set_invoice, only: %i[show update destroy]
 
     def index
-      respond({ invoices: Invoice.all.map { |i| i.as_json } })
+      invoices = Invoice.all
+      respond({ invoices: invoices.map(&:as_json) })
     end
 
     def show
@@ -13,12 +14,13 @@ module FunnySnake
     end
 
     def create
-      inv = Invoice.create contract.body[:invoice]
-      respond({ invoice: inv.as_json })
+      invoice = Invoice.create(contract.body[:invoice])
+
+      respond({ invoice: invoice.as_json })
     end
 
     def update
-      invoice.update contract.body[:invoice]
+      invoice.update(contract.body[:invoice])
       respond({ invoice: invoice.as_json })
     end
 

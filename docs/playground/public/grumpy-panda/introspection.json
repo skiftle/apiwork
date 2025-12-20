@@ -107,25 +107,6 @@
   "resources": {
     "activities": {
       "path": "activities",
-      "schema": {
-        "type": "object",
-        "shape": {
-          "id": {
-            "type": "string"
-          },
-          "action": {
-            "type": "string"
-          },
-          "occurred_at": {
-            "type": "datetime",
-            "nullable": true,
-            "optional": true
-          },
-          "created_at": {
-            "type": "datetime"
-          }
-        }
-      },
       "actions": {
         "index": {
           "method": "get",

@@ -119,56 +119,6 @@ export interface ContactUpdatePayload {
   phone?: string;
 }
 
-export interface ContactsCreateRequest {
-  body: ContactsCreateRequestBody;
-}
-
-export interface ContactsCreateRequestBody {
-  contact: ContactCreatePayload;
-}
-
-export interface ContactsCreateResponse {
-  body: ContactsCreateResponseBody;
-}
-
-export type ContactsCreateResponseBody = { contact: Contact; meta?: object } | { errors?: Error[] };
-
-export type ContactsDestroyResponse = never;
-
-export interface ContactsIndexRequest {
-  query: ContactsIndexRequestQuery;
-}
-
-export interface ContactsIndexRequestQuery {
-  page?: ContactPage;
-}
-
-export interface ContactsIndexResponse {
-  body: ContactsIndexResponseBody;
-}
-
-export type ContactsIndexResponseBody = { contacts?: Contact[]; meta?: object; pagination?: OffsetPagination } | { errors?: Error[] };
-
-export interface ContactsShowResponse {
-  body: ContactsShowResponseBody;
-}
-
-export type ContactsShowResponseBody = { contact: Contact; meta?: object } | { errors?: Error[] };
-
-export interface ContactsUpdateRequest {
-  body: ContactsUpdateRequestBody;
-}
-
-export interface ContactsUpdateRequestBody {
-  contact: ContactUpdatePayload;
-}
-
-export interface ContactsUpdateResponse {
-  body: ContactsUpdateResponseBody;
-}
-
-export type ContactsUpdateResponseBody = { contact: Contact; meta?: object } | { errors?: Error[] };
-
 export interface Error {
   code: string;
   detail: string;

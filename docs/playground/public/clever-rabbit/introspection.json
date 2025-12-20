@@ -244,33 +244,6 @@
   "resources": {
     "orders": {
       "path": "orders",
-      "schema": {
-        "type": "object",
-        "shape": {
-          "id": {
-            "type": "string"
-          },
-          "order_number": {
-            "type": "string"
-          },
-          "status": {
-            "type": "string",
-            "nullable": true,
-            "optional": true
-          },
-          "total": {
-            "type": "decimal",
-            "nullable": true,
-            "optional": true
-          },
-          "created_at": {
-            "type": "datetime"
-          },
-          "updated_at": {
-            "type": "datetime"
-          }
-        }
-      },
       "actions": {
         "index": {
           "method": "get",

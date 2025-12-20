@@ -27,7 +27,6 @@ module Apiwork
           summary: metadata[:summary],
           description: metadata[:description],
           tags: metadata[:tags].presence,
-          schema: serialize_resource_schema(resolve_schema_class),
           actions: build_actions(contract_class),
           resources: build_nested_resources(resource_path)
         }.compact
@@ -108,34 +107,6 @@ module Apiwork
         contract_class < Contract::Base ? contract_class : nil
       end
 
-      def resolve_schema_class
-        contract_class = resolve_contract_class
-        contract_class&.schema_class
-      end
-
-      def serialize_resource_schema(schema_class)
-        return nil unless schema_class.respond_to?(:attribute_definitions)
-
-        attributes = schema_class.attribute_definitions.transform_values { serialize_attribute(_1) }
-        return nil if attributes.empty?
-
-        { type: :object, shape: attributes }
-      end
-
-      def serialize_attribute(attr_def)
-        result = {
-          type: attr_def.type,
-          format: attr_def.format,
-          example: attr_def.example,
-          description: attr_def.description
-        }.compact
-
-        result[:nullable] = true if attr_def.nullable?
-        result[:optional] = true if attr_def.optional?
-        result[:deprecated] = true if attr_def.deprecated
-
-        result
-      end
     end
   end
 end

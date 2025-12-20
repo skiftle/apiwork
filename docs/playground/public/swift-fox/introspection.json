@@ -132,30 +132,6 @@
   "resources": {
     "contacts": {
       "path": "contacts",
-      "schema": {
-        "type": "object",
-        "shape": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string",
-            "nullable": true,
-            "optional": true
-          },
-          "phone": {
-            "type": "string",
-            "optional": true
-          },
-          "notes": {
-            "type": "string",
-            "optional": true
-          }
-        }
-      },
       "actions": {
         "index": {
           "method": "get",

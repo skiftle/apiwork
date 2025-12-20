@@ -287,41 +287,6 @@
   "resources": {
     "invoices": {
       "path": "invoices",
-      "schema": {
-        "type": "object",
-        "shape": {
-          "id": {
-            "type": "string"
-          },
-          "created_at": {
-            "type": "datetime"
-          },
-          "updated_at": {
-            "type": "datetime"
-          },
-          "number": {
-            "type": "string"
-          },
-          "issued_on": {
-            "type": "date",
-            "nullable": true,
-            "optional": true
-          },
-          "notes": {
-            "type": "string",
-            "nullable": true,
-            "optional": true
-          },
-          "status": {
-            "type": "string",
-            "nullable": true,
-            "optional": true
-          },
-          "customer_id": {
-            "type": "string"
-          }
-        }
-      },
       "actions": {
         "index": {
           "method": "get",

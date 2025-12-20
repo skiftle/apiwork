@@ -526,25 +526,6 @@
   "resources": {
     "comments": {
       "path": "comments",
-      "schema": {
-        "type": "object",
-        "shape": {
-          "id": {
-            "type": "string"
-          },
-          "body": {
-            "type": "string"
-          },
-          "author_name": {
-            "type": "string",
-            "nullable": true,
-            "optional": true
-          },
-          "created_at": {
-            "type": "datetime"
-          }
-        }
-      },
       "actions": {
         "index": {
           "method": "get",
