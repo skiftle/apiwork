@@ -1,5 +1,5 @@
 ---
-order: 34
+order: 5
 prev: false
 next: false
 ---
@@ -213,18 +213,6 @@ end
 
 ---
 
-### .inherited(subclass)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L57)
-
----
-
-### .resolve_custom_type(type_name, visited: = Set.new)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L349)
-
----
-
 ### .schema!()
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L112)
@@ -254,16 +242,6 @@ class UserContract < Apiwork::Contract::Base
   end
 end
 ```
-
----
-
-### .schema?()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L150)
-
-**Returns**
-
-`Boolean` — 
 
 ---
 
@@ -341,37 +319,5 @@ class PaymentContract < Apiwork::Contract::Base
   end
 end
 ```
-
----
-
-## Instance Methods
-
-### #initialize(query:, body:, action_name:, coerce: = false)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L38)
-
-**Returns**
-
-`Base` — a new instance of Base
-
----
-
-### #invalid?()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L52)
-
-**Returns**
-
-`Boolean` — 
-
----
-
-### #valid?()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L47)
-
-**Returns**
-
-`Boolean` — 
 
 ---

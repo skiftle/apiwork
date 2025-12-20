@@ -1,5 +1,5 @@
 ---
-order: 42
+order: 9
 prev: false
 next: false
 ---
@@ -158,16 +158,6 @@ class LegacyOrderSchema < Apiwork::Schema::Base
   deprecated
 end
 ```
-
----
-
-### .deprecated?()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L423)
-
-**Returns**
-
-`Boolean` — 
 
 ---
 
@@ -378,16 +368,6 @@ end
 
 ---
 
-### .needs_discriminator_transform?()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L380)
-
-**Returns**
-
-`Boolean` — 
-
----
-
 ### .root(singular, plural = nil)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L130)
@@ -454,26 +434,6 @@ InvoiceSchema.serialize(Invoice.all)
 
 ---
 
-### .sti_base?()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L370)
-
-**Returns**
-
-`Boolean` — 
-
----
-
-### .sti_variant?()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L376)
-
-**Returns**
-
-`Boolean` — 
-
----
-
 ### .variant(as: = nil)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L353)
@@ -503,17 +463,5 @@ class CarSchema < VehicleSchema
   attribute :doors
 end
 ```
-
----
-
-## Instance Methods
-
-### #initialize(object, context: = {}, include: = nil)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L45)
-
-**Returns**
-
-`Base` — a new instance of Base
 
 ---

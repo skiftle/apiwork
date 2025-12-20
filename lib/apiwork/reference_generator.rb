@@ -37,9 +37,25 @@ module Apiwork
     end
 
     def public_api?(obj)
-      # Check docstring tags first (handles @!method directives)
-      return true if obj.docstring.tags(:api).any? { |t| t.text == 'public' }
+      api_tag = obj.docstring.tags(:api).find { |t| t.text == 'public' }
 
+      if obj.type == :method
+        # For methods, check if @api tag is inherited from parent class/module
+        # by comparing object_id with parent's tag
+        return false unless api_tag
+
+        parent = obj.namespace
+        return true unless parent
+
+        parent_api_tag = parent.docstring.tags(:api).find { |t| t.text == 'public' }
+        return api_tag.object_id != parent_api_tag&.object_id
+      end
+
+      # For classes/modules with own docstring and @api tag
+      has_own_docstring = !obj.docstring.to_s.strip.empty?
+      return true if has_own_docstring && api_tag
+
+      # Fallback: check file for @api public in class/module comment
       return false unless obj.file
 
       lines = File.readlines(obj.file)
@@ -100,7 +116,9 @@ module Apiwork
     def documented?(method)
       return true unless method.docstring.to_s.strip.empty?
 
-      useful_tags = method.docstring.tags.reject { |t| t.tag_name == 'api' }
+      useful_tags = method.docstring.tags.reject do |t|
+        t.tag_name == 'api' || t.text.to_s.strip.empty?
+      end
       useful_tags.any?
     end
 

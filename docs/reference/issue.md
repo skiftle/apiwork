@@ -1,5 +1,5 @@
 ---
-order: 41
+order: 8
 prev: false
 next: false
 ---
@@ -42,16 +42,6 @@ coercion, or constraint checks. Access via `contract.issues`.
 **Returns**
 
 `String` — human-readable error message
-
----
-
-### #initialize(code:, detail:, path: = [], meta: = {})
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L26)
-
-**Returns**
-
-`Issue` — a new instance of Issue
 
 ---
 

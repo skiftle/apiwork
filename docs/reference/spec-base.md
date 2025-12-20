@@ -1,5 +1,5 @@
 ---
-order: 44
+order: 11
 prev: false
 next: false
 ---
@@ -30,12 +30,6 @@ end
 ```
 
 ## Class Methods
-
-### .file_extension()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L49)
-
----
 
 ### .generate(api_path, **options)
 
@@ -70,15 +64,5 @@ Access API data via `@data` (introspection hash).
 **Returns**
 
 `String` — the generated spec
-
----
-
-### #initialize(api_path, **options)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L54)
-
-**Returns**
-
-`Base` — a new instance of Base
 
 ---

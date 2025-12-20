@@ -1,5 +1,5 @@
 ---
-order: 12
+order: 3
 prev: false
 next: false
 ---
@@ -27,16 +27,6 @@ Registers an adapter.
 ```ruby
 Apiwork::Adapter.register(JsonApiAdapter)
 ```
-
----
-
-### .registered?(identifier)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L22)
-
-**Returns**
-
-`Boolean` — 
 
 ---
 
