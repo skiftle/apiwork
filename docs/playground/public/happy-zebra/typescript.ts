@@ -183,6 +183,34 @@ export interface PostsUpdateResponse {
 
 export type PostsUpdateResponseBody = { errors?: Error[] } | { meta?: object; post: Post };
 
+export interface Profile {
+  bio: null | string;
+  createdAt: string;
+  id: string;
+  updatedAt: string;
+  user?: object;
+  website: null | string;
+}
+
+export interface ProfileNestedCreatePayload {
+  _type: 'create';
+  bio?: null | string;
+  website?: null | string;
+}
+
+export type ProfileNestedPayload = { _type: 'create' } & ProfileNestedCreatePayload | { _type: 'update' } & ProfileNestedUpdatePayload;
+
+export interface ProfileNestedUpdatePayload {
+  _type?: 'update';
+  bio?: null | string;
+  website?: null | string;
+}
+
+export interface ProfileSort {
+  createdAt?: SortDirection;
+  updatedAt?: SortDirection;
+}
+
 export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
@@ -198,7 +226,7 @@ export interface User {
   email: string;
   id: string;
   posts: Post[];
-  profile: object;
+  profile: Profile;
   updatedAt: string;
   username: string;
 }
@@ -206,7 +234,7 @@ export interface User {
 export interface UserCreatePayload {
   email: string;
   posts?: PostNestedPayload[];
-  profile?: object;
+  profile?: ProfileNestedPayload;
   username: string;
 }
 
@@ -231,7 +259,7 @@ export interface UserSort {
 export interface UserUpdatePayload {
   email?: string;
   posts?: PostNestedPayload[];
-  profile?: object;
+  profile?: ProfileNestedPayload;
   username?: string;
 }
 

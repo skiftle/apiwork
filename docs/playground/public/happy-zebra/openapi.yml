@@ -652,6 +652,86 @@ components:
           type: string
       required:
       - title
+    profile:
+      type: object
+      properties:
+        bio:
+          type:
+          - string
+          - 'null'
+        createdAt:
+          type: string
+        id:
+          type: string
+        updatedAt:
+          type: string
+        user:
+          type: object
+          properties: {}
+        website:
+          type:
+          - string
+          - 'null'
+      required:
+      - bio
+      - createdAt
+      - id
+      - updatedAt
+      - website
+    profileNestedCreatePayload:
+      type: object
+      properties:
+        _type:
+          type: string
+          const: create
+        bio:
+          type:
+          - string
+          - 'null'
+        website:
+          type:
+          - string
+          - 'null'
+      required:
+      - _type
+    profileNestedPayload:
+      oneOf:
+      - "$ref": "#/components/schemas/profileNestedCreatePayload"
+      - "$ref": "#/components/schemas/profileNestedUpdatePayload"
+      discriminator:
+        propertyName: _type
+        mapping:
+          create: "#/components/schemas/profileNestedCreatePayload"
+          update: "#/components/schemas/profileNestedUpdatePayload"
+    profileNestedUpdatePayload:
+      type: object
+      properties:
+        _type:
+          type: string
+          const: update
+        bio:
+          type:
+          - string
+          - 'null'
+        website:
+          type:
+          - string
+          - 'null'
+      required:
+      - _type
+    profileSort:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          enum:
+          - asc
+          - desc
+        updatedAt:
+          type: string
+          enum:
+          - asc
+          - desc
     stringFilter:
       type: object
       properties:
@@ -681,8 +761,7 @@ components:
           items:
             "$ref": "#/components/schemas/post"
         profile:
-          type: object
-          properties: {}
+          "$ref": "#/components/schemas/profile"
         updatedAt:
           type: string
         username:
@@ -705,8 +784,7 @@ components:
           items:
             "$ref": "#/components/schemas/postNestedPayload"
         profile:
-          type: object
-          properties: {}
+          "$ref": "#/components/schemas/profileNestedPayload"
         username:
           type: string
       required:
@@ -766,8 +844,7 @@ components:
           items:
             "$ref": "#/components/schemas/postNestedPayload"
         profile:
-          type: object
-          properties: {}
+          "$ref": "#/components/schemas/profileNestedPayload"
         username:
           type: string
       required:

@@ -14,6 +14,25 @@ Comments that belong to different content types (posts, videos, images)
 
 ## Models
 
+<small>`app/models/gentle_owl/comment.rb`</small>
+
+<<< @/playground/app/models/gentle_owl/comment.rb
+
+<details>
+<summary>Database Table</summary>
+
+| Column | Type | Nullable | Default |
+|--------|------|----------|---------|
+| id | string |  |  |
+| author_name | string | ✓ |  |
+| body | text |  |  |
+| commentable_id | string |  |  |
+| commentable_type | string |  |  |
+| created_at | datetime |  |  |
+| updated_at | datetime |  |  |
+
+</details>
+
 <small>`app/models/gentle_owl/post.rb`</small>
 
 <<< @/playground/app/models/gentle_owl/post.rb
@@ -68,26 +87,11 @@ Comments that belong to different content types (posts, videos, images)
 
 </details>
 
-<small>`app/models/gentle_owl/comment.rb`</small>
-
-<<< @/playground/app/models/gentle_owl/comment.rb
-
-<details>
-<summary>Database Table</summary>
-
-| Column | Type | Nullable | Default |
-|--------|------|----------|---------|
-| id | string |  |  |
-| author_name | string | ✓ |  |
-| body | text |  |  |
-| commentable_id | string |  |  |
-| commentable_type | string |  |  |
-| created_at | datetime |  |  |
-| updated_at | datetime |  |  |
-
-</details>
-
 ## Schemas
+
+<small>`app/schemas/gentle_owl/comment_schema.rb`</small>
+
+<<< @/playground/app/schemas/gentle_owl/comment_schema.rb
 
 <small>`app/schemas/gentle_owl/post_schema.rb`</small>
 
@@ -101,15 +105,23 @@ Comments that belong to different content types (posts, videos, images)
 
 <<< @/playground/app/schemas/gentle_owl/image_schema.rb
 
-<small>`app/schemas/gentle_owl/comment_schema.rb`</small>
-
-<<< @/playground/app/schemas/gentle_owl/comment_schema.rb
-
 ## Contracts
 
 <small>`app/contracts/gentle_owl/comment_contract.rb`</small>
 
 <<< @/playground/app/contracts/gentle_owl/comment_contract.rb
+
+<small>`app/contracts/gentle_owl/post_contract.rb`</small>
+
+<<< @/playground/app/contracts/gentle_owl/post_contract.rb
+
+<small>`app/contracts/gentle_owl/video_contract.rb`</small>
+
+<<< @/playground/app/contracts/gentle_owl/video_contract.rb
+
+<small>`app/contracts/gentle_owl/image_contract.rb`</small>
+
+<<< @/playground/app/contracts/gentle_owl/image_contract.rb
 
 ## Controllers
 

@@ -21,6 +21,7 @@ sections:
   - title: Contracts
     files:
       - app/contracts/happy_zebra/user_contract.rb
+      - app/contracts/happy_zebra/profile_contract.rb
       - app/contracts/happy_zebra/post_contract.rb
       - app/contracts/happy_zebra/comment_contract.rb
   - title: Controllers

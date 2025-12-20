@@ -19,6 +19,8 @@ sections:
   - title: Contracts
     files:
       - app/contracts/clever_rabbit/order_contract.rb
+      - app/contracts/clever_rabbit/line_item_contract.rb
+      - app/contracts/clever_rabbit/shipping_address_contract.rb
   - title: Controllers
     files:
       - app/controllers/clever_rabbit/orders_controller.rb

@@ -91,6 +91,14 @@ Create, update, and delete nested records in a single request
 
 <<< @/playground/app/contracts/clever_rabbit/order_contract.rb
 
+<small>`app/contracts/clever_rabbit/line_item_contract.rb`</small>
+
+<<< @/playground/app/contracts/clever_rabbit/line_item_contract.rb
+
+<small>`app/contracts/clever_rabbit/shipping_address_contract.rb`</small>
+
+<<< @/playground/app/contracts/clever_rabbit/shipping_address_contract.rb
+
 ## Controllers
 
 <small>`app/controllers/clever_rabbit/orders_controller.rb`</small>

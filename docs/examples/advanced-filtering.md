@@ -14,23 +14,6 @@ Complex queries with string patterns, numeric ranges, and logical operators
 
 ## Models
 
-<small>`app/models/bold_falcon/category.rb`</small>
-
-<<< @/playground/app/models/bold_falcon/category.rb
-
-<details>
-<summary>Database Table</summary>
-
-| Column | Type | Nullable | Default |
-|--------|------|----------|---------|
-| id | string |  |  |
-| created_at | datetime |  |  |
-| name | string |  |  |
-| slug | string |  |  |
-| updated_at | datetime |  |  |
-
-</details>
-
 <small>`app/models/bold_falcon/article.rb`</small>
 
 <<< @/playground/app/models/bold_falcon/article.rb
@@ -53,21 +36,42 @@ Complex queries with string patterns, numeric ranges, and logical operators
 
 </details>
 
+<small>`app/models/bold_falcon/category.rb`</small>
+
+<<< @/playground/app/models/bold_falcon/category.rb
+
+<details>
+<summary>Database Table</summary>
+
+| Column | Type | Nullable | Default |
+|--------|------|----------|---------|
+| id | string |  |  |
+| created_at | datetime |  |  |
+| name | string |  |  |
+| slug | string |  |  |
+| updated_at | datetime |  |  |
+
+</details>
+
 ## Schemas
-
-<small>`app/schemas/bold_falcon/category_schema.rb`</small>
-
-<<< @/playground/app/schemas/bold_falcon/category_schema.rb
 
 <small>`app/schemas/bold_falcon/article_schema.rb`</small>
 
 <<< @/playground/app/schemas/bold_falcon/article_schema.rb
+
+<small>`app/schemas/bold_falcon/category_schema.rb`</small>
+
+<<< @/playground/app/schemas/bold_falcon/category_schema.rb
 
 ## Contracts
 
 <small>`app/contracts/bold_falcon/article_contract.rb`</small>
 
 <<< @/playground/app/contracts/bold_falcon/article_contract.rb
+
+<small>`app/contracts/bold_falcon/category_contract.rb`</small>
+
+<<< @/playground/app/contracts/bold_falcon/category_contract.rb
 
 ## Controllers
 

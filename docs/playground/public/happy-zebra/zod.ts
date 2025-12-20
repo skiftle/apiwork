@@ -55,6 +55,32 @@ export const PostPageSchema = z.object({
   size: z.number().int().min(1).max(100).optional()
 });
 
+export const ProfileSchema = z.object({
+  bio: z.string().nullable(),
+  createdAt: z.iso.datetime(),
+  id: z.string(),
+  updatedAt: z.iso.datetime(),
+  user: z.object({}).optional(),
+  website: z.string().nullable()
+});
+
+export const ProfileNestedCreatePayloadSchema = z.object({
+  _type: z.literal('create'),
+  bio: z.string().nullable().optional(),
+  website: z.string().nullable().optional()
+});
+
+export const ProfileNestedUpdatePayloadSchema = z.object({
+  _type: z.literal('update'),
+  bio: z.string().nullable().optional(),
+  website: z.string().nullable().optional()
+});
+
+export const ProfileSortSchema = z.object({
+  createdAt: SortDirectionSchema.optional(),
+  updatedAt: SortDirectionSchema.optional()
+});
+
 export const StringFilterSchema = z.object({
   contains: z.string().optional(),
   endsWith: z.string().optional(),
@@ -84,6 +110,11 @@ export const CommentNestedPayloadSchema = z.discriminatedUnion('_type', [
   CommentNestedUpdatePayloadSchema
 ]);
 
+export const ProfileNestedPayloadSchema = z.discriminatedUnion('_type', [
+  ProfileNestedCreatePayloadSchema,
+  ProfileNestedUpdatePayloadSchema
+]);
+
 export const UserFilterSchema: z.ZodType<UserFilter> = z.lazy(() => z.object({
   _and: z.array(UserFilterSchema).optional(),
   _not: UserFilterSchema.optional(),
@@ -97,7 +128,7 @@ export const UserSchema = z.object({
   email: z.string(),
   id: z.string(),
   posts: z.array(PostSchema),
-  profile: z.object({}),
+  profile: ProfileSchema,
   updatedAt: z.iso.datetime(),
   username: z.string()
 });
@@ -132,14 +163,14 @@ export const PostNestedPayloadSchema = z.discriminatedUnion('_type', [
 export const UserCreatePayloadSchema = z.object({
   email: z.string(),
   posts: z.array(PostNestedPayloadSchema).optional(),
-  profile: z.object({}).optional(),
+  profile: ProfileNestedPayloadSchema.optional(),
   username: z.string()
 });
 
 export const UserUpdatePayloadSchema = z.object({
   email: z.string().optional(),
   posts: z.array(PostNestedPayloadSchema).optional(),
-  profile: z.object({}).optional(),
+  profile: ProfileNestedPayloadSchema.optional(),
   username: z.string().optional()
 });
 
@@ -380,6 +411,34 @@ export interface PostUpdatePayload {
   title?: string;
 }
 
+export interface Profile {
+  bio: null | string;
+  createdAt: string;
+  id: string;
+  updatedAt: string;
+  user?: object;
+  website: null | string;
+}
+
+export interface ProfileNestedCreatePayload {
+  _type: 'create';
+  bio?: null | string;
+  website?: null | string;
+}
+
+export type ProfileNestedPayload = { _type: 'create' } & ProfileNestedCreatePayload | { _type: 'update' } & ProfileNestedUpdatePayload;
+
+export interface ProfileNestedUpdatePayload {
+  _type?: 'update';
+  bio?: null | string;
+  website?: null | string;
+}
+
+export interface ProfileSort {
+  createdAt?: SortDirection;
+  updatedAt?: SortDirection;
+}
+
 export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {
@@ -395,7 +454,7 @@ export interface User {
   email: string;
   id: string;
   posts: Post[];
-  profile: object;
+  profile: Profile;
   updatedAt: string;
   username: string;
 }
@@ -403,7 +462,7 @@ export interface User {
 export interface UserCreatePayload {
   email: string;
   posts?: PostNestedPayload[];
-  profile?: object;
+  profile?: ProfileNestedPayload;
   username: string;
 }
 
@@ -428,6 +487,6 @@ export interface UserSort {
 export interface UserUpdatePayload {
   email?: string;
   posts?: PostNestedPayload[];
-  profile?: object;
+  profile?: ProfileNestedPayload;
   username?: string;
 }

@@ -108,6 +108,10 @@ How Apiwork captures ActiveRecord validation errors and presents them in a unifi
 
 <<< @/playground/app/contracts/happy_zebra/user_contract.rb
 
+<small>`app/contracts/happy_zebra/profile_contract.rb`</small>
+
+<<< @/playground/app/contracts/happy_zebra/profile_contract.rb
+
 <small>`app/contracts/happy_zebra/post_contract.rb`</small>
 
 <<< @/playground/app/contracts/happy_zebra/post_contract.rb

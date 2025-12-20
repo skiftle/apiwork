@@ -8,17 +8,19 @@ sections:
       - config/apis/brave_eagle.rb
   - title: Models
     files:
-      - app/models/brave_eagle/user.rb
       - app/models/brave_eagle/task.rb
+      - app/models/brave_eagle/user.rb
       - app/models/brave_eagle/comment.rb
   - title: Schemas
     files:
-      - app/schemas/brave_eagle/user_schema.rb
       - app/schemas/brave_eagle/task_schema.rb
+      - app/schemas/brave_eagle/user_schema.rb
       - app/schemas/brave_eagle/comment_schema.rb
   - title: Contracts
     files:
       - app/contracts/brave_eagle/task_contract.rb
+      - app/contracts/brave_eagle/user_contract.rb
+      - app/contracts/brave_eagle/comment_contract.rb
   - title: Controllers
     files:
       - app/controllers/brave_eagle/tasks_controller.rb

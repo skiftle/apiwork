@@ -248,6 +248,97 @@
         }
       }
     },
+    "profile": {
+      "type": "object",
+      "shape": {
+        "bio": {
+          "type": "string",
+          "nullable": true
+        },
+        "created_at": {
+          "type": "datetime"
+        },
+        "id": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "datetime"
+        },
+        "user": {
+          "type": "object",
+          "optional": true
+        },
+        "website": {
+          "type": "string",
+          "nullable": true
+        }
+      }
+    },
+    "profile_nested_create_payload": {
+      "type": "object",
+      "shape": {
+        "_type": {
+          "type": "literal",
+          "value": "create"
+        },
+        "bio": {
+          "type": "string",
+          "nullable": true,
+          "optional": true
+        },
+        "website": {
+          "type": "string",
+          "nullable": true,
+          "optional": true
+        }
+      }
+    },
+    "profile_nested_payload": {
+      "type": "union",
+      "variants": [
+        {
+          "type": "profile_nested_create_payload",
+          "tag": "create"
+        },
+        {
+          "type": "profile_nested_update_payload",
+          "tag": "update"
+        }
+      ],
+      "discriminator": "_type"
+    },
+    "profile_nested_update_payload": {
+      "type": "object",
+      "shape": {
+        "_type": {
+          "type": "literal",
+          "value": "update"
+        },
+        "bio": {
+          "type": "string",
+          "nullable": true,
+          "optional": true
+        },
+        "website": {
+          "type": "string",
+          "nullable": true,
+          "optional": true
+        }
+      }
+    },
+    "profile_sort": {
+      "type": "object",
+      "shape": {
+        "created_at": {
+          "type": "sort_direction",
+          "optional": true
+        },
+        "updated_at": {
+          "type": "sort_direction",
+          "optional": true
+        }
+      }
+    },
     "string_filter": {
       "type": "object",
       "shape": {
@@ -291,7 +382,7 @@
           "of": "post"
         },
         "profile": {
-          "type": "object"
+          "type": "profile"
         },
         "updated_at": {
           "type": "datetime"
@@ -314,7 +405,7 @@
           "optional": true
         },
         "profile": {
-          "type": "object",
+          "type": "profile_nested_payload",
           "as": "profile_attributes",
           "optional": true
         },
@@ -408,7 +499,7 @@
           "optional": true
         },
         "profile": {
-          "type": "object",
+          "type": "profile_nested_payload",
           "as": "profile_attributes",
           "optional": true
         },

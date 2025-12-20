@@ -14,23 +14,6 @@ Document APIs with descriptions, examples, formats, and deprecation notices at e
 
 ## Models
 
-<small>`app/models/brave_eagle/user.rb`</small>
-
-<<< @/playground/app/models/brave_eagle/user.rb
-
-<details>
-<summary>Database Table</summary>
-
-| Column | Type | Nullable | Default |
-|--------|------|----------|---------|
-| id | string |  |  |
-| created_at | datetime |  |  |
-| email | string |  |  |
-| name | string |  |  |
-| updated_at | datetime |  |  |
-
-</details>
-
 <small>`app/models/brave_eagle/task.rb`</small>
 
 <<< @/playground/app/models/brave_eagle/task.rb
@@ -49,6 +32,23 @@ Document APIs with descriptions, examples, formats, and deprecation notices at e
 | priority | string | ✓ | medium |
 | status | string | ✓ | pending |
 | title | string |  |  |
+| updated_at | datetime |  |  |
+
+</details>
+
+<small>`app/models/brave_eagle/user.rb`</small>
+
+<<< @/playground/app/models/brave_eagle/user.rb
+
+<details>
+<summary>Database Table</summary>
+
+| Column | Type | Nullable | Default |
+|--------|------|----------|---------|
+| id | string |  |  |
+| created_at | datetime |  |  |
+| email | string |  |  |
+| name | string |  |  |
 | updated_at | datetime |  |  |
 
 </details>
@@ -73,13 +73,13 @@ Document APIs with descriptions, examples, formats, and deprecation notices at e
 
 ## Schemas
 
-<small>`app/schemas/brave_eagle/user_schema.rb`</small>
-
-<<< @/playground/app/schemas/brave_eagle/user_schema.rb
-
 <small>`app/schemas/brave_eagle/task_schema.rb`</small>
 
 <<< @/playground/app/schemas/brave_eagle/task_schema.rb
+
+<small>`app/schemas/brave_eagle/user_schema.rb`</small>
+
+<<< @/playground/app/schemas/brave_eagle/user_schema.rb
 
 <small>`app/schemas/brave_eagle/comment_schema.rb`</small>
 
@@ -90,6 +90,14 @@ Document APIs with descriptions, examples, formats, and deprecation notices at e
 <small>`app/contracts/brave_eagle/task_contract.rb`</small>
 
 <<< @/playground/app/contracts/brave_eagle/task_contract.rb
+
+<small>`app/contracts/brave_eagle/user_contract.rb`</small>
+
+<<< @/playground/app/contracts/brave_eagle/user_contract.rb
+
+<small>`app/contracts/brave_eagle/comment_contract.rb`</small>
+
+<<< @/playground/app/contracts/brave_eagle/comment_contract.rb
 
 ## Controllers
 
