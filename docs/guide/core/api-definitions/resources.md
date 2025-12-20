@@ -72,16 +72,16 @@ Generates routes like `/posts/:post_id/comments` and `/posts/:post_id/comments/:
 Apiwork infers the contract from the resource name in singular form:
 
 ```ruby
-resources :posts      # → PostContract
-resources :comments   # → CommentContract
-resource :account     # → AccountContract
+resources :posts      # uses PostContract
+resources :comments   # uses CommentContract
+resource :account     # uses AccountContract
 ```
 
 If you have both `resources :user` and `resources :users`, they would both try to use `UserContract`. Use the `contract:` option to disambiguate:
 
 ```ruby
-resources :user, contract: 'current_user'   # → CurrentUserContract
-resources :users                            # → UserContract
+resources :user, contract: 'current_user'   # uses CurrentUserContract
+resources :users                            # uses UserContract
 ```
 
 ## Custom Contract

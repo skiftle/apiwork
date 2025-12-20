@@ -313,15 +313,15 @@ Transform values during serialization (`encode`) and deserialization (`decode`).
 
 | Option | When | Direction |
 |--------|------|-----------|
-| `encode` | Response (output) | Database → API |
-| `decode` | Request (input) | API → Database |
+| `encode` | Response (output) | Database to API |
+| `decode` | Request (input) | API to Database |
 
 ::: info Serialization-only
 These transformations must preserve the attribute's type. They operate at the serialization layer and are not passed to adapters — invisible to generated TypeScript, Zod, and OpenAPI specs.
 :::
 
 ```ruby
-# Case normalization: "Invoice" → "invoice"
+# Case normalization: "Invoice" becomes "invoice"
 attribute :subjectable_type, encode: ->(v) { v&.underscore }
 
 # Consistent enum format: "pending" ↔ "PENDING"

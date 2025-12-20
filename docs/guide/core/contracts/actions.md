@@ -151,8 +151,6 @@ action :soft_delete do
 end
 ```
 
-This is the **default for DELETE method actions** (including `destroy`).
-
 **Generated output:**
 
 - OpenAPI: `204 No Content` (no `content` key)

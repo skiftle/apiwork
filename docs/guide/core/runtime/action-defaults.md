@@ -8,16 +8,16 @@ When using `schema!`, the adapter automatically generates typed requests and res
 
 ## Overview
 
-| Action | Type | Request | Response | HTTP Status |
-|--------|------|---------|----------|-------------|
-| `index` | collection | filter, sort, page, include | `{ resources[], pagination, meta? }` | 200 OK |
-| `show` | member | include | `{ resource, meta? }` | 200 OK |
-| `create` | collection | body + include | `{ resource, meta? }` | 201 Created |
-| `update` | member | body + include | `{ resource, meta? }` | 200 OK |
-| `destroy` | member | (none) | (no body) | 204 No Content |
-| Custom member | member | include | `{ resource, meta? }` | 200 OK |
-| Custom collection | collection | (none) | (none) | - |
-| Custom DELETE | any | (none) | (no body) | 204 No Content |
+| Action            | Type       | Request                     | Response                             | HTTP Status    |
+| ----------------- | ---------- | --------------------------- | ------------------------------------ | -------------- |
+| `index`           | collection | filter, sort, page, include | `{ resources[], pagination, meta? }` | 200 OK         |
+| `show`            | member     | include                     | `{ resource, meta? }`                | 200 OK         |
+| `create`          | collection | body + include              | `{ resource, meta? }`                | 201 Created    |
+| `update`          | member     | body + include              | `{ resource, meta? }`                | 200 OK         |
+| `destroy`         | member     | (none)                      | (no body)                            | 204 No Content |
+| Custom member     | member     | include                     | `{ resource, meta? }`                | 200 OK         |
+| Custom collection | collection | (none)                      | (none)                               | -              |
+| Custom DELETE     | any        | (none)                      | (no body)                            | 204 No Content |
 
 ## Standard Actions
 
@@ -26,12 +26,14 @@ When using `schema!`, the adapter automatically generates typed requests and res
 Returns a paginated collection with filtering and sorting.
 
 **Request:**
+
 - `filter` — filter records by attributes and associations
 - `sort` — order results by attributes
 - `page` — pagination parameters (number/size or cursor)
 - `include` — eager load associations
 
 **Response:**
+
 ```json
 {
   "invoices": [...],
@@ -45,9 +47,11 @@ Returns a paginated collection with filtering and sorting.
 Returns a single record by ID.
 
 **Request:**
+
 - `include` — eager load associations (if any exist)
 
 **Response:**
+
 ```json
 {
   "invoice": { "id": 1, "number": "INV-001" },
@@ -60,10 +64,12 @@ Returns a single record by ID.
 Creates a new record. Returns 201 Created on success.
 
 **Request:**
+
 - Body with `writable: true` attributes wrapped in root key
 - `include` — eager load associations in the response
 
 **Response:**
+
 ```json
 {
   "invoice": { "id": 1, "number": "INV-001" },
@@ -76,10 +82,12 @@ Creates a new record. Returns 201 Created on success.
 Updates an existing record.
 
 **Request:**
+
 - Body with `writable: true` attributes (all optional)
 - `include` — eager load associations in the response
 
 **Response:**
+
 ```json
 {
   "invoice": { "id": 1, "number": "INV-002" },
@@ -102,6 +110,7 @@ This is the default for all DELETE method actions. See [no_content!](../contract
 ### Member Actions
 
 Custom member actions (e.g., `patch :archive`) get:
+
 - `include` query param (if associations exist)
 - Single resource response
 
@@ -115,6 +124,7 @@ end
 ```
 
 Default response:
+
 ```json
 {
   "invoice": { ... },

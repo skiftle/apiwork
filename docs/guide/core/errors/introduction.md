@@ -65,17 +65,11 @@ For HTTP errors like "not found" or "forbidden", use `respond_with_error`.
 
 ## Error Flow
 
-```
-Request arrives
-    ↓
-Contract validates request shape
-    ↓ (fails → ContractError → 400)
-Controller runs
-    ↓
-Model saves
-    ↓ (fails → ValidationError → 422)
-Response rendered
-```
+1. Request arrives
+2. Contract validates request shape (if fails: ContractError, returns 400)
+3. Controller runs
+4. Model saves (if fails: ValidationError, returns 422)
+5. Response rendered
 
 Contract errors happen before your controller code runs — the request never reaches your models. Validation errors happen after, when ActiveRecord validations fail during save.
 

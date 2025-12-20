@@ -74,7 +74,7 @@ end
 
 Options:
 - `:keep` - no transformation (default)
-- `:camel` - `created_at` → `createdAt` in responses, `createdAt` → `created_at` in requests
+- `:camel` - `created_at` becomes `createdAt` in responses, `createdAt` becomes `created_at` in requests
 - `:underscore` - all keys use snake_case
 
 ### JSON Columns

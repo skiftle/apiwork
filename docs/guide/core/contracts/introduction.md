@@ -56,8 +56,8 @@ Now responses are serialized through the schema. See [Schemas](../schemas/introd
 2. Contract extracts query and body params
 3. Values are coerced to declared types
 4. Validation runs against the contract
-5. If valid → controller receives clean data
-6. If invalid → 422 with structured errors
+5. If valid, controller receives clean data
+6. If invalid, returns 422 with structured errors
 
 **Response checking:**
 

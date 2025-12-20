@@ -95,7 +95,7 @@ class InvoiceSchema < Apiwork::Schema::Base
 end
 ```
 
-`InvoiceSchema` → `invoice` → `["invoice", "number"]`
+`InvoiceSchema` produces key `invoice`, so path is `["invoice", "number"]`
 
 Matches the request body. Client sent `{ "invoice": { "number": "" } }`, error points to `["invoice", "number"]`.
 

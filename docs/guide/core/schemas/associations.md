@@ -146,15 +146,15 @@ interface Post {
 ```ruby
 # Always present, never null
 belongs_to :author, include: :always
-# → author: Author
+# TypeScript: author: Author
 
 # Always present, can be null
 belongs_to :reviewer, include: :always, nullable: true
-# → reviewer: Author | null
+# TypeScript: reviewer: Author | null
 
 # May not be present, if present then not null
 has_many :comments, include: :optional
-# → comments?: Comment[]
+# TypeScript: comments?: Comment[]
 ```
 
 ### Request Format
@@ -272,7 +272,7 @@ Requires `allow_destroy: true` in Rails model.
 
 ### Deep Nesting
 
-Nested attributes work at multiple levels. For example, Posts → Comments → Replies:
+Nested attributes work at multiple levels. For example, Posts with Comments with Replies:
 
 ```ruby
 class PostSchema < Apiwork::Schema::Base

@@ -45,9 +45,11 @@ Schema Definition
 
 At runtime:
 
-```
-Request → Contract validates → Adapter executes query → Schema serializes → Response
-```
+1. Request arrives
+2. Contract validates
+3. Adapter executes query
+4. Schema serializes
+5. Response sent
 
 ## Generated Types
 
