@@ -142,10 +142,13 @@ The `type_registrar` provides:
 - `union(name, &block)` — Define a union type
 
 The `schema_data` provides information about all schemas in the API:
-- `filterable_types` — Set of attribute types that are filterable
+- `filterable_types` — Array of attribute types that are filterable
+- `nullable_filterable_types` — Array of filterable types that can be null
 - `sortable?` — Whether any schema has sortable attributes
 - `has_resources?` — Whether the API has any resources
 - `has_index_actions?` — Whether any resource has an index action
+- `uses_offset_pagination?` — Whether any schema uses offset pagination
+- `uses_cursor_pagination?` — Whether any schema uses cursor pagination
 
 ### register_contract_types
 
@@ -162,7 +165,29 @@ def register_contract_types(type_registrar, schema_class, actions:)
 
   # Define action contracts
   actions.each do |action_name, action_metadata|
-    type_registrar.action(action_name)
+    # Get or create action definition, then work with it directly
+    action_definition = type_registrar.define_action(action_name)
+
+    # Build request/response based on action type
+    case action_name
+    when :index
+      action_definition.request do
+        query do
+          param :page, type: :integer, optional: true
+        end
+      end
+      action_definition.response do
+        body do
+          param :items, type: :array
+        end
+      end
+    when :show
+      action_definition.response do
+        body do
+          param :item, type: :object
+        end
+      end
+    end
   end
 
   # Register response type
@@ -179,7 +204,7 @@ The `type_registrar` provides:
 - `type(name, &block)` — Define a type
 - `enum(name, values:)` — Define an enum
 - `union(name, &block)` — Define a union type
-- `action(name)` — Define an action contract
+- `define_action(name, &block)` — Get or create an action contract (returns ActionDefinition)
 - `import(contract, as:)` — Import types from another contract
 
 The `schema_class` is the schema associated with the contract, giving you access to:

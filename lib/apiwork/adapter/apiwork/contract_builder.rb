@@ -190,7 +190,7 @@ module Apiwork
         end
 
         def build_action_definition(action_name, action_metadata)
-          action_definition = type_registrar.action(action_name)
+          action_definition = type_registrar.define_action(action_name)
 
           build_request_for_action(action_definition, action_name, action_metadata) unless action_definition.resets_request?
           build_response_for_action(action_definition, action_name, action_metadata) unless action_definition.resets_response?

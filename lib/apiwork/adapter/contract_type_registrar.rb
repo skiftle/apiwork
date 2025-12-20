@@ -9,7 +9,7 @@ module Apiwork
         @contract_class = contract_class
       end
 
-      delegate :type, :enum, :union, :action, :import, to: :contract_class
+      delegate :type, :enum, :union, :define_action, :import, to: :contract_class
     end
   end
 end
