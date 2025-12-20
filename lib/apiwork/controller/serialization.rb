@@ -2,7 +2,7 @@
 
 module Apiwork
   module Controller
-    # @api private
+    # @api public
     module Serialization
       extend ActiveSupport::Concern
 
@@ -12,6 +12,7 @@ module Apiwork
         end
       end
 
+      # @api public
       # Renders a successful API response.
       #
       # When a schema is linked via `schema!`, data is serialized through
@@ -66,6 +67,7 @@ module Apiwork
         render json: json, status: status || (action_name.to_sym == :create ? :created : :ok)
       end
 
+      # @api public
       # Renders an error response with validation issues.
       #
       # Use this for validation errors where you have a list of issues.
@@ -88,6 +90,7 @@ module Apiwork
         render json: json, status: status
       end
 
+      # @api public
       # Renders an error response using a registered error code.
       #
       # Error codes are registered via `Apiwork::ErrorCode.register`.
@@ -144,6 +147,7 @@ module Apiwork
         )
       end
 
+      # @api public
       # Returns the serialization context passed to schemas.
       #
       # Override this method to provide context data to your schemas.

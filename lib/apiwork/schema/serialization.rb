@@ -2,7 +2,6 @@
 
 module Apiwork
   module Schema
-    # @api private
     module Serialization
       extend ActiveSupport::Concern
 

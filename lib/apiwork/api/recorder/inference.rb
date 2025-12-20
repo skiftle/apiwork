@@ -3,7 +3,6 @@
 module Apiwork
   module API
     class Recorder
-      # @api private
       module Inference
         private
 

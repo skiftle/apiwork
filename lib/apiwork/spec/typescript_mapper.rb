@@ -2,7 +2,6 @@
 
 module Apiwork
   module Spec
-    # @api private
     class TypescriptMapper
       attr_reader :introspection,
                   :key_format

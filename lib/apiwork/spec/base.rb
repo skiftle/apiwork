@@ -2,7 +2,6 @@
 
 module Apiwork
   module Spec
-    # @api private
     class Base
       include Registrable
       include Configurable

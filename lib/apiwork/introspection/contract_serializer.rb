@@ -2,7 +2,6 @@
 
 module Apiwork
   module Introspection
-    # @api private
     class ContractSerializer
       def initialize(contract_class, action: nil)
         @contract_class = contract_class

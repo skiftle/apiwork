@@ -2,7 +2,6 @@
 
 module Apiwork
   module Adapter
-    # @api private
     class SchemaData
       attr_reader :filterable_types,
                   :nullable_filterable_types

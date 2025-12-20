@@ -1,18 +1,18 @@
 ---
-order: 3
+order: 2
 prev: false
 next: false
 ---
 
 # Base
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L5)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L6)
 
 ## Class Methods
 
 ### .action(action_name, replace: = false, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L318)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L321)
 
 Defines an action (endpoint) for this contract.
 
@@ -105,7 +105,7 @@ end
 
 ### .identifier(value = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L62)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L65)
 
 Sets the scope prefix for contract-scoped types.
 
@@ -142,7 +142,7 @@ end
 
 ### .import(contract_class, as:)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L258)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L260)
 
 Imports types from another contract for reuse.
 
@@ -179,7 +179,7 @@ end
 
 ### .schema!()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L89)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L93)
 
 Links this contract to its schema using naming convention.
 
@@ -211,7 +211,7 @@ end
 
 ### .type(name, description: = nil, example: = nil, format: = nil, deprecated: = false, schema_class: = nil, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L181)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L180)
 
 Defines a reusable type scoped to this contract.
 
@@ -254,7 +254,7 @@ end
 
 ### .union(name, discriminator: = nil, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L231)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L232)
 
 Defines a discriminated union type scoped to this contract.
 
@@ -283,5 +283,27 @@ class PaymentContract < Apiwork::Contract::Base
   end
 end
 ```
+
+---
+
+## Instance Methods
+
+### #invalid?()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L33)
+
+**Returns**
+
+`Boolean` — 
+
+---
+
+### #valid?()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L28)
+
+**Returns**
+
+`Boolean` — 
 
 ---

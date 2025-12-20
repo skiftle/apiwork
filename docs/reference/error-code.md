@@ -1,18 +1,18 @@
 ---
-order: 4
+order: 6
 prev: false
 next: false
 ---
 
 # ErrorCode
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L4)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L5)
 
 ## Class Methods
 
 ### .register(key, status:, attach_path: = false)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L47)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L49)
 
 Registers a custom error code for use in API responses.
 

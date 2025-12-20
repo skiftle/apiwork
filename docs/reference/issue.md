@@ -1,43 +1,106 @@
 ---
-order: 5
+order: 7
 prev: false
 next: false
 ---
 
 # Issue
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L4)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L9)
+
+Represents a validation issue found during request parsing.
+
+Issues are returned when request parameters fail validation,
+coercion, or constraint checks. Access via `contract.issues`.
 
 ## Instance Methods
 
+### #as_json()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L53)
+
+**Returns**
+
+`Hash` — alias for to_h, for JSON serialization
+
+---
+
 ### #code()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L5)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L12)
 
-Returns the value of attribute code.
+**Returns**
+
+`Symbol` — the error code (e.g., :required, :type_mismatch)
 
 ---
 
 ### #detail()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L5)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L16)
 
-Returns the value of attribute detail.
+**Returns**
+
+`String` — human-readable error message
+
+---
+
+### #initialize(code:, detail:, path: = [], meta: = {})
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L26)
+
+**Returns**
+
+`Issue` — a new instance of Issue
 
 ---
 
 ### #meta()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L5)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L20)
 
-Returns the value of attribute meta.
+**Returns**
+
+`Hash` — additional context about the error
 
 ---
 
 ### #path()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L5)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L24)
 
-Returns the value of attribute path.
+**Returns**
+
+`Array<Symbol, Integer>` — path to the invalid field
+
+---
+
+### #pointer()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L35)
+
+**Returns**
+
+`String` — JSON Pointer to the invalid field (e.g., "/user/email")
+
+---
+
+### #to_h()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L41)
+
+**Returns**
+
+`Hash` — hash representation with code, detail, path, pointer, meta
+
+---
+
+### #to_s()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L59)
+
+**Returns**
+
+`String` — human-readable string representation
 
 ---

@@ -3,7 +3,6 @@
 module Apiwork
   module API
     class Recorder
-      # @api private
       module Concern
         def concern(name, callable = nil, &block)
           callable ||= ->(recorder, options) { recorder.instance_exec(options, &block) }

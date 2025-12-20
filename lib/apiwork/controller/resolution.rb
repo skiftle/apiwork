@@ -2,7 +2,6 @@
 
 module Apiwork
   module Controller
-    # @api private
     module Resolution
       extend ActiveSupport::Concern
 

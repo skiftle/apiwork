@@ -3,7 +3,6 @@
 module Apiwork
   module API
     class TypeSystem
-      # @api private
       class UnionBuilder
         attr_reader :discriminator,
                     :variants

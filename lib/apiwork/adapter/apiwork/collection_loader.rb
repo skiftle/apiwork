@@ -3,7 +3,6 @@
 module Apiwork
   module Adapter
     class Apiwork < Base
-      # @api private
       class CollectionLoader
         attr_reader :schema_class
 

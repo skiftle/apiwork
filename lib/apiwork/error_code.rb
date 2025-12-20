@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Apiwork
+  # @api public
   module ErrorCode
     DEFAULTS = {
       bad_request: { status: 400 },
@@ -28,6 +29,7 @@ module Apiwork
     class << self
       delegate :fetch, :registered?, :all, to: Registry
 
+      # @api public
       # Registers a custom error code for use in API responses.
       #
       # Error codes are used with `raises` declarations and `respond_with_error`

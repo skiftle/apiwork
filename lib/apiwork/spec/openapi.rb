@@ -2,7 +2,6 @@
 
 module Apiwork
   module Spec
-    # @api private
     class Openapi < Base
       identifier :openapi
       content_type 'application/json'

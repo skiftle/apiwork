@@ -2,7 +2,6 @@
 
 module Apiwork
   module Introspection
-    # @api private
     class ActionSerializer
       def initialize(action_definition)
         @action_definition = action_definition

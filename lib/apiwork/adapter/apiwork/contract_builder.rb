@@ -3,7 +3,6 @@
 module Apiwork
   module Adapter
     class Apiwork < Base
-      # @api private
       class ContractBuilder
         MAX_RECURSION_DEPTH = 3
 

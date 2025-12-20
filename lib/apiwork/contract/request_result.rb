@@ -2,7 +2,6 @@
 
 module Apiwork
   module Contract
-    # @api private
     class RequestResult
       attr_reader :body,
                   :issues,

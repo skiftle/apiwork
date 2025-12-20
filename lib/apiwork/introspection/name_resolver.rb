@@ -2,7 +2,6 @@
 
 module Apiwork
   module Introspection
-    # @api private
     class NameResolver
       def initialize
         @import_prefix_cache = {}

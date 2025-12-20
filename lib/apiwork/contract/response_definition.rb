@@ -2,9 +2,7 @@
 
 module Apiwork
   module Contract
-    # @api private
     class ResponseDefinition
-      # @api private
       attr_reader :action_name,
                   :body_definition,
                   :contract_class
@@ -16,7 +14,6 @@ module Apiwork
         @no_content = false
       end
 
-      # @api private
       def no_content?
         @no_content
       end

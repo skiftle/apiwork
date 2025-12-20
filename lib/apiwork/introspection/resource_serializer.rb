@@ -2,7 +2,6 @@
 
 module Apiwork
   module Introspection
-    # @api private
     class ResourceSerializer
       def initialize(api_class, resource_name, resource_metadata, parent_path: nil, parent_resource_name: nil)
         @api_class = api_class

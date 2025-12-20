@@ -2,7 +2,7 @@
 
 module Apiwork
   module Controller
-    # @api private
+    # @api public
     module Deserialization
       extend ActiveSupport::Concern
 
@@ -12,6 +12,7 @@ module Apiwork
       end
 
       class_methods do
+        # @api public
         # Skips contract validation for specified actions.
         #
         # Use this when certain actions don't need request validation,
@@ -35,6 +36,7 @@ module Apiwork
         end
       end
 
+      # @api public
       # Returns the parsed and validated request contract.
       #
       # The contract contains parsed query parameters and request body,

@@ -27,27 +27,30 @@ module Apiwork
       YARD.parse(File.join(GEM_ROOT, 'lib/**/*.rb'))
     end
 
-    EXCLUDED_MODULES = %w[
-      Generators
-      ReferenceGenerator
-    ].freeze
-
     def extract_modules
       YARD::Registry.all(:class, :module)
-                    .select { |obj| obj.path.start_with?('Apiwork::') }
-                    .reject { |obj| excluded?(obj) }
+                    .select { |obj| obj.path.start_with?('Apiwork') }
+                    .select { |obj| public_api?(obj) }
                     .map { |obj| serialize_module(obj) }
                     .reject { |mod| mod[:class_methods].empty? && mod[:instance_methods].empty? }
                     .sort_by { |mod| mod[:path] }
     end
 
-    def excluded?(obj)
-      path = obj.path
-      return true if path.include?('Private')
-      return true if EXCLUDED_MODULES.any? { |name| path.include?("::#{name}") || path.end_with?(name) }
-      return true if obj.docstring.has_tag?(:api) && obj.docstring.tag(:api).text == 'private'
+    def public_api?(obj)
+      return false unless obj.file
 
-      false
+      lines = File.readlines(obj.file)
+      docstring_range = obj.docstring.line_range
+
+      start_line = if docstring_range
+                     docstring_range.first - 1
+                   else
+                     [obj.line - 5, 0].max
+                   end
+      end_line = obj.line
+
+      preceding_lines = lines[start_line...end_line].join
+      preceding_lines.include?('@api public')
     end
 
     def serialize_module(obj)
@@ -71,9 +74,7 @@ module Apiwork
 
     def extract_methods(obj, scope)
       obj.meths(visibility: :public, scope:)
-         .reject { |m| m.name.to_s.start_with?('_') }
-         .reject { |m| m.docstring.empty? }
-         .reject { |m| m.docstring.has_tag?(:api) && m.docstring.tag(:api).text == 'private' }
+         .select { |m| public_api?(m) }
          .sort_by(&:name)
          .map { |m| serialize_method(m) }
     end

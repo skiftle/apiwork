@@ -2,7 +2,6 @@
 
 module Apiwork
   module Spec
-    # @api private
     class Pipeline
       class << self
         def generate(identifier, api_path, **options)

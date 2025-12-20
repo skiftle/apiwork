@@ -2,9 +2,9 @@
 
 module Apiwork
   module API
+    # @api public
     class Base
       class << self
-        # @api private
         attr_reader :adapter_config,
                     :built_contracts,
                     :metadata,
@@ -33,6 +33,7 @@ module Apiwork
           @adapter_config = {}
         end
 
+        # @api public
         # Sets the key format for request/response transformation.
         #
         # Controls how JSON keys are transformed between client and server.
@@ -55,16 +56,15 @@ module Apiwork
           @key_format = format
         end
 
-        # @api private
         def transform_request(hash)
           transform_request_keys(hash)
         end
 
-        # @api private
         def transform_response(hash)
           transform_response_keys(hash)
         end
 
+        # @api public
         # Enables a spec generator for this API.
         #
         # Specs generate client code and documentation from your contracts.
@@ -104,21 +104,19 @@ module Apiwork
           builder.instance_eval(&block)
         end
 
-        # @api private
         def spec_path(type)
           @spec_configs&.dig(type, :path) || "/.spec/#{type}"
         end
 
-        # @api private
         def spec_config(type)
           @spec_configs&.[](type) || {}
         end
 
-        # @api private
         def specs?
           @specs&.any?
         end
 
+        # @api public
         # Declares error codes that any action in this API may raise.
         #
         # These are included in generated specs (OpenAPI, etc.) as possible
@@ -148,6 +146,7 @@ module Apiwork
           @metadata.raises = error_code_keys
         end
 
+        # @api public
         # Configures the adapter for this API.
         #
         # Adapters control serialization, pagination, filtering, and response
@@ -183,6 +182,7 @@ module Apiwork
           @adapter ||= Adapter.find(@adapter_name || :apiwork).new
         end
 
+        # @api public
         # Defines a reusable custom type (object shape).
         #
         # Custom types can be referenced by name in `param` definitions.
@@ -212,6 +212,7 @@ module Apiwork
                                           schema_class:, &block)
         end
 
+        # @api public
         # Defines a reusable enumeration type.
         #
         # Enums can be referenced by name in `param` definitions using
@@ -235,6 +236,7 @@ module Apiwork
           type_system.register_enum(name, values, scope:, description:, example:, deprecated:)
         end
 
+        # @api public
         # Defines a discriminated union type.
         #
         # Unions allow a field to accept one of several shapes, distinguished
@@ -262,21 +264,19 @@ module Apiwork
           type_system.register_union(name, union_builder.serialize, scope:)
         end
 
-        # @api private
         def resolve_type(name, scope: nil)
           type_system.resolve_type(name, scope:)
         end
 
-        # @api private
         def resolve_enum(name, scope:)
           type_system.resolve_enum(name, scope:)
         end
 
-        # @api private
         def scoped_name(scope, name)
           type_system.scoped_name(scope, name)
         end
 
+        # @api public
         # Defines information about this API.
         #
         # Used to set title, version, contact, license,
@@ -301,6 +301,7 @@ module Apiwork
           @metadata.info = builder.info
         end
 
+        # @api public
         # Defines a RESTful resource with standard CRUD actions.
         #
         # This is the main method for declaring API endpoints. Creates
@@ -330,6 +331,7 @@ module Apiwork
           @recorder.resources(name, **options, &block)
         end
 
+        # @api public
         # Defines a singular resource (no index action, no :id in URL).
         #
         # Useful for resources where only one instance exists,
@@ -348,6 +350,7 @@ module Apiwork
           @recorder.resource(name, **options, &block)
         end
 
+        # @api public
         # Defines a reusable concern for resources.
         #
         # Concerns are reusable blocks of resource configuration that can
@@ -372,6 +375,7 @@ module Apiwork
           @recorder.concern(name, &block)
         end
 
+        # @api public
         # Applies options to all nested resource definitions.
         #
         # Useful for applying common configuration to a group of resources.
@@ -390,24 +394,20 @@ module Apiwork
           @recorder.with_options(options, &block)
         end
 
-        # @api private
         def introspect(locale: nil)
           ensure_all_contracts_built!
           @introspect_cache ||= {}
           @introspect_cache[locale] ||= Apiwork::Introspection.api(self, locale:)
         end
 
-        # @api private
         def as_json
           introspect
         end
 
-        # @api private
         def reset_contracts!
           @built_contracts = Set.new
         end
 
-        # @api private
         def ensure_contract_built!(contract_class)
           return if built_contracts.include?(contract_class)
 
@@ -424,7 +424,6 @@ module Apiwork
           adapter.register_contract_types(type_registrar, schema_class, actions: actions)
         end
 
-        # @api private
         def ensure_all_contracts_built!
           return unless @metadata
 

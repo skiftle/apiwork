@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Apiwork
-  # @api private
   class JSONPointer
     def initialize(*path)
       @path = path

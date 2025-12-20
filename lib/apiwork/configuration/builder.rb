@@ -2,7 +2,6 @@
 
 module Apiwork
   module Configuration
-    # @api private
     class Builder
       def initialize(configurable_class, storage)
         @configurable_class = configurable_class

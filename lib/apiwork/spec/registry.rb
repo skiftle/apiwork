@@ -2,7 +2,6 @@
 
 module Apiwork
   module Spec
-    # @api private
     class Registry
       class << self
         def store

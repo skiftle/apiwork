@@ -4,7 +4,6 @@ module Apiwork
   module Adapter
     class Apiwork < Base
       class CollectionLoader
-        # @api private
         class OffsetPaginator
           def self.paginate(relation, schema_class, params)
             new(relation, schema_class, params).paginate

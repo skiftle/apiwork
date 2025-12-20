@@ -5,7 +5,6 @@ module Apiwork
     class Apiwork < Base
       class CollectionLoader
         class Filter
-          # @api private
           class OperatorBuilder
             attr_reader :column,
                         :field_name,

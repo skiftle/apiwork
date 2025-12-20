@@ -2,6 +2,7 @@
 
 module Apiwork
   module Schema
+    # @api public
     class Base
       include Abstractable
       include Serialization
@@ -19,7 +20,6 @@ module Apiwork
       class_attribute :_deprecated, default: false
       class_attribute :_example, default: nil
 
-      # @api private
       attr_reader :context,
                   :include,
                   :object
@@ -31,10 +31,8 @@ module Apiwork
       end
 
       class << self
-        # @api private
         attr_accessor :_model_class
 
-        # @api private
         attr_writer :_auto_detection_complete,
                     :type
 
@@ -42,6 +40,7 @@ module Apiwork
           @_auto_detection_complete || false
         end
 
+        # @api public
         # Sets or gets the model class for this schema.
         #
         # By default, the model is auto-detected from the schema name
@@ -73,12 +72,12 @@ module Apiwork
           end
         end
 
-        # @api private
         def model_class
           ensure_auto_detection_complete
           _model_class
         end
 
+        # @api public
         # Declares the JSON root key for this schema.
         #
         # Adapters can use this to wrap responses in a root key.
@@ -96,7 +95,6 @@ module Apiwork
           self._root = { singular:, plural: }
         end
 
-        # @api private
         def api_class
           return nil unless name
 
@@ -106,6 +104,7 @@ module Apiwork
           Apiwork::API.find("/#{namespace_parts.map(&:underscore).join('/')}")
         end
 
+        # @api public
         # Configures adapter options for this schema.
         #
         # Use this to override API-level adapter settings for a specific
@@ -131,7 +130,6 @@ module Apiwork
           builder.instance_eval(&block)
         end
 
-        # @api private
         def resolve_option(name, subkey = nil)
           adapter_class = api_class&.adapter&.class || Adapter::Apiwork
           opt = adapter_class.options[name]
@@ -148,6 +146,7 @@ module Apiwork
           end
         end
 
+        # @api public
         # Defines an attribute for serialization and API contracts.
         #
         # Types and nullability are auto-detected from the model's database
@@ -188,6 +187,7 @@ module Apiwork
           )
         end
 
+        # @api public
         # Defines a has_one association for serialization and contracts.
         #
         # The association is auto-detected from the model. Use options to
@@ -224,6 +224,7 @@ module Apiwork
           )
         end
 
+        # @api public
         # Defines a has_many association for serialization and contracts.
         #
         # See {#has_one} for shared options. Additionally supports:
@@ -247,6 +248,7 @@ module Apiwork
           )
         end
 
+        # @api public
         # Defines a belongs_to association for serialization and contracts.
         #
         # Nullability is auto-detected from the foreign key column.
@@ -266,6 +268,7 @@ module Apiwork
           )
         end
 
+        # @api public
         # Enables STI (Single Table Inheritance) polymorphism for this schema.
         #
         # Call on the base schema to enable discriminated responses. Variant
@@ -293,6 +296,7 @@ module Apiwork
           self
         end
 
+        # @api public
         # Registers this schema as an STI variant of its parent.
         #
         # The parent schema must have called `discriminator` first.
@@ -320,34 +324,30 @@ module Apiwork
           self
         end
 
-        # @api private
         def register_variant(tag:, schema:, sti_type:)
           self.variants = variants.merge(tag => { schema: schema, sti_type: sti_type })
           self._abstract = true
         end
 
-        # @api private
         def sti_base?
           return false if sti_variant?
 
           discriminator_column.present? && variants.any?
         end
 
-        # @api private
         def sti_variant?
           variant_tag.present?
         end
 
-        # @api private
         def needs_discriminator_transform?
           variants.any? { |tag, data| tag.to_s != data[:sti_type] }
         end
 
-        # @api private
         def discriminator_sti_mapping
           variants.transform_values { |data| data[:sti_type] }
         end
 
+        # @api public
         # Sets or gets a description for this schema.
         #
         # Used in generated documentation (OpenAPI, etc.) to describe
@@ -366,6 +366,7 @@ module Apiwork
           self._description = value
         end
 
+        # @api public
         # Marks this schema as deprecated.
         #
         # Deprecated schemas are included in generated documentation
@@ -381,11 +382,11 @@ module Apiwork
           self._deprecated = value
         end
 
-        # @api private
         def deprecated?
           _deprecated
         end
 
+        # @api public
         # Sets or gets an example value for this schema.
         #
         # Used in generated documentation to show example responses.
@@ -403,12 +404,10 @@ module Apiwork
           self._example = value
         end
 
-        # @api private
         def type
           @type || model_class&.model_name&.element
         end
 
-        # @api private
         def root_key
           if _root
             RootKey.new(_root[:singular], _root[:plural])

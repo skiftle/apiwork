@@ -2,7 +2,6 @@
 
 module Apiwork
   module Schema
-    # @api private
     class AttributeDefinition
       attr_reader :name, :type, :enum, :optional, :empty, :min, :max,
                   :description, :example, :format, :deprecated

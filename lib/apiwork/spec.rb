@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Apiwork
-  # @api private
   module Spec
     class << self
       delegate :register, :find, :all, :registered?, to: Registry

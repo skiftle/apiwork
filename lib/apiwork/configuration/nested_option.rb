@@ -2,7 +2,6 @@
 
 module Apiwork
   module Configuration
-    # @api private
     class NestedOption
       include Validatable
 

@@ -3,7 +3,6 @@
 module Apiwork
   module Adapter
     class Apiwork < Base
-      # @api private
       class TypeSystemBuilder
         FILTER_DEFINITIONS = {
           string_filter: {

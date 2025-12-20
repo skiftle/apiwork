@@ -2,7 +2,6 @@
 
 module Apiwork
   module Contract
-    # @api private
     class EnumValue
       class << self
         def values(enum)
