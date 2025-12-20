@@ -176,7 +176,7 @@ th {
   font-weight: 600;
   text-align: left;
   padding: var(--space-3) var(--space-4);
-  border-bottom: 2px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
   color: var(--color-text);
   font-size: var(--font-size-xs);
   text-transform: uppercase;
@@ -194,15 +194,6 @@ tr:nth-child(even) td {
   background: var(--color-bg-soft);
 }
 
-th:first-child,
-td:first-child {
-  padding-left: 0;
-}
-
-th:last-child,
-td:last-child {
-  padding-right: 0;
-}
 
 /* Blockquotes - Info/tip boxes */
 blockquote {
