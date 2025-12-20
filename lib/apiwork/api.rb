@@ -61,6 +61,11 @@ module Apiwork
         find(path)&.introspect(locale:)
       end
 
+      # @api public
+      # Clears all registered APIs. Intended for test cleanup.
+      #
+      # @example
+      #   Apiwork::API.reset!
       def reset!
         Registry.clear!
       end

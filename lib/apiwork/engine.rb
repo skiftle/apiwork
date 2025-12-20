@@ -14,7 +14,8 @@ module Apiwork
     end
 
     config.to_prepare do
-      Apiwork.reset!
+      Apiwork::API.reset!
+      Apiwork::ErrorCode.reset!
 
       Apiwork::Adapter.register(Apiwork::Adapter::Apiwork)
 

@@ -9,11 +9,6 @@ module Apiwork
       routes.call(env)
     end
 
-    def reset!
-      API.reset!
-      ErrorCode.reset!
-    end
-
     private
 
     def routes

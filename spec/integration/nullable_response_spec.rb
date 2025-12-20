@@ -4,7 +4,8 @@ require 'rails_helper'
 
 RSpec.describe 'Response nullable vs optional semantics' do
   before do
-    Apiwork.reset!
+    Apiwork::API.reset!
+    Apiwork::ErrorCode.reset!
     load File.expand_path('../dummy/config/apis/v1.rb', __dir__)
   end
 

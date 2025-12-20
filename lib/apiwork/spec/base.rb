@@ -2,6 +2,24 @@
 
 module Apiwork
   module Spec
+    # @api public
+    # Base class for spec generators.
+    #
+    # Subclass this to create custom spec formats (GraphQL, Protobuf, etc.).
+    # Override `#generate` to produce output and `.file_extension` for the file type.
+    #
+    # @example Custom spec generator
+    #   class GraphqlSpec < Apiwork::Spec::Base
+    #     register_as :graphql
+    #
+    #     def self.file_extension
+    #       'graphql'
+    #     end
+    #
+    #     def generate
+    #       # Build GraphQL schema from introspection data
+    #     end
+    #   end
     class Base
       include Registrable
       include Configurable
@@ -13,6 +31,12 @@ module Apiwork
                   :options
 
       class << self
+        # @api public
+        # Generates a spec for the given API path.
+        #
+        # @param api_path [String] the API mount path
+        # @param options [Hash] spec-specific options
+        # @return [String] the generated spec
         def generate(api_path, **options)
           new(api_path, **options).generate
         end
@@ -47,6 +71,13 @@ module Apiwork
         end
       end
 
+      # @api public
+      # Generates the spec output.
+      #
+      # Override this method in subclasses to produce the spec format.
+      # Access API data via `@data` (introspection hash).
+      #
+      # @return [String] the generated spec
       def generate
         raise NotImplementedError, "#{self.class} must implement #generate"
       end

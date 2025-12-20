@@ -4,7 +4,8 @@ require 'rails_helper'
 
 RSpec.describe 'Type Descriptions', type: :integration do
   before(:all) do
-    Apiwork.reset!
+    Apiwork::API.reset!
+    Apiwork::ErrorCode.reset!
     load Rails.root.join('config/apis/v1.rb')
   end
 
@@ -177,7 +178,8 @@ RSpec.describe 'Type Descriptions', type: :integration do
 
   describe 'Contract-scoped type merging' do
     before(:all) do
-      Apiwork.reset!
+      Apiwork::API.reset!
+      Apiwork::ErrorCode.reset!
       load Rails.root.join('config/apis/v1.rb')
     end
 
@@ -186,7 +188,8 @@ RSpec.describe 'Type Descriptions', type: :integration do
     it 'can merge description via Contract after adapter generates type' do
       Api::V1::PostContract.type :filter, description: 'Filter posts by various criteria'
 
-      Apiwork.reset!
+      Apiwork::API.reset!
+      Apiwork::ErrorCode.reset!
       load Rails.root.join('config/apis/v1.rb')
       Api::V1::PostContract.type :filter, description: 'Filter posts by various criteria'
 
@@ -200,7 +203,8 @@ RSpec.describe 'Type Descriptions', type: :integration do
         param :search, type: :string, description: 'Full text search'
       end
 
-      Apiwork.reset!
+      Apiwork::API.reset!
+      Apiwork::ErrorCode.reset!
       load Rails.root.join('config/apis/v1.rb')
       Api::V1::PostContract.type :filter do
         param :search, type: :string, description: 'Full text search'
@@ -232,7 +236,8 @@ RSpec.describe 'Type Descriptions', type: :integration do
                                         }
                                       })
 
-      Apiwork.reset!
+      Apiwork::API.reset!
+      Apiwork::ErrorCode.reset!
       load Rails.root.join('config/apis/v1.rb')
     end
 
@@ -279,7 +284,8 @@ RSpec.describe 'Type Descriptions', type: :integration do
                                         }
                                       })
 
-      Apiwork.reset!
+      Apiwork::API.reset!
+      Apiwork::ErrorCode.reset!
       load Rails.root.join('config/apis/v1.rb')
 
       introspection = Apiwork::API.introspect('/api/v1')
@@ -307,7 +313,8 @@ RSpec.describe 'Type Descriptions', type: :integration do
                                         }
                                       })
 
-      Apiwork.reset!
+      Apiwork::API.reset!
+      Apiwork::ErrorCode.reset!
       load Rails.root.join('config/apis/v1.rb')
     end
 

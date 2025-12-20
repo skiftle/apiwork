@@ -75,3 +75,17 @@ Apiwork::API.introspect('/api/v1')
 ```
 
 ---
+
+### .reset!()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L69)
+
+Clears all registered APIs. Intended for test cleanup.
+
+**Example**
+
+```ruby
+Apiwork::API.reset!
+```
+
+---

@@ -4,7 +4,8 @@ require 'rails_helper'
 
 RSpec.describe 'Action Metadata', type: :integration do
   before(:all) do
-    Apiwork.reset!
+    Apiwork::API.reset!
+    Apiwork::ErrorCode.reset!
     load Rails.root.join('config/apis/v1.rb')
   end
 

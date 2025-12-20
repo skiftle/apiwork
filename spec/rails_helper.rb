@@ -25,7 +25,10 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
 
   config.before do |example|
-    Apiwork.reset! unless [:request, :integration].include?(example.metadata[:type])
+    unless [:request, :integration].include?(example.metadata[:type])
+      Apiwork::API.reset!
+      Apiwork::ErrorCode.reset!
+    end
   end
 
   # Ensure APIs are loaded for request/integration specs

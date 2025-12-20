@@ -35,26 +35,4 @@ RSpec.describe 'Apiwork Rack Application' do
       expect(status).to eq(200)
     end
   end
-
-  describe '.reset!' do
-    it 'clears API registry' do
-      expect(Apiwork::API.all).not_to be_empty
-
-      Apiwork.reset!
-
-      expect(Apiwork::API.all).to be_empty
-    end
-
-    it 'clears ErrorCode registry and re-registers defaults' do
-      initial_count = Apiwork::ErrorCode::Registry.all.size
-      Apiwork::ErrorCode.register(:custom_test_error, status: 499)
-
-      expect(Apiwork::ErrorCode::Registry.all.size).to eq(initial_count + 1)
-
-      Apiwork.reset!
-
-      expect(Apiwork::ErrorCode::Registry.all.size).to eq(initial_count)
-      expect(Apiwork::ErrorCode.registered?(:custom_test_error)).to be false
-    end
-  end
 end
