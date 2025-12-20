@@ -92,11 +92,11 @@ end
 
 `transform_key` applies the current `key_format` setting:
 
-| key_format | Input | Output |
-|------------|-------|--------|
-| `:keep` | `created_at` | `created_at` |
-| `:camel` | `created_at` | `createdAt` |
-| `:underscore` | `createdAt` | `created_at` |
+| key_format    | Input        | Output       |
+| ------------- | ------------ | ------------ |
+| `:keep`       | `created_at` | `created_at` |
+| `:camel`      | `created_at` | `createdAt`  |
+| `:underscore` | `createdAt`  | `created_at` |
 
 ::: warning Respect key_format
 Always use `transform_key` for property names in your output, as long as it makes sense in your spec. This ensures consistency with other specs and respects the API's configuration.
@@ -170,13 +170,13 @@ end
 
 ### Option Types
 
-| Type | Description |
-|------|-------------|
-| `:string` | String value |
-| `:integer` | Integer value |
-| `:symbol` | Symbol value |
-| `:boolean` | Boolean value |
-| `:hash` | Nested options (use block) |
+| Type       | Description                |
+| ---------- | -------------------------- |
+| `:string`  | String value               |
+| `:integer` | Integer value              |
+| `:symbol`  | Symbol value               |
+| `:boolean` | Boolean value              |
+| `:hash`    | Nested options (use block) |
 
 ### Accessing Options
 
