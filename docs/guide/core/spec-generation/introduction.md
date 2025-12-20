@@ -26,7 +26,18 @@ Apiwork::API.define '/api/v1' do
 end
 ```
 
-## Endpoints
+## Two Approaches
+
+Apiwork offers two ways to access your generated specs:
+
+| Approach | Best For | How It Works |
+|----------|----------|--------------|
+| **Endpoints** | Development | Specs served dynamically at `/.spec/{format}` |
+| **File Generation** | Production | Specs written to files via rake task |
+
+In development, endpoints are convenient — you get instant feedback as you change your API. In production, pre-generated files are faster and can be served statically.
+
+## Endpoints (Development)
 
 Once enabled, specs are served at `/.spec/{format}`:
 
@@ -36,9 +47,110 @@ Once enabled, specs are served at `/.spec/{format}`:
 | TypeScript | `GET /api/v1/.spec/typescript` |
 | Zod | `GET /api/v1/.spec/zod` |
 
+These endpoints generate specs on each request. Great for development where you want to see changes immediately, but not ideal for production traffic.
+
+::: tip
+During development, you can fetch specs directly from your running server:
+```bash
+curl http://localhost:3000/api/v1/.spec/typescript > src/api/types.ts
+```
+:::
+
+## File Generation (Production)
+
+For production, generate specs to files and serve them statically:
+
+```bash
+rake apiwork:spec:write OUTPUT=public/specs
+```
+
+This generates all enabled specs for all APIs:
+
+```
+public/specs/
+├── api/
+│   └── v1/
+│       ├── openapi.json
+│       ├── typescript.ts
+│       └── zod.ts
+```
+
+### Options
+
+| Option | Description | Example |
+|--------|-------------|---------|
+| `OUTPUT` | Output path (required) | `public/specs` |
+| `API_PATH` | Generate for specific API only | `/api/v1` |
+| `IDENTIFIER` | Generate specific format only | `openapi` |
+| `KEY_FORMAT` | Transform keys | `camel` |
+| `LOCALE` | Use specific locale | `sv` |
+
+Examples:
+
+```bash
+# All specs for all APIs
+rake apiwork:spec:write OUTPUT=public/specs
+
+# Only OpenAPI for /api/v1
+rake apiwork:spec:write API_PATH=/api/v1 IDENTIFIER=openapi OUTPUT=public/specs
+
+# Single file output
+rake apiwork:spec:write API_PATH=/api/v1 IDENTIFIER=openapi OUTPUT=public/openapi.json
+
+# With camelCase keys
+rake apiwork:spec:write IDENTIFIER=typescript KEY_FORMAT=camel OUTPUT=public/specs
+
+# With Swedish locale
+rake apiwork:spec:write OUTPUT=public/specs LOCALE=sv
+```
+
+### Cleaning Generated Files
+
+Remove generated files:
+
+```bash
+rake apiwork:spec:clean OUTPUT=public/specs
+```
+
+## Disabling Endpoints in Production
+
+If you only use file generation in production, disable the endpoints:
+
+```ruby
+Apiwork::API.define '/api/v1' do
+  if Rails.env.development?
+    spec :openapi
+    spec :typescript
+    spec :zod
+  end
+end
+```
+
+The rake tasks work regardless — they generate specs directly from your contracts without needing the endpoints enabled.
+
+## Programmatic Generation
+
+For custom workflows, generate specs in code:
+
+```ruby
+# Generate a single spec
+content = Apiwork::Spec.generate(:openapi, '/api/v1')
+
+# Write all specs to files
+Apiwork::Spec::Pipeline.write(output: 'public/specs')
+
+# Write specific spec
+Apiwork::Spec::Pipeline.write(
+  api_path: '/api/v1',
+  identifier: :typescript,
+  output: 'public/specs',
+  key_format: :camel
+)
+```
+
 ## Custom Path
 
-Want a different URL? Override the path:
+Override the default endpoint path:
 
 ```ruby
 spec :openapi do
@@ -46,11 +158,11 @@ spec :openapi do
 end
 ```
 
-Now served at `GET /api/v1/openapi.json`.
+Now served at `GET /api/v1/openapi.json` instead of `/.spec/openapi`.
 
 ## Key Transformation
 
-If your frontend uses camelCase, you can transform keys in the output:
+Transform keys in the output:
 
 ```ruby
 spec :openapi do
@@ -59,16 +171,8 @@ end
 ```
 
 Options:
-- `:keep` — No transformation (default)
+- `:keep` — No transformation
 - `:camel` — `created_at` becomes `createdAt`
 - `:underscore` — All keys use snake_case
 
-## Programmatic Generation
-
-You can also generate specs in code, useful for CI pipelines or build scripts:
-
-```ruby
-Apiwork::Spec.generate(:openapi, '/api/v1')
-Apiwork::Spec.generate(:typescript, '/api/v1')
-Apiwork::Spec.generate(:zod, '/api/v1')
-```
+If not specified, inherits from the API definition.

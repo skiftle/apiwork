@@ -6,11 +6,55 @@ order: 1
 
 The type system powers everything in Apiwork. Requests, responses, filters, payloads — all flow through it.
 
-Define a type once. Use it in contracts, schemas, and generated specs.
+Define a type once. Use it in contracts, schemas, and generated specs. The same definition produces Ruby validation, TypeScript types, Zod schemas, and OpenAPI specs.
 
 ## [Types](./types.md)
 
-Reusable structures:
+Primitives form the foundation. Every param and attribute uses one of these:
+
+| Type | Description |
+|------|-------------|
+| `:string` | Text values |
+| `:integer` | Whole numbers |
+| `:boolean` | True/false |
+| `:date` | Date only |
+| `:datetime` | Date and time |
+| `:uuid` | UUID format |
+| `:decimal` | Precise decimals |
+| `:float` | Floating point |
+
+Plus special types: `:json`, `:binary`, `:literal`, `:unknown`
+
+## [Enums](./enums.md)
+
+Restrict values to a predefined set:
+
+```ruby
+enum :status, values: %w[draft published archived]
+```
+
+```typescript
+type Status = 'archived' | 'draft' | 'published';
+```
+
+## [Unions](./unions.md)
+
+Multiple type options with optional discriminator:
+
+```ruby
+union :payment_method, discriminator: :type do
+  variant tag: 'card' do
+    param :last_four, type: :string
+  end
+  variant tag: 'bank' do
+    param :account_number, type: :string
+  end
+end
+```
+
+## [Custom Types](./custom-types.md)
+
+Reusable object structures:
 
 ```ruby
 type :address do
@@ -20,84 +64,45 @@ type :address do
 end
 ```
 
-```typescript
-// TypeScript
-export interface Address {
-  city?: string;
-  country?: string;
-  street?: string;
-}
-
-// Zod
-export const AddressSchema = z.object({
-  city: z.string().optional(),
-  country: z.string().optional(),
-  street: z.string().optional()
-});
-```
-
-## [Enums](./enums.md)
-
-Restrict values to a set:
+Reference anywhere:
 
 ```ruby
-enum :status, values: %w[draft published archived]
+param :shipping_address, type: :address
+param :addresses, type: :array, of: :address
 ```
 
-```typescript
-// TypeScript
-type Status = 'archived' | 'draft' | 'published';
+## [Scoping](./scoping.md)
 
-// Zod
-const StatusSchema = z.enum(['archived', 'draft', 'published']);
-```
+Types live at two levels:
 
-## [Unions](./unions.md)
+- **API-level** — available to all contracts, keeps original name
+- **Contract-scoped** — prefixed with contract name in specs
 
-Multiple type options:
+A `:status` type in `OrderContract` becomes `order_status` in generated output.
+
+## [Type Merging](./type-merging.md)
+
+Types are open for extension. Multiple declarations merge:
 
 ```ruby
-union :filter_value do
-  variant type: :string
-  variant type: :integer
+type :user do
+  param :name, type: :string
+end
+
+type :user do
+  param :email, type: :string  # Added to existing type
 end
 ```
 
-```typescript
-// TypeScript
-type FilterValue = number | string;
+## Generated Output
 
-// Zod
-const FilterValueSchema = z.union([z.number().int(), z.string()]);
-```
+Every type definition produces four outputs:
 
-## Scoping
+| Format | Use |
+|--------|-----|
+| Introspection | Internal JSON representation |
+| TypeScript | Frontend type definitions |
+| Zod | Runtime validation schemas |
+| OpenAPI | API documentation |
 
-Types can live at two levels:
-
-**API-level** — available to all contracts:
-```ruby
-Apiwork::API.define '/api/v1' do
-  type :address do
-    param :street, type: :string
-  end
-end
-```
-
-**Contract-scoped** — local to one contract:
-```ruby
-class OrderContract < Apiwork::Contract::Base
-  type :line_item do
-    param :product_id, type: :integer
-    param :quantity, type: :integer
-  end
-end
-```
-
-The difference in generated specs: contract-scoped types get prefixed with the contract name. A `:status` type in `OrderContract` becomes `order_status`. API-level types keep their name as-is.
-
-[Scoping](./scoping.md) explains prefixing rules and how to share types across contracts.
-
-## Available Types
-
-For all primitives and special types, see [Types](./types.md).
+See [Spec Generation](../spec-generation/introduction.md) for details.
