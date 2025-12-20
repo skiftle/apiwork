@@ -1,5 +1,5 @@
 ---
-order: 10
+order: 45
 prev: false
 next: false
 ---
@@ -54,6 +54,16 @@ Registers a spec generator.
 ```ruby
 Apiwork::Spec.register(GraphqlSpec)
 ```
+
+---
+
+### .registered?(identifier)
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec.rb#L26)
+
+**Returns**
+
+`Boolean` — 
 
 ---
 

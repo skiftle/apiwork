@@ -1,12 +1,12 @@
 ---
-order: 36
+order: 38
 prev: false
 next: false
 ---
 
-# Controller
+# Controller::Serialization
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L5)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/serialization.rb#L5)
 
 ## Instance Methods
 
@@ -40,41 +40,6 @@ def context
     locale: I18n.locale,
     feature_flags: FeatureFlags.for(current_user)
   }
-end
-```
-
----
-
-### #contract()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/deserialization.rb#L59)
-
-Returns the parsed and validated request contract.
-
-The contract contains parsed query parameters and request body,
-with type coercion applied. Access parameters via `contract.query`
-and `contract.body`.
-
-**Returns**
-
-`Apiwork::Contract::Base` — the contract instance
-
-**Example: Access parsed parameters**
-
-```ruby
-def create
-  invoice = Invoice.new(contract.body)
-  # contract.body contains validated, coerced params
-end
-```
-
-**Example: Check for specific parameters**
-
-```ruby
-def index
-  if contract.query[:include]
-    # handle include parameter
-  end
 end
 ```
 

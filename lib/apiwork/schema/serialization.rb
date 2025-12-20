@@ -2,6 +2,27 @@
 
 module Apiwork
   module Schema
+    # @!scope class
+    # @!method serialize(object_or_collection, context: {}, include: nil)
+    #   @api public
+    #   Serializes a record or collection using this schema.
+    #
+    #   Converts ActiveRecord objects to JSON-ready hashes based on
+    #   attribute and association definitions.
+    #
+    #   @param object_or_collection [Object, Array] record(s) to serialize
+    #   @param context [Hash] context data available during serialization
+    #   @param include [Symbol, Array, Hash] associations to include
+    #   @return [Hash, Array<Hash>] serialized data
+    #
+    #   @example Serialize a single record
+    #     InvoiceSchema.serialize(invoice)
+    #
+    #   @example Serialize with associations
+    #     InvoiceSchema.serialize(invoice, include: [:customer, :line_items])
+    #
+    #   @example Serialize a collection
+    #     InvoiceSchema.serialize(Invoice.all)
     module Serialization
       extend ActiveSupport::Concern
 

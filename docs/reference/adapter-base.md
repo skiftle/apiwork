@@ -1,5 +1,5 @@
 ---
-order: 4
+order: 31
 prev: false
 next: false
 ---
@@ -12,6 +12,18 @@ Base class for adapters.
 
 Subclass this to create custom response formats (JSON:API, HAL, etc.).
 Override the render and transform methods to customize behavior.
+
+**Example: Custom adapter**
+
+```ruby
+class JsonApiAdapter < Apiwork::Adapter::Base
+  register_as :jsonapi
+
+  def render_record(record, schema_class, action_data)
+    { data: { type: '...', attributes: '...' } }
+  end
+end
+```
 
 ## Instance Methods
 

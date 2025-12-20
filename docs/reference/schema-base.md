@@ -1,5 +1,5 @@
 ---
-order: 9
+order: 43
 prev: false
 next: false
 ---
@@ -9,6 +9,41 @@ next: false
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L6)
 
 ## Class Methods
+
+### .abstract!()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/abstractable.rb#L27)
+
+Marks this class as abstract.
+
+Abstract classes don't require a model and serve as base classes.
+Subclasses automatically become non-abstract.
+
+**Returns**
+
+`void` — 
+
+**Example**
+
+```ruby
+class ApplicationSchema < Apiwork::Schema::Base
+  abstract!
+end
+```
+
+---
+
+### .abstract?()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/abstractable.rb#L27)
+
+Returns whether this class is abstract.
+
+**Returns**
+
+`Boolean` — true if abstract
+
+---
 
 ### .adapter(&block)
 
@@ -122,6 +157,16 @@ class LegacyOrderSchema < Apiwork::Schema::Base
   deprecated
 end
 ```
+
+---
+
+### .deprecated?()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L385)
+
+**Returns**
+
+`Boolean` — 
 
 ---
 
@@ -332,6 +377,16 @@ end
 
 ---
 
+### .needs_discriminator_transform?()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L342)
+
+**Returns**
+
+`Boolean` — 
+
+---
+
 ### .root(singular, plural = nil)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L92)
@@ -354,6 +409,67 @@ class InvoiceSchema < Apiwork::Schema::Base
   root :bill, :bills
 end
 ```
+
+---
+
+### .serialize(object_or_collection, context: = {}, include: = nil)
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/serialization.rb#L26)
+
+Serializes a record or collection using this schema.
+
+Converts ActiveRecord objects to JSON-ready hashes based on
+attribute and association definitions.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `object_or_collection` | `Object, Array` | record(s) to serialize |
+| `context` | `Hash` | context data available during serialization |
+| `include` | `Symbol, Array, Hash` | associations to include |
+
+**Returns**
+
+`Hash, Array<Hash>` — serialized data
+
+**Example: Serialize a single record**
+
+```ruby
+InvoiceSchema.serialize(invoice)
+```
+
+**Example: Serialize with associations**
+
+```ruby
+InvoiceSchema.serialize(invoice, include: [:customer, :line_items])
+```
+
+**Example: Serialize a collection**
+
+```ruby
+InvoiceSchema.serialize(Invoice.all)
+```
+
+---
+
+### .sti_base?()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L332)
+
+**Returns**
+
+`Boolean` — 
+
+---
+
+### .sti_variant?()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L338)
+
+**Returns**
+
+`Boolean` — 
 
 ---
 
@@ -386,5 +502,17 @@ class CarSchema < VehicleSchema
   attribute :doors
 end
 ```
+
+---
+
+## Instance Methods
+
+### #initialize(object, context: = {}, include: = nil)
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L27)
+
+**Returns**
+
+`Base` — a new instance of Base
 
 ---

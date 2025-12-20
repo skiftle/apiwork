@@ -282,6 +282,16 @@ end
 
 ---
 
+### .specs?()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L115)
+
+**Returns**
+
+`Boolean` — 
+
+---
+
 ### .type(name, scope: = nil, description: = nil, example: = nil, format: = nil, deprecated: = false, schema_class: = nil, &block)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L209)

@@ -1,5 +1,5 @@
 ---
-order: 5
+order: 35
 prev: false
 next: false
 ---
@@ -9,6 +9,41 @@ next: false
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L6)
 
 ## Class Methods
+
+### .abstract!()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/abstractable.rb#L27)
+
+Marks this class as abstract.
+
+Abstract classes don't require a model and serve as base classes.
+Subclasses automatically become non-abstract.
+
+**Returns**
+
+`void` — 
+
+**Example**
+
+```ruby
+class ApplicationSchema < Apiwork::Schema::Base
+  abstract!
+end
+```
+
+---
+
+### .abstract?()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/abstractable.rb#L27)
+
+Returns whether this class is abstract.
+
+**Returns**
+
+`Boolean` — true if abstract
+
+---
 
 ### .action(action_name, replace: = false, &block)
 
@@ -177,6 +212,18 @@ end
 
 ---
 
+### .inherited(subclass)
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L38)
+
+---
+
+### .resolve_custom_type(type_name, visited: = Set.new)
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L330)
+
+---
+
 ### .schema!()
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L93)
@@ -206,6 +253,16 @@ class UserContract < Apiwork::Contract::Base
   end
 end
 ```
+
+---
+
+### .schema?()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L131)
+
+**Returns**
+
+`Boolean` — 
 
 ---
 
@@ -287,6 +344,16 @@ end
 ---
 
 ## Instance Methods
+
+### #initialize(query:, body:, action_name:, coerce: = false)
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L19)
+
+**Returns**
+
+`Base` — a new instance of Base
+
+---
 
 ### #invalid?()
 

@@ -37,6 +37,9 @@ module Apiwork
     end
 
     def public_api?(obj)
+      # Check docstring tags first (handles @!method directives)
+      return true if obj.docstring.tags(:api).any? { |t| t.text == 'public' }
+
       return false unless obj.file
 
       lines = File.readlines(obj.file)
@@ -59,6 +62,7 @@ module Apiwork
         path: obj.path,
         type: obj.type,
         docstring: obj.docstring.to_s,
+        examples: extract_examples(obj),
         file: relative_path(obj.file),
         line: obj.line,
         class_methods: extract_methods(obj, :class),
@@ -76,7 +80,9 @@ module Apiwork
       methods = obj.meths(visibility: :public, scope:)
 
       # Include methods from included modules (concerns)
-      obj.mixins(scope).each do |mixin|
+      # Concerns are included at instance scope but may define class methods
+      # via @!scope class, so we check instance mixins for both scopes
+      obj.mixins(:instance).each do |mixin|
         mixin_obj = YARD::Registry.at(mixin.path)
         next unless mixin_obj
 
@@ -237,6 +243,16 @@ module Apiwork
       end
 
       parts << "#{mod[:docstring]}\n" unless mod[:docstring].to_s.empty?
+
+      if mod[:examples].any?
+        mod[:examples].each do |example|
+          title_suffix = example[:title].to_s.empty? ? '' : ": #{example[:title]}"
+          parts << "**Example#{title_suffix}**\n"
+          parts << '```ruby'
+          parts << example[:code]
+          parts << "```\n"
+        end
+      end
 
       if mod[:class_methods].any?
         parts << "## Class Methods\n"

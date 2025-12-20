@@ -1,5 +1,5 @@
 ---
-order: 11
+order: 46
 prev: false
 next: false
 ---
@@ -10,10 +10,32 @@ next: false
 
 Base class for spec generators.
 
-Subclass this to create custom spec formats (GraphQL, Protobuf, etc.).
+Subclass this to create custom spec formats (Protobuf, GraphQL, etc.).
 Override `#generate` to produce output and `.file_extension` for the file type.
 
+**Example: Custom spec generator**
+
+```ruby
+class ProtobufSpec < Apiwork::Spec::Base
+  register_as :protobuf
+
+  def self.file_extension
+    'proto'
+  end
+
+  def generate
+    # Build Protobuf schema from @data (introspection hash)
+  end
+end
+```
+
 ## Class Methods
+
+### .file_extension()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L49)
+
+---
 
 ### .generate(api_path, **options)
 
@@ -48,5 +70,15 @@ Access API data via `@data` (introspection hash).
 **Returns**
 
 `String` — the generated spec
+
+---
+
+### #initialize(api_path, **options)
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L54)
+
+**Returns**
+
+`Base` — a new instance of Base
 
 ---

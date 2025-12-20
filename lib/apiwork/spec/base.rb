@@ -5,19 +5,19 @@ module Apiwork
     # @api public
     # Base class for spec generators.
     #
-    # Subclass this to create custom spec formats (GraphQL, Protobuf, etc.).
+    # Subclass this to create custom spec formats (Protobuf, GraphQL, etc.).
     # Override `#generate` to produce output and `.file_extension` for the file type.
     #
     # @example Custom spec generator
-    #   class GraphqlSpec < Apiwork::Spec::Base
-    #     register_as :graphql
+    #   class ProtobufSpec < Apiwork::Spec::Base
+    #     register_as :protobuf
     #
     #     def self.file_extension
-    #       'graphql'
+    #       'proto'
     #     end
     #
     #     def generate
-    #       # Build GraphQL schema from introspection data
+    #       # Build Protobuf schema from @data (introspection hash)
     #     end
     #   end
     class Base
