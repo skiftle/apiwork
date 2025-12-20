@@ -10,7 +10,7 @@ Create your own spec generators.
 
 ```ruby
 class MySpec < Apiwork::Spec::Base
-  identifier :myspec
+  identifier :my_spec
   content_type 'application/json'
 
   option :key_format, type: :symbol, default: :keep
@@ -80,14 +80,82 @@ option :my_option, type: :string, default: 'value'
 my_option  # Returns the configured value
 ```
 
-## Registering
+## Registering Your Spec
 
-The spec is automatically available when the class is loaded. Use in your API:
+Register your spec so Apiwork can find it:
+
+```ruby
+# config/initializers/apiwork.rb
+Apiwork::Spec.register(MySpec)
+```
+
+## Using Your Spec
+
+Once registered, enable it in your [API definition](/guide/core/api-definitions/introduction):
 
 ```ruby
 Apiwork::API.define '/api/v1' do
-  spec :myspec
+  spec :my_spec
 end
 ```
 
-Served at `GET /api/v1/.spec/myspec`.
+With options:
+
+```ruby
+Apiwork::API.define '/api/v1' do
+  spec :my_spec do
+    key_format :camel
+  end
+end
+```
+
+Served at `GET /api/v1/.spec/my_spec`.
+
+With query parameters:
+
+```
+GET /api/v1/.spec/my_spec?key_format=camel
+GET /api/v1/.spec/my_spec?locale=sv
+```
+
+Generate to file:
+
+```bash
+rake apiwork:spec:write IDENTIFIER=my_spec OUTPUT=public/specs
+rake apiwork:spec:write IDENTIFIER=my_spec KEY_FORMAT=camel OUTPUT=public/specs
+```
+
+## Defining Options
+
+Make your spec configurable with `option`:
+
+```ruby
+class MySpec < Apiwork::Spec::Base
+  identifier :my_spec
+
+  option :key_format, type: :symbol, default: :keep
+  option :include_deprecated, type: :boolean, default: false
+end
+```
+
+### Option Types
+
+| Type | Description |
+|------|-------------|
+| `:string` | String value |
+| `:integer` | Integer value |
+| `:symbol` | Symbol value |
+| `:boolean` | Boolean value |
+| `:hash` | Nested options (use block) |
+
+### Accessing Options
+
+Options are available as methods in your `generate` method:
+
+```ruby
+def generate
+  format = key_format
+  include_deprecated = include_deprecated
+  # ...
+end
+```

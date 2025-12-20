@@ -16,7 +16,7 @@ Three formats out of the box:
 
 ## Enabling Specs
 
-Enable whichever formats you need in your API definition:
+Enable whichever formats you need in your [API definition](/guide/core/api-definitions/introduction):
 
 ```ruby
 Apiwork::API.define '/api/v1' do
@@ -175,4 +175,4 @@ Options:
 - `:camel` — `created_at` becomes `createdAt`
 - `:underscore` — All keys use snake_case
 
-If not specified, inherits from the API definition.
+If not specified, inherits from the [API definition](/guide/core/api-definitions/introduction).

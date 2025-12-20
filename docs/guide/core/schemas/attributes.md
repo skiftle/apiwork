@@ -151,7 +151,7 @@ end
 
 ```typescript
 interface AuthorCreatePayload {
-  name?: string;
+  name: string;
   bio?: string;
 }
 ```

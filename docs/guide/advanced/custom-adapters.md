@@ -12,7 +12,7 @@ Here's the basic structure:
 
 ```ruby
 class MyAdapter < Apiwork::Adapter::Base
-  identifier :myadapter
+  identifier :my_adapter
 
   option :my_option, type: :string, default: 'value'
 
@@ -104,13 +104,30 @@ def transform_response(hash)
 end
 ```
 
+## Registering Your Adapter
+
+Register your adapter so Apiwork can find it:
+
+```ruby
+# config/initializers/apiwork.rb
+Apiwork::Adapter.register(MyAdapter)
+```
+
 ## Using Your Adapter
 
-Once you've defined your adapter, use it in your API definition:
+Once registered, use it in your [API definition](/guide/core/api-definitions/introduction):
 
 ```ruby
 Apiwork::API.define '/api/v1' do
-  adapter :myadapter do
+  adapter :my_adapter
+end
+```
+
+With options:
+
+```ruby
+Apiwork::API.define '/api/v1' do
+  adapter :my_adapter do
     my_option 'custom_value'
   end
 end
@@ -122,7 +139,7 @@ Make your adapter configurable with `option`:
 
 ```ruby
 class MyAdapter < Apiwork::Adapter::Base
-  identifier :myadapter
+  identifier :my_adapter
 
   option :timeout, type: :integer, default: 30
   option :format, type: :symbol, default: :json, enum: %i[json xml]

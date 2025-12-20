@@ -37,7 +37,7 @@ end
 
 ## Adapter Configuration
 
-Schemas inherit adapter settings from the API definition. Override per-schema when needed:
+Schemas inherit adapter settings from the [API definition](/guide/core/api-definitions/introduction). Override per-schema when needed:
 
 ```ruby
 class ActivitySchema < Apiwork::Schema::Base
@@ -64,7 +64,7 @@ end
 Settings resolve in this order (first defined wins):
 
 1. **Schema** `adapter` block — most specific
-2. **API definition** `adapter` block — API-wide defaults
+2. **[API definition](/guide/core/api-definitions/introduction)** `adapter` block — API-wide defaults
 3. **Adapter defaults** — built-in fallbacks
 
 Example:

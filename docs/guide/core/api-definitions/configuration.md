@@ -203,24 +203,3 @@ end
 
 [Type System](../type-system/introduction.md) covers type definitions, enums, unions, and scoping rules.
 
-## with_options
-
-Apply options to multiple resources:
-
-```ruby
-Apiwork::API.define '/api/v1' do
-  with_options only: [:index, :show] do
-    resources :posts
-    resources :comments
-    resources :users
-  end
-end
-```
-
-Equivalent to:
-
-```ruby
-resources :posts, only: [:index, :show]
-resources :comments, only: [:index, :show]
-resources :users, only: [:index, :show]
-```
