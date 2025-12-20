@@ -22,8 +22,11 @@
         "notes": "Updated notes",
         "status": null,
         "customerId": "68015de3-44bf-5dc5-8e6b-9199fa3ac62e",
-        "lines": null,
-        "customer": null
+        "lines": [],
+        "customer": {
+          "id": "68015de3-44bf-5dc5-8e6b-9199fa3ac62e",
+          "name": "Acme Corp"
+        }
       }
     }
   }

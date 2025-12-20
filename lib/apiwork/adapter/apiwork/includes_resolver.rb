@@ -142,7 +142,7 @@ module Apiwork
           return nil if association.polymorphic?
 
           namespace = schema_class.name.deconstantize
-          "#{namespace}::#{association.klass.name}Schema".safe_constantize
+          "#{namespace}::#{association.klass.name.demodulize}Schema".safe_constantize
         end
       end
     end

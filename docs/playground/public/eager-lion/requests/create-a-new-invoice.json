@@ -23,8 +23,11 @@
         "notes": "First invoice",
         "status": null,
         "customerId": "37edd0f2-8741-5638-adf9-7b1141702642",
-        "lines": null,
-        "customer": null
+        "lines": [],
+        "customer": {
+          "id": "37edd0f2-8741-5638-adf9-7b1141702642",
+          "name": "Acme Corp"
+        }
       }
     }
   }

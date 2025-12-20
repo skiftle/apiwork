@@ -15,8 +15,11 @@
         "notes": null,
         "status": null,
         "customerId": "481e8881-0547-5668-91bd-b1ff84936a03",
-        "lines": null,
-        "customer": null
+        "lines": [],
+        "customer": {
+          "id": "481e8881-0547-5668-91bd-b1ff84936a03",
+          "name": "Acme Corp"
+        }
       }
     }
   }

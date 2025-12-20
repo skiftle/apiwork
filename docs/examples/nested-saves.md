@@ -124,7 +124,7 @@ GET /clever_rabbit/orders
       "total": null,
       "createdAt": "2024-01-01T12:00:00.000Z",
       "updatedAt": "2024-01-01T12:00:00.000Z",
-      "lineItems": null,
+      "lineItems": [],
       "shippingAddress": null
     },
     {
@@ -134,7 +134,7 @@ GET /clever_rabbit/orders
       "total": null,
       "createdAt": "2024-01-01T12:00:00.000Z",
       "updatedAt": "2024-01-01T12:00:00.000Z",
-      "lineItems": null,
+      "lineItems": [],
       "shippingAddress": null
     }
   ],
@@ -170,7 +170,7 @@ GET /clever_rabbit/orders/d6afdfea-1e99-5a7c-98e0-f05896dbe62f
     "total": null,
     "createdAt": "2024-01-01T12:00:00.000Z",
     "updatedAt": "2024-01-01T12:00:00.000Z",
-    "lineItems": null,
+    "lineItems": [],
     "shippingAddress": null
   }
 }
@@ -223,8 +223,27 @@ Content-Type: application/json
     "total": null,
     "createdAt": "2024-01-01T12:00:00.000Z",
     "updatedAt": "2024-01-01T12:00:00.000Z",
-    "lineItems": null,
-    "shippingAddress": null
+    "lineItems": [
+      {
+        "id": "ad73acbb-0926-5060-9b75-5888bde61fc7",
+        "productName": "Widget",
+        "quantity": 2,
+        "unitPrice": "29.99"
+      },
+      {
+        "id": "987c1624-9b7b-5467-910c-4dc0035b91ee",
+        "productName": "Gadget",
+        "quantity": 1,
+        "unitPrice": "49.99"
+      }
+    ],
+    "shippingAddress": {
+      "id": "3cb3bbd4-ed44-5c37-a3bf-f77ea95a7e5a",
+      "street": "123 Main St",
+      "city": "Springfield",
+      "postalCode": "12345",
+      "country": "USA"
+    }
   }
 }
 ```
@@ -265,7 +284,14 @@ Content-Type: application/json
     "total": null,
     "createdAt": "2024-01-01T12:00:00.000Z",
     "updatedAt": "2024-01-01T12:00:00.000Z",
-    "lineItems": null,
+    "lineItems": [
+      {
+        "id": "855dd577-4696-5477-8c71-4e8debd866be",
+        "productName": "New Item",
+        "quantity": 3,
+        "unitPrice": "19.99"
+      }
+    ],
     "shippingAddress": null
   }
 }

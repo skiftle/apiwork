@@ -16,8 +16,11 @@
           "notes": null,
           "status": null,
           "customerId": "9428d849-05a5-5c52-a90a-906eac07ecd2",
-          "lines": null,
-          "customer": null
+          "lines": [],
+          "customer": {
+            "id": "9428d849-05a5-5c52-a90a-906eac07ecd2",
+            "name": "Acme Corp"
+          }
         },
         {
           "id": "beeed37c-a296-52da-9206-364418ea6f8e",
@@ -28,8 +31,11 @@
           "notes": null,
           "status": null,
           "customerId": "9428d849-05a5-5c52-a90a-906eac07ecd2",
-          "lines": null,
-          "customer": null
+          "lines": [],
+          "customer": {
+            "id": "9428d849-05a5-5c52-a90a-906eac07ecd2",
+            "name": "Acme Corp"
+          }
         }
       ],
       "pagination": {

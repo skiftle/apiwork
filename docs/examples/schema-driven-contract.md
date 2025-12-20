@@ -132,8 +132,11 @@ GET /eager_lion/invoices
       "notes": null,
       "status": null,
       "customerId": "9428d849-05a5-5c52-a90a-906eac07ecd2",
-      "lines": null,
-      "customer": null
+      "lines": [],
+      "customer": {
+        "id": "9428d849-05a5-5c52-a90a-906eac07ecd2",
+        "name": "Acme Corp"
+      }
     },
     {
       "id": "beeed37c-a296-52da-9206-364418ea6f8e",
@@ -144,8 +147,11 @@ GET /eager_lion/invoices
       "notes": null,
       "status": null,
       "customerId": "9428d849-05a5-5c52-a90a-906eac07ecd2",
-      "lines": null,
-      "customer": null
+      "lines": [],
+      "customer": {
+        "id": "9428d849-05a5-5c52-a90a-906eac07ecd2",
+        "name": "Acme Corp"
+      }
     }
   ],
   "pagination": {
@@ -182,8 +188,11 @@ GET /eager_lion/invoices/67bdd1df-79bb-5b50-9eaf-b17edac86b61
     "notes": null,
     "status": null,
     "customerId": "481e8881-0547-5668-91bd-b1ff84936a03",
-    "lines": null,
-    "customer": null
+    "lines": [],
+    "customer": {
+      "id": "481e8881-0547-5668-91bd-b1ff84936a03",
+      "name": "Acme Corp"
+    }
   }
 }
 ```
@@ -222,8 +231,11 @@ Content-Type: application/json
     "notes": "First invoice",
     "status": null,
     "customerId": "37edd0f2-8741-5638-adf9-7b1141702642",
-    "lines": null,
-    "customer": null
+    "lines": [],
+    "customer": {
+      "id": "37edd0f2-8741-5638-adf9-7b1141702642",
+      "name": "Acme Corp"
+    }
   }
 }
 ```
@@ -261,8 +273,11 @@ Content-Type: application/json
     "notes": "Updated notes",
     "status": null,
     "customerId": "68015de3-44bf-5dc5-8e6b-9199fa3ac62e",
-    "lines": null,
-    "customer": null
+    "lines": [],
+    "customer": {
+      "id": "68015de3-44bf-5dc5-8e6b-9199fa3ac62e",
+      "name": "Acme Corp"
+    }
   }
 }
 ```

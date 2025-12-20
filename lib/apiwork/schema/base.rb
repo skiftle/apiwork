@@ -574,7 +574,7 @@ module Apiwork
         return nil if reflection.polymorphic?
 
         namespace = self.class.name.deconstantize
-        "#{namespace}::#{reflection.klass.name}Schema".safe_constantize
+        "#{namespace}::#{reflection.klass.name.demodulize}Schema".safe_constantize
       end
 
       def serialize_sti_aware(item, resource_class, nested_includes)
