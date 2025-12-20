@@ -8,13 +8,13 @@ module Apiwork
     class Pipeline
       class Writer
         class << self
-          def write(content:, output:, extension:, api_path: nil, identifier: nil)
+          def write(content:, output:, extension:, api_path: nil, spec_name: nil)
             if file_path?(output)
               write_file(content, output)
             else
-              raise ArgumentError, 'api_path and identifier required when output is a directory' if api_path.blank? || identifier.blank?
+              raise ArgumentError, 'api_path and spec_name required when output is a directory' if api_path.blank? || spec_name.blank?
 
-              file_path = build_file_path(output, api_path, identifier, extension)
+              file_path = build_file_path(output, api_path, spec_name, extension)
               write_file(content, file_path)
             end
           end
@@ -39,9 +39,9 @@ module Apiwork
 
           private
 
-          def build_file_path(output, api_path, identifier, extension)
+          def build_file_path(output, api_path, spec_name, extension)
             path_parts = api_path.split('/').reject(&:empty?)
-            File.join(output, *path_parts, "#{identifier}#{extension}")
+            File.join(output, *path_parts, "#{spec_name}#{extension}")
           end
 
           def write_file(content, file_path)

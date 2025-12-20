@@ -81,7 +81,7 @@ public/specs/
 |--------|-------------|---------|
 | `OUTPUT` | Output path (required) | `public/specs` |
 | `API_PATH` | Generate for specific API only | `/api/v1` |
-| `IDENTIFIER` | Generate specific format only | `openapi` |
+| `SPEC_NAME` | Generate specific format only | `openapi` |
 | `KEY_FORMAT` | Transform keys | `camel` |
 | `LOCALE` | Use specific locale | `sv` |
 
@@ -92,13 +92,13 @@ Examples:
 rake apiwork:spec:write OUTPUT=public/specs
 
 # Only OpenAPI for /api/v1
-rake apiwork:spec:write API_PATH=/api/v1 IDENTIFIER=openapi OUTPUT=public/specs
+rake apiwork:spec:write API_PATH=/api/v1 SPEC_NAME=openapi OUTPUT=public/specs
 
 # Single file output
-rake apiwork:spec:write API_PATH=/api/v1 IDENTIFIER=openapi OUTPUT=public/openapi.json
+rake apiwork:spec:write API_PATH=/api/v1 SPEC_NAME=openapi OUTPUT=public/openapi.json
 
 # With camelCase keys
-rake apiwork:spec:write IDENTIFIER=typescript KEY_FORMAT=camel OUTPUT=public/specs
+rake apiwork:spec:write SPEC_NAME=typescript KEY_FORMAT=camel OUTPUT=public/specs
 
 # With Swedish locale
 rake apiwork:spec:write OUTPUT=public/specs LOCALE=sv
@@ -142,7 +142,7 @@ Apiwork::Spec::Pipeline.write(output: 'public/specs')
 # Write specific spec
 Apiwork::Spec::Pipeline.write(
   api_path: '/api/v1',
-  identifier: :typescript,
+  spec_name: :typescript,
   output: 'public/specs',
   key_format: :camel
 )

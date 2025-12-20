@@ -18,21 +18,21 @@ namespace :apiwork do
 
       api_path = ENV['API_PATH']
       output = ENV['OUTPUT']
-      identifier = ENV['IDENTIFIER']&.to_sym
+      spec_name = ENV['SPEC_NAME']&.to_sym
 
       unless output
         puts 'Error: OUTPUT required'
         puts ''
-        puts 'Usage: rake apiwork:spec:write OUTPUT=path [API_PATH=/api/v1] [IDENTIFIER=openapi] [OPTIONS...]'
+        puts 'Usage: rake apiwork:spec:write OUTPUT=path [API_PATH=/api/v1] [SPEC_NAME=openapi] [OPTIONS...]'
         puts ''
         puts 'Examples:'
         puts '  rake apiwork:spec:write OUTPUT=public/specs'
         puts '  rake apiwork:spec:write API_PATH=/api/v1 OUTPUT=public/specs'
-        puts '  rake apiwork:spec:write API_PATH=/api/v1 IDENTIFIER=openapi OUTPUT=public/openapi.json'
-        puts '  rake apiwork:spec:write IDENTIFIER=zod KEY_FORMAT=camel OUTPUT=public/specs'
+        puts '  rake apiwork:spec:write API_PATH=/api/v1 SPEC_NAME=openapi OUTPUT=public/openapi.json'
+        puts '  rake apiwork:spec:write SPEC_NAME=zod KEY_FORMAT=camel OUTPUT=public/specs'
         puts '  rake apiwork:spec:write OUTPUT=public/specs LOCALE=sv'
         puts ''
-        puts 'Available identifiers:'
+        puts 'Available specs:'
         puts "  #{Apiwork::Spec.all.join(', ')}"
         puts ''
         puts 'Built-in options (uppercase ENV vars):'
@@ -43,8 +43,8 @@ namespace :apiwork do
         exit 1
       end
 
-      custom_options = if identifier
-                         Apiwork::Spec.find(identifier).extract_options_from_env
+      custom_options = if spec_name
+                         Apiwork::Spec.find(spec_name).extract_options_from_env
                        else
                          {}
                        end
@@ -53,7 +53,7 @@ namespace :apiwork do
         Apiwork::Spec::Pipeline.write(
           api_path: api_path,
           output: output,
-          identifier: identifier,
+          spec_name: spec_name,
           **custom_options
         )
       rescue ArgumentError => e

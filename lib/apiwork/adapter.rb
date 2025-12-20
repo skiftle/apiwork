@@ -7,7 +7,7 @@ module Apiwork
       # @api public
       # Registers an adapter.
       #
-      # @param klass [Class] the adapter class (subclass of Adapter::Base with identifier)
+      # @param klass [Class] the adapter class (subclass of Adapter::Base with adapter_name)
       #
       # @example
       #   Apiwork::Adapter.register(JsonApiAdapter)
@@ -15,12 +15,12 @@ module Apiwork
         Registry.register(klass)
       end
 
-      def find(identifier)
-        Registry.find(identifier)
+      def find(adapter_name)
+        Registry.find(adapter_name)
       end
 
-      def registered?(identifier)
-        Registry.registered?(identifier)
+      def registered?(adapter_name)
+        Registry.registered?(adapter_name)
       end
 
       def all

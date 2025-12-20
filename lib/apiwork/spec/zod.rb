@@ -3,7 +3,7 @@
 module Apiwork
   module Spec
     class Zod < Base
-      identifier :zod
+      spec_name :zod
       content_type 'text/plain; charset=utf-8'
       file_extension '.ts'
 

@@ -10,9 +10,9 @@ module Apiwork
 
         def register(generator_class)
           raise ArgumentError, 'Spec must inherit from Apiwork::Spec::Base' unless generator_class < Base
-          raise ArgumentError, "Spec #{generator_class} must define an identifier" unless generator_class.identifier
+          raise ArgumentError, "Spec #{generator_class} must define a spec_name" unless generator_class.spec_name
 
-          store[generator_class.identifier] = generator_class
+          store[generator_class.spec_name] = generator_class
         end
 
         def find(name)

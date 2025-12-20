@@ -17,7 +17,7 @@ Set `file_extension` and override `#generate` to produce output.
 
 ```ruby
 class ProtobufSpec < Apiwork::Spec::Base
-  identifier :protobuf
+  spec_name :protobuf
   file_extension '.proto'
 
   def generate

@@ -10,7 +10,7 @@ next: false
 
 ## Class Methods
 
-### .generate(identifier, api_path, **options)
+### .generate(spec_name, api_path, **options)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec.rb#L41)
 
@@ -20,7 +20,7 @@ Generates a spec for an API.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `identifier` | `Symbol` | the spec identifier (:openapi, :typescript, :zod) |
+| `spec_name` | `Symbol` | the spec name (:openapi, :typescript, :zod) |
 | `api_path` | `String` | the API mount path |
 | `options` | `Hash` | spec-specific options |
 
@@ -47,7 +47,7 @@ Registers a spec generator.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class` | the spec class (subclass of Spec::Base with register_as) |
+| `klass` | `Class` | the spec class (subclass of Spec::Base with spec_name) |
 
 **Example**
 

@@ -10,7 +10,7 @@ Create your own spec generators.
 
 ```ruby
 class MySpec < Apiwork::Spec::Base
-  identifier :my_spec
+  spec_name :my_spec
   content_type 'application/json'
   file_extension '.json'
 
@@ -75,35 +75,6 @@ option :my_option, type: :string, default: 'value'
 my_option  # Returns the configured value
 ```
 
-### Key Transformation
-
-The `key_format` option is always available, inherited from the API definition. Use the `transform_key` helper to transform property names consistently:
-
-```ruby
-def generate
-  each_resource do |name, data, parent|
-    data[:fields].each do |field_name, field_data|
-      transformed = transform_key(field_name)
-      # ...
-    end
-  end
-end
-```
-
-`transform_key` applies the current `key_format` setting:
-
-| key_format    | Input        | Output       |
-| ------------- | ------------ | ------------ |
-| `:keep`       | `created_at` | `created_at` |
-| `:camel`      | `created_at` | `createdAt`  |
-| `:underscore` | `createdAt`  | `created_at` |
-
-::: warning Respect key_format
-Always use `transform_key` for property names in your output, as long as it makes sense in your spec. This ensures consistency with other specs and respects the API's configuration.
-
-Need a format beyond `keep`, `camel`, or `underscore`? [Open an issue](https://github.com/skiftle/apiwork/issues) — we're happy to add it.
-:::
-
 ## Registering Your Spec
 
 Register your spec so Apiwork can find it:
@@ -146,9 +117,9 @@ GET /api/v1/.spec/my_spec?include_deprecated=true
 Generate to file (use uppercase ENV vars):
 
 ```bash
-rake apiwork:spec:write IDENTIFIER=my_spec OUTPUT=public/specs
-rake apiwork:spec:write IDENTIFIER=my_spec KEY_FORMAT=camel OUTPUT=public/specs
-rake apiwork:spec:write IDENTIFIER=my_spec INCLUDE_DEPRECATED=true OUTPUT=public/specs
+rake apiwork:spec:write SPEC_NAME=my_spec OUTPUT=public/specs
+rake apiwork:spec:write SPEC_NAME=my_spec KEY_FORMAT=camel OUTPUT=public/specs
+rake apiwork:spec:write SPEC_NAME=my_spec INCLUDE_DEPRECATED=true OUTPUT=public/specs
 ```
 
 ## Defining Options
@@ -157,7 +128,7 @@ Make your spec configurable with `option`:
 
 ```ruby
 class MySpec < Apiwork::Spec::Base
-  identifier :my_spec
+  spec_name :my_spec
 
   option :include_deprecated, type: :boolean, default: false
   option :max_depth, type: :integer, default: 3

@@ -551,9 +551,9 @@ RSpec.describe Apiwork::Spec::Zod do
     end
   end
 
-  describe '.identifier' do
+  describe '.spec_name' do
     it 'returns :zod' do
-      expect(described_class.identifier).to eq(:zod)
+      expect(described_class.spec_name).to eq(:zod)
     end
   end
 

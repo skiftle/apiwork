@@ -3,7 +3,7 @@
 module Apiwork
   module Adapter
     class Apiwork < Base
-      identifier :apiwork
+      adapter_name :apiwork
 
       option :pagination, type: :hash do
         option :strategy, type: :symbol, default: :offset, enum: %i[offset cursor]

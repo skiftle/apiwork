@@ -10,7 +10,7 @@ module Apiwork
     #
     # @example Custom spec generator
     #   class ProtobufSpec < Apiwork::Spec::Base
-    #     identifier :protobuf
+    #     spec_name :protobuf
     #     file_extension '.proto'
     #
     #     def generate
@@ -21,8 +21,14 @@ module Apiwork
     #   # Register the spec
     #   Apiwork::Spec.register(ProtobufSpec)
     class Base
-      include Registrable
       include Configurable
+
+      class << self
+        def spec_name(name = nil)
+          @spec_name = name.to_sym if name
+          @spec_name
+        end
+      end
 
       option :locale, type: :symbol, default: nil
 
