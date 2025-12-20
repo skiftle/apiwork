@@ -41,18 +41,6 @@ end
 
 ---
 
-### .adapter_config()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L8)
-
----
-
-### .built_contracts()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L8)
-
----
-
 ### .concern(name, &block)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L374)
@@ -173,24 +161,6 @@ end
 
 ---
 
-### .metadata()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L8)
-
----
-
-### .mount_path()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L8)
-
----
-
-### .namespaces()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L8)
-
----
-
 ### .raises(*error_code_keys)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L132)
@@ -213,12 +183,6 @@ Apiwork::API.define '/api/v1' do
   raises :unauthorized, :forbidden, :not_found
 end
 ```
-
----
-
-### .recorder()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L8)
 
 ---
 
@@ -318,18 +282,6 @@ end
 
 ---
 
-### .spec_configs()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L8)
-
----
-
-### .specs()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L8)
-
----
-
 ### .type(name, scope: = nil, description: = nil, example: = nil, format: = nil, deprecated: = false, schema_class: = nil, &block)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L209)
@@ -366,12 +318,6 @@ end
 ```ruby
 param :shipping_address, type: :address
 ```
-
----
-
-### .type_system()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L8)
 
 ---
 

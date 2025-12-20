@@ -75,8 +75,16 @@ module Apiwork
     def extract_methods(obj, scope)
       obj.meths(visibility: :public, scope:)
          .select { |m| public_api?(m) }
+         .select { |m| documented?(m) }
          .sort_by(&:name)
          .map { |m| serialize_method(m) }
+    end
+
+    def documented?(method)
+      return true unless method.docstring.to_s.strip.empty?
+
+      useful_tags = method.docstring.tags.reject { |t| t.tag_name == 'api' }
+      useful_tags.any?
     end
 
     def serialize_method(method)
