@@ -162,7 +162,7 @@ def register_contract_types(type_registrar, schema_class, actions:)
 
   # Define action contracts
   actions.each do |action_name, action_metadata|
-    type_registrar.define_action(action_name)
+    type_registrar.action(action_name)
   end
 
   # Register response type
@@ -179,7 +179,7 @@ The `type_registrar` provides:
 - `type(name, &block)` — Define a type
 - `enum(name, values:)` — Define an enum
 - `union(name, &block)` — Define a union type
-- `define_action(name)` — Define an action contract
+- `action(name)` — Define an action contract
 - `import(contract, as:)` — Import types from another contract
 
 The `schema_class` is the schema associated with the contract, giving you access to:

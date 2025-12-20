@@ -159,16 +159,16 @@ module Apiwork
         end
 
         each_resource do |resource_name, resource_data, parent_path|
-          next unless resource_data[:schema]
+          if resource_data[:schema]
+            singular_name = resource_name.to_s.singularize
+            type_sym = singular_name.to_sym
 
-          singular_name = resource_name.to_s.singularize
-          type_sym = singular_name.to_sym
-
-          # Skip if this schema already exists as a registered type (e.g., STI unions)
-          unless types.key?(type_sym)
-            code = typescript_mapper.build_interface(type_sym, resource_data[:schema], action_name: nil, recursive: false)
-            type_name = typescript_mapper.pascal_case(singular_name)
-            all_types << { name: type_name, code: code }
+            # Skip if this schema already exists as a registered type (e.g., STI unions)
+            unless types.key?(type_sym)
+              code = typescript_mapper.build_interface(type_sym, resource_data[:schema], action_name: nil, recursive: false)
+              type_name = typescript_mapper.pascal_case(singular_name)
+              all_types << { name: type_name, code: code }
+            end
           end
 
           each_action(resource_data) do |action_name, action_data|
