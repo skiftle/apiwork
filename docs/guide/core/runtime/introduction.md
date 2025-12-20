@@ -26,7 +26,7 @@ Here's what happens:
 
 ## Architecture
 
-```
+```text
 Schema Definition
        ↓
    Adapter reads metadata

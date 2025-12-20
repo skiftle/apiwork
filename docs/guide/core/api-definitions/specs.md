@@ -85,7 +85,7 @@ Options:
 
 Query parameter override:
 
-```
+```http
 GET /api/v1/.spec/openapi?key_format=camel
 ```
 

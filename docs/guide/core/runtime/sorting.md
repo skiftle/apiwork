@@ -8,7 +8,7 @@ Order results using query parameters. Fields must be marked `sortable: true` in 
 
 ## Query Format
 
-```
+```http
 GET /posts?sort[created_at]=desc
 ```
 
@@ -20,13 +20,13 @@ Direction: `asc` or `desc` (case-insensitive)
 
 Sort by multiple fields in priority order:
 
-```
+```http
 GET /posts?sort[published]=asc&sort[created_at]=desc
 ```
 
 Or use array notation for explicit ordering:
 
-```
+```http
 GET /posts?sort[0][published]=asc&sort[1][created_at]=desc
 ```
 
@@ -59,7 +59,7 @@ end
 
 ### Query Format
 
-```
+```http
 GET /posts?sort[author][name]=asc
 ```
 
@@ -67,7 +67,7 @@ Structure: `sort[association][field]=direction`
 
 ### Nested Associations
 
-```
+```http
 GET /posts?sort[author][company][name]=asc
 ```
 

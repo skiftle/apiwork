@@ -8,7 +8,7 @@ You control which associations are included in responses. When clients request t
 
 ## Query Format
 
-```
+```http
 GET /posts?include[comments]=true
 ```
 
@@ -16,7 +16,7 @@ Structure: `include[association]=true`
 
 Multiple associations:
 
-```
+```http
 GET /posts?include[comments]=true&include[author]=true
 ```
 
@@ -24,7 +24,7 @@ GET /posts?include[comments]=true&include[author]=true
 
 You can include associations on associations:
 
-```
+```http
 GET /posts?include[comments][author]=true
 ```
 
@@ -63,7 +63,7 @@ has_many :comments, include: :optional
 
 Comments only appear when requested:
 
-```
+```http
 GET /posts/1                          # No comments
 GET /posts/1?include[comments]=true   # With comments
 ```
@@ -78,7 +78,7 @@ Sometimes the runtime includes associations automatically, even if the client di
 
 When you filter by an association, it's automatically included:
 
-```
+```http
 GET /posts?filter[author][name][eq]=Jane
 ```
 
@@ -88,7 +88,7 @@ The `author` association gets joined automatically for the filter query.
 
 When you sort by an association, it's automatically included:
 
-```
+```http
 GET /posts?sort[author][name]=asc
 ```
 
@@ -98,7 +98,7 @@ GET /posts?sort[author][name]=asc
 
 You cannot exclude an `include: :always` association:
 
-```
+```http
 GET /posts?include[author]=false  # Ignored, author still included
 ```
 

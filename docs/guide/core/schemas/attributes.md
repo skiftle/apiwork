@@ -63,16 +63,32 @@ attribute :status  # Detects Rails enum values automatically
 Use `with_options` to apply options to multiple attributes:
 
 ```ruby
-class PostSchema < Apiwork::Schema::Base
-  with_options writable: true, filterable: true do
-    attribute :title
-    attribute :body
+class ScheduleSchema < Apiwork::Schema::Base
+  with_options filterable: true, sortable: true do
+    attribute :id
     attribute :status
+    attribute :created_at
+    attribute :updated_at
+
+    with_options writable: true do
+      attribute :name
+      attribute :starts_on
+      attribute :ends_on
+    end
   end
 
-  attribute :created_at, sortable: true
+  attribute :archived_at
 end
 ```
+
+Nested blocks inherit and merge options. In the example above:
+- `id`, `status`, `created_at`, `updated_at` are filterable + sortable
+- `name`, `starts_on`, `ends_on` are filterable + sortable + writable
+- `archived_at` has no options
+
+::: tip Rails Feature
+`with_options` is provided by [ActiveSupport](https://api.rubyonrails.org/classes/Object.html#method-i-with_options) and works with any method that accepts keyword arguments.
+:::
 
 ## Computed Attributes
 
@@ -193,7 +209,7 @@ attribute :created_at, filterable: true
 
 Filters use nested hash syntax:
 
-```
+```http
 GET /api/v1/posts?filter[title][eq]=Hello
 GET /api/v1/posts?filter[status][in][]=draft&filter[status][in][]=published
 GET /api/v1/posts?filter[created_at][gte]=2024-01-01
@@ -244,7 +260,7 @@ GET /api/v1/posts?filter[created_at][gte]=2024-01-01
 
 Nullable attributes get an additional `null` operator:
 
-```
+```http
 GET /api/v1/posts?filter[deleted_at][null]=true   # WHERE deleted_at IS NULL
 GET /api/v1/posts?filter[deleted_at][null]=false  # WHERE deleted_at IS NOT NULL
 ```
@@ -253,7 +269,7 @@ GET /api/v1/posts?filter[deleted_at][null]=false  # WHERE deleted_at IS NOT NULL
 
 Combine filters with `_and`, `_or`, and `_not`:
 
-```
+```text
 # Posts that are published AND created after 2024
 GET /api/v1/posts?filter[_and][0][published][eq]=true&filter[_and][1][created_at][gt]=2024-01-01
 
@@ -283,7 +299,7 @@ attribute :created_at, sortable: true
 
 ### Query Format
 
-```
+```http
 GET /api/v1/posts?sort[created_at]=desc
 GET /api/v1/posts?sort[title]=asc
 ```
@@ -299,7 +315,7 @@ GET /api/v1/posts?sort[title]=asc
 
 Sort by multiple fields in order of precedence:
 
-```
+```http
 GET /api/v1/posts?sort[published]=desc&sort[created_at]=desc
 ```
 

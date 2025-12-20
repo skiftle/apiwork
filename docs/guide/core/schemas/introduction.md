@@ -216,6 +216,6 @@ end
 
 Clients explicitly request admin details when needed:
 
-```
+```http
 GET /api/v1/users/1?include[admin_details]=true
 ```

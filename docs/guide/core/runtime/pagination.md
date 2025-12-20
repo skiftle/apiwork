@@ -38,7 +38,7 @@ The classic approach. Your clients ask for page 1, page 2, etc.
 
 ### Query Format
 
-```
+```http
 GET /posts?page[number]=2&page[size]=20
 ```
 
@@ -108,19 +108,19 @@ end
 
 **First page:**
 
-```
+```http
 GET /posts?page[size]=20
 ```
 
 **Next page:**
 
-```
+```http
 GET /posts?page[size]=20&page[after]=eyJpZCI6MTAwfQ
 ```
 
 **Previous page:**
 
-```
+```http
 GET /posts?page[size]=20&page[before]=eyJpZCI6ODF9
 ```
 

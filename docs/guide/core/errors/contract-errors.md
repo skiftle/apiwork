@@ -255,7 +255,7 @@ end
 
 If your controller returns a post with `status: "archived"` (not in the enum), Apiwork logs a warning:
 
-```
+```text
 [Apiwork] Response validation warning: invalid_value at /post/status
   Expected one of: draft, published
   Actual: archived

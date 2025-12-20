@@ -171,20 +171,20 @@ Response:
 
 **has_many** — indexed:
 
-```
+```json
 ["invoice", "lines", 0, "description"]
 ["invoice", "lines", 1, "description"]
 ```
 
 **has_one** — no index:
 
-```
+```json
 ["user", "profile", "bio"]
 ```
 
 **belongs_to** — foreign key:
 
-```
+```json
 ["line", "invoice_id"]
 ```
 

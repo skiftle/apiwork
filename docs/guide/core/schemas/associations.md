@@ -100,7 +100,7 @@ has_many :comments, schema: CommentSchema, include: :optional
 
 Clients request inclusion explicitly:
 
-```
+```http
 GET /api/v1/posts/1?include[comments]=true
 ```
 
@@ -161,19 +161,19 @@ has_many :comments, include: :optional
 
 **Single Association:**
 
-```
+```http
 GET /api/v1/posts/1?include[comments]=true
 ```
 
 **Multiple Associations:**
 
-```
+```http
 GET /api/v1/posts/1?include[comments]=true&include[author]=true
 ```
 
 **Nested Associations:**
 
-```
+```http
 GET /api/v1/posts/1?include[comments][author]=true
 ```
 
@@ -372,7 +372,7 @@ belongs_to :author, schema: AuthorSchema, filterable: true
 
 **Query Format:**
 
-```
+```text
 # Posts where author name is "Jane"
 GET /api/v1/posts?filter[author][name][eq]=Jane
 
@@ -397,7 +397,7 @@ belongs_to :author, schema: AuthorSchema, sortable: true
 
 **Query Format:**
 
-```
+```text
 # Posts sorted by author name
 GET /api/v1/posts?sort[author][name]=asc
 

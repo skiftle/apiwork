@@ -288,7 +288,7 @@ Filter, sort, and pagination errors return **400 Bad Request**. These are client
 
 Filters use nested object syntax:
 
-```
+```http
 GET /posts?filter[status][eq]=published
 GET /posts?filter[created_at][gte]=2024-01-01
 GET /posts?filter[tags][in][]=ruby&filter[tags][in][]=rails
@@ -298,7 +298,7 @@ GET /posts?filter[tags][in][]=ruby&filter[tags][in][]=rails
 
 Sort uses bracket notation:
 
-```
+```http
 GET /posts?sort[created_at]=asc
 GET /posts?sort[created_at]=desc
 GET /posts?sort[status]=asc&sort[created_at]=desc

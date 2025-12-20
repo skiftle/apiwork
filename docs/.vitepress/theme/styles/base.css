@@ -107,6 +107,11 @@ article a:not(.outline-link):not(.sidebar-link):not(.header-anchor):hover {
   text-decoration-color: var(--color-brand-70);
 }
 
+/* Code inside links - inherit link color */
+a:not(pre) > code {
+  color: inherit;
+}
+
 /* Lists - Proper bullets & numbers */
 ul {
   list-style: disc;

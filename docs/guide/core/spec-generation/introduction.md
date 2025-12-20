@@ -66,7 +66,7 @@ rake apiwork:spec:write OUTPUT=public/specs
 
 This generates all enabled specs for all APIs:
 
-```
+```text
 public/specs/
 ├── api/
 │   └── v1/

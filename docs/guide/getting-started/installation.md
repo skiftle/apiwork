@@ -31,7 +31,7 @@ rails generate apiwork:install
 
 This creates:
 
-```
+```text
 app/
 ├── contracts/
 │   └── application_contract.rb

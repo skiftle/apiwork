@@ -141,7 +141,7 @@ end
 
 Here's how everything fits together:
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │  config/apis/api_v1.rb                                      │
 │  API Definition — declares resources and specs              │

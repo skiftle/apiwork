@@ -8,7 +8,7 @@ Filter records using query parameters. The runtime translates filters into Activ
 
 ## Query Format
 
-```
+```http
 GET /posts?filter[status][eq]=published
 ```
 
@@ -16,7 +16,7 @@ Structure: `filter[field][operator]=value`
 
 Multiple filters combine with AND:
 
-```
+```http
 GET /posts?filter[status][eq]=published&filter[views][gt]=100
 ```
 
@@ -102,7 +102,7 @@ Combine filters with `_and`, `_or`, and `_not`.
 
 Match posts with "Ruby" OR "Rails" in title:
 
-```
+```http
 GET /posts?filter[_or][0][title][contains]=Ruby&filter[_or][1][title][contains]=Rails
 ```
 
@@ -110,7 +110,7 @@ GET /posts?filter[_or][0][title][contains]=Ruby&filter[_or][1][title][contains]=
 
 Explicit AND (default behavior):
 
-```
+```http
 GET /posts?filter[_and][0][status][eq]=published&filter[_and][1][views][gt]=100
 ```
 
@@ -118,7 +118,7 @@ GET /posts?filter[_and][0][status][eq]=published&filter[_and][1][views][gt]=100
 
 Exclude drafts:
 
-```
+```http
 GET /posts?filter[_not][status][eq]=draft
 ```
 
@@ -126,7 +126,7 @@ GET /posts?filter[_not][status][eq]=draft
 
 Published posts with "Ruby" or "Rails":
 
-```
+```http
 GET /posts?filter[status][eq]=published&filter[_or][0][title][contains]=Ruby&filter[_or][1][title][contains]=Rails
 ```
 
@@ -134,7 +134,7 @@ GET /posts?filter[status][eq]=published&filter[_or][0][title][contains]=Ruby&fil
 
 Logical operators can be nested for complex conditions:
 
-```
+```text
 # (status = draft OR status = published) AND views > 100
 GET /posts?filter[_and][0][_or][0][status][eq]=draft&filter[_and][0][_or][1][status][eq]=published&filter[_and][1][views][gt]=100
 ```
@@ -147,14 +147,14 @@ WHERE (status = 'draft' OR status = 'published') AND views > 100
 
 **NOT inside OR:**
 
-```
+```text
 # title contains "Ruby" OR (NOT status = archived)
 GET /posts?filter[_or][0][title][contains]=Ruby&filter[_or][1][_not][status][eq]=archived
 ```
 
 **Multiple levels:**
 
-```
+```text
 # (category = tech AND (status = draft OR status = review)) OR featured = true
 GET /posts?filter[_or][0][_and][0][category][eq]=tech&filter[_or][0][_and][1][_or][0][status][eq]=draft&filter[_or][0][_and][1][_or][1][status][eq]=review&filter[_or][1][featured][eq]=true
 ```
@@ -174,7 +174,7 @@ end
 
 ### Query Format
 
-```
+```http
 GET /posts?filter[author][name][eq]=Jane
 GET /posts?filter[comments][approved][eq]=true
 ```
@@ -183,7 +183,7 @@ Structure: `filter[association][field][operator]=value`
 
 ### Nested Associations
 
-```
+```http
 GET /posts?filter[comments][author][role][eq]=moderator
 ```
 
@@ -197,7 +197,7 @@ The runtime automatically joins required tables. Filtering by an association inc
 
 Use the `null` operator to check for NULL values:
 
-```
+```http
 GET /posts?filter[published_at][null]=true   # WHERE published_at IS NULL
 GET /posts?filter[published_at][null]=false  # WHERE published_at IS NOT NULL
 ```
