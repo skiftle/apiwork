@@ -94,7 +94,7 @@ class PostsController < ApplicationController
 end
 ```
 
-If `Post.create` fails validation, `respond_with` detects the errors and raises a `ValidationError`. The concern catches it and renders the errors with a 422 status.
+If `Post.create` fails validation, `respond` detects the errors and raises a `ValidationError`. The concern catches it and renders the errors with a 422 status.
 
 For HTTP errors, use `respond_with_error`:
 

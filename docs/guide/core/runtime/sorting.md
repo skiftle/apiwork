@@ -21,7 +21,7 @@ Direction: `asc` or `desc` (case-insensitive)
 Sort by multiple fields in priority order:
 
 ```
-GET /posts?sort[published][asc]&sort[created_at]=desc
+GET /posts?sort[published]=asc&sort[created_at]=desc
 ```
 
 Or use array notation for explicit ordering:

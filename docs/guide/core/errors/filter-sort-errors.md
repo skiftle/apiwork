@@ -296,10 +296,10 @@ GET /posts?filter[tags][in][]=ruby&filter[tags][in][]=rails
 
 ## Valid Sort Syntax
 
-Sort accepts comma-separated fields with optional direction:
+Sort uses bracket notation:
 
 ```
-GET /posts?sort=created_at        # ascending (default)
-GET /posts?sort=-created_at       # descending
-GET /posts?sort=status,-created_at # multiple fields
+GET /posts?sort[created_at]=asc
+GET /posts?sort[created_at]=desc
+GET /posts?sort[status]=asc&sort[created_at]=desc
 ```

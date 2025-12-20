@@ -17,7 +17,7 @@ This is similar to Rails' `routes.rb`, but focused on API structure rather than 
 
 ## Path and Namespace
 
-The path you pass to `draw` determines two things:
+The path you pass to `define` determines two things:
 
 1. **Mount point** - where your routes live (`/api/v1/posts`)
 2. **Namespace** - where Apiwork looks for controllers and contracts

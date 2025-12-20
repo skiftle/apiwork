@@ -73,7 +73,7 @@ Apiwork::API.define '/api/v1' do
 
   spec :openapi      # Inherits :camel
   spec :zod do
-    key_format :keep # Override to snake_case
+    key_format :keep # Override to no transformation
   end
 end
 ```

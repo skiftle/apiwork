@@ -88,7 +88,7 @@ p {
 
 a {
   color: var(--color-brand-80);
-  text-decoration: none;
+  font-weight: 500;
   transition: all var(--transition-fast);
 }
 

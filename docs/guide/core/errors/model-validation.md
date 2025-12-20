@@ -235,7 +235,7 @@ The request parsed correctly but failed validation.
 
 ## Works on Any Action
 
-The adapter checks `respond_with` every time. Not just `create` or `update`.
+The adapter checks `respond` every time. Not just `create` or `update`.
 
 ```ruby
 return unless record.respond_to?(:errors) && record.errors.any?
@@ -268,7 +268,7 @@ def publish
 end
 ```
 
-If `save` fails, errors are there. `respond_with` returns 422 with errors.
+If `save` fails, errors are there. `respond` returns 422 with errors.
 
 ### State Transitions
 
@@ -292,7 +292,7 @@ def ship
 end
 ```
 
-`ship!` returns false, order has errors, `respond_with` handles it.
+`ship!` returns false, order has errors, `respond` handles it.
 
 ### Manual Errors
 
@@ -311,13 +311,13 @@ def transfer
 end
 ```
 
-No conditionals. Add errors, call `respond_with`.
+No conditionals. Add errors, call `respond`.
 
 ### The Pattern
 
 1. Do the operation
 2. Add errors if something fails
-3. Call `respond_with`
+3. Call `respond`
 
 Errors exist? 422 with errors. No errors? Serialized record.
 

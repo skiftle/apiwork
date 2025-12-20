@@ -220,7 +220,7 @@ GET /api/v1/posts?filter[created_at][gte]=2024-01-01
 | `gte` | Greater or equal | `filter[price][gte]=50` |
 | `lt` | Less than | `filter[price][lt]=100` |
 | `lte` | Less or equal | `filter[price][lte]=100` |
-| `between` | Range (inclusive) | `filter[price][between][]=10&filter[price][between][]=50` |
+| `between` | Range (inclusive) | `filter[price][between][from]=10&filter[price][between][to]=50` |
 | `in` | In array | `filter[price][in][]=10&filter[price][in][]=20` |
 
 **Datetime / Date:**
@@ -232,7 +232,7 @@ GET /api/v1/posts?filter[created_at][gte]=2024-01-01
 | `gte` | On or after | `filter[created_at][gte]=2024-01-01` |
 | `lt` | Before | `filter[created_at][lt]=2024-12-31` |
 | `lte` | On or before | `filter[created_at][lte]=2024-12-31` |
-| `between` | Range | `filter[created_at][between][]=2024-01-01&filter[created_at][between][]=2024-12-31` |
+| `between` | Range | `filter[created_at][between][from]=2024-01-01&filter[created_at][between][to]=2024-12-31` |
 
 **Boolean:**
 
