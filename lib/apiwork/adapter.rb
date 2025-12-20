@@ -7,7 +7,7 @@ module Apiwork
       # @api public
       # Registers an adapter.
       #
-      # @param klass [Class] the adapter class (subclass of Adapter::Base with register_as)
+      # @param klass [Class] the adapter class (subclass of Adapter::Base with identifier)
       #
       # @example
       #   Apiwork::Adapter.register(JsonApiAdapter)

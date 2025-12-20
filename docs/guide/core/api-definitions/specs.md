@@ -102,14 +102,9 @@ For detailed information about each spec format:
 Generate specs without HTTP endpoints:
 
 ```ruby
-# Generate OpenAPI spec
-Apiwork::Spec::Openapi.generate(path: '/api/v1')
-
-# Generate TypeScript
-Apiwork::Spec::Typescript.generate(path: '/api/v1')
-
-# Generate Zod
-Apiwork::Spec::Zod.generate(path: '/api/v1')
+Apiwork::Spec.generate(:openapi, '/api/v1')
+Apiwork::Spec.generate(:typescript, '/api/v1')
+Apiwork::Spec.generate(:zod, '/api/v1')
 ```
 
 Useful for CI pipelines, static file generation, or build processes.

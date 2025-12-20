@@ -1,10 +1,10 @@
 ---
-order: 3
+order: 4
 ---
 
 # Quick Start
 
-With Apiwork installed, let's build a complete Posts API. By the end, you'll have endpoints with validation, filtering, sorting, pagination, and auto-generated specs.
+Now that you understand the [core concepts](./core-concepts.md), let's put them into practice. We'll build a complete Posts API with validation, filtering, sorting, pagination, and auto-generated specs.
 
 ## 1. The Model
 
@@ -207,13 +207,13 @@ This was the simplest possible example. Apiwork also supports:
 
 - **Associations** — sideloading via `?include=comments`
 - **Nested writes** — create or update related records in a single request
-- **[Eager loading](./execution-layer.md#eager-loading)** — automatic N+1 prevention
-- **[Advanced filtering](./execution-layer.md#filtering)** — operators like `contains`, `starts_with`, and `_and`/`_or` logic
-- **[Cursor pagination](./execution-layer.md#cursor-pagination)** — for large datasets
+- **[Eager loading](../core/runtime/eager-loading.md)** — automatic N+1 prevention
+- **[Advanced filtering](../core/runtime/filtering.md)** — operators like `contains`, `starts_with`, and `_and`/`_or` logic
+- **[Cursor pagination](../core/runtime/pagination.md#cursor-pagination)** — for large datasets
 - **Custom types** — enums, unions, and polymorphic associations
 
 ## Next Steps
 
-- [Core Concepts](./core-concepts.md) — understand API definitions, contracts, and schemas in depth
+- [Runtime](../core/runtime/introduction.md) — filtering, sorting, pagination, and eager loading in depth
 - [Contracts](../core/contracts/introduction.md) — custom validation and action-specific params
 - [Schemas](../core/schemas/introduction.md) — associations, computed attributes, and more

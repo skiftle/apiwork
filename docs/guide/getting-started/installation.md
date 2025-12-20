@@ -119,6 +119,7 @@ Contracts and schemas follow the same namespace structure as your controllers. I
 
 ## Next Steps
 
-With Apiwork installed, you're ready to build your first endpoint.
+With Apiwork installed, you're ready to learn how it works.
 
-- [Quick Start](./quick-start.md) — build a complete API with validation, filtering, and auto-generated specs
+- [Core Concepts](./core-concepts.md) — understand API definitions, schemas, and contracts
+- [Quick Start](./quick-start.md) — build a complete API with validation, filtering, and specs

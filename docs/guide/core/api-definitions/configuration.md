@@ -159,7 +159,7 @@ Apiwork::API.define '/api/v1' do
 end
 ```
 
-[Execution Layer](../../getting-started/execution-layer.md) covers pagination strategies, filtering operators, and sorting options.
+[Runtime](../runtime/introduction.md) covers pagination strategies, filtering operators, and sorting options.
 
 ## Spec Endpoints
 

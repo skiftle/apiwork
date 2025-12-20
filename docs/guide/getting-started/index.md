@@ -9,4 +9,3 @@ New to Apiwork? Start here.
 - [Installation](./installation.md) — Add Apiwork to your Rails app
 - [Core Concepts](./core-concepts.md) — API definitions, contracts, and schemas
 - [Quick Start](./quick-start.md) — Build a complete endpoint from scratch
-- [Execution Layer](./execution-layer.md) — Filtering, sorting, pagination, and eager loading

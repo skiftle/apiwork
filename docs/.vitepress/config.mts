@@ -41,7 +41,7 @@ export default defineConfig({
         sortMenusByFrontmatterOrder: true,
         frontmatterOrderDefaultValue: 999,
         excludeByGlobPattern: ["index.md"],
-        collapsed: true,
+        collapseDepth: 2,
       },
       {
         documentRootPath: ".",

@@ -7,7 +7,7 @@ module Apiwork
       # @api public
       # Registers a spec generator.
       #
-      # @param klass [Class] the spec class (subclass of Spec::Base with register_as)
+      # @param klass [Class] the spec class (subclass of Spec::Base with identifier)
       #
       # @example
       #   Apiwork::Spec.register(GraphqlSpec)
@@ -37,7 +37,7 @@ module Apiwork
       #
       # @example
       #   Apiwork::Spec.generate(:openapi, '/api/v1')
-      #   Apiwork::Spec.generate(:typescript, '/api/v1', namespace: 'Api')
+      #   Apiwork::Spec.generate(:typescript, '/api/v1', locale: :sv, key_format: :camel)
       def generate(identifier, api_path, **options)
         find(identifier)&.generate(api_path, **options)
       end

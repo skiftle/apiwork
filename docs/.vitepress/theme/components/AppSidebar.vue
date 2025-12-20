@@ -9,6 +9,7 @@ const route = useRoute();
 
 // State for expanded sections
 const expanded = ref<Set<string>>(new Set());
+const initializedFromConfig = ref(false);
 
 // Get the correct sidebar based on current path
 const currentSidebar = computed<SidebarMultiItem>(() => {
@@ -86,6 +87,29 @@ function findActiveKeys(): string[] {
   return keys;
 }
 
+// Find keys that should be expanded based on collapsed config
+function findExpandedFromConfig(): string[] {
+  const keys: string[] = [];
+
+  function checkItem(item: SidebarItem, depth: number) {
+    const key = `${depth}-${item.text}`;
+
+    if (item.items?.length) {
+      // If collapsed is explicitly false, expand it
+      if (item.collapsed === false) {
+        keys.push(key);
+      }
+
+      for (const child of item.items) {
+        checkItem(child, depth + 1);
+      }
+    }
+  }
+
+  currentSidebar.value.items.forEach((item) => checkItem(item, 0));
+  return keys;
+}
+
 // Toggle a section
 function toggleSection(key: string) {
   if (expanded.value.has(key)) {
@@ -95,7 +119,20 @@ function toggleSection(key: string) {
   }
 }
 
-// Watch for route changes - only expand active sections, don't close others
+// Watch for sidebar changes to initialize from config
+watch(
+  currentSidebar,
+  () => {
+    if (!initializedFromConfig.value && currentSidebar.value.items.length > 0) {
+      const configKeys = findExpandedFromConfig();
+      configKeys.forEach((key) => expanded.value.add(key));
+      initializedFromConfig.value = true;
+    }
+  },
+  { immediate: true }
+);
+
+// Watch for route changes - expand active sections
 watch(
   () => route.path,
   () => {

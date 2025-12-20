@@ -1,22 +1,17 @@
 ---
-order: 4
+order: 3
 ---
 
 # Core Concepts
 
-Apiwork is built around three main pieces: **API definitions**, **schemas**, and **contracts**. Each has a specific job, but together they describe everything about your API.
+Apiwork is built around three main pieces: **API definitions**, **schemas**, and **contracts**. Each has a specific job, and together they describe everything about your API.
 
 ## API Definition
 
 The API definition lives in `config/apis/` and declares what resources your API exposes:
 
 ```ruby
-# config/apis/api_v1.rb
 Apiwork::API.define '/api/v1' do
-  spec :openapi
-  spec :typescript
-  spec :zod
-
   resources :posts do
     resources :comments
   end
@@ -25,7 +20,19 @@ end
 
 This creates RESTful routes for posts and nested comments. Under the hood, Apiwork uses the Rails router — `resources` works exactly as you'd expect.
 
-The `spec` declarations tell Apiwork to generate documentation. Access them at `/.spec/openapi`, `/.spec/typescript`, and `/.spec/zod`.
+You can also declare which specs to generate:
+
+```ruby
+Apiwork::API.define '/api/v1' do
+  spec :openapi
+  spec :typescript
+  spec :zod
+
+  resources :posts
+end
+```
+
+These become available at `/.spec/openapi`, `/.spec/typescript`, and `/.spec/zod`.
 
 ::: info
 The path in `define '/api/v1'` combines with where you mount Apiwork in `routes.rb`. If you mount at `/` and define at `/api/v1`, your routes become `/api/v1/posts`.
@@ -36,20 +43,12 @@ The path in `define '/api/v1'` combines with where you mount Apiwork in `routes.
 Schemas define how your data is serialized and what can be queried. They live in `app/schemas/`:
 
 ```ruby
-# app/schemas/api/v1/post_schema.rb
-module Api
-  module V1
-    class PostSchema < ApplicationSchema
-      attribute :id
-      attribute :title, writable: true, filterable: true
-      attribute :body, writable: true
-      attribute :published, writable: true, filterable: true
-      attribute :created_at, sortable: true
-      attribute :updated_at, sortable: true
-
-      has_many :comments, writable: true
-    end
-  end
+class PostSchema < ApplicationSchema
+  attribute :id
+  attribute :title, writable: true, filterable: true
+  attribute :body, writable: true
+  attribute :published, filterable: true
+  attribute :created_at, sortable: true
 end
 ```
 
@@ -83,13 +82,8 @@ has_one :profile, include: :always
 Contracts validate requests and define response shapes. The simplest contract uses `schema!` to pull everything from the schema:
 
 ```ruby
-# app/contracts/api/v1/post_contract.rb
-module Api
-  module V1
-    class PostContract < ApplicationContract
-      schema!
-    end
-  end
+class PostContract < ApplicationContract
+  schema!
 end
 ```
 
@@ -124,52 +118,23 @@ You can also write contracts entirely by hand without `schema!`. This gives you 
 
 ## Controller
 
-Controllers look like regular Rails controllers with two differences:
+Controllers look like regular Rails controllers with two key differences:
 
 1. Use `respond` instead of `render`
 2. Access validated params via `contract.query` and `contract.body`
 
-- `contract.query` — URL parameters (filters, sorting, pagination)
-- `contract.body` — request body (create/update payloads)
-
 ```ruby
-# app/controllers/api/v1/posts_controller.rb
-module Api
-  module V1
-    class PostsController < ApplicationController
-      include Apiwork::Controller
-
-      def index
-        respond Post.all
-      end
-
-      def show
-        respond Post.find(params[:id])
-      end
-
-      def create
-        post = Post.create!(contract.body[:post])
-        respond post, status: :created
-      end
-
-      def update
-        post = Post.find(params[:id])
-        post.update!(contract.body[:post])
-        respond post
-      end
-
-      def destroy
-        post = Post.find(params[:id])
-        post.destroy!
-        respond post
-      end
-    end
-  end
+def create
+  post = Post.create!(contract.body[:post])
+  respond post, status: :created
 end
 ```
 
+- `contract.query` — URL parameters (filters, sorting, pagination)
+- `contract.body` — request body (create/update payloads)
+
 ::: tip
-`contract.query` and `contract.body` replace Strong Parameters. They contain only the fields defined in your schema. Unknown fields are filtered out before your controller runs.
+`contract.query` and `contract.body` replace Strong Parameters. They contain only the fields defined in your schema — unknown fields are filtered out before your controller runs.
 :::
 
 ## How They Connect
@@ -213,8 +178,6 @@ Here's how everything fits together:
 
 ## Next Steps
 
-Now that you understand the core concepts:
+Now that you understand the concepts, let's build something:
 
-- [Contracts](../core/contracts/introduction.md) — custom validation and manual contracts
-- [Schemas](../core/schemas/introduction.md) — associations, computed attributes, and more
-- [API Definitions](../core/api-definitions/introduction.md) — key format, metadata, and advanced routing
+- [Quick Start](./quick-start.md) — build a complete API with validation, filtering, and specs

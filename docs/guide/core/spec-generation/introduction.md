@@ -68,7 +68,7 @@ Options:
 You can also generate specs in code, useful for CI pipelines or build scripts:
 
 ```ruby
-Apiwork::Spec::Openapi.generate(path: '/api/v1')
-Apiwork::Spec::Typescript.generate(path: '/api/v1')
-Apiwork::Spec::Zod.generate(path: '/api/v1')
+Apiwork::Spec.generate(:openapi, '/api/v1')
+Apiwork::Spec.generate(:typescript, '/api/v1')
+Apiwork::Spec.generate(:zod, '/api/v1')
 ```

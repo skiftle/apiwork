@@ -10,16 +10,19 @@ module Apiwork
     #
     # @example Custom spec generator
     #   class ProtobufSpec < Apiwork::Spec::Base
-    #     register_as :protobuf
+    #     identifier :protobuf
     #
     #     def self.file_extension
-    #       'proto'
+    #       '.proto'
     #     end
     #
     #     def generate
     #       # Build Protobuf schema from @data (introspection hash)
     #     end
     #   end
+    #
+    #   # Register the spec
+    #   Apiwork::Spec.register(ProtobufSpec)
     class Base
       include Registrable
       include Configurable

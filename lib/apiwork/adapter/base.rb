@@ -10,12 +10,15 @@ module Apiwork
     #
     # @example Custom adapter
     #   class JsonApiAdapter < Apiwork::Adapter::Base
-    #     register_as :jsonapi
+    #     identifier :jsonapi
     #
     #     def render_record(record, schema_class, action_data)
     #       { data: { type: '...', attributes: '...' } }
     #     end
     #   end
+    #
+    #   # Register the adapter
+    #   Apiwork::Adapter.register(JsonApiAdapter)
     class Base
       include Registrable
       include Configurable
