@@ -119,7 +119,7 @@ end
 ```
 
 ::: info
-You can also write contracts entirely by hand without `schema!`. This gives you full control when you need it — see the Contracts guide for details.
+You can also write contracts entirely by hand without `schema!`. This gives you full control when you need it — see [Contracts](../core/contracts/introduction.md) for details.
 :::
 
 ## Controller

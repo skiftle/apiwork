@@ -25,5 +25,5 @@ Another important aspect of Apiwork is that it avoids asking you to repeat infor
 This introduction covers the ideas at a high level. From here, the next step is to see how they work in practice — how an API is defined, how that definition is used throughout the system, and how Rails’ own knowledge flows through the rest of the stack.
 
 - [Installation](./installation.md)
-- [Core Concepts](./core-concepts.md)
 - [Quick Start](./quick-start.md)
+- [Core Concepts](./core-concepts.md)

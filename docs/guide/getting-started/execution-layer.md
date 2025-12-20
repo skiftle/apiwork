@@ -217,37 +217,6 @@ Apiwork automatically eager loads associations to prevent N+1 queries:
 
 You don't need to think about N+1s — Apiwork handles it.
 
-## Configuration
-
-Configure the adapter at the API level:
-
-```ruby
-Apiwork::API.define '/api/v1' do
-  adapter do
-    pagination do
-      strategy :offset    # or :cursor
-      default_size 20
-      max_size 100
-    end
-  end
-end
-```
-
-Override for specific schemas:
-
-```ruby
-class PostSchema < ApplicationSchema
-  adapter do
-    pagination do
-      strategy :cursor
-      default_size 50
-    end
-  end
-end
-```
-
-Schema settings override API settings.
-
 ## Response Metadata
 
 Add custom metadata to any response:
@@ -290,8 +259,9 @@ Adjust behavior at the API or schema level:
 Apiwork::API.define '/api/v1' do
   adapter do
     pagination do
-      strategy :cursor
-      default_size 50
+      strategy :offset    # or :cursor
+      default_size 20
+      max_size 100
     end
   end
 end
@@ -300,11 +270,14 @@ end
 class PostSchema < ApplicationSchema
   adapter do
     pagination do
-      default_size 10
+      strategy :cursor
+      default_size 50
     end
   end
 end
 ```
+
+Schema settings override API settings.
 
 ### Build Your Own Adapter
 

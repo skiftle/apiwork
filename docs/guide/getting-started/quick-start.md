@@ -105,7 +105,7 @@ That's it. `schema!` imports everything from `PostSchema`. The contract now know
 
 ## 6. Controller
 
-The controller looks like any Rails controller, with two differences: use `respond` instead of `render`, and access validated params via `contract.body`:
+The controller looks like any Rails controller, with two differences: use `respond` instead of `render`, and access validated params via `contract.query` (URL params) and `contract.body` (request body):
 
 ```ruby
 # app/controllers/api/v1/posts_controller.rb
@@ -144,7 +144,7 @@ end
 ```
 
 ::: tip
-`contract.body` contains only the fields defined in your schema. Unknown fields are filtered out before your controller runs — no need for Strong Parameters.
+`contract.query` and `contract.body` replace Strong Parameters. They contain only the fields defined in your schema — unknown fields are filtered out before your controller runs.
 :::
 
 ## 7. Try It
@@ -207,9 +207,9 @@ This was the simplest possible example. Apiwork also supports:
 
 - **Associations** — sideloading via `?include=comments`
 - **Nested writes** — create or update related records in a single request
-- **Eager loading** — automatic N+1 prevention
-- **Advanced filtering** — operators like `contains`, `starts_with`, and `_and`/`_or` logic
-- **Cursor pagination** — for large datasets
+- **[Eager loading](./execution-layer.md#eager-loading)** — automatic N+1 prevention
+- **[Advanced filtering](./execution-layer.md#filtering)** — operators like `contains`, `starts_with`, and `_and`/`_or` logic
+- **[Cursor pagination](./execution-layer.md#cursor-pagination)** — for large datasets
 - **Custom types** — enums, unions, and polymorphic associations
 
 ## Next Steps
