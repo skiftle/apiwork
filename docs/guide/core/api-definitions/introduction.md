@@ -53,12 +53,12 @@ end
 You can define multiple APIs, each completely independent:
 
 ```ruby
-# config/apis/v1.rb
+# config/apis/api_v1.rb
 Apiwork::API.define '/api/v1' do
   resources :posts, only: [:index, :show]
 end
 
-# config/apis/v2.rb
+# config/apis/api_v2.rb
 Apiwork::API.define '/api/v2' do
   resources :posts
   resources :articles

@@ -2,7 +2,7 @@
 order: 1
 ---
 
-# Runtime
+# Introduction
 
 Once you connect a schema to a contract with `schema!`, Apiwork's runtime takes over. It reads your schema, generates types, handles filtering and sorting, and serializes responses — all from the schema definition.
 
