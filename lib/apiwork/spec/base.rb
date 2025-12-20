@@ -14,7 +14,7 @@ module Apiwork
     #     file_extension '.proto'
     #
     #     def generate
-    #       # Build Protobuf schema from @data (introspection hash)
+    #       # Build Protobuf schema from data (introspection hash)
     #     end
     #   end
     #
@@ -102,7 +102,7 @@ module Apiwork
       # Generates the spec output.
       #
       # Override this method in subclasses to produce the spec format.
-      # Access API data via `@data` (introspection hash).
+      # Access API data via `data` (introspection hash).
       #
       # @return [String] the generated spec
       def generate

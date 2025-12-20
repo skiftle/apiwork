@@ -25,7 +25,7 @@ module Apiwork
       private
 
       def build_info
-        info_data = @data[:info] || {}
+        info_data = data[:info] || {}
 
         {
           title: info_data[:title] || "#{api_path} API",
@@ -39,7 +39,7 @@ module Apiwork
       end
 
       def build_servers
-        servers_data = @data.dig(:info, :servers)
+        servers_data = data.dig(:info, :servers)
         return nil unless servers_data&.any?
 
         servers_data.map do |server|

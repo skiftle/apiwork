@@ -21,7 +21,7 @@ class ProtobufSpec < Apiwork::Spec::Base
   file_extension '.proto'
 
   def generate
-    # Build Protobuf schema from @data (introspection hash)
+    # Build Protobuf schema from data (introspection hash)
   end
 end
 ```
@@ -56,7 +56,7 @@ Generates a spec for the given API path.
 Generates the spec output.
 
 Override this method in subclasses to produce the spec format.
-Access API data via `@data` (introspection hash).
+Access API data via `data` (introspection hash).
 
 **Returns**
 
