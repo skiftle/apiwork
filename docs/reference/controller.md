@@ -10,9 +10,44 @@ next: false
 
 ## Instance Methods
 
+### #context()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/serialization.rb#L150)
+
+Returns the serialization context passed to schemas.
+
+Override this method to provide context data to your schemas.
+Common uses: current user, permissions, locale, feature flags.
+
+**Returns**
+
+`Hash` — context data available in schema serialization
+
+**Example: Provide current user context**
+
+```ruby
+def context
+  { current_user: current_user }
+end
+```
+
+**Example: Multiple context values**
+
+```ruby
+def context
+  {
+    current_user: current_user,
+    locale: I18n.locale,
+    feature_flags: FeatureFlags.for(current_user)
+  }
+end
+```
+
+---
+
 ### #contract()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/deserialization.rb#L60)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/deserialization.rb#L59)
 
 Returns the parsed and validated request contract.
 
@@ -47,7 +82,7 @@ end
 
 ### #render_error(issues, status: = :bad_request)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/serialization.rb#L88)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/serialization.rb#L87)
 
 Renders an error response with validation issues.
 
@@ -78,7 +113,7 @@ end
 
 ### #respond(data, meta: = {}, status: = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/serialization.rb#L43)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/serialization.rb#L42)
 
 Renders a successful API response.
 
@@ -125,7 +160,7 @@ end
 
 ### #respond_with_error(code_key, detail: = nil, path: = nil, meta: = {}, i18n: = {})
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/serialization.rb#L117)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/serialization.rb#L116)
 
 Renders an error response using a registered error code.
 

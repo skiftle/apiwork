@@ -73,11 +73,22 @@ module Apiwork
     end
 
     def extract_methods(obj, scope)
-      obj.meths(visibility: :public, scope:)
-         .select { |m| public_api?(m) }
-         .select { |m| documented?(m) }
-         .sort_by(&:name)
-         .map { |m| serialize_method(m) }
+      methods = obj.meths(visibility: :public, scope:)
+
+      # Include methods from included modules (concerns)
+      obj.mixins(scope).each do |mixin|
+        mixin_obj = YARD::Registry.at(mixin.path)
+        next unless mixin_obj
+
+        methods += mixin_obj.meths(visibility: :public, scope:)
+      end
+
+      methods
+        .select { |m| public_api?(m) }
+        .select { |m| documented?(m) }
+        .uniq(&:name)
+        .sort_by(&:name)
+        .map { |m| serialize_method(m) }
     end
 
     def documented?(method)

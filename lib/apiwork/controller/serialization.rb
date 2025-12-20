@@ -2,7 +2,6 @@
 
 module Apiwork
   module Controller
-    # @api public
     module Serialization
       extend ActiveSupport::Concern
 
@@ -127,26 +126,6 @@ module Apiwork
         render_error [issue], status: error_code.status
       end
 
-      private
-
-      def render_with_schema(data, schema_class, meta)
-        if data.is_a?(Enumerable)
-          adapter.render_collection(data, schema_class, build_action_data(meta))
-        else
-          adapter.render_record(data, schema_class, build_action_data(meta))
-        end
-      end
-
-      def build_action_data(meta = {})
-        Adapter::ActionData.new(
-          action_name,
-          request.method_symbol,
-          context:,
-          query: resource_metadata ? contract.query : {},
-          meta:
-        )
-      end
-
       # @api public
       # Returns the serialization context passed to schemas.
       #
@@ -170,6 +149,26 @@ module Apiwork
       #   end
       def context
         {}
+      end
+
+      private
+
+      def render_with_schema(data, schema_class, meta)
+        if data.is_a?(Enumerable)
+          adapter.render_collection(data, schema_class, build_action_data(meta))
+        else
+          adapter.render_record(data, schema_class, build_action_data(meta))
+        end
+      end
+
+      def build_action_data(meta = {})
+        Adapter::ActionData.new(
+          action_name,
+          request.method_symbol,
+          context:,
+          query: resource_metadata ? contract.query : {},
+          meta:
+        )
       end
 
       def default_error_path(error_code)

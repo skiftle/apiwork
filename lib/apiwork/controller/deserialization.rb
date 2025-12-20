@@ -2,7 +2,6 @@
 
 module Apiwork
   module Controller
-    # @api public
     module Deserialization
       extend ActiveSupport::Concern
 
