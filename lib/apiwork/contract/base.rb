@@ -3,6 +3,25 @@
 module Apiwork
   module Contract
     # @api public
+    #
+    # @!scope class
+    # @!method abstract!
+    #   @api public
+    #   Marks this contract as abstract.
+    #
+    #   Abstract contracts serve as base classes for other contracts.
+    #   Use this when creating application-wide base contracts that define
+    #   shared imports or configuration. Subclasses automatically become non-abstract.
+    #   @return [void]
+    #   @example Application base contract
+    #     class ApplicationContract < Apiwork::Contract::Base
+    #       abstract!
+    #     end
+    #
+    # @!method abstract?
+    #   @api public
+    #   Returns whether this contract is abstract.
+    #   @return [Boolean] true if abstract
     class Base
       include Abstractable
 
