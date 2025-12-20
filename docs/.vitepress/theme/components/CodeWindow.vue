@@ -11,14 +11,14 @@
 <style scoped>
 .code-window {
   position: relative;
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
 
   .body {
     padding: var(--space-4);
     background: var(--shiki-background);
     border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 12px;
+    border-radius: 16px;
   }
 }
 

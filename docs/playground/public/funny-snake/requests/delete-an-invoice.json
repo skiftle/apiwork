@@ -4,10 +4,6 @@
     "path": "/funny_snake/invoices/2341b2b7-750c-57d9-8ff8-c325cc922833"
   },
   "response": {
-    "status": 500,
-    "body": {
-      "status": 500,
-      "error": "Internal Server Error"
-    }
+    "status": 204
   }
 }

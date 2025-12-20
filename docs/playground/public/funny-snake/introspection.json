@@ -140,7 +140,10 @@
         },
         "destroy": {
           "method": "delete",
-          "path": "/:id"
+          "path": "/:id",
+          "response": {
+            "no_content": true
+          }
         }
       }
     }

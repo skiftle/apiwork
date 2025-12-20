@@ -64,6 +64,8 @@ export const InvoicesUpdateResponseSchema = z.object({
   body: InvoicesUpdateResponseBodySchema
 });
 
+export const InvoicesDestroyResponse = z.never();
+
 export interface Error {
   code: string;
   detail: string;

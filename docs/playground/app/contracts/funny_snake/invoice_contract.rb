@@ -63,6 +63,8 @@ module FunnySnake
       end
     end
 
-    action :destroy
+    action :destroy do
+      response { no_content! }
+    end
   end
 end

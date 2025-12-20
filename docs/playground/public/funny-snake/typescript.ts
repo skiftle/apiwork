@@ -36,6 +36,8 @@ export interface InvoicesCreateResponse {
 
 export type InvoicesCreateResponseBody = { invoice: Invoice };
 
+export type InvoicesDestroyResponse = never;
+
 export interface InvoicesIndexResponse {
   body: InvoicesIndexResponseBody;
 }

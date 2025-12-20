@@ -5,27 +5,26 @@ module FunnySnake
     before_action :set_invoice, only: %i[show update destroy]
 
     def index
-      invoices = Invoice.all
-      respond({ invoices: invoices.map { |i| serialize_invoice(i) } })
+      respond({ invoices: Invoice.all.map { |i| i.as_json } })
     end
 
     def show
-      respond({ invoice: serialize_invoice(invoice) })
+      respond({ invoice: invoice.as_json })
     end
 
     def create
-      invoice = Invoice.create(contract.body[:invoice])
-      respond({ invoice: serialize_invoice(invoice) })
+      inv = Invoice.create contract.body[:invoice]
+      respond({ invoice: inv.as_json })
     end
 
     def update
-      invoice.update(contract.body[:invoice])
-      respond({ invoice: serialize_invoice(invoice) })
+      invoice.update contract.body[:invoice]
+      respond({ invoice: invoice.as_json })
     end
 
     def destroy
       invoice.destroy
-      no_content!
+      respond invoice
     end
 
     private
@@ -34,18 +33,6 @@ module FunnySnake
 
     def set_invoice
       @invoice = Invoice.find(params[:id])
-    end
-
-    def serialize_invoice(invoice)
-      {
-        id: invoice.id,
-        number: invoice.number,
-        issued_on: invoice.issued_on,
-        status: invoice.status,
-        notes: invoice.notes,
-        created_at: invoice.created_at,
-        updated_at: invoice.updated_at
-      }
     end
   end
 end

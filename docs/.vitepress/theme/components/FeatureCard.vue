@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import type { MoreFeature } from "../../data/homepage";
+import { icons } from "../../data/icons";
+
 defineProps<{
-  name: string;
-  description: string;
+  feature: MoreFeature;
 }>();
 </script>
 
@@ -13,11 +15,10 @@ defineProps<{
       fill="none"
       stroke="currentColor"
       stroke-width="2"
-    >
-      <slot name="icon" />
-    </svg>
-    <h3 class="name">{{ name }}</h3>
-    <p class="desc">{{ description }}</p>
+      v-html="icons[feature.icon]"
+    />
+    <h3 class="name">{{ feature.name }}</h3>
+    <p class="desc">{{ feature.description }}</p>
   </div>
 </template>
 

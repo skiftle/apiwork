@@ -1,28 +1,52 @@
 <script setup lang="ts">
+import type { HighlightedFeature } from "../../data/homepage.data";
+import { icons } from "../../data/icons";
+import CodeWindow from "./CodeWindow.vue";
+
 defineProps<{
-  description: string;
-  alt?: boolean;
-  wide?: boolean;
-  blobVariant?: 1 | 2 | 3 | 4;
+  feature: HighlightedFeature;
 }>();
 </script>
 
 <template>
-  <section class="feature" :class="{ alt }">
-    <div class="container" :class="{ wide }">
-      <div class="content" :class="{ centered: wide }">
-        <div class="blob" :class="`v${blobVariant || 1}`"></div>
+  <section class="feature" :class="{ alt: feature.alt }">
+    <div class="container" :class="{ wide: feature.wide }">
+      <div class="content" :class="{ centered: feature.wide }">
+        <div class="blob" :class="`v${feature.blobVariant || 1}`"></div>
         <h2 class="title">
-          <slot name="icon" />
-          <slot name="title" />
+          <svg
+            class="feature-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            v-html="icons[feature.icon]"
+          />
+          {{ feature.title }}
+          <span class="accent">{{ feature.titleAccent }}</span>
         </h2>
-        <p class="description">{{ description }}</p>
+        <p class="description">{{ feature.description }}</p>
       </div>
-      <div v-if="wide" class="output-grid">
-        <slot name="code" />
+      <div v-if="feature.wide" class="output-grid">
+        <CodeWindow
+          v-for="(html, index) in feature.highlightedBlocks"
+          :key="index"
+        >
+          <div v-html="html" />
+        </CodeWindow>
       </div>
       <div v-else class="code">
-        <slot name="code" />
+        <div v-if="feature.highlightedBlocks.length > 1" class="code-stack">
+          <CodeWindow
+            v-for="(html, index) in feature.highlightedBlocks"
+            :key="index"
+          >
+            <div v-html="html" />
+          </CodeWindow>
+        </div>
+        <CodeWindow v-else>
+          <div v-html="feature.highlightedBlocks[0]" />
+        </CodeWindow>
       </div>
     </div>
   </section>
@@ -199,6 +223,12 @@ defineProps<{
     }
   }
 
+  .code-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
   .output-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -231,11 +261,11 @@ defineProps<{
   }
 }
 
-.feature .title :deep(.accent) {
+.feature .title .accent {
   color: var(--color-brand-80);
 }
 
-.feature .title :deep(.feature-icon) {
+.feature .title .feature-icon {
   width: 32px;
   height: 32px;
   color: var(--color-brand-80);
