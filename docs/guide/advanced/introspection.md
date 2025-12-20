@@ -47,8 +47,8 @@ Compact but complete. Everything a spec generator needs:
           "path": "/",
           "request": {
             "body": {
-              "title": { "type": "string", "required": true },
-              "body": { "type": "string", "required": false }
+              "title": { "type": "string" },
+              "body": { "type": "string", "optional": true }
             }
           },
           "response": {

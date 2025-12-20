@@ -98,10 +98,10 @@ Request params are automatically coerced:
 
 ```json
 {
-  "title": { "type": "string", "required": true },
-  "count": { "type": "integer", "required": false },
-  "price": { "type": "decimal", "required": true },
-  "active": { "type": "boolean", "required": false },
-  "published_at": { "type": "datetime", "required": false }
+  "title": { "type": "string" },
+  "count": { "type": "integer", "optional": true },
+  "price": { "type": "decimal" },
+  "active": { "type": "boolean", "optional": true },
+  "published_at": { "type": "datetime", "optional": true }
 }
 ```

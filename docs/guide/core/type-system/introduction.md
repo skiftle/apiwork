@@ -25,6 +25,13 @@ Primitives form the foundation. Every param and attribute uses one of these:
 
 Plus special types: `:json`, `:binary`, `:literal`, `:unknown`
 
+```ruby
+param :name, type: :string
+param :age, type: :integer, optional: true
+param :email, type: :string, nullable: true
+param :tags, type: :array, of: :string
+```
+
 ## [Enums](./enums.md)
 
 Restrict values to a predefined set:

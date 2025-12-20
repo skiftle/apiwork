@@ -81,7 +81,7 @@ Introspection:
     "discriminator": "kind",
     "variants": [
       { "tag": "string", "type": "object", "shape": { "value": { "type": "string" } } },
-      { "tag": "range", "type": "object", "shape": { "gte": { "type": "integer" }, "lte": { "type": "integer", "required": false } } }
+      { "tag": "range", "type": "object", "shape": { "gte": { "type": "integer" }, "lte": { "type": "integer", "optional": true } } }
     ]
   }
 }
