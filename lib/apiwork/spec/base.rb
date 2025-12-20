@@ -6,15 +6,12 @@ module Apiwork
     # Base class for spec generators.
     #
     # Subclass this to create custom spec formats (Protobuf, GraphQL, etc.).
-    # Override `#generate` to produce output and `.file_extension` for the file type.
+    # Set `file_extension` and override `#generate` to produce output.
     #
     # @example Custom spec generator
     #   class ProtobufSpec < Apiwork::Spec::Base
     #     identifier :protobuf
-    #
-    #     def self.file_extension
-    #       '.proto'
-    #     end
+    #     file_extension '.proto'
     #
     #     def generate
     #       # Build Protobuf schema from @data (introspection hash)
@@ -49,8 +46,35 @@ module Apiwork
           @content_type || 'application/json'
         end
 
-        def file_extension
-          raise NotImplementedError, "#{self} must implement .file_extension"
+        def file_extension(ext = nil)
+          @file_extension = ext if ext
+          @file_extension or raise NotImplementedError, "#{self} must set file_extension"
+        end
+
+        def extract_options(params)
+          result = {}
+          options.each do |name, option|
+            next if option.nested?
+
+            param_value = params[name] || params[name.to_s]
+            next if param_value.nil?
+
+            result[name] = option.cast(param_value)
+          end
+          result
+        end
+
+        def extract_options_from_env
+          result = {}
+          options.each do |name, option|
+            next if option.nested?
+
+            env_value = ENV.fetch(name.to_s.upcase, nil)
+            next if env_value.nil?
+
+            result[name] = option.cast(env_value)
+          end
+          result
         end
       end
 

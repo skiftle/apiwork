@@ -5,32 +5,34 @@ module Apiwork
   #
   # Automatically mounted by Routes when API classes use `spec` DSL
   #
-  # Supports query parameters:
+  # Supports query parameters for any option defined by the spec generator.
+  # Built-in options include:
   # - key_format: Transform key casing (underscore, camel, keep)
   # - locale: Generate spec in specific locale (defaults to I18n.locale)
+  #
+  # Custom spec options are also supported via query params.
   #
   # @example GET /api/v1/.spec/openapi
   # @example GET /api/v1/.spec/openapi?key_format=underscore
   # @example GET /api/v1/.spec/zod?key_format=camel
   # @example GET /api/v1/.spec/openapi?locale=sv
+  # @example GET /api/v1/.spec/my_spec?include_deprecated=true
   class SpecsController < ActionController::API
     # GET /.spec/:type
     #
     # Returns spec for the current API
     def show
       api = find_api
-      identifier = params[:spec_type].to_sym
+      identifier = params[:identifier].to_sym
       spec_config = api.spec_config(identifier)
+      generator_class = ::Apiwork::Spec.find(identifier)
 
       options = { key_format: api.key_format }
                 .merge(spec_config)
-                .merge(key_format: params[:key_format]&.to_sym)
-                .merge(locale: params[:locale]&.to_sym)
+                .merge(generator_class.extract_options(params))
                 .compact
 
       spec = ::Apiwork::Spec.generate(identifier, api.metadata.path, **options)
-
-      generator_class = ::Apiwork::Spec.find(identifier)
       render_spec(spec, generator_class.content_type)
     rescue KeyError => e
       render json: { error: e.message }, status: :bad_request

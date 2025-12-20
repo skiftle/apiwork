@@ -12,12 +12,9 @@ Create your own spec generators.
 class MySpec < Apiwork::Spec::Base
   identifier :my_spec
   content_type 'application/json'
+  file_extension '.json'
 
   option :key_format, type: :symbol, default: :keep
-
-  def self.file_extension
-    '.json'
-  end
 
   def generate
     # Build and return your spec
@@ -111,18 +108,20 @@ end
 
 Served at `GET /api/v1/.spec/my_spec`.
 
-With query parameters:
+With query parameters (any defined option works):
 
 ```
 GET /api/v1/.spec/my_spec?key_format=camel
 GET /api/v1/.spec/my_spec?locale=sv
+GET /api/v1/.spec/my_spec?include_deprecated=true
 ```
 
-Generate to file:
+Generate to file (use uppercase ENV vars):
 
 ```bash
 rake apiwork:spec:write IDENTIFIER=my_spec OUTPUT=public/specs
 rake apiwork:spec:write IDENTIFIER=my_spec KEY_FORMAT=camel OUTPUT=public/specs
+rake apiwork:spec:write IDENTIFIER=my_spec INCLUDE_DEPRECATED=true OUTPUT=public/specs
 ```
 
 ## Defining Options

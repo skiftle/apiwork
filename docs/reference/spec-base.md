@@ -11,17 +11,14 @@ next: false
 Base class for spec generators.
 
 Subclass this to create custom spec formats (Protobuf, GraphQL, etc.).
-Override `#generate` to produce output and `.file_extension` for the file type.
+Set `file_extension` and override `#generate` to produce output.
 
 **Example: Custom spec generator**
 
 ```ruby
 class ProtobufSpec < Apiwork::Spec::Base
-  register_as :protobuf
-
-  def self.file_extension
-    'proto'
-  end
+  identifier :protobuf
+  file_extension '.proto'
 
   def generate
     # Build Protobuf schema from @data (introspection hash)

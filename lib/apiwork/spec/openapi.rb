@@ -5,13 +5,10 @@ module Apiwork
     class Openapi < Base
       identifier :openapi
       content_type 'application/json'
+      file_extension '.json'
 
       option :version, type: :string, default: '3.1.0', enum: %w[3.1.0]
       option :key_format, type: :symbol, default: :keep, enum: %i[keep camel underscore]
-
-      def self.file_extension
-        '.json'
-      end
 
       def generate
         {

@@ -48,6 +48,19 @@ module Apiwork
         end
       end
 
+      def cast(value)
+        return nil if value.nil?
+        return value unless value.is_a?(String)
+
+        case type
+        when :symbol then value.to_sym
+        when :string then value
+        when :integer then value.to_i
+        when :boolean then %w[true 1 yes].include?(value.downcase)
+        when :hash then value
+        end
+      end
+
       private
 
       def validate_children!(hash)

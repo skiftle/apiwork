@@ -19,13 +19,11 @@ namespace :apiwork do
       api_path = ENV['API_PATH']
       output = ENV['OUTPUT']
       identifier = ENV['IDENTIFIER']&.to_sym
-      key_format = ENV['KEY_FORMAT']&.to_sym
-      locale = ENV['LOCALE']&.to_sym
 
       unless output
         puts 'Error: OUTPUT required'
         puts ''
-        puts 'Usage: rake apiwork:spec:write OUTPUT=path [API_PATH=/api/v1] [IDENTIFIER=openapi] [KEY_FORMAT=camel] [LOCALE=en]'
+        puts 'Usage: rake apiwork:spec:write OUTPUT=path [API_PATH=/api/v1] [IDENTIFIER=openapi] [OPTIONS...]'
         puts ''
         puts 'Examples:'
         puts '  rake apiwork:spec:write OUTPUT=public/specs'
@@ -37,21 +35,26 @@ namespace :apiwork do
         puts 'Available identifiers:'
         puts "  #{Apiwork::Spec.all.join(', ')}"
         puts ''
-        puts 'Available key formats:'
-        puts '  keep, camel, underscore'
+        puts 'Built-in options (uppercase ENV vars):'
+        puts '  KEY_FORMAT: keep, camel, underscore'
+        puts "  LOCALE: #{I18n.available_locales.join(', ')}"
         puts ''
-        puts 'Available locales:'
-        puts "  #{I18n.available_locales.join(', ')}"
+        puts 'Custom spec options are also supported via ENV vars.'
         exit 1
       end
+
+      custom_options = if identifier
+                         Apiwork::Spec.find(identifier).extract_options_from_env
+                       else
+                         {}
+                       end
 
       begin
         Apiwork::Spec::Pipeline.write(
           api_path: api_path,
           output: output,
           identifier: identifier,
-          key_format: key_format,
-          locale: locale
+          **custom_options
         )
       rescue ArgumentError => e
         puts "Error: #{e.message}"

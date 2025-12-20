@@ -5,13 +5,10 @@ module Apiwork
     class Typescript < Base
       identifier :typescript
       content_type 'text/plain; charset=utf-8'
+      file_extension '.ts'
 
       option :version, type: :string, default: '5', enum: %w[4 5]
       option :key_format, type: :symbol, default: :keep, enum: %i[keep camel underscore]
-
-      def self.file_extension
-        '.ts'
-      end
 
       def generate
         build_all_typescript_types
