@@ -134,6 +134,16 @@ li::marker {
   color: var(--color-text-muted);
 }
 
+/* Inline code - exclude code blocks */
+:not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--color-bg-muted);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  color: var(--color-text);
+}
+
 /* Code in table cells - smaller */
 td code {
   font-size: 0.8em;
@@ -266,6 +276,35 @@ blockquote code {
 }
 .custom-block.danger .custom-block-title {
   color: var(--color-brand-70);
+}
+
+/* Inline code in custom blocks - slightly different bg for contrast */
+.custom-block :not(pre) > code {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.custom-block.info :not(pre) > code {
+  background: rgba(59, 130, 246, 0.15);
+}
+
+.custom-block.tip :not(pre) > code {
+  background: rgba(34, 197, 94, 0.15);
+}
+
+.custom-block.warning :not(pre) > code {
+  background: rgba(245, 158, 11, 0.15);
+}
+
+.custom-block.danger :not(pre) > code {
+  background: var(--color-brand-15);
+}
+
+/* Reset code blocks inside custom blocks */
+.custom-block pre code,
+.custom-block .shiki code {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
 }
 
 /* Details - collapsible */

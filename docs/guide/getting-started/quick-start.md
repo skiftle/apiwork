@@ -4,55 +4,150 @@ order: 3
 
 # Quick Start
 
-This guide walks you through building a complete API endpoint with validation, serialization, filtering, and documentation.
+With Apiwork installed, let's build a complete Posts API. By the end, you'll have endpoints with validation, filtering, sorting, pagination, and auto-generated specs.
 
-## The Goal
+## 1. The Model
 
-We'll create an Invoices API with:
+Start with a simple Post model:
 
-- List invoices with filtering and pagination
-- Create invoices with validation
-- Auto-generated OpenAPI, TypeScript, and Zod specs
+```bash
+rails generate model Post title:string body:text published:boolean
+rails db:migrate
+```
 
-## 1. Database & Model
-
-<<< @/playground/db/migrate/20251130000004_create_eager_lion_tables.rb
-
-<<< @/playground/app/models/eager_lion/invoice.rb
+```ruby
+# app/models/post.rb
+class Post < ApplicationRecord
+  validates :title, presence: true
+end
+```
 
 ## 2. API Definition
 
-<<< @/playground/config/apis/eager_lion.rb
+Create an API definition that exposes posts as a resource:
+
+```ruby
+# config/apis/api_v1.rb
+Apiwork::API.define '/api/v1' do
+  spec :openapi
+  spec :typescript
+  spec :zod
+
+  resources :posts
+end
+```
+
+The `spec` declarations tell Apiwork to generate documentation at `/.spec/openapi`, `/.spec/typescript`, and `/.spec/zod`.
 
 ## 3. Routes
 
-Mount Apiwork routes in your Rails application:
+Mount Apiwork in your routes:
 
-<<< @/playground/config/routes.rb
+```ruby
+# config/routes.rb
+Rails.application.routes.draw do
+  mount Apiwork => '/'
+end
+```
+
+::: info
+Apiwork uses the Rails router under the hood. The API definition's path (`/api/v1`) combines with the mount point (`/`) to produce routes like `/api/v1/posts`.
+:::
 
 ## 4. Schema
 
-The schema defines how your model is serialized and what can be filtered/sorted:
+The schema defines how posts are serialized and what can be queried:
 
-<<< @/playground/app/schemas/eager_lion/invoice_schema.rb
+```ruby
+# app/schemas/api/v1/post_schema.rb
+module Api
+  module V1
+    class PostSchema < ApplicationSchema
+      attribute :id
+      attribute :title, writable: true, filterable: true
+      attribute :body, writable: true
+      attribute :published, writable: true, filterable: true
+      attribute :created_at, sortable: true
+      attribute :updated_at, sortable: true
+    end
+  end
+end
+```
+
+Each option does one thing:
+
+- `writable: true` — the field can be set in create/update requests
+- `filterable: true` — the field can be filtered via query params
+- `sortable: true` — the field can be sorted via query params
+
+Types, nullability, and defaults are auto-detected from your database columns.
 
 ## 5. Contract
 
-The contract imports the schema and can add action-specific rules:
+The contract pulls in the schema and defines what each action accepts:
 
-<<< @/playground/app/contracts/eager_lion/invoice_contract.rb
+```ruby
+# app/contracts/api/v1/post_contract.rb
+module Api
+  module V1
+    class PostContract < ApplicationContract
+      schema!
+    end
+  end
+end
+```
 
-`schema!` imports all attributes from InvoiceSchema. The contract now knows:
+That's it. `schema!` imports everything from `PostSchema`. The contract now knows:
 
-- What fields are writable (for create/update)
-- What fields are filterable/sortable (for index)
+- What fields can be written (for create/update)
+- What fields can be filtered/sorted (for index)
 - The types of all fields (for validation)
 
 ## 6. Controller
 
-<<< @/playground/app/controllers/eager_lion/invoices_controller.rb
+The controller looks like any Rails controller, with two differences: use `respond` instead of `render`, and access validated params via `contract.body`:
 
-## 7. Try It Out
+```ruby
+# app/controllers/api/v1/posts_controller.rb
+module Api
+  module V1
+    class PostsController < ApplicationController
+      include Apiwork::Controller
+
+      def index
+        respond Post.all
+      end
+
+      def show
+        respond Post.find(params[:id])
+      end
+
+      def create
+        post = Post.create!(contract.body[:post])
+        respond post, status: :created
+      end
+
+      def update
+        post = Post.find(params[:id])
+        post.update!(contract.body[:post])
+        respond post
+      end
+
+      def destroy
+        post = Post.find(params[:id])
+        post.destroy!
+        respond post
+      end
+    end
+  end
+end
+```
+
+::: tip
+`contract.body` contains only the fields defined in your schema. Unknown fields are filtered out before your controller runs — no need for Strong Parameters.
+:::
+
+## 7. Try It
 
 Start the server:
 
@@ -60,57 +155,65 @@ Start the server:
 rails server
 ```
 
-### Create an invoice
+### Create a post
 
 ```bash
-curl -X POST http://localhost:3000/eager-lion/invoices \
+curl -X POST http://localhost:3000/api/v1/posts \
   -H "Content-Type: application/json" \
-  -d '{"invoice": {"number": "INV-001", "issued_on": "2024-01-15", "notes": "First invoice"}}'
+  -d '{"post": {"title": "Hello World", "body": "My first post", "published": true}}'
 ```
 
-### List invoices with filtering
+### List posts
 
 ```bash
-# All invoices
-curl http://localhost:3000/eager-lion/invoices
+curl http://localhost:3000/api/v1/posts
+```
 
-# Filter by number
-curl "http://localhost:3000/eager-lion/invoices?filter[number][eq]=INV-001"
+### Filter and sort
 
-# Sort by created_at descending
-curl "http://localhost:3000/eager-lion/invoices?sort[created_at]=desc"
+```bash
+# Only published posts
+curl "http://localhost:3000/api/v1/posts?filter[published][eq]=true"
+
+# Sort by newest first
+curl "http://localhost:3000/api/v1/posts?sort[created_at]=desc"
 
 # Paginate
-curl "http://localhost:3000/eager-lion/invoices?page[number]=1&page[size]=10"
+curl "http://localhost:3000/api/v1/posts?page[number]=1&page[size]=10"
 ```
 
 ### Get the specs
 
 ```bash
-curl http://localhost:3000/eager-lion/.spec/openapi
-curl http://localhost:3000/eager-lion/.spec/typescript
-curl http://localhost:3000/eager-lion/.spec/zod
+curl http://localhost:3000/api/v1/.spec/openapi
+curl http://localhost:3000/api/v1/.spec/typescript
+curl http://localhost:3000/api/v1/.spec/zod
 ```
 
-## What Just Happened?
+## What You Got
 
-With minimal code, you got:
+With minimal code, you now have:
 
-1. **Validation** — The contract validates incoming data matches the schema types
+1. **Validation** — Requests are validated against your schema before reaching the controller
 2. **Serialization** — Responses are automatically formatted using the schema
-3. **Filtering** — `filterable: true` attributes can be filtered via query params
-4. **Sorting** — `sortable: true` attributes can be sorted
-5. **Pagination** — Built-in offset-based pagination
-6. **Documentation** — OpenAPI, TypeScript, and Zod specs generated automatically
-
-See [Schema-Driven Contract Example](/examples/schema-driven-contract.md) for the complete generated output (TypeScript, Zod, OpenAPI).
+3. **Filtering** — `filterable: true` fields can be filtered via `?filter[field][op]=value`
+4. **Sorting** — `sortable: true` fields can be sorted via `?sort[field]=asc|desc`
+5. **Pagination** — Built-in offset-based pagination via `?page[number]=1&page[size]=10`
+6. **Documentation** — OpenAPI, TypeScript, and Zod specs generated from the same source
 
 ## There's More
 
-This was a minimal example to get you started. Apiwork has a lot more to offer, including associations with sideloading via `?include=`, nested saves that create or update related records in a single request, automatic eager loading to prevent N+1 queries, advanced filtering with operators like `contains`, `starts_with`, and complex `_and`/`_or` logic, cursor-based pagination for large datasets, custom types, enums, unions, polymorphic associations, STI support with discriminated unions, custom encoders and decoders for attribute transformation, and i18n support. Keep reading to learn more.
+This was the simplest possible example. Apiwork also supports:
+
+- **Associations** — sideloading via `?include=comments`
+- **Nested writes** — create or update related records in a single request
+- **Eager loading** — automatic N+1 prevention
+- **Advanced filtering** — operators like `contains`, `starts_with`, and `_and`/`_or` logic
+- **Cursor pagination** — for large datasets
+- **Custom types** — enums, unions, and polymorphic associations
 
 ## Next Steps
 
-- [Contracts](../core/contracts/introduction.md) — Add custom validation and action-specific params
-- [Schemas](../core/schemas/introduction.md) — Associations, computed attributes, and more
-- [Spec Generation](../core/spec-generation/introduction.md) — TypeScript, Zod, and OpenAPI options
+- [Core Concepts](./core-concepts.md) — understand API definitions, contracts, and schemas in depth
+- [Contracts](../core/contracts/introduction.md) — custom validation and action-specific params
+- [Schemas](../core/schemas/introduction.md) — associations, computed attributes, and more

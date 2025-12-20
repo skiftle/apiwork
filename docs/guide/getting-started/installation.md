@@ -1,5 +1,5 @@
 ---
-order: 3
+order: 2
 ---
 
 # Installation
@@ -23,15 +23,15 @@ bundle install
 
 ## Setup
 
-Run the install generator:
+Run the install generator to create the directory structure Apiwork expects:
 
 ```bash
 rails generate apiwork:install
 ```
 
-This creates the directory structure Apiwork expects:
+This creates:
 
-```plaintext
+```
 app/
 ├── contracts/
 │   └── application_contract.rb
@@ -41,22 +41,25 @@ config/
 └── apis/
 ```
 
-These sit alongside your existing `app/controllers/` and `app/models/`.
+These sit alongside your existing `app/controllers/` and `app/models/`. Your contracts and schemas inherit from these application-level base classes, just like controllers inherit from `ApplicationController`.
 
-## Define Your API
+## Generators
 
-Run the API generator:
+Apiwork provides generators to scaffold the files you'll work with most.
+
+### apiwork:api
+
+Creates an API definition in `config/apis/`:
 
 ```bash
 rails generate apiwork:api api/v1
 ```
 
-Or create the file manually in `config/apis/`:
+This generates:
 
 ```ruby
 # config/apis/api_v1.rb
 Apiwork::API.define '/api/v1' do
-  resources :posts
 end
 ```
 
@@ -66,65 +69,56 @@ The path `/api/v1` determines both the mount point and the namespace. Apiwork ex
 - Contracts in `Api::V1::` (e.g. `Api::V1::PostContract`)
 - Schemas in `Api::V1::` (e.g. `Api::V1::PostSchema`)
 
-## Mount the Routes
+::: tip
+For a root-level API with no path prefix, use `rails generate apiwork:api /`
+:::
 
-Add Apiwork routes to your `config/routes.rb`:
+### apiwork:schema
+
+Creates a schema for a resource:
+
+```bash
+rails generate apiwork:schema api/v1/invoice
+```
+
+This generates:
 
 ```ruby
-Rails.application.routes.draw do
-  mount Apiwork => '/'
+# app/schemas/api/v1/invoice_schema.rb
+module Api
+  module V1
+    class InvoiceSchema < ApplicationSchema
+    end
+  end
 end
 ```
 
-This mounts all API definitions from `config/apis/` at the specified path. Each API's path (e.g. `/api/v1`) is combined with the mount path — mounting at `'/'` means `/api/v1/posts` while mounting at `'/backend'` would give `/backend/api/v1/posts`.
+### apiwork:contract
+
+Creates a contract for a resource:
+
+```bash
+rails generate apiwork:contract api/v1/invoice
+```
+
+This generates:
+
+```ruby
+# app/contracts/api/v1/invoice_contract.rb
+module Api
+  module V1
+    class InvoiceContract < ApplicationContract
+    end
+  end
+end
+```
 
 ::: info
-The mount path only affects URLs, not namespaces. Your controllers, contracts, and schemas always follow the namespace from the API definition (`Api::V1::` for `/api/v1`), regardless of where you mount the routes.
+Contracts and schemas follow the same namespace structure as your controllers. If your controller is `Api::V1::InvoicesController`, your contract is `Api::V1::InvoiceContract` and your schema is `Api::V1::InvoiceSchema`.
 :::
-
-## Include the Controller Module
-
-In your controllers, include `Apiwork::Controller`:
-
-```ruby
-# app/controllers/api/v1/posts_controller.rb
-class Api::V1::PostsController < ApplicationController
-  include Apiwork::Controller
-
-  def index
-    respond Post.all
-  end
-
-  def show
-    respond Post.find(params[:id])
-  end
-
-  def create
-    respond Post.create!(contract.body), status: :created
-  end
-end
-```
-
-::: tip
-For cleaner code, include `Apiwork::Controller` in an API base controller and have your API controllers inherit from it.
-:::
-
-## Verify It Works
-
-Start your server and make a request:
-
-```bash
-rails server
-curl http://localhost:3000/api/v1/posts
-```
-
-If you add `spec :openapi` to your API definition, you can also check the generated OpenAPI spec:
-
-```bash
-curl http://localhost:3000/api/v1/.spec/openapi
-```
 
 ## Next Steps
 
-- [Core Concepts](./core-concepts.md) — understand API definitions, contracts, and schemas
-- [Quick Start](./quick-start.md) — build a complete endpoint
+With Apiwork installed, you're ready to build your first endpoint.
+
+- [Quick Start](./quick-start.md) — build a complete API with validation, filtering, and auto-generated specs
