@@ -1,10 +1,10 @@
 ---
-order: 2
+order: 3
 prev: false
 next: false
 ---
 
-# Base
+# Contract::Base
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L6)
 

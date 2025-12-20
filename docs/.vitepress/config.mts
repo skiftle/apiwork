@@ -63,7 +63,7 @@ export default defineConfig({
         sortMenusByFrontmatterOrder: true,
         frontmatterOrderDefaultValue: 999,
         sortFolderTo: "top",
-        collapsed: true,
+        collapsed: false,
       },
     ]),
     socialLinks: [

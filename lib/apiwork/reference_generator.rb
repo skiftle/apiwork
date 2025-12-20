@@ -157,7 +157,11 @@ module Apiwork
       cleanup_old_files
 
       all_paths = modules.map { |m| m[:path] }
-      parents = find_parent_paths(all_paths)
+      modules_with_methods = modules
+                             .select { |m| m[:class_methods].any? || m[:instance_methods].any? }
+                             .map { |m| m[:path] }
+                             .to_set
+      parents = find_parent_paths(all_paths, modules_with_methods)
 
       order = 1
       modules.each do |mod|
@@ -177,17 +181,8 @@ module Apiwork
       end
     end
 
-    def find_parent_paths(all_paths)
-      parents = Set.new
-      all_paths.each do |path|
-        parts = path.split('::')
-
-        (1...parts.size).each do |i|
-          prefix = parts[0...i].join('::')
-          parents.add(prefix) if all_paths.any? { |p| p != prefix && p.start_with?("#{prefix}::") }
-        end
-      end
-      parents
+    def find_parent_paths(_all_paths, _modules_with_methods)
+      Set.new
     end
 
     def module_filepath(path, parents)
@@ -215,8 +210,8 @@ module Apiwork
       File.join(dir, filename)
     end
 
-    def short_title(path)
-      path.split('::').last
+    def display_title(path)
+      path.sub('Apiwork::', '')
     end
 
     def dasherize(str)
@@ -234,7 +229,7 @@ module Apiwork
         ---
       FRONTMATTER
 
-      parts << "# #{short_title(mod[:path])}\n"
+      parts << "# #{display_title(mod[:path])}\n"
 
       if mod[:file] && mod[:line]
         github_link = "#{GITHUB_URL}/#{mod[:file]}#L#{mod[:line]}"

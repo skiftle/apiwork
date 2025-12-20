@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 module Apiwork
+  # @api public
   module API
     class << self
+      # @api public
       # Defines a new API at the given path.
       #
       # This is the main entry point for creating an Apiwork API.
@@ -46,6 +48,15 @@ module Apiwork
         Registry.unregister(path)
       end
 
+      # @api public
+      # Returns introspection data for an API.
+      #
+      # @param path [String] the API mount path
+      # @param locale [Symbol] optional locale for descriptions
+      # @return [Hash] the introspection data
+      #
+      # @example
+      #   Apiwork::API.introspect('/api/v1')
       def introspect(path, locale: nil)
         find(path)&.introspect(locale:)
       end

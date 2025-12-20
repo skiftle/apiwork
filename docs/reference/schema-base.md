@@ -1,10 +1,10 @@
 ---
-order: 6
+order: 7
 prev: false
 next: false
 ---
 
-# Base
+# Schema::Base
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L6)
 

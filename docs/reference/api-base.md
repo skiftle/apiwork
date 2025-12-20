@@ -1,10 +1,10 @@
 ---
-order: 1
+order: 2
 prev: false
 next: false
 ---
 
-# Base
+# API::Base
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L6)
 
