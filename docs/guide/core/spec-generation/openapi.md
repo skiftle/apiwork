@@ -17,9 +17,10 @@ end
 ## Options
 
 ```ruby
-spec :openapi,
-     path: '/openapi.json',      # Custom endpoint path
-     key_format: :camel       # Transform keys to camelCase
+spec :openapi do
+  path '/openapi.json'      # Custom endpoint path
+  key_format :camel         # Transform keys to camelCase
+end
 ```
 
 ## API Metadata

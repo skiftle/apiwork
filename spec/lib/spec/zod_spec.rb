@@ -12,47 +12,14 @@ RSpec.describe Apiwork::Spec::Zod do
   let(:api) { Apiwork::API.find(path) }
   let(:introspect) { api.introspect }
 
-  describe 'default options' do
-    it 'has default version 4' do
+  describe 'version option' do
+    it 'defaults to version 4' do
       expect(described_class.default_options[:version]).to eq('4')
     end
-  end
 
-  describe '#version' do
-    it 'uses default version when not specified' do
-      gen = described_class.new(path)
-      expect(gen.send(:version)).to eq('4')
-    end
-
-    it 'allows version override' do
-      gen = described_class.new(path, version: '3')
-      expect(gen.send(:version)).to eq('3')
-    end
-  end
-
-  describe 'version validation' do
-    it 'accepts valid version 3' do
-      expect { described_class.new(path, version: '3') }.not_to raise_error
-    end
-
-    it 'accepts valid version 4' do
-      expect { described_class.new(path, version: '4') }.not_to raise_error
-    end
-
-    it 'raises error for invalid version' do
-      expect do
-        described_class.new(path, version: '2')
-      end.to raise_error(Apiwork::ConfigurationError, /must be one of/)
-    end
-
-    it 'raises error for version 5' do
-      expect do
-        described_class.new(path, version: '5')
-      end.to raise_error(Apiwork::ConfigurationError, /must be one of/)
-    end
-
-    it 'accepts nil version' do
-      expect { described_class.new(path, version: nil) }.not_to raise_error
+    it 'only accepts version 4' do
+      expect { described_class.new(path, version: '3') }
+        .to raise_error(Apiwork::ConfigurationError, /must be one of/)
     end
   end
 

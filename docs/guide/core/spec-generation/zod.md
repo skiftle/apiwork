@@ -17,9 +17,10 @@ end
 ## Options
 
 ```ruby
-spec :zod,
-     path: '/schemas.ts',       # Custom endpoint path
-     key_format: :camel      # Transform keys to camelCase
+spec :zod do
+  path '/schemas.ts'        # Custom endpoint path
+  key_format :camel         # Transform keys to camelCase
+end
 ```
 
 ## Output
@@ -82,4 +83,4 @@ const post = PostSchema.parse(await response.json());
 
 ## Version
 
-Supports Zod v3 and v4. Default is v4.
+Generates schemas for Zod v4.

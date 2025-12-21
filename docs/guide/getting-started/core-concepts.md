@@ -126,23 +126,26 @@ class PostContract < ApplicationContract
 end
 ```
 
-This imports:
+This auto-generates typed requests and responses for all actions based on schema attributes. See [Action Defaults](../core/runtime/action-defaults.md) for default behavior.
 
-- **Writable fields** for create/update request bodies
-- **Filterable fields** for query parameters
-- **Sortable fields** for sort parameters
-- **All fields** for response bodies
-
-Add custom actions alongside schema-generated ones:
+In most cases, the defaults are enough. But you can still customize actions or replace them entirely:
 
 ```ruby
 class PostContract < ApplicationContract
   schema!
 
-  action :publish do
-    response do
+  action :index do
+    request do
+      query do
+        param :status, type: :string, optional: true
+      end
+    end
+  end
+
+  action :destroy do
+    response replace: true do
       body do
-        param :post, type: :post
+        param :deleted_at, type: :datetime
       end
     end
   end

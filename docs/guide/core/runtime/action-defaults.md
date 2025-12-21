@@ -4,7 +4,7 @@ order: 2
 
 # Action Defaults
 
-When using `schema!`, the adapter automatically generates typed requests and responses for standard CRUD actions. This page documents the default behavior for each action.
+When using `schema!`, the adapter automatically generates typed requests and responses for the resource's actions. This page documents the default behavior for each action.
 
 ## Overview
 

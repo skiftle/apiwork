@@ -7,7 +7,7 @@ module Apiwork
       content_type 'text/plain; charset=utf-8'
       file_extension '.ts'
 
-      option :version, type: :string, default: '4', enum: %w[3 4]
+      option :version, type: :string, default: '4', enum: %w[4]
       option :key_format, type: :symbol, default: :keep, enum: %i[keep camel underscore]
 
       def generate
