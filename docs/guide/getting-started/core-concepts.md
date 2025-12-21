@@ -4,7 +4,7 @@ order: 3
 
 # Core Concepts
 
-Apiwork is built around three main pieces: **API definitions**, **schemas**, and **contracts**. Each has a specific job, and together they describe everything about your API.
+Apiwork is built around three main pieces: **API definitions**, **contracts**, and **schemas**. Each has a specific job, and together they describe everything about your API.
 
 ## API Definition
 
@@ -36,6 +36,45 @@ These become available at `/.spec/openapi`, `/.spec/typescript`, and `/.spec/zod
 
 ::: info
 The path in `define '/api/v1'` combines with where you mount Apiwork in `routes.rb`. If you mount at `/` and define at `/api/v1`, your routes become `/api/v1/posts`.
+:::
+
+## Contract
+
+Contracts validate requests and define response shapes. They live in `app/contracts/`:
+
+```ruby
+class PostContract < ApplicationContract
+  action :create do
+    request do
+      body do
+        param :title, type: :string
+        param :body, type: :string
+      end
+    end
+  end
+end
+```
+
+This says: the `create` action expects `title` and `body` as strings.
+
+### Response Shapes
+
+Define what comes back:
+
+```ruby
+action :show do
+  response do
+    body do
+      param :id, type: :integer
+      param :title, type: :string
+      param :body, type: :string
+    end
+  end
+end
+```
+
+::: info
+Contracts can be written entirely by hand or generated from schemas. See [Contracts](../core/contracts/introduction.md) for details.
 :::
 
 ## Schema
@@ -77,9 +116,9 @@ has_one :profile, include: :always
 - `writable: true` — allows nested attributes in create/update
 - `include: :always` — always includes the association in responses
 
-## Contract
+### Connecting to Contract
 
-Contracts validate requests and define response shapes. The simplest contract uses `schema!` to pull everything from the schema:
+Use `schema!` to generate a contract from the schema:
 
 ```ruby
 class PostContract < ApplicationContract
@@ -87,16 +126,14 @@ class PostContract < ApplicationContract
 end
 ```
 
-That's it. `schema!` imports:
+This imports:
 
 - **Writable fields** for create/update request bodies
 - **Filterable fields** for query parameters
 - **Sortable fields** for sort parameters
 - **All fields** for response bodies
 
-### Custom Actions
-
-Need an action beyond standard CRUD? Define it explicitly:
+Add custom actions alongside schema-generated ones:
 
 ```ruby
 class PostContract < ApplicationContract
@@ -111,10 +148,6 @@ class PostContract < ApplicationContract
   end
 end
 ```
-
-::: info
-You can also write contracts entirely by hand without `schema!`. This gives you full control when you need it — see [Contracts](../core/contracts/introduction.md) for details.
-:::
 
 ## Controller
 
