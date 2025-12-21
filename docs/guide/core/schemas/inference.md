@@ -213,8 +213,8 @@ end
 # Schema - discriminator auto-detected as :commentable_type
 class CommentSchema < Apiwork::Schema::Base
   belongs_to :commentable, polymorphic: {
-    Post: PostSchema,
-    Image: ImageSchema
+    post: PostSchema,
+    image: ImageSchema
   }
 end
 ```

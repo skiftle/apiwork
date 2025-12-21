@@ -76,22 +76,24 @@ end
 
 ### meta
 
-Define the structure of response metadata:
+Define metadata structure inside the response body:
 
 ```ruby
 action :index do
   response do
-    meta do
-      param :generated_at, type: :datetime
-      param :api_version, type: :string
+    body do
+      meta do
+        param :generated_at, type: :datetime
+        param :api_version, type: :string
+      end
     end
   end
 end
 ```
 
-This is shorthand for `param :meta, type: :object do ... end`.
+This is shorthand for `param :meta, type: :object, optional: true do ... end`.
 
-In your controller, pass the values:
+In your controller, pass values via the `meta:` keyword:
 
 ```ruby
 def index
@@ -114,8 +116,6 @@ Response:
   }
 }
 ```
-
-The `meta` block documents the shape. The controller provides the values.
 
 ### replace
 
@@ -166,13 +166,6 @@ end
 - OpenAPI: `204 No Content` (no `content` key)
 - TypeScript: `never`
 - Zod: `z.never()`
-
-**Important:** `meta` cannot be used with `no_content!` since 204 has no body.
-If you need `meta`, use an empty response instead:
-
-```ruby
-action :destroy  # 200 OK with { meta?: object }
-```
 
 ## Raises
 

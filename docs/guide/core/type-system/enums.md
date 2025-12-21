@@ -69,7 +69,6 @@ Enums are reflected in OpenAPI, TypeScript, and Zod.
 ```json
 {
   "status": {
-    "type": "enum",
     "values": ["draft", "published", "archived"],
     "description": "Publication status",
     "example": "published"

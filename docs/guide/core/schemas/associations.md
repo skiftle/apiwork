@@ -26,18 +26,19 @@ end
 
 ## Options Reference
 
-| Option        | Type            | Default     | Description                              |
-| ------------- | --------------- | ----------- | ---------------------------------------- |
-| `schema`      | Class           | auto        | Associated schema class                  |
-| `include`     | Symbol          | `:optional` | `:always` or `:optional`                 |
-| `writable`    | `bool` / `hash` | `false`     | Allow nested attributes                  |
-| `filterable`  | `bool`          | `false`     | Enable filtering by association          |
-| `sortable`    | `bool`          | `false`     | Enable sorting by association            |
-| `nullable`    | `bool`          | auto        | Allow null (auto-detected from DB)       |
-| `polymorphic` | Hash            | `nil`       | Polymorphic type mapping                 |
-| `description` | `string`        | `nil`       | API documentation                        |
-| `example`     | `any`           | `nil`       | Example value                            |
-| `deprecated`  | `bool`          | `false`     | Mark as deprecated                       |
+| Option          | Type            | Default     | Description                              |
+| --------------- | --------------- | ----------- | ---------------------------------------- |
+| `schema`        | Class           | auto        | Associated schema class                  |
+| `include`       | Symbol          | `:optional` | `:always` or `:optional`                 |
+| `writable`      | `bool` / `hash` | `false`     | Allow nested attributes                  |
+| `allow_destroy` | `bool`          | `false`     | Allow destroying nested records          |
+| `filterable`    | `bool`          | `false`     | Enable filtering by association          |
+| `sortable`      | `bool`          | `false`     | Enable sorting by association            |
+| `nullable`      | `bool`          | auto        | Allow null (auto-detected from DB)       |
+| `polymorphic`   | Array / Hash    | `nil`       | Polymorphic type mapping                 |
+| `description`   | `string`        | `nil`       | API documentation                        |
+| `example`       | `any`           | `nil`       | Example value                            |
+| `deprecated`    | `bool`          | `false`     | Mark as deprecated                       |
 
 ## Auto-Detection
 

@@ -99,8 +99,9 @@ a:hover {
 /* Content links - underline for clarity */
 article a:not(.outline-link):not(.sidebar-link):not(.header-anchor) {
   text-decoration: underline;
-  text-decoration-color: var(--color-brand-30);
-  text-underline-offset: 2px;
+  text-decoration-color: rgba(128, 128, 128, 0.198);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
 }
 
 article a:not(.outline-link):not(.sidebar-link):not(.header-anchor):hover {
@@ -198,7 +199,6 @@ td {
 tr:nth-child(even) td {
   background: var(--color-bg-soft);
 }
-
 
 /* Blockquotes - Info/tip boxes */
 blockquote {

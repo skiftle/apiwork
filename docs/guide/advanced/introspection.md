@@ -73,7 +73,11 @@ Compact but complete. Everything a spec generator needs:
       "values": ["draft", "published", "archived"]
     }
   },
-  "error_codes": [400, 404, 422]
+  "error_codes": {
+    "bad_request": { "status": 400, "description": "Bad Request" },
+    "not_found": { "status": 404, "description": "Not Found" },
+    "unprocessable_entity": { "status": 422, "description": "Unprocessable Entity" }
+  }
 }
 ```
 
