@@ -190,6 +190,58 @@ export interface OrderUpdatePayload {
   shippingAddress?: object;
 }
 
+export interface OrdersCreateRequest {
+  body: OrdersCreateRequestBody;
+}
+
+export interface OrdersCreateRequestBody {
+  order: OrderCreatePayload;
+}
+
+export interface OrdersCreateResponse {
+  body: OrdersCreateResponseBody;
+}
+
+export type OrdersCreateResponseBody = { errors?: Error[] } | { meta?: object; order: Order };
+
+export type OrdersDestroyResponse = never;
+
+export interface OrdersIndexRequest {
+  query: OrdersIndexRequestQuery;
+}
+
+export interface OrdersIndexRequestQuery {
+  filter?: OrderFilter | OrderFilter[];
+  page?: OrderPage;
+  sort?: OrderSort | OrderSort[];
+}
+
+export interface OrdersIndexResponse {
+  body: OrdersIndexResponseBody;
+}
+
+export type OrdersIndexResponseBody = { errors?: Error[] } | { meta?: object; orders?: Order[]; pagination?: OffsetPagination };
+
+export interface OrdersShowResponse {
+  body: OrdersShowResponseBody;
+}
+
+export type OrdersShowResponseBody = { errors?: Error[] } | { meta?: object; order: Order };
+
+export interface OrdersUpdateRequest {
+  body: OrdersUpdateRequestBody;
+}
+
+export interface OrdersUpdateRequestBody {
+  order: OrderUpdatePayload;
+}
+
+export interface OrdersUpdateResponse {
+  body: OrdersUpdateResponseBody;
+}
+
+export type OrdersUpdateResponseBody = { errors?: Error[] } | { meta?: object; order: Order };
+
 export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {

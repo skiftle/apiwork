@@ -24,13 +24,16 @@ class ProtobufSpec < Apiwork::Spec::Base
     # Build Protobuf schema from data (introspection hash)
   end
 end
+
+# Register the spec
+Apiwork::Spec.register(ProtobufSpec)
 ```
 
 ## Class Methods
 
 ### .generate(api_path, **options)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L40)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L46)
 
 Generates a spec for the given API path.
 
@@ -51,7 +54,7 @@ Generates a spec for the given API path.
 
 ### #generate()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L81)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L114)
 
 Generates the spec output.
 

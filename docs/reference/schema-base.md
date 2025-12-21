@@ -338,7 +338,7 @@ has_one :imageable, polymorphic: [:product, :user]
 Sets or gets the model class for this schema.
 
 By default, the model is auto-detected from the schema name
-(e.g., InvoiceSchema infers Invoice). Use this to override.
+(e.g., InvoiceSchema → Invoice). Use this to override.
 
 **Parameters**
 
