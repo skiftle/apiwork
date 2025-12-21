@@ -73,6 +73,7 @@ end
 ```
 
 Options:
+
 - `:keep` - no transformation (default)
 - `:camel` - `created_at` becomes `createdAt` in responses, `createdAt` becomes `created_at` in requests
 - `:underscore` - all keys use snake_case
@@ -183,7 +184,7 @@ spec :openapi do
 end
 ```
 
-[Spec Generation](../spec-generation/introduction.md) covers format options, custom paths, and per-spec configuration.
+[Spec Generation](../specs/introduction.md) covers format options, custom paths, and per-spec configuration.
 
 ## Global Types and Enums
 
@@ -202,4 +203,3 @@ end
 ```
 
 [Type System](../type-system/introduction.md) covers type definitions, enums, unions, and scoping rules.
-

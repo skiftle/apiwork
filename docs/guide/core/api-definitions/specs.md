@@ -22,11 +22,11 @@ end
 
 Each spec declaration creates an endpoint:
 
-| Declaration | Endpoint |
-|-------------|----------|
-| `spec :openapi` | `GET /api/v1/.spec/openapi` |
+| Declaration        | Endpoint                       |
+| ------------------ | ------------------------------ |
+| `spec :openapi`    | `GET /api/v1/.spec/openapi`    |
 | `spec :typescript` | `GET /api/v1/.spec/typescript` |
-| `spec :zod` | `GET /api/v1/.spec/zod` |
+| `spec :zod`        | `GET /api/v1/.spec/zod`        |
 
 ## Custom Paths
 
@@ -47,6 +47,7 @@ end
 ```
 
 Now served at:
+
 - `GET /api/v1/openapi.json`
 - `GET /api/v1/types.ts`
 - `GET /api/v1/schemas.ts`
@@ -79,6 +80,7 @@ end
 ```
 
 Options:
+
 - `:keep` — No transformation (default)
 - `:camel` — `created_at` becomes `createdAt`
 - `:underscore` — All keys use snake_case
@@ -93,9 +95,9 @@ GET /api/v1/.spec/openapi?key_format=camel
 
 For detailed information about each spec format:
 
-- [OpenAPI](../spec-generation/openapi.md)
-- [TypeScript](../spec-generation/typescript.md)
-- [Zod](../spec-generation/zod.md)
+- [OpenAPI](../specs/openapi.md)
+- [TypeScript](../specs/typescript.md)
+- [Zod](../specs/zod.md)
 
 ## Programmatic Generation
 

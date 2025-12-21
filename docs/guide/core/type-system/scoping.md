@@ -105,4 +105,34 @@ class OrderContract < Apiwork::Contract::Base
 end
 ```
 
-[Imports](../contracts/imports.md) shows how to share types between contracts.
+See [Imports](../contracts/imports.md) for sharing types between contracts.
+
+## Generated Output
+
+API-level types keep their original name. Contract-scoped types get prefixed.
+
+### Introspection
+
+```json
+{
+  "types": {
+    "address": { "type": "object", "shape": { ... } },
+    "order_line_item": { "type": "object", "shape": { ... } }
+  },
+  "enums": {
+    "status": { "values": ["active", "inactive"] },
+    "post_status": { "values": ["draft", "published"] }
+  }
+}
+```
+
+### TypeScript
+
+```typescript
+// API-level (no prefix)
+interface Address { ... }
+
+// Contract-scoped (prefixed)
+interface OrderLineItem { ... }
+type PostStatus = "draft" | "published";
+```

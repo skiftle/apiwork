@@ -4,7 +4,7 @@ order: 2
 
 # Types
 
-Primitive types form the foundation of the type system. Every param and attribute uses one of these types.
+Primitive types are the building blocks. Every param uses one of these.
 
 ## Scalar Types
 
@@ -94,7 +94,9 @@ Request params are automatically coerced:
 | `"false"` | `:boolean` | `false` |
 | `"2024-01-15"` | `:date` | `Date.parse("2024-01-15")` |
 
-## Introspection
+## Generated Output
+
+### Introspection
 
 ```json
 {
@@ -104,4 +106,48 @@ Request params are automatically coerced:
   "active": { "type": "boolean", "optional": true },
   "published_at": { "type": "datetime", "optional": true }
 }
+```
+
+### TypeScript
+
+```typescript
+interface Example {
+  title: string;
+  count?: number;
+  price: number;
+  active?: boolean;
+  publishedAt?: string;
+}
+```
+
+### Zod
+
+```typescript
+const ExampleSchema = z.object({
+  title: z.string(),
+  count: z.number().int().optional(),
+  price: z.number(),
+  active: z.boolean().optional(),
+  publishedAt: z.iso.datetime().optional(),
+});
+```
+
+### OpenAPI
+
+```yaml
+Example:
+  type: object
+  required: [title, price]
+  properties:
+    title:
+      type: string
+    count:
+      type: integer
+    price:
+      type: number
+    active:
+      type: boolean
+    publishedAt:
+      type: string
+      format: date-time
 ```

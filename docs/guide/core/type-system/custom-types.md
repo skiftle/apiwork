@@ -4,7 +4,7 @@ order: 5
 
 # Custom Types
 
-Define reusable object structures once, use them everywhere.
+Custom types are named object structures that can be referenced by name.
 
 ## Defining a Type
 
@@ -36,9 +36,24 @@ param :addresses, type: :array, of: :address
 
 ## Generated Output
 
-The same type definition produces:
+### Introspection
 
-**TypeScript:**
+```json
+{
+  "address": {
+    "type": "object",
+    "shape": {
+      "street": { "type": "string" },
+      "city": { "type": "string" },
+      "postal_code": { "type": "string" },
+      "country": { "type": "string" }
+    }
+  }
+}
+```
+
+### TypeScript
+
 ```typescript
 export interface Address {
   city?: string;
@@ -48,7 +63,8 @@ export interface Address {
 }
 ```
 
-**Zod:**
+### Zod
+
 ```typescript
 export const AddressSchema = z.object({
   city: z.string().optional(),
@@ -56,6 +72,22 @@ export const AddressSchema = z.object({
   postalCode: z.string().optional(),
   street: z.string().optional(),
 });
+```
+
+### OpenAPI
+
+```yaml
+Address:
+  type: object
+  properties:
+    street:
+      type: string
+    city:
+      type: string
+    postalCode:
+      type: string
+    country:
+      type: string
 ```
 
 ## Metadata
