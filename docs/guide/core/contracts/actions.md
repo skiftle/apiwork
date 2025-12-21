@@ -76,7 +76,7 @@ end
 
 ### meta
 
-Define metadata structure inside the response body:
+For response data that doesn't belong to the resource itself:
 
 ```ruby
 action :index do
@@ -91,7 +91,15 @@ action :index do
 end
 ```
 
-This is shorthand for `param :meta, type: :object, optional: true do ... end`.
+This is shorthand for `param :meta, type: :object do ... end`.
+
+For optional meta, pass `optional: true`:
+
+```ruby
+meta optional: true do
+  param :request_id, type: :uuid
+end
+```
 
 In your controller, pass values via the `meta:` keyword:
 

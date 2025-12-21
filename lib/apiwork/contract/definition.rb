@@ -112,22 +112,32 @@ module Apiwork
         end
       end
 
-      # Defines a metadata object for request payloads.
+      # Shorthand for `param :meta, type: :object do ... end`.
       #
-      # Meta is an optional object for request-level metadata like
-      # request IDs, client info, or idempotency keys. The adapter
-      # may pre-populate common meta fields.
+      # Use for response data that doesn't belong to the resource itself.
+      # In your controller, pass values via the `meta:` keyword to `respond`.
       #
-      # @yield block defining metadata params
+      # @param options [Hash] options passed to param (e.g., optional: true)
+      # @yield block defining meta params
       #
-      # @example
-      #   request do
-      #     meta do
-      #       param :request_id, type: :uuid
-      #       param :client_version, type: :string, optional: true
+      # @example Required meta (default)
+      #   response do
+      #     body do
+      #       meta do
+      #         param :generated_at, type: :datetime
+      #       end
       #     end
       #   end
-      def meta(&block)
+      #
+      # @example Optional meta
+      #   response do
+      #     body do
+      #       meta optional: true do
+      #         param :api_version, type: :string
+      #       end
+      #     end
+      #   end
+      def meta(**options, &block)
         return unless block
 
         existing_meta = @params[:meta]
@@ -135,7 +145,7 @@ module Apiwork
         if existing_meta && existing_meta[:shape]
           existing_meta[:shape].instance_eval(&block)
         else
-          param :meta, type: :object, optional: true, &block
+          param :meta, type: :object, **options, &block
         end
       end
 
