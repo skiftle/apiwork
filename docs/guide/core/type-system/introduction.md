@@ -4,117 +4,64 @@ order: 1
 
 # Introduction
 
-The type system powers everything in Apiwork. Requests, responses, filters, payloads — all flow through it.
+The type system is a DSL for describing data shapes. You define types in Ruby, and Apiwork uses them throughout the request lifecycle and for generating specs.
 
-Define a type once. Use it in contracts, schemas, and generated specs. The same definition produces Ruby validation, TypeScript types, Zod schemas, and OpenAPI specs.
+## What Types Do
 
-## [Types](./types.md)
+When you define a type, Apiwork uses it for:
 
-Primitives form the foundation. Every param and attribute uses one of these:
+**Request handling:**
+- Validates that incoming data matches the expected shape
+- Coerces values to the correct type (e.g., `"123"` → `123`)
+- Rejects requests with missing required fields or wrong types
+
+**Response handling:**
+- Validates outgoing data before sending
+- Serializes values to the correct format (e.g., dates to ISO 8601)
+- Transforms keys if configured (e.g., `created_at` → `createdAt`)
+
+**Spec generation:**
+- [Introspection](../../advanced/introspection.md) converts types to a JSON representation
+- Spec generators read this JSON and produce TypeScript, Zod, and OpenAPI
+
+## Primitives
+
+Every type is built from primitives:
 
 | Type | Description |
 |------|-------------|
 | `:string` | Text values |
 | `:integer` | Whole numbers |
 | `:boolean` | True/false |
-| `:date` | Date only |
-| `:datetime` | Date and time |
+| `:date` | Date only (ISO 8601) |
+| `:datetime` | Date and time (ISO 8601) |
 | `:uuid` | UUID format |
 | `:decimal` | Precise decimals |
 | `:float` | Floating point |
 
-Plus special types: `:json`, `:binary`, `:literal`, `:unknown`
+Plus: `:json`, `:binary`, `:literal`, `:unknown`
 
-Structure types: `:array` (with `of:`), `:object` (with nested params)
+Combine them into structures:
 
 ```ruby
-param :name, type: :string
-param :age, type: :integer, optional: true
-param :email, type: :string, nullable: true
-param :tags, type: :array, of: :string
-param :config, type: :object do
-  param :enabled, type: :boolean
+type :invoice do
+  param :id, type: :uuid
+  param :number, type: :string
+  param :status, type: :string, enum: %w[draft sent paid]
+  param :total, type: :decimal
+  param :line_items, type: :array, of: :line_item
 end
 ```
 
-## [Enums](./enums.md)
+## What's Next
 
-Restrict values to a predefined set:
+| Topic | Description |
+|-------|-------------|
+| [Types](./types.md) | Type options: optional, nullable, default, min/max |
+| [Enums](./enums.md) | Restrict values to a set |
+| [Unions](./unions.md) | Multiple type options with discriminator |
+| [Custom Types](./custom-types.md) | Reusable named types |
+| [Scoping](./scoping.md) | API-level vs contract-scoped types |
+| [Type Merging](./type-merging.md) | Extend existing types |
 
-```ruby
-enum :status, values: %w[draft published archived]
-```
-
-```typescript
-type Status = 'archived' | 'draft' | 'published';
-```
-
-## [Unions](./unions.md)
-
-Multiple type options with optional discriminator:
-
-```ruby
-union :payment_method, discriminator: :type do
-  variant tag: 'card' do
-    param :last_four, type: :string
-  end
-  variant tag: 'bank' do
-    param :account_number, type: :string
-  end
-end
-```
-
-## [Custom Types](./custom-types.md)
-
-Reusable object structures:
-
-```ruby
-type :address do
-  param :street, type: :string
-  param :city, type: :string
-  param :country, type: :string
-end
-```
-
-Reference anywhere:
-
-```ruby
-param :shipping_address, type: :address
-param :addresses, type: :array, of: :address
-```
-
-## [Scoping](./scoping.md)
-
-Types live at two levels:
-
-- **API-level** — available to all contracts, keeps original name
-- **Contract-scoped** — prefixed with contract name in specs
-
-A `:status` type in `OrderContract` becomes `order_status` in generated output.
-
-## [Type Merging](./type-merging.md)
-
-Types are open for extension. Multiple declarations merge:
-
-```ruby
-type :user do
-  param :name, type: :string
-end
-
-type :user do
-  param :email, type: :string  # Added to existing type
-end
-```
-
-## Generated Output
-
-Every type definition produces four outputs:
-
-| Format | Use |
-|--------|-----|
-| Introspection | Internal JSON representation |
-| TypeScript | Frontend type definitions |
-| Zod | Runtime validation schemas |
-| OpenAPI | API documentation |
-
-See [Spec Generation](../spec-generation/introduction.md) for details.
+See also: [Introspection](../../advanced/introspection.md), [Spec Generation](../spec-generation/introduction.md)

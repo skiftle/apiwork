@@ -8,7 +8,7 @@ Types can be global (API-level) or scoped to a contract.
 
 ## API-Level Types
 
-Defined in the API draw block:
+Defined in the API define block:
 
 ```ruby
 Apiwork::API.define '/api/v1' do
@@ -44,10 +44,10 @@ Only available within that contract.
 
 Contract-scoped types get a prefix based on the contract:
 
-| Contract | Type | Scoped Name |
-|----------|------|-------------|
+| Contract        | Type         | Scoped Name        |
+| --------------- | ------------ | ------------------ |
 | `OrderContract` | `:line_item` | `:order_line_item` |
-| `PostContract` | `:status` | `:post_status` |
+| `PostContract`  | `:status`    | `:post_status`     |
 
 This prefix appears in the generated output:
 
