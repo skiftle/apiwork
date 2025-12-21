@@ -126,7 +126,7 @@ class PostContract < ApplicationContract
 end
 ```
 
-This auto-generates typed requests and responses for all actions based on schema attributes. See [Action Defaults](../core/runtime/action-defaults.md) for default behavior.
+This auto-generates typed requests and responses for all actions based on schema attributes. See [Action Defaults](../core/execution-engine/action-defaults.md) for default behavior.
 
 In most cases, the defaults are enough. But you can still customize actions or replace them entirely:
 

@@ -71,9 +71,9 @@ interface Address {
 // Result: merged interface with all three fields
 ```
 
-## Extending Adapter Types
+## Extending Generated Types
 
-Adapters may generate types you don't control directly — filter types, sort types, pagination types. Type merging makes it possible to add metadata like descriptions to these types.
+When using [`schema!`](../schemas/introduction.md), types are generated that you don't control directly — filter types, sort types, pagination types. Type merging makes it possible to add metadata like descriptions to these types.
 
 ```ruby
 class InvoiceContract < Apiwork::Contract::Base

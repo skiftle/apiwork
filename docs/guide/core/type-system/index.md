@@ -1,4 +1,4 @@
 ---
-order: 5
+order: 4
 ---
 # Type System

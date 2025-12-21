@@ -207,13 +207,13 @@ This was the simplest possible example. Apiwork also supports:
 
 - **Associations** — sideloading via `?include=comments`
 - **Nested writes** — create or update related records in a single request
-- **[Eager loading](../core/runtime/eager-loading.md)** — automatic N+1 prevention
-- **[Advanced filtering](../core/runtime/filtering.md)** — operators like `contains`, `starts_with`, and `_and`/`_or` logic
-- **[Cursor pagination](../core/runtime/pagination.md#cursor-pagination)** — for large datasets
+- **[Eager loading](../core/execution-engine/eager-loading.md)** — automatic N+1 prevention
+- **[Advanced filtering](../core/execution-engine/filtering.md)** — operators like `contains`, `starts_with`, and `_and`/`_or` logic
+- **[Cursor pagination](../core/execution-engine/pagination.md#cursor-pagination)** — for large datasets
 - **Custom types** — enums, unions, and polymorphic associations
 
 ## Next Steps
 
-- [Runtime](../core/runtime/introduction.md) — filtering, sorting, pagination, and eager loading in depth
+- [Execution Engine](../core/execution-engine/introduction.md) — filtering, sorting, pagination, and eager loading in depth
 - [Contracts](../core/contracts/introduction.md) — custom validation and action-specific params
 - [Schemas](../core/schemas/introduction.md) — associations, computed attributes, and more
