@@ -4,7 +4,7 @@ order: 2
 
 # Filtering
 
-Filter records using query parameters. The runtime translates filters into ActiveRecord queries.
+Filter records using query parameters. The adapter translates filters into ActiveRecord queries.
 
 ## Query Format
 
@@ -189,7 +189,7 @@ GET /posts?filter[comments][author][role][eq]=moderator
 
 ### Auto-Join
 
-The runtime automatically joins required tables. Filtering by an association includes it in the query.
+The adapter automatically joins required tables. Filtering by an association includes it in the query.
 
 ---
 
@@ -221,7 +221,7 @@ The `null` operator is only allowed on nullable columns. Non-nullable columns re
 Apiwork validates filter parameters in two layers:
 
 ::: info Contract Validates First
-When you use `schema!`, the adapter generates typed filter definitions. The contract validates every request against these types **before the runtime even runs**. Unknown fields, invalid operators, and type mismatches are rejected immediately.
+When you use `schema!`, the adapter generates typed filter definitions. The contract validates every request against these types **before the adapter runs**. Unknown fields, invalid operators, and type mismatches are rejected immediately.
 :::
 
 ### What the Contract Catches
@@ -235,9 +235,9 @@ The contract layer handles most validation:
 
 These errors return standard contract validation errors with codes like `invalid_type` and `field_unknown`.
 
-### Runtime Validation
+### Adapter Validation
 
-The runtime only validates edge cases that pass contract validation:
+The adapter only validates edge cases that pass contract validation:
 
 | Code | When It Fires |
 |------|---------------|
@@ -250,7 +250,7 @@ These are rare — they only occur when values have the right type but fail pars
 
 ### Association Errors
 
-These can occur at runtime when schema configuration is incomplete:
+These can occur when schema configuration is incomplete:
 
 | Code | Cause |
 |------|-------|

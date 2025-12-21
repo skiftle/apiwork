@@ -126,7 +126,7 @@ RSpec.describe 'Type Descriptions', type: :integration do
         end
 
         type :address do
-          param :country, type: :string
+          param :country_code, type: :string
         end
 
         type :with_nested do

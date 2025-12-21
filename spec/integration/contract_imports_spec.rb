@@ -14,7 +14,7 @@ RSpec.describe 'Contract Imports' do
         type :address do
           param :street, type: :string, required: true
           param :city, type: :string, required: true
-          param :country, type: :string, required: true
+          param :country_code, type: :string, required: true
         end
 
         enum :status, values: %w[active inactive suspended]

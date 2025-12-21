@@ -102,7 +102,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
       contract_class = create_test_contract do
         type :address do
           param :city, type: :string, required: true
-          param :country, type: :string, enum: %w[US UK SE], required: true
+          param :country_code, type: :string, enum: %w[US UK SE], required: true
         end
 
         type :account do

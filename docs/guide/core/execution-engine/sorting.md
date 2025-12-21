@@ -73,13 +73,13 @@ GET /posts?sort[author][company][name]=asc
 
 ### Auto-Join
 
-The runtime automatically joins required tables and applies `DISTINCT` to prevent duplicate rows from joins.
+The adapter automatically joins required tables and applies `DISTINCT` to prevent duplicate rows from joins.
 
 ---
 
 ## Default Sorting
 
-The runtime applies no default sort. Results use database order unless explicitly sorted.
+The adapter applies no default sort. Results use database order unless explicitly sorted.
 
 To enforce a default in your controller:
 
@@ -95,7 +95,7 @@ end
 ## Validation
 
 ::: info Contract Validates First
-Like filtering, sort parameters are validated by the contract before reaching the runtime. The adapter generates typed sort definitions from your schema — unknown fields and invalid directions are rejected immediately.
+Like filtering, sort parameters are validated by the contract before reaching the adapter. The adapter generates typed sort definitions from your schema — unknown fields and invalid directions are rejected immediately.
 :::
 
 ### What the Contract Catches
@@ -104,7 +104,7 @@ Like filtering, sort parameters are validated by the contract before reaching th
 - **Invalid directions** — `sort[title]=sideways` rejected (only `asc`/`desc`)
 - **Non-sortable fields** — `sort[body]` rejected if not marked `sortable: true`
 
-### Runtime Validation
+### Adapter Validation
 
 These errors only occur with incomplete schema configuration:
 

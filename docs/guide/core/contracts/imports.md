@@ -102,7 +102,7 @@ class UserContract < Apiwork::Contract::Base
   type :address do
     param :street, type: :string
     param :city, type: :string
-    param :country, type: :string  # 3 fields
+    param :country_code, type: :string  # 3 fields
   end
 end
 
@@ -112,7 +112,7 @@ class OrderContract < Apiwork::Contract::Base
   # This local type shadows the imported one
   type :user_address do
     param :street, type: :string
-    param :city, type: :string      # 2 fields (no country)
+    param :city, type: :string      # 2 fields (no country_code)
   end
 
   action :show do

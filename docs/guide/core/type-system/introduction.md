@@ -4,47 +4,38 @@ order: 1
 
 # Introduction
 
-The type system is a DSL for describing data shapes. You define types in Ruby, and Apiwork uses them throughout the request lifecycle and for generating specs.
+The **Type System** defines the language used by Apiwork contracts.
 
-## What Types Do
+It describes data shapes, constraints, and semantics in a precise and declarative form.
+These definitions express what data is allowed to exist at the API boundary — independent of how or when that data is used.
 
-When you define a type, Apiwork uses it for:
+Types are defined in Ruby, but are purely declarative. They define shape and constraints.
 
-**Request handling:**
+---
 
-- Validates that incoming data matches the expected shape
-- Coerces values to the correct type (e.g., `"123"` → `123`)
-- Rejects requests with missing required fields or wrong types
+## What the Type System Defines
 
-**Response handling:**
+The type system answers questions such as:
 
-- Validates outgoing data before sending
-- Serializes values to the correct format (e.g., dates to ISO 8601)
-- Transforms keys if configured (e.g., `created_at` → `createdAt`)
+- What fields exist?
+- Which values are allowed?
+- Which fields are required or optional?
+- How are values structured and nested?
+- What invariants must always hold?
 
-**Spec generation:**
+It does **not** define runtime behavior, such as:
 
-- [Introspection](../../advanced/introspection.md) converts types to a JSON representation
-- Spec generators read this JSON and produce TypeScript, Zod, and OpenAPI
+- how requests are handled
+- how data is queried
+- how responses are rendered
 
-## Primitives
+Those concerns belong to the [Execution Engine](../execution-engine/introduction.md).
 
-Every type is built from primitives:
+---
 
-| Type        | Description              |
-| ----------- | ------------------------ |
-| `:string`   | Text values              |
-| `:integer`  | Whole numbers            |
-| `:boolean`  | True/false               |
-| `:date`     | Date only (ISO 8601)     |
-| `:datetime` | Date and time (ISO 8601) |
-| `:uuid`     | UUID format              |
-| `:decimal`  | Precise decimals         |
-| `:float`    | Floating point           |
+## Shapes and Constraints
 
-Plus: `:json`, `:binary`, `:literal`, `:unknown`
-
-Combine them into structures:
+A type defines both **shape** and **constraints**.
 
 ```ruby
 type :invoice do
@@ -56,15 +47,42 @@ type :invoice do
 end
 ```
 
-## What's Next
+This definition expresses:
 
-| Topic                             | Description                                        |
-| --------------------------------- | -------------------------------------------------- |
-| [Types](./types.md)               | Type options: optional, nullable, default, min/max |
-| [Enums](./enums.md)               | Restrict values to a set                           |
-| [Unions](./unions.md)             | Multiple type options with discriminator           |
-| [Custom Types](./custom-types.md) | Reusable named types                               |
-| [Scoping](./scoping.md)           | API-level vs contract-scoped types                 |
-| [Type Merging](./type-merging.md) | Extend existing types                              |
+- which fields exist
+- how they are nested
+- which values are valid
+- which constraints apply
 
-See also: [Introspection](../../advanced/introspection.md), [Spec Generation](../specs/introduction.md)
+---
+
+## Primitives
+
+Types are built from a small, well-defined set of primitive building blocks.
+
+| Type        | Description              |
+| ----------- | ------------------------ |
+| `:string`   | Text values              |
+| `:integer`  | Whole numbers            |
+| `:boolean`  | True / false             |
+| `:date`     | Date only (ISO 8601)     |
+| `:datetime` | Date and time (ISO 8601) |
+| `:uuid`     | UUID format              |
+| `:decimal`  | Precise decimal values   |
+| `:float`    | Floating point numbers   |
+
+Additional primitives include structural types such as:
+`:array` and `:object`, as well as `:json`, `:binary`, `:literal`, and `:unknown`.
+
+---
+
+## Next Steps
+
+| Topic                             | Description                                         |
+| --------------------------------- | --------------------------------------------------- |
+| [Types](./types.md)               | Optionality, nullability, defaults, and constraints |
+| [Enums](./enums.md)               | Restrict values to a fixed set                      |
+| [Unions](./unions.md)             | Multiple shapes with a discriminator                |
+| [Custom Types](./custom-types.md) | Reusable named types                                |
+| [Scoping](./scoping.md)           | API-level vs contract-scoped types                  |
+| [Type Merging](./type-merging.md) | Extending and composing types                       |

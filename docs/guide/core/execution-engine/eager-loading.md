@@ -4,7 +4,7 @@ order: 5
 
 # Eager Loading
 
-You control which associations are included in responses. When clients request them, the runtime uses ActiveRecord's `includes` to prevent N+1 queries automatically.
+You control which associations are included in responses. When clients request them, the adapter uses ActiveRecord's `includes` to prevent N+1 queries automatically.
 
 ## Query Format
 
@@ -72,7 +72,7 @@ GET /posts/1?include[comments]=true   # With comments
 
 ## Auto-Includes
 
-Sometimes the runtime includes associations automatically, even if the client didn't ask:
+Sometimes the adapter includes associations automatically, even if the client didn't ask:
 
 ### Filtering
 
@@ -106,7 +106,7 @@ GET /posts?include[author]=false  # Ignored, author still included
 
 ## N+1 Prevention
 
-The runtime picks the right loading strategy for you:
+The adapter picks the right loading strategy for you:
 
 **Collections (index):**
 
@@ -159,7 +159,7 @@ With `include[comments]=true`:
 
 ## Circular Reference Prevention
 
-Don't worry about infinite loops — the runtime tracks visited associations:
+Don't worry about infinite loops — the adapter tracks visited associations:
 
 ```ruby
 class PostSchema < Apiwork::Schema::Base
@@ -171,4 +171,4 @@ class CommentSchema < Apiwork::Schema::Base
 end
 ```
 
-If someone requests `include[comments][post][comments]`, the runtime stops at the circular reference instead of looping forever.
+If someone requests `include[comments][post][comments]`, the adapter stops at the circular reference instead of looping forever.

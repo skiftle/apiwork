@@ -17,7 +17,7 @@ end
 type :address, description: "A physical address"
 
 type :address do
-  param :country, type: :string
+  param :country_code, type: :string
 end
 ```
 

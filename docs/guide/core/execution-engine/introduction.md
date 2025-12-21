@@ -50,8 +50,8 @@ From this schema, the adapter generates the following types:
 | `invoice_update_payload` | Validates update request body | `writable: true`   |
 | `invoice`                | Serializes responses          | all attributes     |
 
-In addition, Apiwork generates [action defaults](./action-defaults.md):
-typed request and response definitions for `index`, `show`, `create`, `update`, and `destroy`.
+In addition, Apiwork generates [action defaults](./action-defaults.md) for each action on the resource.
+The generated types vary depending on the action type.
 
 All defaults are derived directly from the schema and require no additional configuration.
 
@@ -77,7 +77,7 @@ The adapter supports four query parameter groups:
 | `page`    | Paginate        | `?page[number]=2&page[size]=20` |
 | `include` | Eager load data | `?include[lines]=true`          |
 
-Invalid or unsupported queries are rejected before reaching the controller.
+Invalid or unsupported queries fail fast before reaching the database.
 
 ---
 
