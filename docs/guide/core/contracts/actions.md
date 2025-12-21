@@ -119,35 +119,45 @@ The `meta` block documents the shape. The controller provides the values.
 
 ### replace
 
-By default, contract requests and responses are merged with schema definitions. Use `replace: true` to completely override:
+When using `schema!`, the adapter auto-generates request and response definitions from your schema attributes. By default, your custom definitions are merged with these auto-generated ones.
+
+Use `replace: true` to reset the auto-generated definition and start fresh:
 
 ```ruby
-action :destroy do
-  # Replace the response entirely
-  response replace: true do
-    body do
-      param :deleted_id, type: :uuid
+class InvoiceContract < Apiwork::Contract::Base
+  schema!  # Auto-generates request/response from schema
+
+  action :destroy do
+    # Reset auto-generated response, define custom
+    response replace: true do
+      body do
+        param :deleted_id, type: :uuid
+      end
     end
   end
-end
 
-action :create do
-  # Replace the request entirely
-  request replace: true do
-    body do
-      param :title, type: :string
+  action :create do
+    # Reset auto-generated request body, define custom
+    request replace: true do
+      body do
+        param :title, type: :string
+      end
     end
   end
 end
 ```
+
+Without `replace: true`, your params would be added to the schema-generated ones. With `replace: true`, only your explicitly defined params are used.
 
 ### no_content!
 
 For actions that return HTTP 204 No Content (no response body):
 
 ```ruby
-action :soft_delete do
-  response { no_content! }
+action :destroy do
+  response do
+    no_content!
+  end
 end
 ```
 
@@ -157,25 +167,11 @@ end
 - TypeScript: `never`
 - Zod: `z.never()`
 
-To return data instead:
-
-```ruby
-action :destroy do
-  response do
-    body do
-      param :deleted_at, type: :datetime
-    end
-  end
-end
-```
-
 **Important:** `meta` cannot be used with `no_content!` since 204 has no body.
 If you need `meta`, use an empty response instead:
 
 ```ruby
-action :destroy do
-  response {}  # 200 OK with { meta?: object }
-end
+action :destroy  # 200 OK with { meta?: object }
 ```
 
 ## Raises

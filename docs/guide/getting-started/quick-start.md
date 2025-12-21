@@ -123,19 +123,19 @@ module Api
       end
 
       def create
-        post = Post.create!(contract.body[:post])
-        respond post, status: :created
+        post = Post.create(contract.body[:post])
+        respond post
       end
 
       def update
         post = Post.find(params[:id])
-        post.update!(contract.body[:post])
+        post.update(contract.body[:post])
         respond post
       end
 
       def destroy
         post = Post.find(params[:id])
-        post.destroy!
+        post.destroy
         respond post
       end
     end

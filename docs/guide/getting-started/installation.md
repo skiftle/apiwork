@@ -73,26 +73,6 @@ The path `/api/v1` determines both the mount point and the namespace. Apiwork ex
 For a root-level API with no path prefix, use `rails generate apiwork:api /`
 :::
 
-### apiwork:schema
-
-Creates a schema for a resource:
-
-```bash
-rails generate apiwork:schema api/v1/invoice
-```
-
-This generates:
-
-```ruby
-# app/schemas/api/v1/invoice_schema.rb
-module Api
-  module V1
-    class InvoiceSchema < ApplicationSchema
-    end
-  end
-end
-```
-
 ### apiwork:contract
 
 Creates a contract for a resource:
@@ -108,6 +88,26 @@ This generates:
 module Api
   module V1
     class InvoiceContract < ApplicationContract
+    end
+  end
+end
+```
+
+### apiwork:schema
+
+Creates a schema for a resource:
+
+```bash
+rails generate apiwork:schema api/v1/invoice
+```
+
+This generates:
+
+```ruby
+# app/schemas/api/v1/invoice_schema.rb
+module Api
+  module V1
+    class InvoiceSchema < ApplicationSchema
     end
   end
 end

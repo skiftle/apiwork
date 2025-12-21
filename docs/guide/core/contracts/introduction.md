@@ -73,8 +73,8 @@ You rarely need this, but contracts work standalone:
 
 ```ruby
 contract = PostContract.new(
-  query: params,
-  body: request.body,
+  query: request.query_parameters.deep_symbolize_keys,
+  body: request.request_parameters.deep_symbolize_keys,
   action: :create
 )
 

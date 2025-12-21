@@ -54,11 +54,11 @@ end
 
 Each option controls one thing:
 
-| Option | What it does |
-|--------|--------------|
-| `writable: true` | Field can be set in create/update requests |
+| Option             | What it does                                         |
+| ------------------ | ---------------------------------------------------- |
+| `writable: true`   | Field can be set in create/update requests           |
 | `filterable: true` | Field can be filtered via `?filter[field][op]=value` |
-| `sortable: true` | Field can be sorted via `?sort[field]=asc` |
+| `sortable: true`   | Field can be sorted via `?sort[field]=asc`           |
 
 ::: tip
 You don't need to specify types. Apiwork reads your database columns and infers types, nullability, and defaults automatically.
@@ -125,8 +125,8 @@ Controllers look like regular Rails controllers with two key differences:
 
 ```ruby
 def create
-  post = Post.create!(contract.body[:post])
-  respond post, status: :created
+  post = Post.create(contract.body[:post])
+  respond post
 end
 ```
 
