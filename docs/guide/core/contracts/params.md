@@ -23,45 +23,35 @@ param :id, type: :uuid
 
 [Types](../type-system/types.md) has the full list with formatting options.
 
-## Required & Optional
+## Required, Optional & Nullable
 
-Fields are required by default.
+Three options control field presence:
 
-::: tip Why required by default?
-This matches TypeScript conventions and catches missing fields early. Explicitly mark optional fields with `optional: true`.
-:::
+| Option           | Field omitted | Field is `null` | Use case         |
+| ---------------- | ------------- | --------------- | ---------------- |
+| (default)        | Error         | Error           | Required fields  |
+| `optional: true` | OK            | Error           | Optional fields  |
+| `nullable: true` | Error         | OK              | Clearable fields |
+| Both             | OK            | OK              | Fully optional   |
 
 ```ruby
-# Required (default)
-param :title, type: :string
-
-# Explicitly optional
-param :notes, type: :string, optional: true
-
-# Works the same in query blocks
-query do
-  param :id, type: :uuid                        # required
-  param :page, type: :integer, optional: true   # optional
-end
+param :title, type: :string                                     # required
+param :notes, type: :string, optional: true                     # can omit
+param :deleted_at, type: :datetime, nullable: true              # can be null
+param :metadata, type: :object, optional: true, nullable: true  # can omit or null
 ```
 
-## Default Values
+### Defaults
 
-When a param is omitted, use a default:
+When a field is omitted, use a default value:
 
 ```ruby
-param :published, type: :boolean, default: false
 param :status, type: :string, default: 'draft'
+param :count, type: :integer, default: 0
 param :tags, type: :array, default: []
 ```
 
-## Nullable
-
-Sometimes you want to explicitly accept `null`:
-
-```ruby
-param :archived_at, type: :datetime, nullable: true
-```
+When validation fails, Apiwork returns a [contract error](../errors/contract-errors.md) with codes like `field_missing` or `value_null`.
 
 ## Enums
 
@@ -106,6 +96,8 @@ Or array size:
 param :tags, type: :array, min: 1, max: 10
 ```
 
+See [contract errors](../errors/contract-errors.md) for the validation error codes (`string_too_short`, `array_too_large`, etc.).
+
 ## Arrays
 
 Arrays use `of:` to specify element type:
@@ -126,7 +118,7 @@ end
 
 ## Nested Objects
 
-Objects can nest as deep as you need:
+Objects can nest up to 10 levels deep:
 
 ```ruby
 param :post, type: :object do
@@ -139,15 +131,17 @@ param :post, type: :object do
 end
 ```
 
+Requests exceeding the depth limit receive a `max_depth_exceeded` error.
+
 ## Alias
 
 When the API name differs from your internal name, use `as:`:
 
 ```ruby
-param :userName, type: :string, as: :user_name
+param :lines_attributes, type: :string, as: :lines
 ```
 
-Clients send `userName`, but your code receives `user_name`.
+Clients send `lines`, but your code receives `lines_attributes`.
 
 ## Custom Types
 
