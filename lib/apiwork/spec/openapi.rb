@@ -519,9 +519,9 @@ module Apiwork
         return nil unless type # Return nil for nil type
 
         case type.to_sym
-        when :string, :text then 'string'
+        when :string then 'string'
         when :integer then 'integer'
-        when :float, :decimal, :number then 'number'
+        when :float, :decimal then 'number'
         when :boolean then 'boolean'
         when :date, :datetime, :time, :uuid then 'string'
         when :json then 'object'
@@ -571,7 +571,7 @@ module Apiwork
       end
 
       def numeric_type?(type)
-        [:integer, :float, :decimal, :number].include?(type&.to_sym)
+        [:integer, :float, :decimal].include?(type&.to_sym)
       end
     end
   end

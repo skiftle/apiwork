@@ -5,12 +5,10 @@ module Apiwork
     class ZodMapper
       TYPE_MAP = {
         string: 'z.string()',
-        text: 'z.string()',
         uuid: 'z.uuid()',
         integer: 'z.number().int()',
         float: 'z.number()',
         decimal: 'z.number()',
-        number: 'z.number()',
         boolean: 'z.boolean()',
         date: 'z.iso.date()',
         datetime: 'z.iso.datetime()',
@@ -317,7 +315,7 @@ module Apiwork
       end
 
       def numeric_type?(type)
-        [:integer, :float, :decimal, :number].include?(type&.to_sym)
+        [:integer, :float, :decimal].include?(type&.to_sym)
       end
 
       def transform_key(key)

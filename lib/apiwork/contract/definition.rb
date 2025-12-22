@@ -93,6 +93,7 @@ module Apiwork
         end
 
         type ||= :string
+        validate_type!(type)
         raise ArgumentError, 'discriminator can only be used with type: :union' if discriminator && type != :union
 
         visited_types = visited_types || @visited_types || Set.new
@@ -931,10 +932,19 @@ module Apiwork
         nil
       end
 
-      NUMERIC_TYPES = Set[:integer, :float, :decimal, :number].freeze
+      NUMERIC_TYPES = Set[:integer, :float, :decimal].freeze
+
+      REMOVED_ALIASES = { text: :string, number: :float }.freeze
 
       def numeric_type?(type)
         NUMERIC_TYPES.include?(type&.to_sym)
+      end
+
+      def validate_type!(type)
+        return unless type
+        return unless REMOVED_ALIASES.key?(type.to_sym)
+
+        raise ArgumentError, "Unknown type :#{type}, did you mean :#{REMOVED_ALIASES[type.to_sym]}?"
       end
     end
   end

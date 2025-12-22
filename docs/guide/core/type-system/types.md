@@ -20,13 +20,6 @@ Primitive types are the building blocks. Every param uses one of these.
 | `:time` | `Time` | `string` | `z.iso.time()` |
 | `:uuid` | `String` (UUID format) | `string` | `z.uuid()` |
 
-## Aliases
-
-| Type | Alias for |
-|------|-----------|
-| `:text` | `:string` |
-| `:number` | `:float` |
-
 ## Special Types
 
 | Type | Purpose | TypeScript | Zod |

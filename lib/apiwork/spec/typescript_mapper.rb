@@ -219,9 +219,9 @@ module Apiwork
 
       def map_primitive(type)
         case type.to_sym
-        when :string, :text, :uuid, :date, :datetime, :time, :binary
+        when :string, :uuid, :date, :datetime, :time, :binary
           'string'
-        when :integer, :float, :decimal, :number
+        when :integer, :float, :decimal
           'number'
         when :boolean
           'boolean'
