@@ -521,6 +521,22 @@ module Apiwork
             result[name] = definition.decode(result[name])
           end
 
+          association_definitions.each do |name, definition|
+            next unless result.key?(name)
+
+            schema_class = definition.schema_class
+            next unless schema_class
+
+            value = result[name]
+            result[name] = if definition.collection? && value.is_a?(Array)
+                             value.map { |item| schema_class.deserialize(item) }
+                           elsif value.is_a?(Hash)
+                             schema_class.deserialize(value)
+                           else
+                             value
+                           end
+          end
+
           result
         end
 

@@ -95,4 +95,90 @@ RSpec.describe 'Schema.deserialize' do
       expect(original[:email]).to eq('  UPPER@TEST.COM  ')
     end
   end
+
+  describe 'nested associations' do
+    let(:line_schema) do
+      Class.new(Apiwork::Schema::Base) do
+        abstract!
+        attribute :description, type: :string
+        attribute :amount, decode: ->(v) { BigDecimal(v.to_s) }
+      end
+    end
+
+    let(:customer_schema) do
+      Class.new(Apiwork::Schema::Base) do
+        abstract!
+        attribute :name, type: :string
+        attribute :email, decode: ->(v) { v&.downcase&.strip }
+      end
+    end
+
+    let(:invoice_schema) do
+      line = line_schema
+      customer = customer_schema
+      Class.new(Apiwork::Schema::Base) do
+        abstract!
+        attribute :number, type: :string
+        attribute :email, decode: ->(v) { v&.downcase&.strip }
+        has_many :lines, schema: line
+        has_one :customer, schema: customer
+      end
+    end
+
+    it 'deserializes nested has_many associations' do
+      input = {
+        number: 'INV-001',
+        email: '  USER@EXAMPLE.COM  ',
+        lines: [
+          { description: 'Widget', amount: '99.99' },
+          { description: 'Gadget', amount: '49.99' }
+        ]
+      }
+
+      result = invoice_schema.deserialize(input)
+
+      expect(result[:email]).to eq('user@example.com')
+      expect(result[:lines][0][:amount]).to eq(BigDecimal('99.99'))
+      expect(result[:lines][1][:amount]).to eq(BigDecimal('49.99'))
+    end
+
+    it 'deserializes nested has_one associations' do
+      input = {
+        number: 'INV-001',
+        customer: { name: 'Acme', email: '  ACME@EXAMPLE.COM  ' }
+      }
+
+      result = invoice_schema.deserialize(input)
+
+      expect(result[:customer][:email]).to eq('acme@example.com')
+    end
+
+    it 'handles nil association values' do
+      input = { number: 'INV-001', customer: nil, lines: nil }
+
+      result = invoice_schema.deserialize(input)
+
+      expect(result[:customer]).to be_nil
+      expect(result[:lines]).to be_nil
+    end
+
+    it 'handles empty array for has_many' do
+      input = { number: 'INV-001', lines: [] }
+
+      result = invoice_schema.deserialize(input)
+
+      expect(result[:lines]).to eq([])
+    end
+
+    it 'skips associations without schema_class' do
+      schema_without_explicit = Class.new(Apiwork::Schema::Base) do
+        abstract!
+        attribute :title, type: :string
+      end
+
+      result = schema_without_explicit.deserialize({ title: 'Test' })
+
+      expect(result[:title]).to eq('Test')
+    end
+  end
 end

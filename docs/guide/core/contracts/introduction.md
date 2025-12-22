@@ -4,9 +4,9 @@ order: 1
 
 # Introduction
 
-Contracts define what goes in and what comes out of each endpoint.
+Contracts define what goes in and what comes out of each resource action.
 
-You declare the shape of requests and responses. Apiwork validates incoming data, rejects anything that doesn't match, and checks responses in development.
+You declare the shape of requests and responses. Apiwork validates incoming data, rejects anything that doesn’t match, and logs response mismatches in development.
 
 ## A Minimal Contract
 
