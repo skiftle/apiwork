@@ -1,10 +1,10 @@
 ---
-order: 999
+order: 13
 ---
 
-# Curious Cat
+# Inline Type Definitions
 
-Complete example with API, models, schemas, contracts, and controllers.
+Define typed JSON columns with object shapes, arrays, and nested structures
 
 ## API Definition
 
@@ -26,11 +26,11 @@ Complete example with API, models, schemas, contracts, and controllers.
 | id | string |  |  |
 | name | string |  |  |
 | email | string |  |  |
-| settings | json | ✓ |  |
-| tags | json | ✓ |  |
-| addresses | json | ✓ |  |
-| preferences | json | ✓ |  |
-| metadata | json | ✓ |  |
+| settings | json |  | {} |
+| tags | json |  | [] |
+| addresses | json |  | [] |
+| preferences | json |  | {} |
+| metadata | json |  | {} |
 | created_at | datetime |  |  |
 | updated_at | datetime |  |  |
 
@@ -41,6 +41,14 @@ Complete example with API, models, schemas, contracts, and controllers.
 <small>`app/schemas/curious_cat/profile_schema.rb`</small>
 
 <<< @/playground/app/schemas/curious_cat/profile_schema.rb
+
+The schema demonstrates all inline type variants:
+
+- **Object shape** (`settings`) — Define properties with `param` inside the block
+- **Array of primitives** (`tags`) — Use `type: :array, of: :string`
+- **Array of objects** (`addresses`) — Use `type: :array` with a block defining the element shape
+- **Nested objects** (`preferences`) — Use `param :name, type: :object do ... end` for sub-objects
+- **Untyped JSON** (`metadata`) — Use `type: :json` for `Record<string, any>`
 
 ## Contracts
 
@@ -53,6 +61,164 @@ Complete example with API, models, schemas, contracts, and controllers.
 <small>`app/controllers/curious_cat/profiles_controller.rb`</small>
 
 <<< @/playground/app/controllers/curious_cat/profiles_controller.rb
+
+---
+
+## Request Examples
+
+<details>
+<summary>Create a profile with all inline types</summary>
+
+**Request**
+
+```http
+POST /curious_cat/profiles
+Content-Type: application/json
+
+{
+  "profile": {
+    "name": "Alice",
+    "email": "alice@example.com",
+    "settings": {
+      "theme": "dark",
+      "notifications": true,
+      "language": "en"
+    },
+    "tags": ["developer", "typescript"],
+    "addresses": [
+      {
+        "street": "123 Main St",
+        "city": "Stockholm",
+        "zip": "12345",
+        "primary": true
+      }
+    ],
+    "preferences": {
+      "ui": {
+        "theme": "compact",
+        "sidebarCollapsed": false
+      },
+      "notifications": {
+        "email": true,
+        "push": false
+      }
+    },
+    "metadata": {
+      "source": "api",
+      "version": 2
+    }
+  }
+}
+```
+
+**Response** `201`
+
+```json
+{
+  "profile": {
+    "id": "abc123",
+    "name": "Alice",
+    "email": "alice@example.com",
+    "settings": {
+      "theme": "dark",
+      "notifications": true,
+      "language": "en"
+    },
+    "tags": ["developer", "typescript"],
+    "addresses": [
+      {
+        "street": "123 Main St",
+        "city": "Stockholm",
+        "zip": "12345",
+        "primary": true
+      }
+    ],
+    "preferences": {
+      "ui": {
+        "theme": "compact",
+        "sidebarCollapsed": false
+      },
+      "notifications": {
+        "email": true,
+        "push": false
+      }
+    },
+    "metadata": {
+      "source": "api",
+      "version": 2
+    },
+    "createdAt": "2024-01-15T10:30:00.000Z",
+    "updatedAt": "2024-01-15T10:30:00.000Z"
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>Update with partial inline types</summary>
+
+**Request**
+
+```http
+PATCH /curious_cat/profiles/abc123
+Content-Type: application/json
+
+{
+  "profile": {
+    "settings": {
+      "theme": "light",
+      "notifications": false,
+      "language": "sv"
+    },
+    "tags": ["developer", "ruby", "rails"]
+  }
+}
+```
+
+**Response** `200`
+
+```json
+{
+  "profile": {
+    "id": "abc123",
+    "name": "Alice",
+    "email": "alice@example.com",
+    "settings": {
+      "theme": "light",
+      "notifications": false,
+      "language": "sv"
+    },
+    "tags": ["developer", "ruby", "rails"],
+    "addresses": [
+      {
+        "street": "123 Main St",
+        "city": "Stockholm",
+        "zip": "12345",
+        "primary": true
+      }
+    ],
+    "preferences": {
+      "ui": {
+        "theme": "compact",
+        "sidebarCollapsed": false
+      },
+      "notifications": {
+        "email": true,
+        "push": false
+      }
+    },
+    "metadata": {
+      "source": "api",
+      "version": 2
+    },
+    "createdAt": "2024-01-15T10:30:00.000Z",
+    "updatedAt": "2024-01-15T11:00:00.000Z"
+  }
+}
+```
+
+</details>
 
 ---
 

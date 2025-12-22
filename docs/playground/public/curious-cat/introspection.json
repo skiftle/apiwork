@@ -61,8 +61,7 @@
             "zip": {
               "type": "string"
             }
-          },
-          "nullable": true
+          }
         },
         "created_at": {
           "type": "datetime"
@@ -75,8 +74,7 @@
           "type": "string"
         },
         "metadata": {
-          "type": "object",
-          "nullable": true
+          "type": "object"
         },
         "name": {
           "type": "string"
@@ -106,8 +104,7 @@
                 }
               }
             }
-          },
-          "nullable": true
+          }
         },
         "settings": {
           "type": "object",
@@ -121,13 +118,11 @@
             "theme": {
               "type": "string"
             }
-          },
-          "nullable": true
+          }
         },
         "tags": {
           "type": "array",
-          "of": "string",
-          "nullable": true
+          "of": "string"
         },
         "updated_at": {
           "type": "datetime"
@@ -153,7 +148,6 @@
               "type": "string"
             }
           },
-          "nullable": true,
           "optional": true
         },
         "email": {
@@ -162,7 +156,6 @@
         },
         "metadata": {
           "type": "object",
-          "nullable": true,
           "optional": true
         },
         "name": {
@@ -194,7 +187,6 @@
               }
             }
           },
-          "nullable": true,
           "optional": true
         },
         "settings": {
@@ -210,13 +202,11 @@
               "type": "string"
             }
           },
-          "nullable": true,
           "optional": true
         },
         "tags": {
           "type": "array",
           "of": "string",
-          "nullable": true,
           "optional": true
         }
       }
@@ -256,7 +246,6 @@
               "type": "string"
             }
           },
-          "nullable": true,
           "optional": true
         },
         "email": {
@@ -265,7 +254,6 @@
         },
         "metadata": {
           "type": "object",
-          "nullable": true,
           "optional": true
         },
         "name": {
@@ -297,7 +285,6 @@
               }
             }
           },
-          "nullable": true,
           "optional": true
         },
         "settings": {
@@ -313,13 +300,11 @@
               "type": "string"
             }
           },
-          "nullable": true,
           "optional": true
         },
         "tags": {
           "type": "array",
           "of": "string",
-          "nullable": true,
           "optional": true
         }
       }

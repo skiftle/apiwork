@@ -16,26 +16,26 @@ export const OffsetPaginationSchema = z.object({
 });
 
 export const ProfileSchema = z.object({
-  addresses: z.array(z.object({ city: z.string(), primary: z.boolean(), street: z.string(), zip: z.string() })).nullable(),
+  addresses: z.array(z.object({ city: z.string(), primary: z.boolean(), street: z.string(), zip: z.string() })),
   createdAt: z.iso.datetime(),
   email: z.email(),
   id: z.string(),
-  metadata: z.object({}).nullable(),
+  metadata: z.object({}),
   name: z.string(),
-  preferences: z.object({ notifications: z.object({ email: z.boolean(), push: z.boolean() }), ui: z.object({ sidebarCollapsed: z.boolean(), theme: z.string() }) }).nullable(),
-  settings: z.object({ language: z.string(), notifications: z.boolean(), theme: z.string() }).nullable(),
-  tags: z.array(z.string()).nullable(),
+  preferences: z.object({ notifications: z.object({ email: z.boolean(), push: z.boolean() }), ui: z.object({ sidebarCollapsed: z.boolean(), theme: z.string() }) }),
+  settings: z.object({ language: z.string(), notifications: z.boolean(), theme: z.string() }),
+  tags: z.array(z.string()),
   updatedAt: z.iso.datetime()
 });
 
 export const ProfileCreatePayloadSchema = z.object({
-  addresses: z.array(z.object({ city: z.string(), primary: z.boolean(), street: z.string(), zip: z.string() })).nullable().optional(),
+  addresses: z.array(z.object({ city: z.string(), primary: z.boolean(), street: z.string(), zip: z.string() })).optional(),
   email: z.email(),
-  metadata: z.object({}).nullable().optional(),
+  metadata: z.object({}).optional(),
   name: z.string(),
-  preferences: z.object({ notifications: z.object({ email: z.boolean(), push: z.boolean() }), ui: z.object({ sidebarCollapsed: z.boolean(), theme: z.string() }) }).nullable().optional(),
-  settings: z.object({ language: z.string(), notifications: z.boolean(), theme: z.string() }).nullable().optional(),
-  tags: z.array(z.string()).nullable().optional()
+  preferences: z.object({ notifications: z.object({ email: z.boolean(), push: z.boolean() }), ui: z.object({ sidebarCollapsed: z.boolean(), theme: z.string() }) }).optional(),
+  settings: z.object({ language: z.string(), notifications: z.boolean(), theme: z.string() }).optional(),
+  tags: z.array(z.string()).optional()
 });
 
 export const ProfilePageSchema = z.object({
@@ -44,13 +44,13 @@ export const ProfilePageSchema = z.object({
 });
 
 export const ProfileUpdatePayloadSchema = z.object({
-  addresses: z.array(z.object({ city: z.string().optional(), primary: z.boolean().optional(), street: z.string().optional(), zip: z.string().optional() })).nullable(),
+  addresses: z.array(z.object({ city: z.string().optional(), primary: z.boolean().optional(), street: z.string().optional(), zip: z.string().optional() })),
   email: z.email().optional(),
-  metadata: z.object({}).nullable().optional(),
+  metadata: z.object({}).optional(),
   name: z.string().optional(),
-  preferences: z.object({ notifications: z.object({ email: z.boolean().optional(), push: z.boolean().optional() }), ui: z.object({ sidebarCollapsed: z.boolean().optional(), theme: z.string().optional() }) }).nullable(),
-  settings: z.object({ language: z.string().optional(), notifications: z.boolean().optional(), theme: z.string().optional() }).nullable(),
-  tags: z.array(z.string()).nullable().optional()
+  preferences: z.object({ notifications: z.object({ email: z.boolean().optional(), push: z.boolean().optional() }), ui: z.object({ sidebarCollapsed: z.boolean().optional(), theme: z.string().optional() }) }),
+  settings: z.object({ language: z.string().optional(), notifications: z.boolean().optional(), theme: z.string().optional() }),
+  tags: z.array(z.string()).optional()
 });
 
 export const ProfilesIndexRequestQuerySchema = z.object({
@@ -119,26 +119,26 @@ export interface OffsetPagination {
 }
 
 export interface Profile {
-  addresses: null | { city: string; primary: boolean; street: string; zip: string }[];
+  addresses: { city: string; primary: boolean; street: string; zip: string }[];
   createdAt: string;
   email: string;
   id: string;
-  metadata: null | object;
+  metadata: object;
   name: string;
-  preferences: null | { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
-  settings: null | { language: string; notifications: boolean; theme: string };
-  tags: null | string[];
+  preferences: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
+  settings: { language: string; notifications: boolean; theme: string };
+  tags: string[];
   updatedAt: string;
 }
 
 export interface ProfileCreatePayload {
-  addresses?: null | { city: string; primary: boolean; street: string; zip: string }[];
+  addresses?: { city: string; primary: boolean; street: string; zip: string }[];
   email: string;
-  metadata?: null | object;
+  metadata?: object;
   name: string;
-  preferences?: null | { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
-  settings?: null | { language: string; notifications: boolean; theme: string };
-  tags?: null | string[];
+  preferences?: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
+  settings?: { language: string; notifications: boolean; theme: string };
+  tags?: string[];
 }
 
 export interface ProfilePage {
@@ -147,13 +147,13 @@ export interface ProfilePage {
 }
 
 export interface ProfileUpdatePayload {
-  addresses?: null | { city: string; primary: boolean; street: string; zip: string }[];
+  addresses?: { city: string; primary: boolean; street: string; zip: string }[];
   email?: string;
-  metadata?: null | object;
+  metadata?: object;
   name?: string;
-  preferences?: null | { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
-  settings?: null | { language: string; notifications: boolean; theme: string };
-  tags?: null | string[];
+  preferences?: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
+  settings?: { language: string; notifications: boolean; theme: string };
+  tags?: string[];
 }
 
 export interface ProfilesCreateRequest {

@@ -5,11 +5,11 @@ class CreateCuriousCatTables < ActiveRecord::Migration[8.1]
     create_table :curious_cat_profiles, id: :string do |t|
       t.string :name, null: false
       t.string :email, null: false
-      t.json :settings
-      t.json :tags
-      t.json :addresses
-      t.json :preferences
-      t.json :metadata
+      t.json :settings, null: false, default: {}
+      t.json :tags, null: false, default: []
+      t.json :addresses, null: false, default: []
+      t.json :preferences, null: false, default: {}
+      t.json :metadata, null: false, default: {}
       t.timestamps
     end
   end

@@ -190,9 +190,7 @@ components:
       type: object
       properties:
         addresses:
-          type:
-          - array
-          - 'null'
+          type: array
           items:
             type: object
             properties:
@@ -218,16 +216,12 @@ components:
         id:
           type: string
         metadata:
-          type:
-          - object
-          - 'null'
+          type: object
           properties: {}
         name:
           type: string
         preferences:
-          type:
-          - object
-          - 'null'
+          type: object
           properties:
             notifications:
               type: object
@@ -253,9 +247,7 @@ components:
           - notifications
           - ui
         settings:
-          type:
-          - object
-          - 'null'
+          type: object
           properties:
             language:
               type: string
@@ -268,9 +260,7 @@ components:
           - notifications
           - theme
         tags:
-          type:
-          - array
-          - 'null'
+          type: array
           items:
             type: string
         updatedAt:
@@ -291,9 +281,7 @@ components:
       type: object
       properties:
         addresses:
-          type:
-          - array
-          - 'null'
+          type: array
           items:
             type: object
             properties:
@@ -314,16 +302,12 @@ components:
           type: string
           format: email
         metadata:
-          type:
-          - object
-          - 'null'
+          type: object
           properties: {}
         name:
           type: string
         preferences:
-          type:
-          - object
-          - 'null'
+          type: object
           properties:
             notifications:
               type: object
@@ -349,9 +333,7 @@ components:
           - notifications
           - ui
         settings:
-          type:
-          - object
-          - 'null'
+          type: object
           properties:
             language:
               type: string
@@ -364,9 +346,7 @@ components:
           - notifications
           - theme
         tags:
-          type:
-          - array
-          - 'null'
+          type: array
           items:
             type: string
       required:
@@ -386,9 +366,7 @@ components:
       type: object
       properties:
         addresses:
-          type:
-          - array
-          - 'null'
+          type: array
           items:
             type: object
             properties:
@@ -409,16 +387,12 @@ components:
           type: string
           format: email
         metadata:
-          type:
-          - object
-          - 'null'
+          type: object
           properties: {}
         name:
           type: string
         preferences:
-          type:
-          - object
-          - 'null'
+          type: object
           properties:
             notifications:
               type: object
@@ -444,9 +418,7 @@ components:
           - notifications
           - ui
         settings:
-          type:
-          - object
-          - 'null'
+          type: object
           properties:
             language:
               type: string
@@ -459,9 +431,7 @@ components:
           - notifications
           - theme
         tags:
-          type:
-          - array
-          - 'null'
+          type: array
           items:
             type: string
       required:

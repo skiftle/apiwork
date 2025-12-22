@@ -14,26 +14,26 @@ export interface OffsetPagination {
 }
 
 export interface Profile {
-  addresses: null | { city: string; primary: boolean; street: string; zip: string }[];
+  addresses: { city: string; primary: boolean; street: string; zip: string }[];
   createdAt: string;
   email: string;
   id: string;
-  metadata: null | object;
+  metadata: object;
   name: string;
-  preferences: null | { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
-  settings: null | { language: string; notifications: boolean; theme: string };
-  tags: null | string[];
+  preferences: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
+  settings: { language: string; notifications: boolean; theme: string };
+  tags: string[];
   updatedAt: string;
 }
 
 export interface ProfileCreatePayload {
-  addresses?: null | { city: string; primary: boolean; street: string; zip: string }[];
+  addresses?: { city: string; primary: boolean; street: string; zip: string }[];
   email: string;
-  metadata?: null | object;
+  metadata?: object;
   name: string;
-  preferences?: null | { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
-  settings?: null | { language: string; notifications: boolean; theme: string };
-  tags?: null | string[];
+  preferences?: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
+  settings?: { language: string; notifications: boolean; theme: string };
+  tags?: string[];
 }
 
 export interface ProfilePage {
@@ -42,13 +42,13 @@ export interface ProfilePage {
 }
 
 export interface ProfileUpdatePayload {
-  addresses?: null | { city: string; primary: boolean; street: string; zip: string }[];
+  addresses?: { city: string; primary: boolean; street: string; zip: string }[];
   email?: string;
-  metadata?: null | object;
+  metadata?: object;
   name?: string;
-  preferences?: null | { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
-  settings?: null | { language: string; notifications: boolean; theme: string };
-  tags?: null | string[];
+  preferences?: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
+  settings?: { language: string; notifications: boolean; theme: string };
+  tags?: string[];
 }
 
 export interface ProfilesCreateRequest {
