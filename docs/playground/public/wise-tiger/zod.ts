@@ -170,21 +170,34 @@ export interface OffsetPagination {
 }
 
 export interface Project {
+  /** Timestamp when project was created */
   createdAt: string;
+  /** Target completion date */
   deadline: null | string;
+  /** Detailed project description */
   description: null | string;
+  /** Unique project identifier */
   id: string;
+  /** Human-readable project name */
   name: string;
+  /** Project priority for resource allocation */
   priority: ProjectPriority | null;
+  /** Current project lifecycle status */
   status: ProjectStatus | null;
+  /** Timestamp of last modification */
   updatedAt: string;
 }
 
 export interface ProjectCreatePayload {
+  /** Target completion date */
   deadline?: null | string;
+  /** Detailed project description */
   description?: null | string;
+  /** Human-readable project name */
   name: string;
+  /** Project priority for resource allocation */
   priority?: ProjectPriority | null;
+  /** Current project lifecycle status */
   status?: ProjectStatus | null;
 }
 
@@ -192,7 +205,9 @@ export interface ProjectFilter {
   _and?: ProjectFilter[];
   _not?: ProjectFilter;
   _or?: ProjectFilter[];
+  /** Project priority for resource allocation */
   priority?: ProjectPriorityFilter;
+  /** Current project lifecycle status */
   status?: ProjectStatusFilter;
 }
 
@@ -206,7 +221,9 @@ export type ProjectPriority = 'critical' | 'high' | 'low' | 'medium';
 export type ProjectPriorityFilter = ProjectPriority | { eq?: ProjectPriority; in?: ProjectPriority[] };
 
 export interface ProjectSort {
+  /** Timestamp when project was created */
   createdAt?: SortDirection;
+  /** Target completion date */
   deadline?: SortDirection;
 }
 
@@ -215,10 +232,15 @@ export type ProjectStatus = 'active' | 'archived' | 'completed' | 'paused';
 export type ProjectStatusFilter = ProjectStatus | { eq?: ProjectStatus; in?: ProjectStatus[] };
 
 export interface ProjectUpdatePayload {
+  /** Target completion date */
   deadline?: null | string;
+  /** Detailed project description */
   description?: null | string;
+  /** Human-readable project name */
   name?: string;
+  /** Project priority for resource allocation */
   priority?: ProjectPriority | null;
+  /** Current project lifecycle status */
   status?: ProjectStatus | null;
 }
 

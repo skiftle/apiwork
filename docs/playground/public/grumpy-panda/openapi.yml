@@ -154,12 +154,14 @@ components:
           type: string
         createdAt:
           type: string
+          format: date-time
         id:
           type: string
         occurredAt:
           type:
           - string
           - 'null'
+          format: date-time
       required:
       - action
       - createdAt
@@ -174,6 +176,7 @@ components:
           type:
           - string
           - 'null'
+          format: date-time
       required:
       - action
     activityPage:
@@ -196,6 +199,7 @@ components:
           type:
           - string
           - 'null'
+          format: date-time
       required:
       - action
     cursorPagination:

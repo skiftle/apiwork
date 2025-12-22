@@ -318,6 +318,7 @@ components:
           description: Discussion comments on this task
         createdAt:
           type: string
+          format: date-time
           description: Timestamp when the task was created
         description:
           type:
@@ -329,6 +330,7 @@ components:
           type:
           - string
           - 'null'
+          format: date-time
           description: Target date for task completion
           example: '2024-02-01T00:00:00Z'
         id:
@@ -362,6 +364,7 @@ components:
           example: Implement user authentication
         updatedAt:
           type: string
+          format: date-time
           description: Timestamp of last modification
       description: A task representing work to be completed
       required:
@@ -387,6 +390,7 @@ components:
           type:
           - string
           - 'null'
+          format: date-time
           description: Target date for task completion
           example: '2024-02-01T00:00:00Z'
         priority:
@@ -515,6 +519,7 @@ components:
           type:
           - string
           - 'null'
+          format: date-time
           description: Target date for task completion
           example: '2024-02-01T00:00:00Z'
         priority:

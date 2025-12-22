@@ -179,12 +179,14 @@ components:
           properties: {}
         createdAt:
           type: string
+          format: date-time
         id:
           type: string
         publishedOn:
           type:
           - string
           - 'null'
+          format: date
         rating:
           type:
           - number
@@ -201,6 +203,7 @@ components:
           type: string
         updatedAt:
           type: string
+          format: date-time
         viewCount:
           type:
           - integer
@@ -226,6 +229,7 @@ components:
           type:
           - string
           - 'null'
+          format: date
         status:
           type:
           - string
@@ -254,6 +258,7 @@ components:
         publishedOn:
           oneOf:
           - type: string
+            format: date
           - "$ref": "#/components/schemas/nullableDateFilter"
         rating:
           oneOf:
@@ -337,6 +342,7 @@ components:
           type:
           - string
           - 'null'
+          format: date
         status:
           type:
           - string
@@ -356,25 +362,32 @@ components:
           "$ref": "#/components/schemas/dateFilterBetween"
         eq:
           type: string
+          format: date
         gt:
           type: string
+          format: date
         gte:
           type: string
+          format: date
         in:
           type: array
           items:
             type: string
         lt:
           type: string
+          format: date
         lte:
           type: string
+          format: date
     dateFilterBetween:
       type: object
       properties:
         from:
           type: string
+          format: date
         to:
           type: string
+          format: date
     decimalFilter:
       type: object
       properties:
@@ -452,18 +465,23 @@ components:
           "$ref": "#/components/schemas/dateFilterBetween"
         eq:
           type: string
+          format: date
         gt:
           type: string
+          format: date
         gte:
           type: string
+          format: date
         in:
           type: array
           items:
             type: string
         lt:
           type: string
+          format: date
         lte:
           type: string
+          format: date
         'null':
           type: boolean
     nullableDecimalFilter:

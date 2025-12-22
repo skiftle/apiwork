@@ -575,6 +575,7 @@
   },
   "resources": {
     "vehicles": {
+      "identifier": "vehicles",
       "path": "vehicles",
       "actions": {
         "index": {

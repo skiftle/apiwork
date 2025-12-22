@@ -226,6 +226,7 @@ components:
       properties:
         createdAt:
           type: string
+          format: date-time
         id:
           type: string
         lineItems:
@@ -247,6 +248,7 @@ components:
           - 'null'
         updatedAt:
           type: string
+          format: date-time
       required:
       - createdAt
       - id

@@ -65,6 +65,7 @@
   },
   "resources": {
     "invoices": {
+      "identifier": "invoices",
       "path": "invoices",
       "actions": {
         "index": {

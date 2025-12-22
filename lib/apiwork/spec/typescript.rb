@@ -25,22 +25,28 @@ module Apiwork
 
         enums.each do |enum_name, enum_data|
           type_name = mapper.pascal_case(enum_name)
-          enum_values = enum_data[:values]
-          type_literal = enum_values.sort.map { |v| "'#{v}'" }.join(' | ')
-          all_types << { name: type_name, code: "export type #{type_name} = #{type_literal};" }
+          code = mapper.build_enum_type(enum_name, enum_data)
+          all_types << { name: type_name, code: }
         end
 
         sorted_types = TypeAnalysis.topological_sort_types(types)
         sorted_types.each do |type_name, type_shape|
           type_name_pascal = mapper.pascal_case(type_name)
           code = if type_shape.is_a?(Hash) && type_shape[:type] == :union
-                   mapper.build_union_type(type_name, type_shape)
+                   mapper.build_union_type(type_name, type_shape, description: type_shape[:description])
                  else
                    action_name = type_name.to_s.end_with?('_update_payload') ? 'update' : nil
                    recursive = TypeAnalysis.circular_reference?(type_name, type_shape, filter: :custom_only)
-                   mapper.build_interface(type_name, type_shape, action_name: action_name, recursive: recursive)
+                   mapper.build_interface(
+                     type_name,
+                     type_shape,
+                     action_name:,
+                     recursive:,
+                     description: type_shape[:description],
+                     example: type_shape[:example]
+                   )
                  end
-          all_types << { name: type_name_pascal, code: code }
+          all_types << { name: type_name_pascal, code: }
         end
 
         each_resource do |resource_name, resource_data, parent_path|

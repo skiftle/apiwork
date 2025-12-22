@@ -604,6 +604,7 @@
   },
   "resources": {
     "articles": {
+      "identifier": "articles",
       "path": "articles",
       "actions": {
         "index": {

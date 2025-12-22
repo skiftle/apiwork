@@ -525,6 +525,7 @@
   },
   "resources": {
     "users": {
+      "identifier": "users",
       "path": "users",
       "actions": {
         "index": {
@@ -729,6 +730,7 @@
       }
     },
     "posts": {
+      "identifier": "posts",
       "path": "posts",
       "actions": {
         "index": {
@@ -907,6 +909,7 @@
       }
     },
     "comments": {
+      "identifier": "comments",
       "path": "comments",
       "actions": {
         "index": {

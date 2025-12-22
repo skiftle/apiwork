@@ -106,6 +106,7 @@
   },
   "resources": {
     "activities": {
+      "identifier": "activities",
       "path": "activities",
       "actions": {
         "index": {

@@ -132,10 +132,13 @@ components:
       properties:
         createdAt:
           type: string
+          format: date-time
         id:
           type: string
+          format: uuid
         issuedOn:
           type: string
+          format: date
         notes:
           type: string
         number:
@@ -144,6 +147,7 @@ components:
           type: string
         updatedAt:
           type: string
+          format: date-time
       required:
       - createdAt
       - id
@@ -157,6 +161,7 @@ components:
       properties:
         issuedOn:
           type: string
+          format: date
         notes:
           type: string
         number:

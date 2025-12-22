@@ -353,11 +353,9 @@ RSpec.describe Apiwork::Spec::Typescript do
       expect(metadata_output).to include("export type Status = 'active' | 'inactive'")
     end
 
-    it 'does not include metadata fields in TypeScript output' do
-      # TypeScript generator doesn't output JSDoc comments from metadata
-      # (Could be a future enhancement, but not required now)
-      expect(metadata_output).not_to include('Type with description')
-      expect(metadata_output).not_to include('Status enum')
+    it 'includes metadata as JSDoc comments' do
+      expect(metadata_output).to include("/**\n * Type with description\n */")
+      expect(metadata_output).to include("/**\n * Status enum\n */")
     end
 
     it 'handles deprecated flag without errors' do
@@ -395,6 +393,52 @@ RSpec.describe Apiwork::Spec::Typescript do
     it 'maintains enum value sorting with metadata present' do
       # Enum values should still be sorted alphabetically
       expect(metadata_output).to include("'active' | 'inactive'")
+    end
+
+    it 'includes property descriptions as JSDoc' do
+      Apiwork::API.define '/api/ts_prop_desc' do
+        type :invoice do
+          param :amount, type: :decimal, description: 'Total amount in cents'
+          param :currency, type: :string
+        end
+      end
+
+      output = Apiwork::Spec.generate(:typescript, '/api/ts_prop_desc')
+
+      expect(output).to include('/** Total amount in cents */')
+      expect(output).not_to include('/** currency')
+
+      Apiwork::API.unregister('/api/ts_prop_desc')
+    end
+
+    it 'includes @example in JSDoc when example provided' do
+      Apiwork::API.define '/api/ts_example' do
+        type :price, description: 'Price object', example: { amount: 99 } do
+          param :amount, type: :integer, example: 99
+        end
+      end
+
+      output = Apiwork::Spec.generate(:typescript, '/api/ts_example')
+
+      expect(output).to include('@example {:amount=>99}')
+      expect(output).to include('@example 99')
+
+      Apiwork::API.unregister('/api/ts_example')
+    end
+
+    it 'does not generate empty JSDoc when no description' do
+      Apiwork::API.define '/api/ts_no_desc' do
+        type :simple do
+          param :value, type: :string
+        end
+      end
+
+      output = Apiwork::Spec.generate(:typescript, '/api/ts_no_desc')
+
+      expect(output).not_to include('/**')
+      expect(output).to include('export interface Simple')
+
+      Apiwork::API.unregister('/api/ts_no_desc')
     end
   end
 

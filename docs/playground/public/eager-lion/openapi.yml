@@ -212,6 +212,7 @@ components:
       properties:
         createdAt:
           type: string
+          format: date-time
         customer:
           type: object
           properties: {}
@@ -223,6 +224,7 @@ components:
           type:
           - string
           - 'null'
+          format: date
         lines:
           type: array
           items:
@@ -239,6 +241,7 @@ components:
           - 'null'
         updatedAt:
           type: string
+          format: date-time
       required:
       - createdAt
       - customer
@@ -259,6 +262,7 @@ components:
           type:
           - string
           - 'null'
+          format: date
         lines:
           type: array
           items:
@@ -335,6 +339,7 @@ components:
           type:
           - string
           - 'null'
+          format: date
         lines:
           type: array
           items:

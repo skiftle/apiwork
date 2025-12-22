@@ -247,11 +247,13 @@ components:
       properties:
         createdAt:
           type: string
+          format: date-time
           description: Timestamp when project was created
         deadline:
           type:
           - string
           - 'null'
+          format: date
           description: Target completion date
         description:
           type:
@@ -286,6 +288,7 @@ components:
           - archived
         updatedAt:
           type: string
+          format: date-time
           description: Timestamp of last modification
       required:
       - createdAt
@@ -303,6 +306,7 @@ components:
           type:
           - string
           - 'null'
+          format: date
           description: Target completion date
         description:
           type:
@@ -423,6 +427,7 @@ components:
           type:
           - string
           - 'null'
+          format: date
           description: Target completion date
         description:
           type:

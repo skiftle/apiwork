@@ -19,6 +19,7 @@ paths:
                     type: string
                   timestamp:
                     type: string
+                    format: date-time
                   version:
                     type: string
                 required:

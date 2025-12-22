@@ -661,10 +661,12 @@ components:
           - 'null'
         createdAt:
           type: string
+          format: date-time
         id:
           type: string
         updatedAt:
           type: string
+          format: date-time
         user:
           type: object
           properties: {}
@@ -752,6 +754,7 @@ components:
       properties:
         createdAt:
           type: string
+          format: date-time
         email:
           type: string
         id:
@@ -764,6 +767,7 @@ components:
           "$ref": "#/components/schemas/profile"
         updatedAt:
           type: string
+          format: date-time
         username:
           type: string
       required:

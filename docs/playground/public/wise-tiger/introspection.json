@@ -356,6 +356,7 @@
   },
   "resources": {
     "projects": {
+      "identifier": "projects",
       "path": "projects",
       "actions": {
         "index": {

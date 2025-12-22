@@ -131,6 +131,7 @@
   },
   "resources": {
     "contacts": {
+      "identifier": "contacts",
       "path": "contacts",
       "actions": {
         "index": {

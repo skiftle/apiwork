@@ -525,6 +525,7 @@
   },
   "resources": {
     "comments": {
+      "identifier": "comments",
       "path": "comments",
       "actions": {
         "index": {

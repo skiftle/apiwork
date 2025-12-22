@@ -22,6 +22,7 @@
   },
   "resources": {
     "status": {
+      "identifier": "status",
       "path": "status",
       "actions": {
         "health": {

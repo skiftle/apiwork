@@ -11,7 +11,7 @@ module Apiwork
         @key_format = key_format
       end
 
-      def build_interface(type_name, type_shape, action_name: nil, recursive: false)
+      def build_interface(type_name, type_shape, action_name: nil, recursive: false, description: nil, example: nil)
         type_name_pascal = pascal_case(type_name)
 
         fields = type_shape[:shape] || {}
@@ -23,17 +23,29 @@ module Apiwork
 
           ts_type = map_field(property_definition, action_name: action_name)
           optional_marker = update || optional ? '?' : ''
-          "  #{key}#{optional_marker}: #{ts_type};"
+
+          prop_jsdoc = jsdoc_property(
+            description: property_definition[:description],
+            example: property_definition[:example]
+          )
+          if prop_jsdoc
+            "  #{prop_jsdoc}\n  #{key}#{optional_marker}: #{ts_type};"
+          else
+            "  #{key}#{optional_marker}: #{ts_type};"
+          end
         end.join("\n")
 
-        if properties.empty?
-          "export type #{type_name_pascal} = object;"
-        else
-          "export interface #{type_name_pascal} {\n#{properties}\n}"
-        end
+        type_jsdoc = jsdoc(description:, example:)
+
+        code = if properties.empty?
+                 "export type #{type_name_pascal} = object;"
+               else
+                 "export interface #{type_name_pascal} {\n#{properties}\n}"
+               end
+        type_jsdoc ? "#{type_jsdoc}\n#{code}" : code
       end
 
-      def build_union_type(type_name, type_shape)
+      def build_union_type(type_name, type_shape, description: nil)
         type_name_pascal = pascal_case(type_name)
         variants = type_shape[:variants]
         discriminator = type_shape[:discriminator]
@@ -49,7 +61,19 @@ module Apiwork
           end
         end
 
-        "export type #{type_name_pascal} = #{variant_types.join(' | ')};"
+        code = "export type #{type_name_pascal} = #{variant_types.join(' | ')};"
+        type_jsdoc = jsdoc(description:)
+        type_jsdoc ? "#{type_jsdoc}\n#{code}" : code
+      end
+
+      def build_enum_type(enum_name, enum_data)
+        type_name = pascal_case(enum_name)
+        enum_values = enum_data[:values]
+        type_literal = enum_values.sort.map { |v| "'#{v}'" }.join(' | ')
+
+        code = "export type #{type_name} = #{type_literal};"
+        type_jsdoc = jsdoc(description: enum_data[:description])
+        type_jsdoc ? "#{type_jsdoc}\n#{code}" : code
       end
 
       def build_action_request_query_type(resource_name, action_name, query_params, parent_path: nil)
@@ -240,6 +264,25 @@ module Apiwork
 
       def pascal_case(name)
         name.to_s.camelize(:upper)
+      end
+
+      def jsdoc(description: nil, example: nil)
+        return nil if description.nil? && example.nil?
+
+        lines = ['/**']
+        lines << " * #{description}" if description
+        lines << " * @example #{example}" if example
+        lines << ' */'
+        lines.join("\n")
+      end
+
+      def jsdoc_property(description: nil, example: nil)
+        return nil if description.nil? && example.nil?
+
+        parts = []
+        parts << description if description
+        parts << "@example #{example}" if example
+        "/** #{parts.join(' ')} */"
       end
 
       private

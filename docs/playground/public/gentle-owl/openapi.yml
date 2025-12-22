@@ -195,6 +195,7 @@ components:
           "$ref": "#/components/schemas/commentCommentable"
         createdAt:
           type: string
+          format: date-time
         id:
           type: string
       required:
@@ -285,6 +286,7 @@ components:
             type:
         createdAt:
           type: string
+          format: date-time
         height:
           type:
           - integer
@@ -418,6 +420,7 @@ components:
             type:
         createdAt:
           type: string
+          format: date-time
         id:
           type: string
         title:
@@ -500,6 +503,7 @@ components:
             type:
         createdAt:
           type: string
+          format: date-time
         duration:
           type:
           - integer

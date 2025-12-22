@@ -397,6 +397,7 @@
   },
   "resources": {
     "tasks": {
+      "identifier": "tasks",
       "path": "tasks",
       "actions": {
         "index": {
