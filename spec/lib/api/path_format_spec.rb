@@ -32,6 +32,15 @@ RSpec.describe 'API path_format' do
       expect(api_class.path_format).to eq(:camel)
     end
 
+    it 'accepts :underscore format' do
+      api_class = Class.new(Apiwork::API::Base) do
+        mount '/test'
+        path_format :underscore
+      end
+
+      expect(api_class.path_format).to eq(:underscore)
+    end
+
     it 'raises error for invalid format' do
       expect do
         Class.new(Apiwork::API::Base) do
@@ -88,6 +97,14 @@ RSpec.describe 'API path_format' do
 
       it 'handles multiple underscores' do
         expect(api_class.transform_path_segment(:very_long_resource_name)).to eq('veryLongResourceName')
+      end
+    end
+
+    context 'with :underscore format' do
+      before { api_class.path_format :underscore }
+
+      it 'keeps underscores unchanged' do
+        expect(api_class.transform_path_segment(:recurring_invoices)).to eq('recurring_invoices')
       end
     end
   end

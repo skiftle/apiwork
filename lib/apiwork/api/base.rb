@@ -75,7 +75,7 @@ module Apiwork
         def path_format(format = nil)
           return @path_format if format.nil?
 
-          valid = %i[keep kebab camel]
+          valid = %i[keep kebab camel underscore]
           raise ConfigurationError, "path_format must be one of #{valid}" unless valid.include?(format)
 
           @path_format = format
