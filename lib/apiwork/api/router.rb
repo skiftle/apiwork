@@ -50,14 +50,13 @@ module Apiwork
           options[:path] = path_option unless path_option == name.to_s
 
           router_instance = self
-          api = api_class
 
           context.instance_eval do
             send(resource_method, name, **options) do
               if metadata[:members].any?
                 member do
                   metadata[:members].each do |action, meta|
-                    action_path = api.transform_path_segment(action)
+                    action_path = api_class.transform_path_segment(action)
                     if action_path == action.to_s
                       send(meta[:method], action)
                     else
@@ -70,7 +69,7 @@ module Apiwork
               if metadata[:collections].any?
                 collection do
                   metadata[:collections].each do |action, meta|
-                    action_path = api.transform_path_segment(action)
+                    action_path = api_class.transform_path_segment(action)
                     if action_path == action.to_s
                       send(meta[:method], action)
                     else
@@ -80,7 +79,7 @@ module Apiwork
                 end
               end
 
-              router_instance.draw_resources_in_context(self, metadata[:resources], api)
+              router_instance.draw_resources_in_context(self, metadata[:resources], api_class)
             end
           end
         end

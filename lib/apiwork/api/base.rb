@@ -84,7 +84,7 @@ module Apiwork
         def transform_path_segment(segment)
           case @path_format
           when :kebab
-            segment.to_s.tr('_', '-')
+            segment.to_s.dasherize
           when :camel
             segment.to_s.camelize(:lower)
           else
