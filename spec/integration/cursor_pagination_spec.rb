@@ -22,14 +22,14 @@ RSpec.describe 'Cursor Pagination API', type: :request do
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
       expect(json['activities'].length).to eq(10)
-      expect(json['pagination']['next_cursor']).to be_present
-      expect(json['pagination']['prev_cursor']).to be_nil
+      expect(json['pagination']['next']).to be_present
+      expect(json['pagination']['prev']).to be_nil
     end
 
     it 'navigates forward with after cursor' do
       get '/api/v1/activities', params: { page: { size: 10 } }
       json = JSON.parse(response.body)
-      next_cursor = json['pagination']['next_cursor']
+      next_cursor = json['pagination']['next']
       first_page_ids = json['activities'].map { |a| a['id'] }
 
       get '/api/v1/activities', params: { page: { after: next_cursor, size: 10 } }
@@ -46,11 +46,11 @@ RSpec.describe 'Cursor Pagination API', type: :request do
     it 'navigates backward with before cursor' do
       get '/api/v1/activities', params: { page: { size: 10 } }
       json = JSON.parse(response.body)
-      next_cursor = json['pagination']['next_cursor']
+      next_cursor = json['pagination']['next']
 
       get '/api/v1/activities', params: { page: { after: next_cursor, size: 10 } }
       json = JSON.parse(response.body)
-      prev_cursor = json['pagination']['prev_cursor']
+      prev_cursor = json['pagination']['prev']
       second_page_ids = json['activities'].map { |a| a['id'] }
 
       get '/api/v1/activities', params: { page: { before: prev_cursor, size: 10 } }
@@ -64,18 +64,18 @@ RSpec.describe 'Cursor Pagination API', type: :request do
     it 'returns null next_cursor on last page' do
       get '/api/v1/activities', params: { page: { size: 10 } }
       json = JSON.parse(response.body)
-      next_cursor = json['pagination']['next_cursor']
+      next_cursor = json['pagination']['next']
 
       get '/api/v1/activities', params: { page: { after: next_cursor, size: 10 } }
       json = JSON.parse(response.body)
-      next_cursor = json['pagination']['next_cursor']
+      next_cursor = json['pagination']['next']
 
       get '/api/v1/activities', params: { page: { after: next_cursor, size: 10 } }
 
       json = JSON.parse(response.body)
       expect(response).to have_http_status(:ok)
       expect(json['activities'].length).to eq(5)
-      expect(json['pagination']['next_cursor']).to be_nil
+      expect(json['pagination']['next']).to be_nil
     end
 
     it 'handles different page sizes' do
@@ -84,7 +84,7 @@ RSpec.describe 'Cursor Pagination API', type: :request do
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
       expect(json['activities'].length).to eq(5)
-      expect(json['pagination']['next_cursor']).to be_present
+      expect(json['pagination']['next']).to be_present
     end
 
     it 'uses default page size when not specified' do
@@ -118,8 +118,8 @@ RSpec.describe 'Cursor Pagination API', type: :request do
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
       expect(json['activities']).to eq([])
-      expect(json['pagination']['next_cursor']).to be_nil
-      expect(json['pagination']['prev_cursor']).to be_nil
+      expect(json['pagination']['next']).to be_nil
+      expect(json['pagination']['prev']).to be_nil
     end
 
     it 'returns consistent ordering by id' do

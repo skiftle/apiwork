@@ -137,8 +137,8 @@ module Apiwork
 
         def register_cursor_pagination
           type_registrar.type :cursor_pagination do
-            param :next_cursor, type: :string, nullable: true, optional: true
-            param :prev_cursor, type: :string, nullable: true, optional: true
+            param :next, type: :string, nullable: true, optional: true
+            param :prev, type: :string, nullable: true, optional: true
           end
         end
 

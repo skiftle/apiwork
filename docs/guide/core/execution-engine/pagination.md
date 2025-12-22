@@ -10,7 +10,7 @@ Two strategies: offset-based (traditional page numbers) or cursor-based (for lar
 
 ## Configuration
 
-You set pagination at the API level:
+Set pagination at the API level, or [override per schema](#per-schema-override):
 
 ```ruby
 Apiwork::API.define '/api/v1' do
@@ -140,16 +140,16 @@ You can't use `after` and `before` in the same request.
 {
   "posts": [...],
   "pagination": {
-    "next_cursor": "eyJpZCI6MTAwfQ",
-    "prev_cursor": "eyJpZCI6ODF9"
+    "next": "eyJpZCI6MTAwfQ",
+    "prev": "eyJpZCI6ODF9"
   }
 }
 ```
 
 | Field | Description |
 |-------|-------------|
-| `next_cursor` | Cursor for next page (`null` if last) |
-| `prev_cursor` | Cursor for previous page (`null` if first) |
+| `next` | Cursor for next page (`null` if last) |
+| `prev` | Cursor for previous page (`null` if first) |
 
 ### Cursor Format
 
