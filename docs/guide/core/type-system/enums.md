@@ -77,13 +77,13 @@ enum :status,
 ### TypeScript
 
 ```typescript
-type Status = "draft" | "published" | "archived";
+type Status = "archived" | "draft" | "published";
 ```
 
 ### Zod
 
 ```typescript
-const StatusSchema = z.enum(["draft", "published", "archived"]);
+export const StatusSchema = z.enum(["archived", "draft", "published"]);
 ```
 
 ### OpenAPI

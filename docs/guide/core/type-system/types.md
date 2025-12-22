@@ -17,6 +17,7 @@ Primitive types are the building blocks. Every param uses one of these.
 | `:boolean` | `true`, `false` | `boolean` | `z.boolean()` |
 | `:date` | `Date` | `string` | `z.iso.date()` |
 | `:datetime` | `DateTime`, `Time` | `string` | `z.iso.datetime()` |
+| `:time` | `Time` | `string` | `z.iso.time()` |
 | `:uuid` | `String` (UUID format) | `string` | `z.uuid()` |
 
 ## Aliases
@@ -65,6 +66,7 @@ Date and time types serialize to ISO 8601 strings:
 |------|--------|---------|
 | `:date` | `YYYY-MM-DD` | `"2024-01-15"` |
 | `:datetime` | `YYYY-MM-DDTHH:MM:SSZ` | `"2024-01-15T10:30:00Z"` |
+| `:time` | `HH:MM:SS` | `"10:30:00"` |
 
 ## Literal Type
 
@@ -127,7 +129,7 @@ Request params are automatically coerced:
 ### TypeScript
 
 ```typescript
-interface Example {
+export interface Example {
   title: string;
   count: number;
   price: number;
@@ -141,7 +143,7 @@ interface Example {
 ### Zod
 
 ```typescript
-const ExampleSchema = z.object({
+export const ExampleSchema = z.object({
   title: z.string(),
   count: z.number().int(),
   price: z.number(),
