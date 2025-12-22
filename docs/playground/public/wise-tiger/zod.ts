@@ -222,6 +222,58 @@ export interface ProjectUpdatePayload {
   status?: ProjectStatus | null;
 }
 
+export interface ProjectsCreateRequest {
+  body: ProjectsCreateRequestBody;
+}
+
+export interface ProjectsCreateRequestBody {
+  project: ProjectCreatePayload;
+}
+
+export interface ProjectsCreateResponse {
+  body: ProjectsCreateResponseBody;
+}
+
+export type ProjectsCreateResponseBody = { errors?: Error[] } | { meta?: object; project: Project };
+
+export type ProjectsDestroyResponse = never;
+
+export interface ProjectsIndexRequest {
+  query: ProjectsIndexRequestQuery;
+}
+
+export interface ProjectsIndexRequestQuery {
+  filter?: ProjectFilter | ProjectFilter[];
+  page?: ProjectPage;
+  sort?: ProjectSort | ProjectSort[];
+}
+
+export interface ProjectsIndexResponse {
+  body: ProjectsIndexResponseBody;
+}
+
+export type ProjectsIndexResponseBody = { errors?: Error[] } | { meta?: object; pagination?: OffsetPagination; projects?: Project[] };
+
+export interface ProjectsShowResponse {
+  body: ProjectsShowResponseBody;
+}
+
+export type ProjectsShowResponseBody = { errors?: Error[] } | { meta?: object; project: Project };
+
+export interface ProjectsUpdateRequest {
+  body: ProjectsUpdateRequestBody;
+}
+
+export interface ProjectsUpdateRequestBody {
+  project: ProjectUpdatePayload;
+}
+
+export interface ProjectsUpdateResponse {
+  body: ProjectsUpdateResponseBody;
+}
+
+export type ProjectsUpdateResponseBody = { errors?: Error[] } | { meta?: object; project: Project };
+
 export type SortDirection = 'asc' | 'desc';
 
 export interface StringFilter {

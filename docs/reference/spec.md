@@ -32,7 +32,7 @@ Generates a spec for an API.
 
 ```ruby
 Apiwork::Spec.generate(:openapi, '/api/v1')
-Apiwork::Spec.generate(:typescript, '/api/v1', namespace: 'Api')
+Apiwork::Spec.generate(:typescript, '/api/v1', locale: :sv, key_format: :camel)
 ```
 
 ---

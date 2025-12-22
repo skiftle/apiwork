@@ -197,6 +197,64 @@ export interface InvoiceUpdatePayload {
   number?: string;
 }
 
+export interface InvoicesArchiveResponse {
+  body: InvoicesArchiveResponseBody;
+}
+
+export type InvoicesArchiveResponseBody = { errors?: Error[] } | { invoice: Invoice; meta?: object };
+
+export interface InvoicesCreateRequest {
+  body: InvoicesCreateRequestBody;
+}
+
+export interface InvoicesCreateRequestBody {
+  invoice: InvoiceCreatePayload;
+}
+
+export interface InvoicesCreateResponse {
+  body: InvoicesCreateResponseBody;
+}
+
+export type InvoicesCreateResponseBody = { errors?: Error[] } | { invoice: Invoice; meta?: object };
+
+export type InvoicesDestroyResponse = never;
+
+export interface InvoicesIndexRequest {
+  query: InvoicesIndexRequestQuery;
+}
+
+export interface InvoicesIndexRequestQuery {
+  filter?: InvoiceFilter | InvoiceFilter[];
+  page?: InvoicePage;
+  sort?: InvoiceSort | InvoiceSort[];
+}
+
+export interface InvoicesIndexResponse {
+  body: InvoicesIndexResponseBody;
+}
+
+export type InvoicesIndexResponseBody = { errors?: Error[] } | { invoices?: Invoice[]; meta?: object; pagination?: OffsetPagination };
+
+export interface InvoicesShowResponse {
+  body: InvoicesShowResponseBody;
+}
+
+export type InvoicesShowResponseBody = { errors?: Error[] } | { invoice: Invoice; meta?: object };
+
+export interface InvoicesUpdateRequest {
+  body: InvoicesUpdateRequestBody;
+}
+
+export interface InvoicesUpdateRequestBody {
+  invoice: InvoiceUpdatePayload;
+}
+
+export interface InvoicesUpdateResponse {
+  body: InvoicesUpdateResponseBody;
+}
+
+export type InvoicesUpdateResponseBody = { errors?: Error[] } | { invoice: Invoice; meta?: object };
+
 export interface NullableStringFilter {
   contains?: string;
   endsWith?: string;

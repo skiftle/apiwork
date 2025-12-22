@@ -6,7 +6,7 @@ next: false
 
 # Adapter::Base
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L19)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L22)
 
 Base class for adapters.
 
@@ -17,19 +17,22 @@ Override the render and transform methods to customize behavior.
 
 ```ruby
 class JsonApiAdapter < Apiwork::Adapter::Base
-  register_as :jsonapi
+  adapter_name :jsonapi
 
   def render_record(record, schema_class, action_data)
     { data: { type: '...', attributes: '...' } }
   end
 end
+
+# Register the adapter
+Apiwork::Adapter.register(JsonApiAdapter)
 ```
 
 ## Instance Methods
 
 ### #register_api_types(type_registrar, schema_data)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L26)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L35)
 
 Registers types from schemas for the API.
 Override to customize type registration.
@@ -38,7 +41,7 @@ Override to customize type registration.
 
 ### #register_contract_types(type_registrar, schema_class, actions:)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L33)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L42)
 
 Registers types for a contract.
 Override to customize contract type registration.
@@ -47,7 +50,7 @@ Override to customize contract type registration.
 
 ### #render_collection(collection, schema_class, action_data)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L44)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L53)
 
 Renders a collection response.
 
@@ -67,7 +70,7 @@ Renders a collection response.
 
 ### #render_error(issues, action_data)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L65)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L74)
 
 Renders an error response.
 
@@ -86,7 +89,7 @@ Renders an error response.
 
 ### #render_record(record, schema_class, action_data)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L55)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L64)
 
 Renders a single record response.
 
@@ -106,7 +109,7 @@ Renders a single record response.
 
 ### #transform_request(hash, schema_class)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L76)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L85)
 
 Transforms incoming request parameters.
 Override to customize key casing, unwrapping, etc.
@@ -126,7 +129,7 @@ Override to customize key casing, unwrapping, etc.
 
 ### #transform_response(hash, schema_class)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L87)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L96)
 
 Transforms outgoing response data.
 Override to customize key casing, wrapping, etc.

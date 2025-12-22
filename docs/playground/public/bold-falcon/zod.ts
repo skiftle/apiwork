@@ -277,6 +277,58 @@ export interface ArticleUpdatePayload {
   title?: string;
 }
 
+export interface ArticlesCreateRequest {
+  body: ArticlesCreateRequestBody;
+}
+
+export interface ArticlesCreateRequestBody {
+  article: ArticleCreatePayload;
+}
+
+export interface ArticlesCreateResponse {
+  body: ArticlesCreateResponseBody;
+}
+
+export type ArticlesCreateResponseBody = { article: Article; meta?: object } | { errors?: Error[] };
+
+export type ArticlesDestroyResponse = never;
+
+export interface ArticlesIndexRequest {
+  query: ArticlesIndexRequestQuery;
+}
+
+export interface ArticlesIndexRequestQuery {
+  filter?: ArticleFilter | ArticleFilter[];
+  page?: ArticlePage;
+  sort?: ArticleSort | ArticleSort[];
+}
+
+export interface ArticlesIndexResponse {
+  body: ArticlesIndexResponseBody;
+}
+
+export type ArticlesIndexResponseBody = { articles?: Article[]; meta?: object; pagination?: OffsetPagination } | { errors?: Error[] };
+
+export interface ArticlesShowResponse {
+  body: ArticlesShowResponseBody;
+}
+
+export type ArticlesShowResponseBody = { article: Article; meta?: object } | { errors?: Error[] };
+
+export interface ArticlesUpdateRequest {
+  body: ArticlesUpdateRequestBody;
+}
+
+export interface ArticlesUpdateRequestBody {
+  article: ArticleUpdatePayload;
+}
+
+export interface ArticlesUpdateResponse {
+  body: ArticlesUpdateResponseBody;
+}
+
+export type ArticlesUpdateResponseBody = { article: Article; meta?: object } | { errors?: Error[] };
+
 export interface DateFilter {
   between?: DateFilterBetween;
   eq?: string;

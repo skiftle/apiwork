@@ -361,6 +361,56 @@ export interface CommentUpdatePayload {
   body?: string;
 }
 
+export interface CommentsCreateRequest {
+  body: CommentsCreateRequestBody;
+}
+
+export interface CommentsCreateRequestBody {
+  comment: CommentCreatePayload;
+}
+
+export interface CommentsCreateResponse {
+  body: CommentsCreateResponseBody;
+}
+
+export type CommentsCreateResponseBody = { comment: Comment; meta?: object } | { errors?: Error[] };
+
+export type CommentsDestroyResponse = never;
+
+export interface CommentsIndexRequest {
+  query: CommentsIndexRequestQuery;
+}
+
+export interface CommentsIndexRequestQuery {
+  page?: CommentPage;
+}
+
+export interface CommentsIndexResponse {
+  body: CommentsIndexResponseBody;
+}
+
+export type CommentsIndexResponseBody = { comments?: Comment[]; meta?: object; pagination?: OffsetPagination } | { errors?: Error[] };
+
+export interface CommentsShowResponse {
+  body: CommentsShowResponseBody;
+}
+
+export type CommentsShowResponseBody = { comment: Comment; meta?: object } | { errors?: Error[] };
+
+export interface CommentsUpdateRequest {
+  body: CommentsUpdateRequestBody;
+}
+
+export interface CommentsUpdateRequestBody {
+  comment: CommentUpdatePayload;
+}
+
+export interface CommentsUpdateResponse {
+  body: CommentsUpdateResponseBody;
+}
+
+export type CommentsUpdateResponseBody = { comment: Comment; meta?: object } | { errors?: Error[] };
+
 export interface Error {
   code: string;
   detail: string;
@@ -410,6 +460,56 @@ export interface PostUpdatePayload {
   comments?: CommentNestedPayload[];
   title?: string;
 }
+
+export interface PostsCreateRequest {
+  body: PostsCreateRequestBody;
+}
+
+export interface PostsCreateRequestBody {
+  post: PostCreatePayload;
+}
+
+export interface PostsCreateResponse {
+  body: PostsCreateResponseBody;
+}
+
+export type PostsCreateResponseBody = { errors?: Error[] } | { meta?: object; post: Post };
+
+export type PostsDestroyResponse = never;
+
+export interface PostsIndexRequest {
+  query: PostsIndexRequestQuery;
+}
+
+export interface PostsIndexRequestQuery {
+  page?: PostPage;
+}
+
+export interface PostsIndexResponse {
+  body: PostsIndexResponseBody;
+}
+
+export type PostsIndexResponseBody = { errors?: Error[] } | { meta?: object; pagination?: OffsetPagination; posts?: Post[] };
+
+export interface PostsShowResponse {
+  body: PostsShowResponseBody;
+}
+
+export type PostsShowResponseBody = { errors?: Error[] } | { meta?: object; post: Post };
+
+export interface PostsUpdateRequest {
+  body: PostsUpdateRequestBody;
+}
+
+export interface PostsUpdateRequestBody {
+  post: PostUpdatePayload;
+}
+
+export interface PostsUpdateResponse {
+  body: PostsUpdateResponseBody;
+}
+
+export type PostsUpdateResponseBody = { errors?: Error[] } | { meta?: object; post: Post };
 
 export interface Profile {
   bio: null | string;
@@ -490,3 +590,55 @@ export interface UserUpdatePayload {
   profile?: ProfileNestedPayload;
   username?: string;
 }
+
+export interface UsersCreateRequest {
+  body: UsersCreateRequestBody;
+}
+
+export interface UsersCreateRequestBody {
+  user: UserCreatePayload;
+}
+
+export interface UsersCreateResponse {
+  body: UsersCreateResponseBody;
+}
+
+export type UsersCreateResponseBody = { errors?: Error[] } | { meta?: object; user: User };
+
+export type UsersDestroyResponse = never;
+
+export interface UsersIndexRequest {
+  query: UsersIndexRequestQuery;
+}
+
+export interface UsersIndexRequestQuery {
+  filter?: UserFilter | UserFilter[];
+  page?: UserPage;
+  sort?: UserSort | UserSort[];
+}
+
+export interface UsersIndexResponse {
+  body: UsersIndexResponseBody;
+}
+
+export type UsersIndexResponseBody = { errors?: Error[] } | { meta?: object; pagination?: OffsetPagination; users?: User[] };
+
+export interface UsersShowResponse {
+  body: UsersShowResponseBody;
+}
+
+export type UsersShowResponseBody = { errors?: Error[] } | { meta?: object; user: User };
+
+export interface UsersUpdateRequest {
+  body: UsersUpdateRequestBody;
+}
+
+export interface UsersUpdateRequestBody {
+  user: UserUpdatePayload;
+}
+
+export interface UsersUpdateResponse {
+  body: UsersUpdateResponseBody;
+}
+
+export type UsersUpdateResponseBody = { errors?: Error[] } | { meta?: object; user: User };
