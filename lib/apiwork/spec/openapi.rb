@@ -535,7 +535,7 @@ module Apiwork
       def openapi_format(type)
         return nil unless type
 
-        case type.to_sym
+        case type.to_sym # rubocop:disable Style/HashLikeCase
         when :float then 'double'
         when :date then 'date'
         when :datetime then 'date-time'

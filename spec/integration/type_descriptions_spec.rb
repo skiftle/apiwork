@@ -156,7 +156,7 @@ RSpec.describe 'Type Descriptions', type: :integration do
 
     it 'merges nested params across multiple declarations' do
       shape = introspection[:types][:address][:shape]
-      expect(shape.keys).to include(:street, :city, :country)
+      expect(shape.keys).to include(:street, :city, :country_code)
     end
 
     it 'merges param metadata in nested types' do

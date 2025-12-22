@@ -125,14 +125,14 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
           id: 1,
           address: {
             city: 'Stockholm',
-            country: 'INVALID' # Not in enum
+            country_code: 'INVALID' # Not in enum
           }
         }
       }
       result = contract_class.parse_response(invalid_output, :show)
       expect(result.invalid?).to be(true)
       expect(result.issues.first.code).to eq(:invalid_value)
-      expect(result.issues.first.path).to eq([:account, :address, :country])
+      expect(result.issues.first.path).to eq([:account, :address, :country_code])
     end
   end
 end

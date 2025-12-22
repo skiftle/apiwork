@@ -433,7 +433,7 @@ RSpec.describe 'Contract Serialization' do
 
       expect(definition.params[:meta]).to be_present
       expect(definition.params[:meta][:type]).to eq(:object)
-      expect(definition.params[:meta][:optional]).to be(true)
+      expect(definition.params[:meta][:optional]).to be(false)
       expect(definition.params[:meta][:shape]).to be_a(Apiwork::Contract::Definition)
       expect(definition.params[:meta][:shape].params[:custom]).to be_present
       expect(definition.params[:meta][:shape].params[:custom][:type]).to eq(:string)
