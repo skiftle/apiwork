@@ -44,6 +44,12 @@ module Apiwork
             Time.zone.parse(value) if value.is_a?(String)
           },
 
+          time: lambda { |value|
+            return value if value.is_a?(Time) || value.is_a?(DateTime) || value.is_a?(ActiveSupport::TimeWithZone)
+
+            Time.zone.parse("2000-01-01T#{value}") if value.is_a?(String) && value.match?(/\A\d{2}:\d{2}(:\d{2})?\z/)
+          },
+
           uuid: lambda { |value|
             return value if value.is_a?(String) && value.match?(/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/i)
 

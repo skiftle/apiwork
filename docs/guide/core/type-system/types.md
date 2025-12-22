@@ -12,7 +12,7 @@ Primitive types are the building blocks. Every param uses one of these.
 |------|------|------------|-----|
 | `:string` | `String` | `string` | `z.string()` |
 | `:integer` | `Integer` | `number` | `z.number().int()` |
-| `:float` | `Float`, `BigDecimal` | `number` | `z.number()` |
+| `:float` | `Float` | `number` | `z.number()` |
 | `:decimal` | `BigDecimal` | `number` | `z.number()` |
 | `:boolean` | `true`, `false` | `boolean` | `z.boolean()` |
 | `:date` | `Date` | `string` | `z.iso.date()` |

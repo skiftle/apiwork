@@ -352,20 +352,20 @@ The adapter generates a discriminated union for type-safe client code:
 
 ```typescript
 // Create payload - no id
-interface CommentNestedCreatePayload {
+export interface CommentNestedCreatePayload {
   _type: 'create';
   content?: string;
 }
 
 // Update payload - id required
-interface CommentNestedUpdatePayload {
+export interface CommentNestedUpdatePayload {
   _type: 'update';
   id: string;
   content?: string;
   _destroy?: boolean;
 }
 
-type CommentNestedPayload =
+export type CommentNestedPayload =
   | CommentNestedCreatePayload
   | CommentNestedUpdatePayload;
 ```
@@ -482,11 +482,11 @@ Database columns required: `commentable_id` and `commentable_type`.
 Polymorphic associations generate discriminated unions:
 
 ```typescript
-type CommentablePolymorphic =
+export type CommentablePolymorphic =
   | { commentable_type: 'post' } & Post
   | { commentable_type: 'video' } & Video;
 
-interface Comment {
+export interface Comment {
   content?: string;
   commentable?: CommentablePolymorphic;
 }

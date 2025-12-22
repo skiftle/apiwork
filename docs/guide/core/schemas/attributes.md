@@ -150,7 +150,7 @@ end
 **Create Payload** — only includes `name` and `bio`:
 
 ```typescript
-interface AuthorCreatePayload {
+export interface AuthorCreatePayload {
   name: string;
   bio?: string;
 }
@@ -159,7 +159,7 @@ interface AuthorCreatePayload {
 **Update Payload** — only includes `name` and `verified`:
 
 ```typescript
-interface AuthorUpdatePayload {
+export interface AuthorUpdatePayload {
   name?: string;
   verified?: boolean;
 }

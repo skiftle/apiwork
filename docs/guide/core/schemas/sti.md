@@ -117,17 +117,17 @@ STI generates a discriminated union type.
 ### TypeScript
 
 ```typescript
-type Client = PersonClient | CompanyClient;
+export type Client = PersonClient | CompanyClient;
 
-interface PersonClient {
-  kind: "person";
+export interface PersonClient {
+  kind: 'person';
   name: string;
   email: string;
   birthDate: string;
 }
 
-interface CompanyClient {
-  kind: "company";
+export interface CompanyClient {
+  kind: 'company';
   name: string;
   email: string;
   industry: string;
@@ -138,22 +138,22 @@ interface CompanyClient {
 ### Zod
 
 ```typescript
-const PersonClientSchema = z.object({
-  kind: z.literal("person"),
+export const PersonClientSchema = z.object({
+  kind: z.literal('person'),
   name: z.string(),
   email: z.string(),
   birthDate: z.string(),
 });
 
-const CompanyClientSchema = z.object({
-  kind: z.literal("company"),
+export const CompanyClientSchema = z.object({
+  kind: z.literal('company'),
   name: z.string(),
   email: z.string(),
   industry: z.string(),
   registrationNumber: z.string(),
 });
 
-const ClientSchema = z.discriminatedUnion("kind", [
+export const ClientSchema = z.discriminatedUnion('kind', [
   PersonClientSchema,
   CompanyClientSchema,
 ]);

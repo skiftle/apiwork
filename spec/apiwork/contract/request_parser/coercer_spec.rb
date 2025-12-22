@@ -157,6 +157,44 @@ RSpec.describe Apiwork::Contract::RequestParser::Coercer do
       end
     end
 
+    context 'time type' do
+      it 'converts time string to Time' do
+        result = described_class.perform('10:30:00', :time)
+
+        expect(result).to be_a(Time)
+        expect(result.hour).to eq(10)
+        expect(result.min).to eq(30)
+        expect(result.sec).to eq(0)
+      end
+
+      it 'converts time string without seconds' do
+        result = described_class.perform('14:45', :time)
+
+        expect(result).to be_a(Time)
+        expect(result.hour).to eq(14)
+        expect(result.min).to eq(45)
+      end
+
+      it 'preserves Time value' do
+        time = Time.zone.now
+        result = described_class.perform(time, :time)
+
+        expect(result).to eq(time)
+      end
+
+      it 'returns nil for invalid time string' do
+        result = described_class.perform('invalid', :time)
+
+        expect(result).to be_nil
+      end
+
+      it 'returns nil for nil input' do
+        result = described_class.perform(nil, :time)
+
+        expect(result).to be_nil
+      end
+    end
+
     context 'float type' do
       it 'converts float string to Float' do
         result = described_class.perform('3.14', :float)

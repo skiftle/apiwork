@@ -206,7 +206,7 @@ end
 ### TypeScript
 
 ```typescript
-interface CreatePostRequest {
+export interface CreatePostRequest {
   title: string;
   count?: number;
   tags?: string[];
@@ -220,7 +220,7 @@ interface CreatePostRequest {
 ### Zod
 
 ```typescript
-const CreatePostRequestSchema = z.object({
+export const CreatePostRequestSchema = z.object({
   title: z.string().min(1).max(255),
   count: z.number().int().min(0).max(100).optional(),
   tags: z.array(z.string()).optional(),
