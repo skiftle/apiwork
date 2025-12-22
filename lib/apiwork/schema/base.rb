@@ -642,9 +642,21 @@ module Apiwork
       end
 
       def should_include_association?(name, definition)
-        return true if definition.always_included?
+        return explicitly_included?(name) unless definition.always_included?
+        return true unless circular_reference?(definition)
 
-        explicitly_included?(name)
+        false
+      end
+
+      def circular_reference?(definition)
+        assoc_schema = definition.schema_class
+        return false unless assoc_schema
+
+        assoc_schema.association_definitions.any? do |_, assoc_def|
+          next false unless assoc_def.always_included?
+
+          assoc_def.schema_class == self.class
+        end
       end
 
       def explicitly_included?(name)

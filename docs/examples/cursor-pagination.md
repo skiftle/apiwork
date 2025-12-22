@@ -25,8 +25,8 @@ Navigate through large datasets using cursor-based pagination
 |--------|------|----------|---------|
 | id | string |  |  |
 | action | string |  |  |
-| occurred_at | datetime | ✓ |  |
 | created_at | datetime |  |  |
+| occurred_at | datetime | ✓ |  |
 | updated_at | datetime |  |  |
 
 </details>

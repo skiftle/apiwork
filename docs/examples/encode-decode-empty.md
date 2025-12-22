@@ -24,11 +24,11 @@ Transform values on input/output and handle nil/empty string conversion
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| name | string |  |  |
-| email | string | ✓ |  |
-| phone | string | ✓ |  |
-| notes | string | ✓ |  |
 | created_at | datetime |  |  |
+| email | string | ✓ |  |
+| name | string |  |  |
+| notes | string | ✓ |  |
+| phone | string | ✓ |  |
 | updated_at | datetime |  |  |
 
 </details>

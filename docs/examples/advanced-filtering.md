@@ -24,15 +24,15 @@ Complex queries with string patterns, numeric ranges, and logical operators
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| category_id | string | ✓ |  |
-| title | string |  |  |
 | body | text | ✓ |  |
-| status | string | ✓ | draft |
-| view_count | integer | ✓ | 0 |
-| rating | decimal | ✓ |  |
-| published_on | date | ✓ |  |
+| category_id | string | ✓ |  |
 | created_at | datetime |  |  |
+| published_on | date | ✓ |  |
+| rating | decimal | ✓ |  |
+| status | string | ✓ | draft |
+| title | string |  |  |
 | updated_at | datetime |  |  |
+| view_count | integer | ✓ | 0 |
 
 </details>
 
@@ -46,9 +46,9 @@ Complex queries with string patterns, numeric ranges, and logical operators
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
+| created_at | datetime |  |  |
 | name | string |  |  |
 | slug | string |  |  |
-| created_at | datetime |  |  |
 | updated_at | datetime |  |  |
 
 </details>

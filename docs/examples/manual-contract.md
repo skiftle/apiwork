@@ -24,11 +24,11 @@ Defining contracts manually without schemas
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| number | string |  |  |
-| issued_on | date | ✓ |  |
-| status | string | ✓ |  |
-| notes | string | ✓ |  |
 | created_at | datetime |  |  |
+| issued_on | date | ✓ |  |
+| notes | string | ✓ |  |
+| number | string |  |  |
+| status | string | ✓ |  |
 | updated_at | datetime |  |  |
 
 </details>
@@ -67,20 +67,20 @@ GET /funny_snake/invoices
   "invoices": [
     {
       "id": "657000e8-1cd9-5b78-9ca2-dd399ce78cb4",
-      "number": "INV-001",
-      "issuedOn": null,
-      "status": "draft",
-      "notes": null,
       "createdAt": "2024-01-01T12:00:00.000Z",
+      "issuedOn": null,
+      "notes": null,
+      "number": "INV-001",
+      "status": "draft",
       "updatedAt": "2024-01-01T12:00:00.000Z"
     },
     {
       "id": "a791666c-73b8-5dd1-b737-31ca691383ca",
-      "number": "INV-002",
-      "issuedOn": null,
-      "status": "sent",
-      "notes": null,
       "createdAt": "2024-01-01T12:00:00.000Z",
+      "issuedOn": null,
+      "notes": null,
+      "number": "INV-002",
+      "status": "sent",
       "updatedAt": "2024-01-01T12:00:00.000Z"
     }
   ]
@@ -104,11 +104,11 @@ GET /funny_snake/invoices/3feffae7-450f-582f-8951-90b31f1322f4
 {
   "invoice": {
     "id": "3feffae7-450f-582f-8951-90b31f1322f4",
-    "number": "INV-001",
-    "issuedOn": null,
-    "status": "draft",
-    "notes": null,
     "createdAt": "2024-01-01T12:00:00.000Z",
+    "issuedOn": null,
+    "notes": null,
+    "number": "INV-001",
+    "status": "draft",
     "updatedAt": "2024-01-01T12:00:00.000Z"
   }
 }
@@ -141,11 +141,11 @@ Content-Type: application/json
 {
   "invoice": {
     "id": "cd3a4e6a-5247-5f84-876f-e4ff358e30f5",
-    "number": "INV-001",
-    "issuedOn": "2024-01-15",
-    "status": "draft",
-    "notes": "First invoice",
     "createdAt": "2024-01-01T12:00:00.000Z",
+    "issuedOn": "2024-01-15",
+    "notes": "First invoice",
+    "number": "INV-001",
+    "status": "draft",
     "updatedAt": "2024-01-01T12:00:00.000Z"
   }
 }

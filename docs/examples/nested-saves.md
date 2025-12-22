@@ -24,10 +24,10 @@ Create, update, and delete nested records in a single request
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
+| created_at | datetime |  |  |
 | order_number | string |  |  |
 | status | string | ✓ | pending |
 | total | decimal | ✓ |  |
-| created_at | datetime |  |  |
 | updated_at | datetime |  |  |
 
 </details>
@@ -42,11 +42,11 @@ Create, update, and delete nested records in a single request
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
+| created_at | datetime |  |  |
 | order_id | string |  |  |
 | product_name | string |  |  |
 | quantity | integer | ✓ | 1 |
 | unit_price | decimal | ✓ |  |
-| created_at | datetime |  |  |
 | updated_at | datetime |  |  |
 
 </details>
@@ -61,12 +61,12 @@ Create, update, and delete nested records in a single request
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| order_id | string |  |  |
-| street | string |  |  |
 | city | string |  |  |
-| postal_code | string |  |  |
 | country | string |  |  |
 | created_at | datetime |  |  |
+| order_id | string |  |  |
+| postal_code | string |  |  |
+| street | string |  |  |
 | updated_at | datetime |  |  |
 
 </details>
