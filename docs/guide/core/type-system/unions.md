@@ -35,7 +35,7 @@ Introspection:
 
 ```typescript
 // TypeScript
-type FilterValue = number | string;
+export type FilterValue = number | string;
 
 // Zod
 export const FilterValueSchema = z.union([z.number().int(), z.string()]);
@@ -234,9 +234,9 @@ The `discriminator.mapping` tells OpenAPI clients exactly which schema to use ba
 ### TypeScript
 
 ```typescript
-type FilterValue = number | string;
+export type FilterValue = number | string;
 
-type Filter = StringFilter | RangeFilter;
+export type Filter = StringFilter | RangeFilter;
 ```
 
 ### Zod
