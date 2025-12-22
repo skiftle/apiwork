@@ -263,14 +263,26 @@ action :destroy do
 end
 ```
 
-To return 200 OK with meta support:
+To return meta from destroy:
 
 ```ruby
 action :destroy do
   response replace: true do
-    body {}
+    body do
+      meta do
+        param :deleted_at, type: :datetime
+      end
+    end
   end
 end
 ```
 
-See [no_content!](../contracts/actions.md#no_content) for details.
+```ruby
+def destroy
+  invoice = Invoice.find(params[:id])
+  invoice.destroy
+  respond invoice, meta: { deleted_at: Time.current }
+end
+```
+
+See [meta](../contracts/actions.md#meta) and [no_content!](../contracts/actions.md#no_content) for details.

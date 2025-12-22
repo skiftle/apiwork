@@ -4,7 +4,7 @@ order: 5
 
 # Serialization
 
-Calling `serialize` on a schema returns a plain Ruby hash:
+Call `serialize` with a record to get a plain Ruby hash:
 
 ```ruby
 PostSchema.serialize(post)
@@ -71,29 +71,6 @@ InvoiceSchema.deserialize(params[:invoices])
 # => [{ email: "user@example.com" }, { email: "other@example.com" }]
 ```
 
-## Encode & Decode Transformers
-
-Transformers customize how values are converted during serialization and deserialization:
-
-```ruby
-class InvoiceSchema < Apiwork::Schema::Base
-  # encode: Ruby → JSON (applied during serialize)
-  attribute :amount, encode: ->(v) { v.to_s }
-
-  # decode: JSON → Ruby (applied during deserialize)
-  attribute :email, decode: ->(v) { v.downcase.strip }
-
-  # empty: true handles "" ↔ nil conversion automatically
-  attribute :notes, empty: true
-end
-```
-
-| Option | Direction | Applied in |
-|--------|-----------|------------|
-| `encode` | Ruby → JSON | `Schema.serialize` |
-| `decode` | JSON → Ruby | `Schema.deserialize` |
-| `empty: true` | Both | Serializes `nil` → `""`, deserializes `""` → `nil` |
-
 ## Nested Associations
 
 Deserialization handles nested data recursively:
@@ -120,3 +97,11 @@ InvoiceSchema.deserialize({
 ```
 
 Both `has_one` and `has_many` associations are deserialized using their schema's decode transformers.
+
+::: info Adapter-Level Transformations
+`Schema.deserialize()` only applies decode transformers. The built-in adapter's transformation of nested payload attributes (`lines` to `lines_attributes`) is not applied at this level — that requires going through the execution engine and adapter pipeline.
+:::
+
+## Encode & Decode Transformers
+
+Define transformers on attributes to customize serialization and deserialization. See [Encode & Decode](attributes.md#encode-decode) and [Empty & Nullable](attributes.md#empty-nullable) for details.
