@@ -4,7 +4,11 @@ order: 2
 
 # Resources
 
-Resources define the endpoints for your API. They follow the same structure and naming conventions as Rails' resource routing, but within Apiwork they serve a broader purpose. A resource does not only describe which endpoints exist — it also links each endpoint to its contract and forms part of the API's metadata.
+Resources define the endpoints for your API. They follow Rails' resource routing conventions, but serve a broader purpose:
+
+- Define which endpoints exist
+- Link each endpoint to its [contract](../contracts/introduction.md)
+- Form part of the API's metadata for [spec generation](./specs.md)
 
 ## Plural Resources
 
@@ -77,12 +81,14 @@ resources :comments   # uses CommentContract
 resource :account     # uses AccountContract
 ```
 
+::: tip
 If you have both `resources :user` and `resources :users`, they would both try to use `UserContract`. Use the `contract:` option to disambiguate:
 
 ```ruby
 resources :user, contract: 'current_user'   # uses CurrentUserContract
 resources :users                            # uses UserContract
 ```
+:::
 
 ## Custom Contract
 

@@ -109,4 +109,8 @@ Apiwork::Spec.generate(:typescript, '/api/v1')
 Apiwork::Spec.generate(:zod, '/api/v1')
 ```
 
-Useful for CI pipelines, static file generation, or build processes.
+::: tip When to use programmatic generation
+- CI pipelines that commit generated types
+- Static file generation for CDN hosting
+- Build processes that bundle specs with frontend code
+:::

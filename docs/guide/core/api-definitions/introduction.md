@@ -4,7 +4,18 @@ order: 1
 
 # Introduction
 
-The API definition describes the overall shape of your API — which resources exist, which actions they offer and how everything is organised. It also serves as the configuration point for that specific API. Here you decide the key format, which specifications should be generated, which adapter to use and any options that control how the API behaves. These settings are defined at the API level rather than globally. This is intentional: API versioning is common in Rails applications, and different versions may require different behaviour. By keeping the configuration inside each API definition, Apiwork allows every version to define its own rules without affecting the others.
+The API definition describes the shape of your API:
+
+- Which [resources](./resources.md) exist
+- Which actions they offer
+- How everything is organised
+
+It's also where you configure API-specific settings:
+
+- Key format (camelCase, snake_case)
+- Which [specs](./specs.md) to generate
+- Adapter options
+- Global types and enums
 
 ```ruby
 Apiwork::API.define '/api/v1' do
@@ -13,7 +24,9 @@ Apiwork::API.define '/api/v1' do
 end
 ```
 
-This is similar to Rails' `routes.rb`, but focused on API structure rather than just URL routing.
+::: info
+Each API definition is independent. Different API versions can have different configurations without affecting each other.
+:::
 
 ## Path and Namespace
 
