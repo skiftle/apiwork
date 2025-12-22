@@ -128,7 +128,7 @@ The built-in adapter wraps single records in the singular form, and collections 
 }
 ```
 
-Request bodies follow the same pattern — create and update payloads are wrapped in the singular root key.
+Request bodies follow the same pattern — create and update payloads are wrapped in the singular root key. See [Serialization](../execution-engine/serialization.md) for details on how the adapter transforms data.
 
 Override when you need a different name:
 

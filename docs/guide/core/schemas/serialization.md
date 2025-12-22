@@ -4,14 +4,20 @@ order: 5
 
 # Serialization
 
-Schemas serialize model objects to JSON.
-
-## Basic Usage
+Calling `serialize` on a schema returns a plain Ruby hash:
 
 ```ruby
 PostSchema.serialize(post)
 # => { id: 1, title: "Hello", body: "..." }
+```
 
+This is the canonical format. The Execution Engine uses it internally, and adapters may transform it further for HTTP responses (adding root keys, pagination, key formatting).
+
+You can use `serialize` directly for audit logs, webhooks, event streams, or anywhere you need a stable representation of your data.
+
+Collections return an array:
+
+```ruby
 PostSchema.serialize(posts)
 # => [{ id: 1, ... }, { id: 2, ... }]
 ```
@@ -46,46 +52,3 @@ end
 ```
 
 The `context` and `object` accessors are available in all schema methods.
-
-## Response Structure
-
-Single object:
-
-```json
-{
-  "post": {
-    "id": 1,
-    "title": "Hello"
-  }
-}
-```
-
-Collection:
-
-```json
-{
-  "posts": [
-    {
-      "id": 1,
-      "title": "Hello"
-    },
-    {
-      "id": 2,
-      "title": "World"
-    }
-  ]
-}
-```
-
-## Key Transformation
-
-When `key_format: :camel` is set in the API:
-
-```json
-{
-  "post": {
-    "id": 1,
-    "createdAt": "2024-01-15T10:30:00Z"
-  }
-}
-```

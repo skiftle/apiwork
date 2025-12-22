@@ -34,16 +34,16 @@ The generated output includes:
 - Inferred TypeScript types
 
 ```typescript
-import { z } from 'zod';
+import { z } from "zod";
 
 // Enums
-export const StatusSchema = z.enum(['draft', 'published', 'archived']);
+export const StatusSchema = z.enum(["draft", "published", "archived"]);
 
 // Custom types
 export const AddressSchema = z.object({
   street: z.string(),
   city: z.string(),
-  country: z.string()
+  country: z.string(),
 });
 
 // Resource schemas
@@ -52,7 +52,7 @@ export const PostSchema = z.object({
   title: z.string(),
   body: z.string(),
   status: StatusSchema,
-  createdAt: z.string()
+  createdAt: z.string(),
 });
 
 // Request schemas
@@ -60,8 +60,8 @@ export const PostCreateRequestSchema = z.object({
   post: z.object({
     title: z.string(),
     body: z.string().optional(),
-    status: StatusSchema.optional()
-  })
+    status: StatusSchema.optional(),
+  }),
 });
 
 // Inferred types
@@ -72,7 +72,7 @@ export type Post = z.infer<typeof PostSchema>;
 ## Usage
 
 ```typescript
-import { PostCreateRequestSchema, PostSchema } from './api/schemas';
+import { PostCreateRequestSchema, PostSchema } from "./api/schemas";
 
 // Validate request before sending
 const validated = PostCreateRequestSchema.parse(formData);
@@ -87,15 +87,17 @@ Generates schemas compatible with **Zod v4**.
 
 ## Type Ordering
 
-Types are sorted in topological order so dependencies come first. You don't need to think about declaration order.
+Types are sorted in topological order so dependencies come first.
 
 For recursive types (types that reference themselves), Apiwork uses `z.lazy()`:
 
 ```typescript
-export const CategorySchema: z.ZodType<Category> = z.lazy(() => z.object({
-  name: z.string(),
-  children: z.array(CategorySchema),
-}));
+export const CategorySchema: z.ZodType<Category> = z.lazy(() =>
+  z.object({
+    name: z.string(),
+    children: z.array(CategorySchema),
+  })
+);
 ```
 
 This is also why Apiwork generates explicit TypeScript interfaces instead of relying on `z.infer`. Zod's type inference doesn't work correctly with `z.lazy()` for recursive types — the inferred type becomes `unknown`. By generating separate interfaces, you get proper types for all schemas.

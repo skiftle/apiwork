@@ -4,7 +4,7 @@ order: 6
 
 # Single Table Inheritance
 
-Apiwork supports Rails STI (Single Table Inheritance) with automatic type inference. See [Inference](./inference.md) for all inference features.
+Apiwork supports Rails Single Table Inheritance (STI) with automatic type inference. See [Inference](./inference.md) for all inference features.
 
 ## Base Schema
 
@@ -90,11 +90,11 @@ This registration is what enables Apiwork to route serialization to the correct 
 
 When you omit options, Apiwork uses Rails conventions:
 
-| Option | Default | Source |
-|--------|---------|--------|
-| Discriminator column | `:type` | `model_class.inheritance_column` |
-| Discriminator JSON name | Same as column | Positional argument or column name |
-| Variant tag | Class name | `as:` option or `model_class.sti_name` |
+| Option                  | Default        | Source                                 |
+| ----------------------- | -------------- | -------------------------------------- |
+| Discriminator column    | `:type`        | `model_class.inheritance_column`       |
+| Discriminator JSON name | Same as column | Positional argument or column name     |
+| Variant tag             | Class name     | `as:` option or `model_class.sti_name` |
 
 ## Serialization
 
@@ -120,14 +120,14 @@ STI generates a discriminated union type.
 export type Client = PersonClient | CompanyClient;
 
 export interface PersonClient {
-  kind: 'person';
+  kind: "person";
   name: string;
   email: string;
   birthDate: string;
 }
 
 export interface CompanyClient {
-  kind: 'company';
+  kind: "company";
   name: string;
   email: string;
   industry: string;
@@ -139,21 +139,21 @@ export interface CompanyClient {
 
 ```typescript
 export const PersonClientSchema = z.object({
-  kind: z.literal('person'),
+  kind: z.literal("person"),
   name: z.string(),
   email: z.string(),
   birthDate: z.string(),
 });
 
 export const CompanyClientSchema = z.object({
-  kind: z.literal('company'),
+  kind: z.literal("company"),
   name: z.string(),
   email: z.string(),
   industry: z.string(),
   registrationNumber: z.string(),
 });
 
-export const ClientSchema = z.discriminatedUnion('kind', [
+export const ClientSchema = z.discriminatedUnion("kind", [
   PersonClientSchema,
   CompanyClientSchema,
 ]);
