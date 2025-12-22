@@ -100,15 +100,62 @@ You describe your domain once — in a schema aligned with your model — and th
 
 ## Root Key
 
-Override the default root key:
+Every schema has a root key that the adapter can use to wrap request and response data. By default, Apiwork derives it from the model name:
 
 ```ruby
-class PostSchema < Apiwork::Schema::Base
-  root :article, :articles
+class InvoiceSchema < Apiwork::Schema::Base
+  # root key: "invoice" / "invoices"
 end
 ```
 
-Responses use `article` for single objects and `articles` for collections.
+The built-in adapter wraps single records in the singular form, and collections in the plural:
+
+```json
+// Single record → singular root key
+{
+  "invoice": {
+    "id": 1,
+    "number": "INV-001"
+  }
+}
+
+// Collection → plural root key
+{
+  "invoices": [
+    { "id": 1, "number": "INV-001" },
+    { "id": 2, "number": "INV-002" }
+  ]
+}
+```
+
+Request bodies follow the same pattern — create and update payloads are wrapped in the singular root key.
+
+Override when you need a different name:
+
+```ruby
+class PostSchema < Apiwork::Schema::Base
+  root :article  # auto-pluralizes to "articles"
+end
+```
+
+For irregular plurals, you can use Rails' inflector:
+
+```ruby
+# config/initializers/inflections.rb
+ActiveSupport::Inflector.inflections do |inflect|
+  inflect.irregular 'cactus', 'cacti'
+end
+```
+
+This way, `root :cactus` automatically pluralizes to `cacti`.
+
+If configuring inflections isn't an option, or you want to keep it local to the schema, pass both forms:
+
+```ruby
+class CactusSchema < Apiwork::Schema::Base
+  root :cactus, :cacti
+end
+```
 
 ## Schema Metadata
 
