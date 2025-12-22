@@ -25,7 +25,11 @@ param :id, type: :uuid
 
 ## Required & Optional
 
-Fields are required by default, matching TypeScript conventions.
+Fields are required by default.
+
+::: tip Why required by default?
+This matches TypeScript conventions and catches missing fields early. Explicitly mark optional fields with `optional: true`.
+:::
 
 ```ruby
 # Required (default)
@@ -76,6 +80,10 @@ enum :post_status, values: %w[draft published archived]
 # In contract
 param :status, type: :string, enum: :post_status
 ```
+
+::: tip Reusable enums
+Define enums at the [API level](../api-definitions/configuration.md#global-types-and-enums) when multiple contracts share the same values. This keeps them in sync and generates a single TypeScript type.
+:::
 
 ## Min & Max
 
@@ -177,11 +185,15 @@ end
 ```json
 {
   "title": {
-    "type": "string"
+    "type": "string",
+    "min": 1,
+    "max": 255
   },
   "count": {
     "type": "integer",
-    "optional": true
+    "optional": true,
+    "min": 0,
+    "max": 100
   },
   "tags": {
     "type": "array",

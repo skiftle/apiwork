@@ -6,7 +6,7 @@ order: 1
 
 Contracts define what goes in and what comes out of each resource action.
 
-You declare the shape of requests and responses. Apiwork validates incoming data, rejects anything that doesn’t match, and logs response mismatches in development.
+You declare the shape of requests and responses using [params](./params.md) and [types](../type-system/introduction.md). Apiwork validates incoming data, rejects anything that doesn't match, and logs response mismatches in development.
 
 ## A Minimal Contract
 
@@ -57,7 +57,7 @@ Now responses are serialized through the schema. See [Schemas](../schemas/introd
 3. Values are coerced to declared types
 4. Validation runs against the contract
 5. If valid, controller receives clean data
-6. If invalid, returns 422 with structured errors
+6. If invalid, returns 400 with structured errors
 
 **Response checking:**
 
@@ -65,7 +65,9 @@ Now responses are serialized through the schema. See [Schemas](../schemas/introd
 - Mismatches are logged in development — you'll see them, fix them early
 - No errors returned to clients, no checks in production
 
-This keeps incoming data strict while giving you visibility into response drift.
+::: info Strict in, lenient out
+Request validation is strict: invalid data returns 400 Bad Request. Response checking is lenient: mismatches are logged but never break your API. This keeps incoming data clean while giving you visibility into response drift.
+:::
 
 ## Manual Usage
 

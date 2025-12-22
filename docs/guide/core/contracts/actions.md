@@ -157,6 +157,10 @@ end
 
 Without `replace: true`, your params would be added to the schema-generated ones. With `replace: true`, only your explicitly defined params are used.
 
+::: tip Common use case
+Use `replace: true` on destroy actions to return metadata (like `deleted_at`) instead of the full resource. See [Action Defaults](../execution-engine/action-defaults.md) for how the adapter handles standard actions.
+:::
+
 ### no_content!
 
 For actions that return HTTP 204 No Content (no response body):
@@ -175,6 +179,10 @@ end
 - TypeScript: `never`
 - Zod: `z.never()`
 
+::: info Default for destroy
+The adapter uses `no_content!` by default for destroy actions. Override with `replace: true` if you need to return data.
+:::
+
 ## Raises
 
 Declare which errors an action can raise:
@@ -189,7 +197,7 @@ action :create do
 end
 ```
 
-These appear in generated OpenAPI specs as possible error responses.
+These appear in generated [OpenAPI specs](../specs/openapi.md) as possible error responses. You can also declare raises at the [API level](../api-definitions/configuration.md#raises) for errors common to all endpoints.
 
 ## Metadata
 

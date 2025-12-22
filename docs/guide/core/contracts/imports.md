@@ -6,6 +6,10 @@ order: 4
 
 Contracts can import types from other contracts.
 
+::: tip When to use imports
+Imports are useful when contracts share types that don't belong at the API level. For example, an `OrderContract` might import address types from `UserContract` without duplicating the definition.
+:::
+
 ## Importing Types
 
 ```ruby
@@ -144,4 +148,6 @@ class B < Apiwork::Contract::Base
 end
 ```
 
-The circular import check occurs at type resolution time, not at import declaration time. This means the error appears when you try to use a type that would cause infinite recursion.
+::: info Detection timing
+The circular import check occurs at type resolution time, not at import declaration time. The error appears when you try to use a type that would cause infinite recursion.
+:::
