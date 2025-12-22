@@ -186,10 +186,15 @@ module Apiwork
         # Configures the adapter for this API.
         #
         # Adapters control serialization, pagination, filtering, and response
-        # formatting. Default adapter is :apiwork.
+        # formatting. Without arguments, uses the built-in :apiwork adapter.
         #
-        # @param name [Symbol] adapter name (:apiwork, or custom)
+        # @param name [Symbol] adapter name (:apiwork, or a registered custom adapter)
         # @yield optional configuration block
+        #
+        # @example Use a custom adapter
+        #   Apiwork::API.define '/api/v1' do
+        #     adapter :my_adapter
+        #   end
         #
         # @example Configure pagination
         #   Apiwork::API.define '/api/v1' do
