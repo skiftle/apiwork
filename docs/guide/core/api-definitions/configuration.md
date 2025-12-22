@@ -145,6 +145,75 @@ end
 
 For more advanced customization, consider [creating a custom adapter](../../advanced/custom-adapters.md).
 
+## Path Format
+
+Control how URL path segments are formatted:
+
+```ruby
+Apiwork::API.define '/api/v1' do
+  path_format :kebab
+
+  resources :recurring_invoices
+  # Routes: GET /api/v1/recurring-invoices
+end
+```
+
+Options:
+
+| Option | Example Input | URL Path |
+|--------|---------------|----------|
+| `:keep` (default) | `:recurring_invoices` | `recurring_invoices` |
+| `:kebab` | `:recurring_invoices` | `recurring-invoices` |
+| `:camel` | `:recurring_invoices` | `recurringInvoices` |
+| `:underscore` | `:recurring_invoices` | `recurring_invoices` |
+
+::: info Path Segments Only
+`path_format` transforms resource and action names. It does not affect:
+
+- Route parameters (`:id`, `:post_id`)
+- Query parameters
+- Request/response payload keys (use [key_format](#key-format) for those)
+:::
+
+### Custom Member and Collection Actions
+
+Custom actions are also transformed:
+
+```ruby
+Apiwork::API.define '/api/v1' do
+  path_format :kebab
+
+  resources :invoices do
+    member do
+      patch :mark_as_paid      # PATCH /invoices/:id/mark-as-paid
+    end
+    collection do
+      get :past_due            # GET /invoices/past-due
+    end
+  end
+end
+```
+
+### Explicit Path Override
+
+Bypass formatting with explicit `path:`:
+
+```ruby
+resources :recurring_invoices, path: 'invoices'
+# Routes: GET /api/v1/invoices (ignores path_format)
+```
+
+### With Key Format
+
+`path_format` and `key_format` are independent:
+
+```ruby
+Apiwork::API.define '/api/v1' do
+  key_format :camel        # Payload keys: createdAt
+  path_format :kebab       # URL paths: recurring-invoices
+end
+```
+
 ## Adapter Configuration
 
 Configure the built-in adapter:
