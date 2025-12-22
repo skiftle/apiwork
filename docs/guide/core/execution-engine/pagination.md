@@ -4,9 +4,9 @@ order: 4
 
 # Pagination
 
-Two strategies: offset-based (traditional page numbers) or cursor-based (for large datasets). Pick the one that fits your use case.
+Two strategies: offset-based (traditional page numbers) or cursor-based (for large datasets).
 
-**Offset** works well for UIs with page numbers. **Cursor** is better when you have lots of data or real-time updates.
+**Offset** works well for UIs with page numbers. **Cursor** is better for large datasets or real-time updates.
 
 ## Configuration
 
@@ -33,8 +33,6 @@ end
 ---
 
 ## Offset-Based Pagination
-
-The classic approach. Your clients ask for page 1, page 2, etc.
 
 ### Query Format
 
@@ -72,7 +70,7 @@ GET /posts?page[number]=2&page[size]=20
 
 ### Out of Range
 
-If a client requests a page that doesn't exist, they still get a valid response — just an empty array with pagination metadata:
+If a client requests a page that doesn't exist, they get an empty array with pagination metadata:
 
 ```json
 {
@@ -159,11 +157,9 @@ Under the hood, cursors are base64-encoded JSON containing the primary key:
 {"id": 100}
 ```
 
-But clients should treat them as opaque strings — don't parse or construct them manually.
+Clients should treat cursors as opaque strings — don't parse or construct them manually.
 
 ### Limitations
-
-Two things to keep in mind:
 
 - Composite primary keys aren't supported
 - No total count — calculating totals defeats the performance benefit
@@ -172,7 +168,7 @@ Two things to keep in mind:
 
 ## Per-Schema Override
 
-Need different settings for a specific resource? Override at the schema level:
+Override pagination at the schema level for specific resources:
 
 ```ruby
 class ActivitySchema < Apiwork::Schema::Base

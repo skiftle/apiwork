@@ -111,7 +111,7 @@ end
 The built-in adapter wraps single records in the singular form, and collections in the plural:
 
 ```json
-// Single record → singular root key
+// Single record uses singular root key
 {
   "invoice": {
     "id": 1,
@@ -119,7 +119,7 @@ The built-in adapter wraps single records in the singular form, and collections 
   }
 }
 
-// Collection → plural root key
+// Collection uses plural root key
 {
   "invoices": [
     { "id": 1, "number": "INV-001" },

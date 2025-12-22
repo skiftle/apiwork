@@ -97,15 +97,17 @@ type: z.literal('text')
 
 ## Type Coercion
 
-Request params are automatically coerced:
+Query parameters and form data arrive as strings. Apiwork coerces them to their declared types before validation:
 
-| Input | Type | Result |
-|-------|------|--------|
-| `"123"` | `:integer` | `123` |
-| `"3.14"` | `:float` | `3.14` |
-| `"true"` | `:boolean` | `true` |
-| `"false"` | `:boolean` | `false` |
-| `"2024-01-15"` | `:date` | `Date.parse("2024-01-15")` |
+| Type | Input | Output |
+|------|-------|--------|
+| `:integer` | `"123"` | `123` |
+| `:float` | `"3.14"` | `3.14` |
+| `:boolean` | `"true"`, `"1"` | `true` |
+| `:boolean` | `"false"`, `"0"` | `false` |
+| `:date` | `"2024-01-15"` | `Date` |
+| `:datetime` | `"2024-01-15T10:00:00Z"` | `Time` |
+| `:decimal` | `"99.99"` | `BigDecimal` |
 
 ## Generated Output
 

@@ -4,9 +4,7 @@ order: 6
 
 # Serialization
 
-Schemas can [serialize objects directly](../schemas/serialization.md) — but within the Execution Engine, the adapter wraps this with additional transformations for requests and responses.
-
-This page covers the adapter's serialization pipeline: how incoming data is coerced and decoded, and how outgoing data is encoded and transformed.
+Schemas can [serialize objects directly](../schemas/serialization.md). Within the Execution Engine, the adapter adds transformations for requests and responses.
 
 ## Response Serialization
 
@@ -15,7 +13,7 @@ When you call `respond`, the adapter serializes your data according to the schem
 ```ruby
 def show
   invoice = Invoice.find(params[:id])
-  respond(invoice)
+  respond invoice
 end
 ```
 
@@ -56,8 +54,9 @@ Incoming requests go through a pipeline:
 
 1. **Transform** — API and adapter transformations (key casing, etc.)
 2. **Unwrap** — Extract data from root key wrapper
-3. **Coerce** — Convert strings to typed values (`"123"` → `123`)
-4. **Decode** — Apply `Schema.deserialize()` which runs decode transformers on attributes and nested associations
+3. **Coerce** — [Convert strings to typed values](../type-system/types.md#type-coercion)
+4. **Validate** — Check against [contract definitions](../contracts/introduction.md)
+5. **Decode** — Apply `Schema.deserialize()` which runs decode transformers
 
 ::: info Under the Hood
 The adapter delegates to `Schema.deserialize()` for the decode step. This means nested associations are automatically deserialized recursively — the same transformers you define on your schemas work both when calling `Schema.deserialize()` directly and when processing API requests.
@@ -72,20 +71,6 @@ The adapter delegates to `Schema.deserialize()` for the decode step. This means 
 ```
 
 See [Encode & Decode Transformers](../schemas/serialization.md#encode-decode-transformers) for customizing value transformations.
-
-## Type Coercion
-
-Query parameters and form data arrive as strings. The adapter coerces them based on your type definitions:
-
-| Type | Coercion |
-|------|----------|
-| `:integer` | `"42"` → `42` |
-| `:boolean` | `"true"` → `true`, `"1"` → `true` |
-| `:date` | `"2024-01-15"` → `Date` |
-| `:datetime` | `"2024-01-15T10:00:00Z"` → `Time` |
-| `:decimal` | `"99.99"` → `BigDecimal` |
-
-Coercion happens before validation, so your validators see properly typed values.
 
 ## Custom Adapters
 
