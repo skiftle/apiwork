@@ -290,6 +290,7 @@ components:
           type: string
           format: date-time
           description: Timestamp of last modification
+      description: A project with tasks and deadlines
       required:
       - createdAt
       - deadline
@@ -336,6 +337,7 @@ components:
           - paused
           - completed
           - archived
+      description: A project with tasks and deadlines
       required:
       - name
     projectFilter:
@@ -355,6 +357,7 @@ components:
           "$ref": "#/components/schemas/projectPriorityFilter"
         status:
           "$ref": "#/components/schemas/projectStatusFilter"
+      description: A project with tasks and deadlines
     projectPage:
       type: object
       properties:
@@ -399,6 +402,7 @@ components:
           enum:
           - asc
           - desc
+      description: A project with tasks and deadlines
     projectStatusFilter:
       oneOf:
       - type: string
@@ -457,6 +461,7 @@ components:
           - paused
           - completed
           - archived
+      description: A project with tasks and deadlines
       required:
       - name
     stringFilter:

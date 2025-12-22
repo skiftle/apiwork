@@ -119,7 +119,8 @@
           "type": "datetime",
           "description": "Timestamp of last modification"
         }
-      }
+      },
+      "description": "A project with tasks and deadlines"
     },
     "project_create_payload": {
       "type": "object",
@@ -154,7 +155,8 @@
           "optional": true,
           "description": "Current project lifecycle status"
         }
-      }
+      },
+      "description": "A project with tasks and deadlines"
     },
     "project_filter": {
       "type": "object",
@@ -183,7 +185,8 @@
           "optional": true,
           "description": "Current project lifecycle status"
         }
-      }
+      },
+      "description": "A project with tasks and deadlines"
     },
     "project_page": {
       "type": "object",
@@ -237,7 +240,8 @@
           "optional": true,
           "description": "Target completion date"
         }
-      }
+      },
+      "description": "A project with tasks and deadlines"
     },
     "project_status_filter": {
       "type": "union",
@@ -295,7 +299,8 @@
           "optional": true,
           "description": "Current project lifecycle status"
         }
-      }
+      },
+      "description": "A project with tasks and deadlines"
     },
     "string_filter": {
       "type": "object",

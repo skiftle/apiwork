@@ -197,32 +197,62 @@ export interface Task {
   comments?: string[];
   /** Timestamp when the task was created */
   createdAt: string;
-  /** Detailed description of what needs to be done @example Add OAuth2 login support for Google and GitHub providers */
+  /**
+   * Detailed description of what needs to be done
+   * @example "Add OAuth2 login support for Google and GitHub providers"
+   */
   description: null | string;
-  /** Target date for task completion @example 2024-02-01T00:00:00Z */
+  /**
+   * Target date for task completion
+   * @example "2024-02-01T00:00:00Z"
+   */
   dueDate: null | string;
   /** Unique task identifier */
   id: string;
-  /** Priority level for task ordering @example high */
+  /**
+   * Priority level for task ordering
+   * @example "high"
+   */
   priority: TaskPriority | null;
-  /** Current status of the task @example pending */
+  /**
+   * Current status of the task
+   * @example "pending"
+   */
   status: TaskStatus | null;
-  /** Short title describing the task @example Implement user authentication */
+  /**
+   * Short title describing the task
+   * @example "Implement user authentication"
+   */
   title: string;
   /** Timestamp of last modification */
   updatedAt: string;
 }
 
 export interface TaskCreatePayload {
-  /** Detailed description of what needs to be done @example Add OAuth2 login support for Google and GitHub providers */
+  /**
+   * Detailed description of what needs to be done
+   * @example "Add OAuth2 login support for Google and GitHub providers"
+   */
   description?: null | string;
-  /** Target date for task completion @example 2024-02-01T00:00:00Z */
+  /**
+   * Target date for task completion
+   * @example "2024-02-01T00:00:00Z"
+   */
   dueDate?: null | string;
-  /** Priority level for task ordering @example high */
+  /**
+   * Priority level for task ordering
+   * @example "high"
+   */
   priority?: TaskPriority | null;
-  /** Current status of the task @example pending */
+  /**
+   * Current status of the task
+   * @example "pending"
+   */
   status?: TaskStatus | null;
-  /** Short title describing the task @example Implement user authentication */
+  /**
+   * Short title describing the task
+   * @example "Implement user authentication"
+   */
   title: string;
 }
 
@@ -253,15 +283,30 @@ export type TaskStatus = 'archived' | 'completed' | 'in_progress' | 'pending';
 export type TaskStatusFilter = TaskStatus | { eq?: TaskStatus; in?: TaskStatus[] };
 
 export interface TaskUpdatePayload {
-  /** Detailed description of what needs to be done @example Add OAuth2 login support for Google and GitHub providers */
+  /**
+   * Detailed description of what needs to be done
+   * @example "Add OAuth2 login support for Google and GitHub providers"
+   */
   description?: null | string;
-  /** Target date for task completion @example 2024-02-01T00:00:00Z */
+  /**
+   * Target date for task completion
+   * @example "2024-02-01T00:00:00Z"
+   */
   dueDate?: null | string;
-  /** Priority level for task ordering @example high */
+  /**
+   * Priority level for task ordering
+   * @example "high"
+   */
   priority?: TaskPriority | null;
-  /** Current status of the task @example pending */
+  /**
+   * Current status of the task
+   * @example "pending"
+   */
   status?: TaskStatus | null;
-  /** Short title describing the task @example Implement user authentication */
+  /**
+   * Short title describing the task
+   * @example "Implement user authentication"
+   */
   title?: string;
 }
 

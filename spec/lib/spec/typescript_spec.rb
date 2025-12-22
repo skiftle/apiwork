@@ -354,8 +354,8 @@ RSpec.describe Apiwork::Spec::Typescript do
     end
 
     it 'includes metadata as JSDoc comments' do
-      expect(metadata_output).to include("/**\n * Type with description\n */")
-      expect(metadata_output).to include("/**\n * Status enum\n */")
+      expect(metadata_output).to include('/** Type with description */')
+      expect(metadata_output).to include('/** Status enum */')
     end
 
     it 'handles deprecated flag without errors' do
@@ -406,22 +406,26 @@ RSpec.describe Apiwork::Spec::Typescript do
       output = Apiwork::Spec.generate(:typescript, '/api/ts_prop_desc')
 
       expect(output).to include('/** Total amount in cents */')
-      expect(output).not_to include('/** currency')
+      expect(output).to include('currency: string;')
+      expect(output).not_to include('* currency')
 
       Apiwork::API.unregister('/api/ts_prop_desc')
     end
 
-    it 'includes @example in JSDoc when example provided' do
+    it 'includes @example in JSDoc with JSON format on separate lines' do
       Apiwork::API.define '/api/ts_example' do
         type :price, description: 'Price object', example: { amount: 99 } do
           param :amount, type: :integer, example: 99
+          param :currency, type: :string, example: 'USD'
         end
       end
 
       output = Apiwork::Spec.generate(:typescript, '/api/ts_example')
 
-      expect(output).to include('@example {:amount=>99}')
+      expect(output).to include('@example {"amount":99}')
       expect(output).to include('@example 99')
+      expect(output).to include('@example "USD"')
+      expect(output).to include(" * @example")
 
       Apiwork::API.unregister('/api/ts_example')
     end

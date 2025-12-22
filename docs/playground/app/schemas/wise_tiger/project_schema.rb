@@ -2,6 +2,8 @@
 
 module WiseTiger
   class ProjectSchema < Apiwork::Schema::Base
+    description 'A project with tasks and deadlines'
+
     attribute :id
     attribute :name, writable: true
     attribute :description, writable: true

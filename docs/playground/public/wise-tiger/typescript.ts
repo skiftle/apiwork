@@ -22,6 +22,7 @@ export interface OffsetPagination {
   total: number;
 }
 
+/** A project with tasks and deadlines */
 export interface Project {
   /** Timestamp when project was created */
   createdAt: string;
@@ -41,6 +42,7 @@ export interface Project {
   updatedAt: string;
 }
 
+/** A project with tasks and deadlines */
 export interface ProjectCreatePayload {
   /** Target completion date */
   deadline?: null | string;
@@ -54,6 +56,7 @@ export interface ProjectCreatePayload {
   status?: ProjectStatus | null;
 }
 
+/** A project with tasks and deadlines */
 export interface ProjectFilter {
   _and?: ProjectFilter[];
   _not?: ProjectFilter;
@@ -73,6 +76,7 @@ export type ProjectPriority = 'critical' | 'high' | 'low' | 'medium';
 
 export type ProjectPriorityFilter = ProjectPriority | { eq?: ProjectPriority; in?: ProjectPriority[] };
 
+/** A project with tasks and deadlines */
 export interface ProjectSort {
   /** Timestamp when project was created */
   createdAt?: SortDirection;
@@ -84,6 +88,7 @@ export type ProjectStatus = 'active' | 'archived' | 'completed' | 'paused';
 
 export type ProjectStatusFilter = ProjectStatus | { eq?: ProjectStatus; in?: ProjectStatus[] };
 
+/** A project with tasks and deadlines */
 export interface ProjectUpdatePayload {
   /** Target completion date */
   deadline?: null | string;

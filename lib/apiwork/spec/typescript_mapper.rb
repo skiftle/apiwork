@@ -29,7 +29,8 @@ module Apiwork
             example: property_definition[:example]
           )
           if prop_jsdoc
-            "  #{prop_jsdoc}\n  #{key}#{optional_marker}: #{ts_type};"
+            indented_jsdoc = prop_jsdoc.lines.map { |line| "  #{line.chomp}" }.join("\n")
+            "#{indented_jsdoc}\n  #{key}#{optional_marker}: #{ts_type};"
           else
             "  #{key}#{optional_marker}: #{ts_type};"
           end
@@ -268,21 +269,35 @@ module Apiwork
 
       def jsdoc(description: nil, example: nil)
         return nil if description.nil? && example.nil?
+        return "/** #{description} */" if description && example.nil?
 
         lines = ['/**']
         lines << " * #{description}" if description
-        lines << " * @example #{example}" if example
+        lines << " * @example #{format_example(example)}" if example
         lines << ' */'
         lines.join("\n")
       end
 
       def jsdoc_property(description: nil, example: nil)
         return nil if description.nil? && example.nil?
+        return "/** #{description} */" if description && example.nil?
 
-        parts = []
-        parts << description if description
-        parts << "@example #{example}" if example
-        "/** #{parts.join(' ')} */"
+        lines = ['/**']
+        lines << " * #{description}" if description
+        lines << " * @example #{format_example(example)}" if example
+        lines << ' */'
+        lines.join("\n")
+      end
+
+      def format_example(value)
+        case value
+        when Hash, Array
+          value.to_json
+        when String
+          "\"#{value}\""
+        else
+          value.to_s
+        end
       end
 
       private
