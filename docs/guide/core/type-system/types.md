@@ -101,10 +101,12 @@ Request params are automatically coerced:
 ```json
 {
   "title": { "type": "string" },
-  "count": { "type": "integer", "optional": true },
+  "count": { "type": "integer" },
   "price": { "type": "decimal" },
-  "active": { "type": "boolean", "optional": true },
-  "published_at": { "type": "datetime", "optional": true }
+  "active": { "type": "boolean" },
+  "published_at": { "type": "datetime" },
+  "birth_date": { "type": "date" },
+  "id": { "type": "uuid" }
 }
 ```
 
@@ -113,10 +115,12 @@ Request params are automatically coerced:
 ```typescript
 interface Example {
   title: string;
-  count?: number;
+  count: number;
   price: number;
-  active?: boolean;
-  publishedAt?: string;
+  active: boolean;
+  publishedAt: string;
+  birthDate: string;
+  id: string;
 }
 ```
 
@@ -125,10 +129,12 @@ interface Example {
 ```typescript
 const ExampleSchema = z.object({
   title: z.string(),
-  count: z.number().int().optional(),
+  count: z.number().int(),
   price: z.number(),
-  active: z.boolean().optional(),
-  publishedAt: z.iso.datetime().optional(),
+  active: z.boolean(),
+  publishedAt: z.iso.datetime(),
+  birthDate: z.iso.date(),
+  id: z.uuid(),
 });
 ```
 
@@ -137,7 +143,14 @@ const ExampleSchema = z.object({
 ```yaml
 Example:
   type: object
-  required: [title, price]
+  required:
+    - title
+    - count
+    - price
+    - active
+    - publishedAt
+    - birthDate
+    - id
   properties:
     title:
       type: string
@@ -150,4 +163,10 @@ Example:
     publishedAt:
       type: string
       format: date-time
+    birthDate:
+      type: string
+      format: date
+    id:
+      type: string
+      format: uuid
 ```
