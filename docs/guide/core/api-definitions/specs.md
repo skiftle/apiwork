@@ -91,6 +91,20 @@ Query parameter override:
 GET /api/v1/.spec/openapi?key_format=camel
 ```
 
+::: info Keeping Rails conventions while generating camelCase specs
+If you prefer Rails conventions at runtime (snake_case keys), you can keep the API's `key_format` at `:keep` or `:underscore` and override only for specs. This is useful when your frontend transforms keys to camelCase anyway.
+
+```ruby
+Apiwork::API.define '/api/v1' do
+  # Omit key_format to use :keep (default)
+
+  spec :typescript do
+    key_format :camel  # Generated types use camelCase
+  end
+end
+```
+:::
+
 ## Spec Generation
 
 For detailed information about each spec format:
@@ -101,12 +115,15 @@ For detailed information about each spec format:
 
 ## Programmatic Generation
 
-Generate specs without HTTP endpoints:
+Generate specs directly from Ruby code:
 
 ```ruby
 Apiwork::Spec.generate(:openapi, '/api/v1')
 Apiwork::Spec.generate(:typescript, '/api/v1')
 Apiwork::Spec.generate(:zod, '/api/v1')
+
+# With options
+Apiwork::Spec.generate(:typescript, '/api/v1', key_format: :camel)
 ```
 
 ::: tip When to use programmatic generation

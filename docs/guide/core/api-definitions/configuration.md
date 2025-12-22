@@ -78,10 +78,6 @@ Options:
 - `:camel` - `created_at` becomes `createdAt` in responses, `createdAt` becomes `created_at` in requests
 - `:underscore` - all keys use snake_case
 
-::: tip
-Most JavaScript/TypeScript clients expect camelCase. Use `key_format :camel` for frontend-friendly APIs.
-:::
-
 ### JSON Columns
 
 Key transformation applies recursively to the entire response, including data from JSON/JSONB columns:
