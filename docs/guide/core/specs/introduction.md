@@ -189,6 +189,7 @@ Options:
 
 - `:keep` — No transformation
 - `:camel` — `created_at` becomes `createdAt`
+- `:kebab` — `created_at` becomes `created-at` (JSON:API style)
 - `:underscore` — All keys use snake_case
 
 If not specified, inherits from the [API definition](/guide/core/api-definitions/introduction).

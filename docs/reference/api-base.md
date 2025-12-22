@@ -144,7 +144,7 @@ Useful for JavaScript clients that prefer camelCase.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `format` | `Symbol` | :keep (no transform), :camel (to/from camelCase), :underscore |
+| `format` | `Symbol` | :keep (no transform), :camel (camelCase), :kebab (kebab-case), :underscore |
 
 **Returns**
 

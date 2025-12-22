@@ -83,6 +83,7 @@ Options:
 
 - `:keep` — No transformation (default)
 - `:camel` — `created_at` becomes `createdAt`
+- `:kebab` — `created_at` becomes `created-at` (JSON:API style)
 - `:underscore` — All keys use snake_case
 
 Query parameter override:
