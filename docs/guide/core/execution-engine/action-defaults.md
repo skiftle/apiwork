@@ -37,8 +37,13 @@ Returns a paginated collection with filtering and sorting.
 ```json
 {
   "invoices": [...],
-  "pagination": { "currentPage": 1, "totalPages": 5 },
-  "meta": {}
+  "pagination": {
+    "current": 1,
+    "next": 2,
+    "prev": null,
+    "total": 5,
+    "items": 100
+  }
 }
 ```
 
@@ -57,8 +62,7 @@ Returns a single record by ID.
   "invoice": {
     "id": 1,
     "number": "INV-001"
-  },
-  "meta": {}
+  }
 }
 ```
 
@@ -78,8 +82,7 @@ Creates a new record. Returns 201 Created on success.
   "invoice": {
     "id": 1,
     "number": "INV-001"
-  },
-  "meta": {}
+  }
 }
 ```
 
@@ -99,8 +102,7 @@ Updates an existing record.
   "invoice": {
     "id": 1,
     "number": "INV-002"
-  },
-  "meta": {}
+  }
 }
 ```
 
@@ -136,8 +138,7 @@ Default response:
 
 ```json
 {
-  "invoice": { ... },
-  "meta": {}
+  "invoice": { ... }
 }
 ```
 
@@ -248,11 +249,13 @@ end
 
 ### Override 204 No Content
 
+Use `replace: true` to override the default 204 response.
+
 To return data from destroy:
 
 ```ruby
 action :destroy do
-  response do
+  response replace: true do
     body do
       param :deleted_at, type: :datetime
     end
@@ -264,7 +267,9 @@ To return 200 OK with meta support:
 
 ```ruby
 action :destroy do
-  response {}  # Empty body, but 200 OK with meta
+  response replace: true do
+    body {}
+  end
 end
 ```
 

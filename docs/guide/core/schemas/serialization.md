@@ -93,3 +93,30 @@ end
 | `encode` | Ruby → JSON | `Schema.serialize` |
 | `decode` | JSON → Ruby | `Schema.deserialize` |
 | `empty: true` | Both | Serializes `nil` → `""`, deserializes `""` → `nil` |
+
+## Nested Associations
+
+Deserialization handles nested data recursively:
+
+```ruby
+class InvoiceSchema < Apiwork::Schema::Base
+  attribute :number, type: :string
+  attribute :email, decode: ->(v) { v.downcase.strip }
+  has_many :lines, schema: LineSchema
+end
+
+class LineSchema < Apiwork::Schema::Base
+  attribute :amount, decode: ->(v) { BigDecimal(v.to_s) }
+end
+```
+
+```ruby
+InvoiceSchema.deserialize({
+  number: 'INV-001',
+  email: '  USER@EXAMPLE.COM  ',
+  lines: [{ amount: '99.99' }]
+})
+# => { number: 'INV-001', email: 'user@example.com', lines: [{ amount: BigDecimal('99.99') }] }
+```
+
+Both `has_one` and `has_many` associations are deserialized using their schema's decode transformers.

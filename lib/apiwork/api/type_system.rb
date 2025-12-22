@@ -44,6 +44,15 @@ module Apiwork
         @types[name]
       end
 
+      def resolve_schema_class(name, scope: nil)
+        metadata = if scope
+                     scoped_name_value = scoped_name(scope, name)
+                     @types[scoped_name_value] if @types.key?(scoped_name_value)
+                   end
+        metadata ||= @types[name]
+        metadata&.[](:schema_class)
+      end
+
       def enum_metadata(name)
         @enums[name]
       end

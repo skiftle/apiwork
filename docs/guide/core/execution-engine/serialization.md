@@ -40,7 +40,13 @@ For collections, the plural root key is used:
 ```json
 {
   "invoices": [...],
-  "pagination": { "page": 1, "size": 20, "total": 100 }
+  "pagination": {
+    "current": 1,
+    "next": 2,
+    "prev": null,
+    "total": 5,
+    "items": 100
+  }
 }
 ```
 
@@ -51,7 +57,11 @@ Incoming requests go through a pipeline:
 1. **Transform** — API and adapter transformations (key casing, etc.)
 2. **Unwrap** — Extract data from root key wrapper
 3. **Coerce** — Convert strings to typed values (`"123"` → `123`)
-4. **Decode** — Apply `decode` transformers from attribute definitions
+4. **Decode** — Apply `Schema.deserialize()` which runs decode transformers on attributes and nested associations
+
+::: info Under the Hood
+The adapter delegates to `Schema.deserialize()` for the decode step. This means nested associations are automatically deserialized recursively — the same transformers you define on your schemas work both when calling `Schema.deserialize()` directly and when processing API requests.
+:::
 
 ```ruby
 # Incoming JSON:

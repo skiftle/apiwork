@@ -42,14 +42,8 @@ module Apiwork
             type_name = param_options[:type]
             return nil unless type_name.is_a?(Symbol)
 
-            contract_class = definition.contract_class
-            return nil unless contract_class.respond_to?(:api_class)
-
-            api_class = contract_class.api_class
-            return nil unless api_class.respond_to?(:type_system)
-
-            type_metadata = api_class.type_system.types[type_name]
-            type_metadata&.[](:schema_class)
+            api_class = definition.contract_class&.api_class
+            api_class&.type_system&.resolve_schema_class(type_name, scope: definition.contract_class)
           end
 
           def deserialize_array(array, param_options, definition = nil)
