@@ -82,16 +82,21 @@ end
 
 With `schema!`, Apiwork auto-generates request bodies, response shapes, filter types, sort options and includes — all from the schema definition.
 
-## Schemas as Behavior Hints
+At runtime, the [Execution Engine](../execution-engine/introduction.md) interprets these definitions and handles validation, querying, and serialization automatically.
 
-Beyond describing what to render, schemas act as behavior hints for the API layer. The same definitions that say "this field is exposed" also decide:
+## Schemas as Instructions
 
-- Which fields are safe to filter on
-- Which attributes can be sorted by
-- Which relations can be eagerly loaded
+Schemas are purely declarative — they describe *what* exists, not *how* to process it. The [Execution Engine](../execution-engine/introduction.md) interprets your schema and handles everything: building contracts, validating requests, querying the database, and serializing responses.
+
+The same schema definitions that say "this field exists" also tell the Execution Engine:
+
+- Which fields are safe to [filter](../execution-engine/filtering.md) on
+- Which attributes can be [sorted](../execution-engine/sorting.md) by
+- How results are [paginated](../execution-engine/pagination.md)
+- Which relations can be [eagerly loaded](../execution-engine/eager-loading.md)
 - How nested writes should be handled
 
-You describe your domain once — in a schema aligned with your model — and Apiwork uses that for both serialization and API behavior.
+You describe your domain once — in a schema aligned with your model — and the Execution Engine uses those instructions for all API behavior.
 
 ## Root Key
 
