@@ -24,15 +24,15 @@ Document APIs with descriptions, examples, formats, and deprecation notices at e
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| archived | boolean | ✓ |  |
-| assignee_id | string | ✓ |  |
-| created_at | datetime |  |  |
-| description | text | ✓ |  |
-| due_date | datetime | ✓ |  |
-| priority | string | ✓ | medium |
-| status | string | ✓ | pending |
 | title | string |  |  |
+| description | text | ✓ |  |
+| status | string | ✓ | pending |
+| priority | string | ✓ | medium |
+| due_date | datetime | ✓ |  |
+| archived | boolean | ✓ |  |
+| created_at | datetime |  |  |
 | updated_at | datetime |  |  |
+| assignee_id | string | ✓ |  |
 
 </details>
 
@@ -46,9 +46,9 @@ Document APIs with descriptions, examples, formats, and deprecation notices at e
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| created_at | datetime |  |  |
-| email | string |  |  |
 | name | string |  |  |
+| email | string |  |  |
+| created_at | datetime |  |  |
 | updated_at | datetime |  |  |
 
 </details>
@@ -63,10 +63,10 @@ Document APIs with descriptions, examples, formats, and deprecation notices at e
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| author_name | string | ✓ |  |
-| body | text |  |  |
-| created_at | datetime |  |  |
 | task_id | string |  |  |
+| body | text |  |  |
+| author_name | string | ✓ |  |
+| created_at | datetime |  |  |
 | updated_at | datetime |  |  |
 
 </details>

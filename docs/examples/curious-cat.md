@@ -26,11 +26,11 @@ Define typed JSON columns with object shapes, arrays, and nested structures
 | id | string |  |  |
 | name | string |  |  |
 | email | string |  |  |
-| settings | json |  | {} |
-| tags | json |  | [] |
-| addresses | json |  | [] |
-| preferences | json |  | {} |
-| metadata | json |  | {} |
+| settings | json |  |  |
+| tags | text |  |  |
+| addresses | json |  |  |
+| preferences | json |  |  |
+| metadata | text |  |  |
 | created_at | datetime |  |  |
 | updated_at | datetime |  |  |
 
@@ -44,11 +44,11 @@ Define typed JSON columns with object shapes, arrays, and nested structures
 
 The schema demonstrates all inline type variants:
 
-- **Object shape** (`settings`) — Define properties with `param` inside the block
-- **Array of primitives** (`tags`) — Use `type: :array, of: :string`
-- **Array of objects** (`addresses`) — Use `type: :array` with a block defining the element shape
-- **Nested objects** (`preferences`) — Use `param :name, type: :object do ... end` for sub-objects
-- **Untyped JSON** (`metadata`) — Use `type: :json` for `Record<string, any>`
+- **Object shape** (`settings`) — `json` column + `store_accessor` for direct attribute access
+- **Array of primitives** (`tags`) — `text` column + `serialize :tags, coder: JSON`
+- **Array of objects** (`addresses`) — `json` column with block defining element shape
+- **Nested objects** (`preferences`) — `json` column with nested `param :name, type: :object do ... end`
+- **Untyped JSON** (`metadata`) — `text` column + `store :metadata, coder: JSON`
 
 ## Contracts
 

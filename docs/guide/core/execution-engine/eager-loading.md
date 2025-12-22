@@ -70,40 +70,6 @@ GET /posts/1?include[comments]=true   # With comments
 
 ---
 
-## Auto-Includes
-
-Sometimes the adapter includes associations automatically, even if the client didn't ask:
-
-### Filtering
-
-When you filter by an association, it's automatically included:
-
-```http
-GET /posts?filter[author][name][eq]=Jane
-```
-
-The `author` association gets joined automatically for the filter query.
-
-### Sorting
-
-When you sort by an association, it's automatically included:
-
-```http
-GET /posts?sort[author][name]=asc
-```
-
----
-
-## Excluding Always-Include
-
-You cannot exclude an `include: :always` association:
-
-```http
-GET /posts?include[author]=false  # Ignored, author still included
-```
-
----
-
 ## N+1 Prevention
 
 The adapter picks the right loading strategy for you:

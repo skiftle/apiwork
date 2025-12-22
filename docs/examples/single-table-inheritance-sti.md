@@ -24,16 +24,16 @@ Single Table Inheritance with automatic variant serialization and TypeScript uni
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
+| type | string |  |  |
 | brand | string |  |  |
+| model | string |  |  |
+| year | integer | ✓ |  |
 | color | string | ✓ |  |
-| created_at | datetime |  |  |
 | doors | integer | ✓ |  |
 | engine_cc | integer | ✓ |  |
-| model | string |  |  |
 | payload_capacity | decimal | ✓ |  |
-| type | string |  |  |
+| created_at | datetime |  |  |
 | updated_at | datetime |  |  |
-| year | integer | ✓ |  |
 
 </details>
 

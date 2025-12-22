@@ -90,14 +90,14 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_22_000001) do
   end
 
   create_table "curious_cat_profiles", id: :string, force: :cascade do |t|
-    t.json "addresses", default: [], null: false
+    t.json "addresses", null: false
     t.datetime "created_at", null: false
     t.string "email", null: false
-    t.json "metadata", default: {}, null: false
+    t.text "metadata", null: false
     t.string "name", null: false
-    t.json "preferences", default: {}, null: false
-    t.json "settings", default: {}, null: false
-    t.json "tags", default: [], null: false
+    t.json "preferences", null: false
+    t.json "settings", null: false
+    t.text "tags", null: false
     t.datetime "updated_at", null: false
   end
 

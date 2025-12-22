@@ -27,13 +27,13 @@ export interface Profile {
 }
 
 export interface ProfileCreatePayload {
-  addresses?: { city: string; primary: boolean; street: string; zip: string }[];
+  addresses: { city: string; primary: boolean; street: string; zip: string }[];
   email: string;
-  metadata?: object;
+  metadata: object;
   name: string;
-  preferences?: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
-  settings?: { language: string; notifications: boolean; theme: string };
-  tags?: string[];
+  preferences: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
+  settings: { language: string; notifications: boolean; theme: string };
+  tags: string[];
 }
 
 export interface ProfilePage {

@@ -147,16 +147,14 @@
             "zip": {
               "type": "string"
             }
-          },
-          "optional": true
+          }
         },
         "email": {
           "type": "string",
           "format": "email"
         },
         "metadata": {
-          "type": "object",
-          "optional": true
+          "type": "object"
         },
         "name": {
           "type": "string"
@@ -186,8 +184,7 @@
                 }
               }
             }
-          },
-          "optional": true
+          }
         },
         "settings": {
           "type": "object",
@@ -201,13 +198,11 @@
             "theme": {
               "type": "string"
             }
-          },
-          "optional": true
+          }
         },
         "tags": {
           "type": "array",
-          "of": "string",
-          "optional": true
+          "of": "string"
         }
       }
     },
@@ -245,16 +240,14 @@
             "zip": {
               "type": "string"
             }
-          },
-          "optional": true
+          }
         },
         "email": {
           "type": "string",
           "format": "email"
         },
         "metadata": {
-          "type": "object",
-          "optional": true
+          "type": "object"
         },
         "name": {
           "type": "string"
@@ -284,8 +277,7 @@
                 }
               }
             }
-          },
-          "optional": true
+          }
         },
         "settings": {
           "type": "object",
@@ -299,13 +291,11 @@
             "theme": {
               "type": "string"
             }
-          },
-          "optional": true
+          }
         },
         "tags": {
           "type": "array",
-          "of": "string",
-          "optional": true
+          "of": "string"
         }
       }
     }

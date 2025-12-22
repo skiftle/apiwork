@@ -24,12 +24,12 @@ Using `schema!` to generate a complete contract from schema definitions
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| created_at | datetime |  |  |
 | customer_id | string |  |  |
+| number | string |  |  |
 | issued_on | date | ✓ |  |
 | notes | string | ✓ |  |
-| number | string |  |  |
 | status | string | ✓ |  |
+| created_at | datetime |  |  |
 | updated_at | datetime |  |  |
 
 </details>
@@ -44,8 +44,8 @@ Using `schema!` to generate a complete contract from schema definitions
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| created_at | datetime |  |  |
 | name | string |  |  |
+| created_at | datetime |  |  |
 | updated_at | datetime |  |  |
 
 </details>
@@ -60,11 +60,11 @@ Using `schema!` to generate a complete contract from schema definitions
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| created_at | datetime |  |  |
-| description | string | ✓ |  |
 | invoice_id | string |  |  |
-| price | decimal | ✓ |  |
+| description | string | ✓ |  |
 | quantity | integer | ✓ |  |
+| price | decimal | ✓ |  |
+| created_at | datetime |  |  |
 | updated_at | datetime |  |  |
 
 </details>

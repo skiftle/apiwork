@@ -24,10 +24,10 @@ Comments that belong to different content types (posts, videos, images)
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| author_name | string | ✓ |  |
-| body | text |  |  |
-| commentable_id | string |  |  |
 | commentable_type | string |  |  |
+| commentable_id | string |  |  |
+| body | text |  |  |
+| author_name | string | ✓ |  |
 | created_at | datetime |  |  |
 | updated_at | datetime |  |  |
 
@@ -43,9 +43,9 @@ Comments that belong to different content types (posts, videos, images)
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
+| title | string |  |  |
 | body | text | ✓ |  |
 | created_at | datetime |  |  |
-| title | string |  |  |
 | updated_at | datetime |  |  |
 
 </details>
@@ -60,11 +60,11 @@ Comments that belong to different content types (posts, videos, images)
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| created_at | datetime |  |  |
-| duration | integer | ✓ |  |
 | title | string |  |  |
-| updated_at | datetime |  |  |
 | url | string |  |  |
+| duration | integer | ✓ |  |
+| created_at | datetime |  |  |
+| updated_at | datetime |  |  |
 
 </details>
 
@@ -78,12 +78,12 @@ Comments that belong to different content types (posts, videos, images)
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| created_at | datetime |  |  |
-| height | integer | ✓ |  |
 | title | string |  |  |
-| updated_at | datetime |  |  |
 | url | string |  |  |
 | width | integer | ✓ |  |
+| height | integer | ✓ |  |
+| created_at | datetime |  |  |
+| updated_at | datetime |  |  |
 
 </details>
 

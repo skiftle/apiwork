@@ -29,13 +29,13 @@ export const ProfileSchema = z.object({
 });
 
 export const ProfileCreatePayloadSchema = z.object({
-  addresses: z.array(z.object({ city: z.string(), primary: z.boolean(), street: z.string(), zip: z.string() })).optional(),
+  addresses: z.array(z.object({ city: z.string(), primary: z.boolean(), street: z.string(), zip: z.string() })),
   email: z.email(),
-  metadata: z.object({}).optional(),
+  metadata: z.object({}),
   name: z.string(),
-  preferences: z.object({ notifications: z.object({ email: z.boolean(), push: z.boolean() }), ui: z.object({ sidebarCollapsed: z.boolean(), theme: z.string() }) }).optional(),
-  settings: z.object({ language: z.string(), notifications: z.boolean(), theme: z.string() }).optional(),
-  tags: z.array(z.string()).optional()
+  preferences: z.object({ notifications: z.object({ email: z.boolean(), push: z.boolean() }), ui: z.object({ sidebarCollapsed: z.boolean(), theme: z.string() }) }),
+  settings: z.object({ language: z.string(), notifications: z.boolean(), theme: z.string() }),
+  tags: z.array(z.string())
 });
 
 export const ProfilePageSchema = z.object({
@@ -132,13 +132,13 @@ export interface Profile {
 }
 
 export interface ProfileCreatePayload {
-  addresses?: { city: string; primary: boolean; street: string; zip: string }[];
+  addresses: { city: string; primary: boolean; street: string; zip: string }[];
   email: string;
-  metadata?: object;
+  metadata: object;
   name: string;
-  preferences?: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
-  settings?: { language: string; notifications: boolean; theme: string };
-  tags?: string[];
+  preferences: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
+  settings: { language: string; notifications: boolean; theme: string };
+  tags: string[];
 }
 
 export interface ProfilePage {

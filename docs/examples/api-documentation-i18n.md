@@ -24,12 +24,12 @@ Using built-in I18n for translatable API documentation
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| created_at | datetime |  |  |
-| deadline | date | ✓ |  |
-| description | text | ✓ |  |
 | name | string |  |  |
-| priority | string | ✓ | medium |
+| description | text | ✓ |  |
 | status | string | ✓ | active |
+| priority | string | ✓ | medium |
+| deadline | date | ✓ |  |
+| created_at | datetime |  |  |
 | updated_at | datetime |  |  |
 
 </details>

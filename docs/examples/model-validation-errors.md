@@ -24,10 +24,10 @@ How Apiwork captures ActiveRecord validation errors and presents them in a unifi
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| created_at | datetime |  |  |
 | email | string |  |  |
-| updated_at | datetime |  |  |
 | username | string |  |  |
+| created_at | datetime |  |  |
+| updated_at | datetime |  |  |
 
 </details>
 
@@ -41,11 +41,11 @@ How Apiwork captures ActiveRecord validation errors and presents them in a unifi
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
+| user_id | string |  |  |
 | bio | text | ✓ |  |
+| website | string | ✓ |  |
 | created_at | datetime |  |  |
 | updated_at | datetime |  |  |
-| user_id | string |  |  |
-| website | string | ✓ |  |
 
 </details>
 
@@ -59,10 +59,10 @@ How Apiwork captures ActiveRecord validation errors and presents them in a unifi
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| created_at | datetime |  |  |
-| title | string |  |  |
-| updated_at | datetime |  |  |
 | user_id | string |  |  |
+| title | string |  |  |
+| created_at | datetime |  |  |
+| updated_at | datetime |  |  |
 
 </details>
 
@@ -76,10 +76,10 @@ How Apiwork captures ActiveRecord validation errors and presents them in a unifi
 | Column | Type | Nullable | Default |
 |--------|------|----------|---------|
 | id | string |  |  |
-| author | string |  |  |
-| body | string |  |  |
-| created_at | datetime |  |  |
 | post_id | string |  |  |
+| body | string |  |  |
+| author | string |  |  |
+| created_at | datetime |  |  |
 | updated_at | datetime |  |  |
 
 </details>
