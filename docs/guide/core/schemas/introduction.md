@@ -93,7 +93,7 @@ The same schema definitions that say "this field exists" also tell the Execution
 - Which fields are safe to [filter](../execution-engine/filtering.md) on
 - Which attributes can be [sorted](../execution-engine/sorting.md) by
 - How results are [paginated](../execution-engine/pagination.md)
-- Which relations can be [eagerly loaded](../execution-engine/eager-loading.md)
+- Which associations can be [included](../execution-engine/includes.md)
 - How nested writes should be handled
 
 You describe your domain once — in a schema aligned with your model — and the Execution Engine uses those instructions for all API behavior.

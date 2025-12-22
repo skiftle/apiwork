@@ -87,4 +87,4 @@ Invalid or unsupported queries fail fast before reaching the database.
 - [Filtering](./filtering.md)
 - [Sorting](./sorting.md)
 - [Pagination](./pagination.md)
-- [Eager Loading](./eager-loading.md)
+- [Includes](./includes.md)
