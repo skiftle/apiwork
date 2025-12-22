@@ -105,6 +105,30 @@ All fields are optional. If `title` is not provided, it defaults to the API path
 }
 ```
 
+## Schemas
+
+Named types defined in the [Type System](../type-system/custom-types.md) appear in `components/schemas`. This makes the generated spec cleaner and more reusable.
+
+Inline types are embedded directly in operations. Named types use `$ref` references:
+
+```json
+{
+  "components": {
+    "schemas": {
+      "Address": {
+        "type": "object",
+        "properties": {
+          "street": { "type": "string" },
+          "city": { "type": "string" }
+        }
+      }
+    }
+  }
+}
+```
+
+Named types define the logical building blocks of your API. They become first-class schemas in the OpenAPI spec, making them discoverable, documentable, and reusable across operations.
+
 ## Raises
 
 Document possible error responses:
@@ -118,3 +142,7 @@ end
 Appears in the OpenAPI spec as possible responses.
 
 [Contracts: Actions](../contracts/actions.md#metadata) shows how to add `summary`, `description`, `tags`, and `operation_id` to your actions.
+
+## Version
+
+Generates specifications following **OpenAPI 3.1.0**.

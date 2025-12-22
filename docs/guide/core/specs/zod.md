@@ -83,4 +83,19 @@ const post = PostSchema.parse(await response.json());
 
 ## Version
 
-Generates schemas for Zod v4.
+Generates schemas compatible with **Zod v4**.
+
+## Type Ordering
+
+Types are sorted in topological order so dependencies come first. You don't need to think about declaration order.
+
+For recursive types (types that reference themselves), Apiwork uses `z.lazy()`:
+
+```typescript
+export const CategorySchema: z.ZodType<Category> = z.lazy(() => z.object({
+  name: z.string().optional(),
+  children: z.array(CategorySchema).optional(),
+}));
+```
+
+This is also why Apiwork generates explicit TypeScript interfaces instead of relying on `z.infer`. Zod's type inference doesn't work correctly with `z.lazy()` for recursive types — the inferred type becomes `unknown`. By generating separate interfaces, you get proper types for all schemas.

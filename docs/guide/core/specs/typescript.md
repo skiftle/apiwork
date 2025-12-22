@@ -90,3 +90,9 @@ async function createPost(data: PostCreateRequest): Promise<Post> {
   return response.json();
 }
 ```
+
+## Type Ordering
+
+Types are sorted in topological order so dependencies come first. Enums appear before types that use them, and custom types appear before schemas that reference them.
+
+Recursive types (types that reference themselves) work naturally in TypeScript interfaces.

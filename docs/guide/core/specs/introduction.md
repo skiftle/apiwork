@@ -4,14 +4,27 @@ order: 1
 
 # Introduction
 
-Your contracts and schemas already describe your API completely — Apiwork can generate specifications from them automatically.
+API specs (or specifications) describe an API in a structured, machine-readable form.
+
+They are commonly used for documentation, client generation, validation, and integration with external tooling.
+In Apiwork, specs are not maintained separately from the implementation.
+They are derived from the same definitions that describe and constrain the API itself.
+
+API definitions and contracts define the structure and rules of the API.
+Introspection turns those definitions into a canonical representation of the API.
+Specs are then derived from that introspection output.
+
+As a result, specs in Apiwork accurately reflect the current API configuration.
+They can be used to generate documentation and clients with confidence, without manual synchronization or duplication.
+
+---
 
 ## Available Formats
 
-Three formats out of the box:
+Apiwork derives specs in the following formats:
 
 - **OpenAPI** — OpenAPI 3.1 specification
-- **TypeScript** — type definitions for your frontend
+- **TypeScript** — type definitions for frontend consumers
 - **Zod** — runtime validation schemas
 
 ## Enabling Specs
@@ -30,10 +43,10 @@ end
 
 Apiwork offers two ways to access your generated specs:
 
-| Approach | Best For | How It Works |
-|----------|----------|--------------|
-| **Endpoints** | Development | Specs served dynamically at `/.spec/{format}` |
-| **File Generation** | Production | Specs written to files via rake task |
+| Approach            | Best For    | How It Works                                  |
+| ------------------- | ----------- | --------------------------------------------- |
+| **Endpoints**       | Development | Specs served dynamically at `/.spec/{format}` |
+| **File Generation** | Production  | Specs written to files via rake task          |
 
 In development, endpoints are convenient — you get instant feedback as you change your API. In production, pre-generated files are faster and can be served statically.
 
@@ -41,19 +54,21 @@ In development, endpoints are convenient — you get instant feedback as you cha
 
 Once enabled, specs are served at `/.spec/{format}`:
 
-| Format | Endpoint |
-|--------|----------|
-| OpenAPI | `GET /api/v1/.spec/openapi` |
+| Format     | Endpoint                       |
+| ---------- | ------------------------------ |
+| OpenAPI    | `GET /api/v1/.spec/openapi`    |
 | TypeScript | `GET /api/v1/.spec/typescript` |
-| Zod | `GET /api/v1/.spec/zod` |
+| Zod        | `GET /api/v1/.spec/zod`        |
 
 These endpoints generate specs on each request. Great for development where you want to see changes immediately, but not ideal for production traffic.
 
 ::: tip
 During development, you can fetch specs directly from your running server:
+
 ```bash
 curl http://localhost:3000/api/v1/.spec/typescript > src/api/types.ts
 ```
+
 :::
 
 ## File Generation (Production)
@@ -77,13 +92,13 @@ public/specs/
 
 ### Options
 
-| Option | Description | Example |
-|--------|-------------|---------|
-| `OUTPUT` | Output path (required) | `public/specs` |
-| `API_PATH` | Generate for specific API only | `/api/v1` |
-| `SPEC_NAME` | Generate specific format only | `openapi` |
-| `KEY_FORMAT` | Transform keys | `camel` |
-| `LOCALE` | Use specific locale | `sv` |
+| Option       | Description                    | Example        |
+| ------------ | ------------------------------ | -------------- |
+| `OUTPUT`     | Output path (required)         | `public/specs` |
+| `API_PATH`   | Generate for specific API only | `/api/v1`      |
+| `SPEC_NAME`  | Generate specific format only  | `openapi`      |
+| `KEY_FORMAT` | Transform keys                 | `camel`        |
+| `LOCALE`     | Use specific locale            | `sv`           |
 
 Examples:
 
@@ -171,6 +186,7 @@ end
 ```
 
 Options:
+
 - `:keep` — No transformation
 - `:camel` — `created_at` becomes `createdAt`
 - `:underscore` — All keys use snake_case
