@@ -31,7 +31,9 @@ If validation fails, the adapter sees `invoice.errors`, converts each to an erro
   "detail": "can't be blank",
   "path": ["invoice", "number"],
   "pointer": "/invoice/number",
-  "meta": { "attribute": "number" }
+  "meta": {
+    "attribute": "number"
+  }
 }
 ```
 
@@ -134,8 +136,14 @@ Request:
   "invoice": {
     "number": "",
     "lines": [
-      { "description": "Widget", "quantity": 5 },
-      { "description": "", "quantity": -1 }
+      {
+        "description": "Widget",
+        "quantity": 5
+      },
+      {
+        "description": "",
+        "quantity": -1
+      }
     ]
   }
 }

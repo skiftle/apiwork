@@ -37,7 +37,9 @@ A required field is absent or blank:
   "detail": "Field required",
   "path": ["post", "title"],
   "pointer": "/post/title",
-  "meta": { "field": "title" }
+  "meta": {
+    "field": "title"
+  }
 }
 ```
 
@@ -51,7 +53,10 @@ The request contains a field not defined in the contract:
   "detail": "Unknown field",
   "path": ["post", "foo"],
   "pointer": "/post/foo",
-  "meta": { "field": "foo", "allowed": ["title", "body", "status"] }
+  "meta": {
+    "field": "foo",
+    "allowed": ["title", "body", "status"]
+  }
 }
 ```
 
@@ -65,7 +70,11 @@ The value doesn't match the expected type:
   "detail": "Invalid type",
   "path": ["post", "title"],
   "pointer": "/post/title",
-  "meta": { "field": "title", "expected": "string", "actual": "integer" }
+  "meta": {
+    "field": "title",
+    "expected": "string",
+    "actual": "integer"
+  }
 }
 ```
 
@@ -79,7 +88,11 @@ The value doesn't match enum constraints or other value restrictions:
   "detail": "Invalid value. Must be one of: draft, published",
   "path": ["post", "status"],
   "pointer": "/post/status",
-  "meta": { "field": "status", "expected": ["draft", "published"], "actual": "archived" }
+  "meta": {
+    "field": "status",
+    "expected": ["draft", "published"],
+    "actual": "archived"
+  }
 }
 ```
 
@@ -93,7 +106,9 @@ A field explicitly marked `nullable: false` received null:
   "detail": "Value cannot be null",
   "path": ["post", "title"],
   "pointer": "/post/title",
-  "meta": { "field": "title" }
+  "meta": {
+    "field": "title"
+  }
 }
 ```
 
@@ -111,7 +126,11 @@ param :title, type: :string, min: 5, max: 100
   "detail": "String must be at least 5 characters",
   "path": ["post", "title"],
   "pointer": "/post/title",
-  "meta": { "field": "title", "actual_length": 3, "min_length": 5 }
+  "meta": {
+    "field": "title",
+    "actual_length": 3,
+    "min_length": 5
+  }
 }
 ```
 
@@ -129,7 +148,10 @@ param :tags, type: :array, of: :string, min: 1, max: 10
   "detail": "Array exceeds maximum length",
   "path": ["post", "tags"],
   "pointer": "/post/tags",
-  "meta": { "max": 10, "actual": 15 }
+  "meta": {
+    "max": 10,
+    "actual": 15
+  }
 }
 ```
 
@@ -143,7 +165,10 @@ Nested structures exceed the maximum validation depth (default 10):
   "detail": "Max depth exceeded",
   "path": ["deeply", "nested", "structure"],
   "pointer": "/deeply/nested/structure",
-  "meta": { "depth": 11, "max_depth": 10 }
+  "meta": {
+    "depth": 11,
+    "max_depth": 10
+  }
 }
 ```
 
@@ -173,7 +198,9 @@ Missing `author_id`:
   "detail": "Field required",
   "path": ["post", "metadata", "author_id"],
   "pointer": "/post/metadata/author_id",
-  "meta": { "field": "author_id" }
+  "meta": {
+    "field": "author_id"
+  }
 }
 ```
 
@@ -202,7 +229,9 @@ If the third item is missing `quantity`:
   "detail": "Field required",
   "path": ["items", 2, "quantity"],
   "pointer": "/items/2/quantity",
-  "meta": { "field": "quantity" }
+  "meta": {
+    "field": "quantity"
+  }
 }
 ```
 
@@ -229,7 +258,11 @@ Invalid discriminator value:
   "detail": "Invalid discriminator value. Must be one of: text, image",
   "path": ["content", "type"],
   "pointer": "/content/type",
-  "meta": { "field": "type", "expected": ["text", "image"], "actual": "video" }
+  "meta": {
+    "field": "type",
+    "expected": ["text", "image"],
+    "actual": "video"
+  }
 }
 ```
 

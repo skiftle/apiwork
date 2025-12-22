@@ -100,13 +100,27 @@ Request params are automatically coerced:
 
 ```json
 {
-  "title": { "type": "string" },
-  "count": { "type": "integer" },
-  "price": { "type": "decimal" },
-  "active": { "type": "boolean" },
-  "published_at": { "type": "datetime" },
-  "birth_date": { "type": "date" },
-  "id": { "type": "uuid" }
+  "title": {
+    "type": "string"
+  },
+  "count": {
+    "type": "integer"
+  },
+  "price": {
+    "type": "decimal"
+  },
+  "active": {
+    "type": "boolean"
+  },
+  "published_at": {
+    "type": "datetime"
+  },
+  "birth_date": {
+    "type": "date"
+  },
+  "id": {
+    "type": "uuid"
+  }
 }
 ```
 

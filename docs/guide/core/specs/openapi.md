@@ -118,8 +118,12 @@ Inline types are embedded directly in operations. Named types use `$ref` referen
       "Address": {
         "type": "object",
         "properties": {
-          "street": { "type": "string" },
-          "city": { "type": "string" }
+          "street": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          }
         }
       }
     }

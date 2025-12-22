@@ -191,8 +191,13 @@ end
   "author": {
     "type": "object",
     "shape": {
-      "name": { "type": "string" },
-      "email": { "type": "string", "optional": true }
+      "name": {
+        "type": "string"
+      },
+      "email": {
+        "type": "string",
+        "optional": true
+      }
     }
   }
 }

@@ -54,7 +54,10 @@ Returns a single record by ID.
 
 ```json
 {
-  "invoice": { "id": 1, "number": "INV-001" },
+  "invoice": {
+    "id": 1,
+    "number": "INV-001"
+  },
   "meta": {}
 }
 ```
@@ -72,7 +75,10 @@ Creates a new record. Returns 201 Created on success.
 
 ```json
 {
-  "invoice": { "id": 1, "number": "INV-001" },
+  "invoice": {
+    "id": 1,
+    "number": "INV-001"
+  },
   "meta": {}
 }
 ```
@@ -90,7 +96,10 @@ Updates an existing record.
 
 ```json
 {
-  "invoice": { "id": 1, "number": "INV-002" },
+  "invoice": {
+    "id": 1,
+    "number": "INV-002"
+  },
   "meta": {}
 }
 ```

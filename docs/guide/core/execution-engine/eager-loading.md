@@ -148,8 +148,14 @@ With `include[comments]=true`:
     "id": "1",
     "title": "Hello World",
     "comments": [
-      { "id": "1", "content": "Great post!" },
-      { "id": "2", "content": "Thanks!" }
+      {
+        "id": "1",
+        "content": "Great post!"
+      },
+      {
+        "id": "2",
+        "content": "Thanks!"
+      }
     ]
   }
 }

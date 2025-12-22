@@ -34,7 +34,9 @@ The filter references a field that isn't marked as filterable:
   "detail": "Field 'body' is not filterable",
   "path": ["filter", "body"],
   "pointer": "/filter/body",
-  "meta": { "field": "body" }
+  "meta": {
+    "field": "body"
+  }
 }
 ```
 
@@ -48,7 +50,11 @@ The filter uses an operator not allowed for this field:
   "detail": "Operator 'contains' is not allowed for field 'status'",
   "path": ["filter", "status", "contains"],
   "pointer": "/filter/status/contains",
-  "meta": { "field": "status", "operator": "contains", "allowed": ["eq", "in"] }
+  "meta": {
+    "field": "status",
+    "operator": "contains",
+    "allowed": ["eq", "in"]
+  }
 }
 ```
 
@@ -62,7 +68,10 @@ The filter value doesn't match the expected type:
   "detail": "Expected array for 'in' operator",
   "path": ["filter", "status", "in"],
   "pointer": "/filter/status/in",
-  "meta": { "operator": "in", "expected": "array" }
+  "meta": {
+    "operator": "in",
+    "expected": "array"
+  }
 }
 ```
 
@@ -76,7 +85,10 @@ The filter value isn't in the enum's allowed values:
   "detail": "Invalid enum value 'archived'. Must be one of: draft, published",
   "path": ["filter", "status", "eq"],
   "pointer": "/filter/status/eq",
-  "meta": { "value": "archived", "allowed": ["draft", "published"] }
+  "meta": {
+    "value": "archived",
+    "allowed": ["draft", "published"]
+  }
 }
 ```
 
@@ -90,7 +102,9 @@ A date/datetime filter value has an invalid format:
   "detail": "Invalid date format",
   "path": ["filter", "created_at", "gte"],
   "pointer": "/filter/created_at/gte",
-  "meta": { "value": "not-a-date" }
+  "meta": {
+    "value": "not-a-date"
+  }
 }
 ```
 
@@ -104,7 +118,9 @@ A numeric filter value can't be parsed:
   "detail": "Invalid numeric value",
   "path": ["filter", "amount", "gte"],
   "pointer": "/filter/amount/gte",
-  "meta": { "value": "abc" }
+  "meta": {
+    "value": "abc"
+  }
 }
 ```
 
@@ -118,7 +134,9 @@ A filter that doesn't support null received null:
   "detail": "Null values not allowed for this operator",
   "path": ["filter", "title", "contains"],
   "pointer": "/filter/title/contains",
-  "meta": { "operator": "contains" }
+  "meta": {
+    "operator": "contains"
+  }
 }
 ```
 
@@ -132,7 +150,9 @@ The database column type couldn't be determined:
   "detail": "Unknown column type for field 'custom_field'",
   "path": ["filter", "custom_field"],
   "pointer": "/filter/custom_field",
-  "meta": { "field": "custom_field" }
+  "meta": {
+    "field": "custom_field"
+  }
 }
 ```
 
@@ -146,7 +166,10 @@ The column type doesn't support filtering:
   "detail": "Column type 'binary' is not supported for filtering",
   "path": ["filter", "data"],
   "pointer": "/filter/data",
-  "meta": { "field": "data", "type": "binary" }
+  "meta": {
+    "field": "data",
+    "type": "binary"
+  }
 }
 ```
 
@@ -160,7 +183,9 @@ A filter references an association that doesn't exist:
   "detail": "Association 'author' not found",
   "path": ["filter", "author.name"],
   "pointer": "/filter/author.name",
-  "meta": { "association": "author" }
+  "meta": {
+    "association": "author"
+  }
 }
 ```
 
@@ -174,7 +199,9 @@ The association exists but has no schema defined:
   "detail": "No schema found for association 'author'",
   "path": ["filter", "author.name"],
   "pointer": "/filter/author.name",
-  "meta": { "association": "author" }
+  "meta": {
+    "association": "author"
+  }
 }
 ```
 
@@ -190,7 +217,9 @@ The sort parameter isn't the expected type:
   "detail": "Sort parameter must be a string or array",
   "path": ["sort"],
   "pointer": "/sort",
-  "meta": { "actual": "object" }
+  "meta": {
+    "actual": "object"
+  }
 }
 ```
 
@@ -204,7 +233,9 @@ The sort references a field that isn't marked as sortable:
   "detail": "Field 'body' is not sortable",
   "path": ["sort"],
   "pointer": "/sort",
-  "meta": { "field": "body" }
+  "meta": {
+    "field": "body"
+  }
 }
 ```
 
@@ -232,7 +263,10 @@ The sort direction isn't `asc` or `desc`:
   "detail": "Invalid sort direction 'up'. Must be 'asc' or 'desc'",
   "path": ["sort"],
   "pointer": "/sort",
-  "meta": { "field": "title", "direction": "up" }
+  "meta": {
+    "field": "title",
+    "direction": "up"
+  }
 }
 ```
 
@@ -246,7 +280,9 @@ A sort references a malformed association path:
   "detail": "Invalid association path",
   "path": ["sort"],
   "pointer": "/sort",
-  "meta": { "value": "author..name" }
+  "meta": {
+    "value": "author..name"
+  }
 }
 ```
 
@@ -260,7 +296,9 @@ The association exists but isn't marked as sortable:
   "detail": "Association 'tags' is not sortable",
   "path": ["sort"],
   "pointer": "/sort",
-  "meta": { "association": "tags" }
+  "meta": {
+    "association": "tags"
+  }
 }
 ```
 

@@ -116,12 +116,22 @@ API-level types keep their original name. Contract-scoped types get prefixed.
 ```json
 {
   "types": {
-    "address": { "type": "object", "shape": { ... } },
-    "order_line_item": { "type": "object", "shape": { ... } }
+    "address": {
+      "type": "object",
+      "shape": { ... }
+    },
+    "order_line_item": {
+      "type": "object",
+      "shape": { ... }
+    }
   },
   "enums": {
-    "status": { "values": ["active", "inactive"] },
-    "post_status": { "values": ["draft", "published"] }
+    "status": {
+      "values": ["active", "inactive"]
+    },
+    "post_status": {
+      "values": ["draft", "published"]
+    }
   }
 }
 ```

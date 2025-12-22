@@ -22,8 +22,12 @@ Introspection:
   "filter_value": {
     "type": "union",
     "variants": [
-      { "type": "string" },
-      { "type": "integer" }
+      {
+        "type": "string"
+      },
+      {
+        "type": "integer"
+      }
     ]
   }
 }
@@ -80,8 +84,28 @@ Introspection:
     "type": "union",
     "discriminator": "kind",
     "variants": [
-      { "tag": "string", "type": "object", "shape": { "value": { "type": "string" } } },
-      { "tag": "range", "type": "object", "shape": { "gte": { "type": "integer" }, "lte": { "type": "integer", "optional": true } } }
+      {
+        "tag": "string",
+        "type": "object",
+        "shape": {
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      {
+        "tag": "range",
+        "type": "object",
+        "shape": {
+          "gte": {
+            "type": "integer"
+          },
+          "lte": {
+            "type": "integer",
+            "optional": true
+          }
+        }
+      }
     ]
   }
 }

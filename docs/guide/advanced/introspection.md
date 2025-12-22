@@ -39,7 +39,10 @@ Compact but complete. Everything a spec generator needs:
           "method": "GET",
           "path": "/",
           "response": {
-            "body": { "type": "array", "of": "post" }
+            "body": {
+              "type": "array",
+              "of": "post"
+            }
           }
         },
         "create": {
@@ -47,12 +50,19 @@ Compact but complete. Everything a spec generator needs:
           "path": "/",
           "request": {
             "body": {
-              "title": { "type": "string" },
-              "body": { "type": "string", "optional": true }
+              "title": {
+                "type": "string"
+              },
+              "body": {
+                "type": "string",
+                "optional": true
+              }
             }
           },
           "response": {
-            "body": { "type": "post" }
+            "body": {
+              "type": "post"
+            }
           }
         }
       }
@@ -62,9 +72,15 @@ Compact but complete. Everything a spec generator needs:
     "post": {
       "type": "object",
       "shape": {
-        "id": { "type": "integer" },
-        "title": { "type": "string" },
-        "body": { "type": "string" }
+        "id": {
+          "type": "integer"
+        },
+        "title": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        }
       }
     }
   },
@@ -74,8 +90,14 @@ Compact but complete. Everything a spec generator needs:
     }
   },
   "error_codes": {
-    "bad_request": { "status": 400, "description": "Bad Request" },
-    "not_found": { "status": 404, "description": "Not Found" },
+    "bad_request": {
+      "status": 400,
+      "description": "Bad Request"
+    },
+    "not_found": {
+      "status": 404,
+      "description": "Not Found"
+    },
     "unprocessable_entity": {
       "status": 422,
       "description": "Unprocessable Entity"

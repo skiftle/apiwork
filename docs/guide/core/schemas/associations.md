@@ -75,8 +75,14 @@ end
       "name": "Jane"
     },
     "comments": [
-      { "id": "1", "content": "Great post!" },
-      { "id": "2", "content": "Thanks for sharing" }
+      {
+        "id": "1",
+        "content": "Great post!"
+      },
+      {
+        "id": "2",
+        "content": "Thanks for sharing"
+      }
     ]
   }
 }
@@ -237,7 +243,10 @@ has_many :comments, writable: true                   # Both
 {
   "post": {
     "comments": [
-      { "id": "5", "content": "Updated comment" }
+      {
+        "id": "5",
+        "content": "Updated comment"
+      }
     ]
   }
 }
@@ -249,7 +258,10 @@ has_many :comments, writable: true                   # Both
 {
   "post": {
     "comments": [
-      { "id": "5", "_destroy": true }
+      {
+        "id": "5",
+        "_destroy": true
+      }
     ]
   }
 }
@@ -263,9 +275,17 @@ Requires `allow_destroy: true` in Rails model.
 {
   "post": {
     "comments": [
-      { "id": "5", "content": "Updated" },
-      { "content": "New comment" },
-      { "id": "3", "_destroy": true }
+      {
+        "id": "5",
+        "content": "Updated"
+      },
+      {
+        "content": "New comment"
+      },
+      {
+        "id": "3",
+        "_destroy": true
+      }
     ]
   }
 }
