@@ -39,6 +39,24 @@ Primitive types are the building blocks. Every param uses one of these.
 
 [Unions](./unions.md) covers discriminated and simple unions. [Custom Types](./custom-types.md) shows how to define reusable object types.
 
+## Semantic Precision
+
+Some types produce identical runtime output but carry distinct meaning. This metadata is preserved in specs that support it.
+
+| Type | Runtime | Purpose | OpenAPI |
+|------|---------|---------|---------|
+| `:float` | `number` | IEEE 754 floating-point | `format: double` |
+| `:decimal` | `number` | Arbitrary precision | — |
+| `:binary` | `string` | Base64-encoded bytes | `format: byte` |
+
+**When to use which:**
+
+- `:decimal` for money, percentages, and values where precision matters
+- `:float` for scientific calculations, coordinates, and approximate values
+- `:binary` for file uploads, images, and encoded payloads
+
+The semantic distinction exists even when the generated code is identical. OpenAPI consumers can use format hints for validation, documentation, and code generation. TypeScript and Zod treat these as equivalent at runtime.
+
 ## Usage
 
 ```ruby

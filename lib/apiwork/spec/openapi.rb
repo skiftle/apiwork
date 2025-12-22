@@ -507,6 +507,9 @@ module Apiwork
 
         result = { type: type_value }
 
+        format_value = openapi_format(definition[:type])
+        result[:format] = format_value if format_value
+
         if numeric_type?(definition[:type])
           result[:minimum] = definition[:min] if definition[:min]
           result[:maximum] = definition[:max] if definition[:max]
@@ -516,18 +519,29 @@ module Apiwork
       end
 
       def openapi_type(type)
-        return nil unless type # Return nil for nil type
+        return nil unless type
 
         case type.to_sym
         when :string then 'string'
         when :integer then 'integer'
         when :float, :decimal then 'number'
         when :boolean then 'boolean'
-        when :date, :datetime, :time, :uuid then 'string'
+        when :date, :datetime, :time, :uuid, :binary then 'string'
         when :json then 'object'
-        when :binary then 'string'
-        when :unknown then nil # Return nil to trigger empty schema
-        else nil # Return nil for unmapped types (will become empty schema)
+        when :unknown then nil
+        end
+      end
+
+      def openapi_format(type)
+        return nil unless type
+
+        case type.to_sym
+        when :float then 'double'
+        when :date then 'date'
+        when :datetime then 'date-time'
+        when :time then 'time'
+        when :uuid then 'uuid'
+        when :binary then 'byte'
         end
       end
 
