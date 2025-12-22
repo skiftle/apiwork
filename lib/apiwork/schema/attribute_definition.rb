@@ -4,7 +4,8 @@ module Apiwork
   module Schema
     class AttributeDefinition
       attr_reader :name, :type, :enum, :optional, :empty, :min, :max,
-                  :description, :example, :format, :deprecated
+                  :description, :example, :format, :deprecated,
+                  :inline_shape, :of
 
       ALLOWED_FORMATS = {
         string: %i[email uuid uri url date date_time ipv4 ipv6 password hostname],
@@ -14,9 +15,13 @@ module Apiwork
         number: %i[float double]
       }.freeze
 
-      def initialize(name, schema_class, **options)
+      def initialize(name, schema_class, **options, &block)
         @name = name
         @owner_schema_class = schema_class
+        @inline_shape = block
+        @of = options[:of]
+
+        options[:type] ||= :object if block
 
         if schema_class.respond_to?(:model_class) && schema_class.model_class.present?
           @model_class = schema_class.model_class

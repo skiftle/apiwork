@@ -219,9 +219,9 @@ module Apiwork
         #
         # @example Writable only on create
         #   attribute :email, writable: { on: [:create] }
-        def attribute(name, **options)
+        def attribute(name, **options, &block)
           self.attribute_definitions = attribute_definitions.merge(
-            name => AttributeDefinition.new(name, self, **options)
+            name => AttributeDefinition.new(name, self, **options, &block)
           )
         end
 

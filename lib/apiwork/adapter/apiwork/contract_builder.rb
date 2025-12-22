@@ -99,10 +99,15 @@ module Apiwork
 
             param_options[:min] = attribute_definition.min if attribute_definition.min
             param_options[:max] = attribute_definition.max if attribute_definition.max
+            param_options[:of] = attribute_definition.of if attribute_definition.of
 
             param_options[:enum] = name if attribute_definition.enum
 
-            definition.param name, **param_options
+            if attribute_definition.inline_shape
+              definition.param name, **param_options, &attribute_definition.inline_shape
+            else
+              definition.param name, **param_options
+            end
           end
 
           target_schema_class.association_definitions.each do |name, association_definition|
@@ -316,16 +321,25 @@ module Apiwork
           type_registrar.type(type_name, schema_class: schema_class_local) do
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
               enum_option = attribute_definition.enum ? { enum: name } : {}
+              of_option = attribute_definition.of ? { of: attribute_definition.of } : {}
 
-              param name,
-                    type: builder.send(:map_type, attribute_definition.type),
-                    nullable: attribute_definition.nullable?,
-                    description: attribute_definition.description,
-                    example: attribute_definition.example,
-                    format: attribute_definition.format,
-                    deprecated: attribute_definition.deprecated,
-                    attribute_definition: attribute_definition,
-                    **enum_option
+              param_options = {
+                type: builder.send(:map_type, attribute_definition.type),
+                nullable: attribute_definition.nullable?,
+                description: attribute_definition.description,
+                example: attribute_definition.example,
+                format: attribute_definition.format,
+                deprecated: attribute_definition.deprecated,
+                attribute_definition: attribute_definition,
+                **enum_option,
+                **of_option
+              }
+
+              if attribute_definition.inline_shape
+                param name, **param_options, &attribute_definition.inline_shape
+              else
+                param name, **param_options
+              end
             end
 
             schema_class_local.association_definitions.each do |name, association_definition|

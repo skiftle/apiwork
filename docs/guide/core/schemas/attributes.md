@@ -52,6 +52,7 @@ attribute :status  # Detects Rails enum values automatically
 | `nullable` | `bool` | auto | Allow null values |
 | `optional` | `bool` | auto | Optional in requests |
 | `type` | `symbol` | auto | Data type |
+| `of` | `symbol` | `nil` | Array element type (for `type: :array`) |
 | `format` | `symbol` | `nil` | Format hint (email, uuid, etc.) |
 | `min` / `max` | `integer` | `nil` | Value/length constraints |
 | `description` | `string` | `nil` | API documentation |
@@ -462,6 +463,141 @@ attribute :ip_address, format: :ipv4
 | `:ipv6` | `format: ipv6` | `z.ipv6()` |
 | `:password` | `format: password` | `z.string()` |
 | `:hostname` | `format: hostname` | `z.string()` |
+
+---
+
+## Inline Type Definitions
+
+Define the exact shape of structured data directly in your schema. This provides typed access in generated TypeScript instead of `Record<string, any>`.
+
+Works with:
+- JSON/JSONB columns (auto-detected)
+- `store` attributes (requires explicit type)
+- `serialize` attributes (requires explicit type)
+- Virtual attributes (requires explicit type)
+
+### Object Shape
+
+Define an object structure with `param`:
+
+```ruby
+class UserSchema < Apiwork::Schema::Base
+  attribute :settings do
+    param :theme, type: :string
+    param :notifications, type: :boolean
+    param :language, type: :string
+  end
+end
+```
+
+Generated TypeScript:
+
+```typescript
+export interface User {
+  settings: { language: string; notifications: boolean; theme: string };
+}
+```
+
+The same shape is used in `UserCreatePayload` and `UserUpdatePayload` when the attribute is writable.
+
+### Array of Primitives
+
+Use `type: :array` with `of:` for simple arrays:
+
+```ruby
+attribute :tags, type: :array, of: :string
+```
+
+Generated TypeScript:
+
+```typescript
+export interface User {
+  tags: string[];
+}
+```
+
+### Array of Objects
+
+Combine `type: :array` with a block for typed arrays:
+
+```ruby
+attribute :addresses, type: :array do
+  param :street, type: :string
+  param :city, type: :string
+  param :zip, type: :string
+end
+```
+
+Generated TypeScript:
+
+```typescript
+export interface User {
+  addresses: { city: string; street: string; zip: string }[];
+}
+```
+
+### Nested Objects
+
+Blocks can nest to any depth:
+
+```ruby
+attribute :preferences do
+  param :ui do
+    param :theme, type: :string
+    param :sidebar_collapsed, type: :boolean
+  end
+  param :notifications do
+    param :email, type: :boolean
+    param :push, type: :boolean
+  end
+end
+```
+
+Generated TypeScript:
+
+```typescript
+export interface User {
+  preferences: {
+    notifications: { email: boolean; push: boolean };
+    ui: { sidebarCollapsed: boolean; theme: string };
+  };
+}
+```
+
+### Without Shape Definition
+
+Without an inline shape, unstructured data defaults to `Record<string, any>`:
+
+```ruby
+attribute :metadata, type: :json
+```
+
+Generated TypeScript:
+
+```typescript
+export interface User {
+  metadata: Record<string, any>;
+}
+```
+
+### With Rails store
+
+For `store` on TEXT columns, set `type: :object` explicitly:
+
+```ruby
+# Model
+class User < ApplicationRecord
+  store :settings, accessors: [:theme, :language], coder: JSON
+end
+
+# Schema
+class UserSchema < Apiwork::Schema::Base
+  attribute :settings, type: :object, writable: true do
+    param :theme, type: :string
+    param :language, type: :string
+  end
+end
+```
 
 ---
 
