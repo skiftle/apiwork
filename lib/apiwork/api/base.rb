@@ -51,7 +51,7 @@ module Apiwork
         def key_format(format = nil)
           return @key_format if format.nil?
 
-          valid = %i[keep camel underscore]
+          valid = %i[keep camel underscore kebab]
           raise ConfigurationError, "key_format must be one of #{valid}" unless valid.include?(format)
 
           @key_format = format
@@ -479,7 +479,7 @@ module Apiwork
 
         def transform_request_keys(hash)
           case @key_format
-          when :camel
+          when :camel, :kebab
             hash.deep_transform_keys { |key| key.to_s.underscore.to_sym }
           else
             hash
@@ -490,6 +490,8 @@ module Apiwork
           case @key_format
           when :camel
             hash.deep_transform_keys { |key| key.to_s.camelize(:lower).to_sym }
+          when :kebab
+            hash.deep_transform_keys { |key| key.to_s.dasherize.to_sym }
           else
             hash
           end

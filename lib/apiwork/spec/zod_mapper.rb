@@ -327,6 +327,8 @@ module Apiwork
         transformed = case key_format
                       when :camel
                         base.camelize(:lower)
+                      when :kebab
+                        base.dasherize
                       when :pascal
                         base.camelize(:upper)
                       else

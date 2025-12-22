@@ -8,7 +8,7 @@ module Apiwork
       file_extension '.json'
 
       option :version, type: :string, default: '3.1.0', enum: %w[3.1.0]
-      option :key_format, type: :symbol, default: :keep, enum: %i[keep camel underscore]
+      option :key_format, type: :symbol, default: :keep, enum: %i[keep camel underscore kebab]
 
       def generate
         {

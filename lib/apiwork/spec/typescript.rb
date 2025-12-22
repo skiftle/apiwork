@@ -8,7 +8,7 @@ module Apiwork
       file_extension '.ts'
 
       option :version, type: :string, default: '5', enum: %w[4 5]
-      option :key_format, type: :symbol, default: :keep, enum: %i[keep camel underscore]
+      option :key_format, type: :symbol, default: :keep, enum: %i[keep camel underscore kebab]
 
       def generate
         build_all_typescript_types

@@ -132,6 +132,7 @@ module Apiwork
         transform = lambda do |s|
           case strategy
           when :camel then s.camelize(:lower)
+          when :kebab then s.dasherize
           when :underscore then s.underscore
           else s
           end
