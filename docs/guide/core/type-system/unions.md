@@ -38,7 +38,7 @@ Introspection:
 type FilterValue = number | string;
 
 // Zod
-const FilterValueSchema = z.union([z.number().int(), z.string()]);
+export const FilterValueSchema = z.union([z.number().int(), z.string()]);
 ```
 
 Usage:
@@ -127,7 +127,7 @@ interface RangeFilter {
 type Filter = StringFilter | RangeFilter;
 
 // Zod
-const FilterSchema = z.discriminatedUnion('kind', [
+export const FilterSchema = z.discriminatedUnion('kind', [
   z.object({
     kind: z.literal('string'),
     value: z.string()
@@ -243,10 +243,10 @@ type Filter = StringFilter | RangeFilter;
 
 ```typescript
 // Simple union
-const FilterValueSchema = z.union([z.number().int(), z.string()]);
+export const FilterValueSchema = z.union([z.number().int(), z.string()]);
 
 // Discriminated union
-const FilterSchema = z.discriminatedUnion('kind', [
+export const FilterSchema = z.discriminatedUnion('kind', [
   z.object({ kind: z.literal('string'), value: z.string() }),
   z.object({ kind: z.literal('range'), gte: z.number().int(), lte: z.number().int().optional() })
 ]);

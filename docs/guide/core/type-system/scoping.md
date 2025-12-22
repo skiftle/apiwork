@@ -61,8 +61,8 @@ export interface OrderLineItem { ... }
 export const OrderLineItemSchema = z.object({ ... });
 
 // Contract-scoped enum
-type PostStatus = 'draft' | 'published';
-const PostStatusSchema = z.enum(['draft', 'published']);
+export type PostStatus = 'draft' | 'published';
+export const PostStatusSchema = z.enum(['draft', 'published']);
 ```
 
 ## Resolution Priority
@@ -140,9 +140,9 @@ API-level types keep their original name. Contract-scoped types get prefixed.
 
 ```typescript
 // API-level (no prefix)
-interface Address { ... }
+export interface Address { ... }
 
 // Contract-scoped (prefixed)
-interface OrderLineItem { ... }
-type PostStatus = "draft" | "published";
+export interface OrderLineItem { ... }
+export type PostStatus = 'draft' | 'published';
 ```

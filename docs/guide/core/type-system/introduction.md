@@ -67,6 +67,7 @@ Types are built from a small, well-defined set of primitive building blocks.
 | `:boolean`  | True / false             |
 | `:date`     | Date only (ISO 8601)     |
 | `:datetime` | Date and time (ISO 8601) |
+| `:time`     | Time only (ISO 8601)     |
 | `:uuid`     | UUID format              |
 | `:decimal`  | Precise decimal values   |
 | `:float`    | Floating point numbers   |
