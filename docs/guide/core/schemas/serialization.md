@@ -11,7 +11,7 @@ PostSchema.serialize(post)
 # => { id: 1, title: "Hello", body: "..." }
 ```
 
-This is the canonical format. The Execution Engine uses it internally, and adapters may transform it further for HTTP responses (adding root keys, pagination, key formatting).
+This is the canonical format. The [Execution Engine](../execution-engine/introduction.md) uses it internally, and adapters may transform it further for HTTP responses (adding root keys, pagination, key formatting).
 
 You can use `serialize` directly for audit logs, webhooks, event streams, or anywhere you need a stable representation of your data.
 
@@ -52,3 +52,44 @@ end
 ```
 
 The `context` and `object` accessors are available in all schema methods.
+
+## Deserialization
+
+The inverse of `serialize` — transforms incoming data using decode transformers:
+
+```ruby
+InvoiceSchema.deserialize(params[:invoice])
+# => { email: "user@example.com", notes: nil }
+```
+
+Use this for processing request payloads, webhooks, imports, or any external data that needs normalization before use.
+
+Collections work the same way:
+
+```ruby
+InvoiceSchema.deserialize(params[:invoices])
+# => [{ email: "user@example.com" }, { email: "other@example.com" }]
+```
+
+## Encode & Decode Transformers
+
+Transformers customize how values are converted during serialization and deserialization:
+
+```ruby
+class InvoiceSchema < Apiwork::Schema::Base
+  # encode: Ruby → JSON (applied during serialize)
+  attribute :amount, encode: ->(v) { v.to_s }
+
+  # decode: JSON → Ruby (applied during deserialize)
+  attribute :email, decode: ->(v) { v.downcase.strip }
+
+  # empty: true handles "" ↔ nil conversion automatically
+  attribute :notes, empty: true
+end
+```
+
+| Option | Direction | Applied in |
+|--------|-----------|------------|
+| `encode` | Ruby → JSON | `Schema.serialize` |
+| `decode` | JSON → Ruby | `Schema.deserialize` |
+| `empty: true` | Both | Serializes `nil` → `""`, deserializes `""` → `nil` |

@@ -485,6 +485,45 @@ module Apiwork
           raise Apiwork::SchemaError, "Serialization error for #{schema_name}: #{e.message}"
         end
 
+        # @api public
+        # Deserializes a hash using this schema's decode transformers.
+        #
+        # Transforms incoming data by applying decode transformers defined
+        # on each attribute. Use this for processing request payloads,
+        # webhooks, or any external data.
+        #
+        # @param hash_or_array [Hash, Array<Hash>] data to deserialize
+        # @return [Hash, Array<Hash>] deserialized data
+        #
+        # @example Deserialize request payload
+        #   InvoiceSchema.deserialize(params[:invoice])
+        #
+        # @example Deserialize a collection
+        #   InvoiceSchema.deserialize(params[:invoices])
+        def deserialize(hash_or_array)
+          return nil if hash_or_array.nil?
+
+          if hash_or_array.is_a?(Array)
+            hash_or_array.map { |h| deserialize_single(h) }
+          else
+            deserialize_single(hash_or_array)
+          end
+        end
+
+        def deserialize_single(hash)
+          return hash unless hash.is_a?(Hash)
+
+          result = hash.dup
+
+          attribute_definitions.each do |name, definition|
+            next unless result.key?(name)
+
+            result[name] = definition.decode(result[name])
+          end
+
+          result
+        end
+
         def serialize_single(obj, context: {}, include: nil)
           if respond_to?(:sti_base?) && sti_base?
             variant_schema = resolve_sti_variant(obj)

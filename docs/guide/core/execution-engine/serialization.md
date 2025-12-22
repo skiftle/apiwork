@@ -61,21 +61,7 @@ Incoming requests go through a pipeline:
 { amount: BigDecimal("99.99"), issued_on: Date.new(2024, 1, 15) }
 ```
 
-## Encode & Decode Transformers
-
-Transformers let you customize how values are serialized and deserialized:
-
-```ruby
-class InvoiceSchema < Apiwork::Schema::Base
-  # Normalize on input
-  attribute :email, decode: ->(v) { v.downcase.strip }
-
-  # Allow empty strings (converts "" ↔ nil automatically)
-  attribute :notes, empty: true
-end
-```
-
-The `empty: true` option automatically handles empty string conversion — deserializing `""` to `nil` and serializing `nil` back to `""`.
+See [Encode & Decode Transformers](../schemas/serialization.md#encode-decode-transformers) for customizing value transformations.
 
 ## Type Coercion
 
