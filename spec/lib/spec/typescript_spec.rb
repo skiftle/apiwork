@@ -425,7 +425,7 @@ RSpec.describe Apiwork::Spec::Typescript do
       expect(output).to include('@example {"amount":99}')
       expect(output).to include('@example 99')
       expect(output).to include('@example "USD"')
-      expect(output).to include(" * @example")
+      expect(output).to include(' * @example')
 
       Apiwork::API.unregister('/api/ts_example')
     end
