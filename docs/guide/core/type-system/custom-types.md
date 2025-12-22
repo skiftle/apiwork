@@ -62,10 +62,10 @@ param :addresses, type: :array, of: :address
 
 ```typescript
 export interface Address {
-  city?: string;
-  countryCode?: string;
-  postalCode?: string;
-  street?: string;
+  city: string;
+  countryCode: string;
+  postalCode: string;
+  street: string;
 }
 ```
 
@@ -73,10 +73,10 @@ export interface Address {
 
 ```typescript
 export const AddressSchema = z.object({
-  city: z.string().optional(),
-  countryCode: z.string().optional(),
-  postalCode: z.string().optional(),
-  street: z.string().optional(),
+  city: z.string(),
+  countryCode: z.string(),
+  postalCode: z.string(),
+  street: z.string(),
 });
 ```
 
@@ -85,6 +85,11 @@ export const AddressSchema = z.object({
 ```yaml
 Address:
   type: object
+  required:
+    - street
+    - city
+    - postalCode
+    - countryCode
   properties:
     street:
       type: string
@@ -145,8 +150,8 @@ In Zod, recursive types use `z.lazy()` to avoid infinite loops:
 
 ```typescript
 export const CategorySchema: z.ZodType<Category> = z.lazy(() => z.object({
-  name: z.string().optional(),
-  children: z.array(CategorySchema).optional(),
+  name: z.string(),
+  children: z.array(CategorySchema),
 }));
 ```
 
@@ -154,8 +159,8 @@ TypeScript interfaces handle recursion naturally:
 
 ```typescript
 export interface Category {
-  name?: string;
-  children?: Category[];
+  name: string;
+  children: Category[];
 }
 ```
 
@@ -164,6 +169,9 @@ OpenAPI uses `$ref`:
 ```yaml
 Category:
   type: object
+  required:
+    - name
+    - children
   properties:
     name:
       type: string

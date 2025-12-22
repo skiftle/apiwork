@@ -51,35 +51,26 @@ class PostContract < ApplicationContract
         param :body, type: :string
       end
     end
-  end
-end
-```
 
-This says: the `create` action expects `title` and `body` as strings.
-
-### Response Shapes
-
-Define what comes back:
-
-```ruby
-action :show do
-  response do
-    body do
-      param :id, type: :integer
-      param :title, type: :string
-      param :body, type: :string
+    response do
+      body do
+        param :id, type: :integer
+        param :title, type: :string
+        param :body, type: :string
+        param :created_at, type: :datetime
+      end
     end
   end
 end
 ```
 
-::: info
-Contracts can be written entirely by hand or generated from schemas. See [Contracts](../core/contracts/introduction.md) for details.
-:::
+This defines what goes in and what comes out. The contract validates incoming requests and documents response shapes for generated specs.
 
 ## Schema
 
-Schemas define how your data is serialized and what can be queried. They live in `app/schemas/`:
+Writing contracts by hand means defining every request type, response type, filter, and sort — for every action. That adds up.
+
+A schema bridges the gap. It sits between your ActiveRecord model and the contract, describing what to expose and how it behaves — what can be filtered, sorted, and written. Apiwork uses this to build the contract and handle requests.
 
 ```ruby
 class PostSchema < ApplicationSchema
@@ -91,9 +82,9 @@ class PostSchema < ApplicationSchema
 end
 ```
 
-Each option controls one thing:
+Each flag controls one thing:
 
-| Option             | What it does                                         |
+| Flag               | What it does                                         |
 | ------------------ | ---------------------------------------------------- |
 | `writable: true`   | Field can be set in create/update requests           |
 | `filterable: true` | Field can be filtered via `?filter[field][op]=value` |
@@ -116,9 +107,9 @@ has_one :profile, include: :always
 - `writable: true` — allows nested attributes in create/update
 - `include: :always` — always includes the association in responses
 
-### Connecting to Contract
+### From Schema to Contract
 
-Use `schema!` to generate a contract from the schema:
+Use `schema!` to generate a complete contract from your schema:
 
 ```ruby
 class PostContract < ApplicationContract
@@ -126,9 +117,29 @@ class PostContract < ApplicationContract
 end
 ```
 
-This auto-generates typed requests and responses for all actions based on schema attributes. See [Action Defaults](../core/execution-engine/action-defaults.md) for default behavior.
+This single line generates typed definitions for all CRUD actions.
 
-In most cases, the defaults are enough. But you can still customize actions or replace them entirely:
+::: tip
+You can also write contracts entirely by hand without schemas. This is useful for non-CRUD endpoints or custom APIs. See [Contracts](../core/contracts/introduction.md).
+:::
+
+The schema knows:
+- Which fields exist (from `attribute`)
+- Which can be written (from `writable: true`)
+- Which can be filtered or sorted (from `filterable:` / `sortable:`)
+- How associations nest (from `has_many`, `belongs_to`, etc.)
+
+From this, Apiwork generates:
+- Request types for create/update (writable fields only)
+- Response types for all actions (all exposed fields)
+- Filter types (filterable fields only)
+- Sort types (sortable fields only)
+
+See [Action Defaults](../core/execution-engine/action-defaults.md) for what gets generated.
+
+### Customizing Generated Actions
+
+The defaults usually work. But you can extend or replace any action:
 
 ```ruby
 class PostContract < ApplicationContract

@@ -93,8 +93,8 @@ For recursive types (types that reference themselves), Apiwork uses `z.lazy()`:
 
 ```typescript
 export const CategorySchema: z.ZodType<Category> = z.lazy(() => z.object({
-  name: z.string().optional(),
-  children: z.array(CategorySchema).optional(),
+  name: z.string(),
+  children: z.array(CategorySchema),
 }));
 ```
 

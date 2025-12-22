@@ -115,7 +115,6 @@ module Apiwork
       # Shorthand for `param :meta, type: :object do ... end`.
       #
       # Use for response data that doesn't belong to the resource itself.
-      # In your controller, pass values via the `meta:` keyword to `respond`.
       #
       # @param options [Hash] options passed to param (e.g., optional: true)
       # @yield block defining meta params
