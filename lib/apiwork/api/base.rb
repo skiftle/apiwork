@@ -22,6 +22,7 @@ module Apiwork
           @type_system = TypeSystem.new
           @built_contracts = Set.new
           @key_format = :keep
+          @path_format = :keep
 
           @namespaces = path == '/' ? [] : path.split('/').reject(&:empty?).map { |n| n.tr('-', '_').to_sym }
 
@@ -54,6 +55,41 @@ module Apiwork
           raise ConfigurationError, "key_format must be one of #{valid}" unless valid.include?(format)
 
           @key_format = format
+        end
+
+        # @api public
+        # Sets the path format for URL path segments.
+        #
+        # Controls how resource names are transformed into URL paths.
+        # Does not affect payload keys or internal identifiers.
+        #
+        # @param format [Symbol] :keep (no transform), :kebab (kebab-case), :camel (camelCase)
+        # @return [Symbol] the current path format
+        #
+        # @example kebab-case paths for REST conventions
+        #   Apiwork::API.define '/api/v1' do
+        #     path_format :kebab
+        #     resources :recurring_invoices
+        #     # Routes: GET /api/v1/recurring-invoices
+        #   end
+        def path_format(format = nil)
+          return @path_format if format.nil?
+
+          valid = %i[keep kebab camel]
+          raise ConfigurationError, "path_format must be one of #{valid}" unless valid.include?(format)
+
+          @path_format = format
+        end
+
+        def transform_path_segment(segment)
+          case @path_format
+          when :kebab
+            segment.to_s.tr('_', '-')
+          when :camel
+            segment.to_s.camelize(:lower)
+          else
+            segment.to_s
+          end
         end
 
         def transform_request(hash)

@@ -13,16 +13,21 @@ module Apiwork
 
       def serialize
         resource_segment = @resource_metadata[:singular] ? @resource_name.to_s.singularize : @resource_name.to_s
+
+        formatted_segment = @resource_metadata.dig(:options, :path) ||
+                            @api_class.transform_path_segment(resource_segment)
+
         resource_path = if @parent_path
-                          ":#{@parent_resource_name.to_s.singularize}_id/#{resource_segment}"
+                          ":#{@parent_resource_name.to_s.singularize}_id/#{formatted_segment}"
                         else
-                          resource_segment
+                          formatted_segment
                         end
 
         metadata = @resource_metadata[:metadata] || {}
         contract_class = resolve_contract_class
 
         {
+          identifier: @resource_name.to_s,
           path: resource_path,
           summary: metadata[:summary],
           description: metadata[:description],
@@ -80,9 +85,9 @@ module Apiwork
         when :show, :update, :destroy
           '/:id'
         when :member
-          "/:id/#{action_name}"
+          "/:id/#{@api_class.transform_path_segment(action_name)}"
         when :collection
-          "/#{action_name}"
+          "/#{@api_class.transform_path_segment(action_name)}"
         else
           '/'
         end

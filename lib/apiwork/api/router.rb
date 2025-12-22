@@ -26,7 +26,7 @@ module Apiwork
 
             controller_path = api_class.namespaces.map(&:to_s).join('/').underscore
             scope path: api_class.mount_path, module: controller_path do
-              router_instance.draw_resources_in_context(self, api_class.metadata.resources)
+              router_instance.draw_resources_in_context(self, api_class.metadata.resources, api_class)
             end
 
             scope path: api_class.mount_path do
@@ -40,27 +40,47 @@ module Apiwork
         set
       end
 
-      def draw_resources_in_context(context, resources_hash)
+      def draw_resources_in_context(context, resources_hash, api_class)
         resources_hash.each do |name, metadata|
           resource_method = metadata[:singular] ? :resource : :resources
           options = metadata[:options].slice(:only, :except, :controller).compact
+
+          path_option = metadata.dig(:options, :path) ||
+                        api_class.transform_path_segment(name)
+          options[:path] = path_option unless path_option == name.to_s
+
           router_instance = self
+          api = api_class
 
           context.instance_eval do
             send(resource_method, name, **options) do
               if metadata[:members].any?
                 member do
-                  metadata[:members].each { |action, meta| send(meta[:method], action) }
+                  metadata[:members].each do |action, meta|
+                    action_path = api.transform_path_segment(action)
+                    if action_path == action.to_s
+                      send(meta[:method], action)
+                    else
+                      send(meta[:method], action, path: action_path)
+                    end
+                  end
                 end
               end
 
               if metadata[:collections].any?
                 collection do
-                  metadata[:collections].each { |action, meta| send(meta[:method], action) }
+                  metadata[:collections].each do |action, meta|
+                    action_path = api.transform_path_segment(action)
+                    if action_path == action.to_s
+                      send(meta[:method], action)
+                    else
+                      send(meta[:method], action, path: action_path)
+                    end
+                  end
                 end
               end
 
-              router_instance.draw_resources_in_context(self, metadata[:resources])
+              router_instance.draw_resources_in_context(self, metadata[:resources], api)
             end
           end
         end
