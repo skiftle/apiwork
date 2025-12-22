@@ -1,0 +1,88 @@
+{
+  "request": {
+    "method": "PATCH",
+    "path": "/curious_cat/profiles/6f45e345-dbd9-543b-bfd8-0f430bd8299f",
+    "body": {
+      "profile": {
+        "name": "Alice",
+        "email": "alice@example.com",
+        "settings": {
+          "theme": "light",
+          "notifications": false,
+          "language": "sv"
+        },
+        "tags": [
+          "developer",
+          "ruby",
+          "rails"
+        ],
+        "addresses": [
+          {
+            "street": "123 Main St",
+            "city": "Stockholm",
+            "zip": "12345",
+            "primary": true
+          }
+        ],
+        "preferences": {
+          "ui": {
+            "theme": "compact",
+            "sidebar_collapsed": false
+          },
+          "notifications": {
+            "email": true,
+            "push": false
+          }
+        },
+        "metadata": {
+          "source": "api",
+          "version": 3
+        }
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "profile": {
+        "id": "6f45e345-dbd9-543b-bfd8-0f430bd8299f",
+        "name": "Alice",
+        "email": "alice@example.com",
+        "settings": {
+          "theme": "light",
+          "notifications": false,
+          "language": "sv"
+        },
+        "tags": [
+          "developer",
+          "ruby",
+          "rails"
+        ],
+        "addresses": [
+          {
+            "street": "123 Main St",
+            "city": "Stockholm",
+            "zip": "12345",
+            "primary": true
+          }
+        ],
+        "preferences": {
+          "ui": {
+            "theme": "compact",
+            "sidebarCollapsed": false
+          },
+          "notifications": {
+            "email": true,
+            "push": false
+          }
+        },
+        "metadata": {
+          "source": "api",
+          "version": 3
+        },
+        "createdAt": "2024-01-01T12:00:00.000Z",
+        "updatedAt": "2024-01-01T12:00:00.000Z"
+      }
+    }
+  }
+}
