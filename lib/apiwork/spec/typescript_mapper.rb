@@ -24,7 +24,7 @@ module Apiwork
           ts_type = map_field(property_definition, action_name: action_name)
           optional_marker = update || optional ? '?' : ''
 
-          prop_jsdoc = jsdoc_property(
+          prop_jsdoc = jsdoc(
             description: property_definition[:description],
             example: property_definition[:example]
           )
@@ -268,17 +268,6 @@ module Apiwork
       end
 
       def jsdoc(description: nil, example: nil)
-        return nil if description.nil? && example.nil?
-        return "/** #{description} */" if description && example.nil?
-
-        lines = ['/**']
-        lines << " * #{description}" if description
-        lines << " * @example #{format_example(example)}" if example
-        lines << ' */'
-        lines.join("\n")
-      end
-
-      def jsdoc_property(description: nil, example: nil)
         return nil if description.nil? && example.nil?
         return "/** #{description} */" if description && example.nil?
 
