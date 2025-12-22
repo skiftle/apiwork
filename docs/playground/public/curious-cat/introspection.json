@@ -1,0 +1,515 @@
+{
+  "path": "/curious_cat",
+  "types": {
+    "error": {
+      "type": "object",
+      "shape": {
+        "code": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "field": {
+          "type": "string"
+        },
+        "path": {
+          "type": "array",
+          "of": "string"
+        }
+      }
+    },
+    "offset_pagination": {
+      "type": "object",
+      "shape": {
+        "current": {
+          "type": "integer"
+        },
+        "items": {
+          "type": "integer"
+        },
+        "next": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "prev": {
+          "type": "integer",
+          "nullable": true,
+          "optional": true
+        },
+        "total": {
+          "type": "integer"
+        }
+      }
+    },
+    "profile": {
+      "type": "object",
+      "shape": {
+        "addresses": {
+          "type": "array",
+          "shape": {
+            "city": {
+              "type": "string"
+            },
+            "primary": {
+              "type": "boolean"
+            },
+            "street": {
+              "type": "string"
+            },
+            "zip": {
+              "type": "string"
+            }
+          },
+          "nullable": true
+        },
+        "created_at": {
+          "type": "datetime"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "id": {
+          "type": "string"
+        },
+        "metadata": {
+          "type": "object",
+          "nullable": true
+        },
+        "name": {
+          "type": "string"
+        },
+        "preferences": {
+          "type": "object",
+          "shape": {
+            "notifications": {
+              "type": "object",
+              "shape": {
+                "email": {
+                  "type": "boolean"
+                },
+                "push": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "ui": {
+              "type": "object",
+              "shape": {
+                "sidebar_collapsed": {
+                  "type": "boolean"
+                },
+                "theme": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "nullable": true
+        },
+        "settings": {
+          "type": "object",
+          "shape": {
+            "language": {
+              "type": "string"
+            },
+            "notifications": {
+              "type": "boolean"
+            },
+            "theme": {
+              "type": "string"
+            }
+          },
+          "nullable": true
+        },
+        "tags": {
+          "type": "array",
+          "of": "string",
+          "nullable": true
+        },
+        "updated_at": {
+          "type": "datetime"
+        }
+      }
+    },
+    "profile_create_payload": {
+      "type": "object",
+      "shape": {
+        "addresses": {
+          "type": "array",
+          "shape": {
+            "city": {
+              "type": "string"
+            },
+            "primary": {
+              "type": "boolean"
+            },
+            "street": {
+              "type": "string"
+            },
+            "zip": {
+              "type": "string"
+            }
+          },
+          "nullable": true,
+          "optional": true
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "metadata": {
+          "type": "object",
+          "nullable": true,
+          "optional": true
+        },
+        "name": {
+          "type": "string"
+        },
+        "preferences": {
+          "type": "object",
+          "shape": {
+            "notifications": {
+              "type": "object",
+              "shape": {
+                "email": {
+                  "type": "boolean"
+                },
+                "push": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "ui": {
+              "type": "object",
+              "shape": {
+                "sidebar_collapsed": {
+                  "type": "boolean"
+                },
+                "theme": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "nullable": true,
+          "optional": true
+        },
+        "settings": {
+          "type": "object",
+          "shape": {
+            "language": {
+              "type": "string"
+            },
+            "notifications": {
+              "type": "boolean"
+            },
+            "theme": {
+              "type": "string"
+            }
+          },
+          "nullable": true,
+          "optional": true
+        },
+        "tags": {
+          "type": "array",
+          "of": "string",
+          "nullable": true,
+          "optional": true
+        }
+      }
+    },
+    "profile_page": {
+      "type": "object",
+      "shape": {
+        "number": {
+          "type": "integer",
+          "optional": true,
+          "min": 1
+        },
+        "size": {
+          "type": "integer",
+          "optional": true,
+          "min": 1,
+          "max": 100
+        }
+      }
+    },
+    "profile_update_payload": {
+      "type": "object",
+      "shape": {
+        "addresses": {
+          "type": "array",
+          "shape": {
+            "city": {
+              "type": "string"
+            },
+            "primary": {
+              "type": "boolean"
+            },
+            "street": {
+              "type": "string"
+            },
+            "zip": {
+              "type": "string"
+            }
+          },
+          "nullable": true,
+          "optional": true
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "metadata": {
+          "type": "object",
+          "nullable": true,
+          "optional": true
+        },
+        "name": {
+          "type": "string"
+        },
+        "preferences": {
+          "type": "object",
+          "shape": {
+            "notifications": {
+              "type": "object",
+              "shape": {
+                "email": {
+                  "type": "boolean"
+                },
+                "push": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "ui": {
+              "type": "object",
+              "shape": {
+                "sidebar_collapsed": {
+                  "type": "boolean"
+                },
+                "theme": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "nullable": true,
+          "optional": true
+        },
+        "settings": {
+          "type": "object",
+          "shape": {
+            "language": {
+              "type": "string"
+            },
+            "notifications": {
+              "type": "boolean"
+            },
+            "theme": {
+              "type": "string"
+            }
+          },
+          "nullable": true,
+          "optional": true
+        },
+        "tags": {
+          "type": "array",
+          "of": "string",
+          "nullable": true,
+          "optional": true
+        }
+      }
+    }
+  },
+  "error_codes": {
+    "unprocessable_entity": {
+      "status": 422,
+      "description": "Unprocessable Entity"
+    }
+  },
+  "resources": {
+    "profiles": {
+      "identifier": "profiles",
+      "path": "profiles",
+      "actions": {
+        "index": {
+          "method": "get",
+          "path": "/",
+          "request": {
+            "query": {
+              "page": {
+                "type": "profile_page",
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "pagination": {
+                      "type": "offset_pagination",
+                      "optional": true
+                    },
+                    "profiles": {
+                      "type": "array",
+                      "of": "profile",
+                      "optional": true
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "errors": {
+                      "type": "array",
+                      "of": "error",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "show": {
+          "method": "get",
+          "path": "/:id",
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "profile": {
+                      "type": "profile"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "errors": {
+                      "type": "array",
+                      "of": "error",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "create": {
+          "method": "post",
+          "path": "/",
+          "request": {
+            "body": {
+              "profile": {
+                "type": "profile_create_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "profile": {
+                      "type": "profile"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "errors": {
+                      "type": "array",
+                      "of": "error",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "raises": [
+            "unprocessable_entity"
+          ]
+        },
+        "update": {
+          "method": "patch",
+          "path": "/:id",
+          "request": {
+            "body": {
+              "profile": {
+                "type": "profile_update_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "object",
+                  "shape": {
+                    "meta": {
+                      "type": "object",
+                      "optional": true
+                    },
+                    "profile": {
+                      "type": "profile"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "shape": {
+                    "errors": {
+                      "type": "array",
+                      "of": "error",
+                      "optional": true
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "raises": [
+            "unprocessable_entity"
+          ]
+        },
+        "destroy": {
+          "method": "delete",
+          "path": "/:id",
+          "response": {
+            "no_content": true
+          }
+        }
+      }
+    }
+  }
+}

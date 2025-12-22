@@ -184,6 +184,12 @@ module Apiwork
 
       def map_array_type(definition, action_name: nil)
         items_type = definition[:of]
+
+        if items_type.nil? && definition[:shape]
+          items_schema = map_object_type({ type: :object, shape: definition[:shape] }, action_name: action_name)
+          return "z.array(#{items_schema})"
+        end
+
         return 'z.array(z.string())' unless items_type
 
         if items_type.is_a?(Symbol) && enum_or_type_reference?(items_type)

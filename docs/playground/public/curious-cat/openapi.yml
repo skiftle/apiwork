@@ -1,0 +1,469 @@
+---
+openapi: 3.1.0
+info:
+  title: "/curious_cat API"
+  version: 1.0.0
+paths:
+  profiles/:
+    get:
+      operationId: profilesIndex
+      parameters:
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/profilePage"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    type: object
+                    properties: {}
+                  pagination:
+                    "$ref": "#/components/schemas/offsetPagination"
+                  profiles:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/profile"
+    post:
+      operationId: profilesCreate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                profile:
+                  "$ref": "#/components/schemas/profileCreatePayload"
+              required:
+              - profile
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    type: object
+                    properties: {}
+                  profile:
+                    "$ref": "#/components/schemas/profile"
+                required:
+                - profile
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/error"
+  profiles/{id}:
+    get:
+      operationId: profilesShow
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    type: object
+                    properties: {}
+                  profile:
+                    "$ref": "#/components/schemas/profile"
+                required:
+                - profile
+    patch:
+      operationId: profilesUpdate
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                profile:
+                  "$ref": "#/components/schemas/profileUpdatePayload"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    type: object
+                    properties: {}
+                  profile:
+                    "$ref": "#/components/schemas/profile"
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/error"
+    delete:
+      operationId: profilesDestroy
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+components:
+  schemas:
+    error:
+      type: object
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+        field:
+          type: string
+        path:
+          type: array
+          items:
+            type: string
+      required:
+      - code
+      - detail
+      - field
+      - path
+    offsetPagination:
+      type: object
+      properties:
+        current:
+          type: integer
+        items:
+          type: integer
+        next:
+          type:
+          - integer
+          - 'null'
+        prev:
+          type:
+          - integer
+          - 'null'
+        total:
+          type: integer
+      required:
+      - current
+      - items
+      - total
+    profile:
+      type: object
+      properties:
+        addresses:
+          type:
+          - array
+          - 'null'
+          items:
+            type: object
+            properties:
+              city:
+                type: string
+              primary:
+                type: boolean
+              street:
+                type: string
+              zip:
+                type: string
+            required:
+            - city
+            - primary
+            - street
+            - zip
+        createdAt:
+          type: string
+          format: date-time
+        email:
+          type: string
+          format: email
+        id:
+          type: string
+        metadata:
+          type:
+          - object
+          - 'null'
+          properties: {}
+        name:
+          type: string
+        preferences:
+          type:
+          - object
+          - 'null'
+          properties:
+            notifications:
+              type: object
+              properties:
+                email:
+                  type: boolean
+                push:
+                  type: boolean
+              required:
+              - email
+              - push
+            ui:
+              type: object
+              properties:
+                sidebarCollapsed:
+                  type: boolean
+                theme:
+                  type: string
+              required:
+              - sidebarCollapsed
+              - theme
+          required:
+          - notifications
+          - ui
+        settings:
+          type:
+          - object
+          - 'null'
+          properties:
+            language:
+              type: string
+            notifications:
+              type: boolean
+            theme:
+              type: string
+          required:
+          - language
+          - notifications
+          - theme
+        tags:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - addresses
+      - createdAt
+      - email
+      - id
+      - metadata
+      - name
+      - preferences
+      - settings
+      - tags
+      - updatedAt
+    profileCreatePayload:
+      type: object
+      properties:
+        addresses:
+          type:
+          - array
+          - 'null'
+          items:
+            type: object
+            properties:
+              city:
+                type: string
+              primary:
+                type: boolean
+              street:
+                type: string
+              zip:
+                type: string
+            required:
+            - city
+            - primary
+            - street
+            - zip
+        email:
+          type: string
+          format: email
+        metadata:
+          type:
+          - object
+          - 'null'
+          properties: {}
+        name:
+          type: string
+        preferences:
+          type:
+          - object
+          - 'null'
+          properties:
+            notifications:
+              type: object
+              properties:
+                email:
+                  type: boolean
+                push:
+                  type: boolean
+              required:
+              - email
+              - push
+            ui:
+              type: object
+              properties:
+                sidebarCollapsed:
+                  type: boolean
+                theme:
+                  type: string
+              required:
+              - sidebarCollapsed
+              - theme
+          required:
+          - notifications
+          - ui
+        settings:
+          type:
+          - object
+          - 'null'
+          properties:
+            language:
+              type: string
+            notifications:
+              type: boolean
+            theme:
+              type: string
+          required:
+          - language
+          - notifications
+          - theme
+        tags:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+      required:
+      - email
+      - name
+    profilePage:
+      type: object
+      properties:
+        number:
+          type: integer
+          minimum: 1
+        size:
+          type: integer
+          minimum: 1
+          maximum: 100
+    profileUpdatePayload:
+      type: object
+      properties:
+        addresses:
+          type:
+          - array
+          - 'null'
+          items:
+            type: object
+            properties:
+              city:
+                type: string
+              primary:
+                type: boolean
+              street:
+                type: string
+              zip:
+                type: string
+            required:
+            - city
+            - primary
+            - street
+            - zip
+        email:
+          type: string
+          format: email
+        metadata:
+          type:
+          - object
+          - 'null'
+          properties: {}
+        name:
+          type: string
+        preferences:
+          type:
+          - object
+          - 'null'
+          properties:
+            notifications:
+              type: object
+              properties:
+                email:
+                  type: boolean
+                push:
+                  type: boolean
+              required:
+              - email
+              - push
+            ui:
+              type: object
+              properties:
+                sidebarCollapsed:
+                  type: boolean
+                theme:
+                  type: string
+              required:
+              - sidebarCollapsed
+              - theme
+          required:
+          - notifications
+          - ui
+        settings:
+          type:
+          - object
+          - 'null'
+          properties:
+            language:
+              type: string
+            notifications:
+              type: boolean
+            theme:
+              type: string
+          required:
+          - language
+          - notifications
+          - theme
+        tags:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+      required:
+      - email
+      - name

@@ -29,3 +29,4 @@ Each example includes:
 | [Cursor Pagination](./cursor-pagination.md) | Navigate through large datasets using cursor-based pagination |
 | [API Documentation](./api-documentation.md) | Document APIs with descriptions, examples, formats, and deprecation notices at every level |
 | [API Documentation (I18n)](./api-documentation-i18n.md) | Using built-in I18n for translatable API documentation |
+| [Curious Cat](./curious-cat.md) | Complete example with API, models, schemas, contracts, and controllers. |

@@ -431,6 +431,11 @@ module Apiwork
       def map_array(definition, action_name = nil)
         items_type = definition[:of]
 
+        if items_type.nil? && definition[:shape]
+          items_schema = map_object({ type: :object, shape: definition[:shape] }, action_name)
+          return { type: 'array', items: items_schema }
+        end
+
         return { type: 'array', items: { type: 'string' } } unless items_type
 
         items_schema = if items_type.is_a?(Symbol) && types.key?(items_type)
