@@ -421,7 +421,7 @@ module Apiwork
             meta: { field: name, expected: enum_values, actual: value }
           )
         else
-          Issue.new(layer: :contract, code: :field_missing, detail: 'Field required', path: field_path, meta: { field: name })
+          Issue.new(layer: :contract, code: :field_missing, detail: 'Field required', path: field_path, meta: { field: name, type: param_options[:type] })
         end
       end
 
@@ -439,7 +439,7 @@ module Apiwork
           code: :value_null,
           detail: 'Value cannot be null',
           path: field_path,
-          meta: { field: name }
+          meta: { field: name, type: param_options[:type] }
         )
       end
 
@@ -582,7 +582,7 @@ module Apiwork
                   code: :invalid_type,
                   detail: 'Invalid type',
                   path: item_path,
-                  meta: { field: index, expected: param_options[:of], actual: item.class.name.underscore.to_sym }
+                  meta: { index: index, expected: param_options[:of], actual: item.class.name.underscore.to_sym }
                 )
                 next
               end

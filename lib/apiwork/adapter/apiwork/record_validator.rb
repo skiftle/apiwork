@@ -102,7 +102,7 @@ module Apiwork
         end
 
         def issue(rails_error, path)
-          meta = { attribute: rails_error.attribute }
+          meta = { field: rails_error.attribute }
 
           if rails_error.options
             %i[in minimum maximum count is too_short too_long].each do |key|

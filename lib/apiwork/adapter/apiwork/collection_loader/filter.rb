@@ -422,8 +422,8 @@ module Apiwork
             unless allow_nil
               @issues << Issue.new(
                 layer: :contract,
-                code: :null_not_allowed,
-                detail: "#{key} cannot be null",
+                code: :value_null,
+                detail: 'Value cannot be null',
                 path: [:filter, key],
                 meta: { field: key }
               )
