@@ -185,24 +185,24 @@ RSpec.describe Apiwork::Adapter::Apiwork::DomainIssueMapper do
       expect(issues.first.meta).to eq({ gt: 18 })
     end
 
-    it 'returns nil meta for :required' do
+    it 'returns empty meta for :required' do
       record_class = create_test_record(title: { presence: true })
       record = record_class.new(title: '')
       record.valid?
 
       issues = mapper_class.call(record, root_path: [:data])
 
-      expect(issues.first.meta).to be_nil
+      expect(issues.first.meta).to eq({})
     end
 
-    it 'returns nil meta for :custom' do
+    it 'returns empty meta for :custom' do
       record_class = create_test_record({})
       record = record_class.new
       record.errors.add(:title, :unknown_code)
 
       issues = mapper_class.call(record, root_path: [:data])
 
-      expect(issues.first.meta).to be_nil
+      expect(issues.first.meta).to eq({})
     end
 
     it 'does not expose array values from inclusion validation' do
@@ -212,7 +212,7 @@ RSpec.describe Apiwork::Adapter::Apiwork::DomainIssueMapper do
 
       issues = mapper_class.call(record, root_path: [:data])
 
-      expect(issues.first.meta).to be_nil
+      expect(issues.first.meta).to eq({})
     end
   end
 

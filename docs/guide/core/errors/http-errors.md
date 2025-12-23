@@ -4,7 +4,9 @@ order: 2
 
 # HTTP Errors
 
-HTTP errors like "not found" or "forbidden" are part of every API. Apiwork provides `respond_with_error` for these. It returns errors in the same format as contract and validation errors. One parser handles everything.
+HTTP errors are transport-level responses. They are status-driven and express outcomes through HTTP semantics — not input validation or business rules.
+
+Use `respond_with_error` when you need to communicate an HTTP-level outcome like "not found", "forbidden", or "unauthorized".
 
 ## HTTP Status
 

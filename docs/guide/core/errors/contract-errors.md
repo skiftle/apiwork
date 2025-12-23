@@ -4,15 +4,15 @@ order: 3
 
 # Contract Errors
 
-Contract errors occur when an incoming request doesn't match the contract definition. They're caught before your controller code runs, preventing malformed data from reaching your models.
+Contract errors occur when a request violates the declared API contract. The request shape, query parameters, or body doesn't match what the API specifies.
+
+These errors are **fully client-correctable** — if the client follows the API specification, the error will not occur.
+
+Contract validation happens before your controller code runs. The request never reaches your models.
 
 ## HTTP Status
 
 **400 Bad Request** — The request was malformed. Fix it before retrying.
-
-## When They Happen
-
-A `ContractError` is raised during the `before_action` that validates the request. If the contract defines a required field and it's missing, or a field has the wrong type, the request is rejected immediately.
 
 ```ruby
 class PostContract < Apiwork::Contract::Base

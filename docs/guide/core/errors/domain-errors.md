@@ -4,13 +4,13 @@ order: 4
 
 # Domain Errors
 
-ActiveRecord validation errors become Issues automatically. Same format as contract and HTTP errors. Your API returns consistent errors whether they come from contracts, models, or nested associations.
+Domain errors occur when a valid request is rejected by business rules. The request itself was structurally correct, but model validations, uniqueness constraints, or domain invariants failed.
 
-Requires:
+The client cannot avoid domain errors by changing the request shape — only by changing the data itself.
 
-- A schema (`schema!`)
-- The built-in adapter (default)
-- ActiveRecord
+The built-in adapter automatically maps Rails model validation errors to domain issues when you call `respond`. You can also create domain issues manually for custom business logic.
+
+**Requires:** A schema (`schema!`), the built-in adapter (default), and ActiveRecord.
 
 ## HTTP Status
 

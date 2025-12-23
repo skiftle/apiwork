@@ -2,13 +2,13 @@
 order: 1
 ---
 
-# Introduction
+# Errors
 
-Apiwork uses a unified error system. Every error — whether from contract validation, model validation, or HTTP responses — follows the same structure. Clients receive consistent, predictable responses regardless of where the failure occurred.
+Apiwork uses a unified error format. All errors share the same structure, so clients receive consistent responses regardless of where a request fails.
 
 ## The Issue Object
 
-At the center of Apiwork's error handling is the **Issue** class. Each issue represents a single problem with a request:
+Every error is an `Issue`:
 
 ```ruby
 Apiwork::Issue.new(
@@ -20,20 +20,18 @@ Apiwork::Issue.new(
 )
 ```
 
-Every error contains:
-
-| Field     | Description                                                         |
-| --------- | ------------------------------------------------------------------- |
-| `layer`   | Origin of the error: `"contract"`, `"domain"`, or `"http"`          |
-| `code`    | A machine-readable symbol (`:field_missing`, `:invalid_type`, etc.) |
-| `detail`  | A human-readable message                                            |
-| `path`    | An array representing the location in the request body              |
-| `pointer` | A JSON Pointer string derived from the path                         |
-| `meta`    | Additional context (constraints, expected values, etc.)             |
+| Field     | Description                                                    |
+| --------- | -------------------------------------------------------------- |
+| `layer`   | Which responsibility rejected: `http`, `contract`, or `domain` |
+| `code`    | Machine-readable symbol                                        |
+| `detail`  | Human-readable message                                         |
+| `path`    | Location in request body                                       |
+| `pointer` | JSON Pointer derived from path                                 |
+| `meta`    | Additional context                                             |
 
 ## JSON Response
 
-When errors occur, Apiwork renders them as JSON:
+All errors render the same way:
 
 ```json
 {
@@ -50,90 +48,76 @@ When errors occur, Apiwork renders them as JSON:
 }
 ```
 
-The `errors` array contains all problems found. Clients can iterate through them, display messages to users, or highlight specific fields using the path or pointer.
+The `errors` array contains all issues. Clients iterate through them, display messages, or highlight fields using the path.
 
 ## Error Layers
 
-The `layer` field indicates where the error originated:
+The `layer` field indicates which responsibility rejected the request. Validation runs in order: `http`, then `contract`, then `domain`. If a layer rejects the request, subsequent layers don't run.
 
-| Layer      | HTTP Status | Description                             |
-| ---------- | ----------- | --------------------------------------- |
-| `contract` | 400         | Request shape validation                |
-| `domain`   | 422         | Business rule validation (ActiveRecord) |
-| `http`     | Varies      | HTTP-level errors (not found, etc.)     |
+| Layer      | Meaning                             | HTTP Status |
+| ---------- | ----------------------------------- | ----------- |
+| `http`     | Transport-level response            | Varies      |
+| `contract` | Request violates the API contract   | 400         |
+| `domain`   | Business rules rejected valid input | 422         |
 
-This lets clients handle errors differently based on their source — for example, showing contract errors inline on form fields while displaying HTTP errors as alerts.
+::: info
+Layer describes **which part of the system rejected the request** — not where the code lives.
+:::
 
-## Error Flow
+### http
 
+Transport-level response like "not found" or "forbidden".
+
+```json
+{
+  "layer": "http",
+  "code": "not_found",
+  "detail": "Not found",
+  "path": [],
+  "pointer": ""
+}
 ```
-Request arrives
-     ↓
-Contract validates request shape
-     ↓ (if fails: 400 with contract errors)
-Controller runs
-     ↓
-Model saves
-     ↓ (if fails: 422 with domain errors)
-Response rendered
+
+Status-driven. Not tied to specific fields.
+
+### contract
+
+Request shape, types, or constraints don't match the contract.
+
+```json
+{
+  "layer": "contract",
+  "code": "field_missing",
+  "detail": "Required",
+  "path": ["invoice", "number"],
+  "pointer": "/invoice/number"
+}
 ```
 
-Contract errors happen before your controller code runs — the request never reaches your models. Domain errors happen after, when ActiveRecord validations fail during save.
+Client can fix by following the API specification.
 
-## Error Documentation
+### domain
 
-Each layer has its own documentation:
+Request was valid but failed model validation or business rules.
+
+```json
+{
+  "layer": "domain",
+  "code": "min",
+  "detail": "Too short",
+  "path": ["invoice", "number"],
+  "pointer": "/invoice/number",
+  "meta": { "min": 3 }
+}
+```
+
+Client can only fix by changing the data itself.
+
+## Documentation
+
+Each layer has dedicated documentation:
 
 - [HTTP Errors](./http-errors.md) — `respond_with_error` and 20 built-in codes
 - [Contract Errors](./contract-errors.md) — 28 codes for body, filter, sort, pagination
 - [Domain Errors](./domain-errors.md) — 24 codes mapped from Rails validations
 - [Custom Errors](./custom-errors.md) — Register your own error codes
-
-## Handling Errors
-
-The `Apiwork::Controller` module automatically rescues constraint errors:
-
-```ruby
-class PostsController < ApplicationController
-  include Apiwork::Controller
-
-  def create
-    post = Post.create(contract.body[:post])
-    respond post  # Automatically handles validation errors
-  end
-end
-```
-
-If `Post.create` fails validation, `respond` detects the errors and raises a `ValidationError`. The concern catches it and renders the errors with a 422 status.
-
-For HTTP errors, use `respond_with_error`:
-
-```ruby
-class PostsController < ApplicationController
-  include Apiwork::Controller
-
-  rescue_from ActiveRecord::RecordNotFound do
-    respond_with_error :not_found
-  end
-
-  def publish
-    post = Post.find(params[:id])
-
-    unless current_user.can_publish?(post)
-      return respond_with_error :forbidden
-    end
-
-    post.publish!
-    respond post
-  end
-end
-```
-
-## Why This Matters
-
-A consistent error format means:
-
-- **Client simplicity** — One error parser handles everything
-- **Precise feedback** — Paths point to exact fields
-- **Rich context** — Metadata helps build better error messages
-- **Predictability** — Same shape whether contract, domain, or HTTP fails
