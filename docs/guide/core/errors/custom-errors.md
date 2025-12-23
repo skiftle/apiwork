@@ -15,11 +15,12 @@ issue = Apiwork::Issue.new(
   code: :insufficient_balance,
   detail: "Account balance is too low for this transaction",
   path: [:transaction, :amount],
-  meta: { required: 100.00, available: 45.50 }
+  meta: { required: 100.00, available: 45.50 },
+  layer: :domain
 )
 ```
 
-The `code` should be a symbol that clients can use programmatically. The `detail` provides human-readable context.
+The `code` should be a symbol that clients can use programmatically. The `detail` provides human-readable context. The `layer` indicates where the error originated — use `:domain` for business rule violations.
 
 ## Rendering Errors
 
@@ -37,7 +38,8 @@ def create
         code: :out_of_stock,
         detail: "#{item.name} is out of stock",
         path: [:order, :items, index, :product_id],
-        meta: { product_id: item.product_id, requested: item.quantity, available: 0 }
+        meta: { product_id: item.product_id, requested: item.quantity, available: 0 },
+        layer: :domain
       )
     end
 
@@ -87,7 +89,8 @@ def transfer
       code: :account_frozen,
       detail: "Source account is frozen",
       path: [:from_account_id],
-      meta: { account_id: from_account.id }
+      meta: { account_id: from_account.id },
+      layer: :domain
     )
   end
 
@@ -96,7 +99,8 @@ def transfer
       code: :account_closed,
       detail: "Destination account is closed",
       path: [:to_account_id],
-      meta: { account_id: to_account.id }
+      meta: { account_id: to_account.id },
+      layer: :domain
     )
   end
 
@@ -105,7 +109,8 @@ def transfer
       code: :insufficient_funds,
       detail: "Insufficient funds for transfer",
       path: [:amount],
-      meta: { requested: amount, available: from_account.balance }
+      meta: { requested: amount, available: from_account.balance },
+      layer: :domain
     )
   end
 

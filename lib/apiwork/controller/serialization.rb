@@ -120,7 +120,8 @@ module Apiwork
           code: error_code.key,
           detail: resolve_error_detail(error_code, detail, i18n),
           path: path || default_error_path(error_code),
-          meta:
+          meta:,
+          layer: :http
         )
 
         render_error [issue], status: error_code.status

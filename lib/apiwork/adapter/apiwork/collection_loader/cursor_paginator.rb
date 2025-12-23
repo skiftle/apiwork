@@ -78,7 +78,7 @@ module Apiwork
           def decode_cursor(cursor)
             JSON.parse(Base64.urlsafe_decode64(cursor)).symbolize_keys
           rescue ArgumentError, JSON::ParserError
-            issue = ::Apiwork::Issue.new(code: :invalid_cursor, path: [:page], detail: 'Invalid cursor format')
+            issue = ::Apiwork::Issue.new(code: :invalid_cursor, path: [:page], detail: 'Invalid cursor format', layer: :contract)
             raise ::Apiwork::ConstraintError, issue
           end
         end

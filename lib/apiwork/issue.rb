@@ -7,6 +7,8 @@ module Apiwork
   # Issues are returned when request parameters fail validation,
   # coercion, or constraint checks. Access via `contract.issues`.
   class Issue
+    VALID_LAYERS = %w[contract domain http].freeze
+
     # @api public
     # @return [Symbol] the error code (e.g., :required, :type_mismatch)
     attr_reader :code
@@ -23,11 +25,17 @@ module Apiwork
     # @return [Array<Symbol, Integer>] path to the invalid field
     attr_reader :path
 
-    def initialize(code:, detail:, path: [], meta: {})
+    # @api public
+    # @return [String, nil] validation layer ("contract" or "domain")
+    attr_reader :layer
+
+    def initialize(code:, detail:, path: [], meta: {}, layer: nil)
       @code = code
       @detail = detail
       @path = path.map { |element| element.is_a?(Integer) ? element : element.to_sym }
       @meta = meta
+      @layer = layer&.to_s
+      validate_layer! if @layer
     end
 
     # @api public
@@ -37,15 +45,17 @@ module Apiwork
     end
 
     # @api public
-    # @return [Hash] hash representation with code, detail, path, pointer, meta
+    # @return [Hash] hash representation with layer, code, detail, path, pointer, meta
     def to_h
-      {
+      hash = {
         code: code,
         detail: detail,
         path: path.map(&:to_s),
         pointer: pointer,
         meta: meta
       }
+      hash[:layer] = layer if layer
+      hash
     end
 
     # @api public
@@ -62,6 +72,14 @@ module Apiwork
 
     def warn
       Rails.logger.warn(to_s)
+    end
+
+    private
+
+    def validate_layer!
+      return if VALID_LAYERS.include?(@layer)
+
+      raise ArgumentError, "Invalid layer '#{@layer}'. Must be one of: #{VALID_LAYERS.join(', ')}"
     end
   end
 end

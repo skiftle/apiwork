@@ -30,6 +30,7 @@ The filter references a field that isn't marked as filterable:
 
 ```json
 {
+  "layer": "contract",
   "code": "field_not_filterable",
   "detail": "body is not a filterable attribute on Post. Available: title, status",
   "path": ["filter", "body"],
@@ -48,6 +49,7 @@ The filter uses an operator not allowed for this field:
 
 ```json
 {
+  "layer": "contract",
   "code": "invalid_operator",
   "detail": "Invalid operator 'contains' for status. Valid: eq, in",
   "path": ["filter", "status", "contains"],
@@ -66,6 +68,7 @@ The filter value doesn't match the expected type:
 
 ```json
 {
+  "layer": "contract",
   "code": "invalid_filter_value_type",
   "detail": "Expected array for 'in' operator",
   "path": ["filter", "status", "in"],
@@ -83,6 +86,7 @@ The filter value isn't in the enum's allowed values:
 
 ```json
 {
+  "layer": "contract",
   "code": "invalid_enum_value",
   "detail": "Invalid status value(s): archived. Valid values: draft, published",
   "path": ["filter", "status"],
@@ -101,6 +105,7 @@ A date/datetime filter value has an invalid format:
 
 ```json
 {
+  "layer": "contract",
   "code": "invalid_date_format",
   "detail": "'not-a-date' is not a valid date",
   "path": ["filter", "created_at"],
@@ -118,6 +123,7 @@ A numeric filter value can't be parsed:
 
 ```json
 {
+  "layer": "contract",
   "code": "invalid_numeric_format",
   "detail": "'abc' is not a valid number",
   "path": ["filter", "amount"],
@@ -135,6 +141,7 @@ A filter that doesn't support null received null:
 
 ```json
 {
+  "layer": "contract",
   "code": "null_not_allowed",
   "detail": "title cannot be null",
   "path": ["filter", "title"],
@@ -151,6 +158,7 @@ The database column type couldn't be determined:
 
 ```json
 {
+  "layer": "contract",
   "code": "unknown_column_type",
   "detail": "Unknown column type for field 'custom_field'",
   "path": ["filter", "custom_field"],
@@ -167,6 +175,7 @@ The column type doesn't support filtering:
 
 ```json
 {
+  "layer": "contract",
   "code": "unsupported_column_type",
   "detail": "Column type 'binary' is not supported for filtering",
   "path": ["filter", "data"],
@@ -184,6 +193,7 @@ A filter references an association that doesn't exist:
 
 ```json
 {
+  "layer": "contract",
   "code": "association_not_found",
   "detail": "Association 'author' not found",
   "path": ["filter", "author.name"],
@@ -200,6 +210,7 @@ The association exists but has no schema defined:
 
 ```json
 {
+  "layer": "contract",
   "code": "association_resource_not_found",
   "detail": "No schema found for association 'author'",
   "path": ["filter", "author.name"],
@@ -218,6 +229,7 @@ The sort parameter isn't the expected type:
 
 ```json
 {
+  "layer": "contract",
   "code": "invalid_sort_params_type",
   "detail": "sort must be a Hash or Array of Hashes",
   "path": ["sort"],
@@ -234,6 +246,7 @@ The sort references a field that isn't marked as sortable:
 
 ```json
 {
+  "layer": "contract",
   "code": "field_not_sortable",
   "detail": "body is not sortable on Post. Sortable: title, created_at",
   "path": ["sort", "body"],
@@ -252,6 +265,7 @@ A sort item has an invalid format:
 
 ```json
 {
+  "layer": "contract",
   "code": "invalid_sort_value_type",
   "detail": "Sort value must be 'asc', 'desc', or Hash for associations",
   "path": ["sort", "title"],
@@ -269,6 +283,7 @@ The sort direction isn't `asc` or `desc`:
 
 ```json
 {
+  "layer": "contract",
   "code": "invalid_sort_direction",
   "detail": "Invalid direction 'up'. Use 'asc' or 'desc'",
   "path": ["sort", "title"],
@@ -287,6 +302,7 @@ A sort references an association that doesn't exist:
 
 ```json
 {
+  "layer": "contract",
   "code": "invalid_association",
   "detail": "author is not a valid association on Post",
   "path": ["sort", "author"],
@@ -304,6 +320,7 @@ The association exists but isn't marked as sortable:
 
 ```json
 {
+  "layer": "contract",
   "code": "association_not_sortable",
   "detail": "Association 'tags' is not sortable",
   "path": ["sort"],
@@ -322,6 +339,7 @@ The cursor value is malformed or can't be decoded:
 
 ```json
 {
+  "layer": "contract",
   "code": "invalid_cursor",
   "detail": "Invalid cursor format",
   "path": ["page"],

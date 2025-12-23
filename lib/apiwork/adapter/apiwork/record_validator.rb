@@ -115,7 +115,8 @@ module Apiwork
             code: rails_error.type,
             detail: rails_error.message,
             path:,
-            meta:
+            meta:,
+            layer: :domain
           )
         end
       end

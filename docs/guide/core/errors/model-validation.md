@@ -27,6 +27,7 @@ If validation fails, the adapter sees `invoice.errors`, converts each to an erro
 
 ```json
 {
+  "layer": "domain",
   "code": "blank",
   "detail": "can't be blank",
   "path": ["invoice", "number"],
@@ -39,6 +40,7 @@ If validation fails, the adapter sees `invoice.errors`, converts each to an erro
 
 | Field     | Source                                              |
 | --------- | --------------------------------------------------- |
+| `layer`   | Always `"domain"` for model validation              |
 | `code`    | Rails error type (`:blank`, `:too_short`, `:taken`) |
 | `detail`  | Human-readable message                              |
 | `path`    | Schema root key + attribute                         |
@@ -67,6 +69,7 @@ validates :number, length: { minimum: 3, maximum: 50 }
 
 ```json
 {
+  "layer": "domain",
   "code": "too_short",
   "path": ["invoice", "number"],
   "meta": {
@@ -155,16 +158,19 @@ Response:
 {
   "errors": [
     {
+      "layer": "domain",
       "code": "blank",
       "path": ["invoice", "number"],
       "pointer": "/invoice/number"
     },
     {
+      "layer": "domain",
       "code": "blank",
       "path": ["invoice", "lines", 1, "description"],
       "pointer": "/invoice/lines/1/description"
     },
     {
+      "layer": "domain",
       "code": "greater_than",
       "path": ["invoice", "lines", 1, "quantity"],
       "pointer": "/invoice/lines/1/quantity"
@@ -213,6 +219,7 @@ end
 
 ```json
 {
+  "layer": "domain",
   "path": ["invoice", "lines", 0, "adjustments", 2, "reason"]
 }
 ```

@@ -341,7 +341,8 @@ module Apiwork
           code: :max_depth_exceeded,
           detail: 'Max depth exceeded',
           path: path,
-          meta: { depth: current_depth, max_depth: max_depth }
+          meta: { depth: current_depth, max_depth: max_depth },
+          layer: :contract
         )]
         { issues: issues, params: {} }
       end
@@ -369,7 +370,8 @@ module Apiwork
               code: :invalid_value,
               detail: "Value must be exactly #{expected.inspect}",
               path: field_path,
-              meta: { field: name, expected: expected, actual: value }
+              meta: { field: name, expected: expected, actual: value },
+              layer: :contract
             )
             return { issues: [error], value_set: false }
           end
@@ -415,10 +417,11 @@ module Apiwork
             code: :invalid_value,
             detail: "Invalid value. Must be one of: #{EnumValue.format(param_options[:enum])}",
             path: field_path,
-            meta: { field: name, expected: enum_values, actual: value }
+            meta: { field: name, expected: enum_values, actual: value },
+            layer: :contract
           )
         else
-          Issue.new(code: :field_missing, detail: 'Field required', path: field_path, meta: { field: name })
+          Issue.new(code: :field_missing, detail: 'Field required', path: field_path, meta: { field: name }, layer: :contract)
         end
       end
 
@@ -435,7 +438,8 @@ module Apiwork
           code: :value_null,
           detail: 'Value cannot be null',
           path: field_path,
-          meta: { field: name }
+          meta: { field: name },
+          layer: :contract
         )
       end
 
@@ -446,7 +450,8 @@ module Apiwork
           code: :invalid_value,
           detail: "Invalid value. Must be one of: #{EnumValue.format(enum)}",
           path: field_path,
-          meta: { field: name, expected: EnumValue.values(enum), actual: value }
+          meta: { field: name, expected: EnumValue.values(enum), actual: value },
+          layer: :contract
         )
       end
 
@@ -512,7 +517,8 @@ module Apiwork
             code: :field_unknown,
             detail: 'Unknown field',
             path: path + [key],
-            meta: { field: key, allowed: @params.keys }
+            meta: { field: key, allowed: @params.keys },
+            layer: :contract
           )
         end
       end
@@ -534,7 +540,8 @@ module Apiwork
             code: :array_too_large,
             detail: 'Array exceeds maximum length',
             path: field_path,
-            meta: { max:, actual: array.length }
+            meta: { max:, actual: array.length },
+            layer: :contract
           )
           return [issues, []]
         end
@@ -544,7 +551,8 @@ module Apiwork
             code: :array_too_small,
             detail: 'Array below minimum length',
             path: field_path,
-            meta: { min:, actual: array.length }
+            meta: { min:, actual: array.length },
+            layer: :contract
           )
           return [issues, []]
         end
@@ -573,7 +581,8 @@ module Apiwork
                   code: :invalid_type,
                   detail: 'Invalid type',
                   path: item_path,
-                  meta: { field: index, expected: param_options[:of], actual: item.class.name.underscore.to_sym }
+                  meta: { field: index, expected: param_options[:of], actual: item.class.name.underscore.to_sym },
+                  layer: :contract
                 )
                 next
               end
@@ -641,7 +650,8 @@ module Apiwork
           code: :invalid_type,
           detail: 'Invalid type',
           path: path,
-          meta: { field: name, expected: expected_type, actual: value.class.name.underscore.to_sym }
+          meta: { field: name, expected: expected_type, actual: value.class.name.underscore.to_sym },
+          layer: :contract
         )
       end
 
@@ -687,7 +697,8 @@ module Apiwork
           code: :invalid_type,
           detail: 'Invalid type',
           path: path,
-          meta: { field: name, expected: expected_types.join(' | '), actual: value.class.name.underscore.to_sym }
+          meta: { field: name, expected: expected_types.join(' | '), actual: value.class.name.underscore.to_sym },
+          layer: :contract
         )
 
         [error, nil]
@@ -702,7 +713,8 @@ module Apiwork
             code: :invalid_type,
             detail: 'Invalid type',
             path: path,
-            meta: { field: name, expected: :object, actual: value.class.name.underscore.to_sym }
+            meta: { field: name, expected: :object, actual: value.class.name.underscore.to_sym },
+            layer: :contract
           )
           return [error, nil]
         end
@@ -712,7 +724,8 @@ module Apiwork
             code: :field_missing,
             detail: "Discriminator field '#{discriminator}' is required",
             path: path + [discriminator],
-            meta: { field: discriminator }
+            meta: { field: discriminator },
+            layer: :contract
           )
           return [error, nil]
         end
@@ -730,7 +743,8 @@ module Apiwork
             code: :invalid_value,
             detail: "Invalid discriminator value. Must be one of: #{valid_tags.join(', ')}",
             path: path + [discriminator],
-            meta: { field: discriminator, expected: valid_tags, actual: discriminator_value }
+            meta: { field: discriminator, expected: valid_tags, actual: discriminator_value },
+            layer: :contract
           )
           return [error, nil]
         end
@@ -774,7 +788,8 @@ module Apiwork
               code: :invalid_type,
               detail: 'Invalid type',
               path: path,
-              meta: { field: name, expected: variant_type, actual: value.class.name.underscore.to_sym }
+              meta: { field: name, expected: variant_type, actual: value.class.name.underscore.to_sym },
+              layer: :contract
             )
             return [type_error, nil]
           end
@@ -797,7 +812,8 @@ module Apiwork
               code: :invalid_type,
               detail: 'Invalid type',
               path: path,
-              meta: { field: name, expected: :array, actual: value.class.name.underscore.to_sym }
+              meta: { field: name, expected: :array, actual: value.class.name.underscore.to_sym },
+              layer: :contract
             )
             return [type_error, nil]
           end
@@ -827,7 +843,8 @@ module Apiwork
               code: :invalid_type,
               detail: 'Invalid type',
               path: path,
-              meta: { field: name, expected: :object, actual: value.class.name.underscore.to_sym }
+              meta: { field: name, expected: :object, actual: value.class.name.underscore.to_sym },
+              layer: :contract
             )
             return [type_error, nil]
           end
@@ -852,7 +869,8 @@ module Apiwork
             code: :invalid_value,
             detail: "Invalid value. Must be one of: #{variant_definition[:enum].join(', ')}",
             path: path,
-            meta: { field: name, expected: variant_definition[:enum], actual: value }
+            meta: { field: name, expected: variant_definition[:enum], actual: value },
+            layer: :contract
           )
           return [enum_error, nil]
         end
@@ -887,7 +905,8 @@ module Apiwork
             code: :invalid_value,
             detail: "Value must be >= #{min_value}",
             path: field_path,
-            meta: { field: name, actual: value, minimum: min_value }
+            meta: { field: name, actual: value, minimum: min_value },
+            layer: :contract
           )
         end
 
@@ -896,7 +915,8 @@ module Apiwork
             code: :invalid_value,
             detail: "Value must be <= #{max_value}",
             path: field_path,
-            meta: { field: name, actual: value, maximum: max_value }
+            meta: { field: name, actual: value, maximum: max_value },
+            layer: :contract
           )
         end
 
@@ -916,7 +936,8 @@ module Apiwork
             code: :string_too_short,
             detail: "String must be at least #{min_length} characters",
             path: field_path,
-            meta: { field: name, actual_length: value.length, min_length: }
+            meta: { field: name, actual_length: value.length, min_length: },
+            layer: :contract
           )
         end
 
@@ -925,7 +946,8 @@ module Apiwork
             code: :string_too_long,
             detail: "String must be at most #{max_length} characters",
             path: field_path,
-            meta: { field: name, actual_length: value.length, max_length: }
+            meta: { field: name, actual_length: value.length, max_length: },
+            layer: :contract
           )
         end
 

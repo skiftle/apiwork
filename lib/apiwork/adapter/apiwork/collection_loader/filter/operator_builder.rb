@@ -38,7 +38,8 @@ module Apiwork
                 code: :invalid_operator,
                 detail: "Invalid operator '#{operator}' for #{field_name}. Valid: #{valid_operators.join(', ')}",
                 path: [:filter, field_name, operator],
-                meta: { field: field_name, operator: operator, valid_operators: valid_operators }
+                meta: { field: field_name, operator: operator, valid_operators: valid_operators },
+                layer: :contract
               )
             end
           end

@@ -27,7 +27,8 @@ module Apiwork
                 code: :invalid_sort_params_type,
                 detail: 'sort must be a Hash or Array of Hashes',
                 path: [:sort],
-                meta: { params_type: params.class.name }
+                meta: { params_type: params.class.name },
+                layer: :contract
               )
               return @relation
             end
@@ -55,7 +56,8 @@ module Apiwork
                     code: :field_not_sortable,
                     detail: "#{key} is not sortable on #{target_klass.name}. Sortable: #{available.join(', ')}",
                     path: [:sort, key],
-                    meta: { field: key, class: target_klass.name, available: available }
+                    meta: { field: key, class: target_klass.name, available: available },
+                    layer: :contract
                   )
                   next
                 end
@@ -71,7 +73,8 @@ module Apiwork
                               code: :invalid_sort_direction,
                               detail: "Invalid direction '#{direction}'. Use 'asc' or 'desc'",
                               path: [:sort, key],
-                              meta: { field: key, direction: direction, valid_directions: [:asc, :desc] }
+                              meta: { field: key, direction: direction, valid_directions: [:asc, :desc] },
+                              layer: :contract
                             )
                             next
                           end
@@ -84,7 +87,8 @@ module Apiwork
                     code: :invalid_association,
                     detail: "#{key} is not a valid association on #{target_klass.name}",
                     path: [:sort, key],
-                    meta: { field: key, class: target_klass.name }
+                    meta: { field: key, class: target_klass.name },
+                    layer: :contract
                   )
                   next
                 end
@@ -94,7 +98,8 @@ module Apiwork
                     code: :association_not_sortable,
                     detail: "Association #{key} is not sortable",
                     path: [:sort, key],
-                    meta: { association: key }
+                    meta: { association: key },
+                    layer: :contract
                   )
                   next
                 end
@@ -106,7 +111,8 @@ module Apiwork
                     code: :association_resource_not_found,
                     detail: "Cannot find resource for association #{key}",
                     path: [:sort, key],
-                    meta: { association: key }
+                    meta: { association: key },
+                    layer: :contract
                   )
                   next
                 end
@@ -121,7 +127,8 @@ module Apiwork
                   code: :invalid_sort_value_type,
                   detail: "Sort value must be 'asc', 'desc', or Hash for associations",
                   path: [:sort, key],
-                  meta: { field: key, value_type: value.class.name }
+                  meta: { field: key, value_type: value.class.name },
+                  layer: :contract
                 )
               end
             end

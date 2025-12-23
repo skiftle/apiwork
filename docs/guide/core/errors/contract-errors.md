@@ -33,6 +33,7 @@ A required field is absent or blank:
 
 ```json
 {
+  "layer": "contract",
   "code": "field_missing",
   "detail": "Field required",
   "path": ["post", "title"],
@@ -49,6 +50,7 @@ The request contains a field not defined in the contract:
 
 ```json
 {
+  "layer": "contract",
   "code": "field_unknown",
   "detail": "Unknown field",
   "path": ["post", "foo"],
@@ -66,6 +68,7 @@ The value doesn't match the expected type:
 
 ```json
 {
+  "layer": "contract",
   "code": "invalid_type",
   "detail": "Invalid type",
   "path": ["post", "title"],
@@ -84,6 +87,7 @@ The value doesn't match enum constraints or other value restrictions:
 
 ```json
 {
+  "layer": "contract",
   "code": "invalid_value",
   "detail": "Invalid value. Must be one of: draft, published",
   "path": ["post", "status"],
@@ -102,6 +106,7 @@ A field explicitly marked `nullable: false` received null:
 
 ```json
 {
+  "layer": "contract",
   "code": "value_null",
   "detail": "Value cannot be null",
   "path": ["post", "title"],
@@ -122,6 +127,7 @@ param :title, type: :string, min: 5, max: 100
 
 ```json
 {
+  "layer": "contract",
   "code": "string_too_short",
   "detail": "String must be at least 5 characters",
   "path": ["post", "title"],
@@ -144,6 +150,7 @@ param :tags, type: :array, of: :string, min: 1, max: 10
 
 ```json
 {
+  "layer": "contract",
   "code": "array_too_large",
   "detail": "Array exceeds maximum length",
   "path": ["post", "tags"],
@@ -161,6 +168,7 @@ Nested structures exceed the maximum validation depth (default 10):
 
 ```json
 {
+  "layer": "contract",
   "code": "max_depth_exceeded",
   "detail": "Max depth exceeded",
   "path": ["deeply", "nested", "structure"],
@@ -194,6 +202,7 @@ Missing `author_id`:
 
 ```json
 {
+  "layer": "contract",
   "code": "field_missing",
   "detail": "Field required",
   "path": ["post", "metadata", "author_id"],
@@ -225,6 +234,7 @@ If the third item is missing `quantity`:
 
 ```json
 {
+  "layer": "contract",
   "code": "field_missing",
   "detail": "Field required",
   "path": ["items", 2, "quantity"],
@@ -254,6 +264,7 @@ Invalid discriminator value:
 
 ```json
 {
+  "layer": "contract",
   "code": "invalid_value",
   "detail": "Invalid discriminator value. Must be one of: text, image",
   "path": ["content", "type"],

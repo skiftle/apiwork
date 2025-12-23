@@ -15,7 +15,8 @@ Apiwork::Issue.new(
   code: :field_missing,
   detail: "Field required",
   path: [:invoice, :number],
-  meta: { field: :number }
+  meta: { field: :number },
+  layer: :contract
 )
 ```
 
@@ -23,6 +24,7 @@ Every error contains:
 
 | Field     | Description                                                         |
 | --------- | ------------------------------------------------------------------- |
+| `layer`   | Origin of the error: `"contract"`, `"domain"`, or `"http"`          |
 | `code`    | A machine-readable symbol (`:field_missing`, `:invalid_type`, etc.) |
 | `detail`  | A human-readable message                                            |
 | `path`    | An array representing the location in the request body              |
@@ -37,6 +39,7 @@ When errors occur, Apiwork renders them as JSON:
 {
   "errors": [
     {
+      "layer": "contract",
       "code": "field_missing",
       "detail": "Field required",
       "path": ["invoice", "number"],
@@ -48,6 +51,18 @@ When errors occur, Apiwork renders them as JSON:
 ```
 
 The `errors` array contains all problems found. Clients can iterate through them, display messages to users, or highlight specific fields using the path or pointer.
+
+## Error Layers
+
+The `layer` field indicates where the error originated:
+
+| Layer      | Description                                              |
+| ---------- | -------------------------------------------------------- |
+| `contract` | Request shape validation (types, required, constraints)  |
+| `domain`   | Business rule validation (ActiveModel/ActiveRecord)      |
+| `http`     | HTTP-level errors (not found, forbidden, unauthorized)   |
+
+This lets clients handle errors differently based on their source — for example, showing contract errors inline on form fields while displaying HTTP errors as alerts.
 
 ## Error Types
 
