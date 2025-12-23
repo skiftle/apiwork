@@ -130,41 +130,6 @@ Choose the appropriate status for your error type:
 | `422 Unprocessable Entity` | Business rule violation                          |
 | `429 Too Many Requests`    | Rate limiting                                    |
 
-## Combining Error Sources
-
-You can mix custom errors with validation errors:
-
-```ruby
-def create
-  invoice = Invoice.new(contract.body[:invoice])
-  issues = []
-
-  # Business rule check
-  if invoice.total > current_user.credit_limit
-    issues << Apiwork::Issue.new(
-      code: :credit_limit_exceeded,
-      detail: "Invoice total exceeds your credit limit",
-      path: [:invoice, :total],
-      meta: { limit: current_user.credit_limit, total: invoice.total }
-    )
-  end
-
-  # Model validation
-  unless invoice.valid?
-    adapter = Apiwork::Controller::ValidationAdapter.new(
-      invoice,
-      schema_class: InvoiceSchema
-    )
-    issues.concat(adapter.convert)
-  end
-
-  return render_error issues, status: :unprocessable_entity if issues.any?
-
-  invoice.save!
-  respond invoice
-end
-```
-
 ## Registering Custom Codes
 
 For domain-specific errors that you use frequently, register them as error codes:

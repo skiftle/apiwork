@@ -31,11 +31,13 @@ The filter references a field that isn't marked as filterable:
 ```json
 {
   "code": "field_not_filterable",
-  "detail": "Field 'body' is not filterable",
+  "detail": "body is not a filterable attribute on Post. Available: title, status",
   "path": ["filter", "body"],
   "pointer": "/filter/body",
   "meta": {
-    "field": "body"
+    "field": "body",
+    "class": "Post",
+    "available": ["title", "status"]
   }
 }
 ```
@@ -47,13 +49,13 @@ The filter uses an operator not allowed for this field:
 ```json
 {
   "code": "invalid_operator",
-  "detail": "Operator 'contains' is not allowed for field 'status'",
+  "detail": "Invalid operator 'contains' for status. Valid: eq, in",
   "path": ["filter", "status", "contains"],
   "pointer": "/filter/status/contains",
   "meta": {
     "field": "status",
     "operator": "contains",
-    "allowed": ["eq", "in"]
+    "valid_operators": ["eq", "in"]
   }
 }
 ```
@@ -82,12 +84,13 @@ The filter value isn't in the enum's allowed values:
 ```json
 {
   "code": "invalid_enum_value",
-  "detail": "Invalid enum value 'archived'. Must be one of: draft, published",
-  "path": ["filter", "status", "eq"],
-  "pointer": "/filter/status/eq",
+  "detail": "Invalid status value(s): archived. Valid values: draft, published",
+  "path": ["filter", "status"],
+  "pointer": "/filter/status",
   "meta": {
-    "value": "archived",
-    "allowed": ["draft", "published"]
+    "field": "status",
+    "invalid": ["archived"],
+    "valid": ["draft", "published"]
   }
 }
 ```
@@ -99,10 +102,11 @@ A date/datetime filter value has an invalid format:
 ```json
 {
   "code": "invalid_date_format",
-  "detail": "Invalid date format",
-  "path": ["filter", "created_at", "gte"],
-  "pointer": "/filter/created_at/gte",
+  "detail": "'not-a-date' is not a valid date",
+  "path": ["filter", "created_at"],
+  "pointer": "/filter/created_at",
   "meta": {
+    "field": "created_at",
     "value": "not-a-date"
   }
 }
@@ -115,10 +119,11 @@ A numeric filter value can't be parsed:
 ```json
 {
   "code": "invalid_numeric_format",
-  "detail": "Invalid numeric value",
-  "path": ["filter", "amount", "gte"],
-  "pointer": "/filter/amount/gte",
+  "detail": "'abc' is not a valid number",
+  "path": ["filter", "amount"],
+  "pointer": "/filter/amount",
   "meta": {
+    "field": "amount",
     "value": "abc"
   }
 }
@@ -131,11 +136,11 @@ A filter that doesn't support null received null:
 ```json
 {
   "code": "null_not_allowed",
-  "detail": "Null values not allowed for this operator",
-  "path": ["filter", "title", "contains"],
-  "pointer": "/filter/title/contains",
+  "detail": "title cannot be null",
+  "path": ["filter", "title"],
+  "pointer": "/filter/title",
   "meta": {
-    "operator": "contains"
+    "field": "title"
   }
 }
 ```
@@ -214,11 +219,11 @@ The sort parameter isn't the expected type:
 ```json
 {
   "code": "invalid_sort_params_type",
-  "detail": "Sort parameter must be a string or array",
+  "detail": "sort must be a Hash or Array of Hashes",
   "path": ["sort"],
   "pointer": "/sort",
   "meta": {
-    "actual": "object"
+    "params_type": "String"
   }
 }
 ```
@@ -230,11 +235,13 @@ The sort references a field that isn't marked as sortable:
 ```json
 {
   "code": "field_not_sortable",
-  "detail": "Field 'body' is not sortable",
-  "path": ["sort"],
-  "pointer": "/sort",
+  "detail": "body is not sortable on Post. Sortable: title, created_at",
+  "path": ["sort", "body"],
+  "pointer": "/sort/body",
   "meta": {
-    "field": "body"
+    "field": "body",
+    "class": "Post",
+    "available": ["title", "created_at"]
   }
 }
 ```
@@ -246,10 +253,13 @@ A sort item has an invalid format:
 ```json
 {
   "code": "invalid_sort_value_type",
-  "detail": "Sort value must be a string",
-  "path": ["sort", 0],
-  "pointer": "/sort/0",
-  "meta": {}
+  "detail": "Sort value must be 'asc', 'desc', or Hash for associations",
+  "path": ["sort", "title"],
+  "pointer": "/sort/title",
+  "meta": {
+    "field": "title",
+    "value_type": "Array"
+  }
 }
 ```
 
@@ -260,28 +270,30 @@ The sort direction isn't `asc` or `desc`:
 ```json
 {
   "code": "invalid_sort_direction",
-  "detail": "Invalid sort direction 'up'. Must be 'asc' or 'desc'",
-  "path": ["sort"],
-  "pointer": "/sort",
+  "detail": "Invalid direction 'up'. Use 'asc' or 'desc'",
+  "path": ["sort", "title"],
+  "pointer": "/sort/title",
   "meta": {
     "field": "title",
-    "direction": "up"
+    "direction": "up",
+    "valid_directions": ["asc", "desc"]
   }
 }
 ```
 
 ### `invalid_association`
 
-A sort references a malformed association path:
+A sort references an association that doesn't exist:
 
 ```json
 {
   "code": "invalid_association",
-  "detail": "Invalid association path",
-  "path": ["sort"],
-  "pointer": "/sort",
+  "detail": "author is not a valid association on Post",
+  "path": ["sort", "author"],
+  "pointer": "/sort/author",
   "meta": {
-    "value": "author..name"
+    "field": "author",
+    "class": "Post"
   }
 }
 ```
