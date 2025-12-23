@@ -4,6 +4,62 @@ module Apiwork
   module Adapter
     class Apiwork < Base
       class DomainIssueMapper
+        CODE_MAP = {
+          blank: :required,
+          present: :forbidden,
+          empty: :required,
+          taken: :unique,
+          accepted: :accepted,
+          confirmation: :confirmed,
+          too_short: :min,
+          too_long: :max,
+          wrong_length: :length,
+          not_a_number: :number,
+          not_an_integer: :integer,
+          greater_than: :gt,
+          greater_than_or_equal_to: :gte,
+          less_than: :lt,
+          less_than_or_equal_to: :lte,
+          equal_to: :eq,
+          other_than: :ne,
+          odd: :odd,
+          even: :even,
+          inclusion: :in,
+          exclusion: :not_in,
+          in: :in,
+          invalid: :invalid,
+          restrict_dependent_destroy: :associated
+        }.freeze
+
+        DETAIL_MAP = {
+          required: 'Required',
+          forbidden: 'Must be blank',
+          unique: 'Already taken',
+          format: 'Invalid format',
+          accepted: 'Must be accepted',
+          confirmed: 'Does not match',
+          min: 'Too short',
+          max: 'Too long',
+          length: 'Wrong length',
+          number: 'Not a number',
+          integer: 'Not an integer',
+          gt: 'Too small',
+          gte: 'Too small',
+          lt: 'Too large',
+          lte: 'Too large',
+          eq: 'Wrong value',
+          ne: 'Reserved value',
+          odd: 'Must be odd',
+          even: 'Must be even',
+          in: 'Invalid value',
+          not_in: 'Reserved value',
+          associated: 'Invalid',
+          invalid: 'Invalid',
+          custom: 'Validation failed'
+        }.freeze
+
+        META_CODES = %i[min max length gt gte lt lte eq ne in].freeze
+
         def self.call(record, root_path: [])
           new(record, root_path).call
         end
@@ -31,15 +87,7 @@ module Apiwork
         end
 
         def association_issues
-          has_many_issues + has_one_issues
-        end
-
-        def has_many_issues
-          collect_association_issues(:has_many)
-        end
-
-        def has_one_issues
-          collect_association_issues(:has_one)
+          collect_association_issues(:has_many) + collect_association_issues(:has_one)
         end
 
         def collect_association_issues(association_type)
@@ -77,17 +125,58 @@ module Apiwork
         end
 
         def build_issue(error)
-          code = CodeNormalizer.call(error, @record)
+          code = normalize_code(error)
           attribute = resolve_attribute(error.attribute)
           path = @root_path + [attribute]
 
           Issue.new(
             layer: :domain,
             code:,
-            detail: DetailResolver.detail_for(code),
+            detail: detail_for(code),
             path:,
-            meta: MetaBuilder.call(code, error)
+            meta: build_meta(code, error)
           )
+        end
+
+        def normalize_code(error)
+          return :invalid if error.attribute == :base
+
+          CODE_MAP[error.type] || :custom
+        end
+
+        def detail_for(code)
+          DETAIL_MAP[code] || DETAIL_MAP[:custom]
+        end
+
+        def build_meta(code, error)
+          return nil unless META_CODES.include?(code)
+          return nil unless error.options
+
+          if code == :in
+            build_range_meta(error)
+          else
+            build_numeric_meta(code, error)
+          end
+        end
+
+        def build_numeric_meta(code, error)
+          value = error.options[:count]
+          return nil unless value.is_a?(Numeric)
+
+          meta_key = code == :length ? :exact : code
+          { meta_key => value }
+        end
+
+        def build_range_meta(error)
+          range = error.options[:in]
+          return nil unless range.is_a?(Range)
+          return nil unless range.begin.is_a?(Numeric) && range.end.is_a?(Numeric)
+
+          {
+            min: range.begin,
+            max: range.end,
+            max_exclusive: range.exclude_end?
+          }
         end
 
         def resolve_attribute(attribute)
