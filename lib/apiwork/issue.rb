@@ -33,7 +33,7 @@ module Apiwork
       @code = code
       @detail = detail
       @path = path.map { |element| element.is_a?(Integer) ? element : element.to_sym }
-      @meta = meta || {}
+      @meta = meta
       @layer = layer&.to_s
       validate_layer! if @layer
     end

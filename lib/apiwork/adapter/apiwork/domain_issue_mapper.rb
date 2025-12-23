@@ -149,8 +149,8 @@ module Apiwork
         end
 
         def build_meta(code, error)
-          return nil unless META_CODES.include?(code)
-          return nil unless error.options
+          return {} unless META_CODES.include?(code)
+          return {} unless error.options
 
           if code == :in
             build_range_meta(error)
@@ -161,7 +161,7 @@ module Apiwork
 
         def build_numeric_meta(code, error)
           value = error.options[:count]
-          return nil unless value.is_a?(Numeric)
+          return {} unless value.is_a?(Numeric)
 
           meta_key = code == :length ? :exact : code
           { meta_key => value }
@@ -169,8 +169,8 @@ module Apiwork
 
         def build_range_meta(error)
           range = error.options[:in]
-          return nil unless range.is_a?(Range)
-          return nil unless range.begin.is_a?(Numeric) && range.end.is_a?(Numeric)
+          return {} unless range.is_a?(Range)
+          return {} unless range.begin.is_a?(Numeric) && range.end.is_a?(Numeric)
 
           {
             min: range.begin,
