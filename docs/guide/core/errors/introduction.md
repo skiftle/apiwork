@@ -4,19 +4,19 @@ order: 1
 
 # Introduction
 
-Apiwork uses a unified error system. Every error — whether from contract validation, model validation, or business logic — follows the same structure. Clients receive consistent, predictable responses regardless of where the failure occurred.
+Apiwork uses a unified error system. Every error — whether from contract validation, model validation, or HTTP responses — follows the same structure. Clients receive consistent, predictable responses regardless of where the failure occurred.
 
-## The Error Object
+## The Issue Object
 
-At the center of Apiwork's error handling is the **Issue** class. Each issue represents a single problem with a request or response:
+At the center of Apiwork's error handling is the **Issue** class. Each issue represents a single problem with a request:
 
 ```ruby
 Apiwork::Issue.new(
   layer: :contract,
   code: :field_missing,
-  detail: "Field required",
+  detail: "Required",
   path: [:invoice, :number],
-  meta: { field: :number }
+  meta: { field: :number, type: :string }
 )
 ```
 
@@ -41,10 +41,10 @@ When errors occur, Apiwork renders them as JSON:
     {
       "layer": "contract",
       "code": "field_missing",
-      "detail": "Field required",
+      "detail": "Required",
       "path": ["invoice", "number"],
       "pointer": "/invoice/number",
-      "meta": { "field": "number" }
+      "meta": { "field": "number", "type": "string" }
     }
   ]
 }
@@ -56,37 +56,38 @@ The `errors` array contains all problems found. Clients can iterate through them
 
 The `layer` field indicates where the error originated:
 
-| Layer      | Description                                              |
-| ---------- | -------------------------------------------------------- |
-| `contract` | Request shape validation (types, required, constraints)  |
-| `domain`   | Business rule validation (ActiveModel/ActiveRecord)      |
-| `http`     | HTTP-level errors (not found, forbidden, unauthorized)   |
+| Layer      | HTTP Status | Description                             |
+| ---------- | ----------- | --------------------------------------- |
+| `contract` | 400         | Request shape validation                |
+| `domain`   | 422         | Business rule validation (ActiveRecord) |
+| `http`     | Varies      | HTTP-level errors (not found, etc.)     |
 
 This lets clients handle errors differently based on their source — for example, showing contract errors inline on form fields while displaying HTTP errors as alerts.
 
-## Error Types
-
-Apiwork distinguishes between different error categories:
-
-| Error                | HTTP Status              | When                                     |
-| -------------------- | ------------------------ | ---------------------------------------- |
-| `ContractError`      | 400 Bad Request          | Request doesn't match the contract       |
-| `ValidationError`    | 422 Unprocessable Entity | Model validation failed                  |
-| `respond_with_error` | Varies                   | HTTP errors (not found, forbidden, etc.) |
-
-`ContractError` and `ValidationError` inherit from `ConstraintError` and carry an array of errors. The controller automatically catches these and renders the appropriate response.
-
-For HTTP errors like "not found" or "forbidden", use `respond_with_error`.
-
 ## Error Flow
 
-1. Request arrives
-2. Contract validates request shape (if fails: ContractError, returns 400)
-3. Controller runs
-4. Model saves (if fails: ValidationError, returns 422)
-5. Response rendered
+```
+Request arrives
+     ↓
+Contract validates request shape
+     ↓ (if fails: 400 with contract errors)
+Controller runs
+     ↓
+Model saves
+     ↓ (if fails: 422 with domain errors)
+Response rendered
+```
 
-Contract errors happen before your controller code runs — the request never reaches your models. Validation errors happen after, when ActiveRecord validations fail during save.
+Contract errors happen before your controller code runs — the request never reaches your models. Domain errors happen after, when ActiveRecord validations fail during save.
+
+## Error Documentation
+
+Each layer has its own documentation:
+
+- [HTTP Errors](./http-errors.md) — `respond_with_error` and 20 built-in codes
+- [Contract Errors](./contract-errors.md) — 28 codes for body, filter, sort, pagination
+- [Domain Errors](./domain-errors.md) — 24 codes mapped from Rails validations
+- [Custom Errors](./custom-errors.md) — Register your own error codes
 
 ## Handling Errors
 
@@ -128,8 +129,6 @@ class PostsController < ApplicationController
 end
 ```
 
-[Error Codes](./error-codes.md) lists all built-in codes and shows how to register custom ones with i18n support.
-
 ## Why This Matters
 
 A consistent error format means:
@@ -137,6 +136,4 @@ A consistent error format means:
 - **Client simplicity** — One error parser handles everything
 - **Precise feedback** — Paths point to exact fields
 - **Rich context** — Metadata helps build better error messages
-- **Predictability** — Same shape whether contract or model fails
-
-The next sections cover each error type in detail.
+- **Predictability** — Same shape whether contract, domain, or HTTP fails

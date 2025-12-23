@@ -1,10 +1,14 @@
 ---
-order: 2
+order: 3
 ---
 
 # Contract Errors
 
 Contract errors occur when an incoming request doesn't match the contract definition. They're caught before your controller code runs, preventing malformed data from reaching your models.
+
+## HTTP Status
+
+**400 Bad Request** — The request was malformed. Fix it before retrying.
 
 ## When They Happen
 
@@ -25,11 +29,59 @@ end
 
 ## Error Codes
 
-Contract validation produces these issue codes:
+### Request Body Errors
 
-### `field_missing`
+| Code               | Detail            | Meta                              |
+| ------------------ | ----------------- | --------------------------------- |
+| `field_missing`    | Required          | `field`, `type`                   |
+| `field_unknown`    | Unknown field     | `field`, `allowed`                |
+| `type_invalid`     | Invalid type      | `field`, `expected`, `actual`     |
+| `value_invalid`    | Invalid value     | `field`, `expected`, `actual`     |
+| `value_null`       | Cannot be null    | `field`, `type`                   |
+| `string_too_short` | Too short         | `field`, `min`, `actual`          |
+| `string_too_long`  | Too long          | `field`, `max`, `actual`          |
+| `array_too_small`  | Too few items     | `min`, `actual`                   |
+| `array_too_large`  | Too many items    | `max`, `actual`                   |
+| `depth_exceeded`   | Too deeply nested | `depth`, `max`                    |
 
-A required field is absent or blank:
+### Filter Errors
+
+| Code                        | Detail                   | Meta                          |
+| --------------------------- | ------------------------ | ----------------------------- |
+| `field_not_filterable`      | Not filterable           | `field`, `available`          |
+| `operator_invalid`          | Invalid operator         | `field`, `operator`, `allowed`|
+| `filter_value_invalid`      | Invalid filter value     | `field`, `type`, `allowed`    |
+| `enum_invalid`              | Invalid enum value       | `field`, `value`, `allowed`   |
+| `date_invalid`              | Invalid date             | `field`, `value`              |
+| `number_invalid`            | Invalid number           | `field`, `value`              |
+| `value_null`                | Cannot be null           | `field`                       |
+| `column_unknown`            | Unknown column type      | `field`                       |
+| `column_unsupported`        | Unsupported column type  | `field`, `type`               |
+| `association_not_found`     | Association not found    | `association`                 |
+| `association_schema_missing`| Association schema missing| `association`                |
+
+### Sort Errors
+
+| Code                     | Detail             | Meta                              |
+| ------------------------ | ------------------ | --------------------------------- |
+| `sort_params_invalid`    | Invalid sort params| `type`                            |
+| `field_not_sortable`     | Not sortable       | `field`, `available`              |
+| `sort_value_invalid`     | Invalid sort value | `field`, `type`                   |
+| `sort_direction_invalid` | Invalid direction  | `field`, `direction`, `allowed`   |
+| `association_invalid`    | Invalid association| `field`                           |
+| `association_not_sortable`| Not sortable      | `association`                     |
+
+### Pagination Errors
+
+| Code              | Detail          | Meta     |
+| ----------------- | --------------- | -------- |
+| `cursor_invalid`  | Invalid cursor  | `cursor` |
+
+## Meta Reference
+
+### Request Body
+
+#### field_missing
 
 ```json
 {
@@ -45,9 +97,7 @@ A required field is absent or blank:
 }
 ```
 
-### `field_unknown`
-
-The request contains a field not defined in the contract:
+#### field_unknown
 
 ```json
 {
@@ -63,9 +113,7 @@ The request contains a field not defined in the contract:
 }
 ```
 
-### `type_invalid`
-
-The value doesn't match the expected type:
+#### type_invalid
 
 ```json
 {
@@ -82,9 +130,7 @@ The value doesn't match the expected type:
 }
 ```
 
-### `value_invalid`
-
-The value doesn't match enum constraints or other value restrictions:
+#### value_invalid
 
 ```json
 {
@@ -101,9 +147,7 @@ The value doesn't match enum constraints or other value restrictions:
 }
 ```
 
-### `value_null`
-
-A field explicitly marked `nullable: false` received null:
+#### value_null
 
 ```json
 {
@@ -119,9 +163,7 @@ A field explicitly marked `nullable: false` received null:
 }
 ```
 
-### `string_too_short` / `string_too_long`
-
-String length constraints violated:
+#### string_too_short
 
 ```ruby
 param :title, type: :string, min: 5, max: 100
@@ -142,9 +184,7 @@ param :title, type: :string, min: 5, max: 100
 }
 ```
 
-### `array_too_large` / `array_too_small`
-
-Array length constraints violated:
+#### array_too_large
 
 ```ruby
 param :tags, type: :array, of: :string, min: 1, max: 10
@@ -164,9 +204,7 @@ param :tags, type: :array, of: :string, min: 1, max: 10
 }
 ```
 
-### `depth_exceeded`
-
-Nested structures exceed the maximum validation depth (default 10):
+#### depth_exceeded
 
 ```json
 {
@@ -178,6 +216,174 @@ Nested structures exceed the maximum validation depth (default 10):
   "meta": {
     "depth": 11,
     "max": 10
+  }
+}
+```
+
+### Filters
+
+#### field_not_filterable
+
+```json
+{
+  "layer": "contract",
+  "code": "field_not_filterable",
+  "detail": "Not filterable",
+  "path": ["filter", "body"],
+  "pointer": "/filter/body",
+  "meta": {
+    "field": "body",
+    "available": ["title", "status"]
+  }
+}
+```
+
+#### operator_invalid
+
+```json
+{
+  "layer": "contract",
+  "code": "operator_invalid",
+  "detail": "Invalid operator",
+  "path": ["filter", "status", "contains"],
+  "pointer": "/filter/status/contains",
+  "meta": {
+    "field": "status",
+    "operator": "contains",
+    "allowed": ["eq", "in"]
+  }
+}
+```
+
+#### filter_value_invalid
+
+```json
+{
+  "layer": "contract",
+  "code": "filter_value_invalid",
+  "detail": "Invalid filter value",
+  "path": ["filter", "status", "in"],
+  "pointer": "/filter/status/in",
+  "meta": {
+    "field": "status",
+    "type": "String",
+    "allowed": ["Array"]
+  }
+}
+```
+
+#### enum_invalid
+
+```json
+{
+  "layer": "contract",
+  "code": "enum_invalid",
+  "detail": "Invalid enum value",
+  "path": ["filter", "status"],
+  "pointer": "/filter/status",
+  "meta": {
+    "field": "status",
+    "value": ["archived"],
+    "allowed": ["draft", "published"]
+  }
+}
+```
+
+#### date_invalid
+
+```json
+{
+  "layer": "contract",
+  "code": "date_invalid",
+  "detail": "Invalid date",
+  "path": ["filter", "created_at"],
+  "pointer": "/filter/created_at",
+  "meta": {
+    "field": "created_at",
+    "value": "not-a-date"
+  }
+}
+```
+
+#### number_invalid
+
+```json
+{
+  "layer": "contract",
+  "code": "number_invalid",
+  "detail": "Invalid number",
+  "path": ["filter", "amount"],
+  "pointer": "/filter/amount",
+  "meta": {
+    "field": "amount",
+    "value": "abc"
+  }
+}
+```
+
+#### association_not_found
+
+```json
+{
+  "layer": "contract",
+  "code": "association_not_found",
+  "detail": "Association not found",
+  "path": ["filter", "author.name"],
+  "pointer": "/filter/author.name",
+  "meta": {
+    "association": "author"
+  }
+}
+```
+
+### Sort
+
+#### field_not_sortable
+
+```json
+{
+  "layer": "contract",
+  "code": "field_not_sortable",
+  "detail": "Not sortable",
+  "path": ["sort", "body"],
+  "pointer": "/sort/body",
+  "meta": {
+    "field": "body",
+    "available": ["title", "created_at"]
+  }
+}
+```
+
+#### sort_direction_invalid
+
+```json
+{
+  "layer": "contract",
+  "code": "sort_direction_invalid",
+  "detail": "Invalid direction",
+  "path": ["sort", "title"],
+  "pointer": "/sort/title",
+  "meta": {
+    "field": "title",
+    "direction": "up",
+    "allowed": ["asc", "desc"]
+  }
+}
+```
+
+### Pagination
+
+#### cursor_invalid
+
+```json
+{
+  "layer": "contract",
+  "code": "cursor_invalid",
+  "detail": "Invalid cursor",
+  "path": ["page"],
+  "pointer": "/page",
+  "meta": {
+    "cursor": "invalid-cursor-value"
   }
 }
 ```
@@ -281,9 +487,27 @@ Invalid discriminator value:
 }
 ```
 
-## HTTP Status
+## Query Parameter Syntax
 
-Contract errors return **400 Bad Request**. This indicates a client error — the request was malformed and should be corrected before retrying.
+### Filter Syntax
+
+Filters use nested object syntax:
+
+```http
+GET /posts?filter[status][eq]=published
+GET /posts?filter[created_at][gte]=2024-01-01
+GET /posts?filter[tags][in][]=ruby&filter[tags][in][]=rails
+```
+
+### Sort Syntax
+
+Sort uses bracket notation:
+
+```http
+GET /posts?sort[created_at]=asc
+GET /posts?sort[created_at]=desc
+GET /posts?sort[status]=asc&sort[created_at]=desc
+```
 
 ## Output Validation
 
