@@ -78,8 +78,10 @@ export type ContactsUpdateResponseBody = { contact: Contact; meta?: object } | {
 export interface Error {
   code: string;
   detail: string;
-  field: string;
+  layer: 'contract' | 'domain' | 'http';
+  meta: object;
   path: string[];
+  pointer: string;
 }
 
 export interface OffsetPagination {

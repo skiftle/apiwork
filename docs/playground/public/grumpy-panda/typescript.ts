@@ -72,13 +72,15 @@ export interface ActivityUpdatePayload {
 }
 
 export interface CursorPagination {
-  nextCursor?: null | string;
-  prevCursor?: null | string;
+  next?: null | string;
+  prev?: null | string;
 }
 
 export interface Error {
   code: string;
   detail: string;
-  field: string;
+  layer: 'contract' | 'domain' | 'http';
+  meta: object;
   path: string[];
+  pointer: string;
 }

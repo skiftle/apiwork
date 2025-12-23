@@ -348,6 +348,7 @@ Content-Type: application/json
 {
   "errors": [
     {
+      "layer": "contract",
       "code": "field_missing",
       "detail": "Field required",
       "path": [

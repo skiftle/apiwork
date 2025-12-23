@@ -9,8 +9,10 @@ export const SortDirectionSchema = z.enum(['asc', 'desc']);
 export const ErrorSchema = z.object({
   code: z.string(),
   detail: z.string(),
-  field: z.string(),
-  path: z.array(z.string())
+  layer: z.enum(['http', 'contract', 'domain']),
+  meta: z.object({}),
+  path: z.array(z.string()),
+  pointer: z.string()
 });
 
 export const NullableStringFilterSchema = z.object({
@@ -148,8 +150,10 @@ export const ProjectsDestroyResponse = z.never();
 export interface Error {
   code: string;
   detail: string;
-  field: string;
+  layer: 'contract' | 'domain' | 'http';
+  meta: object;
   path: string[];
+  pointer: string;
 }
 
 export interface NullableStringFilter {

@@ -38,8 +38,10 @@ export const CommentUpdatePayloadSchema = z.object({
 export const ErrorSchema = z.object({
   code: z.string(),
   detail: z.string(),
-  field: z.string(),
-  path: z.array(z.string())
+  layer: z.enum(['http', 'contract', 'domain']),
+  meta: z.object({}),
+  path: z.array(z.string()),
+  pointer: z.string()
 });
 
 export const OffsetPaginationSchema = z.object({
@@ -414,8 +416,10 @@ export type CommentsUpdateResponseBody = { comment: Comment; meta?: object } | {
 export interface Error {
   code: string;
   detail: string;
-  field: string;
+  layer: 'contract' | 'domain' | 'http';
+  meta: object;
   path: string[];
+  pointer: string;
 }
 
 export interface OffsetPagination {

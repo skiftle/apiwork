@@ -207,6 +207,7 @@ Content-Type: application/json
 {
   "errors": [
     {
+      "layer": "contract",
       "code": "field_unknown",
       "detail": "Unknown field",
       "path": [

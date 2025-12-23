@@ -18,6 +18,7 @@
     "body": {
       "errors": [
         {
+          "layer": "domain",
           "code": "too_long",
           "detail": "is too long (maximum is 500 characters)",
           "path": [
@@ -32,6 +33,7 @@
           }
         },
         {
+          "layer": "domain",
           "code": "invalid",
           "detail": "is invalid",
           "path": [

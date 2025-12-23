@@ -67,12 +67,12 @@
     "cursor_pagination": {
       "type": "object",
       "shape": {
-        "next_cursor": {
+        "next": {
           "type": "string",
           "nullable": true,
           "optional": true
         },
-        "prev_cursor": {
+        "prev": {
           "type": "string",
           "nullable": true,
           "optional": true
@@ -88,12 +88,23 @@
         "detail": {
           "type": "string"
         },
-        "field": {
-          "type": "string"
+        "layer": {
+          "type": "string",
+          "enum": [
+            "http",
+            "contract",
+            "domain"
+          ]
+        },
+        "meta": {
+          "type": "object"
         },
         "path": {
           "type": "array",
           "of": "string"
+        },
+        "pointer": {
+          "type": "string"
         }
       }
     }

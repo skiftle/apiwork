@@ -421,17 +421,28 @@ components:
           type: string
         detail:
           type: string
-        field:
+        layer:
           type: string
+          enum:
+          - http
+          - contract
+          - domain
+        meta:
+          type: object
+          properties: {}
         path:
           type: array
           items:
             type: string
+        pointer:
+          type: string
       required:
       - code
       - detail
-      - field
+      - layer
+      - meta
       - path
+      - pointer
     integerFilter:
       type: object
       properties:

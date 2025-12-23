@@ -139,15 +139,6 @@ module Apiwork
       #   def context
       #     { current_user: current_user }
       #   end
-      #
-      # @example Multiple context values
-      #   def context
-      #     {
-      #       current_user: current_user,
-      #       locale: I18n.locale,
-      #       feature_flags: FeatureFlags.for(current_user)
-      #     }
-      #   end
       def context
         {}
       end

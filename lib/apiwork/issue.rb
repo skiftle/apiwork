@@ -7,7 +7,7 @@ module Apiwork
   # Issues are returned when request parameters fail validation,
   # coercion, or constraint checks. Access via `contract.issues`.
   class Issue
-    VALID_LAYERS = %w[contract domain http].freeze
+    VALID_LAYERS = %w[http contract domain].freeze
 
     # @api public
     # @return [Symbol] the error code (e.g., :required, :type_mismatch)
@@ -47,15 +47,14 @@ module Apiwork
     # @api public
     # @return [Hash] hash representation with layer, code, detail, path, pointer, meta
     def to_h
-      hash = {
+      {
+        layer: layer,
         code: code,
         detail: detail,
         path: path.map(&:to_s),
         pointer: pointer,
         meta: meta
       }
-      hash[:layer] = layer if layer
-      hash
     end
 
     # @api public

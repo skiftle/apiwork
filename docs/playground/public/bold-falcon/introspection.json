@@ -330,12 +330,23 @@
         "detail": {
           "type": "string"
         },
-        "field": {
-          "type": "string"
+        "layer": {
+          "type": "string",
+          "enum": [
+            "http",
+            "contract",
+            "domain"
+          ]
+        },
+        "meta": {
+          "type": "object"
         },
         "path": {
           "type": "array",
           "of": "string"
+        },
+        "pointer": {
+          "type": "string"
         }
       }
     },

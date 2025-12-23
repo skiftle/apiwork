@@ -223,6 +223,7 @@ Content-Type: application/json
 {
   "errors": [
     {
+      "layer": "contract",
       "code": "field_unknown",
       "detail": "Unknown field",
       "path": [
@@ -239,6 +240,7 @@ Content-Type: application/json
       }
     },
     {
+      "layer": "contract",
       "code": "field_unknown",
       "detail": "Unknown field",
       "path": [
@@ -285,6 +287,7 @@ Content-Type: application/json
 {
   "errors": [
     {
+      "layer": "contract",
       "code": "field_unknown",
       "detail": "Unknown field",
       "path": [
@@ -301,6 +304,7 @@ Content-Type: application/json
       }
     },
     {
+      "layer": "contract",
       "code": "field_unknown",
       "detail": "Unknown field",
       "path": [
@@ -337,6 +341,7 @@ GET /gentle_owl/comments?filter[commentable_type][eq]=GentleOwl::Post
 {
   "errors": [
     {
+      "layer": "contract",
       "code": "field_unknown",
       "detail": "Unknown field",
       "path": [

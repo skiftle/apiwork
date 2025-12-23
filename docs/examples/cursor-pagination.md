@@ -89,8 +89,8 @@ GET /grumpy_panda/activities
     }
   ],
   "pagination": {
-    "nextCursor": "eyJpZCI6IjRjMzkyNzVmLWVjMTQtNWEzNy04NThkLTg0ZWI2ODk5YjU1ZCJ9",
-    "prevCursor": null
+    "next": "eyJpZCI6IjRjMzkyNzVmLWVjMTQtNWEzNy04NThkLTg0ZWI2ODk5YjU1ZCJ9",
+    "prev": null
   }
 }
 ```

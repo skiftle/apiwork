@@ -96,7 +96,7 @@ RSpec.describe Apiwork::Issue do
   end
 
   describe '#to_h' do
-    it 'returns hash representation without layer when nil' do
+    it 'includes layer nil when not provided' do
       issue = described_class.new(
         code: :required,
         detail: 'Field is required',
@@ -105,6 +105,7 @@ RSpec.describe Apiwork::Issue do
       )
 
       expect(issue.to_h).to eq({
+                                 layer: nil,
                                  code: :required,
                                  detail: 'Field is required',
                                  path: %w[user email],

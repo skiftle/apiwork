@@ -25,6 +25,7 @@
     "body": {
       "errors": [
         {
+          "layer": "domain",
           "code": "blank",
           "detail": "can't be blank",
           "path": [
@@ -41,6 +42,7 @@
           }
         },
         {
+          "layer": "domain",
           "code": "too_short",
           "detail": "is too short (minimum is 1 character)",
           "path": [
@@ -58,6 +60,7 @@
           }
         },
         {
+          "layer": "domain",
           "code": "blank",
           "detail": "can't be blank",
           "path": [

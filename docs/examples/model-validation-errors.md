@@ -208,6 +208,7 @@ Content-Type: application/json
 {
   "errors": [
     {
+      "layer": "domain",
       "code": "invalid",
       "detail": "is invalid",
       "path": [
@@ -248,6 +249,7 @@ Content-Type: application/json
 {
   "errors": [
     {
+      "layer": "contract",
       "code": "field_missing",
       "detail": "Field required",
       "path": [
@@ -260,6 +262,7 @@ Content-Type: application/json
       }
     },
     {
+      "layer": "contract",
       "code": "field_missing",
       "detail": "Field required",
       "path": [
@@ -304,6 +307,7 @@ Content-Type: application/json
 {
   "errors": [
     {
+      "layer": "domain",
       "code": "too_long",
       "detail": "is too long (maximum is 500 characters)",
       "path": [
@@ -318,6 +322,7 @@ Content-Type: application/json
       }
     },
     {
+      "layer": "domain",
       "code": "invalid",
       "detail": "is invalid",
       "path": [
@@ -437,6 +442,7 @@ Content-Type: application/json
 {
   "errors": [
     {
+      "layer": "domain",
       "code": "blank",
       "detail": "can't be blank",
       "path": [
@@ -453,6 +459,7 @@ Content-Type: application/json
       }
     },
     {
+      "layer": "domain",
       "code": "too_short",
       "detail": "is too short (minimum is 1 character)",
       "path": [
@@ -470,6 +477,7 @@ Content-Type: application/json
       }
     },
     {
+      "layer": "domain",
       "code": "blank",
       "detail": "can't be blank",
       "path": [

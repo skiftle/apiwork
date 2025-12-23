@@ -29,8 +29,10 @@ export interface CarUpdatePayload {
 export interface Error {
   code: string;
   detail: string;
-  field: string;
+  layer: 'contract' | 'domain' | 'http';
+  meta: object;
   path: string[];
+  pointer: string;
 }
 
 export interface IntegerFilter {

@@ -24,15 +24,17 @@ export const ActivityUpdatePayloadSchema = z.object({
 });
 
 export const CursorPaginationSchema = z.object({
-  nextCursor: z.string().nullable().optional(),
-  prevCursor: z.string().nullable().optional()
+  next: z.string().nullable().optional(),
+  prev: z.string().nullable().optional()
 });
 
 export const ErrorSchema = z.object({
   code: z.string(),
   detail: z.string(),
-  field: z.string(),
-  path: z.array(z.string())
+  layer: z.enum(['http', 'contract', 'domain']),
+  meta: z.object({}),
+  path: z.array(z.string()),
+  pointer: z.string()
 });
 
 export const ActivitiesIndexRequestQuerySchema = z.object({
@@ -159,13 +161,15 @@ export interface ActivityUpdatePayload {
 }
 
 export interface CursorPagination {
-  nextCursor?: null | string;
-  prevCursor?: null | string;
+  next?: null | string;
+  prev?: null | string;
 }
 
 export interface Error {
   code: string;
   detail: string;
-  field: string;
+  layer: 'contract' | 'domain' | 'http';
+  meta: object;
   path: string[];
+  pointer: string;
 }
