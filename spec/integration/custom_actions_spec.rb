@@ -277,7 +277,7 @@ RSpec.describe 'Custom Actions API', type: :request do
 
         notify_issue = json['errors'].find { |issue| issue['pointer']&.include?('notify_users') }
         expect(notify_issue).to be_present
-        expect(notify_issue['code']).to eq('invalid_type')
+        expect(notify_issue['code']).to eq('type_invalid')
       end
 
       it 'rejects unknown fields' do

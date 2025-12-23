@@ -34,7 +34,7 @@ RSpec.describe 'Model Validation Errors', type: :request do
       expect(json['errors']).to be_an(Array)
       published_issue = json['errors'].find { |i| i['pointer'] == '/post/published' }
       expect(published_issue).to be_present
-      expect(published_issue['code']).to eq('invalid_type')
+      expect(published_issue['code']).to eq('type_invalid')
     end
   end
 
@@ -116,7 +116,7 @@ RSpec.describe 'Model Validation Errors', type: :request do
       expect(json['errors']).to be_an(Array)
       published_issue = json['errors'].find { |i| i['pointer'] == '/post/published' }
       expect(published_issue).to be_present
-      expect(published_issue['code']).to eq('invalid_type')
+      expect(published_issue['code']).to eq('type_invalid')
     end
   end
 

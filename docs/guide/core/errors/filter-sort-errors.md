@@ -32,82 +32,82 @@ The filter references a field that isn't marked as filterable:
 {
   "layer": "contract",
   "code": "field_not_filterable",
-  "detail": "body is not a filterable attribute on Post. Available: title, status",
+  "detail": "Not filterable",
   "path": ["filter", "body"],
   "pointer": "/filter/body",
   "meta": {
     "field": "body",
-    "class": "Post",
     "available": ["title", "status"]
   }
 }
 ```
 
-### `invalid_operator`
+### `operator_invalid`
 
 The filter uses an operator not allowed for this field:
 
 ```json
 {
   "layer": "contract",
-  "code": "invalid_operator",
-  "detail": "Invalid operator 'contains' for status. Valid: eq, in",
+  "code": "operator_invalid",
+  "detail": "Invalid operator",
   "path": ["filter", "status", "contains"],
   "pointer": "/filter/status/contains",
   "meta": {
     "field": "status",
     "operator": "contains",
-    "valid_operators": ["eq", "in"]
+    "allowed": ["eq", "in"]
   }
 }
 ```
 
-### `invalid_filter_value_type`
+### `filter_value_invalid`
 
 The filter value doesn't match the expected type:
 
 ```json
 {
   "layer": "contract",
-  "code": "invalid_filter_value_type",
-  "detail": "Expected array for 'in' operator",
+  "code": "filter_value_invalid",
+  "detail": "Invalid filter value",
   "path": ["filter", "status", "in"],
   "pointer": "/filter/status/in",
   "meta": {
-    "operator": "in",
-    "expected": "array"
+    "field": "status",
+    "type": "String",
+    "allowed": ["Array"]
   }
 }
 ```
 
-### `invalid_enum_value`
+### `enum_invalid`
 
 The filter value isn't in the enum's allowed values:
 
 ```json
 {
   "layer": "contract",
-  "code": "invalid_enum_value",
-  "detail": "Invalid status value(s): archived. Valid values: draft, published",
+  "code": "enum_invalid",
+  "detail": "Invalid enum value",
   "path": ["filter", "status"],
   "pointer": "/filter/status",
   "meta": {
     "field": "status",
-    "invalid": ["archived"],
-    "valid": ["draft", "published"]
+    "value": ["archived"],
+    "allowed": ["draft", "published"]
   }
 }
 ```
 
-### `invalid_date_format`
+### `date_invalid`
 
 A date/datetime filter value has an invalid format:
 
 ```json
 {
   "layer": "contract",
-  "code": "invalid_date_format",
-  "detail": "'not-a-date' is not a valid date",
+  "code": "date_invalid",
+  "detail": "Invalid date",
   "path": ["filter", "created_at"],
   "pointer": "/filter/created_at",
   "meta": {
@@ -117,15 +117,15 @@ A date/datetime filter value has an invalid format:
 }
 ```
 
-### `invalid_numeric_format`
+### `number_invalid`
 
 A numeric filter value can't be parsed:
 
 ```json
 {
   "layer": "contract",
-  "code": "invalid_numeric_format",
-  "detail": "'abc' is not a valid number",
+  "code": "number_invalid",
+  "detail": "Invalid number",
   "path": ["filter", "amount"],
   "pointer": "/filter/amount",
   "meta": {
@@ -135,15 +135,15 @@ A numeric filter value can't be parsed:
 }
 ```
 
-### `null_not_allowed`
+### `value_null`
 
 A filter that doesn't support null received null:
 
 ```json
 {
   "layer": "contract",
-  "code": "null_not_allowed",
-  "detail": "title cannot be null",
+  "code": "value_null",
+  "detail": "Cannot be null",
   "path": ["filter", "title"],
   "pointer": "/filter/title",
   "meta": {
@@ -152,15 +152,15 @@ A filter that doesn't support null received null:
 }
 ```
 
-### `unknown_column_type`
+### `column_unknown`
 
 The database column type couldn't be determined:
 
 ```json
 {
   "layer": "contract",
-  "code": "unknown_column_type",
-  "detail": "Unknown column type for field 'custom_field'",
+  "code": "column_unknown",
+  "detail": "Unknown column type",
   "path": ["filter", "custom_field"],
   "pointer": "/filter/custom_field",
   "meta": {
@@ -169,15 +169,15 @@ The database column type couldn't be determined:
 }
 ```
 
-### `unsupported_column_type`
+### `column_unsupported`
 
 The column type doesn't support filtering:
 
 ```json
 {
   "layer": "contract",
-  "code": "unsupported_column_type",
-  "detail": "Column type 'binary' is not supported for filtering",
+  "code": "column_unsupported",
+  "detail": "Unsupported column type",
   "path": ["filter", "data"],
   "pointer": "/filter/data",
   "meta": {
@@ -195,7 +195,7 @@ A filter references an association that doesn't exist:
 {
   "layer": "contract",
   "code": "association_not_found",
-  "detail": "Association 'author' not found",
+  "detail": "Association not found",
   "path": ["filter", "author.name"],
   "pointer": "/filter/author.name",
   "meta": {
@@ -204,15 +204,15 @@ A filter references an association that doesn't exist:
 }
 ```
 
-### `association_resource_not_found`
+### `association_schema_missing`
 
 The association exists but has no schema defined:
 
 ```json
 {
   "layer": "contract",
-  "code": "association_resource_not_found",
-  "detail": "No schema found for association 'author'",
+  "code": "association_schema_missing",
+  "detail": "Association schema missing",
   "path": ["filter", "author.name"],
   "pointer": "/filter/author.name",
   "meta": {
@@ -223,19 +223,19 @@ The association exists but has no schema defined:
 
 ## Sort Error Codes
 
-### `invalid_sort_params_type`
+### `sort_params_invalid`
 
 The sort parameter isn't the expected type:
 
 ```json
 {
   "layer": "contract",
-  "code": "invalid_sort_params_type",
-  "detail": "sort must be a Hash or Array of Hashes",
+  "code": "sort_params_invalid",
+  "detail": "Invalid sort params",
   "path": ["sort"],
   "pointer": "/sort",
   "meta": {
-    "params_type": "String"
+    "type": "String"
   }
 }
 ```
@@ -248,68 +248,66 @@ The sort references a field that isn't marked as sortable:
 {
   "layer": "contract",
   "code": "field_not_sortable",
-  "detail": "body is not sortable on Post. Sortable: title, created_at",
+  "detail": "Not sortable",
   "path": ["sort", "body"],
   "pointer": "/sort/body",
   "meta": {
     "field": "body",
-    "class": "Post",
     "available": ["title", "created_at"]
   }
 }
 ```
 
-### `invalid_sort_value_type`
+### `sort_value_invalid`
 
 A sort item has an invalid format:
 
 ```json
 {
   "layer": "contract",
-  "code": "invalid_sort_value_type",
-  "detail": "Sort value must be 'asc', 'desc', or Hash for associations",
+  "code": "sort_value_invalid",
+  "detail": "Invalid sort value",
   "path": ["sort", "title"],
   "pointer": "/sort/title",
   "meta": {
     "field": "title",
-    "value_type": "Array"
+    "type": "Array"
   }
 }
 ```
 
-### `invalid_sort_direction`
+### `sort_direction_invalid`
 
 The sort direction isn't `asc` or `desc`:
 
 ```json
 {
   "layer": "contract",
-  "code": "invalid_sort_direction",
-  "detail": "Invalid direction 'up'. Use 'asc' or 'desc'",
+  "code": "sort_direction_invalid",
+  "detail": "Invalid direction",
   "path": ["sort", "title"],
   "pointer": "/sort/title",
   "meta": {
     "field": "title",
     "direction": "up",
-    "valid_directions": ["asc", "desc"]
+    "allowed": ["asc", "desc"]
   }
 }
 ```
 
-### `invalid_association`
+### `association_invalid`
 
 A sort references an association that doesn't exist:
 
 ```json
 {
   "layer": "contract",
-  "code": "invalid_association",
-  "detail": "author is not a valid association on Post",
+  "code": "association_invalid",
+  "detail": "Invalid association",
   "path": ["sort", "author"],
   "pointer": "/sort/author",
   "meta": {
-    "field": "author",
-    "class": "Post"
+    "field": "author"
   }
 }
 ```
@@ -322,9 +320,9 @@ The association exists but isn't marked as sortable:
 {
   "layer": "contract",
   "code": "association_not_sortable",
-  "detail": "Association 'tags' is not sortable",
-  "path": ["sort"],
-  "pointer": "/sort",
+  "detail": "Not sortable",
+  "path": ["sort", "tags"],
+  "pointer": "/sort/tags",
   "meta": {
     "association": "tags"
   }
@@ -333,18 +331,20 @@ The association exists but isn't marked as sortable:
 
 ## Pagination Error Codes
 
-### `invalid_cursor`
+### `cursor_invalid`
 
 The cursor value is malformed or can't be decoded:
 
 ```json
 {
   "layer": "contract",
-  "code": "invalid_cursor",
-  "detail": "Invalid cursor format",
+  "code": "cursor_invalid",
+  "detail": "Invalid cursor",
   "path": ["page"],
   "pointer": "/page",
-  "meta": {}
+  "meta": {
+    "cursor": "invalid-cursor-value"
+  }
 }
 ```
 

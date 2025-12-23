@@ -16,8 +16,8 @@ RSpec.describe 'Enum output validation', type: :request do
       # Check that we have an error for first_day_of_week enum
       fdow_error = json['errors'].find { |e| e['path']&.last == 'first_day_of_week' }
       expect(fdow_error).not_to be_nil
-      expect(fdow_error['code']).to eq('invalid_value')
-      expect(fdow_error['detail']).to include('Must be one of')
+      expect(fdow_error['code']).to eq('value_invalid')
+      expect(fdow_error['detail']).to eq('Invalid value')
     end
   end
 end

@@ -205,9 +205,9 @@ module Apiwork
             @issues << Issue.new(
               layer: :contract,
               code: :field_not_filterable,
-              detail: "#{key} is not a filterable attribute on #{target_klass.name}. Available: #{available.join(', ')}",
+              detail: 'Not filterable',
               path: [:filter, key],
-              meta: { field: key, class: target_klass.name, available: available }
+              meta: { field: key, available: available }
             )
           end
 
@@ -218,10 +218,10 @@ module Apiwork
             if column_type.nil?
               @issues << Issue.new(
                 layer: :contract,
-                code: :unknown_column_type,
-                detail: "Cannot determine type for attribute '#{key}' on #{target_klass.name}",
-                path: [key.to_s],
-                meta: { field: key.to_s }
+                code: :column_unknown,
+                detail: 'Unknown column type',
+                path: [:filter, key],
+                meta: { field: key }
               )
               return nil
             end
@@ -240,8 +240,8 @@ module Apiwork
             else
               @issues << Issue.new(
                 layer: :contract,
-                code: :unsupported_column_type,
-                detail: "Unsupported column type: #{column_type}",
+                code: :column_unsupported,
+                detail: 'Unsupported column type',
                 path: [:filter, key],
                 meta: { field: key, type: column_type }
               )
@@ -257,10 +257,10 @@ module Apiwork
 
             @issues << Issue.new(
               layer: :contract,
-              code: :invalid_enum_value,
-              detail: "Invalid #{key} value(s): #{invalid_values.join(', ')}. Valid values: #{enum_values.join(', ')}",
+              code: :enum_invalid,
+              detail: 'Invalid enum value',
               path: [:filter, key],
-              meta: { field: key, invalid: invalid_values, valid: enum_values }
+              meta: { field: key, value: invalid_values, allowed: enum_values }
             )
           end
 
@@ -292,8 +292,8 @@ module Apiwork
             unless association_resource
               @issues << Issue.new(
                 layer: :contract,
-                code: :association_resource_not_found,
-                detail: "Cannot find resource for association #{key}",
+                code: :association_schema_missing,
+                detail: 'Association schema missing',
                 path: [:filter, key],
                 meta: { association: key }
               )
@@ -305,9 +305,9 @@ module Apiwork
               @issues << Issue.new(
                 layer: :contract,
                 code: :association_not_found,
-                detail: "Association #{key} not found on #{schema_class.model_class.name}",
+                detail: 'Association not found',
                 path: [:filter, key],
-                meta: { association: key, class: schema_class.model_class.name }
+                meta: { association: key }
               )
               return [[], {}]
             end
@@ -423,7 +423,7 @@ module Apiwork
               @issues << Issue.new(
                 layer: :contract,
                 code: :value_null,
-                detail: 'Value cannot be null',
+                detail: 'Cannot be null',
                 path: [:filter, key],
                 meta: { field: key }
               )
@@ -535,8 +535,8 @@ module Apiwork
           rescue ArgumentError
             @issues << Issue.new(
               layer: :contract,
-              code: :invalid_date_format,
-              detail: "'#{value}' is not a valid date",
+              code: :date_invalid,
+              detail: 'Invalid date',
               path: [:filter, field],
               meta: { field: field, value: value }
             )
@@ -550,8 +550,8 @@ module Apiwork
             else
               @issues << Issue.new(
                 layer: :contract,
-                code: :invalid_numeric_format,
-                detail: "'#{value}' is not a valid number",
+                code: :number_invalid,
+                detail: 'Invalid number',
                 path: [:filter, field],
                 meta: { field: field, value: value }
               )
@@ -560,8 +560,8 @@ module Apiwork
           rescue ArgumentError
             @issues << Issue.new(
               layer: :contract,
-              code: :invalid_numeric_format,
-              detail: "'#{value}' is not a valid number",
+              code: :number_invalid,
+              detail: 'Invalid number',
               path: [:filter, field],
               meta: { field: field, value: value }
             )

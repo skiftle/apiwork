@@ -19,8 +19,8 @@ RSpec.describe 'Numeric min/max validation' do
       result = definition.validate({ age: 17 })
 
       expect(result[:issues]).not_to be_empty
-      expect(result[:issues].first.code).to eq(:invalid_value)
-      expect(result[:issues].first.detail).to match(/must be >= 18/)
+      expect(result[:issues].first.code).to eq(:value_invalid)
+      expect(result[:issues].first.meta[:min]).to eq(18)
     end
 
     it 'accepts value at min boundary' do
@@ -32,7 +32,7 @@ RSpec.describe 'Numeric min/max validation' do
       result = definition.validate({ age: 151 })
 
       expect(result[:issues]).not_to be_empty
-      expect(result[:issues].first.detail).to match(/must be <= 150/)
+      expect(result[:issues].first.meta[:max]).to eq(150)
     end
   end
 

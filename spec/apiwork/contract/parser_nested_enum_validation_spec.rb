@@ -49,8 +49,8 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
       }
       result = contract_class.parse_response(invalid_status, :show)
       expect(result.invalid?).to be(true)
-      expect(result.issues.first.code).to eq(:invalid_value)
-      expect(result.issues.first.detail).to include('Must be one of')
+      expect(result.issues.first.code).to eq(:value_invalid)
+      expect(result.issues.first.detail).to eq('Invalid value')
       expect(result.issues.first.path).to eq([:account, :status])
 
       # Invalid first_day_of_week enum should fail
@@ -64,8 +64,8 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
       }
       result = contract_class.parse_response(invalid_fdow, :show)
       expect(result.invalid?).to be(true)
-      expect(result.issues.first.code).to eq(:invalid_value)
-      expect(result.issues.first.detail).to include('Must be one of')
+      expect(result.issues.first.code).to eq(:value_invalid)
+      expect(result.issues.first.detail).to eq('Invalid value')
       expect(result.issues.first.path).to eq([:account, :first_day_of_week])
     end
 
@@ -94,7 +94,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
       }
       result = contract_class.parse_response(invalid_output, :show)
       expect(result.invalid?).to be(true)
-      expect(result.issues.first.code).to eq(:invalid_type)
+      expect(result.issues.first.code).to eq(:type_invalid)
       expect(result.issues.first.path).to eq([:account, :name])
     end
 
@@ -131,7 +131,7 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
       }
       result = contract_class.parse_response(invalid_output, :show)
       expect(result.invalid?).to be(true)
-      expect(result.issues.first.code).to eq(:invalid_value)
+      expect(result.issues.first.code).to eq(:value_invalid)
       expect(result.issues.first.path).to eq([:account, :address, :country_code])
     end
   end

@@ -35,11 +35,12 @@ A required field is absent or blank:
 {
   "layer": "contract",
   "code": "field_missing",
-  "detail": "Field required",
+  "detail": "Required",
   "path": ["post", "title"],
   "pointer": "/post/title",
   "meta": {
-    "field": "title"
+    "field": "title",
+    "type": "string"
   }
 }
 ```
@@ -62,14 +63,14 @@ The request contains a field not defined in the contract:
 }
 ```
 
-### `invalid_type`
+### `type_invalid`
 
 The value doesn't match the expected type:
 
 ```json
 {
   "layer": "contract",
-  "code": "invalid_type",
+  "code": "type_invalid",
   "detail": "Invalid type",
   "path": ["post", "title"],
   "pointer": "/post/title",
@@ -81,15 +82,15 @@ The value doesn't match the expected type:
 }
 ```
 
-### `invalid_value`
+### `value_invalid`
 
 The value doesn't match enum constraints or other value restrictions:
 
 ```json
 {
   "layer": "contract",
-  "code": "invalid_value",
-  "detail": "Invalid value. Must be one of: draft, published",
+  "code": "value_invalid",
+  "detail": "Invalid value",
   "path": ["post", "status"],
   "pointer": "/post/status",
   "meta": {
@@ -108,11 +109,12 @@ A field explicitly marked `nullable: false` received null:
 {
   "layer": "contract",
   "code": "value_null",
-  "detail": "Value cannot be null",
+  "detail": "Cannot be null",
   "path": ["post", "title"],
   "pointer": "/post/title",
   "meta": {
-    "field": "title"
+    "field": "title",
+    "type": "string"
   }
 }
 ```
@@ -129,13 +131,13 @@ param :title, type: :string, min: 5, max: 100
 {
   "layer": "contract",
   "code": "string_too_short",
-  "detail": "String must be at least 5 characters",
+  "detail": "Too short",
   "path": ["post", "title"],
   "pointer": "/post/title",
   "meta": {
     "field": "title",
-    "actual_length": 3,
-    "min_length": 5
+    "actual": 3,
+    "min": 5
   }
 }
 ```
@@ -152,7 +154,7 @@ param :tags, type: :array, of: :string, min: 1, max: 10
 {
   "layer": "contract",
   "code": "array_too_large",
-  "detail": "Array exceeds maximum length",
+  "detail": "Too many items",
   "path": ["post", "tags"],
   "pointer": "/post/tags",
   "meta": {
@@ -162,20 +164,20 @@ param :tags, type: :array, of: :string, min: 1, max: 10
 }
 ```
 
-### `max_depth_exceeded`
+### `depth_exceeded`
 
 Nested structures exceed the maximum validation depth (default 10):
 
 ```json
 {
   "layer": "contract",
-  "code": "max_depth_exceeded",
-  "detail": "Max depth exceeded",
+  "code": "depth_exceeded",
+  "detail": "Too deeply nested",
   "path": ["deeply", "nested", "structure"],
   "pointer": "/deeply/nested/structure",
   "meta": {
     "depth": 11,
-    "max_depth": 10
+    "max": 10
   }
 }
 ```
@@ -204,11 +206,12 @@ Missing `author_id`:
 {
   "layer": "contract",
   "code": "field_missing",
-  "detail": "Field required",
+  "detail": "Required",
   "path": ["post", "metadata", "author_id"],
   "pointer": "/post/metadata/author_id",
   "meta": {
-    "field": "author_id"
+    "field": "author_id",
+    "type": "uuid"
   }
 }
 ```
@@ -236,11 +239,12 @@ If the third item is missing `quantity`:
 {
   "layer": "contract",
   "code": "field_missing",
-  "detail": "Field required",
+  "detail": "Required",
   "path": ["items", 2, "quantity"],
   "pointer": "/items/2/quantity",
   "meta": {
-    "field": "quantity"
+    "field": "quantity",
+    "type": "integer"
   }
 }
 ```
@@ -265,8 +269,8 @@ Invalid discriminator value:
 ```json
 {
   "layer": "contract",
-  "code": "invalid_value",
-  "detail": "Invalid discriminator value. Must be one of: text, image",
+  "code": "value_invalid",
+  "detail": "Invalid value",
   "path": ["content", "type"],
   "pointer": "/content/type",
   "meta": {
@@ -300,7 +304,7 @@ end
 If your controller returns a post with `status: "archived"` (not in the enum), Apiwork logs a warning:
 
 ```text
-[Apiwork] Response validation warning: invalid_value at /post/status
+[Apiwork] Response validation warning: value_invalid at /post/status
   Expected one of: draft, published
   Actual: archived
 ```

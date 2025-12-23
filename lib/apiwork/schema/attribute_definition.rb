@@ -170,10 +170,10 @@ module Apiwork
 
         issue = Issue.new(
           layer: :contract,
-          code: :invalid_value,
-          detail: "Must be one of #{enum_values.join(', ')}",
+          code: :value_invalid,
+          detail: 'Invalid value',
           path: [name],
-          meta: {}
+          meta: { field: name, expected: enum_values, actual: value }
         )
         raise ContractError, [issue]
       end

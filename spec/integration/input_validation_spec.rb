@@ -29,7 +29,7 @@ RSpec.describe 'Input Validation' do
     end
 
     context 'with wrong data types that fail coercion' do
-      it 'returns invalid_type for invalid boolean string' do
+      it 'returns type_invalid for invalid boolean string' do
         post '/api/v1/posts', params: { post: { title: 'Test', published: 'not-a-boolean' } }, as: :json
 
         expect(response).to have_http_status(:bad_request)
@@ -37,7 +37,7 @@ RSpec.describe 'Input Validation' do
 
         published_issue = json['errors'].find { |issue| issue['pointer'] == '/post/published' }
         expect(published_issue).to be_present
-        expect(published_issue['code']).to eq('invalid_type')
+        expect(published_issue['code']).to eq('type_invalid')
       end
     end
 
@@ -106,7 +106,7 @@ RSpec.describe 'Input Validation' do
     end
 
     context 'with wrong data types' do
-      it 'returns invalid_type for invalid boolean' do
+      it 'returns type_invalid for invalid boolean' do
         patch "/api/v1/posts/#{post_record.id}", params: {
           post: { published: 'not-a-boolean' }
         }, as: :json
@@ -116,7 +116,7 @@ RSpec.describe 'Input Validation' do
 
         published_issue = json['errors'].find { |issue| issue['pointer'] == '/post/published' }
         expect(published_issue).to be_present
-        expect(published_issue['code']).to eq('invalid_type')
+        expect(published_issue['code']).to eq('type_invalid')
       end
     end
   end

@@ -16,7 +16,7 @@ RSpec.describe Apiwork::Issue do
 
     it 'accepts path and meta' do
       issue = described_class.new(
-        code: :invalid_type,
+        code: :type_invalid,
         detail: 'Expected string',
         path: [:user, :name],
         meta: { expected: 'string', got: 'integer' }

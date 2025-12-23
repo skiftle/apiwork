@@ -17,8 +17,8 @@ RSpec.describe 'Enum output validation with key transformation', type: :request 
       # This is consistent with error paths being schema-level, not serialization-level
       fdow_error = json['errors'].find { |e| e['path']&.last == 'first_day_of_week' }
       expect(fdow_error).not_to be_nil
-      expect(fdow_error['code']).to eq('invalid_value')
-      expect(fdow_error['detail']).to include('Must be one of')
+      expect(fdow_error['code']).to eq('value_invalid')
+      expect(fdow_error['detail']).to eq('Invalid value')
     end
 
     # NOTE: This test exposes a separate bug in Apiwork where Rails enum attributes

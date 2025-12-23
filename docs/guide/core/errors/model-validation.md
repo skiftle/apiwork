@@ -33,7 +33,7 @@ If validation fails, the adapter sees `invoice.errors`, converts each to an erro
   "path": ["invoice", "number"],
   "pointer": "/invoice/number",
   "meta": {
-    "attribute": "number"
+    "field": "number"
   }
 }
 ```
@@ -73,7 +73,7 @@ validates :number, length: { minimum: 3, maximum: 50 }
   "code": "too_short",
   "path": ["invoice", "number"],
   "meta": {
-    "attribute": "number",
+    "field": "number",
     "minimum": 3,
     "count": 1
   }

@@ -92,14 +92,14 @@ RSpec.describe 'Security and edge case validation' do
       expect(result[:issues]).not_to be_empty
       issue = result[:issues].first
       expect(issue.path).to eq([:count])
-      expect(issue.code).to eq(:invalid_type)
+      expect(issue.code).to eq(:type_invalid)
     end
 
     it 'rejects array when boolean expected' do
       result = definition.validate({ active: [true, false] })
 
       expect(result[:issues]).not_to be_empty
-      expect(result[:issues].first.code).to eq(:invalid_type)
+      expect(result[:issues].first.code).to eq(:type_invalid)
     end
   end
 

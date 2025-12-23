@@ -25,10 +25,10 @@ module Apiwork
             unless params.is_a?(Hash)
               @issues << Issue.new(
                 layer: :contract,
-                code: :invalid_sort_params_type,
-                detail: 'sort must be a Hash or Array of Hashes',
+                code: :sort_params_invalid,
+                detail: 'Invalid sort params',
                 path: [:sort],
-                meta: { params_type: params.class.name }
+                meta: { type: params.class.name }
               )
               return @relation
             end
@@ -55,9 +55,9 @@ module Apiwork
                   @issues << Issue.new(
                     layer: :contract,
                     code: :field_not_sortable,
-                    detail: "#{key} is not sortable on #{target_klass.name}. Sortable: #{available.join(', ')}",
+                    detail: 'Not sortable',
                     path: [:sort, key],
-                    meta: { field: key, class: target_klass.name, available: available }
+                    meta: { field: key, available: available }
                   )
                   next
                 end
@@ -71,10 +71,10 @@ module Apiwork
                           else
                             @issues << Issue.new(
                               layer: :contract,
-                              code: :invalid_sort_direction,
-                              detail: "Invalid direction '#{direction}'. Use 'asc' or 'desc'",
+                              code: :sort_direction_invalid,
+                              detail: 'Invalid direction',
                               path: [:sort, key],
-                              meta: { field: key, direction: direction, valid_directions: [:asc, :desc] }
+                              meta: { field: key, direction: direction, allowed: %i[asc desc] }
                             )
                             next
                           end
@@ -85,10 +85,10 @@ module Apiwork
                 if association.nil?
                   @issues << Issue.new(
                     layer: :contract,
-                    code: :invalid_association,
-                    detail: "#{key} is not a valid association on #{target_klass.name}",
+                    code: :association_invalid,
+                    detail: 'Invalid association',
                     path: [:sort, key],
-                    meta: { field: key, class: target_klass.name }
+                    meta: { field: key }
                   )
                   next
                 end
@@ -97,7 +97,7 @@ module Apiwork
                   @issues << Issue.new(
                     layer: :contract,
                     code: :association_not_sortable,
-                    detail: "Association #{key} is not sortable",
+                    detail: 'Not sortable',
                     path: [:sort, key],
                     meta: { association: key }
                   )
@@ -109,8 +109,8 @@ module Apiwork
                 if association_resource.nil?
                   @issues << Issue.new(
                     layer: :contract,
-                    code: :association_resource_not_found,
-                    detail: "Cannot find resource for association #{key}",
+                    code: :association_schema_missing,
+                    detail: 'Association schema missing',
                     path: [:sort, key],
                     meta: { association: key }
                   )
@@ -125,10 +125,10 @@ module Apiwork
               else
                 @issues << Issue.new(
                   layer: :contract,
-                  code: :invalid_sort_value_type,
-                  detail: "Sort value must be 'asc', 'desc', or Hash for associations",
+                  code: :sort_value_invalid,
+                  detail: 'Invalid sort value',
                   path: [:sort, key],
-                  meta: { field: key, value_type: value.class.name }
+                  meta: { field: key, type: value.class.name }
                 )
               end
             end
