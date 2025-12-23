@@ -4,6 +4,8 @@ module Apiwork
   module Adapter
     class Apiwork < Base
       class RecordValidator
+        SAFE_META_KEYS = %i[minimum maximum count].freeze
+
         attr_reader :schema_class
 
         def self.validate(record, schema_class)
@@ -101,23 +103,27 @@ module Apiwork
           @belongs_to_names ||= @record.class.reflect_on_all_associations(:belongs_to).map(&:name)
         end
 
-        def issue(rails_error, path)
-          meta = { field: rails_error.attribute }
-
-          if rails_error.options
-            %i[in minimum maximum count is too_short too_long].each do |key|
-              value = rails_error.options[key]
-              meta[key] = value if value
-            end
-          end
-
+        def issue(error, path)
           Issue.new(
             layer: :domain,
-            code: rails_error.type,
-            detail: rails_error.message,
+            code: error.type,
+            detail: error.message,
             path:,
-            meta:
+            meta: safe_meta(error)
           )
+        end
+
+        def safe_meta(error)
+          meta = { field: error.attribute }
+
+          return meta unless error.options
+
+          SAFE_META_KEYS.each do |key|
+            value = error.options[key]
+            meta[key] = value if value
+          end
+
+          meta
         end
       end
     end
