@@ -112,11 +112,11 @@ module Apiwork
           end
 
           Issue.new(
+            layer: :domain,
             code: rails_error.type,
             detail: rails_error.message,
             path:,
-            meta:,
-            layer: :domain
+            meta:
           )
         end
       end

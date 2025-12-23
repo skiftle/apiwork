@@ -102,7 +102,7 @@ For standard HTTP errors, use `respond_with_error` instead.
 def create
   unless record.valid?
     issues = record.errors.map do |error|
-      Apiwork::Issue.new(code: :invalid, detail: error.message, path: [error.attribute])
+      Apiwork::Issue.new(layer: :domain, code: :invalid, detail: error.message, path: [error.attribute], meta: {})
     end
     render_error issues, status: :unprocessable_entity
   end

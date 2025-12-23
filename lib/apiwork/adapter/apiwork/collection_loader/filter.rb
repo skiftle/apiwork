@@ -203,11 +203,11 @@ module Apiwork
                                     .keys
 
             @issues << Issue.new(
+              layer: :contract,
               code: :field_not_filterable,
               detail: "#{key} is not a filterable attribute on #{target_klass.name}. Available: #{available.join(', ')}",
               path: [:filter, key],
-              meta: { field: key, class: target_klass.name, available: available },
-              layer: :contract
+              meta: { field: key, class: target_klass.name, available: available }
             )
           end
 
@@ -217,11 +217,11 @@ module Apiwork
             column_type = target_klass.type_for_attribute(key).type
             if column_type.nil?
               @issues << Issue.new(
+                layer: :contract,
                 code: :unknown_column_type,
-                field: key.to_s,
                 detail: "Cannot determine type for attribute '#{key}' on #{target_klass.name}",
                 path: [key.to_s],
-                layer: :contract
+                meta: { field: key.to_s }
               )
               return nil
             end
@@ -239,11 +239,11 @@ module Apiwork
               build_boolean_where_clause(key, value, target_klass)
             else
               @issues << Issue.new(
+                layer: :contract,
                 code: :unsupported_column_type,
                 detail: "Unsupported column type: #{column_type}",
                 path: [:filter, key],
-                meta: { field: key, type: column_type },
-                layer: :contract
+                meta: { field: key, type: column_type }
               )
               nil
             end
@@ -256,11 +256,11 @@ module Apiwork
             return if invalid_values.empty?
 
             @issues << Issue.new(
+              layer: :contract,
               code: :invalid_enum_value,
               detail: "Invalid #{key} value(s): #{invalid_values.join(', ')}. Valid values: #{enum_values.join(', ')}",
               path: [:filter, key],
-              meta: { field: key, invalid: invalid_values, valid: enum_values },
-              layer: :contract
+              meta: { field: key, invalid: invalid_values, valid: enum_values }
             )
           end
 
@@ -291,11 +291,11 @@ module Apiwork
 
             unless association_resource
               @issues << Issue.new(
+                layer: :contract,
                 code: :association_resource_not_found,
                 detail: "Cannot find resource for association #{key}",
                 path: [:filter, key],
-                meta: { association: key },
-                layer: :contract
+                meta: { association: key }
               )
               return [[], {}]
             end
@@ -303,11 +303,11 @@ module Apiwork
             association_reflection = schema_class.model_class.reflect_on_association(key)
             unless association_reflection
               @issues << Issue.new(
+                layer: :contract,
                 code: :association_not_found,
                 detail: "Association #{key} not found on #{schema_class.model_class.name}",
                 path: [:filter, key],
-                meta: { association: key, class: schema_class.model_class.name },
-                layer: :contract
+                meta: { association: key, class: schema_class.model_class.name }
               )
               return [[], {}]
             end
@@ -421,11 +421,11 @@ module Apiwork
           def handle_date_nil_value(column, key, allow_nil)
             unless allow_nil
               @issues << Issue.new(
+                layer: :contract,
                 code: :null_not_allowed,
                 detail: "#{key} cannot be null",
                 path: [:filter, key],
-                meta: { field: key },
-                layer: :contract
+                meta: { field: key }
               )
             end
 
@@ -534,11 +534,11 @@ module Apiwork
             DateTime.parse(value.to_s)
           rescue ArgumentError
             @issues << Issue.new(
+              layer: :contract,
               code: :invalid_date_format,
               detail: "'#{value}' is not a valid date",
               path: [:filter, field],
-              meta: { field: field, value: value },
-              layer: :contract
+              meta: { field: field, value: value }
             )
             nil
           end
@@ -549,21 +549,21 @@ module Apiwork
             when String then Float(value)
             else
               @issues << Issue.new(
+                layer: :contract,
                 code: :invalid_numeric_format,
                 detail: "'#{value}' is not a valid number",
                 path: [:filter, field],
-                meta: { field: field, value: value },
-                layer: :contract
+                meta: { field: field, value: value }
               )
               nil
             end
           rescue ArgumentError
             @issues << Issue.new(
+              layer: :contract,
               code: :invalid_numeric_format,
               detail: "'#{value}' is not a valid number",
               path: [:filter, field],
-              meta: { field: field, value: value },
-              layer: :contract
+              meta: { field: field, value: value }
             )
             nil
           end

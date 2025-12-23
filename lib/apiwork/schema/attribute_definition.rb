@@ -169,10 +169,11 @@ module Apiwork
         return if enum_values.map(&:to_s).include?(value.to_s)
 
         issue = Issue.new(
+          layer: :contract,
           code: :invalid_value,
           detail: "Must be one of #{enum_values.join(', ')}",
           path: [name],
-          layer: :contract
+          meta: {}
         )
         raise ContractError, [issue]
       end

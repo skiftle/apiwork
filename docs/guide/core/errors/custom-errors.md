@@ -12,11 +12,11 @@ Build errors directly when you need custom error handling:
 
 ```ruby
 issue = Apiwork::Issue.new(
+  layer: :domain,
   code: :insufficient_balance,
   detail: "Account balance is too low for this transaction",
   path: [:transaction, :amount],
-  meta: { required: 100.00, available: 45.50 },
-  layer: :domain
+  meta: { required: 100.00, available: 45.50 }
 )
 ```
 
@@ -35,11 +35,11 @@ def create
       next if item.in_stock?
 
       Apiwork::Issue.new(
+        layer: :domain,
         code: :out_of_stock,
         detail: "#{item.name} is out of stock",
         path: [:order, :items, index, :product_id],
-        meta: { product_id: item.product_id, requested: item.quantity, available: 0 },
-        layer: :domain
+        meta: { product_id: item.product_id, requested: item.quantity, available: 0 }
       )
     end
 
@@ -86,31 +86,31 @@ def transfer
 
   if from_account.frozen?
     issues << Apiwork::Issue.new(
+      layer: :domain,
       code: :account_frozen,
       detail: "Source account is frozen",
       path: [:from_account_id],
-      meta: { account_id: from_account.id },
-      layer: :domain
+      meta: { account_id: from_account.id }
     )
   end
 
   if to_account.closed?
     issues << Apiwork::Issue.new(
+      layer: :domain,
       code: :account_closed,
       detail: "Destination account is closed",
       path: [:to_account_id],
-      meta: { account_id: to_account.id },
-      layer: :domain
+      meta: { account_id: to_account.id }
     )
   end
 
   if amount > from_account.balance
     issues << Apiwork::Issue.new(
+      layer: :domain,
       code: :insufficient_funds,
       detail: "Insufficient funds for transfer",
       path: [:amount],
-      meta: { requested: amount, available: from_account.balance },
-      layer: :domain
+      meta: { requested: amount, available: from_account.balance }
     )
   end
 

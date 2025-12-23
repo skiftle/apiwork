@@ -79,7 +79,7 @@ module Apiwork
       #   def create
       #     unless record.valid?
       #       issues = record.errors.map do |error|
-      #         Apiwork::Issue.new(code: :invalid, detail: error.message, path: [error.attribute])
+      #         Apiwork::Issue.new(layer: :domain, code: :invalid, detail: error.message, path: [error.attribute], meta: {})
       #       end
       #       render_error issues, status: :unprocessable_entity
       #     end
@@ -117,11 +117,11 @@ module Apiwork
         error_code = ErrorCode.fetch(code_key)
 
         issue = Issue.new(
+          layer: :http,
           code: error_code.key,
           detail: resolve_error_detail(error_code, detail, i18n),
           path: path || default_error_path(error_code),
-          meta:,
-          layer: :http
+          meta:
         )
 
         render_error [issue], status: error_code.status

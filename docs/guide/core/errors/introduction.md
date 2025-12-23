@@ -12,11 +12,11 @@ At the center of Apiwork's error handling is the **Issue** class. Each issue rep
 
 ```ruby
 Apiwork::Issue.new(
+  layer: :contract,
   code: :field_missing,
   detail: "Field required",
   path: [:invoice, :number],
-  meta: { field: :number },
-  layer: :contract
+  meta: { field: :number }
 )
 ```
 
