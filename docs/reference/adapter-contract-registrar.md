@@ -40,7 +40,7 @@ end
 
 ### #api_registrar()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L103)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L112)
 
 Returns a registrar for API-level types.
 Use this to define or resolve types at the API scope.
