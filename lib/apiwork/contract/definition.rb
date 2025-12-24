@@ -2,6 +2,13 @@
 
 module Apiwork
   module Contract
+    # Defines params for query, body, or response.
+    #
+    # Part of the Adapter DSL. Returned by {RequestDefinition#query},
+    # {RequestDefinition#body}, and {ResponseDefinition#body}.
+    # Use as a declarative builder - do not rely on internal state.
+    #
+    # @api public
     class Definition
       def initialize(type:, contract_class:, action_name: nil)
         @type = type # :query, :body, or :response_body

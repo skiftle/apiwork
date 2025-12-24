@@ -2,6 +2,12 @@
 
 module Apiwork
   module Contract
+    # Defines request/response structure for an action.
+    #
+    # Part of the Adapter DSL. Returned by {Adapter::ContractRegistrar#define_action}.
+    # Use as a declarative builder - do not rely on internal state.
+    #
+    # @api public
     class ActionDefinition
       attr_reader :action_name,
                   :contract_class,

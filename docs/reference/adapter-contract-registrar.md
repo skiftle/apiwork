@@ -63,6 +63,10 @@ Defines an action with query, body, and response.
 |------|------|-------------|
 | `name` | `Symbol` | the action name |
 
+**Returns**
+
+`ActionDefinition` — the action definition
+
 ---
 
 ### #enum(name, values:)

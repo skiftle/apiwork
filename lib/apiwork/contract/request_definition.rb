@@ -2,6 +2,12 @@
 
 module Apiwork
   module Contract
+    # Defines query params and body for a request.
+    #
+    # Part of the Adapter DSL. Returned by {ActionDefinition#request}.
+    # Use as a declarative builder - do not rely on internal state.
+    #
+    # @api public
     class RequestDefinition
       attr_reader :action_name,
                   :body_definition,

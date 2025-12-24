@@ -55,6 +55,7 @@ module Apiwork
       #   Defines an action with query, body, and response.
       #   @param name [Symbol] the action name
       #   @yield block defining request/response
+      #   @return [ActionDefinition] the action definition
       #   @see Apiwork::Contract::Base.define_action
 
       # @!method import(type_name, from:)

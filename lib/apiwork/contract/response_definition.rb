@@ -2,6 +2,12 @@
 
 module Apiwork
   module Contract
+    # Defines body for a response.
+    #
+    # Part of the Adapter DSL. Returned by {ActionDefinition#response}.
+    # Use as a declarative builder - do not rely on internal state.
+    #
+    # @api public
     class ResponseDefinition
       attr_reader :action_name,
                   :body_definition,

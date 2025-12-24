@@ -204,8 +204,40 @@ The `registrar` provides:
 - `type(name, &block)` — Define a type
 - `enum(name, values:)` — Define an enum
 - `union(name, &block)` — Define a union type
-- `define_action(name, &block)` — Get or create an action contract (returns ActionDefinition)
+- `define_action(name, &block)` — Define an action (returns `ActionDefinition`)
 - `import(contract, as:)` — Import types from another contract
+
+### ActionDefinition
+
+`define_action` returns an `ActionDefinition` for configuring request/response:
+
+```ruby
+registrar.define_action :index do
+  request do
+    query { param :page, type: :integer, optional: true }
+  end
+  response do
+    body { param :items, type: :array }
+  end
+end
+```
+
+Or capture and build incrementally:
+
+```ruby
+action = registrar.define_action(:index)
+action.request { query { param :page, type: :integer } }
+action.response { body { param :items, type: :array } }
+```
+
+`ActionDefinition` provides:
+- `request(&block)` — Define query params and body (returns `RequestDefinition`)
+- `response(&block)` — Define response body (returns `ResponseDefinition`)
+- `summary(text)` — Set operation summary
+- `description(text)` — Set operation description
+- `tags(*names)` — Set operation tags
+- `deprecated(bool)` — Mark as deprecated
+- `raises(*error_codes)` — Declare possible error codes
 
 The `schema_class` is the schema associated with the contract, giving you access to:
 - `attribute_definitions` — All attributes with their types, options, and constraints
