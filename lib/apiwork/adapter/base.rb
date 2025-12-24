@@ -97,12 +97,12 @@ module Apiwork
         hash
       end
 
-      def build_api_type_registrar(api_class)
-        ApiTypeRegistrar.new(api_class)
+      def build_api_registrar(api_class)
+        APIRegistrar.new(api_class)
       end
 
-      def build_contract_type_registrar(contract_class)
-        ContractTypeRegistrar.new(contract_class)
+      def build_contract_registrar(contract_class)
+        ContractRegistrar.new(contract_class)
       end
 
       def build_schema_data(schemas, has_resources: false, has_index_actions: false)

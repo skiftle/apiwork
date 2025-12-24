@@ -309,7 +309,7 @@ module Apiwork
           type_system.resolve_type(name, scope:)
         end
 
-        def resolve_enum(name, scope:)
+        def resolve_enum(name, scope: nil)
           type_system.resolve_enum(name, scope:)
         end
 
@@ -461,7 +461,7 @@ module Apiwork
           built_contracts.add(contract_class)
 
           actions = extract_actions_from_resource(resource_data)
-          type_registrar = adapter.build_contract_type_registrar(contract_class)
+          type_registrar = adapter.build_contract_registrar(contract_class)
           adapter.register_contract_types(type_registrar, schema_class, actions: actions)
         end
 
@@ -476,7 +476,7 @@ module Apiwork
           has_resources = @metadata.resources.any?
           has_index_actions = any_index_actions?(@metadata.resources)
           schema_data = adapter.build_schema_data(schemas, has_resources:, has_index_actions:)
-          type_registrar = adapter.build_api_type_registrar(self)
+          type_registrar = adapter.build_api_registrar(self)
           adapter.register_api_types(type_registrar, schema_data)
         end
 
@@ -520,7 +520,7 @@ module Apiwork
           built_contracts.add(contract_class)
 
           actions = extract_actions_from_resource(resource_data)
-          type_registrar = adapter.build_contract_type_registrar(contract_class)
+          type_registrar = adapter.build_contract_registrar(contract_class)
           adapter.register_contract_types(type_registrar, schema_class, actions: actions)
 
           resource_data[:resources]&.each_value do |nested_resource|

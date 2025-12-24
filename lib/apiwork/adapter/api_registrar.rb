@@ -21,7 +21,7 @@ module Apiwork
     #   def register_api_types(type_registrar, schema_data)
     #     type_registrar.enum :status, values: %w[pending active completed]
     #   end
-    class ApiTypeRegistrar
+    class APIRegistrar
       def initialize(api_class)
         @api_class = api_class
       end
@@ -53,15 +53,18 @@ module Apiwork
       #   @param name [Symbol] the type name
       #   @return [Object, nil] the type definition if registered
 
-      delegate :type, :enum, :union, :resolve_type, to: :api_class
+      # @!method resolve_enum(name)
+      #   @api public
+      #   Resolves an enum registered at the API level.
+      #   @param name [Symbol] the enum name
+      #   @return [Array, nil] the enum values if registered
 
-      # @api public
-      # Resolves an enum registered at the API level.
-      # @param enum_name [Symbol] the enum name
-      # @return [Array, nil] the enum values if registered
-      def resolve_enum(enum_name)
-        api_class.resolve_enum(enum_name, scope: nil)
-      end
+      delegate :type,
+               :enum,
+               :union,
+               :resolve_type,
+               :resolve_enum,
+               to: :api_class
 
       private
 

@@ -1,12 +1,12 @@
 ---
-order: 5
+order: 4
 prev: false
 next: false
 ---
 
-# Adapter::ApiTypeRegistrar
+# Adapter::APIRegistrar
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_type_registrar.rb#L24)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_registrar.rb#L24)
 
 Registers API-wide types during adapter initialization.
 
@@ -37,7 +37,7 @@ end
 
 ### #enum(name, values:)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_type_registrar.rb#L36)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_registrar.rb#L36)
 
 Defines an enum type.
 
@@ -52,7 +52,7 @@ Defines an enum type.
 
 ### #resolve_enum(enum_name)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_type_registrar.rb#L62)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_registrar.rb#L62)
 
 Resolves an enum registered at the API level.
 
@@ -70,7 +70,7 @@ Resolves an enum registered at the API level.
 
 ### #resolve_type(name)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_type_registrar.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_registrar.rb#L56)
 
 Resolves a type registered at the API level.
 
@@ -88,7 +88,7 @@ Resolves a type registered at the API level.
 
 ### #type(name, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_type_registrar.rb#L29)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_registrar.rb#L29)
 
 Defines a named type.
 
@@ -102,7 +102,7 @@ Defines a named type.
 
 ### #union(name, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_type_registrar.rb#L43)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_registrar.rb#L43)
 
 Defines a union type.
 

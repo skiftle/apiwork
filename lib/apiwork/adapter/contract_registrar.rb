@@ -24,7 +24,7 @@ module Apiwork
     #       end
     #     end
     #   end
-    class ContractTypeRegistrar
+    class ContractRegistrar
       def initialize(contract_class)
         @contract_class = contract_class
       end
@@ -93,15 +93,24 @@ module Apiwork
       #   Returns the hash of imported types.
       #   @return [Hash] imported types
 
-      delegate :type, :enum, :union, :define_action, :import, to: :contract_class
-      delegate :resolve_type, :resolve_enum, :scoped_name, :find_contract_for_schema, :imports, to: :contract_class
+      delegate :type,
+               :enum,
+               :union,
+               :define_action,
+               :import,
+               :resolve_type,
+               :resolve_enum,
+               :scoped_name,
+               :find_contract_for_schema,
+               :imports,
+               to: :contract_class
 
       # @api public
       # Returns a registrar for API-level types.
       # Use this to define or resolve types at the API scope.
-      # @return [ApiTypeRegistrar] the API type registrar
+      # @return [APIRegistrar] the API registrar
       def api_registrar
-        @api_registrar ||= ApiTypeRegistrar.new(contract_class.api_class)
+        @api_registrar ||= APIRegistrar.new(contract_class.api_class)
       end
 
       private

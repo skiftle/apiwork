@@ -933,8 +933,8 @@ module Apiwork
             api_class = association_contract.api_class
             api_class&.ensure_contract_built!(association_contract)
 
-            association_type_registrar = ContractTypeRegistrar.new(association_contract)
-            sub_builder = self.class.for_schema(association_type_registrar, association_schema)
+            association_registrar = ContractRegistrar.new(association_contract)
+            sub_builder = self.class.for_schema(association_registrar, association_schema)
 
             sub_builder.send(:build_filter_type, visited: Set.new, depth: 0)
             sub_builder.send(:build_sort_type, visited: Set.new, depth: 0)
