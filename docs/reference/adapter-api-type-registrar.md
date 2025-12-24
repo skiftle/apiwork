@@ -50,6 +50,42 @@ Defines an enum type.
 
 ---
 
+### #resolve_enum(enum_name)
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_type_registrar.rb#L62)
+
+Resolves an enum registered at the API level.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `enum_name` | `Symbol` | the enum name |
+
+**Returns**
+
+`Array, nil` — the enum values if registered
+
+---
+
+### #resolve_type(name)
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_type_registrar.rb#L56)
+
+Resolves a type registered at the API level.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `Symbol` | the type name |
+
+**Returns**
+
+`Object, nil` — the type definition if registered
+
+---
+
 ### #type(name, &block)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_type_registrar.rb#L29)
@@ -66,7 +102,7 @@ Defines a named type.
 
 ### #union(name, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_type_registrar.rb#L50)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_type_registrar.rb#L43)
 
 Defines a union type.
 

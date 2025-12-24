@@ -38,32 +38,16 @@ end
 
 ## Instance Methods
 
-### #api_type(type_name, **options, &block)
+### #api_registrar()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_type_registrar.rb#L120)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_type_registrar.rb#L103)
 
-Registers a type at the API level (global scope).
+Returns a registrar for API-level types.
+Use this to define or resolve types at the API scope.
 
-**Parameters**
+**Returns**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `type_name` | `Symbol` | the type name |
-| `options` | `Hash` | type options |
-
----
-
-### #api_union(type_name, &block)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_type_registrar.rb#L128)
-
-Registers a union at the API level (global scope).
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `type_name` | `Symbol` | the union name |
+`ApiTypeRegistrar` — the API type registrar
 
 ---
 
@@ -138,42 +122,6 @@ Returns the hash of imported types.
 **Returns**
 
 `Hash` — imported types
-
----
-
-### #resolve_api_enum(enum_name)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_type_registrar.rb#L111)
-
-Resolves an enum registered at the API level.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `enum_name` | `Symbol` | the enum name |
-
-**Returns**
-
-`Array, nil` — the enum values if registered
-
----
-
-### #resolve_api_type(type_name)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_type_registrar.rb#L103)
-
-Resolves a type registered at the API level.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `type_name` | `Symbol` | the type name |
-
-**Returns**
-
-`Object, nil` — the type definition if registered
 
 ---
 

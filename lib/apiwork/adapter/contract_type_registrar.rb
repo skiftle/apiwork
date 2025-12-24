@@ -97,36 +97,11 @@ module Apiwork
       delegate :resolve_type, :resolve_enum, :scoped_name, :find_contract_for_schema, :imports, to: :contract_class
 
       # @api public
-      # Resolves a type registered at the API level.
-      # @param type_name [Symbol] the type name
-      # @return [Object, nil] the type definition if registered
-      def resolve_api_type(type_name)
-        contract_class.api_class.resolve_type(type_name)
-      end
-
-      # @api public
-      # Resolves an enum registered at the API level.
-      # @param enum_name [Symbol] the enum name
-      # @return [Array, nil] the enum values if registered
-      def resolve_api_enum(enum_name)
-        contract_class.api_class.resolve_enum(enum_name)
-      end
-
-      # @api public
-      # Registers a type at the API level (global scope).
-      # @param type_name [Symbol] the type name
-      # @param options [Hash] type options
-      # @yield block defining params
-      def api_type(type_name, **options, &block)
-        contract_class.api_class.type(type_name, **options, &block)
-      end
-
-      # @api public
-      # Registers a union at the API level (global scope).
-      # @param type_name [Symbol] the union name
-      # @yield block defining variants
-      def api_union(type_name, &block)
-        contract_class.api_class.union(type_name, &block)
+      # Returns a registrar for API-level types.
+      # Use this to define or resolve types at the API scope.
+      # @return [ApiTypeRegistrar] the API type registrar
+      def api_registrar
+        @api_registrar ||= ApiTypeRegistrar.new(contract_class.api_class)
       end
 
       private

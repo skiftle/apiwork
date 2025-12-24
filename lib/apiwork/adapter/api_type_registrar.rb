@@ -47,7 +47,21 @@ module Apiwork
       #   @yield block defining variants
       #   @see Apiwork::Api::Base.union
 
-      delegate :type, :enum, :union, to: :api_class
+      # @!method resolve_type(name)
+      #   @api public
+      #   Resolves a type registered at the API level.
+      #   @param name [Symbol] the type name
+      #   @return [Object, nil] the type definition if registered
+
+      delegate :type, :enum, :union, :resolve_type, to: :api_class
+
+      # @api public
+      # Resolves an enum registered at the API level.
+      # @param enum_name [Symbol] the enum name
+      # @return [Array, nil] the enum values if registered
+      def resolve_enum(enum_name)
+        api_class.resolve_enum(enum_name, scope: nil)
+      end
 
       private
 

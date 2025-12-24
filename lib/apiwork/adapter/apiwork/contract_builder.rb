@@ -281,8 +281,8 @@ module Apiwork
             variant_schema_name = variant_schema.name.demodulize.underscore.gsub(/_schema$/, '')
             variant_type_name = :"#{variant_schema_name}_#{context_symbol}_payload"
 
-            unless type_registrar.resolve_api_type(variant_type_name)
-              type_registrar.api_type(variant_type_name) do
+            unless type_registrar.api_registrar.resolve_type(variant_type_name)
+              type_registrar.api_registrar.type(variant_type_name) do
                 # Rename discriminator from API name to DB column if different
                 as_column = discriminator_name != discriminator_column ? discriminator_column : nil
                 param discriminator_name, type: :literal, value: tag.to_s, as: as_column, sti_mapping: sti_mapping
@@ -510,13 +510,13 @@ module Apiwork
           return type_name if existing
 
           if strategy == :cursor
-            type_registrar.api_type(type_name, scope: nil) do
+            type_registrar.api_registrar.type(type_name, scope: nil) do
               param :after, type: :string, optional: true
               param :before, type: :string, optional: true
               param :size, type: :integer, optional: true, min: 1, max: max_size
             end
           else
-            type_registrar.api_type(type_name, scope: nil) do
+            type_registrar.api_registrar.type(type_name, scope: nil) do
               param :number, type: :integer, optional: true, min: 1
               param :size, type: :integer, optional: true, min: 1, max: max_size
             end
@@ -802,8 +802,8 @@ module Apiwork
           build_sti_union(union_type_name: union_type_name, visited: visited) do |variant_schema, tag, _visit_set|
             variant_type_name = variant_schema.root_key.singular.to_sym
 
-            unless type_registrar.resolve_api_type(variant_type_name)
-              type_registrar.api_type(variant_type_name, schema_class: variant_schema) do
+            unless type_registrar.api_registrar.resolve_type(variant_type_name)
+              type_registrar.api_registrar.type(variant_type_name, schema_class: variant_schema) do
                 param discriminator_name, type: :literal, value: tag.to_s
 
                 variant_schema.attribute_definitions.each do |name, attribute_definition|
@@ -863,9 +863,9 @@ module Apiwork
           scoped_name = type_registrar.scoped_name(enum_name)
           filter_name = :"#{scoped_name}_filter"
 
-          return if type_registrar.resolve_api_type(filter_name)
+          return if type_registrar.api_registrar.resolve_type(filter_name)
 
-          type_registrar.api_union(filter_name) do
+          type_registrar.api_registrar.union(filter_name) do
             variant type: scoped_name
             variant type: :object, partial: true do
               param :eq, type: scoped_name, optional: true
