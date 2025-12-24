@@ -25,7 +25,7 @@ def create
 end
 ```
 
-If validation fails, the adapter sees `invoice.errors`, converts each to an Issue and raises `ValidationError`. You get a 422 with all errors. No conditionals needed.
+If validation fails, the adapter sees `invoice.errors`, converts each to an Issue and raises `DomainError`. You get a 422 with all errors. No conditionals needed.
 
 ## Rails to Apiwork Mapping
 

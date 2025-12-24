@@ -18,7 +18,7 @@ module Apiwork
         def validate
           return unless @record.respond_to?(:errors) && @record.errors.any?
 
-          raise ValidationError, issues
+          raise DomainError, issues
         end
 
         def issues
