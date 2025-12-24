@@ -7,7 +7,7 @@ export interface Error {
 }
 
 export interface ErrorResponse {
-  errors: Error[];
+  issues: Error[];
   layer: Layer;
 }
 
@@ -82,7 +82,7 @@ export interface OrdersCreateResponse {
   body: OrdersCreateResponseBody;
 }
 
-export type OrdersCreateResponseBody = { errors?: Error[] } | { meta?: object; order: Order };
+export type OrdersCreateResponseBody = { issues?: Error[] } | { meta?: object; order: Order };
 
 export type OrdersDestroyResponse = never;
 
@@ -100,13 +100,13 @@ export interface OrdersIndexResponse {
   body: OrdersIndexResponseBody;
 }
 
-export type OrdersIndexResponseBody = { errors?: Error[] } | { meta?: object; orders?: Order[]; pagination?: OffsetPagination };
+export type OrdersIndexResponseBody = { issues?: Error[] } | { meta?: object; orders?: Order[]; pagination?: OffsetPagination };
 
 export interface OrdersShowResponse {
   body: OrdersShowResponseBody;
 }
 
-export type OrdersShowResponseBody = { errors?: Error[] } | { meta?: object; order: Order };
+export type OrdersShowResponseBody = { issues?: Error[] } | { meta?: object; order: Order };
 
 export interface OrdersUpdateRequest {
   body: OrdersUpdateRequestBody;
@@ -120,7 +120,7 @@ export interface OrdersUpdateResponse {
   body: OrdersUpdateResponseBody;
 }
 
-export type OrdersUpdateResponseBody = { errors?: Error[] } | { meta?: object; order: Order };
+export type OrdersUpdateResponseBody = { issues?: Error[] } | { meta?: object; order: Order };
 
 export type SortDirection = 'asc' | 'desc';
 

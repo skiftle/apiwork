@@ -11,7 +11,7 @@ export const ErrorSchema = z.object({
 });
 
 export const ErrorResponseSchema = z.object({
-  errors: z.array(ErrorSchema),
+  issues: z.array(ErrorSchema),
   layer: LayerSchema
 });
 
@@ -36,7 +36,7 @@ export interface Error {
 }
 
 export interface ErrorResponse {
-  errors: Error[];
+  issues: Error[];
   layer: Layer;
 }
 

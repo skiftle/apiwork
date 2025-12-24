@@ -127,7 +127,7 @@ export const VehicleSortSchema = z.object({
 });
 
 export const ErrorResponseSchema = z.object({
-  errors: z.array(ErrorSchema),
+  issues: z.array(ErrorSchema),
   layer: LayerSchema
 });
 
@@ -189,13 +189,13 @@ export const VehiclesIndexRequestSchema = z.object({
   query: VehiclesIndexRequestQuerySchema
 });
 
-export const VehiclesIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional(), vehicles: z.array(VehicleSchema).optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
+export const VehiclesIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional(), vehicles: z.array(VehicleSchema).optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
 
 export const VehiclesIndexResponseSchema = z.object({
   body: VehiclesIndexResponseBodySchema
 });
 
-export const VehiclesShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), vehicle: VehicleSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
+export const VehiclesShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), vehicle: VehicleSchema }), z.object({ issues: z.array(ErrorSchema).optional() })]);
 
 export const VehiclesShowResponseSchema = z.object({
   body: VehiclesShowResponseBodySchema
@@ -209,7 +209,7 @@ export const VehiclesCreateRequestSchema = z.object({
   body: VehiclesCreateRequestBodySchema
 });
 
-export const VehiclesCreateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), vehicle: VehicleSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
+export const VehiclesCreateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), vehicle: VehicleSchema }), z.object({ issues: z.array(ErrorSchema).optional() })]);
 
 export const VehiclesCreateResponseSchema = z.object({
   body: VehiclesCreateResponseBodySchema
@@ -223,7 +223,7 @@ export const VehiclesUpdateRequestSchema = z.object({
   body: VehiclesUpdateRequestBodySchema
 });
 
-export const VehiclesUpdateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), vehicle: VehicleSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
+export const VehiclesUpdateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), vehicle: VehicleSchema }), z.object({ issues: z.array(ErrorSchema).optional() })]);
 
 export const VehiclesUpdateResponseSchema = z.object({
   body: VehiclesUpdateResponseBodySchema
@@ -268,7 +268,7 @@ export interface Error {
 }
 
 export interface ErrorResponse {
-  errors: Error[];
+  issues: Error[];
   layer: Layer;
 }
 
@@ -410,7 +410,7 @@ export interface VehiclesCreateResponse {
   body: VehiclesCreateResponseBody;
 }
 
-export type VehiclesCreateResponseBody = { errors?: Error[] } | { meta?: object; vehicle: Vehicle };
+export type VehiclesCreateResponseBody = { issues?: Error[] } | { meta?: object; vehicle: Vehicle };
 
 export type VehiclesDestroyResponse = never;
 
@@ -428,13 +428,13 @@ export interface VehiclesIndexResponse {
   body: VehiclesIndexResponseBody;
 }
 
-export type VehiclesIndexResponseBody = { errors?: Error[] } | { meta?: object; pagination?: OffsetPagination; vehicles?: Vehicle[] };
+export type VehiclesIndexResponseBody = { issues?: Error[] } | { meta?: object; pagination?: OffsetPagination; vehicles?: Vehicle[] };
 
 export interface VehiclesShowResponse {
   body: VehiclesShowResponseBody;
 }
 
-export type VehiclesShowResponseBody = { errors?: Error[] } | { meta?: object; vehicle: Vehicle };
+export type VehiclesShowResponseBody = { issues?: Error[] } | { meta?: object; vehicle: Vehicle };
 
 export interface VehiclesUpdateRequest {
   body: VehiclesUpdateRequestBody;
@@ -448,4 +448,4 @@ export interface VehiclesUpdateResponse {
   body: VehiclesUpdateResponseBody;
 }
 
-export type VehiclesUpdateResponseBody = { errors?: Error[] } | { meta?: object; vehicle: Vehicle };
+export type VehiclesUpdateResponseBody = { issues?: Error[] } | { meta?: object; vehicle: Vehicle };

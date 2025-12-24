@@ -17,7 +17,7 @@
     "status": 400,
     "body": {
       "layer": "contract",
-      "errors": [
+      "issues": [
         {
           "code": "field_missing",
           "detail": "Required",

@@ -44,7 +44,7 @@ module Apiwork
       def render_error(issues, layer, action_data)
         {
           layer:,
-          errors: issues.map(&:to_h)
+          issues: issues.map(&:to_h)
         }
       end
 

@@ -222,7 +222,7 @@ Content-Type: application/json
 ```json
 {
   "layer": "contract",
-  "errors": [
+  "issues": [
     {
       "code": "field_unknown",
       "detail": "Unknown field",
@@ -285,7 +285,7 @@ Content-Type: application/json
 ```json
 {
   "layer": "contract",
-  "errors": [
+  "issues": [
     {
       "code": "field_unknown",
       "detail": "Unknown field",
@@ -338,7 +338,7 @@ GET /gentle_owl/comments?filter[commentable_type][eq]=GentleOwl::Post
 ```json
 {
   "layer": "contract",
-  "errors": [
+  "issues": [
     {
       "code": "field_unknown",
       "detail": "Unknown field",

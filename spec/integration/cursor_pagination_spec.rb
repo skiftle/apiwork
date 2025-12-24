@@ -135,8 +135,8 @@ RSpec.describe 'Cursor Pagination API', type: :request do
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
-      expect(json['errors']).to be_an(Array)
-      expect(json['errors'].first['code']).to eq('cursor_invalid')
+      expect(json['issues']).to be_an(Array)
+      expect(json['issues'].first['code']).to eq('cursor_invalid')
     end
 
     it 'enforces maximum page size' do
@@ -144,8 +144,8 @@ RSpec.describe 'Cursor Pagination API', type: :request do
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
-      expect(json['errors']).to be_an(Array)
-      expect(json['errors'].first['code']).to eq('value_invalid')
+      expect(json['issues']).to be_an(Array)
+      expect(json['issues'].first['code']).to eq('value_invalid')
     end
   end
 end

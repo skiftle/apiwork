@@ -2,7 +2,7 @@
 order: 1
 ---
 
-# Errors
+# Introduction
 
 Apiwork uses a unified error format. All errors share the same structure, so clients receive consistent responses regardless of where a request fails.
 
@@ -34,7 +34,7 @@ All errors render the same way:
 ```json
 {
   "layer": "contract",
-  "errors": [
+  "issues": [
     {
       "code": "field_missing",
       "detail": "Required",
@@ -46,7 +46,7 @@ All errors render the same way:
 }
 ```
 
-The `layer` field indicates which part of the system rejected the request. The `errors` array contains all issues. Clients iterate through them, display messages, or highlight fields using the path.
+The `layer` field indicates which part of the system rejected the request. The `issues` array contains all issues. Clients iterate through them, display messages, or highlight fields using the path.
 
 ## Error Layers
 
@@ -69,7 +69,7 @@ Transport-level response like "not found" or "forbidden".
 ```json
 {
   "layer": "http",
-  "errors": [
+  "issues": [
     {
       "code": "not_found",
       "detail": "Not found",
@@ -90,7 +90,7 @@ Request shape, types, or constraints don't match the contract.
 ```json
 {
   "layer": "contract",
-  "errors": [
+  "issues": [
     {
       "code": "field_missing",
       "detail": "Required",
@@ -111,7 +111,7 @@ Request was valid but failed model validation or business rules.
 ```json
 {
   "layer": "domain",
-  "errors": [
+  "issues": [
     {
       "code": "min",
       "detail": "Too short",
@@ -129,7 +129,7 @@ Client can only fix by changing the data itself.
 
 Each layer has dedicated documentation:
 
-- [HTTP Errors](./http-errors.md) — `respond_with_error` and 20 built-in codes
-- [Contract Errors](./contract-errors.md) — 28 codes for body, filter, sort, pagination
-- [Domain Errors](./domain-errors.md) — 23 codes mapped from Rails validations
+- [HTTP Issues](./http-issues.md) — `respond_with_error` and 20 built-in codes
+- [Contract Issues](./contract-issues.md) — 28 codes for body, filter, sort, pagination
+- [Domain Issues](./domain-issues.md) — 23 codes mapped from Rails validations
 - [Custom Errors](./custom-errors.md) — Register your own error codes

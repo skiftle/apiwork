@@ -108,7 +108,7 @@ RSpec.describe 'Filtering API', type: :request do
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
-      expect(json['errors']).to be_present
+      expect(json['issues']).to be_present
     end
 
     it 'handles invalid operator gracefully' do
@@ -116,7 +116,7 @@ RSpec.describe 'Filtering API', type: :request do
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
-      expect(json['errors']).to be_present
+      expect(json['issues']).to be_present
     end
   end
 end

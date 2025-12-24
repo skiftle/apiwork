@@ -17,8 +17,8 @@ RSpec.describe 'Min and Max validation on params', type: :request do
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      expect(json['errors']).to be_present
-      issue = json['errors'].find { |i| i['path'].include?('name') }
+      expect(json['issues']).to be_present
+      issue = json['issues'].find { |i| i['path'].include?('name') }
       expect(issue).to be_present
       expect(issue['code']).to eq('string_too_short')
     end
@@ -67,8 +67,8 @@ RSpec.describe 'Min and Max validation on params', type: :request do
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      expect(json['errors']).to be_present
-      issue = json['errors'].find { |i| i['path'].include?('name') }
+      expect(json['issues']).to be_present
+      issue = json['issues'].find { |i| i['path'].include?('name') }
       expect(issue['code']).to eq('string_too_long')
     end
 
@@ -126,7 +126,7 @@ RSpec.describe 'Min and Max validation on params', type: :request do
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      issue = json['errors'].find { |i| i['path'].include?('name') }
+      issue = json['issues'].find { |i| i['path'].include?('name') }
       expect(issue['code']).to eq('string_too_short')
     end
 
@@ -136,7 +136,7 @@ RSpec.describe 'Min and Max validation on params', type: :request do
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      issue = json['errors'].find { |i| i['path'].include?('name') }
+      issue = json['issues'].find { |i| i['path'].include?('name') }
       expect(issue['code']).to eq('string_too_long')
     end
 
@@ -157,7 +157,7 @@ RSpec.describe 'Min and Max validation on params', type: :request do
       post '/api/v1/users', params: { user: { name: 'X', email: 'test@example.com' } }, as: :json
 
       json = JSON.parse(response.body)
-      issue = json['errors'].find { |i| i['path'].include?('name') }
+      issue = json['issues'].find { |i| i['path'].include?('name') }
 
       expect(issue['code']).to eq('string_too_short')
       expect(issue['path']).to eq(%w[user name])
@@ -167,7 +167,7 @@ RSpec.describe 'Min and Max validation on params', type: :request do
       post '/api/v1/users', params: { user: { name: 'X' * 51, email: 'test@example.com' } }, as: :json
 
       json = JSON.parse(response.body)
-      issue = json['errors'].find { |i| i['path'].include?('name') }
+      issue = json['issues'].find { |i| i['path'].include?('name') }
 
       expect(issue['code']).to eq('string_too_long')
       expect(issue['path']).to eq(%w[user name])

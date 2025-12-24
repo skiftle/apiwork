@@ -89,7 +89,7 @@ export const StringFilterSchema = z.object({
 });
 
 export const ErrorResponseSchema = z.object({
-  errors: z.array(ErrorSchema),
+  issues: z.array(ErrorSchema),
   layer: LayerSchema
 });
 
@@ -111,13 +111,13 @@ export const ProjectsIndexRequestSchema = z.object({
   query: ProjectsIndexRequestQuerySchema
 });
 
-export const ProjectsIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional(), projects: z.array(ProjectSchema).optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
+export const ProjectsIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional(), projects: z.array(ProjectSchema).optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
 
 export const ProjectsIndexResponseSchema = z.object({
   body: ProjectsIndexResponseBodySchema
 });
 
-export const ProjectsShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), project: ProjectSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
+export const ProjectsShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), project: ProjectSchema }), z.object({ issues: z.array(ErrorSchema).optional() })]);
 
 export const ProjectsShowResponseSchema = z.object({
   body: ProjectsShowResponseBodySchema
@@ -131,7 +131,7 @@ export const ProjectsCreateRequestSchema = z.object({
   body: ProjectsCreateRequestBodySchema
 });
 
-export const ProjectsCreateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), project: ProjectSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
+export const ProjectsCreateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), project: ProjectSchema }), z.object({ issues: z.array(ErrorSchema).optional() })]);
 
 export const ProjectsCreateResponseSchema = z.object({
   body: ProjectsCreateResponseBodySchema
@@ -145,7 +145,7 @@ export const ProjectsUpdateRequestSchema = z.object({
   body: ProjectsUpdateRequestBodySchema
 });
 
-export const ProjectsUpdateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), project: ProjectSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
+export const ProjectsUpdateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), project: ProjectSchema }), z.object({ issues: z.array(ErrorSchema).optional() })]);
 
 export const ProjectsUpdateResponseSchema = z.object({
   body: ProjectsUpdateResponseBodySchema
@@ -162,7 +162,7 @@ export interface Error {
 }
 
 export interface ErrorResponse {
-  errors: Error[];
+  issues: Error[];
   layer: Layer;
 }
 
@@ -272,7 +272,7 @@ export interface ProjectsCreateResponse {
   body: ProjectsCreateResponseBody;
 }
 
-export type ProjectsCreateResponseBody = { errors?: Error[] } | { meta?: object; project: Project };
+export type ProjectsCreateResponseBody = { issues?: Error[] } | { meta?: object; project: Project };
 
 export type ProjectsDestroyResponse = never;
 
@@ -290,13 +290,13 @@ export interface ProjectsIndexResponse {
   body: ProjectsIndexResponseBody;
 }
 
-export type ProjectsIndexResponseBody = { errors?: Error[] } | { meta?: object; pagination?: OffsetPagination; projects?: Project[] };
+export type ProjectsIndexResponseBody = { issues?: Error[] } | { meta?: object; pagination?: OffsetPagination; projects?: Project[] };
 
 export interface ProjectsShowResponse {
   body: ProjectsShowResponseBody;
 }
 
-export type ProjectsShowResponseBody = { errors?: Error[] } | { meta?: object; project: Project };
+export type ProjectsShowResponseBody = { issues?: Error[] } | { meta?: object; project: Project };
 
 export interface ProjectsUpdateRequest {
   body: ProjectsUpdateRequestBody;
@@ -310,7 +310,7 @@ export interface ProjectsUpdateResponse {
   body: ProjectsUpdateResponseBody;
 }
 
-export type ProjectsUpdateResponseBody = { errors?: Error[] } | { meta?: object; project: Project };
+export type ProjectsUpdateResponseBody = { issues?: Error[] } | { meta?: object; project: Project };
 
 export type SortDirection = 'asc' | 'desc';
 

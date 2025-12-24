@@ -7,7 +7,7 @@ export interface Error {
 }
 
 export interface ErrorResponse {
-  errors: Error[];
+  issues: Error[];
   layer: Layer;
 }
 
@@ -64,7 +64,7 @@ export interface InvoicesArchiveResponse {
   body: InvoicesArchiveResponseBody;
 }
 
-export type InvoicesArchiveResponseBody = { errors?: Error[] } | { invoice: Invoice; meta?: object };
+export type InvoicesArchiveResponseBody = { invoice: Invoice; meta?: object } | { issues?: Error[] };
 
 export interface InvoicesCreateRequest {
   body: InvoicesCreateRequestBody;
@@ -78,7 +78,7 @@ export interface InvoicesCreateResponse {
   body: InvoicesCreateResponseBody;
 }
 
-export type InvoicesCreateResponseBody = { errors?: Error[] } | { invoice: Invoice; meta?: object };
+export type InvoicesCreateResponseBody = { invoice: Invoice; meta?: object } | { issues?: Error[] };
 
 export type InvoicesDestroyResponse = never;
 
@@ -96,13 +96,13 @@ export interface InvoicesIndexResponse {
   body: InvoicesIndexResponseBody;
 }
 
-export type InvoicesIndexResponseBody = { errors?: Error[] } | { invoices?: Invoice[]; meta?: object; pagination?: OffsetPagination };
+export type InvoicesIndexResponseBody = { invoices?: Invoice[]; meta?: object; pagination?: OffsetPagination } | { issues?: Error[] };
 
 export interface InvoicesShowResponse {
   body: InvoicesShowResponseBody;
 }
 
-export type InvoicesShowResponseBody = { errors?: Error[] } | { invoice: Invoice; meta?: object };
+export type InvoicesShowResponseBody = { invoice: Invoice; meta?: object } | { issues?: Error[] };
 
 export interface InvoicesUpdateRequest {
   body: InvoicesUpdateRequestBody;
@@ -116,7 +116,7 @@ export interface InvoicesUpdateResponse {
   body: InvoicesUpdateResponseBody;
 }
 
-export type InvoicesUpdateResponseBody = { errors?: Error[] } | { invoice: Invoice; meta?: object };
+export type InvoicesUpdateResponseBody = { invoice: Invoice; meta?: object } | { issues?: Error[] };
 
 export type Layer = 'contract' | 'domain' | 'http';
 

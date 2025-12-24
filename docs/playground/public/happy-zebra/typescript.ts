@@ -45,7 +45,7 @@ export interface CommentsCreateResponse {
   body: CommentsCreateResponseBody;
 }
 
-export type CommentsCreateResponseBody = { comment: Comment; meta?: object } | { errors?: Error[] };
+export type CommentsCreateResponseBody = { comment: Comment; meta?: object } | { issues?: Error[] };
 
 export type CommentsDestroyResponse = never;
 
@@ -61,13 +61,13 @@ export interface CommentsIndexResponse {
   body: CommentsIndexResponseBody;
 }
 
-export type CommentsIndexResponseBody = { comments?: Comment[]; meta?: object; pagination?: OffsetPagination } | { errors?: Error[] };
+export type CommentsIndexResponseBody = { comments?: Comment[]; meta?: object; pagination?: OffsetPagination } | { issues?: Error[] };
 
 export interface CommentsShowResponse {
   body: CommentsShowResponseBody;
 }
 
-export type CommentsShowResponseBody = { comment: Comment; meta?: object } | { errors?: Error[] };
+export type CommentsShowResponseBody = { comment: Comment; meta?: object } | { issues?: Error[] };
 
 export interface CommentsUpdateRequest {
   body: CommentsUpdateRequestBody;
@@ -81,7 +81,7 @@ export interface CommentsUpdateResponse {
   body: CommentsUpdateResponseBody;
 }
 
-export type CommentsUpdateResponseBody = { comment: Comment; meta?: object } | { errors?: Error[] };
+export type CommentsUpdateResponseBody = { comment: Comment; meta?: object } | { issues?: Error[] };
 
 export interface Error {
   code: string;
@@ -92,7 +92,7 @@ export interface Error {
 }
 
 export interface ErrorResponse {
-  errors: Error[];
+  issues: Error[];
   layer: Layer;
 }
 
@@ -153,7 +153,7 @@ export interface PostsCreateResponse {
   body: PostsCreateResponseBody;
 }
 
-export type PostsCreateResponseBody = { errors?: Error[] } | { meta?: object; post: Post };
+export type PostsCreateResponseBody = { issues?: Error[] } | { meta?: object; post: Post };
 
 export type PostsDestroyResponse = never;
 
@@ -169,13 +169,13 @@ export interface PostsIndexResponse {
   body: PostsIndexResponseBody;
 }
 
-export type PostsIndexResponseBody = { errors?: Error[] } | { meta?: object; pagination?: OffsetPagination; posts?: Post[] };
+export type PostsIndexResponseBody = { issues?: Error[] } | { meta?: object; pagination?: OffsetPagination; posts?: Post[] };
 
 export interface PostsShowResponse {
   body: PostsShowResponseBody;
 }
 
-export type PostsShowResponseBody = { errors?: Error[] } | { meta?: object; post: Post };
+export type PostsShowResponseBody = { issues?: Error[] } | { meta?: object; post: Post };
 
 export interface PostsUpdateRequest {
   body: PostsUpdateRequestBody;
@@ -189,7 +189,7 @@ export interface PostsUpdateResponse {
   body: PostsUpdateResponseBody;
 }
 
-export type PostsUpdateResponseBody = { errors?: Error[] } | { meta?: object; post: Post };
+export type PostsUpdateResponseBody = { issues?: Error[] } | { meta?: object; post: Post };
 
 export interface Profile {
   bio: null | string;
@@ -283,7 +283,7 @@ export interface UsersCreateResponse {
   body: UsersCreateResponseBody;
 }
 
-export type UsersCreateResponseBody = { errors?: Error[] } | { meta?: object; user: User };
+export type UsersCreateResponseBody = { issues?: Error[] } | { meta?: object; user: User };
 
 export type UsersDestroyResponse = never;
 
@@ -301,13 +301,13 @@ export interface UsersIndexResponse {
   body: UsersIndexResponseBody;
 }
 
-export type UsersIndexResponseBody = { errors?: Error[] } | { meta?: object; pagination?: OffsetPagination; users?: User[] };
+export type UsersIndexResponseBody = { issues?: Error[] } | { meta?: object; pagination?: OffsetPagination; users?: User[] };
 
 export interface UsersShowResponse {
   body: UsersShowResponseBody;
 }
 
-export type UsersShowResponseBody = { errors?: Error[] } | { meta?: object; user: User };
+export type UsersShowResponseBody = { issues?: Error[] } | { meta?: object; user: User };
 
 export interface UsersUpdateRequest {
   body: UsersUpdateRequestBody;
@@ -321,4 +321,4 @@ export interface UsersUpdateResponse {
   body: UsersUpdateResponseBody;
 }
 
-export type UsersUpdateResponseBody = { errors?: Error[] } | { meta?: object; user: User };
+export type UsersUpdateResponseBody = { issues?: Error[] } | { meta?: object; user: User };

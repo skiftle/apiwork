@@ -17,7 +17,7 @@
     "status": 422,
     "body": {
       "layer": "domain",
-      "errors": [
+      "issues": [
         {
           "code": "max",
           "detail": "Too long",

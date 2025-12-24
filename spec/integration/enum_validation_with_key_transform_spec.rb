@@ -11,11 +11,11 @@ RSpec.describe 'Enum output validation with key transformation', type: :request 
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
-      expect(json['errors']).to be_an(Array)
+      expect(json['issues']).to be_an(Array)
 
       # Error paths use canonical field names (snake_case), not transformed names
       # This is consistent with error paths being schema-level, not serialization-level
-      fdow_error = json['errors'].find { |e| e['path']&.last == 'first_day_of_week' }
+      fdow_error = json['issues'].find { |e| e['path']&.last == 'first_day_of_week' }
       expect(fdow_error).not_to be_nil
       expect(fdow_error['code']).to eq('value_invalid')
       expect(fdow_error['detail']).to eq('Invalid value')

@@ -51,7 +51,7 @@ param :count, type: :integer, default: 0
 param :tags, type: :array, default: []
 ```
 
-When validation fails, Apiwork returns a [contract error](../errors/contract-errors.md) with codes like `field_missing` or `value_null`.
+When validation fails, Apiwork returns a [contract error](../errors/contract-issues.md) with codes like `field_missing` or `value_null`.
 
 ## Enums
 
@@ -96,7 +96,7 @@ Or array size:
 param :tags, type: :array, min: 1, max: 10
 ```
 
-See [contract errors](../errors/contract-errors.md) for the validation error codes (`string_too_short`, `array_too_large`, etc.).
+See [contract errors](../errors/contract-issues.md) for the validation error codes (`string_too_short`, `array_too_large`, etc.).
 
 ## Arrays
 

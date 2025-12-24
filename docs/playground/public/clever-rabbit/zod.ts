@@ -71,7 +71,7 @@ export const StringFilterSchema = z.object({
 });
 
 export const ErrorResponseSchema = z.object({
-  errors: z.array(ErrorSchema),
+  issues: z.array(ErrorSchema),
   layer: LayerSchema
 });
 
@@ -92,13 +92,13 @@ export const OrdersIndexRequestSchema = z.object({
   query: OrdersIndexRequestQuerySchema
 });
 
-export const OrdersIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), orders: z.array(OrderSchema).optional(), pagination: OffsetPaginationSchema.optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
+export const OrdersIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), orders: z.array(OrderSchema).optional(), pagination: OffsetPaginationSchema.optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
 
 export const OrdersIndexResponseSchema = z.object({
   body: OrdersIndexResponseBodySchema
 });
 
-export const OrdersShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), order: OrderSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
+export const OrdersShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), order: OrderSchema }), z.object({ issues: z.array(ErrorSchema).optional() })]);
 
 export const OrdersShowResponseSchema = z.object({
   body: OrdersShowResponseBodySchema
@@ -112,7 +112,7 @@ export const OrdersCreateRequestSchema = z.object({
   body: OrdersCreateRequestBodySchema
 });
 
-export const OrdersCreateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), order: OrderSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
+export const OrdersCreateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), order: OrderSchema }), z.object({ issues: z.array(ErrorSchema).optional() })]);
 
 export const OrdersCreateResponseSchema = z.object({
   body: OrdersCreateResponseBodySchema
@@ -126,7 +126,7 @@ export const OrdersUpdateRequestSchema = z.object({
   body: OrdersUpdateRequestBodySchema
 });
 
-export const OrdersUpdateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), order: OrderSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
+export const OrdersUpdateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), order: OrderSchema }), z.object({ issues: z.array(ErrorSchema).optional() })]);
 
 export const OrdersUpdateResponseSchema = z.object({
   body: OrdersUpdateResponseBodySchema
@@ -143,7 +143,7 @@ export interface Error {
 }
 
 export interface ErrorResponse {
-  errors: Error[];
+  issues: Error[];
   layer: Layer;
 }
 
@@ -218,7 +218,7 @@ export interface OrdersCreateResponse {
   body: OrdersCreateResponseBody;
 }
 
-export type OrdersCreateResponseBody = { errors?: Error[] } | { meta?: object; order: Order };
+export type OrdersCreateResponseBody = { issues?: Error[] } | { meta?: object; order: Order };
 
 export type OrdersDestroyResponse = never;
 
@@ -236,13 +236,13 @@ export interface OrdersIndexResponse {
   body: OrdersIndexResponseBody;
 }
 
-export type OrdersIndexResponseBody = { errors?: Error[] } | { meta?: object; orders?: Order[]; pagination?: OffsetPagination };
+export type OrdersIndexResponseBody = { issues?: Error[] } | { meta?: object; orders?: Order[]; pagination?: OffsetPagination };
 
 export interface OrdersShowResponse {
   body: OrdersShowResponseBody;
 }
 
-export type OrdersShowResponseBody = { errors?: Error[] } | { meta?: object; order: Order };
+export type OrdersShowResponseBody = { issues?: Error[] } | { meta?: object; order: Order };
 
 export interface OrdersUpdateRequest {
   body: OrdersUpdateRequestBody;
@@ -256,7 +256,7 @@ export interface OrdersUpdateResponse {
   body: OrdersUpdateResponseBody;
 }
 
-export type OrdersUpdateResponseBody = { errors?: Error[] } | { meta?: object; order: Order };
+export type OrdersUpdateResponseBody = { issues?: Error[] } | { meta?: object; order: Order };
 
 export type SortDirection = 'asc' | 'desc';
 

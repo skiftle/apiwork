@@ -159,7 +159,7 @@ RSpec.describe 'Association Sorting API', type: :request do
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
-      expect(json['errors']).to be_present
+      expect(json['issues']).to be_present
     end
 
     it 'handles non-sortable association gracefully' do
@@ -172,9 +172,9 @@ RSpec.describe 'Association Sorting API', type: :request do
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
-      expect(json['errors']).to be_present
+      expect(json['issues']).to be_present
       # Contract validation returns "Unknown field" since the field isn't in the contract
-      expect(json['errors'].first['detail']).to match(/Invalid type|not sortable|Unknown field/)
+      expect(json['issues'].first['detail']).to match(/Invalid type|not sortable|Unknown field/)
     end
   end
 end

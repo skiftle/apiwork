@@ -57,7 +57,7 @@ export const ProfileUpdatePayloadSchema = z.object({
 });
 
 export const ErrorResponseSchema = z.object({
-  errors: z.array(ErrorSchema),
+  issues: z.array(ErrorSchema),
   layer: LayerSchema
 });
 
@@ -69,13 +69,13 @@ export const ProfilesIndexRequestSchema = z.object({
   query: ProfilesIndexRequestQuerySchema
 });
 
-export const ProfilesIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional(), profiles: z.array(ProfileSchema).optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
+export const ProfilesIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional(), profiles: z.array(ProfileSchema).optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
 
 export const ProfilesIndexResponseSchema = z.object({
   body: ProfilesIndexResponseBodySchema
 });
 
-export const ProfilesShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), profile: ProfileSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
+export const ProfilesShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), profile: ProfileSchema }), z.object({ issues: z.array(ErrorSchema).optional() })]);
 
 export const ProfilesShowResponseSchema = z.object({
   body: ProfilesShowResponseBodySchema
@@ -89,7 +89,7 @@ export const ProfilesCreateRequestSchema = z.object({
   body: ProfilesCreateRequestBodySchema
 });
 
-export const ProfilesCreateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), profile: ProfileSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
+export const ProfilesCreateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), profile: ProfileSchema }), z.object({ issues: z.array(ErrorSchema).optional() })]);
 
 export const ProfilesCreateResponseSchema = z.object({
   body: ProfilesCreateResponseBodySchema
@@ -103,7 +103,7 @@ export const ProfilesUpdateRequestSchema = z.object({
   body: ProfilesUpdateRequestBodySchema
 });
 
-export const ProfilesUpdateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), profile: ProfileSchema }), z.object({ errors: z.array(ErrorSchema).optional() })]);
+export const ProfilesUpdateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), profile: ProfileSchema }), z.object({ issues: z.array(ErrorSchema).optional() })]);
 
 export const ProfilesUpdateResponseSchema = z.object({
   body: ProfilesUpdateResponseBodySchema
@@ -120,7 +120,7 @@ export interface Error {
 }
 
 export interface ErrorResponse {
-  errors: Error[];
+  issues: Error[];
   layer: Layer;
 }
 
@@ -184,7 +184,7 @@ export interface ProfilesCreateResponse {
   body: ProfilesCreateResponseBody;
 }
 
-export type ProfilesCreateResponseBody = { errors?: Error[] } | { meta?: object; profile: Profile };
+export type ProfilesCreateResponseBody = { issues?: Error[] } | { meta?: object; profile: Profile };
 
 export type ProfilesDestroyResponse = never;
 
@@ -200,13 +200,13 @@ export interface ProfilesIndexResponse {
   body: ProfilesIndexResponseBody;
 }
 
-export type ProfilesIndexResponseBody = { errors?: Error[] } | { meta?: object; pagination?: OffsetPagination; profiles?: Profile[] };
+export type ProfilesIndexResponseBody = { issues?: Error[] } | { meta?: object; pagination?: OffsetPagination; profiles?: Profile[] };
 
 export interface ProfilesShowResponse {
   body: ProfilesShowResponseBody;
 }
 
-export type ProfilesShowResponseBody = { errors?: Error[] } | { meta?: object; profile: Profile };
+export type ProfilesShowResponseBody = { issues?: Error[] } | { meta?: object; profile: Profile };
 
 export interface ProfilesUpdateRequest {
   body: ProfilesUpdateRequestBody;
@@ -220,4 +220,4 @@ export interface ProfilesUpdateResponse {
   body: ProfilesUpdateResponseBody;
 }
 
-export type ProfilesUpdateResponseBody = { errors?: Error[] } | { meta?: object; profile: Profile };
+export type ProfilesUpdateResponseBody = { issues?: Error[] } | { meta?: object; profile: Profile };

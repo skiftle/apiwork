@@ -142,7 +142,7 @@ export const NullableDecimalFilterSchema = z.object({
 });
 
 export const ErrorResponseSchema = z.object({
-  errors: z.array(ErrorSchema),
+  issues: z.array(ErrorSchema),
   layer: LayerSchema
 });
 
@@ -188,13 +188,13 @@ export const ArticlesIndexRequestSchema = z.object({
   query: ArticlesIndexRequestQuerySchema
 });
 
-export const ArticlesIndexResponseBodySchema = z.union([z.object({ articles: z.array(ArticleSchema).optional(), meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
+export const ArticlesIndexResponseBodySchema = z.union([z.object({ articles: z.array(ArticleSchema).optional(), meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
 
 export const ArticlesIndexResponseSchema = z.object({
   body: ArticlesIndexResponseBodySchema
 });
 
-export const ArticlesShowResponseBodySchema = z.union([z.object({ article: ArticleSchema, meta: z.object({}).optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
+export const ArticlesShowResponseBodySchema = z.union([z.object({ article: ArticleSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
 
 export const ArticlesShowResponseSchema = z.object({
   body: ArticlesShowResponseBodySchema
@@ -208,7 +208,7 @@ export const ArticlesCreateRequestSchema = z.object({
   body: ArticlesCreateRequestBodySchema
 });
 
-export const ArticlesCreateResponseBodySchema = z.union([z.object({ article: ArticleSchema, meta: z.object({}).optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
+export const ArticlesCreateResponseBodySchema = z.union([z.object({ article: ArticleSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
 
 export const ArticlesCreateResponseSchema = z.object({
   body: ArticlesCreateResponseBodySchema
@@ -222,7 +222,7 @@ export const ArticlesUpdateRequestSchema = z.object({
   body: ArticlesUpdateRequestBodySchema
 });
 
-export const ArticlesUpdateResponseBodySchema = z.union([z.object({ article: ArticleSchema, meta: z.object({}).optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
+export const ArticlesUpdateResponseBodySchema = z.union([z.object({ article: ArticleSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
 
 export const ArticlesUpdateResponseSchema = z.object({
   body: ArticlesUpdateResponseBodySchema
@@ -297,7 +297,7 @@ export interface ArticlesCreateResponse {
   body: ArticlesCreateResponseBody;
 }
 
-export type ArticlesCreateResponseBody = { article: Article; meta?: object } | { errors?: Error[] };
+export type ArticlesCreateResponseBody = { article: Article; meta?: object } | { issues?: Error[] };
 
 export type ArticlesDestroyResponse = never;
 
@@ -315,13 +315,13 @@ export interface ArticlesIndexResponse {
   body: ArticlesIndexResponseBody;
 }
 
-export type ArticlesIndexResponseBody = { articles?: Article[]; meta?: object; pagination?: OffsetPagination } | { errors?: Error[] };
+export type ArticlesIndexResponseBody = { articles?: Article[]; meta?: object; pagination?: OffsetPagination } | { issues?: Error[] };
 
 export interface ArticlesShowResponse {
   body: ArticlesShowResponseBody;
 }
 
-export type ArticlesShowResponseBody = { article: Article; meta?: object } | { errors?: Error[] };
+export type ArticlesShowResponseBody = { article: Article; meta?: object } | { issues?: Error[] };
 
 export interface ArticlesUpdateRequest {
   body: ArticlesUpdateRequestBody;
@@ -335,7 +335,7 @@ export interface ArticlesUpdateResponse {
   body: ArticlesUpdateResponseBody;
 }
 
-export type ArticlesUpdateResponseBody = { article: Article; meta?: object } | { errors?: Error[] };
+export type ArticlesUpdateResponseBody = { article: Article; meta?: object } | { issues?: Error[] };
 
 export interface DateFilter {
   between?: DateFilterBetween;
@@ -376,7 +376,7 @@ export interface Error {
 }
 
 export interface ErrorResponse {
-  errors: Error[];
+  issues: Error[];
   layer: Layer;
 }
 

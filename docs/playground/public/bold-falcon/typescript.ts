@@ -65,7 +65,7 @@ export interface ArticlesCreateResponse {
   body: ArticlesCreateResponseBody;
 }
 
-export type ArticlesCreateResponseBody = { article: Article; meta?: object } | { errors?: Error[] };
+export type ArticlesCreateResponseBody = { article: Article; meta?: object } | { issues?: Error[] };
 
 export type ArticlesDestroyResponse = never;
 
@@ -83,13 +83,13 @@ export interface ArticlesIndexResponse {
   body: ArticlesIndexResponseBody;
 }
 
-export type ArticlesIndexResponseBody = { articles?: Article[]; meta?: object; pagination?: OffsetPagination } | { errors?: Error[] };
+export type ArticlesIndexResponseBody = { articles?: Article[]; meta?: object; pagination?: OffsetPagination } | { issues?: Error[] };
 
 export interface ArticlesShowResponse {
   body: ArticlesShowResponseBody;
 }
 
-export type ArticlesShowResponseBody = { article: Article; meta?: object } | { errors?: Error[] };
+export type ArticlesShowResponseBody = { article: Article; meta?: object } | { issues?: Error[] };
 
 export interface ArticlesUpdateRequest {
   body: ArticlesUpdateRequestBody;
@@ -103,7 +103,7 @@ export interface ArticlesUpdateResponse {
   body: ArticlesUpdateResponseBody;
 }
 
-export type ArticlesUpdateResponseBody = { article: Article; meta?: object } | { errors?: Error[] };
+export type ArticlesUpdateResponseBody = { article: Article; meta?: object } | { issues?: Error[] };
 
 export interface DateFilter {
   between?: DateFilterBetween;
@@ -144,7 +144,7 @@ export interface Error {
 }
 
 export interface ErrorResponse {
-  errors: Error[];
+  issues: Error[];
   layer: Layer;
 }
 

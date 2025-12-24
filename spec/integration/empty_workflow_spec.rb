@@ -43,7 +43,7 @@ RSpec.describe 'empty workflow', type: :request do
 
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
-        expect(json['errors'].first['code']).to eq('value_null')
+        expect(json['issues'].first['code']).to eq('value_null')
       end
     end
 
@@ -97,7 +97,7 @@ RSpec.describe 'empty workflow', type: :request do
 
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
-        expect(json['errors'].first['code']).to eq('value_null')
+        expect(json['issues'].first['code']).to eq('value_null')
       end
     end
   end

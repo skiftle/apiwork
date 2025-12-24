@@ -37,7 +37,7 @@ export interface ContactsCreateResponse {
   body: ContactsCreateResponseBody;
 }
 
-export type ContactsCreateResponseBody = { contact: Contact; meta?: object } | { errors?: Error[] };
+export type ContactsCreateResponseBody = { contact: Contact; meta?: object } | { issues?: Error[] };
 
 export type ContactsDestroyResponse = never;
 
@@ -53,13 +53,13 @@ export interface ContactsIndexResponse {
   body: ContactsIndexResponseBody;
 }
 
-export type ContactsIndexResponseBody = { contacts?: Contact[]; meta?: object; pagination?: OffsetPagination } | { errors?: Error[] };
+export type ContactsIndexResponseBody = { contacts?: Contact[]; meta?: object; pagination?: OffsetPagination } | { issues?: Error[] };
 
 export interface ContactsShowResponse {
   body: ContactsShowResponseBody;
 }
 
-export type ContactsShowResponseBody = { contact: Contact; meta?: object } | { errors?: Error[] };
+export type ContactsShowResponseBody = { contact: Contact; meta?: object } | { issues?: Error[] };
 
 export interface ContactsUpdateRequest {
   body: ContactsUpdateRequestBody;
@@ -73,7 +73,7 @@ export interface ContactsUpdateResponse {
   body: ContactsUpdateResponseBody;
 }
 
-export type ContactsUpdateResponseBody = { contact: Contact; meta?: object } | { errors?: Error[] };
+export type ContactsUpdateResponseBody = { contact: Contact; meta?: object } | { issues?: Error[] };
 
 export interface Error {
   code: string;
@@ -84,7 +84,7 @@ export interface Error {
 }
 
 export interface ErrorResponse {
-  errors: Error[];
+  issues: Error[];
   layer: Layer;
 }
 

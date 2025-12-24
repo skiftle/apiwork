@@ -15,7 +15,7 @@
     "status": 400,
     "body": {
       "layer": "contract",
-      "errors": [
+      "issues": [
         {
           "code": "field_unknown",
           "detail": "Unknown field",

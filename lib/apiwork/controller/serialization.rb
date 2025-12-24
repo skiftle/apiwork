@@ -6,7 +6,7 @@ module Apiwork
       extend ActiveSupport::Concern
 
       included do
-        rescue_from Apiwork::ConstraintError do |error|
+        rescue_from Apiwork::ContractError, Apiwork::DomainError do |error|
           render_error error.issues, layer: error.layer, status: error.error_code.status
         end
       end

@@ -207,7 +207,7 @@ Content-Type: application/json
 ```json
 {
   "layer": "domain",
-  "errors": [
+  "issues": [
     {
       "code": "invalid",
       "detail": "Invalid",
@@ -246,7 +246,7 @@ Content-Type: application/json
 ```json
 {
   "layer": "contract",
-  "errors": [
+  "issues": [
     {
       "code": "field_missing",
       "detail": "Required",
@@ -305,7 +305,7 @@ Content-Type: application/json
 ```json
 {
   "layer": "domain",
-  "errors": [
+  "issues": [
     {
       "code": "max",
       "detail": "Too long",
@@ -436,7 +436,7 @@ Content-Type: application/json
 ```json
 {
   "layer": "domain",
-  "errors": [
+  "issues": [
     {
       "code": "required",
       "detail": "Required",

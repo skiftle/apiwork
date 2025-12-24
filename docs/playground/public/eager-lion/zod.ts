@@ -79,7 +79,7 @@ export const StringFilterSchema = z.object({
 });
 
 export const ErrorResponseSchema = z.object({
-  errors: z.array(ErrorSchema),
+  issues: z.array(ErrorSchema),
   layer: LayerSchema
 });
 
@@ -101,13 +101,13 @@ export const InvoicesIndexRequestSchema = z.object({
   query: InvoicesIndexRequestQuerySchema
 });
 
-export const InvoicesIndexResponseBodySchema = z.union([z.object({ invoices: z.array(InvoiceSchema).optional(), meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
+export const InvoicesIndexResponseBodySchema = z.union([z.object({ invoices: z.array(InvoiceSchema).optional(), meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
 
 export const InvoicesIndexResponseSchema = z.object({
   body: InvoicesIndexResponseBodySchema
 });
 
-export const InvoicesShowResponseBodySchema = z.union([z.object({ invoice: InvoiceSchema, meta: z.object({}).optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
+export const InvoicesShowResponseBodySchema = z.union([z.object({ invoice: InvoiceSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
 
 export const InvoicesShowResponseSchema = z.object({
   body: InvoicesShowResponseBodySchema
@@ -121,7 +121,7 @@ export const InvoicesCreateRequestSchema = z.object({
   body: InvoicesCreateRequestBodySchema
 });
 
-export const InvoicesCreateResponseBodySchema = z.union([z.object({ invoice: InvoiceSchema, meta: z.object({}).optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
+export const InvoicesCreateResponseBodySchema = z.union([z.object({ invoice: InvoiceSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
 
 export const InvoicesCreateResponseSchema = z.object({
   body: InvoicesCreateResponseBodySchema
@@ -135,7 +135,7 @@ export const InvoicesUpdateRequestSchema = z.object({
   body: InvoicesUpdateRequestBodySchema
 });
 
-export const InvoicesUpdateResponseBodySchema = z.union([z.object({ invoice: InvoiceSchema, meta: z.object({}).optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
+export const InvoicesUpdateResponseBodySchema = z.union([z.object({ invoice: InvoiceSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
 
 export const InvoicesUpdateResponseSchema = z.object({
   body: InvoicesUpdateResponseBodySchema
@@ -143,7 +143,7 @@ export const InvoicesUpdateResponseSchema = z.object({
 
 export const InvoicesDestroyResponse = z.never();
 
-export const InvoicesArchiveResponseBodySchema = z.union([z.object({ invoice: InvoiceSchema, meta: z.object({}).optional() }), z.object({ errors: z.array(ErrorSchema).optional() })]);
+export const InvoicesArchiveResponseBodySchema = z.union([z.object({ invoice: InvoiceSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
 
 export const InvoicesArchiveResponseSchema = z.object({
   body: InvoicesArchiveResponseBodySchema
@@ -158,7 +158,7 @@ export interface Error {
 }
 
 export interface ErrorResponse {
-  errors: Error[];
+  issues: Error[];
   layer: Layer;
 }
 
@@ -215,7 +215,7 @@ export interface InvoicesArchiveResponse {
   body: InvoicesArchiveResponseBody;
 }
 
-export type InvoicesArchiveResponseBody = { errors?: Error[] } | { invoice: Invoice; meta?: object };
+export type InvoicesArchiveResponseBody = { invoice: Invoice; meta?: object } | { issues?: Error[] };
 
 export interface InvoicesCreateRequest {
   body: InvoicesCreateRequestBody;
@@ -229,7 +229,7 @@ export interface InvoicesCreateResponse {
   body: InvoicesCreateResponseBody;
 }
 
-export type InvoicesCreateResponseBody = { errors?: Error[] } | { invoice: Invoice; meta?: object };
+export type InvoicesCreateResponseBody = { invoice: Invoice; meta?: object } | { issues?: Error[] };
 
 export type InvoicesDestroyResponse = never;
 
@@ -247,13 +247,13 @@ export interface InvoicesIndexResponse {
   body: InvoicesIndexResponseBody;
 }
 
-export type InvoicesIndexResponseBody = { errors?: Error[] } | { invoices?: Invoice[]; meta?: object; pagination?: OffsetPagination };
+export type InvoicesIndexResponseBody = { invoices?: Invoice[]; meta?: object; pagination?: OffsetPagination } | { issues?: Error[] };
 
 export interface InvoicesShowResponse {
   body: InvoicesShowResponseBody;
 }
 
-export type InvoicesShowResponseBody = { errors?: Error[] } | { invoice: Invoice; meta?: object };
+export type InvoicesShowResponseBody = { invoice: Invoice; meta?: object } | { issues?: Error[] };
 
 export interface InvoicesUpdateRequest {
   body: InvoicesUpdateRequestBody;
@@ -267,7 +267,7 @@ export interface InvoicesUpdateResponse {
   body: InvoicesUpdateResponseBody;
 }
 
-export type InvoicesUpdateResponseBody = { errors?: Error[] } | { invoice: Invoice; meta?: object };
+export type InvoicesUpdateResponseBody = { invoice: Invoice; meta?: object } | { issues?: Error[] };
 
 export type Layer = 'contract' | 'domain' | 'http';
 

@@ -35,8 +35,8 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      expect(json['errors']).to be_present
-      issue = json['errors'].find { |i| i['path'].include?('verified') }
+      expect(json['issues']).to be_present
+      issue = json['issues'].find { |i| i['path'].include?('verified') }
       expect(issue).to be_present
       expect(issue['code']).to eq('field_unknown')
     end
@@ -51,8 +51,8 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      expect(json['errors']).to be_present
-      issue = json['errors'].find { |i| i['path'].include?('bio') }
+      expect(json['issues']).to be_present
+      issue = json['issues'].find { |i| i['path'].include?('bio') }
       expect(issue).to be_present
       expect(issue['code']).to eq('field_unknown')
 
@@ -70,7 +70,7 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      issue = json['errors'].find { |i| i['path'].include?('bio') }
+      issue = json['issues'].find { |i| i['path'].include?('bio') }
       expect(issue).to be_present
       expect(issue['code']).to eq('field_unknown')
 
@@ -179,7 +179,7 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      issue = json['errors'].find { |i| i['path'].include?('verified') }
+      issue = json['issues'].find { |i| i['path'].include?('verified') }
       expect(issue['code']).to eq('field_unknown')
 
       # Create without verified field - should succeed
@@ -202,7 +202,7 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
 
-      issue = json['errors'].find { |i| i['path'].include?('bio') }
+      issue = json['issues'].find { |i| i['path'].include?('bio') }
       expect(issue['code']).to eq('field_unknown')
 
       # Update only verified (allowed on update)

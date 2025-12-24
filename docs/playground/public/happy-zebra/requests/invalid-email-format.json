@@ -13,7 +13,7 @@
     "status": 422,
     "body": {
       "layer": "domain",
-      "errors": [
+      "issues": [
         {
           "code": "invalid",
           "detail": "Invalid",

@@ -48,7 +48,7 @@ export interface CommentsCreateResponse {
   body: CommentsCreateResponseBody;
 }
 
-export type CommentsCreateResponseBody = { comment: Comment; meta?: object } | { errors?: Error[] };
+export type CommentsCreateResponseBody = { comment: Comment; meta?: object } | { issues?: Error[] };
 
 export interface CommentsDestroyRequest {
   query: CommentsDestroyRequestQuery;
@@ -74,7 +74,7 @@ export interface CommentsIndexResponse {
   body: CommentsIndexResponseBody;
 }
 
-export type CommentsIndexResponseBody = { comments?: Comment[]; meta?: object; pagination?: OffsetPagination } | { errors?: Error[] };
+export type CommentsIndexResponseBody = { comments?: Comment[]; meta?: object; pagination?: OffsetPagination } | { issues?: Error[] };
 
 export interface CommentsShowRequest {
   query: CommentsShowRequestQuery;
@@ -88,7 +88,7 @@ export interface CommentsShowResponse {
   body: CommentsShowResponseBody;
 }
 
-export type CommentsShowResponseBody = { comment: Comment; meta?: object } | { errors?: Error[] };
+export type CommentsShowResponseBody = { comment: Comment; meta?: object } | { issues?: Error[] };
 
 export interface CommentsUpdateRequest {
   query: CommentsUpdateRequestQuery;
@@ -107,7 +107,7 @@ export interface CommentsUpdateResponse {
   body: CommentsUpdateResponseBody;
 }
 
-export type CommentsUpdateResponseBody = { comment: Comment; meta?: object } | { errors?: Error[] };
+export type CommentsUpdateResponseBody = { comment: Comment; meta?: object } | { issues?: Error[] };
 
 export interface Error {
   code: string;
@@ -118,7 +118,7 @@ export interface Error {
 }
 
 export interface ErrorResponse {
-  errors: Error[];
+  issues: Error[];
   layer: Layer;
 }
 

@@ -155,7 +155,7 @@ module Apiwork
 
           type_registrar.type :error_response do
             param :layer, type: :layer
-            param :errors, type: :array, of: :error
+            param :issues, type: :array, of: :error
           end
         end
 

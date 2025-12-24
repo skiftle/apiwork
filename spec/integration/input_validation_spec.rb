@@ -10,8 +10,8 @@ RSpec.describe 'Input Validation' do
 
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
-        expect(json['errors']).to be_an(Array)
-        expect(json['errors']).not_to be_empty
+        expect(json['issues']).to be_an(Array)
+        expect(json['issues']).not_to be_empty
       end
     end
 
@@ -22,7 +22,7 @@ RSpec.describe 'Input Validation' do
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
 
-        title_issue = json['errors'].find { |issue| issue['pointer'] == '/post/title' }
+        title_issue = json['issues'].find { |issue| issue['pointer'] == '/post/title' }
         expect(title_issue).to be_present
         expect(title_issue['code']).to eq('field_missing')
       end
@@ -35,7 +35,7 @@ RSpec.describe 'Input Validation' do
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
 
-        published_issue = json['errors'].find { |issue| issue['pointer'] == '/post/published' }
+        published_issue = json['issues'].find { |issue| issue['pointer'] == '/post/published' }
         expect(published_issue).to be_present
         expect(published_issue['code']).to eq('type_invalid')
       end
@@ -52,9 +52,9 @@ RSpec.describe 'Input Validation' do
 
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
-        expect(json['errors'].length).to be >= 2
+        expect(json['issues'].length).to be >= 2
 
-        pointers = json['errors'].map { |issue| issue['pointer'] }
+        pointers = json['issues'].map { |issue| issue['pointer'] }
         expect(pointers).to include('/post/title')
         expect(pointers).to include('/post/published')
       end
@@ -114,7 +114,7 @@ RSpec.describe 'Input Validation' do
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
 
-        published_issue = json['errors'].find { |issue| issue['pointer'] == '/post/published' }
+        published_issue = json['issues'].find { |issue| issue['pointer'] == '/post/published' }
         expect(published_issue).to be_present
         expect(published_issue['code']).to eq('type_invalid')
       end
@@ -142,21 +142,21 @@ RSpec.describe 'Input Validation' do
       post '/api/v1/posts', params: { post: { title: nil } }, as: :json
       missing_error = JSON.parse(response.body)
 
-      expect(missing_error).to have_key('errors')
-      expect(missing_error['errors']).to be_an(Array)
-      expect(missing_error['errors'].first).to have_key('code')
-      expect(missing_error['errors'].first).to have_key('pointer')
-      expect(missing_error['errors'].first).to have_key('detail')
+      expect(missing_error).to have_key('issues')
+      expect(missing_error['issues']).to be_an(Array)
+      expect(missing_error['issues'].first).to have_key('code')
+      expect(missing_error['issues'].first).to have_key('pointer')
+      expect(missing_error['issues'].first).to have_key('detail')
 
       # Test type_mismatch error
       post '/api/v1/posts', params: { post: { title: 'Test', published: 'invalid' } }, as: :json
       type_error = JSON.parse(response.body)
 
-      expect(type_error).to have_key('errors')
-      expect(type_error['errors']).to be_an(Array)
-      expect(type_error['errors'].first).to have_key('code')
-      expect(type_error['errors'].first).to have_key('pointer')
-      expect(type_error['errors'].first).to have_key('detail')
+      expect(type_error).to have_key('issues')
+      expect(type_error['issues']).to be_an(Array)
+      expect(type_error['issues'].first).to have_key('code')
+      expect(type_error['issues'].first).to have_key('pointer')
+      expect(type_error['issues'].first).to have_key('detail')
     end
 
     it 'uses JSON pointer format for errors' do
@@ -164,7 +164,7 @@ RSpec.describe 'Input Validation' do
       json = JSON.parse(response.body)
 
       # Pointers should start with /post/ for root-level fields
-      issue = json['errors'].first
+      issue = json['issues'].first
       expect(issue['pointer']).to match(%r{^/post/})
     end
 
@@ -181,8 +181,8 @@ RSpec.describe 'Input Validation' do
       json = JSON.parse(response.body)
 
       # Should have pointer like /post/comments_attributes/0/content
-      nested_issue = json['errors'].find { |issue| issue['pointer']&.include?('comments_attributes') }
-      expect(nested_issue).to be_present if json['errors'].any?
+      nested_issue = json['issues'].find { |issue| issue['pointer']&.include?('comments_attributes') }
+      expect(nested_issue).to be_present if json['issues'].any?
     end
   end
 end

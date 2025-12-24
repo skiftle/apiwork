@@ -7,7 +7,7 @@ export interface Error {
 }
 
 export interface ErrorResponse {
-  errors: Error[];
+  issues: Error[];
   layer: Layer;
 }
 
@@ -71,7 +71,7 @@ export interface ProfilesCreateResponse {
   body: ProfilesCreateResponseBody;
 }
 
-export type ProfilesCreateResponseBody = { errors?: Error[] } | { meta?: object; profile: Profile };
+export type ProfilesCreateResponseBody = { issues?: Error[] } | { meta?: object; profile: Profile };
 
 export type ProfilesDestroyResponse = never;
 
@@ -87,13 +87,13 @@ export interface ProfilesIndexResponse {
   body: ProfilesIndexResponseBody;
 }
 
-export type ProfilesIndexResponseBody = { errors?: Error[] } | { meta?: object; pagination?: OffsetPagination; profiles?: Profile[] };
+export type ProfilesIndexResponseBody = { issues?: Error[] } | { meta?: object; pagination?: OffsetPagination; profiles?: Profile[] };
 
 export interface ProfilesShowResponse {
   body: ProfilesShowResponseBody;
 }
 
-export type ProfilesShowResponseBody = { errors?: Error[] } | { meta?: object; profile: Profile };
+export type ProfilesShowResponseBody = { issues?: Error[] } | { meta?: object; profile: Profile };
 
 export interface ProfilesUpdateRequest {
   body: ProfilesUpdateRequestBody;
@@ -107,4 +107,4 @@ export interface ProfilesUpdateResponse {
   body: ProfilesUpdateResponseBody;
 }
 
-export type ProfilesUpdateResponseBody = { errors?: Error[] } | { meta?: object; profile: Profile };
+export type ProfilesUpdateResponseBody = { issues?: Error[] } | { meta?: object; profile: Profile };

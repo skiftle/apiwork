@@ -347,7 +347,7 @@ Content-Type: application/json
 ```json
 {
   "layer": "contract",
-  "errors": [
+  "issues": [
     {
       "code": "field_missing",
       "detail": "Required",

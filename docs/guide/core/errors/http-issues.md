@@ -20,9 +20,9 @@ respond_with_error :forbidden
 
 ```json
 {
-  "errors": [
+  "layer": "http",
+  "issues": [
     {
-      "layer": "http",
       "code": "forbidden",
       "detail": "Forbidden",
       "path": [],
@@ -125,9 +125,9 @@ end
 
 ```json
 {
-  "errors": [
+  "layer": "http",
+  "issues": [
     {
-      "layer": "http",
       "code": "not_found",
       "detail": "Not found",
       "path": ["id"],
@@ -158,9 +158,9 @@ end
 
 ```json
 {
-  "errors": [
+  "layer": "http",
+  "issues": [
     {
-      "layer": "http",
       "code": "conflict",
       "detail": "Order already shipped",
       "path": ["order", "status"],
@@ -186,9 +186,9 @@ end
 
 ```json
 {
-  "errors": [
+  "layer": "http",
+  "issues": [
     {
-      "layer": "http",
       "code": "too_many_requests",
       "detail": "Too many requests",
       "path": [],

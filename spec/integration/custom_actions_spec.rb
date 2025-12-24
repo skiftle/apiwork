@@ -275,7 +275,7 @@ RSpec.describe 'Custom Actions API', type: :request do
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
 
-        notify_issue = json['errors'].find { |issue| issue['pointer']&.include?('notify_users') }
+        notify_issue = json['issues'].find { |issue| issue['pointer']&.include?('notify_users') }
         expect(notify_issue).to be_present
         expect(notify_issue['code']).to eq('type_invalid')
       end
@@ -288,7 +288,7 @@ RSpec.describe 'Custom Actions API', type: :request do
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
 
-        unknown_issue = json['errors'].find { |issue| issue['code'] == 'field_unknown' }
+        unknown_issue = json['issues'].find { |issue| issue['code'] == 'field_unknown' }
         expect(unknown_issue).to be_present
       end
     end

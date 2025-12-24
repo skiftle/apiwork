@@ -29,7 +29,7 @@ module Apiwork
 
           @data = Sorter.sort(@data, @schema_class, params[:sort], issues)
 
-          raise ConstraintError, issues if issues.any?
+          raise ContractError, issues if issues.any?
 
           @data = EagerLoader.load(@data, @schema_class, params)
 

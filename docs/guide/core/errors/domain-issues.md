@@ -222,7 +222,7 @@ Response:
 ```json
 {
   "layer": "domain",
-  "errors": [
+  "issues": [
     {
       "code": "required",
       "detail": "Required",

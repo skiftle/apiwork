@@ -24,7 +24,7 @@
     "status": 422,
     "body": {
       "layer": "domain",
-      "errors": [
+      "issues": [
         {
           "code": "required",
           "detail": "Required",

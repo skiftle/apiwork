@@ -15,27 +15,27 @@ RSpec.describe 'Error Response' do
         get '/api/v1/posts/999999'
 
         json = JSON.parse(response.body)
-        expect(json).to have_key('errors')
-        expect(json['errors']).to be_an(Array)
-        expect(json['errors'].first).to have_key('code')
-        expect(json['errors'].first).to have_key('detail')
-        expect(json['errors'].first).to have_key('path')
-        expect(json['errors'].first).to have_key('pointer')
-        expect(json['errors'].first).to have_key('meta')
+        expect(json).to have_key('issues')
+        expect(json['issues']).to be_an(Array)
+        expect(json['issues'].first).to have_key('code')
+        expect(json['issues'].first).to have_key('detail')
+        expect(json['issues'].first).to have_key('path')
+        expect(json['issues'].first).to have_key('pointer')
+        expect(json['issues'].first).to have_key('meta')
       end
 
       it 'uses correct error code' do
         get '/api/v1/posts/999999'
 
         json = JSON.parse(response.body)
-        expect(json['errors'].first['code']).to eq('not_found')
+        expect(json['issues'].first['code']).to eq('not_found')
       end
 
       it 'uses i18n for detail' do
         get '/api/v1/posts/999999'
 
         json = JSON.parse(response.body)
-        expect(json['errors'].first['detail']).to eq('Not Found')
+        expect(json['issues'].first['detail']).to eq('Not Found')
       end
     end
   end
@@ -48,8 +48,8 @@ RSpec.describe 'Error Response' do
       post '/api/v1/posts', params: { post: { title: nil } }, as: :json
       validation_response = JSON.parse(response.body)
 
-      error_keys = error_response['errors'].first.keys.sort
-      validation_keys = validation_response['errors'].first.keys.sort
+      error_keys = error_response['issues'].first.keys.sort
+      validation_keys = validation_response['issues'].first.keys.sort
 
       expect(error_keys).to eq(validation_keys)
     end

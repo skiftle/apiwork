@@ -83,7 +83,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  errors:
+                  issues:
                     type: array
                     items:
                       "$ref": "#/components/schemas/error"
@@ -148,7 +148,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  errors:
+                  issues:
                     type: array
                     items:
                       "$ref": "#/components/schemas/error"
@@ -224,7 +224,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  errors:
+                  issues:
                     type: array
                     items:
                       "$ref": "#/components/schemas/error"
@@ -289,7 +289,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  errors:
+                  issues:
                     type: array
                     items:
                       "$ref": "#/components/schemas/error"
@@ -365,7 +365,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  errors:
+                  issues:
                     type: array
                     items:
                       "$ref": "#/components/schemas/error"
@@ -430,7 +430,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  errors:
+                  issues:
                     type: array
                     items:
                       "$ref": "#/components/schemas/error"
@@ -552,7 +552,7 @@ components:
     errorResponse:
       type: object
       properties:
-        errors:
+        issues:
           type: array
           items:
             "$ref": "#/components/schemas/error"
@@ -563,7 +563,7 @@ components:
           - contract
           - domain
       required:
-      - errors
+      - issues
       - layer
     offsetPagination:
       type: object

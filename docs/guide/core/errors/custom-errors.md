@@ -68,7 +68,7 @@ def destroy
 end
 ```
 
-[HTTP Errors](./http-errors.md) lists all built-in codes and how to register custom ones.
+[HTTP Issues](./http-issues.md) lists all built-in codes and how to register custom ones.
 
 ## Domain Validation
 
@@ -148,4 +148,4 @@ respond_with_error :insufficient_funds,
   meta: { requested: amount, available: from_account.balance }
 ```
 
-This gives you i18n support and consistent HTTP status codes. [HTTP Errors](./http-errors.md) shows all built-in codes and how to register your own.
+This gives you i18n support and consistent HTTP status codes. [HTTP Issues](./http-issues.md) shows all built-in codes and how to register your own.
