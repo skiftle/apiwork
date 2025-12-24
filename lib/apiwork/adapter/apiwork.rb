@@ -11,11 +11,11 @@ module Apiwork
         option :max_size, type: :integer, default: 100
       end
 
-      def register_api_types(type_registrar, schema_data)
+      def register_api(type_registrar, schema_data)
         TypeSystemBuilder.build(type_registrar, schema_data)
       end
 
-      def register_contract_types(type_registrar, schema_class, actions:)
+      def register_contract(type_registrar, schema_class, actions:)
         ContractBuilder.build(type_registrar, schema_class, actions)
       end
 

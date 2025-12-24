@@ -10,13 +10,13 @@ next: false
 
 Registers contract-scoped types during contract building.
 
-Passed to `register_contract_types` in your adapter. Use to define
+Passed to `register_contract` in your adapter. Use to define
 types specific to a resource contract (request/response shapes).
 
 **Example: Register request body type**
 
 ```ruby
-def register_contract_types(type_registrar, schema_class, actions:)
+def register_contract(type_registrar, schema_class, actions:)
   type_registrar.type :user_input do
     param :name, type: :string
     param :email, type: :string
@@ -27,7 +27,7 @@ end
 **Example: Define action contracts**
 
 ```ruby
-def register_contract_types(type_registrar, schema_class, actions:)
+def register_contract(type_registrar, schema_class, actions:)
   type_registrar.define_action :index do
     response do
       param :users, type: :array, of: :user

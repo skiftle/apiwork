@@ -10,13 +10,13 @@ next: false
 
 Registers API-wide types during adapter initialization.
 
-Passed to `register_api_types` in your adapter. Use to define
+Passed to `register_api` in your adapter. Use to define
 shared types like pagination, error responses, or enums.
 
 **Example: Register pagination type**
 
 ```ruby
-def register_api_types(type_registrar, schema_data)
+def register_api(type_registrar, schema_data)
   type_registrar.type :pagination do
     param :page, type: :integer
     param :per_page, type: :integer
@@ -28,7 +28,7 @@ end
 **Example: Register enum**
 
 ```ruby
-def register_api_types(type_registrar, schema_data)
+def register_api(type_registrar, schema_data)
   type_registrar.enum :status, values: %w[pending active completed]
 end
 ```

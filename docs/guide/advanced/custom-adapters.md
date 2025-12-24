@@ -108,12 +108,12 @@ end
 
 These hooks let your adapter register types based on schema metadata. This is how the built-in adapter automatically generates filter types, pagination types, and response shapes from your schemas.
 
-### register_api_types
+### register_api
 
 Called once when the API is loaded. Use this to register global types shared across all contracts:
 
 ```ruby
-def register_api_types(type_registrar, schema_data)
+def register_api(type_registrar, schema_data)
   # Register pagination types
   type_registrar.type :my_pagination do
     param :page, type: :integer
@@ -150,12 +150,12 @@ The `schema_data` provides information about all schemas in the API:
 - `uses_offset_pagination?` — Whether any schema uses offset pagination
 - `uses_cursor_pagination?` — Whether any schema uses cursor pagination
 
-### register_contract_types
+### register_contract
 
 Called for each contract. Use this to register types specific to that contract:
 
 ```ruby
-def register_contract_types(type_registrar, schema_class, actions:)
+def register_contract(type_registrar, schema_class, actions:)
   # Register enums from schema attributes
   schema_class.attribute_definitions.each do |name, attr|
     if attr.enum&.any?
