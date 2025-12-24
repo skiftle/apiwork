@@ -285,8 +285,10 @@ module Apiwork
                 next
               end
 
-              custom_param_definition = ParamDefinition.new(type: @param_definition.type, contract_class: contract_class_for_custom_type,
-                                                            action_name: @param_definition.action_name)
+              custom_param_definition = ParamDefinition.new(
+                contract_class_for_custom_type,
+                action_name: @param_definition.action_name
+              )
               custom_type_block.each { |block| custom_param_definition.instance_eval(&block) }
 
               validator = ParamValidator.new(custom_param_definition)
@@ -475,8 +477,10 @@ module Apiwork
 
         custom_type_block = @param_definition.contract_class.resolve_custom_type(variant_type)
         if custom_type_block
-          custom_param_definition = ParamDefinition.new(type: @param_definition.type, contract_class: @param_definition.contract_class,
-                                                        action_name: @param_definition.action_name)
+          custom_param_definition = ParamDefinition.new(
+            @param_definition.contract_class,
+            action_name: @param_definition.action_name
+          )
           custom_type_block.each { |block| custom_param_definition.instance_eval(&block) }
 
           unless value.is_a?(Hash)

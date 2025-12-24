@@ -10,11 +10,15 @@ module Apiwork
     #
     # @api public
     class ParamDefinition
-      def initialize(type:, contract_class:, action_name: nil)
-        @type = type # :query, :body, or :response_body
+      def initialize(contract_class, action_name: nil, wrapped: false)
         @contract_class = contract_class
         @action_name = action_name
+        @wrapped = wrapped
         @params = {}
+      end
+
+      def wrapped?
+        @wrapped
       end
 
       def resolve_option(name, subkey = nil)
@@ -46,8 +50,7 @@ module Apiwork
                   :contract_class,
                   :error_response_type,
                   :params,
-                  :success_response_type,
-                  :type
+                  :success_response_type
 
       # @api public
       # Defines a parameter/field in a request or response body.
@@ -190,7 +193,7 @@ module Apiwork
         elsif existing[:shape]
           existing[:shape].instance_eval(&block)
         else
-          shape_param_definition = ParamDefinition.new(type: nil, contract_class: @contract_class, action_name: @action_name)
+          shape_param_definition = ParamDefinition.new(@contract_class, action_name: @action_name)
           shape_param_definition.instance_eval(&block)
           @params[name][:shape] = shape_param_definition
         end
@@ -273,7 +276,7 @@ module Apiwork
 
         visited_with_current = visited_types.dup.add(expansion_key)
 
-        shape_param_definition = ParamDefinition.new(type: nil, contract_class: @contract_class, action_name: @action_name)
+        shape_param_definition = ParamDefinition.new(@contract_class, action_name: @action_name)
 
         shape_param_definition.instance_variable_set(:@visited_types, visited_with_current)
 
@@ -311,7 +314,7 @@ module Apiwork
 
         return unless block_given?
 
-        shape_param_definition = ParamDefinition.new(type: nil, contract_class: @contract_class, action_name: @action_name)
+        shape_param_definition = ParamDefinition.new(@contract_class, action_name: @action_name)
         shape_param_definition.instance_eval(&block)
         @params[name][:shape] = shape_param_definition
       end

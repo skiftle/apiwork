@@ -85,8 +85,7 @@ module Apiwork
 
             if custom_type_blocks
               temp_param_definition = Apiwork::Contract::ParamDefinition.new(
-                type: parent_definition.type,
-                contract_class: contract_class,
+                contract_class,
                 action_name: parent_definition.action_name
               )
               custom_type_blocks.each { |block| temp_param_definition.instance_eval(&block) }
@@ -153,8 +152,7 @@ module Apiwork
             return nil unless custom_type_block
 
             temp_param_definition = Apiwork::Contract::ParamDefinition.new(
-              type: definition.type,
-              contract_class: contract_class,
+              contract_class,
               action_name: definition.action_name
             )
 

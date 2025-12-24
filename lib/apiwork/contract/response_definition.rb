@@ -65,9 +65,9 @@ module Apiwork
       #   end
       def body(&block)
         @body_definition ||= ParamDefinition.new(
-          type: :response_body,
-          contract_class: @contract_class,
-          action_name: @action_name
+          @contract_class,
+          action_name: @action_name,
+          wrapped: true
         )
 
         @body_definition.instance_eval(&block) if block

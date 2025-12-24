@@ -27,7 +27,7 @@ module Apiwork
         variant_definition[:partial] = true if partial
 
         if block_given?
-          shape_param_definition = ParamDefinition.new(type: :body, contract_class: @contract_class)
+          shape_param_definition = ParamDefinition.new(@contract_class)
           shape_param_definition.instance_eval(&block)
           variant_definition[:shape] = shape_param_definition
         end

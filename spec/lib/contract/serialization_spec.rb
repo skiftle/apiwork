@@ -422,9 +422,9 @@ RSpec.describe 'Contract Serialization' do
 
     it 'creates meta param if not exists' do
       definition = Apiwork::Contract::ParamDefinition.new(
-        type: :response_body,
-        contract_class: contract_class,
-        action_name: :test
+        contract_class,
+        action_name: :test,
+        wrapped: true
       )
 
       definition.meta do
@@ -441,9 +441,9 @@ RSpec.describe 'Contract Serialization' do
 
     it 'extends existing meta from adapter' do
       definition = Apiwork::Contract::ParamDefinition.new(
-        type: :response_body,
-        contract_class: contract_class,
-        action_name: :test
+        contract_class,
+        action_name: :test,
+        wrapped: true
       )
 
       # Simulate adapter defining meta with pagination
@@ -489,9 +489,9 @@ RSpec.describe 'Contract Serialization' do
 
     it 'does nothing without a block' do
       definition = Apiwork::Contract::ParamDefinition.new(
-        type: :response_body,
-        contract_class: contract_class,
-        action_name: :test
+        contract_class,
+        action_name: :test,
+        wrapped: true
       )
 
       definition.meta

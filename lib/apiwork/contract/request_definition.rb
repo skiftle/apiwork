@@ -40,8 +40,7 @@ module Apiwork
       #   end
       def query(&block)
         @query_definition ||= ParamDefinition.new(
-          type: :query,
-          contract_class: @contract_class,
+          @contract_class,
           action_name: @action_name
         )
 
@@ -68,8 +67,7 @@ module Apiwork
       #   end
       def body(&block)
         @body_definition ||= ParamDefinition.new(
-          type: :body,
-          contract_class: @contract_class,
+          @contract_class,
           action_name: @action_name
         )
 

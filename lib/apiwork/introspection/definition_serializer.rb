@@ -20,8 +20,7 @@ module Apiwork
           result[name] = serialize_param(name, param_options)
         end
 
-        # Response bodies are always objects (unless they're unions handled above)
-        if @definition.type == :response_body
+        if @definition.wrapped?
           result.empty? ? nil : { type: :object, shape: result }
         else
           result.presence
