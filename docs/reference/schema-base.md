@@ -1,5 +1,5 @@
 ---
-order: 9
+order: 13
 prev: false
 next: false
 ---
@@ -70,7 +70,7 @@ end
 
 ---
 
-### .attribute(name, **options)
+### .attribute(name, **options, &block)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L222)
 
@@ -186,6 +186,40 @@ what this resource represents.
 class InvoiceSchema < Apiwork::Schema::Base
   description 'Represents a customer invoice'
 end
+```
+
+---
+
+### .deserialize(hash_or_array)
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L503)
+
+Deserializes a hash using this schema's decode transformers.
+
+Transforms incoming data by applying decode transformers defined
+on each attribute. Use this for processing request payloads,
+webhooks, or any external data.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `hash_or_array` | `Hash, Array<Hash>` | data to deserialize |
+
+**Returns**
+
+`Hash, Array<Hash>` — deserialized data
+
+**Example: Deserialize request payload**
+
+```ruby
+InvoiceSchema.deserialize(params[:invoice])
+```
+
+**Example: Deserialize a collection**
+
+```ruby
+InvoiceSchema.deserialize(params[:invoices])
 ```
 
 ---
@@ -338,7 +372,7 @@ has_one :imageable, polymorphic: [:product, :user]
 Sets or gets the model class for this schema.
 
 By default, the model is auto-detected from the schema name
-(e.g., `InvoiceSchema` becomes `Invoice`). Use this to override.
+(e.g., InvoiceSchema → Invoice). Use this to override.
 
 **Parameters**
 

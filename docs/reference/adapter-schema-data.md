@@ -1,0 +1,106 @@
+---
+order: 8
+prev: false
+next: false
+---
+
+# Adapter::SchemaData
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_data.rb#L27)
+
+Aggregated schema information for type registration.
+
+Passed to `register_api_types` in your adapter. Use to conditionally
+register types based on what schemas define (filtering, sorting, pagination).
+
+**Example: Conditional type registration**
+
+```ruby
+def register_api_types(type_registrar, schema_data)
+  if schema_data.uses_offset_pagination?
+    type_registrar.type :offset_pagination do
+      param :page, type: :integer
+      param :per_page, type: :integer
+    end
+  end
+
+  if schema_data.sortable?
+    type_registrar.type :sort_param do
+      param :field, type: :string
+      param :direction, type: :string
+    end
+  end
+end
+```
+
+## Instance Methods
+
+### #filterable_types()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_data.rb#L30)
+
+**Returns**
+
+`Array<Symbol>` — data types used in filterable attributes
+
+---
+
+### #has_index_actions?()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_data.rb#L58)
+
+**Returns**
+
+`Boolean` — true if any resource has an index action
+
+---
+
+### #has_resources?()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_data.rb#L52)
+
+**Returns**
+
+`Boolean` — true if the API has any resources registered
+
+---
+
+### #nullable_filterable_types()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_data.rb#L34)
+
+**Returns**
+
+`Array<Symbol>` — data types used in nullable filterable attributes
+
+---
+
+### #sortable?()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_data.rb#L46)
+
+**Returns**
+
+`Boolean` — true if any schema has sortable attributes or associations
+
+---
+
+### #uses_cursor_pagination?()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_data.rb#L70)
+
+**Returns**
+
+`Boolean` — true if any schema uses cursor pagination
+
+---
+
+### #uses_offset_pagination?()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_data.rb#L64)
+
+**Returns**
+
+`Boolean` — true if any schema uses offset pagination
+
+---

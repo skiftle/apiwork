@@ -1,5 +1,5 @@
 ---
-order: 6
+order: 10
 prev: false
 next: false
 ---
@@ -12,7 +12,7 @@ next: false
 
 ### #context()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/serialization.rb#L150)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/serialization.rb#L142)
 
 Returns the serialization context passed to schemas.
 
@@ -28,18 +28,6 @@ Common uses: current user, permissions, locale, feature flags.
 ```ruby
 def context
   { current_user: current_user }
-end
-```
-
-**Example: Multiple context values**
-
-```ruby
-def context
-  {
-    current_user: current_user,
-    locale: I18n.locale,
-    feature_flags: FeatureFlags.for(current_user)
-  }
 end
 ```
 
@@ -82,7 +70,7 @@ end
 
 ### #render_error(issues, layer:, status: = :bad_request)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/serialization.rb#L87)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/serialization.rb#L88)
 
 Renders an error response with validation issues.
 
@@ -94,7 +82,7 @@ For standard HTTP errors, use `respond_with_error` instead.
 | Name | Type | Description |
 |------|------|-------------|
 | `issues` | `Array<Apiwork::Issue>` | list of validation issues |
-| `layer` | `Symbol` | error layer (`:http`, `:contract`, or `:domain`) |
+| `layer` | `String` | error layer ("http", "contract", or "domain") |
 | `status` | `Symbol, Integer` | HTTP status (default: :bad_request) |
 
 **Example: Render validation errors**
@@ -105,7 +93,7 @@ def create
     issues = record.errors.map do |error|
       Apiwork::Issue.new(code: :invalid, detail: error.message, path: [error.attribute], meta: {})
     end
-    render_error issues, layer: :domain, status: :unprocessable_entity
+    render_error issues, layer: 'domain', status: :unprocessable_entity
   end
 end
 ```
@@ -161,7 +149,7 @@ end
 
 ### #respond_with_error(code_key, detail: = nil, path: = nil, meta: = {}, i18n: = {})
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/serialization.rb#L116)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/serialization.rb#L117)
 
 Renders an error response using a registered error code.
 
