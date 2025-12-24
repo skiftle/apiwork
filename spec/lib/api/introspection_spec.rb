@@ -118,8 +118,7 @@ RSpec.describe 'API Introspection' do
             expect(success_variant[:shape][:post][:optional]).to be_nil
 
             error_variant = response_body[:variants][1]
-            expect(error_variant[:shape].keys).to include(:issues)
-            expect(error_variant[:shape][:issues][:optional]).to be(true)
+            expect(error_variant[:type]).to eq(:error_response_body)
           end
 
           it 'merges custom response params at top level' do
@@ -137,7 +136,7 @@ RSpec.describe 'API Introspection' do
             expect(success_variant[:shape].keys).to include(:archived_at, :archive_note)
 
             error_variant = response_body[:variants][1]
-            expect(error_variant[:shape].keys).to include(:issues)
+            expect(error_variant[:type]).to eq(:error_response_body)
           end
 
           it 'replaces response body completely when response replace: true is used' do
@@ -187,7 +186,7 @@ RSpec.describe 'API Introspection' do
             expect(success_variant[:shape].keys).to include(:search_query, :result_count)
 
             error_variant = response_body[:variants][1]
-            expect(error_variant[:shape].keys).to include(:issues)
+            expect(error_variant[:type]).to eq(:error_response_body)
           end
         end
 

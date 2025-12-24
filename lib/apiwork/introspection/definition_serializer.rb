@@ -32,18 +32,19 @@ module Apiwork
 
       def serialize_unwrapped_union
         success_params = {}
-        issue_params = {}
 
         @definition.params.sort_by { |name, _| name.to_s }.each do |name, param_options|
-          case name
-          when :issues
-            issue_params[name] = serialize_param(name, param_options)
-          else
-            serialized = serialize_param(name, param_options)
-            serialized[:optional] = true if param_options[:optional]
-            success_params[name] = serialized
-          end
+          serialized = serialize_param(name, param_options)
+          serialized[:optional] = true if param_options[:optional]
+          success_params[name] = serialized
         end
+
+        error_type = @definition.error_response_type
+        error_variant = if error_type
+                          { type: error_type }
+                        else
+                          { type: :object, shape: {} }
+                        end
 
         {
           type: :union,
@@ -52,10 +53,7 @@ module Apiwork
               type: :object,
               shape: success_params
             },
-            {
-              type: :object,
-              shape: issue_params
-            }
+            error_variant
           ]
         }
       end

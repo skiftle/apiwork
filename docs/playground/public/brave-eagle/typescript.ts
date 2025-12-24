@@ -1,14 +1,14 @@
-export interface Error {
+export interface ErrorResponseBody {
+  issues: Issue[];
+  layer: Layer;
+}
+
+export interface Issue {
   code: string;
   detail: string;
   meta: object;
   path: string[];
   pointer: string;
-}
-
-export interface ErrorResponse {
-  issues: Error[];
-  layer: Layer;
 }
 
 export type Layer = 'contract' | 'domain' | 'http';
@@ -171,7 +171,7 @@ export interface TasksArchiveResponse {
   body: TasksArchiveResponseBody;
 }
 
-export type TasksArchiveResponseBody = { issues?: Error[] } | { meta?: object; task: Task };
+export type TasksArchiveResponseBody = ErrorResponseBody | { meta?: object; task: Task };
 
 export interface TasksCreateRequest {
   body: TasksCreateRequestBody;
@@ -185,7 +185,7 @@ export interface TasksCreateResponse {
   body: TasksCreateResponseBody;
 }
 
-export type TasksCreateResponseBody = { issues?: Error[] } | { meta?: object; task: Task };
+export type TasksCreateResponseBody = ErrorResponseBody | { meta?: object; task: Task };
 
 export type TasksDestroyResponse = never;
 
@@ -203,13 +203,13 @@ export interface TasksIndexResponse {
   body: TasksIndexResponseBody;
 }
 
-export type TasksIndexResponseBody = { issues?: Error[] } | { meta?: object; pagination?: OffsetPagination; tasks?: Task[] };
+export type TasksIndexResponseBody = ErrorResponseBody | { meta?: object; pagination?: OffsetPagination; tasks?: Task[] };
 
 export interface TasksShowResponse {
   body: TasksShowResponseBody;
 }
 
-export type TasksShowResponseBody = { issues?: Error[] } | { meta?: object; task: Task };
+export type TasksShowResponseBody = ErrorResponseBody | { meta?: object; task: Task };
 
 export interface TasksUpdateRequest {
   body: TasksUpdateRequestBody;
@@ -223,4 +223,4 @@ export interface TasksUpdateResponse {
   body: TasksUpdateResponseBody;
 }
 
-export type TasksUpdateResponseBody = { issues?: Error[] } | { meta?: object; task: Task };
+export type TasksUpdateResponseBody = ErrorResponseBody | { meta?: object; task: Task };

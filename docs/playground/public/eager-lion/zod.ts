@@ -4,14 +4,6 @@ export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
-export const ErrorSchema = z.object({
-  code: z.string(),
-  detail: z.string(),
-  meta: z.object({}),
-  path: z.array(z.string()),
-  pointer: z.string()
-});
-
 export const InvoiceSchema = z.object({
   createdAt: z.iso.datetime(),
   customer: z.object({}),
@@ -53,6 +45,14 @@ export const InvoiceUpdatePayloadSchema = z.object({
   number: z.string().optional()
 });
 
+export const IssueSchema = z.object({
+  code: z.string(),
+  detail: z.string(),
+  meta: z.object({}),
+  path: z.array(z.string()),
+  pointer: z.string()
+});
+
 export const NullableStringFilterSchema = z.object({
   contains: z.string().optional(),
   endsWith: z.string().optional(),
@@ -78,8 +78,8 @@ export const StringFilterSchema = z.object({
   startsWith: z.string().optional()
 });
 
-export const ErrorResponseSchema = z.object({
-  issues: z.array(ErrorSchema),
+export const ErrorResponseBodySchema = z.object({
+  issues: z.array(IssueSchema),
   layer: LayerSchema
 });
 
@@ -101,13 +101,13 @@ export const InvoicesIndexRequestSchema = z.object({
   query: InvoicesIndexRequestQuerySchema
 });
 
-export const InvoicesIndexResponseBodySchema = z.union([z.object({ invoices: z.array(InvoiceSchema).optional(), meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
+export const InvoicesIndexResponseBodySchema = z.union([z.object({ invoices: z.array(InvoiceSchema).optional(), meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional() }), ErrorResponseBodySchema]);
 
 export const InvoicesIndexResponseSchema = z.object({
   body: InvoicesIndexResponseBodySchema
 });
 
-export const InvoicesShowResponseBodySchema = z.union([z.object({ invoice: InvoiceSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
+export const InvoicesShowResponseBodySchema = z.union([z.object({ invoice: InvoiceSchema, meta: z.object({}).optional() }), ErrorResponseBodySchema]);
 
 export const InvoicesShowResponseSchema = z.object({
   body: InvoicesShowResponseBodySchema
@@ -121,7 +121,7 @@ export const InvoicesCreateRequestSchema = z.object({
   body: InvoicesCreateRequestBodySchema
 });
 
-export const InvoicesCreateResponseBodySchema = z.union([z.object({ invoice: InvoiceSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
+export const InvoicesCreateResponseBodySchema = z.union([z.object({ invoice: InvoiceSchema, meta: z.object({}).optional() }), ErrorResponseBodySchema]);
 
 export const InvoicesCreateResponseSchema = z.object({
   body: InvoicesCreateResponseBodySchema
@@ -135,7 +135,7 @@ export const InvoicesUpdateRequestSchema = z.object({
   body: InvoicesUpdateRequestBodySchema
 });
 
-export const InvoicesUpdateResponseBodySchema = z.union([z.object({ invoice: InvoiceSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
+export const InvoicesUpdateResponseBodySchema = z.union([z.object({ invoice: InvoiceSchema, meta: z.object({}).optional() }), ErrorResponseBodySchema]);
 
 export const InvoicesUpdateResponseSchema = z.object({
   body: InvoicesUpdateResponseBodySchema
@@ -143,22 +143,14 @@ export const InvoicesUpdateResponseSchema = z.object({
 
 export const InvoicesDestroyResponse = z.never();
 
-export const InvoicesArchiveResponseBodySchema = z.union([z.object({ invoice: InvoiceSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
+export const InvoicesArchiveResponseBodySchema = z.union([z.object({ invoice: InvoiceSchema, meta: z.object({}).optional() }), ErrorResponseBodySchema]);
 
 export const InvoicesArchiveResponseSchema = z.object({
   body: InvoicesArchiveResponseBodySchema
 });
 
-export interface Error {
-  code: string;
-  detail: string;
-  meta: object;
-  path: string[];
-  pointer: string;
-}
-
-export interface ErrorResponse {
-  issues: Error[];
+export interface ErrorResponseBody {
+  issues: Issue[];
   layer: Layer;
 }
 
@@ -215,7 +207,7 @@ export interface InvoicesArchiveResponse {
   body: InvoicesArchiveResponseBody;
 }
 
-export type InvoicesArchiveResponseBody = { invoice: Invoice; meta?: object } | { issues?: Error[] };
+export type InvoicesArchiveResponseBody = ErrorResponseBody | { invoice: Invoice; meta?: object };
 
 export interface InvoicesCreateRequest {
   body: InvoicesCreateRequestBody;
@@ -229,7 +221,7 @@ export interface InvoicesCreateResponse {
   body: InvoicesCreateResponseBody;
 }
 
-export type InvoicesCreateResponseBody = { invoice: Invoice; meta?: object } | { issues?: Error[] };
+export type InvoicesCreateResponseBody = ErrorResponseBody | { invoice: Invoice; meta?: object };
 
 export type InvoicesDestroyResponse = never;
 
@@ -247,13 +239,13 @@ export interface InvoicesIndexResponse {
   body: InvoicesIndexResponseBody;
 }
 
-export type InvoicesIndexResponseBody = { invoices?: Invoice[]; meta?: object; pagination?: OffsetPagination } | { issues?: Error[] };
+export type InvoicesIndexResponseBody = ErrorResponseBody | { invoices?: Invoice[]; meta?: object; pagination?: OffsetPagination };
 
 export interface InvoicesShowResponse {
   body: InvoicesShowResponseBody;
 }
 
-export type InvoicesShowResponseBody = { invoice: Invoice; meta?: object } | { issues?: Error[] };
+export type InvoicesShowResponseBody = ErrorResponseBody | { invoice: Invoice; meta?: object };
 
 export interface InvoicesUpdateRequest {
   body: InvoicesUpdateRequestBody;
@@ -267,7 +259,15 @@ export interface InvoicesUpdateResponse {
   body: InvoicesUpdateResponseBody;
 }
 
-export type InvoicesUpdateResponseBody = { invoice: Invoice; meta?: object } | { issues?: Error[] };
+export type InvoicesUpdateResponseBody = ErrorResponseBody | { invoice: Invoice; meta?: object };
+
+export interface Issue {
+  code: string;
+  detail: string;
+  meta: object;
+  path: string[];
+  pointer: string;
+}
 
 export type Layer = 'contract' | 'domain' | 'http';
 

@@ -48,7 +48,7 @@ export interface CommentsCreateResponse {
   body: CommentsCreateResponseBody;
 }
 
-export type CommentsCreateResponseBody = { comment: Comment; meta?: object } | { issues?: Error[] };
+export type CommentsCreateResponseBody = ErrorResponseBody | { comment: Comment; meta?: object };
 
 export interface CommentsDestroyRequest {
   query: CommentsDestroyRequestQuery;
@@ -74,7 +74,7 @@ export interface CommentsIndexResponse {
   body: CommentsIndexResponseBody;
 }
 
-export type CommentsIndexResponseBody = { comments?: Comment[]; meta?: object; pagination?: OffsetPagination } | { issues?: Error[] };
+export type CommentsIndexResponseBody = ErrorResponseBody | { comments?: Comment[]; meta?: object; pagination?: OffsetPagination };
 
 export interface CommentsShowRequest {
   query: CommentsShowRequestQuery;
@@ -88,7 +88,7 @@ export interface CommentsShowResponse {
   body: CommentsShowResponseBody;
 }
 
-export type CommentsShowResponseBody = { comment: Comment; meta?: object } | { issues?: Error[] };
+export type CommentsShowResponseBody = ErrorResponseBody | { comment: Comment; meta?: object };
 
 export interface CommentsUpdateRequest {
   query: CommentsUpdateRequestQuery;
@@ -107,18 +107,10 @@ export interface CommentsUpdateResponse {
   body: CommentsUpdateResponseBody;
 }
 
-export type CommentsUpdateResponseBody = { comment: Comment; meta?: object } | { issues?: Error[] };
+export type CommentsUpdateResponseBody = ErrorResponseBody | { comment: Comment; meta?: object };
 
-export interface Error {
-  code: string;
-  detail: string;
-  meta: object;
-  path: string[];
-  pointer: string;
-}
-
-export interface ErrorResponse {
-  issues: Error[];
+export interface ErrorResponseBody {
+  issues: Issue[];
   layer: Layer;
 }
 
@@ -159,6 +151,14 @@ export interface ImageNestedUpdatePayload {
 
 export interface ImageSort {
   createdAt?: SortDirection;
+}
+
+export interface Issue {
+  code: string;
+  detail: string;
+  meta: object;
+  path: string[];
+  pointer: string;
 }
 
 export type Layer = 'contract' | 'domain' | 'http';

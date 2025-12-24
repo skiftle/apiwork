@@ -1,13 +1,5 @@
-export interface Error {
-  code: string;
-  detail: string;
-  meta: object;
-  path: string[];
-  pointer: string;
-}
-
-export interface ErrorResponse {
-  issues: Error[];
+export interface ErrorResponseBody {
+  issues: Issue[];
   layer: Layer;
 }
 
@@ -64,7 +56,7 @@ export interface InvoicesArchiveResponse {
   body: InvoicesArchiveResponseBody;
 }
 
-export type InvoicesArchiveResponseBody = { invoice: Invoice; meta?: object } | { issues?: Error[] };
+export type InvoicesArchiveResponseBody = ErrorResponseBody | { invoice: Invoice; meta?: object };
 
 export interface InvoicesCreateRequest {
   body: InvoicesCreateRequestBody;
@@ -78,7 +70,7 @@ export interface InvoicesCreateResponse {
   body: InvoicesCreateResponseBody;
 }
 
-export type InvoicesCreateResponseBody = { invoice: Invoice; meta?: object } | { issues?: Error[] };
+export type InvoicesCreateResponseBody = ErrorResponseBody | { invoice: Invoice; meta?: object };
 
 export type InvoicesDestroyResponse = never;
 
@@ -96,13 +88,13 @@ export interface InvoicesIndexResponse {
   body: InvoicesIndexResponseBody;
 }
 
-export type InvoicesIndexResponseBody = { invoices?: Invoice[]; meta?: object; pagination?: OffsetPagination } | { issues?: Error[] };
+export type InvoicesIndexResponseBody = ErrorResponseBody | { invoices?: Invoice[]; meta?: object; pagination?: OffsetPagination };
 
 export interface InvoicesShowResponse {
   body: InvoicesShowResponseBody;
 }
 
-export type InvoicesShowResponseBody = { invoice: Invoice; meta?: object } | { issues?: Error[] };
+export type InvoicesShowResponseBody = ErrorResponseBody | { invoice: Invoice; meta?: object };
 
 export interface InvoicesUpdateRequest {
   body: InvoicesUpdateRequestBody;
@@ -116,7 +108,15 @@ export interface InvoicesUpdateResponse {
   body: InvoicesUpdateResponseBody;
 }
 
-export type InvoicesUpdateResponseBody = { invoice: Invoice; meta?: object } | { issues?: Error[] };
+export type InvoicesUpdateResponseBody = ErrorResponseBody | { invoice: Invoice; meta?: object };
+
+export interface Issue {
+  code: string;
+  detail: string;
+  meta: object;
+  path: string[];
+  pointer: string;
+}
 
 export type Layer = 'contract' | 'domain' | 'http';
 

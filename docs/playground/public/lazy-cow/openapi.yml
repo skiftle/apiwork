@@ -49,7 +49,23 @@ paths:
                 - usersCount
 components:
   schemas:
-    error:
+    errorResponseBody:
+      type: object
+      properties:
+        issues:
+          type: array
+          items:
+            "$ref": "#/components/schemas/issue"
+        layer:
+          type: string
+          enum:
+          - http
+          - contract
+          - domain
+      required:
+      - issues
+      - layer
+    issue:
       type: object
       properties:
         code:
@@ -71,19 +87,3 @@ components:
       - meta
       - path
       - pointer
-    errorResponse:
-      type: object
-      properties:
-        issues:
-          type: array
-          items:
-            "$ref": "#/components/schemas/error"
-        layer:
-          type: string
-          enum:
-          - http
-          - contract
-          - domain
-      required:
-      - issues
-      - layer

@@ -63,12 +63,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  issues:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/error"
+                "$ref": "#/components/schemas/errorResponseBody"
   activities/{id}:
     get:
       operationId: activitiesShow
@@ -128,12 +123,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  issues:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/error"
+                "$ref": "#/components/schemas/errorResponseBody"
     delete:
       operationId: activitiesDestroy
       parameters:
@@ -213,7 +203,23 @@ components:
           type:
           - string
           - 'null'
-    error:
+    errorResponseBody:
+      type: object
+      properties:
+        issues:
+          type: array
+          items:
+            "$ref": "#/components/schemas/issue"
+        layer:
+          type: string
+          enum:
+          - http
+          - contract
+          - domain
+      required:
+      - issues
+      - layer
+    issue:
       type: object
       properties:
         code:
@@ -235,19 +241,3 @@ components:
       - meta
       - path
       - pointer
-    errorResponse:
-      type: object
-      properties:
-        issues:
-          type: array
-          items:
-            "$ref": "#/components/schemas/error"
-        layer:
-          type: string
-          enum:
-          - http
-          - contract
-          - domain
-      required:
-      - issues
-      - layer

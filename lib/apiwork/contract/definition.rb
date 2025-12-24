@@ -40,6 +40,10 @@ module Apiwork
         @unwrapped_union
       end
 
+      def error_response_type
+        @error_response_type
+      end
+
       # Defines a parameter/field in a request or response body.
       #
       # @param name [Symbol] field name

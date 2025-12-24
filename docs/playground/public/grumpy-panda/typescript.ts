@@ -10,7 +10,7 @@ export interface ActivitiesCreateResponse {
   body: ActivitiesCreateResponseBody;
 }
 
-export type ActivitiesCreateResponseBody = { activity: Activity; meta?: object } | { issues?: Error[] };
+export type ActivitiesCreateResponseBody = ErrorResponseBody | { activity: Activity; meta?: object };
 
 export type ActivitiesDestroyResponse = never;
 
@@ -26,13 +26,13 @@ export interface ActivitiesIndexResponse {
   body: ActivitiesIndexResponseBody;
 }
 
-export type ActivitiesIndexResponseBody = { activities?: Activity[]; meta?: object; pagination?: CursorPagination } | { issues?: Error[] };
+export type ActivitiesIndexResponseBody = ErrorResponseBody | { activities?: Activity[]; meta?: object; pagination?: CursorPagination };
 
 export interface ActivitiesShowResponse {
   body: ActivitiesShowResponseBody;
 }
 
-export type ActivitiesShowResponseBody = { activity: Activity; meta?: object } | { issues?: Error[] };
+export type ActivitiesShowResponseBody = ErrorResponseBody | { activity: Activity; meta?: object };
 
 export interface ActivitiesUpdateRequest {
   body: ActivitiesUpdateRequestBody;
@@ -46,7 +46,7 @@ export interface ActivitiesUpdateResponse {
   body: ActivitiesUpdateResponseBody;
 }
 
-export type ActivitiesUpdateResponseBody = { activity: Activity; meta?: object } | { issues?: Error[] };
+export type ActivitiesUpdateResponseBody = ErrorResponseBody | { activity: Activity; meta?: object };
 
 export interface Activity {
   action: string;
@@ -76,17 +76,17 @@ export interface CursorPagination {
   prev?: null | string;
 }
 
-export interface Error {
+export interface ErrorResponseBody {
+  issues: Issue[];
+  layer: Layer;
+}
+
+export interface Issue {
   code: string;
   detail: string;
   meta: object;
   path: string[];
   pointer: string;
-}
-
-export interface ErrorResponse {
-  issues: Error[];
-  layer: Layer;
 }
 
 export type Layer = 'contract' | 'domain' | 'http';

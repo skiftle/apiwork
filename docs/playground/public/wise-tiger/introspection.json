@@ -6,7 +6,19 @@
     "description": "API for managing projects with I18n-powered documentation"
   },
   "types": {
-    "error": {
+    "error_response_body": {
+      "type": "object",
+      "shape": {
+        "issues": {
+          "type": "array",
+          "of": "issue"
+        },
+        "layer": {
+          "type": "layer"
+        }
+      }
+    },
+    "issue": {
       "type": "object",
       "shape": {
         "code": {
@@ -24,18 +36,6 @@
         },
         "pointer": {
           "type": "string"
-        }
-      }
-    },
-    "error_response": {
-      "type": "object",
-      "shape": {
-        "issues": {
-          "type": "array",
-          "of": "error"
-        },
-        "layer": {
-          "type": "layer"
         }
       }
     },
@@ -452,14 +452,7 @@
                   }
                 },
                 {
-                  "type": "object",
-                  "shape": {
-                    "issues": {
-                      "type": "array",
-                      "of": "error",
-                      "optional": true
-                    }
-                  }
+                  "type": "error_response_body"
                 }
               ]
             }
@@ -491,14 +484,7 @@
                   }
                 },
                 {
-                  "type": "object",
-                  "shape": {
-                    "issues": {
-                      "type": "array",
-                      "of": "error",
-                      "optional": true
-                    }
-                  }
+                  "type": "error_response_body"
                 }
               ]
             }
@@ -537,14 +523,7 @@
                   }
                 },
                 {
-                  "type": "object",
-                  "shape": {
-                    "issues": {
-                      "type": "array",
-                      "of": "error",
-                      "optional": true
-                    }
-                  }
+                  "type": "error_response_body"
                 }
               ]
             }
@@ -586,14 +565,7 @@
                   }
                 },
                 {
-                  "type": "object",
-                  "shape": {
-                    "issues": {
-                      "type": "array",
-                      "of": "error",
-                      "optional": true
-                    }
-                  }
+                  "type": "error_response_body"
                 }
               ]
             }

@@ -65,7 +65,7 @@ export interface ArticlesCreateResponse {
   body: ArticlesCreateResponseBody;
 }
 
-export type ArticlesCreateResponseBody = { article: Article; meta?: object } | { issues?: Error[] };
+export type ArticlesCreateResponseBody = ErrorResponseBody | { article: Article; meta?: object };
 
 export type ArticlesDestroyResponse = never;
 
@@ -83,13 +83,13 @@ export interface ArticlesIndexResponse {
   body: ArticlesIndexResponseBody;
 }
 
-export type ArticlesIndexResponseBody = { articles?: Article[]; meta?: object; pagination?: OffsetPagination } | { issues?: Error[] };
+export type ArticlesIndexResponseBody = ErrorResponseBody | { articles?: Article[]; meta?: object; pagination?: OffsetPagination };
 
 export interface ArticlesShowResponse {
   body: ArticlesShowResponseBody;
 }
 
-export type ArticlesShowResponseBody = { article: Article; meta?: object } | { issues?: Error[] };
+export type ArticlesShowResponseBody = ErrorResponseBody | { article: Article; meta?: object };
 
 export interface ArticlesUpdateRequest {
   body: ArticlesUpdateRequestBody;
@@ -103,7 +103,7 @@ export interface ArticlesUpdateResponse {
   body: ArticlesUpdateResponseBody;
 }
 
-export type ArticlesUpdateResponseBody = { article: Article; meta?: object } | { issues?: Error[] };
+export type ArticlesUpdateResponseBody = ErrorResponseBody | { article: Article; meta?: object };
 
 export interface DateFilter {
   between?: DateFilterBetween;
@@ -135,16 +135,8 @@ export interface DecimalFilterBetween {
   to?: number;
 }
 
-export interface Error {
-  code: string;
-  detail: string;
-  meta: object;
-  path: string[];
-  pointer: string;
-}
-
-export interface ErrorResponse {
-  issues: Error[];
+export interface ErrorResponseBody {
+  issues: Issue[];
   layer: Layer;
 }
 
@@ -161,6 +153,14 @@ export interface IntegerFilter {
 export interface IntegerFilterBetween {
   from?: number;
   to?: number;
+}
+
+export interface Issue {
+  code: string;
+  detail: string;
+  meta: object;
+  path: string[];
+  pointer: string;
 }
 
 export type Layer = 'contract' | 'domain' | 'http';

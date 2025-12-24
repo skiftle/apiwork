@@ -81,12 +81,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  issues:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/error"
+                "$ref": "#/components/schemas/errorResponseBody"
   vehicles/{id}:
     get:
       operationId: vehiclesShow
@@ -146,12 +141,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  issues:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/error"
+                "$ref": "#/components/schemas/errorResponseBody"
     delete:
       operationId: vehiclesDestroy
       parameters:
@@ -249,35 +239,13 @@ components:
       - brand
       - model
       - type
-    error:
-      type: object
-      properties:
-        code:
-          type: string
-        detail:
-          type: string
-        meta:
-          type: object
-          properties: {}
-        path:
-          type: array
-          items:
-            type: string
-        pointer:
-          type: string
-      required:
-      - code
-      - detail
-      - meta
-      - path
-      - pointer
-    errorResponse:
+    errorResponseBody:
       type: object
       properties:
         issues:
           type: array
           items:
-            "$ref": "#/components/schemas/error"
+            "$ref": "#/components/schemas/issue"
         layer:
           type: string
           enum:
@@ -313,6 +281,28 @@ components:
           type: integer
         to:
           type: integer
+    issue:
+      type: object
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+        meta:
+          type: object
+          properties: {}
+        path:
+          type: array
+          items:
+            type: string
+        pointer:
+          type: string
+      required:
+      - code
+      - detail
+      - meta
+      - path
+      - pointer
     motorcycle:
       type: object
       properties:

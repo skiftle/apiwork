@@ -29,7 +29,7 @@ export const ContactUpdatePayloadSchema = z.object({
   phone: z.string().optional()
 });
 
-export const ErrorSchema = z.object({
+export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
   meta: z.object({}),
@@ -45,8 +45,8 @@ export const OffsetPaginationSchema = z.object({
   total: z.number().int()
 });
 
-export const ErrorResponseSchema = z.object({
-  issues: z.array(ErrorSchema),
+export const ErrorResponseBodySchema = z.object({
+  issues: z.array(IssueSchema),
   layer: LayerSchema
 });
 
@@ -58,13 +58,13 @@ export const ContactsIndexRequestSchema = z.object({
   query: ContactsIndexRequestQuerySchema
 });
 
-export const ContactsIndexResponseBodySchema = z.union([z.object({ contacts: z.array(ContactSchema).optional(), meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
+export const ContactsIndexResponseBodySchema = z.union([z.object({ contacts: z.array(ContactSchema).optional(), meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional() }), ErrorResponseBodySchema]);
 
 export const ContactsIndexResponseSchema = z.object({
   body: ContactsIndexResponseBodySchema
 });
 
-export const ContactsShowResponseBodySchema = z.union([z.object({ contact: ContactSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
+export const ContactsShowResponseBodySchema = z.union([z.object({ contact: ContactSchema, meta: z.object({}).optional() }), ErrorResponseBodySchema]);
 
 export const ContactsShowResponseSchema = z.object({
   body: ContactsShowResponseBodySchema
@@ -78,7 +78,7 @@ export const ContactsCreateRequestSchema = z.object({
   body: ContactsCreateRequestBodySchema
 });
 
-export const ContactsCreateResponseBodySchema = z.union([z.object({ contact: ContactSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
+export const ContactsCreateResponseBodySchema = z.union([z.object({ contact: ContactSchema, meta: z.object({}).optional() }), ErrorResponseBodySchema]);
 
 export const ContactsCreateResponseSchema = z.object({
   body: ContactsCreateResponseBodySchema
@@ -92,7 +92,7 @@ export const ContactsUpdateRequestSchema = z.object({
   body: ContactsUpdateRequestBodySchema
 });
 
-export const ContactsUpdateResponseBodySchema = z.union([z.object({ contact: ContactSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
+export const ContactsUpdateResponseBodySchema = z.union([z.object({ contact: ContactSchema, meta: z.object({}).optional() }), ErrorResponseBodySchema]);
 
 export const ContactsUpdateResponseSchema = z.object({
   body: ContactsUpdateResponseBodySchema
@@ -139,7 +139,7 @@ export interface ContactsCreateResponse {
   body: ContactsCreateResponseBody;
 }
 
-export type ContactsCreateResponseBody = { contact: Contact; meta?: object } | { issues?: Error[] };
+export type ContactsCreateResponseBody = ErrorResponseBody | { contact: Contact; meta?: object };
 
 export type ContactsDestroyResponse = never;
 
@@ -155,13 +155,13 @@ export interface ContactsIndexResponse {
   body: ContactsIndexResponseBody;
 }
 
-export type ContactsIndexResponseBody = { contacts?: Contact[]; meta?: object; pagination?: OffsetPagination } | { issues?: Error[] };
+export type ContactsIndexResponseBody = ErrorResponseBody | { contacts?: Contact[]; meta?: object; pagination?: OffsetPagination };
 
 export interface ContactsShowResponse {
   body: ContactsShowResponseBody;
 }
 
-export type ContactsShowResponseBody = { contact: Contact; meta?: object } | { issues?: Error[] };
+export type ContactsShowResponseBody = ErrorResponseBody | { contact: Contact; meta?: object };
 
 export interface ContactsUpdateRequest {
   body: ContactsUpdateRequestBody;
@@ -175,19 +175,19 @@ export interface ContactsUpdateResponse {
   body: ContactsUpdateResponseBody;
 }
 
-export type ContactsUpdateResponseBody = { contact: Contact; meta?: object } | { issues?: Error[] };
+export type ContactsUpdateResponseBody = ErrorResponseBody | { contact: Contact; meta?: object };
 
-export interface Error {
+export interface ErrorResponseBody {
+  issues: Issue[];
+  layer: Layer;
+}
+
+export interface Issue {
   code: string;
   detail: string;
   meta: object;
   path: string[];
   pointer: string;
-}
-
-export interface ErrorResponse {
-  issues: Error[];
-  layer: Layer;
 }
 
 export type Layer = 'contract' | 'domain' | 'http';

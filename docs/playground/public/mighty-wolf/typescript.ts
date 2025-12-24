@@ -26,16 +26,8 @@ export interface CarUpdatePayload {
   year?: null | number;
 }
 
-export interface Error {
-  code: string;
-  detail: string;
-  meta: object;
-  path: string[];
-  pointer: string;
-}
-
-export interface ErrorResponse {
-  issues: Error[];
+export interface ErrorResponseBody {
+  issues: Issue[];
   layer: Layer;
 }
 
@@ -52,6 +44,14 @@ export interface IntegerFilter {
 export interface IntegerFilterBetween {
   from?: number;
   to?: number;
+}
+
+export interface Issue {
+  code: string;
+  detail: string;
+  meta: object;
+  path: string[];
+  pointer: string;
 }
 
 export type Layer = 'contract' | 'domain' | 'http';
@@ -177,7 +177,7 @@ export interface VehiclesCreateResponse {
   body: VehiclesCreateResponseBody;
 }
 
-export type VehiclesCreateResponseBody = { issues?: Error[] } | { meta?: object; vehicle: Vehicle };
+export type VehiclesCreateResponseBody = ErrorResponseBody | { meta?: object; vehicle: Vehicle };
 
 export type VehiclesDestroyResponse = never;
 
@@ -195,13 +195,13 @@ export interface VehiclesIndexResponse {
   body: VehiclesIndexResponseBody;
 }
 
-export type VehiclesIndexResponseBody = { issues?: Error[] } | { meta?: object; pagination?: OffsetPagination; vehicles?: Vehicle[] };
+export type VehiclesIndexResponseBody = ErrorResponseBody | { meta?: object; pagination?: OffsetPagination; vehicles?: Vehicle[] };
 
 export interface VehiclesShowResponse {
   body: VehiclesShowResponseBody;
 }
 
-export type VehiclesShowResponseBody = { issues?: Error[] } | { meta?: object; vehicle: Vehicle };
+export type VehiclesShowResponseBody = ErrorResponseBody | { meta?: object; vehicle: Vehicle };
 
 export interface VehiclesUpdateRequest {
   body: VehiclesUpdateRequestBody;
@@ -215,4 +215,4 @@ export interface VehiclesUpdateResponse {
   body: VehiclesUpdateResponseBody;
 }
 
-export type VehiclesUpdateResponseBody = { issues?: Error[] } | { meta?: object; vehicle: Vehicle };
+export type VehiclesUpdateResponseBody = ErrorResponseBody | { meta?: object; vehicle: Vehicle };

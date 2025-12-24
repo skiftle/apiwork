@@ -159,11 +159,10 @@ module Apiwork
           resource_type_name = resource_type_name_for_response
 
           definition.instance_variable_set(:@unwrapped_union, true)
+          definition.instance_variable_set(:@error_response_type, :error_response_body)
 
           definition.param root_key, type: resource_type_name
           definition.param :meta, type: :object, optional: true
-
-          definition.param :issues, type: :array, of: :error, optional: true
         end
 
         def collection_response(definition)
@@ -172,12 +171,11 @@ module Apiwork
           pagination_type = build_pagination_type
 
           definition.instance_variable_set(:@unwrapped_union, true)
+          definition.instance_variable_set(:@error_response_type, :error_response_body)
 
           definition.param root_key_plural, type: :array, of: resource_type_name, optional: true
           definition.param :pagination, type: pagination_type, optional: true
           definition.param :meta, type: :object, optional: true
-
-          definition.param :issues, type: :array, of: :error, optional: true
         end
 
         def build_enums

@@ -27,14 +27,6 @@ export const CommentUpdatePayloadSchema = z.object({
   body: z.string().optional()
 });
 
-export const ErrorSchema = z.object({
-  code: z.string(),
-  detail: z.string(),
-  meta: z.object({}),
-  path: z.array(z.string()),
-  pointer: z.string()
-});
-
 export const ImageSchema = z.object({
   comments: z.array(z.unknown()).optional(),
   createdAt: z.iso.datetime(),
@@ -70,6 +62,14 @@ export const ImageNestedUpdatePayloadSchema = z.object({
 
 export const ImageSortSchema = z.object({
   createdAt: SortDirectionSchema.optional()
+});
+
+export const IssueSchema = z.object({
+  code: z.string(),
+  detail: z.string(),
+  meta: z.object({}),
+  path: z.array(z.string()),
+  pointer: z.string()
 });
 
 export const OffsetPaginationSchema = z.object({
@@ -145,15 +145,15 @@ export const VideoSortSchema = z.object({
   createdAt: SortDirectionSchema.optional()
 });
 
-export const ErrorResponseSchema = z.object({
-  issues: z.array(ErrorSchema),
-  layer: LayerSchema
-});
-
 export const ImageNestedPayloadSchema = z.discriminatedUnion('_type', [
   ImageNestedCreatePayloadSchema,
   ImageNestedUpdatePayloadSchema
 ]);
+
+export const ErrorResponseBodySchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
+});
 
 export const PostNestedPayloadSchema = z.discriminatedUnion('_type', [
   PostNestedCreatePayloadSchema,
@@ -189,7 +189,7 @@ export const CommentsIndexRequestSchema = z.object({
   query: CommentsIndexRequestQuerySchema
 });
 
-export const CommentsIndexResponseBodySchema = z.union([z.object({ comments: z.array(CommentSchema).optional(), meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
+export const CommentsIndexResponseBodySchema = z.union([z.object({ comments: z.array(CommentSchema).optional(), meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional() }), ErrorResponseBodySchema]);
 
 export const CommentsIndexResponseSchema = z.object({
   body: CommentsIndexResponseBodySchema
@@ -203,7 +203,7 @@ export const CommentsShowRequestSchema = z.object({
   query: CommentsShowRequestQuerySchema
 });
 
-export const CommentsShowResponseBodySchema = z.union([z.object({ comment: CommentSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
+export const CommentsShowResponseBodySchema = z.union([z.object({ comment: CommentSchema, meta: z.object({}).optional() }), ErrorResponseBodySchema]);
 
 export const CommentsShowResponseSchema = z.object({
   body: CommentsShowResponseBodySchema
@@ -222,7 +222,7 @@ export const CommentsCreateRequestSchema = z.object({
   body: CommentsCreateRequestBodySchema
 });
 
-export const CommentsCreateResponseBodySchema = z.union([z.object({ comment: CommentSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
+export const CommentsCreateResponseBodySchema = z.union([z.object({ comment: CommentSchema, meta: z.object({}).optional() }), ErrorResponseBodySchema]);
 
 export const CommentsCreateResponseSchema = z.object({
   body: CommentsCreateResponseBodySchema
@@ -241,7 +241,7 @@ export const CommentsUpdateRequestSchema = z.object({
   body: CommentsUpdateRequestBodySchema
 });
 
-export const CommentsUpdateResponseBodySchema = z.union([z.object({ comment: CommentSchema, meta: z.object({}).optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
+export const CommentsUpdateResponseBodySchema = z.union([z.object({ comment: CommentSchema, meta: z.object({}).optional() }), ErrorResponseBodySchema]);
 
 export const CommentsUpdateResponseSchema = z.object({
   body: CommentsUpdateResponseBodySchema
@@ -307,7 +307,7 @@ export interface CommentsCreateResponse {
   body: CommentsCreateResponseBody;
 }
 
-export type CommentsCreateResponseBody = { comment: Comment; meta?: object } | { issues?: Error[] };
+export type CommentsCreateResponseBody = ErrorResponseBody | { comment: Comment; meta?: object };
 
 export interface CommentsDestroyRequest {
   query: CommentsDestroyRequestQuery;
@@ -333,7 +333,7 @@ export interface CommentsIndexResponse {
   body: CommentsIndexResponseBody;
 }
 
-export type CommentsIndexResponseBody = { comments?: Comment[]; meta?: object; pagination?: OffsetPagination } | { issues?: Error[] };
+export type CommentsIndexResponseBody = ErrorResponseBody | { comments?: Comment[]; meta?: object; pagination?: OffsetPagination };
 
 export interface CommentsShowRequest {
   query: CommentsShowRequestQuery;
@@ -347,7 +347,7 @@ export interface CommentsShowResponse {
   body: CommentsShowResponseBody;
 }
 
-export type CommentsShowResponseBody = { comment: Comment; meta?: object } | { issues?: Error[] };
+export type CommentsShowResponseBody = ErrorResponseBody | { comment: Comment; meta?: object };
 
 export interface CommentsUpdateRequest {
   query: CommentsUpdateRequestQuery;
@@ -366,18 +366,10 @@ export interface CommentsUpdateResponse {
   body: CommentsUpdateResponseBody;
 }
 
-export type CommentsUpdateResponseBody = { comment: Comment; meta?: object } | { issues?: Error[] };
+export type CommentsUpdateResponseBody = ErrorResponseBody | { comment: Comment; meta?: object };
 
-export interface Error {
-  code: string;
-  detail: string;
-  meta: object;
-  path: string[];
-  pointer: string;
-}
-
-export interface ErrorResponse {
-  issues: Error[];
+export interface ErrorResponseBody {
+  issues: Issue[];
   layer: Layer;
 }
 
@@ -418,6 +410,14 @@ export interface ImageNestedUpdatePayload {
 
 export interface ImageSort {
   createdAt?: SortDirection;
+}
+
+export interface Issue {
+  code: string;
+  detail: string;
+  meta: object;
+  path: string[];
+  pointer: string;
 }
 
 export type Layer = 'contract' | 'domain' | 'http';

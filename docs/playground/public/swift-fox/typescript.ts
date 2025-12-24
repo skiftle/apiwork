@@ -37,7 +37,7 @@ export interface ContactsCreateResponse {
   body: ContactsCreateResponseBody;
 }
 
-export type ContactsCreateResponseBody = { contact: Contact; meta?: object } | { issues?: Error[] };
+export type ContactsCreateResponseBody = ErrorResponseBody | { contact: Contact; meta?: object };
 
 export type ContactsDestroyResponse = never;
 
@@ -53,13 +53,13 @@ export interface ContactsIndexResponse {
   body: ContactsIndexResponseBody;
 }
 
-export type ContactsIndexResponseBody = { contacts?: Contact[]; meta?: object; pagination?: OffsetPagination } | { issues?: Error[] };
+export type ContactsIndexResponseBody = ErrorResponseBody | { contacts?: Contact[]; meta?: object; pagination?: OffsetPagination };
 
 export interface ContactsShowResponse {
   body: ContactsShowResponseBody;
 }
 
-export type ContactsShowResponseBody = { contact: Contact; meta?: object } | { issues?: Error[] };
+export type ContactsShowResponseBody = ErrorResponseBody | { contact: Contact; meta?: object };
 
 export interface ContactsUpdateRequest {
   body: ContactsUpdateRequestBody;
@@ -73,19 +73,19 @@ export interface ContactsUpdateResponse {
   body: ContactsUpdateResponseBody;
 }
 
-export type ContactsUpdateResponseBody = { contact: Contact; meta?: object } | { issues?: Error[] };
+export type ContactsUpdateResponseBody = ErrorResponseBody | { contact: Contact; meta?: object };
 
-export interface Error {
+export interface ErrorResponseBody {
+  issues: Issue[];
+  layer: Layer;
+}
+
+export interface Issue {
   code: string;
   detail: string;
   meta: object;
   path: string[];
   pointer: string;
-}
-
-export interface ErrorResponse {
-  issues: Error[];
-  layer: Layer;
 }
 
 export type Layer = 'contract' | 'domain' | 'http';

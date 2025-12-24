@@ -1,14 +1,14 @@
-export interface Error {
+export interface ErrorResponseBody {
+  issues: Issue[];
+  layer: Layer;
+}
+
+export interface Issue {
   code: string;
   detail: string;
   meta: object;
   path: string[];
   pointer: string;
-}
-
-export interface ErrorResponse {
-  issues: Error[];
-  layer: Layer;
 }
 
 export type Layer = 'contract' | 'domain' | 'http';
@@ -122,7 +122,7 @@ export interface ProjectsCreateResponse {
   body: ProjectsCreateResponseBody;
 }
 
-export type ProjectsCreateResponseBody = { issues?: Error[] } | { meta?: object; project: Project };
+export type ProjectsCreateResponseBody = ErrorResponseBody | { meta?: object; project: Project };
 
 export type ProjectsDestroyResponse = never;
 
@@ -140,13 +140,13 @@ export interface ProjectsIndexResponse {
   body: ProjectsIndexResponseBody;
 }
 
-export type ProjectsIndexResponseBody = { issues?: Error[] } | { meta?: object; pagination?: OffsetPagination; projects?: Project[] };
+export type ProjectsIndexResponseBody = ErrorResponseBody | { meta?: object; pagination?: OffsetPagination; projects?: Project[] };
 
 export interface ProjectsShowResponse {
   body: ProjectsShowResponseBody;
 }
 
-export type ProjectsShowResponseBody = { issues?: Error[] } | { meta?: object; project: Project };
+export type ProjectsShowResponseBody = ErrorResponseBody | { meta?: object; project: Project };
 
 export interface ProjectsUpdateRequest {
   body: ProjectsUpdateRequestBody;
@@ -160,7 +160,7 @@ export interface ProjectsUpdateResponse {
   body: ProjectsUpdateResponseBody;
 }
 
-export type ProjectsUpdateResponseBody = { issues?: Error[] } | { meta?: object; project: Project };
+export type ProjectsUpdateResponseBody = ErrorResponseBody | { meta?: object; project: Project };
 
 export type SortDirection = 'asc' | 'desc';
 

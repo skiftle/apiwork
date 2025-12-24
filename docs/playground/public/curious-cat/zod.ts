@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 
-export const ErrorSchema = z.object({
+export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
   meta: z.object({}),
@@ -56,8 +56,8 @@ export const ProfileUpdatePayloadSchema = z.object({
   tags: z.array(z.string()).optional()
 });
 
-export const ErrorResponseSchema = z.object({
-  issues: z.array(ErrorSchema),
+export const ErrorResponseBodySchema = z.object({
+  issues: z.array(IssueSchema),
   layer: LayerSchema
 });
 
@@ -69,13 +69,13 @@ export const ProfilesIndexRequestSchema = z.object({
   query: ProfilesIndexRequestQuerySchema
 });
 
-export const ProfilesIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional(), profiles: z.array(ProfileSchema).optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
+export const ProfilesIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional(), profiles: z.array(ProfileSchema).optional() }), ErrorResponseBodySchema]);
 
 export const ProfilesIndexResponseSchema = z.object({
   body: ProfilesIndexResponseBodySchema
 });
 
-export const ProfilesShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), profile: ProfileSchema }), z.object({ issues: z.array(ErrorSchema).optional() })]);
+export const ProfilesShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), profile: ProfileSchema }), ErrorResponseBodySchema]);
 
 export const ProfilesShowResponseSchema = z.object({
   body: ProfilesShowResponseBodySchema
@@ -89,7 +89,7 @@ export const ProfilesCreateRequestSchema = z.object({
   body: ProfilesCreateRequestBodySchema
 });
 
-export const ProfilesCreateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), profile: ProfileSchema }), z.object({ issues: z.array(ErrorSchema).optional() })]);
+export const ProfilesCreateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), profile: ProfileSchema }), ErrorResponseBodySchema]);
 
 export const ProfilesCreateResponseSchema = z.object({
   body: ProfilesCreateResponseBodySchema
@@ -103,7 +103,7 @@ export const ProfilesUpdateRequestSchema = z.object({
   body: ProfilesUpdateRequestBodySchema
 });
 
-export const ProfilesUpdateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), profile: ProfileSchema }), z.object({ issues: z.array(ErrorSchema).optional() })]);
+export const ProfilesUpdateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), profile: ProfileSchema }), ErrorResponseBodySchema]);
 
 export const ProfilesUpdateResponseSchema = z.object({
   body: ProfilesUpdateResponseBodySchema
@@ -111,17 +111,17 @@ export const ProfilesUpdateResponseSchema = z.object({
 
 export const ProfilesDestroyResponse = z.never();
 
-export interface Error {
+export interface ErrorResponseBody {
+  issues: Issue[];
+  layer: Layer;
+}
+
+export interface Issue {
   code: string;
   detail: string;
   meta: object;
   path: string[];
   pointer: string;
-}
-
-export interface ErrorResponse {
-  issues: Error[];
-  layer: Layer;
 }
 
 export type Layer = 'contract' | 'domain' | 'http';
@@ -184,7 +184,7 @@ export interface ProfilesCreateResponse {
   body: ProfilesCreateResponseBody;
 }
 
-export type ProfilesCreateResponseBody = { issues?: Error[] } | { meta?: object; profile: Profile };
+export type ProfilesCreateResponseBody = ErrorResponseBody | { meta?: object; profile: Profile };
 
 export type ProfilesDestroyResponse = never;
 
@@ -200,13 +200,13 @@ export interface ProfilesIndexResponse {
   body: ProfilesIndexResponseBody;
 }
 
-export type ProfilesIndexResponseBody = { issues?: Error[] } | { meta?: object; pagination?: OffsetPagination; profiles?: Profile[] };
+export type ProfilesIndexResponseBody = ErrorResponseBody | { meta?: object; pagination?: OffsetPagination; profiles?: Profile[] };
 
 export interface ProfilesShowResponse {
   body: ProfilesShowResponseBody;
 }
 
-export type ProfilesShowResponseBody = { issues?: Error[] } | { meta?: object; profile: Profile };
+export type ProfilesShowResponseBody = ErrorResponseBody | { meta?: object; profile: Profile };
 
 export interface ProfilesUpdateRequest {
   body: ProfilesUpdateRequestBody;
@@ -220,4 +220,4 @@ export interface ProfilesUpdateResponse {
   body: ProfilesUpdateResponseBody;
 }
 
-export type ProfilesUpdateResponseBody = { issues?: Error[] } | { meta?: object; profile: Profile };
+export type ProfilesUpdateResponseBody = ErrorResponseBody | { meta?: object; profile: Profile };

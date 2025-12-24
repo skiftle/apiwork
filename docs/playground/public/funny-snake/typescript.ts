@@ -1,13 +1,5 @@
-export interface Error {
-  code: string;
-  detail: string;
-  meta: object;
-  path: string[];
-  pointer: string;
-}
-
-export interface ErrorResponse {
-  issues: Error[];
+export interface ErrorResponseBody {
+  issues: Issue[];
   layer: Layer;
 }
 
@@ -69,5 +61,13 @@ export interface InvoicesUpdateResponse {
 }
 
 export type InvoicesUpdateResponseBody = { invoice: Invoice };
+
+export interface Issue {
+  code: string;
+  detail: string;
+  meta: object;
+  path: string[];
+  pointer: string;
+}
 
 export type Layer = 'contract' | 'domain' | 'http';

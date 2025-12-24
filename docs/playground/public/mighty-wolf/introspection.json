@@ -91,33 +91,12 @@
         }
       }
     },
-    "error": {
-      "type": "object",
-      "shape": {
-        "code": {
-          "type": "string"
-        },
-        "detail": {
-          "type": "string"
-        },
-        "meta": {
-          "type": "object"
-        },
-        "path": {
-          "type": "array",
-          "of": "string"
-        },
-        "pointer": {
-          "type": "string"
-        }
-      }
-    },
-    "error_response": {
+    "error_response_body": {
       "type": "object",
       "shape": {
         "issues": {
           "type": "array",
-          "of": "error"
+          "of": "issue"
         },
         "layer": {
           "type": "layer"
@@ -168,6 +147,27 @@
         "to": {
           "type": "integer",
           "optional": true
+        }
+      }
+    },
+    "issue": {
+      "type": "object",
+      "shape": {
+        "code": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "meta": {
+          "type": "object"
+        },
+        "path": {
+          "type": "array",
+          "of": "string"
+        },
+        "pointer": {
+          "type": "string"
         }
       }
     },
@@ -660,14 +660,7 @@
                   }
                 },
                 {
-                  "type": "object",
-                  "shape": {
-                    "issues": {
-                      "type": "array",
-                      "of": "error",
-                      "optional": true
-                    }
-                  }
+                  "type": "error_response_body"
                 }
               ]
             }
@@ -693,14 +686,7 @@
                   }
                 },
                 {
-                  "type": "object",
-                  "shape": {
-                    "issues": {
-                      "type": "array",
-                      "of": "error",
-                      "optional": true
-                    }
-                  }
+                  "type": "error_response_body"
                 }
               ]
             }
@@ -733,14 +719,7 @@
                   }
                 },
                 {
-                  "type": "object",
-                  "shape": {
-                    "issues": {
-                      "type": "array",
-                      "of": "error",
-                      "optional": true
-                    }
-                  }
+                  "type": "error_response_body"
                 }
               ]
             }
@@ -776,14 +755,7 @@
                   }
                 },
                 {
-                  "type": "object",
-                  "shape": {
-                    "issues": {
-                      "type": "array",
-                      "of": "error",
-                      "optional": true
-                    }
-                  }
+                  "type": "error_response_body"
                 }
               ]
             }

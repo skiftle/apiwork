@@ -32,17 +32,17 @@ export const CarUpdatePayloadSchema = z.object({
   year: z.number().int().nullable().optional()
 });
 
-export const ErrorSchema = z.object({
+export const IntegerFilterBetweenSchema = z.object({
+  from: z.number().int().optional(),
+  to: z.number().int().optional()
+});
+
+export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
   meta: z.object({}),
   path: z.array(z.string()),
   pointer: z.string()
-});
-
-export const IntegerFilterBetweenSchema = z.object({
-  from: z.number().int().optional(),
-  to: z.number().int().optional()
 });
 
 export const MotorcycleSchema = z.object({
@@ -126,11 +126,6 @@ export const VehicleSortSchema = z.object({
   year: SortDirectionSchema.optional()
 });
 
-export const ErrorResponseSchema = z.object({
-  issues: z.array(ErrorSchema),
-  layer: LayerSchema
-});
-
 export const IntegerFilterSchema = z.object({
   between: IntegerFilterBetweenSchema.optional(),
   eq: z.number().int().optional(),
@@ -150,6 +145,11 @@ export const NullableIntegerFilterSchema = z.object({
   lt: z.number().int().optional(),
   lte: z.number().int().optional(),
   null: z.boolean().optional()
+});
+
+export const ErrorResponseBodySchema = z.object({
+  issues: z.array(IssueSchema),
+  layer: LayerSchema
 });
 
 export const VehicleSchema = z.discriminatedUnion('type', [
@@ -189,13 +189,13 @@ export const VehiclesIndexRequestSchema = z.object({
   query: VehiclesIndexRequestQuerySchema
 });
 
-export const VehiclesIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional(), vehicles: z.array(VehicleSchema).optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
+export const VehiclesIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional(), vehicles: z.array(VehicleSchema).optional() }), ErrorResponseBodySchema]);
 
 export const VehiclesIndexResponseSchema = z.object({
   body: VehiclesIndexResponseBodySchema
 });
 
-export const VehiclesShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), vehicle: VehicleSchema }), z.object({ issues: z.array(ErrorSchema).optional() })]);
+export const VehiclesShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), vehicle: VehicleSchema }), ErrorResponseBodySchema]);
 
 export const VehiclesShowResponseSchema = z.object({
   body: VehiclesShowResponseBodySchema
@@ -209,7 +209,7 @@ export const VehiclesCreateRequestSchema = z.object({
   body: VehiclesCreateRequestBodySchema
 });
 
-export const VehiclesCreateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), vehicle: VehicleSchema }), z.object({ issues: z.array(ErrorSchema).optional() })]);
+export const VehiclesCreateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), vehicle: VehicleSchema }), ErrorResponseBodySchema]);
 
 export const VehiclesCreateResponseSchema = z.object({
   body: VehiclesCreateResponseBodySchema
@@ -223,7 +223,7 @@ export const VehiclesUpdateRequestSchema = z.object({
   body: VehiclesUpdateRequestBodySchema
 });
 
-export const VehiclesUpdateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), vehicle: VehicleSchema }), z.object({ issues: z.array(ErrorSchema).optional() })]);
+export const VehiclesUpdateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), vehicle: VehicleSchema }), ErrorResponseBodySchema]);
 
 export const VehiclesUpdateResponseSchema = z.object({
   body: VehiclesUpdateResponseBodySchema
@@ -259,16 +259,8 @@ export interface CarUpdatePayload {
   year?: null | number;
 }
 
-export interface Error {
-  code: string;
-  detail: string;
-  meta: object;
-  path: string[];
-  pointer: string;
-}
-
-export interface ErrorResponse {
-  issues: Error[];
+export interface ErrorResponseBody {
+  issues: Issue[];
   layer: Layer;
 }
 
@@ -285,6 +277,14 @@ export interface IntegerFilter {
 export interface IntegerFilterBetween {
   from?: number;
   to?: number;
+}
+
+export interface Issue {
+  code: string;
+  detail: string;
+  meta: object;
+  path: string[];
+  pointer: string;
 }
 
 export type Layer = 'contract' | 'domain' | 'http';
@@ -410,7 +410,7 @@ export interface VehiclesCreateResponse {
   body: VehiclesCreateResponseBody;
 }
 
-export type VehiclesCreateResponseBody = { issues?: Error[] } | { meta?: object; vehicle: Vehicle };
+export type VehiclesCreateResponseBody = ErrorResponseBody | { meta?: object; vehicle: Vehicle };
 
 export type VehiclesDestroyResponse = never;
 
@@ -428,13 +428,13 @@ export interface VehiclesIndexResponse {
   body: VehiclesIndexResponseBody;
 }
 
-export type VehiclesIndexResponseBody = { issues?: Error[] } | { meta?: object; pagination?: OffsetPagination; vehicles?: Vehicle[] };
+export type VehiclesIndexResponseBody = ErrorResponseBody | { meta?: object; pagination?: OffsetPagination; vehicles?: Vehicle[] };
 
 export interface VehiclesShowResponse {
   body: VehiclesShowResponseBody;
 }
 
-export type VehiclesShowResponseBody = { issues?: Error[] } | { meta?: object; vehicle: Vehicle };
+export type VehiclesShowResponseBody = ErrorResponseBody | { meta?: object; vehicle: Vehicle };
 
 export interface VehiclesUpdateRequest {
   body: VehiclesUpdateRequestBody;
@@ -448,4 +448,4 @@ export interface VehiclesUpdateResponse {
   body: VehiclesUpdateResponseBody;
 }
 
-export type VehiclesUpdateResponseBody = { issues?: Error[] } | { meta?: object; vehicle: Vehicle };
+export type VehiclesUpdateResponseBody = ErrorResponseBody | { meta?: object; vehicle: Vehicle };

@@ -83,12 +83,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  issues:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/error"
+                "$ref": "#/components/schemas/errorResponseBody"
   comments/{id}:
     get:
       operationId: commentsShow
@@ -158,12 +153,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  issues:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/error"
+                "$ref": "#/components/schemas/errorResponseBody"
     delete:
       operationId: commentsDestroy
       parameters:
@@ -259,35 +249,13 @@ components:
           type: string
       required:
       - body
-    error:
-      type: object
-      properties:
-        code:
-          type: string
-        detail:
-          type: string
-        meta:
-          type: object
-          properties: {}
-        path:
-          type: array
-          items:
-            type: string
-        pointer:
-          type: string
-      required:
-      - code
-      - detail
-      - meta
-      - path
-      - pointer
-    errorResponse:
+    errorResponseBody:
       type: object
       properties:
         issues:
           type: array
           items:
-            "$ref": "#/components/schemas/error"
+            "$ref": "#/components/schemas/issue"
         layer:
           type: string
           enum:
@@ -406,6 +374,28 @@ components:
           enum:
           - asc
           - desc
+    issue:
+      type: object
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+        meta:
+          type: object
+          properties: {}
+        path:
+          type: array
+          items:
+            type: string
+        pointer:
+          type: string
+      required:
+      - code
+      - detail
+      - meta
+      - path
+      - pointer
     offsetPagination:
       type: object
       properties:

@@ -4,7 +4,7 @@ export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
-export const ErrorSchema = z.object({
+export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
   meta: z.object({}),
@@ -70,8 +70,8 @@ export const StringFilterSchema = z.object({
   startsWith: z.string().optional()
 });
 
-export const ErrorResponseSchema = z.object({
-  issues: z.array(ErrorSchema),
+export const ErrorResponseBodySchema = z.object({
+  issues: z.array(IssueSchema),
   layer: LayerSchema
 });
 
@@ -92,13 +92,13 @@ export const OrdersIndexRequestSchema = z.object({
   query: OrdersIndexRequestQuerySchema
 });
 
-export const OrdersIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), orders: z.array(OrderSchema).optional(), pagination: OffsetPaginationSchema.optional() }), z.object({ issues: z.array(ErrorSchema).optional() })]);
+export const OrdersIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), orders: z.array(OrderSchema).optional(), pagination: OffsetPaginationSchema.optional() }), ErrorResponseBodySchema]);
 
 export const OrdersIndexResponseSchema = z.object({
   body: OrdersIndexResponseBodySchema
 });
 
-export const OrdersShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), order: OrderSchema }), z.object({ issues: z.array(ErrorSchema).optional() })]);
+export const OrdersShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), order: OrderSchema }), ErrorResponseBodySchema]);
 
 export const OrdersShowResponseSchema = z.object({
   body: OrdersShowResponseBodySchema
@@ -112,7 +112,7 @@ export const OrdersCreateRequestSchema = z.object({
   body: OrdersCreateRequestBodySchema
 });
 
-export const OrdersCreateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), order: OrderSchema }), z.object({ issues: z.array(ErrorSchema).optional() })]);
+export const OrdersCreateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), order: OrderSchema }), ErrorResponseBodySchema]);
 
 export const OrdersCreateResponseSchema = z.object({
   body: OrdersCreateResponseBodySchema
@@ -126,7 +126,7 @@ export const OrdersUpdateRequestSchema = z.object({
   body: OrdersUpdateRequestBodySchema
 });
 
-export const OrdersUpdateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), order: OrderSchema }), z.object({ issues: z.array(ErrorSchema).optional() })]);
+export const OrdersUpdateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), order: OrderSchema }), ErrorResponseBodySchema]);
 
 export const OrdersUpdateResponseSchema = z.object({
   body: OrdersUpdateResponseBodySchema
@@ -134,17 +134,17 @@ export const OrdersUpdateResponseSchema = z.object({
 
 export const OrdersDestroyResponse = z.never();
 
-export interface Error {
+export interface ErrorResponseBody {
+  issues: Issue[];
+  layer: Layer;
+}
+
+export interface Issue {
   code: string;
   detail: string;
   meta: object;
   path: string[];
   pointer: string;
-}
-
-export interface ErrorResponse {
-  issues: Error[];
-  layer: Layer;
 }
 
 export type Layer = 'contract' | 'domain' | 'http';
@@ -218,7 +218,7 @@ export interface OrdersCreateResponse {
   body: OrdersCreateResponseBody;
 }
 
-export type OrdersCreateResponseBody = { issues?: Error[] } | { meta?: object; order: Order };
+export type OrdersCreateResponseBody = ErrorResponseBody | { meta?: object; order: Order };
 
 export type OrdersDestroyResponse = never;
 
@@ -236,13 +236,13 @@ export interface OrdersIndexResponse {
   body: OrdersIndexResponseBody;
 }
 
-export type OrdersIndexResponseBody = { issues?: Error[] } | { meta?: object; orders?: Order[]; pagination?: OffsetPagination };
+export type OrdersIndexResponseBody = ErrorResponseBody | { meta?: object; orders?: Order[]; pagination?: OffsetPagination };
 
 export interface OrdersShowResponse {
   body: OrdersShowResponseBody;
 }
 
-export type OrdersShowResponseBody = { issues?: Error[] } | { meta?: object; order: Order };
+export type OrdersShowResponseBody = ErrorResponseBody | { meta?: object; order: Order };
 
 export interface OrdersUpdateRequest {
   body: OrdersUpdateRequestBody;
@@ -256,7 +256,7 @@ export interface OrdersUpdateResponse {
   body: OrdersUpdateResponseBody;
 }
 
-export type OrdersUpdateResponseBody = { issues?: Error[] } | { meta?: object; order: Order };
+export type OrdersUpdateResponseBody = ErrorResponseBody | { meta?: object; order: Order };
 
 export type SortDirection = 'asc' | 'desc';
 

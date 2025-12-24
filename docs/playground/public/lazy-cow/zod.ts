@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const LayerSchema = z.enum(['contract', 'domain', 'http']);
 
-export const ErrorSchema = z.object({
+export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
   meta: z.object({}),
@@ -10,8 +10,8 @@ export const ErrorSchema = z.object({
   pointer: z.string()
 });
 
-export const ErrorResponseSchema = z.object({
-  issues: z.array(ErrorSchema),
+export const ErrorResponseBodySchema = z.object({
+  issues: z.array(IssueSchema),
   layer: LayerSchema
 });
 
@@ -27,17 +27,17 @@ export const StatusStatsResponseSchema = z.object({
   body: StatusStatsResponseBodySchema
 });
 
-export interface Error {
+export interface ErrorResponseBody {
+  issues: Issue[];
+  layer: Layer;
+}
+
+export interface Issue {
   code: string;
   detail: string;
   meta: object;
   path: string[];
   pointer: string;
-}
-
-export interface ErrorResponse {
-  issues: Error[];
-  layer: Layer;
 }
 
 export type Layer = 'contract' | 'domain' | 'http';

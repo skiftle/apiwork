@@ -1,14 +1,14 @@
-export interface Error {
+export interface ErrorResponseBody {
+  issues: Issue[];
+  layer: Layer;
+}
+
+export interface Issue {
   code: string;
   detail: string;
   meta: object;
   path: string[];
   pointer: string;
-}
-
-export interface ErrorResponse {
-  issues: Error[];
-  layer: Layer;
 }
 
 export type Layer = 'contract' | 'domain' | 'http';
@@ -71,7 +71,7 @@ export interface ProfilesCreateResponse {
   body: ProfilesCreateResponseBody;
 }
 
-export type ProfilesCreateResponseBody = { issues?: Error[] } | { meta?: object; profile: Profile };
+export type ProfilesCreateResponseBody = ErrorResponseBody | { meta?: object; profile: Profile };
 
 export type ProfilesDestroyResponse = never;
 
@@ -87,13 +87,13 @@ export interface ProfilesIndexResponse {
   body: ProfilesIndexResponseBody;
 }
 
-export type ProfilesIndexResponseBody = { issues?: Error[] } | { meta?: object; pagination?: OffsetPagination; profiles?: Profile[] };
+export type ProfilesIndexResponseBody = ErrorResponseBody | { meta?: object; pagination?: OffsetPagination; profiles?: Profile[] };
 
 export interface ProfilesShowResponse {
   body: ProfilesShowResponseBody;
 }
 
-export type ProfilesShowResponseBody = { issues?: Error[] } | { meta?: object; profile: Profile };
+export type ProfilesShowResponseBody = ErrorResponseBody | { meta?: object; profile: Profile };
 
 export interface ProfilesUpdateRequest {
   body: ProfilesUpdateRequestBody;
@@ -107,4 +107,4 @@ export interface ProfilesUpdateResponse {
   body: ProfilesUpdateResponseBody;
 }
 
-export type ProfilesUpdateResponseBody = { issues?: Error[] } | { meta?: object; profile: Profile };
+export type ProfilesUpdateResponseBody = ErrorResponseBody | { meta?: object; profile: Profile };

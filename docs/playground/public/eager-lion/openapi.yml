@@ -81,12 +81,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  issues:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/error"
+                "$ref": "#/components/schemas/errorResponseBody"
   invoices/{id}:
     get:
       operationId: invoicesShow
@@ -146,12 +141,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  issues:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/error"
+                "$ref": "#/components/schemas/errorResponseBody"
     delete:
       operationId: invoicesDestroy
       parameters:
@@ -189,35 +179,13 @@ paths:
                 - invoice
 components:
   schemas:
-    error:
-      type: object
-      properties:
-        code:
-          type: string
-        detail:
-          type: string
-        meta:
-          type: object
-          properties: {}
-        path:
-          type: array
-          items:
-            type: string
-        pointer:
-          type: string
-      required:
-      - code
-      - detail
-      - meta
-      - path
-      - pointer
-    errorResponse:
+    errorResponseBody:
       type: object
       properties:
         issues:
           type: array
           items:
-            "$ref": "#/components/schemas/error"
+            "$ref": "#/components/schemas/issue"
         layer:
           type: string
           enum:
@@ -373,6 +341,28 @@ components:
       required:
       - customerId
       - number
+    issue:
+      type: object
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+        meta:
+          type: object
+          properties: {}
+        path:
+          type: array
+          items:
+            type: string
+        pointer:
+          type: string
+      required:
+      - code
+      - detail
+      - meta
+      - path
+      - pointer
     nullableStringFilter:
       type: object
       properties:
