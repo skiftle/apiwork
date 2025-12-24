@@ -1,5 +1,5 @@
 ---
-order: 9
+order: 10
 prev: false
 next: false
 ---
@@ -65,7 +65,7 @@ response format, and documentation.
 
 **Returns**
 
-`ActionDefinition` — the action definition
+[ActionDefinition](contract-action-definition) — the action definition
 
 **Example: Basic CRUD action**
 
@@ -159,7 +159,7 @@ If not set, prefix is derived from schema's root_key or class name.
 
 **Returns**
 
-`String, nil` — the scope prefix
+`String`, `nil` — the scope prefix
 
 **Example: Custom scope prefix**
 

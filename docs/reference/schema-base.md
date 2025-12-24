@@ -1,5 +1,5 @@
 ---
-order: 13
+order: 17
 prev: false
 next: false
 ---
@@ -114,7 +114,7 @@ attribute :email, writable: { on: [:create] }
 Defines a belongs_to association for serialization and contracts.
 
 Nullability is auto-detected from the foreign key column.
-See {#has_one} for all available options.
+See [#has_one](#has-one) for all available options.
 
 **Parameters**
 
@@ -178,7 +178,7 @@ what this resource represents.
 
 **Returns**
 
-`String, nil` — the description
+`String`, `nil` — the description
 
 **Example**
 
@@ -208,7 +208,7 @@ webhooks, or any external data.
 
 **Returns**
 
-`Hash, Array<Hash>` — deserialized data
+`Hash`, `Array<Hash>` — deserialized data
 
 **Example: Deserialize request payload**
 
@@ -276,7 +276,7 @@ Used in generated documentation to show example responses.
 
 **Returns**
 
-`Hash, nil` — the example
+`Hash`, `nil` — the example
 
 **Example**
 
@@ -294,7 +294,7 @@ end
 
 Defines a has_many association for serialization and contracts.
 
-See {#has_one} for shared options. Additionally supports:
+See [#has_one](#has-one) for shared options. Additionally supports:
 
 **Parameters**
 
@@ -382,7 +382,7 @@ By default, the model is auto-detected from the schema name
 
 **Returns**
 
-`Class, nil` — the model class
+`Class`, `nil` — the model class
 
 **Example: Explicit model**
 
@@ -446,7 +446,7 @@ attribute and association definitions.
 
 **Returns**
 
-`Hash, Array<Hash>` — serialized data
+`Hash`, `Array<Hash>` — serialized data
 
 **Example: Serialize a single record**
 

@@ -242,6 +242,87 @@ module Apiwork
       str.underscore.dasherize
     end
 
+    def linkify_yard_refs(text)
+      return text if text.nil? || text.empty?
+
+      text.gsub(/\{([^}]+)\}/) do
+        ref = ::Regexp.last_match(1)
+        link_path = yard_ref_to_path(ref)
+        "[#{ref}](#{link_path})"
+      end
+    end
+
+    def linkify_type(type_str)
+      parts = type_str.split(/,\s*/)
+      linked_parts = parts.map do |part|
+        if linkable_type?(part)
+          "[#{part}](#{class_to_filepath(part)})"
+        else
+          "`#{part}`"
+        end
+      end
+      linked_parts.join(', ')
+    end
+
+    def linkable_type?(type_name)
+      @linkable_types ||= build_linkable_types
+      @linkable_types.include?(type_name)
+    end
+
+    def build_linkable_types
+      YARD::Registry.all(:class, :module)
+                    .select { |obj| obj.path.start_with?('Apiwork') }
+                    .select { |obj| public_api?(obj) }
+                    .map { |obj| obj.name.to_s }
+                    .to_set
+    end
+
+    def yard_ref_to_path(ref)
+      # Handle method refs: "ActionDefinition#request" → "contract-action-definition.md#requestreplace-false-block"
+      if ref.include?('#')
+        class_part, method_part = ref.split('#', 2)
+        file_path = class_to_filepath(class_part)
+        "#{file_path}##{method_part.tr('_', '-')}"
+      elsif ref.include?('.')
+        # Class method: "Adapter.register" → "adapter.md#register"
+        class_part, method_part = ref.split('.', 2)
+        file_path = class_to_filepath(class_part)
+        "#{file_path}##{method_part.tr('_', '-')}"
+      else
+        class_to_filepath(ref)
+      end
+    end
+
+    def class_to_filepath(class_name)
+      # "Adapter::ContractRegistrar" → "adapter-contract-registrar"
+      # "Contract::RequestDefinition" → "contract-request-definition"
+      # "ActionDefinition" → "contract-action-definition"
+      without_apiwork = class_name.delete_prefix('Apiwork::')
+
+      # If it was under Contract::, keep that as a prefix
+      if without_apiwork.start_with?('Contract::')
+        normalized = without_apiwork.delete_prefix('Contract::')
+        "contract-#{dasherize(normalized)}"
+      elsif contract_class?(class_name)
+        # Short name like "ActionDefinition" that belongs to Contract
+        "contract-#{dasherize(without_apiwork)}"
+      else
+        dasherize(without_apiwork.gsub('::', '-'))
+      end
+    end
+
+    def contract_class?(class_name)
+      @contract_classes ||= build_contract_classes
+      @contract_classes.include?(class_name)
+    end
+
+    def build_contract_classes
+      YARD::Registry.all(:class, :module)
+                    .select { |obj| obj.path.start_with?('Apiwork::Contract::') }
+                    .map { |obj| obj.name.to_s }
+                    .to_set
+    end
+
     def render_module(mod, order)
       parts = []
 
@@ -260,7 +341,7 @@ module Apiwork
         parts << "[GitHub](#{github_link})\n"
       end
 
-      parts << "#{mod[:docstring]}\n" unless mod[:docstring].to_s.empty?
+      parts << "#{linkify_yard_refs(mod[:docstring])}\n" unless mod[:docstring].to_s.empty?
 
       if mod[:examples].any?
         mod[:examples].each do |example|
@@ -299,7 +380,7 @@ module Apiwork
         parts << "[GitHub](#{github_link})\n"
       end
 
-      parts << "#{method[:docstring]}\n" unless method[:docstring].to_s.empty?
+      parts << "#{linkify_yard_refs(method[:docstring])}\n" unless method[:docstring].to_s.empty?
 
       if method[:params].any?
         parts << "**Parameters**\n"
@@ -313,9 +394,9 @@ module Apiwork
       end
 
       if method[:returns]
-        types = method[:returns][:types].join(', ')
+        types = method[:returns][:types].map { |t| linkify_type(t) }.join(', ')
         parts << "**Returns**\n"
-        parts << "`#{types}` — #{method[:returns][:description]}\n"
+        parts << "#{types} — #{linkify_yard_refs(method[:returns][:description])}\n"
       end
 
       if method[:examples].any?

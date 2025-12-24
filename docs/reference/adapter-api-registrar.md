@@ -50,7 +50,7 @@ Defines an enum type.
 
 ---
 
-### #resolve_enum(enum_name)
+### #resolve_enum(name)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_registrar.rb#L62)
 
@@ -60,17 +60,17 @@ Resolves an enum registered at the API level.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `enum_name` | `Symbol` | the enum name |
+| `name` | `Symbol` | the enum name |
 
 **Returns**
 
-`Array, nil` — the enum values if registered
+`Array`, `nil` — the enum values if registered
 
 ---
 
 ### #resolve_type(name)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_registrar.rb#L56)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_registrar.rb#L50)
 
 Resolves a type registered at the API level.
 
@@ -82,7 +82,7 @@ Resolves a type registered at the API level.
 
 **Returns**
 
-`Object, nil` — the type definition if registered
+`Object`, `nil` — the type definition if registered
 
 ---
 

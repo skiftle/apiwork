@@ -40,14 +40,14 @@ end
 
 ### #api_registrar()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L103)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L113)
 
 Returns a registrar for API-level types.
 Use this to define or resolve types at the API scope.
 
 **Returns**
 
-`APIRegistrar` — the API registrar
+[APIRegistrar](api-registrar) — the API registrar
 
 ---
 
@@ -65,7 +65,7 @@ Defines an action with query, body, and response.
 
 **Returns**
 
-`ActionDefinition` — the action definition
+[ActionDefinition](contract-action-definition) — the action definition
 
 ---
 
@@ -86,7 +86,7 @@ Defines an enum type scoped to this contract.
 
 ### #find_contract_for_schema(schema_class)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L85)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L86)
 
 Finds the contract class for an associated schema.
 
@@ -98,13 +98,13 @@ Finds the contract class for an associated schema.
 
 **Returns**
 
-`Class, nil` — the contract class
+`Class`, `nil` — the contract class
 
 ---
 
 ### #import(type_name, from:)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L60)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L61)
 
 Imports a type from another contract or the API.
 
@@ -119,7 +119,7 @@ Imports a type from another contract or the API.
 
 ### #imports()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L96)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L97)
 
 Returns the hash of imported types.
 
@@ -131,7 +131,7 @@ Returns the hash of imported types.
 
 ### #resolve_enum(name)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L73)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L74)
 
 Resolves an enum registered in this contract.
 
@@ -143,13 +143,13 @@ Resolves an enum registered in this contract.
 
 **Returns**
 
-`Array, nil` — the enum values if registered
+`Array`, `nil` — the enum values if registered
 
 ---
 
 ### #resolve_type(name)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L67)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L68)
 
 Resolves a type registered in this contract.
 
@@ -161,13 +161,13 @@ Resolves a type registered in this contract.
 
 **Returns**
 
-`Object, nil` — the type definition if registered
+`Object`, `nil` — the type definition if registered
 
 ---
 
 ### #scoped_name(name)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L79)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L80)
 
 Returns the fully qualified name for a type in this contract's scope.
 

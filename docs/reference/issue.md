@@ -1,5 +1,5 @@
 ---
-order: 12
+order: 16
 prev: false
 next: false
 ---
@@ -61,7 +61,7 @@ coercion, or constraint checks. Access via `contract.issues`.
 
 **Returns**
 
-`Array<Symbol, Integer>` — path to the invalid field
+`Array<Symbol`, `Integer>` — path to the invalid field
 
 ---
 
