@@ -20,7 +20,7 @@ Registers an adapter.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class` | the adapter class (subclass of Adapter::Base with adapter_name) |
+| `klass` | `Class` | an [Adapter::Base](adapter-base) subclass with adapter_name set |
 
 **Example**
 

@@ -94,11 +94,11 @@ Finds the contract class for an associated schema.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `schema_class` | `Class` | the schema class |
+| `schema_class` | `Class` | a [Schema::Base](schema-base) subclass |
 
 **Returns**
 
-`Class`, `nil` — the contract class
+`Class`, `nil` — a [Contract::Base](contract-base) subclass if found
 
 ---
 
@@ -113,7 +113,7 @@ Imports a type from another contract or the API.
 | Name | Type | Description |
 |------|------|-------------|
 | `type_name` | `Symbol` | the type to import |
-| `from` | `Class` | source contract class |
+| `from` | `Class` | a [Contract::Base](contract-base) subclass |
 
 ---
 

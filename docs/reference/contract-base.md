@@ -190,7 +190,7 @@ makes it available as `:user_address`.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `contract_class` | `Class` | the contract class to import from |
+| `contract_class` | `Class` | a [Contract::Base](contract-base) subclass to import from |
 | `as` | `Symbol` | alias prefix for imported types |
 
 **Example: Import types from another contract**
@@ -228,7 +228,7 @@ types based on the schema's attributes.
 
 **Returns**
 
-`Class` — the associated schema class
+`Class` — a [Schema::Base](schema-base) subclass
 
 **Example**
 
@@ -264,7 +264,7 @@ with the contract's scope prefix (e.g., `:order_address`).
 | `example` | `Object` | example value for docs |
 | `format` | `String` | format hint for docs |
 | `deprecated` | `Boolean` | mark as deprecated |
-| `schema_class` | `Class` | associate with schema for inference |
+| `schema_class` | `Class` | a [Schema::Base](schema-base) subclass for type inference |
 
 **Example: Reusable address type**
 

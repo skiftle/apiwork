@@ -32,7 +32,7 @@ Use as a declarative builder - do not rely on internal state.
 
 **Returns**
 
-`Class` — the contract class
+`Class` — a [Contract::Base](contract-base) subclass
 
 ---
 

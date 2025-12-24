@@ -17,7 +17,7 @@ module Apiwork
       #   @return [Definition, nil] the body definition
       # @!attribute [r] contract_class
       #   @api public
-      #   @return [Class] the contract class
+      #   @return [Class] a {Contract::Base} subclass
       attr_reader :action_name,
                   :body_definition,
                   :contract_class

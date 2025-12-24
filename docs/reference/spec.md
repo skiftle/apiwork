@@ -47,7 +47,7 @@ Registers a spec generator.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `klass` | `Class` | the spec class (subclass of Spec::Base with spec_name) |
+| `klass` | `Class` | a [Spec::Base](spec-base) subclass with spec_name set |
 
 **Example**
 

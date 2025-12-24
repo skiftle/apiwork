@@ -62,7 +62,7 @@ module Apiwork
       #   @api public
       #   Imports a type from another contract or the API.
       #   @param type_name [Symbol] the type to import
-      #   @param from [Class] source contract class
+      #   @param from [Class] a {Contract::Base} subclass
       #   @see Apiwork::Contract::Base.import
 
       # @!method resolve_type(name)
@@ -86,8 +86,8 @@ module Apiwork
       # @!method find_contract_for_schema(schema_class)
       #   @api public
       #   Finds the contract class for an associated schema.
-      #   @param schema_class [Class] the schema class
-      #   @return [Class, nil] the contract class
+      #   @param schema_class [Class] a {Schema::Base} subclass
+      #   @return [Class, nil] a {Contract::Base} subclass if found
 
       # @!method imports
       #   @api public

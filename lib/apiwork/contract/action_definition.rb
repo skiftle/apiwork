@@ -14,7 +14,7 @@ module Apiwork
       #   @return [Symbol] the action name
       # @!attribute [r] contract_class
       #   @api public
-      #   @return [Class] the contract class
+      #   @return [Class] a {Contract::Base} subclass
       # @!attribute [r] request_definition
       #   @api public
       #   @return [RequestDefinition, nil] the request definition

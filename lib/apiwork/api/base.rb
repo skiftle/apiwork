@@ -230,12 +230,12 @@ module Apiwork
         # Scoped types are namespaced to a contract class.
         #
         # @param name [Symbol] type name for referencing
-        # @param scope [Class] contract class for scoping (nil for global)
+        # @param scope [Class] a {Contract::Base} subclass for scoping (nil for global)
         # @param description [String] documentation description
         # @param example [Object] example value for docs
         # @param format [String] format hint for docs
         # @param deprecated [Boolean] mark as deprecated
-        # @param schema_class [Class] associate with a schema for type inference
+        # @param schema_class [Class] a {Schema::Base} subclass for type inference
         # @yield block defining the type's params
         #
         # @example Global type
@@ -261,7 +261,7 @@ module Apiwork
         #
         # @param name [Symbol] enum name for referencing
         # @param values [Array<String>] allowed values
-        # @param scope [Class] contract class for scoping (nil for global)
+        # @param scope [Class] a {Contract::Base} subclass for scoping (nil for global)
         # @param description [String] documentation description
         # @param example [String] example value for docs
         # @param deprecated [Boolean] mark as deprecated
@@ -284,7 +284,7 @@ module Apiwork
         # by a discriminator field.
         #
         # @param name [Symbol] union name for referencing
-        # @param scope [Class] contract class for scoping (nil for global)
+        # @param scope [Class] a {Contract::Base} subclass for scoping (nil for global)
         # @param discriminator [Symbol] field name that identifies the variant
         # @yield block defining variants using `variant`
         #

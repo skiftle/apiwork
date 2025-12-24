@@ -47,7 +47,7 @@ module Apiwork
       # Renders a collection response.
       #
       # @param collection [Enumerable] the records to render
-      # @param schema_class [Class] the schema class
+      # @param schema_class [Class] a {Schema::Base} subclass
       # @param action_data [ActionData] request context
       # @return [Hash] the response hash
       def render_collection(collection, schema_class, action_data)
@@ -58,7 +58,7 @@ module Apiwork
       # Renders a single record response.
       #
       # @param record [Object] the record to render
-      # @param schema_class [Class] the schema class
+      # @param schema_class [Class] a {Schema::Base} subclass
       # @param action_data [ActionData] request context
       # @return [Hash] the response hash
       def render_record(record, schema_class, action_data)
@@ -80,7 +80,7 @@ module Apiwork
       # Override to customize key casing, unwrapping, etc.
       #
       # @param hash [Hash] the request parameters
-      # @param schema_class [Class] the schema class (optional)
+      # @param schema_class [Class] a {Schema::Base} subclass (optional)
       # @return [Hash] the transformed parameters
       def transform_request(hash, schema_class)
         hash
@@ -91,7 +91,7 @@ module Apiwork
       # Override to customize key casing, wrapping, etc.
       #
       # @param hash [Hash] the response data
-      # @param schema_class [Class] the schema class (optional)
+      # @param schema_class [Class] a {Schema::Base} subclass (optional)
       # @return [Hash] the transformed response
       def transform_response(hash, schema_class)
         hash

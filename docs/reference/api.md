@@ -28,7 +28,7 @@ types, and configuration.
 
 **Returns**
 
-`Class` — the created API class (subclass of API::Base)
+`Class` — an [API::Base](api-base) subclass
 
 **Example: Basic API**
 

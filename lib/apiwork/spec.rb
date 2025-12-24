@@ -7,7 +7,7 @@ module Apiwork
       # @api public
       # Registers a spec generator.
       #
-      # @param klass [Class] the spec class (subclass of Spec::Base with spec_name)
+      # @param klass [Class] a {Spec::Base} subclass with spec_name set
       #
       # @example
       #   Apiwork::Spec.register(GraphqlSpec)

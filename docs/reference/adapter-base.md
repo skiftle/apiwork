@@ -59,7 +59,7 @@ Renders a collection response.
 | Name | Type | Description |
 |------|------|-------------|
 | `collection` | `Enumerable` | the records to render |
-| `schema_class` | `Class` | the schema class |
+| `schema_class` | `Class` | a [Schema::Base](schema-base) subclass |
 | `action_data` | `ActionData` | request context |
 
 **Returns**
@@ -98,7 +98,7 @@ Renders a single record response.
 | Name | Type | Description |
 |------|------|-------------|
 | `record` | `Object` | the record to render |
-| `schema_class` | `Class` | the schema class |
+| `schema_class` | `Class` | a [Schema::Base](schema-base) subclass |
 | `action_data` | `ActionData` | request context |
 
 **Returns**
@@ -119,7 +119,7 @@ Override to customize key casing, unwrapping, etc.
 | Name | Type | Description |
 |------|------|-------------|
 | `hash` | `Hash` | the request parameters |
-| `schema_class` | `Class` | the schema class (optional) |
+| `schema_class` | `Class` | a [Schema::Base](schema-base) subclass (optional) |
 
 **Returns**
 
@@ -139,7 +139,7 @@ Override to customize key casing, wrapping, etc.
 | Name | Type | Description |
 |------|------|-------------|
 | `hash` | `Hash` | the response data |
-| `schema_class` | `Class` | the schema class (optional) |
+| `schema_class` | `Class` | a [Schema::Base](schema-base) subclass (optional) |
 
 **Returns**
 

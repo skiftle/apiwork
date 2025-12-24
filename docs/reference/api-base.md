@@ -97,7 +97,7 @@ the `enum:` option.
 |------|------|-------------|
 | `name` | `Symbol` | enum name for referencing |
 | `values` | `Array<String>` | allowed values |
-| `scope` | `Class` | contract class for scoping (nil for global) |
+| `scope` | `Class` | a [Contract::Base](contract-base) subclass for scoping (nil for global) |
 | `description` | `String` | documentation description |
 | `example` | `String` | example value for docs |
 | `deprecated` | `Boolean` | mark as deprecated |
@@ -335,12 +335,12 @@ Scoped types are namespaced to a contract class.
 | Name | Type | Description |
 |------|------|-------------|
 | `name` | `Symbol` | type name for referencing |
-| `scope` | `Class` | contract class for scoping (nil for global) |
+| `scope` | `Class` | a [Contract::Base](contract-base) subclass for scoping (nil for global) |
 | `description` | `String` | documentation description |
 | `example` | `Object` | example value for docs |
 | `format` | `String` | format hint for docs |
 | `deprecated` | `Boolean` | mark as deprecated |
-| `schema_class` | `Class` | associate with a schema for type inference |
+| `schema_class` | `Class` | a [Schema::Base](schema-base) subclass for type inference |
 
 **Example: Global type**
 
@@ -374,7 +374,7 @@ by a discriminator field.
 | Name | Type | Description |
 |------|------|-------------|
 | `name` | `Symbol` | union name for referencing |
-| `scope` | `Class` | contract class for scoping (nil for global) |
+| `scope` | `Class` | a [Contract::Base](contract-base) subclass for scoping (nil for global) |
 | `discriminator` | `Symbol` | field name that identifies the variant |
 
 **Example**

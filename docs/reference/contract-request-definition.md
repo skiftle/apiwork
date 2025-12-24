@@ -67,7 +67,7 @@ end
 
 **Returns**
 
-`Class` — the contract class
+`Class` — a [Contract::Base](contract-base) subclass
 
 ---
 

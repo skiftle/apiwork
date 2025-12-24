@@ -388,7 +388,8 @@ module Apiwork
         parts << '|------|------|-------------|'
         method[:params].each do |param|
           types = param[:types].join(', ')
-          parts << "| `#{param[:name]}` | `#{types}` | #{param[:description]} |"
+          desc = linkify_yard_refs(param[:description])
+          parts << "| `#{param[:name]}` | `#{types}` | #{desc} |"
         end
         parts << ''
       end

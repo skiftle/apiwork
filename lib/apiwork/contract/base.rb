@@ -97,7 +97,7 @@ module Apiwork
         # Call this method to enable auto-generation of request/response
         # types based on the schema's attributes.
         #
-        # @return [Class] the associated schema class
+        # @return [Class] a {Schema::Base} subclass
         # @raise [ArgumentError] if schema class not found
         #
         # @example
@@ -177,7 +177,7 @@ module Apiwork
         # @param example [Object] example value for docs
         # @param format [String] format hint for docs
         # @param deprecated [Boolean] mark as deprecated
-        # @param schema_class [Class] associate with schema for inference
+        # @param schema_class [Class] a {Schema::Base} subclass for type inference
         # @yield block defining the type's params
         #
         # @example Reusable address type
@@ -259,7 +259,7 @@ module Apiwork
         # If UserContract defines a type `:address`, importing it as `:user`
         # makes it available as `:user_address`.
         #
-        # @param contract_class [Class] the contract class to import from
+        # @param contract_class [Class] a {Contract::Base} subclass to import from
         # @param as [Symbol] alias prefix for imported types
         #
         # @example Import types from another contract
