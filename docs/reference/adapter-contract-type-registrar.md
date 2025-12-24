@@ -38,24 +38,6 @@ end
 
 ## Instance Methods
 
-### #api_resolve_type(type_name)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_type_registrar.rb#L97)
-
-Checks if a type is registered at the API level.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `type_name` | `Symbol` | the type name |
-
-**Returns**
-
-`Boolean` — true if type exists
-
----
-
 ### #api_type(type_name, **options, &block)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_type_registrar.rb#L106)
@@ -156,6 +138,24 @@ Returns the hash of imported types.
 **Returns**
 
 `Hash` — imported types
+
+---
+
+### #resolve_api_type(type_name)
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_type_registrar.rb#L97)
+
+Resolves a type registered at the API level.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `type_name` | `Symbol` | the type name |
+
+**Returns**
+
+`Object, nil` — the type definition if registered
 
 ---
 

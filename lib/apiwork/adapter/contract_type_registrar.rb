@@ -91,10 +91,10 @@ module Apiwork
       delegate :resolve_type, :scoped_name, :find_contract_for_schema, :imports, to: :contract_class
 
       # @api public
-      # Checks if a type is registered at the API level.
+      # Resolves a type registered at the API level.
       # @param type_name [Symbol] the type name
-      # @return [Boolean] true if type exists
-      def api_resolve_type(type_name)
+      # @return [Object, nil] the type definition if registered
+      def resolve_api_type(type_name)
         contract_class.api_class.resolve_type(type_name)
       end
 

@@ -7,19 +7,19 @@ module Apiwork
         MAX_RECURSION_DEPTH = 3
 
         def self.build(type_registrar, schema_class, actions)
-          new(type_registrar, schema_class, actions, run_build: true)
+          new(type_registrar, schema_class, actions: actions, build: true)
         end
 
         def self.for_schema(type_registrar, schema_class)
-          new(type_registrar, schema_class, nil, run_build: false)
+          new(type_registrar, schema_class)
         end
 
-        def initialize(type_registrar, schema_class, actions, run_build: true)
+        def initialize(type_registrar, schema_class, actions: nil, build: false)
           @type_registrar = type_registrar
           @schema_class = schema_class
           @actions = actions
 
-          return unless run_build
+          return unless build
 
           build_enums
           build_actions
@@ -281,7 +281,7 @@ module Apiwork
             variant_schema_name = variant_schema.name.demodulize.underscore.gsub(/_schema$/, '')
             variant_type_name = :"#{variant_schema_name}_#{context_symbol}_payload"
 
-            unless type_registrar.api_resolve_type(variant_type_name)
+            unless type_registrar.resolve_api_type(variant_type_name)
               type_registrar.api_type(variant_type_name) do
                 # Rename discriminator from API name to DB column if different
                 as_column = discriminator_name != discriminator_column ? discriminator_column : nil
@@ -802,7 +802,7 @@ module Apiwork
           build_sti_union(union_type_name: union_type_name, visited: visited) do |variant_schema, tag, _visit_set|
             variant_type_name = variant_schema.root_key.singular.to_sym
 
-            unless type_registrar.api_resolve_type(variant_type_name)
+            unless type_registrar.resolve_api_type(variant_type_name)
               type_registrar.api_type(variant_type_name, schema_class: variant_schema) do
                 param discriminator_name, type: :literal, value: tag.to_s
 
@@ -863,7 +863,7 @@ module Apiwork
           scoped_name = type_registrar.scoped_name(enum_name)
           filter_name = :"#{scoped_name}_filter"
 
-          return if type_registrar.api_resolve_type(filter_name)
+          return if type_registrar.resolve_api_type(filter_name)
 
           type_registrar.api_union(filter_name) do
             variant type: scoped_name
