@@ -4,7 +4,7 @@ module Apiwork
   module Contract
     # Defines query params and body for a request.
     #
-    # Part of the Adapter DSL. Returned by {ActionDefinition#request}.
+    # Returns {ParamDefinition} via `query` and `body`.
     # Use as a declarative builder - do not rely on internal state.
     #
     # @api public
@@ -28,7 +28,7 @@ module Apiwork
       # Use `param` inside the block to define parameters.
       #
       # @yield block defining query params
-      # @return [ParamDefinition] the query definition
+      # @return [ParamDefinition] the query param definition
       #
       # @example
       #   request do
@@ -57,7 +57,7 @@ module Apiwork
       # Use `param` inside the block to define fields.
       #
       # @yield block defining body params
-      # @return [ParamDefinition] the body definition
+      # @return [ParamDefinition] the body param definition
       #
       # @example
       #   request do

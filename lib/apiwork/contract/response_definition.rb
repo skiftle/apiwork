@@ -4,7 +4,7 @@ module Apiwork
   module Contract
     # Defines body for a response.
     #
-    # Part of the Adapter DSL. Returned by {ActionDefinition#response}.
+    # Returns {ParamDefinition} via `body`.
     # Use as a declarative builder - do not rely on internal state.
     #
     # @api public
@@ -53,7 +53,7 @@ module Apiwork
       # When using schema!, body is auto-generated from schema attributes.
       #
       # @yield block defining body params
-      # @return [ParamDefinition] the body definition
+      # @return [ParamDefinition] the body param definition
       #
       # @example
       #   response do

@@ -10,7 +10,7 @@ next: false
 
 Defines query params and body for a request.
 
-Part of the Adapter DSL. Returned by [ActionDefinition#request](contract-action-definition#request).
+Returns [ParamDefinition](contract-param-definition) via `query` and `body`.
 Use as a declarative builder - do not rely on internal state.
 
 ## Instance Methods
@@ -26,7 +26,7 @@ Use `param` inside the block to define fields.
 
 **Returns**
 
-[ParamDefinition](contract-param-definition) — the body definition
+[ParamDefinition](contract-param-definition) — the body param definition
 
 **Example**
 
@@ -52,7 +52,7 @@ Use `param` inside the block to define parameters.
 
 **Returns**
 
-[ParamDefinition](contract-param-definition) — the query definition
+[ParamDefinition](contract-param-definition) — the query param definition
 
 **Example**
 

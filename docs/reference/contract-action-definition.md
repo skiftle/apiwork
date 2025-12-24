@@ -10,7 +10,7 @@ next: false
 
 Defines request/response structure for an action.
 
-Part of the Adapter DSL. Returned by [Adapter::ContractRegistrar#define_action](adapter-contract-registrar#define-action).
+Returns [RequestDefinition](contract-request-definition) via `request` and [ResponseDefinition](contract-response-definition) via `response`.
 Use as a declarative builder - do not rely on internal state.
 
 ## Instance Methods

@@ -34,10 +34,10 @@ module Apiwork
 
           def coerce_array(array, param_options, definition, type_cache: nil)
             type_cache ||= {}
-            custom_definition = nil
+            custom_param_definition = nil
 
             if param_options[:of] && !Coercer.performable?(param_options[:of])
-              custom_definition = resolve_custom_definition(param_options[:of], definition, type_cache)
+              custom_param_definition = resolve_custom_param_definition(param_options[:of], definition, type_cache)
             end
 
             array.map do |item|
@@ -46,8 +46,8 @@ module Apiwork
               elsif param_options[:of] && Coercer.performable?(param_options[:of])
                 coerced = Coercer.perform(item, param_options[:of])
                 coerced.nil? ? item : coerced
-              elsif custom_definition && item.is_a?(Hash)
-                coerce_hash(item, custom_definition, type_cache: type_cache)
+              elsif custom_param_definition && item.is_a?(Hash)
+                coerce_hash(item, custom_param_definition, type_cache: type_cache)
               else
                 item
               end
@@ -67,20 +67,20 @@ module Apiwork
               variant_of = variant[:of]
 
               if variant_type == :array && value.is_a?(Array) && variant_of
-                custom_definition = resolve_custom_definition(variant_of, definition, type_cache)
-                if custom_definition
+                custom_param_definition = resolve_custom_param_definition(variant_of, definition, type_cache)
+                if custom_param_definition
                   coerced_array = value.map do |item|
-                    item.is_a?(Hash) ? coerce_hash(item, custom_definition, type_cache: type_cache) : item
+                    item.is_a?(Hash) ? coerce_hash(item, custom_param_definition, type_cache: type_cache) : item
                   end
                   return coerced_array
                 end
               end
 
-              custom_definition = resolve_custom_definition(variant_type, definition, type_cache)
-              next unless custom_definition
+              custom_param_definition = resolve_custom_param_definition(variant_type, definition, type_cache)
+              next unless custom_param_definition
 
               if value.is_a?(Hash)
-                coerced = coerce_hash(value, custom_definition, type_cache: type_cache)
+                coerced = coerce_hash(value, custom_param_definition, type_cache: type_cache)
                 return coerced
               end
             end
@@ -90,15 +90,15 @@ module Apiwork
 
           private
 
-          def resolve_custom_definition(type_name, definition, type_cache)
+          def resolve_custom_param_definition(type_name, definition, type_cache)
             return type_cache[type_name] if type_cache.key?(type_name)
 
             custom_type_block = definition.contract_class.resolve_custom_type(type_name)
             return type_cache[type_name] = nil unless custom_type_block
 
-            custom_definition = ParamDefinition.new(type: :body, contract_class: definition.contract_class)
-            custom_type_block.each { |block| custom_definition.instance_eval(&block) }
-            type_cache[type_name] = custom_definition
+            custom_param_definition = ParamDefinition.new(type: :body, contract_class: definition.contract_class)
+            custom_type_block.each { |block| custom_param_definition.instance_eval(&block) }
+            type_cache[type_name] = custom_param_definition
           end
         end
       end

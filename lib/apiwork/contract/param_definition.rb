@@ -187,9 +187,9 @@ module Apiwork
         elsif existing[:shape]
           existing[:shape].instance_eval(&block)
         else
-          shape_definition = ParamDefinition.new(type: nil, contract_class: @contract_class, action_name: @action_name)
-          shape_definition.instance_eval(&block)
-          @params[name][:shape] = shape_definition
+          shape_param_definition = ParamDefinition.new(type: nil, contract_class: @contract_class, action_name: @action_name)
+          shape_param_definition.instance_eval(&block)
+          @params[name][:shape] = shape_param_definition
         end
       end
 
@@ -270,15 +270,15 @@ module Apiwork
 
         visited_with_current = visited_types.dup.add(expansion_key)
 
-        shape_definition = ParamDefinition.new(type: nil, contract_class: @contract_class, action_name: @action_name)
+        shape_param_definition = ParamDefinition.new(type: nil, contract_class: @contract_class, action_name: @action_name)
 
-        shape_definition.instance_variable_set(:@visited_types, visited_with_current)
+        shape_param_definition.instance_variable_set(:@visited_types, visited_with_current)
 
         custom_type_block.each do |definition_block|
-          shape_definition.instance_eval(&definition_block)
+          shape_param_definition.instance_eval(&definition_block)
         end
 
-        shape_definition.instance_eval(&block) if block_given?
+        shape_param_definition.instance_eval(&block) if block_given?
 
         @params[name] = apply_param_defaults({
                                                name: name,
@@ -289,7 +289,7 @@ module Apiwork
                                                of: of,
                                                as: as,
                                                custom_type: type, # Track original custom type name
-                                               shape: shape_definition,
+                                               shape: shape_param_definition,
                                                **options
                                              })
       end
@@ -308,9 +308,9 @@ module Apiwork
 
         return unless block_given?
 
-        shape_definition = ParamDefinition.new(type: nil, contract_class: @contract_class, action_name: @action_name)
-        shape_definition.instance_eval(&block)
-        @params[name][:shape] = shape_definition
+        shape_param_definition = ParamDefinition.new(type: nil, contract_class: @contract_class, action_name: @action_name)
+        shape_param_definition.instance_eval(&block)
+        @params[name][:shape] = shape_param_definition
       end
 
       public
@@ -487,8 +487,8 @@ module Apiwork
         end
       end
 
-      def validate_shape_object(value, shape_definition, field_path, max_depth, current_depth)
-        shape_result = shape_definition.validate(
+      def validate_shape_object(value, shape_param_definition, field_path, max_depth, current_depth)
+        shape_result = shape_param_definition.validate(
           value,
           max_depth: max_depth,
           current_depth: current_depth + 1,
@@ -589,10 +589,10 @@ module Apiwork
                 next
               end
 
-              custom_definition = ParamDefinition.new(type: @type, contract_class: contract_class_for_custom_type, action_name: @action_name)
-              custom_type_block.each { |block| custom_definition.instance_eval(&block) }
+              custom_param_definition = ParamDefinition.new(type: @type, contract_class: contract_class_for_custom_type, action_name: @action_name)
+              custom_type_block.each { |block| custom_param_definition.instance_eval(&block) }
 
-              shape_result = custom_definition.validate(
+              shape_result = custom_param_definition.validate(
                 item,
                 max_depth: max_depth,
                 current_depth: current_depth + 1,
@@ -777,8 +777,8 @@ module Apiwork
 
         custom_type_block = @contract_class.resolve_custom_type(variant_type)
         if custom_type_block
-          custom_definition = ParamDefinition.new(type: @type, contract_class: @contract_class, action_name: @action_name)
-          custom_type_block.each { |block| custom_definition.instance_eval(&block) }
+          custom_param_definition = ParamDefinition.new(type: @type, contract_class: @contract_class, action_name: @action_name)
+          custom_type_block.each { |block| custom_param_definition.instance_eval(&block) }
 
           unless value.is_a?(Hash)
             type_error = Issue.new(
@@ -790,7 +790,7 @@ module Apiwork
             return [type_error, nil]
           end
 
-          result = custom_definition.validate(
+          result = custom_param_definition.validate(
             value,
             max_depth: max_depth,
             current_depth: current_depth + 1,

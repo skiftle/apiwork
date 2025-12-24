@@ -84,13 +84,13 @@ module Apiwork
             custom_type_blocks = contract_class.resolve_custom_type(type_name)
 
             if custom_type_blocks
-              temp_definition = Apiwork::Contract::ParamDefinition.new(
+              temp_param_definition = Apiwork::Contract::ParamDefinition.new(
                 type: parent_definition.type,
                 contract_class: contract_class,
                 action_name: parent_definition.action_name
               )
-              custom_type_blocks.each { |block| temp_definition.instance_eval(&block) }
-              apply_sti_discriminator_transform(value, temp_definition)
+              custom_type_blocks.each { |block| temp_param_definition.instance_eval(&block) }
+              apply_sti_discriminator_transform(value, temp_param_definition)
             else
               # Check if this is a union type registered at API level
               apply_sti_transform_to_registered_union(value, type_name, parent_definition)
@@ -152,15 +152,15 @@ module Apiwork
             custom_type_block = contract_class.resolve_custom_type(type_name)
             return nil unless custom_type_block
 
-            temp_definition = Apiwork::Contract::ParamDefinition.new(
+            temp_param_definition = Apiwork::Contract::ParamDefinition.new(
               type: definition.type,
               contract_class: contract_class,
               action_name: definition.action_name
             )
 
-            custom_type_block.each { |block| temp_definition.instance_eval(&block) }
+            custom_type_block.each { |block| temp_param_definition.instance_eval(&block) }
 
-            temp_definition
+            temp_param_definition
           end
         end
       end

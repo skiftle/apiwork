@@ -10,7 +10,7 @@ next: false
 
 Defines body for a response.
 
-Part of the Adapter DSL. Returned by [ActionDefinition#response](contract-action-definition#response).
+Returns [ParamDefinition](contract-param-definition) via `body`.
 Use as a declarative builder - do not rely on internal state.
 
 ## Instance Methods
@@ -26,7 +26,7 @@ When using schema!, body is auto-generated from schema attributes.
 
 **Returns**
 
-[ParamDefinition](contract-param-definition) — the body definition
+[ParamDefinition](contract-param-definition) — the body param definition
 
 **Example**
 

@@ -4,7 +4,7 @@ module Apiwork
   module Contract
     # Defines request/response structure for an action.
     #
-    # Part of the Adapter DSL. Returned by {Adapter::ContractRegistrar#define_action}.
+    # Returns {RequestDefinition} via `request` and {ResponseDefinition} via `response`.
     # Use as a declarative builder - do not rely on internal state.
     #
     # @api public
