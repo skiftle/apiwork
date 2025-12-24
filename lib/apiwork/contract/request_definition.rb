@@ -10,15 +10,15 @@ module Apiwork
     # @api public
     class RequestDefinition
       attr_reader :action_name,
-                  :body_definition,
+                  :body_param_definition,
                   :contract_class,
-                  :query_definition
+                  :query_param_definition
 
       def initialize(contract_class, action_name)
         @contract_class = contract_class
         @action_name = action_name
-        @query_definition = nil
-        @body_definition = nil
+        @query_param_definition = nil
+        @body_param_definition = nil
       end
 
       # @api public
@@ -39,14 +39,14 @@ module Apiwork
       #     end
       #   end
       def query(&block)
-        @query_definition ||= ParamDefinition.new(
+        @query_param_definition ||= ParamDefinition.new(
           @contract_class,
           action_name: @action_name
         )
 
-        @query_definition.instance_eval(&block) if block
+        @query_param_definition.instance_eval(&block) if block
 
-        @query_definition
+        @query_param_definition
       end
 
       # @api public
@@ -66,14 +66,14 @@ module Apiwork
       #     end
       #   end
       def body(&block)
-        @body_definition ||= ParamDefinition.new(
+        @body_param_definition ||= ParamDefinition.new(
           @contract_class,
           action_name: @action_name
         )
 
-        @body_definition.instance_eval(&block) if block
+        @body_param_definition.instance_eval(&block) if block
 
-        @body_definition
+        @body_param_definition
       end
     end
   end

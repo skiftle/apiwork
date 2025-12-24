@@ -48,9 +48,9 @@ module Apiwork
       def definition_for(part_type)
         case part_type
         when :query
-          action_definition&.request_definition&.query_definition
+          action_definition&.request_definition&.query_param_definition
         when :body
-          action_definition&.request_definition&.body_definition
+          action_definition&.request_definition&.body_param_definition
         end
       end
 

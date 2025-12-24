@@ -52,8 +52,8 @@ module Apiwork
         return nil unless request_definition
 
         {
-          query: request_definition.query_definition&.then { DefinitionSerializer.new(_1).serialize },
-          body: request_definition.body_definition&.then { DefinitionSerializer.new(_1).serialize }
+          query: request_definition.query_param_definition&.then { DefinitionSerializer.new(_1).serialize },
+          body: request_definition.body_param_definition&.then { DefinitionSerializer.new(_1).serialize }
         }.compact.presence
       end
 
@@ -61,11 +61,11 @@ module Apiwork
         return nil unless response_definition
         return { no_content: true } if response_definition.no_content?
 
-        body_definition = response_definition.body_definition
-        return nil unless body_definition
+        body_param_definition = response_definition.body_param_definition
+        return nil unless body_param_definition
 
         result_wrapper = response_definition.result_wrapper
-        serialized = DefinitionSerializer.new(body_definition, result_wrapper:).serialize
+        serialized = DefinitionSerializer.new(body_param_definition, result_wrapper:).serialize
         { body: serialized }.compact.presence
       end
 

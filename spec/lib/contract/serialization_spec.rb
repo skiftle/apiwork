@@ -16,7 +16,7 @@ RSpec.describe 'Contract Serialization' do
         end
       end
 
-      definition = contract_class.action_definition(:create).request_definition.body_definition
+      definition = contract_class.action_definition(:create).request_definition.body_param_definition
       json = definition.as_json
 
       expect(json).to eq({
@@ -39,7 +39,7 @@ RSpec.describe 'Contract Serialization' do
         end
       end
 
-      definition = contract_class.action_definition(:create).request_definition.body_definition
+      definition = contract_class.action_definition(:create).request_definition.body_param_definition
       json = definition.as_json
 
       expect(json).to eq({
@@ -64,7 +64,7 @@ RSpec.describe 'Contract Serialization' do
         end
       end
 
-      definition = contract_class.action_definition(:create).request_definition.body_definition
+      definition = contract_class.action_definition(:create).request_definition.body_param_definition
       json = definition.as_json
 
       expect(json).to eq({
@@ -83,7 +83,7 @@ RSpec.describe 'Contract Serialization' do
         end
       end
 
-      definition = contract_class.action_definition(:create).request_definition.body_definition
+      definition = contract_class.action_definition(:create).request_definition.body_param_definition
       json = definition.as_json
 
       expect(json).to eq({
@@ -102,7 +102,7 @@ RSpec.describe 'Contract Serialization' do
         end
       end
 
-      definition = contract_class.action_definition(:create).request_definition.body_definition
+      definition = contract_class.action_definition(:create).request_definition.body_param_definition
       json = definition.as_json
 
       expect(json).to eq({
@@ -124,7 +124,7 @@ RSpec.describe 'Contract Serialization' do
         end
       end
 
-      definition = contract_class.action_definition(:create).request_definition.body_definition
+      definition = contract_class.action_definition(:create).request_definition.body_param_definition
       json = definition.as_json
 
       expect(json).to eq({
@@ -154,7 +154,7 @@ RSpec.describe 'Contract Serialization' do
         end
       end
 
-      definition = contract_class.action_definition(:create).request_definition.body_definition
+      definition = contract_class.action_definition(:create).request_definition.body_param_definition
       json = definition.as_json
 
       expect(json).to eq({
@@ -182,7 +182,7 @@ RSpec.describe 'Contract Serialization' do
         end
       end
 
-      definition = contract_class.action_definition(:search).request_definition.body_definition
+      definition = contract_class.action_definition(:search).request_definition.body_param_definition
       json = definition.as_json
 
       expect(json).to eq({
@@ -216,7 +216,7 @@ RSpec.describe 'Contract Serialization' do
         end
       end
 
-      definition = contract_class.action_definition(:search).request_definition.body_definition
+      definition = contract_class.action_definition(:search).request_definition.body_param_definition
       json = definition.as_json
 
       expect(json).to eq({
@@ -479,7 +479,7 @@ RSpec.describe 'Contract Serialization' do
 
       action_def = contract_class_with_meta.action_definition(:test)
       response_def = action_def.response_definition
-      body_def = response_def.body_definition
+      body_def = response_def.body_param_definition
 
       expect(body_def.params[:meta]).to be_present
       meta_shape = body_def.params[:meta][:shape]

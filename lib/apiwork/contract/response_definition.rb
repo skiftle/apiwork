@@ -10,7 +10,7 @@ module Apiwork
     # @api public
     class ResponseDefinition
       attr_reader :action_name,
-                  :body_definition,
+                  :body_param_definition,
                   :contract_class
 
       attr_accessor :result_wrapper
@@ -18,7 +18,7 @@ module Apiwork
       def initialize(contract_class, action_name)
         @contract_class = contract_class
         @action_name = action_name
-        @body_definition = nil
+        @body_param_definition = nil
         @result_wrapper = nil
         @no_content = false
       end
@@ -67,15 +67,15 @@ module Apiwork
       #     end
       #   end
       def body(&block)
-        @body_definition ||= ParamDefinition.new(
+        @body_param_definition ||= ParamDefinition.new(
           @contract_class,
           action_name: @action_name,
           wrapped: true
         )
 
-        @body_definition.instance_eval(&block) if block
+        @body_param_definition.instance_eval(&block) if block
 
-        @body_definition
+        @body_param_definition
       end
     end
   end

@@ -25,22 +25,22 @@ module Apiwork
           build_actions
         end
 
-        def single_response(definition)
+        def single_response(param_definition)
           root_key = schema_class.root_key.singular.to_sym
           resource_type_name = resource_type_name_for_response
 
-          definition.param root_key, type: resource_type_name
-          definition.param :meta, type: :object, optional: true
+          param_definition.param root_key, type: resource_type_name
+          param_definition.param :meta, type: :object, optional: true
         end
 
-        def collection_response(definition)
+        def collection_response(param_definition)
           root_key_plural = schema_class.root_key.plural.to_sym
           resource_type_name = resource_type_name_for_response
           pagination_type = build_pagination_type
 
-          definition.param root_key_plural, type: :array, of: resource_type_name
-          definition.param :pagination, type: pagination_type
-          definition.param :meta, type: :object, optional: true
+          param_definition.param root_key_plural, type: :array, of: resource_type_name
+          param_definition.param :pagination, type: pagination_type
+          param_definition.param :meta, type: :object, optional: true
         end
 
         private
@@ -49,34 +49,34 @@ module Apiwork
                     :schema_class,
                     :registrar
 
-        def query_params(definition)
+        def query_params(param_definition)
           filter_type = build_filter_type
           sort_type = build_sort_type
 
           if filter_type
-            definition.param :filter, type: :union, optional: true do
+            param_definition.param :filter, type: :union, optional: true do
               variant type: filter_type
               variant type: :array, of: filter_type
             end
           end
 
           if sort_type
-            definition.param :sort, type: :union, optional: true do
+            param_definition.param :sort, type: :union, optional: true do
               variant type: sort_type
               variant type: :array, of: sort_type
             end
           end
 
           page_type = build_page_type
-          definition.param :page, type: page_type, optional: true
+          param_definition.param :page, type: page_type, optional: true
 
           return unless schema_class.association_definitions.any?
 
           include_type = build_include_type
-          definition.param :include, type: include_type, optional: true if include_type
+          param_definition.param :include, type: include_type, optional: true if include_type
         end
 
-        def writable_request(definition, context_symbol)
+        def writable_request(param_definition, context_symbol)
           root_key = schema_class.root_key.singular.to_sym
           builder = self
 
@@ -92,10 +92,10 @@ module Apiwork
             end
           end
 
-          definition.param root_key, type: payload_type_name
+          param_definition.param root_key, type: payload_type_name
         end
 
-        def writable_params(definition, context_symbol, nested: false, target_schema: nil)
+        def writable_params(param_definition, context_symbol, nested: false, target_schema: nil)
           target_schema_class = target_schema || schema_class
           target_schema_class.attribute_definitions.each do |name, attribute_definition|
             next unless attribute_definition.writable_for?(context_symbol)
@@ -118,9 +118,9 @@ module Apiwork
             param_options[:enum] = name if attribute_definition.enum
 
             if attribute_definition.inline_shape
-              definition.param name, **param_options, &attribute_definition.inline_shape
+              param_definition.param name, **param_options, &attribute_definition.inline_shape
             else
-              definition.param name, **param_options
+              param_definition.param name, **param_options
             end
           end
 
@@ -164,7 +164,7 @@ module Apiwork
               param_options[:type] = association_definition.collection? ? :array : :object
             end
 
-            definition.param name, **param_options
+            param_definition.param name, **param_options
           end
         end
 
