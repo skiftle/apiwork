@@ -16,29 +16,9 @@ Use as a declarative builder - do not rely on internal state.
 
 ## Instance Methods
 
-### #action_name()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/definition.rb#L57)
-
-**Returns**
-
-`Symbol`, `nil` — the action name
-
----
-
-### #contract_class()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/definition.rb#L57)
-
-**Returns**
-
-`Class` — a [Contract::Base](contract-base) subclass
-
----
-
 ### #meta(**options, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/definition.rb#L163)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/definition.rb#L151)
 
 Shorthand for `param :meta, type: :object do ... end`.
 
@@ -78,7 +58,7 @@ end
 
 ### #param(name, type: = nil, optional: = nil, default: = nil, enum: = nil, of: = nil, as: = nil, discriminator: = nil, value: = nil, visited_types: = nil, **options, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/definition.rb#L107)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/definition.rb#L95)
 
 Defines a parameter/field in a request or response body.
 
@@ -132,15 +112,5 @@ param :items, type: :array, of: :line_item do
   param :quantity, type: :integer, min: 1
 end
 ```
-
----
-
-### #params()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/definition.rb#L57)
-
-**Returns**
-
-`Hash` — the defined parameters
 
 ---

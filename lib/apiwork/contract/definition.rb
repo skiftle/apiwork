@@ -42,18 +42,6 @@ module Apiwork
         @unwrapped_union
       end
 
-      # @!attribute [r] action_name
-      #   @api public
-      #   @return [Symbol, nil] the action name
-      # @!attribute [r] contract_class
-      #   @api public
-      #   @return [Class] a {Contract::Base} subclass
-      # @!attribute [r] params
-      #   @api public
-      #   @return [Hash] the defined parameters
-      # @!attribute [r] type
-      #   @api public
-      #   @return [Symbol] the definition type (:query, :body, :response_body)
       attr_reader :action_name,
                   :contract_class,
                   :error_response_type,

@@ -9,18 +9,6 @@ module Apiwork
     #
     # @api public
     class ActionDefinition
-      # @!attribute [r] action_name
-      #   @api public
-      #   @return [Symbol] the action name
-      # @!attribute [r] contract_class
-      #   @api public
-      #   @return [Class] a {Contract::Base} subclass
-      # @!attribute [r] request_definition
-      #   @api public
-      #   @return [RequestDefinition, nil] the request definition
-      # @!attribute [r] response_definition
-      #   @api public
-      #   @return [ResponseDefinition, nil] the response definition
       attr_reader :action_name,
                   :contract_class,
                   :request_definition,

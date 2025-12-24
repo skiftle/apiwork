@@ -15,19 +15,9 @@ Use as a declarative builder - do not rely on internal state.
 
 ## Instance Methods
 
-### #action_name()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L21)
-
-**Returns**
-
-`Symbol` — the action name
-
----
-
 ### #body(&block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L75)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L66)
 
 Defines the response body for this response.
 
@@ -52,19 +42,9 @@ end
 
 ---
 
-### #body_definition()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L21)
-
-**Returns**
-
-[Definition](contract-definition), `nil` — the body definition
-
----
-
 ### #no_content!()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L54)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L45)
 
 Declares this action returns 204 No Content.
 
@@ -91,7 +71,7 @@ end
 
 ### #no_content?()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L35)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L26)
 
 Returns true if this response is 204 No Content.
 

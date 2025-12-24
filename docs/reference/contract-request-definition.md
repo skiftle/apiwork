@@ -15,19 +15,9 @@ Use as a declarative builder - do not rely on internal state.
 
 ## Instance Methods
 
-### #action_name()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_definition.rb#L24)
-
-**Returns**
-
-`Symbol` — the action name
-
----
-
 ### #body(&block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_definition.rb#L81)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_definition.rb#L69)
 
 Defines the request body for this request.
 
@@ -51,29 +41,9 @@ end
 
 ---
 
-### #body_definition()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_definition.rb#L24)
-
-**Returns**
-
-[Definition](contract-definition), `nil` — the body definition
-
----
-
-### #contract_class()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_definition.rb#L24)
-
-**Returns**
-
-`Class` — a [Contract::Base](contract-base) subclass
-
----
-
 ### #query(&block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_definition.rb#L53)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_definition.rb#L41)
 
 Defines query parameters for this request.
 
