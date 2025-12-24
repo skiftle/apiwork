@@ -103,7 +103,6 @@ module Apiwork
         end
 
         type ||= :string
-        validate_type!(type)
         raise ArgumentError, 'discriminator can only be used with type: :union' if discriminator && type != :union
 
         visited_types = visited_types || @visited_types || Set.new
@@ -331,15 +330,6 @@ module Apiwork
           raise ArgumentError,
                 "Enum :#{enum} not found. Define it using `enum :#{enum}, %w[...]` in contract or definition scope."
         end
-      end
-
-      REMOVED_ALIASES = { text: :string, number: :float }.freeze
-
-      def validate_type!(type)
-        return unless type
-        return unless REMOVED_ALIASES.key?(type.to_sym)
-
-        raise ArgumentError, "Unknown type :#{type}, did you mean :#{REMOVED_ALIASES[type.to_sym]}?"
       end
     end
   end
