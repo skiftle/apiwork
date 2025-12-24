@@ -25,6 +25,24 @@ module Apiwork
           build_actions
         end
 
+        def single_response(definition)
+          root_key = schema_class.root_key.singular.to_sym
+          resource_type_name = resource_type_name_for_response
+
+          definition.param root_key, type: resource_type_name
+          definition.param :meta, type: :object, optional: true
+        end
+
+        def collection_response(definition)
+          root_key_plural = schema_class.root_key.plural.to_sym
+          resource_type_name = resource_type_name_for_response
+          pagination_type = build_pagination_type
+
+          definition.param root_key_plural, type: :array, of: resource_type_name
+          definition.param :pagination, type: pagination_type
+          definition.param :meta, type: :object, optional: true
+        end
+
         private
 
         attr_reader :actions,
@@ -150,36 +168,6 @@ module Apiwork
           end
         end
 
-        def single_response(definition)
-          root_key = schema_class.root_key.singular.to_sym
-          resource_type_name = resource_type_name_for_response
-          action_name = definition.action_name
-
-          scoped_success_type = registrar.scoped_name(:"#{action_name}_success_response_body")
-          definition.instance_variable_set(:@unwrapped_union, true)
-          definition.instance_variable_set(:@error_response_type, :error_response_body)
-          definition.instance_variable_set(:@success_response_type, scoped_success_type)
-
-          definition.param root_key, type: resource_type_name
-          definition.param :meta, type: :object, optional: true
-        end
-
-        def collection_response(definition)
-          root_key_plural = schema_class.root_key.plural.to_sym
-          resource_type_name = resource_type_name_for_response
-          pagination_type = build_pagination_type
-          action_name = definition.action_name
-
-          scoped_success_type = registrar.scoped_name(:"#{action_name}_success_response_body")
-          definition.instance_variable_set(:@unwrapped_union, true)
-          definition.instance_variable_set(:@error_response_type, :error_response_body)
-          definition.instance_variable_set(:@success_response_type, scoped_success_type)
-
-          definition.param root_key_plural, type: :array, of: resource_type_name
-          definition.param :pagination, type: pagination_type
-          definition.param :meta, type: :object, optional: true
-        end
-
         def build_enums
           schema_class.attribute_definitions.each do |name, attribute_definition|
             next unless attribute_definition.enum&.any?
@@ -229,31 +217,44 @@ module Apiwork
         end
 
         def build_response_for_action(action_definition, action_name, action_metadata)
-          builder = self
+          result_wrapper = build_result_wrapper(action_name)
 
           case action_name.to_sym
           when :index
-            action_definition.response do
-              body { builder.send(:collection_response, self) }
-            end
+            build_collection_response(action_definition, result_wrapper)
           when :show, :create, :update
-            action_definition.response do
-              body { builder.send(:single_response, self) }
-            end
+            build_single_response(action_definition, result_wrapper)
           when :destroy
             action_definition.response { no_content! }
           else
             if action_metadata[:method] == :delete
               action_definition.response { no_content! }
             elsif action_metadata[:type] == :collection
-              action_definition.response do
-                body { builder.send(:collection_response, self) }
-              end
+              build_collection_response(action_definition, result_wrapper)
             elsif action_metadata[:type] == :member
-              action_definition.response do
-                body { builder.send(:single_response, self) }
-              end
+              build_single_response(action_definition, result_wrapper)
             end
+          end
+        end
+
+        def build_result_wrapper(action_name)
+          success_type = registrar.scoped_name(:"#{action_name}_success_response_body")
+          { success_type:, error_type: :error_response_body }
+        end
+
+        def build_single_response(action_definition, result_wrapper)
+          builder = self
+          action_definition.response do
+            self.result_wrapper = result_wrapper
+            body { builder.single_response(self) }
+          end
+        end
+
+        def build_collection_response(action_definition, result_wrapper)
+          builder = self
+          action_definition.response do
+            self.result_wrapper = result_wrapper
+            body { builder.collection_response(self) }
           end
         end
 

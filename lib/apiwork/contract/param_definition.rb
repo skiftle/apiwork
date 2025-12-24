@@ -42,15 +42,9 @@ module Apiwork
         introspect
       end
 
-      def unwrapped_union?
-        @unwrapped_union
-      end
-
       attr_reader :action_name,
                   :contract_class,
-                  :error_response_type,
-                  :params,
-                  :success_response_type
+                  :params
 
       # @api public
       # Defines a parameter/field in a request or response body.

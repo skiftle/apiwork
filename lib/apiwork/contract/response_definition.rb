@@ -13,10 +13,13 @@ module Apiwork
                   :body_definition,
                   :contract_class
 
+      attr_accessor :result_wrapper
+
       def initialize(contract_class, action_name)
         @contract_class = contract_class
         @action_name = action_name
         @body_definition = nil
+        @result_wrapper = nil
         @no_content = false
       end
 

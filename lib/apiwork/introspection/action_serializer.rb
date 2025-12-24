@@ -61,7 +61,12 @@ module Apiwork
         return nil unless response_definition
         return { no_content: true } if response_definition.no_content?
 
-        { body: response_definition.body_definition&.then { DefinitionSerializer.new(_1).serialize } }.compact.presence
+        body_definition = response_definition.body_definition
+        return nil unless body_definition
+
+        result_wrapper = response_definition.result_wrapper
+        serialized = DefinitionSerializer.new(body_definition, result_wrapper:).serialize
+        { body: serialized }.compact.presence
       end
 
       def raises

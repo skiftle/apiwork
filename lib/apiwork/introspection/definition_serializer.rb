@@ -3,8 +3,9 @@
 module Apiwork
   module Introspection
     class DefinitionSerializer
-      def initialize(definition, visited: Set.new)
+      def initialize(definition, result_wrapper: nil, visited: Set.new)
         @definition = definition
+        @result_wrapper = result_wrapper
         @visited = visited
         @name_resolver = NameResolver.new
       end
@@ -12,7 +13,7 @@ module Apiwork
       def serialize
         return nil unless @definition
 
-        return serialize_unwrapped_union if @definition.unwrapped_union?
+        return serialize_result_wrapped if @result_wrapper
 
         result = {}
 
@@ -29,9 +30,9 @@ module Apiwork
 
       private
 
-      def serialize_unwrapped_union
-        success_type = @definition.success_response_type
-        error_type = @definition.error_response_type
+      def serialize_result_wrapped
+        success_type = @result_wrapper[:success_type]
+        error_type = @result_wrapper[:error_type]
 
         success_params = build_success_params
 
