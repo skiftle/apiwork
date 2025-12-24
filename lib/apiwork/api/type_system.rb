@@ -98,30 +98,30 @@ module Apiwork
       private
 
       def merge_type(key, description:, example:, format:, deprecated:, schema_class:, block:)
-        existing = @types[key]
+        existing_type = @types[key]
 
-        merged_definitions = existing[:definitions]&.dup || []
-        merged_definitions << existing[:definition] if existing[:definition] && existing[:definitions].nil?
+        merged_definitions = existing_type[:definitions]&.dup || []
+        merged_definitions << existing_type[:definition] if existing_type[:definition] && existing_type[:definitions].nil?
         merged_definitions << block if block
 
-        @types[key] = existing.merge(
-          description: description || existing[:description],
-          example: example || existing[:example],
-          format: format || existing[:format],
-          deprecated: deprecated || existing[:deprecated],
-          schema_class: schema_class || existing[:schema_class],
+        @types[key] = existing_type.merge(
+          description: description || existing_type[:description],
+          example: example || existing_type[:example],
+          format: format || existing_type[:format],
+          deprecated: deprecated || existing_type[:deprecated],
+          schema_class: schema_class || existing_type[:schema_class],
           definition: nil,
           definitions: merged_definitions.compact.presence
         )
       end
 
       def merge_enum(key, values:, description:, example:, deprecated:)
-        existing = @enums[key]
-        @enums[key] = existing.merge(
-          description: description || existing[:description],
-          example: example || existing[:example],
-          deprecated: deprecated || existing[:deprecated],
-          values: values || existing[:values]
+        existing_enum = @enums[key]
+        @enums[key] = existing_enum.merge(
+          description: description || existing_enum[:description],
+          example: example || existing_enum[:example],
+          deprecated: deprecated || existing_enum[:deprecated],
+          values: values || existing_enum[:values]
         )
       end
     end

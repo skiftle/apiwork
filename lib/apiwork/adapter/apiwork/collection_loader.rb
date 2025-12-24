@@ -13,30 +13,30 @@ module Apiwork
         def initialize(collection, schema_class, action_data)
           @schema_class = schema_class
           @action_data = action_data
-          @data = collection
-          @metadata = {}
+          @collection = collection
+          @result_metadata = {}
         end
 
         def load
-          return { data: @data, metadata: {} } unless @action_data.index?
-          return { data: @data, metadata: {} } unless @data.is_a?(ActiveRecord::Relation)
+          return { data: @collection, metadata: {} } unless @action_data.index?
+          return { data: @collection, metadata: {} } unless @collection.is_a?(ActiveRecord::Relation)
 
           params = @action_data.query.slice(:filter, :sort, :page, :include)
 
           issues = []
 
-          @data = Filter.filter(@data, @schema_class, params[:filter], issues) if params[:filter].present?
+          @collection = Filter.filter(@collection, @schema_class, params[:filter], issues) if params[:filter].present?
 
-          @data = Sorter.sort(@data, @schema_class, params[:sort], issues)
+          @collection = Sorter.sort(@collection, @schema_class, params[:sort], issues)
 
           raise ContractError, issues if issues.any?
 
-          @data = EagerLoader.load(@data, @schema_class, params)
+          @collection = EagerLoader.load(@collection, @schema_class, params)
 
-          @data, pagination_metadata = Paginator.paginate(@data, @schema_class, params[:page] || {})
-          @metadata.merge!(pagination_metadata)
+          @collection, pagination_metadata = Paginator.paginate(@collection, @schema_class, params[:page] || {})
+          @result_metadata.merge!(pagination_metadata)
 
-          { data: @data, metadata: @metadata }
+          { data: @collection, metadata: @result_metadata }
         end
       end
     end

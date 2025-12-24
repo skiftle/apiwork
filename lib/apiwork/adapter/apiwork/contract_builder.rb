@@ -378,8 +378,8 @@ module Apiwork
 
           type_name = type_name(:filter, depth)
 
-          existing = registrar.resolve_type(type_name)
-          return type_name if existing
+          existing_type = registrar.resolve_type(type_name)
+          return type_name if existing_type
 
           builder = self
           schema_class_local = schema_class
@@ -455,8 +455,8 @@ module Apiwork
 
           type_name = type_name(:sort, depth)
 
-          existing = registrar.resolve_type(type_name)
-          return type_name if existing
+          existing_type = registrar.resolve_type(type_name)
+          return type_name if existing_type
 
           builder = self
           schema_class_local = schema_class
@@ -507,8 +507,8 @@ module Apiwork
 
           type_name = type_name(:page, 1)
 
-          existing = registrar.resolve_type(type_name)
-          return type_name if existing
+          existing_type = registrar.resolve_type(type_name)
+          return type_name if existing_type
 
           if strategy == :cursor
             registrar.api_registrar.type(type_name, scope: nil) do
@@ -537,8 +537,8 @@ module Apiwork
 
           type_name = type_name(:include, depth)
 
-          existing = registrar.resolve_type(type_name)
-          return type_name if existing
+          existing_type = registrar.resolve_type(type_name)
+          return type_name if existing_type
           return type_name if depth >= MAX_RECURSION_DEPTH
 
           visited = visited.dup.add(schema_class)
@@ -745,8 +745,8 @@ module Apiwork
 
           union_type_name = association_definition.name
 
-          existing = registrar.resolve_type(union_type_name)
-          return union_type_name if existing
+          existing_type = registrar.resolve_type(union_type_name)
+          return union_type_name if existing_type
 
           builder = self
           discriminator = association_definition.discriminator

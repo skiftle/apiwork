@@ -93,9 +93,9 @@ module Apiwork
                 discriminator: nil, value: nil, visited_types: nil, **options, &block)
         # rubocop:enable Metrics/ParameterLists
 
-        if type.nil? && (existing = @params[name])
-          merge_existing_param(name, existing, type:, optional:, default:, enum:, of:, as:,
-                                               discriminator:, value:, options:, &block)
+        if type.nil? && (existing_param = @params[name])
+          merge_existing_param(name, existing_param, type:, optional:, default:, enum:, of:, as:,
+                                                     discriminator:, value:, options:, &block)
           return
         end
 
@@ -163,29 +163,29 @@ module Apiwork
       private
 
       # rubocop:disable Metrics/ParameterLists
-      def merge_existing_param(name, existing, type:, optional:, default:, enum:, of:, as:, discriminator:, value:,
+      def merge_existing_param(name, existing_param, type:, optional:, default:, enum:, of:, as:, discriminator:, value:,
                                options:, &block)
         # rubocop:enable Metrics/ParameterLists
         resolved_enum = enum ? resolve_enum_value(enum) : nil
 
-        merged = existing.merge(options.compact)
-        merged[:type] = type if type
-        merged[:optional] = optional unless optional.nil?
-        merged[:default] = default if default
-        merged[:enum] = resolved_enum if resolved_enum
-        merged[:of] = of if of
-        merged[:as] = as if as
-        merged[:discriminator] = discriminator if discriminator
-        merged[:value] = value if value
+        merged_param = existing_param.merge(options.compact)
+        merged_param[:type] = type if type
+        merged_param[:optional] = optional unless optional.nil?
+        merged_param[:default] = default if default
+        merged_param[:enum] = resolved_enum if resolved_enum
+        merged_param[:of] = of if of
+        merged_param[:as] = as if as
+        merged_param[:discriminator] = discriminator if discriminator
+        merged_param[:value] = value if value
 
-        @params[name] = merged
+        @params[name] = merged_param
 
         return unless block
 
-        if existing[:union]
-          existing[:union].instance_eval(&block)
-        elsif existing[:shape]
-          existing[:shape].instance_eval(&block)
+        if existing_param[:union]
+          existing_param[:union].instance_eval(&block)
+        elsif existing_param[:shape]
+          existing_param[:shape].instance_eval(&block)
         else
           shape_param_definition = ParamDefinition.new(@contract_class, action_name: @action_name)
           shape_param_definition.instance_eval(&block)

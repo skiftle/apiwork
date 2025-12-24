@@ -129,12 +129,12 @@ module Apiwork
         key = key.to_s
         strategy ||= key_format
 
-        transform = lambda do |s|
+        transform = lambda do |key_string|
           case strategy
-          when :camel then s.camelize(:lower)
-          when :kebab then s.dasherize
-          when :underscore then s.underscore
-          else s
+          when :camel then key_string.camelize(:lower)
+          when :kebab then key_string.dasherize
+          when :underscore then key_string.underscore
+          else key_string
           end
         end
 
