@@ -243,7 +243,7 @@ module Apiwork
     end
 
     def linkify_yard_refs(text)
-      return text if text.nil? || text.empty?
+      return text if text.blank?
 
       text.gsub(/\{([^}]+)\}/) do
         ref = ::Regexp.last_match(1)
