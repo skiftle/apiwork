@@ -56,7 +56,7 @@ Validation runs in order: `http`, then `contract`, then `domain`. If a layer rej
 | ---------- | ----------------------------------- | ----------- |
 | `http`     | Transport-level response            | Varies      |
 | `contract` | Request violates the API contract   | 400         |
-| `domain`   | Business rules rejected valid input | 422         |
+| `domain`   | Domain rules rejected valid input   | 422         |
 
 ::: info
 Layer describes **which part of the system rejected the request** — not where the code lives.
@@ -106,7 +106,7 @@ Client can fix by following the API specification.
 
 ### domain
 
-Request was valid but failed model validation or business rules.
+Request was valid but violated a domain rule.
 
 ```json
 {

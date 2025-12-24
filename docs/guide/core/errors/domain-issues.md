@@ -2,11 +2,17 @@
 order: 4
 ---
 
-# Domain Errors
+# Domain Issues
 
-Domain errors occur when a valid request is rejected by business rules. The request itself was structurally correct, but model validations, uniqueness constraints, or domain invariants failed.
+Domain issues occur when a valid request violates a domain rule. The request was structurally correct — but the data itself breaks a business constraint.
 
-The client cannot avoid domain errors by changing the request shape — only by changing the data itself.
+The client cannot avoid domain issues by changing the request shape — only by changing the data itself.
+
+::: info
+Layer describes **what kind of rule was broken** — not where the code lives.
+
+A validation defined in a Rails model is still a *domain rule*. The model is just where the rule happens to be enforced. If the rule said "invoice numbers must be unique", that's domain logic — regardless of whether it's checked in a model, a service, or a database constraint.
+:::
 
 The built-in adapter automatically maps Rails model validation errors to domain issues when you call `respond`. You can also create domain issues manually for custom business logic.
 
@@ -25,11 +31,11 @@ def create
 end
 ```
 
-If validation fails, the adapter sees `invoice.errors`, converts each to an Issue and raises `DomainError`. You get a 422 with all errors. No conditionals needed.
+When domain rules fail, the adapter converts each violation to an Issue and raises `DomainError`. You get a 422 with all issues. No conditionals needed.
 
 ## Rails to Apiwork Mapping
 
-Rails validation errors are normalized to consistent Apiwork codes:
+Rails validations are domain rules. The table below shows how Rails error types map to Apiwork issue codes:
 
 | Rails Type                   | Code        | Detail            |
 | ---------------------------- | ----------- | ----------------- |
