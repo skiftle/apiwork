@@ -9,6 +9,18 @@ module Apiwork
     #
     # @api public
     class RequestDefinition
+      # @!attribute [r] action_name
+      #   @api public
+      #   @return [Symbol] the action name
+      # @!attribute [r] body_definition
+      #   @api public
+      #   @return [Definition, nil] the body definition
+      # @!attribute [r] contract_class
+      #   @api public
+      #   @return [Class] the contract class
+      # @!attribute [r] query_definition
+      #   @api public
+      #   @return [Definition, nil] the query definition
       attr_reader :action_name,
                   :body_definition,
                   :contract_class,
@@ -21,6 +33,7 @@ module Apiwork
         @body_definition = nil
       end
 
+      # @api public
       # Defines query parameters for this request.
       #
       # Query parameters are parsed from the URL query string.
@@ -49,6 +62,7 @@ module Apiwork
         @query_definition
       end
 
+      # @api public
       # Defines the request body for this request.
       #
       # Body is parsed from the JSON request body.

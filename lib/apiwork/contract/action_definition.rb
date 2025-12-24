@@ -9,6 +9,18 @@ module Apiwork
     #
     # @api public
     class ActionDefinition
+      # @!attribute [r] action_name
+      #   @api public
+      #   @return [Symbol] the action name
+      # @!attribute [r] contract_class
+      #   @api public
+      #   @return [Class] the contract class
+      # @!attribute [r] request_definition
+      #   @api public
+      #   @return [RequestDefinition, nil] the request definition
+      # @!attribute [r] response_definition
+      #   @api public
+      #   @return [ResponseDefinition, nil] the response definition
       attr_reader :action_name,
                   :contract_class,
                   :request_definition,
@@ -45,6 +57,7 @@ module Apiwork
         introspect
       end
 
+      # @api public
       # Sets a short summary for this action.
       #
       # Used in generated specs as the operation summary.
@@ -61,6 +74,7 @@ module Apiwork
         @summary
       end
 
+      # @api public
       # Sets a detailed description for this action.
       #
       # Used in generated specs as the operation description.
@@ -78,6 +92,7 @@ module Apiwork
         @description
       end
 
+      # @api public
       # Sets tags for grouping this action.
       #
       # Tags help organize actions in generated documentation.
@@ -94,6 +109,7 @@ module Apiwork
         @tags
       end
 
+      # @api public
       # Marks this action as deprecated.
       #
       # Deprecated actions are flagged in generated specs.
@@ -110,6 +126,7 @@ module Apiwork
         @deprecated
       end
 
+      # @api public
       # Sets a custom operation ID.
       #
       # By default, operation ID is auto-generated from resource and action name.
@@ -126,6 +143,7 @@ module Apiwork
         @operation_id
       end
 
+      # @api public
       # Declares error codes this action may return.
       #
       # Error codes must be registered via ErrorCode.register.
@@ -155,6 +173,7 @@ module Apiwork
         @raises = error_code_keys
       end
 
+      # @api public
       # Defines the request structure for this action.
       #
       # Use the block to define query parameters and request body.
@@ -180,6 +199,7 @@ module Apiwork
         @request_definition
       end
 
+      # @api public
       # Defines the response structure for this action.
       #
       # Use the block to define response body or declare no_content.

@@ -42,6 +42,18 @@ module Apiwork
         @unwrapped_union
       end
 
+      # @!attribute [r] action_name
+      #   @api public
+      #   @return [Symbol, nil] the action name
+      # @!attribute [r] contract_class
+      #   @api public
+      #   @return [Class] the contract class
+      # @!attribute [r] params
+      #   @api public
+      #   @return [Hash] the defined parameters
+      # @!attribute [r] type
+      #   @api public
+      #   @return [Symbol] the definition type (:query, :body, :response_body)
       attr_reader :action_name,
                   :contract_class,
                   :error_response_type,
@@ -49,6 +61,7 @@ module Apiwork
                   :success_response_type,
                   :type
 
+      # @api public
       # Defines a parameter/field in a request or response body.
       #
       # @param name [Symbol] field name
@@ -122,6 +135,7 @@ module Apiwork
         end
       end
 
+      # @api public
       # Shorthand for `param :meta, type: :object do ... end`.
       #
       # Use for response data that doesn't belong to the resource itself.

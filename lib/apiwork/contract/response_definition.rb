@@ -9,6 +9,15 @@ module Apiwork
     #
     # @api public
     class ResponseDefinition
+      # @!attribute [r] action_name
+      #   @api public
+      #   @return [Symbol] the action name
+      # @!attribute [r] body_definition
+      #   @api public
+      #   @return [Definition, nil] the body definition
+      # @!attribute [r] contract_class
+      #   @api public
+      #   @return [Class] the contract class
       attr_reader :action_name,
                   :body_definition,
                   :contract_class
@@ -20,10 +29,14 @@ module Apiwork
         @no_content = false
       end
 
+      # @api public
+      # Returns true if this response is 204 No Content.
+      # @return [Boolean]
       def no_content?
         @no_content
       end
 
+      # @api public
       # Declares this action returns 204 No Content.
       #
       # Use for actions that don't return a response body,
@@ -42,6 +55,7 @@ module Apiwork
         @no_content = true
       end
 
+      # @api public
       # Defines the response body for this response.
       #
       # Use `param` inside the block to define fields.
