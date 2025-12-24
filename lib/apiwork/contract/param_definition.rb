@@ -24,13 +24,13 @@ module Apiwork
       def resolve_option(name, subkey = nil)
         return @contract_class.schema_class.resolve_option(name, subkey) if @contract_class.schema_class
 
-        opt = Adapter::Apiwork.options[name]
-        return nil unless opt
+        option = Adapter::Apiwork.options[name]
+        return nil unless option
 
-        if opt.nested? && subkey
-          opt.children[subkey]&.default
+        if option.nested? && subkey
+          option.children[subkey]&.default
         else
-          opt.resolved_default
+          option.resolved_default
         end
       end
 
