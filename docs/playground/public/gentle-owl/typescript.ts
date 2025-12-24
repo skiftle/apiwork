@@ -112,10 +112,14 @@ export type CommentsUpdateResponseBody = { comment: Comment; meta?: object } | {
 export interface Error {
   code: string;
   detail: string;
-  layer: 'contract' | 'domain' | 'http';
   meta: object;
   path: string[];
   pointer: string;
+}
+
+export interface ErrorResponse {
+  errors: Error[];
+  layer: Layer;
 }
 
 export interface Image {
@@ -156,6 +160,8 @@ export interface ImageNestedUpdatePayload {
 export interface ImageSort {
   createdAt?: SortDirection;
 }
+
+export type Layer = 'contract' | 'domain' | 'http';
 
 export interface OffsetPagination {
   current: number;

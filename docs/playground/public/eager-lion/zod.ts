@@ -1,11 +1,12 @@
 import { z } from 'zod';
 
+export const LayerSchema = z.enum(['contract', 'domain', 'http']);
+
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
 export const ErrorSchema = z.object({
   code: z.string(),
   detail: z.string(),
-  layer: z.enum(['http', 'contract', 'domain']),
   meta: z.object({}),
   path: z.array(z.string()),
   pointer: z.string()
@@ -77,6 +78,11 @@ export const StringFilterSchema = z.object({
   startsWith: z.string().optional()
 });
 
+export const ErrorResponseSchema = z.object({
+  errors: z.array(ErrorSchema),
+  layer: LayerSchema
+});
+
 export const InvoiceFilterSchema: z.ZodType<InvoiceFilter> = z.lazy(() => z.object({
   _and: z.array(InvoiceFilterSchema).optional(),
   _not: InvoiceFilterSchema.optional(),
@@ -146,10 +152,14 @@ export const InvoicesArchiveResponseSchema = z.object({
 export interface Error {
   code: string;
   detail: string;
-  layer: 'contract' | 'domain' | 'http';
   meta: object;
   path: string[];
   pointer: string;
+}
+
+export interface ErrorResponse {
+  errors: Error[];
+  layer: Layer;
 }
 
 export interface Invoice {
@@ -258,6 +268,8 @@ export interface InvoicesUpdateResponse {
 }
 
 export type InvoicesUpdateResponseBody = { errors?: Error[] } | { invoice: Invoice; meta?: object };
+
+export type Layer = 'contract' | 'domain' | 'http';
 
 export interface NullableStringFilter {
   contains?: string;

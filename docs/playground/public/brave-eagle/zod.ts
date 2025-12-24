@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+export const LayerSchema = z.enum(['contract', 'domain', 'http']);
+
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
 export const TaskPrioritySchema = z.enum(['critical', 'high', 'low', 'medium']);
@@ -9,7 +11,6 @@ export const TaskStatusSchema = z.enum(['archived', 'completed', 'in_progress', 
 export const ErrorSchema = z.object({
   code: z.string(),
   detail: z.string(),
-  layer: z.enum(['http', 'contract', 'domain']),
   meta: z.object({}),
   path: z.array(z.string()),
   pointer: z.string()
@@ -90,6 +91,11 @@ export const TaskUpdatePayloadSchema = z.object({
   title: z.string().optional()
 });
 
+export const ErrorResponseSchema = z.object({
+  errors: z.array(ErrorSchema),
+  layer: LayerSchema
+});
+
 export const TaskFilterSchema: z.ZodType<TaskFilter> = z.lazy(() => z.object({
   _and: z.array(TaskFilterSchema).optional(),
   _not: TaskFilterSchema.optional(),
@@ -159,11 +165,17 @@ export const TasksArchiveResponseSchema = z.object({
 export interface Error {
   code: string;
   detail: string;
-  layer: 'contract' | 'domain' | 'http';
   meta: object;
   path: string[];
   pointer: string;
 }
+
+export interface ErrorResponse {
+  errors: Error[];
+  layer: Layer;
+}
+
+export type Layer = 'contract' | 'domain' | 'http';
 
 export interface NullableStringFilter {
   contains?: string;

@@ -330,14 +330,6 @@
         "detail": {
           "type": "string"
         },
-        "layer": {
-          "type": "string",
-          "enum": [
-            "http",
-            "contract",
-            "domain"
-          ]
-        },
         "meta": {
           "type": "object"
         },
@@ -347,6 +339,18 @@
         },
         "pointer": {
           "type": "string"
+        }
+      }
+    },
+    "error_response": {
+      "type": "object",
+      "shape": {
+        "errors": {
+          "type": "array",
+          "of": "error"
+        },
+        "layer": {
+          "type": "layer"
         }
       }
     },
@@ -598,6 +602,13 @@
         "draft",
         "published",
         "archived"
+      ]
+    },
+    "layer": {
+      "values": [
+        "http",
+        "contract",
+        "domain"
       ]
     },
     "sort_direction": {

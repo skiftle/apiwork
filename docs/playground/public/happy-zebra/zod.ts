@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+export const LayerSchema = z.enum(['contract', 'domain', 'http']);
+
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
 export const CommentSchema = z.object({
@@ -38,7 +40,6 @@ export const CommentUpdatePayloadSchema = z.object({
 export const ErrorSchema = z.object({
   code: z.string(),
   detail: z.string(),
-  layer: z.enum(['http', 'contract', 'domain']),
   meta: z.object({}),
   path: z.array(z.string()),
   pointer: z.string()
@@ -111,6 +112,11 @@ export const CommentNestedPayloadSchema = z.discriminatedUnion('_type', [
   CommentNestedCreatePayloadSchema,
   CommentNestedUpdatePayloadSchema
 ]);
+
+export const ErrorResponseSchema = z.object({
+  errors: z.array(ErrorSchema),
+  layer: LayerSchema
+});
 
 export const ProfileNestedPayloadSchema = z.discriminatedUnion('_type', [
   ProfileNestedCreatePayloadSchema,
@@ -416,11 +422,17 @@ export type CommentsUpdateResponseBody = { comment: Comment; meta?: object } | {
 export interface Error {
   code: string;
   detail: string;
-  layer: 'contract' | 'domain' | 'http';
   meta: object;
   path: string[];
   pointer: string;
 }
+
+export interface ErrorResponse {
+  errors: Error[];
+  layer: Layer;
+}
+
+export type Layer = 'contract' | 'domain' | 'http';
 
 export interface OffsetPagination {
   current: number;

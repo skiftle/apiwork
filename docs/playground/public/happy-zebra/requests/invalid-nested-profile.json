@@ -16,11 +16,11 @@
   "response": {
     "status": 422,
     "body": {
+      "layer": "domain",
       "errors": [
         {
-          "layer": "domain",
-          "code": "too_long",
-          "detail": "is too long (maximum is 500 characters)",
+          "code": "max",
+          "detail": "Too long",
           "path": [
             "user",
             "profile",
@@ -28,23 +28,19 @@
           ],
           "pointer": "/user/profile/bio",
           "meta": {
-            "attribute": "bio",
-            "count": 500
+            "max": 500
           }
         },
         {
-          "layer": "domain",
           "code": "invalid",
-          "detail": "is invalid",
+          "detail": "Invalid",
           "path": [
             "user",
             "profile",
             "website"
           ],
           "pointer": "/user/profile/website",
-          "meta": {
-            "attribute": "website"
-          }
+          "meta": {}
         }
       ]
     }

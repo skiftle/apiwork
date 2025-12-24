@@ -11,7 +11,6 @@ RSpec.describe Apiwork::Issue do
       expect(issue.detail).to eq('Field is required')
       expect(issue.path).to eq([])
       expect(issue.meta).to eq({})
-      expect(issue.layer).to be_nil
     end
 
     it 'accepts path and meta' do
@@ -37,44 +36,6 @@ RSpec.describe Apiwork::Issue do
     end
   end
 
-  describe 'layer attribute' do
-    it 'accepts :contract layer' do
-      issue = described_class.new(code: :required, detail: 'Required', layer: :contract)
-
-      expect(issue.layer).to eq('contract')
-    end
-
-    it 'accepts :domain layer' do
-      issue = described_class.new(code: :blank, detail: "can't be blank", layer: :domain)
-
-      expect(issue.layer).to eq('domain')
-    end
-
-    it 'accepts :http layer' do
-      issue = described_class.new(code: :not_found, detail: 'Not found', layer: :http)
-
-      expect(issue.layer).to eq('http')
-    end
-
-    it 'accepts string layer' do
-      issue = described_class.new(code: :required, detail: 'Required', layer: 'contract')
-
-      expect(issue.layer).to eq('contract')
-    end
-
-    it 'accepts nil layer for backwards compatibility' do
-      issue = described_class.new(code: :required, detail: 'Required', layer: nil)
-
-      expect(issue.layer).to be_nil
-    end
-
-    it 'raises error for invalid layer' do
-      expect do
-        described_class.new(code: :required, detail: 'Required', layer: :invalid)
-      end.to raise_error(ArgumentError, /Invalid layer 'invalid'/)
-    end
-  end
-
   describe '#pointer' do
     it 'returns JSON pointer format' do
       issue = described_class.new(code: :required, detail: 'Required', path: [:user, :email])
@@ -96,7 +57,7 @@ RSpec.describe Apiwork::Issue do
   end
 
   describe '#to_h' do
-    it 'includes layer nil when not provided' do
+    it 'includes all fields' do
       issue = described_class.new(
         code: :required,
         detail: 'Field is required',
@@ -105,7 +66,6 @@ RSpec.describe Apiwork::Issue do
       )
 
       expect(issue.to_h).to eq({
-                                 layer: nil,
                                  code: :required,
                                  detail: 'Field is required',
                                  path: %w[user email],
@@ -113,53 +73,11 @@ RSpec.describe Apiwork::Issue do
                                  meta: { field: :email }
                                })
     end
-
-    it 'includes layer when present' do
-      issue = described_class.new(
-        code: :required,
-        detail: 'Field is required',
-        path: [:user, :email],
-        meta: {},
-        layer: :contract
-      )
-
-      hash = issue.to_h
-
-      expect(hash[:layer]).to eq('contract')
-    end
-
-    it 'includes domain layer for model validations' do
-      issue = described_class.new(
-        code: :blank,
-        detail: "can't be blank",
-        path: [:user, :name],
-        meta: { attribute: :name },
-        layer: :domain
-      )
-
-      hash = issue.to_h
-
-      expect(hash[:layer]).to eq('domain')
-    end
-
-    it 'includes http layer for respond_with_error' do
-      issue = described_class.new(
-        code: :not_found,
-        detail: 'Resource not found',
-        path: [],
-        meta: {},
-        layer: :http
-      )
-
-      hash = issue.to_h
-
-      expect(hash[:layer]).to eq('http')
-    end
   end
 
   describe '#as_json' do
     it 'returns the same as to_h' do
-      issue = described_class.new(code: :required, detail: 'Required', layer: :contract)
+      issue = described_class.new(code: :required, detail: 'Required')
 
       expect(issue.as_json).to eq(issue.to_h)
     end
@@ -180,12 +98,6 @@ RSpec.describe Apiwork::Issue do
       issue = described_class.new(code: :invalid, detail: 'Invalid request')
 
       expect(issue.to_s).to eq('[invalid] Invalid request')
-    end
-  end
-
-  describe 'VALID_LAYERS constant' do
-    it 'defines the valid layer values' do
-      expect(described_class::VALID_LAYERS).to contain_exactly('contract', 'domain', 'http')
     end
   end
 end

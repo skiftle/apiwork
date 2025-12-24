@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+export const LayerSchema = z.enum(['contract', 'domain', 'http']);
+
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
 export const CarSchema = z.object({
@@ -33,7 +35,6 @@ export const CarUpdatePayloadSchema = z.object({
 export const ErrorSchema = z.object({
   code: z.string(),
   detail: z.string(),
-  layer: z.enum(['http', 'contract', 'domain']),
   meta: z.object({}),
   path: z.array(z.string()),
   pointer: z.string()
@@ -123,6 +124,11 @@ export const VehiclePageSchema = z.object({
 
 export const VehicleSortSchema = z.object({
   year: SortDirectionSchema.optional()
+});
+
+export const ErrorResponseSchema = z.object({
+  errors: z.array(ErrorSchema),
+  layer: LayerSchema
 });
 
 export const IntegerFilterSchema = z.object({
@@ -256,10 +262,14 @@ export interface CarUpdatePayload {
 export interface Error {
   code: string;
   detail: string;
-  layer: 'contract' | 'domain' | 'http';
   meta: object;
   path: string[];
   pointer: string;
+}
+
+export interface ErrorResponse {
+  errors: Error[];
+  layer: Layer;
 }
 
 export interface IntegerFilter {
@@ -276,6 +286,8 @@ export interface IntegerFilterBetween {
   from?: number;
   to?: number;
 }
+
+export type Layer = 'contract' | 'domain' | 'http';
 
 export interface Motorcycle {
   brand: string;

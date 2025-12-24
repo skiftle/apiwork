@@ -2,6 +2,8 @@ import { z } from 'zod';
 
 export const ArticleStatusSchema = z.enum(['archived', 'draft', 'published']);
 
+export const LayerSchema = z.enum(['contract', 'domain', 'http']);
+
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
 export const ArticleSchema = z.object({
@@ -62,7 +64,6 @@ export const DecimalFilterBetweenSchema = z.object({
 export const ErrorSchema = z.object({
   code: z.string(),
   detail: z.string(),
-  layer: z.enum(['http', 'contract', 'domain']),
   meta: z.object({}),
   path: z.array(z.string()),
   pointer: z.string()
@@ -138,6 +139,11 @@ export const NullableDecimalFilterSchema = z.object({
   lt: z.number().optional(),
   lte: z.number().optional(),
   null: z.boolean().optional()
+});
+
+export const ErrorResponseSchema = z.object({
+  errors: z.array(ErrorSchema),
+  layer: LayerSchema
 });
 
 export const IntegerFilterSchema = z.object({
@@ -364,10 +370,14 @@ export interface DecimalFilterBetween {
 export interface Error {
   code: string;
   detail: string;
-  layer: 'contract' | 'domain' | 'http';
   meta: object;
   path: string[];
   pointer: string;
+}
+
+export interface ErrorResponse {
+  errors: Error[];
+  layer: Layer;
 }
 
 export interface IntegerFilter {
@@ -384,6 +394,8 @@ export interface IntegerFilterBetween {
   from?: number;
   to?: number;
 }
+
+export type Layer = 'contract' | 'domain' | 'http';
 
 export interface NullableDateFilter {
   between?: DateFilterBetween;

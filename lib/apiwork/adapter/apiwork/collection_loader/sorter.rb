@@ -24,7 +24,6 @@ module Apiwork
 
             unless params.is_a?(Hash)
               @issues << Issue.new(
-                layer: :contract,
                 code: :sort_params_invalid,
                 detail: 'Invalid sort params',
                 path: [:sort],
@@ -53,7 +52,6 @@ module Apiwork
                                           .keys
 
                   @issues << Issue.new(
-                    layer: :contract,
                     code: :field_not_sortable,
                     detail: 'Not sortable',
                     path: [:sort, key],
@@ -70,7 +68,6 @@ module Apiwork
                           when :desc then column.desc
                           else
                             @issues << Issue.new(
-                              layer: :contract,
                               code: :sort_direction_invalid,
                               detail: 'Invalid direction',
                               path: [:sort, key],
@@ -84,7 +81,6 @@ module Apiwork
 
                 if association.nil?
                   @issues << Issue.new(
-                    layer: :contract,
                     code: :association_invalid,
                     detail: 'Invalid association',
                     path: [:sort, key],
@@ -95,7 +91,6 @@ module Apiwork
 
                 unless schema_class.association_definitions[key]&.sortable?
                   @issues << Issue.new(
-                    layer: :contract,
                     code: :association_not_sortable,
                     detail: 'Not sortable',
                     path: [:sort, key],
@@ -108,7 +103,6 @@ module Apiwork
 
                 if association_resource.nil?
                   @issues << Issue.new(
-                    layer: :contract,
                     code: :association_schema_missing,
                     detail: 'Association schema missing',
                     path: [:sort, key],
@@ -124,7 +118,6 @@ module Apiwork
                 joins << (nested_joins.any? ? { key => nested_joins } : key)
               else
                 @issues << Issue.new(
-                  layer: :contract,
                   code: :sort_value_invalid,
                   detail: 'Invalid sort value',
                   path: [:sort, key],

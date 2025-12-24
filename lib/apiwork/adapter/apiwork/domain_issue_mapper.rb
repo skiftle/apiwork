@@ -130,7 +130,6 @@ module Apiwork
           path = @root_path + [attribute]
 
           Issue.new(
-            layer: :domain,
             code:,
             detail: detail_for(code),
             path:,

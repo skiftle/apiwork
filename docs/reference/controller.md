@@ -80,7 +80,7 @@ end
 
 ---
 
-### #render_error(issues, status: = :bad_request)
+### #render_error(issues, layer:, status: = :bad_request)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/serialization.rb#L87)
 
@@ -94,6 +94,7 @@ For standard HTTP errors, use `respond_with_error` instead.
 | Name | Type | Description |
 |------|------|-------------|
 | `issues` | `Array<Apiwork::Issue>` | list of validation issues |
+| `layer` | `Symbol` | error layer (`:http`, `:contract`, or `:domain`) |
 | `status` | `Symbol, Integer` | HTTP status (default: :bad_request) |
 
 **Example: Render validation errors**
@@ -102,9 +103,9 @@ For standard HTTP errors, use `respond_with_error` instead.
 def create
   unless record.valid?
     issues = record.errors.map do |error|
-      Apiwork::Issue.new(layer: :domain, code: :invalid, detail: error.message, path: [error.attribute], meta: {})
+      Apiwork::Issue.new(code: :invalid, detail: error.message, path: [error.attribute], meta: {})
     end
-    render_error issues, status: :unprocessable_entity
+    render_error issues, layer: :domain, status: :unprocessable_entity
   end
 end
 ```

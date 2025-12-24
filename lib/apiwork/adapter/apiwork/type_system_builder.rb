@@ -143,13 +143,19 @@ module Apiwork
         end
 
         def register_error_type
+          type_registrar.enum :layer, values: %w[http contract domain]
+
           type_registrar.type :error do
-            param :layer, type: :string, enum: %w[http contract domain]
             param :code, type: :string
             param :detail, type: :string
             param :path, type: :array, of: :string
             param :pointer, type: :string
             param :meta, type: :object
+          end
+
+          type_registrar.type :error_response do
+            param :layer, type: :layer
+            param :errors, type: :array, of: :error
           end
         end
 

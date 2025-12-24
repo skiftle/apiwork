@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+export const LayerSchema = z.enum(['contract', 'domain', 'http']);
+
 export const ContactSchema = z.object({
   email: z.string().nullable(),
   id: z.string(),
@@ -30,7 +32,6 @@ export const ContactUpdatePayloadSchema = z.object({
 export const ErrorSchema = z.object({
   code: z.string(),
   detail: z.string(),
-  layer: z.enum(['http', 'contract', 'domain']),
   meta: z.object({}),
   path: z.array(z.string()),
   pointer: z.string()
@@ -42,6 +43,11 @@ export const OffsetPaginationSchema = z.object({
   next: z.number().int().nullable().optional(),
   prev: z.number().int().nullable().optional(),
   total: z.number().int()
+});
+
+export const ErrorResponseSchema = z.object({
+  errors: z.array(ErrorSchema),
+  layer: LayerSchema
 });
 
 export const ContactsIndexRequestQuerySchema = z.object({
@@ -174,11 +180,17 @@ export type ContactsUpdateResponseBody = { contact: Contact; meta?: object } | {
 export interface Error {
   code: string;
   detail: string;
-  layer: 'contract' | 'domain' | 'http';
   meta: object;
   path: string[];
   pointer: string;
 }
+
+export interface ErrorResponse {
+  errors: Error[];
+  layer: Layer;
+}
+
+export type Layer = 'contract' | 'domain' | 'http';
 
 export interface OffsetPagination {
   current: number;

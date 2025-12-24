@@ -525,9 +525,9 @@ GET /bold_falcon/articles?filter[category][name][eq]=Technology
 
 ```json
 {
+  "layer": "contract",
   "errors": [
     {
-      "layer": "contract",
       "code": "field_unknown",
       "detail": "Unknown field",
       "path": [

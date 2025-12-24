@@ -206,19 +206,17 @@ Content-Type: application/json
 
 ```json
 {
+  "layer": "domain",
   "errors": [
     {
-      "layer": "domain",
       "code": "invalid",
-      "detail": "is invalid",
+      "detail": "Invalid",
       "path": [
         "user",
         "email"
       ],
       "pointer": "/user/email",
-      "meta": {
-        "attribute": "email"
-      }
+      "meta": {}
     }
   ]
 }
@@ -247,31 +245,32 @@ Content-Type: application/json
 
 ```json
 {
+  "layer": "contract",
   "errors": [
     {
-      "layer": "contract",
       "code": "field_missing",
-      "detail": "Field required",
+      "detail": "Required",
       "path": [
         "user",
         "email"
       ],
       "pointer": "/user/email",
       "meta": {
-        "field": "email"
+        "field": "email",
+        "type": "string"
       }
     },
     {
-      "layer": "contract",
       "code": "field_missing",
-      "detail": "Field required",
+      "detail": "Required",
       "path": [
         "user",
         "username"
       ],
       "pointer": "/user/username",
       "meta": {
-        "field": "username"
+        "field": "username",
+        "type": "string"
       }
     }
   ]
@@ -305,11 +304,11 @@ Content-Type: application/json
 
 ```json
 {
+  "layer": "domain",
   "errors": [
     {
-      "layer": "domain",
-      "code": "too_long",
-      "detail": "is too long (maximum is 500 characters)",
+      "code": "max",
+      "detail": "Too long",
       "path": [
         "user",
         "profile",
@@ -317,23 +316,19 @@ Content-Type: application/json
       ],
       "pointer": "/user/profile/bio",
       "meta": {
-        "attribute": "bio",
-        "count": 500
+        "max": 500
       }
     },
     {
-      "layer": "domain",
       "code": "invalid",
-      "detail": "is invalid",
+      "detail": "Invalid",
       "path": [
         "user",
         "profile",
         "website"
       ],
       "pointer": "/user/profile/website",
-      "meta": {
-        "attribute": "website"
-      }
+      "meta": {}
     }
   ]
 }
@@ -440,11 +435,25 @@ Content-Type: application/json
 
 ```json
 {
+  "layer": "domain",
   "errors": [
     {
-      "layer": "domain",
-      "code": "blank",
-      "detail": "can't be blank",
+      "code": "required",
+      "detail": "Required",
+      "path": [
+        "user",
+        "posts",
+        "0",
+        "comments",
+        "0",
+        "body"
+      ],
+      "pointer": "/user/posts/0/comments/0/body",
+      "meta": {}
+    },
+    {
+      "code": "min",
+      "detail": "Too short",
       "path": [
         "user",
         "posts",
@@ -455,31 +464,12 @@ Content-Type: application/json
       ],
       "pointer": "/user/posts/0/comments/0/body",
       "meta": {
-        "attribute": "body"
+        "min": 1
       }
     },
     {
-      "layer": "domain",
-      "code": "too_short",
-      "detail": "is too short (minimum is 1 character)",
-      "path": [
-        "user",
-        "posts",
-        "0",
-        "comments",
-        "0",
-        "body"
-      ],
-      "pointer": "/user/posts/0/comments/0/body",
-      "meta": {
-        "attribute": "body",
-        "count": 1
-      }
-    },
-    {
-      "layer": "domain",
-      "code": "blank",
-      "detail": "can't be blank",
+      "code": "required",
+      "detail": "Required",
       "path": [
         "user",
         "posts",
@@ -489,9 +479,7 @@ Content-Type: application/json
         "author"
       ],
       "pointer": "/user/posts/0/comments/0/author",
-      "meta": {
-        "attribute": "author"
-      }
+      "meta": {}
     }
   ]
 }

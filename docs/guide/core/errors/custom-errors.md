@@ -12,7 +12,6 @@ Build errors directly when you need custom error handling:
 
 ```ruby
 issue = Apiwork::Issue.new(
-  layer: :domain,
   code: :insufficient_balance,
   detail: "Account balance is too low for this transaction",
   path: [:transaction, :amount],
@@ -20,7 +19,7 @@ issue = Apiwork::Issue.new(
 )
 ```
 
-The `code` should be a symbol that clients can use programmatically. The `detail` provides human-readable context. The `layer` indicates where the error originated — use `:domain` for business rule violations.
+The `code` should be a symbol that clients can use programmatically. The `detail` provides human-readable context.
 
 ## Rendering Errors
 
@@ -35,7 +34,6 @@ def create
       next if item.in_stock?
 
       Apiwork::Issue.new(
-        layer: :domain,
         code: :out_of_stock,
         detail: "#{item.name} is out of stock",
         path: [:order, :items, index, :product_id],
@@ -43,7 +41,7 @@ def create
       )
     end
 
-    return render_error issues, status: :conflict
+    return render_error issues, layer: :domain, status: :conflict
   end
 
   order.save!
@@ -86,7 +84,6 @@ def transfer
 
   if from_account.frozen?
     issues << Apiwork::Issue.new(
-      layer: :domain,
       code: :account_frozen,
       detail: "Source account is frozen",
       path: [:from_account_id],
@@ -96,7 +93,6 @@ def transfer
 
   if to_account.closed?
     issues << Apiwork::Issue.new(
-      layer: :domain,
       code: :account_closed,
       detail: "Destination account is closed",
       path: [:to_account_id],
@@ -106,7 +102,6 @@ def transfer
 
   if amount > from_account.balance
     issues << Apiwork::Issue.new(
-      layer: :domain,
       code: :insufficient_funds,
       detail: "Insufficient funds for transfer",
       path: [:amount],
@@ -114,7 +109,7 @@ def transfer
     )
   end
 
-  return render_error issues, status: :unprocessable_entity if issues.any?
+  return render_error issues, layer: :domain, status: :unprocessable_entity if issues.any?
 
   Transfer.execute(from: from_account, to: to_account, amount: amount)
   respond from_account

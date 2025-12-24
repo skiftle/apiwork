@@ -44,7 +44,6 @@ module Apiwork
               return true if allowed_types.any? { |type| value.is_a?(type) }
 
               issues << Issue.new(
-                layer: :contract,
                 code: :filter_value_invalid,
                 detail: 'Invalid filter value',
                 path: [:filter, field_name],

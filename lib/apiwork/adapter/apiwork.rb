@@ -41,8 +41,11 @@ module Apiwork
         }.compact
       end
 
-      def render_error(issues, action_data)
-        { errors: issues.map(&:to_h) }
+      def render_error(issues, layer, action_data)
+        {
+          layer:,
+          errors: issues.map(&:to_h)
+        }
       end
 
       def transform_request(hash)

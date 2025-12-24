@@ -12,19 +12,17 @@
   "response": {
     "status": 422,
     "body": {
+      "layer": "domain",
       "errors": [
         {
-          "layer": "domain",
           "code": "invalid",
-          "detail": "is invalid",
+          "detail": "Invalid",
           "path": [
             "user",
             "email"
           ],
           "pointer": "/user/email",
-          "meta": {
-            "attribute": "email"
-          }
+          "meta": {}
         }
       ]
     }

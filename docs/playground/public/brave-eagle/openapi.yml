@@ -232,12 +232,6 @@ components:
           type: string
         detail:
           type: string
-        layer:
-          type: string
-          enum:
-          - http
-          - contract
-          - domain
         meta:
           type: object
           properties: {}
@@ -250,10 +244,25 @@ components:
       required:
       - code
       - detail
-      - layer
       - meta
       - path
       - pointer
+    errorResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            "$ref": "#/components/schemas/error"
+        layer:
+          type: string
+          enum:
+          - http
+          - contract
+          - domain
+      required:
+      - errors
+      - layer
     nullableStringFilter:
       type: object
       properties:

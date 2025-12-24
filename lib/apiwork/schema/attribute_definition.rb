@@ -169,7 +169,6 @@ module Apiwork
         return if enum_values.map(&:to_s).include?(value.to_s)
 
         issue = Issue.new(
-          layer: :contract,
           code: :value_invalid,
           detail: 'Invalid value',
           path: [name],

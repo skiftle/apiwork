@@ -12,5 +12,9 @@ module Apiwork
     def error_code
       @error_code ||= ErrorCode.fetch(:bad_request)
     end
+
+    def layer
+      :contract
+    end
   end
 end

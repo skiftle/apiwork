@@ -248,18 +248,6 @@ RSpec.describe Apiwork::Adapter::Apiwork::DomainIssueMapper do
     end
   end
 
-  describe 'layer attribute' do
-    it 'sets layer to :domain' do
-      record_class = create_test_record(title: { presence: true })
-      record = record_class.new(title: '')
-      record.valid?
-
-      issues = mapper_class.call(record, root_path: [:data])
-
-      expect(issues.first.layer).to eq('domain')
-    end
-  end
-
   describe 'multiple errors' do
     it 'creates issues for all errors' do
       record_class = create_test_record(

@@ -1,9 +1,10 @@
 import { z } from 'zod';
 
+export const LayerSchema = z.enum(['contract', 'domain', 'http']);
+
 export const ErrorSchema = z.object({
   code: z.string(),
   detail: z.string(),
-  layer: z.enum(['http', 'contract', 'domain']),
   meta: z.object({}),
   path: z.array(z.string()),
   pointer: z.string()
@@ -53,6 +54,11 @@ export const ProfileUpdatePayloadSchema = z.object({
   preferences: z.object({ notifications: z.object({ email: z.boolean().optional(), push: z.boolean().optional() }), ui: z.object({ sidebarCollapsed: z.boolean().optional(), theme: z.string().optional() }) }),
   settings: z.object({ language: z.string().optional(), notifications: z.boolean().optional(), theme: z.string().optional() }),
   tags: z.array(z.string()).optional()
+});
+
+export const ErrorResponseSchema = z.object({
+  errors: z.array(ErrorSchema),
+  layer: LayerSchema
 });
 
 export const ProfilesIndexRequestQuerySchema = z.object({
@@ -108,11 +114,17 @@ export const ProfilesDestroyResponse = z.never();
 export interface Error {
   code: string;
   detail: string;
-  layer: 'contract' | 'domain' | 'http';
   meta: object;
   path: string[];
   pointer: string;
 }
+
+export interface ErrorResponse {
+  errors: Error[];
+  layer: Layer;
+}
+
+export type Layer = 'contract' | 'domain' | 'http';
 
 export interface OffsetPagination {
   current: number;

@@ -103,7 +103,6 @@ validates :number, length: { minimum: 3 }
 
 ```json
 {
-  "layer": "domain",
   "code": "min",
   "detail": "Too short",
   "path": ["invoice", "number"],
@@ -132,7 +131,6 @@ validates :quantity, numericality: { greater_than: 0 }
 
 ```json
 {
-  "layer": "domain",
   "code": "gt",
   "detail": "Too small",
   "path": ["line", "quantity"],
@@ -149,7 +147,6 @@ validates :rating, inclusion: { in: 1..5 }
 
 ```json
 {
-  "layer": "domain",
   "code": "in",
   "detail": "Invalid value",
   "path": ["review", "rating"],
@@ -224,23 +221,23 @@ Response:
 
 ```json
 {
+  "layer": "domain",
   "errors": [
     {
-      "layer": "domain",
       "code": "required",
       "detail": "Required",
       "path": ["invoice", "number"],
-      "pointer": "/invoice/number"
+      "pointer": "/invoice/number",
+      "meta": {}
     },
     {
-      "layer": "domain",
       "code": "required",
       "detail": "Required",
       "path": ["invoice", "lines", 1, "description"],
-      "pointer": "/invoice/lines/1/description"
+      "pointer": "/invoice/lines/1/description",
+      "meta": {}
     },
     {
-      "layer": "domain",
       "code": "gt",
       "detail": "Too small",
       "path": ["invoice", "lines", 1, "quantity"],
@@ -291,9 +288,11 @@ end
 
 ```json
 {
-  "layer": "domain",
   "code": "required",
-  "path": ["invoice", "lines", 0, "adjustments", 2, "reason"]
+  "path": ["invoice", "lines", 0, "adjustments", 2, "reason"],
+  "pointer": "/invoice/lines/0/adjustments/2/reason",
+  "detail": "Required",
+  "meta": {}
 }
 ```
 

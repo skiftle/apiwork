@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+export const LayerSchema = z.enum(['contract', 'domain', 'http']);
+
 export const SortDirectionSchema = z.enum(['asc', 'desc']);
 
 export const CommentCreatePayloadSchema = z.object({
@@ -28,7 +30,6 @@ export const CommentUpdatePayloadSchema = z.object({
 export const ErrorSchema = z.object({
   code: z.string(),
   detail: z.string(),
-  layer: z.enum(['http', 'contract', 'domain']),
   meta: z.object({}),
   path: z.array(z.string()),
   pointer: z.string()
@@ -142,6 +143,11 @@ export const VideoNestedUpdatePayloadSchema = z.object({
 
 export const VideoSortSchema = z.object({
   createdAt: SortDirectionSchema.optional()
+});
+
+export const ErrorResponseSchema = z.object({
+  errors: z.array(ErrorSchema),
+  layer: LayerSchema
 });
 
 export const ImageNestedPayloadSchema = z.discriminatedUnion('_type', [
@@ -365,10 +371,14 @@ export type CommentsUpdateResponseBody = { comment: Comment; meta?: object } | {
 export interface Error {
   code: string;
   detail: string;
-  layer: 'contract' | 'domain' | 'http';
   meta: object;
   path: string[];
   pointer: string;
+}
+
+export interface ErrorResponse {
+  errors: Error[];
+  layer: Layer;
 }
 
 export interface Image {
@@ -409,6 +419,8 @@ export interface ImageNestedUpdatePayload {
 export interface ImageSort {
   createdAt?: SortDirection;
 }
+
+export type Layer = 'contract' | 'domain' | 'http';
 
 export interface OffsetPagination {
   current: number;

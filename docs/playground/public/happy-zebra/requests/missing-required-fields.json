@@ -12,31 +12,32 @@
   "response": {
     "status": 400,
     "body": {
+      "layer": "contract",
       "errors": [
         {
-          "layer": "contract",
           "code": "field_missing",
-          "detail": "Field required",
+          "detail": "Required",
           "path": [
             "user",
             "email"
           ],
           "pointer": "/user/email",
           "meta": {
-            "field": "email"
+            "field": "email",
+            "type": "string"
           }
         },
         {
-          "layer": "contract",
           "code": "field_missing",
-          "detail": "Field required",
+          "detail": "Required",
           "path": [
             "user",
             "username"
           ],
           "pointer": "/user/username",
           "meta": {
-            "field": "username"
+            "field": "username",
+            "type": "string"
           }
         }
       ]

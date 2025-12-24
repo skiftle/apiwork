@@ -35,7 +35,6 @@ module Apiwork
 
             def add_invalid_operator_issue(operator)
               issues << Issue.new(
-                layer: :contract,
                 code: :operator_invalid,
                 detail: 'Invalid operator',
                 path: [:filter, field_name, operator],

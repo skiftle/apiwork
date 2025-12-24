@@ -14,9 +14,9 @@
   "response": {
     "status": 400,
     "body": {
+      "layer": "contract",
       "errors": [
         {
-          "layer": "contract",
           "code": "field_unknown",
           "detail": "Unknown field",
           "path": [
@@ -33,7 +33,6 @@
           }
         },
         {
-          "layer": "contract",
           "code": "field_unknown",
           "detail": "Unknown field",
           "path": [

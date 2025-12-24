@@ -346,18 +346,19 @@ Content-Type: application/json
 
 ```json
 {
+  "layer": "contract",
   "errors": [
     {
-      "layer": "contract",
       "code": "field_missing",
-      "detail": "Field required",
+      "detail": "Required",
       "path": [
         "order",
         "order_number"
       ],
       "pointer": "/order/order_number",
       "meta": {
-        "field": "order_number"
+        "field": "order_number",
+        "type": "string"
       }
     }
   ]

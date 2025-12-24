@@ -7,7 +7,7 @@ module Apiwork
 
       included do
         rescue_from Apiwork::ConstraintError do |error|
-          render_error error.issues, status: error.error_code.status
+          render_error error.issues, layer: error.layer, status: error.error_code.status
         end
       end
 
@@ -73,19 +73,20 @@ module Apiwork
       # For standard HTTP errors, use `respond_with_error` instead.
       #
       # @param issues [Array<Apiwork::Issue>] list of validation issues
+      # @param layer [String] error layer ("http", "contract", or "domain")
       # @param status [Symbol, Integer] HTTP status (default: :bad_request)
       #
       # @example Render validation errors
       #   def create
       #     unless record.valid?
       #       issues = record.errors.map do |error|
-      #         Apiwork::Issue.new(layer: :domain, code: :invalid, detail: error.message, path: [error.attribute], meta: {})
+      #         Apiwork::Issue.new(code: :invalid, detail: error.message, path: [error.attribute], meta: {})
       #       end
-      #       render_error issues, status: :unprocessable_entity
+      #       render_error issues, layer: 'domain', status: :unprocessable_entity
       #     end
       #   end
-      def render_error(issues, status: :bad_request)
-        json = adapter.render_error(issues, build_action_data)
+      def render_error(issues, layer:, status: :bad_request)
+        json = adapter.render_error(issues, layer, build_action_data)
         render json: json, status: status
       end
 
@@ -117,14 +118,13 @@ module Apiwork
         error_code = ErrorCode.fetch(code_key)
 
         issue = Issue.new(
-          layer: :http,
           code: error_code.key,
           detail: resolve_error_detail(error_code, detail, i18n),
           path: path || default_error_path(error_code),
           meta:
         )
 
-        render_error [issue], status: error_code.status
+        render_error [issue], layer: :http, status: error_code.status
       end
 
       # @api public
