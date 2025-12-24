@@ -224,8 +224,8 @@ module Apiwork
       def define_union_param(name, discriminator:, resolved_enum:, optional:, default:, as:, options:, &block)
         raise ArgumentError, 'Union type requires a block with variant definitions' unless block_given?
 
-        union_definition = UnionDefinition.new(@contract_class, discriminator: discriminator)
-        union_definition.instance_eval(&block)
+        union_builder = UnionBuilder.new(@contract_class, discriminator: discriminator)
+        union_builder.instance_eval(&block)
 
         @params[name] = apply_param_defaults({
                                                name: name,
@@ -233,7 +233,7 @@ module Apiwork
                                                optional: optional,
                                                default: default,
                                                as: as,
-                                               union: union_definition,
+                                               union: union_builder,
                                                discriminator: discriminator,
                                                enum: resolved_enum, # Store resolved enum (values or reference)
                                                **options
