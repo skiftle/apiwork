@@ -9,7 +9,7 @@ module Apiwork
     # Use as a declarative builder - do not rely on internal state.
     #
     # @api public
-    class Definition
+    class ParamDefinition
       def initialize(type:, contract_class:, action_name: nil)
         @type = type # :query, :body, or :response_body
         @contract_class = contract_class
@@ -187,7 +187,7 @@ module Apiwork
         elsif existing[:shape]
           existing[:shape].instance_eval(&block)
         else
-          shape_definition = Definition.new(type: nil, contract_class: @contract_class, action_name: @action_name)
+          shape_definition = ParamDefinition.new(type: nil, contract_class: @contract_class, action_name: @action_name)
           shape_definition.instance_eval(&block)
           @params[name][:shape] = shape_definition
         end
@@ -270,7 +270,7 @@ module Apiwork
 
         visited_with_current = visited_types.dup.add(expansion_key)
 
-        shape_definition = Definition.new(type: nil, contract_class: @contract_class, action_name: @action_name)
+        shape_definition = ParamDefinition.new(type: nil, contract_class: @contract_class, action_name: @action_name)
 
         shape_definition.instance_variable_set(:@visited_types, visited_with_current)
 
@@ -308,7 +308,7 @@ module Apiwork
 
         return unless block_given?
 
-        shape_definition = Definition.new(type: nil, contract_class: @contract_class, action_name: @action_name)
+        shape_definition = ParamDefinition.new(type: nil, contract_class: @contract_class, action_name: @action_name)
         shape_definition.instance_eval(&block)
         @params[name][:shape] = shape_definition
       end
@@ -589,7 +589,7 @@ module Apiwork
                 next
               end
 
-              custom_definition = Definition.new(type: @type, contract_class: contract_class_for_custom_type, action_name: @action_name)
+              custom_definition = ParamDefinition.new(type: @type, contract_class: contract_class_for_custom_type, action_name: @action_name)
               custom_type_block.each { |block| custom_definition.instance_eval(&block) }
 
               shape_result = custom_definition.validate(
@@ -777,7 +777,7 @@ module Apiwork
 
         custom_type_block = @contract_class.resolve_custom_type(variant_type)
         if custom_type_block
-          custom_definition = Definition.new(type: @type, contract_class: @contract_class, action_name: @action_name)
+          custom_definition = ParamDefinition.new(type: @type, contract_class: @contract_class, action_name: @action_name)
           custom_type_block.each { |block| custom_definition.instance_eval(&block) }
 
           unless value.is_a?(Hash)

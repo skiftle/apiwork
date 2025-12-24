@@ -110,7 +110,7 @@ module Apiwork
 
         temp_contract = contract_class || create_temp_contract
 
-        temp_definition = Apiwork::Contract::Definition.new(
+        temp_definition = Apiwork::Contract::ParamDefinition.new(
           type: :body,
           contract_class: temp_contract
         )

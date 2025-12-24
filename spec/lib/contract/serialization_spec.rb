@@ -421,7 +421,7 @@ RSpec.describe 'Contract Serialization' do
     let(:contract_class) { create_test_contract }
 
     it 'creates meta param if not exists' do
-      definition = Apiwork::Contract::Definition.new(
+      definition = Apiwork::Contract::ParamDefinition.new(
         type: :response_body,
         contract_class: contract_class,
         action_name: :test
@@ -434,13 +434,13 @@ RSpec.describe 'Contract Serialization' do
       expect(definition.params[:meta]).to be_present
       expect(definition.params[:meta][:type]).to eq(:object)
       expect(definition.params[:meta][:optional]).to be(false)
-      expect(definition.params[:meta][:shape]).to be_a(Apiwork::Contract::Definition)
+      expect(definition.params[:meta][:shape]).to be_a(Apiwork::Contract::ParamDefinition)
       expect(definition.params[:meta][:shape].params[:custom]).to be_present
       expect(definition.params[:meta][:shape].params[:custom][:type]).to eq(:string)
     end
 
     it 'extends existing meta from adapter' do
-      definition = Apiwork::Contract::Definition.new(
+      definition = Apiwork::Contract::ParamDefinition.new(
         type: :response_body,
         contract_class: contract_class,
         action_name: :test
@@ -488,7 +488,7 @@ RSpec.describe 'Contract Serialization' do
     end
 
     it 'does nothing without a block' do
-      definition = Apiwork::Contract::Definition.new(
+      definition = Apiwork::Contract::ParamDefinition.new(
         type: :response_body,
         contract_class: contract_class,
         action_name: :test

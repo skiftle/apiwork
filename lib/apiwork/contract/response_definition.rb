@@ -53,7 +53,7 @@ module Apiwork
       # When using schema!, body is auto-generated from schema attributes.
       #
       # @yield block defining body params
-      # @return [Definition] the body definition
+      # @return [ParamDefinition] the body definition
       #
       # @example
       #   response do
@@ -64,7 +64,7 @@ module Apiwork
       #     end
       #   end
       def body(&block)
-        @body_definition ||= Definition.new(
+        @body_definition ||= ParamDefinition.new(
           type: :response_body,
           contract_class: @contract_class,
           action_name: @action_name

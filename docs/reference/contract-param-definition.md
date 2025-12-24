@@ -4,9 +4,9 @@ prev: false
 next: false
 ---
 
-# Contract::Definition
+# Contract::ParamDefinition
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/definition.rb#L12)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L12)
 
 Defines params for query, body, or response.
 
@@ -18,7 +18,7 @@ Use as a declarative builder - do not rely on internal state.
 
 ### #meta(**options, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/definition.rb#L151)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L151)
 
 Shorthand for `param :meta, type: :object do ... end`.
 
@@ -58,7 +58,7 @@ end
 
 ### #param(name, type: = nil, optional: = nil, default: = nil, enum: = nil, of: = nil, as: = nil, discriminator: = nil, value: = nil, visited_types: = nil, **options, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/definition.rb#L95)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L95)
 
 Defines a parameter/field in a request or response body.
 

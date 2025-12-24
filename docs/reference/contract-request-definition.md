@@ -26,7 +26,7 @@ Use `param` inside the block to define fields.
 
 **Returns**
 
-[Definition](contract-definition) — the body definition
+[ParamDefinition](contract-param-definition) — the body definition
 
 **Example**
 
@@ -52,7 +52,7 @@ Use `param` inside the block to define parameters.
 
 **Returns**
 
-[Definition](contract-definition) — the query definition
+[ParamDefinition](contract-param-definition) — the query definition
 
 **Example**
 

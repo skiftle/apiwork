@@ -96,7 +96,7 @@ module Apiwork
             custom_type_block = definition.contract_class.resolve_custom_type(type_name)
             return type_cache[type_name] = nil unless custom_type_block
 
-            custom_definition = Definition.new(type: :body, contract_class: definition.contract_class)
+            custom_definition = ParamDefinition.new(type: :body, contract_class: definition.contract_class)
             custom_type_block.each { |block| custom_definition.instance_eval(&block) }
             type_cache[type_name] = custom_definition
           end

@@ -26,7 +26,7 @@ When using schema!, body is auto-generated from schema attributes.
 
 **Returns**
 
-[Definition](contract-definition) — the body definition
+[ParamDefinition](contract-param-definition) — the body definition
 
 **Example**
 

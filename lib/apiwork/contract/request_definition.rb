@@ -28,7 +28,7 @@ module Apiwork
       # Use `param` inside the block to define parameters.
       #
       # @yield block defining query params
-      # @return [Definition] the query definition
+      # @return [ParamDefinition] the query definition
       #
       # @example
       #   request do
@@ -39,7 +39,7 @@ module Apiwork
       #     end
       #   end
       def query(&block)
-        @query_definition ||= Definition.new(
+        @query_definition ||= ParamDefinition.new(
           type: :query,
           contract_class: @contract_class,
           action_name: @action_name
@@ -57,7 +57,7 @@ module Apiwork
       # Use `param` inside the block to define fields.
       #
       # @yield block defining body params
-      # @return [Definition] the body definition
+      # @return [ParamDefinition] the body definition
       #
       # @example
       #   request do
@@ -67,7 +67,7 @@ module Apiwork
       #     end
       #   end
       def body(&block)
-        @body_definition ||= Definition.new(
+        @body_definition ||= ParamDefinition.new(
           type: :body,
           contract_class: @contract_class,
           action_name: @action_name
