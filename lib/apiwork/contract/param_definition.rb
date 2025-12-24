@@ -21,19 +21,6 @@ module Apiwork
         @wrapped
       end
 
-      def resolve_option(name, subkey = nil)
-        return @contract_class.schema_class.resolve_option(name, subkey) if @contract_class.schema_class
-
-        option = Adapter::StandardAdapter.options[name]
-        return nil unless option
-
-        if option.nested? && subkey
-          option.children[subkey]&.default
-        else
-          option.resolved_default
-        end
-      end
-
       def introspect(locale: nil)
         Apiwork::Introspection.definition(self, locale:)
       end
