@@ -31,15 +31,18 @@ module Apiwork
       private
 
       def serialize_unwrapped_union
-        success_params = {}
-
-        @definition.params.sort_by { |name, _| name.to_s }.each do |name, param_options|
-          serialized = serialize_param(name, param_options)
-          serialized[:optional] = true if param_options[:optional]
-          success_params[name] = serialized
-        end
-
+        success_type = @definition.success_response_type
         error_type = @definition.error_response_type
+
+        success_params = build_success_params
+
+        success_variant = if success_type
+                            register_success_type(success_type, success_params)
+                            { type: success_type }
+                          else
+                            { type: :object, shape: success_params }
+                          end
+
         error_variant = if error_type
                           { type: error_type }
                         else
@@ -48,13 +51,30 @@ module Apiwork
 
         {
           type: :union,
-          variants: [
-            {
-              type: :object,
-              shape: success_params
-            },
-            error_variant
-          ]
+          variants: [success_variant, error_variant]
+        }
+      end
+
+      def build_success_params
+        success_params = {}
+        @definition.params.sort_by { |name, _| name.to_s }.each do |name, param_options|
+          serialized = serialize_param(name, param_options)
+          serialized[:optional] = true if param_options[:optional]
+          success_params[name] = serialized
+        end
+        success_params
+      end
+
+      def register_success_type(type_name, shape)
+        api_class = @definition.contract_class&.api_class
+        return unless api_class
+
+        type_system = api_class.type_system
+        return if type_system.types.key?(type_name)
+
+        type_system.types[type_name] = {
+          scope: nil,
+          expanded_payload: shape
         }
       end
 

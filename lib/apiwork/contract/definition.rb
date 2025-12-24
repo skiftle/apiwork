@@ -3,11 +3,6 @@
 module Apiwork
   module Contract
     class Definition
-      attr_reader :action_name,
-                  :contract_class,
-                  :params,
-                  :type
-
       def initialize(type:, contract_class:, action_name: nil)
         @type = type # :query, :body, or :response_body
         @contract_class = contract_class
@@ -40,9 +35,12 @@ module Apiwork
         @unwrapped_union
       end
 
-      def error_response_type
-        @error_response_type
-      end
+      attr_reader :action_name,
+                  :contract_class,
+                  :error_response_type,
+                  :params,
+                  :success_response_type,
+                  :type
 
       # Defines a parameter/field in a request or response body.
       #

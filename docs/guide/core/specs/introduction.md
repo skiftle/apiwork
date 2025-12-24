@@ -115,7 +115,7 @@ rake apiwork:spec:write API_PATH=/api/v1 SPEC_NAME=openapi OUTPUT=public/openapi
 # With camelCase keys
 rake apiwork:spec:write SPEC_NAME=typescript KEY_FORMAT=camel OUTPUT=public/specs
 
-# With Swedish locale
+# With locale
 rake apiwork:spec:write OUTPUT=public/specs LOCALE=sv
 ```
 

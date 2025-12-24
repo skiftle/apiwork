@@ -114,11 +114,16 @@ RSpec.describe 'API Introspection' do
             expect(response_body[:variants].length).to eq(2)
 
             success_variant = response_body[:variants][0]
-            expect(success_variant[:shape].keys).to include(:post)
-            expect(success_variant[:shape][:post][:optional]).to be_nil
+            expect(success_variant[:type]).to eq(:post_archive_success_response_body)
 
             error_variant = response_body[:variants][1]
             expect(error_variant[:type]).to eq(:error_response_body)
+
+            # Check success type is registered with correct shape
+            success_type = json[:types][:post_archive_success_response_body]
+            expect(success_type).to be_a(Hash)
+            expect(success_type[:shape].keys).to include(:post)
+            expect(success_type[:shape][:post][:optional]).to be_nil
           end
 
           it 'merges custom response params at top level' do
@@ -130,13 +135,18 @@ RSpec.describe 'API Introspection' do
             expect(response_body[:type]).to eq(:union)
 
             success_variant = response_body[:variants][0]
-            # Schema-generated fields
-            expect(success_variant[:shape].keys).to include(:post, :meta)
-            # Custom response params (defined in PostContract#archive response body)
-            expect(success_variant[:shape].keys).to include(:archived_at, :archive_note)
+            expect(success_variant[:type]).to eq(:post_archive_success_response_body)
 
             error_variant = response_body[:variants][1]
             expect(error_variant[:type]).to eq(:error_response_body)
+
+            # Check success type is registered with correct shape
+            success_type = json[:types][:post_archive_success_response_body]
+            expect(success_type).to be_a(Hash)
+            # Schema-generated fields
+            expect(success_type[:shape].keys).to include(:post, :meta)
+            # Custom response params (defined in PostContract#archive response body)
+            expect(success_type[:shape].keys).to include(:archived_at, :archive_note)
           end
 
           it 'replaces response body completely when response replace: true is used' do
@@ -180,13 +190,18 @@ RSpec.describe 'API Introspection' do
             expect(response_body[:type]).to eq(:union)
 
             success_variant = response_body[:variants][0]
-            # Schema-generated fields (from collection wrapper)
-            expect(success_variant[:shape].keys).to include(:posts, :meta)
-            # Custom response params (defined in PostContract#search response body)
-            expect(success_variant[:shape].keys).to include(:search_query, :result_count)
+            expect(success_variant[:type]).to eq(:post_search_success_response_body)
 
             error_variant = response_body[:variants][1]
             expect(error_variant[:type]).to eq(:error_response_body)
+
+            # Check success type is registered with correct shape
+            success_type = json[:types][:post_search_success_response_body]
+            expect(success_type).to be_a(Hash)
+            # Schema-generated fields (from collection wrapper)
+            expect(success_type[:shape].keys).to include(:posts, :meta)
+            # Custom response params (defined in PostContract#search response body)
+            expect(success_type[:shape].keys).to include(:search_query, :result_count)
           end
         end
 

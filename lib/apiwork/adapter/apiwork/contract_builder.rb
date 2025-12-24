@@ -157,9 +157,12 @@ module Apiwork
         def single_response(definition)
           root_key = schema_class.root_key.singular.to_sym
           resource_type_name = resource_type_name_for_response
+          action_name = definition.action_name
 
+          scoped_success_type = contract_class.scoped_name(:"#{action_name}_success_response_body")
           definition.instance_variable_set(:@unwrapped_union, true)
           definition.instance_variable_set(:@error_response_type, :error_response_body)
+          definition.instance_variable_set(:@success_response_type, scoped_success_type)
 
           definition.param root_key, type: resource_type_name
           definition.param :meta, type: :object, optional: true
@@ -169,9 +172,12 @@ module Apiwork
           root_key_plural = schema_class.root_key.plural.to_sym
           resource_type_name = resource_type_name_for_response
           pagination_type = build_pagination_type
+          action_name = definition.action_name
 
+          scoped_success_type = contract_class.scoped_name(:"#{action_name}_success_response_body")
           definition.instance_variable_set(:@unwrapped_union, true)
           definition.instance_variable_set(:@error_response_type, :error_response_body)
+          definition.instance_variable_set(:@success_response_type, scoped_success_type)
 
           definition.param root_key_plural, type: :array, of: resource_type_name, optional: true
           definition.param :pagination, type: pagination_type, optional: true
