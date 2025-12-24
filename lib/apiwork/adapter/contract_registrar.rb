@@ -9,16 +9,16 @@ module Apiwork
     # types specific to a resource contract (request/response shapes).
     #
     # @example Register request body type
-    #   def register_contract(type_registrar, schema_class, actions:)
-    #     type_registrar.type :user_input do
+    #   def register_contract(registrar, schema_class, actions:)
+    #     registrar.type :user_input do
     #       param :name, type: :string
     #       param :email, type: :string
     #     end
     #   end
     #
     # @example Define action contracts
-    #   def register_contract(type_registrar, schema_class, actions:)
-    #     type_registrar.define_action :index do
+    #   def register_contract(registrar, schema_class, actions:)
+    #     registrar.define_action :index do
     #       response do
     #         param :users, type: :array, of: :user
     #       end

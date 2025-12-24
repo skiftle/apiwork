@@ -32,14 +32,14 @@ module Apiwork
       # @api public
       # Registers types from schemas for the API.
       # Override to customize type registration.
-      def register_api(type_registrar, schema_data)
+      def register_api(registrar, schema_data)
         raise NotImplementedError
       end
 
       # @api public
       # Registers types for a contract.
       # Override to customize contract type registration.
-      def register_contract(type_registrar, schema_class, actions:)
+      def register_contract(registrar, schema_class, actions:)
         raise NotImplementedError
       end
 

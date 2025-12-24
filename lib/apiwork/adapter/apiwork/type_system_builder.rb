@@ -101,12 +101,12 @@ module Apiwork
 
         NULLABLE_EXTENSION = { name: :null, type: :boolean }.freeze
 
-        def self.build(type_registrar, schema_data)
-          new(type_registrar, schema_data)
+        def self.build(registrar, schema_data)
+          new(registrar, schema_data)
         end
 
-        def initialize(type_registrar, schema_data)
-          @type_registrar = type_registrar
+        def initialize(registrar, schema_data)
+          @registrar = registrar
           @schema_data = schema_data
 
           register_pagination_types if schema_data.has_index_actions?
@@ -117,7 +117,7 @@ module Apiwork
 
         private
 
-        attr_reader :type_registrar,
+        attr_reader :registrar,
                     :schema_data
 
         def register_pagination_types
@@ -126,7 +126,7 @@ module Apiwork
         end
 
         def register_offset_pagination
-          type_registrar.type :offset_pagination do
+          registrar.type :offset_pagination do
             param :current, type: :integer
             param :next, type: :integer, nullable: true, optional: true
             param :prev, type: :integer, nullable: true, optional: true
@@ -136,16 +136,16 @@ module Apiwork
         end
 
         def register_cursor_pagination
-          type_registrar.type :cursor_pagination do
+          registrar.type :cursor_pagination do
             param :next, type: :string, nullable: true, optional: true
             param :prev, type: :string, nullable: true, optional: true
           end
         end
 
         def register_error_type
-          type_registrar.enum :layer, values: %w[http contract domain]
+          registrar.enum :layer, values: %w[http contract domain]
 
-          type_registrar.type :issue do
+          registrar.type :issue do
             param :code, type: :string
             param :detail, type: :string
             param :path, type: :array, of: :string
@@ -153,7 +153,7 @@ module Apiwork
             param :meta, type: :object
           end
 
-          type_registrar.type :error_response_body do
+          registrar.type :error_response_body do
             param :layer, type: :layer
             param :issues, type: :array, of: :issue
           end
@@ -189,7 +189,7 @@ module Apiwork
         end
 
         def register_sort_direction
-          type_registrar.enum :sort_direction, values: %w[asc desc]
+          registrar.enum :sort_direction, values: %w[asc desc]
         end
 
         def register_filter_type(type_name)
@@ -204,7 +204,7 @@ module Apiwork
           params = definition[:params].dup
           params << NULLABLE_EXTENSION if nullable
 
-          type_registrar.type(type_name) do
+          registrar.type(type_name) do
             params.each do |param_definition|
               if param_definition[:of]
                 param param_definition[:name], type: param_definition[:type], of: param_definition[:of], optional: true

@@ -113,22 +113,22 @@ These hooks let your adapter register types based on schema metadata. This is ho
 Called once when the API is loaded. Use this to register global types shared across all contracts:
 
 ```ruby
-def register_api(type_registrar, schema_data)
+def register_api(registrar, schema_data)
   # Register pagination types
-  type_registrar.type :my_pagination do
+  registrar.type :my_pagination do
     param :page, type: :integer
     param :total, type: :integer
   end
 
   # Register error type
-  type_registrar.type :error do
+  registrar.type :error do
     param :code, type: :string
     param :message, type: :string
   end
 
   # Register filter types based on schema attributes
   if schema_data.filterable_types.include?(:string)
-    type_registrar.type :string_filter do
+    registrar.type :string_filter do
       param :eq, type: :string, optional: true
       param :contains, type: :string, optional: true
     end
@@ -136,7 +136,7 @@ def register_api(type_registrar, schema_data)
 end
 ```
 
-The `type_registrar` provides:
+The `registrar` provides:
 - `type(name, &block)` — Define a type
 - `enum(name, values:)` — Define an enum
 - `union(name, &block)` — Define a union type
@@ -155,18 +155,18 @@ The `schema_data` provides information about all schemas in the API:
 Called for each contract. Use this to register types specific to that contract:
 
 ```ruby
-def register_contract(type_registrar, schema_class, actions:)
+def register_contract(registrar, schema_class, actions:)
   # Register enums from schema attributes
   schema_class.attribute_definitions.each do |name, attr|
     if attr.enum&.any?
-      type_registrar.enum(name, values: attr.enum)
+      registrar.enum(name, values: attr.enum)
     end
   end
 
   # Define action contracts
   actions.each do |action_name, action_metadata|
     # Get or create action definition, then work with it directly
-    action_definition = type_registrar.define_action(action_name)
+    action_definition = registrar.define_action(action_name)
 
     # Build request/response based on action type
     case action_name
@@ -192,7 +192,7 @@ def register_contract(type_registrar, schema_class, actions:)
 
   # Register response type
   root_key = schema_class.root_key.singular.to_sym
-  type_registrar.type(root_key, schema_class: schema_class) do
+  registrar.type(root_key, schema_class: schema_class) do
     schema_class.attribute_definitions.each do |name, attr|
       param name, type: attr.type, nullable: attr.nullable?
     end
@@ -200,7 +200,7 @@ def register_contract(type_registrar, schema_class, actions:)
 end
 ```
 
-The `type_registrar` provides:
+The `registrar` provides:
 - `type(name, &block)` — Define a type
 - `enum(name, values:)` — Define an enum
 - `union(name, &block)` — Define a union type

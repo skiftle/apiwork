@@ -9,8 +9,8 @@ module Apiwork
     # shared types like pagination, error responses, or enums.
     #
     # @example Register pagination type
-    #   def register_api(type_registrar, schema_data)
-    #     type_registrar.type :pagination do
+    #   def register_api(registrar, schema_data)
+    #     registrar.type :pagination do
     #       param :page, type: :integer
     #       param :per_page, type: :integer
     #       param :total, type: :integer
@@ -18,8 +18,8 @@ module Apiwork
     #   end
     #
     # @example Register enum
-    #   def register_api(type_registrar, schema_data)
-    #     type_registrar.enum :status, values: %w[pending active completed]
+    #   def register_api(registrar, schema_data)
+    #     registrar.enum :status, values: %w[pending active completed]
     #   end
     class APIRegistrar
       def initialize(api_class)

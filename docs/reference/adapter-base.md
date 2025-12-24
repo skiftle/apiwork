@@ -30,7 +30,7 @@ Apiwork::Adapter.register(JsonApiAdapter)
 
 ## Instance Methods
 
-### #register_api(type_registrar, schema_data)
+### #register_api(registrar, schema_data)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L35)
 
@@ -39,7 +39,7 @@ Override to customize type registration.
 
 ---
 
-### #register_contract(type_registrar, schema_class, actions:)
+### #register_contract(registrar, schema_class, actions:)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L42)
 

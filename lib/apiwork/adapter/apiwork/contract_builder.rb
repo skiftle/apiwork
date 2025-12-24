@@ -6,16 +6,16 @@ module Apiwork
       class ContractBuilder
         MAX_RECURSION_DEPTH = 3
 
-        def self.build(type_registrar, schema_class, actions)
-          new(type_registrar, schema_class, actions: actions, build: true)
+        def self.build(registrar, schema_class, actions)
+          new(registrar, schema_class, actions: actions, build: true)
         end
 
-        def self.for_schema(type_registrar, schema_class)
-          new(type_registrar, schema_class)
+        def self.for_schema(registrar, schema_class)
+          new(registrar, schema_class)
         end
 
-        def initialize(type_registrar, schema_class, actions: nil, build: false)
-          @type_registrar = type_registrar
+        def initialize(registrar, schema_class, actions: nil, build: false)
+          @registrar = registrar
           @schema_class = schema_class
           @actions = actions
 
@@ -29,7 +29,7 @@ module Apiwork
 
         attr_reader :actions,
                     :schema_class,
-                    :type_registrar
+                    :registrar
 
         def query_params(definition)
           filter_type = build_filter_type
@@ -67,8 +67,8 @@ module Apiwork
           else
             payload_type_name = :"#{context_symbol}_payload"
 
-            unless type_registrar.resolve_type(payload_type_name)
-              type_registrar.type(payload_type_name, schema_class: schema_class) do
+            unless registrar.resolve_type(payload_type_name)
+              registrar.type(payload_type_name, schema_class: schema_class) do
                 builder.send(:writable_params, self, context_symbol, nested: false)
               end
             end
@@ -119,7 +119,7 @@ module Apiwork
               if import_alias
                 association_payload_type = :"#{import_alias}_nested_payload"
 
-                association_contract = type_registrar.find_contract_for_schema(association_resource.schema)
+                association_contract = registrar.find_contract_for_schema(association_resource.schema)
               end
             end
 
@@ -155,7 +155,7 @@ module Apiwork
           resource_type_name = resource_type_name_for_response
           action_name = definition.action_name
 
-          scoped_success_type = type_registrar.scoped_name(:"#{action_name}_success_response_body")
+          scoped_success_type = registrar.scoped_name(:"#{action_name}_success_response_body")
           definition.instance_variable_set(:@unwrapped_union, true)
           definition.instance_variable_set(:@error_response_type, :error_response_body)
           definition.instance_variable_set(:@success_response_type, scoped_success_type)
@@ -170,7 +170,7 @@ module Apiwork
           pagination_type = build_pagination_type
           action_name = definition.action_name
 
-          scoped_success_type = type_registrar.scoped_name(:"#{action_name}_success_response_body")
+          scoped_success_type = registrar.scoped_name(:"#{action_name}_success_response_body")
           definition.instance_variable_set(:@unwrapped_union, true)
           definition.instance_variable_set(:@error_response_type, :error_response_body)
           definition.instance_variable_set(:@success_response_type, scoped_success_type)
@@ -184,7 +184,7 @@ module Apiwork
           schema_class.attribute_definitions.each do |name, attribute_definition|
             next unless attribute_definition.enum&.any?
 
-            type_registrar.enum(name, values: attribute_definition.enum)
+            registrar.enum(name, values: attribute_definition.enum)
           end
         end
 
@@ -195,7 +195,7 @@ module Apiwork
         end
 
         def build_action_definition(action_name, action_metadata)
-          action_definition = type_registrar.define_action(action_name)
+          action_definition = registrar.define_action(action_name)
 
           build_request_for_action(action_definition, action_name, action_metadata) unless action_definition.resets_request?
           build_response_for_action(action_definition, action_name, action_metadata) unless action_definition.resets_response?
@@ -281,8 +281,8 @@ module Apiwork
             variant_schema_name = variant_schema.name.demodulize.underscore.gsub(/_schema$/, '')
             variant_type_name = :"#{variant_schema_name}_#{context_symbol}_payload"
 
-            unless type_registrar.api_registrar.resolve_type(variant_type_name)
-              type_registrar.api_registrar.type(variant_type_name) do
+            unless registrar.api_registrar.resolve_type(variant_type_name)
+              registrar.api_registrar.type(variant_type_name) do
                 # Rename discriminator from API name to DB column if different
                 as_column = discriminator_name != discriminator_column ? discriminator_column : nil
                 param discriminator_name, type: :literal, value: tag.to_s, as: as_column, sti_mapping: sti_mapping
@@ -300,9 +300,9 @@ module Apiwork
             build_sti_response_union_type
           else
             root_key = schema_class.root_key.singular.to_sym
-            resource_type_name = type_registrar.scoped_name(nil)
+            resource_type_name = registrar.scoped_name(nil)
 
-            register_resource_type(root_key) unless type_registrar.resolve_type(resource_type_name)
+            register_resource_type(root_key) unless registrar.resolve_type(resource_type_name)
 
             resource_type_name
           end
@@ -318,7 +318,7 @@ module Apiwork
 
           schema_class_local = schema_class
           builder = self
-          type_registrar.type(type_name, schema_class: schema_class_local) do
+          registrar.type(type_name, schema_class: schema_class_local) do
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
               enum_option = attribute_definition.enum ? { enum: name } : {}
               of_option = attribute_definition.of ? { of: attribute_definition.of } : {}
@@ -377,7 +377,7 @@ module Apiwork
 
           type_name = type_name(:filter, depth)
 
-          existing = type_registrar.resolve_type(type_name)
+          existing = registrar.resolve_type(type_name)
           return type_name if existing
 
           builder = self
@@ -393,7 +393,7 @@ module Apiwork
           type_options = { schema_class: schema_class_local }
           type_options = {} unless depth.zero?
 
-          type_registrar.type(type_name, **type_options) do
+          registrar.type(type_name, **type_options) do
             param :_and, type: :array, of: type_name, optional: true
             param :_or, type: :array, of: type_name, optional: true
             param :_not, type: type_name, optional: true
@@ -440,7 +440,7 @@ module Apiwork
         end
 
         def build_filter_type_for_schema(association_schema, visited:, depth:)
-          self.class.for_schema(type_registrar, association_schema)
+          self.class.for_schema(registrar, association_schema)
               .send(:build_filter_type, visited:, depth:)
         end
 
@@ -454,7 +454,7 @@ module Apiwork
 
           type_name = type_name(:sort, depth)
 
-          existing = type_registrar.resolve_type(type_name)
+          existing = registrar.resolve_type(type_name)
           return type_name if existing
 
           builder = self
@@ -463,7 +463,7 @@ module Apiwork
           type_options = { schema_class: schema_class_local }
           type_options = {} unless depth.zero?
 
-          type_registrar.type(type_name, **type_options) do
+          registrar.type(type_name, **type_options) do
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
               next unless attribute_definition.sortable?
 
@@ -496,7 +496,7 @@ module Apiwork
         end
 
         def build_sort_type_for_schema(association_schema, visited:, depth:)
-          self.class.for_schema(type_registrar, association_schema)
+          self.class.for_schema(registrar, association_schema)
               .send(:build_sort_type, visited:, depth:)
         end
 
@@ -506,17 +506,17 @@ module Apiwork
 
           type_name = type_name(:page, 1)
 
-          existing = type_registrar.resolve_type(type_name)
+          existing = registrar.resolve_type(type_name)
           return type_name if existing
 
           if strategy == :cursor
-            type_registrar.api_registrar.type(type_name, scope: nil) do
+            registrar.api_registrar.type(type_name, scope: nil) do
               param :after, type: :string, optional: true
               param :before, type: :string, optional: true
               param :size, type: :integer, optional: true, min: 1, max: max_size
             end
           else
-            type_registrar.api_registrar.type(type_name, scope: nil) do
+            registrar.api_registrar.type(type_name, scope: nil) do
               param :number, type: :integer, optional: true, min: 1
               param :size, type: :integer, optional: true, min: 1, max: max_size
             end
@@ -536,7 +536,7 @@ module Apiwork
 
           type_name = type_name(:include, depth)
 
-          existing = type_registrar.resolve_type(type_name)
+          existing = registrar.resolve_type(type_name)
           return type_name if existing
           return type_name if depth >= MAX_RECURSION_DEPTH
 
@@ -544,7 +544,7 @@ module Apiwork
 
           builder = self
           schema_class_local = schema_class
-          registrar = type_registrar
+          registrar_local = registrar
 
           registrar.type(type_name) do
             schema_class_local.association_definitions.each do |name, association_definition|
@@ -563,7 +563,7 @@ module Apiwork
 
                 association_include_type = if import_alias
                                              imported_type = :"#{import_alias}_include"
-                                             registrar.resolve_type(imported_type) ? imported_type : nil
+                                             registrar_local.resolve_type(imported_type) ? imported_type : nil
                                            else
                                              builder.send(:build_include_type_for_schema,
                                                           association_resource.schema,
@@ -603,7 +603,7 @@ module Apiwork
               if new_visited.include?(association_resource.schema)
                 !association_definition.always_included?
               elsif association_definition.always_included?
-                nested_builder = self.class.for_schema(type_registrar, association_resource.schema)
+                nested_builder = self.class.for_schema(registrar, association_resource.schema)
                 nested_builder.send(:has_includable_params?, visited: new_visited, depth: depth + 1)
               else
                 true
@@ -613,7 +613,7 @@ module Apiwork
         end
 
         def build_include_type_for_schema(association_schema, visited:, depth:)
-          self.class.for_schema(type_registrar, association_schema)
+          self.class.for_schema(registrar, association_schema)
               .send(:build_include_type, visited:, depth:)
         end
 
@@ -625,8 +625,8 @@ module Apiwork
           builder = self
           schema = schema_class
 
-          unless type_registrar.resolve_type(create_type_name)
-            type_registrar.type(create_type_name) do
+          unless registrar.resolve_type(create_type_name)
+            registrar.type(create_type_name) do
               param :_type, type: :literal, value: 'create'
               builder.send(:writable_params, self, :create, nested: true)
               param :_destroy, type: :boolean, optional: true if schema.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
@@ -634,8 +634,8 @@ module Apiwork
           end
 
           update_type_name = :nested_update_payload
-          unless type_registrar.resolve_type(update_type_name)
-            type_registrar.type(update_type_name) do
+          unless registrar.resolve_type(update_type_name)
+            registrar.type(update_type_name) do
               param :_type, type: :literal, value: 'update'
               builder.send(:writable_params, self, :update, nested: true)
               param :_destroy, type: :boolean, optional: true if schema.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
@@ -643,12 +643,12 @@ module Apiwork
           end
 
           nested_payload_type_name = :nested_payload
-          return if type_registrar.resolve_type(nested_payload_type_name)
+          return if registrar.resolve_type(nested_payload_type_name)
 
-          create_qualified_name = type_registrar.scoped_name(create_type_name)
-          update_qualified_name = type_registrar.scoped_name(update_type_name)
+          create_qualified_name = registrar.scoped_name(create_type_name)
+          update_qualified_name = registrar.scoped_name(update_type_name)
 
-          type_registrar.union(nested_payload_type_name, discriminator: :_type) do
+          registrar.union(nested_payload_type_name, discriminator: :_type) do
             variant type: create_qualified_name, tag: 'create'
             variant type: update_qualified_name, tag: 'update'
           end
@@ -662,16 +662,16 @@ module Apiwork
           return if sti_base_schema?
 
           root_key = schema_class.root_key.singular.to_sym
-          resource_type_name = type_registrar.scoped_name(nil)
+          resource_type_name = registrar.scoped_name(nil)
 
-          return if type_registrar.resolve_type(resource_type_name)
+          return if registrar.resolve_type(resource_type_name)
 
           build_enums
 
           builder = self
           schema_class_local = schema_class
 
-          type_registrar.type(root_key, schema_class: schema_class_local) do
+          registrar.type(root_key, schema_class: schema_class_local) do
             if schema_class_local.respond_to?(:sti_variant?) && schema_class_local.sti_variant?
               parent_schema = schema_class_local.superclass
               discriminator_name = parent_schema.discriminator_name
@@ -744,14 +744,14 @@ module Apiwork
 
           union_type_name = association_definition.name
 
-          existing = type_registrar.resolve_type(union_type_name)
+          existing = registrar.resolve_type(union_type_name)
           return union_type_name if existing
 
           builder = self
           discriminator = association_definition.discriminator
           association_def_local = association_definition
 
-          type_registrar.union(union_type_name, discriminator:) do
+          registrar.union(union_type_name, discriminator:) do
             association_def_local.polymorphic.each_key do |tag|
               schema_class = association_def_local.resolve_polymorphic_schema(tag)
               next unless schema_class
@@ -778,7 +778,7 @@ module Apiwork
             { type: variant_type, tag: tag.to_s } if variant_type
           end
 
-          type_registrar.union(union_type_name, discriminator: discriminator_name) do
+          registrar.union(union_type_name, discriminator: discriminator_name) do
             variant_types.each do |v|
               variant type: v[:type], tag: v[:tag]
             end
@@ -802,8 +802,8 @@ module Apiwork
           build_sti_union(union_type_name: union_type_name, visited: visited) do |variant_schema, tag, _visit_set|
             variant_type_name = variant_schema.root_key.singular.to_sym
 
-            unless type_registrar.api_registrar.resolve_type(variant_type_name)
-              type_registrar.api_registrar.type(variant_type_name, schema_class: variant_schema) do
+            unless registrar.api_registrar.resolve_type(variant_type_name)
+              registrar.api_registrar.type(variant_type_name, schema_class: variant_schema) do
                 param discriminator_name, type: :literal, value: tag.to_s
 
                 variant_schema.attribute_definitions.each do |name, attribute_definition|
@@ -855,17 +855,17 @@ module Apiwork
         end
 
         def enum_filter_type(attribute_definition)
-          scoped_name = type_registrar.scoped_name(attribute_definition.name)
+          scoped_name = registrar.scoped_name(attribute_definition.name)
           :"#{scoped_name}_filter"
         end
 
         def register_enum_filter(enum_name)
-          scoped_name = type_registrar.scoped_name(enum_name)
+          scoped_name = registrar.scoped_name(enum_name)
           filter_name = :"#{scoped_name}_filter"
 
-          return if type_registrar.api_registrar.resolve_type(filter_name)
+          return if registrar.api_registrar.resolve_type(filter_name)
 
-          type_registrar.api_registrar.union(filter_name) do
+          registrar.api_registrar.union(filter_name) do
             variant type: scoped_name
             variant type: :object, partial: true do
               param :eq, type: scoped_name, optional: true
@@ -912,7 +912,7 @@ module Apiwork
         def import_association_contract(association_schema, visited)
           return nil if visited.include?(association_schema)
 
-          association_contract = type_registrar.find_contract_for_schema(association_schema)
+          association_contract = registrar.find_contract_for_schema(association_schema)
 
           unless association_contract
             contract_name = association_schema.name.sub(/Schema$/, 'Contract')
@@ -927,7 +927,7 @@ module Apiwork
 
           alias_name = association_schema.root_key.singular.to_sym
 
-          type_registrar.import(association_contract, as: alias_name) unless type_registrar.imports.key?(alias_name)
+          registrar.import(association_contract, as: alias_name) unless registrar.imports.key?(alias_name)
 
           if association_contract.schema?
             api_class = association_contract.api_class
