@@ -2,7 +2,7 @@
 
 module Apiwork
   module Adapter
-    class Apiwork < Base
+    class StandardAdapter < Base
       class ContractBuilder
         MAX_RECURSION_DEPTH = 3
 

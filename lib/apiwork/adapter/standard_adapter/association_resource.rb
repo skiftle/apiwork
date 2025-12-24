@@ -2,7 +2,7 @@
 
 module Apiwork
   module Adapter
-    class Apiwork < Base
+    class StandardAdapter < Base
       AssociationResource = Struct.new(:schema, :sti, keyword_init: true) do
         def sti?
           sti

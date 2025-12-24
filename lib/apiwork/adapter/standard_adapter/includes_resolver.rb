@@ -2,7 +2,7 @@
 
 module Apiwork
   module Adapter
-    class Apiwork < Base
+    class StandardAdapter < Base
       class IncludesResolver
         attr_reader :schema_class
 

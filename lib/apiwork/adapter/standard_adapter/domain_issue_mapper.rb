@@ -2,7 +2,7 @@
 
 module Apiwork
   module Adapter
-    class Apiwork < Base
+    class StandardAdapter < Base
       class DomainIssueMapper
         CODE_MAP = {
           blank: :required,

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Apiwork::Adapter::Apiwork::ContractBuilder do
+RSpec.describe Apiwork::Adapter::StandardAdapter::ContractBuilder do
   before do
     load File.expand_path('../dummy/config/apis/v1.rb', __dir__)
   end

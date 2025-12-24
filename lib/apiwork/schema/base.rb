@@ -163,13 +163,13 @@ module Apiwork
           return unless block
 
           self._adapter_config = _adapter_config.dup
-          api_adapter_class = api_class&.adapter&.class || Adapter::Apiwork
+          api_adapter_class = api_class&.adapter&.class || Adapter::StandardAdapter
           builder = Configuration::Builder.new(api_adapter_class, _adapter_config)
           builder.instance_eval(&block)
         end
 
         def resolve_option(name, subkey = nil)
-          adapter_class = api_class&.adapter&.class || Adapter::Apiwork
+          adapter_class = api_class&.adapter&.class || Adapter::StandardAdapter
           opt = adapter_class.options[name]
           return nil unless opt
 

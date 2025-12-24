@@ -214,13 +214,13 @@ module Apiwork
 
           if block
             @adapter_config ||= {}
-            adapter_class = Adapter.find(@adapter_name || :apiwork)
+            adapter_class = Adapter.find(@adapter_name || :standard)
             builder = Configuration::Builder.new(adapter_class, @adapter_config)
             builder.instance_eval(&block)
             return
           end
 
-          @adapter ||= Adapter.find(@adapter_name || :apiwork).new
+          @adapter ||= Adapter.find(@adapter_name || :standard).new
         end
 
         # @api public

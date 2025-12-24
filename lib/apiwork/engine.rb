@@ -17,7 +17,7 @@ module Apiwork
       Apiwork::API.reset!
       Apiwork::ErrorCode.reset!
 
-      Apiwork::Adapter.register(Apiwork::Adapter::Apiwork)
+      Apiwork::Adapter.register(Apiwork::Adapter::StandardAdapter)
 
       Apiwork::Spec.register(Apiwork::Spec::Openapi)
       Apiwork::Spec.register(Apiwork::Spec::Zod)

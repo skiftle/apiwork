@@ -223,7 +223,7 @@ RSpec.describe 'Adapter Configuration Integration', type: :request do
 
     it 'returns adapter instance when called without block' do
       api = Apiwork::API.find('/api/dual_purpose')
-      expect(api.adapter).to be_a(Apiwork::Adapter::Apiwork)
+      expect(api.adapter).to be_a(Apiwork::Adapter::StandardAdapter)
     end
 
     it 'stores adapter config when called with block' do
