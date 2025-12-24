@@ -179,8 +179,8 @@ module Apiwork
           definition.instance_variable_set(:@error_response_type, :error_response_body)
           definition.instance_variable_set(:@success_response_type, scoped_success_type)
 
-          definition.param root_key_plural, type: :array, of: resource_type_name, optional: true
-          definition.param :pagination, type: pagination_type, optional: true
+          definition.param root_key_plural, type: :array, of: resource_type_name
+          definition.param :pagination, type: pagination_type
           definition.param :meta, type: :object, optional: true
         end
 
