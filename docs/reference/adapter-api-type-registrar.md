@@ -35,19 +35,9 @@ end
 
 ## Instance Methods
 
-### #api_class()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_type_registrar.rb#L27)
-
-**Returns**
-
-`Class` — the API class being configured
-
----
-
 ### #enum(name, values:)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_type_registrar.rb#L40)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_type_registrar.rb#L36)
 
 Defines an enum type.
 
@@ -62,7 +52,7 @@ Defines an enum type.
 
 ### #type(name, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_type_registrar.rb#L33)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_type_registrar.rb#L29)
 
 Defines a named type.
 
@@ -76,7 +66,7 @@ Defines a named type.
 
 ### #union(name, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_type_registrar.rb#L54)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_type_registrar.rb#L50)
 
 Defines a union type.
 

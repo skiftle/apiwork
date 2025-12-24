@@ -22,10 +22,6 @@ module Apiwork
     #     type_registrar.enum :status, values: %w[pending active completed]
     #   end
     class ApiTypeRegistrar
-      # @api public
-      # @return [Class] the API class being configured
-      attr_reader :api_class
-
       def initialize(api_class)
         @api_class = api_class
       end
@@ -52,6 +48,10 @@ module Apiwork
       #   @see Apiwork::Api::Base.union
 
       delegate :type, :enum, :union, to: :api_class
+
+      private
+
+      attr_reader :api_class
     end
   end
 end
