@@ -31,8 +31,10 @@ loader = Zeitwerk::Loader.for_gem
 
 loader.inflector.inflect(
   'api' => 'API',
+  'api_registrar' => 'APIRegistrar',
   'json_pointer' => 'JSONPointer',
-  'api_registrar' => 'APIRegistrar'
+  'open_api_spec' => 'OpenAPISpec',
+  'type_script_spec' => 'TypeScriptSpec'
 )
 
 loader.ignore("#{__dir__}/rubocop")

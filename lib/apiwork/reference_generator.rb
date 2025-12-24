@@ -180,16 +180,9 @@ module Apiwork
     def write_files(modules)
       cleanup_old_files
 
-      all_paths = modules.map { |m| m[:path] }
-      modules_with_methods = modules
-                             .select { |m| m[:class_methods].any? || m[:instance_methods].any? }
-                             .map { |m| m[:path] }
-                             .to_set
-      parents = find_parent_paths(all_paths, modules_with_methods)
-
       order = 1
       modules.each do |mod|
-        filepath = module_filepath(mod[:path], parents)
+        filepath = module_filepath(mod[:path])
         FileUtils.mkdir_p(File.dirname(filepath))
         content = render_module(mod, order)
         File.write(filepath, content)
@@ -205,33 +198,11 @@ module Apiwork
       end
     end
 
-    def find_parent_paths(_all_paths, _modules_with_methods)
-      Set.new
-    end
-
-    def module_filepath(path, parents)
+    def module_filepath(path)
       parts = path.sub('Apiwork::', '').split('::')
-
-      if parents.include?(path)
-        dir = File.join(OUTPUT_DIR, *parts.map { |p| dasherize(p) })
-        return File.join(dir, 'index.md')
-      end
-
-      dir_parts = []
-      file_parts = []
-
-      parts.each_with_index do |part, idx|
-        prefix = (['Apiwork'] + parts[0..idx]).join('::')
-        if parents.include?(prefix)
-          dir_parts << dasherize(part)
-        else
-          file_parts << dasherize(part)
-        end
-      end
-
-      dir = File.join(OUTPUT_DIR, *dir_parts)
+      file_parts = parts.map { |p| dasherize(p) }
       filename = file_parts.any? ? "#{file_parts.join('-')}.md" : 'index.md'
-      File.join(dir, filename)
+      File.join(OUTPUT_DIR, filename)
     end
 
     def display_title(path)
