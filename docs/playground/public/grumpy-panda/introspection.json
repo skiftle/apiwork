@@ -32,6 +32,34 @@
         }
       }
     },
+    "activity_create_success_response_body": {
+      "type": "object",
+      "shape": {
+        "activity": {
+          "type": "activity"
+        },
+        "meta": {
+          "type": "object",
+          "optional": true
+        }
+      }
+    },
+    "activity_index_success_response_body": {
+      "type": "object",
+      "shape": {
+        "activities": {
+          "type": "array",
+          "of": "activity"
+        },
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "pagination": {
+          "type": "cursor_pagination"
+        }
+      }
+    },
     "activity_page": {
       "type": "object",
       "shape": {
@@ -51,6 +79,18 @@
         }
       }
     },
+    "activity_show_success_response_body": {
+      "type": "object",
+      "shape": {
+        "activity": {
+          "type": "activity"
+        },
+        "meta": {
+          "type": "object",
+          "optional": true
+        }
+      }
+    },
     "activity_update_payload": {
       "type": "object",
       "shape": {
@@ -60,6 +100,18 @@
         "occurred_at": {
           "type": "datetime",
           "nullable": true,
+          "optional": true
+        }
+      }
+    },
+    "activity_update_success_response_body": {
+      "type": "object",
+      "shape": {
+        "activity": {
+          "type": "activity"
+        },
+        "meta": {
+          "type": "object",
           "optional": true
         }
       }
@@ -149,22 +201,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "activities": {
-                      "type": "array",
-                      "of": "activity",
-                      "optional": true
-                    },
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "pagination": {
-                      "type": "cursor_pagination",
-                      "optional": true
-                    }
-                  }
+                  "type": "activity_index_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -181,16 +218,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "activity": {
-                      "type": "activity"
-                    },
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    }
-                  }
+                  "type": "activity_show_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -214,16 +242,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "activity": {
-                      "type": "activity"
-                    },
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    }
-                  }
+                  "type": "activity_create_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -250,16 +269,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "activity": {
-                      "type": "activity"
-                    },
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    }
-                  }
+                  "type": "activity_update_success_response_body"
                 },
                 {
                   "type": "error_response_body"

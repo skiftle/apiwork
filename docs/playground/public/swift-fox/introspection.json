@@ -43,6 +43,34 @@
         }
       }
     },
+    "contact_create_success_response_body": {
+      "type": "object",
+      "shape": {
+        "contact": {
+          "type": "contact"
+        },
+        "meta": {
+          "type": "object",
+          "optional": true
+        }
+      }
+    },
+    "contact_index_success_response_body": {
+      "type": "object",
+      "shape": {
+        "contacts": {
+          "type": "array",
+          "of": "contact"
+        },
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "pagination": {
+          "type": "offset_pagination"
+        }
+      }
+    },
     "contact_page": {
       "type": "object",
       "shape": {
@@ -56,6 +84,18 @@
           "optional": true,
           "min": 1,
           "max": 100
+        }
+      }
+    },
+    "contact_show_success_response_body": {
+      "type": "object",
+      "shape": {
+        "contact": {
+          "type": "contact"
+        },
+        "meta": {
+          "type": "object",
+          "optional": true
         }
       }
     },
@@ -76,6 +116,18 @@
         },
         "phone": {
           "type": "string",
+          "optional": true
+        }
+      }
+    },
+    "contact_update_success_response_body": {
+      "type": "object",
+      "shape": {
+        "contact": {
+          "type": "contact"
+        },
+        "meta": {
+          "type": "object",
           "optional": true
         }
       }
@@ -174,22 +226,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "contacts": {
-                      "type": "array",
-                      "of": "contact",
-                      "optional": true
-                    },
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "pagination": {
-                      "type": "offset_pagination",
-                      "optional": true
-                    }
-                  }
+                  "type": "contact_index_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -206,16 +243,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "contact": {
-                      "type": "contact"
-                    },
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    }
-                  }
+                  "type": "contact_show_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -239,16 +267,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "contact": {
-                      "type": "contact"
-                    },
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    }
-                  }
+                  "type": "contact_create_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -275,16 +294,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "contact": {
-                      "type": "contact"
-                    },
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    }
-                  }
+                  "type": "contact_update_success_response_body"
                 },
                 {
                   "type": "error_response_body"

@@ -37,17 +37,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    type: object
-                    properties: {}
-                  orders:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/order"
-                  pagination:
-                    "$ref": "#/components/schemas/offsetPagination"
+                "$ref": "#/components/schemas/orderIndexSuccessResponseBody"
     post:
       operationId: ordersCreate
       requestBody:
@@ -67,15 +57,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    type: object
-                    properties: {}
-                  order:
-                    "$ref": "#/components/schemas/order"
-                required:
-                - order
+                "$ref": "#/components/schemas/orderCreateSuccessResponseBody"
         '422':
           description: Unprocessable Entity
           content:
@@ -97,15 +79,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    type: object
-                    properties: {}
-                  order:
-                    "$ref": "#/components/schemas/order"
-                required:
-                - order
+                "$ref": "#/components/schemas/orderShowSuccessResponseBody"
     patch:
       operationId: ordersUpdate
       parameters:
@@ -129,13 +103,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    type: object
-                    properties: {}
-                  order:
-                    "$ref": "#/components/schemas/order"
+                "$ref": "#/components/schemas/orderUpdateSuccessResponseBody"
         '422':
           description: Unprocessable Entity
           content:
@@ -282,6 +250,16 @@ components:
           properties: {}
       required:
       - orderNumber
+    orderCreateSuccessResponseBody:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        order:
+          "$ref": "#/components/schemas/order"
+      required:
+      - order
     orderFilter:
       type: object
       properties:
@@ -299,6 +277,21 @@ components:
           oneOf:
           - type: string
           - "$ref": "#/components/schemas/nullableStringFilter"
+    orderIndexSuccessResponseBody:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        orders:
+          type: array
+          items:
+            "$ref": "#/components/schemas/order"
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
+      required:
+      - orders
+      - pagination
     orderPage:
       type: object
       properties:
@@ -309,6 +302,16 @@ components:
           type: integer
           minimum: 1
           maximum: 100
+    orderShowSuccessResponseBody:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        order:
+          "$ref": "#/components/schemas/order"
+      required:
+      - order
     orderSort:
       type: object
       properties:
@@ -336,6 +339,16 @@ components:
           properties: {}
       required:
       - orderNumber
+    orderUpdateSuccessResponseBody:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        order:
+          "$ref": "#/components/schemas/order"
+      required:
+      - order
     stringFilter:
       type: object
       properties:

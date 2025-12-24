@@ -51,6 +51,18 @@
         }
       }
     },
+    "invoice_archive_success_response_body": {
+      "type": "object",
+      "shape": {
+        "invoice": {
+          "type": "invoice"
+        },
+        "meta": {
+          "type": "object",
+          "optional": true
+        }
+      }
+    },
     "invoice_create_payload": {
       "type": "object",
       "shape": {
@@ -74,6 +86,18 @@
         },
         "number": {
           "type": "string"
+        }
+      }
+    },
+    "invoice_create_success_response_body": {
+      "type": "object",
+      "shape": {
+        "invoice": {
+          "type": "invoice"
+        },
+        "meta": {
+          "type": "object",
+          "optional": true
         }
       }
     },
@@ -120,6 +144,22 @@
         }
       }
     },
+    "invoice_index_success_response_body": {
+      "type": "object",
+      "shape": {
+        "invoices": {
+          "type": "array",
+          "of": "invoice"
+        },
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "pagination": {
+          "type": "offset_pagination"
+        }
+      }
+    },
     "invoice_page": {
       "type": "object",
       "shape": {
@@ -133,6 +173,18 @@
           "optional": true,
           "min": 1,
           "max": 100
+        }
+      }
+    },
+    "invoice_show_success_response_body": {
+      "type": "object",
+      "shape": {
+        "invoice": {
+          "type": "invoice"
+        },
+        "meta": {
+          "type": "object",
+          "optional": true
         }
       }
     },
@@ -180,6 +232,18 @@
         },
         "number": {
           "type": "string"
+        }
+      }
+    },
+    "invoice_update_success_response_body": {
+      "type": "object",
+      "shape": {
+        "invoice": {
+          "type": "invoice"
+        },
+        "meta": {
+          "type": "object",
+          "optional": true
         }
       }
     },
@@ -353,22 +417,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "invoices": {
-                      "type": "array",
-                      "of": "invoice",
-                      "optional": true
-                    },
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "pagination": {
-                      "type": "offset_pagination",
-                      "optional": true
-                    }
-                  }
+                  "type": "invoice_index_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -385,16 +434,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "invoice": {
-                      "type": "invoice"
-                    },
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    }
-                  }
+                  "type": "invoice_show_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -418,16 +458,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "invoice": {
-                      "type": "invoice"
-                    },
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    }
-                  }
+                  "type": "invoice_create_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -454,16 +485,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "invoice": {
-                      "type": "invoice"
-                    },
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    }
-                  }
+                  "type": "invoice_update_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -490,16 +512,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "invoice": {
-                      "type": "invoice"
-                    },
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    }
-                  }
+                  "type": "invoice_archive_success_response_body"
                 },
                 {
                   "type": "error_response_body"

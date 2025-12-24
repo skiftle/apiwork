@@ -193,6 +193,18 @@
       },
       "description": "A task representing work to be completed"
     },
+    "task_archive_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "task": {
+          "type": "task"
+        }
+      }
+    },
     "task_create_payload": {
       "type": "object",
       "shape": {
@@ -234,6 +246,18 @@
       },
       "description": "A task representing work to be completed"
     },
+    "task_create_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "task": {
+          "type": "task"
+        }
+      }
+    },
     "task_filter": {
       "type": "object",
       "shape": {
@@ -261,6 +285,22 @@
         }
       },
       "description": "A task representing work to be completed"
+    },
+    "task_index_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "pagination": {
+          "type": "offset_pagination"
+        },
+        "tasks": {
+          "type": "array",
+          "of": "task"
+        }
+      }
     },
     "task_page": {
       "type": "object",
@@ -300,6 +340,18 @@
           }
         }
       ]
+    },
+    "task_show_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "task": {
+          "type": "task"
+        }
+      }
     },
     "task_sort": {
       "type": "object",
@@ -378,6 +430,18 @@
         }
       },
       "description": "A task representing work to be completed"
+    },
+    "task_update_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "task": {
+          "type": "task"
+        }
+      }
     }
   },
   "enums": {
@@ -471,22 +535,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "pagination": {
-                      "type": "offset_pagination",
-                      "optional": true
-                    },
-                    "tasks": {
-                      "type": "array",
-                      "of": "task",
-                      "optional": true
-                    }
-                  }
+                  "type": "task_index_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -509,16 +558,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "task": {
-                      "type": "task"
-                    }
-                  }
+                  "type": "task_show_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -548,16 +588,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "task": {
-                      "type": "task"
-                    }
-                  }
+                  "type": "task_create_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -590,16 +621,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "task": {
-                      "type": "task"
-                    }
-                  }
+                  "type": "task_update_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -639,16 +661,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "task": {
-                      "type": "task"
-                    }
-                  }
+                  "type": "task_archive_success_response_body"
                 },
                 {
                   "type": "error_response_body"

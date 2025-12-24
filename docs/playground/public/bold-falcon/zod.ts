@@ -99,6 +99,21 @@ export const StringFilterSchema = z.object({
   startsWith: z.string().optional()
 });
 
+export const ArticleCreateSuccessResponseBodySchema = z.object({
+  article: ArticleSchema,
+  meta: z.object({}).optional()
+});
+
+export const ArticleShowSuccessResponseBodySchema = z.object({
+  article: ArticleSchema,
+  meta: z.object({}).optional()
+});
+
+export const ArticleUpdateSuccessResponseBodySchema = z.object({
+  article: ArticleSchema,
+  meta: z.object({}).optional()
+});
+
 export const DateFilterSchema = z.object({
   between: DateFilterBetweenSchema.optional(),
   eq: z.iso.date().optional(),
@@ -167,6 +182,12 @@ export const ErrorResponseBodySchema = z.object({
   layer: LayerSchema
 });
 
+export const ArticleIndexSuccessResponseBodySchema = z.object({
+  articles: z.array(ArticleSchema),
+  meta: z.object({}).optional(),
+  pagination: OffsetPaginationSchema
+});
+
 export const ArticleFilterSchema: z.ZodType<ArticleFilter> = z.lazy(() => z.object({
   _and: z.array(ArticleFilterSchema).optional(),
   _not: ArticleFilterSchema.optional(),
@@ -188,13 +209,13 @@ export const ArticlesIndexRequestSchema = z.object({
   query: ArticlesIndexRequestQuerySchema
 });
 
-export const ArticlesIndexResponseBodySchema = z.union([z.object({ articles: z.array(ArticleSchema).optional(), meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional() }), ErrorResponseBodySchema]);
+export const ArticlesIndexResponseBodySchema = z.union([ArticleIndexSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const ArticlesIndexResponseSchema = z.object({
   body: ArticlesIndexResponseBodySchema
 });
 
-export const ArticlesShowResponseBodySchema = z.union([z.object({ article: ArticleSchema, meta: z.object({}).optional() }), ErrorResponseBodySchema]);
+export const ArticlesShowResponseBodySchema = z.union([ArticleShowSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const ArticlesShowResponseSchema = z.object({
   body: ArticlesShowResponseBodySchema
@@ -208,7 +229,7 @@ export const ArticlesCreateRequestSchema = z.object({
   body: ArticlesCreateRequestBodySchema
 });
 
-export const ArticlesCreateResponseBodySchema = z.union([z.object({ article: ArticleSchema, meta: z.object({}).optional() }), ErrorResponseBodySchema]);
+export const ArticlesCreateResponseBodySchema = z.union([ArticleCreateSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const ArticlesCreateResponseSchema = z.object({
   body: ArticlesCreateResponseBodySchema
@@ -222,7 +243,7 @@ export const ArticlesUpdateRequestSchema = z.object({
   body: ArticlesUpdateRequestBodySchema
 });
 
-export const ArticlesUpdateResponseBodySchema = z.union([z.object({ article: ArticleSchema, meta: z.object({}).optional() }), ErrorResponseBodySchema]);
+export const ArticlesUpdateResponseBodySchema = z.union([ArticleUpdateSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const ArticlesUpdateResponseSchema = z.object({
   body: ArticlesUpdateResponseBodySchema
@@ -250,6 +271,11 @@ export interface ArticleCreatePayload {
   title: string;
 }
 
+export interface ArticleCreateSuccessResponseBody {
+  article: Article;
+  meta?: object;
+}
+
 export interface ArticleFilter {
   _and?: ArticleFilter[];
   _not?: ArticleFilter;
@@ -261,9 +287,20 @@ export interface ArticleFilter {
   viewCount?: NullableIntegerFilter | number;
 }
 
+export interface ArticleIndexSuccessResponseBody {
+  articles: Article[];
+  meta?: object;
+  pagination: OffsetPagination;
+}
+
 export interface ArticlePage {
   number?: number;
   size?: number;
+}
+
+export interface ArticleShowSuccessResponseBody {
+  article: Article;
+  meta?: object;
 }
 
 export interface ArticleSort {
@@ -285,6 +322,11 @@ export interface ArticleUpdatePayload {
   title?: string;
 }
 
+export interface ArticleUpdateSuccessResponseBody {
+  article: Article;
+  meta?: object;
+}
+
 export interface ArticlesCreateRequest {
   body: ArticlesCreateRequestBody;
 }
@@ -297,7 +339,7 @@ export interface ArticlesCreateResponse {
   body: ArticlesCreateResponseBody;
 }
 
-export type ArticlesCreateResponseBody = ErrorResponseBody | { article: Article; meta?: object };
+export type ArticlesCreateResponseBody = ArticleCreateSuccessResponseBody | ErrorResponseBody;
 
 export type ArticlesDestroyResponse = never;
 
@@ -315,13 +357,13 @@ export interface ArticlesIndexResponse {
   body: ArticlesIndexResponseBody;
 }
 
-export type ArticlesIndexResponseBody = ErrorResponseBody | { articles?: Article[]; meta?: object; pagination?: OffsetPagination };
+export type ArticlesIndexResponseBody = ArticleIndexSuccessResponseBody | ErrorResponseBody;
 
 export interface ArticlesShowResponse {
   body: ArticlesShowResponseBody;
 }
 
-export type ArticlesShowResponseBody = ErrorResponseBody | { article: Article; meta?: object };
+export type ArticlesShowResponseBody = ArticleShowSuccessResponseBody | ErrorResponseBody;
 
 export interface ArticlesUpdateRequest {
   body: ArticlesUpdateRequestBody;
@@ -335,7 +377,7 @@ export interface ArticlesUpdateResponse {
   body: ArticlesUpdateResponseBody;
 }
 
-export type ArticlesUpdateResponseBody = ErrorResponseBody | { article: Article; meta?: object };
+export type ArticlesUpdateResponseBody = ArticleUpdateSuccessResponseBody | ErrorResponseBody;
 
 export interface DateFilter {
   between?: DateFilterBetween;

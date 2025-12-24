@@ -81,6 +81,11 @@ export interface Task {
   updatedAt: string;
 }
 
+export interface TaskArchiveSuccessResponseBody {
+  meta?: object;
+  task: Task;
+}
+
 /** A task representing work to be completed */
 export interface TaskCreatePayload {
   /**
@@ -110,6 +115,11 @@ export interface TaskCreatePayload {
   title: string;
 }
 
+export interface TaskCreateSuccessResponseBody {
+  meta?: object;
+  task: Task;
+}
+
 /** A task representing work to be completed */
 export interface TaskFilter {
   _and?: TaskFilter[];
@@ -117,6 +127,12 @@ export interface TaskFilter {
   _or?: TaskFilter[];
   priority?: TaskPriorityFilter;
   status?: TaskStatusFilter;
+}
+
+export interface TaskIndexSuccessResponseBody {
+  meta?: object;
+  pagination: OffsetPagination;
+  tasks: Task[];
 }
 
 export interface TaskPage {
@@ -127,6 +143,11 @@ export interface TaskPage {
 export type TaskPriority = 'critical' | 'high' | 'low' | 'medium';
 
 export type TaskPriorityFilter = TaskPriority | { eq?: TaskPriority; in?: TaskPriority[] };
+
+export interface TaskShowSuccessResponseBody {
+  meta?: object;
+  task: Task;
+}
 
 /** A task representing work to be completed */
 export interface TaskSort {
@@ -167,11 +188,16 @@ export interface TaskUpdatePayload {
   title?: string;
 }
 
+export interface TaskUpdateSuccessResponseBody {
+  meta?: object;
+  task: Task;
+}
+
 export interface TasksArchiveResponse {
   body: TasksArchiveResponseBody;
 }
 
-export type TasksArchiveResponseBody = ErrorResponseBody | { meta?: object; task: Task };
+export type TasksArchiveResponseBody = ErrorResponseBody | TaskArchiveSuccessResponseBody;
 
 export interface TasksCreateRequest {
   body: TasksCreateRequestBody;
@@ -185,7 +211,7 @@ export interface TasksCreateResponse {
   body: TasksCreateResponseBody;
 }
 
-export type TasksCreateResponseBody = ErrorResponseBody | { meta?: object; task: Task };
+export type TasksCreateResponseBody = ErrorResponseBody | TaskCreateSuccessResponseBody;
 
 export type TasksDestroyResponse = never;
 
@@ -203,13 +229,13 @@ export interface TasksIndexResponse {
   body: TasksIndexResponseBody;
 }
 
-export type TasksIndexResponseBody = ErrorResponseBody | { meta?: object; pagination?: OffsetPagination; tasks?: Task[] };
+export type TasksIndexResponseBody = ErrorResponseBody | TaskIndexSuccessResponseBody;
 
 export interface TasksShowResponse {
   body: TasksShowResponseBody;
 }
 
-export type TasksShowResponseBody = ErrorResponseBody | { meta?: object; task: Task };
+export type TasksShowResponseBody = ErrorResponseBody | TaskShowSuccessResponseBody;
 
 export interface TasksUpdateRequest {
   body: TasksUpdateRequestBody;
@@ -223,4 +249,4 @@ export interface TasksUpdateResponse {
   body: TasksUpdateResponseBody;
 }
 
-export type TasksUpdateResponseBody = ErrorResponseBody | { meta?: object; task: Task };
+export type TasksUpdateResponseBody = ErrorResponseBody | TaskUpdateSuccessResponseBody;

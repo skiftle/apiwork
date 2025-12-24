@@ -33,17 +33,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  comments:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/comment"
-                  meta:
-                    type: object
-                    properties: {}
-                  pagination:
-                    "$ref": "#/components/schemas/offsetPagination"
+                "$ref": "#/components/schemas/commentIndexSuccessResponseBody"
     post:
       operationId: commentsCreate
       parameters:
@@ -69,15 +59,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  comment:
-                    "$ref": "#/components/schemas/comment"
-                  meta:
-                    type: object
-                    properties: {}
-                required:
-                - comment
+                "$ref": "#/components/schemas/commentCreateSuccessResponseBody"
         '422':
           description: Unprocessable Entity
           content:
@@ -104,15 +86,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  comment:
-                    "$ref": "#/components/schemas/comment"
-                  meta:
-                    type: object
-                    properties: {}
-                required:
-                - comment
+                "$ref": "#/components/schemas/commentShowSuccessResponseBody"
     patch:
       operationId: commentsUpdate
       parameters:
@@ -141,13 +115,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  comment:
-                    "$ref": "#/components/schemas/comment"
-                  meta:
-                    type: object
-                    properties: {}
+                "$ref": "#/components/schemas/commentUpdateSuccessResponseBody"
         '422':
           description: Unprocessable Entity
           content:
@@ -215,11 +183,36 @@ components:
           type: string
       required:
       - body
+    commentCreateSuccessResponseBody:
+      type: object
+      properties:
+        comment:
+          "$ref": "#/components/schemas/comment"
+        meta:
+          type: object
+          properties: {}
+      required:
+      - comment
     commentInclude:
       type: object
       properties:
         commentable:
           type: boolean
+    commentIndexSuccessResponseBody:
+      type: object
+      properties:
+        comments:
+          type: array
+          items:
+            "$ref": "#/components/schemas/comment"
+        meta:
+          type: object
+          properties: {}
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
+      required:
+      - comments
+      - pagination
     commentPage:
       type: object
       properties:
@@ -230,6 +223,16 @@ components:
           type: integer
           minimum: 1
           maximum: 100
+    commentShowSuccessResponseBody:
+      type: object
+      properties:
+        comment:
+          "$ref": "#/components/schemas/comment"
+        meta:
+          type: object
+          properties: {}
+      required:
+      - comment
     commentSort:
       type: object
       properties:
@@ -249,6 +252,16 @@ components:
           type: string
       required:
       - body
+    commentUpdateSuccessResponseBody:
+      type: object
+      properties:
+        comment:
+          "$ref": "#/components/schemas/comment"
+        meta:
+          type: object
+          properties: {}
+      required:
+      - comment
     errorResponseBody:
       type: object
       properties:

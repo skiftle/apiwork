@@ -50,17 +50,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    type: object
-                    properties: {}
-                  pagination:
-                    "$ref": "#/components/schemas/offsetPagination"
-                  tasks:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/task"
+                "$ref": "#/components/schemas/taskIndexSuccessResponseBody"
     post:
       operationId: createTask
       summary: Create a new task
@@ -84,15 +74,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    type: object
-                    properties: {}
-                  task:
-                    "$ref": "#/components/schemas/task"
-                required:
-                - task
+                "$ref": "#/components/schemas/taskCreateSuccessResponseBody"
         '422':
           description: Unprocessable Entity
           content:
@@ -118,15 +100,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    type: object
-                    properties: {}
-                  task:
-                    "$ref": "#/components/schemas/task"
-                required:
-                - task
+                "$ref": "#/components/schemas/taskShowSuccessResponseBody"
     patch:
       operationId: updateTask
       summary: Update a task
@@ -154,13 +128,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    type: object
-                    properties: {}
-                  task:
-                    "$ref": "#/components/schemas/task"
+                "$ref": "#/components/schemas/taskUpdateSuccessResponseBody"
         '422':
           description: Unprocessable Entity
           content:
@@ -204,15 +172,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    type: object
-                    properties: {}
-                  task:
-                    "$ref": "#/components/schemas/task"
-                required:
-                - task
+                "$ref": "#/components/schemas/taskArchiveSuccessResponseBody"
 components:
   schemas:
     errorResponseBody:
@@ -387,6 +347,16 @@ components:
       - status
       - title
       - updatedAt
+    taskArchiveSuccessResponseBody:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        task:
+          "$ref": "#/components/schemas/task"
+      required:
+      - task
     taskCreatePayload:
       type: object
       properties:
@@ -432,6 +402,16 @@ components:
       description: A task representing work to be completed
       required:
       - title
+    taskCreateSuccessResponseBody:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        task:
+          "$ref": "#/components/schemas/task"
+      required:
+      - task
     taskFilter:
       type: object
       properties:
@@ -450,6 +430,21 @@ components:
         status:
           "$ref": "#/components/schemas/taskStatusFilter"
       description: A task representing work to be completed
+    taskIndexSuccessResponseBody:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
+        tasks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/task"
+      required:
+      - pagination
+      - tasks
     taskPage:
       type: object
       properties:
@@ -481,6 +476,16 @@ components:
             type: array
             items:
               type:
+    taskShowSuccessResponseBody:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        task:
+          "$ref": "#/components/schemas/task"
+      required:
+      - task
     taskSort:
       type: object
       properties:
@@ -561,3 +566,13 @@ components:
       description: A task representing work to be completed
       required:
       - title
+    taskUpdateSuccessResponseBody:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        task:
+          "$ref": "#/components/schemas/task"
+      required:
+      - task

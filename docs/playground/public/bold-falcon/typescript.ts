@@ -18,6 +18,11 @@ export interface ArticleCreatePayload {
   title: string;
 }
 
+export interface ArticleCreateSuccessResponseBody {
+  article: Article;
+  meta?: object;
+}
+
 export interface ArticleFilter {
   _and?: ArticleFilter[];
   _not?: ArticleFilter;
@@ -29,9 +34,20 @@ export interface ArticleFilter {
   viewCount?: NullableIntegerFilter | number;
 }
 
+export interface ArticleIndexSuccessResponseBody {
+  articles: Article[];
+  meta?: object;
+  pagination: OffsetPagination;
+}
+
 export interface ArticlePage {
   number?: number;
   size?: number;
+}
+
+export interface ArticleShowSuccessResponseBody {
+  article: Article;
+  meta?: object;
 }
 
 export interface ArticleSort {
@@ -53,6 +69,11 @@ export interface ArticleUpdatePayload {
   title?: string;
 }
 
+export interface ArticleUpdateSuccessResponseBody {
+  article: Article;
+  meta?: object;
+}
+
 export interface ArticlesCreateRequest {
   body: ArticlesCreateRequestBody;
 }
@@ -65,7 +86,7 @@ export interface ArticlesCreateResponse {
   body: ArticlesCreateResponseBody;
 }
 
-export type ArticlesCreateResponseBody = ErrorResponseBody | { article: Article; meta?: object };
+export type ArticlesCreateResponseBody = ArticleCreateSuccessResponseBody | ErrorResponseBody;
 
 export type ArticlesDestroyResponse = never;
 
@@ -83,13 +104,13 @@ export interface ArticlesIndexResponse {
   body: ArticlesIndexResponseBody;
 }
 
-export type ArticlesIndexResponseBody = ErrorResponseBody | { articles?: Article[]; meta?: object; pagination?: OffsetPagination };
+export type ArticlesIndexResponseBody = ArticleIndexSuccessResponseBody | ErrorResponseBody;
 
 export interface ArticlesShowResponse {
   body: ArticlesShowResponseBody;
 }
 
-export type ArticlesShowResponseBody = ErrorResponseBody | { article: Article; meta?: object };
+export type ArticlesShowResponseBody = ArticleShowSuccessResponseBody | ErrorResponseBody;
 
 export interface ArticlesUpdateRequest {
   body: ArticlesUpdateRequestBody;
@@ -103,7 +124,7 @@ export interface ArticlesUpdateResponse {
   body: ArticlesUpdateResponseBody;
 }
 
-export type ArticlesUpdateResponseBody = ErrorResponseBody | { article: Article; meta?: object };
+export type ArticlesUpdateResponseBody = ArticleUpdateSuccessResponseBody | ErrorResponseBody;
 
 export interface DateFilter {
   between?: DateFilterBetween;

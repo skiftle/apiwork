@@ -37,17 +37,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    type: object
-                    properties: {}
-                  pagination:
-                    "$ref": "#/components/schemas/offsetPagination"
-                  users:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/user"
+                "$ref": "#/components/schemas/userIndexSuccessResponseBody"
     post:
       operationId: usersCreate
       requestBody:
@@ -67,15 +57,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    type: object
-                    properties: {}
-                  user:
-                    "$ref": "#/components/schemas/user"
-                required:
-                - user
+                "$ref": "#/components/schemas/userCreateSuccessResponseBody"
         '422':
           description: Unprocessable Entity
           content:
@@ -97,15 +79,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    type: object
-                    properties: {}
-                  user:
-                    "$ref": "#/components/schemas/user"
-                required:
-                - user
+                "$ref": "#/components/schemas/userShowSuccessResponseBody"
     patch:
       operationId: usersUpdate
       parameters:
@@ -129,13 +103,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    type: object
-                    properties: {}
-                  user:
-                    "$ref": "#/components/schemas/user"
+                "$ref": "#/components/schemas/userUpdateSuccessResponseBody"
         '422':
           description: Unprocessable Entity
           content:
@@ -168,17 +136,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    type: object
-                    properties: {}
-                  pagination:
-                    "$ref": "#/components/schemas/offsetPagination"
-                  posts:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/post"
+                "$ref": "#/components/schemas/postIndexSuccessResponseBody"
     post:
       operationId: postsCreate
       requestBody:
@@ -198,15 +156,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    type: object
-                    properties: {}
-                  post:
-                    "$ref": "#/components/schemas/post"
-                required:
-                - post
+                "$ref": "#/components/schemas/postCreateSuccessResponseBody"
         '422':
           description: Unprocessable Entity
           content:
@@ -228,15 +178,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    type: object
-                    properties: {}
-                  post:
-                    "$ref": "#/components/schemas/post"
-                required:
-                - post
+                "$ref": "#/components/schemas/postShowSuccessResponseBody"
     patch:
       operationId: postsUpdate
       parameters:
@@ -260,13 +202,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    type: object
-                    properties: {}
-                  post:
-                    "$ref": "#/components/schemas/post"
+                "$ref": "#/components/schemas/postUpdateSuccessResponseBody"
         '422':
           description: Unprocessable Entity
           content:
@@ -299,17 +235,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  comments:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/comment"
-                  meta:
-                    type: object
-                    properties: {}
-                  pagination:
-                    "$ref": "#/components/schemas/offsetPagination"
+                "$ref": "#/components/schemas/commentIndexSuccessResponseBody"
     post:
       operationId: commentsCreate
       requestBody:
@@ -329,15 +255,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  comment:
-                    "$ref": "#/components/schemas/comment"
-                  meta:
-                    type: object
-                    properties: {}
-                required:
-                - comment
+                "$ref": "#/components/schemas/commentCreateSuccessResponseBody"
         '422':
           description: Unprocessable Entity
           content:
@@ -359,15 +277,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  comment:
-                    "$ref": "#/components/schemas/comment"
-                  meta:
-                    type: object
-                    properties: {}
-                required:
-                - comment
+                "$ref": "#/components/schemas/commentShowSuccessResponseBody"
     patch:
       operationId: commentsUpdate
       parameters:
@@ -391,13 +301,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  comment:
-                    "$ref": "#/components/schemas/comment"
-                  meta:
-                    type: object
-                    properties: {}
+                "$ref": "#/components/schemas/commentUpdateSuccessResponseBody"
         '422':
           description: Unprocessable Entity
           content:
@@ -440,6 +344,31 @@ components:
       required:
       - author
       - body
+    commentCreateSuccessResponseBody:
+      type: object
+      properties:
+        comment:
+          "$ref": "#/components/schemas/comment"
+        meta:
+          type: object
+          properties: {}
+      required:
+      - comment
+    commentIndexSuccessResponseBody:
+      type: object
+      properties:
+        comments:
+          type: array
+          items:
+            "$ref": "#/components/schemas/comment"
+        meta:
+          type: object
+          properties: {}
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
+      required:
+      - comments
+      - pagination
     commentNestedCreatePayload:
       type: object
       properties:
@@ -487,6 +416,16 @@ components:
           type: integer
           minimum: 1
           maximum: 100
+    commentShowSuccessResponseBody:
+      type: object
+      properties:
+        comment:
+          "$ref": "#/components/schemas/comment"
+        meta:
+          type: object
+          properties: {}
+      required:
+      - comment
     commentUpdatePayload:
       type: object
       properties:
@@ -497,6 +436,16 @@ components:
       required:
       - author
       - body
+    commentUpdateSuccessResponseBody:
+      type: object
+      properties:
+        comment:
+          "$ref": "#/components/schemas/comment"
+        meta:
+          type: object
+          properties: {}
+      required:
+      - comment
     errorResponseBody:
       type: object
       properties:
@@ -582,6 +531,31 @@ components:
           type: string
       required:
       - title
+    postCreateSuccessResponseBody:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        post:
+          "$ref": "#/components/schemas/post"
+      required:
+      - post
+    postIndexSuccessResponseBody:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
+        posts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/post"
+      required:
+      - pagination
+      - posts
     postNestedCreatePayload:
       type: object
       properties:
@@ -631,6 +605,16 @@ components:
           type: integer
           minimum: 1
           maximum: 100
+    postShowSuccessResponseBody:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        post:
+          "$ref": "#/components/schemas/post"
+      required:
+      - post
     postUpdatePayload:
       type: object
       properties:
@@ -642,6 +626,16 @@ components:
           type: string
       required:
       - title
+    postUpdateSuccessResponseBody:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        post:
+          "$ref": "#/components/schemas/post"
+      required:
+      - post
     profile:
       type: object
       properties:
@@ -784,6 +778,16 @@ components:
       required:
       - email
       - username
+    userCreateSuccessResponseBody:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        user:
+          "$ref": "#/components/schemas/user"
+      required:
+      - user
     userFilter:
       type: object
       properties:
@@ -805,6 +809,21 @@ components:
           oneOf:
           - type: string
           - "$ref": "#/components/schemas/stringFilter"
+    userIndexSuccessResponseBody:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
+        users:
+          type: array
+          items:
+            "$ref": "#/components/schemas/user"
+      required:
+      - pagination
+      - users
     userPage:
       type: object
       properties:
@@ -815,6 +834,16 @@ components:
           type: integer
           minimum: 1
           maximum: 100
+    userShowSuccessResponseBody:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        user:
+          "$ref": "#/components/schemas/user"
+      required:
+      - user
     userSort:
       type: object
       properties:
@@ -844,3 +873,13 @@ components:
       required:
       - email
       - username
+    userUpdateSuccessResponseBody:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        user:
+          "$ref": "#/components/schemas/user"
+      required:
+      - user

@@ -96,6 +96,32 @@ export const ErrorResponseBodySchema = z.object({
   layer: LayerSchema
 });
 
+export const TaskArchiveSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  task: TaskSchema
+});
+
+export const TaskCreateSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  task: TaskSchema
+});
+
+export const TaskIndexSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  pagination: OffsetPaginationSchema,
+  tasks: z.array(TaskSchema)
+});
+
+export const TaskShowSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  task: TaskSchema
+});
+
+export const TaskUpdateSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  task: TaskSchema
+});
+
 export const TaskFilterSchema: z.ZodType<TaskFilter> = z.lazy(() => z.object({
   _and: z.array(TaskFilterSchema).optional(),
   _not: TaskFilterSchema.optional(),
@@ -114,13 +140,13 @@ export const TasksIndexRequestSchema = z.object({
   query: TasksIndexRequestQuerySchema
 });
 
-export const TasksIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional(), tasks: z.array(TaskSchema).optional() }), ErrorResponseBodySchema]);
+export const TasksIndexResponseBodySchema = z.union([TaskIndexSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const TasksIndexResponseSchema = z.object({
   body: TasksIndexResponseBodySchema
 });
 
-export const TasksShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), task: TaskSchema }), ErrorResponseBodySchema]);
+export const TasksShowResponseBodySchema = z.union([TaskShowSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const TasksShowResponseSchema = z.object({
   body: TasksShowResponseBodySchema
@@ -134,7 +160,7 @@ export const TasksCreateRequestSchema = z.object({
   body: TasksCreateRequestBodySchema
 });
 
-export const TasksCreateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), task: TaskSchema }), ErrorResponseBodySchema]);
+export const TasksCreateResponseBodySchema = z.union([TaskCreateSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const TasksCreateResponseSchema = z.object({
   body: TasksCreateResponseBodySchema
@@ -148,7 +174,7 @@ export const TasksUpdateRequestSchema = z.object({
   body: TasksUpdateRequestBodySchema
 });
 
-export const TasksUpdateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), task: TaskSchema }), ErrorResponseBodySchema]);
+export const TasksUpdateResponseBodySchema = z.union([TaskUpdateSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const TasksUpdateResponseSchema = z.object({
   body: TasksUpdateResponseBodySchema
@@ -156,7 +182,7 @@ export const TasksUpdateResponseSchema = z.object({
 
 export const TasksDestroyResponse = z.never();
 
-export const TasksArchiveResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), task: TaskSchema }), ErrorResponseBodySchema]);
+export const TasksArchiveResponseBodySchema = z.union([TaskArchiveSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const TasksArchiveResponseSchema = z.object({
   body: TasksArchiveResponseBodySchema
@@ -244,6 +270,11 @@ export interface Task {
   updatedAt: string;
 }
 
+export interface TaskArchiveSuccessResponseBody {
+  meta?: object;
+  task: Task;
+}
+
 export interface TaskCreatePayload {
   /**
    * Detailed description of what needs to be done
@@ -272,12 +303,23 @@ export interface TaskCreatePayload {
   title: string;
 }
 
+export interface TaskCreateSuccessResponseBody {
+  meta?: object;
+  task: Task;
+}
+
 export interface TaskFilter {
   _and?: TaskFilter[];
   _not?: TaskFilter;
   _or?: TaskFilter[];
   priority?: TaskPriorityFilter;
   status?: TaskStatusFilter;
+}
+
+export interface TaskIndexSuccessResponseBody {
+  meta?: object;
+  pagination: OffsetPagination;
+  tasks: Task[];
 }
 
 export interface TaskPage {
@@ -288,6 +330,11 @@ export interface TaskPage {
 export type TaskPriority = 'critical' | 'high' | 'low' | 'medium';
 
 export type TaskPriorityFilter = TaskPriority | { eq?: TaskPriority; in?: TaskPriority[] };
+
+export interface TaskShowSuccessResponseBody {
+  meta?: object;
+  task: Task;
+}
 
 export interface TaskSort {
   createdAt?: SortDirection;
@@ -326,11 +373,16 @@ export interface TaskUpdatePayload {
   title?: string;
 }
 
+export interface TaskUpdateSuccessResponseBody {
+  meta?: object;
+  task: Task;
+}
+
 export interface TasksArchiveResponse {
   body: TasksArchiveResponseBody;
 }
 
-export type TasksArchiveResponseBody = ErrorResponseBody | { meta?: object; task: Task };
+export type TasksArchiveResponseBody = ErrorResponseBody | TaskArchiveSuccessResponseBody;
 
 export interface TasksCreateRequest {
   body: TasksCreateRequestBody;
@@ -344,7 +396,7 @@ export interface TasksCreateResponse {
   body: TasksCreateResponseBody;
 }
 
-export type TasksCreateResponseBody = ErrorResponseBody | { meta?: object; task: Task };
+export type TasksCreateResponseBody = ErrorResponseBody | TaskCreateSuccessResponseBody;
 
 export type TasksDestroyResponse = never;
 
@@ -362,13 +414,13 @@ export interface TasksIndexResponse {
   body: TasksIndexResponseBody;
 }
 
-export type TasksIndexResponseBody = ErrorResponseBody | { meta?: object; pagination?: OffsetPagination; tasks?: Task[] };
+export type TasksIndexResponseBody = ErrorResponseBody | TaskIndexSuccessResponseBody;
 
 export interface TasksShowResponse {
   body: TasksShowResponseBody;
 }
 
-export type TasksShowResponseBody = ErrorResponseBody | { meta?: object; task: Task };
+export type TasksShowResponseBody = ErrorResponseBody | TaskShowSuccessResponseBody;
 
 export interface TasksUpdateRequest {
   body: TasksUpdateRequestBody;
@@ -382,4 +434,4 @@ export interface TasksUpdateResponse {
   body: TasksUpdateResponseBody;
 }
 
-export type TasksUpdateResponseBody = ErrorResponseBody | { meta?: object; task: Task };
+export type TasksUpdateResponseBody = ErrorResponseBody | TaskUpdateSuccessResponseBody;

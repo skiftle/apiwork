@@ -66,9 +66,15 @@ module Apiwork
 
       # @!method resolve_type(name)
       #   @api public
-      #   Checks if a type is registered in this contract.
+      #   Resolves a type registered in this contract.
       #   @param name [Symbol] the type name
-      #   @return [Boolean] true if type exists
+      #   @return [Object, nil] the type definition if registered
+
+      # @!method resolve_enum(name)
+      #   @api public
+      #   Resolves an enum registered in this contract.
+      #   @param name [Symbol] the enum name
+      #   @return [Array, nil] the enum values if registered
 
       # @!method scoped_name(name)
       #   @api public
@@ -88,7 +94,7 @@ module Apiwork
       #   @return [Hash] imported types
 
       delegate :type, :enum, :union, :define_action, :import, to: :contract_class
-      delegate :resolve_type, :scoped_name, :find_contract_for_schema, :imports, to: :contract_class
+      delegate :resolve_type, :resolve_enum, :scoped_name, :find_contract_for_schema, :imports, to: :contract_class
 
       # @api public
       # Resolves a type registered at the API level.
@@ -96,6 +102,14 @@ module Apiwork
       # @return [Object, nil] the type definition if registered
       def resolve_api_type(type_name)
         contract_class.api_class.resolve_type(type_name)
+      end
+
+      # @api public
+      # Resolves an enum registered at the API level.
+      # @param enum_name [Symbol] the enum name
+      # @return [Array, nil] the enum values if registered
+      def resolve_api_enum(enum_name)
+        contract_class.api_class.resolve_enum(enum_name)
       end
 
       # @api public

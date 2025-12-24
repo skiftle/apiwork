@@ -221,6 +221,34 @@
         }
       }
     },
+    "profile_create_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "profile": {
+          "type": "profile"
+        }
+      }
+    },
+    "profile_index_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "pagination": {
+          "type": "offset_pagination"
+        },
+        "profiles": {
+          "type": "array",
+          "of": "profile"
+        }
+      }
+    },
     "profile_page": {
       "type": "object",
       "shape": {
@@ -234,6 +262,18 @@
           "optional": true,
           "min": 1,
           "max": 100
+        }
+      }
+    },
+    "profile_show_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "profile": {
+          "type": "profile"
         }
       }
     },
@@ -313,6 +353,18 @@
           "of": "string"
         }
       }
+    },
+    "profile_update_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "profile": {
+          "type": "profile"
+        }
+      }
     }
   },
   "enums": {
@@ -351,22 +403,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "pagination": {
-                      "type": "offset_pagination",
-                      "optional": true
-                    },
-                    "profiles": {
-                      "type": "array",
-                      "of": "profile",
-                      "optional": true
-                    }
-                  }
+                  "type": "profile_index_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -383,16 +420,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "profile": {
-                      "type": "profile"
-                    }
-                  }
+                  "type": "profile_show_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -416,16 +444,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "profile": {
-                      "type": "profile"
-                    }
-                  }
+                  "type": "profile_create_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -452,16 +471,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "profile": {
-                      "type": "profile"
-                    }
-                  }
+                  "type": "profile_update_success_response_body"
                 },
                 {
                   "type": "error_response_body"

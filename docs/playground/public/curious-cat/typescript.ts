@@ -44,9 +44,25 @@ export interface ProfileCreatePayload {
   tags: string[];
 }
 
+export interface ProfileCreateSuccessResponseBody {
+  meta?: object;
+  profile: Profile;
+}
+
+export interface ProfileIndexSuccessResponseBody {
+  meta?: object;
+  pagination: OffsetPagination;
+  profiles: Profile[];
+}
+
 export interface ProfilePage {
   number?: number;
   size?: number;
+}
+
+export interface ProfileShowSuccessResponseBody {
+  meta?: object;
+  profile: Profile;
 }
 
 export interface ProfileUpdatePayload {
@@ -57,6 +73,11 @@ export interface ProfileUpdatePayload {
   preferences?: { notifications: { email: boolean; push: boolean }; ui: { sidebarCollapsed: boolean; theme: string } };
   settings?: { language: string; notifications: boolean; theme: string };
   tags?: string[];
+}
+
+export interface ProfileUpdateSuccessResponseBody {
+  meta?: object;
+  profile: Profile;
 }
 
 export interface ProfilesCreateRequest {
@@ -71,7 +92,7 @@ export interface ProfilesCreateResponse {
   body: ProfilesCreateResponseBody;
 }
 
-export type ProfilesCreateResponseBody = ErrorResponseBody | { meta?: object; profile: Profile };
+export type ProfilesCreateResponseBody = ErrorResponseBody | ProfileCreateSuccessResponseBody;
 
 export type ProfilesDestroyResponse = never;
 
@@ -87,13 +108,13 @@ export interface ProfilesIndexResponse {
   body: ProfilesIndexResponseBody;
 }
 
-export type ProfilesIndexResponseBody = ErrorResponseBody | { meta?: object; pagination?: OffsetPagination; profiles?: Profile[] };
+export type ProfilesIndexResponseBody = ErrorResponseBody | ProfileIndexSuccessResponseBody;
 
 export interface ProfilesShowResponse {
   body: ProfilesShowResponseBody;
 }
 
-export type ProfilesShowResponseBody = ErrorResponseBody | { meta?: object; profile: Profile };
+export type ProfilesShowResponseBody = ErrorResponseBody | ProfileShowSuccessResponseBody;
 
 export interface ProfilesUpdateRequest {
   body: ProfilesUpdateRequestBody;
@@ -107,4 +128,4 @@ export interface ProfilesUpdateResponse {
   body: ProfilesUpdateResponseBody;
 }
 
-export type ProfilesUpdateResponseBody = ErrorResponseBody | { meta?: object; profile: Profile };
+export type ProfilesUpdateResponseBody = ErrorResponseBody | ProfileUpdateSuccessResponseBody;

@@ -37,17 +37,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  invoices:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/invoice"
-                  meta:
-                    type: object
-                    properties: {}
-                  pagination:
-                    "$ref": "#/components/schemas/offsetPagination"
+                "$ref": "#/components/schemas/invoiceIndexSuccessResponseBody"
     post:
       operationId: invoicesCreate
       requestBody:
@@ -67,15 +57,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  invoice:
-                    "$ref": "#/components/schemas/invoice"
-                  meta:
-                    type: object
-                    properties: {}
-                required:
-                - invoice
+                "$ref": "#/components/schemas/invoiceCreateSuccessResponseBody"
         '422':
           description: Unprocessable Entity
           content:
@@ -97,15 +79,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  invoice:
-                    "$ref": "#/components/schemas/invoice"
-                  meta:
-                    type: object
-                    properties: {}
-                required:
-                - invoice
+                "$ref": "#/components/schemas/invoiceShowSuccessResponseBody"
     patch:
       operationId: invoicesUpdate
       parameters:
@@ -129,13 +103,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  invoice:
-                    "$ref": "#/components/schemas/invoice"
-                  meta:
-                    type: object
-                    properties: {}
+                "$ref": "#/components/schemas/invoiceUpdateSuccessResponseBody"
         '422':
           description: Unprocessable Entity
           content:
@@ -168,15 +136,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  invoice:
-                    "$ref": "#/components/schemas/invoice"
-                  meta:
-                    type: object
-                    properties: {}
-                required:
-                - invoice
+                "$ref": "#/components/schemas/invoiceArchiveSuccessResponseBody"
 components:
   schemas:
     errorResponseBody:
@@ -241,6 +201,16 @@ components:
       - number
       - status
       - updatedAt
+    invoiceArchiveSuccessResponseBody:
+      type: object
+      properties:
+        invoice:
+          "$ref": "#/components/schemas/invoice"
+        meta:
+          type: object
+          properties: {}
+      required:
+      - invoice
     invoiceCreatePayload:
       type: object
       properties:
@@ -264,6 +234,16 @@ components:
       required:
       - customerId
       - number
+    invoiceCreateSuccessResponseBody:
+      type: object
+      properties:
+        invoice:
+          "$ref": "#/components/schemas/invoice"
+        meta:
+          type: object
+          properties: {}
+      required:
+      - invoice
     invoiceFilter:
       type: object
       properties:
@@ -285,6 +265,21 @@ components:
           oneOf:
           - type: string
           - "$ref": "#/components/schemas/nullableStringFilter"
+    invoiceIndexSuccessResponseBody:
+      type: object
+      properties:
+        invoices:
+          type: array
+          items:
+            "$ref": "#/components/schemas/invoice"
+        meta:
+          type: object
+          properties: {}
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
+      required:
+      - invoices
+      - pagination
     invoicePage:
       type: object
       properties:
@@ -295,6 +290,16 @@ components:
           type: integer
           minimum: 1
           maximum: 100
+    invoiceShowSuccessResponseBody:
+      type: object
+      properties:
+        invoice:
+          "$ref": "#/components/schemas/invoice"
+        meta:
+          type: object
+          properties: {}
+      required:
+      - invoice
     invoiceSort:
       type: object
       properties:
@@ -341,6 +346,16 @@ components:
       required:
       - customerId
       - number
+    invoiceUpdateSuccessResponseBody:
+      type: object
+      properties:
+        invoice:
+          "$ref": "#/components/schemas/invoice"
+        meta:
+          type: object
+          properties: {}
+      required:
+      - invoice
     issue:
       type: object
       properties:

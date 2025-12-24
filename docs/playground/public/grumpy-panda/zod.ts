@@ -38,6 +38,27 @@ export const IssueSchema = z.object({
   pointer: z.string()
 });
 
+export const ActivityCreateSuccessResponseBodySchema = z.object({
+  activity: ActivitySchema,
+  meta: z.object({}).optional()
+});
+
+export const ActivityShowSuccessResponseBodySchema = z.object({
+  activity: ActivitySchema,
+  meta: z.object({}).optional()
+});
+
+export const ActivityUpdateSuccessResponseBodySchema = z.object({
+  activity: ActivitySchema,
+  meta: z.object({}).optional()
+});
+
+export const ActivityIndexSuccessResponseBodySchema = z.object({
+  activities: z.array(ActivitySchema),
+  meta: z.object({}).optional(),
+  pagination: CursorPaginationSchema
+});
+
 export const ErrorResponseBodySchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
@@ -51,13 +72,13 @@ export const ActivitiesIndexRequestSchema = z.object({
   query: ActivitiesIndexRequestQuerySchema
 });
 
-export const ActivitiesIndexResponseBodySchema = z.union([z.object({ activities: z.array(ActivitySchema).optional(), meta: z.object({}).optional(), pagination: CursorPaginationSchema.optional() }), ErrorResponseBodySchema]);
+export const ActivitiesIndexResponseBodySchema = z.union([ActivityIndexSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const ActivitiesIndexResponseSchema = z.object({
   body: ActivitiesIndexResponseBodySchema
 });
 
-export const ActivitiesShowResponseBodySchema = z.union([z.object({ activity: ActivitySchema, meta: z.object({}).optional() }), ErrorResponseBodySchema]);
+export const ActivitiesShowResponseBodySchema = z.union([ActivityShowSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const ActivitiesShowResponseSchema = z.object({
   body: ActivitiesShowResponseBodySchema
@@ -71,7 +92,7 @@ export const ActivitiesCreateRequestSchema = z.object({
   body: ActivitiesCreateRequestBodySchema
 });
 
-export const ActivitiesCreateResponseBodySchema = z.union([z.object({ activity: ActivitySchema, meta: z.object({}).optional() }), ErrorResponseBodySchema]);
+export const ActivitiesCreateResponseBodySchema = z.union([ActivityCreateSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const ActivitiesCreateResponseSchema = z.object({
   body: ActivitiesCreateResponseBodySchema
@@ -85,7 +106,7 @@ export const ActivitiesUpdateRequestSchema = z.object({
   body: ActivitiesUpdateRequestBodySchema
 });
 
-export const ActivitiesUpdateResponseBodySchema = z.union([z.object({ activity: ActivitySchema, meta: z.object({}).optional() }), ErrorResponseBodySchema]);
+export const ActivitiesUpdateResponseBodySchema = z.union([ActivityUpdateSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const ActivitiesUpdateResponseSchema = z.object({
   body: ActivitiesUpdateResponseBodySchema
@@ -105,7 +126,7 @@ export interface ActivitiesCreateResponse {
   body: ActivitiesCreateResponseBody;
 }
 
-export type ActivitiesCreateResponseBody = ErrorResponseBody | { activity: Activity; meta?: object };
+export type ActivitiesCreateResponseBody = ActivityCreateSuccessResponseBody | ErrorResponseBody;
 
 export type ActivitiesDestroyResponse = never;
 
@@ -121,13 +142,13 @@ export interface ActivitiesIndexResponse {
   body: ActivitiesIndexResponseBody;
 }
 
-export type ActivitiesIndexResponseBody = ErrorResponseBody | { activities?: Activity[]; meta?: object; pagination?: CursorPagination };
+export type ActivitiesIndexResponseBody = ActivityIndexSuccessResponseBody | ErrorResponseBody;
 
 export interface ActivitiesShowResponse {
   body: ActivitiesShowResponseBody;
 }
 
-export type ActivitiesShowResponseBody = ErrorResponseBody | { activity: Activity; meta?: object };
+export type ActivitiesShowResponseBody = ActivityShowSuccessResponseBody | ErrorResponseBody;
 
 export interface ActivitiesUpdateRequest {
   body: ActivitiesUpdateRequestBody;
@@ -141,7 +162,7 @@ export interface ActivitiesUpdateResponse {
   body: ActivitiesUpdateResponseBody;
 }
 
-export type ActivitiesUpdateResponseBody = ErrorResponseBody | { activity: Activity; meta?: object };
+export type ActivitiesUpdateResponseBody = ActivityUpdateSuccessResponseBody | ErrorResponseBody;
 
 export interface Activity {
   action: string;
@@ -155,15 +176,36 @@ export interface ActivityCreatePayload {
   occurredAt?: null | string;
 }
 
+export interface ActivityCreateSuccessResponseBody {
+  activity: Activity;
+  meta?: object;
+}
+
+export interface ActivityIndexSuccessResponseBody {
+  activities: Activity[];
+  meta?: object;
+  pagination: CursorPagination;
+}
+
 export interface ActivityPage {
   after?: string;
   before?: string;
   size?: number;
 }
 
+export interface ActivityShowSuccessResponseBody {
+  activity: Activity;
+  meta?: object;
+}
+
 export interface ActivityUpdatePayload {
   action?: string;
   occurredAt?: null | string;
+}
+
+export interface ActivityUpdateSuccessResponseBody {
+  activity: Activity;
+  meta?: object;
 }
 
 export interface CursorPagination {

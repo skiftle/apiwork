@@ -475,6 +475,18 @@
       ],
       "discriminator": "type"
     },
+    "vehicle_create_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "vehicle": {
+          "type": "vehicle"
+        }
+      }
+    },
     "vehicle_filter": {
       "type": "object",
       "shape": {
@@ -530,6 +542,22 @@
         }
       }
     },
+    "vehicle_index_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "pagination": {
+          "type": "offset_pagination"
+        },
+        "vehicles": {
+          "type": "array",
+          "of": "vehicle"
+        }
+      }
+    },
     "vehicle_page": {
       "type": "object",
       "shape": {
@@ -543,6 +571,18 @@
           "optional": true,
           "min": 1,
           "max": 100
+        }
+      }
+    },
+    "vehicle_show_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "vehicle": {
+          "type": "vehicle"
         }
       }
     },
@@ -572,6 +612,18 @@
         }
       ],
       "discriminator": "type"
+    },
+    "vehicle_update_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "vehicle": {
+          "type": "vehicle"
+        }
+      }
     }
   },
   "enums": {
@@ -642,22 +694,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "pagination": {
-                      "type": "offset_pagination",
-                      "optional": true
-                    },
-                    "vehicles": {
-                      "type": "array",
-                      "of": "vehicle",
-                      "optional": true
-                    }
-                  }
+                  "type": "vehicle_index_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -674,16 +711,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "vehicle": {
-                      "type": "vehicle"
-                    }
-                  }
+                  "type": "vehicle_show_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -707,16 +735,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "vehicle": {
-                      "type": "vehicle"
-                    }
-                  }
+                  "type": "vehicle_create_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -743,16 +762,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "vehicle": {
-                      "type": "vehicle"
-                    }
-                  }
+                  "type": "vehicle_update_success_response_body"
                 },
                 {
                   "type": "error_response_body"

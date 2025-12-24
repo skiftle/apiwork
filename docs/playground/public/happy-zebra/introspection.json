@@ -26,6 +26,34 @@
         }
       }
     },
+    "comment_create_success_response_body": {
+      "type": "object",
+      "shape": {
+        "comment": {
+          "type": "comment"
+        },
+        "meta": {
+          "type": "object",
+          "optional": true
+        }
+      }
+    },
+    "comment_index_success_response_body": {
+      "type": "object",
+      "shape": {
+        "comments": {
+          "type": "array",
+          "of": "comment"
+        },
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "pagination": {
+          "type": "offset_pagination"
+        }
+      }
+    },
     "comment_nested_create_payload": {
       "type": "object",
       "shape": {
@@ -86,6 +114,18 @@
         }
       }
     },
+    "comment_show_success_response_body": {
+      "type": "object",
+      "shape": {
+        "comment": {
+          "type": "comment"
+        },
+        "meta": {
+          "type": "object",
+          "optional": true
+        }
+      }
+    },
     "comment_update_payload": {
       "type": "object",
       "shape": {
@@ -94,6 +134,18 @@
         },
         "body": {
           "type": "string"
+        }
+      }
+    },
+    "comment_update_success_response_body": {
+      "type": "object",
+      "shape": {
+        "comment": {
+          "type": "comment"
+        },
+        "meta": {
+          "type": "object",
+          "optional": true
         }
       }
     },
@@ -183,6 +235,34 @@
         }
       }
     },
+    "post_create_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "post": {
+          "type": "post"
+        }
+      }
+    },
+    "post_index_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "pagination": {
+          "type": "offset_pagination"
+        },
+        "posts": {
+          "type": "array",
+          "of": "post"
+        }
+      }
+    },
     "post_nested_create_payload": {
       "type": "object",
       "shape": {
@@ -249,6 +329,18 @@
         }
       }
     },
+    "post_show_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "post": {
+          "type": "post"
+        }
+      }
+    },
     "post_update_payload": {
       "type": "object",
       "shape": {
@@ -260,6 +352,18 @@
         },
         "title": {
           "type": "string"
+        }
+      }
+    },
+    "post_update_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "post": {
+          "type": "post"
         }
       }
     },
@@ -429,6 +533,18 @@
         }
       }
     },
+    "user_create_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "user": {
+          "type": "user"
+        }
+      }
+    },
     "user_filter": {
       "type": "object",
       "shape": {
@@ -472,6 +588,22 @@
         }
       }
     },
+    "user_index_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "pagination": {
+          "type": "offset_pagination"
+        },
+        "users": {
+          "type": "array",
+          "of": "user"
+        }
+      }
+    },
     "user_page": {
       "type": "object",
       "shape": {
@@ -485,6 +617,18 @@
           "optional": true,
           "min": 1,
           "max": 100
+        }
+      }
+    },
+    "user_show_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "user": {
+          "type": "user"
         }
       }
     },
@@ -520,6 +664,18 @@
         },
         "username": {
           "type": "string"
+        }
+      }
+    },
+    "user_update_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "user": {
+          "type": "user"
         }
       }
     }
@@ -592,22 +748,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "pagination": {
-                      "type": "offset_pagination",
-                      "optional": true
-                    },
-                    "users": {
-                      "type": "array",
-                      "of": "user",
-                      "optional": true
-                    }
-                  }
+                  "type": "user_index_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -624,16 +765,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "user": {
-                      "type": "user"
-                    }
-                  }
+                  "type": "user_show_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -657,16 +789,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "user": {
-                      "type": "user"
-                    }
-                  }
+                  "type": "user_create_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -693,16 +816,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "user": {
-                      "type": "user"
-                    }
-                  }
+                  "type": "user_update_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -743,22 +857,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "pagination": {
-                      "type": "offset_pagination",
-                      "optional": true
-                    },
-                    "posts": {
-                      "type": "array",
-                      "of": "post",
-                      "optional": true
-                    }
-                  }
+                  "type": "post_index_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -775,16 +874,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "post": {
-                      "type": "post"
-                    }
-                  }
+                  "type": "post_show_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -808,16 +898,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "post": {
-                      "type": "post"
-                    }
-                  }
+                  "type": "post_create_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -844,16 +925,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "post": {
-                      "type": "post"
-                    }
-                  }
+                  "type": "post_update_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -894,22 +966,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "comments": {
-                      "type": "array",
-                      "of": "comment",
-                      "optional": true
-                    },
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "pagination": {
-                      "type": "offset_pagination",
-                      "optional": true
-                    }
-                  }
+                  "type": "comment_index_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -926,16 +983,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "comment": {
-                      "type": "comment"
-                    },
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    }
-                  }
+                  "type": "comment_show_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -959,16 +1007,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "comment": {
-                      "type": "comment"
-                    },
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    }
-                  }
+                  "type": "comment_create_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -995,16 +1034,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "comment": {
-                      "type": "comment"
-                    },
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    }
-                  }
+                  "type": "comment_update_success_response_body"
                 },
                 {
                   "type": "error_response_body"

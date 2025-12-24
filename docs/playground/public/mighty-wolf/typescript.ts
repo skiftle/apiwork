@@ -145,6 +145,11 @@ export type Vehicle = { type: 'car' } & Car | { type: 'motorcycle' } & Motorcycl
 
 export type VehicleCreatePayload = { type: 'car' } & CarCreatePayload | { type: 'motorcycle' } & MotorcycleCreatePayload | { type: 'truck' } & TruckCreatePayload;
 
+export interface VehicleCreateSuccessResponseBody {
+  meta?: object;
+  vehicle: Vehicle;
+}
+
 export interface VehicleFilter {
   _and?: VehicleFilter[];
   _not?: VehicleFilter;
@@ -154,9 +159,20 @@ export interface VehicleFilter {
   year?: NullableIntegerFilter | number;
 }
 
+export interface VehicleIndexSuccessResponseBody {
+  meta?: object;
+  pagination: OffsetPagination;
+  vehicles: Vehicle[];
+}
+
 export interface VehiclePage {
   number?: number;
   size?: number;
+}
+
+export interface VehicleShowSuccessResponseBody {
+  meta?: object;
+  vehicle: Vehicle;
 }
 
 export interface VehicleSort {
@@ -164,6 +180,11 @@ export interface VehicleSort {
 }
 
 export type VehicleUpdatePayload = { type: 'car' } & CarUpdatePayload | { type: 'motorcycle' } & MotorcycleUpdatePayload | { type: 'truck' } & TruckUpdatePayload;
+
+export interface VehicleUpdateSuccessResponseBody {
+  meta?: object;
+  vehicle: Vehicle;
+}
 
 export interface VehiclesCreateRequest {
   body: VehiclesCreateRequestBody;
@@ -177,7 +198,7 @@ export interface VehiclesCreateResponse {
   body: VehiclesCreateResponseBody;
 }
 
-export type VehiclesCreateResponseBody = ErrorResponseBody | { meta?: object; vehicle: Vehicle };
+export type VehiclesCreateResponseBody = ErrorResponseBody | VehicleCreateSuccessResponseBody;
 
 export type VehiclesDestroyResponse = never;
 
@@ -195,13 +216,13 @@ export interface VehiclesIndexResponse {
   body: VehiclesIndexResponseBody;
 }
 
-export type VehiclesIndexResponseBody = ErrorResponseBody | { meta?: object; pagination?: OffsetPagination; vehicles?: Vehicle[] };
+export type VehiclesIndexResponseBody = ErrorResponseBody | VehicleIndexSuccessResponseBody;
 
 export interface VehiclesShowResponse {
   body: VehiclesShowResponseBody;
 }
 
-export type VehiclesShowResponseBody = ErrorResponseBody | { meta?: object; vehicle: Vehicle };
+export type VehiclesShowResponseBody = ErrorResponseBody | VehicleShowSuccessResponseBody;
 
 export interface VehiclesUpdateRequest {
   body: VehiclesUpdateRequestBody;
@@ -215,4 +236,4 @@ export interface VehiclesUpdateResponse {
   body: VehiclesUpdateResponseBody;
 }
 
-export type VehiclesUpdateResponseBody = ErrorResponseBody | { meta?: object; vehicle: Vehicle };
+export type VehiclesUpdateResponseBody = ErrorResponseBody | VehicleUpdateSuccessResponseBody;

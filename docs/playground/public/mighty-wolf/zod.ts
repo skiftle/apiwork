@@ -179,6 +179,27 @@ export const VehicleFilterSchema: z.ZodType<VehicleFilter> = z.lazy(() => z.obje
   year: z.union([z.number().int(), NullableIntegerFilterSchema]).optional()
 }));
 
+export const VehicleCreateSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  vehicle: VehicleSchema
+});
+
+export const VehicleIndexSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  pagination: OffsetPaginationSchema,
+  vehicles: z.array(VehicleSchema)
+});
+
+export const VehicleShowSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  vehicle: VehicleSchema
+});
+
+export const VehicleUpdateSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  vehicle: VehicleSchema
+});
+
 export const VehiclesIndexRequestQuerySchema = z.object({
   filter: z.union([VehicleFilterSchema, z.array(VehicleFilterSchema)]).optional(),
   page: VehiclePageSchema.optional(),
@@ -189,13 +210,13 @@ export const VehiclesIndexRequestSchema = z.object({
   query: VehiclesIndexRequestQuerySchema
 });
 
-export const VehiclesIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional(), vehicles: z.array(VehicleSchema).optional() }), ErrorResponseBodySchema]);
+export const VehiclesIndexResponseBodySchema = z.union([VehicleIndexSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const VehiclesIndexResponseSchema = z.object({
   body: VehiclesIndexResponseBodySchema
 });
 
-export const VehiclesShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), vehicle: VehicleSchema }), ErrorResponseBodySchema]);
+export const VehiclesShowResponseBodySchema = z.union([VehicleShowSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const VehiclesShowResponseSchema = z.object({
   body: VehiclesShowResponseBodySchema
@@ -209,7 +230,7 @@ export const VehiclesCreateRequestSchema = z.object({
   body: VehiclesCreateRequestBodySchema
 });
 
-export const VehiclesCreateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), vehicle: VehicleSchema }), ErrorResponseBodySchema]);
+export const VehiclesCreateResponseBodySchema = z.union([VehicleCreateSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const VehiclesCreateResponseSchema = z.object({
   body: VehiclesCreateResponseBodySchema
@@ -223,7 +244,7 @@ export const VehiclesUpdateRequestSchema = z.object({
   body: VehiclesUpdateRequestBodySchema
 });
 
-export const VehiclesUpdateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), vehicle: VehicleSchema }), ErrorResponseBodySchema]);
+export const VehiclesUpdateResponseBodySchema = z.union([VehicleUpdateSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const VehiclesUpdateResponseSchema = z.object({
   body: VehiclesUpdateResponseBodySchema
@@ -378,6 +399,11 @@ export type Vehicle = { type: 'car' } & Car | { type: 'motorcycle' } & Motorcycl
 
 export type VehicleCreatePayload = { type: 'car' } & CarCreatePayload | { type: 'motorcycle' } & MotorcycleCreatePayload | { type: 'truck' } & TruckCreatePayload;
 
+export interface VehicleCreateSuccessResponseBody {
+  meta?: object;
+  vehicle: Vehicle;
+}
+
 export interface VehicleFilter {
   _and?: VehicleFilter[];
   _not?: VehicleFilter;
@@ -387,9 +413,20 @@ export interface VehicleFilter {
   year?: NullableIntegerFilter | number;
 }
 
+export interface VehicleIndexSuccessResponseBody {
+  meta?: object;
+  pagination: OffsetPagination;
+  vehicles: Vehicle[];
+}
+
 export interface VehiclePage {
   number?: number;
   size?: number;
+}
+
+export interface VehicleShowSuccessResponseBody {
+  meta?: object;
+  vehicle: Vehicle;
 }
 
 export interface VehicleSort {
@@ -397,6 +434,11 @@ export interface VehicleSort {
 }
 
 export type VehicleUpdatePayload = { type: 'car' } & CarUpdatePayload | { type: 'motorcycle' } & MotorcycleUpdatePayload | { type: 'truck' } & TruckUpdatePayload;
+
+export interface VehicleUpdateSuccessResponseBody {
+  meta?: object;
+  vehicle: Vehicle;
+}
 
 export interface VehiclesCreateRequest {
   body: VehiclesCreateRequestBody;
@@ -410,7 +452,7 @@ export interface VehiclesCreateResponse {
   body: VehiclesCreateResponseBody;
 }
 
-export type VehiclesCreateResponseBody = ErrorResponseBody | { meta?: object; vehicle: Vehicle };
+export type VehiclesCreateResponseBody = ErrorResponseBody | VehicleCreateSuccessResponseBody;
 
 export type VehiclesDestroyResponse = never;
 
@@ -428,13 +470,13 @@ export interface VehiclesIndexResponse {
   body: VehiclesIndexResponseBody;
 }
 
-export type VehiclesIndexResponseBody = ErrorResponseBody | { meta?: object; pagination?: OffsetPagination; vehicles?: Vehicle[] };
+export type VehiclesIndexResponseBody = ErrorResponseBody | VehicleIndexSuccessResponseBody;
 
 export interface VehiclesShowResponse {
   body: VehiclesShowResponseBody;
 }
 
-export type VehiclesShowResponseBody = ErrorResponseBody | { meta?: object; vehicle: Vehicle };
+export type VehiclesShowResponseBody = ErrorResponseBody | VehicleShowSuccessResponseBody;
 
 export interface VehiclesUpdateRequest {
   body: VehiclesUpdateRequestBody;
@@ -448,4 +490,4 @@ export interface VehiclesUpdateResponse {
   body: VehiclesUpdateResponseBody;
 }
 
-export type VehiclesUpdateResponseBody = ErrorResponseBody | { meta?: object; vehicle: Vehicle };
+export type VehiclesUpdateResponseBody = ErrorResponseBody | VehicleUpdateSuccessResponseBody;

@@ -173,6 +173,18 @@
       },
       "description": "A project with tasks and deadlines"
     },
+    "project_create_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "project": {
+          "type": "project"
+        }
+      }
+    },
     "project_filter": {
       "type": "object",
       "shape": {
@@ -202,6 +214,22 @@
         }
       },
       "description": "A project with tasks and deadlines"
+    },
+    "project_index_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "pagination": {
+          "type": "offset_pagination"
+        },
+        "projects": {
+          "type": "array",
+          "of": "project"
+        }
+      }
     },
     "project_page": {
       "type": "object",
@@ -241,6 +269,18 @@
           }
         }
       ]
+    },
+    "project_show_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "project": {
+          "type": "project"
+        }
+      }
     },
     "project_sort": {
       "type": "object",
@@ -316,6 +356,18 @@
         }
       },
       "description": "A project with tasks and deadlines"
+    },
+    "project_update_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "project": {
+          "type": "project"
+        }
+      }
     },
     "string_filter": {
       "type": "object",
@@ -434,22 +486,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "pagination": {
-                      "type": "offset_pagination",
-                      "optional": true
-                    },
-                    "projects": {
-                      "type": "array",
-                      "of": "project",
-                      "optional": true
-                    }
-                  }
+                  "type": "project_index_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -472,16 +509,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "project": {
-                      "type": "project"
-                    }
-                  }
+                  "type": "project_show_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -511,16 +539,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "project": {
-                      "type": "project"
-                    }
-                  }
+                  "type": "project_create_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -553,16 +572,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "project": {
-                      "type": "project"
-                    }
-                  }
+                  "type": "project_update_success_response_body"
                 },
                 {
                   "type": "error_response_body"

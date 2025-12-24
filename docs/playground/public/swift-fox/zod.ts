@@ -45,9 +45,30 @@ export const OffsetPaginationSchema = z.object({
   total: z.number().int()
 });
 
+export const ContactCreateSuccessResponseBodySchema = z.object({
+  contact: ContactSchema,
+  meta: z.object({}).optional()
+});
+
+export const ContactShowSuccessResponseBodySchema = z.object({
+  contact: ContactSchema,
+  meta: z.object({}).optional()
+});
+
+export const ContactUpdateSuccessResponseBodySchema = z.object({
+  contact: ContactSchema,
+  meta: z.object({}).optional()
+});
+
 export const ErrorResponseBodySchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
+});
+
+export const ContactIndexSuccessResponseBodySchema = z.object({
+  contacts: z.array(ContactSchema),
+  meta: z.object({}).optional(),
+  pagination: OffsetPaginationSchema
 });
 
 export const ContactsIndexRequestQuerySchema = z.object({
@@ -58,13 +79,13 @@ export const ContactsIndexRequestSchema = z.object({
   query: ContactsIndexRequestQuerySchema
 });
 
-export const ContactsIndexResponseBodySchema = z.union([z.object({ contacts: z.array(ContactSchema).optional(), meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional() }), ErrorResponseBodySchema]);
+export const ContactsIndexResponseBodySchema = z.union([ContactIndexSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const ContactsIndexResponseSchema = z.object({
   body: ContactsIndexResponseBodySchema
 });
 
-export const ContactsShowResponseBodySchema = z.union([z.object({ contact: ContactSchema, meta: z.object({}).optional() }), ErrorResponseBodySchema]);
+export const ContactsShowResponseBodySchema = z.union([ContactShowSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const ContactsShowResponseSchema = z.object({
   body: ContactsShowResponseBodySchema
@@ -78,7 +99,7 @@ export const ContactsCreateRequestSchema = z.object({
   body: ContactsCreateRequestBodySchema
 });
 
-export const ContactsCreateResponseBodySchema = z.union([z.object({ contact: ContactSchema, meta: z.object({}).optional() }), ErrorResponseBodySchema]);
+export const ContactsCreateResponseBodySchema = z.union([ContactCreateSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const ContactsCreateResponseSchema = z.object({
   body: ContactsCreateResponseBodySchema
@@ -92,7 +113,7 @@ export const ContactsUpdateRequestSchema = z.object({
   body: ContactsUpdateRequestBodySchema
 });
 
-export const ContactsUpdateResponseBodySchema = z.union([z.object({ contact: ContactSchema, meta: z.object({}).optional() }), ErrorResponseBodySchema]);
+export const ContactsUpdateResponseBodySchema = z.union([ContactUpdateSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const ContactsUpdateResponseSchema = z.object({
   body: ContactsUpdateResponseBodySchema
@@ -115,9 +136,25 @@ export interface ContactCreatePayload {
   phone?: string;
 }
 
+export interface ContactCreateSuccessResponseBody {
+  contact: Contact;
+  meta?: object;
+}
+
+export interface ContactIndexSuccessResponseBody {
+  contacts: Contact[];
+  meta?: object;
+  pagination: OffsetPagination;
+}
+
 export interface ContactPage {
   number?: number;
   size?: number;
+}
+
+export interface ContactShowSuccessResponseBody {
+  contact: Contact;
+  meta?: object;
 }
 
 export interface ContactUpdatePayload {
@@ -125,6 +162,11 @@ export interface ContactUpdatePayload {
   name?: string;
   notes?: string;
   phone?: string;
+}
+
+export interface ContactUpdateSuccessResponseBody {
+  contact: Contact;
+  meta?: object;
 }
 
 export interface ContactsCreateRequest {
@@ -139,7 +181,7 @@ export interface ContactsCreateResponse {
   body: ContactsCreateResponseBody;
 }
 
-export type ContactsCreateResponseBody = ErrorResponseBody | { contact: Contact; meta?: object };
+export type ContactsCreateResponseBody = ContactCreateSuccessResponseBody | ErrorResponseBody;
 
 export type ContactsDestroyResponse = never;
 
@@ -155,13 +197,13 @@ export interface ContactsIndexResponse {
   body: ContactsIndexResponseBody;
 }
 
-export type ContactsIndexResponseBody = ErrorResponseBody | { contacts?: Contact[]; meta?: object; pagination?: OffsetPagination };
+export type ContactsIndexResponseBody = ContactIndexSuccessResponseBody | ErrorResponseBody;
 
 export interface ContactsShowResponse {
   body: ContactsShowResponseBody;
 }
 
-export type ContactsShowResponseBody = ErrorResponseBody | { contact: Contact; meta?: object };
+export type ContactsShowResponseBody = ContactShowSuccessResponseBody | ErrorResponseBody;
 
 export interface ContactsUpdateRequest {
   body: ContactsUpdateRequestBody;
@@ -175,7 +217,7 @@ export interface ContactsUpdateResponse {
   body: ContactsUpdateResponseBody;
 }
 
-export type ContactsUpdateResponseBody = ErrorResponseBody | { contact: Contact; meta?: object };
+export type ContactsUpdateResponseBody = ContactUpdateSuccessResponseBody | ErrorResponseBody;
 
 export interface ErrorResponseBody {
   issues: Issue[];

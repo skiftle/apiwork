@@ -19,17 +19,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    type: object
-                    properties: {}
-                  pagination:
-                    "$ref": "#/components/schemas/offsetPagination"
-                  profiles:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/profile"
+                "$ref": "#/components/schemas/profileIndexSuccessResponseBody"
     post:
       operationId: profilesCreate
       requestBody:
@@ -49,15 +39,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    type: object
-                    properties: {}
-                  profile:
-                    "$ref": "#/components/schemas/profile"
-                required:
-                - profile
+                "$ref": "#/components/schemas/profileCreateSuccessResponseBody"
         '422':
           description: Unprocessable Entity
           content:
@@ -79,15 +61,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    type: object
-                    properties: {}
-                  profile:
-                    "$ref": "#/components/schemas/profile"
-                required:
-                - profile
+                "$ref": "#/components/schemas/profileShowSuccessResponseBody"
     patch:
       operationId: profilesUpdate
       parameters:
@@ -111,13 +85,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    type: object
-                    properties: {}
-                  profile:
-                    "$ref": "#/components/schemas/profile"
+                "$ref": "#/components/schemas/profileUpdateSuccessResponseBody"
         '422':
           description: Unprocessable Entity
           content:
@@ -367,6 +335,31 @@ components:
       - preferences
       - settings
       - tags
+    profileCreateSuccessResponseBody:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        profile:
+          "$ref": "#/components/schemas/profile"
+      required:
+      - profile
+    profileIndexSuccessResponseBody:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
+        profiles:
+          type: array
+          items:
+            "$ref": "#/components/schemas/profile"
+      required:
+      - pagination
+      - profiles
     profilePage:
       type: object
       properties:
@@ -377,6 +370,16 @@ components:
           type: integer
           minimum: 1
           maximum: 100
+    profileShowSuccessResponseBody:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        profile:
+          "$ref": "#/components/schemas/profile"
+      required:
+      - profile
     profileUpdatePayload:
       type: object
       properties:
@@ -457,3 +460,13 @@ components:
       - preferences
       - settings
       - tags
+    profileUpdateSuccessResponseBody:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        profile:
+          "$ref": "#/components/schemas/profile"
+      required:
+      - profile

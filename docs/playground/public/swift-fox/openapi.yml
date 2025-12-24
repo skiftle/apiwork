@@ -19,17 +19,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  contacts:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/contact"
-                  meta:
-                    type: object
-                    properties: {}
-                  pagination:
-                    "$ref": "#/components/schemas/offsetPagination"
+                "$ref": "#/components/schemas/contactIndexSuccessResponseBody"
     post:
       operationId: contactsCreate
       requestBody:
@@ -49,15 +39,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  contact:
-                    "$ref": "#/components/schemas/contact"
-                  meta:
-                    type: object
-                    properties: {}
-                required:
-                - contact
+                "$ref": "#/components/schemas/contactCreateSuccessResponseBody"
         '422':
           description: Unprocessable Entity
           content:
@@ -79,15 +61,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  contact:
-                    "$ref": "#/components/schemas/contact"
-                  meta:
-                    type: object
-                    properties: {}
-                required:
-                - contact
+                "$ref": "#/components/schemas/contactShowSuccessResponseBody"
     patch:
       operationId: contactsUpdate
       parameters:
@@ -111,13 +85,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  contact:
-                    "$ref": "#/components/schemas/contact"
-                  meta:
-                    type: object
-                    properties: {}
+                "$ref": "#/components/schemas/contactUpdateSuccessResponseBody"
         '422':
           description: Unprocessable Entity
           content:
@@ -173,6 +141,31 @@ components:
           type: string
       required:
       - name
+    contactCreateSuccessResponseBody:
+      type: object
+      properties:
+        contact:
+          "$ref": "#/components/schemas/contact"
+        meta:
+          type: object
+          properties: {}
+      required:
+      - contact
+    contactIndexSuccessResponseBody:
+      type: object
+      properties:
+        contacts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/contact"
+        meta:
+          type: object
+          properties: {}
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
+      required:
+      - contacts
+      - pagination
     contactPage:
       type: object
       properties:
@@ -183,6 +176,16 @@ components:
           type: integer
           minimum: 1
           maximum: 100
+    contactShowSuccessResponseBody:
+      type: object
+      properties:
+        contact:
+          "$ref": "#/components/schemas/contact"
+        meta:
+          type: object
+          properties: {}
+      required:
+      - contact
     contactUpdatePayload:
       type: object
       properties:
@@ -198,6 +201,16 @@ components:
           type: string
       required:
       - name
+    contactUpdateSuccessResponseBody:
+      type: object
+      properties:
+        contact:
+          "$ref": "#/components/schemas/contact"
+        meta:
+          type: object
+          properties: {}
+      required:
+      - contact
     errorResponseBody:
       type: object
       properties:

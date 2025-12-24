@@ -64,6 +64,11 @@ export interface ProjectCreatePayload {
   status?: ProjectStatus | null;
 }
 
+export interface ProjectCreateSuccessResponseBody {
+  meta?: object;
+  project: Project;
+}
+
 /** A project with tasks and deadlines */
 export interface ProjectFilter {
   _and?: ProjectFilter[];
@@ -75,6 +80,12 @@ export interface ProjectFilter {
   status?: ProjectStatusFilter;
 }
 
+export interface ProjectIndexSuccessResponseBody {
+  meta?: object;
+  pagination: OffsetPagination;
+  projects: Project[];
+}
+
 export interface ProjectPage {
   number?: number;
   size?: number;
@@ -83,6 +94,11 @@ export interface ProjectPage {
 export type ProjectPriority = 'critical' | 'high' | 'low' | 'medium';
 
 export type ProjectPriorityFilter = ProjectPriority | { eq?: ProjectPriority; in?: ProjectPriority[] };
+
+export interface ProjectShowSuccessResponseBody {
+  meta?: object;
+  project: Project;
+}
 
 /** A project with tasks and deadlines */
 export interface ProjectSort {
@@ -110,6 +126,11 @@ export interface ProjectUpdatePayload {
   status?: ProjectStatus | null;
 }
 
+export interface ProjectUpdateSuccessResponseBody {
+  meta?: object;
+  project: Project;
+}
+
 export interface ProjectsCreateRequest {
   body: ProjectsCreateRequestBody;
 }
@@ -122,7 +143,7 @@ export interface ProjectsCreateResponse {
   body: ProjectsCreateResponseBody;
 }
 
-export type ProjectsCreateResponseBody = ErrorResponseBody | { meta?: object; project: Project };
+export type ProjectsCreateResponseBody = ErrorResponseBody | ProjectCreateSuccessResponseBody;
 
 export type ProjectsDestroyResponse = never;
 
@@ -140,13 +161,13 @@ export interface ProjectsIndexResponse {
   body: ProjectsIndexResponseBody;
 }
 
-export type ProjectsIndexResponseBody = ErrorResponseBody | { meta?: object; pagination?: OffsetPagination; projects?: Project[] };
+export type ProjectsIndexResponseBody = ErrorResponseBody | ProjectIndexSuccessResponseBody;
 
 export interface ProjectsShowResponse {
   body: ProjectsShowResponseBody;
 }
 
-export type ProjectsShowResponseBody = ErrorResponseBody | { meta?: object; project: Project };
+export type ProjectsShowResponseBody = ErrorResponseBody | ProjectShowSuccessResponseBody;
 
 export interface ProjectsUpdateRequest {
   body: ProjectsUpdateRequestBody;
@@ -160,7 +181,7 @@ export interface ProjectsUpdateResponse {
   body: ProjectsUpdateResponseBody;
 }
 
-export type ProjectsUpdateResponseBody = ErrorResponseBody | { meta?: object; project: Project };
+export type ProjectsUpdateResponseBody = ErrorResponseBody | ProjectUpdateSuccessResponseBody;
 
 export type SortDirection = 'asc' | 'desc';
 

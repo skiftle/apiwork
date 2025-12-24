@@ -137,6 +137,18 @@
         }
       }
     },
+    "order_create_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "order": {
+          "type": "order"
+        }
+      }
+    },
     "order_filter": {
       "type": "object",
       "shape": {
@@ -168,6 +180,22 @@
         }
       }
     },
+    "order_index_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "orders": {
+          "type": "array",
+          "of": "order"
+        },
+        "pagination": {
+          "type": "offset_pagination"
+        }
+      }
+    },
     "order_page": {
       "type": "object",
       "shape": {
@@ -181,6 +209,18 @@
           "optional": true,
           "min": 1,
           "max": 100
+        }
+      }
+    },
+    "order_show_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "order": {
+          "type": "order"
         }
       }
     },
@@ -212,6 +252,18 @@
           "type": "object",
           "as": "shipping_address_attributes",
           "optional": true
+        }
+      }
+    },
+    "order_update_success_response_body": {
+      "type": "object",
+      "shape": {
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "order": {
+          "type": "order"
         }
       }
     },
@@ -310,22 +362,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "orders": {
-                      "type": "array",
-                      "of": "order",
-                      "optional": true
-                    },
-                    "pagination": {
-                      "type": "offset_pagination",
-                      "optional": true
-                    }
-                  }
+                  "type": "order_index_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -342,16 +379,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "order": {
-                      "type": "order"
-                    }
-                  }
+                  "type": "order_show_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -375,16 +403,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "order": {
-                      "type": "order"
-                    }
-                  }
+                  "type": "order_create_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -411,16 +430,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "order": {
-                      "type": "order"
-                    }
-                  }
+                  "type": "order_update_success_response_body"
                 },
                 {
                   "type": "error_response_body"

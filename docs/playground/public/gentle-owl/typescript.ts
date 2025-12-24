@@ -13,13 +13,29 @@ export interface CommentCreatePayload {
   body: string;
 }
 
+export interface CommentCreateSuccessResponseBody {
+  comment: Comment;
+  meta?: object;
+}
+
 export interface CommentInclude {
   commentable?: boolean;
+}
+
+export interface CommentIndexSuccessResponseBody {
+  comments: Comment[];
+  meta?: object;
+  pagination: OffsetPagination;
 }
 
 export interface CommentPage {
   number?: number;
   size?: number;
+}
+
+export interface CommentShowSuccessResponseBody {
+  comment: Comment;
+  meta?: object;
 }
 
 export interface CommentSort {
@@ -29,6 +45,11 @@ export interface CommentSort {
 export interface CommentUpdatePayload {
   authorName?: null | string;
   body?: string;
+}
+
+export interface CommentUpdateSuccessResponseBody {
+  comment: Comment;
+  meta?: object;
 }
 
 export interface CommentsCreateRequest {
@@ -48,7 +69,7 @@ export interface CommentsCreateResponse {
   body: CommentsCreateResponseBody;
 }
 
-export type CommentsCreateResponseBody = ErrorResponseBody | { comment: Comment; meta?: object };
+export type CommentsCreateResponseBody = CommentCreateSuccessResponseBody | ErrorResponseBody;
 
 export interface CommentsDestroyRequest {
   query: CommentsDestroyRequestQuery;
@@ -74,7 +95,7 @@ export interface CommentsIndexResponse {
   body: CommentsIndexResponseBody;
 }
 
-export type CommentsIndexResponseBody = ErrorResponseBody | { comments?: Comment[]; meta?: object; pagination?: OffsetPagination };
+export type CommentsIndexResponseBody = CommentIndexSuccessResponseBody | ErrorResponseBody;
 
 export interface CommentsShowRequest {
   query: CommentsShowRequestQuery;
@@ -88,7 +109,7 @@ export interface CommentsShowResponse {
   body: CommentsShowResponseBody;
 }
 
-export type CommentsShowResponseBody = ErrorResponseBody | { comment: Comment; meta?: object };
+export type CommentsShowResponseBody = CommentShowSuccessResponseBody | ErrorResponseBody;
 
 export interface CommentsUpdateRequest {
   query: CommentsUpdateRequestQuery;
@@ -107,7 +128,7 @@ export interface CommentsUpdateResponse {
   body: CommentsUpdateResponseBody;
 }
 
-export type CommentsUpdateResponseBody = ErrorResponseBody | { comment: Comment; meta?: object };
+export type CommentsUpdateResponseBody = CommentUpdateSuccessResponseBody | ErrorResponseBody;
 
 export interface ErrorResponseBody {
   issues: Issue[];

@@ -9,6 +9,17 @@ export interface CommentCreatePayload {
   body: string;
 }
 
+export interface CommentCreateSuccessResponseBody {
+  comment: Comment;
+  meta?: object;
+}
+
+export interface CommentIndexSuccessResponseBody {
+  comments: Comment[];
+  meta?: object;
+  pagination: OffsetPagination;
+}
+
 export interface CommentNestedCreatePayload {
   _type: 'create';
   author: string;
@@ -28,9 +39,19 @@ export interface CommentPage {
   size?: number;
 }
 
+export interface CommentShowSuccessResponseBody {
+  comment: Comment;
+  meta?: object;
+}
+
 export interface CommentUpdatePayload {
   author?: string;
   body?: string;
+}
+
+export interface CommentUpdateSuccessResponseBody {
+  comment: Comment;
+  meta?: object;
 }
 
 export interface CommentsCreateRequest {
@@ -45,7 +66,7 @@ export interface CommentsCreateResponse {
   body: CommentsCreateResponseBody;
 }
 
-export type CommentsCreateResponseBody = ErrorResponseBody | { comment: Comment; meta?: object };
+export type CommentsCreateResponseBody = CommentCreateSuccessResponseBody | ErrorResponseBody;
 
 export type CommentsDestroyResponse = never;
 
@@ -61,13 +82,13 @@ export interface CommentsIndexResponse {
   body: CommentsIndexResponseBody;
 }
 
-export type CommentsIndexResponseBody = ErrorResponseBody | { comments?: Comment[]; meta?: object; pagination?: OffsetPagination };
+export type CommentsIndexResponseBody = CommentIndexSuccessResponseBody | ErrorResponseBody;
 
 export interface CommentsShowResponse {
   body: CommentsShowResponseBody;
 }
 
-export type CommentsShowResponseBody = ErrorResponseBody | { comment: Comment; meta?: object };
+export type CommentsShowResponseBody = CommentShowSuccessResponseBody | ErrorResponseBody;
 
 export interface CommentsUpdateRequest {
   body: CommentsUpdateRequestBody;
@@ -81,7 +102,7 @@ export interface CommentsUpdateResponse {
   body: CommentsUpdateResponseBody;
 }
 
-export type CommentsUpdateResponseBody = ErrorResponseBody | { comment: Comment; meta?: object };
+export type CommentsUpdateResponseBody = CommentUpdateSuccessResponseBody | ErrorResponseBody;
 
 export interface ErrorResponseBody {
   issues: Issue[];
@@ -117,6 +138,17 @@ export interface PostCreatePayload {
   title: string;
 }
 
+export interface PostCreateSuccessResponseBody {
+  meta?: object;
+  post: Post;
+}
+
+export interface PostIndexSuccessResponseBody {
+  meta?: object;
+  pagination: OffsetPagination;
+  posts: Post[];
+}
+
 export interface PostNestedCreatePayload {
   _type: 'create';
   comments?: CommentNestedPayload[];
@@ -136,9 +168,19 @@ export interface PostPage {
   size?: number;
 }
 
+export interface PostShowSuccessResponseBody {
+  meta?: object;
+  post: Post;
+}
+
 export interface PostUpdatePayload {
   comments?: CommentNestedPayload[];
   title?: string;
+}
+
+export interface PostUpdateSuccessResponseBody {
+  meta?: object;
+  post: Post;
 }
 
 export interface PostsCreateRequest {
@@ -153,7 +195,7 @@ export interface PostsCreateResponse {
   body: PostsCreateResponseBody;
 }
 
-export type PostsCreateResponseBody = ErrorResponseBody | { meta?: object; post: Post };
+export type PostsCreateResponseBody = ErrorResponseBody | PostCreateSuccessResponseBody;
 
 export type PostsDestroyResponse = never;
 
@@ -169,13 +211,13 @@ export interface PostsIndexResponse {
   body: PostsIndexResponseBody;
 }
 
-export type PostsIndexResponseBody = ErrorResponseBody | { meta?: object; pagination?: OffsetPagination; posts?: Post[] };
+export type PostsIndexResponseBody = ErrorResponseBody | PostIndexSuccessResponseBody;
 
 export interface PostsShowResponse {
   body: PostsShowResponseBody;
 }
 
-export type PostsShowResponseBody = ErrorResponseBody | { meta?: object; post: Post };
+export type PostsShowResponseBody = ErrorResponseBody | PostShowSuccessResponseBody;
 
 export interface PostsUpdateRequest {
   body: PostsUpdateRequestBody;
@@ -189,7 +231,7 @@ export interface PostsUpdateResponse {
   body: PostsUpdateResponseBody;
 }
 
-export type PostsUpdateResponseBody = ErrorResponseBody | { meta?: object; post: Post };
+export type PostsUpdateResponseBody = ErrorResponseBody | PostUpdateSuccessResponseBody;
 
 export interface Profile {
   bio: null | string;
@@ -246,6 +288,11 @@ export interface UserCreatePayload {
   username: string;
 }
 
+export interface UserCreateSuccessResponseBody {
+  meta?: object;
+  user: User;
+}
+
 export interface UserFilter {
   _and?: UserFilter[];
   _not?: UserFilter;
@@ -254,9 +301,20 @@ export interface UserFilter {
   username?: StringFilter | string;
 }
 
+export interface UserIndexSuccessResponseBody {
+  meta?: object;
+  pagination: OffsetPagination;
+  users: User[];
+}
+
 export interface UserPage {
   number?: number;
   size?: number;
+}
+
+export interface UserShowSuccessResponseBody {
+  meta?: object;
+  user: User;
 }
 
 export interface UserSort {
@@ -271,6 +329,11 @@ export interface UserUpdatePayload {
   username?: string;
 }
 
+export interface UserUpdateSuccessResponseBody {
+  meta?: object;
+  user: User;
+}
+
 export interface UsersCreateRequest {
   body: UsersCreateRequestBody;
 }
@@ -283,7 +346,7 @@ export interface UsersCreateResponse {
   body: UsersCreateResponseBody;
 }
 
-export type UsersCreateResponseBody = ErrorResponseBody | { meta?: object; user: User };
+export type UsersCreateResponseBody = ErrorResponseBody | UserCreateSuccessResponseBody;
 
 export type UsersDestroyResponse = never;
 
@@ -301,13 +364,13 @@ export interface UsersIndexResponse {
   body: UsersIndexResponseBody;
 }
 
-export type UsersIndexResponseBody = ErrorResponseBody | { meta?: object; pagination?: OffsetPagination; users?: User[] };
+export type UsersIndexResponseBody = ErrorResponseBody | UserIndexSuccessResponseBody;
 
 export interface UsersShowResponse {
   body: UsersShowResponseBody;
 }
 
-export type UsersShowResponseBody = ErrorResponseBody | { meta?: object; user: User };
+export type UsersShowResponseBody = ErrorResponseBody | UserShowSuccessResponseBody;
 
 export interface UsersUpdateRequest {
   body: UsersUpdateRequestBody;
@@ -321,4 +384,4 @@ export interface UsersUpdateResponse {
   body: UsersUpdateResponseBody;
 }
 
-export type UsersUpdateResponseBody = ErrorResponseBody | { meta?: object; user: User };
+export type UsersUpdateResponseBody = ErrorResponseBody | UserUpdateSuccessResponseBody;

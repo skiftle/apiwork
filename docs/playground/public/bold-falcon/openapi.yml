@@ -37,17 +37,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  articles:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/article"
-                  meta:
-                    type: object
-                    properties: {}
-                  pagination:
-                    "$ref": "#/components/schemas/offsetPagination"
+                "$ref": "#/components/schemas/articleIndexSuccessResponseBody"
     post:
       operationId: articlesCreate
       requestBody:
@@ -67,15 +57,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  article:
-                    "$ref": "#/components/schemas/article"
-                  meta:
-                    type: object
-                    properties: {}
-                required:
-                - article
+                "$ref": "#/components/schemas/articleCreateSuccessResponseBody"
         '422':
           description: Unprocessable Entity
           content:
@@ -97,15 +79,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  article:
-                    "$ref": "#/components/schemas/article"
-                  meta:
-                    type: object
-                    properties: {}
-                required:
-                - article
+                "$ref": "#/components/schemas/articleShowSuccessResponseBody"
     patch:
       operationId: articlesUpdate
       parameters:
@@ -129,13 +103,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  article:
-                    "$ref": "#/components/schemas/article"
-                  meta:
-                    type: object
-                    properties: {}
+                "$ref": "#/components/schemas/articleUpdateSuccessResponseBody"
         '422':
           description: Unprocessable Entity
           content:
@@ -232,6 +200,16 @@ components:
           type: string
       required:
       - title
+    articleCreateSuccessResponseBody:
+      type: object
+      properties:
+        article:
+          "$ref": "#/components/schemas/article"
+        meta:
+          type: object
+          properties: {}
+      required:
+      - article
     articleFilter:
       type: object
       properties:
@@ -264,6 +242,21 @@ components:
           oneOf:
           - type: integer
           - "$ref": "#/components/schemas/nullableIntegerFilter"
+    articleIndexSuccessResponseBody:
+      type: object
+      properties:
+        articles:
+          type: array
+          items:
+            "$ref": "#/components/schemas/article"
+        meta:
+          type: object
+          properties: {}
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
+      required:
+      - articles
+      - pagination
     articlePage:
       type: object
       properties:
@@ -274,6 +267,16 @@ components:
           type: integer
           minimum: 1
           maximum: 100
+    articleShowSuccessResponseBody:
+      type: object
+      properties:
+        article:
+          "$ref": "#/components/schemas/article"
+        meta:
+          type: object
+          properties: {}
+      required:
+      - article
     articleSort:
       type: object
       properties:
@@ -345,6 +348,16 @@ components:
           type: string
       required:
       - title
+    articleUpdateSuccessResponseBody:
+      type: object
+      properties:
+        article:
+          "$ref": "#/components/schemas/article"
+        meta:
+          type: object
+          properties: {}
+      required:
+      - article
     dateFilter:
       type: object
       properties:

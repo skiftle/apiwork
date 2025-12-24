@@ -47,6 +47,11 @@ export interface OrderCreatePayload {
   shippingAddress?: object;
 }
 
+export interface OrderCreateSuccessResponseBody {
+  meta?: object;
+  order: Order;
+}
+
 export interface OrderFilter {
   _and?: OrderFilter[];
   _not?: OrderFilter;
@@ -54,9 +59,20 @@ export interface OrderFilter {
   status?: NullableStringFilter | string;
 }
 
+export interface OrderIndexSuccessResponseBody {
+  meta?: object;
+  orders: Order[];
+  pagination: OffsetPagination;
+}
+
 export interface OrderPage {
   number?: number;
   size?: number;
+}
+
+export interface OrderShowSuccessResponseBody {
+  meta?: object;
+  order: Order;
 }
 
 export interface OrderSort {
@@ -68,6 +84,11 @@ export interface OrderUpdatePayload {
   lineItems?: string[];
   orderNumber?: string;
   shippingAddress?: object;
+}
+
+export interface OrderUpdateSuccessResponseBody {
+  meta?: object;
+  order: Order;
 }
 
 export interface OrdersCreateRequest {
@@ -82,7 +103,7 @@ export interface OrdersCreateResponse {
   body: OrdersCreateResponseBody;
 }
 
-export type OrdersCreateResponseBody = ErrorResponseBody | { meta?: object; order: Order };
+export type OrdersCreateResponseBody = ErrorResponseBody | OrderCreateSuccessResponseBody;
 
 export type OrdersDestroyResponse = never;
 
@@ -100,13 +121,13 @@ export interface OrdersIndexResponse {
   body: OrdersIndexResponseBody;
 }
 
-export type OrdersIndexResponseBody = ErrorResponseBody | { meta?: object; orders?: Order[]; pagination?: OffsetPagination };
+export type OrdersIndexResponseBody = ErrorResponseBody | OrderIndexSuccessResponseBody;
 
 export interface OrdersShowResponse {
   body: OrdersShowResponseBody;
 }
 
-export type OrdersShowResponseBody = ErrorResponseBody | { meta?: object; order: Order };
+export type OrdersShowResponseBody = ErrorResponseBody | OrderShowSuccessResponseBody;
 
 export interface OrdersUpdateRequest {
   body: OrdersUpdateRequestBody;
@@ -120,7 +141,7 @@ export interface OrdersUpdateResponse {
   body: OrdersUpdateResponseBody;
 }
 
-export type OrdersUpdateResponseBody = ErrorResponseBody | { meta?: object; order: Order };
+export type OrdersUpdateResponseBody = ErrorResponseBody | OrderUpdateSuccessResponseBody;
 
 export type SortDirection = 'asc' | 'desc';
 

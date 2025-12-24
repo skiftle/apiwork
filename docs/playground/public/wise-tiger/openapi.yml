@@ -42,17 +42,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    type: object
-                    properties: {}
-                  pagination:
-                    "$ref": "#/components/schemas/offsetPagination"
-                  projects:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/project"
+                "$ref": "#/components/schemas/projectIndexSuccessResponseBody"
     post:
       operationId: createProject
       summary: Create a new project
@@ -76,15 +66,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    type: object
-                    properties: {}
-                  project:
-                    "$ref": "#/components/schemas/project"
-                required:
-                - project
+                "$ref": "#/components/schemas/projectCreateSuccessResponseBody"
         '422':
           description: Unprocessable Entity
           content:
@@ -110,15 +92,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    type: object
-                    properties: {}
-                  project:
-                    "$ref": "#/components/schemas/project"
-                required:
-                - project
+                "$ref": "#/components/schemas/projectShowSuccessResponseBody"
     patch:
       operationId: updateProject
       summary: Update a project
@@ -146,13 +120,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    type: object
-                    properties: {}
-                  project:
-                    "$ref": "#/components/schemas/project"
+                "$ref": "#/components/schemas/projectUpdateSuccessResponseBody"
         '422':
           description: Unprocessable Entity
           content:
@@ -350,6 +318,16 @@ components:
       description: A project with tasks and deadlines
       required:
       - name
+    projectCreateSuccessResponseBody:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        project:
+          "$ref": "#/components/schemas/project"
+      required:
+      - project
     projectFilter:
       type: object
       properties:
@@ -368,6 +346,21 @@ components:
         status:
           "$ref": "#/components/schemas/projectStatusFilter"
       description: A project with tasks and deadlines
+    projectIndexSuccessResponseBody:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        pagination:
+          "$ref": "#/components/schemas/offsetPagination"
+        projects:
+          type: array
+          items:
+            "$ref": "#/components/schemas/project"
+      required:
+      - pagination
+      - projects
     projectPage:
       type: object
       properties:
@@ -399,6 +392,16 @@ components:
             type: array
             items:
               type:
+    projectShowSuccessResponseBody:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        project:
+          "$ref": "#/components/schemas/project"
+      required:
+      - project
     projectSort:
       type: object
       properties:
@@ -474,6 +477,16 @@ components:
       description: A project with tasks and deadlines
       required:
       - name
+    projectUpdateSuccessResponseBody:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties: {}
+        project:
+          "$ref": "#/components/schemas/project"
+      required:
+      - project
     stringFilter:
       type: object
       properties:

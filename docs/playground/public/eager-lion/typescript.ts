@@ -16,12 +16,22 @@ export interface Invoice {
   updatedAt: string;
 }
 
+export interface InvoiceArchiveSuccessResponseBody {
+  invoice: Invoice;
+  meta?: object;
+}
+
 export interface InvoiceCreatePayload {
   customerId: string;
   issuedOn?: null | string;
   lines?: string[];
   notes?: null | string;
   number: string;
+}
+
+export interface InvoiceCreateSuccessResponseBody {
+  invoice: Invoice;
+  meta?: object;
 }
 
 export interface InvoiceFilter {
@@ -32,9 +42,20 @@ export interface InvoiceFilter {
   status?: NullableStringFilter | string;
 }
 
+export interface InvoiceIndexSuccessResponseBody {
+  invoices: Invoice[];
+  meta?: object;
+  pagination: OffsetPagination;
+}
+
 export interface InvoicePage {
   number?: number;
   size?: number;
+}
+
+export interface InvoiceShowSuccessResponseBody {
+  invoice: Invoice;
+  meta?: object;
 }
 
 export interface InvoiceSort {
@@ -52,11 +73,16 @@ export interface InvoiceUpdatePayload {
   number?: string;
 }
 
+export interface InvoiceUpdateSuccessResponseBody {
+  invoice: Invoice;
+  meta?: object;
+}
+
 export interface InvoicesArchiveResponse {
   body: InvoicesArchiveResponseBody;
 }
 
-export type InvoicesArchiveResponseBody = ErrorResponseBody | { invoice: Invoice; meta?: object };
+export type InvoicesArchiveResponseBody = ErrorResponseBody | InvoiceArchiveSuccessResponseBody;
 
 export interface InvoicesCreateRequest {
   body: InvoicesCreateRequestBody;
@@ -70,7 +96,7 @@ export interface InvoicesCreateResponse {
   body: InvoicesCreateResponseBody;
 }
 
-export type InvoicesCreateResponseBody = ErrorResponseBody | { invoice: Invoice; meta?: object };
+export type InvoicesCreateResponseBody = ErrorResponseBody | InvoiceCreateSuccessResponseBody;
 
 export type InvoicesDestroyResponse = never;
 
@@ -88,13 +114,13 @@ export interface InvoicesIndexResponse {
   body: InvoicesIndexResponseBody;
 }
 
-export type InvoicesIndexResponseBody = ErrorResponseBody | { invoices?: Invoice[]; meta?: object; pagination?: OffsetPagination };
+export type InvoicesIndexResponseBody = ErrorResponseBody | InvoiceIndexSuccessResponseBody;
 
 export interface InvoicesShowResponse {
   body: InvoicesShowResponseBody;
 }
 
-export type InvoicesShowResponseBody = ErrorResponseBody | { invoice: Invoice; meta?: object };
+export type InvoicesShowResponseBody = ErrorResponseBody | InvoiceShowSuccessResponseBody;
 
 export interface InvoicesUpdateRequest {
   body: InvoicesUpdateRequestBody;
@@ -108,7 +134,7 @@ export interface InvoicesUpdateResponse {
   body: InvoicesUpdateResponseBody;
 }
 
-export type InvoicesUpdateResponseBody = ErrorResponseBody | { invoice: Invoice; meta?: object };
+export type InvoicesUpdateResponseBody = ErrorResponseBody | InvoiceUpdateSuccessResponseBody;
 
 export interface Issue {
   code: string;

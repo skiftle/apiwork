@@ -19,17 +19,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  activities:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/activity"
-                  meta:
-                    type: object
-                    properties: {}
-                  pagination:
-                    "$ref": "#/components/schemas/cursorPagination"
+                "$ref": "#/components/schemas/activityIndexSuccessResponseBody"
     post:
       operationId: activitiesCreate
       requestBody:
@@ -49,15 +39,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  activity:
-                    "$ref": "#/components/schemas/activity"
-                  meta:
-                    type: object
-                    properties: {}
-                required:
-                - activity
+                "$ref": "#/components/schemas/activityCreateSuccessResponseBody"
         '422':
           description: Unprocessable Entity
           content:
@@ -79,15 +61,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  activity:
-                    "$ref": "#/components/schemas/activity"
-                  meta:
-                    type: object
-                    properties: {}
-                required:
-                - activity
+                "$ref": "#/components/schemas/activityShowSuccessResponseBody"
     patch:
       operationId: activitiesUpdate
       parameters:
@@ -111,13 +85,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  activity:
-                    "$ref": "#/components/schemas/activity"
-                  meta:
-                    type: object
-                    properties: {}
+                "$ref": "#/components/schemas/activityUpdateSuccessResponseBody"
         '422':
           description: Unprocessable Entity
           content:
@@ -169,6 +137,31 @@ components:
           format: date-time
       required:
       - action
+    activityCreateSuccessResponseBody:
+      type: object
+      properties:
+        activity:
+          "$ref": "#/components/schemas/activity"
+        meta:
+          type: object
+          properties: {}
+      required:
+      - activity
+    activityIndexSuccessResponseBody:
+      type: object
+      properties:
+        activities:
+          type: array
+          items:
+            "$ref": "#/components/schemas/activity"
+        meta:
+          type: object
+          properties: {}
+        pagination:
+          "$ref": "#/components/schemas/cursorPagination"
+      required:
+      - activities
+      - pagination
     activityPage:
       type: object
       properties:
@@ -180,6 +173,16 @@ components:
           type: integer
           minimum: 1
           maximum: 100
+    activityShowSuccessResponseBody:
+      type: object
+      properties:
+        activity:
+          "$ref": "#/components/schemas/activity"
+        meta:
+          type: object
+          properties: {}
+      required:
+      - activity
     activityUpdatePayload:
       type: object
       properties:
@@ -192,6 +195,16 @@ components:
           format: date-time
       required:
       - action
+    activityUpdateSuccessResponseBody:
+      type: object
+      properties:
+        activity:
+          "$ref": "#/components/schemas/activity"
+        meta:
+          type: object
+          properties: {}
+      required:
+      - activity
     cursorPagination:
       type: object
       properties:

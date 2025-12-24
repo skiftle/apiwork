@@ -54,12 +54,40 @@
         }
       }
     },
+    "comment_create_success_response_body": {
+      "type": "object",
+      "shape": {
+        "comment": {
+          "type": "comment"
+        },
+        "meta": {
+          "type": "object",
+          "optional": true
+        }
+      }
+    },
     "comment_include": {
       "type": "object",
       "shape": {
         "commentable": {
           "type": "boolean",
           "optional": true
+        }
+      }
+    },
+    "comment_index_success_response_body": {
+      "type": "object",
+      "shape": {
+        "comments": {
+          "type": "array",
+          "of": "comment"
+        },
+        "meta": {
+          "type": "object",
+          "optional": true
+        },
+        "pagination": {
+          "type": "offset_pagination"
         }
       }
     },
@@ -76,6 +104,18 @@
           "optional": true,
           "min": 1,
           "max": 100
+        }
+      }
+    },
+    "comment_show_success_response_body": {
+      "type": "object",
+      "shape": {
+        "comment": {
+          "type": "comment"
+        },
+        "meta": {
+          "type": "object",
+          "optional": true
         }
       }
     },
@@ -98,6 +138,18 @@
         },
         "body": {
           "type": "string"
+        }
+      }
+    },
+    "comment_update_success_response_body": {
+      "type": "object",
+      "shape": {
+        "comment": {
+          "type": "comment"
+        },
+        "meta": {
+          "type": "object",
+          "optional": true
         }
       }
     },
@@ -583,22 +635,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "comments": {
-                      "type": "array",
-                      "of": "comment",
-                      "optional": true
-                    },
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    },
-                    "pagination": {
-                      "type": "offset_pagination",
-                      "optional": true
-                    }
-                  }
+                  "type": "comment_index_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -623,16 +660,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "comment": {
-                      "type": "comment"
-                    },
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    }
-                  }
+                  "type": "comment_show_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -662,16 +690,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "comment": {
-                      "type": "comment"
-                    },
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    }
-                  }
+                  "type": "comment_create_success_response_body"
                 },
                 {
                   "type": "error_response_body"
@@ -704,16 +723,7 @@
               "type": "union",
               "variants": [
                 {
-                  "type": "object",
-                  "shape": {
-                    "comment": {
-                      "type": "comment"
-                    },
-                    "meta": {
-                      "type": "object",
-                      "optional": true
-                    }
-                  }
+                  "type": "comment_update_success_response_body"
                 },
                 {
                   "type": "error_response_body"

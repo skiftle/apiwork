@@ -93,6 +93,27 @@ export const ErrorResponseBodySchema = z.object({
   layer: LayerSchema
 });
 
+export const ProjectCreateSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  project: ProjectSchema
+});
+
+export const ProjectIndexSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  pagination: OffsetPaginationSchema,
+  projects: z.array(ProjectSchema)
+});
+
+export const ProjectShowSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  project: ProjectSchema
+});
+
+export const ProjectUpdateSuccessResponseBodySchema = z.object({
+  meta: z.object({}).optional(),
+  project: ProjectSchema
+});
+
 export const ProjectFilterSchema: z.ZodType<ProjectFilter> = z.lazy(() => z.object({
   _and: z.array(ProjectFilterSchema).optional(),
   _not: ProjectFilterSchema.optional(),
@@ -111,13 +132,13 @@ export const ProjectsIndexRequestSchema = z.object({
   query: ProjectsIndexRequestQuerySchema
 });
 
-export const ProjectsIndexResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), pagination: OffsetPaginationSchema.optional(), projects: z.array(ProjectSchema).optional() }), ErrorResponseBodySchema]);
+export const ProjectsIndexResponseBodySchema = z.union([ProjectIndexSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const ProjectsIndexResponseSchema = z.object({
   body: ProjectsIndexResponseBodySchema
 });
 
-export const ProjectsShowResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), project: ProjectSchema }), ErrorResponseBodySchema]);
+export const ProjectsShowResponseBodySchema = z.union([ProjectShowSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const ProjectsShowResponseSchema = z.object({
   body: ProjectsShowResponseBodySchema
@@ -131,7 +152,7 @@ export const ProjectsCreateRequestSchema = z.object({
   body: ProjectsCreateRequestBodySchema
 });
 
-export const ProjectsCreateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), project: ProjectSchema }), ErrorResponseBodySchema]);
+export const ProjectsCreateResponseBodySchema = z.union([ProjectCreateSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const ProjectsCreateResponseSchema = z.object({
   body: ProjectsCreateResponseBodySchema
@@ -145,7 +166,7 @@ export const ProjectsUpdateRequestSchema = z.object({
   body: ProjectsUpdateRequestBodySchema
 });
 
-export const ProjectsUpdateResponseBodySchema = z.union([z.object({ meta: z.object({}).optional(), project: ProjectSchema }), ErrorResponseBodySchema]);
+export const ProjectsUpdateResponseBodySchema = z.union([ProjectUpdateSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const ProjectsUpdateResponseSchema = z.object({
   body: ProjectsUpdateResponseBodySchema
@@ -217,6 +238,11 @@ export interface ProjectCreatePayload {
   status?: ProjectStatus | null;
 }
 
+export interface ProjectCreateSuccessResponseBody {
+  meta?: object;
+  project: Project;
+}
+
 export interface ProjectFilter {
   _and?: ProjectFilter[];
   _not?: ProjectFilter;
@@ -227,6 +253,12 @@ export interface ProjectFilter {
   status?: ProjectStatusFilter;
 }
 
+export interface ProjectIndexSuccessResponseBody {
+  meta?: object;
+  pagination: OffsetPagination;
+  projects: Project[];
+}
+
 export interface ProjectPage {
   number?: number;
   size?: number;
@@ -235,6 +267,11 @@ export interface ProjectPage {
 export type ProjectPriority = 'critical' | 'high' | 'low' | 'medium';
 
 export type ProjectPriorityFilter = ProjectPriority | { eq?: ProjectPriority; in?: ProjectPriority[] };
+
+export interface ProjectShowSuccessResponseBody {
+  meta?: object;
+  project: Project;
+}
 
 export interface ProjectSort {
   /** Timestamp when project was created */
@@ -260,6 +297,11 @@ export interface ProjectUpdatePayload {
   status?: ProjectStatus | null;
 }
 
+export interface ProjectUpdateSuccessResponseBody {
+  meta?: object;
+  project: Project;
+}
+
 export interface ProjectsCreateRequest {
   body: ProjectsCreateRequestBody;
 }
@@ -272,7 +314,7 @@ export interface ProjectsCreateResponse {
   body: ProjectsCreateResponseBody;
 }
 
-export type ProjectsCreateResponseBody = ErrorResponseBody | { meta?: object; project: Project };
+export type ProjectsCreateResponseBody = ErrorResponseBody | ProjectCreateSuccessResponseBody;
 
 export type ProjectsDestroyResponse = never;
 
@@ -290,13 +332,13 @@ export interface ProjectsIndexResponse {
   body: ProjectsIndexResponseBody;
 }
 
-export type ProjectsIndexResponseBody = ErrorResponseBody | { meta?: object; pagination?: OffsetPagination; projects?: Project[] };
+export type ProjectsIndexResponseBody = ErrorResponseBody | ProjectIndexSuccessResponseBody;
 
 export interface ProjectsShowResponse {
   body: ProjectsShowResponseBody;
 }
 
-export type ProjectsShowResponseBody = ErrorResponseBody | { meta?: object; project: Project };
+export type ProjectsShowResponseBody = ErrorResponseBody | ProjectShowSuccessResponseBody;
 
 export interface ProjectsUpdateRequest {
   body: ProjectsUpdateRequestBody;
@@ -310,7 +352,7 @@ export interface ProjectsUpdateResponse {
   body: ProjectsUpdateResponseBody;
 }
 
-export type ProjectsUpdateResponseBody = ErrorResponseBody | { meta?: object; project: Project };
+export type ProjectsUpdateResponseBody = ErrorResponseBody | ProjectUpdateSuccessResponseBody;
 
 export type SortDirection = 'asc' | 'desc';
 
