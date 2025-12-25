@@ -41,7 +41,7 @@ module Apiwork
         }.compact
       end
 
-      def render_error(issues, layer, action_summary)
+      def render_error(issues, layer)
         {
           layer:,
           issues: issues.map(&:to_h)
@@ -50,10 +50,6 @@ module Apiwork
 
       def transform_request(hash)
         ParamsNormalizer.call(hash)
-      end
-
-      def transform_response(hash)
-        hash
       end
     end
   end
