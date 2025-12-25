@@ -108,7 +108,7 @@ end
 
 ### .as_json()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L385)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L390)
 
 Alias for [#introspect](#introspect).
 
@@ -225,9 +225,9 @@ end
 
 ---
 
-### .introspect(locale: = nil)
+### .introspect(locale: = nil, expand: = false)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L377)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L382)
 
 Returns a hash representation of this contract's structure.
 
@@ -239,6 +239,7 @@ Useful for generating documentation or client code.
 | Name | Type | Description |
 |------|------|-------------|
 | `locale` | `Symbol` | optional locale for translated descriptions |
+| `expand` | `Boolean` | include imported and global types/enums (default: false) |
 
 **Returns**
 
@@ -249,6 +250,13 @@ Useful for generating documentation or client code.
 ```ruby
 InvoiceContract.introspect
 # => { actions: { create: { request: {...}, response: {...} } } }
+```
+
+**Example: With all available types**
+
+```ruby
+InvoiceContract.introspect(expand: true)
+# => { actions: {...}, types: { local: {...}, imported: {...}, global: {...} } }
 ```
 
 ---

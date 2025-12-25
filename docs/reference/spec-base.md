@@ -33,7 +33,7 @@ Apiwork::Spec.register(ProtobufSpec)
 
 ### .generate(api_path, **options)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L46)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L51)
 
 Generates a spec for the given API path.
 
@@ -50,11 +50,29 @@ Generates a spec for the given API path.
 
 ---
 
+### .spec_name(name = nil)
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L32)
+
+Sets or returns the spec name identifier.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `Symbol, nil` | the spec name to set |
+
+**Returns**
+
+`Symbol`, `nil` — the spec name, or nil if not set
+
+---
+
 ## Instance Methods
 
 ### #generate()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L114)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L119)
 
 Generates the spec output.
 

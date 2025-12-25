@@ -18,8 +18,8 @@ Registers an adapter.
 
 **Parameters**
 
-| Name    | Type    | Description                                                     |
-| ------- | ------- | --------------------------------------------------------------- |
+| Name | Type | Description |
+|------|------|-------------|
 | `klass` | `Class` | an [Adapter::Base](adapter-base) subclass with adapter_name set |
 
 **Example**
