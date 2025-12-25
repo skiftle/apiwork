@@ -25,6 +25,7 @@ module Apiwork
           @path_format = :keep
 
           @namespaces = path == '/' ? [] : path.split('/').reject(&:empty?).map { |n| n.tr('-', '_').to_sym }
+          @contract_introspect_cache = {}
 
           @metadata = Metadata.new(path)
           @recorder = Recorder.new(@metadata, @namespaces)
@@ -441,8 +442,17 @@ module Apiwork
           @introspect_cache[locale] ||= Apiwork::Introspection.api(self, locale:)
         end
 
+        def contract_introspect(contract_class, locale:, expand:)
+          ensure_all_contracts_built!
+          cache_key = [contract_class, locale, expand]
+          @contract_introspect_cache ||= {}
+          @contract_introspect_cache[cache_key] ||= Apiwork::Introspection.contract(contract_class, locale:, expand:)
+        end
+
         def reset_contracts!
           @built_contracts = Set.new
+          @introspect_cache = {}
+          @contract_introspect_cache = {}
         end
 
         def ensure_contract_built!(contract_class)

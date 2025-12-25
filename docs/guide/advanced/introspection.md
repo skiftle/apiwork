@@ -202,13 +202,13 @@ Or use the built-in [spec endpoints](../core/specs/introduction.md) with proper 
 
 ### Caching Behavior
 
-| Method | Cached? | Notes |
-|--------|---------|-------|
-| `API.introspect` | Yes | Per locale, on the API class |
-| `Contract.introspect` | No | Computed each call |
+| Method | Cached? | Cache key |
+|--------|---------|-----------|
+| `API.introspect` | Yes | `locale` |
+| `Contract.introspect` | Yes | `locale`, `expand` |
 | Spec generators | Yes | Use API.introspect internally |
 
-The API cache persists for the application lifetime. Call `API.reset_contracts!` to clear it (useful in development with code reloading).
+Both caches persist for the application lifetime. Call `API.reset_contracts!` to clear them (useful in development with code reloading).
 
 ## Field Types
 

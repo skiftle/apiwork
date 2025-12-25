@@ -380,7 +380,7 @@ module Apiwork
         #   InvoiceContract.introspect(expand: true)
         #   # => { actions: {...}, types: { local: {...}, imported: {...}, global: {...} } }
         def introspect(locale: nil, expand: false)
-          Apiwork::Introspection.contract(self, locale:, expand:)
+          api_class.contract_introspect(self, locale:, expand:)
         end
 
         def api_class
