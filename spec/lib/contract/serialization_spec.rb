@@ -322,46 +322,6 @@ RSpec.describe 'Contract Serialization' do
     end
   end
 
-  describe 'Contract::Base.introspect' do
-    it 'returns introspection for specific action' do
-      contract_class = create_test_contract do
-        action :create do
-          request do
-            body do
-              param :title, type: :string
-            end
-          end
-        end
-
-        action :update do
-          request do
-            body do
-              param :body, type: :string, optional: true
-            end
-          end
-        end
-      end
-
-      json = contract_class.introspect(action: :create)
-
-      expect(json).to eq({
-                           request: {
-                             body: {
-                               title: { type: :string }
-                             }
-                           }
-                         })
-    end
-
-    it 'returns nil for non-existent action' do
-      contract_class = create_test_contract
-
-      json = contract_class.introspect(action: :nonexistent)
-
-      expect(json).to be_nil
-    end
-  end
-
   describe 'Contract::Base.as_json with API routing configuration' do
     context 'when API definition is available' do
       before do

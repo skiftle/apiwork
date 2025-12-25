@@ -3,30 +3,22 @@
 module Apiwork
   module Introspection
     class ContractSerializer
-      def initialize(contract_class, action: nil)
+      def initialize(contract_class)
         @contract_class = contract_class
-        @action = action
       end
 
       def serialize
-        if @action
-          action_definition = @contract_class.action_definition(@action)
-          return nil unless action_definition
+        result = { actions: {} }
 
-          ActionSerializer.new(action_definition).serialize
-        else
-          result = { actions: {} }
+        actions = available_actions
+        actions = @contract_class.action_definitions.keys if actions.empty?
 
-          actions = available_actions
-          actions = @contract_class.action_definitions.keys if actions.empty?
-
-          actions.each do |action_name|
-            action_definition = @contract_class.action_definition(action_name)
-            result[:actions][action_name] = ActionSerializer.new(action_definition).serialize if action_definition
-          end
-
-          result
+        actions.each do |action_name|
+          action_definition = @contract_class.action_definition(action_name)
+          result[:actions][action_name] = ActionSerializer.new(action_definition).serialize if action_definition
         end
+
+        result
       end
 
       private
