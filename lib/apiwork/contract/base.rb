@@ -369,13 +369,18 @@ module Apiwork
         # Useful for generating documentation or client code.
         #
         # @param locale [Symbol] optional locale for translated descriptions
+        # @param expand [Boolean] include imported and global types/enums (default: false)
         # @return [Hash] contract structure with :actions key
         #
         # @example
         #   InvoiceContract.introspect
         #   # => { actions: { create: { request: {...}, response: {...} } } }
-        def introspect(locale: nil)
-          Apiwork::Introspection.contract(self, locale:)
+        #
+        # @example With all available types
+        #   InvoiceContract.introspect(expand: true)
+        #   # => { actions: {...}, types: { local: {...}, imported: {...}, global: {...} } }
+        def introspect(locale: nil, expand: false)
+          Apiwork::Introspection.contract(self, locale:, expand:)
         end
 
         # @api public

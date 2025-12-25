@@ -320,6 +320,119 @@ RSpec.describe 'Contract Serialization' do
       expect(json[:actions][:create]).to have_key(:request)
       expect(json[:actions][:create]).to have_key(:response)
     end
+
+    it 'includes types defined in the contract' do
+      contract_class = create_test_contract do
+        type :shipping_location do
+          param :street, type: :string
+          param :city, type: :string
+        end
+
+        action :create do
+          request do
+            body do
+              param :shipping, type: :shipping_location
+            end
+          end
+        end
+      end
+
+      json = contract_class.as_json
+
+      expect(json).to have_key(:types)
+      expect(json[:types].keys).to include(:shipping_location)
+      expect(json[:types][:shipping_location][:type]).to eq(:object)
+      expect(json[:types][:shipping_location][:shape]).to eq({
+                                                               street: { type: :string },
+                                                               city: { type: :string }
+                                                             })
+    end
+
+    it 'includes enums defined in the contract' do
+      contract_class = create_test_contract do
+        enum :invoice_status, values: %w[draft published archived]
+
+        action :update do
+          request do
+            body do
+              param :status, enum: :invoice_status
+            end
+          end
+        end
+      end
+
+      json = contract_class.as_json
+
+      expect(json).to have_key(:enums)
+      expect(json[:enums].keys).to include(:invoice_status)
+      expect(json[:enums][:invoice_status][:values]).to eq(%w[draft published archived])
+    end
+
+    it 'does not include empty types/enums keys' do
+      contract_class = create_test_contract do
+        action :index do
+          response do
+            body do
+              param :items, type: :array
+            end
+          end
+        end
+      end
+
+      json = contract_class.as_json
+
+      expect(json).not_to have_key(:types)
+      expect(json).not_to have_key(:enums)
+    end
+
+    context 'with expand: true' do
+      it 'includes global API-level types' do
+        api = TestApiHelper.api_class
+        api.type :global_pagination_type do
+          param :page, type: :integer
+          param :per_page, type: :integer
+        end
+
+        contract_class = create_test_contract do
+          type :local_contract_type do
+            param :name, type: :string
+          end
+
+          action :index do
+            response do
+              body do
+                param :items, type: :array
+              end
+            end
+          end
+        end
+
+        json = contract_class.introspect(expand: true)
+
+        expect(json[:types].keys).to include(:local_contract_type)
+        expect(json[:types].keys).to include(:global_pagination_type)
+      end
+
+      it 'does not include global types without expand' do
+        api = TestApiHelper.api_class
+        api.type :another_global_type do
+          param :value, type: :string
+        end
+
+        contract_class = create_test_contract do
+          type :my_local_type do
+            param :id, type: :integer
+          end
+
+          action :show
+        end
+
+        json = contract_class.introspect
+
+        expect(json[:types].keys).to include(:my_local_type)
+        expect(json[:types].keys).not_to include(:another_global_type)
+      end
+    end
   end
 
   describe 'Contract::Base.as_json with API routing configuration' do
