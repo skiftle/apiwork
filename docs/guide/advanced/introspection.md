@@ -4,39 +4,48 @@ order: 1
 
 # Introspection
 
-Apiwork's internal representation of your API. A compact, machine-readable hash that contains everything: resources, actions, types, enums, error codes.
+Apiwork exposes your API as data. Introspection returns a compact, machine-readable hash of your entire API or a single contract.
 
-You rarely call it directly. Spec generators like [OpenAPI](../core/specs/open-api.md), [TypeScript](../core/specs/typescript.md), and [Zod](../core/specs/zod.md) read from this format internally. But if you're building a custom generator, you need to understand it.
+Spec generators read from this format: [OpenAPI](../core/specs/open-api.md), [TypeScript](../core/specs/typescript.md), and [Zod](../core/specs/zod.md). You can call `introspect` directly during development to debug what Apiwork built from your contracts and schemas.
 
-::: warning Performance
-Introspection is designed for development and build-time generation. It's slow. Don't call it on every request in production. Generate static files instead.
-:::
+The output includes:
 
-## Two Levels
+- Resources and actions
+- Request and response shapes
+- Types and enums
+- Registered error codes
+- API metadata (title, version, description)
 
-Apiwork provides introspection at two levels:
+Introspection is the **single source of truth** for spec generation.
 
-### API Introspection
+---
 
-The complete picture. Everything in your API.
+## API Introspection
+
+Returns the complete API:
 
 ```ruby
 Apiwork::API.introspect('/api/v1')
 Apiwork::API.introspect('/api/v1', locale: :sv)
 ```
 
-Returns:
+Includes:
+
 - All resources and nested resources
-- All actions with their request/response definitions
+- All actions with request and response definitions
 - All types and enums (global and resource-scoped)
-- Error codes and raises
-- API metadata (title, version, description)
+- Error codes that actions can raise
+- API metadata
 
-**Cached per locale.** First call builds everything. Subsequent calls return the cached hash.
+::: info
+Results are **cached** per locale. The first call builds the structure; later calls use the cached version.
+:::
 
-### Contract Introspection
+---
 
-A single contract. Useful for development tools or debugging.
+## Contract Introspection
+
+Returns introspection for a single contract:
 
 ```ruby
 InvoiceContract.introspect
@@ -44,22 +53,19 @@ InvoiceContract.introspect(locale: :sv)
 InvoiceContract.introspect(expand: true)
 ```
 
-Returns:
-- Actions defined in the contract
-- Types and enums scoped to this contract
+Includes:
 
-**Not cached.** Computed on every call.
+- Actions defined on the contract
+- Types and enums **scoped** to the contract
 
-## The expand Parameter
-
-By default, `Contract.introspect` returns only types defined in that contract.
+By default, referenced types are not included:
 
 ```ruby
 InvoiceContract.introspect
 # => { actions: {...}, types: { invoice_filter: {...} } }
 ```
 
-With `expand: true`, it walks the dependency graph and includes all referenced types:
+When you pass `expand: true`, referenced types are resolved:
 
 ```ruby
 InvoiceContract.introspect(expand: true)
@@ -67,26 +73,39 @@ InvoiceContract.introspect(expand: true)
 #   actions: {...},
 #   types: {
 #     invoice_filter: {...},
-#     datetime_filter: {...},  # Referenced by invoice_filter
-#     string_filter: {...},    # Referenced by invoice_filter
-#     offset_pagination: {...} # Referenced in response
+#     datetime_filter: {...},
+#     string_filter: {...},
+#     offset_pagination: {...}
 #   }
 # }
 ```
 
-This is useful when you need a self-contained snapshot of everything a contract uses.
+::: info
+Contract introspection is **cached** by locale and `expand`.
+:::
+
+---
 
 ## Output Structure
 
-Compact by design. Only meaningful values are included.
+The structure is designed for machines.
+
+Defaults are omitted to keep output small:
+
+| Property      | Omitted when   |
+| ------------- | -------------- |
+| `optional`    | `false`        |
+| `nullable`    | `false`        |
+| `default`     | `nil`          |
+| `description` | `nil` or empty |
+| `deprecated`  | `false`        |
+
+Example:
 
 ```json
 {
   "path": "/api/v1",
-  "info": {
-    "title": "My API",
-    "version": "1.0.0"
-  },
+  "info": { "title": "My API", "version": "1.0.0" },
   "resources": {
     "posts": {
       "path": "posts",
@@ -95,228 +114,110 @@ Compact by design. Only meaningful values are included.
           "method": "GET",
           "path": "/",
           "response": {
-            "body": {
-              "type": "array",
-              "of": "post"
-            }
-          }
-        },
-        "create": {
-          "method": "POST",
-          "path": "/",
-          "request": {
-            "body": {
-              "title": {
-                "type": "string"
-              },
-              "body": {
-                "type": "string",
-                "optional": true
-              }
-            }
-          },
-          "response": {
-            "body": {
-              "type": "post"
-            }
+            "body": { "type": "array", "of": "post" }
           }
         }
       }
     }
   },
   "types": {
-    "post": {
-      "type": "object",
-      "shape": {
-        "id": {
-          "type": "integer"
-        },
-        "title": {
-          "type": "string"
-        },
-        "body": {
-          "type": "string"
-        }
-      }
-    }
+    "post": { "type": "object", "shape": { "id": { "type": "integer" } } }
   },
-  "enums": {
-    "status": {
-      "values": ["draft", "published", "archived"]
-    }
-  },
+  "enums": { "status": { "values": ["draft", "published", "archived"] } },
   "error_codes": {
-    "bad_request": {
-      "status": 400,
-      "description": "Bad Request"
-    },
-    "not_found": {
-      "status": 404,
-      "description": "Not Found"
-    }
+    "bad_request": { "status": 400, "description": "Bad Request" }
   }
 }
 ```
 
-Properties are omitted when they have default values:
+A simple string becomes:
 
-| Property      | Omitted when      |
-| ------------- | ----------------- |
-| `optional`    | `false` (default) |
-| `nullable`    | `false` (default) |
-| `default`     | `nil`             |
-| `description` | `nil` or empty    |
-| `deprecated`  | `false` (default) |
-
-A simple string field appears as `{ "type": "string" }`, not `{ "type": "string", "optional": false, "nullable": false, "deprecated": false }`.
-
-## Performance and Production
-
-Introspection is slow because it:
-
-1. **Builds all contracts** - Walks every resource, registers contracts with the adapter
-2. **Resolves type dependencies** - Expands type definitions, follows references
-3. **Serializes deeply** - Recursively serializes all param structures
-
-::: danger Don't call in production request handlers
-Never do this:
-
-```ruby
-# Bad - runs introspection on every request
-def spec
-  render json: Apiwork::API.introspect('/api/v1')
-end
-```
-:::
-
-### For Production
-
-Generate static files at build time:
-
-```ruby
-# In a Rake task or build script
-File.write('public/api/introspection.json', Apiwork::API.introspect('/api/v1').to_json)
+```json
+{ "type": "string" }
 ```
 
-Or use the built-in [spec endpoints](../core/specs/introduction.md) with proper caching headers.
+---
 
-### Caching Behavior
+## Types
 
-| Method | Cached? | Cache key |
-|--------|---------|-----------|
-| `API.introspect` | Yes | `locale` |
-| `Contract.introspect` | Yes | `locale`, `expand` |
-| Spec generators | Yes | Use API.introspect internally |
-
-Both caches persist for the application lifetime. Call `API.reset_contracts!` to clear them (useful in development with code reloading).
-
-## Field Types
-
-If you're building a custom spec generator, you need to map these types.
+If you build a custom spec generator, you must handle these types.
 
 ### Primitive Types
 
-| Type       | Description            | `min`/`max` meaning | `format` support       |
-| ---------- | ---------------------- | ------------------- | ---------------------- |
-| `string`   | Text                   | Character length    | `email`, `uri`, `uuid` |
-| `integer`  | Whole number           | Numeric value       | -                      |
-| `float`    | Decimal number         | Numeric value       | -                      |
-| `decimal`  | High-precision decimal | Numeric value       | -                      |
-| `boolean`  | True/false             | -                   | -                      |
-| `datetime` | ISO 8601 timestamp     | -                   | `date-time`            |
-| `date`     | ISO 8601 date only     | -                   | `date`                 |
-| `uuid`     | UUID string            | -                   | `uuid`                 |
+| Type               | Meaning            | `min`/`max` | Format                 |
+| ------------------ | ------------------ | ----------- | ---------------------- |
+| `string`           | text               | length      | `email`, `uri`, `uuid` |
+| `integer`          | whole number       | value       | -                      |
+| `float`, `decimal` | decimal number     | value       | -                      |
+| `boolean`          | true/false         | -           | -                      |
+| `datetime`         | ISO 8601 timestamp | -           | `date-time`            |
+| `date`             | ISO 8601 date      | -           | `date`                 |
+| `uuid`             | UUID string        | -           | `uuid`                 |
 
-### Container Types
+### Container and Composite Types
 
-| Type     | Description             | Required fields             |
-| -------- | ----------------------- | --------------------------- |
-| `array`  | Ordered list            | `of` (element type)         |
-| `object` | Key-value structure     | `shape` (field definitions) |
-| `union`  | Multiple possible types | `variants` (array of types) |
+| Type           | Description                 | Required fields |
+| -------------- | --------------------------- | --------------- |
+| `array`        | ordered list                | `of`            |
+| `object`       | structured fields           | `shape`         |
+| `union`        | multiple possible types     | `variants`      |
+| `literal`      | exact value                 | `value`         |
+| custom type    | reference to a defined type | -               |
+| enum reference | reference to a defined enum | -               |
 
-### Special Types
-
-| Type             | Description               | Required fields |
-| ---------------- | ------------------------- | --------------- |
-| `literal`        | Exact value match         | `value`         |
-| Custom type name | Reference to defined type | -               |
-| Enum reference   | Reference to defined enum | -               |
+---
 
 ## Field Properties
 
-| Property        | Description                                        |
-| --------------- | -------------------------------------------------- |
-| `type`          | The data type                                      |
-| `optional`      | Field can be omitted from request                  |
-| `nullable`      | Field value can be `null`                          |
-| `default`       | Value used when field is omitted                   |
-| `description`   | Human-readable documentation                       |
-| `example`       | Sample value for documentation                     |
-| `format`        | Format hint (e.g., `email`, `uri`)                 |
-| `deprecated`    | Field should not be used                           |
-| `min`           | Minimum value (numbers) or length (strings/arrays) |
-| `max`           | Maximum value (numbers) or length (strings/arrays) |
-| `enum`          | Valid values (inline array or reference)           |
-| `of`            | Element type for arrays                            |
-| `shape`         | Nested field definitions for objects               |
-| `variants`      | Possible types for unions                          |
-| `discriminator` | Field name that determines union variant           |
-| `tag`           | Value that identifies a union variant              |
-| `value`         | Exact value for literal type                       |
-| `as`            | Transformation alias (e.g., `comments_attributes`) |
+| Property        | Meaning                      |
+| --------------- | ---------------------------- |
+| `type`          | field type                   |
+| `optional`      | omitted in requests          |
+| `nullable`      | can be `null`                |
+| `default`       | used when omitted            |
+| `description`   | human-readable               |
+| `example`       | documentation-only           |
+| `format`        | format hint                  |
+| `deprecated`    | field should not be used     |
+| `min` / `max`   | numeric or length constraint |
+| `enum`          | allowed values               |
+| `of`            | array element type           |
+| `shape`         | nested fields                |
+| `variants`      | union alternatives           |
+| `discriminator` | union routing field          |
+| `tag`           | union variant identifier     |
+| `value`         | literal                      |
+| `as`            | Rails/JSON alias             |
 
-### Property Applicability
-
-| Property        | string | integer | float | boolean | date | array  | object | union | literal |
-| --------------- | ------ | ------- | ----- | ------- | ---- | ------ | ------ | ----- | ------- |
-| `type`          | ✓      | ✓       | ✓     | ✓       | ✓    | ✓      | ✓      | ✓     | ✓       |
-| `optional`      | ✓      | ✓       | ✓     | ✓       | ✓    | ✓      | ✓      | ✓     | ✓       |
-| `nullable`      | ✓      | ✓       | ✓     | ✓       | ✓    | ✓      | ✓      | ✓     | ✓       |
-| `default`       | ✓      | ✓       | ✓     | ✓       | ✓    | ✓      | ✓      | -     | ✓       |
-| `description`   | ✓      | ✓       | ✓     | ✓       | ✓    | ✓      | ✓      | ✓     | ✓       |
-| `example`       | ✓      | ✓       | ✓     | ✓       | ✓    | ✓      | ✓      | ✓     | -       |
-| `format`        | ✓      | -       | -     | -       | ✓    | -      | -      | -     | -       |
-| `deprecated`    | ✓      | ✓       | ✓     | ✓       | ✓    | ✓      | ✓      | ✓     | ✓       |
-| `min`           | length | value   | value | -       | -    | length | -      | -     | -       |
-| `max`           | length | value   | value | -       | -    | length | -      | -     | -       |
-| `enum`          | ✓      | ✓       | -     | -       | -    | -      | -      | -     | -       |
-| `of`            | -      | -       | -     | -       | -    | ✓      | -      | -     | -       |
-| `shape`         | -      | -       | -     | -       | -    | ✓\*    | ✓      | ✓\*   | -       |
-| `variants`      | -      | -       | -     | -       | -    | -      | -      | ✓     | -       |
-| `discriminator` | -      | -       | -     | -       | -    | -      | -      | ✓     | -       |
-| `tag`           | -      | -       | -     | -       | -    | -      | -      | ✓     | -       |
-| `value`         | -      | -       | -     | -       | -    | -      | -      | -     | ✓       |
-| `as`            | ✓      | ✓       | ✓     | ✓       | ✓    | ✓      | ✓      | ✓     | -       |
-
-\* `shape` on array: when `of: :object`. On union: inside each variant.
+---
 
 ## Conditional Type Generation
 
-Types are generated only when needed:
+Apiwork generates helper types only when needed:
 
-| Type                                 | Generated when                               |
-| ------------------------------------ | -------------------------------------------- |
-| `error_response_body`                | API has at least one resource                |
-| `offset_pagination`                  | At least one resource uses offset pagination |
-| `cursor_pagination`                  | At least one resource uses cursor pagination |
-| `sort_direction`                     | At least one attribute is sortable           |
-| Filter types (`string_filter`, etc.) | At least one attribute is filterable         |
-| `*_filter`                           | Schema has filterable attributes             |
-| `*_sort`                             | Schema has sortable attributes               |
-| `*_create_payload`                   | Schema has writable attributes + create action |
-| `*_update_payload`                   | Schema has writable attributes + update action |
+| Type                  | Generated when                       |
+| --------------------- | ------------------------------------ |
+| `error_response_body` | API has resources                    |
+| `offset_pagination`   | any resource uses offset pagination  |
+| `cursor_pagination`   | cursor pagination is used            |
+| filter types          | attribute is filterable              |
+| `*_filter`            | schema defines filterable attributes |
+| `*_sort`              | schema defines sortable attributes   |
+| `*_create_payload`    | writable attributes + create action  |
+| `*_update_payload`    | writable attributes + update action  |
+
+::: tip
+If a generator expects a helper type, make sure your schema uses that capability.
+:::
+
+---
 
 ## Building Custom Generators
 
-To build a custom spec generator, you need to:
+To implement a custom spec:
 
-1. Read the introspection output
-2. Walk the structure and map to your target format
-3. Handle all field types and properties
+1. Call `Apiwork::API.introspect('/api/v1')`
+2. Walk the structure
+3. Map every field type and property
 
-See [Custom Specs](./custom-specs.md) for implementation details.
-
-::: info
-All built-in generators (OpenAPI, TypeScript, Zod) read from this same format. The introspection output is the single source of truth.
-:::
+See [Custom Specs](./custom-specs.md) for extension guidance.
