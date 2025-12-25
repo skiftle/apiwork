@@ -17,7 +17,7 @@ Use as a declarative builder - do not rely on internal state.
 
 ### #body(&block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_definition.rb#L69)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_definition.rb#L68)
 
 Defines the request body for this request.
 
