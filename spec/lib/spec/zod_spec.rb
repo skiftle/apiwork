@@ -619,7 +619,7 @@ RSpec.describe Apiwork::Spec::Zod do
   end
 
   describe 'unknown type mapping' do
-    let(:mapper) { Apiwork::Spec::ZodMapper.new(introspection: introspect) }
+    let(:mapper) { Apiwork::Spec::ZodMapper.new(data: introspect) }
 
     it 'maps :unknown to z.unknown()' do
       result = mapper.send(:map_primitive, { type: :unknown })
@@ -633,7 +633,7 @@ RSpec.describe Apiwork::Spec::Zod do
   end
 
   describe 'Zod v4 format mapping' do
-    let(:mapper) { Apiwork::Spec::ZodMapper.new(introspection: introspect) }
+    let(:mapper) { Apiwork::Spec::ZodMapper.new(data: introspect) }
 
     describe 'string formats' do
       it 'maps email format to z.email()' do

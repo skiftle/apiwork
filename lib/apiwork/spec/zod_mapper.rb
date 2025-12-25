@@ -18,11 +18,11 @@ module Apiwork
         unknown: 'z.unknown()'
       }.freeze
 
-      attr_reader :introspection,
+      attr_reader :data,
                   :key_format
 
-      def initialize(introspection:, key_format: :keep)
-        @introspection = introspection
+      def initialize(data:, key_format: :keep)
+        @data = data
         @key_format = key_format
       end
 
@@ -275,11 +275,11 @@ module Apiwork
       private
 
       def types
-        introspection[:types] || {}
+        data[:types] || {}
       end
 
       def enums
-        introspection[:enums] || {}
+        data[:enums] || {}
       end
 
       def enum_or_type_reference?(symbol)
