@@ -9,7 +9,7 @@ module Apiwork
     # Override the render and transform methods to customize behavior.
     #
     # @example Custom adapter
-    #   class JsonApiAdapter < Apiwork::Adapter::Base
+    #   class JSONAPIAdapter < Apiwork::Adapter::Base
     #     adapter_name :jsonapi
     #
     #     def render_record(record, schema_class, action_summary)
@@ -18,7 +18,7 @@ module Apiwork
     #   end
     #
     #   # Register the adapter
-    #   Apiwork::Adapter.register(JsonApiAdapter)
+    #   Apiwork::Adapter.register(JSONAPIAdapter)
     class Base
       include Configurable
 

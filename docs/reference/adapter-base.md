@@ -16,7 +16,7 @@ Override the render and transform methods to customize behavior.
 **Example: Custom adapter**
 
 ```ruby
-class JsonApiAdapter < Apiwork::Adapter::Base
+class JSONAPIAdapter < Apiwork::Adapter::Base
   adapter_name :jsonapi
 
   def render_record(record, schema_class, action_summary)
@@ -25,7 +25,7 @@ class JsonApiAdapter < Apiwork::Adapter::Base
 end
 
 # Register the adapter
-Apiwork::Adapter.register(JsonApiAdapter)
+Apiwork::Adapter.register(JSONAPIAdapter)
 ```
 
 ## Instance Methods
@@ -56,11 +56,11 @@ Renders a collection response.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `collection` | `Enumerable` | the records to render |
-| `schema_class` | `Class` | a [Schema::Base](schema-base) subclass |
-| `action_summary` | `ActionSummary` | request context |
+| Name             | Type            | Description                            |
+| ---------------- | --------------- | -------------------------------------- |
+| `collection`     | `Enumerable`    | the records to render                  |
+| `schema_class`   | `Class`         | a [Schema::Base](schema-base) subclass |
+| `action_summary` | `ActionSummary` | request context                        |
 
 **Returns**
 
@@ -76,10 +76,10 @@ Renders an error response.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `issues` | `Array<Issue>` | the validation issues |
-| `action_summary` | `ActionSummary` | request context |
+| Name             | Type            | Description           |
+| ---------------- | --------------- | --------------------- |
+| `issues`         | `Array<Issue>`  | the validation issues |
+| `action_summary` | `ActionSummary` | request context       |
 
 **Returns**
 
@@ -95,11 +95,11 @@ Renders a single record response.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `record` | `Object` | the record to render |
-| `schema_class` | `Class` | a [Schema::Base](schema-base) subclass |
-| `action_summary` | `ActionSummary` | request context |
+| Name             | Type            | Description                            |
+| ---------------- | --------------- | -------------------------------------- |
+| `record`         | `Object`        | the record to render                   |
+| `schema_class`   | `Class`         | a [Schema::Base](schema-base) subclass |
+| `action_summary` | `ActionSummary` | request context                        |
 
 **Returns**
 
@@ -116,9 +116,9 @@ Override to customize key casing, unwrapping, etc.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `hash` | `Hash` | the request parameters |
+| Name           | Type    | Description                                       |
+| -------------- | ------- | ------------------------------------------------- |
+| `hash`         | `Hash`  | the request parameters                            |
 | `schema_class` | `Class` | a [Schema::Base](schema-base) subclass (optional) |
 
 **Returns**
@@ -136,9 +136,9 @@ Override to customize key casing, wrapping, etc.
 
 **Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `hash` | `Hash` | the response data |
+| Name           | Type    | Description                                       |
+| -------------- | ------- | ------------------------------------------------- |
+| `hash`         | `Hash`  | the response data                                 |
 | `schema_class` | `Class` | a [Schema::Base](schema-base) subclass (optional) |
 
 **Returns**

@@ -10,7 +10,7 @@ module Apiwork
       # @param klass [Class] an {Adapter::Base} subclass with adapter_name set
       #
       # @example
-      #   Apiwork::Adapter.register(JsonApiAdapter)
+      #   Apiwork::Adapter.register(JSONAPIAdapter)
       def register(klass)
         Registry.register(klass)
       end
