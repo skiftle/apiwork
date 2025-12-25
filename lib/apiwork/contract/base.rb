@@ -383,14 +383,6 @@ module Apiwork
           Apiwork::Introspection.contract(self, locale:, expand:)
         end
 
-        # @api public
-        # Alias for {#introspect}.
-        #
-        # @return [Hash] contract structure
-        def as_json
-          introspect
-        end
-
         def api_class
           return @api_class if instance_variable_defined?(:@api_class)
           return nil unless name

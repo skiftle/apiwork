@@ -12,9 +12,9 @@ RSpec.describe 'API Introspection' do
     load File.expand_path('../../dummy/app/contracts/api/v1/article_contract.rb', __dir__) if defined?(Api::V1::ArticleContract)
   end
 
-  describe 'API.as_json' do
+  describe 'API.introspect' do
     let(:api) { Apiwork::API.find('/api/v1') }
-    let(:json) { api.as_json }
+    let(:json) { api.introspect }
 
     it 'returns complete API structure' do
       expect(json).to be_a(Hash)
@@ -283,7 +283,7 @@ RSpec.describe 'API Introspection' do
 
   describe 'raises and error_codes' do
     let(:api) { Apiwork::API.find('/api/v1') }
-    let(:json) { api.as_json }
+    let(:json) { api.introspect }
 
     it 'includes API-level raises at root level' do
       expect(json[:raises]).to contain_exactly(:bad_request, :internal_server_error)
@@ -334,7 +334,7 @@ RSpec.describe 'API Introspection' do
   describe 'nil handling' do
     it 'returns nil when API has no metadata' do
       api_class = Class.new(Apiwork::API::Base)
-      expect(api_class.as_json).to be_nil
+      expect(api_class.introspect).to be_nil
     end
   end
 end

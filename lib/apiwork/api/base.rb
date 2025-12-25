@@ -441,10 +441,6 @@ module Apiwork
           @introspect_cache[locale] ||= Apiwork::Introspection.api(self, locale:)
         end
 
-        def as_json
-          introspect
-        end
-
         def reset_contracts!
           @built_contracts = Set.new
         end

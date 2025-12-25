@@ -286,7 +286,7 @@ RSpec.describe 'Contract Serialization' do
     end
   end
 
-  describe 'Contract::Base.as_json' do
+  describe 'Contract::Base.introspect' do
     it 'serializes entire contract with all actions' do
       contract_class = create_test_contract do
         action :index do
@@ -312,7 +312,7 @@ RSpec.describe 'Contract Serialization' do
         end
       end
 
-      json = contract_class.as_json
+      json = contract_class.introspect
 
       expect(json[:actions].keys).to contain_exactly(:index, :create)
       expect(json[:actions][:index]).not_to have_key(:request)
@@ -337,7 +337,7 @@ RSpec.describe 'Contract Serialization' do
         end
       end
 
-      json = contract_class.as_json
+      json = contract_class.introspect
 
       expect(json).to have_key(:types)
       expect(json[:types].keys).to include(:shipping_location)
@@ -361,7 +361,7 @@ RSpec.describe 'Contract Serialization' do
         end
       end
 
-      json = contract_class.as_json
+      json = contract_class.introspect
 
       expect(json).to have_key(:enums)
       expect(json[:enums].keys).to include(:invoice_status)
@@ -379,7 +379,7 @@ RSpec.describe 'Contract Serialization' do
         end
       end
 
-      json = contract_class.as_json
+      json = contract_class.introspect
 
       expect(json).not_to have_key(:types)
       expect(json).not_to have_key(:enums)
@@ -469,7 +469,7 @@ RSpec.describe 'Contract Serialization' do
     end
   end
 
-  describe 'Contract::Base.as_json with API routing configuration' do
+  describe 'Contract::Base.introspect with API routing configuration' do
     context 'when API definition is available' do
       before do
         # Ensure API is loaded
@@ -479,7 +479,7 @@ RSpec.describe 'Contract Serialization' do
       it 'includes all CRUD actions plus custom actions when no restrictions specified' do
         # PostContract should include actions based on API routing configuration
         # as defined in /spec/dummy/config/apis/v1.rb: resources :posts with member/collection actions
-        json = Api::V1::PostContract.as_json
+        json = Api::V1::PostContract.introspect
 
         # Should have all CRUD actions
         expect(json[:actions].keys).to include(:index, :show, :create, :update, :destroy)
@@ -493,7 +493,7 @@ RSpec.describe 'Contract Serialization' do
 
       it 'serializes actions with their input/output definitions' do
         # Verify that actions have their full definitions including schema-generated params
-        json = Api::V1::PostContract.as_json
+        json = Api::V1::PostContract.introspect
 
         # :index should have request with filter/sort/page/include params from schema
         expect(json[:actions][:index]).to have_key(:request)
@@ -516,7 +516,7 @@ RSpec.describe 'Contract Serialization' do
           end
         end
 
-        json = contract_class.as_json
+        json = contract_class.introspect
 
         # Should only have explicitly defined action
         expect(json[:actions].keys).to eq([:custom_action])
