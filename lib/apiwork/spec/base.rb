@@ -24,6 +24,11 @@ module Apiwork
       include Configurable
 
       class << self
+        # @api public
+        # Sets or returns the spec name identifier.
+        #
+        # @param name [Symbol, nil] the spec name to set
+        # @return [Symbol, nil] the spec name, or nil if not set
         def spec_name(name = nil)
           @spec_name = name.to_sym if name
           @spec_name

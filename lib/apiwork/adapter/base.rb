@@ -23,6 +23,11 @@ module Apiwork
       include Configurable
 
       class << self
+        # @api public
+        # Sets or returns the adapter name identifier.
+        #
+        # @param name [Symbol, nil] the adapter name to set
+        # @return [Symbol, nil] the adapter name, or nil if not set
         def adapter_name(name = nil)
           @adapter_name = name.to_sym if name
           @adapter_name

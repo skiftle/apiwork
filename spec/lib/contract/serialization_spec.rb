@@ -386,22 +386,23 @@ RSpec.describe 'Contract Serialization' do
     end
 
     context 'with expand: true' do
-      it 'includes global API-level types' do
+      it 'includes referenced types recursively' do
         api = TestApiHelper.api_class
-        api.type :global_pagination_type do
+        api.type :expand_pagination_meta do
           param :page, type: :integer
-          param :per_page, type: :integer
+          param :total, type: :integer
         end
 
         contract_class = create_test_contract do
-          type :local_contract_type do
+          type :expand_item do
             param :name, type: :string
           end
 
           action :index do
             response do
               body do
-                param :items, type: :array
+                param :items, type: :array, of: :expand_item
+                param :meta, type: :expand_pagination_meta
               end
             end
           end
@@ -409,28 +410,61 @@ RSpec.describe 'Contract Serialization' do
 
         json = contract_class.introspect(expand: true)
 
-        expect(json[:types].keys).to include(:local_contract_type)
-        expect(json[:types].keys).to include(:global_pagination_type)
+        expect(json[:types].keys).to include(:expand_item)
+        expect(json[:types].keys).to include(:expand_pagination_meta)
       end
 
-      it 'does not include global types without expand' do
+      it 'does not include unreferenced types' do
         api = TestApiHelper.api_class
-        api.type :another_global_type do
+        api.type :expand_unreferenced_type do
           param :value, type: :string
         end
 
         contract_class = create_test_contract do
-          type :my_local_type do
+          type :expand_local_type do
             param :id, type: :integer
           end
 
-          action :show
+          action :show do
+            response do
+              body do
+                param :result, type: :string
+              end
+            end
+          end
         end
 
-        json = contract_class.introspect
+        json = contract_class.introspect(expand: true)
 
-        expect(json[:types].keys).to include(:my_local_type)
-        expect(json[:types].keys).not_to include(:another_global_type)
+        expect(json).not_to have_key(:types)
+      end
+
+      it 'includes nested type references' do
+        api = TestApiHelper.api_class
+        api.type :expand_nested_address do
+          param :street, type: :string
+          param :city, type: :string
+        end
+
+        api.type :expand_nested_person do
+          param :name, type: :string
+          param :address, type: :expand_nested_address
+        end
+
+        contract_class = create_test_contract do
+          action :create do
+            request do
+              body do
+                param :person, type: :expand_nested_person
+              end
+            end
+          end
+        end
+
+        json = contract_class.introspect(expand: true)
+
+        expect(json[:types].keys).to include(:expand_nested_person)
+        expect(json[:types].keys).to include(:expand_nested_address)
       end
     end
   end
