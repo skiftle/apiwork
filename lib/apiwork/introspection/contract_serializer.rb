@@ -9,6 +9,8 @@ module Apiwork
       end
 
       def serialize
+        @contract_class.api_class.ensure_all_contracts_built!
+
         result = { actions: {} }
 
         actions = available_actions
