@@ -90,7 +90,7 @@ Contract introspection is **cached** by locale and `expand`.
 
 The structure is designed for machines.
 
-Defaults are omitted to keep output small:
+Defaults and empty values are omitted to keep output compact:
 
 | Property      | Omitted when   |
 | ------------- | -------------- |
@@ -140,7 +140,7 @@ A simple string becomes:
 
 ## Types
 
-If you build a custom spec generator, you must handle these types.
+These are the types you'll encounter when reading introspection output.
 
 ### Primitive Types
 
@@ -188,27 +188,6 @@ If you build a custom spec generator, you must handle these types.
 | `tag`           | union variant identifier     |
 | `value`         | literal                      |
 | `as`            | Rails/JSON alias             |
-
----
-
-## Conditional Type Generation
-
-Apiwork generates helper types only when needed:
-
-| Type                  | Generated when                       |
-| --------------------- | ------------------------------------ |
-| `error_response_body` | API has resources                    |
-| `offset_pagination`   | any resource uses offset pagination  |
-| `cursor_pagination`   | cursor pagination is used            |
-| filter types          | attribute is filterable              |
-| `*_filter`            | schema defines filterable attributes |
-| `*_sort`              | schema defines sortable attributes   |
-| `*_create_payload`    | writable attributes + create action  |
-| `*_update_payload`    | writable attributes + update action  |
-
-::: tip
-If a generator expects a helper type, make sure your schema uses that capability.
-:::
 
 ---
 
