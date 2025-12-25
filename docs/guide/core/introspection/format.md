@@ -1,106 +1,16 @@
 ---
-order: 1
+order: 4
 ---
 
-# Introspection
+# Format
 
-Apiwork exposes your API as data. Introspection returns a compact, machine-readable hash of your entire API or a single contract.
+The format is designed to be as compact as possible. Defaults are omitted, empty values stripped, and only meaningful data remains. No noise, no placeholders, no redundant metadata.
 
-Spec generators read from this format: [OpenAPI](../core/specs/open-api.md), [TypeScript](../core/specs/typescript.md), and [Zod](../core/specs/zod.md). You can call `introspect` directly during development to debug what Apiwork built from your contracts and schemas.
-
-The output includes:
-
-- Resources and actions
-- Request and response shapes
-- Types and enums
-- Registered error codes
-- API metadata (title, version, description)
-
-Introspection is the **single source of truth** for spec generation.
+Compact output keeps diffs small, makes generators reliable, and reduces cognitive load when debugging.
 
 ---
 
-## API Introspection
-
-Returns the complete API:
-
-```ruby
-Apiwork::API.introspect('/api/v1')
-Apiwork::API.introspect('/api/v1', locale: :sv)
-```
-
-Includes:
-
-- All resources and nested resources
-- All actions with request and response definitions
-- All types and enums (global and resource-scoped)
-- Error codes that actions can raise
-- API metadata
-
-::: info
-Results are **cached** per locale. The first call builds the structure; later calls use the cached version.
-:::
-
----
-
-## Contract Introspection
-
-Returns introspection for a single contract:
-
-```ruby
-InvoiceContract.introspect
-InvoiceContract.introspect(locale: :sv)
-InvoiceContract.introspect(expand: true)
-```
-
-Includes:
-
-- Actions defined on the contract
-- Types and enums **scoped** to the contract
-
-By default, referenced types are not included:
-
-```ruby
-InvoiceContract.introspect
-# => { actions: {...}, types: { invoice_filter: {...} } }
-```
-
-When you pass `expand: true`, referenced types are resolved:
-
-```ruby
-InvoiceContract.introspect(expand: true)
-# => {
-#   actions: {...},
-#   types: {
-#     invoice_filter: {...},
-#     datetime_filter: {...},
-#     string_filter: {...},
-#     offset_pagination: {...}
-#   }
-# }
-```
-
-::: info
-Contract introspection is **cached** by locale and `expand`.
-:::
-
----
-
-## Output Structure
-
-The structure is designed for machines.
-
-Defaults and empty values are omitted to keep output compact:
-
-| Property      | Omitted when   |
-| ------------- | -------------- |
-| `optional`    | `false`        |
-| `nullable`    | `false`        |
-| `default`     | `nil`          |
-| `description` | `nil` or empty |
-| `deprecated`  | `false`        |
-
-Example:
+## Example
 
 ```json
 {
@@ -138,11 +48,21 @@ A simple string becomes:
 
 ---
 
-## Types
+## Omitted Values
 
-These are the types you'll encounter when reading introspection output.
+| Property      | Omitted when   |
+| ------------- | -------------- |
+| `optional`    | `false`        |
+| `nullable`    | `false`        |
+| `default`     | `nil`          |
+| `description` | `nil` or empty |
+| `deprecated`  | `false`        |
 
-### Primitive Types
+Empty objects and arrays are also omitted.
+
+---
+
+## Primitive Types
 
 | Type               | Meaning            | `min`/`max` | Format                 |
 | ------------------ | ------------------ | ----------- | ---------------------- |
@@ -154,7 +74,9 @@ These are the types you'll encounter when reading introspection output.
 | `date`             | ISO 8601 date      | -           | `date`                 |
 | `uuid`             | UUID string        | -           | `uuid`                 |
 
-### Container and Composite Types
+---
+
+## Container Types
 
 | Type           | Description                 | Required fields |
 | -------------- | --------------------------- | --------------- |
@@ -188,15 +110,3 @@ These are the types you'll encounter when reading introspection output.
 | `tag`           | union variant identifier     |
 | `value`         | literal                      |
 | `as`            | Rails/JSON alias             |
-
----
-
-## Building Custom Generators
-
-To implement a custom spec:
-
-1. Call `Apiwork::API.introspect('/api/v1')`
-2. Walk the structure
-3. Map every field type and property
-
-See [Custom Specs](./custom-specs.md) for extension guidance.

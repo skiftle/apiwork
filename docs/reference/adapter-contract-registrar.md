@@ -47,7 +47,7 @@ Use this to define or resolve types at the API scope.
 
 **Returns**
 
-[APIRegistrar](api-registrar) — the API registrar
+[APIRegistrar](adapter-api-registrar) — the API registrar
 
 ---
 

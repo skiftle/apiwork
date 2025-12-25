@@ -4,18 +4,9 @@ order: 1
 
 # Introduction
 
-API specs (or specifications) describe an API in a structured, machine-readable form.
+Specs describe your API in formats understood by external tools — OpenAPI for documentation, TypeScript for type-safe clients, Zod for runtime validation.
 
-They are commonly used for documentation, client generation, validation, and integration with external tooling.
-In Apiwork, specs are not maintained separately from the implementation.
-They are derived from the same definitions that describe and constrain the API itself.
-
-API definitions and contracts define the structure and rules of the API.
-Introspection turns those definitions into a canonical representation of the API.
-Specs are then derived from that introspection output.
-
-As a result, specs in Apiwork accurately reflect the current API configuration.
-They can be used to generate documentation and clients with confidence, without manual synchronization or duplication.
+In Apiwork, specs are not maintained separately. They are generated from [introspection](../introspection/introduction.md), the single source of truth for your API structure. This means specs always reflect the current state of your contracts and schemas, without manual synchronization.
 
 ---
 
