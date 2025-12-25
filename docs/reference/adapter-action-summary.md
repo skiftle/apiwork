@@ -37,6 +37,16 @@ end
 
 ## Instance Methods
 
+### #collection?()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L98)
+
+**Returns**
+
+`Boolean` — true if action operates on a collection
+
+---
+
 ### #context()
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L37)
@@ -97,6 +107,16 @@ end
 
 ---
 
+### #member?()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L92)
+
+**Returns**
+
+`Boolean` — true if action operates on a single resource
+
+---
+
 ### #meta()
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L45)
@@ -149,7 +169,7 @@ end
 
 ### #put?()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L105)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L123)
 
 **Returns**
 
@@ -167,6 +187,16 @@ end
 
 ---
 
+### #read?()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L135)
+
+**Returns**
+
+`Boolean` — true if this is a read operation (GET request)
+
+---
+
 ### #show?()
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L63)
@@ -177,6 +207,16 @@ end
 
 ---
 
+### #type()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L37)
+
+**Returns**
+
+`Symbol, nil` — the action type (:member or :collection)
+
+---
+
 ### #update?()
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L75)
@@ -184,5 +224,15 @@ end
 **Returns**
 
 `Boolean` — true if this is an update action
+
+---
+
+### #write?()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L141)
+
+**Returns**
+
+`Boolean` — true if this is a write operation (POST, PATCH, PUT, DELETE)
 
 ---

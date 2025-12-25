@@ -157,10 +157,18 @@ module Apiwork
         Adapter::ActionSummary.new(
           action_name,
           request.method_symbol,
+          type: action_type,
           context:,
           query: resource_metadata ? contract.query : {},
           meta:
         )
+      end
+
+      def action_type
+        return nil unless resource_metadata
+
+        action_sym = action_name.to_sym
+        resource_metadata[:actions]&.dig(action_sym, :type)
       end
 
       def default_error_path(error_code)

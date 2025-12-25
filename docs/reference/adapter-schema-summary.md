@@ -35,6 +35,16 @@ end
 
 ## Instance Methods
 
+### #filterable?()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L52)
+
+**Returns**
+
+`Boolean` — true if any schema has filterable attributes
+
+---
+
 ### #filterable_types()
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L30)
@@ -72,6 +82,16 @@ end
 **Returns**
 
 `Array<Symbol>` — data types used in nullable filterable attributes
+
+---
+
+### #paginatable?()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L58)
+
+**Returns**
+
+`Boolean` — true if any pagination strategy is used
 
 ---
 

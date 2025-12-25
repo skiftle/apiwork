@@ -48,6 +48,18 @@ module Apiwork
       end
 
       # @api public
+      # @return [Boolean] true if any schema has filterable attributes
+      def filterable?
+        filterable_types.any?
+      end
+
+      # @api public
+      # @return [Boolean] true if any pagination strategy is used
+      def paginatable?
+        uses_offset_pagination? || uses_cursor_pagination?
+      end
+
+      # @api public
       # @return [Boolean] true if the API has any resources registered
       def has_resources?
         @has_resources

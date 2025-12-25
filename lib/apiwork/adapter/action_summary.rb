@@ -33,6 +33,10 @@ module Apiwork
       attr_reader :method
 
       # @api public
+      # @return [Symbol, nil] the action type (:member or :collection)
+      attr_reader :type
+
+      # @api public
       # @return [Hash] arbitrary context passed from the controller
       attr_reader :context
 
@@ -44,9 +48,10 @@ module Apiwork
       # @return [Hash] metadata for the response
       attr_reader :meta
 
-      def initialize(name, method, context: {}, query: {}, meta: {})
+      def initialize(name, method, type: nil, context: {}, query: {}, meta: {})
         @name = name.to_sym
         @method = method.to_sym
+        @type = type&.to_sym
         @context = context
         @query = query
         @meta = meta
@@ -83,6 +88,18 @@ module Apiwork
       end
 
       # @api public
+      # @return [Boolean] true if action operates on a single resource
+      def member?
+        type == :member
+      end
+
+      # @api public
+      # @return [Boolean] true if action operates on a collection
+      def collection?
+        type == :collection
+      end
+
+      # @api public
       # @return [Boolean] true if HTTP method is GET
       def get?
         method == :get
@@ -110,6 +127,18 @@ module Apiwork
       # @return [Boolean] true if HTTP method is DELETE
       def delete?
         method == :delete
+      end
+
+      # @api public
+      # @return [Boolean] true if this is a read operation (GET request)
+      def read?
+        get?
+      end
+
+      # @api public
+      # @return [Boolean] true if this is a write operation (POST, PATCH, PUT, DELETE)
+      def write?
+        !read?
       end
     end
   end
