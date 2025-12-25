@@ -86,7 +86,7 @@ module Apiwork
       #     end
       #   end
       def render_error(issues, layer:, status: :bad_request)
-        json = adapter.render_error(issues, layer, build_action_data)
+        json = adapter.render_error(issues, layer, build_action_summary)
         render json: json, status: status
       end
 
@@ -147,14 +147,14 @@ module Apiwork
 
       def render_with_schema(data, schema_class, meta)
         if data.is_a?(Enumerable)
-          adapter.render_collection(data, schema_class, build_action_data(meta))
+          adapter.render_collection(data, schema_class, build_action_summary(meta))
         else
-          adapter.render_record(data, schema_class, build_action_data(meta))
+          adapter.render_record(data, schema_class, build_action_summary(meta))
         end
       end
 
-      def build_action_data(meta = {})
-        Adapter::ActionData.new(
+      def build_action_summary(meta = {})
+        Adapter::ActionSummary.new(
           action_name,
           request.method_symbol,
           context:,

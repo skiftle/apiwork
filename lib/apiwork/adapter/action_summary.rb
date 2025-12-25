@@ -9,8 +9,8 @@ module Apiwork
     # Use predicates to branch logic based on action or method.
     #
     # @example Check action type
-    #   def render_record(record, schema_class, action_data)
-    #     if action_data.show?
+    #   def render_record(record, schema_class, action_summary)
+    #     if action_summary.show?
     #       { data: serialize(record) }
     #     else
     #       { data: serialize(record), links: { self: url_for(record) } }
@@ -18,12 +18,12 @@ module Apiwork
     #   end
     #
     # @example Check HTTP method
-    #   def render_collection(collection, schema_class, action_data)
+    #   def render_collection(collection, schema_class, action_summary)
     #     response = { data: collection.map { |r| serialize(r) } }
-    #     response[:cache] = true if action_data.get?
+    #     response[:cache] = true if action_summary.get?
     #     response
     #   end
-    class ActionData
+    class ActionSummary
       # @api public
       # @return [Symbol] the action name (:index, :show, :create, :update, :destroy, or custom)
       attr_reader :name

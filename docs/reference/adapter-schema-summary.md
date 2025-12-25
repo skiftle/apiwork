@@ -4,9 +4,9 @@ prev: false
 next: false
 ---
 
-# Adapter::SchemaData
+# Adapter::SchemaSummary
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_data.rb#L27)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L27)
 
 Aggregated schema information for type registration.
 
@@ -16,15 +16,15 @@ register types based on what schemas define (filtering, sorting, pagination).
 **Example: Conditional type registration**
 
 ```ruby
-def register_api(registrar, schema_data)
-  if schema_data.uses_offset_pagination?
+def register_api(registrar, schema_summary)
+  if schema_summary.uses_offset_pagination?
     registrar.type :offset_pagination do
       param :page, type: :integer
       param :per_page, type: :integer
     end
   end
 
-  if schema_data.sortable?
+  if schema_summary.sortable?
     registrar.type :sort_param do
       param :field, type: :string
       param :direction, type: :string
@@ -37,7 +37,7 @@ end
 
 ### #filterable_types()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_data.rb#L30)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L30)
 
 **Returns**
 
@@ -47,7 +47,7 @@ end
 
 ### #has_index_actions?()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_data.rb#L58)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L58)
 
 **Returns**
 
@@ -57,7 +57,7 @@ end
 
 ### #has_resources?()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_data.rb#L52)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L52)
 
 **Returns**
 
@@ -67,7 +67,7 @@ end
 
 ### #nullable_filterable_types()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_data.rb#L34)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L34)
 
 **Returns**
 
@@ -77,7 +77,7 @@ end
 
 ### #sortable?()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_data.rb#L46)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L46)
 
 **Returns**
 
@@ -87,7 +87,7 @@ end
 
 ### #uses_cursor_pagination?()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_data.rb#L70)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L70)
 
 **Returns**
 
@@ -97,7 +97,7 @@ end
 
 ### #uses_offset_pagination?()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_data.rb#L64)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L64)
 
 **Returns**
 

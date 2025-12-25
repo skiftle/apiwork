@@ -11,37 +11,37 @@ module Apiwork
         option :max_size, type: :integer, default: 100
       end
 
-      def register_api(registrar, schema_data)
-        TypeSystemBuilder.build(registrar, schema_data)
+      def register_api(registrar, schema_summary)
+        TypeSystemBuilder.build(registrar, schema_summary)
       end
 
       def register_contract(registrar, schema_class, actions:)
         ContractBuilder.build(registrar, schema_class, actions)
       end
 
-      def render_collection(collection, schema_class, action_data)
-        CollectionLoader.load(collection, schema_class, action_data) => { data:, metadata: }
-        serialized = schema_class.serialize(data, context: action_data.context, include: action_data.query[:include])
+      def render_collection(collection, schema_class, action_summary)
+        CollectionLoader.load(collection, schema_class, action_summary) => { data:, metadata: }
+        serialized = schema_class.serialize(data, context: action_summary.context, include: action_summary.query[:include])
 
         {
           schema_class.root_key.plural => serialized,
           pagination: metadata[:pagination],
-          meta: action_data.meta.presence
+          meta: action_summary.meta.presence
         }.compact
       end
 
-      def render_record(record, schema_class, action_data)
+      def render_record(record, schema_class, action_summary)
         RecordValidator.validate(record, schema_class)
-        data = RecordLoader.load(record, schema_class, action_data.query)
-        serialized = schema_class.serialize(data, context: action_data.context, include: action_data.query[:include])
+        data = RecordLoader.load(record, schema_class, action_summary.query)
+        serialized = schema_class.serialize(data, context: action_summary.context, include: action_summary.query[:include])
 
         {
           schema_class.root_key.singular => serialized,
-          meta: action_data.meta.presence
+          meta: action_summary.meta.presence
         }.compact
       end
 
-      def render_error(issues, layer, action_data)
+      def render_error(issues, layer, action_summary)
         {
           layer:,
           issues: issues.map(&:to_h)

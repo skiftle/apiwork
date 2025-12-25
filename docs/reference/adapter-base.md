@@ -19,7 +19,7 @@ Override the render and transform methods to customize behavior.
 class JsonApiAdapter < Apiwork::Adapter::Base
   adapter_name :jsonapi
 
-  def render_record(record, schema_class, action_data)
+  def render_record(record, schema_class, action_summary)
     { data: { type: '...', attributes: '...' } }
   end
 end
@@ -30,7 +30,7 @@ Apiwork::Adapter.register(JsonApiAdapter)
 
 ## Instance Methods
 
-### #register_api(registrar, schema_data)
+### #register_api(registrar, schema_summary)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L35)
 
@@ -48,7 +48,7 @@ Override to customize contract type registration.
 
 ---
 
-### #render_collection(collection, schema_class, action_data)
+### #render_collection(collection, schema_class, action_summary)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L53)
 
@@ -60,7 +60,7 @@ Renders a collection response.
 |------|------|-------------|
 | `collection` | `Enumerable` | the records to render |
 | `schema_class` | `Class` | a [Schema::Base](schema-base) subclass |
-| `action_data` | `ActionData` | request context |
+| `action_summary` | `ActionSummary` | request context |
 
 **Returns**
 
@@ -68,7 +68,7 @@ Renders a collection response.
 
 ---
 
-### #render_error(issues, action_data)
+### #render_error(issues, action_summary)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L74)
 
@@ -79,7 +79,7 @@ Renders an error response.
 | Name | Type | Description |
 |------|------|-------------|
 | `issues` | `Array<Issue>` | the validation issues |
-| `action_data` | `ActionData` | request context |
+| `action_summary` | `ActionSummary` | request context |
 
 **Returns**
 
@@ -87,7 +87,7 @@ Renders an error response.
 
 ---
 
-### #render_record(record, schema_class, action_data)
+### #render_record(record, schema_class, action_summary)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L64)
 
@@ -99,7 +99,7 @@ Renders a single record response.
 |------|------|-------------|
 | `record` | `Object` | the record to render |
 | `schema_class` | `Class` | a [Schema::Base](schema-base) subclass |
-| `action_data` | `ActionData` | request context |
+| `action_summary` | `ActionSummary` | request context |
 
 **Returns**
 

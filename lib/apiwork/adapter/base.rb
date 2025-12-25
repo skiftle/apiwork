@@ -12,7 +12,7 @@ module Apiwork
     #   class JsonApiAdapter < Apiwork::Adapter::Base
     #     adapter_name :jsonapi
     #
-    #     def render_record(record, schema_class, action_data)
+    #     def render_record(record, schema_class, action_summary)
     #       { data: { type: '...', attributes: '...' } }
     #     end
     #   end
@@ -32,7 +32,7 @@ module Apiwork
       # @api public
       # Registers types from schemas for the API.
       # Override to customize type registration.
-      def register_api(registrar, schema_data)
+      def register_api(registrar, schema_summary)
         raise NotImplementedError
       end
 
@@ -48,9 +48,9 @@ module Apiwork
       #
       # @param collection [Enumerable] the records to render
       # @param schema_class [Class] a {Schema::Base} subclass
-      # @param action_data [ActionData] request context
+      # @param action_summary [ActionSummary] request context
       # @return [Hash] the response hash
-      def render_collection(collection, schema_class, action_data)
+      def render_collection(collection, schema_class, action_summary)
         raise NotImplementedError
       end
 
@@ -59,9 +59,9 @@ module Apiwork
       #
       # @param record [Object] the record to render
       # @param schema_class [Class] a {Schema::Base} subclass
-      # @param action_data [ActionData] request context
+      # @param action_summary [ActionSummary] request context
       # @return [Hash] the response hash
-      def render_record(record, schema_class, action_data)
+      def render_record(record, schema_class, action_summary)
         raise NotImplementedError
       end
 
@@ -69,9 +69,9 @@ module Apiwork
       # Renders an error response.
       #
       # @param issues [Array<Issue>] the validation issues
-      # @param action_data [ActionData] request context
+      # @param action_summary [ActionSummary] request context
       # @return [Hash] the error response hash
-      def render_error(issues, action_data)
+      def render_error(issues, action_summary)
         raise NotImplementedError
       end
 
@@ -105,8 +105,8 @@ module Apiwork
         ContractRegistrar.new(contract_class)
       end
 
-      def build_schema_data(schemas, has_resources: false, has_index_actions: false)
-        SchemaData.new(schemas, has_resources:, has_index_actions:)
+      def build_schema_summary(schemas, has_resources: false, has_index_actions: false)
+        SchemaSummary.new(schemas, has_resources:, has_index_actions:)
       end
     end
   end

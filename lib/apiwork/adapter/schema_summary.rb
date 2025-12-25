@@ -9,22 +9,22 @@ module Apiwork
     # register types based on what schemas define (filtering, sorting, pagination).
     #
     # @example Conditional type registration
-    #   def register_api(registrar, schema_data)
-    #     if schema_data.uses_offset_pagination?
+    #   def register_api(registrar, schema_summary)
+    #     if schema_summary.uses_offset_pagination?
     #       registrar.type :offset_pagination do
     #         param :page, type: :integer
     #         param :per_page, type: :integer
     #       end
     #     end
     #
-    #     if schema_data.sortable?
+    #     if schema_summary.sortable?
     #       registrar.type :sort_param do
     #         param :field, type: :string
     #         param :direction, type: :string
     #       end
     #     end
     #   end
-    class SchemaData
+    class SchemaSummary
       # @api public
       # @return [Array<Symbol>] data types used in filterable attributes
       attr_reader :filterable_types

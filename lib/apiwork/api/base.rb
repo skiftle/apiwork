@@ -475,9 +475,9 @@ module Apiwork
           schemas = collect_all_schemas
           has_resources = @metadata.resources.any?
           has_index_actions = any_index_actions?(@metadata.resources)
-          schema_data = adapter.build_schema_data(schemas, has_resources:, has_index_actions:)
+          schema_summary = adapter.build_schema_summary(schemas, has_resources:, has_index_actions:)
           registrar = adapter.build_api_registrar(self)
-          adapter.register_api(registrar, schema_data)
+          adapter.register_api(registrar, schema_summary)
         end
 
         private

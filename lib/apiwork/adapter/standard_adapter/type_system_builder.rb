@@ -101,28 +101,28 @@ module Apiwork
 
         NULLABLE_EXTENSION = { name: :null, type: :boolean }.freeze
 
-        def self.build(registrar, schema_data)
-          new(registrar, schema_data)
+        def self.build(registrar, schema_summary)
+          new(registrar, schema_summary)
         end
 
-        def initialize(registrar, schema_data)
+        def initialize(registrar, schema_summary)
           @registrar = registrar
-          @schema_data = schema_data
+          @schema_summary = schema_summary
 
-          register_pagination_types if schema_data.has_index_actions?
-          register_error_type if schema_data.has_resources?
-          register_global_filter_types if schema_data.filterable_types.any?
-          register_sort_direction if schema_data.sortable?
+          register_pagination_types if schema_summary.has_index_actions?
+          register_error_type if schema_summary.has_resources?
+          register_global_filter_types if schema_summary.filterable_types.any?
+          register_sort_direction if schema_summary.sortable?
         end
 
         private
 
         attr_reader :registrar,
-                    :schema_data
+                    :schema_summary
 
         def register_pagination_types
-          register_offset_pagination if schema_data.uses_offset_pagination?
-          register_cursor_pagination if schema_data.uses_cursor_pagination?
+          register_offset_pagination if schema_summary.uses_offset_pagination?
+          register_cursor_pagination if schema_summary.uses_cursor_pagination?
         end
 
         def register_offset_pagination
@@ -162,11 +162,11 @@ module Apiwork
         def register_global_filter_types
           filter_types_to_register = Set.new
 
-          schema_data.filterable_types.each do |type|
+          schema_summary.filterable_types.each do |type|
             filter_types_to_register.add(determine_filter_type(type, nullable: false))
           end
 
-          schema_data.nullable_filterable_types.each do |type|
+          schema_summary.nullable_filterable_types.each do |type|
             filter_types_to_register.add(determine_filter_type(type, nullable: true))
           end
 
