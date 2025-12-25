@@ -4,25 +4,81 @@ order: 1
 
 # Introspection
 
-Your API as data. Introspection gives you a complete, machine-readable snapshot of your API — resources, actions, types, enums, everything.
+Apiwork's internal representation of your API. A compact, machine-readable hash that contains everything: resources, actions, types, enums, error codes.
 
-You rarely use it directly. It powers spec generators like OpenAPI, TypeScript, and Zod behind the scenes.
+You rarely call it directly. Spec generators like [OpenAPI](../core/specs/open-api.md), [TypeScript](../core/specs/typescript.md), and [Zod](../core/specs/zod.md) read from this format internally. But if you're building a custom generator, you need to understand it.
 
-## Usage
+::: warning Performance
+Introspection is designed for development and build-time generation. It's slow. Don't call it on every request in production. Generate static files instead.
+:::
+
+## Two Levels
+
+Apiwork provides introspection at two levels:
+
+### API Introspection
+
+The complete picture. Everything in your API.
 
 ```ruby
-# Uses current Rails locale (I18n.locale)
 Apiwork::API.introspect('/api/v1')
-
-# With specific locale
 Apiwork::API.introspect('/api/v1', locale: :sv)
 ```
 
-You get back a hash with your full API structure. Descriptions are localized based on the locale parameter (defaults to Rails' current locale).
+Returns:
+- All resources and nested resources
+- All actions with their request/response definitions
+- All types and enums (global and resource-scoped)
+- Error codes and raises
+- API metadata (title, version, description)
+
+**Cached per locale.** First call builds everything. Subsequent calls return the cached hash.
+
+### Contract Introspection
+
+A single contract. Useful for development tools or debugging.
+
+```ruby
+InvoiceContract.introspect
+InvoiceContract.introspect(locale: :sv)
+InvoiceContract.introspect(expand: true)
+```
+
+Returns:
+- Actions defined in the contract
+- Types and enums scoped to this contract
+
+**Not cached.** Computed on every call.
+
+## The expand Parameter
+
+By default, `Contract.introspect` returns only types defined in that contract.
+
+```ruby
+InvoiceContract.introspect
+# => { actions: {...}, types: { invoice_filter: {...} } }
+```
+
+With `expand: true`, it walks the dependency graph and includes all referenced types:
+
+```ruby
+InvoiceContract.introspect(expand: true)
+# => {
+#   actions: {...},
+#   types: {
+#     invoice_filter: {...},
+#     datetime_filter: {...},  # Referenced by invoice_filter
+#     string_filter: {...},    # Referenced by invoice_filter
+#     offset_pagination: {...} # Referenced in response
+#   }
+# }
+```
+
+This is useful when you need a self-contained snapshot of everything a contract uses.
 
 ## Output Structure
 
-Compact but complete. Everything a spec generator needs:
+Compact by design. Only meaningful values are included.
 
 ```json
 {
@@ -97,31 +153,66 @@ Compact but complete. Everything a spec generator needs:
     "not_found": {
       "status": 404,
       "description": "Not Found"
-    },
-    "unprocessable_entity": {
-      "status": 422,
-      "description": "Unprocessable Entity"
     }
   }
 }
 ```
 
-## What It Powers
+Properties are omitted when they have default values:
 
-Introspection drives all spec generation:
+| Property      | Omitted when      |
+| ------------- | ----------------- |
+| `optional`    | `false` (default) |
+| `nullable`    | `false` (default) |
+| `default`     | `nil`             |
+| `description` | `nil` or empty    |
+| `deprecated`  | `false` (default) |
 
-- **OpenAPI** — `/openapi.json` endpoints
-- **TypeScript** — type interfaces for your frontend
-- **Zod** — runtime validators for JavaScript/TypeScript
-- **Custom generators** — build your own formats
+A simple string field appears as `{ "type": "string" }`, not `{ "type": "string", "optional": false, "nullable": false, "deprecated": false }`.
 
-[Spec Generation](../core/specs/introduction.md) covers how to enable spec endpoints and configure output formats.
+## Performance and Production
+
+Introspection is slow because it:
+
+1. **Builds all contracts** - Walks every resource, registers contracts with the adapter
+2. **Resolves type dependencies** - Expands type definitions, follows references
+3. **Serializes deeply** - Recursively serializes all param structures
+
+::: danger Don't call in production request handlers
+Never do this:
+
+```ruby
+# Bad - runs introspection on every request
+def spec
+  render json: Apiwork::API.introspect('/api/v1')
+end
+```
+:::
+
+### For Production
+
+Generate static files at build time:
+
+```ruby
+# In a Rake task or build script
+File.write('public/api/introspection.json', Apiwork::API.introspect('/api/v1').to_json)
+```
+
+Or use the built-in [spec endpoints](../core/specs/introduction.md) with proper caching headers.
+
+### Caching Behavior
+
+| Method | Cached? | Notes |
+|--------|---------|-------|
+| `API.introspect` | Yes | Per locale, on the API class |
+| `Contract.introspect` | No | Computed each call |
+| Spec generators | Yes | Use API.introspect internally |
+
+The API cache persists for the application lifetime. Call `API.reset_contracts!` to clear it (useful in development with code reloading).
 
 ## Field Types
 
-If you're building a custom spec generator, you'll need to understand these types. The introspection format is the foundation — OpenAPI, TypeScript, and Zod generators all read from this same structure.
-
-Every field has a `type`. Here's the complete list:
+If you're building a custom spec generator, you need to map these types.
 
 ### Primitive Types
 
@@ -154,7 +245,26 @@ Every field has a `type`. Here's the complete list:
 
 ## Field Properties
 
-Properties describe how a field behaves. Not all properties apply to all types.
+| Property        | Description                                        |
+| --------------- | -------------------------------------------------- |
+| `type`          | The data type                                      |
+| `optional`      | Field can be omitted from request                  |
+| `nullable`      | Field value can be `null`                          |
+| `default`       | Value used when field is omitted                   |
+| `description`   | Human-readable documentation                       |
+| `example`       | Sample value for documentation                     |
+| `format`        | Format hint (e.g., `email`, `uri`)                 |
+| `deprecated`    | Field should not be used                           |
+| `min`           | Minimum value (numbers) or length (strings/arrays) |
+| `max`           | Maximum value (numbers) or length (strings/arrays) |
+| `enum`          | Valid values (inline array or reference)           |
+| `of`            | Element type for arrays                            |
+| `shape`         | Nested field definitions for objects               |
+| `variants`      | Possible types for unions                          |
+| `discriminator` | Field name that determines union variant           |
+| `tag`           | Value that identifies a union variant              |
+| `value`         | Exact value for literal type                       |
+| `as`            | Transformation alias (e.g., `comments_attributes`) |
 
 ### Property Applicability
 
@@ -181,79 +291,32 @@ Properties describe how a field behaves. Not all properties apply to all types.
 
 \* `shape` on array: when `of: :object`. On union: inside each variant.
 
-### Property Descriptions
-
-| Property        | Description                                        |
-| --------------- | -------------------------------------------------- |
-| `type`          | The data type                                      |
-| `optional`      | Field can be omitted from request                  |
-| `nullable`      | Field value can be `null`                          |
-| `default`       | Value used when field is omitted                   |
-| `description`   | Human-readable documentation                       |
-| `example`       | Sample value for documentation                     |
-| `format`        | Format hint (e.g., `email`, `uri`)                 |
-| `deprecated`    | Field should not be used                           |
-| `min`           | Minimum value (numbers) or length (strings/arrays) |
-| `max`           | Maximum value (numbers) or length (strings/arrays) |
-| `enum`          | Valid values (inline array or reference)           |
-| `of`            | Element type for arrays                            |
-| `shape`         | Nested field definitions for objects               |
-| `variants`      | Possible types for unions                          |
-| `discriminator` | Field name that determines union variant           |
-| `tag`           | Value that identifies a union variant              |
-| `value`         | Exact value for literal type                       |
-| `as`            | Transformation alias (e.g., `comments_attributes`) |
-
-## Compact Output
-
-The output is compact by design. Properties are **omitted** when they have no meaningful value:
-
-| Property      | Omitted when      |
-| ------------- | ----------------- |
-| `optional`    | `false` (default) |
-| `nullable`    | `false` (default) |
-| `default`     | `nil`             |
-| `description` | `nil` or empty    |
-| `example`     | `nil`             |
-| `format`      | `nil`             |
-| `deprecated`  | `false` (default) |
-| `min`         | `nil`             |
-| `max`         | `nil`             |
-
-So a simple string field appears as just `{ "type": "string" }` rather than including all possible properties with null/false values.
-
 ## Conditional Type Generation
 
-Types are only generated when needed. The introspection output won't include types that serve no purpose. This keeps the output minimal.
-
-### Global Types
+Types are generated only when needed:
 
 | Type                                 | Generated when                               |
 | ------------------------------------ | -------------------------------------------- |
-| `error`                              | API has at least one resource                |
+| `error_response_body`                | API has at least one resource                |
 | `offset_pagination`                  | At least one resource uses offset pagination |
 | `cursor_pagination`                  | At least one resource uses cursor pagination |
 | `sort_direction`                     | At least one attribute is sortable           |
 | Filter types (`string_filter`, etc.) | At least one attribute is filterable         |
-
-### Per-Schema Types
-
-| Type               | Generated when                                           |
-| ------------------ | -------------------------------------------------------- |
-| `*_filter`         | Schema has filterable attributes or associations         |
-| `*_sort`           | Schema has sortable attributes or associations           |
-| `*_include`        | Schema has associations (for client to request includes) |
-| `*_create_payload` | Schema has writable attributes and a create action       |
-| `*_update_payload` | Schema has writable attributes and an update action      |
-
-This means:
-
-- A schema with no filterable attributes won't have a `*_filter` type
-- A schema with no associations won't have a `*_include` type
-- Helper types like `string_filter_between` are only generated if a parent type references them
-
-If you add `filterable: true` to an attribute, the filter type appears. Remove it, and the type is gone. The output always reflects your current schema configuration.
+| `*_filter`                           | Schema has filterable attributes             |
+| `*_sort`                             | Schema has sortable attributes               |
+| `*_create_payload`                   | Schema has writable attributes + create action |
+| `*_update_payload`                   | Schema has writable attributes + update action |
 
 ## Building Custom Generators
 
-Want to build your own spec generator? See [Custom Specs](./custom-specs.md).
+To build a custom spec generator, you need to:
+
+1. Read the introspection output
+2. Walk the structure and map to your target format
+3. Handle all field types and properties
+
+See [Custom Specs](./custom-specs.md) for implementation details.
+
+::: info
+All built-in generators (OpenAPI, TypeScript, Zod) read from this same format. The introspection output is the single source of truth.
+:::
