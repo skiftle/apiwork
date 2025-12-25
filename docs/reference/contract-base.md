@@ -106,6 +106,18 @@ end
 
 ---
 
+### .as_json()
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L385)
+
+Alias for [#introspect](#introspect).
+
+**Returns**
+
+`Hash` — contract structure
+
+---
+
 ### .enum(name, values: = nil, description: = nil, example: = nil, deprecated: = false)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L225)
@@ -209,6 +221,34 @@ class OrderContract < Apiwork::Contract::Base
     end
   end
 end
+```
+
+---
+
+### .introspect(locale: = nil)
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L377)
+
+Returns a hash representation of this contract's structure.
+
+Includes all actions with their request/response definitions.
+Useful for generating documentation or client code.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `locale` | `Symbol` | optional locale for translated descriptions |
+
+**Returns**
+
+`Hash` — contract structure with :actions key
+
+**Example**
+
+```ruby
+InvoiceContract.introspect
+# => { actions: { create: { request: {...}, response: {...} } } }
 ```
 
 ---

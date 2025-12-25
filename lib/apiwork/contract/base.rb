@@ -362,10 +362,26 @@ module Apiwork
           action_definitions[action_name]
         end
 
+        # @api public
+        # Returns a hash representation of this contract's structure.
+        #
+        # Includes all actions with their request/response definitions.
+        # Useful for generating documentation or client code.
+        #
+        # @param locale [Symbol] optional locale for translated descriptions
+        # @return [Hash] contract structure with :actions key
+        #
+        # @example
+        #   InvoiceContract.introspect
+        #   # => { actions: { create: { request: {...}, response: {...} } } }
         def introspect(locale: nil)
           Apiwork::Introspection.contract(self, locale:)
         end
 
+        # @api public
+        # Alias for {#introspect}.
+        #
+        # @return [Hash] contract structure
         def as_json
           introspect
         end

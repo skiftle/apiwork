@@ -17,7 +17,7 @@ Use as a declarative builder - do not rely on internal state.
 
 ### #deprecated(value = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L112)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L104)
 
 Marks this action as deprecated.
 
@@ -45,7 +45,7 @@ end
 
 ### #description(text = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L78)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L70)
 
 Sets a detailed description for this action.
 
@@ -74,7 +74,7 @@ end
 
 ### #operation_id(value = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L129)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L121)
 
 Sets a custom operation ID.
 
@@ -102,7 +102,7 @@ end
 
 ### #raises(*error_code_keys)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L147)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L139)
 
 Declares error codes this action may return.
 
@@ -127,7 +127,7 @@ end
 
 ### #request(replace: = false, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L180)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L172)
 
 Defines the request structure for this action.
 
@@ -158,7 +158,7 @@ end
 
 ### #response(replace: = false, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L210)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L202)
 
 Defines the response structure for this action.
 
@@ -196,7 +196,7 @@ end
 
 ### #summary(text = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L60)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L52)
 
 Sets a short summary for this action.
 
@@ -224,7 +224,7 @@ end
 
 ### #tags(*tags_list)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L95)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L87)
 
 Sets tags for grouping this action.
 
