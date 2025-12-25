@@ -17,7 +17,7 @@ Use as a declarative builder - do not rely on internal state.
 
 ### #body(&block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L66)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L69)
 
 Defines the response body for this response.
 
@@ -44,7 +44,7 @@ end
 
 ### #no_content!()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L45)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L48)
 
 Declares this action returns 204 No Content.
 
@@ -71,7 +71,7 @@ end
 
 ### #no_content?()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L26)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L29)
 
 Returns true if this response is 204 No Content.
 

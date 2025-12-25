@@ -18,7 +18,7 @@ Use as a declarative builder - do not rely on internal state.
 
 ### #meta(**options, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L151)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L134)
 
 Shorthand for `param :meta, type: :object do ... end`.
 
@@ -58,7 +58,7 @@ end
 
 ### #param(name, type: = nil, optional: = nil, default: = nil, enum: = nil, of: = nil, as: = nil, discriminator: = nil, value: = nil, visited_types: = nil, **options, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L95)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L79)
 
 Defines a parameter/field in a request or response body.
 
