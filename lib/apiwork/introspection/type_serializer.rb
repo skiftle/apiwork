@@ -116,7 +116,7 @@ module Apiwork
           temp_param_definition.instance_eval(&definition_block)
         end
 
-        DefinitionSerializer.new(temp_param_definition).serialize
+        ParamDefinitionSerializer.new(temp_param_definition).serialize
       end
 
       def create_temp_contract

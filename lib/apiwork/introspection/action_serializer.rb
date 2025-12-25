@@ -52,8 +52,8 @@ module Apiwork
         return nil unless request_definition
 
         {
-          query: request_definition.query_param_definition&.then { DefinitionSerializer.new(_1).serialize },
-          body: request_definition.body_param_definition&.then { DefinitionSerializer.new(_1).serialize }
+          query: request_definition.query_param_definition&.then { ParamDefinitionSerializer.new(_1).serialize },
+          body: request_definition.body_param_definition&.then { ParamDefinitionSerializer.new(_1).serialize }
         }.compact.presence
       end
 
@@ -65,7 +65,7 @@ module Apiwork
         return nil unless body_param_definition
 
         result_wrapper = response_definition.result_wrapper
-        serialized = DefinitionSerializer.new(body_param_definition, result_wrapper:).serialize
+        serialized = ParamDefinitionSerializer.new(body_param_definition, result_wrapper:).serialize
         { body: serialized }.compact.presence
       end
 

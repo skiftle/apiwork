@@ -37,14 +37,6 @@ module Apiwork
         @reset_response
       end
 
-      def introspect(locale: nil)
-        Apiwork::Introspection.action_definition(self, locale:)
-      end
-
-      def as_json
-        introspect
-      end
-
       # @api public
       # Sets a short summary for this action.
       #

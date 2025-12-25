@@ -11,7 +11,7 @@ RSpec.describe 'TypeSystem Metadata' do
         end
       end
 
-      types = Apiwork::Introspection.types(api)
+      types = Apiwork::Introspection::TypeSerializer.new(api).serialize_types
 
       expect(types[:user_status]).to include(description: 'Current status of user account')
     end
@@ -24,7 +24,7 @@ RSpec.describe 'TypeSystem Metadata' do
         end
       end
 
-      types = Apiwork::Introspection.types(api)
+      types = Apiwork::Introspection::TypeSerializer.new(api).serialize_types
 
       expect(types[:address]).to include(example: { street: '123 Main St', city: 'NYC' })
     end
@@ -36,7 +36,7 @@ RSpec.describe 'TypeSystem Metadata' do
         end
       end
 
-      types = Apiwork::Introspection.types(api)
+      types = Apiwork::Introspection::TypeSerializer.new(api).serialize_types
 
       expect(types[:email_field]).to include(format: 'email')
     end
@@ -48,7 +48,7 @@ RSpec.describe 'TypeSystem Metadata' do
         end
       end
 
-      types = Apiwork::Introspection.types(api)
+      types = Apiwork::Introspection::TypeSerializer.new(api).serialize_types
 
       expect(types[:legacy_response]).to include(deprecated: true)
     end
@@ -60,7 +60,7 @@ RSpec.describe 'TypeSystem Metadata' do
         end
       end
 
-      types = Apiwork::Introspection.types(api)
+      types = Apiwork::Introspection::TypeSerializer.new(api).serialize_types
 
       expect(types[:current_response]).not_to have_key(:deprecated)
     end
@@ -77,7 +77,7 @@ RSpec.describe 'TypeSystem Metadata' do
         end
       end
 
-      types = Apiwork::Introspection.types(api)
+      types = Apiwork::Introspection::TypeSerializer.new(api).serialize_types
 
       expect(types[:payment_info]).to include(
         description: 'Payment information structure',
@@ -94,7 +94,7 @@ RSpec.describe 'TypeSystem Metadata' do
         end
       end
 
-      types = Apiwork::Introspection.types(api)
+      types = Apiwork::Introspection::TypeSerializer.new(api).serialize_types
 
       # Metadata fields should be absent when not set
       expect(types[:simple_type]).not_to have_key(:description)
@@ -110,7 +110,7 @@ RSpec.describe 'TypeSystem Metadata' do
         end
       end
 
-      types = Apiwork::Introspection.types(api)
+      types = Apiwork::Introspection::TypeSerializer.new(api).serialize_types
 
       # deprecated: false should be omitted (only include when true)
       expect(types[:normal_type]).not_to have_key(:deprecated)
@@ -123,7 +123,7 @@ RSpec.describe 'TypeSystem Metadata' do
         end
       end
 
-      types = Apiwork::Introspection.types(api)
+      types = Apiwork::Introspection::TypeSerializer.new(api).serialize_types
 
       # Empty string is different from nil - should appear
       expect(types[:empty_desc_type]).to have_key(:description)
@@ -137,7 +137,7 @@ RSpec.describe 'TypeSystem Metadata' do
         enum :role, values: %w[admin user guest], description: 'User role in the system'
       end
 
-      enums = Apiwork::Introspection.enums(api)
+      enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
 
       expect(enums[:role][:description]).to eq('User role in the system')
     end
@@ -147,7 +147,7 @@ RSpec.describe 'TypeSystem Metadata' do
         enum :priority, values: %i[low medium high], example: :medium
       end
 
-      enums = Apiwork::Introspection.enums(api)
+      enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
 
       expect(enums[:priority][:example]).to eq(:medium)
     end
@@ -157,7 +157,7 @@ RSpec.describe 'TypeSystem Metadata' do
         enum :old_status, values: %w[active inactive], deprecated: true
       end
 
-      enums = Apiwork::Introspection.enums(api)
+      enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
 
       expect(enums[:old_status][:deprecated]).to be true
     end
@@ -167,7 +167,7 @@ RSpec.describe 'TypeSystem Metadata' do
         enum :current_status, values: %w[active inactive], deprecated: false
       end
 
-      enums = Apiwork::Introspection.enums(api)
+      enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
 
       # deprecated: false should be omitted (only include when true)
       expect(enums[:current_status]).not_to have_key(:deprecated)
@@ -182,7 +182,7 @@ RSpec.describe 'TypeSystem Metadata' do
              deprecated: true
       end
 
-      enums = Apiwork::Introspection.enums(api)
+      enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
 
       expect(enums[:color]).to eq(
         values: %w[red green blue],
@@ -197,7 +197,7 @@ RSpec.describe 'TypeSystem Metadata' do
         enum :simple_enum, values: %i[a b c]
       end
 
-      enums = Apiwork::Introspection.enums(api)
+      enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
 
       # Enum should be a hash with :values key
       expect(enums[:simple_enum]).to be_a(Hash)
@@ -210,7 +210,7 @@ RSpec.describe 'TypeSystem Metadata' do
         enum :minimal_enum, values: %i[x y z]
       end
 
-      enums = Apiwork::Introspection.enums(api)
+      enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
 
       # Only values should be present
       expect(enums[:minimal_enum]).to have_key(:values)
@@ -227,7 +227,7 @@ RSpec.describe 'TypeSystem Metadata' do
         enum :normal_enum, values: %i[a b], deprecated: false
       end
 
-      enums = Apiwork::Introspection.enums(api)
+      enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
 
       # deprecated: false should be omitted (only include when true)
       expect(enums[:normal_enum]).not_to have_key(:deprecated)
@@ -238,7 +238,7 @@ RSpec.describe 'TypeSystem Metadata' do
         enum :empty_desc_enum, values: %i[a b], description: ''
       end
 
-      enums = Apiwork::Introspection.enums(api)
+      enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
 
       # Empty string is different from nil - should appear
       expect(enums[:empty_desc_enum]).to have_key(:description)
@@ -260,8 +260,8 @@ RSpec.describe 'TypeSystem Metadata' do
         end
       end
 
-      types_v1 = Apiwork::Introspection.types(api1)
-      types_v2 = Apiwork::Introspection.types(api2)
+      types_v1 = Apiwork::Introspection::TypeSerializer.new(api1).serialize_types
+      types_v2 = Apiwork::Introspection::TypeSerializer.new(api2).serialize_types
 
       expect(types_v1[:shared_name][:description]).to eq('API v1 version')
       expect(types_v2[:shared_name][:description]).to eq('API v2 version')
@@ -280,8 +280,8 @@ RSpec.describe 'TypeSystem Metadata' do
         enum :status, values: %w[pending approved], description: 'V2 status'
       end
 
-      enums_v1 = Apiwork::Introspection.enums(api1)
-      enums_v2 = Apiwork::Introspection.enums(api2)
+      enums_v1 = Apiwork::Introspection::TypeSerializer.new(api1).serialize_enums
+      enums_v2 = Apiwork::Introspection::TypeSerializer.new(api2).serialize_enums
 
       expect(enums_v1[:status][:description]).to eq('V1 status')
       expect(enums_v1[:status][:values]).to eq(%w[active inactive])
@@ -317,7 +317,7 @@ RSpec.describe 'TypeSystem Metadata' do
         end
       end
 
-      types = Apiwork::Introspection.types(api)
+      types = Apiwork::Introspection::TypeSerializer.new(api).serialize_types
 
       # Should be qualified with contract identifier
       expect(types[:test_scoped_scoped_type]).to include(
@@ -349,7 +349,7 @@ RSpec.describe 'TypeSystem Metadata' do
         enum :scoped_enum, values: %i[a b c], description: 'Contract-scoped enum with metadata'
       end
 
-      enums = Apiwork::Introspection.enums(api)
+      enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
 
       # Should be qualified with contract identifier
       expect(enums[:test_scoped_scoped_enum]).to include(
@@ -369,7 +369,7 @@ RSpec.describe 'TypeSystem Metadata' do
         end
       end
 
-      types = Apiwork::Introspection.types(api)
+      types = Apiwork::Introspection::TypeSerializer.new(api).serialize_types
 
       # Example should still be stored even if it doesn't match the schema
       expect(types[:user][:example]).to eq('not_a_hash')
@@ -380,7 +380,7 @@ RSpec.describe 'TypeSystem Metadata' do
         enum :status, values: %w[active inactive], example: 'pending'
       end
 
-      enums = Apiwork::Introspection.enums(api)
+      enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
 
       # Example should still be stored even if it's not in the values
       expect(enums[:status][:example]).to eq('pending')
@@ -393,7 +393,7 @@ RSpec.describe 'TypeSystem Metadata' do
         end
       end
 
-      types = Apiwork::Introspection.types(api)
+      types = Apiwork::Introspection::TypeSerializer.new(api).serialize_types
 
       # Format should be stored regardless of field types
       expect(types[:weird_format][:format]).to eq('email')

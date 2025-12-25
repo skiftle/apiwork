@@ -2,7 +2,7 @@
 
 module Apiwork
   module Introspection
-    class ApiSerializer
+    class APISerializer
       def initialize(api_class)
         @api_class = api_class
       end

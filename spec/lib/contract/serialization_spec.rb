@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Contract Serialization' do
-  describe 'Definition#as_json' do
+  describe 'ParamDefinition serialization' do
     it 'serializes simple params' do
       contract_class = create_test_contract do
         action :create do
@@ -17,7 +17,7 @@ RSpec.describe 'Contract Serialization' do
       end
 
       definition = contract_class.action_definition(:create).request_definition.body_param_definition
-      json = definition.as_json
+      json = Apiwork::Introspection::ParamDefinitionSerializer.new(definition).serialize
 
       expect(json).to eq({
                            title: { type: :string },
@@ -40,7 +40,7 @@ RSpec.describe 'Contract Serialization' do
       end
 
       definition = contract_class.action_definition(:create).request_definition.body_param_definition
-      json = definition.as_json
+      json = Apiwork::Introspection::ParamDefinitionSerializer.new(definition).serialize
 
       expect(json).to eq({
                            post: {
@@ -65,7 +65,7 @@ RSpec.describe 'Contract Serialization' do
       end
 
       definition = contract_class.action_definition(:create).request_definition.body_param_definition
-      json = definition.as_json
+      json = Apiwork::Introspection::ParamDefinitionSerializer.new(definition).serialize
 
       expect(json).to eq({
                            tags: { type: :array, of: :string, optional: true }
@@ -84,7 +84,7 @@ RSpec.describe 'Contract Serialization' do
       end
 
       definition = contract_class.action_definition(:create).request_definition.body_param_definition
-      json = definition.as_json
+      json = Apiwork::Introspection::ParamDefinitionSerializer.new(definition).serialize
 
       expect(json).to eq({
                            status: { type: :string, enum: %w[draft published archived] }
@@ -103,7 +103,7 @@ RSpec.describe 'Contract Serialization' do
       end
 
       definition = contract_class.action_definition(:create).request_definition.body_param_definition
-      json = definition.as_json
+      json = Apiwork::Introspection::ParamDefinitionSerializer.new(definition).serialize
 
       expect(json).to eq({
                            comments: { type: :array, as: :comments_attributes, optional: true }
@@ -125,7 +125,7 @@ RSpec.describe 'Contract Serialization' do
       end
 
       definition = contract_class.action_definition(:create).request_definition.body_param_definition
-      json = definition.as_json
+      json = Apiwork::Introspection::ParamDefinitionSerializer.new(definition).serialize
 
       expect(json).to eq({
                            value: {
@@ -155,7 +155,7 @@ RSpec.describe 'Contract Serialization' do
       end
 
       definition = contract_class.action_definition(:create).request_definition.body_param_definition
-      json = definition.as_json
+      json = Apiwork::Introspection::ParamDefinitionSerializer.new(definition).serialize
 
       expect(json).to eq({
                            shipping_address: { type: :address }
@@ -183,7 +183,7 @@ RSpec.describe 'Contract Serialization' do
       end
 
       definition = contract_class.action_definition(:search).request_definition.body_param_definition
-      json = definition.as_json
+      json = Apiwork::Introspection::ParamDefinitionSerializer.new(definition).serialize
 
       expect(json).to eq({
                            filter: {
@@ -217,7 +217,7 @@ RSpec.describe 'Contract Serialization' do
       end
 
       definition = contract_class.action_definition(:search).request_definition.body_param_definition
-      json = definition.as_json
+      json = Apiwork::Introspection::ParamDefinitionSerializer.new(definition).serialize
 
       expect(json).to eq({
                            filters: {
@@ -232,7 +232,7 @@ RSpec.describe 'Contract Serialization' do
     end
   end
 
-  describe 'ActionDefinition#as_json' do
+  describe 'ActionDefinition serialization' do
     it 'serializes action with input and output' do
       contract_class = create_test_contract do
         action :create do
@@ -252,7 +252,7 @@ RSpec.describe 'Contract Serialization' do
       end
 
       action_def = contract_class.action_definition(:create)
-      json = action_def.as_json
+      json = Apiwork::Introspection::ActionSerializer.new(action_def).serialize
 
       expect(json).to eq({
                            request: {
@@ -280,7 +280,7 @@ RSpec.describe 'Contract Serialization' do
       end
 
       action_def = contract_class.action_definition(:destroy)
-      json = action_def.as_json
+      json = Apiwork::Introspection::ActionSerializer.new(action_def).serialize
 
       expect(json).to eq({})
     end

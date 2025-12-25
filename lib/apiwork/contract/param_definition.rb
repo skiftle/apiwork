@@ -21,14 +21,6 @@ module Apiwork
         @wrapped
       end
 
-      def introspect(locale: nil)
-        Apiwork::Introspection.definition(self, locale: locale)
-      end
-
-      def as_json
-        introspect
-      end
-
       attr_reader :action_name,
                   :contract_class,
                   :params

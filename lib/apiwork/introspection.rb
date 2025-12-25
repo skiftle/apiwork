@@ -4,27 +4,11 @@ module Apiwork
   module Introspection
     class << self
       def api(api_class, locale: nil)
-        with_locale(locale) { ApiSerializer.new(api_class).serialize }
+        with_locale(locale) { APISerializer.new(api_class).serialize }
       end
 
       def contract(contract_class, action: nil, locale: nil)
         with_locale(locale) { ContractSerializer.new(contract_class, action:).serialize }
-      end
-
-      def action_definition(action_definition, locale: nil)
-        with_locale(locale) { ActionSerializer.new(action_definition).serialize }
-      end
-
-      def types(api_class, locale: nil)
-        with_locale(locale) { TypeSerializer.new(api_class).serialize_types }
-      end
-
-      def enums(api_class, locale: nil)
-        with_locale(locale) { TypeSerializer.new(api_class).serialize_enums }
-      end
-
-      def definition(definition, locale: nil)
-        with_locale(locale) { DefinitionSerializer.new(definition).serialize }
       end
 
       private

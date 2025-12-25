@@ -2,7 +2,7 @@
 
 module Apiwork
   module Introspection
-    class DefinitionSerializer
+    class ParamDefinitionSerializer
       def initialize(param_definition, result_wrapper: nil, visited: Set.new)
         @param_definition = param_definition
         @result_wrapper = result_wrapper
@@ -227,7 +227,7 @@ module Apiwork
       end
 
       def serialize_nested_shape(shape_definition)
-        DefinitionSerializer.new(shape_definition, visited: @visited).serialize
+        ParamDefinitionSerializer.new(shape_definition, visited: @visited).serialize
       end
 
       def apply_metadata_fields(result, options)
