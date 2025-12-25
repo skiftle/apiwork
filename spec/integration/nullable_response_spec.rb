@@ -104,7 +104,7 @@ RSpec.describe 'Response nullable vs optional semantics' do
   end
 
   describe 'TypeScript output reflects nullable for responses' do
-    let(:typescript_output) { Apiwork::Spec::Typescript.generate('/api/v1') }
+    let(:typescript_output) { Apiwork::Spec::TypeScriptSpec.generate('/api/v1') }
 
     it 'response interfaces have nullable types' do
       # Should have types like: email: string | null

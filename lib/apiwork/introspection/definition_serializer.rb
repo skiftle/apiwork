@@ -66,7 +66,7 @@ module Apiwork
       end
 
       def register_success_type(type_name, shape)
-        api_class = @param_definition.contract_class&.api_class
+        api_class = @param_definition.contract_class.api_class
         return unless api_class
 
         type_system = api_class.type_system
@@ -259,7 +259,7 @@ module Apiwork
       end
 
       def i18n_attribute_description(attribute_definition)
-        api_class = @param_definition.contract_class&.api_class
+        api_class = @param_definition.contract_class.api_class
         return nil unless api_class
 
         schema_name = attribute_definition.schema_class_name
@@ -269,7 +269,7 @@ module Apiwork
       end
 
       def i18n_association_description(association_definition)
-        api_class = @param_definition.contract_class&.api_class
+        api_class = @param_definition.contract_class.api_class
         return nil unless api_class
 
         schema_name = association_definition.schema_class_name

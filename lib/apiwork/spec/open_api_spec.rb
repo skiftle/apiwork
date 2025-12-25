@@ -2,7 +2,7 @@
 
 module Apiwork
   module Spec
-    class Openapi < Base
+    class OpenAPISpec < Base
       spec_name :openapi
       content_type 'application/json'
       file_extension '.json'

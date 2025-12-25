@@ -39,7 +39,7 @@ RSpec.describe 'Action Metadata', type: :integration do
   end
 
   describe 'OpenAPI generation' do
-    let(:spec) { Apiwork::Spec::Openapi.new('/api/v1').generate }
+    let(:spec) { Apiwork::Spec::OpenAPISpec.new('/api/v1').generate }
 
     it 'includes summary in operation' do
       expect(spec[:paths]['posts/']['get'][:summary]).to eq('List all posts')

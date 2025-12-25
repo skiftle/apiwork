@@ -279,7 +279,7 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
     end
 
     it 'generates TypeScript without unknown for STI associations' do
-      output = Apiwork::Spec::Typescript.new('/api/v1').generate
+      output = Apiwork::Spec::TypeScriptSpec.new('/api/v1').generate
 
       expect(output).to match(/export interface Service \{[^}]*client\?: Client/m)
       expect(output).not_to include('client_sti')

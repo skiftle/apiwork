@@ -2,7 +2,7 @@
 
 module Apiwork
   module Spec
-    class Typescript < Base
+    class TypeScriptSpec < Base
       spec_name :typescript
       content_type 'text/plain; charset=utf-8'
       file_extension '.ts'

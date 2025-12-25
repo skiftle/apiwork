@@ -98,7 +98,7 @@ module Apiwork
 
           def apply_sti_transform_to_registered_union(value, type_name, parent_definition)
             contract_class = parent_definition&.contract_class
-            api_class = contract_class&.api_class
+            api_class = contract_class.api_class
             return unless api_class
 
             scoped_name = api_class.scoped_name(contract_class, type_name)
