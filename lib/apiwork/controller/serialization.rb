@@ -58,10 +58,10 @@ module Apiwork
 
         if Rails.env.development?
           result = contract_class.parse_response(json, action_name)
-          result.issues.each(&:warn)
+          result.issues.each { |issue| Rails.logger.warn(issue.to_s) }
         end
 
-        json = adapter.transform_response(json)
+        json = adapter.transform_response(json, schema_class)
         json = api_class.transform_response(json)
         render json: json, status: status || (action_name.to_sym == :create ? :created : :ok)
       end

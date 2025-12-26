@@ -65,10 +65,10 @@ RSpec.describe Apiwork::ErrorCode::Registry do
       expect(definition.key).to eq(:existing)
     end
 
-    it 'raises ArgumentError for unknown code' do
+    it 'raises KeyError for unknown code' do
       expect do
         described_class.fetch(:unknown)
-      end.to raise_error(ArgumentError, /Unknown error code :unknown/)
+      end.to raise_error(KeyError, /Registry :unknown not found/)
     end
 
     it 'includes available codes in error message' do
@@ -76,7 +76,7 @@ RSpec.describe Apiwork::ErrorCode::Registry do
 
       expect do
         described_class.fetch(:unknown)
-      end.to raise_error(ArgumentError, /Available: existing, another/)
+      end.to raise_error(KeyError, /Available: existing, another/)
     end
   end
 
