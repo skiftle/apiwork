@@ -10,26 +10,29 @@ module Apiwork
         before_action :validate_contract
       end
 
+      # @!method skip_contract_validation!(**options)
+      #   @!scope class
+      #   @api public
+      #   Skips contract validation for specified actions.
+      #
+      #   Use this when certain actions don't need request validation,
+      #   such as health checks or legacy endpoints.
+      #
+      #   @param options [Hash] options passed to skip_before_action
+      #   @option options [Array<Symbol>] :only skip only for these actions
+      #   @option options [Array<Symbol>] :except skip for all except these
+      #
+      #   @example Skip for specific actions
+      #     class HealthController < ApplicationController
+      #       skip_contract_validation! only: [:ping, :status]
+      #     end
+      #
+      #   @example Skip for all actions
+      #     class LegacyController < ApplicationController
+      #       skip_contract_validation!
+      #     end
+
       class_methods do
-        # @api public
-        # Skips contract validation for specified actions.
-        #
-        # Use this when certain actions don't need request validation,
-        # such as health checks or legacy endpoints.
-        #
-        # @param options [Hash] options passed to skip_before_action
-        # @option options [Array<Symbol>] :only skip only for these actions
-        # @option options [Array<Symbol>] :except skip for all except these
-        #
-        # @example Skip for specific actions
-        #   class HealthController < ApplicationController
-        #     skip_contract_validation! only: [:ping, :status]
-        #   end
-        #
-        # @example Skip for all actions
-        #   class LegacyController < ApplicationController
-        #     skip_contract_validation!
-        #   end
         def skip_contract_validation!(**options)
           skip_before_action :validate_contract, **options
         end

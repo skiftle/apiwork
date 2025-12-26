@@ -48,6 +48,41 @@ Sets or returns the adapter name identifier.
 
 ---
 
+### .option(name, type:, default: = nil, enum: = nil, &block)
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configurable.rb#L31)
+
+Defines a configuration option for the spec or adapter.
+
+Options can be passed to `.generate` or set via environment variables.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | `Symbol` | the option name |
+| `type` | `Symbol` | the option type (:symbol, :string, :boolean, :integer) |
+| `default` | `Object, nil` | default value if not provided |
+| `enum` | `Array, nil` | allowed values |
+
+**Returns**
+
+`void` — 
+
+**Example: Simple option**
+
+```ruby
+option :locale, type: :symbol, default: :en
+```
+
+**Example: Option with enum**
+
+```ruby
+option :format, type: :symbol, enum: [:json, :yaml]
+```
+
+---
+
 ## Instance Methods
 
 ### #register_api(registrar, schema_summary)

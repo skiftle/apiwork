@@ -8,6 +8,41 @@ next: false
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L5)
 
+## Class Methods
+
+### .skip_contract_validation!(**options)
+
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/deserialization.rb#L35)
+
+Skips contract validation for specified actions.
+
+Use this when certain actions don't need request validation,
+such as health checks or legacy endpoints.
+
+**Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `options` | `Hash` | options passed to skip_before_action |
+
+**Example: Skip for specific actions**
+
+```ruby
+class HealthController < ApplicationController
+  skip_contract_validation! only: [:ping, :status]
+end
+```
+
+**Example: Skip for all actions**
+
+```ruby
+class LegacyController < ApplicationController
+  skip_contract_validation!
+end
+```
+
+---
+
 ## Instance Methods
 
 ### #context()
@@ -35,7 +70,7 @@ end
 
 ### #contract()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/deserialization.rb#L59)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/deserialization.rb#L62)
 
 Returns the parsed and validated request contract.
 
