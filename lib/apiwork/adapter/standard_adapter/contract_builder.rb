@@ -279,7 +279,7 @@ module Apiwork
           sti_mapping = schema_class.needs_discriminator_transform? ? schema_class.discriminator_sti_mapping : nil
 
           build_sti_union(union_type_name: union_type_name) do |variant_schema, tag, _visited|
-            variant_schema_name = variant_schema.name.demodulize.underscore.delete_suffix('_schema')
+            variant_schema_name = variant_schema.name.demodulize.delete_suffix('Schema').underscore
             variant_type_name = :"#{variant_schema_name}_#{context_symbol}_payload"
 
             unless registrar.api_registrar.resolve_type(variant_type_name)
@@ -958,7 +958,7 @@ module Apiwork
             next false unless ad.filterable?
 
             association_resource = resolve_association_resource(ad)
-            association_resource&.schema && !visited.include?(association_resource.schema)
+            association_resource&.schema && visited.exclude?(association_resource.schema)
           end
         end
 
@@ -973,14 +973,14 @@ module Apiwork
             next false unless ad.sortable?
 
             association_resource = resolve_association_resource(ad)
-            association_resource&.schema && !visited.include?(association_resource.schema)
+            association_resource&.schema && visited.exclude?(association_resource.schema)
           end
         end
 
         def type_name(base_name, depth)
           return base_name if depth.zero?
 
-          schema_name = schema_class.name.demodulize.underscore.delete_suffix('_schema')
+          schema_name = schema_class.name.demodulize.delete_suffix('Schema').underscore
           :"#{schema_name}_#{base_name}"
         end
 

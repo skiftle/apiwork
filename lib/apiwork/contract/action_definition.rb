@@ -210,15 +210,18 @@ module Apiwork
       end
 
       def serialize_data(data, context: {}, include: nil)
-        needs_serialization = if data.is_a?(Hash)
-                                false
-                              elsif data.is_a?(Array)
-                                data.empty? || data.first.class != Hash
-                              else
-                                true
-                              end
+        return data if already_serialized?(data)
 
-        needs_serialization ? schema_class.serialize(data, context: context, include: include) : data
+        schema_class.serialize(data, context: context, include: include)
+      end
+
+      private
+
+      def already_serialized?(data)
+        return true if data.is_a?(Hash)
+        return false unless data.is_a?(Array)
+
+        data.any? && data.first.is_a?(Hash)
       end
     end
   end

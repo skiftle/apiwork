@@ -109,7 +109,7 @@ module Apiwork
 
         return nil unless contract_class
 
-        contract_class < Contract::Base ? contract_class : nil
+        contract_class if contract_class < Contract::Base
       end
     end
   end

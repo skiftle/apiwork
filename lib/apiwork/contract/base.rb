@@ -372,7 +372,7 @@ module Apiwork
         # Useful for generating documentation or client code.
         #
         # @param locale [Symbol] optional locale for translated descriptions
-        # @param expand [Boolean] include imported and global types/enums (default: false)
+        # @param expand [Boolean] resolve all referenced types (local, imported, global)
         # @return [Hash] contract structure with :actions key
         #
         # @example
