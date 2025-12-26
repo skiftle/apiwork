@@ -6,42 +6,42 @@ module Api
       before_action :set_post, only: %i[show update destroy publish archive preview]
 
       def index
-        respond Post.all
+        expose Post.all
       end
 
       def show
-        respond post
+        expose post
       end
 
       def create
         post = Post.create(contract.body[:post])
-        respond post
+        expose post
       end
 
       def update
         post.update(contract.body[:post])
-        respond post
+        expose post
       end
 
       def destroy
         post.destroy
-        respond post
+        expose post
       end
 
       # Member actions
       def publish
         post.update(published: true)
-        respond post
+        expose post
       end
 
       def archive
         post.update(published: false)
-        respond post
+        expose post
       end
 
       def preview
-        # Return post object - respond will serialize it
-        respond post
+        # Return post object - expose will serialize it
+        expose post
       end
 
       # Collection actions
@@ -52,7 +52,7 @@ module Api
         else
           Post.all
         end
-        respond posts
+        expose posts
       end
 
       def bulk_create
@@ -66,7 +66,7 @@ module Api
           post.id
         end
         posts = Post.where(id: created_ids)
-        respond posts, status: :created
+        expose posts, status: :created
       end
 
       private

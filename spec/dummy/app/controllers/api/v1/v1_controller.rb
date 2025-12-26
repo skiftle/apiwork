@@ -6,7 +6,7 @@ module Api
       include Apiwork::Controller
 
       rescue_from ActiveRecord::RecordNotFound do
-        respond_with_error :not_found
+        expose_error :not_found
       end
     end
   end

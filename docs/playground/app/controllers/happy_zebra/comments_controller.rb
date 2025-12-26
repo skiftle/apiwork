@@ -4,7 +4,7 @@ module HappyZebra
   class CommentsController < ApplicationController
     def index
       comments = Comment.all
-      respond comments
+      expose comments
     end
   end
 end

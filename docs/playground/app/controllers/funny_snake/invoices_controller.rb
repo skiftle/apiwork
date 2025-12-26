@@ -6,27 +6,27 @@ module FunnySnake
 
     def index
       invoices = Invoice.all
-      respond({ invoices: invoices.map(&:as_json) })
+      expose({ invoices: invoices.map(&:as_json) })
     end
 
     def show
-      respond({ invoice: invoice.as_json })
+      expose({ invoice: invoice.as_json })
     end
 
     def create
       invoice = Invoice.create(contract.body[:invoice])
 
-      respond({ invoice: invoice.as_json })
+      expose({ invoice: invoice.as_json })
     end
 
     def update
       invoice.update(contract.body[:invoice])
-      respond({ invoice: invoice.as_json })
+      expose({ invoice: invoice.as_json })
     end
 
     def destroy
       invoice.destroy
-      respond invoice
+      expose invoice
     end
 
     private

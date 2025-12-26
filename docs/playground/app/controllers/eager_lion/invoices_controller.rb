@@ -6,31 +6,31 @@ module EagerLion
 
     def index
       invoices = Invoice.all
-      respond invoices
+      expose invoices
     end
 
     def show
-      respond invoice
+      expose invoice
     end
 
     def create
       invoice = Invoice.create(contract.body[:invoice])
-      respond invoice
+      expose invoice
     end
 
     def update
       invoice.update(contract.body[:invoice])
-      respond invoice
+      expose invoice
     end
 
     def destroy
       invoice.destroy
-      respond invoice
+      expose invoice
     end
 
     def archive
       invoice.update(archived: true)
-      respond invoice
+      expose invoice
     end
 
     private

@@ -7,7 +7,7 @@ module Apiwork
     skip_contract_validation!
 
     def not_found
-      respond_with_error :not_found
+      expose_error :not_found
     end
   end
 end

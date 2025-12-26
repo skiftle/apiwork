@@ -6,26 +6,26 @@ module CleverRabbit
 
     def index
       orders = Order.all
-      respond orders
+      expose orders
     end
 
     def show
-      respond order
+      expose order
     end
 
     def create
       order = Order.create(contract.body[:order])
-      respond order
+      expose order
     end
 
     def update
       order.update(contract.body[:order])
-      respond order
+      expose order
     end
 
     def destroy
       order.destroy
-      respond order
+      expose order
     end
 
     private

@@ -47,7 +47,7 @@ end
 
 ### #context()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/serialization.rb#L142)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/serialization.rb#L118)
 
 Returns the serialization context passed to schemas.
 
@@ -103,43 +103,11 @@ end
 
 ---
 
-### #render_error(issues, layer:, status: = :bad_request)
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/serialization.rb#L88)
-
-Renders an error response with validation issues.
-
-Use this for validation errors where you have a list of issues.
-For standard HTTP errors, use `respond_with_error` instead.
-
-**Parameters**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `issues` | `Array<Issue>` | list of validation issues |
-| `layer` | `String` | error layer ("http", "contract", or "domain") |
-| `status` | `Symbol, Integer` | HTTP status (default: :bad_request) |
-
-**Example: Render validation errors**
-
-```ruby
-def create
-  unless record.valid?
-    issues = record.errors.map do |error|
-      Apiwork::Issue.new(code: :invalid, detail: error.message, path: [error.attribute], meta: {})
-    end
-    render_error issues, layer: 'domain', status: :unprocessable_entity
-  end
-end
-```
-
----
-
-### #respond(data, meta: = {}, status: = nil)
+### #expose(data, meta: = {}, status: = nil)
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/serialization.rb#L42)
 
-Renders a successful API response.
+Exposes data as an API response.
 
 When a schema is linked via [Contract::Base.schema!](contract-base#schema!), data is serialized
 through the schema. Otherwise, data is rendered as-is. The adapter applies
@@ -149,25 +117,25 @@ response transformations (key casing, wrapping, etc.).
 
 | Name | Type | Description |
 |------|------|-------------|
-| `data` | `Object, Array` | the record(s) to render |
+| `data` | `Object, Array` | the record(s) to expose |
 | `meta` | `Hash` | metadata to include in response (pagination, etc.) |
 | `status` | `Symbol, Integer` | HTTP status (default: :ok, or :created for create action) |
 
-**Example: Render a single record**
+**Example: Expose a single record**
 
 ```ruby
 def show
   invoice = Invoice.find(params[:id])
-  respond invoice
+  expose invoice
 end
 ```
 
-**Example: Render a collection with metadata**
+**Example: Expose a collection with metadata**
 
 ```ruby
 def index
   invoices = Invoice.all
-  respond invoices, meta: { total: invoices.count }
+  expose invoices, meta: { total: invoices.count }
 end
 ```
 
@@ -176,17 +144,17 @@ end
 ```ruby
 def create
   invoice = Invoice.create!(contract.body)
-  respond invoice, status: :created
+  expose invoice, status: :created
 end
 ```
 
 ---
 
-### #respond_with_error(code_key, detail: = nil, path: = nil, meta: = {}, i18n: = {})
+### #expose_error(code_key, detail: = nil, path: = nil, meta: = {}, i18n: = {})
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/serialization.rb#L117)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/serialization.rb#L93)
 
-Renders an error response using a registered error code.
+Exposes an error response using a registered error code.
 
 Error codes are registered via [ErrorCode.register](error-code#register).
 The detail message is looked up from I18n if not provided.
@@ -206,21 +174,21 @@ The detail message is looked up from I18n if not provided.
 ```ruby
 def show
   invoice = Invoice.find_by(id: params[:id])
-  return respond_with_error :not_found unless invoice
-  respond invoice
+  return expose_error :not_found unless invoice
+  expose invoice
 end
 ```
 
 **Example: With custom message**
 
 ```ruby
-respond_with_error :forbidden, detail: 'You cannot access this invoice'
+expose_error :forbidden, detail: 'You cannot access this invoice'
 ```
 
 **Example: With I18n interpolation**
 
 ```ruby
-respond_with_error :not_found, i18n: { resource: 'Invoice' }
+expose_error :not_found, i18n: { resource: 'Invoice' }
 ```
 
 ---

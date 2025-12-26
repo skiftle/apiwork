@@ -6,26 +6,26 @@ module MightyWolf
 
     def index
       vehicles = Vehicle.all
-      respond vehicles
+      expose vehicles
     end
 
     def show
-      respond vehicle
+      expose vehicle
     end
 
     def create
       vehicle = Vehicle.create(contract.body[:vehicle])
-      respond vehicle
+      expose vehicle
     end
 
     def update
       vehicle.update(contract.body[:vehicle])
-      respond vehicle
+      expose vehicle
     end
 
     def destroy
       vehicle.destroy
-      respond vehicle
+      expose vehicle
     end
 
     private

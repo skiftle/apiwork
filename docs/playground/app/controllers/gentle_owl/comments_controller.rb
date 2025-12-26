@@ -6,26 +6,26 @@ module GentleOwl
 
     def index
       comments = Comment.all
-      respond comments
+      expose comments
     end
 
     def show
-      respond comment
+      expose comment
     end
 
     def create
       comment = Comment.create(contract.body[:comment])
-      respond comment
+      expose comment
     end
 
     def update
       comment.update(contract.body[:comment])
-      respond comment
+      expose comment
     end
 
     def destroy
       comment.destroy
-      respond comment
+      expose comment
     end
 
     private

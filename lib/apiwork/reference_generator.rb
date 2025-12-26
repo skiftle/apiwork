@@ -312,7 +312,7 @@ module Apiwork
         parts << "[GitHub](#{github_link})\n"
       end
 
-      parts << "#{linkify_yard_refs(mod[:docstring])}\n" unless mod[:docstring].blank?
+      parts << "#{linkify_yard_refs(mod[:docstring])}\n" if mod[:docstring].present?
 
       if mod[:examples].any?
         mod[:examples].each do |example|
@@ -351,7 +351,7 @@ module Apiwork
         parts << "[GitHub](#{github_link})\n"
       end
 
-      parts << "#{linkify_yard_refs(method[:docstring])}\n" unless method[:docstring].blank?
+      parts << "#{linkify_yard_refs(method[:docstring])}\n" if method[:docstring].present?
 
       if method[:params].any?
         parts << "**Parameters**\n"

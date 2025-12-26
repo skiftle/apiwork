@@ -10,7 +10,7 @@ module Api
         # Override the getter to return an invalid value
         account.define_singleton_method(:first_day_of_week) { 'hahahahahaha' }
 
-        respond account
+        expose account
       end
     end
   end

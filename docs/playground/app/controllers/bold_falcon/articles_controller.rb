@@ -6,26 +6,26 @@ module BoldFalcon
 
     def index
       articles = Article.all
-      respond articles
+      expose articles
     end
 
     def show
-      respond article
+      expose article
     end
 
     def create
       article = Article.create(contract.body[:article])
-      respond article
+      expose article
     end
 
     def update
       article.update(contract.body[:article])
-      respond article
+      expose article
     end
 
     def destroy
       article.destroy
-      respond article
+      expose article
     end
 
     private

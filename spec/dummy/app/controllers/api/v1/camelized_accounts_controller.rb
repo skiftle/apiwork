@@ -12,7 +12,7 @@ module Api
           account.define_singleton_method(:first_day_of_week) { 'hahahahahaha' }
         end
 
-        respond account
+        expose account
       end
     end
   end

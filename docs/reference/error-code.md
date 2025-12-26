@@ -16,7 +16,7 @@ next: false
 
 Registers a custom error code for use in API responses.
 
-Error codes are used with `raises` declarations and `respond_with_error`
+Error codes are used with `raises` declarations and `expose_error`
 in controllers. Built-in codes (400-504) are pre-registered.
 
 **Parameters**

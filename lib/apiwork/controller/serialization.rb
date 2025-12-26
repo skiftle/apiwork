@@ -7,39 +7,39 @@ module Apiwork
 
       included do
         rescue_from Apiwork::ContractError, Apiwork::DomainError do |error|
-          render_error error.issues, layer: error.layer, status: error.error_code.status
+          render_issues error.issues, layer: error.layer, status: error.error_code.status
         end
       end
 
       # @api public
-      # Renders a successful API response.
+      # Exposes data as an API response.
       #
       # When a schema is linked via {Contract::Base.schema!}, data is serialized
       # through the schema. Otherwise, data is rendered as-is. The adapter applies
       # response transformations (key casing, wrapping, etc.).
       #
-      # @param data [Object, Array] the record(s) to render
+      # @param data [Object, Array] the record(s) to expose
       # @param meta [Hash] metadata to include in response (pagination, etc.)
       # @param status [Symbol, Integer] HTTP status (default: :ok, or :created for create action)
       #
-      # @example Render a single record
+      # @example Expose a single record
       #   def show
       #     invoice = Invoice.find(params[:id])
-      #     respond invoice
+      #     expose invoice
       #   end
       #
-      # @example Render a collection with metadata
+      # @example Expose a collection with metadata
       #   def index
       #     invoices = Invoice.all
-      #     respond invoices, meta: { total: invoices.count }
+      #     expose invoices, meta: { total: invoices.count }
       #   end
       #
       # @example Custom status
       #   def create
       #     invoice = Invoice.create!(contract.body)
-      #     respond invoice, status: :created
+      #     expose invoice, status: :created
       #   end
-      def respond(data, meta: {}, status: nil)
+      def expose(data, meta: {}, status: nil)
         action_def = contract_class.action_definitions[action_name.to_sym]
 
         if action_def&.response_definition&.no_content?
@@ -67,31 +67,7 @@ module Apiwork
       end
 
       # @api public
-      # Renders an error response with validation issues.
-      #
-      # Use this for validation errors where you have a list of issues.
-      # For standard HTTP errors, use `respond_with_error` instead.
-      #
-      # @param issues [Array<Issue>] list of validation issues
-      # @param layer [String] error layer ("http", "contract", or "domain")
-      # @param status [Symbol, Integer] HTTP status (default: :bad_request)
-      #
-      # @example Render validation errors
-      #   def create
-      #     unless record.valid?
-      #       issues = record.errors.map do |error|
-      #         Apiwork::Issue.new(code: :invalid, detail: error.message, path: [error.attribute], meta: {})
-      #       end
-      #       render_error issues, layer: 'domain', status: :unprocessable_entity
-      #     end
-      #   end
-      def render_error(issues, layer:, status: :bad_request)
-        json = adapter.render_error(issues, layer, build_action_summary)
-        render json: json, status: status
-      end
-
-      # @api public
-      # Renders an error response using a registered error code.
+      # Exposes an error response using a registered error code.
       #
       # Error codes are registered via {ErrorCode.register}.
       # The detail message is looked up from I18n if not provided.
@@ -105,16 +81,16 @@ module Apiwork
       # @example Not found error
       #   def show
       #     invoice = Invoice.find_by(id: params[:id])
-      #     return respond_with_error :not_found unless invoice
-      #     respond invoice
+      #     return expose_error :not_found unless invoice
+      #     expose invoice
       #   end
       #
       # @example With custom message
-      #   respond_with_error :forbidden, detail: 'You cannot access this invoice'
+      #   expose_error :forbidden, detail: 'You cannot access this invoice'
       #
       # @example With I18n interpolation
-      #   respond_with_error :not_found, i18n: { resource: 'Invoice' }
-      def respond_with_error(code_key, detail: nil, path: nil, meta: {}, i18n: {})
+      #   expose_error :not_found, i18n: { resource: 'Invoice' }
+      def expose_error(code_key, detail: nil, path: nil, meta: {}, i18n: {})
         error_code = ErrorCode.fetch(code_key)
 
         issue = Issue.new(
@@ -124,7 +100,7 @@ module Apiwork
           meta:
         )
 
-        render_error [issue], layer: :http, status: error_code.status
+        render_issues [issue], layer: :http, status: error_code.status
       end
 
       # @api public
@@ -144,6 +120,11 @@ module Apiwork
       end
 
       private
+
+      def render_issues(issues, layer:, status:)
+        json = adapter.render_error(issues, layer, build_action_summary)
+        render json:, status:
+      end
 
       def render_with_schema(data, schema_class, meta)
         if data.is_a?(Enumerable)

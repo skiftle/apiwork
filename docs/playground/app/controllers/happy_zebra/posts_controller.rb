@@ -4,7 +4,7 @@ module HappyZebra
   class PostsController < ApplicationController
     def index
       posts = Post.all
-      respond posts
+      expose posts
     end
   end
 end

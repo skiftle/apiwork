@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Error Response' do
-  describe 'respond_with_error' do
+  describe 'expose_error' do
     context 'with registered error code' do
       it 'returns correct HTTP status for not_found' do
         get '/api/v1/posts/999999'

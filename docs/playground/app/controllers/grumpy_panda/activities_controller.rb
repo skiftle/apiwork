@@ -6,26 +6,26 @@ module GrumpyPanda
 
     def index
       activities = Activity.all
-      respond activities
+      expose activities
     end
 
     def show
-      respond activity
+      expose activity
     end
 
     def create
       activity = Activity.create(contract.body[:activity])
-      respond activity
+      expose activity
     end
 
     def update
       activity.update(contract.body[:activity])
-      respond activity
+      expose activity
     end
 
     def destroy
       activity.destroy
-      respond activity
+      expose activity
     end
 
     private

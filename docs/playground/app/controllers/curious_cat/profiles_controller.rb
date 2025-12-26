@@ -6,26 +6,26 @@ module CuriousCat
 
     def index
       profiles = Profile.all
-      respond profiles
+      expose profiles
     end
 
     def show
-      respond profile
+      expose profile
     end
 
     def create
       profile = Profile.create(contract.body[:profile])
-      respond profile
+      expose profile
     end
 
     def update
       profile.update(contract.body[:profile])
-      respond profile
+      expose profile
     end
 
     def destroy
       profile.destroy
-      respond profile
+      expose profile
     end
 
     private
