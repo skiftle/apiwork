@@ -127,19 +127,17 @@ module Apiwork
         #   class InvoiceSchema < Apiwork::Schema::Base
         #     root :bill, :bills
         #   end
-        def root(singular, plural = nil)
-          singular = singular.to_s
-          plural = plural ? plural.to_s : singular.pluralize
-          self._root = { singular:, plural: }
+        def root(singular, plural = singular.to_s.pluralize)
+          self._root = { singular: singular.to_s, plural: plural.to_s }
         end
 
         def api_class
           return nil unless name
 
-          namespace_parts = name.deconstantize.split('::')
-          return nil if namespace_parts.empty?
+          namespace = name.deconstantize
+          return nil if namespace.blank?
 
-          Apiwork::API.find("/#{namespace_parts.map(&:underscore).join('/')}")
+          Apiwork::API.find("/#{namespace.underscore.tr('::', '/')}")
         end
 
         # @api public

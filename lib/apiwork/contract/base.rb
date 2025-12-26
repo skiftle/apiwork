@@ -125,12 +125,11 @@ module Apiwork
         end
 
         def find_contract_for_schema(schema_class)
-          return nil unless schema_class
+          return nil unless schema_class&.name
 
-          contract_name = schema_class.name.sub(/Schema$/, 'Contract')
-          contract_name.constantize
-        rescue NameError
-          nil
+          schema_class.name
+                      .sub(/Schema\z/, 'Contract')
+                      .safe_constantize
         end
 
         def register_sti_variants(*variant_schema_classes)
@@ -162,7 +161,11 @@ module Apiwork
 
           return nil unless name
 
-          name.demodulize.underscore.gsub(/_(contract|schema)$/, '')
+          name
+            .demodulize
+            .delete_suffix('Contract')
+            .delete_suffix('Schema')
+            .underscore
         end
 
         # @api public
@@ -387,10 +390,10 @@ module Apiwork
           return @api_class if instance_variable_defined?(:@api_class)
           return nil unless name
 
-          namespace_parts = name.deconstantize.split('::')
-          return nil if namespace_parts.empty?
+          namespace = name.deconstantize
+          return nil if namespace.blank?
 
-          Apiwork::API.find("/#{namespace_parts.map(&:underscore).join('/')}")
+          Apiwork::API.find("/#{namespace.underscore.tr('::', '/')}")
         end
 
         def parse_response(body, action)
@@ -429,11 +432,13 @@ module Apiwork
         private
 
         def resolve_imported_type(type_name, visited:)
+          type_string = type_name.to_s
+
           imports.each do |import_alias, imported_contract|
             prefix = "#{import_alias}_"
-            next unless type_name.to_s.start_with?(prefix)
+            next unless type_string.start_with?(prefix)
 
-            unprefixed_name = type_name.to_s.sub(prefix, '').to_sym
+            unprefixed_name = type_string.delete_prefix(prefix).to_sym
             result = imported_contract.resolve_custom_type(unprefixed_name, visited:)
             return result if result
           end
@@ -442,11 +447,13 @@ module Apiwork
         end
 
         def resolve_imported_enum(enum_name, visited:)
+          enum_string = enum_name.to_s
+
           imports.each do |import_alias, imported_contract|
             prefix = "#{import_alias}_"
-            next unless enum_name.to_s.start_with?(prefix)
+            next unless enum_string.start_with?(prefix)
 
-            unprefixed_name = enum_name.to_s.sub(prefix, '').to_sym
+            unprefixed_name = enum_string.delete_prefix(prefix).to_sym
             result = imported_contract.resolve_enum(unprefixed_name, visited:)
             return result if result
           end
