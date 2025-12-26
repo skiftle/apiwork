@@ -563,7 +563,7 @@ module Apiwork
           return if abstract?
 
           schema_name = name.demodulize
-          model_name = schema_name.sub(/Schema$/, '')
+          model_name = schema_name.delete_suffix('Schema')
           return if model_name.blank?
 
           namespace = name.deconstantize

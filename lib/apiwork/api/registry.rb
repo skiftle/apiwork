@@ -2,44 +2,34 @@
 
 module Apiwork
   module API
-    class Registry
+    class Registry < Apiwork::Registry
       class << self
-        def store
-          @store ||= Store.new
-        end
-
         def register(api_class)
           return unless api_class.metadata&.path
 
-          store[normalize_path(api_class.metadata.path)] = api_class
+          store[normalize_key(api_class.metadata.path)] = api_class
         end
 
         def find(path)
           return nil unless path
 
-          store[normalize_path(path)]
+          super
         end
 
         def all
-          store.values.uniq
+          values.uniq
         end
 
         def unregister(path)
-          return unless path
-
-          store.delete(normalize_path(path))
-        end
-
-        def clear!
-          @store = Store.new
+          delete(path) if path
         end
 
         private
 
-        def normalize_path(path)
-          return 'root' if path == '/'
+        def normalize_key(path)
+          return :root if path == '/'
 
-          path.sub(%r{^/}, '').tr('-', '_').downcase
+          path.delete_prefix('/').underscore.to_sym
         end
       end
     end

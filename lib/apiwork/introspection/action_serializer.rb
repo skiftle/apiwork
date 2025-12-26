@@ -42,7 +42,7 @@ module Apiwork
         api_class = contract_class.api_class
         return nil unless api_class&.metadata&.path && contract_class.name
 
-        contract_name = contract_class.name.demodulize.underscore.gsub(/_contract$/, '')
+        contract_name = contract_class.name.demodulize.underscore.delete_suffix('_contract')
         action_name = @action_definition.action_name
 
         api_class.metadata.i18n_lookup(:contracts, contract_name, :actions, action_name, field)

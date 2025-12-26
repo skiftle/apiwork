@@ -253,12 +253,12 @@ module Apiwork
       if ref.include?('#')
         class_part, method_part = ref.split('#', 2)
         file_path = class_to_filepath(class_part)
-        "#{file_path}##{method_part.tr('_', '-')}"
+        "#{file_path}##{method_part.dasherize}"
       elsif ref.include?('.')
         # Class method: "Adapter.register" → "adapter.md#register"
         class_part, method_part = ref.split('.', 2)
         file_path = class_to_filepath(class_part)
-        "#{file_path}##{method_part.tr('_', '-')}"
+        "#{file_path}##{method_part.dasherize}"
       else
         class_to_filepath(ref)
       end

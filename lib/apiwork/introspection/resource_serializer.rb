@@ -102,7 +102,7 @@ module Apiwork
 
           contract_class = @resource_metadata[:contract_class] = begin
             contract_name.constantize
-          rescue StandardError
+          rescue NameError
             nil
           end
         end

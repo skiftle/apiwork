@@ -13,12 +13,12 @@ module Apiwork
         @value_set = value_set
       end
 
-      def success?
+      def valid?
         issues.empty?
       end
 
-      def failure?
-        !success?
+      def invalid?
+        issues.any?
       end
 
       def to_h

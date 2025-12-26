@@ -94,9 +94,6 @@ module Apiwork
 
           Rails.logger.debug "    → #{file_path}"
           1
-        rescue StandardError => e
-          Rails.logger.debug "  ✗ #{api_path} → #{spec_name} (error: #{e.message})"
-          0
         end
       end
     end

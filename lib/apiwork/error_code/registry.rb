@@ -2,14 +2,10 @@
 
 module Apiwork
   module ErrorCode
-    class Registry
+    class Registry < Apiwork::Registry
       class << self
-        def store
-          @store ||= Store.new
-        end
-
         def register(key, status:, attach_path: false)
-          key = key.to_sym
+          key = normalize_key(key)
           status = Integer(status)
 
           raise ArgumentError, "Status must be 400-599, got #{status}" unless (400..599).cover?(status)
@@ -17,21 +13,8 @@ module Apiwork
           store[key] = Definition.new(key:, status:, attach_path:)
         end
 
-        def fetch(key)
-          key = key.to_sym
-          store.fetch(key) { raise ArgumentError, "Unknown error code :#{key}. Available: #{all.join(', ')}" }
-        end
-
-        def registered?(key)
-          store.key?(key.to_sym)
-        end
-
         def all
-          store.keys
-        end
-
-        def clear!
-          @store = Store.new
+          keys
         end
       end
     end

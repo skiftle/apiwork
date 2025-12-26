@@ -279,7 +279,7 @@ module Apiwork
           sti_mapping = schema_class.needs_discriminator_transform? ? schema_class.discriminator_sti_mapping : nil
 
           build_sti_union(union_type_name: union_type_name) do |variant_schema, tag, _visited|
-            variant_schema_name = variant_schema.name.demodulize.underscore.gsub(/_schema$/, '')
+            variant_schema_name = variant_schema.name.demodulize.underscore.delete_suffix('_schema')
             variant_type_name = :"#{variant_schema_name}_#{context_symbol}_payload"
 
             unless registrar.api_registrar.resolve_type(variant_type_name)
@@ -919,7 +919,7 @@ module Apiwork
             contract_name = association_schema.name.sub(/Schema$/, 'Contract')
             association_contract = begin
               contract_name.constantize
-            rescue StandardError
+            rescue NameError
               nil
             end
           end
@@ -980,7 +980,7 @@ module Apiwork
         def type_name(base_name, depth)
           return base_name if depth.zero?
 
-          schema_name = schema_class.name.demodulize.underscore.gsub(/_schema$/, '')
+          schema_name = schema_class.name.demodulize.underscore.delete_suffix('_schema')
           :"#{schema_name}_#{base_name}"
         end
 

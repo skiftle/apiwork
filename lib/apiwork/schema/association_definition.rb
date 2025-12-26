@@ -100,7 +100,7 @@ module Apiwork
       end
 
       def schema_class_name
-        @schema_class_name ||= @owner_schema_class.name.demodulize.underscore.gsub(/_schema$/, '')
+        @schema_class_name ||= @owner_schema_class.name.demodulize.underscore.delete_suffix('_schema')
       end
 
       def resolve_polymorphic_schema(tag)

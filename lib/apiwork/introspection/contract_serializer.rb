@@ -145,7 +145,7 @@ module Apiwork
       def resource_name
         return nil unless @contract_class.name
 
-        @contract_class.name.demodulize.sub(/Contract$/, '').underscore.pluralize.to_sym
+        @contract_class.name.demodulize.delete_suffix('Contract').underscore.pluralize.to_sym
       end
     end
   end
