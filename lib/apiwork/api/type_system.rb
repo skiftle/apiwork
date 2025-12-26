@@ -7,8 +7,8 @@ module Apiwork
                   :types
 
       def initialize
-        @types = Apiwork::Store.new
-        @enums = Apiwork::Store.new
+        @types = Concurrent::Map.new
+        @enums = Concurrent::Map.new
       end
 
       def register_type(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false,
@@ -87,8 +87,8 @@ module Apiwork
       end
 
       def clear!
-        @types.clear!
-        @enums.clear!
+        @types.clear
+        @enums.clear
       end
 
       def unregister_type(name)
