@@ -42,10 +42,10 @@ module Apiwork
       # Returns the parsed and validated request contract.
       #
       # The contract contains parsed query parameters and request body,
-      # with type coercion applied. Access parameters via `contract.query`
-      # and `contract.body`.
+      # with type coercion applied. Access parameters via {Contract::Base#query}
+      # and {Contract::Base#body}.
       #
-      # @return [Apiwork::Contract::Base] the contract instance
+      # @return [Contract::Base] the contract instance
       #
       # @example Access parsed parameters
       #   def create

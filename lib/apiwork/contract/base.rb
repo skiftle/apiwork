@@ -30,10 +30,21 @@ module Apiwork
       class_attribute :_identifier
       class_attribute :_schema_class
 
-      attr_reader :action_name,
-                  :body,
-                  :issues,
-                  :query
+      # @api public
+      # @return [Hash] parsed and validated query parameters
+      attr_reader :query
+
+      # @api public
+      # @return [Hash] parsed and validated request body
+      attr_reader :body
+
+      # @api public
+      # @return [Array<Issue>] validation issues (empty if valid)
+      attr_reader :issues
+
+      # @api public
+      # @return [Symbol] the current action name
+      attr_reader :action_name
 
       def initialize(query:, body:, action_name:, coerce: false)
         result = RequestParser.new(self.class, action_name, coerce:).parse(query, body)
@@ -44,11 +55,15 @@ module Apiwork
       end
 
       # @api public
+      # Returns whether the contract passed validation.
+      # @return [Boolean] true if no validation issues
       def valid?
         issues.empty?
       end
 
       # @api public
+      # Returns whether the contract has validation issues.
+      # @return [Boolean] true if any validation issues
       def invalid?
         issues.any?
       end

@@ -56,7 +56,7 @@ module Apiwork
 
       def resource_name
         @resource_name ||= begin
-          base_name = self.class.name.underscore.gsub('_controller', '').split('/').last
+          base_name = self.class.name.underscore.delete_suffix('_controller').split('/').last
           metadata = api_class&.metadata
 
           plural = base_name.to_sym

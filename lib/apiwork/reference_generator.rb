@@ -89,7 +89,7 @@ module Apiwork
     def relative_path(file)
       return nil unless file
 
-      file.sub("#{GEM_ROOT}/", '')
+      file.delete_prefix("#{GEM_ROOT}/")
     end
 
     def extract_methods(obj, scope)
@@ -312,11 +312,11 @@ module Apiwork
         parts << "[GitHub](#{github_link})\n"
       end
 
-      parts << "#{linkify_yard_refs(mod[:docstring])}\n" unless mod[:docstring].to_s.empty?
+      parts << "#{linkify_yard_refs(mod[:docstring])}\n" unless mod[:docstring].blank?
 
       if mod[:examples].any?
         mod[:examples].each do |example|
-          title_suffix = example[:title].to_s.empty? ? '' : ": #{example[:title]}"
+          title_suffix = example[:title].blank? ? '' : ": #{example[:title]}"
           parts << "**Example#{title_suffix}**\n"
           parts << '```ruby'
           parts << example[:code]
@@ -351,7 +351,7 @@ module Apiwork
         parts << "[GitHub](#{github_link})\n"
       end
 
-      parts << "#{linkify_yard_refs(method[:docstring])}\n" unless method[:docstring].to_s.empty?
+      parts << "#{linkify_yard_refs(method[:docstring])}\n" unless method[:docstring].blank?
 
       if method[:params].any?
         parts << "**Parameters**\n"
@@ -373,7 +373,7 @@ module Apiwork
 
       if method[:examples].any?
         method[:examples].each do |example|
-          title_suffix = example[:title].to_s.empty? ? '' : ": #{example[:title]}"
+          title_suffix = example[:title].blank? ? '' : ": #{example[:title]}"
           parts << "**Example#{title_suffix}**\n"
           parts << '```ruby'
           parts << example[:code]
