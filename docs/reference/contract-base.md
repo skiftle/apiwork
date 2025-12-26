@@ -48,7 +48,7 @@ Returns whether this contract is abstract.
 
 ### .action(action_name, replace: = false, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L340)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L343)
 
 Defines an action (endpoint) for this contract.
 
@@ -106,21 +106,9 @@ end
 
 ---
 
-### .as_json()
-
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L390)
-
-Alias for [#introspect](#introspect).
-
-**Returns**
-
-`Hash` — contract structure
-
----
-
 ### .enum(name, values: = nil, description: = nil, example: = nil, deprecated: = false)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L225)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L228)
 
 Defines an enum scoped to this contract.
 
@@ -190,7 +178,7 @@ end
 
 ### .import(contract_class, as:)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L279)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L282)
 
 Imports types from another contract for reuse.
 
@@ -227,7 +215,7 @@ end
 
 ### .introspect(locale: = nil, expand: = false)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L382)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L385)
 
 Returns a hash representation of this contract's structure.
 
@@ -239,7 +227,7 @@ Useful for generating documentation or client code.
 | Name | Type | Description |
 |------|------|-------------|
 | `locale` | `Symbol` | optional locale for translated descriptions |
-| `expand` | `Boolean` | include imported and global types/enums (default: false) |
+| `expand` | `Boolean` | resolve all referenced types (local, imported, global) |
 
 **Returns**
 
@@ -295,7 +283,7 @@ end
 
 ### .type(name, description: = nil, example: = nil, format: = nil, deprecated: = false, schema_class: = nil, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L199)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L202)
 
 Defines a reusable type scoped to this contract.
 
@@ -338,7 +326,7 @@ end
 
 ### .union(name, discriminator: = nil, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L251)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L254)
 
 Defines a discriminated union type scoped to this contract.
 

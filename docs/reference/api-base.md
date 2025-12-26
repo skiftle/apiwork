@@ -12,7 +12,7 @@ next: false
 
 ### .adapter(name = nil, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L209)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L210)
 
 Configures the adapter for this API.
 
@@ -51,7 +51,7 @@ end
 
 ### .concern(name, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L415)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L416)
 
 Defines a reusable concern for resources.
 
@@ -84,7 +84,7 @@ end
 
 ### .enum(name, values: = nil, scope: = nil, description: = nil, example: = nil, deprecated: = false)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L274)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L275)
 
 Defines a reusable enumeration type.
 
@@ -115,7 +115,7 @@ param :status, enum: :status
 
 ### .info(&block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L339)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L340)
 
 Defines information about this API.
 
@@ -141,7 +141,7 @@ end
 
 ### .key_format(format = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L51)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L52)
 
 Sets the key format for request/response transformation.
 
@@ -171,7 +171,7 @@ end
 
 ### .path_format(format = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L75)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L76)
 
 Sets the path format for URL path segments.
 
@@ -202,7 +202,7 @@ end
 
 ### .raises(*error_code_keys)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L168)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L169)
 
 Declares error codes that any action in this API may raise.
 
@@ -227,7 +227,7 @@ end
 
 ### .resource(name, **options, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L390)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L391)
 
 Defines a singular resource (no index action, no :id in URL).
 
@@ -254,7 +254,7 @@ end
 
 ### .resources(name, **options, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L371)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L372)
 
 Defines a RESTful resource with standard CRUD actions.
 
@@ -290,7 +290,7 @@ end
 
 ### .spec(type, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L121)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L122)
 
 Enables a spec generator for this API.
 
@@ -323,7 +323,7 @@ end
 
 ### .type(name, scope: = nil, description: = nil, example: = nil, format: = nil, deprecated: = false, schema_class: = nil, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L250)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L251)
 
 Defines a reusable custom type (object shape).
 
@@ -362,7 +362,7 @@ param :shipping_address, type: :address
 
 ### .union(name, scope: = nil, discriminator: = nil, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L300)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L301)
 
 Defines a discriminated union type.
 
@@ -394,7 +394,7 @@ end
 
 ### .with_options(options = {}, &block)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L434)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L435)
 
 Applies options to all nested resource definitions.
 
