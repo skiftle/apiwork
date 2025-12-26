@@ -129,7 +129,7 @@ Client can only fix by changing the data itself.
 
 Each layer has dedicated documentation:
 
-- [HTTP Issues](./http-issues.md) — `respond_with_error` and 20 built-in codes
+- [HTTP Issues](./http-issues.md) — `expose_error` and 20 built-in codes
 - [Contract Issues](./contract-issues.md) — 28 codes for body, filter, sort, pagination
 - [Domain Issues](./domain-issues.md) — 23 codes mapped from Rails validations
 - [Custom Errors](./custom-errors.md) — Register your own error codes

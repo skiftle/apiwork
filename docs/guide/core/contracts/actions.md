@@ -106,7 +106,7 @@ In your controller, pass values via the `meta:` keyword:
 ```ruby
 def index
   posts = Post.all
-  respond posts, meta: {
+  expose posts, meta: {
     generated_at: Time.current,
     api_version: 'v1'
   }

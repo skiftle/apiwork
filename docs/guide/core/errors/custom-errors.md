@@ -45,26 +45,26 @@ def create
   end
 
   order.save!
-  respond order
+  expose order
 end
 ```
 
 ## Authorization Errors
 
-For common HTTP errors like forbidden or not found, use `respond_with_error`:
+For common HTTP errors like forbidden or not found, use `expose_error`:
 
 ```ruby
 def destroy
   post = Post.find(params[:id])
 
   unless current_user.can_delete?(post)
-    return respond_with_error :forbidden,
+    return expose_error :forbidden,
       detail: "You don't have permission to delete this post",
       meta: { user_id: current_user.id, post_id: post.id }
   end
 
   post.destroy
-  respond post
+  expose post
 end
 ```
 
@@ -112,7 +112,7 @@ def transfer
   return render_error issues, layer: :domain, status: :unprocessable_entity if issues.any?
 
   Transfer.execute(from: from_account, to: to_account, amount: amount)
-  respond from_account
+  expose from_account
 end
 ```
 
@@ -141,10 +141,10 @@ Apiwork::ErrorCode.register :account_frozen, status: 403
 Apiwork::ErrorCode.register :out_of_stock, status: 409
 ```
 
-Then use them with `respond_with_error`:
+Then use them with `expose_error`:
 
 ```ruby
-respond_with_error :insufficient_funds,
+expose_error :insufficient_funds,
   meta: { requested: amount, available: from_account.balance }
 ```
 

@@ -86,7 +86,7 @@ To enforce a default in your controller:
 ```ruby
 def index
   posts = Post.order(created_at: :desc)
-  respond posts
+  expose posts
 end
 ```
 

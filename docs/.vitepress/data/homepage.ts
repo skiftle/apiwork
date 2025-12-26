@@ -142,7 +142,7 @@ end`,
     title: "Focus on",
     titleAccent: "business logic",
     description:
-      "Your controllers stay focused on what matters. Apiwork handles the boundaries — requests are validated before they reach you, responses serialized on the way out. Just use your params and respond with data.",
+      "Your controllers stay focused on what matters. Apiwork handles the boundaries — requests are validated before they reach you, responses serialized on the way out. Just use your params and expose data.",
     alt: true,
     blobVariant: 4,
     codeBlocks: [
@@ -151,12 +151,12 @@ end`,
         code: `class InvoicesController < ApplicationController
   def show
     invoice = Invoice.find(params[:id])
-    respond invoice
+    expose invoice
   end
 
   def create
     invoice = Invoice.create(contract.body[:invoice])
-    respond invoice
+    expose invoice
   end
 end`,
       },

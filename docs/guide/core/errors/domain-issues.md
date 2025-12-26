@@ -14,7 +14,7 @@ Layer describes **what kind of rule was broken** — not where the code lives.
 A validation defined in a Rails model is still a *domain rule*. The model is just where the rule happens to be enforced. If the rule said "invoice numbers must be unique", that's domain logic — regardless of whether it's checked in a model, a service, or a database constraint.
 :::
 
-The built-in adapter automatically maps Rails model validation errors to domain issues when you call `respond`. You can also create domain issues manually for custom business logic.
+The built-in adapter automatically maps Rails model validation errors to domain issues when you call `expose`. You can also create domain issues manually for custom business logic.
 
 **Requires:** A schema (`schema!`), the built-in adapter (default), and ActiveRecord.
 
@@ -27,7 +27,7 @@ The built-in adapter automatically maps Rails model validation errors to domain 
 ```ruby
 def create
   invoice = Invoice.create(contract.body[:invoice])
-  respond invoice
+  expose invoice
 end
 ```
 
@@ -321,7 +321,7 @@ For nested errors:
 
 ## Custom Actions
 
-The adapter checks `respond` every time. Not just `create` or `update`.
+The adapter checks `expose` every time. Not just `create` or `update`.
 
 ```ruby
 return unless record.respond_to?(:errors) && record.errors.any?
@@ -347,11 +347,11 @@ end
 ```ruby
 def ship
   order.ship!
-  respond order
+  expose order
 end
 ```
 
-`ship!` returns false, order has errors, `respond` handles it.
+`ship!` returns false, order has errors, `expose` handles it.
 
 ### Manual Errors
 
@@ -366,16 +366,16 @@ def transfer
     account.errors.add(:balance, "insufficient funds")
   end
 
-  respond account
+  expose account
 end
 ```
 
-No conditionals. Add errors, call `respond`.
+No conditionals. Add errors, call `expose`.
 
 ## The Pattern
 
 1. Do the operation
 2. Add errors if something fails
-3. Call `respond`
+3. Call `expose`
 
 Errors exist? 422 with errors. No errors? Serialized record.

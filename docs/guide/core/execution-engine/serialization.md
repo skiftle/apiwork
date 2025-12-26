@@ -8,12 +8,12 @@ Schemas can [serialize objects directly](../schemas/serialization.md). Within th
 
 ## Response Serialization
 
-When you call `respond`, the adapter serializes your data according to the schema:
+When you call `expose`, the adapter serializes your data according to the schema:
 
 ```ruby
 def show
   invoice = Invoice.find(params[:id])
-  respond invoice
+  expose invoice
 end
 ```
 

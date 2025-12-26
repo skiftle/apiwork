@@ -6,7 +6,7 @@ order: 2
 
 HTTP errors are transport-level responses. They are status-driven and express outcomes through HTTP semantics — not input validation or business rules.
 
-Use `respond_with_error` when you need to communicate an HTTP-level outcome like "not found", "forbidden", or "unauthorized".
+Use `expose_error` when you need to communicate an HTTP-level outcome like "not found", "forbidden", or "unauthorized".
 
 ## HTTP Status
 
@@ -15,7 +15,7 @@ Use `respond_with_error` when you need to communicate an HTTP-level outcome like
 ## Usage
 
 ```ruby
-respond_with_error :forbidden
+expose_error :forbidden
 ```
 
 ```json
@@ -36,7 +36,7 @@ respond_with_error :forbidden
 ### Parameters
 
 ```ruby
-respond_with_error :conflict,
+expose_error :conflict,
   detail: "Order already shipped",
   path: [:order, :status],
   meta: { current_status: "shipped" }
@@ -59,11 +59,11 @@ class ApplicationController < ActionController::API
   include Apiwork::Controller
 
   rescue_from ActiveRecord::RecordNotFound do
-    respond_with_error :not_found
+    expose_error :not_found
   end
 
   rescue_from Pundit::NotAuthorizedError do
-    respond_with_error :forbidden
+    expose_error :forbidden
   end
 end
 ```
@@ -117,7 +117,7 @@ Error messages support translations. See the [i18n section](/guide/advanced/i18n
 
 ```ruby
 rescue_from ActiveRecord::RecordNotFound do |exception|
-  respond_with_error :not_found,
+  expose_error :not_found,
     path: [:id],
     meta: { model: exception.model }
 end
@@ -145,14 +145,14 @@ def ship
   order = Order.find(params[:id])
 
   if order.shipped?
-    return respond_with_error :conflict,
+    return expose_error :conflict,
       detail: "Order already shipped",
       path: [:order, :status],
       meta: { current_status: order.status }
   end
 
   order.ship!
-  respond order
+  expose order
 end
 ```
 
@@ -176,7 +176,7 @@ end
 ```ruby
 def create
   if rate_limit_exceeded?
-    return respond_with_error :too_many_requests,
+    return expose_error :too_many_requests,
       meta: { retry_after: 60 }
   end
 

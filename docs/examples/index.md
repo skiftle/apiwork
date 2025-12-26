@@ -24,7 +24,7 @@ Each example includes:
 | [Single Table Inheritance (STI)](./single-table-inheritance-sti.md) | Single Table Inheritance with automatic variant serialization and TypeScript union types |
 | [Polymorphic Associations](./polymorphic-associations.md) | Comments that belong to different content types (posts, videos, images) |
 | [Model Validation Errors](./model-validation-errors.md) | How Apiwork captures ActiveRecord validation errors and presents them in a unified format |
-| [Custom Hash Responses](./custom-hash-responses.md) | Using respond with plain hashes instead of ActiveRecord models |
+| [Custom Hash Responses](./custom-hash-responses.md) | Using expose with plain hashes instead of ActiveRecord models |
 | [Encode, Decode & Empty](./encode-decode-empty.md) | Transform values on input/output and handle nil/empty string conversion |
 | [Cursor Pagination](./cursor-pagination.md) | Navigate through large datasets using cursor-based pagination |
 | [API Documentation](./api-documentation.md) | Document APIs with descriptions, examples, formats, and deprecation notices at every level |

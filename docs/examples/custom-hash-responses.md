@@ -4,7 +4,7 @@ order: 8
 
 # Custom Hash Responses
 
-Using respond with plain hashes instead of ActiveRecord models
+Using expose with plain hashes instead of ActiveRecord models
 
 ## API Definition
 

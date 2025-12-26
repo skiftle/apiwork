@@ -167,13 +167,13 @@ end
 
 Controllers look like regular Rails controllers with two key differences:
 
-1. Use `respond` instead of `render`
+1. Use `expose` to return data
 2. Access validated params via `contract.query` and `contract.body`
 
 ```ruby
 def create
   post = Post.create(contract.body[:post])
-  respond post
+  expose post
 end
 ```
 

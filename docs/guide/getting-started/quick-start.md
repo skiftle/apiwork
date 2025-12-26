@@ -105,7 +105,7 @@ That's it. `schema!` imports everything from `PostSchema`. The contract now know
 
 ## 6. Controller
 
-The controller looks like any Rails controller, with two differences: use `respond` instead of `render`, and access validated params via `contract.query` (URL params) and `contract.body` (request body):
+The controller looks like any Rails controller, with two differences: use `expose` to return data, and access validated params via `contract.query` (URL params) and `contract.body` (request body):
 
 ```ruby
 # app/controllers/api/v1/posts_controller.rb
@@ -115,28 +115,28 @@ module Api
       include Apiwork::Controller
 
       def index
-        respond Post.all
+        expose Post.all
       end
 
       def show
-        respond Post.find(params[:id])
+        expose Post.find(params[:id])
       end
 
       def create
         post = Post.create(contract.body[:post])
-        respond post
+        expose post
       end
 
       def update
         post = Post.find(params[:id])
         post.update(contract.body[:post])
-        respond post
+        expose post
       end
 
       def destroy
         post = Post.find(params[:id])
         post.destroy
-        respond post
+        expose post
       end
     end
   end

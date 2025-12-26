@@ -281,7 +281,7 @@ end
 def destroy
   invoice = Invoice.find(params[:id])
   invoice.destroy
-  respond invoice, meta: { deleted_at: Time.current }
+  expose invoice, meta: { deleted_at: Time.current }
 end
 ```
 
