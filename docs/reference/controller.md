@@ -116,7 +116,7 @@ For standard HTTP errors, use `respond_with_error` instead.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `issues` | `Array<Apiwork::Issue>` | list of validation issues |
+| `issues` | `Array<Issue>` | list of validation issues |
 | `layer` | `String` | error layer ("http", "contract", or "domain") |
 | `status` | `Symbol, Integer` | HTTP status (default: :bad_request) |
 
@@ -141,8 +141,8 @@ end
 
 Renders a successful API response.
 
-When a schema is linked via `schema!`, data is serialized through
-the schema. Otherwise, data is rendered as-is. The adapter applies
+When a schema is linked via [Contract::Base.schema!](contract-base#schema!), data is serialized
+through the schema. Otherwise, data is rendered as-is. The adapter applies
 response transformations (key casing, wrapping, etc.).
 
 **Parameters**
@@ -188,7 +188,7 @@ end
 
 Renders an error response using a registered error code.
 
-Error codes are registered via `Apiwork::ErrorCode.register`.
+Error codes are registered via [ErrorCode.register](error-code#register).
 The detail message is looked up from I18n if not provided.
 
 **Parameters**

@@ -14,8 +14,8 @@ module Apiwork
       # @api public
       # Renders a successful API response.
       #
-      # When a schema is linked via `schema!`, data is serialized through
-      # the schema. Otherwise, data is rendered as-is. The adapter applies
+      # When a schema is linked via {Contract::Base.schema!}, data is serialized
+      # through the schema. Otherwise, data is rendered as-is. The adapter applies
       # response transformations (key casing, wrapping, etc.).
       #
       # @param data [Object, Array] the record(s) to render
@@ -72,7 +72,7 @@ module Apiwork
       # Use this for validation errors where you have a list of issues.
       # For standard HTTP errors, use `respond_with_error` instead.
       #
-      # @param issues [Array<Apiwork::Issue>] list of validation issues
+      # @param issues [Array<Issue>] list of validation issues
       # @param layer [String] error layer ("http", "contract", or "domain")
       # @param status [Symbol, Integer] HTTP status (default: :bad_request)
       #
@@ -93,7 +93,7 @@ module Apiwork
       # @api public
       # Renders an error response using a registered error code.
       #
-      # Error codes are registered via `Apiwork::ErrorCode.register`.
+      # Error codes are registered via {ErrorCode.register}.
       # The detail message is looked up from I18n if not provided.
       #
       # @param code_key [Symbol] registered error code (:not_found, :unauthorized, etc.)
