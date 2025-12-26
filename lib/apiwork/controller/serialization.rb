@@ -7,7 +7,7 @@ module Apiwork
 
       included do
         rescue_from Apiwork::ContractError, Apiwork::DomainError do |error|
-          render_issues error.issues, layer: error.layer, status: error.error_code.status
+          render_error error.layer, error.issues, error.status
         end
       end
 
@@ -100,7 +100,7 @@ module Apiwork
           meta:
         )
 
-        render_issues [issue], layer: :http, status: error_code.status
+        render_error :http, [issue], error_code.status
       end
 
       # @api public
@@ -121,8 +121,8 @@ module Apiwork
 
       private
 
-      def render_issues(issues, layer:, status:)
-        json = adapter.render_error(issues, layer, build_action_summary)
+      def render_error(layer, issues, status)
+        json = adapter.render_error(layer, issues, build_action_summary)
         render json:, status:
       end
 

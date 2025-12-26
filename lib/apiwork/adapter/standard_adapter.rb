@@ -41,7 +41,7 @@ module Apiwork
         }.compact
       end
 
-      def render_error(issues, layer, action_summary)
+      def render_error(layer, issues, action_summary)
         {
           layer:,
           issues: issues.map(&:to_h)

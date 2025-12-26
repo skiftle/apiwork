@@ -73,10 +73,11 @@ module Apiwork
       # @api public
       # Renders an error response.
       #
+      # @param layer [Symbol] the error layer (:http, :contract, :domain)
       # @param issues [Array<Issue>] the validation issues
       # @param action_summary [ActionSummary] request context
       # @return [Hash] the error response hash
-      def render_error(issues, action_summary)
+      def render_error(layer, issues, action_summary)
         raise NotImplementedError
       end
 
