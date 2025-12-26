@@ -40,9 +40,9 @@ module Apiwork
       #     expose invoice, status: :created
       #   end
       def expose(data, meta: {}, status: nil)
-        action_def = contract_class.action_definitions[action_name.to_sym]
+        action_definition = contract_class.action_definitions[action_name.to_sym]
 
-        if action_def&.response_definition&.no_content?
+        if action_definition&.response_definition&.no_content?
           head :no_content
           return
         end
@@ -123,7 +123,7 @@ module Apiwork
 
       def render_error(layer, issues, status)
         json = adapter.render_error(layer, issues, build_action_summary)
-        render json:, status:
+        render json: json, status: status
       end
 
       def render_with_schema(data, schema_class, meta)
