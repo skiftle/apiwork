@@ -480,9 +480,6 @@ module Apiwork
           else
             serialize_single(object_or_collection, context: context, include: include)
           end
-        rescue StandardError => e
-          schema_name = respond_to?(:name) ? name : 'Schema'
-          raise Apiwork::SchemaError, "Serialization error for #{schema_name}: #{e.message}"
         end
 
         # @api public
