@@ -26,8 +26,8 @@ module Apiwork
 
           boolean: lambda { |value|
             return value if [true, false].include?(value)
-            return true if value.to_s.downcase.in?(%w[true 1 yes])
-            return false if value.to_s.downcase.in?(%w[false 0 no])
+            return true if %w[true 1 yes].include?(value.to_s.downcase)
+            return false if %w[false 0 no].include?(value.to_s.downcase)
 
             nil
           },

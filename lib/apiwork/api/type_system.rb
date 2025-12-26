@@ -62,7 +62,8 @@ module Apiwork
 
         prefix = scope.respond_to?(:scope_prefix) ? scope.scope_prefix : nil
         return name unless prefix
-        return prefix.to_sym if name.nil? || name.to_s.empty?
+        return prefix.to_sym if name.nil?
+        return prefix.to_sym if name.to_s.empty?
         return name.to_sym if name.to_s == prefix
 
         :"#{prefix}_#{name}"
