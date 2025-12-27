@@ -15,7 +15,7 @@ module Apiwork
         definition = body_param_definition
         return ResponseResult.new(body, []) unless definition&.params&.any?
 
-        validated = definition.validate(body) || { params: body, issues: [] }
+        validated = definition.validate(body)
 
         ResponseResult.new(validated[:params], validated[:issues])
       end
