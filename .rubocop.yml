@@ -138,7 +138,7 @@ Layout/LineLength:
 
 # Allow more parameters for complex validations
 Metrics/ParameterLists:
-  Max: 8
+  Enabled: false
 
 # Allow empty else for explicit flow control
 Style/EmptyElse:

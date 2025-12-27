@@ -67,11 +67,8 @@ module Apiwork
       #     param :product_id, type: :integer
       #     param :quantity, type: :integer, min: 1
       #   end
-      # rubocop:disable Metrics/ParameterLists
       def param(name, type: nil, optional: nil, default: nil, enum: nil, of: nil, as: nil,
                 discriminator: nil, value: nil, visited_types: nil, **options, &block)
-        # rubocop:enable Metrics/ParameterLists
-
         if type.nil? && (existing_param = @params[name])
           merge_existing_param(name, existing_param, type:, optional:, default:, enum:, of:, as:,
                                                      discriminator:, value:, options:, &block)
@@ -141,10 +138,8 @@ module Apiwork
 
       private
 
-      # rubocop:disable Metrics/ParameterLists
       def merge_existing_param(name, existing_param, type:, optional:, default:, enum:, of:, as:, discriminator:, value:,
                                options:, &block)
-        # rubocop:enable Metrics/ParameterLists
         resolved_enum = enum ? resolve_enum_value(enum) : nil
 
         merged_param = existing_param.merge(options.compact)
@@ -219,9 +214,7 @@ module Apiwork
                                              })
       end
 
-      # rubocop:disable Metrics/ParameterLists
       def define_regular_param(name, type:, resolved_enum:, optional:, default:, of:, as:, visited_types:, options:, &block)
-        # rubocop:enable Metrics/ParameterLists
         custom_type_block = @contract_class.resolve_custom_type(type)
 
         if custom_type_block
@@ -241,10 +234,8 @@ module Apiwork
         end
       end
 
-      # rubocop:disable Metrics/ParameterLists
       def define_custom_type_param(name, type:, custom_type_block:, resolved_enum:, optional:, default:, of:, as:,
                                    visited_types:, options:, &block)
-        # rubocop:enable Metrics/ParameterLists
         expansion_key = [@contract_class.object_id, type]
 
         visited_with_current = visited_types.dup.add(expansion_key)
