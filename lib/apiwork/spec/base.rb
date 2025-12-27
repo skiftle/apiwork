@@ -74,19 +74,6 @@ module Apiwork
           end
           result
         end
-
-        def extract_options_from_env
-          result = {}
-          options.each do |name, option|
-            next if option.nested?
-
-            env_value = ENV.fetch(name.to_s.upcase, nil)
-            next if env_value.nil?
-
-            result[name] = option.cast(env_value)
-          end
-          result
-        end
       end
 
       def initialize(api_path, **options)
