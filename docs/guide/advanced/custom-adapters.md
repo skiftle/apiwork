@@ -4,7 +4,11 @@ order: 2
 
 # Custom Adapters
 
-Apiwork's built-in adapter covers most use cases, but not all. If you have custom data sources, non-ActiveRecord models, or specialized query logic, you can create your own adapter.
+The built-in adapter handles filtering, sorting, pagination, and serialization for ActiveRecord models. Custom adapters let you change *how* these are done — different pagination formats, custom response structures, specialized filtering logic, or alternative serialization strategies.
+
+::: info
+Schemas require ActiveRecord models for type inference and association discovery. Custom adapters customize behavior, not the underlying data layer.
+:::
 
 ## Creating an Adapter
 
