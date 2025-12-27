@@ -123,9 +123,9 @@ Renders a collection response.
 
 ---
 
-### #render_error(issues, action_summary)
+### #render_error(layer, issues, action_summary)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L79)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L80)
 
 Renders an error response.
 
@@ -133,6 +133,7 @@ Renders an error response.
 
 | Name | Type | Description |
 |------|------|-------------|
+| `layer` | `Symbol` | the error layer (:http, :contract, :domain) |
 | `issues` | `Array<Issue>` | the validation issues |
 | `action_summary` | `ActionSummary` | request context |
 
@@ -164,7 +165,7 @@ Renders a single record response.
 
 ### #transform_request(hash, schema_class)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L90)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L91)
 
 Transforms incoming request parameters.
 Override to customize key casing, unwrapping, etc.
@@ -184,7 +185,7 @@ Override to customize key casing, unwrapping, etc.
 
 ### #transform_response(hash, schema_class)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L101)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L102)
 
 Transforms outgoing response data.
 Override to customize key casing, wrapping, etc.

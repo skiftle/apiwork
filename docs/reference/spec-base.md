@@ -107,7 +107,7 @@ Sets or returns the spec name identifier.
 
 ### #generate()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L119)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L106)
 
 Generates the spec output.
 
