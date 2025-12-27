@@ -3,6 +3,7 @@
 require 'yard'
 require 'fileutils'
 require 'active_support/core_ext/string/inflections'
+require 'active_support/core_ext/object/blank'
 
 module Apiwork
   class ReferenceGenerator
@@ -244,7 +245,7 @@ module Apiwork
       YARD::Registry.all(:class, :module)
                     .select { |obj| obj.path.start_with?('Apiwork') }
                     .select { |obj| public_api?(obj) }
-                    .map { |obj| obj.name.to_s }
+                    .flat_map { |obj| [obj.name.to_s, obj.path.delete_prefix('Apiwork::')] }
                     .to_set
     end
 

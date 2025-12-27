@@ -80,7 +80,7 @@ and [Contract::Base#body](contract-base#body).
 
 **Returns**
 
-`Contract::Base` — the contract instance
+[Contract::Base](contract-base) — the contract instance
 
 **Example: Access parsed parameters**
 
