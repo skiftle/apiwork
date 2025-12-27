@@ -21,16 +21,6 @@ export default defineConfig({
   },
   themeConfig: {
     outline: [2, 3],
-    nav: [
-      { text: "Home", link: "/" },
-      {
-        text: "Guide",
-        link: "/guide/getting-started/introduction",
-        activeMatch: "/guide/",
-      },
-      { text: "Examples", link: "/examples/", activeMatch: "/examples/" },
-      { text: "Reference", link: "/reference/", activeMatch: "/reference/" },
-    ],
     sidebar: generateSidebar([
       {
         documentRootPath: ".",
@@ -66,12 +56,5 @@ export default defineConfig({
         collapsed: false,
       },
     ]),
-    socialLinks: [
-      { icon: "github", link: "https://github.com/skiftle/apiwork" },
-    ],
-    footer: {
-      message: "Released under the MIT License.",
-      copyright: "Copyright © 2025 Skiftle",
-    },
   },
 });

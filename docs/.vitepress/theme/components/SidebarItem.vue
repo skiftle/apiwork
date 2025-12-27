@@ -23,6 +23,21 @@ const isExpanded = computed(() => props.expanded.has(itemKey.value));
 const fullLink = computed(() => props.buildLink(props.item.link));
 const isItemActive = computed(() => props.isActive(props.item.link));
 
+// Check if any descendant is active
+const hasActiveDescendant = computed(() => {
+  if (!props.item.items?.length) return false;
+
+  function checkItems(items: SidebarItem[]): boolean {
+    for (const item of items) {
+      if (props.isActive(item.link)) return true;
+      if (item.items?.length && checkItems(item.items)) return true;
+    }
+    return false;
+  }
+
+  return checkItems(props.item.items);
+});
+
 // Icon mapping for top-level sections
 const sectionIcon = computed(() => {
   if (!isTopLevel.value) return null;
@@ -89,10 +104,10 @@ function onToggle(key: string) {
         :aria-expanded="isTopLevel ? undefined : isExpanded"
       >
         <a
-          :href="item.link ? fullLink : (isTopLevel ? firstChildLink : undefined)"
+          :href="item.link ? fullLink : firstChildLink"
           class="sidebar-link"
-          :class="{ active: isItemActive, 'sidebar-link-toggle': !item.link && !isTopLevel }"
-          @click.stop="item.link || isTopLevel ? expand() : toggle()"
+          :class="{ active: isItemActive || hasActiveDescendant, 'sidebar-link-toggle': !item.link && !isTopLevel }"
+          @click.stop="item.link ? expand() : toggle()"
         >
           <!-- Section icons for top-level -->
           <svg v-if="sectionIcon === 'rocket'" class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
