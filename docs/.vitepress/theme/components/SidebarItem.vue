@@ -43,11 +43,21 @@ const sectionIcon = computed(() => {
   return "folder";
 });
 
-// For nested groups without a link, use the first child's link
+// Recursively find the first leaf (page without children)
+function findFirstLeafLink(item: SidebarItem): string | undefined {
+  if (!item.items?.length) {
+    return item.link;
+  }
+  return findFirstLeafLink(item.items[0]);
+}
+
+// For nested groups without a link, navigate to first leaf
 const firstChildLink = computed(() => {
   if (props.item.link) return undefined;
-  const firstChild = props.item.items?.[0];
-  return firstChild?.link ? props.buildLink(firstChild.link) : undefined;
+  if (!props.item.items?.length) return undefined;
+
+  const leafLink = findFirstLeafLink(props.item.items[0]);
+  return leafLink ? props.buildLink(leafLink) : undefined;
 });
 
 function toggle() {
