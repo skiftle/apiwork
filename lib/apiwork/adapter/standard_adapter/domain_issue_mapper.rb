@@ -54,19 +54,19 @@ module Apiwork
           in: 'Invalid value',
           not_in: 'Reserved value',
           associated: 'Invalid',
-          invalid: 'Invalid',
-          custom: 'Validation failed'
+          invalid: 'Invalid'
         }.freeze
 
         META_CODES = %i[min max length gt gte lt lte eq ne in].freeze
 
-        def self.call(record, root_path: [])
-          new(record, root_path).call
+        def self.call(record, root_path: [], api_path: nil)
+          new(record, root_path, api_path).call
         end
 
-        def initialize(record, root_path)
+        def initialize(record, root_path, api_path)
           @record = record
           @root_path = Array(root_path)
+          @api_path = api_path
         end
 
         def call
@@ -105,7 +105,7 @@ module Apiwork
               next unless item.errors.any?
 
               nested_path = build_association_path(association.name, index, association_type)
-              result.concat(self.class.call(item, root_path: nested_path))
+              result.concat(self.class.call(item, root_path: nested_path, api_path: @api_path))
             end
           end
 
@@ -127,7 +127,7 @@ module Apiwork
         def build_issue(error)
           code = normalize_code(error)
           attribute = resolve_attribute(error.attribute)
-          path = @root_path + [attribute]
+          path = attribute == :base ? @root_path : @root_path + [attribute]
 
           Issue.new(
             code:,
@@ -140,11 +140,21 @@ module Apiwork
         def normalize_code(error)
           return :invalid if error.attribute == :base
 
-          CODE_MAP[error.type] || :custom
+          CODE_MAP[error.type] || error.type
         end
 
         def detail_for(code)
-          DETAIL_MAP[code] || DETAIL_MAP[:custom]
+          if @api_path
+            api_key = :"apiwork.apis.#{@api_path}.adapters.standard.domain_issues.#{code}"
+            result = I18n.t(api_key, default: nil)
+            return result if result
+          end
+
+          adapter_key = :"apiwork.adapters.standard.domain_issues.#{code}"
+          result = I18n.t(adapter_key, default: nil)
+          return result if result
+
+          DETAIL_MAP[code] || code.to_s.humanize
         end
 
         def build_meta(code, error)

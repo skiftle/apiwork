@@ -33,6 +33,27 @@ end
 
 When domain rules fail, the adapter converts each violation to an Issue and raises `DomainError`. You get a 422 with all issues. No conditionals needed.
 
+## Why Mapping?
+
+Apiwork maps Rails errors to its own codes instead of passing through Rails messages. This is intentional.
+
+**Decoupling.** Rails error types like `blank`, `empty`, `present` are implementation details. API clients shouldn't depend on them. The mapped codes (`required`, `forbidden`) are semantic — they describe what's wrong, not how it was detected.
+
+**Consistency.** Rails has multiple types for similar concepts. Both `blank` and `empty` mean the same thing to clients — the field is required. They both become `required`.
+
+**Machine-readable.** Short codes (`gte`, `lte`, `min`) are easier to switch on than verbose strings. Constraint values go in `meta`, not embedded in message text:
+
+```json
+{
+  "code": "gt",
+  "meta": { "gt": 0 }
+}
+```
+
+Clients can format this however they want: "must be greater than 0", "minimum: 1", or a localized equivalent.
+
+**Controlled exposure.** Rails messages can contain internal details — model names, attribute names as defined in code. Mapped issues expose only what you intend.
+
 ## Rails to Apiwork Mapping
 
 Rails validations are domain rules. The table below shows how Rails error types map to Apiwork issue codes:
@@ -63,12 +84,47 @@ Rails validations are domain rules. The table below shows how Rails error types 
 | `exclusion`                  | `not_in`    | Reserved value    |
 | `invalid`                    | `invalid`   | Invalid           |
 | `restrict_dependent_destroy` | `associated`| Invalid           |
-| `:base` errors               | `invalid`   | Invalid           |
-| (unknown)                    | `custom`    | Validation failed |
+
+### Custom Codes
+
+Unknown error types pass through as-is:
+
+```ruby
+errors.add(:email, :disposable)
+```
+
+```json
+{
+  "code": "disposable",
+  "detail": "Disposable",
+  "path": ["user", "email"]
+}
+```
+
+Default detail is the code titleized. Override via [i18n](../../advanced/i18n.md#domain-issues).
+
+### Record-Level Errors
+
+Errors on `:base` get the root path only:
+
+```ruby
+errors.add(:base, :invalid)
+```
+
+```json
+{
+  "code": "invalid",
+  "detail": "Invalid",
+  "path": ["invoice"],
+  "pointer": "/invoice"
+}
+```
+
+No field name in path indicates a record-level error.
 
 ## Error Codes
 
-All 23 domain error codes:
+All 22 domain error codes:
 
 | Code        | Detail            | Meta                           |
 | ----------- | ----------------- | ------------------------------ |
@@ -95,7 +151,10 @@ All 23 domain error codes:
 | `format`    | Invalid format    | —                              |
 | `associated`| Invalid           | —                              |
 | `invalid`   | Invalid           | —                              |
-| `custom`    | Validation failed | —                              |
+
+::: tip
+Translate detail messages via i18n. See [i18n](../../advanced/i18n.md#domain-issues).
+:::
 
 ## Meta Reference
 

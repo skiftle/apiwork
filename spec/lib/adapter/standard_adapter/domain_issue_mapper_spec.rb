@@ -101,14 +101,14 @@ RSpec.describe Apiwork::Adapter::StandardAdapter::DomainIssueMapper do
       expect(issues.first.code).to eq(:in)
     end
 
-    it 'returns :custom for unknown Rails codes' do
+    it 'passes through unknown Rails codes as-is' do
       record_class = create_test_record({})
       record = record_class.new
-      record.errors.add(:title, :unknown_code_xyz)
+      record.errors.add(:title, :disposable)
 
       issues = mapper_class.call(record, root_path: [:data])
 
-      expect(issues.first.code).to eq(:custom)
+      expect(issues.first.code).to eq(:disposable)
     end
   end
 
@@ -143,14 +143,14 @@ RSpec.describe Apiwork::Adapter::StandardAdapter::DomainIssueMapper do
       expect(issues.first.detail).to eq('Too long')
     end
 
-    it 'uses "Validation failed" for :custom' do
+    it 'humanizes unknown codes for detail' do
       record_class = create_test_record({})
       record = record_class.new
-      record.errors.add(:title, :unknown_code)
+      record.errors.add(:title, :disposable_email)
 
       issues = mapper_class.call(record, root_path: [:data])
 
-      expect(issues.first.detail).to eq('Validation failed')
+      expect(issues.first.detail).to eq('Disposable email')
     end
   end
 
