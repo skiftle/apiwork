@@ -81,17 +81,18 @@ function onToggle(key: string) {
     <template v-if="hasChildren">
       <div
         class="sidebar-toggle"
-        @click="toggle"
-        @keydown.enter.space.prevent="toggle"
-        tabindex="0"
-        role="button"
-        :aria-expanded="isExpanded"
+        :class="{ 'no-toggle': isTopLevel }"
+        @click="!isTopLevel && toggle()"
+        @keydown.enter.space.prevent="!isTopLevel && toggle()"
+        :tabindex="isTopLevel ? -1 : 0"
+        :role="isTopLevel ? undefined : 'button'"
+        :aria-expanded="isTopLevel ? undefined : isExpanded"
       >
         <a
-          :href="item.link ? fullLink : firstChildLink"
+          :href="item.link ? fullLink : (isTopLevel ? firstChildLink : undefined)"
           class="sidebar-link"
-          :class="{ active: isItemActive }"
-          @click.stop="expand"
+          :class="{ active: isItemActive, 'sidebar-link-toggle': !item.link && !isTopLevel }"
+          @click.stop="item.link || isTopLevel ? expand() : toggle()"
         >
           <!-- Section icons for top-level -->
           <svg v-if="sectionIcon === 'rocket'" class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -164,6 +165,7 @@ function onToggle(key: string) {
           {{ item.text }}
         </a>
         <svg
+          v-if="!isTopLevel"
           class="sidebar-chevron"
           :class="{ expanded: isExpanded }"
           width="16"
@@ -181,7 +183,7 @@ function onToggle(key: string) {
           />
         </svg>
       </div>
-      <div class="sidebar-children" :class="isExpanded ? 'expanded' : 'collapsed'">
+      <div class="sidebar-children" :class="isTopLevel || isExpanded ? 'expanded' : 'collapsed'">
         <SidebarItem
           v-for="child in item.items"
           :key="child.text"
@@ -243,6 +245,10 @@ function onToggle(key: string) {
   outline-offset: 2px;
 }
 
+.sidebar-toggle.no-toggle {
+  cursor: default;
+}
+
 /* Chevron */
 .sidebar-chevron {
   width: 14px;
@@ -297,6 +303,10 @@ function onToggle(key: string) {
 .sidebar-link:hover {
   color: var(--color-brand-80);
   text-decoration: none;
+}
+
+.sidebar-link-toggle {
+  cursor: pointer;
 }
 
 /* Top-level links are bolder */

@@ -2,6 +2,7 @@
 import { Content } from "vitepress";
 import AppSidebar from "./AppSidebar.vue";
 import PageOutline from "./PageOutline.vue";
+import PageNavigation from "./PageNavigation.vue";
 </script>
 
 <template>
@@ -10,6 +11,7 @@ import PageOutline from "./PageOutline.vue";
     <article class="guide-content">
       <div class="guide-content-container">
         <Content />
+        <PageNavigation />
       </div>
     </article>
     <PageOutline />
