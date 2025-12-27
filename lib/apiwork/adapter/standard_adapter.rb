@@ -49,7 +49,7 @@ module Apiwork
       end
 
       def transform_request(hash)
-        ParamsNormalizer.call(hash)
+        RequestTransformer.transform(hash)
       end
     end
   end
