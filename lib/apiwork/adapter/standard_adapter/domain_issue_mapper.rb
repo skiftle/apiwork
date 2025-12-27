@@ -145,12 +145,12 @@ module Apiwork
 
         def detail_for(code)
           if @api_path
-            api_key = :"apiwork.apis.#{@api_path}.adapters.standard.domain_issues.#{code}"
+            api_key = :"apiwork.apis.#{@api_path}.adapters.standard.domain_issues.#{code}.detail"
             result = I18n.t(api_key, default: nil)
             return result if result
           end
 
-          adapter_key = :"apiwork.adapters.standard.domain_issues.#{code}"
+          adapter_key = :"apiwork.adapters.standard.domain_issues.#{code}.detail"
           result = I18n.t(adapter_key, default: nil)
           return result if result
 

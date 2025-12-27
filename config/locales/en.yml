@@ -89,26 +89,49 @@ en:
     adapters:
       standard:
         domain_issues:
-          required: "Required"
-          forbidden: "Must be blank"
-          unique: "Already taken"
-          format: "Invalid format"
-          accepted: "Must be accepted"
-          confirmed: "Does not match"
-          min: "Too short"
-          max: "Too long"
-          length: "Wrong length"
-          number: "Not a number"
-          integer: "Not an integer"
-          gt: "Too small"
-          gte: "Too small"
-          lt: "Too large"
-          lte: "Too large"
-          eq: "Wrong value"
-          ne: "Reserved value"
-          odd: "Must be odd"
-          even: "Must be even"
-          in: "Invalid value"
-          not_in: "Reserved value"
-          associated: "Invalid"
-          invalid: "Invalid"
+          required:
+            detail: "Required"
+          forbidden:
+            detail: "Must be blank"
+          unique:
+            detail: "Already taken"
+          format:
+            detail: "Invalid format"
+          accepted:
+            detail: "Must be accepted"
+          confirmed:
+            detail: "Does not match"
+          min:
+            detail: "Too short"
+          max:
+            detail: "Too long"
+          length:
+            detail: "Wrong length"
+          number:
+            detail: "Not a number"
+          integer:
+            detail: "Not an integer"
+          gt:
+            detail: "Too small"
+          gte:
+            detail: "Too small"
+          lt:
+            detail: "Too large"
+          lte:
+            detail: "Too large"
+          eq:
+            detail: "Wrong value"
+          ne:
+            detail: "Reserved value"
+          odd:
+            detail: "Must be odd"
+          even:
+            detail: "Must be even"
+          in:
+            detail: "Invalid value"
+          not_in:
+            detail: "Reserved value"
+          associated:
+            detail: "Invalid"
+          invalid:
+            detail: "Invalid"
