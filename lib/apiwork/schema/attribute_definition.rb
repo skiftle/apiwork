@@ -170,11 +170,11 @@ module Apiwork
       end
 
       def attribute_not_found_message
-        base = "Undefined resource attribute '#{@name}' in #{@owner_schema_class.name}: "
+        base = "Undefined attribute '#{@name}' in #{@owner_schema_class.name}: "
         base + if @model_class
-                 'no DB column, no reader method on model, and no reader method on resource'
+                 'no DB column, no reader method on model, and no reader method on schema'
                else
-                 'no reader method on resource'
+                 'no reader method on schema'
                end
       end
 

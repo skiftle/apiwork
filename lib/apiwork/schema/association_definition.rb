@@ -233,7 +233,7 @@ module Apiwork
         reflection = @model_class.reflect_on_association(@name)
         return if reflection
 
-        detail = "Undefined resource association '#{@name}' in #{@owner_schema_class.name}: no association on model"
+        detail = "Undefined association '#{@name}' in #{@owner_schema_class.name}: no association on model"
         error = ConfigurationError.new(
           code: :invalid_association,
           detail: detail,
