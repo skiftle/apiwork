@@ -33,15 +33,20 @@ end
 
 When domain rules fail, the adapter converts each violation to an Issue and raises `DomainError`. You get a 422 with all issues. No conditionals needed.
 
-## Why Mapping?
+## Rails Codes
 
-Apiwork maps Rails errors to its own codes instead of passing through Rails messages. This is intentional.
+Rails validations use internal error types like `blank`, `taken`, `too_short`. The adapter maps these to semantic codes that work better for API clients:
 
-**Decoupling.** Rails error types like `blank`, `empty`, `present` are implementation details. API clients shouldn't depend on them. The mapped codes (`required`, `forbidden`) are semantic — they describe what's wrong, not how it was detected.
+- `blank`, `empty` → `required` — field must have a value
+- `taken` → `unique` — value already exists
+- `too_short`, `too_long` → `min`, `max` — length constraints
+- `greater_than` → `gt` — numeric constraints
 
-**Consistency.** Rails has multiple types for similar concepts. Both `blank` and `empty` mean the same thing to clients — the field is required. They both become `required`.
+This decouples your API from Rails internals. If Rails renamed `blank` to `missing`, your API stays stable.
 
-**Machine-readable.** Short codes (`gte`, `lte`, `min`) are easier to switch on than verbose strings. Constraint values go in `meta`, not embedded in message text:
+**Consistency.** Rails has multiple types for similar concepts. Both `blank` and `empty` mean the same thing — the field is required. They both become `required`.
+
+**Machine-readable.** Short codes are easier to switch on. Constraint values go in `meta`, not embedded in message text:
 
 ```json
 {
@@ -50,13 +55,9 @@ Apiwork maps Rails errors to its own codes instead of passing through Rails mess
 }
 ```
 
-Clients can format this however they want: "must be greater than 0", "minimum: 1", or a localized equivalent.
+Clients format this however they want: "must be greater than 0", "minimum: 1", or a localized equivalent.
 
-**Controlled exposure.** Rails messages can contain internal details — model names, attribute names as defined in code. Mapped issues expose only what you intend.
-
-## Rails to Apiwork Mapping
-
-Rails validations are domain rules. The table below shows how Rails error types map to Apiwork issue codes:
+### Mapping Table
 
 | Rails Type                   | Code        | Detail            |
 | ---------------------------- | ----------- | ----------------- |
@@ -85,12 +86,14 @@ Rails validations are domain rules. The table below shows how Rails error types 
 | `invalid`                    | `invalid`   | Invalid           |
 | `restrict_dependent_destroy` | `associated`| Invalid           |
 
-### Custom Codes
+## Custom Codes
 
-Unknown error types pass through as-is:
+Custom error types are domain-specific — your own business vocabulary. They pass through as-is.
 
 ```ruby
 errors.add(:email, :disposable)
+errors.add(:account, :suspended)
+errors.add(:transfer, :insufficient_funds)
 ```
 
 ```json
@@ -101,9 +104,13 @@ errors.add(:email, :disposable)
 }
 ```
 
-Default detail is the code titleized. Override via [i18n](../../advanced/i18n.md#domain-issues).
+**Why not pass Rails messages?**
 
-### Record-Level Errors
+Messages are for humans, codes are for machines. Rails messages can contain interpolations, model names, or phrases that don't fit an API context.
+
+You control the `detail` via [i18n](../../advanced/i18n.md#domain-issues). Default is the code titleized (`:insufficient_funds` → "Insufficient funds").
+
+## Record-Level Errors
 
 Errors on `:base` get the root path only:
 

@@ -6,30 +6,9 @@ order: 1
 
 Apiwork uses a unified error format. All errors share the same structure, so clients receive consistent responses regardless of where a request fails.
 
-## The Issue Object
+## Error Response
 
-Every error is an `Issue`:
-
-```ruby
-Apiwork::Issue.new(
-  code: :field_missing,
-  detail: "Required",
-  path: [:invoice, :number],
-  meta: { field: :number, type: :string }
-)
-```
-
-| Field     | Description                    |
-| --------- | ------------------------------ |
-| `code`    | Machine-readable symbol        |
-| `detail`  | Human-readable message         |
-| `path`    | Location in request body       |
-| `pointer` | JSON Pointer derived from path |
-| `meta`    | Additional context             |
-
-## JSON Response
-
-All errors render the same way:
+When something goes wrong, Apiwork returns an error response with two parts:
 
 ```json
 {
@@ -40,13 +19,32 @@ All errors render the same way:
       "detail": "Required",
       "path": ["invoice", "number"],
       "pointer": "/invoice/number",
-      "meta": { "field": "number", "type": "string" }
+      "meta": {}
     }
   ]
 }
 ```
 
-The `layer` field indicates which part of the system rejected the request. The `issues` array contains all issues. Clients iterate through them, display messages, or highlight fields using the path.
+| Field    | Description                                   |
+| -------- | --------------------------------------------- |
+| `layer`  | Which part of the system rejected the request |
+| `issues` | One or more problems found                    |
+
+The `layer` tells you *what kind* of validation failed. The `issues` array tells you *what specifically* went wrong. A single request can have multiple issues — like several missing fields — but they all belong to the same layer.
+
+## The Issue Object
+
+Each issue describes one specific problem:
+
+| Field     | Description                    |
+| --------- | ------------------------------ |
+| `code`    | Machine-readable symbol        |
+| `detail`  | Human-readable message         |
+| `path`    | Location in request body       |
+| `pointer` | JSON Pointer derived from path |
+| `meta`    | Additional context             |
+
+Clients iterate through issues to display messages or highlight fields using the path.
 
 ## Error Layers
 
@@ -131,5 +129,4 @@ Each layer has dedicated documentation:
 
 - [HTTP Issues](./http-issues.md) — `expose_error` and 20 built-in codes
 - [Contract Issues](./contract-issues.md) — 28 codes for body, filter, sort, pagination
-- [Domain Issues](./domain-issues.md) — 23 codes mapped from Rails validations
-- [Custom Errors](./custom-errors.md) — Register your own error codes
+- [Domain Issues](./domain-issues.md) — 22 codes mapped from Rails validations
