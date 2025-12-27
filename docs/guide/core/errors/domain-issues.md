@@ -42,11 +42,7 @@ Rails validations use internal error types like `blank`, `taken`, `too_short`. T
 - `too_short`, `too_long` → `min`, `max` — length constraints
 - `greater_than` → `gt` — numeric constraints
 
-This decouples your API from Rails internals. If Rails renamed `blank` to `missing`, your API stays stable.
-
-**Consistency.** Rails has multiple types for similar concepts. Both `blank` and `empty` mean the same thing — the field is required. They both become `required`.
-
-**Machine-readable.** Short codes are easier to switch on. Constraint values go in `meta`, not embedded in message text:
+This decouples your API from Rails internals — no implementation details leak to clients. Rails has multiple types for similar concepts — both `blank` and `empty` become `required`. Short codes are easier to switch on, and constraint values go in `meta`:
 
 ```json
 {
@@ -165,7 +161,7 @@ Translate detail messages via i18n. See [i18n](../../advanced/i18n.md#domain-iss
 
 ## Meta Reference
 
-Constraints end up in `meta`:
+Constraints that are safe to expose go in `meta` — they help clients build better error messages without leaking implementation details:
 
 ### Length Constraints
 
@@ -343,6 +339,22 @@ Response:
 ["line", "invoice_id"]
 ```
 
+### Record-Level
+
+Errors on `:base` get the record path without a field name:
+
+**has_one:**
+
+```json
+["user", "profile"]
+```
+
+**has_many:**
+
+```json
+["invoice", "lines", 1]
+```
+
 ### Any Depth
 
 The adapter walks associations recursively:
@@ -399,25 +411,25 @@ If the record has errors, they become API errors. Doesn't matter which action.
 
 ```ruby
 class Order < ApplicationRecord
-  def ship!
+  def ship
     unless shippable?
       errors.add(:base, "cannot ship #{status} order")
       errors.add(:address, "required") if address.blank?
       return false
     end
-    update!(status: 'shipped')
+    update(status: 'shipped')
   end
 end
 ```
 
 ```ruby
 def ship
-  order.ship!
+  order.ship
   expose order
 end
 ```
 
-`ship!` returns false, order has errors, `expose` handles it.
+`ship` returns false, order has errors, `expose` handles it.
 
 ### Manual Errors
 

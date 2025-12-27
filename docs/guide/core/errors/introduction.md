@@ -62,7 +62,7 @@ Layer describes **which part of the system rejected the request** — not where 
 
 ### http
 
-Transport-level response like "not found" or "forbidden".
+Transport-level responses like "not found" or "forbidden". Status-driven, not tied to specific fields.
 
 ```json
 {
@@ -79,11 +79,13 @@ Transport-level response like "not found" or "forbidden".
 }
 ```
 
-Status-driven. Not tied to specific fields.
+Apiwork provides 20 built-in codes. You can also register your own.
+
+See [HTTP Issues](./http-issues.md) for all codes and how to create custom ones.
 
 ### contract
 
-Request shape, types, or constraints don't match the contract.
+Request shape, types, or constraints don't match the contract. Client can fix by following the API specification.
 
 ```json
 {
@@ -100,11 +102,11 @@ Request shape, types, or constraints don't match the contract.
 }
 ```
 
-Client can fix by following the API specification.
+See [Contract Issues](./contract-issues.md) for all 28 codes.
 
 ### domain
 
-Request was valid but violated a domain rule.
+Request was valid but violated a domain rule. Client can only fix by changing the data itself.
 
 ```json
 {
@@ -121,12 +123,6 @@ Request was valid but violated a domain rule.
 }
 ```
 
-Client can only fix by changing the data itself.
+The standard adapter maps Rails validation errors to 22 built-in codes. Custom validations pass through as your own domain vocabulary.
 
-## Documentation
-
-Each layer has dedicated documentation:
-
-- [HTTP Issues](./http-issues.md) — `expose_error` and 20 built-in codes
-- [Contract Issues](./contract-issues.md) — 28 codes for body, filter, sort, pagination
-- [Domain Issues](./domain-issues.md) — 22 codes mapped from Rails validations
+See [Domain Issues](./domain-issues.md) for all codes and custom validation handling.
