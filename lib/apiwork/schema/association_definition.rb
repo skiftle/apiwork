@@ -28,13 +28,7 @@ module Apiwork
         @filterable = options[:filterable]
         @sortable = options[:sortable]
         @include = options[:include]
-        writable_value = options[:writable]
-        @writable = case writable_value
-                    when true then { on: %i[create update] }
-                    when false then { on: [] }
-                    when Hash then { on: Array(writable_value[:on] || %i[create update]) }
-                    else { on: [] }
-                    end
+        @writable = normalize_writable(options[:writable])
         @allow_destroy = options[:allow_destroy]
         @nullable = options[:nullable]
 
@@ -177,6 +171,15 @@ module Apiwork
         }.merge(options)
       end
 
+      def normalize_writable(value)
+        case value
+        when true  then { on: %i[create update] }
+        when false then { on: [] }
+        when Hash  then { on: Array(value[:on] || %i[create update]) }
+        else            { on: [] }
+        end
+      end
+
       def detect_foreign_key
         reflection = @model_class.reflect_on_association(@name)
         reflection&.foreign_key || "#{@name}_id"
@@ -194,36 +197,17 @@ module Apiwork
       def validate_polymorphic!
         return unless polymorphic?
 
-        if @filterable
-          detail = "Polymorphic association '#{@name}' cannot use filterable: true"
-          error = ConfigurationError.new(
-            code: :invalid_polymorphic_option,
-            detail: detail,
-            path: [@name]
-          )
-          raise error
-        end
+        raise_polymorphic_error(:filterable) if @filterable
+        raise_polymorphic_error(:sortable) if @sortable
+        raise_polymorphic_error(:writable, suffix: '. Rails does not support accepts_nested_attributes_for on polymorphic associations') if writable?
+      end
 
-        if @sortable
-          detail = "Polymorphic association '#{@name}' cannot use sortable: true"
-          error = ConfigurationError.new(
-            code: :invalid_polymorphic_option,
-            detail: detail,
-            path: [@name]
-          )
-          raise error
-        end
-
-        return unless @writable[:on].any?
-
-        detail = "Polymorphic association '#{@name}' cannot use writable: true. " \
-                 'Rails does not support accepts_nested_attributes_for on polymorphic associations'
-        error = ConfigurationError.new(
+      def raise_polymorphic_error(option, suffix: '')
+        raise ConfigurationError.new(
           code: :invalid_polymorphic_option,
-          detail: detail,
+          detail: "Polymorphic association '#{@name}' cannot use #{option}: true#{suffix}",
           path: [@name]
         )
-        raise error
       end
 
       def validate_include_option!

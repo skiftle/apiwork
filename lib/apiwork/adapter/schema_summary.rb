@@ -86,18 +86,12 @@ module Apiwork
       private
 
       def extract_filterable_type_variants(schemas)
-        filterable = Set.new
-        nullable = Set.new
+        filterable_attributes = schemas
+                                .flat_map { |schema| schema.attribute_definitions.values }
+                                .select(&:filterable?)
 
-        schemas.each do |schema|
-          schema.attribute_definitions.each_value do |attribute_definition|
-            next unless attribute_definition.filterable?
-
-            type = attribute_definition.type
-            filterable.add(type)
-            nullable.add(type) if attribute_definition.nullable?
-          end
-        end
+        filterable = filterable_attributes.map(&:type).to_set
+        nullable = filterable_attributes.select(&:nullable?).map(&:type).to_set
 
         [filterable.to_a, nullable.to_a]
       end
@@ -110,12 +104,9 @@ module Apiwork
       end
 
       def extract_pagination_strategies(schemas)
-        strategies = Set.new
-        schemas.each do |schema|
-          strategy = schema.resolve_option(:pagination, :strategy)
-          strategies.add(strategy) if strategy
-        end
-        strategies
+        schemas
+          .filter_map { |schema| schema.resolve_option(:pagination, :strategy) }
+          .to_set
       end
     end
   end

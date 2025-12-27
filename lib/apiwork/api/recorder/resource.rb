@@ -131,15 +131,16 @@ module Apiwork
           end
         end
 
+        CRUD_ACTION_METHODS = {
+          index: :get,
+          show: :get,
+          create: :post,
+          update: :patch,
+          destroy: :delete
+        }.freeze
+
         def crud_action_method(action_name)
-          case action_name.to_sym
-          when :index then :get
-          when :show then :get
-          when :create then :post
-          when :update then :patch
-          when :destroy then :delete
-          else :get
-          end
+          CRUD_ACTION_METHODS.fetch(action_name.to_sym, :get)
         end
 
         def capture_resource_metadata(name, singular:, options:)

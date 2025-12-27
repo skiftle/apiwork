@@ -42,12 +42,7 @@ module Apiwork
 
         @filterable = options[:filterable]
         @sortable = options[:sortable]
-        @writable = case options[:writable]
-                    when true then { on: %i[create update] }
-                    when false then { on: [] }
-                    when Hash then { on: Array(options[:writable][:on] || %i[create update]) }
-                    else { on: [] }
-                    end
+        @writable = normalize_writable(options[:writable])
         @encode = options[:encode]
         @decode = options[:decode]
         @empty = options[:empty]
@@ -145,26 +140,42 @@ module Apiwork
         defaults.merge(options)
       end
 
+      def normalize_writable(value)
+        case value
+        when true  then { on: %i[create update] }
+        when false then { on: [] }
+        when Hash  then { on: Array(value[:on] || %i[create update]) }
+        else            { on: [] }
+        end
+      end
+
       def validate_attribute_exists!
         return if @owner_schema_class.abstract?
-
-        return if @model_class && (@is_db_column || @model_class.instance_methods.include?(@name.to_sym))
-
-        return if @owner_schema_class.instance_methods.include?(@name.to_sym)
-
-        detail = if @model_class
-                   "Undefined resource attribute '#{@name}' in #{@owner_schema_class.name}: " \
-                   'no DB column, no reader method on model, and no reader method on resource'
-                 else
-                   "Undefined resource attribute '#{@name}' in #{@owner_schema_class.name}: " \
-                   'no reader method on resource'
-                 end
+        return if defined_on_model?
+        return if defined_on_schema?
 
         raise ConfigurationError.new(
           code: :invalid_attribute,
-          detail: detail,
+          detail: attribute_not_found_message,
           path: [@name]
         )
+      end
+
+      def defined_on_model?
+        @model_class && (@is_db_column || @model_class.instance_methods.include?(@name.to_sym))
+      end
+
+      def defined_on_schema?
+        @owner_schema_class.instance_methods.include?(@name.to_sym)
+      end
+
+      def attribute_not_found_message
+        base = "Undefined resource attribute '#{@name}' in #{@owner_schema_class.name}: "
+        base + if @model_class
+                 'no DB column, no reader method on model, and no reader method on resource'
+               else
+                 'no reader method on resource'
+               end
       end
 
       def validate_enum(value)
