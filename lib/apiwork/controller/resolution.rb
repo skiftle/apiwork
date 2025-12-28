@@ -51,18 +51,17 @@ module Apiwork
       end
 
       def resource
-        @resource ||= api_class&.structure&.find_resource(resource_name)
+        @resource ||= api_class.structure.find_resource(resource_name)
       end
 
       def resource_name
         @resource_name ||= begin
           base_name = self.class.name.underscore.delete_suffix('_controller').split('/').last
-          definition = api_class&.structure
 
           plural = base_name.to_sym
           singular = base_name.singularize.to_sym
 
-          definition&.find_resource(plural) ? plural : singular
+          api_class.structure.find_resource(plural) ? plural : singular
         end
       end
 
