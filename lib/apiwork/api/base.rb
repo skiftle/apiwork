@@ -17,18 +17,16 @@ module Apiwork
           @path = path
           @specs = Set.new
           @spec_configs = {}
+          @adapter_config = {}
+          @structure = Structure.new(path)
           @type_system = TypeSystem.new
           @built_contracts = Set.new
           @key_format = :keep
           @path_format = :keep
-
+          @introspect_cache = {}
           @introspect_contract_cache = {}
 
-          @structure = Structure.new(path)
-
           Registry.register(self)
-
-          @adapter_config = {}
         end
 
         # @api public
@@ -123,9 +121,6 @@ module Apiwork
                   "Available: #{available}"
           end
 
-          @specs ||= Set.new
-          @spec_configs ||= {}
-
           @specs.add(type)
           @spec_configs[type] ||= {}
           @spec_configs[type][:path] ||= "/.spec/#{type}"
@@ -210,7 +205,6 @@ module Apiwork
           end
 
           if block
-            @adapter_config ||= {}
             adapter_class = Adapter.find(@adapter_name || :standard)
             builder = Configuration::Builder.new(adapter_class, @adapter_config)
             builder.instance_eval(&block)
@@ -434,14 +428,12 @@ module Apiwork
 
         def introspect(locale: nil)
           ensure_all_contracts_built!
-          @introspect_cache ||= {}
           @introspect_cache[locale] ||= Apiwork::Introspection.api(self, locale:)
         end
 
         def introspect_contract(contract_class, locale:, expand:)
           ensure_all_contracts_built!
           cache_key = [contract_class, locale, expand]
-          @introspect_contract_cache ||= {}
           @introspect_contract_cache[cache_key] ||= Apiwork::Introspection.contract(contract_class, locale:, expand:)
         end
 
