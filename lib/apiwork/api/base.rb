@@ -472,7 +472,7 @@ module Apiwork
           end
 
           schema_summary = adapter.build_schema_summary(
-            @structure.schemas,
+            @structure.schema_classes,
             has_resources: @structure.has_resources?,
             has_index_actions: @structure.has_index_actions?
           )
