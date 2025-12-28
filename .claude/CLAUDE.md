@@ -355,7 +355,8 @@ positional → keyword → splat
 - `tap`, `then` for fluent flow
 - `present?`, `blank?`, `presence`
 - Freeze constants: `FOO = {...}.freeze`
-- Ruby 3 hash shorthands: `{ title, value }`
+- Hash shorthands OK: `{ title, value }`
+- No keyword argument shorthand — always explicit: `scope: scope`, not `scope:`
 - Predicate methods: `amount.positive?`, `collection.any?`, `value.zero?`
 
 ---

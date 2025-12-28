@@ -239,8 +239,13 @@ module Apiwork
         # @example Using in a contract
         #   param :shipping_address, type: :address
         def type(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false, schema_class: nil, &block)
-          type_system.register_type(name, scope:, description:, example:, format:, deprecated:,
-                                          schema_class:, &block)
+          type_system.register_type(name, scope: scope,
+                                          description: description,
+                                          example: example,
+                                          format: format,
+                                          deprecated: deprecated,
+                                          schema_class: schema_class,
+                                    &block)
         end
 
         # @api public
@@ -264,7 +269,11 @@ module Apiwork
         def enum(name, values: nil, scope: nil, description: nil, example: nil, deprecated: false)
           raise ArgumentError, 'Values must be an array' if values && !values.is_a?(Array)
 
-          type_system.register_enum(name, values, scope:, description:, example:, deprecated:)
+          type_system.register_enum(name, values,
+                                    scope: scope,
+                                    description: description,
+                                    example: example,
+                                    deprecated: deprecated)
         end
 
         # @api public
@@ -290,17 +299,17 @@ module Apiwork
         def union(name, scope: nil, discriminator: nil, &block)
           raise ArgumentError, 'Union requires a block' unless block_given?
 
-          union_builder = TypeSystem::UnionBuilder.new(discriminator:)
+          union_builder = TypeSystem::UnionBuilder.new(discriminator: discriminator)
           union_builder.instance_eval(&block)
-          type_system.register_union(name, union_builder.serialize, scope:)
+          type_system.register_union(name, union_builder.serialize, scope: scope)
         end
 
         def resolve_type(name, scope: nil)
-          type_system.resolve_type(name, scope:)
+          type_system.resolve_type(name, scope: scope)
         end
 
         def resolve_enum(name, scope: nil)
-          type_system.resolve_enum(name, scope:)
+          type_system.resolve_enum(name, scope: scope)
         end
 
         def scoped_name(scope, name)
@@ -427,13 +436,13 @@ module Apiwork
 
         def introspect(locale: nil)
           ensure_all_contracts_built!
-          @introspect_cache[locale] ||= Apiwork::Introspection.api(self, locale:)
+          @introspect_cache[locale] ||= Apiwork::Introspection.api(self, locale: locale)
         end
 
         def introspect_contract(contract_class, locale:, expand:)
           ensure_all_contracts_built!
           cache_key = [contract_class, locale, expand]
-          @introspect_contract_cache[cache_key] ||= Apiwork::Introspection.contract(contract_class, locale:, expand:)
+          @introspect_contract_cache[cache_key] ||= Apiwork::Introspection.contract(contract_class, locale: locale, expand: expand)
         end
 
         def reset_contracts!
