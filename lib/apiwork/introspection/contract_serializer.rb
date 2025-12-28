@@ -3,6 +3,28 @@
 module Apiwork
   module Introspection
     class ContractSerializer
+      PRIMITIVE_TYPES = %i[
+        array
+        binary
+        boolean
+        date
+        datetime
+        decimal
+        enum
+        float
+        integer
+        json
+        literal
+        number
+        object
+        string
+        text
+        time
+        union
+        unknown
+        uuid
+      ].freeze
+
       def initialize(contract_class, expand: false)
         @contract_class = contract_class
         @expand = expand
@@ -116,7 +138,7 @@ module Apiwork
       end
 
       def primitive_type?(type)
-        Spec::TypeAnalysis.primitive_type?(type.to_sym)
+        PRIMITIVE_TYPES.include?(type.to_sym)
       end
 
       def available_actions
