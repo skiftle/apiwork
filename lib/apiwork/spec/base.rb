@@ -78,7 +78,7 @@ module Apiwork
 
       def initialize(api_path, **options)
         @api_path = api_path
-        @api_class = Apiwork::API.find(api_path)
+        @api_class = API.find(api_path)
         raise "API not found at path: #{api_path}" unless @api_class
 
         @options = self.class.default_options

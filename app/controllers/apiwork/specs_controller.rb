@@ -3,16 +3,16 @@
 module Apiwork
   class SpecsController < ActionController::API
     def show
-      api_class = Apiwork::API.find(params[:api_path])
+      api_class = API.find(params[:api_path])
       spec_name = params[:spec_name].to_sym
-      spec_class = Apiwork::Spec.find(spec_name)
+      spec_class = Spec.find(spec_name)
 
       options = { key_format: api_class.key_format }
                 .merge(api_class.spec_config(spec_name))
                 .merge(spec_class.extract_options(params))
                 .compact
 
-      result = Apiwork::Spec.generate(spec_name, api_class.path, **options)
+      result = Spec.generate(spec_name, api_class.path, **options)
 
       if spec_class.content_type.start_with?('application/json')
         render json: result

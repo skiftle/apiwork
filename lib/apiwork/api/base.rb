@@ -436,13 +436,13 @@ module Apiwork
 
         def introspect(locale: nil)
           ensure_all_contracts_built!
-          @introspect_cache[locale] ||= Apiwork::Introspection.api(self, locale: locale)
+          @introspect_cache[locale] ||= Introspection.api(self, locale: locale)
         end
 
         def introspect_contract(contract_class, locale:, expand:)
           ensure_all_contracts_built!
           cache_key = [contract_class, locale, expand]
-          @introspect_contract_cache[cache_key] ||= Apiwork::Introspection.contract(contract_class, locale: locale, expand: expand)
+          @introspect_contract_cache[cache_key] ||= Introspection.contract(contract_class, locale: locale, expand: expand)
         end
 
         def reset_contracts!

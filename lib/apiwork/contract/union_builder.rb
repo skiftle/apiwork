@@ -38,7 +38,7 @@ module Apiwork
       def serialize
         serialized_variants = @variants.map do |variant|
           serialized = variant.dup
-          serialized[:shape] = serialized[:shape].as_json if serialized[:shape].is_a?(Apiwork::Contract::ParamDefinition)
+          serialized[:shape] = serialized[:shape].as_json if serialized[:shape].is_a?(ParamDefinition)
           serialized
         end
 

@@ -137,7 +137,7 @@ module Apiwork
           namespace = name.deconstantize
           return nil if namespace.blank?
 
-          Apiwork::API.find("/#{namespace.underscore.tr('::', '/')}")
+          API.find("/#{namespace.underscore.tr('::', '/')}")
         end
 
         # @api public

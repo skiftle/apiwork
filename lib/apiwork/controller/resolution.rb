@@ -20,11 +20,11 @@ module Apiwork
 
       def find_api_class
         parts = path_parts
-        return Apiwork::API.find('/') if parts.empty?
+        return API.find('/') if parts.empty?
 
         (parts.length - 1).downto(1) do |i|
           path = "/#{parts[0...i].join('/')}"
-          api_class = Apiwork::API.find(path)
+          api_class = API.find(path)
           return api_class if api_class
         end
 

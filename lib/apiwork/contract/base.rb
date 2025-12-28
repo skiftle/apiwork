@@ -149,7 +149,7 @@ module Apiwork
 
         def register_sti_variants(*variant_schema_classes)
           variant_schema_classes.each do |variant_class|
-            next if variant_class.is_a?(Class) && variant_class < Apiwork::Schema::Base
+            next if variant_class.is_a?(Class) && variant_class < Schema::Base
 
             raise ArgumentError,
                   "Expected Schema class, got #{variant_class.inspect}. " \
@@ -300,7 +300,7 @@ module Apiwork
                                  "Use: import UserContract, as: :user (not 'UserContract' or :user_contract)"
           end
 
-          unless contract_class < Apiwork::Contract::Base
+          unless contract_class < Contract::Base
             raise ArgumentError, 'import must be a Contract class (subclass of Apiwork::Contract::Base), ' \
                                  "got #{contract_class}"
           end
@@ -408,7 +408,7 @@ module Apiwork
           namespace = name.deconstantize
           return nil if namespace.blank?
 
-          Apiwork::API.find("/#{namespace.underscore.tr('::', '/')}")
+          API.find("/#{namespace.underscore.tr('::', '/')}")
         end
 
         def parse_response(body, action)

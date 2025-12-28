@@ -231,7 +231,7 @@ module Apiwork
         return unless resource
 
         if options[:on] && [:member, :collection].exclude?(options[:on])
-          raise Apiwork::ConfigurationError,
+          raise ConfigurationError,
                 ":on option must be either :member or :collection, got #{options[:on].inspect}"
         end
 
@@ -244,7 +244,7 @@ module Apiwork
         if action_type
           resource.add_action(action, type: action_type, method: method)
         else
-          raise Apiwork::ConfigurationError,
+          raise ConfigurationError,
                 "Action '#{action}' on resource '#{resource_name}' must be declared " \
                 "within a member or collection block, or use the :on parameter.\n" \
                 "Examples:\n" \
