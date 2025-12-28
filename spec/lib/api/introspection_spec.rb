@@ -330,5 +330,4 @@ RSpec.describe 'API Introspection' do
       end
     end
   end
-
 end

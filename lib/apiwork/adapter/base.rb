@@ -111,8 +111,8 @@ module Apiwork
         ContractRegistrar.new(contract_class)
       end
 
-      def build_schema_summary(schemas, has_resources: false, has_index_actions: false)
-        SchemaSummary.new(schemas, has_resources:, has_index_actions:)
+      def build_schema_summary(structure)
+        SchemaSummary.new(structure)
       end
     end
   end

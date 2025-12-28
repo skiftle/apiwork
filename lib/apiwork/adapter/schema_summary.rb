@@ -33,12 +33,14 @@ module Apiwork
       # @return [Array<Symbol>] data types used in nullable filterable attributes
       attr_reader :nullable_filterable_types
 
-      def initialize(schemas, has_resources: false, has_index_actions: false)
-        @filterable_types, @nullable_filterable_types = extract_filterable_type_variants(schemas)
-        @sortable = check_sortable(schemas)
-        @has_resources = has_resources
-        @has_index_actions = has_index_actions
-        @pagination_strategies = extract_pagination_strategies(schemas)
+      def initialize(structure)
+        @structure = structure
+        schema_classes = structure.schema_classes
+        @filterable_types, @nullable_filterable_types = extract_filterable_type_variants(schema_classes)
+        @sortable = check_sortable(schema_classes)
+        @has_resources = structure.has_resources?
+        @has_index_actions = structure.has_index_actions?
+        @pagination_strategies = extract_pagination_strategies(schema_classes)
       end
 
       # @api public

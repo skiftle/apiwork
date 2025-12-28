@@ -471,11 +471,7 @@ module Apiwork
             build_contracts_for_resource(resource)
           end
 
-          schema_summary = adapter.build_schema_summary(
-            @structure.schema_classes,
-            has_resources: @structure.has_resources?,
-            has_index_actions: @structure.has_index_actions?
-          )
+          schema_summary = adapter.build_schema_summary(@structure)
           registrar = adapter.build_api_registrar(self)
           adapter.register_api(registrar, schema_summary)
         end
