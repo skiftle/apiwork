@@ -34,7 +34,7 @@ module Apiwork
           @crud_actions.include?(:index) || @resources.values.any?(&:has_index?)
         end
 
-        def schema
+        def schema_class
           contract_class&.schema_class
         end
 

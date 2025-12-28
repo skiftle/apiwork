@@ -131,13 +131,13 @@ module Apiwork
             association_payload_type = nil
 
             association_contract = nil
-            if association_resource&.schema
-              import_alias = import_association_contract(association_resource.schema, Set.new)
+            if association_resource&.schema_class
+              import_alias = import_association_contract(association_resource.schema_class, Set.new)
 
               if import_alias
                 association_payload_type = :"#{import_alias}_nested_payload"
 
-                association_contract = registrar.find_contract_for_schema(association_resource.schema)
+                association_contract = registrar.find_contract_for_schema(association_resource.schema_class)
               end
             end
 
@@ -419,16 +419,16 @@ module Apiwork
               next unless association_definition.filterable?
 
               association_resource = builder.send(:resolve_association_resource, association_definition)
-              next unless association_resource&.schema
-              next if visited.include?(association_resource.schema)
+              next unless association_resource&.schema_class
+              next if visited.include?(association_resource.schema_class)
 
-              import_alias = builder.send(:import_association_contract, association_resource.schema, visited)
+              import_alias = builder.send(:import_association_contract, association_resource.schema_class, visited)
 
               association_filter_type = if import_alias
                                           :"#{import_alias}_filter"
                                         else
                                           builder.send(:build_filter_type_for_schema,
-                                                       association_resource.schema,
+                                                       association_resource.schema_class,
                                                        visited: visited,
                                                        depth: depth + 1)
                                         end
@@ -475,16 +475,16 @@ module Apiwork
               next unless association_definition.sortable?
 
               association_resource = builder.send(:resolve_association_resource, association_definition)
-              next unless association_resource&.schema
-              next if visited.include?(association_resource.schema)
+              next unless association_resource&.schema_class
+              next if visited.include?(association_resource.schema_class)
 
-              import_alias = builder.send(:import_association_contract, association_resource.schema, visited)
+              import_alias = builder.send(:import_association_contract, association_resource.schema_class, visited)
 
               association_sort_type = if import_alias
                                         :"#{import_alias}_sort"
                                       else
                                         builder.send(:build_sort_type_for_schema,
-                                                     association_resource.schema,
+                                                     association_resource.schema_class,
                                                      visited: visited,
                                                      depth: depth + 1)
                                       end
@@ -555,19 +555,19 @@ module Apiwork
               end
 
               association_resource = builder.send(:resolve_association_resource, association_definition)
-              next unless association_resource&.schema
+              next unless association_resource&.schema_class
 
-              if visited.include?(association_resource.schema)
+              if visited.include?(association_resource.schema_class)
                 param name, type: :boolean, optional: true unless association_definition.always_included?
               else
-                import_alias = builder.send(:import_association_contract, association_resource.schema, visited)
+                import_alias = builder.send(:import_association_contract, association_resource.schema_class, visited)
 
                 association_include_type = if import_alias
                                              imported_type = :"#{import_alias}_include"
                                              registrar_local.resolve_type(imported_type) ? imported_type : nil
                                            else
                                              builder.send(:build_include_type_for_schema,
-                                                          association_resource.schema,
+                                                          association_resource.schema_class,
                                                           visited: visited,
                                                           depth: depth + 1)
                                            end
@@ -599,12 +599,12 @@ module Apiwork
               !association_definition.always_included?
             else
               association_resource = resolve_association_resource(association_definition)
-              next false unless association_resource&.schema
+              next false unless association_resource&.schema_class
 
-              if new_visited.include?(association_resource.schema)
+              if new_visited.include?(association_resource.schema_class)
                 !association_definition.always_included?
               elsif association_definition.always_included?
-                nested_builder = self.class.for_schema(registrar, association_resource.schema)
+                nested_builder = self.class.for_schema(registrar, association_resource.schema_class)
                 nested_builder.send(:has_includable_params?, visited: new_visited, depth: depth + 1)
               else
                 true
@@ -729,11 +729,11 @@ module Apiwork
           association_resource = resolve_association_resource(association_definition)
           return nil unless association_resource
 
-          return build_sti_association_type(association_definition, association_resource.schema, visited: visited) if association_resource.sti?
+          return build_sti_association_type(association_definition, association_resource.schema_class, visited: visited) if association_resource.sti?
 
-          return nil if visited.include?(association_resource.schema)
+          return nil if visited.include?(association_resource.schema_class)
 
-          import_alias = import_association_contract(association_resource.schema, visited)
+          import_alias = import_association_contract(association_resource.schema_class, visited)
           return import_alias if import_alias
 
           nil
@@ -958,7 +958,7 @@ module Apiwork
             next false unless ad.filterable?
 
             association_resource = resolve_association_resource(ad)
-            association_resource&.schema && visited.exclude?(association_resource.schema)
+            association_resource&.schema_class && visited.exclude?(association_resource.schema_class)
           end
         end
 
@@ -973,7 +973,7 @@ module Apiwork
             next false unless ad.sortable?
 
             association_resource = resolve_association_resource(ad)
-            association_resource&.schema && visited.exclude?(association_resource.schema)
+            association_resource&.schema_class && visited.exclude?(association_resource.schema_class)
           end
         end
 

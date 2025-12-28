@@ -160,8 +160,8 @@ module Apiwork
       def collect_all_schemas
         schemas = []
         each_resource do |resource|
-          schema = resource.schema
-          schemas << schema if schema
+          schema_class = resource.schema_class
+          schemas << schema_class if schema_class
         end
         schemas
       end

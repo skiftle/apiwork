@@ -12,8 +12,11 @@ module Apiwork
       end
 
       def fetch(key)
-        k = normalize_key(key)
-        store.fetch(k) { raise KeyError.new("#{registry_name} :#{k} not found. Available: #{keys.join(', ')}", key: k, receiver: store) }
+        normalized_key = normalize_key(key)
+        store.fetch(normalized_key) do
+          raise KeyError.new("#{registry_name} :#{normalized_key} not found. Available: #{keys.join(', ')}",
+                             key: normalized_key, receiver: store)
+        end
       end
 
       def registered?(key)

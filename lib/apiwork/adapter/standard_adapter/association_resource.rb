@@ -3,7 +3,7 @@
 module Apiwork
   module Adapter
     class StandardAdapter < Base
-      AssociationResource = Struct.new(:schema, :sti, keyword_init: true) do
+      AssociationResource = Struct.new(:schema_class, :sti, keyword_init: true) do
         def sti?
           sti
         end
@@ -12,8 +12,8 @@ module Apiwork
           :polymorphic
         end
 
-        def self.for(schema, sti: false)
-          new(schema:, sti:)
+        def self.for(schema_class, sti: false)
+          new(schema_class:, sti:)
         end
       end
     end
