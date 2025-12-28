@@ -22,7 +22,7 @@ module Apiwork
           @key_format = :keep
           @path_format = :keep
 
-          @contract_introspect_cache = {}
+          @introspect_contract_cache = {}
 
           @structure = Structure.new(path)
 
@@ -438,17 +438,17 @@ module Apiwork
           @introspect_cache[locale] ||= Apiwork::Introspection.api(self, locale:)
         end
 
-        def contract_introspect(contract_class, locale:, expand:)
+        def introspect_contract(contract_class, locale:, expand:)
           ensure_all_contracts_built!
           cache_key = [contract_class, locale, expand]
-          @contract_introspect_cache ||= {}
-          @contract_introspect_cache[cache_key] ||= Apiwork::Introspection.contract(contract_class, locale:, expand:)
+          @introspect_contract_cache ||= {}
+          @introspect_contract_cache[cache_key] ||= Apiwork::Introspection.contract(contract_class, locale:, expand:)
         end
 
         def reset_contracts!
           @built_contracts = Set.new
           @introspect_cache = {}
-          @contract_introspect_cache = {}
+          @introspect_contract_cache = {}
         end
 
         def ensure_contract_built!(contract_class)
