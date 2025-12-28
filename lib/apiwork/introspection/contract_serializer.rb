@@ -142,13 +142,12 @@ module Apiwork
       end
 
       def available_actions
-        resource = resource_metadata
         return [] unless resource
 
         resource.actions.keys
       end
 
-      def resource_metadata
+      def resource
         api_class = @contract_class.api_class
         api_class.structure.find_resource(resource_name)
       end

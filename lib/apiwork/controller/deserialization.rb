@@ -71,7 +71,7 @@ module Apiwork
       private
 
       def validate_contract
-        return unless resource_metadata
+        return unless resource
         return if contract.valid?
 
         raise ContractError, contract.issues

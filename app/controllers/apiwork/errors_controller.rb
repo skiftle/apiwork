@@ -2,7 +2,7 @@
 
 module Apiwork
   class ErrorsController < ActionController::API
-    include Apiwork::Controller
+    include Controller
 
     skip_contract_validation!
 

@@ -9,7 +9,7 @@ module Apiwork
 
       def contract_class
         @contract_class ||= begin
-          klass = resource_metadata&.resolve_contract_class
+          klass = resource&.resolve_contract_class
           klass || raise_contract_not_found_error
         end
       end
@@ -50,8 +50,8 @@ module Apiwork
         api_class.adapter
       end
 
-      def resource_metadata
-        @resource_metadata ||= api_class&.structure&.find_resource(resource_name)
+      def resource
+        @resource ||= api_class&.structure&.find_resource(resource_name)
       end
 
       def resource_name

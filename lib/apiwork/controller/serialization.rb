@@ -140,15 +140,15 @@ module Apiwork
           request.method_symbol,
           type: action_type,
           context:,
-          query: resource_metadata ? contract.query : {},
+          query: resource ? contract.query : {},
           meta:
         )
       end
 
       def action_type
-        return nil unless resource_metadata
+        return nil unless resource
 
-        action = resource_metadata.actions[action_name.to_sym]
+        action = resource.actions[action_name.to_sym]
         action&.type
       end
 

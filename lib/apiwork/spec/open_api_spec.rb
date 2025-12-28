@@ -97,12 +97,12 @@ module Apiwork
         end
       end
 
-      def build_operation(resource_name, resource_path, action_name, action_data, resource_metadata, parent_paths = [], full_path = nil)
+      def build_operation(resource_name, resource_path, action_name, action_data, resource, parent_paths = [], full_path = nil)
         operation = {
           operationId: action_data[:operation_id] || operation_id(resource_name, resource_path, action_name, parent_paths),
           summary: action_data[:summary],
           description: action_data[:description],
-          tags: build_tags(resource_metadata[:tags], action_data[:tags]),
+          tags: build_tags(resource[:tags], action_data[:tags]),
           deprecated: action_data[:deprecated] || nil
         }
 

@@ -3,22 +3,21 @@
 module Apiwork
   module Introspection
     class ResourceSerializer
-      def initialize(api_class, resource_name, resource, parent_path: nil, parent_resource_name: nil)
-        @api_class = api_class
-        @resource_name = resource_name
+      def initialize(resource, api_class, parent_path: nil, parent_resource: nil)
         @resource = resource
+        @api_class = api_class
         @parent_path = parent_path
-        @parent_resource_name = parent_resource_name
+        @parent_resource = parent_resource
       end
 
       def serialize
-        resource_segment = @resource.singular ? @resource_name.to_s.singularize : @resource_name.to_s
+        resource_segment = @resource.singular ? @resource.name.to_s.singularize : @resource.name.to_s
 
         formatted_segment = @resource.options[:path] ||
                             @api_class.transform_path_segment(resource_segment)
 
         resource_path = if @parent_path
-                          ":#{@parent_resource_name.to_s.singularize}_id/#{formatted_segment}"
+                          ":#{@parent_resource.name.to_s.singularize}_id/#{formatted_segment}"
                         else
                           formatted_segment
                         end
@@ -26,7 +25,7 @@ module Apiwork
         contract_class = resolve_contract_class
 
         {
-          identifier: @resource_name.to_s,
+          identifier: @resource.name.to_s,
           path: resource_path,
           actions: build_actions(contract_class),
           resources: build_nested_resources(resource_path)
@@ -55,13 +54,12 @@ module Apiwork
       def build_nested_resources(resource_path)
         return nil unless @resource.resources.any?
 
-        @resource.resources.each_with_object({}) do |(nested_name, nested_resource), result|
-          result[nested_name] = ResourceSerializer.new(
-            @api_class,
-            nested_name,
+        @resource.resources.transform_values do |nested_resource|
+          ResourceSerializer.new(
             nested_resource,
+            @api_class,
             parent_path: resource_path,
-            parent_resource_name: @resource_name
+            parent_resource: @resource
           ).serialize
         end
       end

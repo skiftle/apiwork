@@ -54,15 +54,9 @@ module Apiwork
       end
 
       def serialize_resources
-        resources = {}
-        @api_class.structure.resources.each do |resource_name, resource_metadata|
-          resources[resource_name] = ResourceSerializer.new(
-            @api_class,
-            resource_name,
-            resource_metadata
-          ).serialize
+        @api_class.structure.resources.transform_values do |resource|
+          ResourceSerializer.new(resource, @api_class).serialize
         end
-        resources
       end
 
       def serialize_info
