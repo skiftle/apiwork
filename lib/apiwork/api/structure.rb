@@ -47,11 +47,12 @@ module Apiwork
         @resources[resource.name] = resource
       end
 
-      def find_resource(resource_name)
-        return @resources[resource_name] if @resources[resource_name]
+      def find_resource(name = nil, &block)
+        return find_resource_by_block(&block) if block
+        return @resources[name] if @resources[name]
 
         @resources.each_value do |resource|
-          found = resource.find_resource(resource_name)
+          found = resource.find_resource(name)
           return found if found
         end
 
@@ -63,15 +64,6 @@ module Apiwork
           yield resource
           resource.each_resource(&block)
         end
-      end
-
-      def detect_resource(&block)
-        @resources.each_value do |resource|
-          result = search_in_resource_tree(resource, &block)
-          return result if result
-        end
-
-        nil
       end
 
       def resources(name = nil, **options, &block)
@@ -174,13 +166,12 @@ module Apiwork
         schemas
       end
 
-      def search_in_resource_tree(resource, &block)
-        result = yield(resource)
-        return result if result
+      def find_resource_by_block(&block)
+        @resources.each_value do |resource|
+          return resource if yield(resource)
 
-        resource.resources.each_value do |nested_resource|
-          result = search_in_resource_tree(nested_resource, &block)
-          return result if result
+          found = resource.find_resource(&block)
+          return found if found
         end
 
         nil

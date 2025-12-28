@@ -95,12 +95,13 @@ module Apiwork
         return nil unless api_class&.structure
 
         action_name = @action_definition.action_name.to_sym
-        api_class.structure.detect_resource do |resource|
-          next unless @action_definition.send(:resource_uses_contract?, resource, @action_definition.contract_class)
-
-          action = resource.actions[action_name]
-          action&.method
+        resource = api_class.structure.find_resource do |resource|
+          @action_definition.send(:resource_uses_contract?, resource, @action_definition.contract_class)
         end
+        return nil unless resource
+
+        action = resource.actions[action_name]
+        action&.method
       end
     end
   end

@@ -503,9 +503,7 @@ module Apiwork
         end
 
         def find_resource_for_contract(contract_class)
-          @structure.detect_resource do |resource|
-            resource if resource.contract_class == contract_class
-          end
+          @structure.find_resource { |resource| resource.contract_class == contract_class }
         end
 
         def build_contracts_for_resource(resource)
