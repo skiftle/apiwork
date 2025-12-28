@@ -5,6 +5,7 @@ module Apiwork
     class Structure
       attr_reader :namespaces,
                   :path
+
       attr_accessor :info,
                     :raises
 
