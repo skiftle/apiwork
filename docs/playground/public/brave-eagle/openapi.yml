@@ -173,6 +173,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/taskArchiveSuccessResponseBody"
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
 components:
   schemas:
     errorResponseBody:

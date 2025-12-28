@@ -37,7 +37,7 @@ end
 
 ### #filterable?()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L52)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L54)
 
 **Returns**
 
@@ -57,7 +57,7 @@ end
 
 ### #has_index_actions?()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L70)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L72)
 
 **Returns**
 
@@ -67,7 +67,7 @@ end
 
 ### #has_resources?()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L64)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L66)
 
 **Returns**
 
@@ -87,7 +87,7 @@ end
 
 ### #paginatable?()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L58)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L60)
 
 **Returns**
 
@@ -97,7 +97,7 @@ end
 
 ### #sortable?()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L46)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L48)
 
 **Returns**
 
@@ -107,7 +107,7 @@ end
 
 ### #uses_cursor_pagination?()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L82)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L84)
 
 **Returns**
 
@@ -117,7 +117,7 @@ end
 
 ### #uses_offset_pagination?()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L76)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L78)
 
 **Returns**
 

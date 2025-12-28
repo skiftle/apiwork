@@ -669,6 +669,9 @@
               ]
             }
           },
+          "raises": [
+            "unprocessable_entity"
+          ],
           "deprecated": true
         }
       }
