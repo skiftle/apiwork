@@ -28,6 +28,7 @@ module Apiwork
       def initialize(contract_class, expand: false)
         @contract_class = contract_class
         @expand = expand
+        @type_serializer = TypeSerializer.new(contract_class.api_class)
       end
 
       def serialize
@@ -40,7 +41,7 @@ module Apiwork
 
         actions.each do |action_name|
           action_definition = @contract_class.action_definition(action_name)
-          result[:actions][action_name] = ActionSerializer.new(action_definition).serialize if action_definition
+          result[:actions][action_name] = ActionDefinitionSerializer.new(action_definition).serialize if action_definition
         end
 
         if @expand
@@ -59,33 +60,25 @@ module Apiwork
       private
 
       def serialize_local_types
-        api_class = @contract_class.api_class
-        type_serializer = TypeSerializer.new(api_class)
-
-        api_class.type_system.types.each_pair
-                 .select { |_, metadata| metadata[:scope] == @contract_class }
-                 .sort_by { |name, _| name.to_s }
-                 .each_with_object({}) do |(name, metadata), result|
-          result[name] = type_serializer.serialize_type(name, metadata)
+        @contract_class.api_class.type_system.types.each_pair
+                       .select { |_, metadata| metadata[:scope] == @contract_class }
+                       .sort_by { |name, _| name.to_s }
+                       .each_with_object({}) do |(name, metadata), result|
+          result[name] = @type_serializer.serialize_type(name, metadata)
         end
       end
 
       def serialize_local_enums
-        api_class = @contract_class.api_class
-        type_serializer = TypeSerializer.new(api_class)
-
-        api_class.type_system.enums.each_pair
-                 .select { |_, metadata| metadata[:scope] == @contract_class }
-                 .sort_by { |name, _| name.to_s }
-                 .each_with_object({}) do |(name, metadata), result|
-          result[name] = type_serializer.serialize_enum(name, metadata)
+        @contract_class.api_class.type_system.enums.each_pair
+                       .select { |_, metadata| metadata[:scope] == @contract_class }
+                       .sort_by { |name, _| name.to_s }
+                       .each_with_object({}) do |(name, metadata), result|
+          result[name] = @type_serializer.serialize_enum(name, metadata)
         end
       end
 
       def serialize_referenced_types_and_enums(actions_data)
-        api_class = @contract_class.api_class
-        type_serializer = TypeSerializer.new(api_class)
-        type_system = api_class.type_system
+        type_system = @contract_class.api_class.type_system
 
         referenced_types = Set.new
         referenced_enums = Set.new
@@ -101,7 +94,7 @@ module Apiwork
             metadata = type_system.types[type_name]
             next unless metadata
 
-            serialized = type_serializer.serialize_type(type_name, metadata)
+            serialized = @type_serializer.serialize_type(type_name, metadata)
             serialized_types[type_name] = serialized
 
             collect_references(serialized, referenced_types, referenced_enums)
@@ -110,7 +103,7 @@ module Apiwork
 
         serialized_enums = referenced_enums.each_with_object({}) do |enum_name, result|
           metadata = type_system.enums[enum_name]
-          result[enum_name] = type_serializer.serialize_enum(enum_name, metadata) if metadata
+          result[enum_name] = @type_serializer.serialize_enum(enum_name, metadata) if metadata
         end
 
         sorted_types = serialized_types.sort_by { |name, _| name.to_s }.to_h

@@ -252,7 +252,7 @@ RSpec.describe 'Contract Serialization' do
       end
 
       action_def = contract_class.action_definition(:create)
-      json = Apiwork::Introspection::ActionSerializer.new(action_def).serialize
+      json = Apiwork::Introspection::ActionDefinitionSerializer.new(action_def).serialize
 
       expect(json).to eq({
                            request: {
@@ -280,7 +280,7 @@ RSpec.describe 'Contract Serialization' do
       end
 
       action_def = contract_class.action_definition(:destroy)
-      json = Apiwork::Introspection::ActionSerializer.new(action_def).serialize
+      json = Apiwork::Introspection::ActionDefinitionSerializer.new(action_def).serialize
 
       expect(json).to eq({})
     end

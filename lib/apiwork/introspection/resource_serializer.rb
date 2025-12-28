@@ -44,7 +44,7 @@ module Apiwork
           action_definition = contract_class&.action_definition(action_name)
           next unless action_definition
 
-          actions[action_name].merge!(ActionSerializer.new(action_definition).serialize.except(:deprecated).compact)
+          actions[action_name].merge!(ActionDefinitionSerializer.new(action_definition).serialize.except(:deprecated).compact)
           actions[action_name][:deprecated] = true if action_definition.deprecated
         end
 

@@ -5,6 +5,7 @@ module Apiwork
     class APISerializer
       def initialize(api_class)
         @api_class = api_class
+        @type_serializer = TypeSerializer.new(api_class)
       end
 
       def serialize
@@ -13,8 +14,8 @@ module Apiwork
         {
           path: @api_class.path,
           info: serialize_info.presence,
-          types: TypeSerializer.new(@api_class).serialize_types.presence,
-          enums: TypeSerializer.new(@api_class).serialize_enums.presence,
+          types: @type_serializer.serialize_types.presence,
+          enums: @type_serializer.serialize_enums.presence,
           raises: @api_class.structure.raises.presence,
           error_codes: serialize_error_codes(collect_all_error_codes(resources)).presence,
           resources:
