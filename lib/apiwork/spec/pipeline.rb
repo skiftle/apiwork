@@ -18,7 +18,7 @@ module Apiwork
                   'api_path and spec_name required when output is a file'
           end
 
-          apis = api_path ? [find_api(api_path)] : find_all_apis
+          apis = api_path ? [find_api_class(api_path)] : find_all_api_classes
           spec_names = spec_name ? [spec_name] : Registry.all
 
           start_time = Time.zone.now
@@ -51,13 +51,13 @@ module Apiwork
 
         private
 
-        def find_api(api_path)
+        def find_api_class(api_path)
           api_class = API.all.find do |klass|
-            klass.structure&.path == api_path
+            klass.path == api_path
           end
 
           unless api_class
-            available = API.all.filter_map { |k| k.structure&.path }
+            available = API.all.filter_map(&:path)
             raise ArgumentError,
                   "API not found: #{api_path}. Available APIs: #{available.join(', ')}"
           end
@@ -65,12 +65,12 @@ module Apiwork
           api_class
         end
 
-        def find_all_apis
+        def find_all_api_classes
           API.all.select(&:metadata)
         end
 
         def generate_file(api_class:, spec_name:, output:, options:)
-          api_path = api_class.structure.path
+          api_path = api_class.path
 
           unless api_class.specs&.include?(spec_name)
             Rails.logger.debug "  ⊘ Skipping #{api_path} → #{spec_name} (not configured)"

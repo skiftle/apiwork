@@ -22,17 +22,17 @@ module Apiwork
     #
     # Returns spec for the current API
     def show
-      api = find_api
+      api_class = find_api_class
       spec_name = params[:spec_name].to_sym
-      spec_config = api.spec_config(spec_name)
+      spec_config = api_class.spec_config(spec_name)
       generator_class = ::Apiwork::Spec.find(spec_name)
 
-      options = { key_format: api.key_format }
+      options = { key_format: api_class.key_format }
                 .merge(spec_config)
                 .merge(generator_class.extract_options(params))
                 .compact
 
-      spec = ::Apiwork::Spec.generate(spec_name, api.structure.path, **options)
+      spec = ::Apiwork::Spec.generate(spec_name, api_class.path, **options)
       render_spec(spec, generator_class.content_type)
     rescue KeyError => e
       render json: { error: e.message }, status: :bad_request
@@ -44,21 +44,21 @@ module Apiwork
 
     private
 
-    def find_api
-      api = ::Apiwork::API.find(params[:api_path]) if params[:api_path].present?
-      return api if api
+    def find_api_class
+      api_class = ::Apiwork::API.find(params[:api_path]) if params[:api_path].present?
+      return api_class if api_class
 
-      find_api_from_request_path
+      find_api_class_from_request_path
     end
 
-    def find_api_from_request_path
+    def find_api_class_from_request_path
       path_parts = request.path.split('/').reject(&:blank?)
       return nil if path_parts.empty?
 
       (path_parts.length - 1).downto(1) do |i|
         path = "/#{path_parts[0...i].join('/')}"
-        api = ::Apiwork::API.find(path)
-        return api if api
+        api_class = ::Apiwork::API.find(path)
+        return api_class if api_class
       end
 
       raise "No API found for path: #{request.path}"

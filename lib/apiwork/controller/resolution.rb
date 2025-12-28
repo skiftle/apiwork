@@ -24,15 +24,15 @@ module Apiwork
 
         (parts.length - 1).downto(1) do |i|
           path = "/#{parts[0...i].join('/')}"
-          api = Apiwork::API.find(path)
-          return api if api
+          api_class = Apiwork::API.find(path)
+          return api_class if api_class
         end
 
         nil
       end
 
       def api_path
-        api_class&.structure&.path || begin
+        api_class&.path || begin
           parts = path_parts
           parts.empty? ? '/' : "/#{parts[0..1].join('/')}"
         end

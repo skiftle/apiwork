@@ -39,13 +39,12 @@ module Apiwork
 
       def i18n_lookup(field)
         contract_class = @action_definition.contract_class
-        api_class = contract_class.api_class
-        return nil unless api_class&.structure&.path && contract_class.name
+        return nil unless contract_class.name
 
         contract_name = contract_class.name.demodulize.delete_suffix('Contract').underscore
         action_name = @action_definition.action_name
 
-        api_class.structure.i18n_lookup(:contracts, contract_name, :actions, action_name, field)
+        contract_class.api_class.structure.i18n_lookup(:contracts, contract_name, :actions, action_name, field)
       end
 
       def serialize_request(request_definition)

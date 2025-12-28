@@ -7,15 +7,15 @@ module Apiwork
       class << self
         attr_reader :adapter_config,
                     :built_contracts,
-                    :mount_path,
                     :namespaces,
+                    :path,
                     :spec_configs,
                     :specs,
                     :structure,
                     :type_system
 
         def mount(path)
-          @mount_path = path
+          @path = path
           @specs = Set.new
           @spec_configs = {}
           @type_system = TypeSystem.new

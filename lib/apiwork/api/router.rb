@@ -11,25 +11,25 @@ module Apiwork
 
         set.draw do
           api_classes.each do |api_class|
-            next if api_class.mount_path.blank? || api_class.structure.blank?
+            next if api_class.path.blank? || api_class.structure.blank?
 
             if api_class.specs?
-              scope path: api_class.mount_path do
+              scope path: api_class.path do
                 api_class.specs.each do |spec_name|
                   get api_class.spec_path(spec_name), to: 'apiwork/specs#show', defaults: {
                     spec_name: spec_name,
-                    api_path: api_class.structure.path
+                    api_path: api_class.path
                   }
                 end
               end
             end
 
             controller_path = api_class.namespaces.map(&:to_s).join('/').underscore
-            scope path: api_class.mount_path, module: controller_path do
+            scope path: api_class.path, module: controller_path do
               router_instance.draw_resources_in_context(self, api_class.structure.resources, api_class)
             end
 
-            scope path: api_class.mount_path do
+            scope path: api_class.path do
               match '*unmatched',
                     to: 'apiwork/errors#not_found',
                     via: :all

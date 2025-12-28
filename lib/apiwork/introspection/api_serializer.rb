@@ -13,7 +13,7 @@ module Apiwork
         resources = serialize_resources
 
         {
-          path: @api_class.mount_path,
+          path: @api_class.path,
           info: serialize_info.presence,
           types: TypeSerializer.new(@api_class).serialize_types.presence,
           enums: TypeSerializer.new(@api_class).serialize_enums.presence,
