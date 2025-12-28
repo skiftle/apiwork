@@ -7,12 +7,12 @@ module Apiwork
       class << self
         attr_reader :adapter_config,
                     :built_contracts,
-                    :metadata,
                     :mount_path,
                     :namespaces,
                     :recorder,
                     :spec_configs,
                     :specs,
+                    :structure,
                     :type_system
 
         def mount(path)
@@ -27,8 +27,8 @@ module Apiwork
           @namespaces = path == '/' ? [] : path.split('/').reject(&:empty?).map { |n| n.tr('-', '_').to_sym }
           @contract_introspect_cache = {}
 
-          @metadata = Metadata.new(path)
-          @recorder = Recorder.new(@metadata, @namespaces)
+          @structure = Structure.new(path)
+          @recorder = Recorder.new(@structure, @namespaces)
 
           Registry.register(self)
 
@@ -180,7 +180,7 @@ module Apiwork
                   "Unknown error code :#{error_code_key}. Register it with: " \
                   "Apiwork::ErrorCode.register :#{error_code_key}, status: <status>"
           end
-          @metadata.raises = error_code_keys
+          @structure.raises = error_code_keys
         end
 
         # @api public
@@ -340,7 +340,7 @@ module Apiwork
         def info(&block)
           builder = Info::Builder.new
           builder.instance_eval(&block)
-          @metadata.info = builder.info
+          @structure.info = builder.info
         end
 
         # @api public
@@ -458,30 +458,30 @@ module Apiwork
         def ensure_contract_built!(contract_class)
           return if built_contracts.include?(contract_class)
 
-          resource_data = find_resource_for_contract(contract_class)
-          return unless resource_data
+          resource = find_resource_for_contract(contract_class)
+          return unless resource
 
           schema_class = contract_class.schema_class
           return unless schema_class
 
           built_contracts.add(contract_class)
 
-          actions = extract_actions_from_resource(resource_data)
           contract_registrar = adapter.build_contract_registrar(contract_class)
-          adapter.register_contract(contract_registrar, schema_class, actions: actions)
+          adapter.register_contract(contract_registrar, schema_class, actions: resource.actions)
         end
 
         def ensure_all_contracts_built!
-          return unless @metadata
+          return unless @structure
 
-          @metadata.resources.each_value do |resource_data|
-            build_contracts_for_resource(resource_data)
+          @structure.each_resource do |resource|
+            build_contracts_for_resource(resource)
           end
 
-          schemas = collect_all_schemas
-          has_resources = @metadata.resources.any?
-          has_index_actions = any_index_actions?(@metadata.resources)
-          schema_summary = adapter.build_schema_summary(schemas, has_resources:, has_index_actions:)
+          schema_summary = adapter.build_schema_summary(
+            @structure.schemas,
+            has_resources: @structure.has_resources?,
+            has_index_actions: @structure.has_index_actions?
+          )
           registrar = adapter.build_api_registrar(self)
           adapter.register_api(registrar, schema_summary)
         end
@@ -509,14 +509,14 @@ module Apiwork
         end
 
         def find_resource_for_contract(contract_class)
-          @metadata&.search_resources do |resource_data|
-            resource_data if resource_data[:contract] == contract_class.name ||
-                             resource_data[:contract_class] == contract_class
+          @structure&.search_resources do |resource|
+            resource if resource.contract == contract_class.name ||
+                        resource.contract_class == contract_class
           end
         end
 
-        def build_contracts_for_resource(resource_data)
-          contract_class = @metadata.resolve_contract_class(resource_data)
+        def build_contracts_for_resource(resource)
+          contract_class = resource.resolve_contract_class
           return unless contract_class
           return if built_contracts.include?(contract_class)
 
@@ -525,72 +525,8 @@ module Apiwork
 
           built_contracts.add(contract_class)
 
-          actions = extract_actions_from_resource(resource_data)
           contract_registrar = adapter.build_contract_registrar(contract_class)
-          adapter.register_contract(contract_registrar, schema_class, actions: actions)
-
-          resource_data[:resources]&.each_value do |nested_resource|
-            build_contracts_for_resource(nested_resource)
-          end
-        end
-
-        def collect_all_schemas
-          schemas = []
-          collect_schemas_recursive(@metadata.resources, schemas)
-          schemas.compact
-        end
-
-        def collect_schemas_recursive(resources, schemas)
-          resources.each_value do |resource_data|
-            contract_class = @metadata.resolve_contract_class(resource_data)
-            schema_class = contract_class&.schema_class
-            schemas << schema_class if schema_class
-            collect_schemas_recursive(resource_data[:resources] || {}, schemas)
-          end
-        end
-
-        def extract_actions_from_resource(resource_data)
-          actions = {}
-
-          resource_data[:only]&.each do |action_name|
-            type = %i[index].include?(action_name) ? :collection : :member
-            method = action_method_for(action_name)
-
-            actions[action_name] = { type: type, method: method }
-          end
-
-          resource_data[:members]&.each do |action_name, action_data|
-            actions[action_name] = { type: :member, method: action_data[:method] }
-          end
-
-          resource_data[:collections]&.each do |action_name, action_data|
-            actions[action_name] = { type: :collection, method: action_data[:method] }
-          end
-
-          actions
-        end
-
-        def action_method_for(action_name)
-          case action_name.to_sym
-          when :index then :get
-          when :show then :get
-          when :create then :post
-          when :update then :patch
-          when :destroy then :delete
-          else :get
-          end
-        end
-
-        def any_index_actions?(resources)
-          resources.any? do |_, resource_data|
-            resource_has_index?(resource_data)
-          end
-        end
-
-        def resource_has_index?(resource_data)
-          return true if resource_data[:only]&.include?(:index)
-
-          resource_data[:resources]&.any? { |_, nested| resource_has_index?(nested) }
+          adapter.register_contract(contract_registrar, schema_class, actions: resource.actions)
         end
       end
     end

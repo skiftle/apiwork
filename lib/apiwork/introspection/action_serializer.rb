@@ -40,12 +40,12 @@ module Apiwork
       def i18n_lookup(field)
         contract_class = @action_definition.contract_class
         api_class = contract_class.api_class
-        return nil unless api_class&.metadata&.path && contract_class.name
+        return nil unless api_class&.structure&.path && contract_class.name
 
         contract_name = contract_class.name.demodulize.delete_suffix('Contract').underscore
         action_name = @action_definition.action_name
 
-        api_class.metadata.i18n_lookup(:contracts, contract_name, :actions, action_name, field)
+        api_class.structure.i18n_lookup(:contracts, contract_name, :actions, action_name, field)
       end
 
       def serialize_request(request_definition)
@@ -93,16 +93,14 @@ module Apiwork
         return nil unless @action_definition.respond_to?(:find_api_for_contract, true)
 
         api_class = @action_definition.send(:find_api_for_contract)
-        return nil unless api_class&.metadata
+        return nil unless api_class&.structure
 
         action_name = @action_definition.action_name.to_sym
-        api_class.metadata.search_resources do |resource_metadata|
-          next unless @action_definition.send(:resource_uses_contract?, resource_metadata, @action_definition.contract_class)
+        api_class.structure.search_resources do |resource|
+          next unless @action_definition.send(:resource_uses_contract?, resource, @action_definition.contract_class)
 
-          method = resource_metadata.dig(:members, action_name, :method)
-          return method if method
-
-          resource_metadata.dig(:collections, action_name, :method)
+          action = resource.actions[action_name]
+          action&.method
         end
       end
     end

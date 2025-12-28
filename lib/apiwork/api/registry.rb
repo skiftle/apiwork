@@ -5,9 +5,9 @@ module Apiwork
     class Registry < Apiwork::Registry
       class << self
         def register(api_class)
-          return unless api_class.metadata&.path
+          return unless api_class.structure&.path
 
-          store[normalize_key(api_class.metadata.path)] = api_class
+          store[normalize_key(api_class.structure.path)] = api_class
         end
 
         def find(path)

@@ -22,8 +22,8 @@ module Apiwork
         end
 
         def issues
-          api_path = @schema_class&.api_class&.metadata&.locale_key
-          DomainIssueMapper.call(@record, root_path: root_path, api_path: api_path)
+          locale_key = @schema_class&.api_class&.structure&.locale_key
+          DomainIssueMapper.call(@record, root_path: root_path, locale_key: locale_key)
         end
 
         private

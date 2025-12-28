@@ -67,7 +67,7 @@ module Apiwork
           return schema_description if schema_description
         end
 
-        result = @api_class.metadata.i18n_lookup(:types, type_name, :description)
+        result = @api_class.structure.i18n_lookup(:types, type_name, :description)
         return result if result
 
         I18n.t(:"apiwork.types.#{type_name}.description", default: nil)
@@ -82,7 +82,7 @@ module Apiwork
       def resolve_enum_description(enum_name, metadata)
         return metadata[:description] if metadata[:description]
 
-        result = @api_class.metadata.i18n_lookup(:enums, enum_name, :description)
+        result = @api_class.structure.i18n_lookup(:enums, enum_name, :description)
         return result if result
 
         I18n.t(:"apiwork.enums.#{enum_name}.description", default: nil)

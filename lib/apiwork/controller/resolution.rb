@@ -9,7 +9,7 @@ module Apiwork
 
       def contract_class
         @contract_class ||= begin
-          klass = api_class&.metadata&.resolve_contract_class(resource_metadata)
+          klass = resource_metadata&.resolve_contract_class
           klass || raise_contract_not_found_error
         end
       end
@@ -32,7 +32,7 @@ module Apiwork
       end
 
       def api_path
-        api_class&.metadata&.path || begin
+        api_class&.structure&.path || begin
           parts = path_parts
           parts.empty? ? '/' : "/#{parts[0..1].join('/')}"
         end
@@ -51,18 +51,18 @@ module Apiwork
       end
 
       def resource_metadata
-        @resource_metadata ||= api_class&.metadata&.find_resource(resource_name)
+        @resource_metadata ||= api_class&.structure&.find_resource(resource_name)
       end
 
       def resource_name
         @resource_name ||= begin
           base_name = self.class.name.underscore.delete_suffix('_controller').split('/').last
-          metadata = api_class&.metadata
+          definition = api_class&.structure
 
           plural = base_name.to_sym
           singular = base_name.singularize.to_sym
 
-          metadata&.find_resource(plural) ? plural : singular
+          definition&.find_resource(plural) ? plural : singular
         end
       end
 
@@ -76,7 +76,7 @@ module Apiwork
 
       def raise_contract_not_found_error
         resource_base = resource_name.to_s.singularize
-        namespaces = api_class.metadata.namespaces
+        namespaces = api_class.structure.namespaces
 
         contract_name = [*namespaces.map { |n| n.to_s.camelize }, "#{resource_base.camelize}Contract"].join('::')
         contract_path = ['app/contracts', *namespaces, "#{resource_base}_contract.rb"].join('/')

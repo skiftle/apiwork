@@ -7,9 +7,9 @@ module Apiwork
         attach_path
       end
 
-      def description(api_path: nil, options: {})
-        if api_path
-          api_key = :"apiwork.apis.#{api_path}.error_codes.#{key}.description"
+      def description(locale_key: nil, options: {})
+        if locale_key
+          api_key = :"apiwork.apis.#{locale_key}.error_codes.#{key}.description"
           result = I18n.t(api_key, **options, default: nil)
           return result if result
         end

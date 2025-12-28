@@ -21,9 +21,9 @@ RSpec.describe 'API Concerns', type: :integration do
       resources :posts, concerns: [:auditable]
     end
 
-    resource = api.metadata.find_resource(:posts)
-    expect(resource[:members]).to have_key(:audit_log)
-    expect(resource[:members][:audit_log][:method]).to eq(:get)
+    resource = api.structure.find_resource(:posts)
+    expect(resource.member_actions).to have_key(:audit_log)
+    expect(resource.member_actions[:audit_log].method).to eq(:get)
   end
 
   it 'applies collection actions from concern' do
@@ -37,9 +37,9 @@ RSpec.describe 'API Concerns', type: :integration do
       resources :posts, concerns: [:searchable]
     end
 
-    resource = api.metadata.find_resource(:posts)
-    expect(resource[:collections]).to have_key(:search)
-    expect(resource[:collections][:search][:method]).to eq(:get)
+    resource = api.structure.find_resource(:posts)
+    expect(resource.collection_actions).to have_key(:search)
+    expect(resource.collection_actions[:search].method).to eq(:get)
   end
 
   it 'applies multiple concerns' do
@@ -59,9 +59,9 @@ RSpec.describe 'API Concerns', type: :integration do
       resources :posts, concerns: %i[auditable searchable]
     end
 
-    resource = api.metadata.find_resource(:posts)
-    expect(resource[:members]).to have_key(:audit_log)
-    expect(resource[:collections]).to have_key(:search)
+    resource = api.structure.find_resource(:posts)
+    expect(resource.member_actions).to have_key(:audit_log)
+    expect(resource.collection_actions).to have_key(:search)
   end
 
   it 'raises error for unknown concern' do

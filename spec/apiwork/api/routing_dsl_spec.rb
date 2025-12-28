@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Apiwork Routing DSL' do
-  let(:metadata) { Apiwork::API::Metadata.new('/api/v1') }
-  let(:recorder) { Apiwork::API::Recorder.new(metadata, [:api, :v1]) }
+  let(:structure) { Apiwork::API::Structure.new('/api/v1') }
+  let(:recorder) { Apiwork::API::Recorder.new(structure, [:api, :v1]) }
 
   describe 'member actions' do
     context 'with member block syntax' do
@@ -17,9 +17,9 @@ RSpec.describe 'Apiwork Routing DSL' do
           end
         end
 
-        members = metadata.resources[:posts][:members]
-        expect(members).to have_key(:archive)
-        expect(members[:archive][:method]).to eq(:patch)
+        resource = structure.resources[:posts]
+        expect(resource.member_actions).to have_key(:archive)
+        expect(resource.member_actions[:archive].method).to eq(:patch)
       end
 
       it 'captures multiple actions' do
@@ -33,11 +33,11 @@ RSpec.describe 'Apiwork Routing DSL' do
           end
         end
 
-        members = metadata.resources[:posts][:members]
-        expect(members).to have_key(:archive)
-        expect(members).to have_key(:unarchive)
-        expect(members).to have_key(:preview)
-        expect(members[:preview][:method]).to eq(:get)
+        resource = structure.resources[:posts]
+        expect(resource.member_actions).to have_key(:archive)
+        expect(resource.member_actions).to have_key(:unarchive)
+        expect(resource.member_actions).to have_key(:preview)
+        expect(resource.member_actions[:preview].method).to eq(:get)
       end
 
       it 'supports all HTTP verbs' do
@@ -53,12 +53,12 @@ RSpec.describe 'Apiwork Routing DSL' do
           end
         end
 
-        members = metadata.resources[:posts][:members]
-        expect(members[:preview][:method]).to eq(:get)
-        expect(members[:publish][:method]).to eq(:post)
-        expect(members[:rename][:method]).to eq(:patch)
-        expect(members[:replace][:method]).to eq(:put)
-        expect(members[:remove][:method]).to eq(:delete)
+        resource = structure.resources[:posts]
+        expect(resource.member_actions[:preview].method).to eq(:get)
+        expect(resource.member_actions[:publish].method).to eq(:post)
+        expect(resource.member_actions[:rename].method).to eq(:patch)
+        expect(resource.member_actions[:replace].method).to eq(:put)
+        expect(resource.member_actions[:remove].method).to eq(:delete)
       end
     end
 
@@ -70,9 +70,9 @@ RSpec.describe 'Apiwork Routing DSL' do
           end
         end
 
-        members = metadata.resources[:posts][:members]
-        expect(members).to have_key(:archive)
-        expect(members[:archive][:method]).to eq(:patch)
+        resource = structure.resources[:posts]
+        expect(resource.member_actions).to have_key(:archive)
+        expect(resource.member_actions[:archive].method).to eq(:patch)
       end
 
       it 'captures multiple actions declared separately' do
@@ -83,9 +83,9 @@ RSpec.describe 'Apiwork Routing DSL' do
           end
         end
 
-        members = metadata.resources[:posts][:members]
-        expect(members).to have_key(:archive)
-        expect(members).to have_key(:preview)
+        resource = structure.resources[:posts]
+        expect(resource.member_actions).to have_key(:archive)
+        expect(resource.member_actions).to have_key(:preview)
       end
     end
 
@@ -97,11 +97,11 @@ RSpec.describe 'Apiwork Routing DSL' do
           end
         end
 
-        members = metadata.resources[:posts][:members]
-        expect(members).to have_key(:archive)
-        expect(members).to have_key(:unarchive)
-        expect(members[:archive][:method]).to eq(:patch)
-        expect(members[:unarchive][:method]).to eq(:patch)
+        resource = structure.resources[:posts]
+        expect(resource.member_actions).to have_key(:archive)
+        expect(resource.member_actions).to have_key(:unarchive)
+        expect(resource.member_actions[:archive].method).to eq(:patch)
+        expect(resource.member_actions[:unarchive].method).to eq(:patch)
       end
 
       it 'works in member blocks' do
@@ -113,9 +113,9 @@ RSpec.describe 'Apiwork Routing DSL' do
           end
         end
 
-        members = metadata.resources[:posts][:members]
-        expect(members).to have_key(:preview)
-        expect(members).to have_key(:history)
+        resource = structure.resources[:posts]
+        expect(resource.member_actions).to have_key(:preview)
+        expect(resource.member_actions).to have_key(:history)
       end
     end
   end
@@ -131,9 +131,9 @@ RSpec.describe 'Apiwork Routing DSL' do
           end
         end
 
-        collections = metadata.resources[:posts][:collections]
-        expect(collections).to have_key(:search)
-        expect(collections[:search][:method]).to eq(:get)
+        resource = structure.resources[:posts]
+        expect(resource.collection_actions).to have_key(:search)
+        expect(resource.collection_actions[:search].method).to eq(:get)
       end
 
       it 'captures multiple actions' do
@@ -147,10 +147,10 @@ RSpec.describe 'Apiwork Routing DSL' do
           end
         end
 
-        collections = metadata.resources[:posts][:collections]
-        expect(collections).to have_key(:search)
-        expect(collections).to have_key(:import)
-        expect(collections).to have_key(:export)
+        resource = structure.resources[:posts]
+        expect(resource.collection_actions).to have_key(:search)
+        expect(resource.collection_actions).to have_key(:import)
+        expect(resource.collection_actions).to have_key(:export)
       end
 
       it 'supports all HTTP verbs' do
@@ -166,12 +166,12 @@ RSpec.describe 'Apiwork Routing DSL' do
           end
         end
 
-        collections = metadata.resources[:posts][:collections]
-        expect(collections[:search][:method]).to eq(:get)
-        expect(collections[:bulk_create][:method]).to eq(:post)
-        expect(collections[:bulk_update][:method]).to eq(:patch)
-        expect(collections[:bulk_replace][:method]).to eq(:put)
-        expect(collections[:bulk_delete][:method]).to eq(:delete)
+        resource = structure.resources[:posts]
+        expect(resource.collection_actions[:search].method).to eq(:get)
+        expect(resource.collection_actions[:bulk_create].method).to eq(:post)
+        expect(resource.collection_actions[:bulk_update].method).to eq(:patch)
+        expect(resource.collection_actions[:bulk_replace].method).to eq(:put)
+        expect(resource.collection_actions[:bulk_delete].method).to eq(:delete)
       end
     end
 
@@ -183,9 +183,9 @@ RSpec.describe 'Apiwork Routing DSL' do
           end
         end
 
-        collections = metadata.resources[:posts][:collections]
-        expect(collections).to have_key(:search)
-        expect(collections[:search][:method]).to eq(:get)
+        resource = structure.resources[:posts]
+        expect(resource.collection_actions).to have_key(:search)
+        expect(resource.collection_actions[:search].method).to eq(:get)
       end
 
       it 'captures multiple actions declared separately' do
@@ -196,9 +196,9 @@ RSpec.describe 'Apiwork Routing DSL' do
           end
         end
 
-        collections = metadata.resources[:posts][:collections]
-        expect(collections).to have_key(:search)
-        expect(collections).to have_key(:import)
+        resource = structure.resources[:posts]
+        expect(resource.collection_actions).to have_key(:search)
+        expect(resource.collection_actions).to have_key(:import)
       end
     end
 
@@ -210,11 +210,11 @@ RSpec.describe 'Apiwork Routing DSL' do
           end
         end
 
-        collections = metadata.resources[:posts][:collections]
-        expect(collections).to have_key(:import)
-        expect(collections).to have_key(:export)
-        expect(collections[:import][:method]).to eq(:post)
-        expect(collections[:export][:method]).to eq(:post)
+        resource = structure.resources[:posts]
+        expect(resource.collection_actions).to have_key(:import)
+        expect(resource.collection_actions).to have_key(:export)
+        expect(resource.collection_actions[:import].method).to eq(:post)
+        expect(resource.collection_actions[:export].method).to eq(:post)
       end
 
       it 'works in collection blocks' do
@@ -226,9 +226,9 @@ RSpec.describe 'Apiwork Routing DSL' do
           end
         end
 
-        collections = metadata.resources[:posts][:collections]
-        expect(collections).to have_key(:search)
-        expect(collections).to have_key(:filter)
+        resource = structure.resources[:posts]
+        expect(resource.collection_actions).to have_key(:search)
+        expect(resource.collection_actions).to have_key(:filter)
       end
     end
   end
@@ -307,13 +307,12 @@ RSpec.describe 'Apiwork Routing DSL' do
         end
       end
 
-      members = metadata.resources[:posts][:members]
-      collections = metadata.resources[:posts][:collections]
+      resource = structure.resources[:posts]
 
-      expect(members).to have_key(:archive)
-      expect(members).to have_key(:preview)
-      expect(collections).to have_key(:search)
-      expect(collections).to have_key(:import)
+      expect(resource.member_actions).to have_key(:archive)
+      expect(resource.member_actions).to have_key(:preview)
+      expect(resource.collection_actions).to have_key(:search)
+      expect(resource.collection_actions).to have_key(:import)
     end
 
     it 'allows mixing block and inline syntax' do
@@ -328,12 +327,11 @@ RSpec.describe 'Apiwork Routing DSL' do
         end
       end
 
-      members = metadata.resources[:posts][:members]
-      collections = metadata.resources[:posts][:collections]
+      resource = structure.resources[:posts]
 
-      expect(members).to have_key(:archive)
-      expect(members).to have_key(:preview)
-      expect(collections).to have_key(:search)
+      expect(resource.member_actions).to have_key(:archive)
+      expect(resource.member_actions).to have_key(:preview)
+      expect(resource.collection_actions).to have_key(:search)
     end
   end
 
@@ -353,9 +351,9 @@ RSpec.describe 'Apiwork Routing DSL' do
         end
       end
 
-      posts_metadata = metadata.resources[:accounts][:resources][:posts]
-      expect(posts_metadata[:members]).to have_key(:archive)
-      expect(posts_metadata[:collections]).to have_key(:search)
+      posts_resource = structure.resources[:accounts].resources[:posts]
+      expect(posts_resource.member_actions).to have_key(:archive)
+      expect(posts_resource.collection_actions).to have_key(:search)
     end
   end
 
@@ -369,9 +367,8 @@ RSpec.describe 'Apiwork Routing DSL' do
         end
       end
 
-      # Singular resources store in same structure
-      account_metadata = metadata.resources[:account]
-      expect(account_metadata[:members]).to have_key(:dashboard)
+      account_resource = structure.resources[:account]
+      expect(account_resource.member_actions).to have_key(:dashboard)
     end
 
     it 'allows on: :member for singular resources' do
@@ -381,8 +378,8 @@ RSpec.describe 'Apiwork Routing DSL' do
         end
       end
 
-      account_metadata = metadata.resources[:account]
-      expect(account_metadata[:members]).to have_key(:dashboard)
+      account_resource = structure.resources[:account]
+      expect(account_resource.member_actions).to have_key(:dashboard)
     end
   end
 end

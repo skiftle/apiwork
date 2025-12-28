@@ -1,0 +1,114 @@
+# frozen_string_literal: true
+
+module Apiwork
+  module API
+    class Structure
+      class Resource
+        attr_reader :contract,
+                    :controller,
+                    :name,
+                    :options,
+                    :parent,
+                    :resources,
+                    :singular
+        attr_accessor :contract_class
+
+        def initialize(name:, singular:, contract:, controller: nil, parent: nil, **options)
+          @name = name
+          @singular = singular
+          @contract = contract
+          @controller = controller
+          @parent = parent
+          @options = options
+          @crud_actions = determine_crud_actions(singular, options)
+          @custom_actions = []
+          @resources = {}
+        end
+
+        def actions
+          @actions ||= build_actions
+        end
+
+        def has_index?
+          @crud_actions.include?(:index) || @resources.values.any?(&:has_index?)
+        end
+
+        def schema
+          contract_class&.schema_class
+        end
+
+        def add_action(name, type:, method:)
+          @custom_actions << Action.new(name, type:, method:)
+        end
+
+        def member_actions
+          @custom_actions.select(&:member?).index_by(&:name)
+        end
+
+        def collection_actions
+          @custom_actions.select(&:collection?).index_by(&:name)
+        end
+
+        def add_resource(resource)
+          @resources[resource.name] = resource
+        end
+
+        def find_resource(resource_name)
+          return @resources[resource_name] if @resources[resource_name]
+
+          @resources.each_value do |resource|
+            found = resource.find_resource(resource_name)
+            return found if found
+          end
+
+          nil
+        end
+
+        def each_resource(&block)
+          @resources.each_value do |resource|
+            yield resource
+            resource.each_resource(&block)
+          end
+        end
+
+        def resolve_contract_class
+          return @contract_class if @contract_class
+          return nil unless @contract
+
+          @contract_class = @contract.constantize
+        rescue NameError
+          nil
+        end
+
+        private
+
+        def build_actions
+          actions = @crud_actions.map { |name| Action.new(name) }
+          actions.concat(@custom_actions)
+          actions.index_by(&:name)
+        end
+
+        def determine_crud_actions(singular, options)
+          only = options[:only]
+          except = options[:except]
+
+          if only
+            Array(only).map(&:to_sym)
+          else
+            default_actions = if singular
+                                [:show, :create, :update, :destroy]
+                              else
+                                [:index, :show, :create, :update, :destroy]
+                              end
+
+            if except
+              default_actions - Array(except).map(&:to_sym)
+            else
+              default_actions
+            end
+          end
+        end
+      end
+    end
+  end
+end

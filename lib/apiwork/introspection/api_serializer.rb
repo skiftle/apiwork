@@ -8,7 +8,7 @@ module Apiwork
       end
 
       def serialize
-        return nil unless @api_class.metadata
+        return nil unless @api_class.structure
 
         resources = serialize_resources
 
@@ -17,7 +17,7 @@ module Apiwork
           info: serialize_info.presence,
           types: TypeSerializer.new(@api_class).serialize_types.presence,
           enums: TypeSerializer.new(@api_class).serialize_enums.presence,
-          raises: @api_class.metadata.raises.presence,
+          raises: @api_class.structure.raises.presence,
           error_codes: serialize_error_codes(collect_all_error_codes(resources)).presence,
           resources:
         }.compact
@@ -26,7 +26,7 @@ module Apiwork
       private
 
       def collect_all_error_codes(resources)
-        codes = Set.new(@api_class.metadata.raises || [])
+        codes = Set.new(@api_class.structure.raises || [])
 
         collect_action_error_codes(resources, codes)
 
@@ -44,20 +44,20 @@ module Apiwork
       end
 
       def serialize_error_codes(codes)
-        api_path = @api_class.metadata.locale_key
+        locale_key = @api_class.structure.locale_key
 
         codes.each_with_object({}) do |code, hash|
           error_code = ErrorCode.fetch(code)
           hash[code] = {
             status: error_code.status,
-            description: error_code.description(api_path:)
+            description: error_code.description(locale_key:)
           }
         end
       end
 
       def serialize_resources
         resources = {}
-        @api_class.metadata.resources.each do |resource_name, resource_metadata|
+        @api_class.structure.resources.each do |resource_name, resource_metadata|
           resources[resource_name] = ResourceSerializer.new(
             @api_class,
             resource_name,
@@ -68,7 +68,7 @@ module Apiwork
       end
 
       def serialize_info
-        info = @api_class.metadata.info
+        info = @api_class.structure.info
         return nil unless info
 
         {

@@ -177,22 +177,22 @@ module Apiwork
         end
 
         def build_actions
-          actions.each do |action_name, action_metadata|
-            build_action_definition(action_name, action_metadata)
+          actions.each_value do |action|
+            build_action_definition(action)
           end
         end
 
-        def build_action_definition(action_name, action_metadata)
-          action_definition = registrar.define_action(action_name)
+        def build_action_definition(action)
+          action_definition = registrar.define_action(action.name)
 
-          build_request_for_action(action_definition, action_name, action_metadata) unless action_definition.resets_request?
-          build_response_for_action(action_definition, action_name, action_metadata) unless action_definition.resets_response?
+          build_request_for_action(action_definition, action) unless action_definition.resets_request?
+          build_response_for_action(action_definition, action) unless action_definition.resets_response?
         end
 
-        def build_request_for_action(action_definition, action_name, action_metadata)
+        def build_request_for_action(action_definition, action)
           builder = self
 
-          case action_name.to_sym
+          case action.name
           when :index
             action_definition.request do
               query { builder.send(:query_params, self) }
@@ -212,14 +212,14 @@ module Apiwork
           when :destroy
             build_member_query_params(action_definition)
           else
-            build_member_query_params(action_definition) if action_metadata[:type] == :member
+            build_member_query_params(action_definition) if action.member?
           end
         end
 
-        def build_response_for_action(action_definition, action_name, action_metadata)
-          result_wrapper = build_result_wrapper(action_name)
+        def build_response_for_action(action_definition, action)
+          result_wrapper = build_result_wrapper(action.name)
 
-          case action_name.to_sym
+          case action.name
           when :index
             build_collection_response(action_definition, result_wrapper)
           when :show, :create, :update
@@ -227,11 +227,11 @@ module Apiwork
           when :destroy
             action_definition.response { no_content! }
           else
-            if action_metadata[:method] == :delete
+            if action.method == :delete
               action_definition.response { no_content! }
-            elsif action_metadata[:type] == :collection
+            elsif action.collection?
               build_collection_response(action_definition, result_wrapper)
-            elsif action_metadata[:type] == :member
+            elsif action.member?
               build_single_response(action_definition, result_wrapper)
             end
           end

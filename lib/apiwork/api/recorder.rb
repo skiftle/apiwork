@@ -8,10 +8,10 @@ module Apiwork
       include Recorder::Concern      # Handles concern definitions
       include Recorder::Inference    # Handles class inference
 
-      attr_reader :metadata
+      attr_reader :structure
 
-      def initialize(metadata, namespaces)
-        @metadata = metadata
+      def initialize(structure, namespaces)
+        @structure = structure
         @namespaces = namespaces
         @resource_stack = []
         @current_options = nil

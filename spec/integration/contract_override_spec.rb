@@ -15,16 +15,16 @@ RSpec.describe 'Contract Override Option', type: :request do
         Apiwork::API::Registry.unregister('/api/override_test')
       end
 
-      it 'uses metadata to resolve explicit contract class' do
+      it 'uses definition to resolve explicit contract class' do
         api = Apiwork::API.find('/api/override_test')
         expect(api).to be_present
 
-        articles_metadata = api.metadata.resources[:articles]
-        expect(articles_metadata).to be_present
-        expect(api.metadata.resolve_contract_class(articles_metadata)).to eq(Api::OverrideTest::PostContract)
+        resource = api.structure.resources[:articles]
+        expect(resource).to be_present
+        expect(resource.resolve_contract_class).to eq(Api::OverrideTest::PostContract)
       end
 
-      it 'controller resolves to explicit contract from metadata' do
+      it 'controller resolves to explicit contract from definition' do
         request_double = instance_double(ActionDispatch::Request, path: '/api/override_test/articles')
         controller = Api::OverrideTest::ArticlesController.new
 
@@ -53,9 +53,9 @@ RSpec.describe 'Contract Override Option', type: :request do
         api = Apiwork::API.find('/api/inference_test')
         expect(api).to be_present
 
-        posts_metadata = api.metadata.resources[:posts]
-        expect(posts_metadata).to be_present
-        expect(api.metadata.resolve_contract_class(posts_metadata)).to eq(Api::InferenceTest::PostContract)
+        resource = api.structure.resources[:posts]
+        expect(resource).to be_present
+        expect(resource.resolve_contract_class).to eq(Api::InferenceTest::PostContract)
       end
 
       it 'controller resolves to inferred contract' do

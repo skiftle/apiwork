@@ -126,20 +126,17 @@ module Apiwork
       end
 
       def available_actions
-        metadata = resource_metadata
-        return [] unless metadata
+        resource = resource_metadata
+        return [] unless resource
 
-        actions = metadata[:actions]&.keys || []
-        actions += metadata[:members]&.keys || []
-        actions += metadata[:collections]&.keys || []
-        actions
+        resource.actions.keys
       end
 
       def resource_metadata
         api = @contract_class.api_class
-        return nil unless api&.metadata
+        return nil unless api&.structure
 
-        api.metadata.find_resource(resource_name)
+        api.structure.find_resource(resource_name)
       end
 
       def resource_name

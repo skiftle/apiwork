@@ -148,8 +148,8 @@ module Apiwork
       def action_type
         return nil unless resource_metadata
 
-        action_sym = action_name.to_sym
-        resource_metadata[:actions]&.dig(action_sym, :type)
+        action = resource_metadata.actions[action_name.to_sym]
+        action&.type
       end
 
       def default_error_path(error_code)
@@ -161,8 +161,8 @@ module Apiwork
       def resolve_error_detail(error_code, detail, options)
         return detail if detail
 
-        api_path = api_class.metadata&.locale_key
-        error_code.description(api_path:, options:)
+        locale_key = api_class.structure&.locale_key
+        error_code.description(locale_key:, options:)
       end
     end
   end

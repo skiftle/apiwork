@@ -53,11 +53,11 @@ module Apiwork
 
         def find_api(api_path)
           api_class = API.all.find do |klass|
-            klass.metadata&.path == api_path
+            klass.structure&.path == api_path
           end
 
           unless api_class
-            available = API.all.filter_map { |k| k.metadata&.path }
+            available = API.all.filter_map { |k| k.structure&.path }
             raise ArgumentError,
                   "API not found: #{api_path}. Available APIs: #{available.join(', ')}"
           end
@@ -70,7 +70,7 @@ module Apiwork
         end
 
         def generate_file(api_class:, spec_name:, output:, options:)
-          api_path = api_class.metadata.path
+          api_path = api_class.structure.path
 
           unless api_class.specs&.include?(spec_name)
             Rails.logger.debug "  ⊘ Skipping #{api_path} → #{spec_name} (not configured)"

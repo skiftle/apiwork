@@ -59,14 +59,14 @@ module Apiwork
 
         META_CODES = %i[min max length gt gte lt lte eq ne in].freeze
 
-        def self.call(record, root_path: [], api_path: nil)
-          new(record, root_path, api_path).call
+        def self.call(record, root_path: [], locale_key: nil)
+          new(record, root_path, locale_key).call
         end
 
-        def initialize(record, root_path, api_path)
+        def initialize(record, root_path, locale_key)
           @record = record
           @root_path = Array(root_path)
-          @api_path = api_path
+          @locale_key = locale_key
         end
 
         def call
@@ -105,7 +105,7 @@ module Apiwork
               next unless item.errors.any?
 
               nested_path = build_association_path(association.name, index, association_type)
-              result.concat(self.class.call(item, root_path: nested_path, api_path: @api_path))
+              result.concat(self.class.call(item, root_path: nested_path, locale_key: @locale_key))
             end
           end
 
@@ -144,8 +144,8 @@ module Apiwork
         end
 
         def detail_for(code)
-          if @api_path
-            api_key = :"apiwork.apis.#{@api_path}.adapters.standard.domain_issues.#{code}.detail"
+          if @locale_key
+            api_key = :"apiwork.apis.#{@locale_key}.adapters.standard.domain_issues.#{code}.detail"
             result = I18n.t(api_key, default: nil)
             return result if result
           end
