@@ -25,15 +25,15 @@ module Apiwork
       api_class = find_api_class
       spec_name = params[:spec_name].to_sym
       spec_config = api_class.spec_config(spec_name)
-      generator_class = ::Apiwork::Spec.find(spec_name)
+      spec_class = Apiwork::Spec.find(spec_name)
 
       options = { key_format: api_class.key_format }
                 .merge(spec_config)
-                .merge(generator_class.extract_options(params))
+                .merge(spec_class.extract_options(params))
                 .compact
 
-      spec = ::Apiwork::Spec.generate(spec_name, api_class.path, **options)
-      render_spec(spec, generator_class.content_type)
+      result = Apiwork::Spec.generate(spec_name, api_class.path, **options)
+      render_spec(result, spec_class.content_type)
     rescue KeyError => e
       render json: { error: e.message }, status: :bad_request
     rescue ConfigurationError => e
@@ -45,7 +45,7 @@ module Apiwork
     private
 
     def find_api_class
-      api_class = ::Apiwork::API.find(params[:api_path]) if params[:api_path].present?
+      api_class = Apiwork::API.find(params[:api_path]) if params[:api_path].present?
       return api_class if api_class
 
       find_api_class_from_request_path
@@ -57,7 +57,7 @@ module Apiwork
 
       (path_parts.length - 1).downto(1) do |i|
         path = "/#{path_parts[0...i].join('/')}"
-        api_class = ::Apiwork::API.find(path)
+        api_class = Apiwork::API.find(path)
         return api_class if api_class
       end
 
@@ -73,10 +73,9 @@ module Apiwork
     end
 
     def handle_generation_error(error)
-      if ::Rails.env.production?
-
-        ::Rails.logger.error("Spec generation failed: #{error.message}")
-        ::Rails.logger.error(error.backtrace.join("\n"))
+      if Rails.env.production?
+        Rails.logger.error("Spec generation failed: #{error.message}")
+        Rails.logger.error(error.backtrace.join("\n"))
         render json: { error: 'Spec generation failed' }, status: :internal_server_error
       else
         render json: {
