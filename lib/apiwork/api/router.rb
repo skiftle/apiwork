@@ -24,7 +24,7 @@ module Apiwork
               end
             end
 
-            controller_path = api_class.namespaces.map(&:to_s).join('/').underscore
+            controller_path = api_class.structure.namespaces.map(&:to_s).join('/').underscore
             scope path: api_class.path, module: controller_path do
               router_instance.draw_resources_in_context(self, api_class.structure.resources, api_class)
             end

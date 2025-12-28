@@ -7,7 +7,6 @@ module Apiwork
       class << self
         attr_reader :adapter_config,
                     :built_contracts,
-                    :namespaces,
                     :path,
                     :spec_configs,
                     :specs,
@@ -23,7 +22,6 @@ module Apiwork
           @key_format = :keep
           @path_format = :keep
 
-          @namespaces = path == '/' ? [] : path.split('/').reject(&:empty?).map { |n| n.tr('-', '_').to_sym }
           @contract_introspect_cache = {}
 
           @structure = Structure.new(path)

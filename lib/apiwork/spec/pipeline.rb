@@ -18,7 +18,7 @@ module Apiwork
                   'api_path and spec_name required when output is a file'
           end
 
-          apis = api_path ? [find_api_class(api_path)] : find_all_api_classes
+          api_classes = api_path ? [find_api_class(api_path)] : API.all
           spec_names = spec_name ? [spec_name] : Registry.all
 
           start_time = Time.zone.now
@@ -26,7 +26,7 @@ module Apiwork
 
           Rails.logger.debug 'Generating artifacts...'
 
-          apis.each do |api_class|
+          api_classes.each do |api_class|
             spec_names.each do |name|
               count += generate_file(
                 api_class: api_class,
@@ -52,21 +52,12 @@ module Apiwork
         private
 
         def find_api_class(api_path)
-          api_class = API.all.find do |klass|
-            klass.path == api_path
-          end
+          api_class = API.find(api_path)
+          return api_class if api_class
 
-          unless api_class
-            available = API.all.filter_map(&:path)
-            raise ArgumentError,
-                  "API not found: #{api_path}. Available APIs: #{available.join(', ')}"
-          end
-
-          api_class
-        end
-
-        def find_all_api_classes
-          API.all.select(&:metadata)
+          available = API.all.filter_map(&:path)
+          raise ArgumentError,
+                "API not found: #{api_path}. Available APIs: #{available.join(', ')}"
         end
 
         def generate_file(api_class:, spec_name:, output:, options:)
