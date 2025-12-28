@@ -24,8 +24,8 @@ class ExampleGenerator
 
     examples = []
 
-    each_example do |namespace, metadata|
-      generate_for_namespace(namespace, metadata)
+    each_api do |api_class, namespace, metadata|
+      generate_for_api(api_class, namespace, metadata)
       examples << metadata.merge(namespace:)
     end
 
@@ -49,11 +49,11 @@ class ExampleGenerator
     end
   end
 
-  def each_example
-    Dir.glob(Rails.root.join('config/apis/*.rb')).sort.each do |api_file|
-      namespace = File.basename(api_file, '.rb')
+  def each_api
+    Apiwork::API.all.sort_by(&:path).each do |api_class|
+      namespace = api_class.path.delete_prefix('/').underscore
       metadata = metadata_for(namespace)
-      yield namespace, metadata
+      yield api_class, namespace, metadata
     end
   end
 
@@ -71,7 +71,7 @@ class ExampleGenerator
     end
   end
 
-  def generate_for_namespace(namespace, metadata)
+  def generate_for_api(api_class, namespace, metadata)
     locale_key = namespace.dasherize
     output_dir = PUBLIC_DIR.join(locale_key)
 
@@ -80,39 +80,36 @@ class ExampleGenerator
 
     Rails.logger.debug "  Generating: #{locale_key}/"
 
-    api = Apiwork::API.all.find { |a| a.metadata.locale_key == namespace }
-    return unless api
-
-    write_specs(api, output_dir)
+    write_specs(api_class, output_dir)
     write_requests(namespace, output_dir, metadata[:scenarios]) if metadata[:scenarios]
     write_markdown(namespace, locale_key, metadata)
   end
 
-  def write_specs(api, dir)
-    write_typescript(api, dir)
-    write_zod(api, dir)
-    write_openapi(api, dir)
-    write_introspection(api, dir)
+  def write_specs(api_class, dir)
+    write_typescript(api_class, dir)
+    write_zod(api_class, dir)
+    write_openapi(api_class, dir)
+    write_introspection(api_class, dir)
   end
 
-  def write_typescript(api, dir)
-    content = Apiwork::Spec::TypeScriptSpec.generate(api.metadata.path)
+  def write_typescript(api_class, dir)
+    content = Apiwork::Spec::TypeScriptSpec.generate(api_class.path)
     File.write(dir.join('typescript.ts'), content)
   end
 
-  def write_zod(api, dir)
-    content = Apiwork::Spec::Zod.generate(api.metadata.path)
+  def write_zod(api_class, dir)
+    content = Apiwork::Spec::Zod.generate(api_class.path)
     File.write(dir.join('zod.ts'), content)
   end
 
-  def write_openapi(api, dir)
-    content = Apiwork::Spec::OpenAPISpec.generate(api.metadata.path)
+  def write_openapi(api_class, dir)
+    content = Apiwork::Spec::OpenAPISpec.generate(api_class.path)
     yaml = JSON.parse(content.to_json).to_yaml
     File.write(dir.join('openapi.yml'), yaml)
   end
 
-  def write_introspection(api, dir)
-    content = api.introspect
+  def write_introspection(api_class, dir)
+    content = api_class.introspect
     File.write(dir.join('introspection.json'), JSON.pretty_generate(content))
   end
 
