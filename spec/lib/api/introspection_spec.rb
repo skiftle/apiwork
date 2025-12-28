@@ -331,10 +331,4 @@ RSpec.describe 'API Introspection' do
     end
   end
 
-  describe 'nil handling' do
-    it 'returns nil when API has no metadata' do
-      api_class = Class.new(Apiwork::API::Base)
-      expect(api_class.introspect).to be_nil
-    end
-  end
 end

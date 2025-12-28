@@ -133,15 +133,15 @@ module Apiwork
         end
 
         def spec_path(type)
-          @spec_configs&.dig(type, :path) || "/.spec/#{type}"
+          @spec_configs.dig(type, :path) || "/.spec/#{type}"
         end
 
         def spec_config(type)
-          @spec_configs&.[](type) || {}
+          @spec_configs[type] || {}
         end
 
         def specs?
-          @specs&.any?
+          @specs.any?
         end
 
         # @api public
@@ -238,8 +238,7 @@ module Apiwork
         #
         # @example Using in a contract
         #   param :shipping_address, type: :address
-        def type(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false,
-                 schema_class: nil, &block)
+        def type(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false, schema_class: nil, &block)
           type_system.register_type(name, scope:, description:, example:, format:, deprecated:,
                                           schema_class:, &block)
         end
@@ -459,8 +458,6 @@ module Apiwork
         end
 
         def ensure_all_contracts_built!
-          return unless @structure
-
           @structure.each_resource do |resource|
             build_contracts_for_resource(resource)
           end
@@ -497,7 +494,7 @@ module Apiwork
         end
 
         def find_resource_for_contract(contract_class)
-          @structure&.search_resources do |resource|
+          @structure.search_resources do |resource|
             resource if resource.contract == contract_class.name ||
                         resource.contract_class == contract_class
           end
