@@ -38,8 +38,6 @@ module Apiwork
 
       def serialize_local_types
         api_class = @contract_class.api_class
-        return {} unless api_class
-
         type_serializer = TypeSerializer.new(api_class)
 
         api_class.type_system.types.each_pair
@@ -52,8 +50,6 @@ module Apiwork
 
       def serialize_local_enums
         api_class = @contract_class.api_class
-        return {} unless api_class
-
         type_serializer = TypeSerializer.new(api_class)
 
         api_class.type_system.enums.each_pair
@@ -66,8 +62,6 @@ module Apiwork
 
       def serialize_referenced_types_and_enums(actions_data)
         api_class = @contract_class.api_class
-        return [{}, {}] unless api_class
-
         type_serializer = TypeSerializer.new(api_class)
         type_system = api_class.type_system
 
@@ -133,10 +127,8 @@ module Apiwork
       end
 
       def resource_metadata
-        api = @contract_class.api_class
-        return nil unless api&.structure
-
-        api.structure.find_resource(resource_name)
+        api_class = @contract_class.api_class
+        api_class.structure.find_resource(resource_name)
       end
 
       def resource_name

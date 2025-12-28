@@ -8,8 +8,6 @@ module Apiwork
       end
 
       def serialize
-        return nil unless @api_class.structure
-
         resources = serialize_resources
 
         {
@@ -26,7 +24,7 @@ module Apiwork
       private
 
       def collect_all_error_codes(resources)
-        codes = Set.new(@api_class.structure.raises || [])
+        codes = Set.new(@api_class.structure.raises)
 
         collect_action_error_codes(resources, codes)
 

@@ -89,19 +89,14 @@ module Apiwork
       end
 
       def find_http_method
-        return nil unless @action_definition.respond_to?(:find_api_for_contract, true)
+        api_class = @action_definition.contract_class.api_class
+        return nil unless api_class
 
-        api_class = @action_definition.send(:find_api_for_contract)
-        return nil unless api_class&.structure
-
-        action_name = @action_definition.action_name.to_sym
-        resource = api_class.structure.find_resource do |resource|
-          @action_definition.send(:resource_uses_contract?, resource, @action_definition.contract_class)
-        end
+        contract_class = @action_definition.contract_class
+        resource = api_class.structure.find_resource { |r| r.contract_class == contract_class }
         return nil unless resource
 
-        action = resource.actions[action_name]
-        action&.method
+        resource.actions[@action_definition.action_name.to_sym]&.method
       end
     end
   end
