@@ -32,7 +32,7 @@ module Apiwork
                 .merge(generator_class.extract_options(params))
                 .compact
 
-      spec = ::Apiwork::Spec.generate(spec_name, api.metadata.path, **options)
+      spec = ::Apiwork::Spec.generate(spec_name, api.structure.path, **options)
       render_spec(spec, generator_class.content_type)
     rescue KeyError => e
       render json: { error: e.message }, status: :bad_request

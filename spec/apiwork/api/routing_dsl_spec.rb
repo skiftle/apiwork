@@ -4,12 +4,11 @@ require 'rails_helper'
 
 RSpec.describe 'Apiwork Routing DSL' do
   let(:structure) { Apiwork::API::Structure.new('/api/v1') }
-  let(:recorder) { Apiwork::API::Recorder.new(structure, [:api, :v1]) }
 
   describe 'member actions' do
     context 'with member block syntax' do
       it 'captures single action' do
-        recorder.instance_eval do
+        structure.instance_eval do
           resources :posts do
             member do
               patch :archive
@@ -23,7 +22,7 @@ RSpec.describe 'Apiwork Routing DSL' do
       end
 
       it 'captures multiple actions' do
-        recorder.instance_eval do
+        structure.instance_eval do
           resources :posts do
             member do
               patch :archive
@@ -41,7 +40,7 @@ RSpec.describe 'Apiwork Routing DSL' do
       end
 
       it 'supports all HTTP verbs' do
-        recorder.instance_eval do
+        structure.instance_eval do
           resources :posts do
             member do
               get :preview
@@ -64,7 +63,7 @@ RSpec.describe 'Apiwork Routing DSL' do
 
     context 'with inline on: :member syntax' do
       it 'captures single action' do
-        recorder.instance_eval do
+        structure.instance_eval do
           resources :posts do
             patch :archive, on: :member
           end
@@ -76,7 +75,7 @@ RSpec.describe 'Apiwork Routing DSL' do
       end
 
       it 'captures multiple actions declared separately' do
-        recorder.instance_eval do
+        structure.instance_eval do
           resources :posts do
             patch :archive, on: :member
             get :preview, on: :member
@@ -91,7 +90,7 @@ RSpec.describe 'Apiwork Routing DSL' do
 
     context 'with array of actions' do
       it 'captures all actions in array' do
-        recorder.instance_eval do
+        structure.instance_eval do
           resources :posts do
             patch %i[archive unarchive], on: :member
           end
@@ -105,7 +104,7 @@ RSpec.describe 'Apiwork Routing DSL' do
       end
 
       it 'works in member blocks' do
-        recorder.instance_eval do
+        structure.instance_eval do
           resources :posts do
             member do
               get %i[preview history]
@@ -123,7 +122,7 @@ RSpec.describe 'Apiwork Routing DSL' do
   describe 'collection actions' do
     context 'with collection block syntax' do
       it 'captures single action' do
-        recorder.instance_eval do
+        structure.instance_eval do
           resources :posts do
             collection do
               get :search
@@ -137,7 +136,7 @@ RSpec.describe 'Apiwork Routing DSL' do
       end
 
       it 'captures multiple actions' do
-        recorder.instance_eval do
+        structure.instance_eval do
           resources :posts do
             collection do
               get :search
@@ -154,7 +153,7 @@ RSpec.describe 'Apiwork Routing DSL' do
       end
 
       it 'supports all HTTP verbs' do
-        recorder.instance_eval do
+        structure.instance_eval do
           resources :posts do
             collection do
               get :search
@@ -177,7 +176,7 @@ RSpec.describe 'Apiwork Routing DSL' do
 
     context 'with inline on: :collection syntax' do
       it 'captures single action' do
-        recorder.instance_eval do
+        structure.instance_eval do
           resources :posts do
             get :search, on: :collection
           end
@@ -189,7 +188,7 @@ RSpec.describe 'Apiwork Routing DSL' do
       end
 
       it 'captures multiple actions declared separately' do
-        recorder.instance_eval do
+        structure.instance_eval do
           resources :posts do
             get :search, on: :collection
             post :import, on: :collection
@@ -204,7 +203,7 @@ RSpec.describe 'Apiwork Routing DSL' do
 
     context 'with array of actions' do
       it 'captures all actions in array' do
-        recorder.instance_eval do
+        structure.instance_eval do
           resources :posts do
             post %i[import export], on: :collection
           end
@@ -218,7 +217,7 @@ RSpec.describe 'Apiwork Routing DSL' do
       end
 
       it 'works in collection blocks' do
-        recorder.instance_eval do
+        structure.instance_eval do
           resources :posts do
             collection do
               get %i[search filter]
@@ -237,7 +236,7 @@ RSpec.describe 'Apiwork Routing DSL' do
     context 'when action declared without member/collection context' do
       it 'raises ConfigurationError with helpful message' do
         expect do
-          recorder.instance_eval do
+          structure.instance_eval do
             resources :posts do
               patch :archive
             end
@@ -250,7 +249,7 @@ RSpec.describe 'Apiwork Routing DSL' do
 
       it 'error message includes examples' do
         expect do
-          recorder.instance_eval do
+          structure.instance_eval do
             resources :posts do
               get :preview
             end
@@ -265,7 +264,7 @@ RSpec.describe 'Apiwork Routing DSL' do
     context 'when :on parameter has invalid value' do
       it 'raises ConfigurationError for :on => :invalid' do
         expect do
-          recorder.instance_eval do
+          structure.instance_eval do
             resources :posts do
               patch :archive, on: :invalid
             end
@@ -278,7 +277,7 @@ RSpec.describe 'Apiwork Routing DSL' do
 
       it 'raises ConfigurationError for :on => "member"' do
         expect do
-          recorder.instance_eval do
+          structure.instance_eval do
             resources :posts do
               patch :archive, on: 'member'
             end
@@ -293,7 +292,7 @@ RSpec.describe 'Apiwork Routing DSL' do
 
   describe 'mixed member and collection actions' do
     it 'captures both types correctly' do
-      recorder.instance_eval do
+      structure.instance_eval do
         resources :posts do
           member do
             patch :archive
@@ -316,7 +315,7 @@ RSpec.describe 'Apiwork Routing DSL' do
     end
 
     it 'allows mixing block and inline syntax' do
-      recorder.instance_eval do
+      structure.instance_eval do
         resources :posts do
           member do
             patch :archive
@@ -337,7 +336,7 @@ RSpec.describe 'Apiwork Routing DSL' do
 
   describe 'nested resources' do
     it 'supports member/collection actions in nested resources' do
-      recorder.instance_eval do
+      structure.instance_eval do
         resources :accounts do
           resources :posts do
             member do
@@ -359,7 +358,7 @@ RSpec.describe 'Apiwork Routing DSL' do
 
   describe 'singular resources' do
     it 'captures actions on singular resource' do
-      recorder.instance_eval do
+      structure.instance_eval do
         resource :account do
           member do
             get :dashboard
@@ -372,7 +371,7 @@ RSpec.describe 'Apiwork Routing DSL' do
     end
 
     it 'allows on: :member for singular resources' do
-      recorder.instance_eval do
+      structure.instance_eval do
         resource :account do
           get :dashboard, on: :member
         end

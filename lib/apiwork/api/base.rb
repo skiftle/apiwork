@@ -9,7 +9,6 @@ module Apiwork
                     :built_contracts,
                     :mount_path,
                     :namespaces,
-                    :recorder,
                     :spec_configs,
                     :specs,
                     :structure,
@@ -28,7 +27,6 @@ module Apiwork
           @contract_introspect_cache = {}
 
           @structure = Structure.new(path)
-          @recorder = Recorder.new(@structure, @namespaces)
 
           Registry.register(self)
 
@@ -370,7 +368,7 @@ module Apiwork
         #     resources :line_items
         #   end
         def resources(name, **options, &block)
-          @recorder.resources(name, **options, &block)
+          @structure.resources(name, **options, &block)
         end
 
         # @api public
@@ -389,7 +387,7 @@ module Apiwork
         #     # Routes: GET /profile, PATCH /profile (no index, no :id)
         #   end
         def resource(name, **options, &block)
-          @recorder.resource(name, **options, &block)
+          @structure.resource(name, **options, &block)
         end
 
         # @api public
@@ -414,7 +412,7 @@ module Apiwork
         #     resources :comments, concerns: [:archivable]
         #   end
         def concern(name, &block)
-          @recorder.concern(name, &block)
+          @structure.concern(name, &block)
         end
 
         # @api public
@@ -433,7 +431,7 @@ module Apiwork
         #     end
         #   end
         def with_options(options = {}, &block)
-          @recorder.with_options(options, &block)
+          @structure.with_options(options, &block)
         end
 
         def introspect(locale: nil)
