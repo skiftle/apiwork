@@ -4,19 +4,20 @@ module Apiwork
   module API
     class Structure
       class Resource
-        attr_reader :contract,
+        attr_reader :contract_class_name,
                     :controller,
                     :name,
                     :options,
                     :parent,
                     :resources,
                     :singular
+
         attr_accessor :contract_class
 
-        def initialize(name:, singular:, contract:, controller: nil, parent: nil, **options)
+        def initialize(name:, singular:, contract_class_name:, controller: nil, parent: nil, **options)
           @name = name
           @singular = singular
-          @contract = contract
+          @contract_class_name = contract_class_name
           @controller = controller
           @parent = parent
           @options = options
@@ -73,9 +74,9 @@ module Apiwork
 
         def resolve_contract_class
           return @contract_class if @contract_class
-          return nil unless @contract
+          return nil unless @contract_class_name
 
-          @contract_class = @contract.constantize
+          @contract_class = @contract_class_name.constantize
         rescue NameError
           nil
         end

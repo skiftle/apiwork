@@ -65,7 +65,7 @@ module Apiwork
         end
       end
 
-      def search_resources(&block)
+      def detect_resource(&block)
         @resources.each_value do |resource|
           result = search_in_resource_tree(resource, &block)
           return result if result
@@ -202,20 +202,18 @@ module Apiwork
         parent_name = @resource_stack.last
         parent_resource = parent_name ? find_resource(parent_name) : nil
 
-        contract_path = merged.delete(:contract)
-        controller_option = merged.delete(:controller)
+        contract = merged.delete(:contract)
 
-        contract = if contract_path
-                     contract_path_to_class_name(contract_path)
-                   else
-                     infer_contract_class_name(name)
-                   end
+        contract_class_name = if contract
+                                contract_path_to_class_name(contract)
+                              else
+                                infer_contract_class_name(name)
+                              end
 
         resource = Resource.new(
           name: name,
           singular: singular,
-          contract: contract,
-          controller: controller_option,
+          contract_class_name: contract_class_name,
           parent: parent_name,
           **merged
         )

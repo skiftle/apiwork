@@ -18,6 +18,7 @@ It's also where you configure API-specific settings:
 - Global types and enums
 
 ```ruby
+# config/apis/api_v1.rb
 Apiwork::API.define '/api/v1' do
   resources :posts
   resources :comments
@@ -78,4 +79,4 @@ Apiwork::API.define '/api/v2' do
 end
 ```
 
-Each API has its own namespace, controllers, contracts, and generated specs.
+Each API has its own namespace with controllers, contracts, and schemas.
