@@ -52,7 +52,7 @@ Sets or returns the adapter name identifier.
 
 ### .option
 
-`.option(name, type:, default: = nil, enum: = nil, &block)`
+`.option(name, type:, default: nil, enum: nil, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configurable.rb#L31)
 

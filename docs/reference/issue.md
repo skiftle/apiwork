@@ -17,7 +17,7 @@ coercion, or constraint checks. Access via `contract.issues`.
 
 ### #as_json
 
-`#as_json()`
+`#as_json`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L53)
 
@@ -29,7 +29,7 @@ coercion, or constraint checks. Access via `contract.issues`.
 
 ### #code
 
-`#code()`
+`#code`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L12)
 
@@ -41,7 +41,7 @@ coercion, or constraint checks. Access via `contract.issues`.
 
 ### #detail
 
-`#detail()`
+`#detail`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L16)
 
@@ -53,7 +53,7 @@ coercion, or constraint checks. Access via `contract.issues`.
 
 ### #meta
 
-`#meta()`
+`#meta`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L20)
 
@@ -65,7 +65,7 @@ coercion, or constraint checks. Access via `contract.issues`.
 
 ### #path
 
-`#path()`
+`#path`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L24)
 
@@ -77,7 +77,7 @@ coercion, or constraint checks. Access via `contract.issues`.
 
 ### #pointer
 
-`#pointer()`
+`#pointer`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L35)
 
@@ -89,7 +89,7 @@ coercion, or constraint checks. Access via `contract.issues`.
 
 ### #to_h
 
-`#to_h()`
+`#to_h`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L41)
 
@@ -101,7 +101,7 @@ coercion, or constraint checks. Access via `contract.issues`.
 
 ### #to_s
 
-`#to_s()`
+`#to_s`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/issue.rb#L59)
 

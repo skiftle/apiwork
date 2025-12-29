@@ -12,7 +12,7 @@ next: false
 
 ### .abstract!
 
-`.abstract!()`
+`.abstract!`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L25)
 
@@ -38,7 +38,7 @@ end
 
 ### .abstract?
 
-`.abstract?()`
+`.abstract?`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L25)
 
@@ -52,7 +52,7 @@ Returns whether this contract is abstract.
 
 ### .action
 
-`.action(action_name, replace: = false, &block)`
+`.action(action_name, replace: false, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L358)
 
@@ -114,7 +114,7 @@ end
 
 ### .enum
 
-`.enum(name, values: = nil, description: = nil, example: = nil, deprecated: = false)`
+`.enum(name, values: nil, description: nil, example: nil, deprecated: false)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L243)
 
@@ -227,7 +227,7 @@ end
 
 ### .introspect
 
-`.introspect(locale: = nil, expand: = false)`
+`.introspect(locale: nil, expand: false)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L400)
 
@@ -265,7 +265,7 @@ InvoiceContract.introspect(expand: true)
 
 ### .schema!
 
-`.schema!()`
+`.schema!`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L127)
 
@@ -299,7 +299,7 @@ end
 
 ### .type
 
-`.type(name, description: = nil, example: = nil, format: = nil, deprecated: = false, schema_class: = nil, &block)`
+`.type(name, description: nil, example: nil, format: nil, deprecated: false, schema_class: nil, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L217)
 
@@ -344,7 +344,7 @@ end
 
 ### .union
 
-`.union(name, discriminator: = nil, &block)`
+`.union(name, discriminator: nil, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L269)
 
@@ -382,7 +382,7 @@ end
 
 ### #action_name
 
-`#action_name()`
+`#action_name`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L47)
 
@@ -394,7 +394,7 @@ end
 
 ### #body
 
-`#body()`
+`#body`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L39)
 
@@ -406,7 +406,7 @@ end
 
 ### #invalid?
 
-`#invalid?()`
+`#invalid?`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L67)
 
@@ -420,7 +420,7 @@ Returns whether the contract has validation issues.
 
 ### #issues
 
-`#issues()`
+`#issues`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L43)
 
@@ -432,7 +432,7 @@ Returns whether the contract has validation issues.
 
 ### #query
 
-`#query()`
+`#query`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L35)
 
@@ -444,7 +444,7 @@ Returns whether the contract has validation issues.
 
 ### #valid?
 
-`#valid?()`
+`#valid?`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L60)
 

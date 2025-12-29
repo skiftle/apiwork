@@ -40,7 +40,7 @@ end
 
 ### #api_registrar
 
-`#api_registrar()`
+`#api_registrar`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L113)
 
@@ -129,7 +129,7 @@ Imports a type from another contract or the API.
 
 ### #imports
 
-`#imports()`
+`#imports`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L97)
 

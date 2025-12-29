@@ -60,7 +60,7 @@ end
 
 ### #param
 
-`#param(name, type: = nil, optional: = nil, default: = nil, enum: = nil, of: = nil, as: = nil, discriminator: = nil, value: = nil, visited_types: = nil, **options, &block)`
+`#param(name, type: nil, optional: nil, default: nil, enum: nil, of: nil, as: nil, discriminator: nil, value: nil, visited_types: nil, **options, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L70)
 

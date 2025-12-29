@@ -12,7 +12,7 @@ next: false
 
 ### .abstract!
 
-`.abstract!()`
+`.abstract!`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L25)
 
@@ -38,7 +38,7 @@ end
 
 ### .abstract?
 
-`.abstract?()`
+`.abstract?`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L25)
 
@@ -457,7 +457,7 @@ end
 
 ### .serialize
 
-`.serialize(object_or_collection, context: = {}, include: = nil)`
+`.serialize(object_or_collection, context: {}, include: nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L475)
 
@@ -500,7 +500,7 @@ InvoiceSchema.serialize(Invoice.all)
 
 ### .variant
 
-`.variant(as: = nil)`
+`.variant(as: nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L351)
 

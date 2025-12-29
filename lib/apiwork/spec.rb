@@ -10,7 +10,7 @@ module Apiwork
       # @param klass [Class] a {Spec::Base} subclass with spec_name set
       #
       # @example
-      #   Apiwork::Spec.register(GraphqlSpec)
+      #   Apiwork::Spec.register(JSONSchemaSpec)
       def register(klass)
         Registry.register(klass)
       end

@@ -54,7 +54,7 @@ Generates a spec for the given API path.
 
 ### .option
 
-`.option(name, type:, default: = nil, enum: = nil, &block)`
+`.option(name, type:, default: nil, enum: nil, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configurable.rb#L31)
 
@@ -113,7 +113,7 @@ Sets or returns the spec name identifier.
 
 ### #generate
 
-`#generate()`
+`#generate`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L106)
 

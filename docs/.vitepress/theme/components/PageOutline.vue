@@ -16,6 +16,15 @@ const indicatorStyle = ref({
   opacity: 0,
 });
 
+const HEADER_OFFSET = 100;
+
+interface HeadingPosition {
+  id: string;
+  top: number;
+}
+
+const headingPositions = ref<HeadingPosition[]>([]);
+
 function getFirstHeaderId() {
   const first = headers.value[0];
   if (first?.link) return first.link.slice(1);
@@ -35,18 +44,61 @@ function getLastHeaderId() {
   return flat[flat.length - 1] || "";
 }
 
+function getAbsoluteTop(element: HTMLElement): number {
+  let top = 0;
+  let el: HTMLElement | null = element;
+  while (el) {
+    top += el.offsetTop;
+    el = el.offsetParent as HTMLElement | null;
+  }
+  return top;
+}
+
+function updateHeadingPositions() {
+  const headings = document.querySelectorAll<HTMLElement>("h2[id], h3[id]");
+  headingPositions.value = Array.from(headings).map((h) => ({
+    id: h.id,
+    top: getAbsoluteTop(h),
+  }));
+}
+
 function onScroll() {
-  const scrollHeight = document.documentElement.scrollHeight;
   const scrollTop = window.scrollY;
+  const scrollHeight = document.documentElement.scrollHeight;
   const clientHeight = window.innerHeight;
 
-  // If near bottom of page, activate last header
-  if (scrollTop + clientHeight >= scrollHeight - 50) {
+  // Bottom of page: activate last heading
+  if (scrollTop + clientHeight >= scrollHeight - 10) {
     const lastId = getLastHeaderId();
-    if (lastId && activeId.value !== lastId) {
+    if (lastId) {
       activeId.value = lastId;
+      return;
     }
   }
+
+  // Find heading closest to scroll position + offset
+  const positions = headingPositions.value;
+  if (!positions.length) return;
+
+  let currentId = positions[0].id;
+  for (const { id, top } of positions) {
+    if (top <= scrollTop + HEADER_OFFSET) {
+      currentId = id;
+    } else {
+      break;
+    }
+  }
+
+  activeId.value = currentId;
+}
+
+let scrollTimeout: number | null = null;
+function throttledScroll() {
+  if (scrollTimeout) return;
+  scrollTimeout = window.setTimeout(() => {
+    onScroll();
+    scrollTimeout = null;
+  }, 50);
 }
 
 function updateIndicator() {
@@ -75,43 +127,17 @@ function updateIndicator() {
   });
 }
 
-let observer: IntersectionObserver | null = null;
-
-function setupObserver() {
-  observer?.disconnect();
-
-  const headings = document.querySelectorAll("h2[id], h3[id]");
-  if (!headings.length) return;
-
-  // Set initial active to first header
-  if (!activeId.value) {
-    activeId.value = getFirstHeaderId();
-    updateIndicator();
-  }
-
-  observer = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) {
-          activeId.value = entry.target.id;
-          break;
-        }
-      }
-    },
-    { rootMargin: "-80px 0px -80% 0px" }
-  );
-
-  headings.forEach((h) => observer?.observe(h));
-}
-
 onMounted(() => {
-  setupObserver();
-  window.addEventListener("scroll", onScroll, { passive: true });
+  updateHeadingPositions();
+  window.addEventListener("scroll", throttledScroll, { passive: true });
+  window.addEventListener("resize", updateHeadingPositions, { passive: true });
+  onScroll();
 });
 
 onUnmounted(() => {
-  observer?.disconnect();
-  window.removeEventListener("scroll", onScroll);
+  window.removeEventListener("scroll", throttledScroll);
+  window.removeEventListener("resize", updateHeadingPositions);
+  if (scrollTimeout) clearTimeout(scrollTimeout);
 });
 
 watch(activeId, updateIndicator);
@@ -122,14 +148,16 @@ watch(
     activeId.value = "";
     indicatorStyle.value.opacity = 0;
     setTimeout(() => {
+      updateHeadingPositions();
       activeId.value = getFirstHeaderId();
-      setupObserver();
+      onScroll();
     }, 100);
   }
 );
 
 watch(headers, () => {
   if (headers.value.length && !activeId.value) {
+    updateHeadingPositions();
     activeId.value = getFirstHeaderId();
     updateIndicator();
   }

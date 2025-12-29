@@ -139,10 +139,15 @@ module Apiwork
 
     def build_signature(method)
       params = method.parameters.map do |name, default|
-        default ? "#{name} = #{default}" : name.to_s
+        if name.to_s.end_with?(':')
+          default ? "#{name} #{default}" : name.to_s
+        else
+          default ? "#{name} = #{default}" : name.to_s
+        end
       end
+
       name = escape_brackets(method.name.to_s)
-      "#{name}(#{params.join(', ')})"
+      params.any? ? "#{name}(#{params.join(', ')})" : name
     end
 
     def escape_brackets(text)

@@ -55,7 +55,7 @@ end
 
 ### .introspect
 
-`.introspect(path, locale: = nil)`
+`.introspect(path, locale: nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L60)
 
@@ -82,7 +82,7 @@ Apiwork::API.introspect('/api/v1')
 
 ### .reset!
 
-`.reset!()`
+`.reset!`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L69)
 

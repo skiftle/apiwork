@@ -63,7 +63,7 @@ Apiwork::Spec.register(GraphqlSpec)
 
 ### .reset!
 
-`.reset!()`
+`.reset!`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec.rb#L50)
 

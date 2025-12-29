@@ -135,7 +135,7 @@ end
 
 ### #request
 
-`#request(replace: = false, &block)`
+`#request(replace: false, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L172)
 
@@ -168,7 +168,7 @@ end
 
 ### #response
 
-`#response(replace: = false, &block)`
+`#response(replace: false, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L202)
 

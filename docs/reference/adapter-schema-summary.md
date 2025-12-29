@@ -37,7 +37,7 @@ end
 
 ### #filterable?
 
-`#filterable?()`
+`#filterable?`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L54)
 
@@ -49,7 +49,7 @@ end
 
 ### #filterable_types
 
-`#filterable_types()`
+`#filterable_types`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L30)
 
@@ -61,7 +61,7 @@ end
 
 ### #has_index_actions?
 
-`#has_index_actions?()`
+`#has_index_actions?`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L72)
 
@@ -73,7 +73,7 @@ end
 
 ### #has_resources?
 
-`#has_resources?()`
+`#has_resources?`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L66)
 
@@ -85,7 +85,7 @@ end
 
 ### #nullable_filterable_types
 
-`#nullable_filterable_types()`
+`#nullable_filterable_types`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L34)
 
@@ -97,7 +97,7 @@ end
 
 ### #paginatable?
 
-`#paginatable?()`
+`#paginatable?`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L60)
 
@@ -109,7 +109,7 @@ end
 
 ### #sortable?
 
-`#sortable?()`
+`#sortable?`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L48)
 
@@ -121,7 +121,7 @@ end
 
 ### #uses_cursor_pagination?
 
-`#uses_cursor_pagination?()`
+`#uses_cursor_pagination?`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L84)
 
@@ -133,7 +133,7 @@ end
 
 ### #uses_offset_pagination?
 
-`#uses_offset_pagination?()`
+`#uses_offset_pagination?`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/schema_summary.rb#L78)
 

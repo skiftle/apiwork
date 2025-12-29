@@ -46,7 +46,7 @@ end
 
 ### #no_content!
 
-`#no_content!()`
+`#no_content!`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L48)
 
@@ -75,7 +75,7 @@ end
 
 ### #no_content?
 
-`#no_content?()`
+`#no_content?`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L29)
 

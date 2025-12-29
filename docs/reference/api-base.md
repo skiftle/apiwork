@@ -88,7 +88,7 @@ end
 
 ### .enum
 
-`.enum(name, values: = nil, scope: = nil, description: = nil, example: = nil, deprecated: = false)`
+`.enum(name, values: nil, scope: nil, description: nil, example: nil, deprecated: false)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L269)
 
@@ -343,7 +343,7 @@ end
 
 ### .type
 
-`.type(name, scope: = nil, description: = nil, example: = nil, format: = nil, deprecated: = false, schema_class: = nil, &block)`
+`.type(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false, schema_class: nil, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L241)
 
@@ -384,7 +384,7 @@ param :shipping_address, type: :address
 
 ### .union
 
-`.union(name, scope: = nil, discriminator: = nil, &block)`
+`.union(name, scope: nil, discriminator: nil, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L299)
 
