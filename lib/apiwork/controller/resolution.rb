@@ -18,14 +18,6 @@ module Apiwork
         @api_class ||= find_api_class || raise_api_not_found_error
       end
 
-      def api_path
-        api_class.path
-      end
-
-      def relative_path
-        request.path.delete_prefix(api_path)
-      end
-
       def adapter
         api_class.adapter
       end

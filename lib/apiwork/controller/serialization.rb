@@ -50,7 +50,11 @@ module Apiwork
         schema_class = contract_class.schema_class
 
         json = if schema_class
-                 render_with_schema(data, schema_class, meta)
+                 if data.is_a?(Enumerable)
+                   adapter.render_collection(data, schema_class, build_action_summary(meta))
+                 else
+                   adapter.render_record(data, schema_class, build_action_summary(meta))
+                 end
                else
                  data[:meta] = meta if meta.present?
                  data
@@ -92,11 +96,12 @@ module Apiwork
       #   expose_error :not_found, i18n: { resource: 'Invoice' }
       def expose_error(code_key, detail: nil, path: nil, meta: {}, i18n: {})
         error_code = ErrorCode.fetch(code_key)
+        locale_key = api_class.structure.locale_key
 
         issue = Issue.new(
           code: error_code.key,
-          detail: resolve_error_detail(error_code, detail, i18n),
-          path: path || default_error_path(error_code),
+          detail: detail || error_code.description(locale_key:, options: i18n),
+          path: path || (error_code.attach_path? ? request.path.delete_prefix(api_class.path).split('/').reject(&:blank?) : []),
           meta:
         )
 
@@ -126,43 +131,15 @@ module Apiwork
         render json: json, status: status
       end
 
-      def render_with_schema(data, schema_class, meta)
-        if data.is_a?(Enumerable)
-          adapter.render_collection(data, schema_class, build_action_summary(meta))
-        else
-          adapter.render_record(data, schema_class, build_action_summary(meta))
-        end
-      end
-
       def build_action_summary(meta = {})
         Adapter::ActionSummary.new(
           action_name,
           request.method_symbol,
-          type: action_type,
+          type: resource&.actions&.dig(action_name.to_sym)&.type,
           context:,
           query: resource ? contract.query : {},
           meta:
         )
-      end
-
-      def action_type
-        return nil unless resource
-
-        action = resource.actions[action_name.to_sym]
-        action&.type
-      end
-
-      def default_error_path(error_code)
-        return relative_path.split('/').reject(&:blank?) if error_code.attach_path?
-
-        []
-      end
-
-      def resolve_error_detail(error_code, detail, options)
-        return detail if detail
-
-        locale_key = api_class.structure&.locale_key
-        error_code.description(locale_key:, options:)
       end
     end
   end
