@@ -13,8 +13,8 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
     end
 
     it 'serializes collections through resource class' do
-      post1 = Post.create!(title: 'First Post', body: 'First body', published: true)
-      post2 = Post.create!(title: 'Second Post', body: 'Second body', published: false)
+      post1 = Post.create!(body: 'First body', published: true, title: 'First Post')
+      post2 = Post.create!(body: 'Second body', published: false, title: 'Second Post')
 
       get '/api/v1/posts'
 
@@ -28,7 +28,7 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
 
   describe 'GET /api/v1/posts/:id' do
     it 'serializes single resource with all attributes' do
-      post = Post.create!(title: 'Test Post', body: 'Test body', published: true)
+      post = Post.create!(body: 'Test body', published: true, title: 'Test Post')
 
       get "/api/v1/posts/#{post.id}"
 
@@ -58,7 +58,7 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
       }
 
       expect do
-        post '/api/v1/posts', params: post_params, as: :json
+        post '/api/v1/posts', as: :json, params: post_params
       end.to change(Post, :count).by(1)
 
       expect(response).to have_http_status(:created)
@@ -77,7 +77,7 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
       }
 
       expect do
-        post '/api/v1/posts', params: post_params, as: :json
+        post '/api/v1/posts', as: :json, params: post_params
       end.not_to change(Post, :count)
 
       expect(response).to have_http_status(:bad_request)
@@ -102,7 +102,7 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
       }
 
       expect do
-        post '/api/v1/posts', params: post_params, as: :json
+        post '/api/v1/posts', as: :json, params: post_params
       end.to change(Post, :count).by(1)
 
       expect(response).to have_http_status(:created)
@@ -179,7 +179,7 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
         }
       }
 
-      post '/api/v1/posts', params: post_params, as: :json
+      post '/api/v1/posts', as: :json, params: post_params
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
@@ -195,7 +195,7 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
         }
       }
 
-      post '/api/v1/posts', params: post_params, as: :json
+      post '/api/v1/posts', as: :json, params: post_params
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
@@ -205,10 +205,10 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
 
   describe 'PATCH /api/v1/posts/:id' do
     it 'handles partial updates through contract' do
-      post_record = Post.create!(title: 'Original Title', body: 'Original body', published: false)
+      post_record = Post.create!(body: 'Original body', published: false, title: 'Original Title')
 
       patch "/api/v1/posts/#{post_record.id}",
-            params: { post: { title: 'Updated Title', published: true } },
+            params: { post: { published: true, title: 'Updated Title' } },
             as: :json
 
       expect(response).to have_http_status(:ok)
@@ -222,7 +222,7 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
     end
 
     it 'returns 404 when updating missing resource' do
-      patch '/api/v1/posts/99999', params: { post: { title: 'Updated' } }, as: :json
+      patch '/api/v1/posts/99999', as: :json, params: { post: { title: 'Updated' } }
 
       expect(response).to have_http_status(:not_found)
     end
@@ -230,7 +230,7 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
 
   describe 'DELETE /api/v1/posts/:id' do
     it 'returns 204 No Content after deletion' do
-      post_record = Post.create!(title: 'To Delete', body: 'Delete me')
+      post_record = Post.create!(body: 'Delete me', title: 'To Delete')
 
       expect do
         delete "/api/v1/posts/#{post_record.id}"

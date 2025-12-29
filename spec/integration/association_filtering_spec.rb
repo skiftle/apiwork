@@ -4,26 +4,26 @@ require 'rails_helper'
 
 RSpec.describe 'Association Filtering API', type: :request do
   let!(:post1) do
-    Post.create!(title: 'Ruby Tutorial', body: 'Learn Ruby', published: true, created_at: 3.days.ago)
+    Post.create!(body: 'Learn Ruby', created_at: 3.days.ago, published: true, title: 'Ruby Tutorial')
   end
   let!(:post2) do
-    Post.create!(title: 'Rails Guide', body: 'Learn Rails', published: false, created_at: 2.days.ago)
+    Post.create!(body: 'Learn Rails', created_at: 2.days.ago, published: false, title: 'Rails Guide')
   end
   let!(:post3) do
-    Post.create!(title: 'Advanced Ruby', body: 'Master Ruby', published: true, created_at: 1.day.ago)
+    Post.create!(body: 'Master Ruby', created_at: 1.day.ago, published: true, title: 'Advanced Ruby')
   end
 
   let!(:comment1) do
-    Comment.create!(post: post1, content: 'Great tutorial!', author: 'Alice', created_at: 2.days.ago)
+    Comment.create!(author: 'Alice', content: 'Great tutorial!', created_at: 2.days.ago, post: post1)
   end
   let!(:comment2) do
-    Comment.create!(post: post1, content: 'Very helpful', author: 'Bob', created_at: 1.day.ago)
+    Comment.create!(author: 'Bob', content: 'Very helpful', created_at: 1.day.ago, post: post1)
   end
   let!(:comment3) do
-    Comment.create!(post: post2, content: 'Needs more examples', author: 'Alice', created_at: 1.day.ago)
+    Comment.create!(author: 'Alice', content: 'Needs more examples', created_at: 1.day.ago, post: post2)
   end
   let!(:comment4) do
-    Comment.create!(post: post3, content: 'Excellent content!', author: 'Charlie', created_at: 1.hour.ago)
+    Comment.create!(author: 'Charlie', content: 'Excellent content!', created_at: 1.hour.ago, post: post3)
   end
 
   describe 'GET /api/v1/posts with comment filters (has_many)' do

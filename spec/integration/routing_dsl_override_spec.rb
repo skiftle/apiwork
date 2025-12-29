@@ -4,8 +4,8 @@ require 'rails_helper'
 
 RSpec.describe 'Routing DSL Override with only/except', type: :request do
   describe 'Restricted resources with only: [:index, :show]' do
-    let!(:post1) { Post.create!(title: 'Post 1', body: 'Body 1', published: true) }
-    let!(:post2) { Post.create!(title: 'Post 2', body: 'Body 2', published: false) }
+    let!(:post1) { Post.create!(body: 'Body 1', published: true, title: 'Post 1') }
+    let!(:post2) { Post.create!(body: 'Body 2', published: false, title: 'Post 2') }
 
     it 'allows index action' do
       get '/api/v1/restricted_posts'
@@ -34,7 +34,7 @@ RSpec.describe 'Routing DSL Override with only/except', type: :request do
         }
       }
 
-      post '/api/v1/restricted_posts', params: post_params, as: :json
+      post '/api/v1/restricted_posts', as: :json, params: post_params
 
       expect(response).to have_http_status(:not_found)
     end
@@ -46,7 +46,7 @@ RSpec.describe 'Routing DSL Override with only/except', type: :request do
         }
       }
 
-      patch "/api/v1/restricted_posts/#{post1.id}", params: post_params, as: :json
+      patch "/api/v1/restricted_posts/#{post1.id}", as: :json, params: post_params
 
       expect(response).to have_http_status(:not_found)
     end
@@ -59,9 +59,9 @@ RSpec.describe 'Routing DSL Override with only/except', type: :request do
   end
 
   describe 'Restricted resources with except: [:destroy]' do
-    let!(:post_for_comments) { Post.create!(title: 'Post for Comments', body: 'Body', published: true) }
-    let!(:comment1) { Comment.create!(post: post_for_comments, content: 'Comment 1', author: 'Author 1') }
-    let!(:comment2) { Comment.create!(post: post_for_comments, content: 'Comment 2', author: 'Author 2') }
+    let!(:post_for_comments) { Post.create!(body: 'Body', published: true, title: 'Post for Comments') }
+    let!(:comment1) { Comment.create!(author: 'Author 1', content: 'Comment 1', post: post_for_comments) }
+    let!(:comment2) { Comment.create!(author: 'Author 2', content: 'Comment 2', post: post_for_comments) }
 
     it 'allows index action' do
       get '/api/v1/safe_comments'
@@ -90,7 +90,7 @@ RSpec.describe 'Routing DSL Override with only/except', type: :request do
         }
       }
 
-      post '/api/v1/safe_comments', params: comment_params, as: :json
+      post '/api/v1/safe_comments', as: :json, params: comment_params
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
@@ -106,7 +106,7 @@ RSpec.describe 'Routing DSL Override with only/except', type: :request do
         }
       }
 
-      patch "/api/v1/safe_comments/#{comment1.id}", params: comment_params, as: :json
+      patch "/api/v1/safe_comments/#{comment1.id}", as: :json, params: comment_params
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
@@ -121,8 +121,8 @@ RSpec.describe 'Routing DSL Override with only/except', type: :request do
   end
 
   describe 'Coexistence with unrestricted resources' do
-    let!(:test_post) { Post.create!(title: 'Test Post', body: 'Body', published: true) }
-    let!(:test_comment) { Comment.create!(post: test_post, content: 'Test Comment', author: 'Author') }
+    let!(:test_post) { Post.create!(body: 'Body', published: true, title: 'Test Post') }
+    let!(:test_comment) { Comment.create!(author: 'Author', content: 'Test Comment', post: test_post) }
 
     it 'unrestricted posts allow all actions' do
       # Index
@@ -134,11 +134,15 @@ RSpec.describe 'Routing DSL Override with only/except', type: :request do
       expect(response).to have_http_status(:ok)
 
       # Create
-      post '/api/v1/posts', params: { post: { title: 'New', body: 'Body', published: true } }, as: :json
+      post '/api/v1/posts', as: :json, params: { post: {
+        body: 'Body',
+        published: true,
+        title: 'New'
+      } }
       expect(response).to have_http_status(:created)
 
       # Update
-      patch "/api/v1/posts/#{test_post.id}", params: { post: { title: 'Updated' } }, as: :json
+      patch "/api/v1/posts/#{test_post.id}", as: :json, params: { post: { title: 'Updated' } }
       expect(response).to have_http_status(:ok)
 
       # Destroy
@@ -148,7 +152,11 @@ RSpec.describe 'Routing DSL Override with only/except', type: :request do
 
     it 'unrestricted comments allow all actions including destroy' do
       # Create
-      post '/api/v1/comments', params: { comment: { content: 'New', author: 'Author', post_id: test_post.id } },
+      post '/api/v1/comments', params: { comment: {
+        author: 'Author',
+        content: 'New',
+        post_id: test_post.id
+      } },
                                as: :json
       expect(response).to have_http_status(:created)
       created_id = JSON.parse(response.body)['comment']['id']

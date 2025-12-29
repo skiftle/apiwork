@@ -6,7 +6,13 @@ module Apiwork
       class Resource
         class Action
           CRUD = %i[index show create update destroy].freeze
-          METHODS = { index: :get, show: :get, create: :post, update: :patch, destroy: :delete }.freeze
+          METHODS = {
+            create: :post,
+            destroy: :delete,
+            index: :get,
+            show: :get,
+            update: :patch
+          }.freeze
 
           attr_reader :method,
                       :name,

@@ -28,7 +28,7 @@ RSpec.describe 'Format validation', type: :integration do
       %i[email uuid uri url date date_time ipv4 ipv6 password hostname].each do |format|
         expect do
           schema.class_eval do
-            attribute :test_field, type: :string, format: format
+            attribute :test_field, format: format, type: :string
           end
         end.not_to raise_error
       end
@@ -45,7 +45,7 @@ RSpec.describe 'Format validation', type: :integration do
       %i[int32 int64].each do |format|
         expect do
           schema.class_eval do
-            attribute :test_field, type: :integer, format: format
+            attribute :test_field, format: format, type: :integer
           end
         end.not_to raise_error
       end
@@ -62,7 +62,7 @@ RSpec.describe 'Format validation', type: :integration do
       %i[float double].each do |format|
         expect do
           schema.class_eval do
-            attribute :test_field, type: :float, format: format
+            attribute :test_field, format: format, type: :float
           end
         end.not_to raise_error
       end
@@ -95,7 +95,7 @@ RSpec.describe 'Format validation', type: :integration do
 
       expect do
         schema.class_eval do
-          attribute :test_field, type: :string, format: :int32
+          attribute :test_field, format: :int32, type: :string
         end
       end.to raise_error(Apiwork::ConfigurationError, /format :int32 is not valid for type :string/)
     end
@@ -110,7 +110,7 @@ RSpec.describe 'Format validation', type: :integration do
 
       expect do
         schema.class_eval do
-          attribute :test_field, type: :integer, format: :email
+          attribute :test_field, format: :email, type: :integer
         end
       end.to raise_error(Apiwork::ConfigurationError, /format :email is not valid for type :integer/)
     end
@@ -125,7 +125,7 @@ RSpec.describe 'Format validation', type: :integration do
 
       expect do
         schema.class_eval do
-          attribute :test_field, type: :boolean, format: :email
+          attribute :test_field, format: :email, type: :boolean
         end
       end.to raise_error(Apiwork::ConfigurationError, /format option is not supported for type :boolean/)
     end
@@ -140,7 +140,7 @@ RSpec.describe 'Format validation', type: :integration do
 
       expect do
         schema.class_eval do
-          attribute :test_field, type: :string, format: :invalid_format
+          attribute :test_field, format: :invalid_format, type: :string
         end
       end.to raise_error(Apiwork::ConfigurationError, /Allowed formats: email, uuid, uri, url, date, date_time, ipv4, ipv6, password, hostname/)
     end

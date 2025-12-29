@@ -10,7 +10,7 @@ module SwiftFox
               encode: ->(v) { v&.downcase },
               decode: ->(v) { v&.upcase }
 
-    attribute :phone, writable: true, empty: true
-    attribute :notes, writable: true, empty: true
+    attribute :phone, empty: true, writable: true
+    attribute :notes, empty: true, writable: true
   end
 end

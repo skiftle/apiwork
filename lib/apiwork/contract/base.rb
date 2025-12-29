@@ -250,7 +250,7 @@ module Apiwork
                  description: nil,
                  example: nil,
                  deprecated: false)
-          api_class.enum(name, values:, scope: self, description:, example:, deprecated:)
+          api_class.enum(name, deprecated:, description:, example:, scope: self, values:)
         end
 
         # @api public
@@ -276,7 +276,7 @@ module Apiwork
         #     end
         #   end
         def union(name, discriminator: nil, &block)
-          api_class.union(name, scope: self, discriminator:, &block)
+          api_class.union(name, discriminator:, scope: self, &block)
         end
 
         # @api public
@@ -407,7 +407,7 @@ module Apiwork
         #   InvoiceContract.introspect(expand: true)
         #   # => { actions: {...}, types: { local: {...}, imported: {...}, global: {...} } }
         def introspect(expand: false, locale: nil)
-          api_class.introspect_contract(self, locale:, expand:)
+          api_class.introspect_contract(self, expand:, locale:)
         end
 
         def api_class

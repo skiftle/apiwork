@@ -12,7 +12,7 @@ RSpec.describe 'Encode and Decode attribute options', type: :request do
         }
       }
 
-      post '/api/v1/users', params: user_params, as: :json
+      post '/api/v1/users', as: :json, params: user_params
 
       expect(response).to have_http_status(:created)
 
@@ -30,7 +30,7 @@ RSpec.describe 'Encode and Decode attribute options', type: :request do
         }
       }
 
-      patch "/api/v1/users/#{user_record.id}", params: patch_params, as: :json
+      patch "/api/v1/users/#{user_record.id}", as: :json, params: patch_params
 
       expect(response).to have_http_status(:ok)
 
@@ -47,7 +47,7 @@ RSpec.describe 'Encode and Decode attribute options', type: :request do
         }
       }
 
-      post '/api/v1/users', params: user_params, as: :json
+      post '/api/v1/users', as: :json, params: user_params
 
       # email is nullable, so nil is accepted
       expect(response).to have_http_status(:created)
@@ -93,7 +93,7 @@ RSpec.describe 'Encode and Decode attribute options', type: :request do
         }
       }
 
-      post '/api/v1/users', params: user_params, as: :json
+      post '/api/v1/users', as: :json, params: user_params
       expect(response).to have_http_status(:created)
 
       created_user = User.last
@@ -112,7 +112,7 @@ RSpec.describe 'Encode and Decode attribute options', type: :request do
     it 'round-trips correctly through create and update' do
       # Create
       user_params = { user: { email: 'original@test.com', name: 'User' } }
-      post '/api/v1/users', params: user_params, as: :json
+      post '/api/v1/users', as: :json, params: user_params
 
       user_id = JSON.parse(response.body)['user']['id']
 
@@ -121,7 +121,7 @@ RSpec.describe 'Encode and Decode attribute options', type: :request do
 
       # Update
       patch_params = { user: { email: 'updated@test.com' } }
-      patch "/api/v1/users/#{user_id}", params: patch_params, as: :json
+      patch "/api/v1/users/#{user_id}", as: :json, params: patch_params
       expect(response).to have_http_status(:ok)
 
       # Verify updated in uppercase

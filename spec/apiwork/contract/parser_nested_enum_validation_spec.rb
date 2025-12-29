@@ -11,16 +11,16 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
     it 'validates enum values in nested custom types' do
       contract_class = create_test_contract do
         type :account do
-          param :id, type: :integer, required: true
-          param :name, type: :string, required: true
-          param :status, type: :string, enum: %w[active inactive archived], required: true
-          param :first_day_of_week, type: :string, enum: %w[monday tuesday wednesday thursday friday saturday sunday], required: false
+          param :id, required: true, type: :integer
+          param :name, required: true, type: :string
+          param :status, enum: %w[active inactive archived], required: true, type: :string
+          param :first_day_of_week, enum: %w[monday tuesday wednesday thursday friday saturday sunday], required: false, type: :string
         end
 
         action :show do
           response do
             body do
-              param :account, type: :account, required: true
+              param :account, required: true, type: :account
             end
           end
         end
@@ -72,14 +72,14 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
     it 'validates type errors in nested custom types without coercion' do
       contract_class = create_test_contract do
         type :account do
-          param :id, type: :integer, required: true
-          param :name, type: :string, required: true
+          param :id, required: true, type: :integer
+          param :name, required: true, type: :string
         end
 
         action :show do
           response do
             body do
-              param :account, type: :account, required: true
+              param :account, required: true, type: :account
             end
           end
         end
@@ -101,19 +101,19 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
     it 'validates deeply nested custom types' do
       contract_class = create_test_contract do
         type :address do
-          param :city, type: :string, required: true
-          param :country_code, type: :string, enum: %w[US UK SE], required: true
+          param :city, required: true, type: :string
+          param :country_code, enum: %w[US UK SE], required: true, type: :string
         end
 
         type :account do
-          param :id, type: :integer, required: true
-          param :address, type: :address, required: true
+          param :id, required: true, type: :integer
+          param :address, required: true, type: :address
         end
 
         action :show do
           response do
             body do
-              param :account, type: :account, required: true
+              param :account, required: true, type: :account
             end
           end
         end

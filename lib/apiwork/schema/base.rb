@@ -128,7 +128,7 @@ module Apiwork
         #     root :bill, :bills
         #   end
         def root(singular, plural = singular.to_s.pluralize)
-          self._root = { singular: singular.to_s, plural: plural.to_s }
+          self._root = { plural: plural.to_s, singular: singular.to_s }
         end
 
         def api_class
@@ -355,7 +355,7 @@ module Apiwork
           self.variant_tag = tag.to_sym
           self._sti_type = model_class.sti_name
 
-          superclass.register_variant(tag: variant_tag, schema: self, sti_type: _sti_type) if superclass.respond_to?(:register_variant)
+          superclass.register_variant(schema: self, sti_type: _sti_type, tag: variant_tag) if superclass.respond_to?(:register_variant)
 
           self
         end

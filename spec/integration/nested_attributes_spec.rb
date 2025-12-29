@@ -17,13 +17,13 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
           body: 'Post body',
           published: true,
           comments: [
-            { content: 'First comment', author: 'Author 1' },
-            { content: 'Second comment', author: 'Author 2' }
+            { author: 'Author 1', content: 'First comment' },
+            { author: 'Author 2', content: 'Second comment' }
           ]
         }
       }
 
-      post '/api/v1/posts', params: post_params, as: :json
+      post '/api/v1/posts', as: :json, params: post_params
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
@@ -47,7 +47,7 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
         }
       }
 
-      post '/api/v1/posts', params: post_params, as: :json
+      post '/api/v1/posts', as: :json, params: post_params
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
@@ -65,7 +65,7 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
         }
       }
 
-      post '/api/v1/posts', params: post_params, as: :json
+      post '/api/v1/posts', as: :json, params: post_params
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
@@ -83,22 +83,30 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
         published: true
       )
     end
-    let!(:comment1) { Comment.create!(post: post_record, content: 'Existing comment 1', author: 'Author 1') }
-    let!(:comment2) { Comment.create!(post: post_record, content: 'Existing comment 2', author: 'Author 2') }
+    let!(:comment1) { Comment.create!(author: 'Author 1', content: 'Existing comment 1', post: post_record) }
+    let!(:comment2) { Comment.create!(author: 'Author 2', content: 'Existing comment 2', post: post_record) }
 
     it 'adds new comments to existing post' do
       post_params = {
         post: {
           title: 'Updated Post',
           comments: [
-            { id: comment1.id, content: 'Updated comment 1', author: 'Author 1' },
-            { id: comment2.id, content: 'Updated comment 2', author: 'Author 2' },
-            { content: 'New comment 3', author: 'Author 3' }
+            {
+              author: 'Author 1',
+              content: 'Updated comment 1',
+              id: comment1.id
+            },
+            {
+              author: 'Author 2',
+              content: 'Updated comment 2',
+              id: comment2.id
+            },
+            { author: 'Author 3', content: 'New comment 3' }
           ]
         }
       }
 
-      patch "/api/v1/posts/#{post_record.id}", params: post_params, as: :json
+      patch "/api/v1/posts/#{post_record.id}", as: :json, params: post_params
 
       expect(response).to have_http_status(:ok)
 
@@ -116,12 +124,17 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
         post: {
           title: 'Keep title',
           comments: [
-            { id: comment1.id, content: 'Modified comment', author: 'Modified Author', post_id: post_record.id }
+            {
+              author: 'Modified Author',
+              content: 'Modified comment',
+              id: comment1.id,
+              post_id: post_record.id
+            }
           ]
         }
       }
 
-      patch "/api/v1/posts/#{post_record.id}", params: post_params, as: :json
+      patch "/api/v1/posts/#{post_record.id}", as: :json, params: post_params
 
       expect(response).to have_http_status(:ok)
 
@@ -135,13 +148,18 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
         post: {
           title: 'Keep title',
           comments: [
-            { id: comment1.id, _destroy: true },
-            { id: comment2.id, content: 'Keep this comment', author: 'Author 2', post_id: post_record.id }
+            { _destroy: true, id: comment1.id },
+            {
+              author: 'Author 2',
+              content: 'Keep this comment',
+              id: comment2.id,
+              post_id: post_record.id
+            }
           ]
         }
       }
 
-      patch "/api/v1/posts/#{post_record.id}", params: post_params, as: :json
+      patch "/api/v1/posts/#{post_record.id}", as: :json, params: post_params
 
       expect(response).to have_http_status(:ok)
 
@@ -156,12 +174,12 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
         post: {
           title: 'Updated Post',
           comments: [
-            { content: '', author: 'Author' } # Invalid: content is required
+            { author: 'Author', content: '' } # Invalid: content is required
           ]
         }
       }
 
-      patch "/api/v1/posts/#{post_record.id}", params: post_params, as: :json
+      patch "/api/v1/posts/#{post_record.id}", as: :json, params: post_params
 
       expect(response).to have_http_status(:unprocessable_content)
       JSON.parse(response.body)
@@ -176,13 +194,13 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
           body: 'Body',
           published: true,
           comments: [
-            { content: 'Valid comment', author: 'Author' },
-            { content: '', author: 'Invalid' } # Missing required content
+            { author: 'Author', content: 'Valid comment' },
+            { author: 'Invalid', content: '' } # Missing required content
           ]
         }
       }
 
-      post '/api/v1/posts', params: post_params, as: :json
+      post '/api/v1/posts', as: :json, params: post_params
 
       expect(response).to have_http_status(:unprocessable_content)
     end
@@ -198,13 +216,13 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
           body: 'Body',
           published: true,
           comments: [
-            { content: 'Comment via transformation', author: 'Author' }
+            { author: 'Author', content: 'Comment via transformation' }
           ]
         }
       }
 
       expect do
-        post '/api/v1/posts', params: post_params, as: :json
+        post '/api/v1/posts', as: :json, params: post_params
       end.to change(Comment, :count).by(1)
 
       expect(response).to have_http_status(:created)
@@ -224,22 +242,22 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
                 content: 'First comment',
                 author: 'Author 1',
                 replies: [
-                  { content: 'Reply to first comment', author: 'Replier 1' },
-                  { content: 'Another reply to first', author: 'Replier 2' }
+                  { author: 'Replier 1', content: 'Reply to first comment' },
+                  { author: 'Replier 2', content: 'Another reply to first' }
                 ]
               },
               {
                 content: 'Second comment',
                 author: 'Author 2',
                 replies: [
-                  { content: 'Reply to second comment', author: 'Replier 3' }
+                  { author: 'Replier 3', content: 'Reply to second comment' }
                 ]
               }
             ]
           }
         }
 
-        post '/api/v1/posts', params: post_params, as: :json
+        post '/api/v1/posts', as: :json, params: post_params
 
         expect(Post.count).to eq(1)
         expect(Comment.count).to eq(2)
@@ -279,7 +297,7 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
           }
         }
 
-        post '/api/v1/posts', params: post_params, as: :json
+        post '/api/v1/posts', as: :json, params: post_params
 
         expect(Comment.count).to eq(1)
         expect(Reply.count).to eq(0)
@@ -289,9 +307,9 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
     end
 
     describe 'Updating with deeply nested data' do
-      let!(:post_record) { Post.create!(title: 'Post', body: 'Body', published: true) }
-      let!(:comment) { Comment.create!(post: post_record, content: 'Comment', author: 'Author') }
-      let!(:reply) { Reply.create!(comment: comment, content: 'Existing reply', author: 'Replier') }
+      let!(:post_record) { Post.create!(body: 'Body', published: true, title: 'Post') }
+      let!(:comment) { Comment.create!(author: 'Author', content: 'Comment', post: post_record) }
+      let!(:reply) { Reply.create!(author: 'Replier', comment: comment, content: 'Existing reply') }
 
       it 'updates existing replies and adds new ones' do
         post_params = {
@@ -303,8 +321,12 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
                 content: 'Updated comment',
                 author: 'Author',
                 replies: [
-                  { id: reply.id, content: 'Updated reply', author: 'Replier' },
-                  { content: 'New reply', author: 'New Replier' }
+                  {
+                    author: 'Replier',
+                    content: 'Updated reply',
+                    id: reply.id
+                  },
+                  { author: 'New Replier', content: 'New reply' }
                 ]
               }
             ]
@@ -312,7 +334,7 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
         }
 
         expect do
-          patch "/api/v1/posts/#{post_record.id}", params: post_params, as: :json
+          patch "/api/v1/posts/#{post_record.id}", as: :json, params: post_params
         end.to change(Reply, :count).by(1)
 
         expect(response).to have_http_status(:ok)
@@ -340,7 +362,7 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
                 author: 'Author',
                 post_id: post_record.id,
                 replies: [
-                  { id: reply.id, _destroy: true }
+                  { _destroy: true, id: reply.id }
                 ]
               }
             ]
@@ -348,7 +370,7 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
         }
 
         expect do
-          patch "/api/v1/posts/#{post_record.id}", params: post_params, as: :json
+          patch "/api/v1/posts/#{post_record.id}", as: :json, params: post_params
         end.to change(Reply, :count).by(-1)
 
         expect(response).to have_http_status(:ok)
@@ -368,14 +390,14 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
                 content: 'Valid comment',
                 author: 'Author',
                 replies: [
-                  { content: '', author: 'Replier' } # Invalid: content is required
+                  { author: 'Replier', content: '' } # Invalid: content is required
                 ]
               }
             ]
           }
         }
 
-        post '/api/v1/posts', params: post_params, as: :json
+        post '/api/v1/posts', as: :json, params: post_params
 
         expect(response).to have_http_status(:unprocessable_content)
         JSON.parse(response.body)
@@ -394,7 +416,7 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
                 content: 'Comment',
                 author: 'Author',
                 replies: [
-                  { content: 'Reply via transformation', author: 'Replier' }
+                  { author: 'Replier', content: 'Reply via transformation' }
                 ]
               }
             ]
@@ -402,7 +424,7 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
         }
 
         expect do
-          post '/api/v1/posts', params: post_params, as: :json
+          post '/api/v1/posts', as: :json, params: post_params
         end.to change(Reply, :count).by(1)
 
         expect(response).to have_http_status(:created)

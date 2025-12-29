@@ -23,7 +23,7 @@ module Apiwork
           includes_hash_value = build_includes_hash(@query[:include])
           return @record if includes_hash_value.empty?
 
-          ActiveRecord::Associations::Preloader.new(records: [@record], associations: includes_hash_value).call
+          ActiveRecord::Associations::Preloader.new(associations: includes_hash_value, records: [@record]).call
           @record
         end
 

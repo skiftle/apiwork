@@ -254,7 +254,7 @@ RSpec.describe Apiwork::Adapter::StandardAdapter::DomainIssueMapper do
         title: { presence: true },
         age: { numericality: { greater_than: 0 } }
       )
-      record = record_class.new(title: '', age: -1)
+      record = record_class.new(age: -1, title: '')
       record.valid?
 
       issues = mapper_class.call(record, root_path: [:data])

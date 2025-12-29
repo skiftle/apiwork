@@ -7,6 +7,6 @@ module HappyZebra
 
     accepts_nested_attributes_for :comments
 
-    validates :title, presence: true, length: { minimum: 3, maximum: 100 }
+    validates :title, length: { maximum: 100, minimum: 3 }, presence: true
   end
 end

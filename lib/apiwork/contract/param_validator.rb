@@ -74,11 +74,19 @@ module Apiwork
               code: :value_invalid,
               detail: 'Invalid value',
               path: field_path,
-              meta: { field: name, expected: expected, actual: value }
+              meta: {
+                actual: value,
+                expected: expected,
+                field: name
+              }
             )
             return { issues: [error], value_set: false }
           end
-          return { issues: [], value: value, value_set: true }
+          return {
+            issues: [],
+            value: value,
+            value_set: true
+          }
         end
 
         return validate_union_param(name, value, param_options, field_path, max_depth, current_depth) if param_options[:type] == :union
@@ -120,10 +128,14 @@ module Apiwork
             code: :value_invalid,
             detail: 'Invalid value',
             path: field_path,
-            meta: { field: name, expected: enum_values, actual: value }
+            meta: {
+              actual: value,
+              expected: enum_values,
+              field: name
+            }
           )
         else
-          Issue.new(code: :field_missing, detail: 'Required', path: field_path, meta: { field: name, type: param_options[:type] })
+          Issue.new(code: :field_missing, detail: 'Required', meta: { field: name, type: param_options[:type] }, path: field_path)
         end
       end
 
@@ -151,7 +163,11 @@ module Apiwork
           code: :value_invalid,
           detail: 'Invalid value',
           path: field_path,
-          meta: { field: name, expected: EnumValue.values(enum), actual: value }
+          meta: {
+            actual: value,
+            expected: EnumValue.values(enum),
+            field: name
+          }
         )
       end
 
@@ -167,7 +183,11 @@ module Apiwork
         if union_error
           { issues: [union_error], value_set: false }
         else
-          { issues: [], value: union_value, value_set: true }
+          {
+            issues: [],
+            value: union_value,
+            value_set: true
+          }
         end
       end
 
@@ -177,7 +197,11 @@ module Apiwork
         elsif param_options[:type] == :array && value.is_a?(Array)
           validate_array_param(value, param_options, field_path, max_depth, current_depth)
         else
-          { issues: [], value: value, value_set: true }
+          {
+            issues: [],
+            value: value,
+            value_set: true
+          }
         end
       end
 
@@ -192,7 +216,11 @@ module Apiwork
         if shape_result[:issues].any?
           { issues: shape_result[:issues], value_set: false }
         else
-          { issues: [], value: shape_result[:params], value_set: true }
+          {
+            issues: [],
+            value: shape_result[:params],
+            value_set: true
+          }
         end
       end
 
@@ -205,7 +233,11 @@ module Apiwork
         }
         array_issues, array_values = validate_array(value, array_validation_options)
         if array_issues.empty?
-          { issues: [], value: array_values, value_set: true }
+          {
+            issues: [],
+            value: array_values,
+            value_set: true
+          }
         else
           { issues: array_issues, value_set: false }
         end
@@ -218,7 +250,7 @@ module Apiwork
             code: :field_unknown,
             detail: 'Unknown field',
             path: path + [key],
-            meta: { field: key, allowed: @param_definition.params.keys }
+            meta: { allowed: @param_definition.params.keys, field: key }
           )
         end
       end
@@ -240,7 +272,7 @@ module Apiwork
             code: :array_too_large,
             detail: 'Too many items',
             path: field_path,
-            meta: { max:, actual: array.length }
+            meta: { actual: array.length, max: }
           )
           return [issues, []]
         end
@@ -250,7 +282,7 @@ module Apiwork
             code: :array_too_small,
             detail: 'Too few items',
             path: field_path,
-            meta: { min:, actual: array.length }
+            meta: { actual: array.length, min: }
           )
           return [issues, []]
         end
@@ -280,7 +312,11 @@ module Apiwork
                   code: :type_invalid,
                   detail: 'Invalid type',
                   path: item_path,
-                  meta: { index: index, expected: param_options[:of], actual: item.class.name.underscore.to_sym }
+                  meta: {
+                    actual: item.class.name.underscore.to_sym,
+                    expected: param_options[:of],
+                    index: index
+                  }
                 )
                 next
               end
@@ -326,7 +362,7 @@ module Apiwork
 
         return nil unless type_definition
 
-        type_definition.validate(value, max_depth: max_depth, current_depth: current_depth + 1, field_path: field_path)
+        type_definition.validate(value, current_depth: current_depth + 1, field_path: field_path, max_depth: max_depth)
       rescue NameError, ArgumentError => e
         Rails.logger.debug("Custom type resolution failed for :#{type_name}: #{e.message}") if defined?(Rails)
         nil
@@ -352,7 +388,11 @@ module Apiwork
           code: :type_invalid,
           detail: 'Invalid type',
           path: path,
-          meta: { field: name, expected: expected_type, actual: value.class.name.underscore.to_sym }
+          meta: {
+            actual: value.class.name.underscore.to_sym,
+            expected: expected_type,
+            field: name
+          }
         )
       end
 
@@ -361,7 +401,7 @@ module Apiwork
 
         if union_definition.discriminator
           return validate_discriminated_union(
-            name, value, union_definition, path, max_depth: max_depth, current_depth: current_depth
+            name, value, union_definition, path, current_depth: current_depth, max_depth: max_depth
           )
         end
 
@@ -382,7 +422,7 @@ module Apiwork
 
           return [nil, validated_value] if error.nil?
 
-          variant_errors << { type: variant_type, error: error }
+          variant_errors << { error: error, type: variant_type }
 
           if error.code == :field_unknown
             most_specific_error = error
@@ -398,7 +438,11 @@ module Apiwork
           code: :type_invalid,
           detail: 'Invalid type',
           path: path,
-          meta: { field: name, expected: expected_types.join(' | '), actual: value.class.name.underscore.to_sym }
+          meta: {
+            actual: value.class.name.underscore.to_sym,
+            expected: expected_types.join(' | '),
+            field: name
+          }
         )
 
         [error, nil]
@@ -413,7 +457,11 @@ module Apiwork
             code: :type_invalid,
             detail: 'Invalid type',
             path: path,
-            meta: { field: name, expected: :object, actual: value.class.name.underscore.to_sym }
+            meta: {
+              actual: value.class.name.underscore.to_sym,
+              expected: :object,
+              field: name
+            }
           )
           return [error, nil]
         end
@@ -441,7 +489,11 @@ module Apiwork
             code: :value_invalid,
             detail: 'Invalid value',
             path: path + [discriminator],
-            meta: { field: discriminator, expected: valid_tags, actual: discriminator_value }
+            meta: {
+              actual: discriminator_value,
+              expected: valid_tags,
+              field: discriminator
+            }
           )
           return [error, nil]
         end
@@ -488,7 +540,11 @@ module Apiwork
               code: :type_invalid,
               detail: 'Invalid type',
               path: path,
-              meta: { field: name, expected: variant_type, actual: value.class.name.underscore.to_sym }
+              meta: {
+                actual: value.class.name.underscore.to_sym,
+                expected: variant_type,
+                field: name
+              }
             )
             return [type_error, nil]
           end
@@ -512,7 +568,11 @@ module Apiwork
               code: :type_invalid,
               detail: 'Invalid type',
               path: path,
-              meta: { field: name, expected: :array, actual: value.class.name.underscore.to_sym }
+              meta: {
+                actual: value.class.name.underscore.to_sym,
+                expected: :array,
+                field: name
+              }
             )
             return [type_error, nil]
           end
@@ -521,7 +581,7 @@ module Apiwork
             array_issues, array_values = validate_array(
               value,
               {
-                param_options: { shape: variant_shape, of: variant_of },
+                param_options: { of: variant_of, shape: variant_shape },
                 field_path: path,
                 max_depth: max_depth,
                 current_depth: current_depth
@@ -542,7 +602,11 @@ module Apiwork
               code: :type_invalid,
               detail: 'Invalid type',
               path: path,
-              meta: { field: name, expected: :object, actual: value.class.name.underscore.to_sym }
+              meta: {
+                actual: value.class.name.underscore.to_sym,
+                expected: :object,
+                field: name
+              }
             )
             return [type_error, nil]
           end
@@ -568,7 +632,11 @@ module Apiwork
             code: :value_invalid,
             detail: 'Invalid value',
             path: path,
-            meta: { field: name, expected: variant_definition[:enum], actual: value }
+            meta: {
+              actual: value,
+              expected: variant_definition[:enum],
+              field: name
+            }
           )
           return [enum_error, nil]
         end
@@ -587,7 +655,11 @@ module Apiwork
             code: :value_invalid,
             detail: 'Invalid value',
             path: field_path,
-            meta: { field: name, actual: value, min: min_value }
+            meta: {
+              actual: value,
+              field: name,
+              min: min_value
+            }
           )
         end
 
@@ -596,7 +668,11 @@ module Apiwork
             code: :value_invalid,
             detail: 'Invalid value',
             path: field_path,
-            meta: { field: name, actual: value, max: max_value }
+            meta: {
+              actual: value,
+              field: name,
+              max: max_value
+            }
           )
         end
 
@@ -616,7 +692,11 @@ module Apiwork
             code: :string_too_short,
             detail: 'Too short',
             path: field_path,
-            meta: { field: name, actual: value.length, min: min_length }
+            meta: {
+              actual: value.length,
+              field: name,
+              min: min_length
+            }
           )
         end
 
@@ -625,7 +705,11 @@ module Apiwork
             code: :string_too_long,
             detail: 'Too long',
             path: field_path,
-            meta: { field: name, actual: value.length, max: max_length }
+            meta: {
+              actual: value.length,
+              field: name,
+              max: max_length
+            }
           )
         end
 

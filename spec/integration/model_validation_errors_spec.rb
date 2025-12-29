@@ -14,7 +14,7 @@ RSpec.describe 'Model Validation Errors', type: :request do
   describe 'Contract vs Model validation' do
     it 'returns 400 when required field is missing (contract validation from DB schema)' do
       # Title column has null: false, so contract validation catches this
-      post '/api/v1/posts', params: { post: { title: '' } }, as: :json
+      post '/api/v1/posts', as: :json, params: { post: { title: '' } }
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
@@ -26,7 +26,7 @@ RSpec.describe 'Model Validation Errors', type: :request do
     end
 
     it 'returns 400 for type mismatch (contract validation)' do
-      post '/api/v1/posts', params: { post: { title: 'Valid', published: 'not-a-boolean' } }, as: :json
+      post '/api/v1/posts', as: :json, params: { post: { published: 'not-a-boolean', title: 'Valid' } }
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
@@ -40,7 +40,7 @@ RSpec.describe 'Model Validation Errors', type: :request do
 
   describe 'Error response format' do
     it 'returns consistent error format with all required fields' do
-      post '/api/v1/posts', params: { post: { title: '' } }, as: :json
+      post '/api/v1/posts', as: :json, params: { post: { title: '' } }
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
@@ -54,7 +54,7 @@ RSpec.describe 'Model Validation Errors', type: :request do
     end
 
     it 'uses JSON pointer format for field paths' do
-      post '/api/v1/posts', params: { post: { title: '' } }, as: :json
+      post '/api/v1/posts', as: :json, params: { post: { title: '' } }
 
       json = JSON.parse(response.body)
       issue = json['issues'].first
@@ -64,7 +64,7 @@ RSpec.describe 'Model Validation Errors', type: :request do
     end
 
     it 'includes field name in meta' do
-      post '/api/v1/posts', params: { post: { title: '' } }, as: :json
+      post '/api/v1/posts', as: :json, params: { post: { title: '' } }
 
       json = JSON.parse(response.body)
       issue = json['issues'].first
@@ -99,7 +99,7 @@ RSpec.describe 'Model Validation Errors', type: :request do
     let!(:existing_post) { Post.create!(title: 'Original Title') }
 
     it 'does not update record when contract validation fails' do
-      patch "/api/v1/posts/#{existing_post.id}", params: { post: { title: '' } }, as: :json
+      patch "/api/v1/posts/#{existing_post.id}", as: :json, params: { post: { title: '' } }
 
       expect(response).to have_http_status(:bad_request)
       existing_post.reload
@@ -108,7 +108,7 @@ RSpec.describe 'Model Validation Errors', type: :request do
 
     it 'returns validation error on update with invalid type' do
       # Title is valid, but published has wrong type
-      patch "/api/v1/posts/#{existing_post.id}", params: { post: { title: 'Valid', published: 'invalid' } }, as: :json
+      patch "/api/v1/posts/#{existing_post.id}", as: :json, params: { post: { published: 'invalid', title: 'Valid' } }
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)

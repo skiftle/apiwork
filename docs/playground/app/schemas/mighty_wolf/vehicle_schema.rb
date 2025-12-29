@@ -5,9 +5,9 @@ module MightyWolf
     discriminator
 
     attribute :id
-    attribute :brand, writable: true, filterable: true
-    attribute :model, writable: true, filterable: true
-    attribute :year, writable: true, filterable: true, sortable: true
+    attribute :brand, filterable: true, writable: true
+    attribute :model, filterable: true, writable: true
+    attribute :year, filterable: true, sortable: true, writable: true
     attribute :color, writable: true
   end
 end

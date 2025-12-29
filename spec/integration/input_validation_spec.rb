@@ -6,7 +6,7 @@ RSpec.describe 'Input Validation' do
   describe 'POST /api/v1/posts' do
     context 'with empty body' do
       it 'returns validation errors for missing required fields' do
-        post '/api/v1/posts', params: {}, as: :json
+        post '/api/v1/posts', as: :json, params: {}
 
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
@@ -17,7 +17,7 @@ RSpec.describe 'Input Validation' do
 
     context 'with null values for required fields' do
       it 'returns field_missing error for null title' do
-        post '/api/v1/posts', params: { post: { title: nil } }, as: :json
+        post '/api/v1/posts', as: :json, params: { post: { title: nil } }
 
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
@@ -30,7 +30,7 @@ RSpec.describe 'Input Validation' do
 
     context 'with wrong data types that fail coercion' do
       it 'returns type_invalid for invalid boolean string' do
-        post '/api/v1/posts', params: { post: { title: 'Test', published: 'not-a-boolean' } }, as: :json
+        post '/api/v1/posts', as: :json, params: { post: { published: 'not-a-boolean', title: 'Test' } }
 
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
@@ -139,7 +139,7 @@ RSpec.describe 'Input Validation' do
   describe 'Error response format consistency' do
     it 'returns consistent error format across different error types' do
       # Test field_missing error
-      post '/api/v1/posts', params: { post: { title: nil } }, as: :json
+      post '/api/v1/posts', as: :json, params: { post: { title: nil } }
       missing_error = JSON.parse(response.body)
 
       expect(missing_error).to have_key('issues')
@@ -149,7 +149,7 @@ RSpec.describe 'Input Validation' do
       expect(missing_error['issues'].first).to have_key('detail')
 
       # Test type_mismatch error
-      post '/api/v1/posts', params: { post: { title: 'Test', published: 'invalid' } }, as: :json
+      post '/api/v1/posts', as: :json, params: { post: { published: 'invalid', title: 'Test' } }
       type_error = JSON.parse(response.body)
 
       expect(type_error).to have_key('issues')
@@ -160,7 +160,7 @@ RSpec.describe 'Input Validation' do
     end
 
     it 'uses JSON pointer format for errors' do
-      post '/api/v1/posts', params: { post: { title: nil } }, as: :json
+      post '/api/v1/posts', as: :json, params: { post: { title: nil } }
       json = JSON.parse(response.body)
 
       # Pointers should start with /post/ for root-level fields

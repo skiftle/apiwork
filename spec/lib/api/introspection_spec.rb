@@ -291,8 +291,8 @@ RSpec.describe 'API Introspection' do
 
     it 'includes error_codes hash with status and description for all used error codes' do
       expect(json[:error_codes].keys).to include(:bad_request, :internal_server_error, :not_found, :forbidden, :unprocessable_entity)
-      expect(json[:error_codes][:bad_request]).to eq({ status: 400, description: 'Bad Request' })
-      expect(json[:error_codes][:not_found]).to eq({ status: 404, description: 'Not Found' })
+      expect(json[:error_codes][:bad_request]).to eq({ description: 'Bad Request', status: 400 })
+      expect(json[:error_codes][:not_found]).to eq({ description: 'Not Found', status: 404 })
     end
 
     context 'when action has no specific raises' do

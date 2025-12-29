@@ -37,7 +37,7 @@ RSpec.describe 'Inline type definitions in schema attributes' do
 
     describe 'with array of primitives' do
       it 'stores the of option' do
-        definition = described_class.new(:tags, schema_class, type: :array, of: :string)
+        definition = described_class.new(:tags, schema_class, of: :string, type: :array)
 
         expect(definition.of).to eq(:string)
         expect(definition.type).to eq(:array)
@@ -87,7 +87,7 @@ RSpec.describe 'Inline type definitions in schema attributes' do
       schema_class = Class.new(Apiwork::Schema::Base) do
         abstract!
 
-        attribute :tags, type: :array, of: :string
+        attribute :tags, of: :string, type: :array
       end
 
       definition = schema_class.attribute_definitions[:tags]

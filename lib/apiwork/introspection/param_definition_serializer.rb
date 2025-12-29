@@ -22,7 +22,7 @@ module Apiwork
         end
 
         if @param_definition.wrapped?
-          result.empty? ? nil : { type: :object, shape: result }
+          result.empty? ? nil : { shape: result, type: :object }
         else
           result.presence
         end
@@ -40,13 +40,13 @@ module Apiwork
                             register_success_type(success_type, success_params)
                             { type: success_type }
                           else
-                            { type: :object, shape: success_params }
+                            { shape: success_params, type: :object }
                           end
 
         error_variant = if error_type
                           { type: error_type }
                         else
-                          { type: :object, shape: {} }
+                          { shape: {}, type: :object }
                         end
 
         {
@@ -114,7 +114,7 @@ module Apiwork
                                                            @param_definition)
         end
 
-        result = { type: custom_type_name, as: options[:as] }.compact
+        result = { as: options[:as], type: custom_type_name }.compact
         apply_boolean_flags(result, options)
         apply_metadata_fields(result, options)
         result

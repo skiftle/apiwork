@@ -5,7 +5,7 @@ module Apiwork
     class ApiGenerator < Rails::Generators::Base
       source_root File.expand_path('templates/api', __dir__)
 
-      argument :mount_path, type: :string, desc: 'The API mount path (e.g., /api/v1 or /)'
+      argument :mount_path, desc: 'The API mount path (e.g., /api/v1 or /)', type: :string
 
       desc 'Creates an Apiwork API definition'
 

@@ -24,7 +24,7 @@ class CreateGentleOwlTables < ActiveRecord::Migration[7.1]
     end
 
     create_table :gentle_owl_comments, id: :string do |t|
-      t.references :commentable, type: :string, polymorphic: true, null: false
+      t.references :commentable, null: false, polymorphic: true, type: :string
       t.text :body, null: false
       t.string :author_name
       t.timestamps

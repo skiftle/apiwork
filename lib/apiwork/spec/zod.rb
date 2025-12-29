@@ -7,8 +7,8 @@ module Apiwork
       content_type 'text/plain; charset=utf-8'
       file_extension '.ts'
 
-      option :version, type: :string, default: '4', enum: %w[4]
-      option :key_format, type: :symbol, default: :keep, enum: %i[keep camel underscore kebab]
+      option :version, default: '4', enum: %w[4], type: :string
+      option :key_format, default: :keep, enum: %i[keep camel underscore kebab], type: :symbol
 
       def generate
         parts = []
@@ -143,7 +143,7 @@ module Apiwork
           type_name = typescript_mapper.pascal_case(enum_name)
           enum_values = enum_data[:values]
           type_literal = enum_values.sort.map { |v| "'#{v}'" }.join(' | ')
-          all_types << { name: type_name, code: "export type #{type_name} = #{type_literal};" }
+          all_types << { code: "export type #{type_name} = #{type_literal};", name: type_name }
         end
 
         types.each do |type_name, type_shape|
@@ -155,7 +155,7 @@ module Apiwork
                    recursive = TypeAnalysis.circular_reference?(type_name, type_shape, filter: :custom_only)
                    typescript_mapper.build_interface(type_name, type_shape, action_name: action_name, recursive: recursive)
                  end
-          all_types << { name: type_name_pascal, code: code }
+          all_types << { code: code, name: type_name_pascal }
         end
 
         each_resource do |resource_name, resource_data, parent_path|
@@ -167,7 +167,7 @@ module Apiwork
             unless types.key?(type_sym)
               code = typescript_mapper.build_interface(type_sym, resource_data[:schema], action_name: nil, recursive: false)
               type_name = typescript_mapper.pascal_case(singular_name)
-              all_types << { name: type_name, code: code }
+              all_types << { code: code, name: type_name }
             end
           end
 
@@ -177,33 +177,33 @@ module Apiwork
               if request_data[:query]&.any?
                 type_name = typescript_mapper.action_type_name(resource_name, action_name, 'RequestQuery', parent_path: parent_path)
                 code = typescript_mapper.build_action_request_query_type(resource_name, action_name, request_data[:query], parent_path: parent_path)
-                all_types << { name: type_name, code: code }
+                all_types << { code: code, name: type_name }
               end
 
               if request_data[:body]&.any?
                 type_name = typescript_mapper.action_type_name(resource_name, action_name, 'RequestBody', parent_path: parent_path)
                 code = typescript_mapper.build_action_request_body_type(resource_name, action_name, request_data[:body], parent_path: parent_path)
-                all_types << { name: type_name, code: code }
+                all_types << { code: code, name: type_name }
               end
 
               type_name = typescript_mapper.action_type_name(resource_name, action_name, 'Request', parent_path: parent_path)
               code = typescript_mapper.build_action_request_type(resource_name, action_name, request_data, parent_path: parent_path)
-              all_types << { name: type_name, code: code }
+              all_types << { code: code, name: type_name }
             end
 
             response_data = action_data[:response]
 
             if response_data&.dig(:no_content)
               type_name = typescript_mapper.action_type_name(resource_name, action_name, 'Response', parent_path: parent_path)
-              all_types << { name: type_name, code: "export type #{type_name} = never;" }
+              all_types << { code: "export type #{type_name} = never;", name: type_name }
             elsif response_data && response_data[:body]
               type_name = typescript_mapper.action_type_name(resource_name, action_name, 'ResponseBody', parent_path: parent_path)
               code = typescript_mapper.build_action_response_body_type(resource_name, action_name, response_data[:body], parent_path: parent_path)
-              all_types << { name: type_name, code: code }
+              all_types << { code: code, name: type_name }
 
               type_name = typescript_mapper.action_type_name(resource_name, action_name, 'Response', parent_path: parent_path)
               code = typescript_mapper.build_action_response_type(resource_name, action_name, response_data, parent_path: parent_path)
-              all_types << { name: type_name, code: code }
+              all_types << { code: code, name: type_name }
             end
           end
         end

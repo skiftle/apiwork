@@ -55,7 +55,7 @@ module Apiwork
                     code: :field_not_sortable,
                     detail: 'Not sortable',
                     path: [:sort, key],
-                    meta: { field: key, available: available }
+                    meta: { available: available, field: key }
                   )
                   next
                 end
@@ -71,7 +71,11 @@ module Apiwork
                               code: :sort_direction_invalid,
                               detail: 'Invalid direction',
                               path: [:sort, key],
-                              meta: { field: key, direction: direction, allowed: %i[asc desc] }
+                              meta: {
+                                allowed: %i[asc desc],
+                                direction: direction,
+                                field: key
+                              }
                             )
                             next
                           end

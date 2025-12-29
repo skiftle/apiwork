@@ -47,7 +47,11 @@ module Apiwork
                 code: :filter_value_invalid,
                 detail: 'Invalid filter value',
                 path: [:filter, field_name],
-                meta: { field: field_name, type: value.class.name, allowed: allowed_types.map(&:name) }
+                meta: {
+                  allowed: allowed_types.map(&:name),
+                  field: field_name,
+                  type: value.class.name
+                }
               )
               false
             end

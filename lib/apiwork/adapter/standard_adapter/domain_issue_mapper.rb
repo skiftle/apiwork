@@ -105,7 +105,7 @@ module Apiwork
               next unless item.errors.any?
 
               nested_path = build_association_path(association.name, index, association_type)
-              result.concat(self.class.call(item, root_path: nested_path, locale_key: @locale_key))
+              result.concat(self.class.call(item, locale_key: @locale_key, root_path: nested_path))
             end
           end
 

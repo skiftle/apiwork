@@ -8,7 +8,7 @@ module HappyZebra
     accepts_nested_attributes_for :profile
     accepts_nested_attributes_for :posts
 
-    validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
-    validates :username, presence: true, length: { minimum: 3, maximum: 20 }
+    validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, presence: true
+    validates :username, length: { maximum: 20, minimum: 3 }, presence: true
   end
 end

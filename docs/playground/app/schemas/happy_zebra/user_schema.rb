@@ -5,10 +5,10 @@ module HappyZebra
     attribute :id
     attribute :created_at, sortable: true
     attribute :updated_at, sortable: true
-    attribute :email, writable: true, filterable: true
-    attribute :username, writable: true, filterable: true
+    attribute :email, filterable: true, writable: true
+    attribute :username, filterable: true, writable: true
 
-    has_one :profile, schema: ProfileSchema, writable: true, include: :always
-    has_many :posts, schema: PostSchema, writable: true, include: :always
+    has_one :profile, include: :always, schema: ProfileSchema, writable: true
+    has_many :posts, include: :always, schema: PostSchema, writable: true
   end
 end

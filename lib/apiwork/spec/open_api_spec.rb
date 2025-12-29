@@ -7,8 +7,8 @@ module Apiwork
       content_type 'application/json'
       file_extension '.json'
 
-      option :version, type: :string, default: '3.1.0', enum: %w[3.1.0]
-      option :key_format, type: :symbol, default: :keep, enum: %i[keep camel underscore kebab]
+      option :version, default: '3.1.0', enum: %w[3.1.0], type: :string
+      option :key_format, default: :keep, enum: %i[keep camel underscore kebab], type: :symbol
 
       def generate
         {
@@ -43,7 +43,7 @@ module Apiwork
         return nil unless servers_data&.any?
 
         servers_data.map do |server|
-          { url: server[:url], description: server[:description] }.compact
+          { description: server[:description], url: server[:url] }.compact
         end
       end
 
@@ -348,7 +348,7 @@ module Apiwork
           required_fields << transformed_key if param_definition.is_a?(Hash) && !param_definition[:optional] && create_action
         end
 
-        result = { type: 'object', properties: }
+        result = { properties:, type: 'object' }
         result[:required] = required_fields if required_fields.any?
         result
       end
@@ -362,7 +362,7 @@ module Apiwork
         end
 
         if definition[:type].is_a?(Symbol) && enums.key?(definition[:type])
-          schema = { type: 'string', enum: enums[definition[:type]][:values] }
+          schema = { enum: enums[definition[:type]][:values], type: 'string' }
           return apply_nullable(schema, definition[:nullable])
         end
 
@@ -395,7 +395,7 @@ module Apiwork
           if types.key?(type)
             { '$ref': "#/components/schemas/#{schema_name(type)}" }
           elsif enums.key?(type)
-            { type: 'string', enum: enums[type][:values] }
+            { enum: enums[type][:values], type: 'string' }
           else
             map_primitive(definition)
           end
@@ -432,11 +432,11 @@ module Apiwork
         items_type = definition[:of]
 
         if items_type.nil? && definition[:shape]
-          items_schema = map_object({ type: :object, shape: definition[:shape] }, action_name)
-          return { type: 'array', items: items_schema }
+          items_schema = map_object({ shape: definition[:shape], type: :object }, action_name)
+          return { items: items_schema, type: 'array' }
         end
 
-        return { type: 'array', items: { type: 'string' } } unless items_type
+        return { items: { type: 'string' }, type: 'array' } unless items_type
 
         items_schema = if items_type.is_a?(Symbol) && types.key?(items_type)
                          { '$ref': "#/components/schemas/#{schema_name(items_type)}" }

@@ -94,7 +94,7 @@ module Apiwork
     end
 
     def extract_methods(obj, scope)
-      methods = obj.meths(visibility: :public, scope:)
+      methods = obj.meths(scope:, visibility: :public)
 
       # Include methods from included modules (concerns)
       # Concerns are included at instance scope but may define class methods
@@ -103,7 +103,7 @@ module Apiwork
         mixin_obj = YARD::Registry.at(mixin.path)
         next unless mixin_obj
 
-        methods += mixin_obj.meths(visibility: :public, scope:)
+        methods += mixin_obj.meths(scope:, visibility: :public)
       end
 
       methods

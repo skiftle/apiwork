@@ -4,7 +4,7 @@ module HappyZebra
   class Comment < ApplicationRecord
     belongs_to :post
 
-    validates :body, presence: true, length: { minimum: 1, maximum: 500 }
+    validates :body, length: { maximum: 500, minimum: 1 }, presence: true
     validates :author, presence: true
   end
 end

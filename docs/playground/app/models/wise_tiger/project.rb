@@ -2,8 +2,18 @@
 
 module WiseTiger
   class Project < ApplicationRecord
-    enum :status, { active: 'active', paused: 'paused', completed: 'completed', archived: 'archived' }
-    enum :priority, { low: 'low', medium: 'medium', high: 'high', critical: 'critical' }
+    enum :status, {
+      active: 'active',
+      archived: 'archived',
+      completed: 'completed',
+      paused: 'paused'
+    }
+    enum :priority, {
+      critical: 'critical',
+      high: 'high',
+      low: 'low',
+      medium: 'medium'
+    }
 
     validates :name, presence: true
   end

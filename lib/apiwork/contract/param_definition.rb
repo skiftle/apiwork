@@ -94,7 +94,7 @@ module Apiwork
 
         case type
         when :literal
-          define_literal_param(name, value: value, optional: optional || false, default: default, as: as, options: options)
+          define_literal_param(name, as: as, default: default, optional: optional || false, options: options, value: value)
         when :union
           define_union_param(name, discriminator: discriminator, resolved_enum: resolved_enum,
                                    optional: optional || false, default: default, as: as, options: options, &block)
@@ -138,7 +138,7 @@ module Apiwork
         if existing_meta && existing_meta[:shape]
           existing_meta[:shape].instance_eval(&block)
         else
-          param :meta, type: :object, optional: optional, &block
+          param :meta, optional: optional, type: :object, &block
         end
       end
 

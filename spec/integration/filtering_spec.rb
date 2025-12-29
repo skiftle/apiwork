@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe 'Filtering API', type: :request do
-  let!(:post1) { Post.create!(title: 'First Post', body: 'Rails tutorial', published: true, created_at: 3.days.ago) }
-  let!(:post2) { Post.create!(title: 'Second Post', body: 'Ruby guide', published: false, created_at: 2.days.ago) }
-  let!(:post3) { Post.create!(title: 'Third Post', body: 'Rails advanced', published: true, created_at: 1.hour.ago) }
+  let!(:post1) { Post.create!(body: 'Rails tutorial', created_at: 3.days.ago, published: true, title: 'First Post') }
+  let!(:post2) { Post.create!(body: 'Ruby guide', created_at: 2.days.ago, published: false, title: 'Second Post') }
+  let!(:post3) { Post.create!(body: 'Rails advanced', created_at: 1.hour.ago, published: true, title: 'Third Post') }
 
   describe 'GET /api/v1/posts with filters' do
     it 'filters by exact match' do

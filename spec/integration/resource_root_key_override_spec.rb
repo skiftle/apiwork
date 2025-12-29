@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Resource override and selective serialization', type: :request do
   describe 'GET /api/v1/articles' do
     it 'serializes with custom resource root key' do
-      Post.create!(title: 'Test Post', body: 'Test body', published: true)
+      Post.create!(body: 'Test body', published: true, title: 'Test Post')
 
       get '/api/v1/articles'
 
@@ -16,7 +16,7 @@ RSpec.describe 'Resource override and selective serialization', type: :request d
     end
 
     it 'exposes only attributes defined in resource class' do
-      Post.create!(title: 'Test Post', body: 'Test body', published: true)
+      Post.create!(body: 'Test body', published: true, title: 'Test Post')
 
       get '/api/v1/articles'
 
@@ -28,7 +28,7 @@ RSpec.describe 'Resource override and selective serialization', type: :request d
     end
 
     it 'hides attributes not specified in resource' do
-      Post.create!(title: 'Test Post', body: 'Secret body', published: true)
+      Post.create!(body: 'Secret body', published: true, title: 'Test Post')
 
       get '/api/v1/articles'
 
@@ -41,7 +41,7 @@ RSpec.describe 'Resource override and selective serialization', type: :request d
 
   describe 'GET /api/v1/articles/:id' do
     it 'uses custom resource for single resource serialization' do
-      post = Post.create!(title: 'Test Post', body: 'Test body', published: true)
+      post = Post.create!(body: 'Test body', published: true, title: 'Test Post')
 
       get "/api/v1/articles/#{post.id}"
 
@@ -64,7 +64,7 @@ RSpec.describe 'Resource override and selective serialization', type: :request d
       }
 
       expect do
-        post '/api/v1/articles', params: article_params, as: :json
+        post '/api/v1/articles', as: :json, params: article_params
       end.to change(Post, :count).by(1)
 
       expect(response).to have_http_status(:created)
@@ -86,7 +86,7 @@ RSpec.describe 'Resource override and selective serialization', type: :request d
         }
       }
 
-      post '/api/v1/articles', params: article_params, as: :json
+      post '/api/v1/articles', as: :json, params: article_params
 
       json = JSON.parse(response.body)
       expect(json['article'].keys.sort).to eq(%w[id title])
@@ -95,7 +95,7 @@ RSpec.describe 'Resource override and selective serialization', type: :request d
 
   describe 'PATCH /api/v1/articles/:id' do
     it 'accepts minimal contract for updates' do
-      post_record = Post.create!(title: 'Original', body: 'Original body', published: true)
+      post_record = Post.create!(body: 'Original body', published: true, title: 'Original')
 
       patch "/api/v1/articles/#{post_record.id}",
             params: { article: { title: 'Updated Title' } },
@@ -113,7 +113,7 @@ RSpec.describe 'Resource override and selective serialization', type: :request d
 
   describe 'Resource comparison' do
     it 'same model data serializes differently through different resources' do
-      post = Post.create!(title: 'Same Post', body: 'Same body', published: true)
+      post = Post.create!(body: 'Same body', published: true, title: 'Same Post')
 
       # Fetch through PostsController (full resource)
       get "/api/v1/posts/#{post.id}"
@@ -141,7 +141,7 @@ RSpec.describe 'Resource override and selective serialization', type: :request d
 
   describe 'DELETE /api/v1/articles/:id' do
     it 'works with custom resource serialization' do
-      post_record = Post.create!(title: 'To Delete', body: 'Delete me')
+      post_record = Post.create!(body: 'Delete me', title: 'To Delete')
 
       expect do
         delete "/api/v1/articles/#{post_record.id}"

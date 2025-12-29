@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Association Edge Cases' do
   describe 'Dependent destroy cascades' do
     it 'cascades delete from post to comments when deleting post' do
-      post = Post.create!(title: 'Parent Post', body: 'Content')
+      post = Post.create!(body: 'Content', title: 'Parent Post')
       comment1 = post.comments.create!(content: 'Comment 1')
       comment2 = post.comments.create!(content: 'Comment 2')
 
@@ -21,10 +21,10 @@ RSpec.describe 'Association Edge Cases' do
     end
 
     it 'cascades delete from comment to replies when deleting comment' do
-      post = Post.create!(title: 'Post', body: 'Content')
+      post = Post.create!(body: 'Content', title: 'Post')
       comment = post.comments.create!(content: 'Comment')
-      reply1 = comment.replies.create!(content: 'Reply 1', author: 'User1')
-      reply2 = comment.replies.create!(content: 'Reply 2', author: 'User2')
+      reply1 = comment.replies.create!(author: 'User1', content: 'Reply 1')
+      reply2 = comment.replies.create!(author: 'User2', content: 'Reply 2')
 
       expect(Reply.count).to eq(2)
 
@@ -37,9 +37,9 @@ RSpec.describe 'Association Edge Cases' do
     end
 
     it 'cascades through multiple levels when deleting top-level resource' do
-      post = Post.create!(title: 'Post', body: 'Content')
+      post = Post.create!(body: 'Content', title: 'Post')
       comment = post.comments.create!(content: 'Comment')
-      reply = comment.replies.create!(content: 'Reply', author: 'User')
+      reply = comment.replies.create!(author: 'User', content: 'Reply')
 
       delete "/api/v1/posts/#{post.id}"
 
@@ -51,16 +51,16 @@ RSpec.describe 'Association Edge Cases' do
     end
 
     it 'correctly handles multiple records at each cascade level' do
-      post1 = Post.create!(title: 'Post 1', body: 'Content')
-      post2 = Post.create!(title: 'Post 2', body: 'Content')
+      post1 = Post.create!(body: 'Content', title: 'Post 1')
+      post2 = Post.create!(body: 'Content', title: 'Post 2')
 
       comment1_1 = post1.comments.create!(content: 'Post1 Comment1')
       comment1_2 = post1.comments.create!(content: 'Post1 Comment2')
       comment2_1 = post2.comments.create!(content: 'Post2 Comment1')
 
-      comment1_1.replies.create!(content: 'Reply to 1_1', author: 'User')
-      comment1_2.replies.create!(content: 'Reply to 1_2', author: 'User')
-      comment2_1.replies.create!(content: 'Reply to 2_1', author: 'User')
+      comment1_1.replies.create!(author: 'User', content: 'Reply to 1_1')
+      comment1_2.replies.create!(author: 'User', content: 'Reply to 1_2')
+      comment2_1.replies.create!(author: 'User', content: 'Reply to 2_1')
 
       expect(Post.count).to eq(2)
       expect(Comment.count).to eq(3)
@@ -76,8 +76,8 @@ RSpec.describe 'Association Edge Cases' do
 
   describe 'Cross-post association queries' do
     before do
-      post1 = Post.create!(title: 'Post 1', body: 'Content')
-      post2 = Post.create!(title: 'Post 2', body: 'Content')
+      post1 = Post.create!(body: 'Content', title: 'Post 1')
+      post2 = Post.create!(body: 'Content', title: 'Post 2')
       post1.comments.create!(content: 'Comment for post 1')
       post1.comments.create!(content: 'Another comment for post 1')
       post2.comments.create!(content: 'Comment for post 2')
@@ -110,7 +110,7 @@ RSpec.describe 'Association Edge Cases' do
 
   describe 'Deletion of non-existent associations' do
     it 'returns 404 when deleting comment that does not exist' do
-      post = Post.create!(title: 'Post', body: 'Content')
+      post = Post.create!(body: 'Content', title: 'Post')
 
       delete "/api/v1/posts/#{post.id}/comments/99999"
 
@@ -118,8 +118,8 @@ RSpec.describe 'Association Edge Cases' do
     end
 
     it 'returns 404 when accessing nested resource under wrong parent' do
-      post1 = Post.create!(title: 'Post 1', body: 'Content')
-      post2 = Post.create!(title: 'Post 2', body: 'Content')
+      post1 = Post.create!(body: 'Content', title: 'Post 1')
+      post2 = Post.create!(body: 'Content', title: 'Post 2')
       comment = post1.comments.create!(content: 'Comment for post 1')
 
       # Try to access post1's comment through post2

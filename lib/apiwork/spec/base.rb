@@ -35,7 +35,7 @@ module Apiwork
         end
       end
 
-      option :locale, type: :symbol, default: nil
+      option :locale, default: nil, type: :symbol
 
       attr_reader :api_path,
                   :data,

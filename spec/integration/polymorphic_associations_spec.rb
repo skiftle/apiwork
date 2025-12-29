@@ -186,11 +186,11 @@ RSpec.describe 'Polymorphic associations', type: :integration do
 
     it 'correctly sets taggable_type for different models' do
       # Create post with tagging
-      post = Post.create!(title: 'Post', body: 'Body', published: true)
+      post = Post.create!(body: 'Body', published: true, title: 'Post')
       post_tagging = post.taggings.create!(tag: ruby_tag)
 
       # Create comment with tagging
-      comment = Comment.create!(post: post, content: 'Comment', author: 'Alice')
+      comment = Comment.create!(author: 'Alice', content: 'Comment', post: post)
       comment_tagging = comment.taggings.create!(tag: rails_tag)
 
       # Create author with tagging
@@ -203,8 +203,8 @@ RSpec.describe 'Polymorphic associations', type: :integration do
     end
 
     it 'maintains separate taggings for different taggable types' do
-      post = Post.create!(title: 'Post', body: 'Body', published: true)
-      comment = Comment.create!(post: post, content: 'Comment', author: 'Alice')
+      post = Post.create!(body: 'Body', published: true, title: 'Post')
+      comment = Comment.create!(author: 'Alice', content: 'Comment', post: post)
 
       # Same tag on different taggable types
       post.taggings.create!(tag: ruby_tag)
@@ -216,8 +216,8 @@ RSpec.describe 'Polymorphic associations', type: :integration do
     end
 
     it 'allows same tag on different taggable types' do
-      post = Post.create!(title: 'Post', body: 'Body', published: true)
-      comment = Comment.create!(post: post, content: 'Comment', author: 'Alice')
+      post = Post.create!(body: 'Body', published: true, title: 'Post')
+      comment = Comment.create!(author: 'Alice', content: 'Comment', post: post)
       author = Author.create!(name: 'Author')
 
       # Create same tag on all three types

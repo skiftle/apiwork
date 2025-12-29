@@ -5,6 +5,6 @@ module HappyZebra
     belongs_to :user
 
     validates :bio, length: { maximum: 500 }
-    validates :website, format: { with: URI::DEFAULT_PARSER.make_regexp }, allow_blank: true
+    validates :website, allow_blank: true, format: { with: URI::DEFAULT_PARSER.make_regexp }
   end
 end

@@ -12,7 +12,7 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
         }
       }
 
-      post '/api/v1/authors', params: author_params, as: :json
+      post '/api/v1/authors', as: :json, params: author_params
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
@@ -30,7 +30,7 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
         }
       }
 
-      post '/api/v1/authors', params: author_params, as: :json
+      post '/api/v1/authors', as: :json, params: author_params
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
@@ -42,7 +42,7 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
     end
 
     it 'rejects bio field during update (not writable on update)' do
-      author = Author.create!(name: 'Original Name', bio: 'Original Bio')
+      author = Author.create!(bio: 'Original Bio', name: 'Original Name')
 
       patch "/api/v1/authors/#{author.id}",
             params: { author: { bio: 'Attempted Update' } },
@@ -61,10 +61,10 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
     end
 
     it 'allows updating name but rejects bio during update' do
-      author = Author.create!(name: 'Original Name', bio: 'Original Bio')
+      author = Author.create!(bio: 'Original Bio', name: 'Original Name')
 
       patch "/api/v1/authors/#{author.id}",
-            params: { author: { name: 'Updated Name', bio: 'Should be rejected' } },
+            params: { author: { bio: 'Should be rejected', name: 'Updated Name' } },
             as: :json
 
       expect(response).to have_http_status(:bad_request)
@@ -90,7 +90,7 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
         }
       }
 
-      post '/api/v1/authors', params: author_params, as: :json
+      post '/api/v1/authors', as: :json, params: author_params
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
@@ -144,7 +144,7 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
         }
       }
 
-      post '/api/v1/authors', params: author_params, as: :json
+      post '/api/v1/authors', as: :json, params: author_params
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
@@ -173,7 +173,11 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
     it 'correctly filters context-specific fields on create vs update' do
       # Create with bio (allowed), verified rejected with field_unknown
       post '/api/v1/authors',
-           params: { author: { name: 'Author', bio: 'Initial Bio', verified: true } },
+           params: { author: {
+             bio: 'Initial Bio',
+             name: 'Author',
+             verified: true
+           } },
            as: :json
 
       expect(response).to have_http_status(:bad_request)
@@ -184,7 +188,7 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
 
       # Create without verified field - should succeed
       post '/api/v1/authors',
-           params: { author: { name: 'Author', bio: 'Initial Bio' } },
+           params: { author: { bio: 'Initial Bio', name: 'Author' } },
            as: :json
 
       expect(response).to have_http_status(:created)

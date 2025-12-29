@@ -10,7 +10,7 @@ module Apiwork
 
           raise ArgumentError, "Status must be 400-599, got #{status}" unless (400..599).cover?(status)
 
-          store[key] = Definition.new(key:, status:, attach_path:)
+          store[key] = Definition.new(attach_path:, key:, status:)
         end
 
         def all

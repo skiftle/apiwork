@@ -6,9 +6,9 @@ module Apiwork
       adapter_name :standard
 
       option :pagination, type: :hash do
-        option :strategy, type: :symbol, default: :offset, enum: %i[offset cursor]
-        option :default_size, type: :integer, default: 20
-        option :max_size, type: :integer, default: 100
+        option :strategy, default: :offset, enum: %i[offset cursor], type: :symbol
+        option :default_size, default: 20, type: :integer
+        option :max_size, default: 100, type: :integer
       end
 
       def register_api(registrar, schema_summary)

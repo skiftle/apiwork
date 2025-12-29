@@ -45,7 +45,7 @@ RSpec.describe 'Error Response' do
       get '/api/v1/posts/999999'
       error_response = JSON.parse(response.body)
 
-      post '/api/v1/posts', params: { post: { title: nil } }, as: :json
+      post '/api/v1/posts', as: :json, params: { post: { title: nil } }
       validation_response = JSON.parse(response.body)
 
       error_keys = error_response['issues'].first.keys.sort

@@ -17,7 +17,7 @@ module Apiwork
       if spec_class.content_type.start_with?('application/json')
         render json: result
       else
-        render plain: result, content_type: spec_class.content_type
+        render content_type: spec_class.content_type, plain: result
       end
     end
   end

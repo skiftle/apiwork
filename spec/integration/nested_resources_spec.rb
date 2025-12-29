@@ -3,11 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe 'Nested Resources Routing', type: :request do
-  let!(:post1) { Post.create!(title: 'Post 1', body: 'Body 1', published: true) }
-  let!(:post2) { Post.create!(title: 'Post 2', body: 'Body 2', published: false) }
-  let!(:comment1) { Comment.create!(post: post1, content: 'Comment 1 for Post 1', author: 'Author 1') }
-  let!(:comment2) { Comment.create!(post: post1, content: 'Comment 2 for Post 1', author: 'Author 2') }
-  let!(:comment3) { Comment.create!(post: post2, content: 'Comment 1 for Post 2', author: 'Author 3') }
+  let!(:post1) { Post.create!(body: 'Body 1', published: true, title: 'Post 1') }
+  let!(:post2) { Post.create!(body: 'Body 2', published: false, title: 'Post 2') }
+  let!(:comment1) { Comment.create!(author: 'Author 1', content: 'Comment 1 for Post 1', post: post1) }
+  let!(:comment2) { Comment.create!(author: 'Author 2', content: 'Comment 2 for Post 1', post: post1) }
+  let!(:comment3) { Comment.create!(author: 'Author 3', content: 'Comment 1 for Post 2', post: post2) }
 
   describe 'Nested Index: GET /posts/:post_id/comments' do
     it 'returns comments scoped to the parent post' do
@@ -34,7 +34,7 @@ RSpec.describe 'Nested Resources Routing', type: :request do
     end
 
     it 'returns empty array for post with no comments' do
-      post3 = Post.create!(title: 'Post 3', body: 'Body 3', published: true)
+      post3 = Post.create!(body: 'Body 3', published: true, title: 'Post 3')
 
       get "/api/v1/posts/#{post3.id}/comments"
 
@@ -79,7 +79,7 @@ RSpec.describe 'Nested Resources Routing', type: :request do
         }
       }
 
-      post "/api/v1/posts/#{post1.id}/comments", params: comment_params, as: :json
+      post "/api/v1/posts/#{post1.id}/comments", as: :json, params: comment_params
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
@@ -101,7 +101,7 @@ RSpec.describe 'Nested Resources Routing', type: :request do
         }
       }
 
-      post "/api/v1/posts/#{post1.id}/comments", params: comment_params, as: :json
+      post "/api/v1/posts/#{post1.id}/comments", as: :json, params: comment_params
 
       # Contract validation happens first (400), model validation happens later (422)
       # Empty string passes contract but fails model validation
@@ -120,7 +120,7 @@ RSpec.describe 'Nested Resources Routing', type: :request do
         }
       }
 
-      patch "/api/v1/posts/#{post1.id}/comments/#{comment1.id}", params: comment_params, as: :json
+      patch "/api/v1/posts/#{post1.id}/comments/#{comment1.id}", as: :json, params: comment_params
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
@@ -138,7 +138,7 @@ RSpec.describe 'Nested Resources Routing', type: :request do
         }
       }
 
-      patch "/api/v1/posts/#{post2.id}/comments/#{comment1.id}", params: comment_params, as: :json
+      patch "/api/v1/posts/#{post2.id}/comments/#{comment1.id}", as: :json, params: comment_params
 
       expect(response).to have_http_status(:not_found)
     end

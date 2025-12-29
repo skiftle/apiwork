@@ -2,7 +2,7 @@
 
 module BraveEagle
   class Task < ApplicationRecord
-    belongs_to :assignee, class_name: 'User', optional: true, inverse_of: :assigned_tasks
+    belongs_to :assignee, class_name: 'User', inverse_of: :assigned_tasks, optional: true
     has_many :comments, dependent: :destroy
 
     validates :title, presence: true

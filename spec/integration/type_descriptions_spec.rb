@@ -68,7 +68,7 @@ RSpec.describe 'Type Descriptions', type: :integration do
         type :base_type, description: 'A base type with name and age'
 
         type :base_type do
-          param :email, type: :string, description: 'Email address'
+          param :email, description: 'Email address', type: :string
         end
 
         type :base_type do
@@ -130,7 +130,7 @@ RSpec.describe 'Type Descriptions', type: :integration do
         end
 
         type :with_nested do
-          param :location, type: :object, description: 'Location info'
+          param :location, description: 'Location info', type: :object
         end
 
         type :with_nested do
@@ -200,14 +200,14 @@ RSpec.describe 'Type Descriptions', type: :integration do
 
     it 'can add new param via Contract after adapter generates type' do
       Api::V1::PostContract.type :filter do
-        param :search, type: :string, description: 'Full text search'
+        param :search, description: 'Full text search', type: :string
       end
 
       Apiwork::API.reset!
       Apiwork::ErrorCode.reset!
       load Rails.root.join('config/apis/v1.rb')
       Api::V1::PostContract.type :filter do
-        param :search, type: :string, description: 'Full text search'
+        param :search, description: 'Full text search', type: :string
       end
 
       fresh_introspection = Apiwork::API.introspect('/api/v1')

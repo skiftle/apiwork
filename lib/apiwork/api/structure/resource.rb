@@ -32,7 +32,7 @@ module Apiwork
           @path = path
           @only = only
           @except = except
-          @crud_actions = determine_crud_actions(singular, only:, except:)
+          @crud_actions = determine_crud_actions(singular, except:, only:)
           @custom_actions = []
           @resources = {}
         end
@@ -50,7 +50,7 @@ module Apiwork
         end
 
         def add_action(name, method:, type:)
-          @custom_actions << Action.new(name, type:, method:)
+          @custom_actions << Action.new(name, method:, type:)
         end
 
         def member_actions

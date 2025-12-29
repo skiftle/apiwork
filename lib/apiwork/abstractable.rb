@@ -5,7 +5,7 @@ module Apiwork
     extend ActiveSupport::Concern
 
     included do
-      class_attribute :_abstract, instance_predicate: false, default: false
+      class_attribute :_abstract, default: false, instance_predicate: false
     end
 
     class_methods do

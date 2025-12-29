@@ -72,7 +72,7 @@ module Apiwork
 
         concern_names = options.delete(:concerns)
 
-        create_resource(name, singular: false, options: options)
+        create_resource(name, options: options, singular: false)
 
         @resource_stack.push(name)
 
@@ -85,7 +85,7 @@ module Apiwork
       def resource(name, **options, &block)
         concern_names = options.delete(:concerns)
 
-        create_resource(name, singular: true, options: options)
+        create_resource(name, options: options, singular: true)
 
         @resource_stack.push(name)
 
@@ -242,7 +242,7 @@ module Apiwork
                       end
 
         if action_type
-          resource.add_action(action, type: action_type, method: method)
+          resource.add_action(action, method: method, type: action_type)
         else
           raise ConfigurationError,
                 "Action '#{action}' on resource '#{resource_name}' must be declared " \

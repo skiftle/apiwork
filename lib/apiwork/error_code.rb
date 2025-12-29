@@ -8,7 +8,7 @@ module Apiwork
       unauthorized: { status: 401 },
       payment_required: { status: 402 },
       forbidden: { status: 403 },
-      not_found: { status: 404, attach_path: true },
+      not_found: { attach_path: true, status: 404 },
       method_not_allowed: { status: 405 },
       not_acceptable: { status: 406 },
       request_timeout: { status: 408 },
@@ -47,7 +47,7 @@ module Apiwork
       # @example With path attachment
       #   Apiwork::ErrorCode.register :not_found, status: 404, attach_path: true
       def register(key, attach_path: false, status:)
-        Registry.register(key, status:, attach_path:)
+        Registry.register(key, attach_path:, status:)
       end
 
       def key_for_status(status)

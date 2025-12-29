@@ -6,7 +6,7 @@ RSpec.describe 'Custom Actions API', type: :request do
   describe 'Custom member actions' do
     describe 'PATCH /api/v1/posts/:id/publish' do
       it 'routes to custom member action and serializes response' do
-        post = Post.create!(title: 'Draft Post', body: 'Draft content', published: false)
+        post = Post.create!(body: 'Draft content', published: false, title: 'Draft Post')
         expect(post.published).to be(false)
 
         patch "/api/v1/posts/#{post.id}/publish"
@@ -21,7 +21,7 @@ RSpec.describe 'Custom Actions API', type: :request do
       end
 
       it 'works with idempotent operations' do
-        post = Post.create!(title: 'Published Post', body: 'Content', published: true)
+        post = Post.create!(body: 'Content', published: true, title: 'Published Post')
 
         patch "/api/v1/posts/#{post.id}/publish"
 
@@ -39,7 +39,7 @@ RSpec.describe 'Custom Actions API', type: :request do
 
     describe 'PATCH /api/v1/posts/:id/archive' do
       it 'handles custom member actions that modify state' do
-        post = Post.create!(title: 'Published Post', body: 'Content', published: true)
+        post = Post.create!(body: 'Content', published: true, title: 'Published Post')
         expect(post.published).to be(true)
 
         patch "/api/v1/posts/#{post.id}/archive"
@@ -54,7 +54,7 @@ RSpec.describe 'Custom Actions API', type: :request do
       end
 
       it 'handles idempotent custom actions' do
-        post = Post.create!(title: 'Archived Post', body: 'Content', published: false)
+        post = Post.create!(body: 'Content', published: false, title: 'Archived Post')
 
         patch "/api/v1/posts/#{post.id}/archive"
 
@@ -84,7 +84,7 @@ RSpec.describe 'Custom Actions API', type: :request do
       end
 
       it 'serializes resources with varying attribute values' do
-        post = Post.create!(title: 'Short', body: 'Short body', published: false)
+        post = Post.create!(body: 'Short body', published: false, title: 'Short')
 
         get "/api/v1/posts/#{post.id}/preview"
 
@@ -94,7 +94,7 @@ RSpec.describe 'Custom Actions API', type: :request do
       end
 
       it 'handles nil values in serialization' do
-        post = Post.create!(title: 'No body', body: nil, published: false)
+        post = Post.create!(body: nil, published: false, title: 'No body')
 
         get "/api/v1/posts/#{post.id}/preview"
 
@@ -108,10 +108,10 @@ RSpec.describe 'Custom Actions API', type: :request do
   describe 'Custom collection actions' do
     describe 'GET /api/v1/posts/search' do
       before do
-        Post.create!(title: 'Ruby Tutorial', body: 'Learn Ruby programming', published: true)
-        Post.create!(title: 'Rails Guide', body: 'Learn Rails framework', published: true)
-        Post.create!(title: 'Python Tutorial', body: 'Learn Python programming', published: false)
-        Post.create!(title: 'JavaScript Basics', body: 'Learn JavaScript', published: true)
+        Post.create!(body: 'Learn Ruby programming', published: true, title: 'Ruby Tutorial')
+        Post.create!(body: 'Learn Rails framework', published: true, title: 'Rails Guide')
+        Post.create!(body: 'Learn Python programming', published: false, title: 'Python Tutorial')
+        Post.create!(body: 'Learn JavaScript', published: true, title: 'JavaScript Basics')
       end
 
       it 'routes to custom collection action with query params' do
@@ -166,14 +166,26 @@ RSpec.describe 'Custom Actions API', type: :request do
       it 'parses array params and returns collection' do
         posts_params = {
           posts: [
-            { title: 'Post 1', body: 'Body 1', published: true },
-            { title: 'Post 2', body: 'Body 2', published: false },
-            { title: 'Post 3', body: 'Body 3', published: true }
+            {
+              body: 'Body 1',
+              published: true,
+              title: 'Post 1'
+            },
+            {
+              body: 'Body 2',
+              published: false,
+              title: 'Post 2'
+            },
+            {
+              body: 'Body 3',
+              published: true,
+              title: 'Post 3'
+            }
           ]
         }
 
         expect do
-          post '/api/v1/posts/bulk_create', params: posts_params, as: :json
+          post '/api/v1/posts/bulk_create', as: :json, params: posts_params
         end.to change(Post, :count).by(3)
 
         expect(response).to have_http_status(:created)
@@ -185,7 +197,7 @@ RSpec.describe 'Custom Actions API', type: :request do
       end
 
       it 'handles empty arrays in custom actions' do
-        post '/api/v1/posts/bulk_create', params: { posts: [] }, as: :json
+        post '/api/v1/posts/bulk_create', as: :json, params: { posts: [] }
 
         expect(response).to have_http_status(:created)
         json = JSON.parse(response.body)
@@ -195,18 +207,18 @@ RSpec.describe 'Custom Actions API', type: :request do
       it 'applies defaults to array elements' do
         posts_params = {
           posts: [
-            { title: 'Post without published', body: 'Body' }
+            { body: 'Body', title: 'Post without published' }
           ]
         }
 
-        post '/api/v1/posts/bulk_create', params: posts_params, as: :json
+        post '/api/v1/posts/bulk_create', as: :json, params: posts_params
 
         json = JSON.parse(response.body)
         expect(json['posts'][0]['published']).to be(false)
       end
 
       it 'handles missing params gracefully' do
-        post '/api/v1/posts/bulk_create', params: {}, as: :json
+        post '/api/v1/posts/bulk_create', as: :json, params: {}
 
         expect(response).to have_http_status(:created)
         json = JSON.parse(response.body)
@@ -217,7 +229,7 @@ RSpec.describe 'Custom Actions API', type: :request do
 
   describe 'Interaction between standard and custom actions' do
     it 'works consistently with standard CRUD actions' do
-      post = Post.create!(title: 'Test', body: 'Body', published: false)
+      post = Post.create!(body: 'Body', published: false, title: 'Test')
 
       # Standard show
       get "/api/v1/posts/#{post.id}"
@@ -243,8 +255,8 @@ RSpec.describe 'Custom Actions API', type: :request do
     end
 
     it 'custom and standard collection actions coexist' do
-      Post.create!(title: 'Ruby Post', body: 'Ruby content', published: true)
-      Post.create!(title: 'Python Post', body: 'Python content', published: false)
+      Post.create!(body: 'Ruby content', published: true, title: 'Ruby Post')
+      Post.create!(body: 'Python content', published: false, title: 'Python Post')
 
       # Standard index
       get '/api/v1/posts'
@@ -264,7 +276,7 @@ RSpec.describe 'Custom Actions API', type: :request do
   end
 
   describe 'Custom action input validation' do
-    let!(:post_record) { Post.create!(title: 'Test Post', body: 'Body') }
+    let!(:post_record) { Post.create!(body: 'Body', title: 'Test Post') }
 
     context 'archive action' do
       it 'validates boolean parameter types' do

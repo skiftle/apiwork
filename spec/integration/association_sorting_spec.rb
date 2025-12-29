@@ -4,26 +4,26 @@ require 'rails_helper'
 
 RSpec.describe 'Association Sorting API', type: :request do
   let!(:post1) do
-    Post.create!(title: 'Sort Test Alpha', body: 'First', published: true, created_at: 3.days.ago)
+    Post.create!(body: 'First', created_at: 3.days.ago, published: true, title: 'Sort Test Alpha')
   end
   let!(:post2) do
-    Post.create!(title: 'Sort Test Beta', body: 'Second', published: false, created_at: 2.days.ago)
+    Post.create!(body: 'Second', created_at: 2.days.ago, published: false, title: 'Sort Test Beta')
   end
   let!(:post3) do
-    Post.create!(title: 'Sort Test Gamma', body: 'Third', published: true, created_at: 1.day.ago)
+    Post.create!(body: 'Third', created_at: 1.day.ago, published: true, title: 'Sort Test Gamma')
   end
 
   let!(:comment1) do
-    Comment.create!(post: post1, content: 'First comment', author: 'Zara', created_at: 2.days.ago)
+    Comment.create!(author: 'Zara', content: 'First comment', created_at: 2.days.ago, post: post1)
   end
   let!(:comment2) do
-    Comment.create!(post: post1, content: 'Second comment', author: 'Alice', created_at: 1.day.ago)
+    Comment.create!(author: 'Alice', content: 'Second comment', created_at: 1.day.ago, post: post1)
   end
   let!(:comment3) do
-    Comment.create!(post: post2, content: 'Third comment', author: 'Bob', created_at: 1.5.days.ago)
+    Comment.create!(author: 'Bob', content: 'Third comment', created_at: 1.5.days.ago, post: post2)
   end
   let!(:comment4) do
-    Comment.create!(post: post3, content: 'Fourth comment', author: 'Charlie', created_at: 1.hour.ago)
+    Comment.create!(author: 'Charlie', content: 'Fourth comment', created_at: 1.hour.ago, post: post3)
   end
 
   describe 'GET /api/v1/posts with comment sorting (has_many)' do

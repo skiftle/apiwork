@@ -50,7 +50,7 @@ RSpec.describe Apiwork::Adapter::StandardAdapter::IncludesResolver do
 
     context 'with for_collection: false' do
       it 'does not extract from filter' do
-        result = resolver.build(params: { filter: { comments: { content: 'test' } } }, for_collection: false)
+        result = resolver.build(for_collection: false, params: { filter: { comments: { content: 'test' } } })
         expect(result).not_to have_key(:comments)
       end
     end
@@ -65,7 +65,7 @@ RSpec.describe Apiwork::Adapter::StandardAdapter::IncludesResolver do
 
       expect(result).to eq({
                              author: {},
-                             comments: { replies: {}, author: {} },
+                             comments: { author: {}, replies: {} },
                              tags: {}
                            })
     end

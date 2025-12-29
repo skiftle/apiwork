@@ -454,7 +454,7 @@ module Apiwork
         def introspect_contract(contract_class, expand:, locale:)
           ensure_all_contracts_built!
           cache_key = [contract_class, locale, expand]
-          @introspect_contract_cache[cache_key] ||= Introspection.contract(contract_class, locale: locale, expand: expand)
+          @introspect_contract_cache[cache_key] ||= Introspection.contract(contract_class, expand: expand, locale: locale)
         end
 
         def reset_contracts!

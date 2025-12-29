@@ -25,7 +25,7 @@ module Apiwork
             end
 
             controller_path = api_class.structure.namespaces.map(&:to_s).join('/').underscore
-            scope path: api_class.path, module: controller_path do
+            scope module: controller_path, path: api_class.path do
               router_instance.draw_resources_in_context(self, api_class.structure.resources, api_class)
             end
 
@@ -43,7 +43,11 @@ module Apiwork
       def draw_resources_in_context(context, resources_hash, api_class)
         resources_hash.each_value do |resource|
           resource_method = resource.singular ? :resource : :resources
-          options = { controller: resource.controller, only: resource.only, except: resource.except }.compact
+          options = {
+            controller: resource.controller,
+            except: resource.except,
+            only: resource.only
+          }.compact
 
           path_option = resource.path || api_class.transform_path_segment(resource.name)
           options[:path] = path_option unless path_option == resource.name.to_s

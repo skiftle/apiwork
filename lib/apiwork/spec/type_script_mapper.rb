@@ -216,7 +216,7 @@ module Apiwork
         items_type = definition[:of]
 
         if items_type.nil? && definition[:shape]
-          element_type = map_object_type({ type: :object, shape: definition[:shape] }, action_name: action_name)
+          element_type = map_object_type({ shape: definition[:shape], type: :object }, action_name: action_name)
           return "#{element_type}[]"
         end
 

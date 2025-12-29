@@ -182,7 +182,11 @@ module Apiwork
           code: :value_invalid,
           detail: 'Invalid value',
           path: [name],
-          meta: { field: name, expected: enum_values, actual: value }
+          meta: {
+            actual: value,
+            expected: enum_values,
+            field: name
+          }
         )
         raise ContractError, [issue]
       end

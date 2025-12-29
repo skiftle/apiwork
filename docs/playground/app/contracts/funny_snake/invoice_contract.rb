@@ -22,7 +22,7 @@ module FunnySnake
     action :index do
       response do
         body do
-          param :invoices, type: :array, of: :invoice
+          param :invoices, of: :invoice, type: :array
         end
       end
     end

@@ -4,7 +4,7 @@ module CuriousCat
   class ProfileSchema < Apiwork::Schema::Base
     attribute :id
     attribute :name, writable: true
-    attribute :email, writable: true, format: :email
+    attribute :email, format: :email, writable: true
 
     attribute :settings, writable: true do
       param :theme, type: :string
@@ -12,7 +12,7 @@ module CuriousCat
       param :language, type: :string
     end
 
-    attribute :tags, type: :array, of: :string, writable: true
+    attribute :tags, of: :string, type: :array, writable: true
 
     attribute :addresses, type: :array, writable: true do
       param :street, type: :string

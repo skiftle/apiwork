@@ -148,7 +148,7 @@ RSpec.describe 'API TypeSystem Builder' do
 
     it 'allows defining enum with description' do
       api = Apiwork::API.define '/api/test' do
-        enum :documented_enum, values: %i[a b c], description: 'An enum with description'
+        enum :documented_enum, description: 'An enum with description', values: %i[a b c]
       end
 
       enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
@@ -158,7 +158,7 @@ RSpec.describe 'API TypeSystem Builder' do
 
     it 'allows defining enum with example' do
       api = Apiwork::API.define '/api/test' do
-        enum :example_enum, values: %i[red green blue], example: :red
+        enum :example_enum, example: :red, values: %i[red green blue]
       end
 
       enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
@@ -168,7 +168,7 @@ RSpec.describe 'API TypeSystem Builder' do
 
     it 'allows defining enum with deprecated: true' do
       api = Apiwork::API.define '/api/test' do
-        enum :legacy_enum, values: %i[old new], deprecated: true
+        enum :legacy_enum, deprecated: true, values: %i[old new]
       end
 
       enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
@@ -202,7 +202,7 @@ RSpec.describe 'API TypeSystem Builder' do
           param :value, type: :string
         end
 
-        enum :chained_enum, values: %i[x y], description: 'Enum metadata flows through'
+        enum :chained_enum, description: 'Enum metadata flows through', values: %i[x y]
       end
 
       types = Apiwork::Introspection::TypeSerializer.new(api).serialize_types

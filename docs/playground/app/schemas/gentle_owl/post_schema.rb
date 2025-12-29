@@ -3,7 +3,7 @@
 module GentleOwl
   class PostSchema < Apiwork::Schema::Base
     attribute :id
-    attribute :title, writable: true, filterable: true
+    attribute :title, filterable: true, writable: true
     attribute :body, writable: true
     attribute :created_at, sortable: true
 

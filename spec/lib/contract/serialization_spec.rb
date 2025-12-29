@@ -10,7 +10,7 @@ RSpec.describe 'Contract Serialization' do
           request do
             body do
               param :title, type: :string
-              param :published, type: :boolean, optional: true, default: false
+              param :published, default: false, optional: true, type: :boolean
             end
           end
         end
@@ -21,7 +21,11 @@ RSpec.describe 'Contract Serialization' do
 
       expect(json).to eq({
                            title: { type: :string },
-                           published: { type: :boolean, optional: true, default: false }
+                           published: {
+                             default: false,
+                             optional: true,
+                             type: :boolean
+                           }
                          })
     end
 
@@ -32,7 +36,7 @@ RSpec.describe 'Contract Serialization' do
             body do
               param :post, type: :object do
                 param :title, type: :string
-                param :body, type: :string, optional: true
+                param :body, optional: true, type: :string
               end
             end
           end
@@ -47,7 +51,7 @@ RSpec.describe 'Contract Serialization' do
                              type: :object,
                              shape: {
                                title: { type: :string },
-                               body: { type: :string, optional: true }
+                               body: { optional: true, type: :string }
                              }
                            }
                          })
@@ -58,7 +62,7 @@ RSpec.describe 'Contract Serialization' do
         action :create do
           request do
             body do
-              param :tags, type: :array, of: :string, optional: true
+              param :tags, of: :string, optional: true, type: :array
             end
           end
         end
@@ -68,7 +72,11 @@ RSpec.describe 'Contract Serialization' do
       json = Apiwork::Introspection::ParamDefinitionSerializer.new(definition).serialize
 
       expect(json).to eq({
-                           tags: { type: :array, of: :string, optional: true }
+                           tags: {
+                             of: :string,
+                             optional: true,
+                             type: :array
+                           }
                          })
     end
 
@@ -77,7 +85,7 @@ RSpec.describe 'Contract Serialization' do
         action :create do
           request do
             body do
-              param :status, type: :string, enum: %w[draft published archived]
+              param :status, enum: %w[draft published archived], type: :string
             end
           end
         end
@@ -87,7 +95,7 @@ RSpec.describe 'Contract Serialization' do
       json = Apiwork::Introspection::ParamDefinitionSerializer.new(definition).serialize
 
       expect(json).to eq({
-                           status: { type: :string, enum: %w[draft published archived] }
+                           status: { enum: %w[draft published archived], type: :string }
                          })
     end
 
@@ -96,7 +104,7 @@ RSpec.describe 'Contract Serialization' do
         action :create do
           request do
             body do
-              param :comments, type: :array, as: :comments_attributes, optional: true
+              param :comments, as: :comments_attributes, optional: true, type: :array
             end
           end
         end
@@ -106,7 +114,11 @@ RSpec.describe 'Contract Serialization' do
       json = Apiwork::Introspection::ParamDefinitionSerializer.new(definition).serialize
 
       expect(json).to eq({
-                           comments: { type: :array, as: :comments_attributes, optional: true }
+                           comments: {
+                             as: :comments_attributes,
+                             optional: true,
+                             type: :array
+                           }
                          })
     end
 
@@ -165,15 +177,15 @@ RSpec.describe 'Contract Serialization' do
     it 'returns type references for custom types in unions' do
       contract_class = create_test_contract do
         type :test_union_filter_a do
-          param :equal, type: :string, optional: true
-          param :contains, type: :string, optional: true
-          param :starts_with, type: :string, optional: true
+          param :equal, optional: true, type: :string
+          param :contains, optional: true, type: :string
+          param :starts_with, optional: true, type: :string
         end
 
         action :search do
           request do
             body do
-              param :filter, type: :union, optional: true do
+              param :filter, optional: true, type: :union do
                 variant type: :test_union_filter_a
                 variant type: :string
               end
@@ -200,16 +212,16 @@ RSpec.describe 'Contract Serialization' do
     it 'returns type references for array of custom types in unions' do
       contract_class = create_test_contract do
         type :test_union_filter_b do
-          param :equal, type: :string, optional: true
-          param :contains, type: :string, optional: true
+          param :equal, optional: true, type: :string
+          param :contains, optional: true, type: :string
         end
 
         action :search do
           request do
             body do
-              param :filters, type: :union, optional: true do
+              param :filters, optional: true, type: :union do
                 variant type: :test_union_filter_b
-                variant type: :array, of: :test_union_filter_b
+                variant of: :test_union_filter_b, type: :array
               end
             end
           end
@@ -225,7 +237,7 @@ RSpec.describe 'Contract Serialization' do
                              optional: true,
                              variants: [
                                { type: :test_union_filter_b },
-                               { type: :array, of: :test_union_filter_b }
+                               { of: :test_union_filter_b, type: :array }
                              ]
                            }
                          })
@@ -401,7 +413,7 @@ RSpec.describe 'Contract Serialization' do
           action :index do
             response do
               body do
-                param :items, type: :array, of: :expand_item
+                param :items, of: :expand_item, type: :array
                 param :meta, type: :expand_pagination_meta
               end
             end

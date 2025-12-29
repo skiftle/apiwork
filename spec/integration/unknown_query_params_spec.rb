@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Unknown query parameter validation', type: :request do
-  let!(:post_record) { Post.create!(title: 'Test Post', body: 'Body') }
+  let!(:post_record) { Post.create!(body: 'Body', title: 'Test Post') }
 
   describe 'GET /api/v1/posts/:id (show)' do
     it 'rejects unknown query parameters' do

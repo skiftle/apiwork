@@ -6,12 +6,25 @@ plugins:
 require:
   - ./lib/rubocop/cop/apiwork/sort_attr_arguments.rb
   - ./lib/rubocop/cop/apiwork/sort_keyword_arguments.rb
+  - ./lib/rubocop/cop/apiwork/sort_hash_keys.rb
+  - ./lib/rubocop/cop/apiwork/multiline_hash_pairs.rb
 
 Apiwork/SortAttrArguments:
   Enabled: true
 
 Apiwork/SortKeywordArguments:
   Enabled: true
+
+# Disable - conflicts with Apiwork/SortKeywordArguments (we prefer alphabetical)
+Style/KeywordParametersOrder:
+  Enabled: false
+
+Apiwork/SortHashKeys:
+  Enabled: true
+
+Apiwork/MultilineHashPairs:
+  Enabled: true
+  MinPairs: 3
 
 AllCops:
   TargetRubyVersion: 3.2

@@ -30,7 +30,7 @@ module Apiwork
           resource_type_name = resource_type_name_for_response
 
           param_definition.param root_key, type: resource_type_name
-          param_definition.param :meta, type: :object, optional: true
+          param_definition.param :meta, optional: true, type: :object
         end
 
         def collection_response(param_definition)
@@ -38,9 +38,9 @@ module Apiwork
           resource_type_name = resource_type_name_for_response
           pagination_type = build_pagination_type
 
-          param_definition.param root_key_plural, type: :array, of: resource_type_name
+          param_definition.param root_key_plural, of: resource_type_name, type: :array
           param_definition.param :pagination, type: pagination_type
-          param_definition.param :meta, type: :object, optional: true
+          param_definition.param :meta, optional: true, type: :object
         end
 
         private
@@ -54,26 +54,26 @@ module Apiwork
           sort_type = build_sort_type
 
           if filter_type
-            param_definition.param :filter, type: :union, optional: true do
+            param_definition.param :filter, optional: true, type: :union do
               variant type: filter_type
-              variant type: :array, of: filter_type
+              variant of: filter_type, type: :array
             end
           end
 
           if sort_type
-            param_definition.param :sort, type: :union, optional: true do
+            param_definition.param :sort, optional: true, type: :union do
               variant type: sort_type
-              variant type: :array, of: sort_type
+              variant of: sort_type, type: :array
             end
           end
 
           page_type = build_page_type
-          param_definition.param :page, type: page_type, optional: true
+          param_definition.param :page, optional: true, type: page_type
 
           return unless schema_class.association_definitions.any?
 
           include_type = build_include_type
-          param_definition.param :include, type: include_type, optional: true if include_type
+          param_definition.param :include, optional: true, type: include_type if include_type
         end
 
         def writable_request(param_definition, context_symbol)
@@ -239,7 +239,7 @@ module Apiwork
 
         def build_result_wrapper(action_name)
           success_type = registrar.scoped_name(:"#{action_name}_success_response_body")
-          { success_type:, error_type: :error_response_body }
+          { error_type: :error_response_body, success_type: }
         end
 
         def build_single_response(action_definition, result_wrapper)
@@ -265,7 +265,7 @@ module Apiwork
             query do
               if builder.send(:schema_class).association_definitions.any?
                 include_type = builder.send(:build_include_type)
-                param :include, type: include_type, optional: true if include_type
+                param :include, optional: true, type: include_type if include_type
               end
             end
           end
@@ -286,7 +286,7 @@ module Apiwork
               registrar.api_registrar.type(variant_type_name) do
                 # Rename discriminator from API name to DB column if different
                 as_column = discriminator_name != discriminator_column ? discriminator_column : nil
-                param discriminator_name, type: :literal, value: tag.to_s, as: as_column, sti_mapping: sti_mapping
+                param discriminator_name, as: as_column, sti_mapping: sti_mapping, type: :literal, value: tag.to_s
 
                 builder.send(:writable_params, self, context_symbol, nested: false, target_schema: variant_schema)
               end
@@ -395,9 +395,9 @@ module Apiwork
           type_options = {} unless depth.zero?
 
           registrar.type(type_name, **type_options) do
-            param :_and, type: :array, of: type_name, optional: true
-            param :_or, type: :array, of: type_name, optional: true
-            param :_not, type: type_name, optional: true
+            param :_and, of: type_name, optional: true, type: :array
+            param :_or, of: type_name, optional: true, type: :array
+            param :_not, optional: true, type: type_name
 
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
               next unless attribute_definition.filterable?
@@ -406,9 +406,9 @@ module Apiwork
               filter_type = builder.send(:filter_type_for, attribute_definition)
 
               if attribute_definition.enum
-                param name, type: filter_type, optional: true, attribute_definition: attribute_definition
+                param name, attribute_definition: attribute_definition, optional: true, type: filter_type
               else
-                param name, type: :union, optional: true, attribute_definition: attribute_definition do
+                param name, attribute_definition: attribute_definition, optional: true, type: :union do
                   variant type: builder.send(:map_type, attribute_definition.type)
                   variant type: filter_type
                 end
@@ -433,7 +433,7 @@ module Apiwork
                                                        depth: depth + 1)
                                         end
 
-              param name, type: association_filter_type, optional: true, association_definition: association_definition if association_filter_type
+              param name, association_definition: association_definition, optional: true, type: association_filter_type if association_filter_type
             end
           end
 
@@ -442,7 +442,7 @@ module Apiwork
 
         def build_filter_type_for_schema(association_schema, depth:, visited:)
           self.class.for_schema(registrar, association_schema)
-              .send(:build_filter_type, visited:, depth:)
+              .send(:build_filter_type, depth:, visited:)
         end
 
         def build_sort_type(depth: 0, visited: Set.new)
@@ -468,7 +468,7 @@ module Apiwork
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
               next unless attribute_definition.sortable?
 
-              param name, type: :sort_direction, optional: true, attribute_definition: attribute_definition
+              param name, attribute_definition: attribute_definition, optional: true, type: :sort_direction
             end
 
             schema_class_local.association_definitions.each do |name, association_definition|
@@ -489,7 +489,7 @@ module Apiwork
                                                      depth: depth + 1)
                                       end
 
-              param name, type: association_sort_type, optional: true, association_definition: association_definition if association_sort_type
+              param name, association_definition: association_definition, optional: true, type: association_sort_type if association_sort_type
             end
           end
 
@@ -498,7 +498,7 @@ module Apiwork
 
         def build_sort_type_for_schema(association_schema, depth:, visited:)
           self.class.for_schema(registrar, association_schema)
-              .send(:build_sort_type, visited:, depth:)
+              .send(:build_sort_type, depth:, visited:)
         end
 
         def build_page_type
@@ -512,14 +512,14 @@ module Apiwork
 
           if strategy == :cursor
             registrar.api_registrar.type(type_name, scope: nil) do
-              param :after, type: :string, optional: true
-              param :before, type: :string, optional: true
-              param :size, type: :integer, optional: true, min: 1, max: max_size
+              param :after, optional: true, type: :string
+              param :before, optional: true, type: :string
+              param :size, max: max_size, min: 1, optional: true, type: :integer
             end
           else
             registrar.api_registrar.type(type_name, scope: nil) do
-              param :number, type: :integer, optional: true, min: 1
-              param :size, type: :integer, optional: true, min: 1, max: max_size
+              param :number, min: 1, optional: true, type: :integer
+              param :size, max: max_size, min: 1, optional: true, type: :integer
             end
           end
 
@@ -533,7 +533,7 @@ module Apiwork
 
         def build_include_type(depth: 0, visited: Set.new)
           return nil unless schema_class.association_definitions.any?
-          return nil unless has_includable_params?(visited:, depth:)
+          return nil unless has_includable_params?(depth:, visited:)
 
           type_name = type_name(:include, depth)
 
@@ -550,7 +550,7 @@ module Apiwork
           registrar.type(type_name) do
             schema_class_local.association_definitions.each do |name, association_definition|
               if association_definition.polymorphic?
-                param name, type: :boolean, optional: true unless association_definition.always_included?
+                param name, optional: true, type: :boolean unless association_definition.always_included?
                 next
               end
 
@@ -558,7 +558,7 @@ module Apiwork
               next unless association_resource&.schema_class
 
               if visited.include?(association_resource.schema_class)
-                param name, type: :boolean, optional: true unless association_definition.always_included?
+                param name, optional: true, type: :boolean unless association_definition.always_included?
               else
                 import_alias = builder.send(:import_association_contract, association_resource.schema_class, visited)
 
@@ -573,11 +573,11 @@ module Apiwork
                                            end
 
                 if association_include_type.nil?
-                  param name, type: :boolean, optional: true unless association_definition.always_included?
+                  param name, optional: true, type: :boolean unless association_definition.always_included?
                 elsif association_definition.always_included?
-                  param name, type: association_include_type, optional: true
+                  param name, optional: true, type: association_include_type
                 else
-                  param name, type: :union, optional: true do
+                  param name, optional: true, type: :union do
                     variant type: :boolean
                     variant type: association_include_type
                   end
@@ -605,7 +605,7 @@ module Apiwork
                 !association_definition.always_included?
               elsif association_definition.always_included?
                 nested_builder = self.class.for_schema(registrar, association_resource.schema_class)
-                nested_builder.send(:has_includable_params?, visited: new_visited, depth: depth + 1)
+                nested_builder.send(:has_includable_params?, depth: depth + 1, visited: new_visited)
               else
                 true
               end
@@ -615,7 +615,7 @@ module Apiwork
 
         def build_include_type_for_schema(association_schema, depth:, visited:)
           self.class.for_schema(registrar, association_schema)
-              .send(:build_include_type, visited:, depth:)
+              .send(:build_include_type, depth:, visited:)
         end
 
         def build_nested_payload_union
@@ -630,7 +630,7 @@ module Apiwork
             registrar.type(create_type_name) do
               param :_type, type: :literal, value: 'create'
               builder.send(:writable_params, self, :create, nested: true)
-              param :_destroy, type: :boolean, optional: true if schema.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
+              param :_destroy, optional: true, type: :boolean if schema.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
             end
           end
 
@@ -639,7 +639,7 @@ module Apiwork
             registrar.type(update_type_name) do
               param :_type, type: :literal, value: 'update'
               builder.send(:writable_params, self, :update, nested: true)
-              param :_destroy, type: :boolean, optional: true if schema.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
+              param :_destroy, optional: true, type: :boolean if schema.association_definitions.any? { |_, ad| ad.writable? && ad.allow_destroy }
             end
           end
 
@@ -650,8 +650,8 @@ module Apiwork
           update_qualified_name = registrar.scoped_name(update_type_name)
 
           registrar.union(nested_payload_type_name, discriminator: :_type) do
-            variant type: create_qualified_name, tag: 'create'
-            variant type: update_qualified_name, tag: 'update'
+            variant tag: 'create', type: create_qualified_name
+            variant tag: 'update', type: update_qualified_name
           end
         end
 
@@ -760,7 +760,7 @@ module Apiwork
               import_alias = builder.send(:import_association_contract, schema_class, visited)
               next unless import_alias
 
-              variant type: import_alias, tag: tag.to_s
+              variant tag: tag.to_s, type: import_alias
             end
           end
 
@@ -776,12 +776,12 @@ module Apiwork
           variant_types = variants.filter_map do |tag, variant_data|
             variant_schema = variant_data[:schema]
             variant_type = yield(variant_schema, tag, visited)
-            { type: variant_type, tag: tag.to_s } if variant_type
+            { tag: tag.to_s, type: variant_type } if variant_type
           end
 
           registrar.union(union_type_name, discriminator: discriminator_name) do
             variant_types.each do |v|
-              variant type: v[:type], tag: v[:tag]
+              variant tag: v[:tag], type: v[:type]
             end
           end
 
@@ -868,9 +868,9 @@ module Apiwork
 
           registrar.api_registrar.union(filter_name) do
             variant type: scoped_name
-            variant type: :object, partial: true do
-              param :eq, type: scoped_name, optional: true
-              param :in, type: :array, of: scoped_name, optional: true
+            variant partial: true, type: :object do
+              param :eq, optional: true, type: scoped_name
+              param :in, of: scoped_name, optional: true, type: :array
             end
           end
         end
@@ -937,9 +937,9 @@ module Apiwork
             association_registrar = ContractRegistrar.new(association_contract)
             sub_builder = self.class.for_schema(association_registrar, association_schema)
 
-            sub_builder.send(:build_filter_type, visited: Set.new, depth: 0)
-            sub_builder.send(:build_sort_type, visited: Set.new, depth: 0)
-            sub_builder.send(:build_include_type, visited: Set.new, depth: 0)
+            sub_builder.send(:build_filter_type, depth: 0, visited: Set.new)
+            sub_builder.send(:build_sort_type, depth: 0, visited: Set.new)
+            sub_builder.send(:build_include_type, depth: 0, visited: Set.new)
             sub_builder.send(:build_nested_payload_union)
             sub_builder.send(:build_response_type, visited: Set.new)
           end

@@ -20,13 +20,13 @@ RSpec.describe 'Literal and Discriminated Union Features' do
     let(:definition) { contract_class.action_definition(:test).request_definition.body_param_definition }
 
     it 'accepts the exact literal value' do
-      result = definition.validate({ status: 'archived', name: 'Test' })
+      result = definition.validate({ name: 'Test', status: 'archived' })
       expect(result[:issues]).to be_empty
       expect(result[:params][:status]).to eq('archived')
     end
 
     it 'rejects different values' do
-      result = definition.validate({ status: 'active', name: 'Test' })
+      result = definition.validate({ name: 'Test', status: 'active' })
       expect(result[:issues]).not_to be_empty
       expect(result[:issues].first.code).to eq(:value_invalid)
       expect(result[:issues].first.detail).to eq('Invalid value')
@@ -63,12 +63,12 @@ RSpec.describe 'Literal and Discriminated Union Features' do
         action :test do
           request do
             body do
-              param :filter, type: :union, discriminator: :kind do
+              param :filter, discriminator: :kind, type: :union do
                 variant tag: 'string', type: :string_filter
 
                 variant tag: 'range', type: :object do
                   param :gte, type: :integer
-                  param :lte, type: :integer, required: false
+                  param :lte, required: false, type: :integer
                 end
               end
             end
@@ -86,7 +86,11 @@ RSpec.describe 'Literal and Discriminated Union Features' do
     end
 
     it 'validates range variant with correct discriminator' do
-      result = definition.validate({ filter: { kind: 'range', gte: 10, lte: 20 } })
+      result = definition.validate({ filter: {
+                                     gte: 10,
+                                     kind: 'range',
+                                     lte: 20
+                                   } })
       expect(result[:issues]).to be_empty
       expect(result[:params][:filter][:gte]).to eq(10)
       expect(result[:params][:filter][:lte]).to eq(20)
@@ -129,7 +133,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
           action :test do
             request do
               body do
-                param :status, type: :string, discriminator: :kind
+                param :status, discriminator: :kind, type: :string
               end
             end
           end
@@ -159,7 +163,7 @@ RSpec.describe 'Literal and Discriminated Union Features' do
           action :test do
             request do
               body do
-                param :filter, type: :union, discriminator: :kind do
+                param :filter, discriminator: :kind, type: :union do
                   variant type: :string # Missing tag!
                 end
               end

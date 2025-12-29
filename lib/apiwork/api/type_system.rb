@@ -22,16 +22,24 @@ module Apiwork
         key = scoped_name(scope, name)
 
         if @types.key?(key)
-          merge_type(key, description:, example:, format:, deprecated:, schema_class:, block:)
+          merge_type(key, block:, deprecated:, description:, example:, format:, schema_class:)
         else
-          @types[key] = { scope:, definition: block, definitions: nil, description:, example:, format:,
-                          deprecated:, schema_class: }
+          @types[key] = {
+            scope:,
+            definition: block,
+            definitions: nil,
+            description:,
+            example:,
+            format:,
+            deprecated:,
+            schema_class:
+          }
         end
       end
 
       def register_union(name, payload, scope: nil)
         key = scoped_name(scope, name)
-        @types[key] = { scope:, payload: }
+        @types[key] = { payload:, scope: }
       end
 
       def resolve_type(name, scope: nil)
@@ -84,9 +92,15 @@ module Apiwork
         key = scoped_name(scope, name)
 
         if @enums.key?(key)
-          merge_enum(key, values:, description:, example:, deprecated:)
+          merge_enum(key, deprecated:, description:, example:, values:)
         else
-          @enums[key] = { scope:, values:, description:, example:, deprecated: }
+          @enums[key] = {
+            deprecated:,
+            description:,
+            example:,
+            scope:,
+            values:
+          }
         end
       end
 

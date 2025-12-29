@@ -108,7 +108,7 @@ RSpec.describe Apiwork::Contract::ParamDefinition, '#validate datetime and date 
     context 'when datetime field is optional' do
       before do
         definition.instance_variable_set(:@params, {})
-        definition.param :archived_at, type: :datetime, optional: true
+        definition.param :archived_at, optional: true, type: :datetime
       end
 
       it 'allows nil value' do
@@ -203,7 +203,7 @@ RSpec.describe Apiwork::Contract::ParamDefinition, '#validate datetime and date 
     context 'when date field is optional' do
       before do
         definition.instance_variable_set(:@params, {})
-        definition.param :birth_date, type: :date, optional: true
+        definition.param :birth_date, optional: true, type: :date
       end
 
       it 'allows nil value' do
@@ -223,7 +223,7 @@ RSpec.describe Apiwork::Contract::ParamDefinition, '#validate datetime and date 
 
   describe 'required enum validation' do
     before do
-      definition.param :status, type: :string, enum: %w[active inactive archived]
+      definition.param :status, enum: %w[active inactive archived], type: :string
     end
 
     context 'when required enum field is missing' do
@@ -306,7 +306,7 @@ RSpec.describe Apiwork::Contract::ParamDefinition, '#validate datetime and date 
 
   describe 'optional enum validation' do
     before do
-      definition.param :status, type: :string, enum: %w[active inactive], optional: true
+      definition.param :status, enum: %w[active inactive], optional: true, type: :string
     end
 
     it 'allows missing field' do
@@ -383,7 +383,7 @@ RSpec.describe Apiwork::Contract::ParamDefinition, '#validate datetime and date 
   describe 'nullable validation for associations' do
     let(:definition) do
       described_class.new(contract_class).tap do |d|
-        d.param :address, type: :object, optional: true, nullable: false
+        d.param :address, nullable: false, optional: true, type: :object
       end
     end
 
@@ -416,7 +416,7 @@ RSpec.describe Apiwork::Contract::ParamDefinition, '#validate datetime and date 
     context 'when nullable: true' do
       let(:definition) do
         described_class.new(contract_class).tap do |d|
-          d.param :address, type: :object, optional: true, nullable: true
+          d.param :address, nullable: true, optional: true, type: :object
         end
       end
 
@@ -445,7 +445,7 @@ RSpec.describe Apiwork::Contract::ParamDefinition, '#validate datetime and date 
     context 'when nullable is not specified (defaults to allowing nil)' do
       let(:definition) do
         described_class.new(contract_class).tap do |d|
-          d.param :address, type: :object, optional: true
+          d.param :address, optional: true, type: :object
         end
       end
 
@@ -460,7 +460,7 @@ RSpec.describe Apiwork::Contract::ParamDefinition, '#validate datetime and date 
     context 'with array type (has_many)' do
       let(:definition) do
         described_class.new(contract_class).tap do |d|
-          d.param :comments, type: :array, optional: true, nullable: false
+          d.param :comments, nullable: false, optional: true, type: :array
         end
       end
 
@@ -493,7 +493,7 @@ RSpec.describe Apiwork::Contract::ParamDefinition, '#validate datetime and date 
     context 'with max constraint' do
       let(:definition) do
         described_class.new(contract_class).tap do |d|
-          d.param :tags, type: :array, of: :string, max: 3, optional: true
+          d.param :tags, max: 3, of: :string, optional: true, type: :array
         end
       end
 
@@ -533,7 +533,7 @@ RSpec.describe Apiwork::Contract::ParamDefinition, '#validate datetime and date 
     context 'with min constraint' do
       let(:definition) do
         described_class.new(contract_class).tap do |d|
-          d.param :tags, type: :array, of: :string, min: 2, optional: true
+          d.param :tags, min: 2, of: :string, optional: true, type: :array
         end
       end
 
@@ -576,7 +576,7 @@ RSpec.describe Apiwork::Contract::ParamDefinition, '#validate datetime and date 
     context 'with both min and max constraints' do
       let(:definition) do
         described_class.new(contract_class).tap do |d|
-          d.param :tags, type: :array, of: :string, min: 1, max: 5, optional: true
+          d.param :tags, max: 5, min: 1, of: :string, optional: true, type: :array
         end
       end
 
@@ -617,7 +617,7 @@ RSpec.describe Apiwork::Contract::ParamDefinition, '#validate datetime and date 
     context 'without length constraints' do
       let(:definition) do
         described_class.new(contract_class).tap do |d|
-          d.param :tags, type: :array, of: :string, optional: true
+          d.param :tags, of: :string, optional: true, type: :array
         end
       end
 
@@ -639,7 +639,7 @@ RSpec.describe Apiwork::Contract::ParamDefinition, '#validate datetime and date 
     context 'with nested object arrays' do
       let(:definition) do
         described_class.new(contract_class).tap do |d|
-          d.param :comments, type: :array, of: :object, min: 1, max: 10, optional: true
+          d.param :comments, max: 10, min: 1, of: :object, optional: true, type: :array
         end
       end
 

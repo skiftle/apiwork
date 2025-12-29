@@ -8,8 +8,8 @@ RSpec.describe 'Schema.deserialize' do
       abstract!
 
       attribute :title, type: :string
-      attribute :email, type: :string, decode: ->(v) { v&.downcase&.strip }
-      attribute :notes, type: :string, empty: true
+      attribute :email, decode: ->(v) { v&.downcase&.strip }, type: :string
+      attribute :notes, empty: true, type: :string
       attribute :count, type: :integer
     end
   end
@@ -20,7 +20,7 @@ RSpec.describe 'Schema.deserialize' do
     end
 
     it 'returns hash unchanged when no transformers defined' do
-      result = schema_class.deserialize({ title: 'Hello', count: 42 })
+      result = schema_class.deserialize({ count: 42, title: 'Hello' })
 
       expect(result[:title]).to eq('Hello')
       expect(result[:count]).to eq(42)
@@ -130,8 +130,8 @@ RSpec.describe 'Schema.deserialize' do
         number: 'INV-001',
         email: '  USER@EXAMPLE.COM  ',
         lines: [
-          { description: 'Widget', amount: '99.99' },
-          { description: 'Gadget', amount: '49.99' }
+          { amount: '99.99', description: 'Widget' },
+          { amount: '49.99', description: 'Gadget' }
         ]
       }
 
@@ -145,7 +145,7 @@ RSpec.describe 'Schema.deserialize' do
     it 'deserializes nested has_one associations' do
       input = {
         number: 'INV-001',
-        customer: { name: 'Acme', email: '  ACME@EXAMPLE.COM  ' }
+        customer: { email: '  ACME@EXAMPLE.COM  ', name: 'Acme' }
       }
 
       result = invoice_schema.deserialize(input)
@@ -154,7 +154,11 @@ RSpec.describe 'Schema.deserialize' do
     end
 
     it 'handles nil association values' do
-      input = { number: 'INV-001', customer: nil, lines: nil }
+      input = {
+        customer: nil,
+        lines: nil,
+        number: 'INV-001'
+      }
 
       result = invoice_schema.deserialize(input)
 
@@ -163,7 +167,7 @@ RSpec.describe 'Schema.deserialize' do
     end
 
     it 'handles empty array for has_many' do
-      input = { number: 'INV-001', lines: [] }
+      input = { lines: [], number: 'INV-001' }
 
       result = invoice_schema.deserialize(input)
 

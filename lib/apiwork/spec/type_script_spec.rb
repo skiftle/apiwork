@@ -7,8 +7,8 @@ module Apiwork
       content_type 'text/plain; charset=utf-8'
       file_extension '.ts'
 
-      option :version, type: :string, default: '5', enum: %w[4 5]
-      option :key_format, type: :symbol, default: :keep, enum: %i[keep camel underscore kebab]
+      option :version, default: '5', enum: %w[4 5], type: :string
+      option :key_format, default: :keep, enum: %i[keep camel underscore kebab], type: :symbol
 
       def generate
         build_all_typescript_types
@@ -26,7 +26,7 @@ module Apiwork
         enums.each do |enum_name, enum_data|
           type_name = mapper.pascal_case(enum_name)
           code = mapper.build_enum_type(enum_name, enum_data)
-          all_types << { name: type_name, code: }
+          all_types << { code:, name: type_name }
         end
 
         sorted_types = TypeAnalysis.topological_sort_types(types)
@@ -46,7 +46,7 @@ module Apiwork
                      example: type_shape[:example]
                    )
                  end
-          all_types << { name: type_name_pascal, code: }
+          all_types << { code:, name: type_name_pascal }
         end
 
         each_resource do |resource_name, resource_data, parent_path|
@@ -56,33 +56,33 @@ module Apiwork
               if request_data[:query]&.any?
                 type_name = mapper.action_type_name(resource_name, action_name, 'RequestQuery', parent_path: parent_path)
                 code = mapper.build_action_request_query_type(resource_name, action_name, request_data[:query], parent_path: parent_path)
-                all_types << { name: type_name, code: code }
+                all_types << { code: code, name: type_name }
               end
 
               if request_data[:body]&.any?
                 type_name = mapper.action_type_name(resource_name, action_name, 'RequestBody', parent_path: parent_path)
                 code = mapper.build_action_request_body_type(resource_name, action_name, request_data[:body], parent_path: parent_path)
-                all_types << { name: type_name, code: code }
+                all_types << { code: code, name: type_name }
               end
 
               type_name = mapper.action_type_name(resource_name, action_name, 'Request', parent_path: parent_path)
               code = mapper.build_action_request_type(resource_name, action_name, request_data, parent_path: parent_path)
-              all_types << { name: type_name, code: code }
+              all_types << { code: code, name: type_name }
             end
 
             response_data = action_data[:response]
 
             if response_data&.dig(:no_content)
               type_name = mapper.action_type_name(resource_name, action_name, 'Response', parent_path: parent_path)
-              all_types << { name: type_name, code: "export type #{type_name} = never;" }
+              all_types << { code: "export type #{type_name} = never;", name: type_name }
             elsif response_data && response_data[:body]
               type_name = mapper.action_type_name(resource_name, action_name, 'ResponseBody', parent_path: parent_path)
               code = mapper.build_action_response_body_type(resource_name, action_name, response_data[:body], parent_path: parent_path)
-              all_types << { name: type_name, code: code }
+              all_types << { code: code, name: type_name }
 
               type_name = mapper.action_type_name(resource_name, action_name, 'Response', parent_path: parent_path)
               code = mapper.build_action_response_type(resource_name, action_name, response_data, parent_path: parent_path)
-              all_types << { name: type_name, code: code }
+              all_types << { code: code, name: type_name }
             end
           end
         end

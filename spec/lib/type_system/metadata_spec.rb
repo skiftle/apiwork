@@ -18,7 +18,7 @@ RSpec.describe 'TypeSystem Metadata' do
 
     it 'stores and serializes type with example' do
       api = Apiwork::API.define '/api/test' do
-        type :address, example: { street: '123 Main St', city: 'NYC' } do
+        type :address, example: { city: 'NYC', street: '123 Main St' } do
           param :street, type: :string
           param :city, type: :string
         end
@@ -26,7 +26,7 @@ RSpec.describe 'TypeSystem Metadata' do
 
       types = Apiwork::Introspection::TypeSerializer.new(api).serialize_types
 
-      expect(types[:address]).to include(example: { street: '123 Main St', city: 'NYC' })
+      expect(types[:address]).to include(example: { city: 'NYC', street: '123 Main St' })
     end
 
     it 'stores and serializes type with format' do
@@ -134,7 +134,7 @@ RSpec.describe 'TypeSystem Metadata' do
   describe 'Enum metadata' do
     it 'stores and serializes enum with description' do
       api = Apiwork::API.define '/api/test' do
-        enum :role, values: %w[admin user guest], description: 'User role in the system'
+        enum :role, description: 'User role in the system', values: %w[admin user guest]
       end
 
       enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
@@ -144,7 +144,7 @@ RSpec.describe 'TypeSystem Metadata' do
 
     it 'stores and serializes enum with example' do
       api = Apiwork::API.define '/api/test' do
-        enum :priority, values: %i[low medium high], example: :medium
+        enum :priority, example: :medium, values: %i[low medium high]
       end
 
       enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
@@ -154,7 +154,7 @@ RSpec.describe 'TypeSystem Metadata' do
 
     it 'stores and serializes enum with deprecated: true' do
       api = Apiwork::API.define '/api/test' do
-        enum :old_status, values: %w[active inactive], deprecated: true
+        enum :old_status, deprecated: true, values: %w[active inactive]
       end
 
       enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
@@ -164,7 +164,7 @@ RSpec.describe 'TypeSystem Metadata' do
 
     it 'omits deprecated: false for enums' do
       api = Apiwork::API.define '/api/test' do
-        enum :current_status, values: %w[active inactive], deprecated: false
+        enum :current_status, deprecated: false, values: %w[active inactive]
       end
 
       enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
@@ -224,7 +224,7 @@ RSpec.describe 'TypeSystem Metadata' do
 
     it 'omits deprecated: false even when explicitly set' do
       api = Apiwork::API.define '/api/test' do
-        enum :normal_enum, values: %i[a b], deprecated: false
+        enum :normal_enum, deprecated: false, values: %i[a b]
       end
 
       enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
@@ -235,7 +235,7 @@ RSpec.describe 'TypeSystem Metadata' do
 
     it 'preserves empty string description' do
       api = Apiwork::API.define '/api/test' do
-        enum :empty_desc_enum, values: %i[a b], description: ''
+        enum :empty_desc_enum, description: '', values: %i[a b]
       end
 
       enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
@@ -273,11 +273,11 @@ RSpec.describe 'TypeSystem Metadata' do
 
     it 'keeps enum metadata isolated between different APIs' do
       api1 = Apiwork::API.define '/api/v1' do
-        enum :status, values: %w[active inactive], description: 'V1 status'
+        enum :status, description: 'V1 status', values: %w[active inactive]
       end
 
       api2 = Apiwork::API.define '/api/v2' do
-        enum :status, values: %w[pending approved], description: 'V2 status'
+        enum :status, description: 'V2 status', values: %w[pending approved]
       end
 
       enums_v1 = Apiwork::Introspection::TypeSerializer.new(api1).serialize_enums
@@ -346,7 +346,7 @@ RSpec.describe 'TypeSystem Metadata' do
           end
         end
 
-        enum :scoped_enum, values: %i[a b c], description: 'Contract-scoped enum with metadata'
+        enum :scoped_enum, description: 'Contract-scoped enum with metadata', values: %i[a b c]
       end
 
       enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
@@ -377,7 +377,7 @@ RSpec.describe 'TypeSystem Metadata' do
 
     it 'handles enum example that is not in values list' do
       api = Apiwork::API.define '/api/test' do
-        enum :status, values: %w[active inactive], example: 'pending'
+        enum :status, example: 'pending', values: %w[active inactive]
       end
 
       enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums

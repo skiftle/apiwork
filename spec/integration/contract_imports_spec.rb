@@ -12,9 +12,9 @@ RSpec.describe 'Contract Imports' do
     let(:user_contract) do
       create_test_contract do
         type :address do
-          param :street, type: :string, required: true
-          param :city, type: :string, required: true
-          param :country_code, type: :string, required: true
+          param :street, required: true, type: :string
+          param :city, required: true, type: :string
+          param :country_code, required: true, type: :string
         end
 
         enum :status, values: %w[active inactive suspended]
@@ -24,8 +24,8 @@ RSpec.describe 'Contract Imports' do
     let(:order_contract) do
       create_test_contract do
         type :order_item do
-          param :product_id, type: :uuid, required: true
-          param :quantity, type: :integer, required: true
+          param :product_id, required: true, type: :uuid
+          param :quantity, required: true, type: :integer
         end
       end
     end
@@ -38,7 +38,7 @@ RSpec.describe 'Contract Imports' do
         action :create do
           request do
             body do
-              param :shipping_address, type: :user_address, required: true
+              param :shipping_address, required: true, type: :user_address
             end
           end
         end
@@ -57,7 +57,7 @@ RSpec.describe 'Contract Imports' do
         action :create do
           request do
             body do
-              param :account_status, type: :string, enum: :user_status
+              param :account_status, enum: :user_status, type: :string
             end
           end
         end
@@ -78,7 +78,7 @@ RSpec.describe 'Contract Imports' do
           request do
             body do
               param :shipping_address, type: :user_address
-              param :items, type: :array, of: :order_order_item
+              param :items, of: :order_order_item, type: :array
             end
           end
         end
@@ -205,8 +205,8 @@ RSpec.describe 'Contract Imports' do
     let(:user_contract) do
       create_test_contract do
         type :address do
-          param :street, type: :string, required: true
-          param :city, type: :string, required: true
+          param :street, required: true, type: :string
+          param :city, required: true, type: :string
         end
       end
     end

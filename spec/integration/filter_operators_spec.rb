@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe 'Filter Operators' do
-  let!(:old_post) { Post.create!(title: 'Old Post', created_at: 3.days.ago) }
-  let!(:recent_post) { Post.create!(title: 'Recent Post', created_at: 1.day.ago) }
-  let!(:new_post) { Post.create!(title: 'New Post', created_at: 1.hour.ago) }
+  let!(:old_post) { Post.create!(created_at: 3.days.ago, title: 'Old Post') }
+  let!(:recent_post) { Post.create!(created_at: 1.day.ago, title: 'Recent Post') }
+  let!(:new_post) { Post.create!(created_at: 1.hour.ago, title: 'New Post') }
 
   describe 'Comparison operators for dates' do
     describe 'gte (greater than or equal)' do

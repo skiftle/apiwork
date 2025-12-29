@@ -38,7 +38,11 @@ module Apiwork
                 code: :operator_invalid,
                 detail: 'Invalid operator',
                 path: [:filter, field_name, operator],
-                meta: { field: field_name, operator: operator, allowed: valid_operators }
+                meta: {
+                  allowed: valid_operators,
+                  field: field_name,
+                  operator: operator
+                }
               )
             end
           end

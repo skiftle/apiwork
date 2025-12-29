@@ -5,7 +5,7 @@ module Apiwork
     extend ActiveSupport::Concern
 
     included do
-      class_attribute :options, instance_predicate: false, default: {}
+      class_attribute :options, default: {}, instance_predicate: false
     end
 
     # @!method option(name, type:, default: nil, enum: nil, &block)

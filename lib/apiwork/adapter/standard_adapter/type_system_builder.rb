@@ -8,7 +8,11 @@ module Apiwork
           string_filter: {
             params: [
               { name: :eq, type: :string },
-              { name: :in, type: :array, of: :string },
+              {
+                name: :in,
+                of: :string,
+                type: :array
+              },
               { name: :contains, type: :string },
               { name: :starts_with, type: :string },
               { name: :ends_with, type: :string }
@@ -28,7 +32,11 @@ module Apiwork
               { name: :gte, type: :integer },
               { name: :lt, type: :integer },
               { name: :lte, type: :integer },
-              { name: :in, type: :array, of: :integer },
+              {
+                name: :in,
+                of: :integer,
+                type: :array
+              },
               { name: :between, type: :integer_filter_between }
             ]
           },
@@ -46,7 +54,11 @@ module Apiwork
               { name: :gte, type: :decimal },
               { name: :lt, type: :decimal },
               { name: :lte, type: :decimal },
-              { name: :in, type: :array, of: :decimal },
+              {
+                name: :in,
+                of: :decimal,
+                type: :array
+              },
               { name: :between, type: :decimal_filter_between }
             ]
           },
@@ -70,7 +82,11 @@ module Apiwork
               { name: :lt, type: :date },
               { name: :lte, type: :date },
               { name: :between, type: :date_filter_between },
-              { name: :in, type: :array, of: :date }
+              {
+                name: :in,
+                of: :date,
+                type: :array
+              }
             ]
           },
           datetime_filter_between: {
@@ -88,13 +104,21 @@ module Apiwork
               { name: :lt, type: :datetime },
               { name: :lte, type: :datetime },
               { name: :between, type: :datetime_filter_between },
-              { name: :in, type: :array, of: :datetime }
+              {
+                name: :in,
+                of: :datetime,
+                type: :array
+              }
             ]
           },
           uuid_filter: {
             params: [
               { name: :eq, type: :uuid },
-              { name: :in, type: :array, of: :uuid }
+              {
+                name: :in,
+                of: :uuid,
+                type: :array
+              }
             ]
           }
         }.freeze
@@ -128,8 +152,8 @@ module Apiwork
         def register_offset_pagination
           registrar.type :offset_pagination do
             param :current, type: :integer
-            param :next, type: :integer, nullable: true, optional: true
-            param :prev, type: :integer, nullable: true, optional: true
+            param :next, nullable: true, optional: true, type: :integer
+            param :prev, nullable: true, optional: true, type: :integer
             param :total, type: :integer
             param :items, type: :integer
           end
@@ -137,8 +161,8 @@ module Apiwork
 
         def register_cursor_pagination
           registrar.type :cursor_pagination do
-            param :next, type: :string, nullable: true, optional: true
-            param :prev, type: :string, nullable: true, optional: true
+            param :next, nullable: true, optional: true, type: :string
+            param :prev, nullable: true, optional: true, type: :string
           end
         end
 
@@ -148,14 +172,14 @@ module Apiwork
           registrar.type :issue do
             param :code, type: :string
             param :detail, type: :string
-            param :path, type: :array, of: :string
+            param :path, of: :string, type: :array
             param :pointer, type: :string
             param :meta, type: :object
           end
 
           registrar.type :error_response_body do
             param :layer, type: :layer
-            param :issues, type: :array, of: :issue
+            param :issues, of: :issue, type: :array
           end
         end
 
@@ -207,9 +231,9 @@ module Apiwork
           registrar.type(type_name) do
             params.each do |param_definition|
               if param_definition[:of]
-                param param_definition[:name], type: param_definition[:type], of: param_definition[:of], optional: true
+                param param_definition[:name], of: param_definition[:of], optional: true, type: param_definition[:type]
               else
-                param param_definition[:name], type: param_definition[:type], optional: true
+                param param_definition[:name], optional: true, type: param_definition[:type]
               end
             end
           end

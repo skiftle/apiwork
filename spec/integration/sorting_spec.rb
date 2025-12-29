@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe 'Sorting API', type: :request do
-  let!(:post_a) { Post.create!(title: 'Alpha Post', body: 'Content A', published: true, created_at: 3.days.ago) }
-  let!(:post_b) { Post.create!(title: 'Beta Post', body: 'Content B', published: false, created_at: 1.day.ago) }
-  let!(:post_c) { Post.create!(title: 'Charlie Post', body: 'Content C', published: true, created_at: 2.days.ago) }
+  let!(:post_a) { Post.create!(body: 'Content A', created_at: 3.days.ago, published: true, title: 'Alpha Post') }
+  let!(:post_b) { Post.create!(body: 'Content B', created_at: 1.day.ago, published: false, title: 'Beta Post') }
+  let!(:post_c) { Post.create!(body: 'Content C', created_at: 2.days.ago, published: true, title: 'Charlie Post') }
 
   describe 'GET /api/v1/posts with sorting' do
     it 'sorts by title ascending' do

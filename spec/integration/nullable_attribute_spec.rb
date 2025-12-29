@@ -12,7 +12,7 @@ RSpec.describe 'Nullable attribute option', type: :request do
         }
       }
 
-      post '/api/v1/users', params: user_params, as: :json
+      post '/api/v1/users', as: :json, params: user_params
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
@@ -26,7 +26,7 @@ RSpec.describe 'Nullable attribute option', type: :request do
     it 'omits nil value on update (nil values are omitted from params)' do
       # When sending nil in JSON, Rails/Apiwork omits it from params
       # This is correct REST API behavior - omitted fields are not updated
-      user = User.create!(name: 'Test User', email: 'original@example.com')
+      user = User.create!(email: 'original@example.com', name: 'Test User')
 
       patch "/api/v1/users/#{user.id}",
             params: { user: { email: nil } },
@@ -43,7 +43,7 @@ RSpec.describe 'Nullable attribute option', type: :request do
     end
 
     it 'returns nil in response when value is nil' do
-      user = User.create!(name: 'Test User', email: nil)
+      user = User.create!(email: nil, name: 'Test User')
 
       get "/api/v1/users/#{user.id}", as: :json
 
@@ -54,7 +54,7 @@ RSpec.describe 'Nullable attribute option', type: :request do
     end
 
     it 'allows setting value after nil' do
-      user = User.create!(name: 'Test User', email: nil)
+      user = User.create!(email: nil, name: 'Test User')
 
       patch "/api/v1/users/#{user.id}",
             params: { user: { email: 'new@example.com' } },
@@ -80,7 +80,7 @@ RSpec.describe 'Nullable attribute option', type: :request do
         }
       }
 
-      post '/api/v1/users', params: user_params, as: :json
+      post '/api/v1/users', as: :json, params: user_params
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
@@ -92,7 +92,7 @@ RSpec.describe 'Nullable attribute option', type: :request do
     end
 
     it 'rejects nil value on update' do
-      user = User.create!(name: 'Original Name', email: 'test@example.com')
+      user = User.create!(email: 'test@example.com', name: 'Original Name')
 
       patch "/api/v1/users/#{user.id}",
             params: { user: { name: nil } },
@@ -116,7 +116,7 @@ RSpec.describe 'Nullable attribute option', type: :request do
       # nil → rejected (value_null)
 
       post '/api/v1/users',
-           params: { user: { name: '', email: 'test@example.com' } },
+           params: { user: { email: 'test@example.com', name: '' } },
            as: :json
 
       expect(response).to have_http_status(:created)
@@ -128,7 +128,7 @@ RSpec.describe 'Nullable attribute option', type: :request do
 
       # But explicit nil is rejected
       post '/api/v1/users',
-           params: { user: { name: nil, email: 'test2@example.com' } },
+           params: { user: { email: 'test2@example.com', name: nil } },
            as: :json
 
       expect(response).to have_http_status(:bad_request)
@@ -141,7 +141,7 @@ RSpec.describe 'Nullable attribute option', type: :request do
   describe 'nullable: true allows serialize/deserialize transformations' do
     it 'transforms nil values through serialize/deserialize' do
       # email has nullable: true + serialize/deserialize
-      user = User.create!(name: 'Test', email: nil)
+      user = User.create!(email: nil, name: 'Test')
 
       # Serialize should handle nil gracefully (value&.downcase)
       get "/api/v1/users/#{user.id}", as: :json

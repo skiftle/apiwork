@@ -4,15 +4,15 @@ require 'rails_helper'
 
 RSpec.describe 'Includes API', type: :request do
   let!(:post1) do
-    Post.create!(title: 'First Post', body: 'Content', published: true).tap do |post|
-      post.comments.create!(content: 'Great post!', author: 'Alice')
-      post.comments.create!(content: 'Thanks!', author: 'Bob')
+    Post.create!(body: 'Content', published: true, title: 'First Post').tap do |post|
+      post.comments.create!(author: 'Alice', content: 'Great post!')
+      post.comments.create!(author: 'Bob', content: 'Thanks!')
     end
   end
 
   let!(:post2) do
-    Post.create!(title: 'Second Post', body: 'More content', published: false).tap do |post|
-      post.comments.create!(content: 'Interesting', author: 'Charlie')
+    Post.create!(body: 'More content', published: false, title: 'Second Post').tap do |post|
+      post.comments.create!(author: 'Charlie', content: 'Interesting')
     end
   end
 
@@ -223,7 +223,11 @@ RSpec.describe 'Includes API', type: :request do
   describe 'POST /api/v1/posts with include' do
     it 'includes associations on create action' do
       post '/api/v1/posts?include[comments]=true',
-           params: { post: { title: 'New Post', body: 'Content', published: true } }.to_json,
+           params: { post: {
+             body: 'Content',
+             published: true,
+             title: 'New Post'
+           } }.to_json,
            headers: { 'CONTENT_TYPE' => 'application/json' }
 
       expect(response).to have_http_status(:created)
@@ -234,7 +238,11 @@ RSpec.describe 'Includes API', type: :request do
 
     it 'does not include associations when not requested' do
       post '/api/v1/posts', params: {
-        post: { title: 'Another Post', body: 'More content', published: false }
+        post: {
+          body: 'More content',
+          published: false,
+          title: 'Another Post'
+        }
       }, as: :json
 
       expect(response).to have_http_status(:created)

@@ -165,7 +165,7 @@ RSpec.describe Apiwork::Spec::TypeScriptSpec do
 
           kind = Regexp.last_match(1)
           name = Regexp.last_match(2)
-          declarations << { name: name, kind: kind }
+          declarations << { kind: kind, name: name }
         end
 
         # Verify they're in alphabetical order by name
@@ -331,7 +331,7 @@ RSpec.describe Apiwork::Spec::TypeScriptSpec do
           param :value, type: :string
         end
 
-        enum :status, values: %w[active inactive], description: 'Status enum', deprecated: true
+        enum :status, deprecated: true, description: 'Status enum', values: %w[active inactive]
       end
       @metadata_output = Apiwork::Spec.generate(:typescript, '/api/ts_metadata_test')
     end
@@ -365,7 +365,7 @@ RSpec.describe Apiwork::Spec::TypeScriptSpec do
 
     it 'generates correct output for type with all metadata fields' do
       Apiwork::API.define '/api/ts_full_metadata' do
-        type :full_meta, description: 'desc', example: { x: 1 }, format: 'fmt', deprecated: false do
+        type :full_meta, deprecated: false, description: 'desc', example: { x: 1 }, format: 'fmt' do
           param :x, type: :integer
         end
       end
@@ -380,7 +380,7 @@ RSpec.describe Apiwork::Spec::TypeScriptSpec do
 
     it 'generates correct output for enum with all metadata fields' do
       Apiwork::API.define '/api/ts_enum_meta' do
-        enum :color, values: %w[red green blue], description: 'desc', example: 'red', deprecated: false
+        enum :color, deprecated: false, description: 'desc', example: 'red', values: %w[red green blue]
       end
 
       output = Apiwork::Spec.generate(:typescript, '/api/ts_enum_meta')
@@ -398,7 +398,7 @@ RSpec.describe Apiwork::Spec::TypeScriptSpec do
     it 'includes property descriptions as JSDoc' do
       Apiwork::API.define '/api/ts_prop_desc' do
         type :invoice do
-          param :amount, type: :decimal, description: 'Total amount in cents'
+          param :amount, description: 'Total amount in cents', type: :decimal
           param :currency, type: :string
         end
       end
@@ -415,8 +415,8 @@ RSpec.describe Apiwork::Spec::TypeScriptSpec do
     it 'includes @example in JSDoc with JSON format on separate lines' do
       Apiwork::API.define '/api/ts_example' do
         type :price, description: 'Price object', example: { amount: 99 } do
-          param :amount, type: :integer, example: 99
-          param :currency, type: :string, example: 'USD'
+          param :amount, example: 99, type: :integer
+          param :currency, example: 'USD', type: :string
         end
       end
 

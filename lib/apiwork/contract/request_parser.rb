@@ -61,7 +61,7 @@ module Apiwork
       end
 
       def validate(data, definition)
-        definition.validate(data) || { params: data, issues: [] }
+        definition.validate(data) || { issues: [], params: data }
       end
 
       def deserialize(data, definition)

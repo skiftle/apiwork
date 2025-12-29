@@ -206,7 +206,7 @@ module Apiwork
               code: :field_not_filterable,
               detail: 'Not filterable',
               path: [:filter, key],
-              meta: { field: key, available: available }
+              meta: { available: available, field: key }
             )
           end
 
@@ -256,7 +256,11 @@ module Apiwork
               code: :enum_invalid,
               detail: 'Invalid enum value',
               path: [:filter, key],
-              meta: { field: key, value: invalid_values, allowed: enum_values }
+              meta: {
+                allowed: enum_values,
+                field: key,
+                value: invalid_values
+              }
             )
           end
 
@@ -333,7 +337,7 @@ module Apiwork
               allowed_types: [Hash]
             )
 
-            builder.build(value, valid_operators: NULLABLE_UUID_OPERATORS, normalizer: normalizer) do |operator, compare|
+            builder.build(value, normalizer: normalizer, valid_operators: NULLABLE_UUID_OPERATORS) do |operator, compare|
               case operator
               when :eq then column.eq(compare)
               when :in then column.in(compare)
@@ -387,7 +391,7 @@ module Apiwork
               allowed_types: [Hash]
             )
 
-            builder.build(value, valid_operators: NULLABLE_DATE_OPERATORS, normalizer: normalizer) do |operator, compare|
+            builder.build(value, normalizer: normalizer, valid_operators: NULLABLE_DATE_OPERATORS) do |operator, compare|
               if operator == :null
                 handle_null_operator(column, compare)
               elsif compare.blank?

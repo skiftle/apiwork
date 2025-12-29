@@ -9,7 +9,7 @@ class CreateBoldFalconTables < ActiveRecord::Migration[7.1]
     end
 
     create_table :bold_falcon_articles, id: :string do |t|
-      t.references :category, type: :string, foreign_key: { to_table: :bold_falcon_categories }
+      t.references :category, foreign_key: { to_table: :bold_falcon_categories }, type: :string
       t.string :title, null: false
       t.text :body
       t.string :status, default: 'draft'

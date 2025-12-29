@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Root key override with root DSL', type: :request do
   describe 'Auto-pluralization with root :article' do
     it 'uses custom singular root key for single resources' do
-      post = Post.create!(title: 'Test Article', body: 'Body', published: true)
+      post = Post.create!(body: 'Body', published: true, title: 'Test Article')
 
       get "/api/v1/articles/#{post.id}"
 
@@ -17,8 +17,8 @@ RSpec.describe 'Root key override with root DSL', type: :request do
     end
 
     it 'uses custom plural root key for collections' do
-      Post.create!(title: 'Article 1', body: 'Body 1', published: true)
-      Post.create!(title: 'Article 2', body: 'Body 2', published: false)
+      Post.create!(body: 'Body 1', published: true, title: 'Article 1')
+      Post.create!(body: 'Body 2', published: false, title: 'Article 2')
 
       get '/api/v1/articles'
 
@@ -36,7 +36,7 @@ RSpec.describe 'Root key override with root DSL', type: :request do
         }
       }
 
-      post '/api/v1/articles', params: article_params, as: :json
+      post '/api/v1/articles', as: :json, params: article_params
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
@@ -46,7 +46,7 @@ RSpec.describe 'Root key override with root DSL', type: :request do
 
   describe 'Explicit plural with root :person, :people' do
     it 'uses custom singular root key (person)' do
-      post_record = Post.create!(title: 'John Doe', body: 'Bio', published: true)
+      post_record = Post.create!(body: 'Bio', published: true, title: 'John Doe')
 
       get "/api/v1/persons/#{post_record.id}"
 
@@ -59,8 +59,8 @@ RSpec.describe 'Root key override with root DSL', type: :request do
     end
 
     it 'uses custom irregular plural root key (people)' do
-      Post.create!(title: 'Person 1', body: 'Bio 1', published: true)
-      Post.create!(title: 'Person 2', body: 'Bio 2', published: false)
+      Post.create!(body: 'Bio 1', published: true, title: 'Person 1')
+      Post.create!(body: 'Bio 2', published: false, title: 'Person 2')
 
       get '/api/v1/persons'
 
@@ -81,7 +81,7 @@ RSpec.describe 'Root key override with root DSL', type: :request do
         }
       }
 
-      post '/api/v1/persons', params: person_params, as: :json
+      post '/api/v1/persons', as: :json, params: person_params
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
@@ -91,7 +91,7 @@ RSpec.describe 'Root key override with root DSL', type: :request do
 
   describe 'Root key consistency' do
     it 'same model produces different root keys through different resources' do
-      post = Post.create!(title: 'Same Data', body: 'Body', published: true)
+      post = Post.create!(body: 'Body', published: true, title: 'Same Data')
 
       # Through PostsController (default: 'post'/'posts')
       get "/api/v1/posts/#{post.id}"

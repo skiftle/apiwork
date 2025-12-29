@@ -128,7 +128,7 @@ class RequestRunner
 
   def execute_request(method, path, body)
     if body
-      send(method, path, params: body.to_json, headers: json_headers)
+      send(method, path, headers: json_headers, params: body.to_json)
     else
       send(method, path, headers: json_headers)
     end

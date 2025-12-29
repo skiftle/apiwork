@@ -3,7 +3,7 @@
 module GentleOwl
   class ImageSchema < Apiwork::Schema::Base
     attribute :id
-    attribute :title, writable: true, filterable: true
+    attribute :title, filterable: true, writable: true
     attribute :url, writable: true
     attribute :width, writable: true
     attribute :height, writable: true

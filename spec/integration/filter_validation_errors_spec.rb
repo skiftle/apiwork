@@ -61,8 +61,8 @@ RSpec.describe 'Filter and Sort Validation Errors', type: :request do
 
   describe 'Valid filter and sort parameters' do
     before do
-      Post.create!(title: 'Alpha Post', published: true)
-      Post.create!(title: 'Beta Post', published: false)
+      Post.create!(published: true, title: 'Alpha Post')
+      Post.create!(published: false, title: 'Beta Post')
     end
 
     it 'accepts valid filter parameters' do

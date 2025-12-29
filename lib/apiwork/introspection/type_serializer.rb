@@ -21,7 +21,7 @@ module Apiwork
         base = if expanded_shape.is_a?(Hash) && expanded_shape[:type] == :union
                  expanded_shape
                elsif expanded_shape.present?
-                 { type: :object, shape: expanded_shape }
+                 { shape: expanded_shape, type: :object }
                else
                  { type: :object }
                end
