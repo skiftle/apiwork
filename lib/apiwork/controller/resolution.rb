@@ -18,28 +18,8 @@ module Apiwork
         @api_class ||= find_api_class || raise_api_not_found_error
       end
 
-      def find_api_class
-        parts = path_parts
-        return API.find('/') if parts.empty?
-
-        (parts.length - 1).downto(1) do |i|
-          path = "/#{parts[0...i].join('/')}"
-          api_class = API.find(path)
-          return api_class if api_class
-        end
-
-        nil
-      end
-
       def api_path
-        api_class&.path || begin
-          parts = path_parts
-          parts.empty? ? '/' : "/#{parts[0..1].join('/')}"
-        end
-      end
-
-      def path_parts
-        @path_parts ||= request.path.split('/').reject(&:blank?)
+        api_class.path
       end
 
       def relative_path
@@ -54,23 +34,13 @@ module Apiwork
         @resource ||= api_class.structure.find_resource(resource_name)
       end
 
-      def resource_name
-        @resource_name ||= begin
-          base_name = self.class.name.underscore.delete_suffix('_controller').split('/').last
-
-          plural = base_name.to_sym
-          singular = base_name.singularize.to_sym
-
-          api_class.structure.find_resource(plural) ? plural : singular
-        end
-      end
-
       def raise_api_not_found_error
-        api_file = "config/apis/#{api_path.split('/').reject(&:blank?).join('_')}.rb"
+        path = path_parts.empty? ? '/' : "/#{path_parts[0..1].join('/')}"
+        api_file = "config/apis/#{path.split('/').reject(&:blank?).join('_')}.rb"
 
         raise ConfigurationError,
               "No API found for #{self.class.name}. " \
-              "Create the API: #{api_file} (Apiwork::API.define '#{api_path}')"
+              "Create the API: #{api_file} (Apiwork::API.define '#{path}')"
       end
 
       def raise_contract_not_found_error
@@ -83,6 +53,34 @@ module Apiwork
         raise ConfigurationError,
               "No contract found for #{self.class.name}. " \
               "Create the contract: #{contract_path} (#{contract_name})"
+      end
+
+      def find_api_class
+        parts = path_parts
+        return API.find('/') if parts.empty?
+
+        (parts.length - 1).downto(1) do |i|
+          path = "/#{parts[0...i].join('/')}"
+          api_class = API.find(path)
+          return api_class if api_class
+        end
+
+        nil
+      end
+
+      def resource_name
+        @resource_name ||= begin
+          base_name = self.class.name.underscore.delete_suffix('_controller').split('/').last
+
+          plural = base_name.to_sym
+          singular = base_name.singularize.to_sym
+
+          api_class.structure.find_resource(plural) ? plural : singular
+        end
+      end
+
+      def path_parts
+        @path_parts ||= request.path.split('/').reject(&:blank?)
       end
     end
   end
