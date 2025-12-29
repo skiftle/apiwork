@@ -67,29 +67,53 @@ module Apiwork
         end
       end
 
-      def resources(name = nil, **options, &block)
+      def resources(name = nil,
+                    concerns: nil,
+                    contract: nil,
+                    controller: nil,
+                    except: nil,
+                    only: nil,
+                    path: nil,
+                    &block)
         return @resources if name.nil?
 
-        concern_names = options.delete(:concerns)
-
+        options = {
+          contract: contract,
+          controller: controller,
+          except: except,
+          only: only,
+          path: path,
+        }.compact
         create_resource(name, options: options, singular: false)
 
         @resource_stack.push(name)
 
-        concerns(*concern_names) if concern_names
+        concerns(*concerns) if concerns
         instance_eval(&block) if block
 
         @resource_stack.pop
       end
 
-      def resource(name, **options, &block)
-        concern_names = options.delete(:concerns)
-
+      def resource(name,
+                   concerns: nil,
+                   contract: nil,
+                   controller: nil,
+                   except: nil,
+                   only: nil,
+                   path: nil,
+                   &block)
+        options = {
+          contract: contract,
+          controller: controller,
+          except: except,
+          only: only,
+          path: path,
+        }.compact
         create_resource(name, options: options, singular: true)
 
         @resource_stack.push(name)
 
-        concerns(*concern_names) if concern_names
+        concerns(*concerns) if concerns
         instance_eval(&block) if block
 
         @resource_stack.pop
@@ -116,24 +140,24 @@ module Apiwork
         @in_collection_block = false
       end
 
-      def patch(actions, **options)
-        capture_actions(actions, method: :patch, options: options)
+      def patch(actions, on: nil)
+        capture_actions(actions, method: :patch, on: on)
       end
 
-      def get(actions, **options)
-        capture_actions(actions, method: :get, options: options)
+      def get(actions, on: nil)
+        capture_actions(actions, method: :get, on: on)
       end
 
-      def post(actions, **options)
-        capture_actions(actions, method: :post, options: options)
+      def post(actions, on: nil)
+        capture_actions(actions, method: :post, on: on)
       end
 
-      def put(actions, **options)
-        capture_actions(actions, method: :put, options: options)
+      def put(actions, on: nil)
+        capture_actions(actions, method: :put, on: on)
       end
 
-      def delete(actions, **options)
-        capture_actions(actions, method: :delete, options: options)
+      def delete(actions, on: nil)
+        capture_actions(actions, method: :delete, on: on)
       end
 
       def concern(name, callable = nil, &block)
@@ -217,27 +241,27 @@ module Apiwork
         end
       end
 
-      def capture_actions(actions, method:, options:)
+      def capture_actions(actions, method:, on:)
         Array(actions).each do |action|
-          capture_action(action, method: method, options: options)
+          capture_action(action, method: method, on: on)
         end
       end
 
-      def capture_action(action, method:, options:)
+      def capture_action(action, method:, on:)
         resource_name = @resource_stack.last
         return unless resource_name
 
         resource = find_resource(resource_name)
         return unless resource
 
-        if options[:on] && [:member, :collection].exclude?(options[:on])
+        if on && [:member, :collection].exclude?(on)
           raise ConfigurationError,
-                ":on option must be either :member or :collection, got #{options[:on].inspect}"
+                ":on option must be either :member or :collection, got #{on.inspect}"
         end
 
-        action_type = if @in_member_block || options[:on] == :member
+        action_type = if @in_member_block || on == :member
                         :member
-                      elsif @in_collection_block || options[:on] == :collection
+                      elsif @in_collection_block || on == :collection
                         :collection
                       end
 

@@ -124,8 +124,8 @@ module Apiwork
       # @api public
       # Declares error codes this action may return.
       #
-      # Error codes must be registered via ErrorCode.register.
-      # These appear in generated specs as possible error responses.
+      # Uses built-in error codes (:not_found, :forbidden, etc.) or custom codes
+      # registered via ErrorCode.register. These appear in generated specs.
       #
       # @param error_code_keys [Array<Symbol>] error code keys
       # @raise [ConfigurationError] if error code is not registered

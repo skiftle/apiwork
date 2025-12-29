@@ -38,13 +38,14 @@ module Apiwork
       # @param as [Symbol] serialize field under different name
       # @param discriminator [Symbol] discriminator field for :union type
       # @param value [Object] exact value for :literal type
-      # @option options [Boolean] :nullable whether null is allowed
-      # @option options [Integer] :min minimum value (numeric) or length (string/array)
-      # @option options [Integer] :max maximum value (numeric) or length (string/array)
-      # @option options [String] :description field description for docs
-      # @option options [Object] :example example value for docs
-      # @option options [String] :format format hint (e.g. 'email', 'uri')
-      # @option options [Boolean] :deprecated mark field as deprecated
+      # @param deprecated [Boolean] mark field as deprecated
+      # @param description [String] field description for docs
+      # @param example [Object] example value for docs
+      # @param format [String] format hint (e.g. 'email', 'uri')
+      # @param max [Integer] maximum value (numeric) or length (string/array)
+      # @param min [Integer] minimum value (numeric) or length (string/array)
+      # @param nullable [Boolean] whether null is allowed
+      # @param required [Boolean] alias for optional: false (for readability)
       # @yield nested params for :object or :array of objects
       #
       # @example Basic types
@@ -77,8 +78,33 @@ module Apiwork
                 discriminator: nil,
                 value: nil,
                 visited_types: nil,
-                **options,
+                association_definition: nil,
+                attribute_definition: nil,
+                deprecated: nil,
+                description: nil,
+                example: nil,
+                format: nil,
+                max: nil,
+                min: nil,
+                nullable: nil,
+                required: nil,
+                sti_mapping: nil,
+                type_contract_class: nil,
                 &block)
+        options = {
+          association_definition: association_definition,
+          attribute_definition: attribute_definition,
+          deprecated: deprecated,
+          description: description,
+          example: example,
+          format: format,
+          max: max,
+          min: min,
+          nullable: nullable,
+          required: required,
+          sti_mapping: sti_mapping,
+          type_contract_class: type_contract_class,
+        }.compact
         if type.nil? && (existing_param = @params[name])
           merge_existing_param(
             name,

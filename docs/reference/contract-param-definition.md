@@ -20,7 +20,7 @@ Use as a declarative builder - do not rely on internal state.
 
 `#meta(optional: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L133)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L172)
 
 Shorthand for `param :meta, type: :object do ... end`.
 
@@ -60,9 +60,9 @@ end
 
 ### #param
 
-`#param(name, type: nil, optional: nil, default: nil, enum: nil, of: nil, as: nil, discriminator: nil, value: nil, visited_types: nil, **options, &block)`
+`#param(name, type: nil, optional: nil, default: nil, enum: nil, of: nil, as: nil, discriminator: nil, value: nil, visited_types: nil, association_definition: nil, attribute_definition: nil, deprecated: nil, description: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, required: nil, sti_mapping: nil, type_contract_class: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L70)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L71)
 
 Defines a parameter/field in a request or response body.
 
@@ -71,8 +71,7 @@ Defines a parameter/field in a request or response body.
 | Name | Type | Description |
 |------|------|-------------|
 | `name` | `Symbol` | field name |
-| `type` | `Symbol` | data type (:string, :integer, :boolean, :datetime, :date,
-:uuid, :object, :array, :decimal, :float, :literal, :union, or custom type) |
+| `type` | `Symbol` | data type (:string, :integer, :boolean, :datetime, :date, :uuid, :object, :array, :decimal, :float, :literal, :union, or custom type) |
 | `optional` | `Boolean` | whether field can be omitted (default: false) |
 | `default` | `Object` | value when field is nil |
 | `enum` | `Array, Symbol` | allowed values, or reference to registered enum |
@@ -80,7 +79,14 @@ Defines a parameter/field in a request or response body.
 | `as` | `Symbol` | serialize field under different name |
 | `discriminator` | `Symbol` | discriminator field for :union type |
 | `value` | `Object` | exact value for :literal type |
-| `options` | `Hash` | a customizable set of options |
+| `deprecated` | `Boolean` | mark field as deprecated |
+| `description` | `String` | field description for docs |
+| `example` | `Object` | example value for docs |
+| `format` | `String` | format hint (e.g. 'email', 'uri') |
+| `max` | `Integer` | maximum value (numeric) or length (string/array) |
+| `min` | `Integer` | minimum value (numeric) or length (string/array) |
+| `nullable` | `Boolean` | whether null is allowed |
+| `required` | `Boolean` | alias for optional: false (for readability) |
 
 **Example: Basic types**
 

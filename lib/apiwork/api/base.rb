@@ -367,12 +367,12 @@ module Apiwork
         # Nested resources and custom actions can be defined in the block.
         #
         # @param name [Symbol] resource name (plural)
-        # @param options [Hash] resource options
-        # @option options [Array<Symbol>] :only limit to specific CRUD actions
-        # @option options [Array<Symbol>] :except exclude specific CRUD actions
-        # @option options [String] :contract custom contract path
-        # @option options [String] :controller custom controller path
-        # @option options [Array<Symbol>] :concerns concerns to include
+        # @param concerns [Array<Symbol>] concerns to include
+        # @param contract [String] custom contract path
+        # @param controller [String] custom controller path
+        # @param except [Array<Symbol>] exclude specific CRUD actions
+        # @param only [Array<Symbol>] limit to specific CRUD actions
+        # @param path [String] custom URL path segment
         # @yield block for nested resources and custom actions
         #
         # @example Basic resource
@@ -385,8 +385,24 @@ module Apiwork
         #     member { post :archive }
         #     resources :line_items
         #   end
-        def resources(name, **options, &block)
-          @structure.resources(name, **options, &block)
+        def resources(name,
+                      concerns: nil,
+                      contract: nil,
+                      controller: nil,
+                      except: nil,
+                      only: nil,
+                      path: nil,
+                      &block)
+          @structure.resources(
+            name,
+            concerns: concerns,
+            contract: contract,
+            controller: controller,
+            except: except,
+            only: only,
+            path: path,
+            &block
+          )
         end
 
         # @api public
@@ -396,7 +412,12 @@ module Apiwork
         # like user profile or application settings.
         #
         # @param name [Symbol] resource name (singular)
-        # @param options [Hash] resource options (same as resources)
+        # @param concerns [Array<Symbol>] concerns to include
+        # @param contract [String] custom contract path
+        # @param controller [String] custom controller path
+        # @param except [Array<Symbol>] exclude specific CRUD actions
+        # @param only [Array<Symbol>] limit to specific CRUD actions
+        # @param path [String] custom URL path segment
         # @yield block for nested resources and custom actions
         #
         # @example
@@ -404,8 +425,24 @@ module Apiwork
         #     resource :profile
         #     # Routes: GET /profile, PATCH /profile (no index, no :id)
         #   end
-        def resource(name, **options, &block)
-          @structure.resource(name, **options, &block)
+        def resource(name,
+                     concerns: nil,
+                     contract: nil,
+                     controller: nil,
+                     except: nil,
+                     only: nil,
+                     path: nil,
+                     &block)
+          @structure.resource(
+            name,
+            concerns: concerns,
+            contract: contract,
+            controller: controller,
+            except: except,
+            only: only,
+            path: path,
+            &block
+          )
         end
 
         # @api public

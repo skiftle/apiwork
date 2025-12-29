@@ -47,7 +47,7 @@ end
 
 ### #description
 
-`#description(text = nil)`
+`#description(description = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L70)
 
@@ -60,7 +60,7 @@ Supports Markdown formatting.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `text` | `String` | description text (optional) |
+| `description` | `String` | description text (optional) |
 
 **Returns**
 
@@ -78,19 +78,17 @@ end
 
 ### #operation_id
 
-`#operation_id(value = nil)`
+`#operation_id(operation_id = nil)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L121)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L119)
 
 Sets a custom operation ID.
-
-By default, operation ID is auto-generated from resource and action name.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `value` | `String` | custom operation ID (optional) |
+| `operation_id` | `String` | custom operation ID (optional) |
 
 **Returns**
 
@@ -110,12 +108,12 @@ end
 
 `#raises(*error_code_keys)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L139)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L137)
 
 Declares error codes this action may return.
 
-Error codes must be registered via ErrorCode.register.
-These appear in generated specs as possible error responses.
+Uses built-in error codes (:not_found, :forbidden, etc.) or custom codes
+registered via ErrorCode.register. These appear in generated specs.
 
 **Parameters**
 
@@ -137,7 +135,7 @@ end
 
 `#request(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L172)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L170)
 
 Defines the request structure for this action.
 
@@ -170,7 +168,7 @@ end
 
 `#response(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L202)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L200)
 
 Defines the response structure for this action.
 
@@ -208,7 +206,7 @@ end
 
 ### #summary
 
-`#summary(text = nil)`
+`#summary(summary = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L52)
 
@@ -220,7 +218,7 @@ Used in generated specs as the operation summary.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `text` | `String` | summary text (optional) |
+| `summary` | `String` | summary text (optional) |
 
 **Returns**
 
@@ -238,7 +236,7 @@ end
 
 ### #tags
 
-`#tags(*tags_list)`
+`#tags(*tags)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L87)
 
@@ -250,7 +248,7 @@ Tags help organize actions in generated documentation.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `tags_list` | `Array<String,Symbol>` | tag names |
+| `tags` | `Array<String,Symbol>` | tag names |
 
 **Returns**
 
