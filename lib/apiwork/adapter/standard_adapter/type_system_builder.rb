@@ -152,8 +152,14 @@ module Apiwork
         def register_offset_pagination
           registrar.type :offset_pagination do
             param :current, type: :integer
-            param :next, nullable: true, optional: true, type: :integer
-            param :prev, nullable: true, optional: true, type: :integer
+            param :next,
+                  nullable: true,
+                  optional: true,
+                  type: :integer
+            param :prev,
+                  nullable: true,
+                  optional: true,
+                  type: :integer
             param :total, type: :integer
             param :items, type: :integer
           end
@@ -161,8 +167,14 @@ module Apiwork
 
         def register_cursor_pagination
           registrar.type :cursor_pagination do
-            param :next, nullable: true, optional: true, type: :string
-            param :prev, nullable: true, optional: true, type: :string
+            param :next,
+                  nullable: true,
+                  optional: true,
+                  type: :string
+            param :prev,
+                  nullable: true,
+                  optional: true,
+                  type: :string
           end
         end
 
@@ -231,7 +243,10 @@ module Apiwork
           registrar.type(type_name) do
             params.each do |param_definition|
               if param_definition[:of]
-                param param_definition[:name], of: param_definition[:of], optional: true, type: param_definition[:type]
+                param param_definition[:name],
+                      of: param_definition[:of],
+                      optional: true,
+                      type: param_definition[:type]
               else
                 param param_definition[:name], optional: true, type: param_definition[:type]
               end

@@ -6,13 +6,17 @@ module CuriousCat
     attribute :name, writable: true
     attribute :email, format: :email, writable: true
 
-    attribute :settings, writable: true do
+    attribute :settings,
+              writable: true do
       param :theme, type: :string
       param :notifications, type: :boolean
       param :language, type: :string
     end
 
-    attribute :tags, of: :string, type: :array, writable: true
+    attribute :tags,
+              type: :array,
+              of: :string,
+              writable: true
 
     attribute :addresses, type: :array, writable: true do
       param :street, type: :string

@@ -286,7 +286,11 @@ module Apiwork
               registrar.api_registrar.type(variant_type_name) do
                 # Rename discriminator from API name to DB column if different
                 as_column = discriminator_name != discriminator_column ? discriminator_column : nil
-                param discriminator_name, as: as_column, sti_mapping: sti_mapping, type: :literal, value: tag.to_s
+                param discriminator_name,
+                      as: as_column,
+                      sti_mapping: sti_mapping,
+                      type: :literal,
+                      value: tag.to_s
 
                 builder.send(:writable_params, self, context_symbol, nested: false, target_schema: variant_schema)
               end
@@ -395,8 +399,14 @@ module Apiwork
           type_options = {} unless depth.zero?
 
           registrar.type(type_name, **type_options) do
-            param :_and, of: type_name, optional: true, type: :array
-            param :_or, of: type_name, optional: true, type: :array
+            param :_and,
+                  of: type_name,
+                  optional: true,
+                  type: :array
+            param :_or,
+                  of: type_name,
+                  optional: true,
+                  type: :array
             param :_not, optional: true, type: type_name
 
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
@@ -406,9 +416,15 @@ module Apiwork
               filter_type = builder.send(:filter_type_for, attribute_definition)
 
               if attribute_definition.enum
-                param name, attribute_definition: attribute_definition, optional: true, type: filter_type
+                param name,
+                      attribute_definition: attribute_definition,
+                      optional: true,
+                      type: filter_type
               else
-                param name, attribute_definition: attribute_definition, optional: true, type: :union do
+                param name,
+                      attribute_definition: attribute_definition,
+                      optional: true,
+                      type: :union do
                   variant type: builder.send(:map_type, attribute_definition.type)
                   variant type: filter_type
                 end
@@ -435,7 +451,10 @@ module Apiwork
                                           )
                                         end
 
-              param name, association_definition: association_definition, optional: true, type: association_filter_type if association_filter_type
+              param name,
+                    association_definition: association_definition,
+                    optional: true,
+                    type: association_filter_type if association_filter_type
             end
           end
 
@@ -470,7 +489,10 @@ module Apiwork
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
               next unless attribute_definition.sortable?
 
-              param name, attribute_definition: attribute_definition, optional: true, type: :sort_direction
+              param name,
+                    attribute_definition: attribute_definition,
+                    optional: true,
+                    type: :sort_direction
             end
 
             schema_class_local.association_definitions.each do |name, association_definition|
@@ -493,7 +515,10 @@ module Apiwork
                                         )
                                       end
 
-              param name, association_definition: association_definition, optional: true, type: association_sort_type if association_sort_type
+              param name,
+                    association_definition: association_definition,
+                    optional: true,
+                    type: association_sort_type if association_sort_type
             end
           end
 
@@ -518,12 +543,23 @@ module Apiwork
             registrar.api_registrar.type(type_name, scope: nil) do
               param :after, optional: true, type: :string
               param :before, optional: true, type: :string
-              param :size, max: max_size, min: 1, optional: true, type: :integer
+              param :size,
+                    max: max_size,
+                    min: 1,
+                    optional: true,
+                    type: :integer
             end
           else
             registrar.api_registrar.type(type_name, scope: nil) do
-              param :number, min: 1, optional: true, type: :integer
-              param :size, max: max_size, min: 1, optional: true, type: :integer
+              param :number,
+                    min: 1,
+                    optional: true,
+                    type: :integer
+              param :size,
+                    max: max_size,
+                    min: 1,
+                    optional: true,
+                    type: :integer
             end
           end
 
@@ -890,7 +926,10 @@ module Apiwork
             variant type: scoped_name
             variant partial: true, type: :object do
               param :eq, optional: true, type: scoped_name
-              param :in, of: scoped_name, optional: true, type: :array
+              param :in,
+                    of: scoped_name,
+                    optional: true,
+                    type: :array
             end
           end
         end

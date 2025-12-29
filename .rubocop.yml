@@ -8,6 +8,7 @@ require:
   - ./lib/rubocop/cop/apiwork/sort_keyword_arguments.rb
   - ./lib/rubocop/cop/apiwork/sort_hash_keys.rb
   - ./lib/rubocop/cop/apiwork/multiline_hash_pairs.rb
+  - ./lib/rubocop/cop/apiwork/multiline_keyword_arguments.rb
 
 AllCops:
   TargetRubyVersion: 3.2
@@ -29,6 +30,20 @@ Apiwork/SortHashKeys:
 Apiwork/MultilineHashPairs:
   Enabled: true
   MinPairs: 3
+
+Apiwork/MultilineKeywordArguments:
+  Enabled: true
+  Methods:
+    - attribute
+    - belongs_to
+    - enum
+    - field
+    - has_many
+    - has_one
+    - param
+    - type
+    - union
+    - variant
 
 Style/KeywordParametersOrder:
   Enabled: false
@@ -202,5 +217,5 @@ RSpec/BeforeAfterAll:
 RSpec/SpecFilePathFormat:
   Enabled: false
 
-Layout/MultilineHashArgumentLineBreaks:
+Layout/MultilineHashKeyLineBreaks:
   Enabled: true
