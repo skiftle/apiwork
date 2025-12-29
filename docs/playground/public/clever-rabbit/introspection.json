@@ -2,7 +2,6 @@
   "path": "/clever_rabbit",
   "types": {
     "error_response_body": {
-      "type": "object",
       "shape": {
         "issues": {
           "type": "array",
@@ -11,10 +10,10 @@
         "layer": {
           "type": "layer"
         }
-      }
+      },
+      "type": "object"
     },
     "issue": {
-      "type": "object",
       "shape": {
         "code": {
           "type": "string"
@@ -32,10 +31,10 @@
         "pointer": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "nullable_string_filter": {
-      "type": "object",
       "shape": {
         "contains": {
           "type": "string",
@@ -62,10 +61,10 @@
           "type": "string",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "offset_pagination": {
-      "type": "object",
       "shape": {
         "current": {
           "type": "integer"
@@ -86,10 +85,10 @@
         "total": {
           "type": "integer"
         }
-      }
+      },
+      "type": "object"
     },
     "order": {
-      "type": "object",
       "shape": {
         "created_at": {
           "type": "datetime"
@@ -117,10 +116,10 @@
         "updated_at": {
           "type": "datetime"
         }
-      }
+      },
+      "type": "object"
     },
     "order_create_payload": {
-      "type": "object",
       "shape": {
         "line_items": {
           "type": "array",
@@ -135,10 +134,10 @@
           "as": "shipping_address_attributes",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "order_create_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -147,10 +146,10 @@
         "order": {
           "type": "order"
         }
-      }
+      },
+      "type": "object"
     },
     "order_filter": {
-      "type": "object",
       "shape": {
         "_and": {
           "type": "array",
@@ -178,10 +177,10 @@
           ],
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "order_index_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -194,10 +193,10 @@
         "pagination": {
           "type": "offset_pagination"
         }
-      }
+      },
+      "type": "object"
     },
     "order_page": {
-      "type": "object",
       "shape": {
         "number": {
           "type": "integer",
@@ -210,10 +209,10 @@
           "min": 1,
           "max": 100
         }
-      }
+      },
+      "type": "object"
     },
     "order_show_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -222,10 +221,10 @@
         "order": {
           "type": "order"
         }
-      }
+      },
+      "type": "object"
     },
     "order_sort": {
-      "type": "object",
       "shape": {
         "created_at": {
           "type": "sort_direction",
@@ -235,10 +234,10 @@
           "type": "sort_direction",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "order_update_payload": {
-      "type": "object",
       "shape": {
         "line_items": {
           "type": "array",
@@ -253,10 +252,10 @@
           "as": "shipping_address_attributes",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "order_update_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -265,10 +264,10 @@
         "order": {
           "type": "order"
         }
-      }
+      },
+      "type": "object"
     },
     "string_filter": {
-      "type": "object",
       "shape": {
         "contains": {
           "type": "string",
@@ -291,7 +290,8 @@
           "type": "string",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     }
   },
   "enums": {

@@ -1,3 +1,51 @@
+/** A comment on a task */
+export interface Comment {
+  /**
+   * Name of the person who wrote the comment
+   * @example "John Doe"
+   */
+  authorName: null | string;
+  /**
+   * Comment content
+   * @example "This looks good, ready for review."
+   */
+  body: string;
+  /** When the comment was created */
+  createdAt: string;
+  /** Unique comment identifier */
+  id: string;
+}
+
+export interface CommentNestedCreatePayload {
+  _type: 'create';
+  /**
+   * Name of the person who wrote the comment
+   * @example "John Doe"
+   */
+  authorName?: null | string;
+  /**
+   * Comment content
+   * @example "This looks good, ready for review."
+   */
+  body: string;
+}
+
+export type CommentNestedPayload = { _type: 'create' } & CommentNestedCreatePayload | { _type: 'update' } & CommentNestedUpdatePayload;
+
+export interface CommentNestedUpdatePayload {
+  _type?: 'update';
+  /**
+   * Name of the person who wrote the comment
+   * @example "John Doe"
+   */
+  authorName?: null | string;
+  /**
+   * Comment content
+   * @example "This looks good, ready for review."
+   */
+  body?: string;
+}
+
 export interface ErrorResponseBody {
   issues: Issue[];
   layer: Layer;
@@ -45,9 +93,9 @@ export interface Task {
   /** Whether the task has been archived */
   archived: boolean | null;
   /** User responsible for completing this task */
-  assignee?: null | object;
+  assignee?: User | null;
   /** Discussion comments on this task */
-  comments?: string[];
+  comments?: Comment[];
   /** Timestamp when the task was created */
   createdAt: string;
   /**
@@ -129,6 +177,11 @@ export interface TaskFilter {
   status?: TaskStatusFilter;
 }
 
+export interface TaskInclude {
+  assignee?: boolean;
+  comments?: boolean;
+}
+
 export interface TaskIndexSuccessResponseBody {
   meta?: object;
   pagination: OffsetPagination;
@@ -193,6 +246,14 @@ export interface TaskUpdateSuccessResponseBody {
   task: Task;
 }
 
+export interface TasksArchiveRequest {
+  query: TasksArchiveRequestQuery;
+}
+
+export interface TasksArchiveRequestQuery {
+  include?: TaskInclude;
+}
+
 export interface TasksArchiveResponse {
   body: TasksArchiveResponseBody;
 }
@@ -200,6 +261,7 @@ export interface TasksArchiveResponse {
 export type TasksArchiveResponseBody = ErrorResponseBody | TaskArchiveSuccessResponseBody;
 
 export interface TasksCreateRequest {
+  query: TasksCreateRequestQuery;
   body: TasksCreateRequestBody;
 }
 
@@ -207,11 +269,23 @@ export interface TasksCreateRequestBody {
   task: TaskCreatePayload;
 }
 
+export interface TasksCreateRequestQuery {
+  include?: TaskInclude;
+}
+
 export interface TasksCreateResponse {
   body: TasksCreateResponseBody;
 }
 
 export type TasksCreateResponseBody = ErrorResponseBody | TaskCreateSuccessResponseBody;
+
+export interface TasksDestroyRequest {
+  query: TasksDestroyRequestQuery;
+}
+
+export interface TasksDestroyRequestQuery {
+  include?: TaskInclude;
+}
 
 export type TasksDestroyResponse = never;
 
@@ -221,6 +295,7 @@ export interface TasksIndexRequest {
 
 export interface TasksIndexRequestQuery {
   filter?: TaskFilter | TaskFilter[];
+  include?: TaskInclude;
   page?: TaskPage;
   sort?: TaskSort | TaskSort[];
 }
@@ -231,6 +306,14 @@ export interface TasksIndexResponse {
 
 export type TasksIndexResponseBody = ErrorResponseBody | TaskIndexSuccessResponseBody;
 
+export interface TasksShowRequest {
+  query: TasksShowRequestQuery;
+}
+
+export interface TasksShowRequestQuery {
+  include?: TaskInclude;
+}
+
 export interface TasksShowResponse {
   body: TasksShowResponseBody;
 }
@@ -238,6 +321,7 @@ export interface TasksShowResponse {
 export type TasksShowResponseBody = ErrorResponseBody | TaskShowSuccessResponseBody;
 
 export interface TasksUpdateRequest {
+  query: TasksUpdateRequestQuery;
   body: TasksUpdateRequestBody;
 }
 
@@ -245,8 +329,28 @@ export interface TasksUpdateRequestBody {
   task: TaskUpdatePayload;
 }
 
+export interface TasksUpdateRequestQuery {
+  include?: TaskInclude;
+}
+
 export interface TasksUpdateResponse {
   body: TasksUpdateResponseBody;
 }
 
 export type TasksUpdateResponseBody = ErrorResponseBody | TaskUpdateSuccessResponseBody;
+
+/** A user who can be assigned to tasks */
+export interface User {
+  /**
+   * User's email address
+   * @example "jane@example.com"
+   */
+  email: string;
+  /** Unique user identifier */
+  id: string;
+  /**
+   * User's display name
+   * @example "Jane Doe"
+   */
+  name: string;
+}

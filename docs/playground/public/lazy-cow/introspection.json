@@ -2,7 +2,6 @@
   "path": "/lazy_cow",
   "types": {
     "error_response_body": {
-      "type": "object",
       "shape": {
         "issues": {
           "type": "array",
@@ -11,10 +10,10 @@
         "layer": {
           "type": "layer"
         }
-      }
+      },
+      "type": "object"
     },
     "issue": {
-      "type": "object",
       "shape": {
         "code": {
           "type": "string"
@@ -32,7 +31,8 @@
         "pointer": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     }
   },
   "enums": {
@@ -54,7 +54,6 @@
           "path": "/health",
           "response": {
             "body": {
-              "type": "object",
               "shape": {
                 "status": {
                   "type": "string"
@@ -65,7 +64,8 @@
                 "version": {
                   "type": "string"
                 }
-              }
+              },
+              "type": "object"
             }
           }
         },
@@ -74,7 +74,6 @@
           "path": "/stats",
           "response": {
             "body": {
-              "type": "object",
               "shape": {
                 "posts_count": {
                   "type": "integer"
@@ -85,7 +84,8 @@
                 "users_count": {
                   "type": "integer"
                 }
-              }
+              },
+              "type": "object"
             }
           }
         }

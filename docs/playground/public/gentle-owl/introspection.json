@@ -2,7 +2,6 @@
   "path": "/gentle_owl",
   "types": {
     "comment": {
-      "type": "object",
       "shape": {
         "author_name": {
           "type": "string",
@@ -21,7 +20,8 @@
         "id": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "comment_commentable": {
       "type": "union",
@@ -42,7 +42,6 @@
       "discriminator": "commentable_type"
     },
     "comment_create_payload": {
-      "type": "object",
       "shape": {
         "author_name": {
           "type": "string",
@@ -52,10 +51,10 @@
         "body": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "comment_create_success_response_body": {
-      "type": "object",
       "shape": {
         "comment": {
           "type": "comment"
@@ -64,19 +63,19 @@
           "type": "object",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "comment_include": {
-      "type": "object",
       "shape": {
         "commentable": {
           "type": "boolean",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "comment_index_success_response_body": {
-      "type": "object",
       "shape": {
         "comments": {
           "type": "array",
@@ -89,10 +88,10 @@
         "pagination": {
           "type": "offset_pagination"
         }
-      }
+      },
+      "type": "object"
     },
     "comment_page": {
-      "type": "object",
       "shape": {
         "number": {
           "type": "integer",
@@ -105,10 +104,10 @@
           "min": 1,
           "max": 100
         }
-      }
+      },
+      "type": "object"
     },
     "comment_show_success_response_body": {
-      "type": "object",
       "shape": {
         "comment": {
           "type": "comment"
@@ -117,19 +116,19 @@
           "type": "object",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "comment_sort": {
-      "type": "object",
       "shape": {
         "created_at": {
           "type": "sort_direction",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "comment_update_payload": {
-      "type": "object",
       "shape": {
         "author_name": {
           "type": "string",
@@ -139,10 +138,10 @@
         "body": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "comment_update_success_response_body": {
-      "type": "object",
       "shape": {
         "comment": {
           "type": "comment"
@@ -151,10 +150,10 @@
           "type": "object",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "error_response_body": {
-      "type": "object",
       "shape": {
         "issues": {
           "type": "array",
@@ -163,10 +162,10 @@
         "layer": {
           "type": "layer"
         }
-      }
+      },
+      "type": "object"
     },
     "image": {
-      "type": "object",
       "shape": {
         "comments": {
           "type": "array",
@@ -193,10 +192,10 @@
           "type": "integer",
           "nullable": true
         }
-      }
+      },
+      "type": "object"
     },
     "image_filter": {
-      "type": "object",
       "shape": {
         "_and": {
           "type": "array",
@@ -224,10 +223,10 @@
           ],
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "image_nested_create_payload": {
-      "type": "object",
       "shape": {
         "_type": {
           "type": "literal",
@@ -249,7 +248,8 @@
           "nullable": true,
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "image_nested_payload": {
       "type": "union",
@@ -266,7 +266,6 @@
       "discriminator": "_type"
     },
     "image_nested_update_payload": {
-      "type": "object",
       "shape": {
         "_type": {
           "type": "literal",
@@ -288,19 +287,19 @@
           "nullable": true,
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "image_sort": {
-      "type": "object",
       "shape": {
         "created_at": {
           "type": "sort_direction",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "issue": {
-      "type": "object",
       "shape": {
         "code": {
           "type": "string"
@@ -318,10 +317,10 @@
         "pointer": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "offset_pagination": {
-      "type": "object",
       "shape": {
         "current": {
           "type": "integer"
@@ -342,10 +341,10 @@
         "total": {
           "type": "integer"
         }
-      }
+      },
+      "type": "object"
     },
     "post": {
-      "type": "object",
       "shape": {
         "body": {
           "type": "string",
@@ -365,10 +364,10 @@
         "title": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "post_filter": {
-      "type": "object",
       "shape": {
         "_and": {
           "type": "array",
@@ -396,10 +395,10 @@
           ],
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "post_nested_create_payload": {
-      "type": "object",
       "shape": {
         "_type": {
           "type": "literal",
@@ -413,7 +412,8 @@
         "title": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "post_nested_payload": {
       "type": "union",
@@ -430,7 +430,6 @@
       "discriminator": "_type"
     },
     "post_nested_update_payload": {
-      "type": "object",
       "shape": {
         "_type": {
           "type": "literal",
@@ -444,19 +443,19 @@
         "title": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "post_sort": {
-      "type": "object",
       "shape": {
         "created_at": {
           "type": "sort_direction",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "video": {
-      "type": "object",
       "shape": {
         "comments": {
           "type": "array",
@@ -479,10 +478,10 @@
         "url": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "video_filter": {
-      "type": "object",
       "shape": {
         "_and": {
           "type": "array",
@@ -510,10 +509,10 @@
           ],
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "video_nested_create_payload": {
-      "type": "object",
       "shape": {
         "_type": {
           "type": "literal",
@@ -530,7 +529,8 @@
         "url": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "video_nested_payload": {
       "type": "union",
@@ -547,7 +547,6 @@
       "discriminator": "_type"
     },
     "video_nested_update_payload": {
-      "type": "object",
       "shape": {
         "_type": {
           "type": "literal",
@@ -564,16 +563,17 @@
         "url": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "video_sort": {
-      "type": "object",
       "shape": {
         "created_at": {
           "type": "sort_direction",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     }
   },
   "enums": {

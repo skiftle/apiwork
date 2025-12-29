@@ -45,10 +45,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               properties:
                 invoice:
                   "$ref": "#/components/schemas/invoiceCreatePayload"
+              type: object
               required:
               - invoice
       responses:
@@ -93,10 +93,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               properties:
                 invoice:
                   "$ref": "#/components/schemas/invoiceUpdatePayload"
+              type: object
       responses:
         '200':
           description: Successful response
@@ -153,11 +153,11 @@ components:
           items:
             "$ref": "#/components/schemas/issue"
         layer:
-          type: string
           enum:
           - http
           - contract
           - domain
+          type: string
       required:
       - issues
       - layer
@@ -180,9 +180,9 @@ components:
           - 'null'
           format: date
         lines:
-          type: array
           items:
             type: string
+          type: array
         notes:
           type:
           - string
@@ -228,9 +228,9 @@ components:
           - 'null'
           format: date
         lines:
-          type: array
           items:
             type: string
+          type: array
         notes:
           type:
           - string
@@ -310,25 +310,25 @@ components:
       type: object
       properties:
         createdAt:
-          type: string
           enum:
           - asc
           - desc
+          type: string
         issuedOn:
-          type: string
           enum:
           - asc
           - desc
+          type: string
         status:
-          type: string
           enum:
           - asc
           - desc
+          type: string
         updatedAt:
-          type: string
           enum:
           - asc
           - desc
+          type: string
     invoiceUpdatePayload:
       type: object
       properties:
@@ -340,9 +340,9 @@ components:
           - 'null'
           format: date
         lines:
-          type: array
           items:
             type: string
+          type: array
         notes:
           type:
           - string

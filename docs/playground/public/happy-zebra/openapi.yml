@@ -45,10 +45,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               properties:
                 user:
                   "$ref": "#/components/schemas/userCreatePayload"
+              type: object
               required:
               - user
       responses:
@@ -93,10 +93,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               properties:
                 user:
                   "$ref": "#/components/schemas/userUpdatePayload"
+              type: object
       responses:
         '200':
           description: Successful response
@@ -144,10 +144,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               properties:
                 post:
                   "$ref": "#/components/schemas/postCreatePayload"
+              type: object
               required:
               - post
       responses:
@@ -192,10 +192,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               properties:
                 post:
                   "$ref": "#/components/schemas/postUpdatePayload"
+              type: object
       responses:
         '200':
           description: Successful response
@@ -243,10 +243,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               properties:
                 comment:
                   "$ref": "#/components/schemas/commentCreatePayload"
+              type: object
               required:
               - comment
       responses:
@@ -291,10 +291,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               properties:
                 comment:
                   "$ref": "#/components/schemas/commentUpdatePayload"
+              type: object
       responses:
         '200':
           description: Successful response
@@ -454,11 +454,11 @@ components:
           items:
             "$ref": "#/components/schemas/issue"
         layer:
-          type: string
           enum:
           - http
           - contract
           - domain
+          type: string
       required:
       - issues
       - layer
@@ -709,15 +709,15 @@ components:
       type: object
       properties:
         createdAt:
-          type: string
           enum:
           - asc
           - desc
+          type: string
         updatedAt:
-          type: string
           enum:
           - asc
           - desc
+          type: string
     stringFilter:
       type: object
       properties:
@@ -848,15 +848,15 @@ components:
       type: object
       properties:
         createdAt:
-          type: string
           enum:
           - asc
           - desc
+          type: string
         updatedAt:
-          type: string
           enum:
           - asc
           - desc
+          type: string
     userUpdatePayload:
       type: object
       properties:

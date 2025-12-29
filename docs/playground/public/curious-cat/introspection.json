@@ -2,7 +2,6 @@
   "path": "/curious_cat",
   "types": {
     "error_response_body": {
-      "type": "object",
       "shape": {
         "issues": {
           "type": "array",
@@ -11,10 +10,10 @@
         "layer": {
           "type": "layer"
         }
-      }
+      },
+      "type": "object"
     },
     "issue": {
-      "type": "object",
       "shape": {
         "code": {
           "type": "string"
@@ -32,10 +31,10 @@
         "pointer": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "offset_pagination": {
-      "type": "object",
       "shape": {
         "current": {
           "type": "integer"
@@ -56,10 +55,10 @@
         "total": {
           "type": "integer"
         }
-      }
+      },
+      "type": "object"
     },
     "profile": {
-      "type": "object",
       "shape": {
         "addresses": {
           "type": "array",
@@ -142,10 +141,10 @@
         "updated_at": {
           "type": "datetime"
         }
-      }
+      },
+      "type": "object"
     },
     "profile_create_payload": {
-      "type": "object",
       "shape": {
         "addresses": {
           "type": "array",
@@ -219,10 +218,10 @@
           "type": "array",
           "of": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "profile_create_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -231,10 +230,10 @@
         "profile": {
           "type": "profile"
         }
-      }
+      },
+      "type": "object"
     },
     "profile_index_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -247,10 +246,10 @@
           "type": "array",
           "of": "profile"
         }
-      }
+      },
+      "type": "object"
     },
     "profile_page": {
-      "type": "object",
       "shape": {
         "number": {
           "type": "integer",
@@ -263,10 +262,10 @@
           "min": 1,
           "max": 100
         }
-      }
+      },
+      "type": "object"
     },
     "profile_show_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -275,10 +274,10 @@
         "profile": {
           "type": "profile"
         }
-      }
+      },
+      "type": "object"
     },
     "profile_update_payload": {
-      "type": "object",
       "shape": {
         "addresses": {
           "type": "array",
@@ -352,10 +351,10 @@
           "type": "array",
           "of": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "profile_update_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -364,7 +363,8 @@
         "profile": {
           "type": "profile"
         }
-      }
+      },
+      "type": "object"
     }
   },
   "enums": {

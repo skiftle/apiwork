@@ -45,10 +45,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               properties:
                 order:
                   "$ref": "#/components/schemas/orderCreatePayload"
+              type: object
               required:
               - order
       responses:
@@ -93,10 +93,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               properties:
                 order:
                   "$ref": "#/components/schemas/orderUpdatePayload"
+              type: object
       responses:
         '200':
           description: Successful response
@@ -131,11 +131,11 @@ components:
           items:
             "$ref": "#/components/schemas/issue"
         layer:
-          type: string
           enum:
           - http
           - contract
           - domain
+          type: string
       required:
       - issues
       - layer
@@ -208,9 +208,9 @@ components:
         id:
           type: string
         lineItems:
-          type: array
           items:
             type: string
+          type: array
         orderNumber:
           type: string
         shippingAddress:
@@ -240,9 +240,9 @@ components:
       type: object
       properties:
         lineItems:
-          type: array
           items:
             type: string
+          type: array
         orderNumber:
           type: string
         shippingAddress:
@@ -316,22 +316,22 @@ components:
       type: object
       properties:
         createdAt:
-          type: string
           enum:
           - asc
           - desc
+          type: string
         status:
-          type: string
           enum:
           - asc
           - desc
+          type: string
     orderUpdatePayload:
       type: object
       properties:
         lineItems:
-          type: array
           items:
             type: string
+          type: array
         orderNumber:
           type: string
         shippingAddress:

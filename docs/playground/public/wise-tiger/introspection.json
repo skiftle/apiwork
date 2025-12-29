@@ -7,7 +7,6 @@
   },
   "types": {
     "error_response_body": {
-      "type": "object",
       "shape": {
         "issues": {
           "type": "array",
@@ -16,10 +15,10 @@
         "layer": {
           "type": "layer"
         }
-      }
+      },
+      "type": "object"
     },
     "issue": {
-      "type": "object",
       "shape": {
         "code": {
           "type": "string"
@@ -37,10 +36,10 @@
         "pointer": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "nullable_string_filter": {
-      "type": "object",
       "shape": {
         "contains": {
           "type": "string",
@@ -67,10 +66,10 @@
           "type": "string",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "offset_pagination": {
-      "type": "object",
       "shape": {
         "current": {
           "type": "integer"
@@ -91,10 +90,10 @@
         "total": {
           "type": "integer"
         }
-      }
+      },
+      "type": "object"
     },
     "project": {
-      "type": "object",
       "shape": {
         "created_at": {
           "type": "datetime",
@@ -135,10 +134,10 @@
           "description": "Timestamp of last modification"
         }
       },
+      "type": "object",
       "description": "A project with tasks and deadlines"
     },
     "project_create_payload": {
-      "type": "object",
       "shape": {
         "deadline": {
           "type": "date",
@@ -171,10 +170,10 @@
           "description": "Current project lifecycle status"
         }
       },
+      "type": "object",
       "description": "A project with tasks and deadlines"
     },
     "project_create_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -183,10 +182,10 @@
         "project": {
           "type": "project"
         }
-      }
+      },
+      "type": "object"
     },
     "project_filter": {
-      "type": "object",
       "shape": {
         "_and": {
           "type": "array",
@@ -213,10 +212,10 @@
           "description": "Current project lifecycle status"
         }
       },
+      "type": "object",
       "description": "A project with tasks and deadlines"
     },
     "project_index_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -229,10 +228,10 @@
           "type": "array",
           "of": "project"
         }
-      }
+      },
+      "type": "object"
     },
     "project_page": {
-      "type": "object",
       "shape": {
         "number": {
           "type": "integer",
@@ -245,7 +244,8 @@
           "min": 1,
           "max": 100
         }
-      }
+      },
+      "type": "object"
     },
     "project_priority_filter": {
       "type": "union",
@@ -271,7 +271,6 @@
       ]
     },
     "project_show_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -280,10 +279,10 @@
         "project": {
           "type": "project"
         }
-      }
+      },
+      "type": "object"
     },
     "project_sort": {
-      "type": "object",
       "shape": {
         "created_at": {
           "type": "sort_direction",
@@ -296,6 +295,7 @@
           "description": "Target completion date"
         }
       },
+      "type": "object",
       "description": "A project with tasks and deadlines"
     },
     "project_status_filter": {
@@ -322,7 +322,6 @@
       ]
     },
     "project_update_payload": {
-      "type": "object",
       "shape": {
         "deadline": {
           "type": "date",
@@ -355,10 +354,10 @@
           "description": "Current project lifecycle status"
         }
       },
+      "type": "object",
       "description": "A project with tasks and deadlines"
     },
     "project_update_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -367,10 +366,10 @@
         "project": {
           "type": "project"
         }
-      }
+      },
+      "type": "object"
     },
     "string_filter": {
-      "type": "object",
       "shape": {
         "contains": {
           "type": "string",
@@ -393,7 +392,8 @@
           "type": "string",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     }
   },
   "enums": {
@@ -406,18 +406,18 @@
     },
     "project_priority": {
       "values": [
-        "low",
-        "medium",
+        "critical",
         "high",
-        "critical"
+        "low",
+        "medium"
       ]
     },
     "project_status": {
       "values": [
         "active",
-        "paused",
+        "archived",
         "completed",
-        "archived"
+        "paused"
       ]
     },
     "sort_direction": {

@@ -2,7 +2,6 @@
   "path": "/happy_zebra",
   "types": {
     "comment": {
-      "type": "object",
       "shape": {
         "author": {
           "type": "string"
@@ -13,10 +12,10 @@
         "id": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "comment_create_payload": {
-      "type": "object",
       "shape": {
         "author": {
           "type": "string"
@@ -24,10 +23,10 @@
         "body": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "comment_create_success_response_body": {
-      "type": "object",
       "shape": {
         "comment": {
           "type": "comment"
@@ -36,10 +35,10 @@
           "type": "object",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "comment_index_success_response_body": {
-      "type": "object",
       "shape": {
         "comments": {
           "type": "array",
@@ -52,10 +51,10 @@
         "pagination": {
           "type": "offset_pagination"
         }
-      }
+      },
+      "type": "object"
     },
     "comment_nested_create_payload": {
-      "type": "object",
       "shape": {
         "_type": {
           "type": "literal",
@@ -67,7 +66,8 @@
         "body": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "comment_nested_payload": {
       "type": "union",
@@ -84,7 +84,6 @@
       "discriminator": "_type"
     },
     "comment_nested_update_payload": {
-      "type": "object",
       "shape": {
         "_type": {
           "type": "literal",
@@ -96,10 +95,10 @@
         "body": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "comment_page": {
-      "type": "object",
       "shape": {
         "number": {
           "type": "integer",
@@ -112,10 +111,10 @@
           "min": 1,
           "max": 100
         }
-      }
+      },
+      "type": "object"
     },
     "comment_show_success_response_body": {
-      "type": "object",
       "shape": {
         "comment": {
           "type": "comment"
@@ -124,10 +123,10 @@
           "type": "object",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "comment_update_payload": {
-      "type": "object",
       "shape": {
         "author": {
           "type": "string"
@@ -135,10 +134,10 @@
         "body": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "comment_update_success_response_body": {
-      "type": "object",
       "shape": {
         "comment": {
           "type": "comment"
@@ -147,10 +146,10 @@
           "type": "object",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "error_response_body": {
-      "type": "object",
       "shape": {
         "issues": {
           "type": "array",
@@ -159,10 +158,10 @@
         "layer": {
           "type": "layer"
         }
-      }
+      },
+      "type": "object"
     },
     "issue": {
-      "type": "object",
       "shape": {
         "code": {
           "type": "string"
@@ -180,10 +179,10 @@
         "pointer": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "offset_pagination": {
-      "type": "object",
       "shape": {
         "current": {
           "type": "integer"
@@ -204,10 +203,10 @@
         "total": {
           "type": "integer"
         }
-      }
+      },
+      "type": "object"
     },
     "post": {
-      "type": "object",
       "shape": {
         "comments": {
           "type": "array",
@@ -219,10 +218,10 @@
         "title": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "post_create_payload": {
-      "type": "object",
       "shape": {
         "comments": {
           "type": "array",
@@ -233,10 +232,10 @@
         "title": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "post_create_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -245,10 +244,10 @@
         "post": {
           "type": "post"
         }
-      }
+      },
+      "type": "object"
     },
     "post_index_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -261,10 +260,10 @@
           "type": "array",
           "of": "post"
         }
-      }
+      },
+      "type": "object"
     },
     "post_nested_create_payload": {
-      "type": "object",
       "shape": {
         "_type": {
           "type": "literal",
@@ -279,7 +278,8 @@
         "title": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "post_nested_payload": {
       "type": "union",
@@ -296,7 +296,6 @@
       "discriminator": "_type"
     },
     "post_nested_update_payload": {
-      "type": "object",
       "shape": {
         "_type": {
           "type": "literal",
@@ -311,10 +310,10 @@
         "title": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "post_page": {
-      "type": "object",
       "shape": {
         "number": {
           "type": "integer",
@@ -327,10 +326,10 @@
           "min": 1,
           "max": 100
         }
-      }
+      },
+      "type": "object"
     },
     "post_show_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -339,10 +338,10 @@
         "post": {
           "type": "post"
         }
-      }
+      },
+      "type": "object"
     },
     "post_update_payload": {
-      "type": "object",
       "shape": {
         "comments": {
           "type": "array",
@@ -353,10 +352,10 @@
         "title": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "post_update_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -365,10 +364,10 @@
         "post": {
           "type": "post"
         }
-      }
+      },
+      "type": "object"
     },
     "profile": {
-      "type": "object",
       "shape": {
         "bio": {
           "type": "string",
@@ -391,10 +390,10 @@
           "type": "string",
           "nullable": true
         }
-      }
+      },
+      "type": "object"
     },
     "profile_nested_create_payload": {
-      "type": "object",
       "shape": {
         "_type": {
           "type": "literal",
@@ -410,7 +409,8 @@
           "nullable": true,
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "profile_nested_payload": {
       "type": "union",
@@ -427,7 +427,6 @@
       "discriminator": "_type"
     },
     "profile_nested_update_payload": {
-      "type": "object",
       "shape": {
         "_type": {
           "type": "literal",
@@ -443,10 +442,10 @@
           "nullable": true,
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "profile_sort": {
-      "type": "object",
       "shape": {
         "created_at": {
           "type": "sort_direction",
@@ -456,10 +455,10 @@
           "type": "sort_direction",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "string_filter": {
-      "type": "object",
       "shape": {
         "contains": {
           "type": "string",
@@ -482,10 +481,10 @@
           "type": "string",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "user": {
-      "type": "object",
       "shape": {
         "created_at": {
           "type": "datetime"
@@ -509,10 +508,10 @@
         "username": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "user_create_payload": {
-      "type": "object",
       "shape": {
         "email": {
           "type": "string"
@@ -531,10 +530,10 @@
         "username": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "user_create_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -543,10 +542,10 @@
         "user": {
           "type": "user"
         }
-      }
+      },
+      "type": "object"
     },
     "user_filter": {
-      "type": "object",
       "shape": {
         "_and": {
           "type": "array",
@@ -586,10 +585,10 @@
           ],
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "user_index_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -602,10 +601,10 @@
           "type": "array",
           "of": "user"
         }
-      }
+      },
+      "type": "object"
     },
     "user_page": {
-      "type": "object",
       "shape": {
         "number": {
           "type": "integer",
@@ -618,10 +617,10 @@
           "min": 1,
           "max": 100
         }
-      }
+      },
+      "type": "object"
     },
     "user_show_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -630,10 +629,10 @@
         "user": {
           "type": "user"
         }
-      }
+      },
+      "type": "object"
     },
     "user_sort": {
-      "type": "object",
       "shape": {
         "created_at": {
           "type": "sort_direction",
@@ -643,10 +642,10 @@
           "type": "sort_direction",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "user_update_payload": {
-      "type": "object",
       "shape": {
         "email": {
           "type": "string"
@@ -665,10 +664,10 @@
         "username": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "user_update_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -677,7 +676,8 @@
         "user": {
           "type": "user"
         }
-      }
+      },
+      "type": "object"
     }
   },
   "enums": {

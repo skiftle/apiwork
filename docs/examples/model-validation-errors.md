@@ -438,20 +438,6 @@ Content-Type: application/json
   "layer": "domain",
   "issues": [
     {
-      "code": "required",
-      "detail": "Required",
-      "path": [
-        "user",
-        "posts",
-        "0",
-        "comments",
-        "0",
-        "body"
-      ],
-      "pointer": "/user/posts/0/comments/0/body",
-      "meta": {}
-    },
-    {
       "code": "min",
       "detail": "Too short",
       "path": [
@@ -466,6 +452,20 @@ Content-Type: application/json
       "meta": {
         "min": 1
       }
+    },
+    {
+      "code": "required",
+      "detail": "Required",
+      "path": [
+        "user",
+        "posts",
+        "0",
+        "comments",
+        "0",
+        "body"
+      ],
+      "pointer": "/user/posts/0/comments/0/body",
+      "meta": {}
     },
     {
       "code": "required",

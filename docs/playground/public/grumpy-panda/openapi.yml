@@ -27,10 +27,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               properties:
                 activity:
                   "$ref": "#/components/schemas/activityCreatePayload"
+              type: object
               required:
               - activity
       responses:
@@ -75,10 +75,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               properties:
                 activity:
                   "$ref": "#/components/schemas/activityUpdatePayload"
+              type: object
       responses:
         '200':
           description: Successful response
@@ -224,11 +224,11 @@ components:
           items:
             "$ref": "#/components/schemas/issue"
         layer:
-          type: string
           enum:
           - http
           - contract
           - domain
+          type: string
       required:
       - issues
       - layer

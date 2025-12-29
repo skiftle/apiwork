@@ -27,10 +27,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               properties:
                 profile:
                   "$ref": "#/components/schemas/profileCreatePayload"
+              type: object
               required:
               - profile
       responses:
@@ -75,10 +75,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               properties:
                 profile:
                   "$ref": "#/components/schemas/profileUpdatePayload"
+              type: object
       responses:
         '200':
           description: Successful response
@@ -113,11 +113,11 @@ components:
           items:
             "$ref": "#/components/schemas/issue"
         layer:
-          type: string
           enum:
           - http
           - contract
           - domain
+          type: string
       required:
       - issues
       - layer
@@ -168,7 +168,6 @@ components:
       type: object
       properties:
         addresses:
-          type: array
           items:
             type: object
             properties:
@@ -185,6 +184,7 @@ components:
             - primary
             - street
             - zip
+          type: array
         createdAt:
           type: string
           format: date-time
@@ -259,7 +259,6 @@ components:
       type: object
       properties:
         addresses:
-          type: array
           items:
             type: object
             properties:
@@ -276,6 +275,7 @@ components:
             - primary
             - street
             - zip
+          type: array
         email:
           type: string
           format: email
@@ -384,7 +384,6 @@ components:
       type: object
       properties:
         addresses:
-          type: array
           items:
             type: object
             properties:
@@ -401,6 +400,7 @@ components:
             - primary
             - street
             - zip
+          type: array
         email:
           type: string
           format: email

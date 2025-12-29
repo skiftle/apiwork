@@ -2,7 +2,6 @@
   "path": "/funny_snake",
   "types": {
     "error_response_body": {
-      "type": "object",
       "shape": {
         "issues": {
           "type": "array",
@@ -11,10 +10,10 @@
         "layer": {
           "type": "layer"
         }
-      }
+      },
+      "type": "object"
     },
     "invoice": {
-      "type": "object",
       "shape": {
         "created_at": {
           "type": "datetime"
@@ -37,10 +36,10 @@
         "updated_at": {
           "type": "datetime"
         }
-      }
+      },
+      "type": "object"
     },
     "invoice_payload": {
-      "type": "object",
       "shape": {
         "issued_on": {
           "type": "date"
@@ -54,10 +53,10 @@
         "status": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "issue": {
-      "type": "object",
       "shape": {
         "code": {
           "type": "string"
@@ -75,7 +74,8 @@
         "pointer": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     }
   },
   "enums": {
@@ -97,13 +97,13 @@
           "path": "/",
           "response": {
             "body": {
-              "type": "object",
               "shape": {
                 "invoices": {
                   "type": "array",
                   "of": "invoice"
                 }
-              }
+              },
+              "type": "object"
             }
           }
         },
@@ -112,12 +112,12 @@
           "path": "/:id",
           "response": {
             "body": {
-              "type": "object",
               "shape": {
                 "invoice": {
                   "type": "invoice"
                 }
-              }
+              },
+              "type": "object"
             }
           }
         },
@@ -133,12 +133,12 @@
           },
           "response": {
             "body": {
-              "type": "object",
               "shape": {
                 "invoice": {
                   "type": "invoice"
                 }
-              }
+              },
+              "type": "object"
             }
           }
         },
@@ -154,12 +154,12 @@
           },
           "response": {
             "body": {
-              "type": "object",
               "shape": {
                 "invoice": {
                   "type": "invoice"
                 }
-              }
+              },
+              "type": "object"
             }
           }
         },

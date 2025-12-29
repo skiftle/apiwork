@@ -216,14 +216,14 @@ Content-Type: application/json
       ],
       "pointer": "/task/assignee_id",
       "meta": {
-        "field": "assignee_id",
         "allowed": [
           "title",
           "description",
           "status",
           "priority",
           "due_date"
-        ]
+        ],
+        "field": "assignee_id"
       }
     }
   ]

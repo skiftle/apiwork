@@ -8,6 +8,25 @@ export const TaskPrioritySchema = z.enum(['critical', 'high', 'low', 'medium']);
 
 export const TaskStatusSchema = z.enum(['archived', 'completed', 'in_progress', 'pending']);
 
+export const CommentSchema = z.object({
+  authorName: z.string().nullable(),
+  body: z.string(),
+  createdAt: z.iso.datetime(),
+  id: z.string()
+});
+
+export const CommentNestedCreatePayloadSchema = z.object({
+  _type: z.literal('create'),
+  authorName: z.string().nullable().optional(),
+  body: z.string()
+});
+
+export const CommentNestedUpdatePayloadSchema = z.object({
+  _type: z.literal('update'),
+  authorName: z.string().nullable().optional(),
+  body: z.string().optional()
+});
+
 export const IssueSchema = z.object({
   code: z.string(),
   detail: z.string(),
@@ -41,26 +60,17 @@ export const StringFilterSchema = z.object({
   startsWith: z.string().optional()
 });
 
-export const TaskSchema = z.object({
-  archived: z.boolean().nullable(),
-  assignee: z.object({}).nullable().optional(),
-  comments: z.array(z.string()).optional(),
-  createdAt: z.iso.datetime(),
-  description: z.string().nullable(),
-  dueDate: z.iso.datetime().nullable(),
-  id: z.string(),
-  priority: TaskPrioritySchema.nullable(),
-  status: TaskStatusSchema.nullable(),
-  title: z.string(),
-  updatedAt: z.iso.datetime()
-});
-
 export const TaskCreatePayloadSchema = z.object({
   description: z.string().nullable().optional(),
   dueDate: z.iso.datetime().nullable().optional(),
   priority: TaskPrioritySchema.nullable().optional(),
   status: TaskStatusSchema.nullable().optional(),
   title: z.string()
+});
+
+export const TaskIncludeSchema = z.object({
+  assignee: z.boolean().optional(),
+  comments: z.boolean().optional()
 });
 
 export const TaskPageSchema = z.object({
@@ -91,9 +101,42 @@ export const TaskUpdatePayloadSchema = z.object({
   title: z.string().optional()
 });
 
+export const UserSchema = z.object({
+  email: z.email(),
+  id: z.string(),
+  name: z.string()
+});
+
+export const CommentNestedPayloadSchema = z.discriminatedUnion('_type', [
+  CommentNestedCreatePayloadSchema,
+  CommentNestedUpdatePayloadSchema
+]);
+
 export const ErrorResponseBodySchema = z.object({
   issues: z.array(IssueSchema),
   layer: LayerSchema
+});
+
+export const TaskFilterSchema: z.ZodType<TaskFilter> = z.lazy(() => z.object({
+  _and: z.array(TaskFilterSchema).optional(),
+  _not: TaskFilterSchema.optional(),
+  _or: z.array(TaskFilterSchema).optional(),
+  priority: TaskPriorityFilterSchema.optional(),
+  status: TaskStatusFilterSchema.optional()
+}));
+
+export const TaskSchema = z.object({
+  archived: z.boolean().nullable(),
+  assignee: UserSchema.nullable().optional(),
+  comments: z.array(CommentSchema).optional(),
+  createdAt: z.iso.datetime(),
+  description: z.string().nullable(),
+  dueDate: z.iso.datetime().nullable(),
+  id: z.string(),
+  priority: TaskPrioritySchema.nullable(),
+  status: TaskStatusSchema.nullable(),
+  title: z.string(),
+  updatedAt: z.iso.datetime()
 });
 
 export const TaskArchiveSuccessResponseBodySchema = z.object({
@@ -122,16 +165,9 @@ export const TaskUpdateSuccessResponseBodySchema = z.object({
   task: TaskSchema
 });
 
-export const TaskFilterSchema: z.ZodType<TaskFilter> = z.lazy(() => z.object({
-  _and: z.array(TaskFilterSchema).optional(),
-  _not: TaskFilterSchema.optional(),
-  _or: z.array(TaskFilterSchema).optional(),
-  priority: TaskPriorityFilterSchema.optional(),
-  status: TaskStatusFilterSchema.optional()
-}));
-
 export const TasksIndexRequestQuerySchema = z.object({
   filter: z.union([TaskFilterSchema, z.array(TaskFilterSchema)]).optional(),
+  include: TaskIncludeSchema.optional(),
   page: TaskPageSchema.optional(),
   sort: z.union([TaskSortSchema, z.array(TaskSortSchema)]).optional()
 });
@@ -146,10 +182,22 @@ export const TasksIndexResponseSchema = z.object({
   body: TasksIndexResponseBodySchema
 });
 
+export const TasksShowRequestQuerySchema = z.object({
+  include: TaskIncludeSchema.optional()
+});
+
+export const TasksShowRequestSchema = z.object({
+  query: TasksShowRequestQuerySchema
+});
+
 export const TasksShowResponseBodySchema = z.union([TaskShowSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const TasksShowResponseSchema = z.object({
   body: TasksShowResponseBodySchema
+});
+
+export const TasksCreateRequestQuerySchema = z.object({
+  include: TaskIncludeSchema.optional()
 });
 
 export const TasksCreateRequestBodySchema = z.object({
@@ -157,6 +205,7 @@ export const TasksCreateRequestBodySchema = z.object({
 });
 
 export const TasksCreateRequestSchema = z.object({
+  query: TasksCreateRequestQuerySchema,
   body: TasksCreateRequestBodySchema
 });
 
@@ -166,11 +215,16 @@ export const TasksCreateResponseSchema = z.object({
   body: TasksCreateResponseBodySchema
 });
 
+export const TasksUpdateRequestQuerySchema = z.object({
+  include: TaskIncludeSchema.optional()
+});
+
 export const TasksUpdateRequestBodySchema = z.object({
   task: TaskUpdatePayloadSchema
 });
 
 export const TasksUpdateRequestSchema = z.object({
+  query: TasksUpdateRequestQuerySchema,
   body: TasksUpdateRequestBodySchema
 });
 
@@ -180,13 +234,76 @@ export const TasksUpdateResponseSchema = z.object({
   body: TasksUpdateResponseBodySchema
 });
 
+export const TasksDestroyRequestQuerySchema = z.object({
+  include: TaskIncludeSchema.optional()
+});
+
+export const TasksDestroyRequestSchema = z.object({
+  query: TasksDestroyRequestQuerySchema
+});
+
 export const TasksDestroyResponse = z.never();
+
+export const TasksArchiveRequestQuerySchema = z.object({
+  include: TaskIncludeSchema.optional()
+});
+
+export const TasksArchiveRequestSchema = z.object({
+  query: TasksArchiveRequestQuerySchema
+});
 
 export const TasksArchiveResponseBodySchema = z.union([TaskArchiveSuccessResponseBodySchema, ErrorResponseBodySchema]);
 
 export const TasksArchiveResponseSchema = z.object({
   body: TasksArchiveResponseBodySchema
 });
+
+export interface Comment {
+  /**
+   * Name of the person who wrote the comment
+   * @example "John Doe"
+   */
+  authorName: null | string;
+  /**
+   * Comment content
+   * @example "This looks good, ready for review."
+   */
+  body: string;
+  /** When the comment was created */
+  createdAt: string;
+  /** Unique comment identifier */
+  id: string;
+}
+
+export interface CommentNestedCreatePayload {
+  _type: 'create';
+  /**
+   * Name of the person who wrote the comment
+   * @example "John Doe"
+   */
+  authorName?: null | string;
+  /**
+   * Comment content
+   * @example "This looks good, ready for review."
+   */
+  body: string;
+}
+
+export type CommentNestedPayload = { _type: 'create' } & CommentNestedCreatePayload | { _type: 'update' } & CommentNestedUpdatePayload;
+
+export interface CommentNestedUpdatePayload {
+  _type?: 'update';
+  /**
+   * Name of the person who wrote the comment
+   * @example "John Doe"
+   */
+  authorName?: null | string;
+  /**
+   * Comment content
+   * @example "This looks good, ready for review."
+   */
+  body?: string;
+}
 
 export interface ErrorResponseBody {
   issues: Issue[];
@@ -234,9 +351,9 @@ export interface Task {
   /** Whether the task has been archived */
   archived: boolean | null;
   /** User responsible for completing this task */
-  assignee?: null | object;
+  assignee?: User | null;
   /** Discussion comments on this task */
-  comments?: string[];
+  comments?: Comment[];
   /** Timestamp when the task was created */
   createdAt: string;
   /**
@@ -316,6 +433,11 @@ export interface TaskFilter {
   status?: TaskStatusFilter;
 }
 
+export interface TaskInclude {
+  assignee?: boolean;
+  comments?: boolean;
+}
+
 export interface TaskIndexSuccessResponseBody {
   meta?: object;
   pagination: OffsetPagination;
@@ -378,6 +500,14 @@ export interface TaskUpdateSuccessResponseBody {
   task: Task;
 }
 
+export interface TasksArchiveRequest {
+  query: TasksArchiveRequestQuery;
+}
+
+export interface TasksArchiveRequestQuery {
+  include?: TaskInclude;
+}
+
 export interface TasksArchiveResponse {
   body: TasksArchiveResponseBody;
 }
@@ -385,6 +515,7 @@ export interface TasksArchiveResponse {
 export type TasksArchiveResponseBody = ErrorResponseBody | TaskArchiveSuccessResponseBody;
 
 export interface TasksCreateRequest {
+  query: TasksCreateRequestQuery;
   body: TasksCreateRequestBody;
 }
 
@@ -392,11 +523,23 @@ export interface TasksCreateRequestBody {
   task: TaskCreatePayload;
 }
 
+export interface TasksCreateRequestQuery {
+  include?: TaskInclude;
+}
+
 export interface TasksCreateResponse {
   body: TasksCreateResponseBody;
 }
 
 export type TasksCreateResponseBody = ErrorResponseBody | TaskCreateSuccessResponseBody;
+
+export interface TasksDestroyRequest {
+  query: TasksDestroyRequestQuery;
+}
+
+export interface TasksDestroyRequestQuery {
+  include?: TaskInclude;
+}
 
 export type TasksDestroyResponse = never;
 
@@ -406,6 +549,7 @@ export interface TasksIndexRequest {
 
 export interface TasksIndexRequestQuery {
   filter?: TaskFilter | TaskFilter[];
+  include?: TaskInclude;
   page?: TaskPage;
   sort?: TaskSort | TaskSort[];
 }
@@ -416,6 +560,14 @@ export interface TasksIndexResponse {
 
 export type TasksIndexResponseBody = ErrorResponseBody | TaskIndexSuccessResponseBody;
 
+export interface TasksShowRequest {
+  query: TasksShowRequestQuery;
+}
+
+export interface TasksShowRequestQuery {
+  include?: TaskInclude;
+}
+
 export interface TasksShowResponse {
   body: TasksShowResponseBody;
 }
@@ -423,6 +575,7 @@ export interface TasksShowResponse {
 export type TasksShowResponseBody = ErrorResponseBody | TaskShowSuccessResponseBody;
 
 export interface TasksUpdateRequest {
+  query: TasksUpdateRequestQuery;
   body: TasksUpdateRequestBody;
 }
 
@@ -430,8 +583,27 @@ export interface TasksUpdateRequestBody {
   task: TaskUpdatePayload;
 }
 
+export interface TasksUpdateRequestQuery {
+  include?: TaskInclude;
+}
+
 export interface TasksUpdateResponse {
   body: TasksUpdateResponseBody;
 }
 
 export type TasksUpdateResponseBody = ErrorResponseBody | TaskUpdateSuccessResponseBody;
+
+export interface User {
+  /**
+   * User's email address
+   * @example "jane@example.com"
+   */
+  email: string;
+  /** Unique user identifier */
+  id: string;
+  /**
+   * User's display name
+   * @example "Jane Doe"
+   */
+  name: string;
+}

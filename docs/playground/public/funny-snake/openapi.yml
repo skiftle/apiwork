@@ -28,10 +28,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               properties:
                 invoice:
                   "$ref": "#/components/schemas/invoicePayload"
+              type: object
               required:
               - invoice
       responses:
@@ -80,10 +80,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               properties:
                 invoice:
                   "$ref": "#/components/schemas/invoicePayload"
+              type: object
       responses:
         '200':
           description: Successful response
@@ -117,11 +117,11 @@ components:
           items:
             "$ref": "#/components/schemas/issue"
         layer:
-          type: string
           enum:
           - http
           - contract
           - domain
+          type: string
       required:
       - issues
       - layer

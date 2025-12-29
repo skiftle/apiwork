@@ -536,7 +536,6 @@ GET /bold_falcon/articles?filter[category][name][eq]=Technology
       ],
       "pointer": "/filter/category",
       "meta": {
-        "field": "category",
         "allowed": [
           "_and",
           "_or",
@@ -546,7 +545,8 @@ GET /bold_falcon/articles?filter[category][name][eq]=Technology
           "view_count",
           "rating",
           "published_on"
-        ]
+        ],
+        "field": "category"
       }
     }
   ]

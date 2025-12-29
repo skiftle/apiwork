@@ -17,7 +17,6 @@
           ],
           "pointer": "/filter/category",
           "meta": {
-            "field": "category",
             "allowed": [
               "_and",
               "_or",
@@ -27,7 +26,8 @@
               "view_count",
               "rating",
               "published_on"
-            ]
+            ],
+            "field": "category"
           }
         }
       ]

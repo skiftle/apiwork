@@ -31,6 +31,11 @@ paths:
             items:
               "$ref": "#/components/schemas/taskFilter"
       - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/taskInclude"
+      - in: query
         name: page
         required: false
         schema:
@@ -57,15 +62,21 @@ paths:
       description: Creates a task and returns the created resource
       tags:
       - Tasks
+      parameters:
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/taskInclude"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
               properties:
                 task:
                   "$ref": "#/components/schemas/taskCreatePayload"
+              type: object
               required:
               - task
       responses:
@@ -94,6 +105,11 @@ paths:
         required: true
         schema:
           type: string
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/taskInclude"
       responses:
         '200':
           description: Successful response
@@ -113,15 +129,20 @@ paths:
         required: true
         schema:
           type: string
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/taskInclude"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
               properties:
                 task:
                   "$ref": "#/components/schemas/taskUpdatePayload"
+              type: object
       responses:
         '200':
           description: Successful response
@@ -147,6 +168,11 @@ paths:
         required: true
         schema:
           type: string
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/taskInclude"
       responses:
         '204':
           description: No content
@@ -166,6 +192,11 @@ paths:
         required: true
         schema:
           type: string
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/taskInclude"
       responses:
         '200':
           description: Successful response
@@ -181,6 +212,79 @@ paths:
                 "$ref": "#/components/schemas/errorResponseBody"
 components:
   schemas:
+    comment:
+      type: object
+      properties:
+        authorName:
+          type:
+          - string
+          - 'null'
+          description: Name of the person who wrote the comment
+          example: John Doe
+        body:
+          type: string
+          description: Comment content
+          example: This looks good, ready for review.
+        createdAt:
+          type: string
+          format: date-time
+          description: When the comment was created
+        id:
+          type: string
+          description: Unique comment identifier
+      description: A comment on a task
+      required:
+      - authorName
+      - body
+      - createdAt
+      - id
+    commentNestedCreatePayload:
+      type: object
+      properties:
+        _type:
+          type: string
+          const: create
+        authorName:
+          type:
+          - string
+          - 'null'
+          description: Name of the person who wrote the comment
+          example: John Doe
+        body:
+          type: string
+          description: Comment content
+          example: This looks good, ready for review.
+      required:
+      - _type
+      - body
+    commentNestedPayload:
+      oneOf:
+      - "$ref": "#/components/schemas/commentNestedCreatePayload"
+      - "$ref": "#/components/schemas/commentNestedUpdatePayload"
+      discriminator:
+        propertyName: _type
+        mapping:
+          create: "#/components/schemas/commentNestedCreatePayload"
+          update: "#/components/schemas/commentNestedUpdatePayload"
+    commentNestedUpdatePayload:
+      type: object
+      properties:
+        _type:
+          type: string
+          const: update
+        authorName:
+          type:
+          - string
+          - 'null'
+          description: Name of the person who wrote the comment
+          example: John Doe
+        body:
+          type: string
+          description: Comment content
+          example: This looks good, ready for review.
+      required:
+      - _type
+      - body
     errorResponseBody:
       type: object
       properties:
@@ -189,11 +293,11 @@ components:
           items:
             "$ref": "#/components/schemas/issue"
         layer:
-          type: string
           enum:
           - http
           - contract
           - domain
+          type: string
       required:
       - issues
       - layer
@@ -282,15 +386,13 @@ components:
           description: Whether the task has been archived
           deprecated: true
         assignee:
-          type:
-          - object
-          - 'null'
-          properties: {}
-          description: User responsible for completing this task
+          oneOf:
+          - "$ref": "#/components/schemas/user"
+          - type: 'null'
         comments:
           type: array
           items:
-            type: string
+            "$ref": "#/components/schemas/comment"
           description: Discussion comments on this task
         createdAt:
           type: string
@@ -436,6 +538,13 @@ components:
         status:
           "$ref": "#/components/schemas/taskStatusFilter"
       description: A task representing work to be completed
+    taskInclude:
+      type: object
+      properties:
+        assignee:
+          type: boolean
+        comments:
+          type: boolean
     taskIndexSuccessResponseBody:
       type: object
       properties:
@@ -463,21 +572,21 @@ components:
           maximum: 100
     taskPriorityFilter:
       oneOf:
-      - type: string
-        enum:
+      - enum:
         - low
         - medium
         - high
         - critical
+        type: string
       - type: object
         properties:
           eq:
-            type: string
             enum:
             - low
             - medium
             - high
             - critical
+            type: string
           in:
             type: array
             items:
@@ -496,33 +605,33 @@ components:
       type: object
       properties:
         createdAt:
-          type: string
           enum:
           - asc
           - desc
+          type: string
         dueDate:
-          type: string
           enum:
           - asc
           - desc
+          type: string
       description: A task representing work to be completed
     taskStatusFilter:
       oneOf:
-      - type: string
-        enum:
+      - enum:
         - pending
         - in_progress
         - completed
         - archived
+        type: string
       - type: object
         properties:
           eq:
-            type: string
             enum:
             - pending
             - in_progress
             - completed
             - archived
+            type: string
           in:
             type: array
             items:
@@ -582,3 +691,23 @@ components:
           "$ref": "#/components/schemas/task"
       required:
       - task
+    user:
+      type: object
+      properties:
+        email:
+          type: string
+          description: User's email address
+          example: jane@example.com
+          format: email
+        id:
+          type: string
+          description: Unique user identifier
+        name:
+          type: string
+          description: User's display name
+          example: Jane Doe
+      description: A user who can be assigned to tasks
+      required:
+      - email
+      - id
+      - name

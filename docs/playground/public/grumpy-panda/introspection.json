@@ -2,7 +2,6 @@
   "path": "/grumpy_panda",
   "types": {
     "activity": {
-      "type": "object",
       "shape": {
         "action": {
           "type": "string"
@@ -17,10 +16,10 @@
           "type": "datetime",
           "nullable": true
         }
-      }
+      },
+      "type": "object"
     },
     "activity_create_payload": {
-      "type": "object",
       "shape": {
         "action": {
           "type": "string"
@@ -30,10 +29,10 @@
           "nullable": true,
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "activity_create_success_response_body": {
-      "type": "object",
       "shape": {
         "activity": {
           "type": "activity"
@@ -42,10 +41,10 @@
           "type": "object",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "activity_index_success_response_body": {
-      "type": "object",
       "shape": {
         "activities": {
           "type": "array",
@@ -58,10 +57,10 @@
         "pagination": {
           "type": "cursor_pagination"
         }
-      }
+      },
+      "type": "object"
     },
     "activity_page": {
-      "type": "object",
       "shape": {
         "after": {
           "type": "string",
@@ -77,10 +76,10 @@
           "min": 1,
           "max": 100
         }
-      }
+      },
+      "type": "object"
     },
     "activity_show_success_response_body": {
-      "type": "object",
       "shape": {
         "activity": {
           "type": "activity"
@@ -89,10 +88,10 @@
           "type": "object",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "activity_update_payload": {
-      "type": "object",
       "shape": {
         "action": {
           "type": "string"
@@ -102,10 +101,10 @@
           "nullable": true,
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "activity_update_success_response_body": {
-      "type": "object",
       "shape": {
         "activity": {
           "type": "activity"
@@ -114,10 +113,10 @@
           "type": "object",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "cursor_pagination": {
-      "type": "object",
       "shape": {
         "next": {
           "type": "string",
@@ -129,10 +128,10 @@
           "nullable": true,
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "error_response_body": {
-      "type": "object",
       "shape": {
         "issues": {
           "type": "array",
@@ -141,10 +140,10 @@
         "layer": {
           "type": "layer"
         }
-      }
+      },
+      "type": "object"
     },
     "issue": {
-      "type": "object",
       "shape": {
         "code": {
           "type": "string"
@@ -162,7 +161,8 @@
         "pointer": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     }
   },
   "enums": {

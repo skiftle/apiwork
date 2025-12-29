@@ -45,10 +45,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               properties:
                 article:
                   "$ref": "#/components/schemas/articleCreatePayload"
+              type: object
               required:
               - article
       responses:
@@ -93,10 +93,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               properties:
                 article:
                   "$ref": "#/components/schemas/articleUpdatePayload"
+              type: object
       responses:
         '200':
           description: Successful response
@@ -154,9 +154,9 @@ components:
           - string
           - 'null'
           enum:
+          - archived
           - draft
           - published
-          - archived
         title:
           type: string
         updatedAt:
@@ -193,9 +193,9 @@ components:
           - string
           - 'null'
           enum:
+          - archived
           - draft
           - published
-          - archived
         title:
           type: string
       required:
@@ -281,45 +281,45 @@ components:
       type: object
       properties:
         createdAt:
-          type: string
           enum:
           - asc
           - desc
+          type: string
         publishedOn:
-          type: string
           enum:
           - asc
           - desc
+          type: string
         rating:
-          type: string
           enum:
           - asc
           - desc
+          type: string
         status:
-          type: string
           enum:
           - asc
           - desc
+          type: string
         viewCount:
-          type: string
           enum:
           - asc
           - desc
+          type: string
     articleStatusFilter:
       oneOf:
-      - type: string
-        enum:
+      - enum:
+        - archived
         - draft
         - published
-        - archived
+        type: string
       - type: object
         properties:
           eq:
-            type: string
             enum:
+            - archived
             - draft
             - published
-            - archived
+            type: string
           in:
             type: array
             items:
@@ -341,9 +341,9 @@ components:
           - string
           - 'null'
           enum:
+          - archived
           - draft
           - published
-          - archived
         title:
           type: string
       required:
@@ -425,11 +425,11 @@ components:
           items:
             "$ref": "#/components/schemas/issue"
         layer:
-          type: string
           enum:
           - http
           - contract
           - domain
+          type: string
       required:
       - issues
       - layer

@@ -2,7 +2,6 @@
   "path": "/mighty_wolf",
   "types": {
     "car": {
-      "type": "object",
       "shape": {
         "brand": {
           "type": "string"
@@ -29,10 +28,10 @@
           "type": "integer",
           "nullable": true
         }
-      }
+      },
+      "type": "object"
     },
     "car_create_payload": {
-      "type": "object",
       "shape": {
         "brand": {
           "type": "string"
@@ -59,10 +58,10 @@
           "nullable": true,
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "car_update_payload": {
-      "type": "object",
       "shape": {
         "brand": {
           "type": "string"
@@ -89,10 +88,10 @@
           "nullable": true,
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "error_response_body": {
-      "type": "object",
       "shape": {
         "issues": {
           "type": "array",
@@ -101,10 +100,10 @@
         "layer": {
           "type": "layer"
         }
-      }
+      },
+      "type": "object"
     },
     "integer_filter": {
-      "type": "object",
       "shape": {
         "between": {
           "type": "integer_filter_between",
@@ -135,10 +134,10 @@
           "type": "integer",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "integer_filter_between": {
-      "type": "object",
       "shape": {
         "from": {
           "type": "integer",
@@ -148,10 +147,10 @@
           "type": "integer",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "issue": {
-      "type": "object",
       "shape": {
         "code": {
           "type": "string"
@@ -169,10 +168,10 @@
         "pointer": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "motorcycle": {
-      "type": "object",
       "shape": {
         "brand": {
           "type": "string"
@@ -199,10 +198,10 @@
           "type": "integer",
           "nullable": true
         }
-      }
+      },
+      "type": "object"
     },
     "motorcycle_create_payload": {
-      "type": "object",
       "shape": {
         "brand": {
           "type": "string"
@@ -229,10 +228,10 @@
           "nullable": true,
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "motorcycle_update_payload": {
-      "type": "object",
       "shape": {
         "brand": {
           "type": "string"
@@ -259,10 +258,10 @@
           "nullable": true,
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "nullable_integer_filter": {
-      "type": "object",
       "shape": {
         "between": {
           "type": "integer_filter_between",
@@ -297,10 +296,10 @@
           "type": "boolean",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "offset_pagination": {
-      "type": "object",
       "shape": {
         "current": {
           "type": "integer"
@@ -321,10 +320,10 @@
         "total": {
           "type": "integer"
         }
-      }
+      },
+      "type": "object"
     },
     "string_filter": {
-      "type": "object",
       "shape": {
         "contains": {
           "type": "string",
@@ -347,10 +346,10 @@
           "type": "string",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "truck": {
-      "type": "object",
       "shape": {
         "brand": {
           "type": "string"
@@ -377,10 +376,10 @@
           "type": "integer",
           "nullable": true
         }
-      }
+      },
+      "type": "object"
     },
     "truck_create_payload": {
-      "type": "object",
       "shape": {
         "brand": {
           "type": "string"
@@ -407,10 +406,10 @@
           "nullable": true,
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "truck_update_payload": {
-      "type": "object",
       "shape": {
         "brand": {
           "type": "string"
@@ -437,7 +436,8 @@
           "nullable": true,
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "vehicle": {
       "type": "union",
@@ -476,7 +476,6 @@
       "discriminator": "type"
     },
     "vehicle_create_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -485,10 +484,10 @@
         "vehicle": {
           "type": "vehicle"
         }
-      }
+      },
+      "type": "object"
     },
     "vehicle_filter": {
-      "type": "object",
       "shape": {
         "_and": {
           "type": "array",
@@ -540,10 +539,10 @@
           ],
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "vehicle_index_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -556,10 +555,10 @@
           "type": "array",
           "of": "vehicle"
         }
-      }
+      },
+      "type": "object"
     },
     "vehicle_page": {
-      "type": "object",
       "shape": {
         "number": {
           "type": "integer",
@@ -572,10 +571,10 @@
           "min": 1,
           "max": 100
         }
-      }
+      },
+      "type": "object"
     },
     "vehicle_show_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -584,16 +583,17 @@
         "vehicle": {
           "type": "vehicle"
         }
-      }
+      },
+      "type": "object"
     },
     "vehicle_sort": {
-      "type": "object",
       "shape": {
         "year": {
           "type": "sort_direction",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "vehicle_update_payload": {
       "type": "union",
@@ -614,7 +614,6 @@
       "discriminator": "type"
     },
     "vehicle_update_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -623,7 +622,8 @@
         "vehicle": {
           "type": "vehicle"
         }
-      }
+      },
+      "type": "object"
     }
   },
   "enums": {

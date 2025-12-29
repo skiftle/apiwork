@@ -232,11 +232,11 @@ Content-Type: application/json
       ],
       "pointer": "/comment/commentable_type",
       "meta": {
-        "field": "commentable_type",
         "allowed": [
           "body",
           "author_name"
-        ]
+        ],
+        "field": "commentable_type"
       }
     },
     {
@@ -248,11 +248,11 @@ Content-Type: application/json
       ],
       "pointer": "/comment/commentable_id",
       "meta": {
-        "field": "commentable_id",
         "allowed": [
           "body",
           "author_name"
-        ]
+        ],
+        "field": "commentable_id"
       }
     }
   ]
@@ -295,11 +295,11 @@ Content-Type: application/json
       ],
       "pointer": "/comment/commentable_type",
       "meta": {
-        "field": "commentable_type",
         "allowed": [
           "body",
           "author_name"
-        ]
+        ],
+        "field": "commentable_type"
       }
     },
     {
@@ -311,11 +311,11 @@ Content-Type: application/json
       ],
       "pointer": "/comment/commentable_id",
       "meta": {
-        "field": "commentable_id",
         "allowed": [
           "body",
           "author_name"
-        ]
+        ],
+        "field": "commentable_id"
       }
     }
   ]
@@ -347,12 +347,12 @@ GET /gentle_owl/comments?filter[commentable_type][eq]=GentleOwl::Post
       ],
       "pointer": "/filter",
       "meta": {
-        "field": "filter",
         "allowed": [
           "sort",
           "page",
           "include"
-        ]
+        ],
+        "field": "filter"
       }
     }
   ]

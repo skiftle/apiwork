@@ -17,18 +17,19 @@ module Apiwork
       def initialize(name,
                      type,
                      schema_class,
-                     schema: nil,
-                     class_name: nil,
-                     polymorphic: nil,
-                     include: :optional,
-                     filterable: false,
-                     sortable: false,
-                     writable: false,
                      allow_destroy: false,
-                     nullable: nil,
+                     class_name: nil,
+                     deprecated: false,
                      description: nil,
                      example: nil,
-                     deprecated: false)
+                     filterable: false,
+                     include: :optional,
+                     nullable: nil,
+                     optional: nil,
+                     polymorphic: nil,
+                     schema: nil,
+                     sortable: false,
+                     writable: false)
         @name = name
         @type = type
         @owner_schema_class = schema_class
@@ -42,7 +43,7 @@ module Apiwork
         @include = include
         @writable = normalize_writable(writable)
         @allow_destroy = allow_destroy
-        @nullable = nullable
+        @nullable = nullable.nil? ? optional : nullable
         @description = description
         @example = example
         @deprecated = deprecated

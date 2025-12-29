@@ -47,10 +47,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               properties:
                 comment:
                   "$ref": "#/components/schemas/commentCreatePayload"
+              type: object
               required:
               - comment
       responses:
@@ -105,10 +105,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               properties:
                 comment:
                   "$ref": "#/components/schemas/commentUpdatePayload"
+              type: object
       responses:
         '200':
           description: Successful response
@@ -237,10 +237,10 @@ components:
       type: object
       properties:
         createdAt:
-          type: string
           enum:
           - asc
           - desc
+          type: string
     commentUpdatePayload:
       type: object
       properties:
@@ -270,11 +270,11 @@ components:
           items:
             "$ref": "#/components/schemas/issue"
         layer:
-          type: string
           enum:
           - http
           - contract
           - domain
+          type: string
       required:
       - issues
       - layer
@@ -383,10 +383,10 @@ components:
       type: object
       properties:
         createdAt:
-          type: string
           enum:
           - asc
           - desc
+          type: string
     issue:
       type: object
       properties:
@@ -513,10 +513,10 @@ components:
       type: object
       properties:
         createdAt:
-          type: string
           enum:
           - asc
           - desc
+          type: string
     video:
       type: object
       properties:
@@ -609,7 +609,7 @@ components:
       type: object
       properties:
         createdAt:
-          type: string
           enum:
           - asc
           - desc
+          type: string

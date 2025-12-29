@@ -12,7 +12,7 @@ next: false
 
 ### .register
 
-`.register(key, status:, attach_path: false)`
+`.register(key, attach_path: false, status:)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L49)
 

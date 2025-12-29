@@ -25,11 +25,11 @@
           ],
           "pointer": "/comment/commentable_type",
           "meta": {
-            "field": "commentable_type",
             "allowed": [
               "body",
               "author_name"
-            ]
+            ],
+            "field": "commentable_type"
           }
         },
         {
@@ -41,11 +41,11 @@
           ],
           "pointer": "/comment/commentable_id",
           "meta": {
-            "field": "commentable_id",
             "allowed": [
               "body",
               "author_name"
-            ]
+            ],
+            "field": "commentable_id"
           }
         }
       ]

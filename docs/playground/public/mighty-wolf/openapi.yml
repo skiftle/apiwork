@@ -45,10 +45,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               properties:
                 vehicle:
                   "$ref": "#/components/schemas/vehicleCreatePayload"
+              type: object
               required:
               - vehicle
       responses:
@@ -93,10 +93,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               properties:
                 vehicle:
                   "$ref": "#/components/schemas/vehicleUpdatePayload"
+              type: object
       responses:
         '200':
           description: Successful response
@@ -215,11 +215,11 @@ components:
           items:
             "$ref": "#/components/schemas/issue"
         layer:
-          type: string
           enum:
           - http
           - contract
           - domain
+          type: string
       required:
       - issues
       - layer
@@ -592,10 +592,10 @@ components:
       type: object
       properties:
         year:
-          type: string
           enum:
           - asc
           - desc
+          type: string
     vehicleUpdatePayload:
       oneOf:
       - "$ref": "#/components/schemas/carUpdatePayload"

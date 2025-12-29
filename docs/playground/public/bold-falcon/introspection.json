@@ -2,7 +2,6 @@
   "path": "/bold_falcon",
   "types": {
     "article": {
-      "type": "object",
       "shape": {
         "body": {
           "type": "string",
@@ -42,10 +41,10 @@
           "type": "integer",
           "nullable": true
         }
-      }
+      },
+      "type": "object"
     },
     "article_create_payload": {
-      "type": "object",
       "shape": {
         "body": {
           "type": "string",
@@ -66,10 +65,10 @@
         "title": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "article_create_success_response_body": {
-      "type": "object",
       "shape": {
         "article": {
           "type": "article"
@@ -78,10 +77,10 @@
           "type": "object",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "article_filter": {
-      "type": "object",
       "shape": {
         "_and": {
           "type": "array",
@@ -149,10 +148,10 @@
           ],
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "article_index_success_response_body": {
-      "type": "object",
       "shape": {
         "articles": {
           "type": "array",
@@ -165,10 +164,10 @@
         "pagination": {
           "type": "offset_pagination"
         }
-      }
+      },
+      "type": "object"
     },
     "article_page": {
-      "type": "object",
       "shape": {
         "number": {
           "type": "integer",
@@ -181,10 +180,10 @@
           "min": 1,
           "max": 100
         }
-      }
+      },
+      "type": "object"
     },
     "article_show_success_response_body": {
-      "type": "object",
       "shape": {
         "article": {
           "type": "article"
@@ -193,10 +192,10 @@
           "type": "object",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "article_sort": {
-      "type": "object",
       "shape": {
         "created_at": {
           "type": "sort_direction",
@@ -218,7 +217,8 @@
           "type": "sort_direction",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "article_status_filter": {
       "type": "union",
@@ -244,7 +244,6 @@
       ]
     },
     "article_update_payload": {
-      "type": "object",
       "shape": {
         "body": {
           "type": "string",
@@ -265,10 +264,10 @@
         "title": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "article_update_success_response_body": {
-      "type": "object",
       "shape": {
         "article": {
           "type": "article"
@@ -277,10 +276,10 @@
           "type": "object",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "date_filter": {
-      "type": "object",
       "shape": {
         "between": {
           "type": "date_filter_between",
@@ -311,10 +310,10 @@
           "type": "date",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "date_filter_between": {
-      "type": "object",
       "shape": {
         "from": {
           "type": "date",
@@ -324,10 +323,10 @@
           "type": "date",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "decimal_filter": {
-      "type": "object",
       "shape": {
         "between": {
           "type": "decimal_filter_between",
@@ -358,10 +357,10 @@
           "type": "decimal",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "decimal_filter_between": {
-      "type": "object",
       "shape": {
         "from": {
           "type": "decimal",
@@ -371,10 +370,10 @@
           "type": "decimal",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "error_response_body": {
-      "type": "object",
       "shape": {
         "issues": {
           "type": "array",
@@ -383,10 +382,10 @@
         "layer": {
           "type": "layer"
         }
-      }
+      },
+      "type": "object"
     },
     "integer_filter": {
-      "type": "object",
       "shape": {
         "between": {
           "type": "integer_filter_between",
@@ -417,10 +416,10 @@
           "type": "integer",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "integer_filter_between": {
-      "type": "object",
       "shape": {
         "from": {
           "type": "integer",
@@ -430,10 +429,10 @@
           "type": "integer",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "issue": {
-      "type": "object",
       "shape": {
         "code": {
           "type": "string"
@@ -451,10 +450,10 @@
         "pointer": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "nullable_date_filter": {
-      "type": "object",
       "shape": {
         "between": {
           "type": "date_filter_between",
@@ -489,10 +488,10 @@
           "type": "boolean",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "nullable_decimal_filter": {
-      "type": "object",
       "shape": {
         "between": {
           "type": "decimal_filter_between",
@@ -527,10 +526,10 @@
           "type": "boolean",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "nullable_integer_filter": {
-      "type": "object",
       "shape": {
         "between": {
           "type": "integer_filter_between",
@@ -565,10 +564,10 @@
           "type": "boolean",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "nullable_string_filter": {
-      "type": "object",
       "shape": {
         "contains": {
           "type": "string",
@@ -595,10 +594,10 @@
           "type": "string",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "offset_pagination": {
-      "type": "object",
       "shape": {
         "current": {
           "type": "integer"
@@ -619,10 +618,10 @@
         "total": {
           "type": "integer"
         }
-      }
+      },
+      "type": "object"
     },
     "string_filter": {
-      "type": "object",
       "shape": {
         "contains": {
           "type": "string",
@@ -645,15 +644,16 @@
           "type": "string",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     }
   },
   "enums": {
     "article_status": {
       "values": [
+        "archived",
         "draft",
-        "published",
-        "archived"
+        "published"
       ]
     },
     "layer": {

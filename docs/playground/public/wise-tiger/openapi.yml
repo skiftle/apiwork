@@ -54,10 +54,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               properties:
                 project:
                   "$ref": "#/components/schemas/projectCreatePayload"
+              type: object
               required:
               - project
       responses:
@@ -110,10 +110,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               properties:
                 project:
                   "$ref": "#/components/schemas/projectUpdatePayload"
+              type: object
       responses:
         '200':
           description: Successful response
@@ -152,11 +152,11 @@ components:
           items:
             "$ref": "#/components/schemas/issue"
         layer:
-          type: string
           enum:
           - http
           - contract
           - domain
+          type: string
       required:
       - issues
       - layer
@@ -250,10 +250,10 @@ components:
           - 'null'
           description: Project priority for resource allocation
           enum:
+          - critical
+          - high
           - low
           - medium
-          - high
-          - critical
         status:
           type:
           - string
@@ -261,9 +261,9 @@ components:
           description: Current project lifecycle status
           enum:
           - active
-          - paused
-          - completed
           - archived
+          - completed
+          - paused
         updatedAt:
           type: string
           format: date-time
@@ -301,10 +301,10 @@ components:
           - 'null'
           description: Project priority for resource allocation
           enum:
+          - critical
+          - high
           - low
           - medium
-          - high
-          - critical
         status:
           type:
           - string
@@ -312,9 +312,9 @@ components:
           description: Current project lifecycle status
           enum:
           - active
-          - paused
-          - completed
           - archived
+          - completed
+          - paused
       description: A project with tasks and deadlines
       required:
       - name
@@ -373,21 +373,21 @@ components:
           maximum: 100
     projectPriorityFilter:
       oneOf:
-      - type: string
-        enum:
+      - enum:
+        - critical
+        - high
         - low
         - medium
-        - high
-        - critical
+        type: string
       - type: object
         properties:
           eq:
-            type: string
             enum:
+            - critical
+            - high
             - low
             - medium
-            - high
-            - critical
+            type: string
           in:
             type: array
             items:
@@ -406,33 +406,33 @@ components:
       type: object
       properties:
         createdAt:
-          type: string
           enum:
           - asc
           - desc
+          type: string
         deadline:
-          type: string
           enum:
           - asc
           - desc
+          type: string
       description: A project with tasks and deadlines
     projectStatusFilter:
       oneOf:
-      - type: string
-        enum:
+      - enum:
         - active
-        - paused
-        - completed
         - archived
+        - completed
+        - paused
+        type: string
       - type: object
         properties:
           eq:
-            type: string
             enum:
             - active
-            - paused
-            - completed
             - archived
+            - completed
+            - paused
+            type: string
           in:
             type: array
             items:
@@ -460,10 +460,10 @@ components:
           - 'null'
           description: Project priority for resource allocation
           enum:
+          - critical
+          - high
           - low
           - medium
-          - high
-          - critical
         status:
           type:
           - string
@@ -471,9 +471,9 @@ components:
           description: Current project lifecycle status
           enum:
           - active
-          - paused
-          - completed
           - archived
+          - completed
+          - paused
       description: A project with tasks and deadlines
       required:
       - name

@@ -227,7 +227,7 @@ end
 
 ### .introspect
 
-`.introspect(locale: nil, expand: false)`
+`.introspect(expand: false, locale: nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/base.rb#L409)
 

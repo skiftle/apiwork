@@ -2,7 +2,6 @@
   "path": "/eager_lion",
   "types": {
     "error_response_body": {
-      "type": "object",
       "shape": {
         "issues": {
           "type": "array",
@@ -11,10 +10,10 @@
         "layer": {
           "type": "layer"
         }
-      }
+      },
+      "type": "object"
     },
     "invoice": {
-      "type": "object",
       "shape": {
         "created_at": {
           "type": "datetime"
@@ -49,10 +48,10 @@
         "updated_at": {
           "type": "datetime"
         }
-      }
+      },
+      "type": "object"
     },
     "invoice_archive_success_response_body": {
-      "type": "object",
       "shape": {
         "invoice": {
           "type": "invoice"
@@ -61,10 +60,10 @@
           "type": "object",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "invoice_create_payload": {
-      "type": "object",
       "shape": {
         "customer_id": {
           "type": "string"
@@ -87,10 +86,10 @@
         "number": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "invoice_create_success_response_body": {
-      "type": "object",
       "shape": {
         "invoice": {
           "type": "invoice"
@@ -99,10 +98,10 @@
           "type": "object",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "invoice_filter": {
-      "type": "object",
       "shape": {
         "_and": {
           "type": "array",
@@ -142,10 +141,10 @@
           ],
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "invoice_index_success_response_body": {
-      "type": "object",
       "shape": {
         "invoices": {
           "type": "array",
@@ -158,10 +157,10 @@
         "pagination": {
           "type": "offset_pagination"
         }
-      }
+      },
+      "type": "object"
     },
     "invoice_page": {
-      "type": "object",
       "shape": {
         "number": {
           "type": "integer",
@@ -174,10 +173,10 @@
           "min": 1,
           "max": 100
         }
-      }
+      },
+      "type": "object"
     },
     "invoice_show_success_response_body": {
-      "type": "object",
       "shape": {
         "invoice": {
           "type": "invoice"
@@ -186,10 +185,10 @@
           "type": "object",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "invoice_sort": {
-      "type": "object",
       "shape": {
         "created_at": {
           "type": "sort_direction",
@@ -207,10 +206,10 @@
           "type": "sort_direction",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "invoice_update_payload": {
-      "type": "object",
       "shape": {
         "customer_id": {
           "type": "string"
@@ -233,10 +232,10 @@
         "number": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "invoice_update_success_response_body": {
-      "type": "object",
       "shape": {
         "invoice": {
           "type": "invoice"
@@ -245,10 +244,10 @@
           "type": "object",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "issue": {
-      "type": "object",
       "shape": {
         "code": {
           "type": "string"
@@ -266,10 +265,10 @@
         "pointer": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "nullable_string_filter": {
-      "type": "object",
       "shape": {
         "contains": {
           "type": "string",
@@ -296,10 +295,10 @@
           "type": "string",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "offset_pagination": {
-      "type": "object",
       "shape": {
         "current": {
           "type": "integer"
@@ -320,10 +319,10 @@
         "total": {
           "type": "integer"
         }
-      }
+      },
+      "type": "object"
     },
     "string_filter": {
-      "type": "object",
       "shape": {
         "contains": {
           "type": "string",
@@ -346,7 +345,8 @@
           "type": "string",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     }
   },
   "enums": {

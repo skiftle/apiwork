@@ -14,8 +14,88 @@
     }
   },
   "types": {
-    "error_response_body": {
+    "comment": {
+      "shape": {
+        "author_name": {
+          "type": "string",
+          "nullable": true,
+          "description": "Name of the person who wrote the comment",
+          "example": "John Doe"
+        },
+        "body": {
+          "type": "string",
+          "description": "Comment content",
+          "example": "This looks good, ready for review."
+        },
+        "created_at": {
+          "type": "datetime",
+          "description": "When the comment was created"
+        },
+        "id": {
+          "type": "string",
+          "description": "Unique comment identifier"
+        }
+      },
       "type": "object",
+      "description": "A comment on a task"
+    },
+    "comment_nested_create_payload": {
+      "shape": {
+        "_type": {
+          "type": "literal",
+          "value": "create"
+        },
+        "author_name": {
+          "type": "string",
+          "nullable": true,
+          "optional": true,
+          "description": "Name of the person who wrote the comment",
+          "example": "John Doe"
+        },
+        "body": {
+          "type": "string",
+          "description": "Comment content",
+          "example": "This looks good, ready for review."
+        }
+      },
+      "type": "object"
+    },
+    "comment_nested_payload": {
+      "type": "union",
+      "variants": [
+        {
+          "type": "comment_nested_create_payload",
+          "tag": "create"
+        },
+        {
+          "type": "comment_nested_update_payload",
+          "tag": "update"
+        }
+      ],
+      "discriminator": "_type"
+    },
+    "comment_nested_update_payload": {
+      "shape": {
+        "_type": {
+          "type": "literal",
+          "value": "update"
+        },
+        "author_name": {
+          "type": "string",
+          "nullable": true,
+          "optional": true,
+          "description": "Name of the person who wrote the comment",
+          "example": "John Doe"
+        },
+        "body": {
+          "type": "string",
+          "description": "Comment content",
+          "example": "This looks good, ready for review."
+        }
+      },
+      "type": "object"
+    },
+    "error_response_body": {
       "shape": {
         "issues": {
           "type": "array",
@@ -24,10 +104,10 @@
         "layer": {
           "type": "layer"
         }
-      }
+      },
+      "type": "object"
     },
     "issue": {
-      "type": "object",
       "shape": {
         "code": {
           "type": "string"
@@ -45,10 +125,10 @@
         "pointer": {
           "type": "string"
         }
-      }
+      },
+      "type": "object"
     },
     "nullable_string_filter": {
-      "type": "object",
       "shape": {
         "contains": {
           "type": "string",
@@ -75,10 +155,10 @@
           "type": "string",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "offset_pagination": {
-      "type": "object",
       "shape": {
         "current": {
           "type": "integer"
@@ -99,10 +179,10 @@
         "total": {
           "type": "integer"
         }
-      }
+      },
+      "type": "object"
     },
     "string_filter": {
-      "type": "object",
       "shape": {
         "contains": {
           "type": "string",
@@ -125,10 +205,10 @@
           "type": "string",
           "optional": true
         }
-      }
+      },
+      "type": "object"
     },
     "task": {
-      "type": "object",
       "shape": {
         "archived": {
           "type": "boolean",
@@ -137,13 +217,14 @@
           "deprecated": true
         },
         "assignee": {
-          "type": "object",
+          "type": "user",
           "nullable": true,
           "optional": true,
           "description": "User responsible for completing this task"
         },
         "comments": {
           "type": "array",
+          "of": "comment",
           "optional": true,
           "description": "Discussion comments on this task"
         },
@@ -191,10 +272,10 @@
           "description": "Timestamp of last modification"
         }
       },
+      "type": "object",
       "description": "A task representing work to be completed"
     },
     "task_archive_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -203,10 +284,10 @@
         "task": {
           "type": "task"
         }
-      }
+      },
+      "type": "object"
     },
     "task_create_payload": {
-      "type": "object",
       "shape": {
         "description": {
           "type": "string",
@@ -244,10 +325,10 @@
           "example": "Implement user authentication"
         }
       },
+      "type": "object",
       "description": "A task representing work to be completed"
     },
     "task_create_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -256,10 +337,10 @@
         "task": {
           "type": "task"
         }
-      }
+      },
+      "type": "object"
     },
     "task_filter": {
-      "type": "object",
       "shape": {
         "_and": {
           "type": "array",
@@ -284,10 +365,23 @@
           "optional": true
         }
       },
+      "type": "object",
       "description": "A task representing work to be completed"
     },
+    "task_include": {
+      "shape": {
+        "assignee": {
+          "type": "boolean",
+          "optional": true
+        },
+        "comments": {
+          "type": "boolean",
+          "optional": true
+        }
+      },
+      "type": "object"
+    },
     "task_index_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -300,10 +394,10 @@
           "type": "array",
           "of": "task"
         }
-      }
+      },
+      "type": "object"
     },
     "task_page": {
-      "type": "object",
       "shape": {
         "number": {
           "type": "integer",
@@ -316,7 +410,8 @@
           "min": 1,
           "max": 100
         }
-      }
+      },
+      "type": "object"
     },
     "task_priority_filter": {
       "type": "union",
@@ -342,7 +437,6 @@
       ]
     },
     "task_show_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -351,10 +445,10 @@
         "task": {
           "type": "task"
         }
-      }
+      },
+      "type": "object"
     },
     "task_sort": {
-      "type": "object",
       "shape": {
         "created_at": {
           "type": "sort_direction",
@@ -365,6 +459,7 @@
           "optional": true
         }
       },
+      "type": "object",
       "description": "A task representing work to be completed"
     },
     "task_status_filter": {
@@ -391,7 +486,6 @@
       ]
     },
     "task_update_payload": {
-      "type": "object",
       "shape": {
         "description": {
           "type": "string",
@@ -429,10 +523,10 @@
           "example": "Implement user authentication"
         }
       },
+      "type": "object",
       "description": "A task representing work to be completed"
     },
     "task_update_success_response_body": {
-      "type": "object",
       "shape": {
         "meta": {
           "type": "object",
@@ -441,7 +535,29 @@
         "task": {
           "type": "task"
         }
-      }
+      },
+      "type": "object"
+    },
+    "user": {
+      "shape": {
+        "email": {
+          "type": "string",
+          "description": "User's email address",
+          "example": "jane@example.com",
+          "format": "email"
+        },
+        "id": {
+          "type": "string",
+          "description": "Unique user identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "User's display name",
+          "example": "Jane Doe"
+        }
+      },
+      "type": "object",
+      "description": "A user who can be assigned to tasks"
     }
   },
   "enums": {
@@ -511,6 +627,10 @@
                 ],
                 "optional": true
               },
+              "include": {
+                "type": "task_include",
+                "optional": true
+              },
               "page": {
                 "type": "task_page",
                 "optional": true
@@ -553,6 +673,14 @@
             "Tasks"
           ],
           "operation_id": "getTask",
+          "request": {
+            "query": {
+              "include": {
+                "type": "task_include",
+                "optional": true
+              }
+            }
+          },
           "response": {
             "body": {
               "type": "union",
@@ -577,6 +705,12 @@
           ],
           "operation_id": "createTask",
           "request": {
+            "query": {
+              "include": {
+                "type": "task_include",
+                "optional": true
+              }
+            },
             "body": {
               "task": {
                 "type": "task_create_payload"
@@ -610,6 +744,12 @@
           ],
           "operation_id": "updateTask",
           "request": {
+            "query": {
+              "include": {
+                "type": "task_include",
+                "optional": true
+              }
+            },
             "body": {
               "task": {
                 "type": "task_update_payload"
@@ -642,6 +782,14 @@
             "Tasks"
           ],
           "operation_id": "deleteTask",
+          "request": {
+            "query": {
+              "include": {
+                "type": "task_include",
+                "optional": true
+              }
+            }
+          },
           "response": {
             "no_content": true
           }
@@ -656,6 +804,14 @@
             "Lifecycle"
           ],
           "operation_id": "archiveTask",
+          "request": {
+            "query": {
+              "include": {
+                "type": "task_include",
+                "optional": true
+              }
+            }
+          },
           "response": {
             "body": {
               "type": "union",

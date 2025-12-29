@@ -384,7 +384,7 @@ param :shipping_address, type: :address
 
 ### .union
 
-`.union(name, scope: nil, discriminator: nil, &block)`
+`.union(name, discriminator: nil, scope: nil, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L311)
 

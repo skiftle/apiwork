@@ -16,12 +16,12 @@
           ],
           "pointer": "/filter",
           "meta": {
-            "field": "filter",
             "allowed": [
               "sort",
               "page",
               "include"
-            ]
+            ],
+            "field": "filter"
           }
         }
       ]
