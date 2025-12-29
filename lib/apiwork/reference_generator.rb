@@ -138,7 +138,8 @@ module Apiwork
     end
 
     def build_signature(method)
-      params = method.parameters.map do |name, default|
+      params = method.parameters.reject { |name, _| name.to_s.start_with?('internal') }
+      params = params.map do |name, default|
         if name.to_s.end_with?(':')
           default ? "#{name} #{default}" : name.to_s
         else

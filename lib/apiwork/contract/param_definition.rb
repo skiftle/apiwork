@@ -69,28 +69,30 @@ module Apiwork
       #     param :quantity, type: :integer, min: 1
       #   end
       def param(name,
-                type: nil,
-                optional: nil,
-                default: nil,
-                enum: nil,
-                of: nil,
                 as: nil,
-                discriminator: nil,
-                value: nil,
-                visited_types: nil,
-                association_definition: nil,
-                attribute_definition: nil,
+                default: nil,
                 deprecated: nil,
                 description: nil,
+                discriminator: nil,
+                enum: nil,
                 example: nil,
                 format: nil,
                 max: nil,
                 min: nil,
                 nullable: nil,
+                of: nil,
+                optional: nil,
                 required: nil,
-                sti_mapping: nil,
-                type_contract_class: nil,
+                type: nil,
+                value: nil,
+                internal: {},
                 &block)
+        visited_types = internal[:visited_types]
+        association_definition = internal[:association_definition]
+        attribute_definition = internal[:attribute_definition]
+        sti_mapping = internal[:sti_mapping]
+        type_contract_class = internal[:type_contract_class]
+
         options = {
           association_definition: association_definition,
           attribute_definition: attribute_definition,
