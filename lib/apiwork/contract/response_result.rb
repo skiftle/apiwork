@@ -6,7 +6,7 @@ module Apiwork
       attr_reader :body,
                   :issues
 
-      def initialize(body, issues)
+      def initialize(body: nil, issues: [])
         @body = body
         @issues = issues
       end

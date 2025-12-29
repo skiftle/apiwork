@@ -8,9 +8,9 @@ module Apiwork
                   :query
 
       def initialize(body: {}, issues: [], query: {})
-        @query = query
-        @body = body
         @issues = issues
+        @body = body
+        @query = query
       end
 
       def data

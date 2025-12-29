@@ -13,11 +13,11 @@ module Apiwork
 
       def parse(body)
         definition = body_param_definition
-        return ResponseResult.new(body, []) unless definition&.params&.any?
+        return ResponseResult.new(body: body) unless definition&.params&.any?
 
         validated = definition.validate(body)
 
-        ResponseResult.new(validated[:params], validated[:issues])
+        ResponseResult.new(body: validated[:params], issues: validated[:issues])
       end
 
       private
