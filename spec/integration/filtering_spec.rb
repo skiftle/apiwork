@@ -83,8 +83,8 @@ RSpec.describe 'Filtering API', type: :request do
           params: {
             filter: {
               published: { eq: true },
-              body: { contains: 'Rails' }
-            }
+              body: { contains: 'Rails' },
+            },
           }
 
       expect(response).to have_http_status(:ok)

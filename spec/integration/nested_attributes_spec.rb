@@ -18,9 +18,9 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
           published: true,
           comments: [
             { author: 'Author 1', content: 'First comment' },
-            { author: 'Author 2', content: 'Second comment' }
-          ]
-        }
+            { author: 'Author 2', content: 'Second comment' },
+          ],
+        },
       }
 
       post '/api/v1/posts', as: :json, params: post_params
@@ -43,8 +43,8 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
           title: 'Post without Comments',
           body: 'Post body',
           published: true,
-          comments: []
-        }
+          comments: [],
+        },
       }
 
       post '/api/v1/posts', as: :json, params: post_params
@@ -61,8 +61,8 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
         post: {
           title: 'Simple Post',
           body: 'Post body',
-          published: true
-        }
+          published: true,
+        },
       }
 
       post '/api/v1/posts', as: :json, params: post_params
@@ -80,7 +80,7 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
       Post.create!(
         title: 'Existing Post',
         body: 'Existing body',
-        published: true
+        published: true,
       )
     end
     let!(:comment1) { Comment.create!(author: 'Author 1', content: 'Existing comment 1', post: post_record) }
@@ -94,16 +94,16 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
             {
               author: 'Author 1',
               content: 'Updated comment 1',
-              id: comment1.id
+              id: comment1.id,
             },
             {
               author: 'Author 2',
               content: 'Updated comment 2',
-              id: comment2.id
+              id: comment2.id,
             },
-            { author: 'Author 3', content: 'New comment 3' }
-          ]
-        }
+            { author: 'Author 3', content: 'New comment 3' },
+          ],
+        },
       }
 
       patch "/api/v1/posts/#{post_record.id}", as: :json, params: post_params
@@ -115,7 +115,7 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
       expect(post_record.comments.pluck(:content)).to contain_exactly(
         'Updated comment 1',
         'Updated comment 2',
-        'New comment 3'
+        'New comment 3',
       )
     end
 
@@ -128,10 +128,10 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
               author: 'Modified Author',
               content: 'Modified comment',
               id: comment1.id,
-              post_id: post_record.id
-            }
-          ]
-        }
+              post_id: post_record.id,
+            },
+          ],
+        },
       }
 
       patch "/api/v1/posts/#{post_record.id}", as: :json, params: post_params
@@ -153,10 +153,10 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
               author: 'Author 2',
               content: 'Keep this comment',
               id: comment2.id,
-              post_id: post_record.id
-            }
-          ]
-        }
+              post_id: post_record.id,
+            },
+          ],
+        },
       }
 
       patch "/api/v1/posts/#{post_record.id}", as: :json, params: post_params
@@ -174,9 +174,9 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
         post: {
           title: 'Updated Post',
           comments: [
-            { author: 'Author', content: '' } # Invalid: content is required
-          ]
-        }
+            { author: 'Author', content: '' }, # Invalid: content is required
+          ],
+        },
       }
 
       patch "/api/v1/posts/#{post_record.id}", as: :json, params: post_params
@@ -195,9 +195,9 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
           published: true,
           comments: [
             { author: 'Author', content: 'Valid comment' },
-            { author: 'Invalid', content: '' } # Missing required content
-          ]
-        }
+            { author: 'Invalid', content: '' }, # Missing required content
+          ],
+        },
       }
 
       post '/api/v1/posts', as: :json, params: post_params
@@ -216,9 +216,9 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
           body: 'Body',
           published: true,
           comments: [
-            { author: 'Author', content: 'Comment via transformation' }
-          ]
-        }
+            { author: 'Author', content: 'Comment via transformation' },
+          ],
+        },
       }
 
       expect do
@@ -243,18 +243,18 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
                 author: 'Author 1',
                 replies: [
                   { author: 'Replier 1', content: 'Reply to first comment' },
-                  { author: 'Replier 2', content: 'Another reply to first' }
-                ]
+                  { author: 'Replier 2', content: 'Another reply to first' },
+                ],
               },
               {
                 content: 'Second comment',
                 author: 'Author 2',
                 replies: [
-                  { author: 'Replier 3', content: 'Reply to second comment' }
-                ]
-              }
-            ]
-          }
+                  { author: 'Replier 3', content: 'Reply to second comment' },
+                ],
+              },
+            ],
+          },
         }
 
         post '/api/v1/posts', as: :json, params: post_params
@@ -273,7 +273,7 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
         expect(first_comment.replies.count).to eq(2)
         expect(first_comment.replies.pluck(:content)).to contain_exactly(
           'Reply to first comment',
-          'Another reply to first'
+          'Another reply to first',
         )
 
         second_comment = created_post.comments.find_by(content: 'Second comment')
@@ -291,10 +291,10 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
               {
                 content: 'Comment without replies',
                 author: 'Author',
-                replies: []
-              }
-            ]
-          }
+                replies: [],
+              },
+            ],
+          },
         }
 
         post '/api/v1/posts', as: :json, params: post_params
@@ -324,13 +324,13 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
                   {
                     author: 'Replier',
                     content: 'Updated reply',
-                    id: reply.id
+                    id: reply.id,
                   },
-                  { author: 'New Replier', content: 'New reply' }
-                ]
-              }
-            ]
-          }
+                  { author: 'New Replier', content: 'New reply' },
+                ],
+              },
+            ],
+          },
         }
 
         expect do
@@ -362,11 +362,11 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
                 author: 'Author',
                 post_id: post_record.id,
                 replies: [
-                  { _destroy: true, id: reply.id }
-                ]
-              }
-            ]
-          }
+                  { _destroy: true, id: reply.id },
+                ],
+              },
+            ],
+          },
         }
 
         expect do
@@ -390,11 +390,11 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
                 content: 'Valid comment',
                 author: 'Author',
                 replies: [
-                  { author: 'Replier', content: '' } # Invalid: content is required
-                ]
-              }
-            ]
-          }
+                  { author: 'Replier', content: '' }, # Invalid: content is required
+                ],
+              },
+            ],
+          },
         }
 
         post '/api/v1/posts', as: :json, params: post_params
@@ -416,11 +416,11 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
                 content: 'Comment',
                 author: 'Author',
                 replies: [
-                  { author: 'Replier', content: 'Reply via transformation' }
-                ]
-              }
-            ]
-          }
+                  { author: 'Replier', content: 'Reply via transformation' },
+                ],
+              },
+            ],
+          },
         }
 
         expect do

@@ -18,7 +18,7 @@ RSpec.describe Apiwork::Issue do
         code: :type_invalid,
         detail: 'Expected string',
         path: [:user, :name],
-        meta: { expected: 'string', got: 'integer' }
+        meta: { expected: 'string', got: 'integer' },
       )
 
       expect(issue.path).to eq([:user, :name])
@@ -29,7 +29,7 @@ RSpec.describe Apiwork::Issue do
       issue = described_class.new(
         code: :required,
         detail: 'Required',
-        path: ['user', 'items', 0, 'name']
+        path: ['user', 'items', 0, 'name'],
       )
 
       expect(issue.path).to eq([:user, :items, 0, :name])
@@ -62,7 +62,7 @@ RSpec.describe Apiwork::Issue do
         code: :required,
         detail: 'Field is required',
         path: [:user, :email],
-        meta: { field: :email }
+        meta: { field: :email },
       )
 
       expect(issue.to_h).to eq(
@@ -71,8 +71,8 @@ RSpec.describe Apiwork::Issue do
           detail: 'Field is required',
           path: %w[user email],
           pointer: '/user/email',
-          meta: { field: :email }
-        }
+          meta: { field: :email },
+        },
       )
     end
   end
@@ -90,7 +90,7 @@ RSpec.describe Apiwork::Issue do
       issue = described_class.new(
         code: :required,
         detail: 'Field is required',
-        path: [:user, :email]
+        path: [:user, :email],
       )
 
       expect(issue.to_s).to eq('[required] at /user/email Field is required')

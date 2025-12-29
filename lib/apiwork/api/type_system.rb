@@ -32,7 +32,7 @@ module Apiwork
             example:,
             format:,
             deprecated:,
-            schema_class:
+            schema_class:,
           }
         end
       end
@@ -99,7 +99,7 @@ module Apiwork
             description:,
             example:,
             scope:,
-            values:
+            values:,
           }
         end
       end
@@ -133,7 +133,7 @@ module Apiwork
           deprecated: deprecated || existing_type[:deprecated],
           schema_class: schema_class || existing_type[:schema_class],
           definition: nil,
-          definitions: merged_definitions.compact.presence
+          definitions: merged_definitions.compact.presence,
         )
       end
 
@@ -143,7 +143,7 @@ module Apiwork
           description: description || existing_enum[:description],
           example: example || existing_enum[:example],
           deprecated: deprecated || existing_enum[:deprecated],
-          values: values || existing_enum[:values]
+          values: values || existing_enum[:values],
         )
       end
     end

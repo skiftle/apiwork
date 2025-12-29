@@ -453,7 +453,7 @@ module Apiwork
 
           action_definition = action_definitions[action_name] ||= ActionDefinition.new(
             action_name:,
-            contract_class: self
+            contract_class: self,
           )
 
           action_definition.instance_eval(&block) if block_given?

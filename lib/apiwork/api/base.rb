@@ -290,7 +290,7 @@ module Apiwork
             scope: scope,
             description: description,
             example: example,
-            deprecated: deprecated
+            deprecated: deprecated,
           )
         end
 

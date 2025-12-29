@@ -51,7 +51,7 @@ module Apiwork
 
         {
           type: :union,
-          variants: [success_variant, error_variant]
+          variants: [success_variant, error_variant],
         }
       end
 
@@ -74,7 +74,7 @@ module Apiwork
 
         type_system.types[type_name] = {
           scope: nil,
-          expanded_payload: shape
+          expanded_payload: shape,
         }
       end
 
@@ -90,7 +90,7 @@ module Apiwork
           enum: resolve_enum(options),
           as: options[:as],
           of: resolve_of(options),
-          shape: options[:shape]&.then { serialize_nested_shape(_1).presence }
+          shape: options[:shape]&.then { serialize_nested_shape(_1).presence },
         }.compact
 
         apply_boolean_flags(result, options)
@@ -112,7 +112,7 @@ module Apiwork
         if @param_definition.contract_class.resolve_custom_type(custom_type_name)
           custom_type_name = @name_resolver.qualified_name(
             custom_type_name,
-            @param_definition
+            @param_definition,
           )
         end
 
@@ -176,7 +176,7 @@ module Apiwork
       def serialize_union(union_definition)
         result = {
           type: :union,
-          variants: union_definition.variants.map { |variant| serialize_variant(variant) }
+          variants: union_definition.variants.map { |variant| serialize_variant(variant) },
         }
         result[:discriminator] = union_definition.discriminator if union_definition.discriminator
         result
@@ -239,8 +239,8 @@ module Apiwork
             example: options[:example],
             format: options[:format],
             min: options[:min],
-            max: options[:max]
-          }.compact
+            max: options[:max],
+          }.compact,
         )
 
         result[:deprecated] = true if options[:deprecated]

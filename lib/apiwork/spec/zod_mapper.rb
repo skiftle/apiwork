@@ -15,7 +15,7 @@ module Apiwork
         time: 'z.iso.time()',
         json: 'z.record(z.string(), z.any())',
         binary: 'z.string()',
-        unknown: 'z.unknown()'
+        unknown: 'z.unknown()',
       }.freeze
 
       attr_reader :data,

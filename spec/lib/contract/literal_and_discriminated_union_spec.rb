@@ -90,8 +90,8 @@ RSpec.describe 'Literal and Discriminated Union Features' do
         { filter: {
           gte: 10,
           kind: 'range',
-          lte: 20
-        } }
+          lte: 20,
+        } },
       )
       expect(result[:issues]).to be_empty
       expect(result[:params][:filter][:gte]).to eq(10)

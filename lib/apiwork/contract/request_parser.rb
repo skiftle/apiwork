@@ -19,7 +19,7 @@ module Apiwork
         RequestResult.new(
           query: query_data,
           body: body_data,
-          issues: query_issues + body_issues
+          issues: query_issues + body_issues,
         )
       end
 

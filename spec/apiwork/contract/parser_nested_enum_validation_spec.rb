@@ -32,8 +32,8 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
           id: 1,
           name: 'Test Account',
           status: 'active',
-          first_day_of_week: 'monday'
-        }
+          first_day_of_week: 'monday',
+        },
       }
       result = contract_class.parse_response(valid_output, :show)
       expect(result.valid?).to be(true), "Expected valid result but got issues: #{result.issues.inspect}"
@@ -44,8 +44,8 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
           id: 1,
           name: 'Test Account',
           status: 'deleted', # Not in enum
-          first_day_of_week: 'monday'
-        }
+          first_day_of_week: 'monday',
+        },
       }
       result = contract_class.parse_response(invalid_status, :show)
       expect(result.invalid?).to be(true)
@@ -59,8 +59,8 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
           id: 1,
           name: 'Test Account',
           status: 'active',
-          first_day_of_week: 'hahahahahaha' # Not in enum
-        }
+          first_day_of_week: 'hahahahahaha', # Not in enum
+        },
       }
       result = contract_class.parse_response(invalid_fdow, :show)
       expect(result.invalid?).to be(true)
@@ -89,8 +89,8 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
       invalid_output = {
         account: {
           id: 1,
-          name: 42 # Should be string
-        }
+          name: 42, # Should be string
+        },
       }
       result = contract_class.parse_response(invalid_output, :show)
       expect(result.invalid?).to be(true)
@@ -125,9 +125,9 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
           id: 1,
           address: {
             city: 'Stockholm',
-            country_code: 'INVALID' # Not in enum
-          }
-        }
+            country_code: 'INVALID', # Not in enum
+          },
+        },
       }
       result = contract_class.parse_response(invalid_output, :show)
       expect(result.invalid?).to be(true)

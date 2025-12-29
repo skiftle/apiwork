@@ -7,14 +7,14 @@ module WiseTiger
            active: 'active',
            archived: 'archived',
            completed: 'completed',
-           paused: 'paused'
+           paused: 'paused',
          }
     enum :priority,
          {
            critical: 'critical',
            high: 'high',
            low: 'low',
-           medium: 'medium'
+           medium: 'medium',
          }
 
     validates :name, presence: true

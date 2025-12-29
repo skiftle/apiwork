@@ -11,7 +11,7 @@ module Apiwork
             destroy: :delete,
             index: :get,
             show: :get,
-            update: :patch
+            update: :patch,
           }.freeze
 
           attr_reader :method,

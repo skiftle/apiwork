@@ -10,7 +10,7 @@ RSpec.describe 'Cursor Pagination API', type: :request do
         target_type: 'Post',
         target_id: i + 1,
         read: i.even?,
-        created_at: (25 - i).days.ago
+        created_at: (25 - i).days.ago,
       )
     end
   end
@@ -100,7 +100,7 @@ RSpec.describe 'Cursor Pagination API', type: :request do
       get '/api/v1/activities',
           params: {
             filter: { read: { eq: true } },
-            page: { size: 5 }
+            page: { size: 5 },
           }
 
       expect(response).to have_http_status(:ok)

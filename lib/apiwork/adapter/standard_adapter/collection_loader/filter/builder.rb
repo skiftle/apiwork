@@ -27,7 +27,7 @@ module Apiwork
                 column: column,
                 field_name: field_name,
                 valid_operators: valid_operators,
-                issues: issues
+                issues: issues,
               )
 
               builder.build(value, &block)
@@ -50,8 +50,8 @@ module Apiwork
                 meta: {
                   allowed: allowed_types.map(&:name),
                   field: field_name,
-                  type: value.class.name
-                }
+                  type: value.class.name,
+                },
               )
               false
             end

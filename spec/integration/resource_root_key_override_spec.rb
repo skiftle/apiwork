@@ -59,8 +59,8 @@ RSpec.describe 'Resource override and selective serialization', type: :request d
     it 'accepts minimal input contract and creates full model' do
       article_params = {
         article: {
-          title: 'New Article'
-        }
+          title: 'New Article',
+        },
       }
 
       expect do
@@ -82,8 +82,8 @@ RSpec.describe 'Resource override and selective serialization', type: :request d
     it 'serializes response through custom resource despite full model' do
       article_params = {
         article: {
-          title: 'Article Title'
-        }
+          title: 'Article Title',
+        },
       }
 
       post '/api/v1/articles', as: :json, params: article_params

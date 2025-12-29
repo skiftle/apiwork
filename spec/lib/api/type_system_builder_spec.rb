@@ -18,8 +18,8 @@ RSpec.describe 'API TypeSystem Builder' do
       type: :object,
       shape: {
         error: { type: :string },
-        code: { type: :integer }
-      }
+        code: { type: :integer },
+      },
     )
   end
 
@@ -142,7 +142,7 @@ RSpec.describe 'API TypeSystem Builder' do
         description: 'Comprehensive metadata',
         example: { data: 'example' },
         format: 'custom',
-        deprecated: true
+        deprecated: true,
       )
     end
 
@@ -191,7 +191,7 @@ RSpec.describe 'API TypeSystem Builder' do
         values: %w[option1 option2],
         description: 'Complete enum metadata',
         example: 'option1',
-        deprecated: true
+        deprecated: true,
       )
     end
 

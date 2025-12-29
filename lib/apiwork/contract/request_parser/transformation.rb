@@ -86,7 +86,7 @@ module Apiwork
             if custom_type_blocks
               temp_param_definition = ParamDefinition.new(
                 contract_class,
-                action_name: parent_definition.action_name
+                action_name: parent_definition.action_name,
               )
               custom_type_blocks.each { |block| temp_param_definition.instance_eval(&block) }
               apply_sti_discriminator_transform(value, temp_param_definition)
@@ -153,7 +153,7 @@ module Apiwork
 
             temp_param_definition = ParamDefinition.new(
               contract_class,
-              action_name: definition.action_name
+              action_name: definition.action_name,
             )
 
             custom_type_block.each { |block| temp_param_definition.instance_eval(&block) }

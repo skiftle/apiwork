@@ -27,9 +27,9 @@ RSpec.describe 'Contract custom type unknown field validation' do
     result = action_definition.request_definition.body_param_definition.validate(
       {
         custom: {
-          invalid_field: true # This should be caught as unknown
-        }
-      }
+          invalid_field: true, # This should be caught as unknown
+        },
+      },
     )
 
     expect(result[:issues]).not_to be_empty
@@ -43,9 +43,9 @@ RSpec.describe 'Contract custom type unknown field validation' do
       {
         custom: {
           valid_field: true,
-          another_field: 'test'
-        }
-      }
+          another_field: 'test',
+        },
+      },
     )
 
     expect(result[:issues]).to be_empty

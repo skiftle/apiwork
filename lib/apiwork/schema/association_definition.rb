@@ -204,7 +204,7 @@ module Apiwork
         raise ConfigurationError.new(
           code: :invalid_polymorphic_option,
           detail: "Polymorphic association '#{@name}' cannot use #{option}: true#{suffix}",
-          path: [@name]
+          path: [@name],
         )
       end
 
@@ -217,7 +217,7 @@ module Apiwork
         error = ConfigurationError.new(
           code: :invalid_include_option,
           detail: detail,
-          path: [@name]
+          path: [@name],
         )
 
         raise error
@@ -235,7 +235,7 @@ module Apiwork
         error = ConfigurationError.new(
           code: :invalid_association,
           detail: detail,
-          path: [@name]
+          path: [@name],
         )
 
         raise error
@@ -252,7 +252,7 @@ module Apiwork
           error = ConfigurationError.new(
             code: :missing_nested_attributes,
             detail: detail,
-            path: [@name]
+            path: [@name],
           )
 
           raise error
@@ -273,7 +273,7 @@ module Apiwork
         raise ConfigurationError.new(
           code: :query_option_requires_association,
           detail: "Association #{@name}: filterable/sortable requires an ActiveRecord association for JOINs",
-          path: [@name]
+          path: [@name],
         )
       end
     end

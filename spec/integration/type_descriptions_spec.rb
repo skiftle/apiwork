@@ -36,12 +36,12 @@ RSpec.describe 'Type Descriptions', type: :integration do
             apis: {
               'api/override_test' => {
                 types: {
-                  post_filter: { description: 'Custom filter for posts' }
-                }
-              }
-            }
-          }
-        }
+                  post_filter: { description: 'Custom filter for posts' },
+                },
+              },
+            },
+          },
+        },
       )
     end
 
@@ -232,14 +232,14 @@ RSpec.describe 'Type Descriptions', type: :integration do
                 schemas: {
                   post: {
                     attributes: {
-                      title: { description: 'Post title from i18n' }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
+                      title: { description: 'Post title from i18n' },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
       )
 
       Apiwork::API.reset!
@@ -283,14 +283,14 @@ RSpec.describe 'Type Descriptions', type: :integration do
                 schemas: {
                   post: {
                     attributes: {
-                      body: { description: 'Should be overridden by inline' }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
+                      body: { description: 'Should be overridden by inline' },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
       )
 
       Apiwork::API.reset!
@@ -315,14 +315,14 @@ RSpec.describe 'Type Descriptions', type: :integration do
                 schemas: {
                   post: {
                     associations: {
-                      comments: { description: 'Post comments from i18n' }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
+                      comments: { description: 'Post comments from i18n' },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
       )
 
       Apiwork::API.reset!

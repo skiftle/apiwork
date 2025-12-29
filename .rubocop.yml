@@ -182,11 +182,38 @@ Layout/ParameterAlignment:
 Layout/MultilineMethodParameterLineBreaks:
   Enabled: true
 
-# En rad per argument i fler-radiga metodanrop
 Layout/MultilineMethodArgumentLineBreaks:
   Enabled: true
   AllowMultilineFinalElement: false
 
-# Tvinga ner första argumentet på ny rad när anropet är fler-radigt
 Layout/FirstMethodArgumentLineBreak:
   Enabled: true
+
+Style/TrailingCommaInArguments:
+  Enabled: true
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInArrayLiteral:
+  Enabled: true
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInHashLiteral:
+  Enabled: true
+  EnforcedStyleForMultiline: comma
+
+Layout/HashAlignment:
+  Enabled: true
+  EnforcedHashRocketStyle: key
+  EnforcedColonStyle: key
+
+Layout/MultilineHashBraceLayout:
+  Enabled: true
+  EnforcedStyle: symmetrical
+
+Layout/MultilineArrayBraceLayout:
+  Enabled: true
+  EnforcedStyle: symmetrical
+
+Layout/MultilineMethodCallBraceLayout:
+  Enabled: true
+  EnforcedStyle: symmetrical

@@ -32,7 +32,7 @@ module Apiwork
                 api_class: api_class,
                 spec_name: name,
                 output: output,
-                options: options
+                options: options,
               )
             end
           end
@@ -80,7 +80,7 @@ module Apiwork
             output: output,
             api_path: api_path,
             spec_name: spec_name,
-            extension: extension
+            extension: extension,
           )
 
           Rails.logger.debug "    → #{file_path}"

@@ -42,7 +42,7 @@ RSpec.describe 'API Introspection' do
           :articles,
           :persons,
           :restricted_posts,
-          :safe_comments
+          :safe_comments,
         )
       end
 

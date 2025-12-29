@@ -8,7 +8,7 @@ module BoldFalcon
          {
            archived: 'archived',
            draft: 'draft',
-           published: 'published'
+           published: 'published',
          }
 
     validates :title, presence: true

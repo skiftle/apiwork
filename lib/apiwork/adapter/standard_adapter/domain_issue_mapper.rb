@@ -28,7 +28,7 @@ module Apiwork
           exclusion: :not_in,
           in: :in,
           invalid: :invalid,
-          restrict_dependent_destroy: :associated
+          restrict_dependent_destroy: :associated,
         }.freeze
 
         DETAIL_MAP = {
@@ -54,7 +54,7 @@ module Apiwork
           in: 'Invalid value',
           not_in: 'Reserved value',
           associated: 'Invalid',
-          invalid: 'Invalid'
+          invalid: 'Invalid',
         }.freeze
 
         META_CODES = %i[min max length gt gte lt lte eq ne in].freeze
@@ -133,7 +133,7 @@ module Apiwork
             code:,
             detail: detail_for(code),
             path:,
-            meta: build_meta(code, error)
+            meta: build_meta(code, error),
           )
         end
 
@@ -184,7 +184,7 @@ module Apiwork
           {
             min: range.begin,
             max: range.end,
-            max_exclusive: range.exclude_end?
+            max_exclusive: range.exclude_end?,
           }
         end
 

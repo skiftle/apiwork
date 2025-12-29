@@ -66,8 +66,8 @@ module Apiwork
             {
               pagination: {
                 next: has_more && records.any? ? encode_cursor(records.last) : nil,
-                prev: (@params[:after] || @params[:before]) && records.any? ? encode_cursor(records.first) : nil
-              }
+                prev: (@params[:after] || @params[:before]) && records.any? ? encode_cursor(records.first) : nil,
+              },
             }
           end
 

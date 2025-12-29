@@ -11,18 +11,18 @@ module Apiwork
               {
                 name: :in,
                 of: :string,
-                type: :array
+                type: :array,
               },
               { name: :contains, type: :string },
               { name: :starts_with, type: :string },
-              { name: :ends_with, type: :string }
-            ]
+              { name: :ends_with, type: :string },
+            ],
           },
           integer_filter_between: {
             params: [
               { name: :from, type: :integer },
-              { name: :to, type: :integer }
-            ]
+              { name: :to, type: :integer },
+            ],
           },
           integer_filter: {
             depends_on: :integer_filter_between,
@@ -35,16 +35,16 @@ module Apiwork
               {
                 name: :in,
                 of: :integer,
-                type: :array
+                type: :array,
               },
-              { name: :between, type: :integer_filter_between }
-            ]
+              { name: :between, type: :integer_filter_between },
+            ],
           },
           decimal_filter_between: {
             params: [
               { name: :from, type: :decimal },
-              { name: :to, type: :decimal }
-            ]
+              { name: :to, type: :decimal },
+            ],
           },
           decimal_filter: {
             depends_on: :decimal_filter_between,
@@ -57,21 +57,21 @@ module Apiwork
               {
                 name: :in,
                 of: :decimal,
-                type: :array
+                type: :array,
               },
-              { name: :between, type: :decimal_filter_between }
-            ]
+              { name: :between, type: :decimal_filter_between },
+            ],
           },
           boolean_filter: {
             params: [
-              { name: :eq, type: :boolean }
-            ]
+              { name: :eq, type: :boolean },
+            ],
           },
           date_filter_between: {
             params: [
               { name: :from, type: :date },
-              { name: :to, type: :date }
-            ]
+              { name: :to, type: :date },
+            ],
           },
           date_filter: {
             depends_on: :date_filter_between,
@@ -85,15 +85,15 @@ module Apiwork
               {
                 name: :in,
                 of: :date,
-                type: :array
-              }
-            ]
+                type: :array,
+              },
+            ],
           },
           datetime_filter_between: {
             params: [
               { name: :from, type: :datetime },
-              { name: :to, type: :datetime }
-            ]
+              { name: :to, type: :datetime },
+            ],
           },
           datetime_filter: {
             depends_on: :datetime_filter_between,
@@ -107,9 +107,9 @@ module Apiwork
               {
                 name: :in,
                 of: :datetime,
-                type: :array
-              }
-            ]
+                type: :array,
+              },
+            ],
           },
           uuid_filter: {
             params: [
@@ -117,10 +117,10 @@ module Apiwork
               {
                 name: :in,
                 of: :uuid,
-                type: :array
-              }
-            ]
-          }
+                type: :array,
+              },
+            ],
+          },
         }.freeze
 
         NULLABLE_EXTENSION = { name: :null, type: :boolean }.freeze

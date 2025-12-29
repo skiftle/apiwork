@@ -8,7 +8,7 @@ RSpec.describe Apiwork::Adapter::SchemaSummary do
       Apiwork::API::Structure,
       schema_classes: [],
       has_resources?: false,
-      has_index_actions?: false
+      has_index_actions?: false,
     )
   end
 

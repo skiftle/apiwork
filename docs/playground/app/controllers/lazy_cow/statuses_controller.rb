@@ -7,8 +7,8 @@ module LazyCow
         {
           status: 'ok',
           timestamp: Time.current,
-          version: '1.0.0'
-        }
+          version: '1.0.0',
+        },
       )
     end
 
@@ -17,8 +17,8 @@ module LazyCow
         {
           users_count: 1234,
           posts_count: 5678,
-          uptime_seconds: 86_400
-        }
+          uptime_seconds: 86_400,
+        },
       )
     end
   end

@@ -66,7 +66,7 @@ class ExampleGenerator
       {
         title: namespace.humanize.titleize,
         description: 'Complete example with API, models, schemas, contracts, and controllers.',
-        order: 999
+        order: 999,
       }
     end
   end
@@ -179,7 +179,7 @@ class ExampleGenerator
       models_section(namespace),
       schemas_section(namespace),
       contracts_section(namespace),
-      controllers_section(namespace)
+      controllers_section(namespace),
     ].compact.join("\n\n")
   end
 

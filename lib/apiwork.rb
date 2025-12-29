@@ -36,7 +36,7 @@ loader.inflector.inflect(
   'json_pointer' => 'JSONPointer',
   'open_api_spec' => 'OpenAPISpec',
   'type_script_mapper' => 'TypeScriptMapper',
-  'type_script_spec' => 'TypeScriptSpec'
+  'type_script_spec' => 'TypeScriptSpec',
 )
 
 loader.ignore("#{__dir__}/rubocop")

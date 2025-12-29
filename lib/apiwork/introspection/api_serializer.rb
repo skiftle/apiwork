@@ -18,7 +18,7 @@ module Apiwork
           enums: @type_serializer.serialize_enums.presence,
           raises: @api_class.structure.raises.presence,
           error_codes: serialize_error_codes(collect_all_error_codes(resources)).presence,
-          resources:
+          resources:,
         }.compact
       end
 
@@ -49,7 +49,7 @@ module Apiwork
           error_code = ErrorCode.fetch(code)
           hash[code] = {
             status: error_code.status,
-            description: error_code.description(locale_key:)
+            description: error_code.description(locale_key:),
           }
         end
       end
@@ -72,7 +72,7 @@ module Apiwork
           terms_of_service: info[:terms_of_service],
           contact: info[:contact],
           license: info[:license],
-          servers: info[:servers]
+          servers: info[:servers],
         }.compact.presence
       end
     end

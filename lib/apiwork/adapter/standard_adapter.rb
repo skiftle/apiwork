@@ -26,7 +26,7 @@ module Apiwork
         {
           schema_class.root_key.plural => serialized,
           pagination: metadata[:pagination],
-          meta: action_summary.meta.presence
+          meta: action_summary.meta.presence,
         }.compact
       end
 
@@ -37,14 +37,14 @@ module Apiwork
 
         {
           schema_class.root_key.singular => serialized,
-          meta: action_summary.meta.presence
+          meta: action_summary.meta.presence,
         }.compact
       end
 
       def render_error(layer, issues, action_summary)
         {
           layer:,
-          issues: issues.map(&:to_h)
+          issues: issues.map(&:to_h),
         }
       end
 

@@ -243,7 +243,7 @@ RSpec.describe 'Apiwork Routing DSL' do
           end
         end.to raise_error(
           Apiwork::ConfigurationError,
-          /Action 'archive' on resource 'posts' must be declared/
+          /Action 'archive' on resource 'posts' must be declared/,
         )
       end
 
@@ -256,7 +256,7 @@ RSpec.describe 'Apiwork Routing DSL' do
           end
         end.to raise_error(
           Apiwork::ConfigurationError,
-          /member \{ get :preview \}/
+          /member \{ get :preview \}/,
         )
       end
     end
@@ -271,7 +271,7 @@ RSpec.describe 'Apiwork Routing DSL' do
           end
         end.to raise_error(
           Apiwork::ConfigurationError,
-          /:on option must be either :member or :collection, got :invalid/
+          /:on option must be either :member or :collection, got :invalid/,
         )
       end
 
@@ -284,7 +284,7 @@ RSpec.describe 'Apiwork Routing DSL' do
           end
         end.to raise_error(
           Apiwork::ConfigurationError,
-          /:on option must be either :member or :collection, got "member"/
+          /:on option must be either :member or :collection, got "member"/,
         )
       end
     end

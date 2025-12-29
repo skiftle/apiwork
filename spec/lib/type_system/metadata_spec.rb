@@ -83,7 +83,7 @@ RSpec.describe 'TypeSystem Metadata' do
         description: 'Payment information structure',
         example: { amount: 100, currency: 'USD' },
         format: 'payment',
-        deprecated: true
+        deprecated: true,
       )
     end
 
@@ -188,7 +188,7 @@ RSpec.describe 'TypeSystem Metadata' do
         values: %w[red green blue],
         description: 'Available color options',
         example: 'red',
-        deprecated: true
+        deprecated: true,
       )
     end
 
@@ -321,7 +321,7 @@ RSpec.describe 'TypeSystem Metadata' do
 
       # Should be qualified with contract identifier
       expect(types[:test_scoped_scoped_type]).to include(
-        description: 'Contract-scoped type with metadata'
+        description: 'Contract-scoped type with metadata',
       )
 
       # Clean up
@@ -353,7 +353,7 @@ RSpec.describe 'TypeSystem Metadata' do
 
       # Should be qualified with contract identifier
       expect(enums[:test_scoped_scoped_enum]).to include(
-        description: 'Contract-scoped enum with metadata'
+        description: 'Contract-scoped enum with metadata',
       )
 
       # Clean up

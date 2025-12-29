@@ -62,7 +62,7 @@ module RuboCop
             Parser::Source::Range.new(
               node.loc.expression.source_buffer,
               node.loc.begin.end_pos,
-              node.loc.end.begin_pos
+              node.loc.end.begin_pos,
             )
           else
             node.loc.expression

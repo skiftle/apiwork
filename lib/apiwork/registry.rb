@@ -17,7 +17,7 @@ module Apiwork
           raise KeyError.new(
             "#{registry_name} :#{normalized_key} not found. Available: #{keys.join(', ')}",
             key: normalized_key,
-            receiver: store
+            receiver: store,
           )
         end
       end

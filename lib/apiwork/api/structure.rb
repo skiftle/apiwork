@@ -207,7 +207,7 @@ module Apiwork
           singular: singular,
           contract_class_name: contract_class_name,
           parent: parent_name,
-          **merged
+          **merged,
         )
 
         if parent_resource

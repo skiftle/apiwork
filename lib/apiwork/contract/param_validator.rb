@@ -28,7 +28,7 @@ module Apiwork
             data,
             path,
             max_depth: max_depth,
-            current_depth: current_depth
+            current_depth: current_depth,
           )
           issues.concat(param_result[:issues])
           params[name] = param_result[:value] if param_result[:value_set]
@@ -46,7 +46,7 @@ module Apiwork
           code: :depth_exceeded,
           detail: 'Too deeply nested',
           path: path,
-          meta: { depth: current_depth, max: max_depth }
+          meta: { depth: current_depth, max: max_depth },
         )]
         { issues: issues, params: {} }
       end
@@ -77,15 +77,15 @@ module Apiwork
               meta: {
                 actual: value,
                 expected: expected,
-                field: name
-              }
+                field: name,
+              },
             )
             return { issues: [error], value_set: false }
           end
           return {
             issues: [],
             value: value,
-            value_set: true
+            value_set: true,
           }
         end
 
@@ -131,8 +131,8 @@ module Apiwork
             meta: {
               actual: value,
               expected: enum_values,
-              field: name
-            }
+              field: name,
+            },
           )
         else
           Issue.new(code: :field_missing, detail: 'Required', meta: { field: name, type: param_options[:type] }, path: field_path)
@@ -152,7 +152,7 @@ module Apiwork
           code: :value_null,
           detail: 'Cannot be null',
           path: field_path,
-          meta: { field: name, type: param_options[:type] }
+          meta: { field: name, type: param_options[:type] },
         )
       end
 
@@ -166,8 +166,8 @@ module Apiwork
           meta: {
             actual: value,
             expected: EnumValue.values(enum),
-            field: name
-          }
+            field: name,
+          },
         )
       end
 
@@ -178,7 +178,7 @@ module Apiwork
           param_options[:union],
           field_path,
           max_depth: max_depth,
-          current_depth: current_depth
+          current_depth: current_depth,
         )
         if union_error
           { issues: [union_error], value_set: false }
@@ -186,7 +186,7 @@ module Apiwork
           {
             issues: [],
             value: union_value,
-            value_set: true
+            value_set: true,
           }
         end
       end
@@ -200,7 +200,7 @@ module Apiwork
           {
             issues: [],
             value: value,
-            value_set: true
+            value_set: true,
           }
         end
       end
@@ -211,7 +211,7 @@ module Apiwork
           value,
           max_depth: max_depth,
           current_depth: current_depth + 1,
-          path: field_path
+          path: field_path,
         )
         if shape_result[:issues].any?
           { issues: shape_result[:issues], value_set: false }
@@ -219,7 +219,7 @@ module Apiwork
           {
             issues: [],
             value: shape_result[:params],
-            value_set: true
+            value_set: true,
           }
         end
       end
@@ -229,14 +229,14 @@ module Apiwork
           param_options: param_options,
           field_path: field_path,
           max_depth: max_depth,
-          current_depth: current_depth
+          current_depth: current_depth,
         }
         array_issues, array_values = validate_array(value, array_validation_options)
         if array_issues.empty?
           {
             issues: [],
             value: array_values,
-            value_set: true
+            value_set: true,
           }
         else
           { issues: array_issues, value_set: false }
@@ -250,7 +250,7 @@ module Apiwork
             code: :field_unknown,
             detail: 'Unknown field',
             path: path + [key],
-            meta: { allowed: @param_definition.params.keys, field: key }
+            meta: { allowed: @param_definition.params.keys, field: key },
           )
         end
       end
@@ -272,7 +272,7 @@ module Apiwork
             code: :array_too_large,
             detail: 'Too many items',
             path: field_path,
-            meta: { actual: array.length, max: }
+            meta: { actual: array.length, max: },
           )
           return [issues, []]
         end
@@ -282,7 +282,7 @@ module Apiwork
             code: :array_too_small,
             detail: 'Too few items',
             path: field_path,
-            meta: { actual: array.length, min: }
+            meta: { actual: array.length, min: },
           )
           return [issues, []]
         end
@@ -296,7 +296,7 @@ module Apiwork
               item,
               max_depth: max_depth,
               current_depth: current_depth + 1,
-              path: item_path
+              path: item_path,
             )
             if shape_result[:issues].any?
               issues.concat(shape_result[:issues])
@@ -315,15 +315,15 @@ module Apiwork
                   meta: {
                     actual: item.class.name.underscore.to_sym,
                     expected: param_options[:of],
-                    index: index
-                  }
+                    index: index,
+                  },
                 )
                 next
               end
 
               custom_param_definition = ParamDefinition.new(
                 contract_class_for_custom_type,
-                action_name: @param_definition.action_name
+                action_name: @param_definition.action_name,
               )
               custom_type_block.each { |block| custom_param_definition.instance_eval(&block) }
 
@@ -332,7 +332,7 @@ module Apiwork
                 item,
                 max_depth: max_depth,
                 current_depth: current_depth + 1,
-                path: item_path
+                path: item_path,
               )
               if shape_result[:issues].any?
                 issues.concat(shape_result[:issues])
@@ -391,8 +391,8 @@ module Apiwork
           meta: {
             actual: value.class.name.underscore.to_sym,
             expected: expected_type,
-            field: name
-          }
+            field: name,
+          },
         )
       end
 
@@ -417,7 +417,7 @@ module Apiwork
             variant_definition,
             path,
             max_depth: max_depth,
-            current_depth: current_depth
+            current_depth: current_depth,
           )
 
           return [nil, validated_value] if error.nil?
@@ -441,8 +441,8 @@ module Apiwork
           meta: {
             actual: value.class.name.underscore.to_sym,
             expected: expected_types.join(' | '),
-            field: name
-          }
+            field: name,
+          },
         )
 
         [error, nil]
@@ -460,8 +460,8 @@ module Apiwork
             meta: {
               actual: value.class.name.underscore.to_sym,
               expected: :object,
-              field: name
-            }
+              field: name,
+            },
           )
           return [error, nil]
         end
@@ -471,7 +471,7 @@ module Apiwork
             code: :field_missing,
             detail: 'Required',
             path: path + [discriminator],
-            meta: { field: discriminator }
+            meta: { field: discriminator },
           )
           return [error, nil]
         end
@@ -492,8 +492,8 @@ module Apiwork
             meta: {
               actual: discriminator_value,
               expected: valid_tags,
-              field: discriminator
-            }
+              field: discriminator,
+            },
           )
           return [error, nil]
         end
@@ -506,7 +506,7 @@ module Apiwork
           matching_variant,
           path,
           max_depth: max_depth,
-          current_depth: current_depth
+          current_depth: current_depth,
         )
 
         validated_value = validated_value.merge(discriminator => discriminator_value) if validated_value.is_a?(Hash)
@@ -531,7 +531,7 @@ module Apiwork
         if custom_type_block
           custom_param_definition = ParamDefinition.new(
             @param_definition.contract_class,
-            action_name: @param_definition.action_name
+            action_name: @param_definition.action_name,
           )
           custom_type_block.each { |block| custom_param_definition.instance_eval(&block) }
 
@@ -543,8 +543,8 @@ module Apiwork
               meta: {
                 actual: value.class.name.underscore.to_sym,
                 expected: variant_type,
-                field: name
-              }
+                field: name,
+              },
             )
             return [type_error, nil]
           end
@@ -554,7 +554,7 @@ module Apiwork
             value,
             max_depth: max_depth,
             current_depth: current_depth + 1,
-            path: path
+            path: path,
           )
 
           return [result[:issues].first, nil] if result[:issues].any?
@@ -571,8 +571,8 @@ module Apiwork
               meta: {
                 actual: value.class.name.underscore.to_sym,
                 expected: :array,
-                field: name
-              }
+                field: name,
+              },
             )
             return [type_error, nil]
           end
@@ -584,8 +584,8 @@ module Apiwork
                 param_options: { of: variant_of, shape: variant_shape },
                 field_path: path,
                 max_depth: max_depth,
-                current_depth: current_depth
-              }
+                current_depth: current_depth,
+              },
             )
 
             return [array_issues.first, nil] if array_issues.any?
@@ -605,8 +605,8 @@ module Apiwork
               meta: {
                 actual: value.class.name.underscore.to_sym,
                 expected: :object,
-                field: name
-              }
+                field: name,
+              },
             )
             return [type_error, nil]
           end
@@ -616,7 +616,7 @@ module Apiwork
             value,
             max_depth: max_depth,
             current_depth: current_depth + 1,
-            path: path
+            path: path,
           )
 
           return [result[:issues].first, nil] if result[:issues].any?
@@ -635,8 +635,8 @@ module Apiwork
             meta: {
               actual: value,
               expected: variant_definition[:enum],
-              field: name
-            }
+              field: name,
+            },
           )
           return [enum_error, nil]
         end
@@ -658,8 +658,8 @@ module Apiwork
             meta: {
               actual: value,
               field: name,
-              min: min_value
-            }
+              min: min_value,
+            },
           )
         end
 
@@ -671,8 +671,8 @@ module Apiwork
             meta: {
               actual: value,
               field: name,
-              max: max_value
-            }
+              max: max_value,
+            },
           )
         end
 
@@ -695,8 +695,8 @@ module Apiwork
             meta: {
               actual: value.length,
               field: name,
-              min: min_length
-            }
+              min: min_length,
+            },
           )
         end
 
@@ -708,8 +708,8 @@ module Apiwork
             meta: {
               actual: value.length,
               field: name,
-              max: max_length
-            }
+              max: max_length,
+            },
           )
         end
 

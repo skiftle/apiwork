@@ -22,7 +22,7 @@ module Apiwork
         integer: %i[int32 int64],
         float: %i[float double],
         decimal: %i[float double],
-        number: %i[float double]
+        number: %i[float double],
       }.freeze
 
       def initialize(name,
@@ -162,7 +162,7 @@ module Apiwork
         raise ConfigurationError.new(
           code: :invalid_attribute,
           detail: attribute_not_found_message,
-          path: [@name]
+          path: [@name],
         )
       end
 
@@ -195,8 +195,8 @@ module Apiwork
           meta: {
             actual: value,
             expected: enum_values,
-            field: name
-          }
+            field: name,
+          },
         )
         raise ContractError, [issue]
       end
@@ -312,7 +312,7 @@ module Apiwork
           raise ConfigurationError.new(
             code: :filterable_requires_column,
             detail: "Attribute #{@name}: filterable requires a database column",
-            path: [@name]
+            path: [@name],
           )
         end
 
@@ -320,7 +320,7 @@ module Apiwork
           raise ConfigurationError.new(
             code: :sortable_requires_column,
             detail: "Attribute #{@name}: sortable requires a database column",
-            path: [@name]
+            path: [@name],
           )
         end
 
@@ -329,7 +329,7 @@ module Apiwork
         raise ConfigurationError.new(
           code: :writable_requires_column,
           detail: "Attribute #{@name}: writable requires a database column",
-          path: [@name]
+          path: [@name],
         )
       end
     end

@@ -208,7 +208,7 @@ module Apiwork
           as: nil,
           enum: nil,
           of: nil,
-          shape: nil
+          shape: nil,
         }.merge(param_hash)
       end
 
@@ -225,8 +225,8 @@ module Apiwork
             optional: optional,
             default: default,
             as: as,
-            **options.except(:value) # Remove :value from options to avoid duplication
-          }
+            **options.except(:value), # Remove :value from options to avoid duplication
+          },
         )
       end
 
@@ -246,8 +246,8 @@ module Apiwork
             union: union_builder,
             discriminator: discriminator,
             enum: resolved_enum, # Store resolved enum (values or reference)
-            **options
-          }
+            **options,
+          },
         )
       end
 
@@ -315,8 +315,8 @@ module Apiwork
             as: as,
             custom_type: type, # Track original custom type name
             shape: shape_param_definition,
-            **options
-          }
+            **options,
+          },
         )
       end
 
@@ -330,8 +330,8 @@ module Apiwork
             enum: resolved_enum, # Store resolved enum (values or reference)
             of: of,
             as: as,
-            **options
-          }
+            **options,
+          },
         )
 
         return unless block_given?

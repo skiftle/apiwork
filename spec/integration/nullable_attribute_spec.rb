@@ -8,8 +8,8 @@ RSpec.describe 'Nullable attribute option', type: :request do
       user_params = {
         user: {
           name: 'Test User',
-          email: nil # email has nullable: true
-        }
+          email: nil, # email has nullable: true
+        },
       }
 
       post '/api/v1/users', as: :json, params: user_params
@@ -76,8 +76,8 @@ RSpec.describe 'Nullable attribute option', type: :request do
       user_params = {
         user: {
           name: nil, # name does NOT have nullable: true
-          email: 'test@example.com'
-        }
+          email: 'test@example.com',
+        },
       }
 
       post '/api/v1/users', as: :json, params: user_params

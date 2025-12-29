@@ -53,8 +53,8 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
         post: {
           title: 'New Post',
           body: 'New body',
-          published: true
-        }
+          published: true,
+        },
       }
 
       expect do
@@ -72,8 +72,8 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
       post_params = {
         post: {
           body: 'Body without title',
-          published: false
-        }
+          published: false,
+        },
       }
 
       expect do
@@ -96,9 +96,9 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
           metadata: {
             tags: %w[ruby rails],
             author_notes: 'Draft version',
-            version: 1
-          }
-        }
+            version: 1,
+          },
+        },
       }
 
       expect do
@@ -112,8 +112,8 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
         {
           'tags' => %w[ruby rails],
           'author_notes' => 'Draft version',
-          'version' => 1
-        }
+          'version' => 1,
+        },
       )
 
       # Verify database storage (keys stored as-is in database)
@@ -122,8 +122,8 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
         {
           'tags' => %w[ruby rails],
           'author_notes' => 'Draft version',
-          'version' => 1
-        }
+          'version' => 1,
+        },
       )
     end
 
@@ -133,8 +133,8 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
         body: 'Body',
         metadata: {
           'tags' => %w[api test],
-          'priority' => 'high'
-        }
+          'priority' => 'high',
+        },
       )
 
       get "/api/v1/posts/#{post_record.id}"
@@ -144,8 +144,8 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
       expect(json['post']['metadata']).to eq(
         {
           'tags' => %w[api test],
-          'priority' => 'high'
-        }
+          'priority' => 'high',
+        },
       )
     end
 
@@ -154,7 +154,7 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
         title: 'Original',
         body: 'Body',
         published: false,
-        metadata: { 'version' => 1 }
+        metadata: { 'version' => 1 },
       )
 
       patch "/api/v1/posts/#{post_record.id}",
@@ -163,8 +163,8 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
                 title: 'Original',
                 body: 'Body',
                 published: false,
-                metadata: { 'version' => 2, 'updated' => true }
-              }
+                metadata: { 'version' => 2, 'updated' => true },
+              },
             },
             as: :json
 
@@ -173,8 +173,8 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
       expect(json['post']['metadata']).to eq(
         {
           'version' => 2,
-          'updated' => true
-        }
+          'updated' => true,
+        },
       )
     end
 
@@ -183,8 +183,8 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
         post: {
           title: 'Post without Metadata',
           body: 'Body',
-          metadata: nil
-        }
+          metadata: nil,
+        },
       }
 
       post '/api/v1/posts', as: :json, params: post_params
@@ -199,8 +199,8 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
         post: {
           title: 'Post with Empty Metadata',
           body: 'Body',
-          metadata: {}
-        }
+          metadata: {},
+        },
       }
 
       post '/api/v1/posts', as: :json, params: post_params

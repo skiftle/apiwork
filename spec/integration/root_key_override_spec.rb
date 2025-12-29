@@ -32,8 +32,8 @@ RSpec.describe 'Root key override with root DSL', type: :request do
     it 'uses custom root key for input validation' do
       article_params = {
         article: {
-          title: 'New Article'
-        }
+          title: 'New Article',
+        },
       }
 
       post '/api/v1/articles', as: :json, params: article_params
@@ -77,8 +77,8 @@ RSpec.describe 'Root key override with root DSL', type: :request do
         person: {
           title: 'Jane Doe',
           body: 'Bio text',
-          published: true
-        }
+          published: true,
+        },
       }
 
       post '/api/v1/persons', as: :json, params: person_params

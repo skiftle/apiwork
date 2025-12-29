@@ -28,7 +28,7 @@ module Apiwork
           identifier: @resource.name.to_s,
           path: resource_path,
           actions: build_actions(contract_class),
-          resources: build_nested_resources(resource_path)
+          resources: build_nested_resources(resource_path),
         }.compact
       end
 
@@ -59,7 +59,7 @@ module Apiwork
             nested_resource,
             @api_class,
             parent_path: resource_path,
-            parent_resource: @resource
+            parent_resource: @resource,
           ).serialize
         end
       end

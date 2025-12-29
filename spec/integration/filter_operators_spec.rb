@@ -93,9 +93,9 @@ RSpec.describe 'Filter Operators' do
             filter: {
               created_at: {
                 gte: start_date.iso8601,
-                lt: end_date.iso8601
-              }
-            }
+                lt: end_date.iso8601,
+              },
+            },
           }
 
       expect(response).to have_http_status(:ok)
@@ -165,8 +165,8 @@ RSpec.describe 'Filter Operators' do
               created_at: { gte: 10.days.ago.iso8601 },
               title: { contains: 'Post' },
               published: { eq: false },
-              id: { in: [old_post.id, recent_post.id, new_post.id] }
-            }
+              id: { in: [old_post.id, recent_post.id, new_post.id] },
+            },
           }
 
       expect(response).to have_http_status(:ok)

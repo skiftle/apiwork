@@ -43,7 +43,7 @@ module Apiwork
                      action_name:,
                      recursive:,
                      description: type_shape[:description],
-                     example: type_shape[:example]
+                     example: type_shape[:example],
                    )
                  end
           all_types << { code:, name: type_name_pascal }

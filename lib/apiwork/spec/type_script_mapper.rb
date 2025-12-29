@@ -31,7 +31,7 @@ module Apiwork
 
           prop_jsdoc = jsdoc(
             description: property_definition[:description],
-            example: property_definition[:example]
+            example: property_definition[:example],
           )
           if prop_jsdoc
             indented_jsdoc = prop_jsdoc.lines.map { |line| "  #{line.chomp}" }.join("\n")

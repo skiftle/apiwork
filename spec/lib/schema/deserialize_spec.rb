@@ -55,8 +55,8 @@ RSpec.describe 'Schema.deserialize' do
       result = schema_class.deserialize(
         [
           { email: 'ONE@EXAMPLE.COM' },
-          { email: 'TWO@EXAMPLE.COM' }
-        ]
+          { email: 'TWO@EXAMPLE.COM' },
+        ],
       )
 
       expect(result).to be_an(Array)
@@ -83,8 +83,8 @@ RSpec.describe 'Schema.deserialize' do
         {
           title: 'Test',
           email: '  UPPER@TEST.COM  ',
-          notes: ''
-        }
+          notes: '',
+        },
       )
 
       expect(result[:title]).to eq('Test')
@@ -135,8 +135,8 @@ RSpec.describe 'Schema.deserialize' do
         email: '  USER@EXAMPLE.COM  ',
         lines: [
           { amount: '99.99', description: 'Widget' },
-          { amount: '49.99', description: 'Gadget' }
-        ]
+          { amount: '49.99', description: 'Gadget' },
+        ],
       }
 
       result = invoice_schema.deserialize(input)
@@ -149,7 +149,7 @@ RSpec.describe 'Schema.deserialize' do
     it 'deserializes nested has_one associations' do
       input = {
         number: 'INV-001',
-        customer: { email: '  ACME@EXAMPLE.COM  ', name: 'Acme' }
+        customer: { email: '  ACME@EXAMPLE.COM  ', name: 'Acme' },
       }
 
       result = invoice_schema.deserialize(input)
@@ -161,7 +161,7 @@ RSpec.describe 'Schema.deserialize' do
       input = {
         customer: nil,
         lines: nil,
-        number: 'INV-001'
+        number: 'INV-001',
       }
 
       result = invoice_schema.deserialize(input)

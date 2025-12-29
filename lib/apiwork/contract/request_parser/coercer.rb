@@ -60,7 +60,7 @@ module Apiwork
             return value if value.is_a?(String)
 
             value.to_s
-          }
+          },
         }.freeze
 
         class << self

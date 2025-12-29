@@ -10,7 +10,7 @@ RSpec.describe 'Pagination API', type: :request do
         title: "Post #{i + 1}",
         body: "Body #{i + 1}",
         published: i.even?,
-        created_at: (25 - i).days.ago
+        created_at: (25 - i).days.ago,
       )
     end
   end
@@ -86,7 +86,7 @@ RSpec.describe 'Pagination API', type: :request do
       get '/api/v1/posts',
           params: {
             filter: { published: { eq: true } },
-            page: { number: 1, size: 5 }
+            page: { number: 1, size: 5 },
           }
 
       expect(response).to have_http_status(:ok)
@@ -103,7 +103,7 @@ RSpec.describe 'Pagination API', type: :request do
       get '/api/v1/posts',
           params: {
             sort: { title: 'desc' },
-            page: { number: 1, size: 5 }
+            page: { number: 1, size: 5 },
           }
 
       expect(response).to have_http_status(:ok)
@@ -120,7 +120,7 @@ RSpec.describe 'Pagination API', type: :request do
           params: {
             filter: { published: { eq: true } },
             sort: { title: 'asc' },
-            page: { number: 1, size: 3 }
+            page: { number: 1, size: 3 },
           }
 
       expect(response).to have_http_status(:ok)

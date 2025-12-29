@@ -138,8 +138,8 @@ RSpec.describe 'Security and edge case validation' do
         {
           field1: 'invalid',
           field2: 'invalid',
-          field3: 'invalid'
-        }
+          field3: 'invalid',
+        },
       )
 
       expect(result[:issues]).not_to be_empty

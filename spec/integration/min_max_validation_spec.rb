@@ -8,8 +8,8 @@ RSpec.describe 'Min and Max validation on params', type: :request do
       user_params = {
         user: {
           name: 'A', # Only 1 character, min is 2
-          email: 'test@example.com'
-        }
+          email: 'test@example.com',
+        },
       }
 
       post '/api/v1/users', as: :json, params: user_params
@@ -27,8 +27,8 @@ RSpec.describe 'Min and Max validation on params', type: :request do
       user_params = {
         user: {
           name: 'AB', # Exactly 2 characters
-          email: 'test@example.com'
-        }
+          email: 'test@example.com',
+        },
       }
 
       post '/api/v1/users', as: :json, params: user_params
@@ -41,8 +41,8 @@ RSpec.describe 'Min and Max validation on params', type: :request do
       user_params = {
         user: {
           name: 'John Doe', # 8 characters, between min(2) and max(50)
-          email: 'test@example.com'
-        }
+          email: 'test@example.com',
+        },
       }
 
       post '/api/v1/users', as: :json, params: user_params
@@ -58,8 +58,8 @@ RSpec.describe 'Min and Max validation on params', type: :request do
       user_params = {
         user: {
           name: 'A' * 51, # 51 characters, max is 50
-          email: 'test@example.com'
-        }
+          email: 'test@example.com',
+        },
       }
 
       post '/api/v1/users', as: :json, params: user_params
@@ -76,8 +76,8 @@ RSpec.describe 'Min and Max validation on params', type: :request do
       user_params = {
         user: {
           name: 'A' * 50, # Exactly 50 characters
-          email: 'test@example.com'
-        }
+          email: 'test@example.com',
+        },
       }
 
       post '/api/v1/users', as: :json, params: user_params
@@ -90,8 +90,8 @@ RSpec.describe 'Min and Max validation on params', type: :request do
       user_params = {
         user: {
           name: 'Short', # 5 characters, well under max(50)
-          email: 'test@example.com'
-        }
+          email: 'test@example.com',
+        },
       }
 
       post '/api/v1/users', as: :json, params: user_params

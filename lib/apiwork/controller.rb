@@ -58,7 +58,7 @@ module Apiwork
         query: transformed_query_parameters,
         body: transformed_body_parameters,
         action_name: action_name,
-        coerce: true
+        coerce: true,
       )
     end
 
@@ -157,7 +157,7 @@ module Apiwork
         code: error_code.key,
         detail: detail || error_code.description(locale_key:, options: i18n),
         path: path || (error_code.attach_path? ? request.path.delete_prefix(api_class.path).split('/').reject(&:blank?) : []),
-        meta:
+        meta:,
       )
 
       render_error :http, [issue], error_code.status
@@ -200,7 +200,7 @@ module Apiwork
         type: resource&.actions&.dig(action_name.to_sym)&.type,
         context:,
         query: resource ? contract.query : {},
-        meta:
+        meta:,
       )
     end
 

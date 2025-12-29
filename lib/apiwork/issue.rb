@@ -44,7 +44,7 @@ module Apiwork
         detail: detail,
         path: path.map(&:to_s),
         pointer: pointer,
-        meta: meta
+        meta: meta,
       }
     end
 

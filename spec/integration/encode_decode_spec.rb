@@ -8,8 +8,8 @@ RSpec.describe 'Encode and Decode attribute options', type: :request do
       user_params = {
         user: {
           email: 'john.doe@example.com',
-          name: 'John Doe'
-        }
+          name: 'John Doe',
+        },
       }
 
       post '/api/v1/users', as: :json, params: user_params
@@ -26,8 +26,8 @@ RSpec.describe 'Encode and Decode attribute options', type: :request do
 
       patch_params = {
         user: {
-          email: 'updated@example.com'
-        }
+          email: 'updated@example.com',
+        },
       }
 
       patch "/api/v1/users/#{user_record.id}", as: :json, params: patch_params
@@ -43,8 +43,8 @@ RSpec.describe 'Encode and Decode attribute options', type: :request do
       user_params = {
         user: {
           email: nil,
-          name: 'John'
-        }
+          name: 'John',
+        },
       }
 
       post '/api/v1/users', as: :json, params: user_params
@@ -89,8 +89,8 @@ RSpec.describe 'Encode and Decode attribute options', type: :request do
       user_params = {
         user: {
           email: 'lowercase@input.com',
-          name: 'Test User'
-        }
+          name: 'Test User',
+        },
       }
 
       post '/api/v1/users', as: :json, params: user_params

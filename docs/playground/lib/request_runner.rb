@@ -38,7 +38,7 @@ class RequestRunner
 
       {
         request: build_request_data(scenario[:method], path, body),
-        response: build_response_data
+        response: build_response_data,
       }
     end
   end
@@ -137,7 +137,7 @@ class RequestRunner
   def build_request_data(method, path, body)
     data = {
       method: method,
-      path: path
+      path: path,
     }
     data[:body] = body if body
     data
@@ -148,7 +148,7 @@ class RequestRunner
 
     {
       status: response.status,
-      body: body
+      body: body,
     }.compact
   end
 

@@ -220,7 +220,7 @@ module Apiwork
         #   attribute :email, writable: { on: [:create] }
         def attribute(name, **options, &block)
           self.attribute_definitions = attribute_definitions.merge(
-            name => AttributeDefinition.new(name, self, **options, &block)
+            name => AttributeDefinition.new(name, self, **options, &block),
           )
         end
 
@@ -257,7 +257,7 @@ module Apiwork
         #   has_one :imageable, polymorphic: [:product, :user]
         def has_one(name, **options)
           self.association_definitions = association_definitions.merge(
-            name => AssociationDefinition.new(name, :has_one, self, **options)
+            name => AssociationDefinition.new(name, :has_one, self, **options),
           )
         end
 
@@ -281,7 +281,7 @@ module Apiwork
         #   has_many :tags, include: :always
         def has_many(name, **options)
           self.association_definitions = association_definitions.merge(
-            name => AssociationDefinition.new(name, :has_many, self, **options)
+            name => AssociationDefinition.new(name, :has_many, self, **options),
           )
         end
 
@@ -301,7 +301,7 @@ module Apiwork
         #   belongs_to :category, filterable: true
         def belongs_to(name, **options)
           self.association_definitions = association_definitions.merge(
-            name => AssociationDefinition.new(name, :belongs_to, self, **options)
+            name => AssociationDefinition.new(name, :belongs_to, self, **options),
           )
         end
 
@@ -580,7 +580,7 @@ module Apiwork
               detail: "Could not find model '#{model_name}' for #{name}. " \
                       "Either create the model, declare it explicitly with 'model YourModel', " \
                       "or mark this schema as abstract with 'abstract!'",
-              path: []
+              path: [],
             )
           end
         end

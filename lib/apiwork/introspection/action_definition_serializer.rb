@@ -15,7 +15,7 @@ module Apiwork
           operation_id: @action_definition.operation_id,
           request: serialize_request(@action_definition.request_definition),
           response: serialize_response(@action_definition.response_definition),
-          raises: raises.presence
+          raises: raises.presence,
         }.compact
 
         result[:deprecated] = true if @action_definition.deprecated
@@ -52,7 +52,7 @@ module Apiwork
 
         {
           query: request_definition.query_param_definition&.then { ParamDefinitionSerializer.new(_1).serialize },
-          body: request_definition.body_param_definition&.then { ParamDefinitionSerializer.new(_1).serialize }
+          body: request_definition.body_param_definition&.then { ParamDefinitionSerializer.new(_1).serialize },
         }.compact.presence
       end
 

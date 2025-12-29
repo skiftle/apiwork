@@ -108,7 +108,7 @@ module Apiwork
               example: attribute_definition.example,
               format: attribute_definition.format,
               deprecated: attribute_definition.deprecated,
-              attribute_definition: attribute_definition
+              attribute_definition: attribute_definition,
             }
 
             param_options[:min] = attribute_definition.min if attribute_definition.min
@@ -148,7 +148,7 @@ module Apiwork
               description: association_definition.description,
               example: association_definition.example,
               deprecated: association_definition.deprecated,
-              association_definition: association_definition
+              association_definition: association_definition,
             }
 
             param_options[:type_contract_class] = association_contract if association_contract
@@ -333,7 +333,7 @@ module Apiwork
                 deprecated: attribute_definition.deprecated,
                 attribute_definition: attribute_definition,
                 **enum_option,
-                **of_option
+                **of_option,
               }
 
               if attribute_definition.inline_shape
@@ -352,7 +352,7 @@ module Apiwork
                 description: association_definition.description,
                 example: association_definition.example,
                 deprecated: association_definition.deprecated,
-                association_definition: association_definition
+                association_definition: association_definition,
               }
 
               if association_definition.singular?
@@ -431,7 +431,7 @@ module Apiwork
                                             :build_filter_type_for_schema,
                                             association_resource.schema_class,
                                             visited: visited,
-                                            depth: depth + 1
+                                            depth: depth + 1,
                                           )
                                         end
 
@@ -489,7 +489,7 @@ module Apiwork
                                           :build_sort_type_for_schema,
                                           association_resource.schema_class,
                                           visited: visited,
-                                          depth: depth + 1
+                                          depth: depth + 1,
                                         )
                                       end
 
@@ -574,7 +574,7 @@ module Apiwork
                                                :build_include_type_for_schema,
                                                association_resource.schema_class,
                                                visited: visited,
-                                               depth: depth + 1
+                                               depth: depth + 1,
                                              )
                                            end
 

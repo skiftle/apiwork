@@ -37,8 +37,8 @@ RSpec.describe 'TypeSystem Integration', type: :request do
         shape: {
           code: { type: :string },
           message: { type: :string },
-          field: { type: :string }
-        }
+          field: { type: :string },
+        },
       )
 
       expect(introspection[:types]).to have_key(:pagination_params)
@@ -46,8 +46,8 @@ RSpec.describe 'TypeSystem Integration', type: :request do
         type: :object,
         shape: {
           page: { type: :integer },
-          per_page: { type: :integer }
-        }
+          per_page: { type: :integer },
+        },
       )
     end
 
@@ -85,7 +85,7 @@ RSpec.describe 'TypeSystem Integration', type: :request do
       # Account model has first_day_of_week enum
       expect(introspection[:enums]).to have_key(:account_first_day_of_week)
       expect(introspection[:enums][:account_first_day_of_week][:values]).to match_array(
-        %w[monday tuesday wednesday thursday friday saturday sunday]
+        %w[monday tuesday wednesday thursday friday saturday sunday],
       )
     end
 
@@ -304,8 +304,8 @@ RSpec.describe 'TypeSystem Integration', type: :request do
         type: :object,
         shape: {
           author: { type: :string },
-          version: { type: :integer }
-        }
+          version: { type: :integer },
+        },
       )
     end
 
@@ -422,7 +422,7 @@ RSpec.describe 'TypeSystem Integration', type: :request do
       expect(introspection[:types][:documented_type]).to include(
         description: 'A well-documented type',
         example: { value: 'example' },
-        format: 'custom'
+        format: 'custom',
       )
     end
 
@@ -432,7 +432,7 @@ RSpec.describe 'TypeSystem Integration', type: :request do
       expect(introspection[:enums][:status_with_metadata]).to eq(
         values: %w[active inactive],
         description: 'Status values with description',
-        example: 'active'
+        example: 'active',
       )
     end
 

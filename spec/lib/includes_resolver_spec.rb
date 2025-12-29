@@ -67,8 +67,8 @@ RSpec.describe Apiwork::Adapter::StandardAdapter::IncludesResolver do
         {
           author: {},
           comments: { author: {}, replies: {} },
-          tags: {}
-        }
+          tags: {},
+        },
       )
     end
 

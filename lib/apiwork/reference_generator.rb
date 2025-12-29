@@ -83,7 +83,7 @@ module Apiwork
         file: relative_path(obj.file),
         line: obj.line,
         class_methods: extract_methods(obj, :class),
-        instance_methods: extract_methods(obj, :instance)
+        instance_methods: extract_methods(obj, :instance),
       }
     end
 
@@ -133,7 +133,7 @@ module Apiwork
         returns: extract_return(method),
         examples: extract_examples(method),
         file: relative_path(method.file),
-        line: method.line
+        line: method.line,
       }
     end
 
@@ -159,7 +159,7 @@ module Apiwork
         {
           name: tag.name,
           types: tag.types || [],
-          description: tag.text
+          description: tag.text,
         }
       end
     end
@@ -170,7 +170,7 @@ module Apiwork
 
       {
         types: tag.types || [],
-        description: tag.text
+        description: tag.text,
       }
     end
 
@@ -178,7 +178,7 @@ module Apiwork
       method.docstring.tags(:example).map do |tag|
         {
           title: tag.name,
-          code: tag.text
+          code: tag.text,
         }
       end
     end

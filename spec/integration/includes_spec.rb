@@ -45,7 +45,7 @@ RSpec.describe 'Includes API', type: :request do
             params: {
               filter: { published: { eq: true } },
               sort: { title: 'asc' },
-              include: { comments: true }
+              include: { comments: true },
             }
 
         expect(response).to have_http_status(:ok)
@@ -90,9 +90,9 @@ RSpec.describe 'Includes API', type: :request do
           params: {
             include: {
               comments: {
-                post: true
-              }
-            }
+                post: true,
+              },
+            },
           }
 
       expect(response).to have_http_status(:ok)
@@ -228,7 +228,7 @@ RSpec.describe 'Includes API', type: :request do
            params: { post: {
              body: 'Content',
              published: true,
-             title: 'New Post'
+             title: 'New Post',
            } }.to_json,
            headers: { 'CONTENT_TYPE' => 'application/json' }
 
@@ -244,8 +244,8 @@ RSpec.describe 'Includes API', type: :request do
              post: {
                body: 'More content',
                published: false,
-               title: 'Another Post'
-             }
+               title: 'Another Post',
+             },
            },
            as: :json
 
@@ -271,7 +271,7 @@ RSpec.describe 'Includes API', type: :request do
     it 'does not include associations when not requested' do
       patch "/api/v1/posts/#{post2.id}",
             params: {
-              post: { title: 'Updated Second Post' }
+              post: { title: 'Updated Second Post' },
             },
             as: :json
 

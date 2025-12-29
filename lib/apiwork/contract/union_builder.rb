@@ -27,7 +27,7 @@ module Apiwork
           type: type,
           of: of,
           enum: enum,
-          tag: tag
+          tag: tag,
         }.compact
         variant_definition[:partial] = true if partial
 
@@ -50,7 +50,7 @@ module Apiwork
         {
           type: :union,
           variants: serialized_variants,
-          discriminator: @discriminator
+          discriminator: @discriminator,
         }.compact
       end
     end

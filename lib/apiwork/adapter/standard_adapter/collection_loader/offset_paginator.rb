@@ -46,8 +46,8 @@ module Apiwork
                 next: (page_number < total ? page_number + 1 : nil),
                 prev: (page_number > 1 ? page_number - 1 : nil),
                 total:,
-                items:
-              }
+                items:,
+              },
             }
           end
 

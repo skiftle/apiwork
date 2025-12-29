@@ -41,8 +41,8 @@ module Apiwork
                 meta: {
                   allowed: valid_operators,
                   field: field_name,
-                  operator: operator
-                }
+                  operator: operator,
+                },
               )
             end
           end

@@ -8,8 +8,8 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
       author_params = {
         author: {
           name: 'Jane Doe',
-          bio: 'Software engineer and writer'
-        }
+          bio: 'Software engineer and writer',
+        },
       }
 
       post '/api/v1/authors', as: :json, params: author_params
@@ -26,8 +26,8 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
       author_params = {
         author: {
           name: 'Jane Doe',
-          verified: true # Not writable on create
-        }
+          verified: true, # Not writable on create
+        },
       }
 
       post '/api/v1/authors', as: :json, params: author_params
@@ -86,8 +86,8 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
       # Just confirming verified is not writable on create
       author_params = {
         author: {
-          name: 'John Smith'
-        }
+          name: 'John Smith',
+        },
       }
 
       post '/api/v1/authors', as: :json, params: author_params
@@ -140,8 +140,8 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
     it 'allows setting name during create' do
       author_params = {
         author: {
-          name: 'Test Author'
-        }
+          name: 'Test Author',
+        },
       }
 
       post '/api/v1/authors', as: :json, params: author_params
@@ -176,7 +176,7 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
            params: { author: {
              bio: 'Initial Bio',
              name: 'Author',
-             verified: true
+             verified: true,
            } },
            as: :json
 

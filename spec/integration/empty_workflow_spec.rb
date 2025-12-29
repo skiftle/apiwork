@@ -17,8 +17,8 @@ RSpec.describe 'empty workflow', type: :request do
              params: {
                user: {
                  email: 'test@example.com',
-                 name: ''
-               }
+                 name: '',
+               },
              },
              as: :json
 
@@ -40,8 +40,8 @@ RSpec.describe 'empty workflow', type: :request do
              params: {
                user: {
                  email: 'test@example.com',
-                 name: nil
-               }
+                 name: nil,
+               },
              },
              as: :json
 
@@ -57,8 +57,8 @@ RSpec.describe 'empty workflow', type: :request do
              params: {
                user: {
                  email: 'test@example.com',
-                 name: 'John Doe'
-               }
+                 name: 'John Doe',
+               },
              },
              as: :json
 
@@ -82,8 +82,8 @@ RSpec.describe 'empty workflow', type: :request do
         patch "/api/v1/users/#{user.id}",
               params: {
                 user: {
-                  name: ''
-                }
+                  name: '',
+                },
               },
               as: :json
 
@@ -100,8 +100,8 @@ RSpec.describe 'empty workflow', type: :request do
         patch "/api/v1/users/#{user.id}",
               params: {
                 user: {
-                  name: nil
-                }
+                  name: nil,
+                },
               },
               as: :json
 
@@ -148,8 +148,8 @@ RSpec.describe 'empty workflow', type: :request do
            params: {
              user: {
                email: 'test@example.com',
-               name: ''
-             }
+               name: '',
+             },
            },
            as: :json
 
@@ -168,8 +168,8 @@ RSpec.describe 'empty workflow', type: :request do
       patch "/api/v1/users/#{user_id}",
             params: {
               user: {
-                name: ''
-              }
+                name: '',
+              },
             },
             as: :json
 

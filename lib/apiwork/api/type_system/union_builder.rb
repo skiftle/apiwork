@@ -34,7 +34,7 @@ module Apiwork
           {
             type: :union,
             variants: @variants.dup,
-            discriminator: @discriminator
+            discriminator: @discriminator,
           }.compact
         end
 

@@ -35,7 +35,7 @@ RSpec.describe 'Nested Attributes Configuration Errors', type: :request do
         end
       end.to raise_error(
         Apiwork::ConfigurationError,
-        /doesn't accept nested attributes.*accepts_nested_attributes_for :comments/
+        /doesn't accept nested attributes.*accepts_nested_attributes_for :comments/,
       )
     end
 

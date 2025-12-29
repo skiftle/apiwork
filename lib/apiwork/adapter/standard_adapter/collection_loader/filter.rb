@@ -206,7 +206,7 @@ module Apiwork
               code: :field_not_filterable,
               detail: 'Not filterable',
               path: [:filter, key],
-              meta: { available: available, field: key }
+              meta: { available: available, field: key },
             )
           end
 
@@ -219,7 +219,7 @@ module Apiwork
                 code: :column_unknown,
                 detail: 'Unknown column type',
                 path: [:filter, key],
-                meta: { field: key }
+                meta: { field: key },
               )
               return nil
             end
@@ -240,7 +240,7 @@ module Apiwork
                 code: :column_unsupported,
                 detail: 'Unsupported column type',
                 path: [:filter, key],
-                meta: { field: key, type: column_type }
+                meta: { field: key, type: column_type },
               )
               nil
             end
@@ -259,8 +259,8 @@ module Apiwork
               meta: {
                 allowed: enum_values,
                 field: key,
-                value: invalid_values
-              }
+                value: invalid_values,
+              },
             )
           end
 
@@ -294,7 +294,7 @@ module Apiwork
                 code: :association_schema_missing,
                 detail: 'Association schema missing',
                 path: [:filter, key],
-                meta: { association: key }
+                meta: { association: key },
               )
               return [[], {}]
             end
@@ -305,7 +305,7 @@ module Apiwork
                 code: :association_not_found,
                 detail: 'Association not found',
                 path: [:filter, key],
-                meta: { association: key }
+                meta: { association: key },
               )
               return [[], {}]
             end
@@ -334,7 +334,7 @@ module Apiwork
               column: column,
               field_name: key,
               issues: @issues,
-              allowed_types: [Hash]
+              allowed_types: [Hash],
             )
 
             builder.build(value, normalizer: normalizer, valid_operators: NULLABLE_UUID_OPERATORS) do |operator, compare|
@@ -355,13 +355,13 @@ module Apiwork
               column: column,
               field_name: key,
               issues: @issues,
-              allowed_types: [Hash]
+              allowed_types: [Hash],
             )
 
             builder.build(
               value,
               valid_operators: NULLABLE_STRING_OPERATORS,
-              normalizer: normalizer
+              normalizer: normalizer,
             ) do |operator, compare|
               case operator
               when :eq then column.eq(compare)
@@ -391,7 +391,7 @@ module Apiwork
               column: column,
               field_name: key,
               issues: @issues,
-              allowed_types: [Hash]
+              allowed_types: [Hash],
             )
 
             builder.build(value, normalizer: normalizer, valid_operators: NULLABLE_DATE_OPERATORS) do |operator, compare|
@@ -425,7 +425,7 @@ module Apiwork
                 code: :value_null,
                 detail: 'Cannot be null',
                 path: [:filter, key],
-                meta: { field: key }
+                meta: { field: key },
               )
             end
 
@@ -441,13 +441,13 @@ module Apiwork
               column: column,
               field_name: key,
               issues: @issues,
-              allowed_types: [Hash]
+              allowed_types: [Hash],
             )
 
             builder.build(
               value,
               valid_operators: NULLABLE_NUMERIC_OPERATORS,
-              normalizer: normalizer
+              normalizer: normalizer,
             ) do |operator, compare|
               case operator
               when :eq
@@ -504,13 +504,13 @@ module Apiwork
               column: column,
               field_name: key,
               issues: @issues,
-              allowed_types: [Hash]
+              allowed_types: [Hash],
             )
 
             builder.build(
               value,
               valid_operators: NULLABLE_BOOLEAN_OPERATORS,
-              normalizer: normalizer
+              normalizer: normalizer,
             ) do |operator, compare|
               case operator
               when :eq
@@ -543,7 +543,7 @@ module Apiwork
               code: :date_invalid,
               detail: 'Invalid date',
               path: [:filter, field],
-              meta: { field: field, value: value }
+              meta: { field: field, value: value },
             )
             nil
           end
@@ -557,7 +557,7 @@ module Apiwork
                 code: :number_invalid,
                 detail: 'Invalid number',
                 path: [:filter, field],
-                meta: { field: field, value: value }
+                meta: { field: field, value: value },
               )
               nil
             end
@@ -566,7 +566,7 @@ module Apiwork
               code: :number_invalid,
               detail: 'Invalid number',
               path: [:filter, field],
-              meta: { field: field, value: value }
+              meta: { field: field, value: value },
             )
             nil
           end

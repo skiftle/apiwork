@@ -47,8 +47,8 @@ RSpec.describe 'Input Validation' do
              params: {
                post: {
                  title: nil,
-                 published: 'not-boolean'
-               }
+                 published: 'not-boolean',
+               },
              },
              as: :json
 
@@ -69,8 +69,8 @@ RSpec.describe 'Input Validation' do
                post: {
                  title: 'Valid Title',
                  body: 'Valid body content',
-                 published: true
-               }
+                 published: true,
+               },
              },
              as: :json
 
@@ -84,8 +84,8 @@ RSpec.describe 'Input Validation' do
              params: {
                post: {
                  title: 'Test',
-                 published: 'true'
-               }
+                 published: 'true',
+               },
              },
              as: :json
 
@@ -103,7 +103,7 @@ RSpec.describe 'Input Validation' do
       it 'updates only provided fields' do
         patch "/api/v1/posts/#{post_record.id}",
               params: {
-                post: { title: 'Updated' }
+                post: { title: 'Updated' },
               },
               as: :json
 
@@ -117,7 +117,7 @@ RSpec.describe 'Input Validation' do
       it 'returns type_invalid for invalid boolean' do
         patch "/api/v1/posts/#{post_record.id}",
               params: {
-                post: { published: 'not-a-boolean' }
+                post: { published: 'not-a-boolean' },
               },
               as: :json
 
@@ -184,9 +184,9 @@ RSpec.describe 'Input Validation' do
              post: {
                title: 'Test',
                comments_attributes: [
-                 { content: nil }
-               ]
-             }
+                 { content: nil },
+               ],
+             },
            },
            as: :json
 

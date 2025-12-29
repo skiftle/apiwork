@@ -8,7 +8,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
       title: 'Advanced Filter Test Ruby Basics',
       body: 'Introduction to Ruby',
       published: true,
-      created_at: 5.days.ago
+      created_at: 5.days.ago,
     )
   end
   let!(:post2) do
@@ -16,7 +16,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
       title: 'Advanced Filter Test Rails Basics',
       body: 'Introduction to Rails',
       published: false,
-      created_at: 3.days.ago
+      created_at: 3.days.ago,
     )
   end
   let!(:post3) do
@@ -24,7 +24,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
       title: 'Advanced Filter Test Advanced Ruby',
       body: 'Deep dive into Ruby',
       published: true,
-      created_at: 1.day.ago
+      created_at: 1.day.ago,
     )
   end
   let!(:post4) do
@@ -32,7 +32,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
       title: 'Advanced Filter Test JavaScript Guide',
       body: 'Learn JavaScript',
       published: true,
-      created_at: 2.days.ago
+      created_at: 2.days.ago,
     )
   end
 
@@ -42,8 +42,8 @@ RSpec.describe 'Advanced Filtering API', type: :request do
           params: {
             filter: [
               { title: { eq: 'Advanced Filter Test Ruby Basics' } },
-              { title: { eq: 'Advanced Filter Test Rails Basics' } }
-            ]
+              { title: { eq: 'Advanced Filter Test Rails Basics' } },
+            ],
           }
 
       expect(response).to have_http_status(:ok)
@@ -64,7 +64,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
       expect(titles).to contain_exactly(
         'Advanced Filter Test Ruby Basics',
         'Advanced Filter Test Advanced Ruby',
-        'Advanced Filter Test JavaScript Guide'
+        'Advanced Filter Test JavaScript Guide',
       )
     end
 
@@ -73,9 +73,9 @@ RSpec.describe 'Advanced Filtering API', type: :request do
           params: {
             filter: [
               { title: { contains: 'Ruby' } },
-              { title: { contains: 'Rails' } }
+              { title: { contains: 'Rails' } },
             ],
-            sort: { title: 'asc' }
+            sort: { title: 'asc' },
           }
 
       expect(response).to have_http_status(:ok)
@@ -93,7 +93,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       get '/api/v1/posts',
           params: {
-            filter: { created_at: { between: { from: from_date, to: to_date } } }
+            filter: { created_at: { between: { from: from_date, to: to_date } } },
           }
 
       expect(response).to have_http_status(:ok)
@@ -109,7 +109,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       get '/api/v1/posts',
           params: {
-            filter: { created_at: { between: { from: from_date, to: to_date } } }
+            filter: { created_at: { between: { from: from_date, to: to_date } } },
           }
 
       expect(response).to have_http_status(:ok)
@@ -124,7 +124,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       get '/api/v1/posts',
           params: {
-            filter: { _not: { id: { in: excluded_ids } } }
+            filter: { _not: { id: { in: excluded_ids } } },
           }
 
       expect(response).to have_http_status(:ok)
@@ -137,7 +137,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
     it 'returns all posts when excluding non-existent ids' do
       get '/api/v1/posts',
           params: {
-            filter: { _not: { id: { in: [99_999, 88_888] } } }
+            filter: { _not: { id: { in: [99_999, 88_888] } } },
           }
 
       expect(response).to have_http_status(:ok)
@@ -150,7 +150,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
     it 'filters posts not containing specific text using _not' do
       get '/api/v1/posts',
           params: {
-            filter: { _not: { title: { contains: 'Ruby' } } }
+            filter: { _not: { title: { contains: 'Ruby' } } },
           }
 
       expect(response).to have_http_status(:ok)
@@ -163,7 +163,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
     it 'returns all posts when _not + contains matches nothing' do
       get '/api/v1/posts',
           params: {
-            filter: { _not: { title: { contains: 'Python' } } }
+            filter: { _not: { title: { contains: 'Python' } } },
           }
 
       expect(response).to have_http_status(:ok)
@@ -176,7 +176,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
     it 'filters posts starting with specific text' do
       get '/api/v1/posts',
           params: {
-            filter: { title: { starts_with: 'Advanced Filter Test Ruby' } }
+            filter: { title: { starts_with: 'Advanced Filter Test Ruby' } },
           }
 
       expect(response).to have_http_status(:ok)
@@ -188,7 +188,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
     it 'is case sensitive' do
       get '/api/v1/posts',
           params: {
-            filter: { title: { starts_with: 'advanced filter test ruby' } }
+            filter: { title: { starts_with: 'advanced filter test ruby' } },
           }
 
       expect(response).to have_http_status(:ok)
@@ -201,7 +201,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
     it 'filters posts ending with specific text' do
       get '/api/v1/posts',
           params: {
-            filter: { title: { ends_with: 'Basics' } }
+            filter: { title: { ends_with: 'Basics' } },
           }
 
       expect(response).to have_http_status(:ok)
@@ -214,7 +214,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
     it 'returns empty array when no matches' do
       get '/api/v1/posts',
           params: {
-            filter: { title: { ends_with: 'Tutorial' } }
+            filter: { title: { ends_with: 'Tutorial' } },
           }
 
       expect(response).to have_http_status(:ok)
@@ -230,7 +230,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
 
       get '/api/v1/posts',
           params: {
-            filter: { _not: { created_at: { between: { from: from_date, to: to_date } } } }
+            filter: { _not: { created_at: { between: { from: from_date, to: to_date } } } },
           }
 
       expect(response).to have_http_status(:ok)
@@ -248,8 +248,8 @@ RSpec.describe 'Advanced Filtering API', type: :request do
             filter: {
               title: { starts_with: 'Advanced Filter Test Ruby' },
               published: { eq: true },
-              created_at: { gt: 6.days.ago.iso8601 }
-            }
+              created_at: { gt: 6.days.ago.iso8601 },
+            },
           }
 
       expect(response).to have_http_status(:ok)
@@ -265,13 +265,13 @@ RSpec.describe 'Advanced Filtering API', type: :request do
             filter: [
               {
                 title: { contains: 'Ruby' },
-                published: { eq: true }
+                published: { eq: true },
               },
               {
                 title: { contains: 'Rails' },
-                published: { eq: true }
-              }
-            ]
+                published: { eq: true },
+              },
+            ],
           }
 
       expect(response).to have_http_status(:ok)
@@ -292,9 +292,9 @@ RSpec.describe 'Advanced Filtering API', type: :request do
               filter: {
                 _or: [
                   { title: { contains: 'Ruby Basics' } },
-                  { title: { contains: 'Rails' } }
-                ]
-              }
+                  { title: { contains: 'Rails' } },
+                ],
+              },
             }
 
         expect(response).to have_http_status(:ok)
@@ -312,9 +312,9 @@ RSpec.describe 'Advanced Filtering API', type: :request do
                 published: { eq: true },
                 _or: [
                   { title: { contains: 'Ruby' } },
-                  { title: { contains: 'JavaScript' } }
-                ]
-              }
+                  { title: { contains: 'JavaScript' } },
+                ],
+              },
             }
 
         expect(response).to have_http_status(:ok)
@@ -325,7 +325,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
         expect(titles).to contain_exactly(
           'Advanced Filter Test Ruby Basics',
           'Advanced Filter Test Advanced Ruby',
-          'Advanced Filter Test JavaScript Guide'
+          'Advanced Filter Test JavaScript Guide',
         )
       end
     end
@@ -337,9 +337,9 @@ RSpec.describe 'Advanced Filtering API', type: :request do
               filter: {
                 _and: [
                   { published: { eq: true } },
-                  { title: { contains: 'Ruby' } }
-                ]
-              }
+                  { title: { contains: 'Ruby' } },
+                ],
+              },
             }
 
         expect(response).to have_http_status(:ok)
@@ -356,9 +356,9 @@ RSpec.describe 'Advanced Filtering API', type: :request do
                 _and: [
                   { published: { eq: true } },
                   { title: { contains: 'Ruby' } },
-                  { created_at: { lt: 2.days.ago.iso8601 } }
-                ]
-              }
+                  { created_at: { lt: 2.days.ago.iso8601 } },
+                ],
+              },
             }
 
         expect(response).to have_http_status(:ok)
@@ -373,8 +373,8 @@ RSpec.describe 'Advanced Filtering API', type: :request do
         get '/api/v1/posts',
             params: {
               filter: {
-                _not: { published: { eq: true } }
-              }
+                _not: { published: { eq: true } },
+              },
             }
 
         expect(response).to have_http_status(:ok)
@@ -389,8 +389,8 @@ RSpec.describe 'Advanced Filtering API', type: :request do
             params: {
               filter: {
                 published: { eq: true },
-                _not: { title: { contains: 'JavaScript' } }
-              }
+                _not: { title: { contains: 'JavaScript' } },
+              },
             }
 
         expect(response).to have_http_status(:ok)
@@ -408,9 +408,9 @@ RSpec.describe 'Advanced Filtering API', type: :request do
               filter: {
                 _not: {
                   published: { eq: true },
-                  title: { contains: 'Ruby' }
-                }
-              }
+                  title: { contains: 'Ruby' },
+                },
+              },
             }
 
         expect(response).to have_http_status(:ok)
@@ -433,11 +433,11 @@ RSpec.describe 'Advanced Filtering API', type: :request do
                   {
                     _or: [
                       { title: { contains: 'Ruby' } },
-                      { title: { contains: 'Rails' } }
-                    ]
-                  }
-                ]
-              }
+                      { title: { contains: 'Rails' } },
+                    ],
+                  },
+                ],
+              },
             }
 
         expect(response).to have_http_status(:ok)
@@ -454,7 +454,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
         get '/api/v1/posts',
             params: {
               'filter[_or][0][title][contains]' => 'JavaScript',
-              'filter[_or][1][_not][published][eq]' => 'true'
+              'filter[_or][1][_not][published][eq]' => 'true',
             }
 
         expect(response).to have_http_status(:ok)
@@ -473,7 +473,7 @@ RSpec.describe 'Advanced Filtering API', type: :request do
             params: {
               'filter[_not][_and][0][_or][0][title][contains]' => 'Ruby',
               'filter[_not][_and][0][_or][1][title][contains]' => 'Rails',
-              'filter[_not][_and][1][published][eq]' => 'true'
+              'filter[_not][_and][1][published][eq]' => 'true',
             }
 
         expect(response).to have_http_status(:ok)

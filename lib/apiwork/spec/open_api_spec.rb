@@ -17,8 +17,8 @@ module Apiwork
           servers: build_servers,
           paths: build_paths,
           components: {
-            schemas: build_schemas
-          }
+            schemas: build_schemas,
+          },
         }.compact
       end
 
@@ -34,7 +34,7 @@ module Apiwork
           description: info_data[:description],
           termsOfService: info_data[:terms_of_service],
           contact: build_contact(info_data[:contact]),
-          license: build_license(info_data[:license])
+          license: build_license(info_data[:license]),
         }.compact
       end
 
@@ -53,7 +53,7 @@ module Apiwork
         {
           name: contact_data[:name],
           email: contact_data[:email],
-          url: contact_data[:url]
+          url: contact_data[:url],
         }.compact.presence
       end
 
@@ -62,7 +62,7 @@ module Apiwork
 
         {
           name: license_data[:name],
-          url: license_data[:url]
+          url: license_data[:url],
         }.compact.presence
       end
 
@@ -92,7 +92,7 @@ module Apiwork
             action_data,
             resource_data,
             parent_paths,
-            full_path
+            full_path,
           )
         end
       end
@@ -103,7 +103,7 @@ module Apiwork
           summary: action_data[:summary],
           description: action_data[:description],
           tags: build_tags(resource[:tags], action_data[:tags]),
-          deprecated: action_data[:deprecated] || nil
+          deprecated: action_data[:deprecated] || nil,
         }
 
         path_params = extract_path_parameters(full_path)
@@ -177,7 +177,7 @@ module Apiwork
             name: transform_key(param_name),
             in: 'path',
             required: true,
-            schema: { type: 'string' }
+            schema: { type: 'string' },
           }
         end
       end
@@ -190,7 +190,7 @@ module Apiwork
             in: 'query',
             name: transform_key(param_name),
             required: param_definition.is_a?(Hash) ? !param_definition[:optional] : true,
-            schema: build_parameter_schema(param_definition)
+            schema: build_parameter_schema(param_definition),
           }.tap do |param|
             param[:description] = param_definition[:description] if param_definition.is_a?(Hash) && param_definition[:description]
           end
@@ -212,9 +212,9 @@ module Apiwork
           required: true,
           content: {
             'application/json': {
-              schema: build_params_object(request_params, action_name)
-            }
-          }
+              schema: build_params_object(request_params, action_name),
+            },
+          },
         }
       end
 
@@ -236,9 +236,9 @@ module Apiwork
               description: 'Successful response',
               content: {
                 'application/json': {
-                  schema: map_type_definition(success_variant, action_name)
-                }
-              }
+                  schema: map_type_definition(success_variant, action_name),
+                },
+              },
             }
 
             combined_raises.each do |code|
@@ -250,9 +250,9 @@ module Apiwork
               description: 'Successful response',
               content: {
                 'application/json': {
-                  schema: build_params_object(response_params)
-                }
-              }
+                  schema: build_params_object(response_params),
+                },
+              },
             }
 
             combined_raises.each do |code|
@@ -269,11 +269,11 @@ module Apiwork
                 schema: {
                   type: 'object',
                   properties: {
-                    meta: { type: 'object' }
-                  }
-                }
-              }
-            }
+                    meta: { type: 'object' },
+                  },
+                },
+              },
+            },
           }
         else
           # No response definition at all - default to 204
@@ -294,14 +294,14 @@ module Apiwork
                   issues: {
                     type: 'array',
                     items: {
-                      '$ref': "#/components/schemas/#{schema_name(:error)}"
-                    }
-                  }
+                      '$ref': "#/components/schemas/#{schema_name(:error)}",
+                    },
+                  },
                 },
-                required: ['issues']
-              }
-            }
-          }
+                required: ['issues'],
+              },
+            },
+          },
         }
       end
 
@@ -310,9 +310,9 @@ module Apiwork
           description:,
           content: {
             'application/json': {
-              schema: map_type_definition(error_variant, nil)
-            }
-          }
+              schema: map_type_definition(error_variant, nil),
+            },
+          },
         }
       end
 
@@ -405,7 +405,7 @@ module Apiwork
       def map_object(definition, action_name = nil)
         result = {
           type: 'object',
-          properties: {}
+          properties: {},
         }
 
         result[:description] = definition[:description] if definition[:description]
@@ -448,7 +448,7 @@ module Apiwork
 
         {
           type: 'array',
-          items: items_schema
+          items: items_schema,
         }
       end
 
@@ -457,7 +457,7 @@ module Apiwork
           map_discriminated_union(definition, action_name)
         else
           {
-            oneOf: definition[:variants].map { |variant| map_type_definition(variant, action_name) }
+            oneOf: definition[:variants].map { |variant| map_type_definition(variant, action_name) },
           }
         end
       end
@@ -485,11 +485,11 @@ module Apiwork
         result[:discriminator] = if mapping.any?
                                    {
                                      propertyName: transform_key(discriminator_field),
-                                     mapping:
+                                     mapping:,
                                    }
                                  else
                                    {
-                                     propertyName: transform_key(discriminator_field)
+                                     propertyName: transform_key(discriminator_field),
                                    }
                                  end
 
@@ -499,7 +499,7 @@ module Apiwork
       def map_literal(definition)
         {
           type: openapi_type_for_value(definition[:value]),
-          const: definition[:value]
+          const: definition[:value],
         }
       end
 
@@ -567,8 +567,8 @@ module Apiwork
           {
             oneOf: [
               schema,
-              { type: 'null' }
-            ]
+              { type: 'null' },
+            ],
           }
         else
           current_type = schema[:type]

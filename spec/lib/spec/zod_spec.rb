@@ -451,7 +451,7 @@ RSpec.describe Apiwork::Spec::Zod do
         expect_before(
           :datetime_filter_between,
           :datetime_filter,
-          'DatetimeFilterBetween must be declared before DatetimeFilter uses it'
+          'DatetimeFilterBetween must be declared before DatetimeFilter uses it',
         )
       end
 
@@ -459,7 +459,7 @@ RSpec.describe Apiwork::Spec::Zod do
         expect_before(
           :integer_filter_between,
           :integer_filter,
-          'IntegerFilterBetween must be declared before IntegerFilter uses it'
+          'IntegerFilterBetween must be declared before IntegerFilter uses it',
         )
       end
 
@@ -470,7 +470,7 @@ RSpec.describe Apiwork::Spec::Zod do
           expect_before(
             filter,
             :post_filter,
-            "#{filter} must be declared before PostFilter references it"
+            "#{filter} must be declared before PostFilter references it",
           )
         end
       end

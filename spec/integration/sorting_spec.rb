@@ -89,7 +89,7 @@ RSpec.describe 'Sorting API', type: :request do
       get '/api/v1/posts',
           params: {
             filter: { published: { eq: true } },
-            sort: { title: 'desc' }
+            sort: { title: 'desc' },
           }
 
       expect(response).to have_http_status(:ok)

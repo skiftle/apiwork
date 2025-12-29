@@ -12,8 +12,8 @@ RSpec.describe 'Format validation', type: :integration do
           integer: %i[int32 int64],
           float: %i[float double],
           decimal: %i[float double],
-          number: %i[float double]
-        }
+          number: %i[float double],
+        },
       )
     end
   end

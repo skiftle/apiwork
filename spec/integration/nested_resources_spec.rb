@@ -75,8 +75,8 @@ RSpec.describe 'Nested Resources Routing', type: :request do
         comment: {
           content: 'New nested comment',
           author: 'New Author',
-          post_id: post1.id # Still needed for validation, but route also provides it
-        }
+          post_id: post1.id, # Still needed for validation, but route also provides it
+        },
       }
 
       post "/api/v1/posts/#{post1.id}/comments", as: :json, params: comment_params
@@ -97,8 +97,8 @@ RSpec.describe 'Nested Resources Routing', type: :request do
         comment: {
           content: '', # Required field empty - caught by model validation
           author: 'Author',
-          post_id: post1.id
-        }
+          post_id: post1.id,
+        },
       }
 
       post "/api/v1/posts/#{post1.id}/comments", as: :json, params: comment_params
@@ -116,8 +116,8 @@ RSpec.describe 'Nested Resources Routing', type: :request do
         comment: {
           content: 'Updated comment content',
           author: 'Updated Author',
-          post_id: post1.id
-        }
+          post_id: post1.id,
+        },
       }
 
       patch "/api/v1/posts/#{post1.id}/comments/#{comment1.id}", as: :json, params: comment_params
@@ -134,8 +134,8 @@ RSpec.describe 'Nested Resources Routing', type: :request do
         comment: {
           content: 'Trying to update',
           author: 'Author',
-          post_id: post2.id
-        }
+          post_id: post2.id,
+        },
       }
 
       patch "/api/v1/posts/#{post2.id}/comments/#{comment1.id}", as: :json, params: comment_params
@@ -199,7 +199,7 @@ RSpec.describe 'Nested Resources Routing', type: :request do
         post: post1,
         content: 'Newest comment',
         author: 'Author',
-        created_at: Time.current
+        created_at: Time.current,
       )
 
       get "/api/v1/posts/#{post1.id}/comments/recent"

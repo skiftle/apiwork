@@ -30,8 +30,8 @@ RSpec.describe 'Routing DSL Override with only/except', type: :request do
         post: {
           title: 'New Post',
           body: 'Body',
-          published: true
-        }
+          published: true,
+        },
       }
 
       post '/api/v1/restricted_posts', as: :json, params: post_params
@@ -42,8 +42,8 @@ RSpec.describe 'Routing DSL Override with only/except', type: :request do
     it 'restricts update action (404)' do
       post_params = {
         post: {
-          title: 'Updated Title'
-        }
+          title: 'Updated Title',
+        },
       }
 
       patch "/api/v1/restricted_posts/#{post1.id}", as: :json, params: post_params
@@ -86,8 +86,8 @@ RSpec.describe 'Routing DSL Override with only/except', type: :request do
         comment: {
           content: 'New Comment',
           author: 'New Author',
-          post_id: post_for_comments.id
-        }
+          post_id: post_for_comments.id,
+        },
       }
 
       post '/api/v1/safe_comments', as: :json, params: comment_params
@@ -102,8 +102,8 @@ RSpec.describe 'Routing DSL Override with only/except', type: :request do
         comment: {
           content: 'Updated Comment',
           author: 'Updated Author',
-          post_id: post_for_comments.id
-        }
+          post_id: post_for_comments.id,
+        },
       }
 
       patch "/api/v1/safe_comments/#{comment1.id}", as: :json, params: comment_params
@@ -139,7 +139,7 @@ RSpec.describe 'Routing DSL Override with only/except', type: :request do
            params: { post: {
              body: 'Body',
              published: true,
-             title: 'New'
+             title: 'New',
            } }
       expect(response).to have_http_status(:created)
 
@@ -158,7 +158,7 @@ RSpec.describe 'Routing DSL Override with only/except', type: :request do
            params: { comment: {
              author: 'Author',
              content: 'New',
-             post_id: test_post.id
+             post_id: test_post.id,
            } },
            as: :json
       expect(response).to have_http_status(:created)

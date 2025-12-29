@@ -116,7 +116,7 @@ module Apiwork
                   resource_name,
                   action_name,
                   request_data[:query],
-                  parent_path: parent_path
+                  parent_path: parent_path,
                 )
               end
               if request_data[:body]&.any?
@@ -124,7 +124,7 @@ module Apiwork
                   resource_name,
                   action_name,
                   request_data[:body],
-                  parent_path: parent_path
+                  parent_path: parent_path,
                 )
               end
               schemas << zod_mapper.build_action_request_schema(resource_name, action_name, request_data, parent_path: parent_path)

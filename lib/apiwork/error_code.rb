@@ -23,7 +23,7 @@ module Apiwork
       not_implemented: { status: 501 },
       bad_gateway: { status: 502 },
       service_unavailable: { status: 503 },
-      gateway_timeout: { status: 504 }
+      gateway_timeout: { status: 504 },
     }.freeze
 
     class << self

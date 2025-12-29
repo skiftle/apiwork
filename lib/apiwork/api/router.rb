@@ -20,7 +20,7 @@ module Apiwork
                       to: 'apiwork/specs#show',
                       defaults: {
                         spec_name: spec_name,
-                        api_path: api_class.path
+                        api_path: api_class.path,
                       }
                 end
               end
@@ -48,7 +48,7 @@ module Apiwork
           options = {
             controller: resource.controller,
             except: resource.except,
-            only: resource.only
+            only: resource.only,
           }.compact
 
           path_option = resource.path || api_class.transform_path_segment(resource.name)

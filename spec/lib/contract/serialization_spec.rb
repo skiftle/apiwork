@@ -25,9 +25,9 @@ RSpec.describe 'Contract Serialization' do
           published: {
             default: false,
             optional: true,
-            type: :boolean
-          }
-        }
+            type: :boolean,
+          },
+        },
       )
     end
 
@@ -54,10 +54,10 @@ RSpec.describe 'Contract Serialization' do
             type: :object,
             shape: {
               title: { type: :string },
-              body: { optional: true, type: :string }
-            }
-          }
-        }
+              body: { optional: true, type: :string },
+            },
+          },
+        },
       )
     end
 
@@ -80,9 +80,9 @@ RSpec.describe 'Contract Serialization' do
           tags: {
             of: :string,
             optional: true,
-            type: :array
-          }
-        }
+            type: :array,
+          },
+        },
       )
     end
 
@@ -102,8 +102,8 @@ RSpec.describe 'Contract Serialization' do
 
       expect(json).to eq(
         {
-          status: { enum: %w[draft published archived], type: :string }
-        }
+          status: { enum: %w[draft published archived], type: :string },
+        },
       )
     end
 
@@ -126,9 +126,9 @@ RSpec.describe 'Contract Serialization' do
           comments: {
             as: :comments_attributes,
             optional: true,
-            type: :array
-          }
-        }
+            type: :array,
+          },
+        },
       )
     end
 
@@ -155,10 +155,10 @@ RSpec.describe 'Contract Serialization' do
             type: :union,
             variants: [
               { type: :string },
-              { type: :integer }
-            ]
-          }
-        }
+              { type: :integer },
+            ],
+          },
+        },
       )
     end
 
@@ -183,8 +183,8 @@ RSpec.describe 'Contract Serialization' do
 
       expect(json).to eq(
         {
-          shipping_address: { type: :address }
-        }
+          shipping_address: { type: :address },
+        },
       )
     end
 
@@ -218,10 +218,10 @@ RSpec.describe 'Contract Serialization' do
             optional: true,
             variants: [
               { type: :test_union_filter_a },
-              { type: :string }
-            ]
-          }
-        }
+              { type: :string },
+            ],
+          },
+        },
       )
     end
 
@@ -254,10 +254,10 @@ RSpec.describe 'Contract Serialization' do
             optional: true,
             variants: [
               { type: :test_union_filter_b },
-              { of: :test_union_filter_b, type: :array }
-            ]
-          }
-        }
+              { of: :test_union_filter_b, type: :array },
+            ],
+          },
+        },
       )
     end
   end
@@ -288,19 +288,19 @@ RSpec.describe 'Contract Serialization' do
         {
           request: {
             body: {
-              title: { type: :string }
-            }
+              title: { type: :string },
+            },
           },
           response: {
             body: {
               type: :object,
               shape: {
                 id: { type: :integer },
-                title: { type: :string }
-              }
-            }
-          }
-        }
+                title: { type: :string },
+              },
+            },
+          },
+        },
       )
     end
 
@@ -377,8 +377,8 @@ RSpec.describe 'Contract Serialization' do
       expect(json[:types][:shipping_location][:shape]).to eq(
         {
           street: { type: :string },
-          city: { type: :string }
-        }
+          city: { type: :string },
+        },
       )
     end
 
@@ -565,7 +565,7 @@ RSpec.describe 'Contract Serialization' do
       definition = Apiwork::Contract::ParamDefinition.new(
         contract_class,
         action_name: :test,
-        wrapped: true
+        wrapped: true,
       )
 
       definition.meta do
@@ -584,7 +584,7 @@ RSpec.describe 'Contract Serialization' do
       definition = Apiwork::Contract::ParamDefinition.new(
         contract_class,
         action_name: :test,
-        wrapped: true
+        wrapped: true,
       )
 
       # Simulate adapter defining meta with pagination
@@ -632,7 +632,7 @@ RSpec.describe 'Contract Serialization' do
       definition = Apiwork::Contract::ParamDefinition.new(
         contract_class,
         action_name: :test,
-        wrapped: true
+        wrapped: true,
       )
 
       definition.meta

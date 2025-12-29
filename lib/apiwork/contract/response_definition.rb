@@ -70,7 +70,7 @@ module Apiwork
         @body_param_definition ||= ParamDefinition.new(
           @contract_class,
           action_name: @action_name,
-          wrapped: true
+          wrapped: true,
         )
 
         @body_param_definition.instance_eval(&block) if block

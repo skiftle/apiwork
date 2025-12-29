@@ -54,7 +54,7 @@ namespace :apiwork do
           api_path: api_path,
           output: output,
           spec_name: spec_name,
-          **custom_options
+          **custom_options,
         )
       rescue ArgumentError => e
         puts "Error: #{e.message}"

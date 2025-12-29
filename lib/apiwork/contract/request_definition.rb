@@ -41,7 +41,7 @@ module Apiwork
       def query(&block)
         @query_param_definition ||= ParamDefinition.new(
           @contract_class,
-          action_name: @action_name
+          action_name: @action_name,
         )
 
         @query_param_definition.instance_eval(&block) if block
@@ -68,7 +68,7 @@ module Apiwork
       def body(&block)
         @body_param_definition ||= ParamDefinition.new(
           @contract_class,
-          action_name: @action_name
+          action_name: @action_name,
         )
 
         @body_param_definition.instance_eval(&block) if block

@@ -30,8 +30,8 @@ module Apiwork
           {
             description: resolve_type_description(qualified_name, metadata),
             example: resolve_type_example(metadata),
-            format: metadata[:format]
-          }.compact
+            format: metadata[:format],
+          }.compact,
         )
 
         result[:deprecated] = true if metadata[:deprecated]
@@ -51,7 +51,7 @@ module Apiwork
         result = {
           values: metadata[:values],
           description: resolve_enum_description(qualified_name, metadata),
-          example: metadata[:example]
+          example: metadata[:example],
         }.compact
 
         result[:deprecated] = true if metadata[:deprecated]

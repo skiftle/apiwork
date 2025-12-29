@@ -81,7 +81,7 @@ RSpec.describe 'Association Sorting API', type: :request do
       get '/api/v1/posts',
           params: {
             filter: { published: { eq: true } },
-            sort: { comments: { author: 'asc' } }
+            sort: { comments: { author: 'asc' } },
           }
 
       expect(response).to have_http_status(:ok)
@@ -96,7 +96,7 @@ RSpec.describe 'Association Sorting API', type: :request do
       get '/api/v1/posts',
           params: {
             filter: { comments: { author: { eq: 'Alice' } } },
-            sort: { comments: { created_at: 'desc' } }
+            sort: { comments: { created_at: 'desc' } },
           }
 
       expect(response).to have_http_status(:ok)
@@ -109,7 +109,7 @@ RSpec.describe 'Association Sorting API', type: :request do
       get '/api/v1/posts',
           params: {
             filter: { comments: { content: { contains: 'comment' } } },
-            sort: { title: 'asc' }
+            sort: { title: 'asc' },
           }
 
       expect(response).to have_http_status(:ok)
@@ -148,7 +148,7 @@ RSpec.describe 'Association Sorting API', type: :request do
       get '/api/v1/comments',
           params: {
             filter: { author: { eq: 'Alice' } },
-            sort: { post: { title: 'asc' } }
+            sort: { post: { title: 'asc' } },
           }
 
       expect(response).to have_http_status(:ok)
@@ -172,7 +172,7 @@ RSpec.describe 'Association Sorting API', type: :request do
       # Contract validation should reject this since non-sortable fields aren't in the contract
       get '/api/v1/articles',
           params: {
-            sort: { comments: 'asc' }
+            sort: { comments: 'asc' },
           }
 
       expect(response).to have_http_status(:bad_request)

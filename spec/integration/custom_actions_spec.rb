@@ -69,7 +69,7 @@ RSpec.describe 'Custom Actions API', type: :request do
         post = Post.create!(
           title: 'Test Post',
           body: 'This is a long post body.',
-          published: true
+          published: true,
         )
 
         get "/api/v1/posts/#{post.id}/preview"
@@ -169,19 +169,19 @@ RSpec.describe 'Custom Actions API', type: :request do
             {
               body: 'Body 1',
               published: true,
-              title: 'Post 1'
+              title: 'Post 1',
             },
             {
               body: 'Body 2',
               published: false,
-              title: 'Post 2'
+              title: 'Post 2',
             },
             {
               body: 'Body 3',
               published: true,
-              title: 'Post 3'
-            }
-          ]
+              title: 'Post 3',
+            },
+          ],
         }
 
         expect do
@@ -207,8 +207,8 @@ RSpec.describe 'Custom Actions API', type: :request do
       it 'applies defaults to array elements' do
         posts_params = {
           posts: [
-            { body: 'Body', title: 'Post without published' }
-          ]
+            { body: 'Body', title: 'Post without published' },
+          ],
         }
 
         post '/api/v1/posts/bulk_create', as: :json, params: posts_params
@@ -282,7 +282,7 @@ RSpec.describe 'Custom Actions API', type: :request do
       it 'validates boolean parameter types' do
         patch "/api/v1/posts/#{post_record.id}/archive",
               params: {
-                notify_users: 'not-a-boolean'
+                notify_users: 'not-a-boolean',
               },
               as: :json
 
@@ -297,7 +297,7 @@ RSpec.describe 'Custom Actions API', type: :request do
       it 'rejects unknown fields' do
         patch "/api/v1/posts/#{post_record.id}/archive",
               params: {
-                unknown_field: 'value'
+                unknown_field: 'value',
               },
               as: :json
 

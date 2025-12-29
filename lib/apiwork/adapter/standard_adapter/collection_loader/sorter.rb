@@ -27,7 +27,7 @@ module Apiwork
                 code: :sort_params_invalid,
                 detail: 'Invalid sort params',
                 path: [:sort],
-                meta: { type: params.class.name }
+                meta: { type: params.class.name },
               )
               return @relation
             end
@@ -55,7 +55,7 @@ module Apiwork
                     code: :field_not_sortable,
                     detail: 'Not sortable',
                     path: [:sort, key],
-                    meta: { available: available, field: key }
+                    meta: { available: available, field: key },
                   )
                   next
                 end
@@ -74,8 +74,8 @@ module Apiwork
                               meta: {
                                 allowed: %i[asc desc],
                                 direction: direction,
-                                field: key
-                              }
+                                field: key,
+                              },
                             )
                             next
                           end
@@ -88,7 +88,7 @@ module Apiwork
                     code: :association_invalid,
                     detail: 'Invalid association',
                     path: [:sort, key],
-                    meta: { field: key }
+                    meta: { field: key },
                   )
                   next
                 end
@@ -98,7 +98,7 @@ module Apiwork
                     code: :association_not_sortable,
                     detail: 'Not sortable',
                     path: [:sort, key],
-                    meta: { association: key }
+                    meta: { association: key },
                   )
                   next
                 end
@@ -110,7 +110,7 @@ module Apiwork
                     code: :association_schema_missing,
                     detail: 'Association schema missing',
                     path: [:sort, key],
-                    meta: { association: key }
+                    meta: { association: key },
                   )
                   next
                 end
@@ -125,7 +125,7 @@ module Apiwork
                   code: :sort_value_invalid,
                   detail: 'Invalid sort value',
                   path: [:sort, key],
-                  meta: { field: key, type: value.class.name }
+                  meta: { field: key, type: value.class.name },
                 )
               end
             end
