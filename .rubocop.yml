@@ -9,15 +9,19 @@ require:
   - ./lib/rubocop/cop/apiwork/sort_hash_keys.rb
   - ./lib/rubocop/cop/apiwork/multiline_hash_pairs.rb
 
+AllCops:
+  TargetRubyVersion: 3.2
+  NewCops: disable
+  SuggestExtensions: false
+  Exclude:
+    - "spec/dummy/**/*"
+    - "vendor/**/*"
+
 Apiwork/SortAttrArguments:
   Enabled: true
 
 Apiwork/SortKeywordArguments:
   Enabled: true
-
-# Disable - conflicts with Apiwork/SortKeywordArguments (we prefer alphabetical)
-Style/KeywordParametersOrder:
-  Enabled: false
 
 Apiwork/SortHashKeys:
   Enabled: true
@@ -26,13 +30,8 @@ Apiwork/MultilineHashPairs:
   Enabled: true
   MinPairs: 3
 
-AllCops:
-  TargetRubyVersion: 3.2
-  NewCops: disable
-  SuggestExtensions: false
-  Exclude:
-    - "spec/dummy/**/*"
-    - "vendor/**/*"
+Style/KeywordParametersOrder:
+  Enabled: false
 
 Metrics/MethodLength:
   Enabled: false
@@ -55,6 +54,45 @@ Metrics/CyclomaticComplexity:
 Metrics/PerceivedComplexity:
   Enabled: false
 
+Metrics/ParameterLists:
+  Enabled: false
+
+Layout/LineLength:
+  Max: 150
+
+Layout/FirstParameterIndentation:
+  EnforcedStyle: align_parentheses
+
+Layout/ParameterAlignment:
+  EnforcedStyle: with_first_parameter
+
+Layout/MultilineMethodParameterLineBreaks:
+  Enabled: true
+
+Layout/MultilineMethodArgumentLineBreaks:
+  Enabled: true
+  AllowMultilineFinalElement: false
+
+Layout/FirstMethodArgumentLineBreak:
+  Enabled: true
+
+Layout/HashAlignment:
+  Enabled: true
+  EnforcedHashRocketStyle: key
+  EnforcedColonStyle: key
+
+Layout/MultilineHashBraceLayout:
+  Enabled: true
+  EnforcedStyle: symmetrical
+
+Layout/MultilineArrayBraceLayout:
+  Enabled: true
+  EnforcedStyle: symmetrical
+
+Layout/MultilineMethodCallBraceLayout:
+  Enabled: true
+  EnforcedStyle: symmetrical
+
 Style/Documentation:
   Enabled: false
 
@@ -67,24 +105,58 @@ Style/FrozenStringLiteralComment:
 Style/SafeNavigation:
   SafeAutoCorrect: true
 
-# Disable delegate cop - causes issues with constant vs symbol
+Style/SymbolArray:
+  Enabled: false
+
+Style/OptionalBooleanParameter:
+  Enabled: false
+
+Style/MultilineBlockChain:
+  Enabled: false
+
+Style/EmptyElse:
+  Enabled: false
+
+Style/TrailingCommaInArguments:
+  Enabled: true
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInArrayLiteral:
+  Enabled: true
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInHashLiteral:
+  Enabled: true
+  EnforcedStyleForMultiline: comma
+
+Naming/VariableNumber:
+  Enabled: false
+
+Naming/PredicatePrefix:
+  Enabled: false
+
+Lint/ConstantDefinitionInBlock:
+  Enabled: false
+
+Lint/UnusedMethodArgument:
+  Enabled: false
+
+Lint/IneffectiveAccessModifier:
+  Enabled: false
+
+Lint/DuplicateMethods:
+  Enabled: false
+
 Rails/Delegate:
   Enabled: false
 
-# Schema files use class constants, not strings
 Rails/ReflectionClassName:
   Exclude:
     - "docs/playground/app/schemas/**/*"
 
-# Disable symbol array cop - breaks validation logic
-Style/SymbolArray:
-  Enabled: false
-
-# Disable HTTP positional arguments - conflicts with DSL syntax
 Rails/HttpPositionalArguments:
   Enabled: false
 
-# RSpec style preferences - disable subjective cops
 RSpec/MultipleExpectations:
   Enabled: false
 
@@ -130,90 +202,5 @@ RSpec/BeforeAfterAll:
 RSpec/SpecFilePathFormat:
   Enabled: false
 
-# Naming and style preferences
-Naming/VariableNumber:
-  Enabled: false
-
-Naming/PredicatePrefix:
-  Enabled: false
-
-# Lint exceptions for test constants
-Lint/ConstantDefinitionInBlock:
-  Enabled: false
-
-# Allow optional boolean parameters for DSL flexibility
-Style/OptionalBooleanParameter:
-  Enabled: false
-
-# Allow multiline block chains for readability
-Style/MultilineBlockChain:
-  Enabled: false
-
-# Increase line length for readability
-Layout/LineLength:
-  Max: 150
-
-# Allow more parameters for complex validations
-Metrics/ParameterLists:
-  Enabled: false
-
-# Allow empty else for explicit flow control
-Style/EmptyElse:
-  Enabled: false
-
-# Allow unused method arguments for interface consistency
-Lint/UnusedMethodArgument:
-  Enabled: false
-
-# Allow ineffective access modifier for self methods
-Lint/IneffectiveAccessModifier:
-  Enabled: false
-
-# Allow duplicate method definitions in tests
-Lint/DuplicateMethods:
-  Enabled: false
-
-Layout/FirstParameterIndentation:
-  EnforcedStyle: align_parentheses
-
-Layout/ParameterAlignment:
-  EnforcedStyle: with_first_parameter
-
-Layout/MultilineMethodParameterLineBreaks:
+Layout/MultilineHashArgumentLineBreaks:
   Enabled: true
-
-Layout/MultilineMethodArgumentLineBreaks:
-  Enabled: true
-  AllowMultilineFinalElement: false
-
-Layout/FirstMethodArgumentLineBreak:
-  Enabled: true
-
-Style/TrailingCommaInArguments:
-  Enabled: true
-  EnforcedStyleForMultiline: comma
-
-Style/TrailingCommaInArrayLiteral:
-  Enabled: true
-  EnforcedStyleForMultiline: comma
-
-Style/TrailingCommaInHashLiteral:
-  Enabled: true
-  EnforcedStyleForMultiline: comma
-
-Layout/HashAlignment:
-  Enabled: true
-  EnforcedHashRocketStyle: key
-  EnforcedColonStyle: key
-
-Layout/MultilineHashBraceLayout:
-  Enabled: true
-  EnforcedStyle: symmetrical
-
-Layout/MultilineArrayBraceLayout:
-  Enabled: true
-  EnforcedStyle: symmetrical
-
-Layout/MultilineMethodCallBraceLayout:
-  Enabled: true
-  EnforcedStyle: symmetrical
