@@ -31,7 +31,9 @@ Apiwork::Spec.register(ProtobufSpec)
 
 ## Class Methods
 
-### .generate(api_path, **options)
+### .generate
+
+`.generate(api_path, **options)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L51)
 
@@ -50,7 +52,9 @@ Generates a spec for the given API path.
 
 ---
 
-### .option(name, type:, default: = nil, enum: = nil, &block)
+### .option
+
+`.option(name, type:, default: = nil, enum: = nil, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configurable.rb#L31)
 
@@ -85,7 +89,9 @@ option :format, type: :symbol, enum: [:json, :yaml]
 
 ---
 
-### .spec_name(name = nil)
+### .spec_name
+
+`.spec_name(name = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L32)
 
@@ -105,7 +111,9 @@ Sets or returns the spec name identifier.
 
 ## Instance Methods
 
-### #generate()
+### #generate
+
+`#generate()`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec/base.rb#L106)
 

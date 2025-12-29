@@ -30,7 +30,9 @@ Apiwork::Adapter.register(JSONAPIAdapter)
 
 ## Class Methods
 
-### .adapter_name(name = nil)
+### .adapter_name
+
+`.adapter_name(name = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L31)
 
@@ -48,7 +50,9 @@ Sets or returns the adapter name identifier.
 
 ---
 
-### .option(name, type:, default: = nil, enum: = nil, &block)
+### .option
+
+`.option(name, type:, default: = nil, enum: = nil, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/configurable.rb#L31)
 
@@ -85,7 +89,9 @@ option :format, type: :symbol, enum: [:json, :yaml]
 
 ## Instance Methods
 
-### #register_api(registrar, schema_summary)
+### #register_api
+
+`#register_api(registrar, schema_summary)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L40)
 
@@ -94,7 +100,9 @@ Override to customize type registration.
 
 ---
 
-### #register_contract(registrar, schema_class, actions:)
+### #register_contract
+
+`#register_contract(registrar, schema_class, actions:)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L47)
 
@@ -103,7 +111,9 @@ Override to customize contract type registration.
 
 ---
 
-### #render_collection(collection, schema_class, action_summary)
+### #render_collection
+
+`#render_collection(collection, schema_class, action_summary)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L58)
 
@@ -123,7 +133,9 @@ Renders a collection response.
 
 ---
 
-### #render_error(layer, issues, action_summary)
+### #render_error
+
+`#render_error(layer, issues, action_summary)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L80)
 
@@ -143,7 +155,9 @@ Renders an error response.
 
 ---
 
-### #render_record(record, schema_class, action_summary)
+### #render_record
+
+`#render_record(record, schema_class, action_summary)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L69)
 
@@ -163,7 +177,9 @@ Renders a single record response.
 
 ---
 
-### #transform_request(hash, schema_class)
+### #transform_request
+
+`#transform_request(hash, schema_class)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L91)
 
@@ -183,7 +199,9 @@ Override to customize key casing, unwrapping, etc.
 
 ---
 
-### #transform_response(hash, schema_class)
+### #transform_response
+
+`#transform_response(hash, schema_class)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/base.rb#L102)
 

@@ -38,7 +38,9 @@ end
 
 ## Instance Methods
 
-### #api_registrar()
+### #api_registrar
+
+`#api_registrar()`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L113)
 
@@ -51,7 +53,9 @@ Use this to define or resolve types at the API scope.
 
 ---
 
-### #define_action(name, &block)
+### #define_action
+
+`#define_action(name, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L53)
 
@@ -69,7 +73,9 @@ Defines an action with query, body, and response.
 
 ---
 
-### #enum(name, values:)
+### #enum
+
+`#enum(name, values:)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L39)
 
@@ -84,7 +90,9 @@ Defines an enum type scoped to this contract.
 
 ---
 
-### #find_contract_for_schema(schema_class)
+### #find_contract_for_schema
+
+`#find_contract_for_schema(schema_class)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L86)
 
@@ -102,7 +110,9 @@ Finds the contract class for an associated schema.
 
 ---
 
-### #import(type_name, from:)
+### #import
+
+`#import(type_name, from:)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L61)
 
@@ -117,7 +127,9 @@ Imports a type from another contract or the API.
 
 ---
 
-### #imports()
+### #imports
+
+`#imports()`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L97)
 
@@ -129,7 +141,9 @@ Returns the hash of imported types.
 
 ---
 
-### #resolve_enum(name)
+### #resolve_enum
+
+`#resolve_enum(name)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L74)
 
@@ -147,7 +161,9 @@ Resolves an enum registered in this contract.
 
 ---
 
-### #resolve_type(name)
+### #resolve_type
+
+`#resolve_type(name)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L68)
 
@@ -165,7 +181,9 @@ Resolves a type registered in this contract.
 
 ---
 
-### #scoped_name(name)
+### #scoped_name
+
+`#scoped_name(name)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L80)
 
@@ -183,7 +201,9 @@ Returns the fully qualified name for a type in this contract's scope.
 
 ---
 
-### #type(name, &block)
+### #type
+
+`#type(name, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L32)
 
@@ -197,7 +217,9 @@ Defines a named type scoped to this contract.
 
 ---
 
-### #union(name, &block)
+### #union
+
+`#union(name, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/contract_registrar.rb#L46)
 

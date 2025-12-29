@@ -10,7 +10,9 @@ next: false
 
 ## Class Methods
 
-### .abstract!()
+### .abstract!
+
+`.abstract!()`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L25)
 
@@ -34,7 +36,9 @@ end
 
 ---
 
-### .abstract?()
+### .abstract?
+
+`.abstract?()`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L25)
 
@@ -46,7 +50,9 @@ Returns whether this schema is abstract.
 
 ---
 
-### .adapter(&block)
+### .adapter
+
+`.adapter(&block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L160)
 
@@ -70,7 +76,9 @@ end
 
 ---
 
-### .attribute(name, **options, &block)
+### .attribute
+
+`.attribute(name, **options, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L220)
 
@@ -107,7 +115,9 @@ attribute :email, writable: { on: [:create] }
 
 ---
 
-### .belongs_to(name, **options)
+### .belongs_to
+
+`.belongs_to(name, **options)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L301)
 
@@ -136,7 +146,9 @@ belongs_to :category, filterable: true
 
 ---
 
-### .deprecated(value = true)
+### .deprecated
+
+`.deprecated(value = true)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L417)
 
@@ -161,7 +173,9 @@ end
 
 ---
 
-### .description(value = nil)
+### .description
+
+`.description(value = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L399)
 
@@ -190,7 +204,9 @@ end
 
 ---
 
-### .deserialize(hash_or_array)
+### .deserialize
+
+`.deserialize(hash_or_array)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L498)
 
@@ -224,7 +240,9 @@ InvoiceSchema.deserialize(params[:invoices])
 
 ---
 
-### .discriminator(name = nil)
+### .discriminator
+
+`.discriminator(name = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L327)
 
@@ -260,7 +278,9 @@ end
 
 ---
 
-### .example(value = nil)
+### .example
+
+`.example(value = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L437)
 
@@ -288,7 +308,9 @@ end
 
 ---
 
-### .has_many(name, **options)
+### .has_many
+
+`.has_many(name, **options)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L281)
 
@@ -323,7 +345,9 @@ has_many :tags, include: :always
 
 ---
 
-### .has_one(name, **options)
+### .has_one
+
+`.has_one(name, **options)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L257)
 
@@ -365,7 +389,9 @@ has_one :imageable, polymorphic: [:product, :user]
 
 ---
 
-### .model(value = nil)
+### .model
+
+`.model(value = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L100)
 
@@ -402,7 +428,9 @@ end
 
 ---
 
-### .root(singular, plural = singular.to_s.pluralize)
+### .root
+
+`.root(singular, plural = singular.to_s.pluralize)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L130)
 
@@ -427,7 +455,9 @@ end
 
 ---
 
-### .serialize(object_or_collection, context: = {}, include: = nil)
+### .serialize
+
+`.serialize(object_or_collection, context: = {}, include: = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L475)
 
@@ -468,7 +498,9 @@ InvoiceSchema.serialize(Invoice.all)
 
 ---
 
-### .variant(as: = nil)
+### .variant
+
+`.variant(as: = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/schema/base.rb#L351)
 

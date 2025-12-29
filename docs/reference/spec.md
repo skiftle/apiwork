@@ -10,7 +10,9 @@ next: false
 
 ## Class Methods
 
-### .generate(spec_name, api_path, **options)
+### .generate
+
+`.generate(spec_name, api_path, **options)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec.rb#L41)
 
@@ -37,7 +39,9 @@ Apiwork::Spec.generate(:typescript, '/api/v1', locale: :sv, key_format: :camel)
 
 ---
 
-### .register(klass)
+### .register
+
+`.register(klass)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec.rb#L14)
 
@@ -57,7 +61,9 @@ Apiwork::Spec.register(GraphqlSpec)
 
 ---
 
-### .reset!()
+### .reset!
+
+`.reset!()`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/spec.rb#L50)
 

@@ -15,7 +15,9 @@ Use as a declarative builder - do not rely on internal state.
 
 ## Instance Methods
 
-### #body(&block)
+### #body
+
+`#body(&block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_definition.rb#L68)
 
@@ -41,7 +43,9 @@ end
 
 ---
 
-### #query(&block)
+### #query
+
+`#query(&block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/request_definition.rb#L41)
 

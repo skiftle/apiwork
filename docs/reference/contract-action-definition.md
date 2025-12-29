@@ -15,7 +15,9 @@ Use as a declarative builder - do not rely on internal state.
 
 ## Instance Methods
 
-### #deprecated(value = nil)
+### #deprecated
+
+`#deprecated(value = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L104)
 
@@ -43,7 +45,9 @@ end
 
 ---
 
-### #description(text = nil)
+### #description
+
+`#description(text = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L70)
 
@@ -72,7 +76,9 @@ end
 
 ---
 
-### #operation_id(value = nil)
+### #operation_id
+
+`#operation_id(value = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L121)
 
@@ -100,7 +106,9 @@ end
 
 ---
 
-### #raises(*error_code_keys)
+### #raises
+
+`#raises(*error_code_keys)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L139)
 
@@ -125,7 +133,9 @@ end
 
 ---
 
-### #request(replace: = false, &block)
+### #request
+
+`#request(replace: = false, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L172)
 
@@ -156,7 +166,9 @@ end
 
 ---
 
-### #response(replace: = false, &block)
+### #response
+
+`#response(replace: = false, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L202)
 
@@ -194,7 +206,9 @@ end
 
 ---
 
-### #summary(text = nil)
+### #summary
+
+`#summary(text = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L52)
 
@@ -222,7 +236,9 @@ end
 
 ---
 
-### #tags(*tags_list)
+### #tags
+
+`#tags(*tags_list)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L87)
 

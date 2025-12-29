@@ -345,7 +345,8 @@ module Apiwork
     def render_method(method, prefix)
       parts = []
 
-      parts << "### #{prefix}#{method[:signature]}\n"
+      parts << "### #{prefix}#{escape_brackets(method[:name])}\n"
+      parts << "`#{prefix}#{method[:signature]}`\n"
 
       if method[:file] && method[:line]
         github_link = "#{GITHUB_URL}/#{method[:file]}#L#{method[:line]}"

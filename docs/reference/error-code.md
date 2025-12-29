@@ -10,7 +10,9 @@ next: false
 
 ## Class Methods
 
-### .register(key, status:, attach_path: = false)
+### .register
+
+`.register(key, status:, attach_path: = false)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/error_code.rb#L49)
 

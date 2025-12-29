@@ -10,7 +10,9 @@ next: false
 
 ## Class Methods
 
-### .register(klass)
+### .register
+
+`.register(klass)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L14)
 
@@ -30,7 +32,9 @@ Apiwork::Adapter.register(JSONAPIAdapter)
 
 ---
 
-### .reset!()
+### .reset!
+
+`.reset!()`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter.rb#L35)
 

@@ -10,7 +10,9 @@ next: false
 
 ## Class Methods
 
-### .adapter(name = nil, &block)
+### .adapter
+
+`.adapter(name = nil, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L201)
 
@@ -49,7 +51,9 @@ end
 
 ---
 
-### .concern(name, &block)
+### .concern
+
+`.concern(name, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L414)
 
@@ -82,7 +86,9 @@ end
 
 ---
 
-### .enum(name, values: = nil, scope: = nil, description: = nil, example: = nil, deprecated: = false)
+### .enum
+
+`.enum(name, values: = nil, scope: = nil, description: = nil, example: = nil, deprecated: = false)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L269)
 
@@ -113,7 +119,9 @@ param :status, enum: :status
 
 ---
 
-### .info(&block)
+### .info
+
+`.info(&block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L338)
 
@@ -139,7 +147,9 @@ end
 
 ---
 
-### .key_format(format = nil)
+### .key_format
+
+`.key_format(format = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L46)
 
@@ -169,7 +179,9 @@ end
 
 ---
 
-### .path_format(format = nil)
+### .path_format
+
+`.path_format(format = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L70)
 
@@ -200,7 +212,9 @@ end
 
 ---
 
-### .raises(*error_code_keys)
+### .raises
+
+`.raises(*error_code_keys)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L160)
 
@@ -225,7 +239,9 @@ end
 
 ---
 
-### .resource(name, **options, &block)
+### .resource
+
+`.resource(name, **options, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L389)
 
@@ -252,7 +268,9 @@ end
 
 ---
 
-### .resources(name, **options, &block)
+### .resources
+
+`.resources(name, **options, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L370)
 
@@ -288,7 +306,9 @@ end
 
 ---
 
-### .spec(type, &block)
+### .spec
+
+`.spec(type, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L116)
 
@@ -321,7 +341,9 @@ end
 
 ---
 
-### .type(name, scope: = nil, description: = nil, example: = nil, format: = nil, deprecated: = false, schema_class: = nil, &block)
+### .type
+
+`.type(name, scope: = nil, description: = nil, example: = nil, format: = nil, deprecated: = false, schema_class: = nil, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L241)
 
@@ -360,7 +382,9 @@ param :shipping_address, type: :address
 
 ---
 
-### .union(name, scope: = nil, discriminator: = nil, &block)
+### .union
+
+`.union(name, scope: = nil, discriminator: = nil, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L299)
 
@@ -392,7 +416,9 @@ end
 
 ---
 
-### .with_options(options = {}, &block)
+### .with_options
+
+`.with_options(options = {}, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L433)
 

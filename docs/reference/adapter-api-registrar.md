@@ -35,7 +35,9 @@ end
 
 ## Instance Methods
 
-### #enum(name, values:)
+### #enum
+
+`#enum(name, values:)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_registrar.rb#L36)
 
@@ -50,7 +52,9 @@ Defines an enum type.
 
 ---
 
-### #resolve_enum(name)
+### #resolve_enum
+
+`#resolve_enum(name)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_registrar.rb#L62)
 
@@ -68,7 +72,9 @@ Resolves an enum registered at the API level.
 
 ---
 
-### #resolve_type(name)
+### #resolve_type
+
+`#resolve_type(name)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_registrar.rb#L50)
 
@@ -86,7 +92,9 @@ Resolves a type registered at the API level.
 
 ---
 
-### #type(name, &block)
+### #type
+
+`#type(name, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_registrar.rb#L29)
 
@@ -100,7 +108,9 @@ Defines a named type.
 
 ---
 
-### #union(name, &block)
+### #union
+
+`#union(name, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/api_registrar.rb#L43)
 

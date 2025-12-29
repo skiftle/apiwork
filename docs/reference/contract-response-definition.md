@@ -15,7 +15,9 @@ Use as a declarative builder - do not rely on internal state.
 
 ## Instance Methods
 
-### #body(&block)
+### #body
+
+`#body(&block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L69)
 
@@ -42,7 +44,9 @@ end
 
 ---
 
-### #no_content!()
+### #no_content!
+
+`#no_content!()`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L48)
 
@@ -69,7 +73,9 @@ end
 
 ---
 
-### #no_content?()
+### #no_content?
+
+`#no_content?()`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/response_definition.rb#L29)
 

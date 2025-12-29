@@ -16,7 +16,9 @@ Use as a declarative builder - do not rely on internal state.
 
 ## Instance Methods
 
-### #meta(**options, &block)
+### #meta
+
+`#meta(**options, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L123)
 
@@ -56,7 +58,9 @@ end
 
 ---
 
-### #param(name, type: = nil, optional: = nil, default: = nil, enum: = nil, of: = nil, as: = nil, discriminator: = nil, value: = nil, visited_types: = nil, **options, &block)
+### #param
+
+`#param(name, type: = nil, optional: = nil, default: = nil, enum: = nil, of: = nil, as: = nil, discriminator: = nil, value: = nil, visited_types: = nil, **options, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L70)
 

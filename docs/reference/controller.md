@@ -10,7 +10,9 @@ next: false
 
 ## Class Methods
 
-### .skip_contract_validation!(only: = nil, except: = nil)
+### .skip_contract_validation!
+
+`.skip_contract_validation!(only: = nil, except: = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L29)
 
@@ -39,7 +41,9 @@ skip_contract_validation!
 
 ## Instance Methods
 
-### #context()
+### #context
+
+`#context()`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L174)
 
@@ -62,7 +66,9 @@ end
 
 ---
 
-### #contract()
+### #contract
+
+`#contract()`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L56)
 
@@ -97,7 +103,9 @@ end
 
 ---
 
-### #expose(data, meta: = {}, status: = nil)
+### #expose
+
+`#expose(data, meta: = {}, status: = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L93)
 
@@ -144,7 +152,9 @@ end
 
 ---
 
-### #expose_error(code_key, detail: = nil, path: = nil, meta: = {}, i18n: = {})
+### #expose_error
+
+`#expose_error(code_key, detail: = nil, path: = nil, meta: = {}, i18n: = {})`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L148)
 

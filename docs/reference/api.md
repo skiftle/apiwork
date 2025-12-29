@@ -10,7 +10,9 @@ next: false
 
 ## Class Methods
 
-### .define(path, &block)
+### .define
+
+`.define(path, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L30)
 
@@ -51,7 +53,9 @@ end
 
 ---
 
-### .introspect(path, locale: = nil)
+### .introspect
+
+`.introspect(path, locale: = nil)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L60)
 
@@ -76,7 +80,9 @@ Apiwork::API.introspect('/api/v1')
 
 ---
 
-### .reset!()
+### .reset!
+
+`.reset!()`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api.rb#L69)
 
