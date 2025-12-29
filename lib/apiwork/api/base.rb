@@ -101,7 +101,7 @@ module Apiwork
         # Specs generate client code and documentation from your contracts.
         # Available specs: :openapi, :typescript, :zod, :introspection.
         #
-        # @param type [Symbol] spec type to enable
+        # @param name [Symbol] spec name to enable
         # @yield optional configuration block
         #
         # @example Enable OpenAPI spec
@@ -113,31 +113,31 @@ module Apiwork
         #   spec :typescript do
         #     path '/types.ts'
         #   end
-        def spec(type, &block)
-          unless Spec.registered?(type)
+        def spec(name, &block)
+          unless Spec.registered?(name)
             available = Spec.all.join(', ')
             raise ConfigurationError,
-                  "Unknown spec: :#{type}. " \
+                  "Unknown spec: :#{name}. " \
                   "Available: #{available}"
           end
 
-          @specs.add(type)
-          @spec_configs[type] ||= {}
-          @spec_configs[type][:path] ||= "/.spec/#{type}"
+          @specs.add(name)
+          @spec_configs[name] ||= {}
+          @spec_configs[name][:path] ||= "/.spec/#{name}"
 
           return unless block
 
-          spec_class = Spec.find(type)
-          builder = Configuration::Builder.new(spec_class, @spec_configs[type])
+          spec_class = Spec.find(name)
+          builder = Configuration::Builder.new(spec_class, @spec_configs[name])
           builder.instance_eval(&block)
         end
 
-        def spec_path(type)
-          @spec_configs.dig(type, :path) || "/.spec/#{type}"
+        def spec_path(name)
+          @spec_configs.dig(name, :path) || "/.spec/#{name}"
         end
 
-        def spec_config(type)
-          @spec_configs[type] || {}
+        def spec_config(name)
+          @spec_configs[name] || {}
         end
 
         def specs?
