@@ -59,7 +59,7 @@ module Apiwork
 
         META_CODES = %i[min max length gt gte lt lte eq ne in].freeze
 
-        def self.call(record, root_path: [], locale_key: nil)
+        def self.call(record, locale_key: nil, root_path: [])
           new(record, root_path, locale_key).call
         end
 

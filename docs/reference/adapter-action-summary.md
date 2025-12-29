@@ -41,7 +41,7 @@ end
 
 `#collection?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L98)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L103)
 
 **Returns**
 
@@ -65,7 +65,7 @@ end
 
 `#create?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L74)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L79)
 
 **Returns**
 
@@ -77,7 +77,7 @@ end
 
 `#delete?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L128)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L133)
 
 **Returns**
 
@@ -89,7 +89,7 @@ end
 
 `#destroy?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L86)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L91)
 
 **Returns**
 
@@ -101,7 +101,7 @@ end
 
 `#get?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L104)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L109)
 
 **Returns**
 
@@ -113,7 +113,7 @@ end
 
 `#index?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L62)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L67)
 
 **Returns**
 
@@ -125,7 +125,7 @@ end
 
 `#member?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L92)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L97)
 
 **Returns**
 
@@ -173,7 +173,7 @@ end
 
 `#patch?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L116)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L121)
 
 **Returns**
 
@@ -185,7 +185,7 @@ end
 
 `#post?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L110)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L115)
 
 **Returns**
 
@@ -197,7 +197,7 @@ end
 
 `#put?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L122)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L127)
 
 **Returns**
 
@@ -221,7 +221,7 @@ end
 
 `#read?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L134)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L139)
 
 **Returns**
 
@@ -233,7 +233,7 @@ end
 
 `#show?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L68)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L73)
 
 **Returns**
 
@@ -257,7 +257,7 @@ end
 
 `#update?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L80)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L85)
 
 **Returns**
 
@@ -269,7 +269,7 @@ end
 
 `#write?`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L140)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/adapter/action_summary.rb#L145)
 
 **Returns**
 

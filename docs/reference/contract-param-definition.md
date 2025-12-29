@@ -18,9 +18,9 @@ Use as a declarative builder - do not rely on internal state.
 
 ### #meta
 
-`#meta(**options, &block)`
+`#meta(optional: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L123)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L133)
 
 Shorthand for `param :meta, type: :object do ... end`.
 
@@ -30,7 +30,7 @@ Use for response data that doesn't belong to the resource itself.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `options` | `Hash` | options passed to param (e.g., optional: true) |
+| `optional` | `Boolean` | whether meta can be omitted (default: false) |
 
 **Example: Required meta (default)**
 

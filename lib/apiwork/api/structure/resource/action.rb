@@ -12,7 +12,7 @@ module Apiwork
                       :name,
                       :type
 
-          def initialize(name, type: nil, method: nil)
+          def initialize(name, method: nil, type: nil)
             @name = name.to_sym
             @type = type || default_type
             @method = method || default_method

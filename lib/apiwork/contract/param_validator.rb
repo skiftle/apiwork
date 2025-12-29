@@ -51,7 +51,7 @@ module Apiwork
         { issues: issues, params: {} }
       end
 
-      def validate_param(name, value, param_options, data, path, max_depth:, current_depth:)
+      def validate_param(name, value, param_options, data, path, current_depth:, max_depth:)
         field_path = path + [name]
 
         required_error = validate_required(name, value, param_options, field_path)
@@ -356,7 +356,7 @@ module Apiwork
         )
       end
 
-      def validate_union(name, value, union_definition, path, max_depth:, current_depth:)
+      def validate_union(name, value, union_definition, path, current_depth:, max_depth:)
         variants = union_definition.variants
 
         if union_definition.discriminator
@@ -404,7 +404,7 @@ module Apiwork
         [error, nil]
       end
 
-      def validate_discriminated_union(name, value, union_definition, path, max_depth:, current_depth:)
+      def validate_discriminated_union(name, value, union_definition, path, current_depth:, max_depth:)
         discriminator = union_definition.discriminator
         variants = union_definition.variants
 
@@ -470,7 +470,7 @@ module Apiwork
         end
       end
 
-      def validate_variant(name, value, variant_definition, path, max_depth:, current_depth:)
+      def validate_variant(name, value, variant_definition, path, current_depth:, max_depth:)
         variant_type = variant_definition[:type]
         variant_of = variant_definition[:of]
         variant_shape = variant_definition[:shape]

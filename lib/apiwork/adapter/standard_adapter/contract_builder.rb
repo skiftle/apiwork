@@ -368,7 +368,7 @@ module Apiwork
           end
         end
 
-        def build_filter_type(visited: Set.new, depth: 0)
+        def build_filter_type(depth: 0, visited: Set.new)
           return nil if visited.include?(schema_class)
           return nil if depth >= MAX_RECURSION_DEPTH
 
@@ -440,12 +440,12 @@ module Apiwork
           type_name
         end
 
-        def build_filter_type_for_schema(association_schema, visited:, depth:)
+        def build_filter_type_for_schema(association_schema, depth:, visited:)
           self.class.for_schema(registrar, association_schema)
               .send(:build_filter_type, visited:, depth:)
         end
 
-        def build_sort_type(visited: Set.new, depth: 0)
+        def build_sort_type(depth: 0, visited: Set.new)
           return nil if visited.include?(schema_class)
           return nil if depth >= MAX_RECURSION_DEPTH
 
@@ -496,7 +496,7 @@ module Apiwork
           type_name
         end
 
-        def build_sort_type_for_schema(association_schema, visited:, depth:)
+        def build_sort_type_for_schema(association_schema, depth:, visited:)
           self.class.for_schema(registrar, association_schema)
               .send(:build_sort_type, visited:, depth:)
         end
@@ -531,7 +531,7 @@ module Apiwork
           strategy == :offset ? :offset_pagination : :cursor_pagination
         end
 
-        def build_include_type(visited: Set.new, depth: 0)
+        def build_include_type(depth: 0, visited: Set.new)
           return nil unless schema_class.association_definitions.any?
           return nil unless has_includable_params?(visited:, depth:)
 
@@ -589,7 +589,7 @@ module Apiwork
           type_name
         end
 
-        def has_includable_params?(visited:, depth:)
+        def has_includable_params?(depth:, visited:)
           return false if depth >= MAX_RECURSION_DEPTH
 
           new_visited = visited.dup.add(schema_class)
@@ -613,7 +613,7 @@ module Apiwork
           end
         end
 
-        def build_include_type_for_schema(association_schema, visited:, depth:)
+        def build_include_type_for_schema(association_schema, depth:, visited:)
           self.class.for_schema(registrar, association_schema)
               .send(:build_include_type, visited:, depth:)
         end

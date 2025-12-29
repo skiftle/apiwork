@@ -10,7 +10,7 @@ module Apiwork
           @schema_class = schema_class
         end
 
-        def build(params: {}, for_collection: true)
+        def build(for_collection: true, params: {})
           return {} if schema_class.association_definitions.empty?
 
           combined = {}

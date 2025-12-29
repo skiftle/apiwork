@@ -11,7 +11,7 @@ module Apiwork
                         :issues,
                         :valid_operators
 
-            def initialize(column:, field_name:, valid_operators:, issues: [])
+            def initialize(column:, field_name:, issues: [], valid_operators:)
               @column = column
               @field_name = field_name
               @valid_operators = valid_operators

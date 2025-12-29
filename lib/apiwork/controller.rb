@@ -27,7 +27,7 @@ module Apiwork
     #   @example Skip for all actions
     #     skip_contract_validation!
     class_methods do
-      def skip_contract_validation!(only: nil, except: nil)
+      def skip_contract_validation!(except: nil, only: nil)
         skip_before_action :validate_contract, only:, except:
       end
     end

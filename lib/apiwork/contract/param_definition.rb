@@ -199,7 +199,7 @@ module Apiwork
         }.merge(param_hash)
       end
 
-      def define_literal_param(name, value:, optional:, default:, as:, options:)
+      def define_literal_param(name, as:, default:, optional:, options:, value:)
         raise ArgumentError, 'Literal type requires a value parameter' if value.nil? && !options.key?(:value)
 
         literal_value = value.nil? ? options[:value] : value
@@ -215,7 +215,7 @@ module Apiwork
                                              })
       end
 
-      def define_union_param(name, discriminator:, resolved_enum:, optional:, default:, as:, options:, &block)
+      def define_union_param(name, as:, default:, discriminator:, optional:, options:, resolved_enum:, &block)
         raise ArgumentError, 'Union type requires a block with variant definitions' unless block_given?
 
         union_builder = UnionBuilder.new(@contract_class, discriminator: discriminator)
@@ -234,7 +234,7 @@ module Apiwork
                                              })
       end
 
-      def define_regular_param(name, type:, resolved_enum:, optional:, default:, of:, as:, visited_types:, options:, &block)
+      def define_regular_param(name, as:, default:, of:, optional:, options:, resolved_enum:, type:, visited_types:, &block)
         custom_type_block = @contract_class.resolve_custom_type(type)
 
         if custom_type_block
@@ -293,7 +293,7 @@ module Apiwork
                                              })
       end
 
-      def define_standard_param(name, type:, resolved_enum:, optional:, default:, of:, as:, options:, &block)
+      def define_standard_param(name, as:, default:, of:, optional:, options:, resolved_enum:, type:, &block)
         @params[name] = apply_param_defaults({
                                                name: name,
                                                type: type,

@@ -5,8 +5,12 @@ plugins:
 
 require:
   - ./lib/rubocop/cop/apiwork/sort_attr_arguments.rb
+  - ./lib/rubocop/cop/apiwork/sort_keyword_arguments.rb
 
 Apiwork/SortAttrArguments:
+  Enabled: true
+
+Apiwork/SortKeywordArguments:
   Enabled: true
 
 AllCops:

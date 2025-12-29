@@ -46,7 +46,7 @@ module Apiwork
       # @return [Symbol] the current action name
       attr_reader :action_name
 
-      def initialize(query:, body:, action_name:, coerce: false)
+      def initialize(action_name:, body:, coerce: false, query:)
         result = RequestParser.new(self.class, action_name, coerce:).parse(query, body)
         @query = result.query
         @body = result.body
@@ -406,7 +406,7 @@ module Apiwork
         # @example With all available types
         #   InvoiceContract.introspect(expand: true)
         #   # => { actions: {...}, types: { local: {...}, imported: {...}, global: {...} } }
-        def introspect(locale: nil, expand: false)
+        def introspect(expand: false, locale: nil)
           api_class.introspect_contract(self, locale:, expand:)
         end
 

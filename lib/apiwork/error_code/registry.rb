@@ -4,7 +4,7 @@ module Apiwork
   module ErrorCode
     class Registry < Apiwork::Registry
       class << self
-        def register(key, status:, attach_path: false)
+        def register(key, attach_path: false, status:)
           key = normalize_key(key)
           status = Integer(status)
 

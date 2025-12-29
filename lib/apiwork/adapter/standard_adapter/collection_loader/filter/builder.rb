@@ -11,14 +11,14 @@ module Apiwork
                         :field_name,
                         :issues
 
-            def initialize(column:, field_name:, issues:, allowed_types:)
+            def initialize(allowed_types:, column:, field_name:, issues:)
               @column = column
               @field_name = field_name
               @issues = issues
               @allowed_types = Array(allowed_types)
             end
 
-            def build(value, valid_operators:, normalizer: nil, &block)
+            def build(value, normalizer: nil, valid_operators:, &block)
               value = normalize_value(value, normalizer) if normalizer
 
               return nil unless validate_value_type(value)

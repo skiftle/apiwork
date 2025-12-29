@@ -60,7 +60,7 @@ module Apiwork
                 "API not found: #{api_path}. Available APIs: #{available.join(', ')}"
         end
 
-        def generate_file(api_class:, spec_name:, output:, options:)
+        def generate_file(api_class:, options:, output:, spec_name:)
           api_path = api_class.path
 
           unless api_class.specs&.include?(spec_name)

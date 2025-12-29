@@ -46,7 +46,7 @@ module Apiwork
       #
       # @example With path attachment
       #   Apiwork::ErrorCode.register :not_found, status: 404, attach_path: true
-      def register(key, status:, attach_path: false)
+      def register(key, attach_path: false, status:)
         Registry.register(key, status:, attach_path:)
       end
 

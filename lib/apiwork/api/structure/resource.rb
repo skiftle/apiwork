@@ -49,7 +49,7 @@ module Apiwork
           contract_class&.schema_class
         end
 
-        def add_action(name, type:, method:)
+        def add_action(name, method:, type:)
           @custom_actions << Action.new(name, type:, method:)
         end
 
@@ -112,7 +112,7 @@ module Apiwork
           actions.index_by(&:name)
         end
 
-        def determine_crud_actions(singular, only:, except:)
+        def determine_crud_actions(singular, except:, only:)
           if only
             Array(only).map(&:to_sym)
           else

@@ -78,7 +78,7 @@ module Apiwork
         #     server url: 'https://api.example.com', description: 'Production'
         #     server url: 'https://staging.example.com', description: 'Staging'
         #   end
-        def server(url:, description: nil)
+        def server(description: nil, url:)
           @info[:servers] ||= []
           @info[:servers] << { url: url, description: description }.compact
         end

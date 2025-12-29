@@ -308,7 +308,7 @@ module Apiwork
         #       param :account_number, type: :string
         #     end
         #   end
-        def union(name, scope: nil, discriminator: nil, &block)
+        def union(name, discriminator: nil, scope: nil, &block)
           raise ArgumentError, 'Union requires a block' unless block_given?
 
           union_builder = TypeSystem::UnionBuilder.new(discriminator: discriminator)
@@ -451,7 +451,7 @@ module Apiwork
           @introspect_cache[locale] ||= Introspection.api(self, locale: locale)
         end
 
-        def introspect_contract(contract_class, locale:, expand:)
+        def introspect_contract(contract_class, expand:, locale:)
           ensure_all_contracts_built!
           cache_key = [contract_class, locale, expand]
           @introspect_contract_cache[cache_key] ||= Introspection.contract(contract_class, locale: locale, expand: expand)

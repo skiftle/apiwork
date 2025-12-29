@@ -7,7 +7,7 @@ module Apiwork
         with_locale(locale) { APISerializer.new(api_class).serialize }
       end
 
-      def contract(contract_class, locale: nil, expand: false)
+      def contract(contract_class, expand: false, locale: nil)
         with_locale(locale) { ContractSerializer.new(contract_class, expand:).serialize }
       end
 

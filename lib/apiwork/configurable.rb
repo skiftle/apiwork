@@ -34,7 +34,7 @@ module Apiwork
         subclass.options = options.dup
       end
 
-      def option(name, type:, default: nil, enum: nil, &block)
+      def option(name, default: nil, enum: nil, type:, &block)
         options[name] = Configuration::Option.new(name, type, default:, enum:, &block)
       end
 

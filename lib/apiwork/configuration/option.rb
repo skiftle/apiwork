@@ -21,7 +21,7 @@ module Apiwork
         instance_eval(&block) if block && type == :hash
       end
 
-      def option(name, type:, default:, enum: nil)
+      def option(name, default:, enum: nil, type:)
         @children[name] = NestedOption.new(name, type, default, enum:)
       end
 

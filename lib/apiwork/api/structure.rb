@@ -188,7 +188,7 @@ module Apiwork
         find_resource(@resource_stack.last)
       end
 
-      def create_resource(name, singular:, options:)
+      def create_resource(name, options:, singular:)
         merged = merged_options(options)
 
         parent_name = @resource_stack.last

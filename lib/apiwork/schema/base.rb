@@ -360,7 +360,7 @@ module Apiwork
           self
         end
 
-        def register_variant(tag:, schema:, sti_type:)
+        def register_variant(schema:, sti_type:, tag:)
           self.variants = variants.merge(tag => { schema: schema, sti_type: sti_type })
           self._abstract = true
         end

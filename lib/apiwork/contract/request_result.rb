@@ -7,14 +7,14 @@ module Apiwork
                   :issues,
                   :query
 
-      def initialize(query:, body:, issues:)
+      def initialize(body: {}, issues: [], query: {})
         @query = query
         @body = body
         @issues = issues
       end
 
       def data
-        @data ||= (query || {}).merge(body || {})
+        @data ||= query.merge(body)
       end
 
       def [](key)

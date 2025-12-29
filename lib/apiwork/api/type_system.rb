@@ -105,7 +105,7 @@ module Apiwork
 
       private
 
-      def merge_type(key, description:, example:, format:, deprecated:, schema_class:, block:)
+      def merge_type(key, block:, deprecated:, description:, example:, format:, schema_class:)
         existing_type = @types[key]
 
         merged_definitions = existing_type[:definitions]&.dup || []
@@ -123,7 +123,7 @@ module Apiwork
         )
       end
 
-      def merge_enum(key, values:, description:, example:, deprecated:)
+      def merge_enum(key, deprecated:, description:, example:, values:)
         existing_enum = @enums[key]
         @enums[key] = existing_enum.merge(
           description: description || existing_enum[:description],

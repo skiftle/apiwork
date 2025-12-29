@@ -23,7 +23,7 @@ module Apiwork
     # @return [Array<Symbol, Integer>] path to the invalid field
     attr_reader :path
 
-    def initialize(code:, detail:, path: [], meta: {})
+    def initialize(code:, detail:, meta: {}, path: [])
       @code = code
       @detail = detail
       @path = path.map { |element| element.is_a?(Integer) ? element : element.to_sym }

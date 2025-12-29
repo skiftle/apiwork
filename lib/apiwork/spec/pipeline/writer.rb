@@ -8,7 +8,7 @@ module Apiwork
     class Pipeline
       class Writer
         class << self
-          def write(content:, output:, extension:, api_path: nil, spec_name: nil)
+          def write(api_path: nil, content:, extension:, output:, spec_name: nil)
             if file_path?(output)
               write_file(content, output)
             else
