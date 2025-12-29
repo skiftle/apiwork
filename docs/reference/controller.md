@@ -10,35 +10,29 @@ next: false
 
 ## Class Methods
 
-### .skip_contract_validation!(**options)
+### .skip_contract_validation!(only: = nil, except: = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/deserialization.rb#L35)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L29)
 
 Skips contract validation for specified actions.
-
-Use this when certain actions don't need request validation,
-such as health checks or legacy endpoints.
 
 **Parameters**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `options` | `Hash` | options passed to skip_before_action |
+| `only` | `Array<Symbol>` | skip only for these |
+| `except` | `Array<Symbol>` | skip for all except these |
 
 **Example: Skip for specific actions**
 
 ```ruby
-class HealthController < ApplicationController
-  skip_contract_validation! only: [:ping, :status]
-end
+skip_contract_validation! only: [:ping, :status]
 ```
 
 **Example: Skip for all actions**
 
 ```ruby
-class LegacyController < ApplicationController
-  skip_contract_validation!
-end
+skip_contract_validation!
 ```
 
 ---
@@ -47,7 +41,7 @@ end
 
 ### #context()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/serialization.rb#L118)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L174)
 
 Returns the serialization context passed to schemas.
 
@@ -70,7 +64,7 @@ end
 
 ### #contract()
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/deserialization.rb#L62)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L56)
 
 Returns the parsed and validated request contract.
 
@@ -105,7 +99,7 @@ end
 
 ### #expose(data, meta: = {}, status: = nil)
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/serialization.rb#L42)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L93)
 
 Exposes data as an API response.
 
@@ -152,7 +146,7 @@ end
 
 ### #expose_error(code_key, detail: = nil, path: = nil, meta: = {}, i18n: = {})
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller/serialization.rb#L93)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/controller.rb#L148)
 
 Exposes an error response using a registered error code.
 

@@ -84,6 +84,36 @@ class CaseTransformer
 end
 ```
 
+### When to Extract Private Methods
+
+A private method is justified by:
+1. **Reuse** — used in 2+ places
+2. **Complexity** — logic is complex enough that a name helps understanding (5+ lines of non-trivial code)
+
+What does NOT justify a method:
+- "It's cleaner" — no, it's more indirection
+- "Methods should be short" — cargo cult
+- "Can be reused later" — YAGNI
+
+```ruby
+# ❌ Bad — extracted for "cleanliness"
+def process
+  validate_input
+  transform_data
+  save_result
+end
+
+def validate_input
+  return if @input.blank?  # one line
+end
+
+# ✅ Good — inline single-use simple logic
+def process
+  return if @input.blank?
+  # transform and save...
+end
+```
+
 ---
 
 ## Philosophy
@@ -519,6 +549,15 @@ This regenerates all files in `docs/playground/public/` and `docs/guide/examples
 **The fundamental rule:**
 Code → docs/playground → `rake docs:generate` → docs/examples/ → VitePress inline embeds.
 They are ONE system. Change one, change all. Same commit. No exceptions.
+
+### Reference Documentation
+
+Run `Apiwork::ReferenceGenerator.run` after any change to:
+- Public method signatures
+- YARD documentation (`@api public`, `@param`, `@return`, `@example`)
+- Class/module structure
+
+This regenerates `docs/reference/*.md` from source code YARD comments.
 
 Style:
 - Pedagogical — teach, don't just describe
