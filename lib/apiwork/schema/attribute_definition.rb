@@ -135,6 +135,10 @@ module Apiwork
         apply_transformers(value, @decode)
       end
 
+      def has_decoder?
+        @decode.present?
+      end
+
       def schema_class_name
         @schema_class_name ||= @owner_schema_class
                                .name

@@ -106,8 +106,8 @@ module Apiwork
         # Links this contract to its schema using naming convention.
         #
         # Looks up the schema class by replacing "Contract" with "Schema"
-        # in the class name. For example, `UserContract.schema!` finds
-        # `UserSchema`.
+        # in the class name. Both must be in the same namespace.
+        # For example, `Api::V1::UserContract.schema!` finds `Api::V1::UserSchema`.
         #
         # Call this method to enable auto-generation of request/response
         # types based on the schema's attributes.
@@ -116,8 +116,8 @@ module Apiwork
         # @raise [ArgumentError] if schema class not found
         #
         # @example
-        #   class UserContract < Apiwork::Contract::Base
-        #     schema!  # Links to UserSchema
+        #   class Api::V1::UserContract < Apiwork::Contract::Base
+        #     schema!  # Links to Api::V1::UserSchema
         #
         #     action :create do
         #       request { body { param :name } }

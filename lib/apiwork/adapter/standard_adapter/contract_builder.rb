@@ -116,12 +116,14 @@ module Apiwork
 
             param_options[:enum] = name if attribute_definition.enum
 
-            internal = { attribute_definition: attribute_definition }
+            source = build_source(target_schema_class, name, :attribute)
+            internal = {}
+            internal[:decoder] = ->(v) { attribute_definition.decode(v) } if attribute_definition.has_decoder?
 
             if attribute_definition.inline_shape
-              param_definition.param name, **param_options, internal: internal, &attribute_definition.inline_shape
+              param_definition.param name, **param_options, internal: internal, source: source, &attribute_definition.inline_shape
             else
-              param_definition.param name, **param_options, internal: internal
+              param_definition.param name, **param_options, internal: internal, source: source
             end
           end
 
@@ -151,7 +153,8 @@ module Apiwork
               optional: true,
             }
 
-            internal = { association_definition: association_definition }
+            source = build_source(target_schema_class, name, :association)
+            internal = {}
             internal[:type_contract_class] = association_contract if association_contract
 
             if association_payload_type
@@ -165,7 +168,7 @@ module Apiwork
               param_options[:type] = association_definition.collection? ? :array : :object
             end
 
-            param_definition.param name, **param_options, internal: internal
+            param_definition.param name, **param_options, internal: internal, source: source
           end
         end
 
@@ -336,12 +339,12 @@ module Apiwork
                 **of_option,
               }
 
-              internal = { attribute_definition: attribute_definition }
+              source = builder.send(:build_source, schema_class_local, name, :attribute)
 
               if attribute_definition.inline_shape
-                param name, **param_options, internal: internal, &attribute_definition.inline_shape
+                param name, **param_options, source: source, &attribute_definition.inline_shape
               else
-                param name, **param_options, internal: internal
+                param name, **param_options, source: source
               end
             end
 
@@ -356,15 +359,15 @@ module Apiwork
                 optional: !association_definition.always_included?,
               }
 
-              internal = { association_definition: association_definition }
+              source = builder.send(:build_source, schema_class_local, name, :association)
 
               if association_definition.singular?
-                param name, type: association_type || :object, **base_options, internal: internal
+                param name, source: source, type: association_type || :object, **base_options
               elsif association_definition.collection?
                 if association_type
-                  param name, of: association_type, type: :array, **base_options, internal: internal
+                  param name, of: association_type, source: source, type: :array, **base_options
                 else
-                  param name, type: :array, **base_options, internal: internal
+                  param name, source: source, type: :array, **base_options
                 end
               end
             end
@@ -407,12 +410,12 @@ module Apiwork
               next if attribute_definition.type == :unknown
 
               filter_type = builder.send(:filter_type_for, attribute_definition)
-              internal = { attribute_definition: attribute_definition }
+              source = builder.send(:build_source, schema_class_local, name, :attribute)
 
               if attribute_definition.enum
-                param name, internal: internal, optional: true, type: filter_type
+                param name, optional: true, source: source, type: filter_type
               else
-                param name, internal: internal, optional: true, type: :union do
+                param name, optional: true, source: source, type: :union do
                   variant type: builder.send(:map_type, attribute_definition.type)
                   variant type: filter_type
                 end
@@ -440,7 +443,8 @@ module Apiwork
                                         end
 
               if association_filter_type
-                param name, internal: { association_definition: association_definition }, optional: true, type: association_filter_type
+                source = builder.send(:build_source, schema_class_local, name, :association)
+                param name, optional: true, source: source, type: association_filter_type
               end
             end
           end
@@ -476,7 +480,8 @@ module Apiwork
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
               next unless attribute_definition.sortable?
 
-              param name, internal: { attribute_definition: attribute_definition }, optional: true, type: :sort_direction
+              source = builder.send(:build_source, schema_class_local, name, :attribute)
+              param name, optional: true, source: source, type: :sort_direction
             end
 
             schema_class_local.association_definitions.each do |name, association_definition|
@@ -500,7 +505,8 @@ module Apiwork
                                       end
 
               if association_sort_type
-                param name, internal: { association_definition: association_definition }, optional: true, type: association_sort_type
+                source = builder.send(:build_source, schema_class_local, name, :association)
+                param name, optional: true, source: source, type: association_sort_type
               end
             end
           end
@@ -703,13 +709,14 @@ module Apiwork
 
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
               enum_option = attribute_definition.enum ? { enum: name } : {}
+              source = builder.send(:build_source, schema_class_local, name, :attribute)
               param name,
                     deprecated: attribute_definition.deprecated,
                     description: attribute_definition.description,
                     example: attribute_definition.example,
                     format: attribute_definition.format,
-                    internal: { attribute_definition: attribute_definition },
                     nullable: attribute_definition.nullable?,
+                    source: source,
                     type: builder.send(:map_type, attribute_definition.type),
                     **enum_option
             end
@@ -717,27 +724,27 @@ module Apiwork
             schema_class_local.association_definitions.each do |name, association_definition|
               association_type = association_type_map[name]
               is_optional = !association_definition.always_included?
-              internal = { association_definition: association_definition }
+              source = builder.send(:build_source, schema_class_local, name, :association)
 
               if association_type
                 if association_definition.singular?
-                  param name, internal: internal, nullable: association_definition.nullable?, optional: is_optional, type: association_type
+                  param name, nullable: association_definition.nullable?, optional: is_optional, source: source, type: association_type
                 elsif association_definition.collection?
                   param name,
-                        internal: internal,
                         nullable: association_definition.nullable?,
                         of: association_type,
                         optional: is_optional,
+                        source: source,
                         type: :array
                 end
               elsif association_definition.singular?
-                param name, internal: internal, nullable: association_definition.nullable?, optional: is_optional, type: :object
+                param name, nullable: association_definition.nullable?, optional: is_optional, source: source, type: :object
               elsif association_definition.collection?
                 param name,
-                      internal: internal,
                       nullable: association_definition.nullable?,
                       of: :object,
                       optional: is_optional,
+                      source: source,
                       type: :array
               end
             end
@@ -830,13 +837,14 @@ module Apiwork
 
                 variant_schema.attribute_definitions.each do |name, attribute_definition|
                   enum_option = attribute_definition.enum ? { enum: name } : {}
+                  source = builder.send(:build_source, variant_schema, name, :attribute)
                   param name,
                         deprecated: attribute_definition.deprecated,
                         description: attribute_definition.description,
                         example: attribute_definition.example,
                         format: attribute_definition.format,
-                        internal: { attribute_definition: attribute_definition },
                         nullable: attribute_definition.nullable?,
+                        source: source,
                         type: builder.send(:map_type, attribute_definition.type),
                         **enum_option
                 end
@@ -1021,6 +1029,14 @@ module Apiwork
           when :unknown then :unknown
           else :unknown
           end
+        end
+
+        def build_source(schema_class_arg, field_name, field_type)
+          {
+            field: field_name,
+            schema: schema_class_arg.name.demodulize.delete_suffix('Schema').underscore.to_sym,
+            type: field_type,
+          }
         end
       end
     end

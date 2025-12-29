@@ -318,7 +318,7 @@ end
 
 ### .spec
 
-`.spec(type, &block)`
+`.spec(name, &block)`
 
 [GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/api/base.rb#L116)
 
@@ -331,7 +331,7 @@ Available specs: :openapi, :typescript, :zod, :introspection.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `type` | `Symbol` | spec type to enable |
+| `name` | `Symbol` | spec name to enable |
 
 **Example: Enable OpenAPI spec**
 

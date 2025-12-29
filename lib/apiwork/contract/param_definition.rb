@@ -46,6 +46,8 @@ module Apiwork
       # @param min [Integer] minimum value (numeric) or length (string/array)
       # @param nullable [Boolean] whether null is allowed
       # @param required [Boolean] alias for optional: false (for readability)
+      # @param source [Hash] schema source for i18n lookup. Keys: :schema (Symbol),
+      #   :field (Symbol), :type (:attribute or :association)
       # @yield nested params for :object or :array of objects
       #
       # @example Basic types
@@ -83,25 +85,26 @@ module Apiwork
                 of: nil,
                 optional: nil,
                 required: nil,
+                source: nil,
                 type: nil,
                 value: nil,
                 internal: {},
                 &block)
         visited_types = internal[:visited_types]
-        association_definition = internal[:association_definition]
-        attribute_definition = internal[:attribute_definition]
+        decoder = internal[:decoder]
         sti_mapping = internal[:sti_mapping]
         type_contract_class = internal[:type_contract_class]
 
         options = {
-          association_definition: association_definition,
-          attribute_definition: attribute_definition,
+          decoder: decoder,
           deprecated: deprecated,
           description: description,
           example: example,
           format: format,
+          internal: internal,
           max: max,
           min: min,
+          source: source,
           nullable: nullable,
           required: required,
           sti_mapping: sti_mapping,
