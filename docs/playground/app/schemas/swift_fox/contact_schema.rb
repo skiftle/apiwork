@@ -5,10 +5,7 @@ module SwiftFox
     attribute :id
     attribute :name, writable: true
 
-    attribute :email,
-              writable: true,
-              encode: ->(v) { v&.downcase },
-              decode: ->(v) { v&.upcase }
+    attribute :email, decode: ->(v) { v&.upcase }, encode: ->(v) { v&.downcase }, writable: true
 
     attribute :phone, empty: true, writable: true
     attribute :notes, empty: true, writable: true

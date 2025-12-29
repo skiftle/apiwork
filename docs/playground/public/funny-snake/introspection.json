@@ -94,81 +94,23 @@
       "actions": {
         "index": {
           "method": "get",
-          "path": "/",
-          "response": {
-            "body": {
-              "shape": {
-                "invoices": {
-                  "type": "array",
-                  "of": "invoice"
-                }
-              },
-              "type": "object"
-            }
-          }
+          "path": "/"
         },
         "show": {
           "method": "get",
-          "path": "/:id",
-          "response": {
-            "body": {
-              "shape": {
-                "invoice": {
-                  "type": "invoice"
-                }
-              },
-              "type": "object"
-            }
-          }
+          "path": "/:id"
         },
         "create": {
           "method": "post",
-          "path": "/",
-          "request": {
-            "body": {
-              "invoice": {
-                "type": "invoice_payload"
-              }
-            }
-          },
-          "response": {
-            "body": {
-              "shape": {
-                "invoice": {
-                  "type": "invoice"
-                }
-              },
-              "type": "object"
-            }
-          }
+          "path": "/"
         },
         "update": {
           "method": "patch",
-          "path": "/:id",
-          "request": {
-            "body": {
-              "invoice": {
-                "type": "invoice_payload"
-              }
-            }
-          },
-          "response": {
-            "body": {
-              "shape": {
-                "invoice": {
-                  "type": "invoice"
-                }
-              },
-              "type": "object"
-            }
-          }
+          "path": "/:id"
         },
         "destroy": {
           "method": "delete",
-          "path": "/:id",
-          "response": {
-            "no_content": true
-          }
+          "path": "/:id"
         }
       }
     }

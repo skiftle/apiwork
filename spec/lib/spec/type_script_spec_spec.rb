@@ -331,10 +331,7 @@ RSpec.describe Apiwork::Spec::TypeScriptSpec do
           param :value, type: :string
         end
 
-        enum :status,
-             deprecated: true,
-             description: 'Status enum',
-             values: %w[active inactive]
+        enum :status, deprecated: true, description: 'Status enum', values: %w[active inactive]
       end
       @metadata_output = Apiwork::Spec.generate(:typescript, '/api/ts_metadata_test')
     end
@@ -368,11 +365,7 @@ RSpec.describe Apiwork::Spec::TypeScriptSpec do
 
     it 'generates correct output for type with all metadata fields' do
       Apiwork::API.define '/api/ts_full_metadata' do
-        type :full_meta,
-             deprecated: false,
-             description: 'desc',
-             example: { x: 1 },
-             format: 'fmt' do
+        type :full_meta, deprecated: false, description: 'desc', example: { x: 1 }, format: 'fmt' do
           param :x, type: :integer
         end
       end

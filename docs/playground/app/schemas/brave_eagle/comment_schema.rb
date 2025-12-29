@@ -4,20 +4,12 @@ module BraveEagle
   class CommentSchema < Apiwork::Schema::Base
     description 'A comment on a task'
 
-    attribute :id,
-              description: 'Unique comment identifier'
+    attribute :id, description: 'Unique comment identifier'
 
-    attribute :body,
-              writable: true,
-              description: 'Comment content',
-              example: 'This looks good, ready for review.'
+    attribute :body, description: 'Comment content', example: 'This looks good, ready for review.', writable: true
 
-    attribute :author_name,
-              writable: true,
-              description: 'Name of the person who wrote the comment',
-              example: 'John Doe'
+    attribute :author_name, description: 'Name of the person who wrote the comment', example: 'John Doe', writable: true
 
-    attribute :created_at,
-              description: 'When the comment was created'
+    attribute :created_at, description: 'When the comment was created'
   end
 end

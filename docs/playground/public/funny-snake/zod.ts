@@ -32,48 +32,6 @@ export const ErrorResponseBodySchema = z.object({
   layer: LayerSchema
 });
 
-export const InvoicesIndexResponseBodySchema = z.object({ invoices: z.array(InvoiceSchema) });
-
-export const InvoicesIndexResponseSchema = z.object({
-  body: InvoicesIndexResponseBodySchema
-});
-
-export const InvoicesShowResponseBodySchema = z.object({ invoice: InvoiceSchema });
-
-export const InvoicesShowResponseSchema = z.object({
-  body: InvoicesShowResponseBodySchema
-});
-
-export const InvoicesCreateRequestBodySchema = z.object({
-  invoice: InvoicePayloadSchema
-});
-
-export const InvoicesCreateRequestSchema = z.object({
-  body: InvoicesCreateRequestBodySchema
-});
-
-export const InvoicesCreateResponseBodySchema = z.object({ invoice: InvoiceSchema });
-
-export const InvoicesCreateResponseSchema = z.object({
-  body: InvoicesCreateResponseBodySchema
-});
-
-export const InvoicesUpdateRequestBodySchema = z.object({
-  invoice: InvoicePayloadSchema
-});
-
-export const InvoicesUpdateRequestSchema = z.object({
-  body: InvoicesUpdateRequestBodySchema
-});
-
-export const InvoicesUpdateResponseBodySchema = z.object({ invoice: InvoiceSchema });
-
-export const InvoicesUpdateResponseSchema = z.object({
-  body: InvoicesUpdateResponseBodySchema
-});
-
-export const InvoicesDestroyResponse = z.never();
-
 export interface ErrorResponseBody {
   issues: Issue[];
   layer: Layer;
@@ -95,48 +53,6 @@ export interface InvoicePayload {
   number: string;
   status: string;
 }
-
-export interface InvoicesCreateRequest {
-  body: InvoicesCreateRequestBody;
-}
-
-export interface InvoicesCreateRequestBody {
-  invoice: InvoicePayload;
-}
-
-export interface InvoicesCreateResponse {
-  body: InvoicesCreateResponseBody;
-}
-
-export type InvoicesCreateResponseBody = { invoice: Invoice };
-
-export type InvoicesDestroyResponse = never;
-
-export interface InvoicesIndexResponse {
-  body: InvoicesIndexResponseBody;
-}
-
-export type InvoicesIndexResponseBody = { invoices: Invoice[] };
-
-export interface InvoicesShowResponse {
-  body: InvoicesShowResponseBody;
-}
-
-export type InvoicesShowResponseBody = { invoice: Invoice };
-
-export interface InvoicesUpdateRequest {
-  body: InvoicesUpdateRequestBody;
-}
-
-export interface InvoicesUpdateRequestBody {
-  invoice: InvoicePayload;
-}
-
-export interface InvoicesUpdateResponse {
-  body: InvoicesUpdateResponseBody;
-}
-
-export type InvoicesUpdateResponseBody = { invoice: Invoice };
 
 export interface Issue {
   code: string;

@@ -33,6 +33,7 @@ Apiwork/MultilineHashPairs:
 
 Apiwork/MultilineKeywordArguments:
   Enabled: true
+  MaxOneLine: 4
   Methods:
     - attribute
     - belongs_to

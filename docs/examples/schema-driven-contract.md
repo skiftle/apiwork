@@ -118,49 +118,12 @@ Using `schema!` to generate a complete contract from schema definitions
 GET /eager_lion/invoices
 ```
 
-**Response** `200`
+**Response** `500`
 
 ```json
 {
-  "invoices": [
-    {
-      "id": "534ec78b-1e57-5f61-ae31-cd61470deb95",
-      "createdAt": "2024-01-01T12:00:00.000Z",
-      "updatedAt": "2024-01-01T12:00:00.000Z",
-      "number": "INV-001",
-      "issuedOn": null,
-      "notes": null,
-      "status": null,
-      "customerId": "9428d849-05a5-5c52-a90a-906eac07ecd2",
-      "lines": [],
-      "customer": {
-        "id": "9428d849-05a5-5c52-a90a-906eac07ecd2",
-        "name": "Acme Corp"
-      }
-    },
-    {
-      "id": "beeed37c-a296-52da-9206-364418ea6f8e",
-      "createdAt": "2024-01-01T12:00:00.000Z",
-      "updatedAt": "2024-01-01T12:00:00.000Z",
-      "number": "INV-002",
-      "issuedOn": null,
-      "notes": null,
-      "status": null,
-      "customerId": "9428d849-05a5-5c52-a90a-906eac07ecd2",
-      "lines": [],
-      "customer": {
-        "id": "9428d849-05a5-5c52-a90a-906eac07ecd2",
-        "name": "Acme Corp"
-      }
-    }
-  ],
-  "pagination": {
-    "current": 1,
-    "next": null,
-    "prev": null,
-    "total": 1,
-    "items": 2
-  }
+  "status": 500,
+  "error": "Internal Server Error"
 }
 ```
 
@@ -175,25 +138,12 @@ GET /eager_lion/invoices
 GET /eager_lion/invoices/67bdd1df-79bb-5b50-9eaf-b17edac86b61
 ```
 
-**Response** `200`
+**Response** `500`
 
 ```json
 {
-  "invoice": {
-    "id": "67bdd1df-79bb-5b50-9eaf-b17edac86b61",
-    "createdAt": "2024-01-01T12:00:00.000Z",
-    "updatedAt": "2024-01-01T12:00:00.000Z",
-    "number": "INV-001",
-    "issuedOn": null,
-    "notes": null,
-    "status": null,
-    "customerId": "481e8881-0547-5668-91bd-b1ff84936a03",
-    "lines": [],
-    "customer": {
-      "id": "481e8881-0547-5668-91bd-b1ff84936a03",
-      "name": "Acme Corp"
-    }
-  }
+  "status": 500,
+  "error": "Internal Server Error"
 }
 ```
 
@@ -218,25 +168,12 @@ Content-Type: application/json
 }
 ```
 
-**Response** `201`
+**Response** `500`
 
 ```json
 {
-  "invoice": {
-    "id": "a8820bf3-8c01-50aa-9940-cad599d88a67",
-    "createdAt": "2024-01-01T12:00:00.000Z",
-    "updatedAt": "2024-01-01T12:00:00.000Z",
-    "number": "INV-001",
-    "issuedOn": "2024-01-15",
-    "notes": "First invoice",
-    "status": null,
-    "customerId": "37edd0f2-8741-5638-adf9-7b1141702642",
-    "lines": [],
-    "customer": {
-      "id": "37edd0f2-8741-5638-adf9-7b1141702642",
-      "name": "Acme Corp"
-    }
-  }
+  "status": 500,
+  "error": "Internal Server Error"
 }
 ```
 
@@ -248,7 +185,7 @@ Content-Type: application/json
 **Request**
 
 ```http
-PATCH /eager_lion/invoices/baf90ee7-f2b9-5d5c-ad6a-8a4536fb1005
+PATCH /eager_lion/invoices/a8820bf3-8c01-50aa-9940-cad599d88a67
 Content-Type: application/json
 
 {
@@ -260,25 +197,12 @@ Content-Type: application/json
 }
 ```
 
-**Response** `200`
+**Response** `500`
 
 ```json
 {
-  "invoice": {
-    "id": "baf90ee7-f2b9-5d5c-ad6a-8a4536fb1005",
-    "createdAt": "2024-01-01T12:00:00.000Z",
-    "updatedAt": "2024-01-01T12:00:00.000Z",
-    "number": "INV-001",
-    "issuedOn": null,
-    "notes": "Updated notes",
-    "status": null,
-    "customerId": "68015de3-44bf-5dc5-8e6b-9199fa3ac62e",
-    "lines": [],
-    "customer": {
-      "id": "68015de3-44bf-5dc5-8e6b-9199fa3ac62e",
-      "name": "Acme Corp"
-    }
-  }
+  "status": 500,
+  "error": "Internal Server Error"
 }
 ```
 
@@ -290,11 +214,17 @@ Content-Type: application/json
 **Request**
 
 ```http
-DELETE /eager_lion/invoices/a2a97615-5156-5664-b7bd-f2be1b59344c
+DELETE /eager_lion/invoices/baf90ee7-f2b9-5d5c-ad6a-8a4536fb1005
 ```
 
-**Response** `204`
+**Response** `500`
 
+```json
+{
+  "status": 500,
+  "error": "Internal Server Error"
+}
+```
 
 </details>
 

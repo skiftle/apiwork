@@ -4,13 +4,9 @@ module BraveEagle
   class TaskSchema < Apiwork::Schema::Base
     description 'A task representing work to be completed'
 
-    attribute :id,
-              description: 'Unique task identifier'
+    attribute :id, description: 'Unique task identifier'
 
-    attribute :title,
-              writable: true,
-              description: 'Short title describing the task',
-              example: 'Implement user authentication'
+    attribute :title, description: 'Short title describing the task', example: 'Implement user authentication', writable: true
 
     attribute :description,
               writable: true,
@@ -31,30 +27,16 @@ module BraveEagle
               example: 'high',
               enum: %w[low medium high critical]
 
-    attribute :due_date,
-              writable: true,
-              sortable: true,
-              description: 'Target date for task completion',
-              example: '2024-02-01T00:00:00Z'
+    attribute :due_date, description: 'Target date for task completion', example: '2024-02-01T00:00:00Z', sortable: true, writable: true
 
-    attribute :archived,
-              description: 'Whether the task has been archived',
-              deprecated: true
+    attribute :archived, deprecated: true, description: 'Whether the task has been archived'
 
-    attribute :created_at,
-              sortable: true,
-              description: 'Timestamp when the task was created'
+    attribute :created_at, description: 'Timestamp when the task was created', sortable: true
 
-    attribute :updated_at,
-              description: 'Timestamp of last modification'
+    attribute :updated_at, description: 'Timestamp of last modification'
 
-    belongs_to :assignee,
-               class_name: BraveEagle::UserSchema,
-               optional: true,
-               description: 'User responsible for completing this task'
+    belongs_to :assignee, class_name: BraveEagle::UserSchema, description: 'User responsible for completing this task', optional: true
 
-    has_many :comments,
-             class_name: BraveEagle::CommentSchema,
-             description: 'Discussion comments on this task'
+    has_many :comments, class_name: BraveEagle::CommentSchema, description: 'Discussion comments on this task'
   end
 end

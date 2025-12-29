@@ -4,47 +4,10 @@
     "path": "/eager_lion/invoices"
   },
   "response": {
-    "status": 200,
+    "status": 500,
     "body": {
-      "invoices": [
-        {
-          "id": "534ec78b-1e57-5f61-ae31-cd61470deb95",
-          "createdAt": "2024-01-01T12:00:00.000Z",
-          "updatedAt": "2024-01-01T12:00:00.000Z",
-          "number": "INV-001",
-          "issuedOn": null,
-          "notes": null,
-          "status": null,
-          "customerId": "9428d849-05a5-5c52-a90a-906eac07ecd2",
-          "lines": [],
-          "customer": {
-            "id": "9428d849-05a5-5c52-a90a-906eac07ecd2",
-            "name": "Acme Corp"
-          }
-        },
-        {
-          "id": "beeed37c-a296-52da-9206-364418ea6f8e",
-          "createdAt": "2024-01-01T12:00:00.000Z",
-          "updatedAt": "2024-01-01T12:00:00.000Z",
-          "number": "INV-002",
-          "issuedOn": null,
-          "notes": null,
-          "status": null,
-          "customerId": "9428d849-05a5-5c52-a90a-906eac07ecd2",
-          "lines": [],
-          "customer": {
-            "id": "9428d849-05a5-5c52-a90a-906eac07ecd2",
-            "name": "Acme Corp"
-          }
-        }
-      ],
-      "pagination": {
-        "current": 1,
-        "next": null,
-        "prev": null,
-        "total": 1,
-        "items": 2
-      }
+      "status": 500,
+      "error": "Internal Server Error"
     }
   }
 }

@@ -175,11 +175,7 @@ RSpec.describe 'TypeSystem Metadata' do
 
     it 'stores and serializes enum with all metadata fields' do
       api = Apiwork::API.define '/api/test' do
-        enum :color,
-             values: %w[red green blue],
-             description: 'Available color options',
-             example: 'red',
-             deprecated: true
+        enum :color, deprecated: true, description: 'Available color options', example: 'red', values: %w[red green blue]
       end
 
       enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums

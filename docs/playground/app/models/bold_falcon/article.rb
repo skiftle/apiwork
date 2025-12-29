@@ -4,12 +4,7 @@ module BoldFalcon
   class Article < ApplicationRecord
     belongs_to :category, optional: true
 
-    enum :status,
-         {
-           archived: 'archived',
-           draft: 'draft',
-           published: 'published',
-         }
+    enum :status, archived: 'archived', draft: 'draft', published: 'published'
 
     validates :title, presence: true
   end

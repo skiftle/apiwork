@@ -10,10 +10,7 @@ RSpec.describe 'Contract Serialization' do
           request do
             body do
               param :title, type: :string
-              param :published,
-                    default: false,
-                    optional: true,
-                    type: :boolean
+              param :published, default: false, optional: true, type: :boolean
             end
           end
         end

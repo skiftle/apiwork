@@ -110,9 +110,7 @@ RSpec.describe 'Polymorphic associations', type: :integration do
         Class.new(Apiwork::Schema::Base) do
           abstract!
 
-          belongs_to :commentable,
-                     polymorphic: { post: post_schema },
-                     filterable: true
+          belongs_to :commentable, filterable: true, polymorphic: { post: post_schema }
         end
       end.to raise_error(Apiwork::ConfigurationError, /cannot use filterable: true/)
     end
@@ -124,9 +122,7 @@ RSpec.describe 'Polymorphic associations', type: :integration do
         Class.new(Apiwork::Schema::Base) do
           abstract!
 
-          belongs_to :commentable,
-                     polymorphic: { post: post_schema },
-                     sortable: true
+          belongs_to :commentable, polymorphic: { post: post_schema }, sortable: true
         end
       end.to raise_error(Apiwork::ConfigurationError, /cannot use sortable: true/)
     end
@@ -138,9 +134,7 @@ RSpec.describe 'Polymorphic associations', type: :integration do
         Class.new(Apiwork::Schema::Base) do
           abstract!
 
-          belongs_to :commentable,
-                     polymorphic: { post: post_schema },
-                     include: :optional
+          belongs_to :commentable, include: :optional, polymorphic: { post: post_schema }
         end
       end.not_to raise_error
     end
@@ -152,9 +146,7 @@ RSpec.describe 'Polymorphic associations', type: :integration do
         Class.new(Apiwork::Schema::Base) do
           abstract!
 
-          belongs_to :commentable,
-                     polymorphic: { post: post_schema },
-                     include: :always
+          belongs_to :commentable, include: :always, polymorphic: { post: post_schema }
         end
       end.not_to raise_error
     end
@@ -166,9 +158,7 @@ RSpec.describe 'Polymorphic associations', type: :integration do
         Class.new(Apiwork::Schema::Base) do
           abstract!
 
-          belongs_to :commentable,
-                     polymorphic: { post: post_schema },
-                     writable: true
+          belongs_to :commentable, polymorphic: { post: post_schema }, writable: true
         end
       end.to raise_error(Apiwork::ConfigurationError, /cannot use writable: true/)
     end

@@ -6,8 +6,7 @@ module EagerLion
 
     action :archive do
       response do
-        body do
-          param :invoice, type: :invoice
+        body param :invoice, type: :invoice do
         end
       end
     end

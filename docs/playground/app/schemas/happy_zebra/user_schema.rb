@@ -8,13 +8,7 @@ module HappyZebra
     attribute :email, filterable: true, writable: true
     attribute :username, filterable: true, writable: true
 
-    has_one :profile,
-            include: :always,
-            schema: ProfileSchema,
-            writable: true
-    has_many :posts,
-             include: :always,
-             schema: PostSchema,
-             writable: true
+    has_one :profile, include: :always, schema: ProfileSchema, writable: true
+    has_many :posts, include: :always, schema: PostSchema, writable: true
   end
 end

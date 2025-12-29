@@ -8,44 +8,13 @@ paths:
     get:
       operationId: invoicesIndex
       responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  invoices:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/invoice"
-                required:
-                - invoices
+        '204':
+          description: No content
     post:
       operationId: invoicesCreate
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              properties:
-                invoice:
-                  "$ref": "#/components/schemas/invoicePayload"
-              type: object
-              required:
-              - invoice
       responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  invoice:
-                    "$ref": "#/components/schemas/invoice"
-                required:
-                - invoice
+        '204':
+          description: No content
   invoices/{id}:
     get:
       operationId: invoicesShow
@@ -56,17 +25,8 @@ paths:
         schema:
           type: string
       responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  invoice:
-                    "$ref": "#/components/schemas/invoice"
-                required:
-                - invoice
+        '204':
+          description: No content
     patch:
       operationId: invoicesUpdate
       parameters:
@@ -75,27 +35,9 @@ paths:
         required: true
         schema:
           type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              properties:
-                invoice:
-                  "$ref": "#/components/schemas/invoicePayload"
-              type: object
       responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  invoice:
-                    "$ref": "#/components/schemas/invoice"
-                required:
-                - invoice
+        '204':
+          description: No content
     delete:
       operationId: invoicesDestroy
       parameters:

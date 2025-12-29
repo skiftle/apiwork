@@ -127,11 +127,7 @@ RSpec.describe 'API TypeSystem Builder' do
 
     it 'allows defining type with all metadata fields' do
       api = Apiwork::API.define '/api/test' do
-        type :full_metadata_type,
-             description: 'Comprehensive metadata',
-             example: { data: 'example' },
-             format: 'custom',
-             deprecated: true do
+        type :full_metadata_type, deprecated: true, description: 'Comprehensive metadata', example: { data: 'example' }, format: 'custom' do
           param :data, type: :string
         end
       end
@@ -178,11 +174,7 @@ RSpec.describe 'API TypeSystem Builder' do
 
     it 'allows defining enum with all metadata fields' do
       api = Apiwork::API.define '/api/test' do
-        enum :full_metadata_enum,
-             values: %w[option1 option2],
-             description: 'Complete enum metadata',
-             example: 'option1',
-             deprecated: true
+        enum :full_metadata_enum, deprecated: true, description: 'Complete enum metadata', example: 'option1', values: %w[option1 option2]
       end
 
       enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums

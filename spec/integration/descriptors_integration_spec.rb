@@ -397,18 +397,11 @@ RSpec.describe 'TypeSystem Integration', type: :request do
   describe 'Custom type and enum metadata in introspection' do
     before(:all) do
       @metadata_api = Apiwork::API.define '/api/metadata_test' do
-        type :documented_type,
-             description: 'A well-documented type',
-             example: { value: 'example' },
-             format: 'custom' do
+        type :documented_type, description: 'A well-documented type', example: { value: 'example' }, format: 'custom' do
           param :value, type: :string
         end
 
-        enum :status_with_metadata,
-             values: %w[active inactive],
-             description: 'Status values with description',
-             example: 'active',
-             deprecated: false
+        enum :status_with_metadata, deprecated: false, description: 'Status values with description', example: 'active', values: %w[active inactive]
       end
     end
 
