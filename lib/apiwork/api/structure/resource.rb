@@ -6,22 +6,31 @@ module Apiwork
       class Resource
         attr_reader :contract_class_name,
                     :controller,
+                    :except,
                     :name,
-                    :options,
+                    :only,
                     :parent,
+                    :path,
                     :resources,
                     :singular
 
         attr_accessor :contract_class
 
-        def initialize(name:, singular:, contract_class_name:, controller: nil, parent: nil, **options)
+        def initialize(name:, singular:, contract_class_name:,
+                       controller: nil,
+                       parent: nil,
+                       path: nil,
+                       only: nil,
+                       except: nil)
           @name = name
           @singular = singular
           @contract_class_name = contract_class_name
           @controller = controller
           @parent = parent
-          @options = options
-          @crud_actions = determine_crud_actions(singular, options)
+          @path = path
+          @only = only
+          @except = except
+          @crud_actions = determine_crud_actions(singular, only:, except:)
           @custom_actions = []
           @resources = {}
         end
@@ -101,10 +110,7 @@ module Apiwork
           actions.index_by(&:name)
         end
 
-        def determine_crud_actions(singular, options)
-          only = options[:only]
-          except = options[:except]
-
+        def determine_crud_actions(singular, only:, except:)
           if only
             Array(only).map(&:to_sym)
           else

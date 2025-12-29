@@ -31,7 +31,7 @@ RSpec.describe 'Nested Attributes Configuration Errors', type: :request do
 
           # This should raise ConfigurationError because TempArticleModel
           # doesn't have accepts_nested_attributes_for :comments
-          has_many :comments, class_name: 'Api::V1::CommentResource', writable: true
+          has_many :comments, writable: true
         end
       end.to raise_error(Apiwork::ConfigurationError,
                          /doesn't accept nested attributes.*accepts_nested_attributes_for :comments/)
@@ -60,7 +60,7 @@ RSpec.describe 'Nested Attributes Configuration Errors', type: :request do
           attribute :title, writable: true
 
           # This is fine because ProperlyConfiguredModel has accepts_nested_attributes_for
-          has_many :comments, class_name: 'Api::V1::CommentResource', writable: true
+          has_many :comments, writable: true
         end
       end.not_to raise_error
     end
@@ -82,7 +82,7 @@ RSpec.describe 'Nested Attributes Configuration Errors', type: :request do
         Class.new(Apiwork::Schema::Base) do
           model temp_model
 
-          has_many :comments, class_name: 'Api::V1::CommentResource', writable: true
+          has_many :comments, writable: true
         end
         raise 'Expected ConfigurationError to be raised'
       rescue Apiwork::ConfigurationError => e

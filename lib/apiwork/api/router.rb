@@ -43,9 +43,9 @@ module Apiwork
       def draw_resources_in_context(context, resources_hash, api_class)
         resources_hash.each_value do |resource|
           resource_method = resource.singular ? :resource : :resources
-          options = resource.options.slice(:only, :except, :controller).compact
+          options = { controller: resource.controller, only: resource.only, except: resource.except }.compact
 
-          path_option = resource.options[:path] || api_class.transform_path_segment(resource.name)
+          path_option = resource.path || api_class.transform_path_segment(resource.name)
           options[:path] = path_option unless path_option == resource.name.to_s
 
           router_instance = self

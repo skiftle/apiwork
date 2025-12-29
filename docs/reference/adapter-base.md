@@ -71,7 +71,7 @@ Options can be passed to `.generate` or set via environment variables.
 
 **Returns**
 
-`void` — 
+`void`
 
 **Example: Simple option**
 

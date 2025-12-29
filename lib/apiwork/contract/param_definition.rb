@@ -100,7 +100,7 @@ module Apiwork
       #
       # Use for response data that doesn't belong to the resource itself.
       #
-      # @param options [Hash] options passed to param (e.g., optional: true)
+      # @param optional [Boolean] whether meta can be omitted (default: false)
       # @yield block defining meta params
       #
       # @example Required meta (default)
@@ -120,7 +120,7 @@ module Apiwork
       #       end
       #     end
       #   end
-      def meta(**options, &block)
+      def meta(optional: nil, &block)
         return unless block
 
         existing_meta = @params[:meta]
@@ -128,7 +128,7 @@ module Apiwork
         if existing_meta && existing_meta[:shape]
           existing_meta[:shape].instance_eval(&block)
         else
-          param :meta, type: :object, **options, &block
+          param :meta, type: :object, optional: optional, &block
         end
       end
 

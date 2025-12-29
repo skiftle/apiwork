@@ -14,27 +14,36 @@ module Apiwork
                   :polymorphic,
                   :discriminator
 
-      def initialize(name, type, schema_class, **options)
+      def initialize(name, type, schema_class,
+                     schema: nil,
+                     class_name: nil,
+                     polymorphic: nil,
+                     include: :optional,
+                     filterable: false,
+                     sortable: false,
+                     writable: false,
+                     allow_destroy: false,
+                     nullable: nil,
+                     description: nil,
+                     example: nil,
+                     deprecated: false)
         @name = name
         @type = type
         @owner_schema_class = schema_class
         @model_class = schema_class.model_class
-        @schema_class = options[:schema]
+        @schema_class = schema || class_name
         validate_schema!
-        @polymorphic = normalize_polymorphic(options[:polymorphic])
+        @polymorphic = normalize_polymorphic(polymorphic)
 
-        options = apply_defaults(options)
-
-        @filterable = options[:filterable]
-        @sortable = options[:sortable]
-        @include = options[:include]
-        @writable = normalize_writable(options[:writable])
-        @allow_destroy = options[:allow_destroy]
-        @nullable = options[:nullable]
-
-        @description = options[:description]
-        @example = options[:example]
-        @deprecated = options[:deprecated]
+        @filterable = filterable
+        @sortable = sortable
+        @include = include
+        @writable = normalize_writable(writable)
+        @allow_destroy = allow_destroy
+        @nullable = nullable
+        @description = description
+        @example = example
+        @deprecated = deprecated
 
         detect_polymorphic_discriminator! if @polymorphic
 
@@ -155,20 +164,6 @@ module Apiwork
 
       def column_for(name)
         @model_class.columns_hash[name.to_s]
-      end
-
-      def apply_defaults(options)
-        {
-          filterable: false,
-          sortable: false,
-          include: :optional,
-          writable: false,
-          allow_destroy: false,
-          nullable: nil, # nil = auto-detect from DB, true/false = explicit override
-          description: nil,
-          example: nil,
-          deprecated: false
-        }.merge(options)
       end
 
       def normalize_writable(value)

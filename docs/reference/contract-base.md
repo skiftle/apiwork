@@ -24,7 +24,7 @@ shared imports or configuration. Subclasses automatically become non-abstract.
 
 **Returns**
 
-`void` — 
+`void`
 
 **Example: Application base contract**
 

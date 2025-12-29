@@ -24,7 +24,7 @@ Subclasses automatically become non-abstract.
 
 **Returns**
 
-`void` — 
+`void`
 
 **Example: Application base schema**
 
@@ -260,7 +260,7 @@ schemas must call `variant` to register themselves.
 
 **Returns**
 
-`self` — 
+`self`
 
 **Example: Base schema with STI**
 
@@ -519,7 +519,7 @@ record's actual type.
 
 **Returns**
 
-`self` — 
+`self`
 
 **Example**
 

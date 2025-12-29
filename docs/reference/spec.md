@@ -56,7 +56,7 @@ Registers a spec generator.
 **Example**
 
 ```ruby
-Apiwork::Spec.register(GraphqlSpec)
+Apiwork::Spec.register(JSONSchemaSpec)
 ```
 
 ---

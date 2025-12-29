@@ -15,13 +15,31 @@ module Apiwork
         number: %i[float double]
       }.freeze
 
-      def initialize(name, schema_class, **options, &block)
+      def initialize(name, schema_class,
+                     type: nil,
+                     optional: nil,
+                     nullable: nil,
+                     enum: nil,
+                     of: nil,
+                     min: nil,
+                     max: nil,
+                     empty: nil,
+                     format: nil,
+                     filterable: nil,
+                     sortable: nil,
+                     writable: nil,
+                     encode: nil,
+                     decode: nil,
+                     description: nil,
+                     example: nil,
+                     deprecated: false,
+                     &block)
         @name = name
         @owner_schema_class = schema_class
         @inline_shape = block
-        @of = options[:of]
+        @of = of
 
-        options[:type] ||= :object if block
+        type ||= :object if block
 
         if schema_class.respond_to?(:model_class) && schema_class.model_class.present?
           @model_class = schema_class.model_class
@@ -29,34 +47,31 @@ module Apiwork
           begin
             @is_db_column = @model_class.column_names.include?(name.to_s)
 
-            options[:enum] ||= detect_enum_values(name)
-            options[:type] ||= detect_type(name) if @is_db_column
-            options[:optional] = detect_optional(name) if options[:optional].nil?
-            options[:nullable] = detect_nullable(name) if options[:nullable].nil?
+            enum ||= detect_enum_values(name)
+            type ||= detect_type(name) if @is_db_column
+            optional = detect_optional(name) if optional.nil?
+            nullable = detect_nullable(name) if nullable.nil?
           rescue ActiveRecord::StatementInvalid, ActiveRecord::NoDatabaseError, ActiveRecord::ConnectionNotEstablished
-            # Silently skip DB introspection if database is unavailable (e.g., in CI without DB setup)
+            # Silently skip DB introspection if database is unavailable
           end
         end
 
-        options = apply_defaults(options)
-
-        @filterable = options[:filterable]
-        @sortable = options[:sortable]
-        @writable = normalize_writable(options[:writable])
-        @encode = options[:encode]
-        @decode = options[:decode]
-        @empty = options[:empty]
-        @nullable = options[:nullable] # Explicit nullable option (overrides DB detection)
-        @optional = options[:optional] || false
-        @type = options[:type]
-        @enum = options[:enum]
-        @min = options[:min]
-        @max = options[:max]
-
-        @description = options[:description]
-        @example = options[:example]
-        @format = options[:format]
-        @deprecated = options[:deprecated] || false
+        @filterable = filterable || false
+        @sortable = sortable || false
+        @writable = normalize_writable(writable)
+        @encode = encode
+        @decode = decode
+        @empty = empty || false
+        @nullable = nullable || false
+        @optional = optional || false
+        @type = type || :unknown
+        @enum = enum
+        @min = min
+        @max = max
+        @description = description
+        @example = example
+        @format = format
+        @deprecated = deprecated
 
         validate_min_max_range!
         validate_format!
@@ -118,27 +133,6 @@ module Apiwork
       end
 
       private
-
-      def apply_defaults(options)
-        defaults = {
-          filterable: false,
-          sortable: false,
-          writable: false,
-          encode: nil,
-          decode: nil,
-          empty: false,
-          nullable: false,
-          optional: false,
-          type: :unknown,
-          enum: nil,
-          description: nil,
-          example: nil,
-          format: nil,
-          deprecated: false
-        }
-
-        defaults.merge(options)
-      end
 
       def normalize_writable(value)
         case value

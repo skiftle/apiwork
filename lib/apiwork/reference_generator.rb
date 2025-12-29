@@ -374,8 +374,9 @@ module Apiwork
 
       if method[:returns]
         types = method[:returns][:types].map { |t| linkify_type(t) }.join(', ')
+        description = linkify_yard_refs(method[:returns][:description])
         parts << "**Returns**\n"
-        parts << "#{types} — #{linkify_yard_refs(method[:returns][:description])}\n"
+        parts << (description.blank? ? "#{types}\n" : "#{types} — #{description}\n")
       end
 
       if method[:examples].any?

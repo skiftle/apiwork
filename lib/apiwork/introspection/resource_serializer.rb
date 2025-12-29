@@ -13,7 +13,7 @@ module Apiwork
       def serialize
         resource_segment = @resource.singular ? @resource.name.to_s.singularize : @resource.name.to_s
 
-        formatted_segment = @resource.options[:path] ||
+        formatted_segment = @resource.path ||
                             @api_class.transform_path_segment(resource_segment)
 
         resource_path = if @parent_path
