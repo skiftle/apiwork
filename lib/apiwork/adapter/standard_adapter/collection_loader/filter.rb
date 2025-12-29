@@ -358,8 +358,11 @@ module Apiwork
               allowed_types: [Hash]
             )
 
-            builder.build(value, valid_operators: NULLABLE_STRING_OPERATORS,
-                                 normalizer: normalizer) do |operator, compare|
+            builder.build(
+              value,
+              valid_operators: NULLABLE_STRING_OPERATORS,
+              normalizer: normalizer
+            ) do |operator, compare|
               case operator
               when :eq then column.eq(compare)
               when :contains then case_sensitive_pattern_match(column, "%#{compare}%")
@@ -441,8 +444,11 @@ module Apiwork
               allowed_types: [Hash]
             )
 
-            builder.build(value, valid_operators: NULLABLE_NUMERIC_OPERATORS,
-                                 normalizer: normalizer) do |operator, compare|
+            builder.build(
+              value,
+              valid_operators: NULLABLE_NUMERIC_OPERATORS,
+              normalizer: normalizer
+            ) do |operator, compare|
               case operator
               when :eq
                 number = parse_numeric(compare, key)
@@ -501,8 +507,11 @@ module Apiwork
               allowed_types: [Hash]
             )
 
-            builder.build(value, valid_operators: NULLABLE_BOOLEAN_OPERATORS,
-                                 normalizer: normalizer) do |operator, compare|
+            builder.build(
+              value,
+              valid_operators: NULLABLE_BOOLEAN_OPERATORS,
+              normalizer: normalizer
+            ) do |operator, compare|
               case operator
               when :eq
                 bool_value = normalize_boolean(compare)

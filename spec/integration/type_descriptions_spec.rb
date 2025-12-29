@@ -29,17 +29,20 @@ RSpec.describe 'Type Descriptions', type: :integration do
         resources :posts
       end
 
-      I18n.backend.store_translations(:en, {
-                                        apiwork: {
-                                          apis: {
-                                            'api/override_test' => {
-                                              types: {
-                                                post_filter: { description: 'Custom filter for posts' }
-                                              }
-                                            }
-                                          }
-                                        }
-                                      })
+      I18n.backend.store_translations(
+        :en,
+        {
+          apiwork: {
+            apis: {
+              'api/override_test' => {
+                types: {
+                  post_filter: { description: 'Custom filter for posts' }
+                }
+              }
+            }
+          }
+        }
+      )
     end
 
     after(:all) do
@@ -220,21 +223,24 @@ RSpec.describe 'Type Descriptions', type: :integration do
 
   describe 'i18n schema attribute descriptions' do
     before(:all) do
-      I18n.backend.store_translations(:en, {
-                                        apiwork: {
-                                          apis: {
-                                            'api/v1' => {
-                                              schemas: {
-                                                post: {
-                                                  attributes: {
-                                                    title: { description: 'Post title from i18n' }
-                                                  }
-                                                }
-                                              }
-                                            }
-                                          }
-                                        }
-                                      })
+      I18n.backend.store_translations(
+        :en,
+        {
+          apiwork: {
+            apis: {
+              'api/v1' => {
+                schemas: {
+                  post: {
+                    attributes: {
+                      title: { description: 'Post title from i18n' }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      )
 
       Apiwork::API.reset!
       Apiwork::ErrorCode.reset!
@@ -268,21 +274,24 @@ RSpec.describe 'Type Descriptions', type: :integration do
     end
 
     it 'prefers inline description over i18n' do
-      I18n.backend.store_translations(:en, {
-                                        apiwork: {
-                                          apis: {
-                                            'api/v1' => {
-                                              schemas: {
-                                                post: {
-                                                  attributes: {
-                                                    body: { description: 'Should be overridden by inline' }
-                                                  }
-                                                }
-                                              }
-                                            }
-                                          }
-                                        }
-                                      })
+      I18n.backend.store_translations(
+        :en,
+        {
+          apiwork: {
+            apis: {
+              'api/v1' => {
+                schemas: {
+                  post: {
+                    attributes: {
+                      body: { description: 'Should be overridden by inline' }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      )
 
       Apiwork::API.reset!
       Apiwork::ErrorCode.reset!
@@ -297,21 +306,24 @@ RSpec.describe 'Type Descriptions', type: :integration do
 
   describe 'i18n schema association descriptions' do
     before(:all) do
-      I18n.backend.store_translations(:en, {
-                                        apiwork: {
-                                          apis: {
-                                            'api/v1' => {
-                                              schemas: {
-                                                post: {
-                                                  associations: {
-                                                    comments: { description: 'Post comments from i18n' }
-                                                  }
-                                                }
-                                              }
-                                            }
-                                          }
-                                        }
-                                      })
+      I18n.backend.store_translations(
+        :en,
+        {
+          apiwork: {
+            apis: {
+              'api/v1' => {
+                schemas: {
+                  post: {
+                    associations: {
+                      comments: { description: 'Post comments from i18n' }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      )
 
       Apiwork::API.reset!
       Apiwork::ErrorCode.reset!

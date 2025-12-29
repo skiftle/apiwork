@@ -19,14 +19,16 @@ RSpec.describe 'Contract Serialization' do
       definition = contract_class.action_definition(:create).request_definition.body_param_definition
       json = Apiwork::Introspection::ParamDefinitionSerializer.new(definition).serialize
 
-      expect(json).to eq({
-                           title: { type: :string },
-                           published: {
-                             default: false,
-                             optional: true,
-                             type: :boolean
-                           }
-                         })
+      expect(json).to eq(
+        {
+          title: { type: :string },
+          published: {
+            default: false,
+            optional: true,
+            type: :boolean
+          }
+        }
+      )
     end
 
     it 'serializes object with shape' do
@@ -46,15 +48,17 @@ RSpec.describe 'Contract Serialization' do
       definition = contract_class.action_definition(:create).request_definition.body_param_definition
       json = Apiwork::Introspection::ParamDefinitionSerializer.new(definition).serialize
 
-      expect(json).to eq({
-                           post: {
-                             type: :object,
-                             shape: {
-                               title: { type: :string },
-                               body: { optional: true, type: :string }
-                             }
-                           }
-                         })
+      expect(json).to eq(
+        {
+          post: {
+            type: :object,
+            shape: {
+              title: { type: :string },
+              body: { optional: true, type: :string }
+            }
+          }
+        }
+      )
     end
 
     it 'serializes arrays with of type' do
@@ -71,13 +75,15 @@ RSpec.describe 'Contract Serialization' do
       definition = contract_class.action_definition(:create).request_definition.body_param_definition
       json = Apiwork::Introspection::ParamDefinitionSerializer.new(definition).serialize
 
-      expect(json).to eq({
-                           tags: {
-                             of: :string,
-                             optional: true,
-                             type: :array
-                           }
-                         })
+      expect(json).to eq(
+        {
+          tags: {
+            of: :string,
+            optional: true,
+            type: :array
+          }
+        }
+      )
     end
 
     it 'serializes enums' do
@@ -94,9 +100,11 @@ RSpec.describe 'Contract Serialization' do
       definition = contract_class.action_definition(:create).request_definition.body_param_definition
       json = Apiwork::Introspection::ParamDefinitionSerializer.new(definition).serialize
 
-      expect(json).to eq({
-                           status: { enum: %w[draft published archived], type: :string }
-                         })
+      expect(json).to eq(
+        {
+          status: { enum: %w[draft published archived], type: :string }
+        }
+      )
     end
 
     it 'serializes param with as: transformation' do
@@ -113,13 +121,15 @@ RSpec.describe 'Contract Serialization' do
       definition = contract_class.action_definition(:create).request_definition.body_param_definition
       json = Apiwork::Introspection::ParamDefinitionSerializer.new(definition).serialize
 
-      expect(json).to eq({
-                           comments: {
-                             as: :comments_attributes,
-                             optional: true,
-                             type: :array
-                           }
-                         })
+      expect(json).to eq(
+        {
+          comments: {
+            as: :comments_attributes,
+            optional: true,
+            type: :array
+          }
+        }
+      )
     end
 
     it 'serializes union types' do
@@ -139,15 +149,17 @@ RSpec.describe 'Contract Serialization' do
       definition = contract_class.action_definition(:create).request_definition.body_param_definition
       json = Apiwork::Introspection::ParamDefinitionSerializer.new(definition).serialize
 
-      expect(json).to eq({
-                           value: {
-                             type: :union,
-                             variants: [
-                               { type: :string },
-                               { type: :integer }
-                             ]
-                           }
-                         })
+      expect(json).to eq(
+        {
+          value: {
+            type: :union,
+            variants: [
+              { type: :string },
+              { type: :integer }
+            ]
+          }
+        }
+      )
     end
 
     it 'serializes custom types' do
@@ -169,9 +181,11 @@ RSpec.describe 'Contract Serialization' do
       definition = contract_class.action_definition(:create).request_definition.body_param_definition
       json = Apiwork::Introspection::ParamDefinitionSerializer.new(definition).serialize
 
-      expect(json).to eq({
-                           shipping_address: { type: :address }
-                         })
+      expect(json).to eq(
+        {
+          shipping_address: { type: :address }
+        }
+      )
     end
 
     it 'returns type references for custom types in unions' do
@@ -197,16 +211,18 @@ RSpec.describe 'Contract Serialization' do
       definition = contract_class.action_definition(:search).request_definition.body_param_definition
       json = Apiwork::Introspection::ParamDefinitionSerializer.new(definition).serialize
 
-      expect(json).to eq({
-                           filter: {
-                             type: :union,
-                             optional: true,
-                             variants: [
-                               { type: :test_union_filter_a },
-                               { type: :string }
-                             ]
-                           }
-                         })
+      expect(json).to eq(
+        {
+          filter: {
+            type: :union,
+            optional: true,
+            variants: [
+              { type: :test_union_filter_a },
+              { type: :string }
+            ]
+          }
+        }
+      )
     end
 
     it 'returns type references for array of custom types in unions' do
@@ -231,16 +247,18 @@ RSpec.describe 'Contract Serialization' do
       definition = contract_class.action_definition(:search).request_definition.body_param_definition
       json = Apiwork::Introspection::ParamDefinitionSerializer.new(definition).serialize
 
-      expect(json).to eq({
-                           filters: {
-                             type: :union,
-                             optional: true,
-                             variants: [
-                               { type: :test_union_filter_b },
-                               { of: :test_union_filter_b, type: :array }
-                             ]
-                           }
-                         })
+      expect(json).to eq(
+        {
+          filters: {
+            type: :union,
+            optional: true,
+            variants: [
+              { type: :test_union_filter_b },
+              { of: :test_union_filter_b, type: :array }
+            ]
+          }
+        }
+      )
     end
   end
 
@@ -266,22 +284,24 @@ RSpec.describe 'Contract Serialization' do
       action_def = contract_class.action_definition(:create)
       json = Apiwork::Introspection::ActionDefinitionSerializer.new(action_def).serialize
 
-      expect(json).to eq({
-                           request: {
-                             body: {
-                               title: { type: :string }
-                             }
-                           },
-                           response: {
-                             body: {
-                               type: :object,
-                               shape: {
-                                 id: { type: :integer },
-                                 title: { type: :string }
-                               }
-                             }
-                           }
-                         })
+      expect(json).to eq(
+        {
+          request: {
+            body: {
+              title: { type: :string }
+            }
+          },
+          response: {
+            body: {
+              type: :object,
+              shape: {
+                id: { type: :integer },
+                title: { type: :string }
+              }
+            }
+          }
+        }
+      )
     end
 
     it 'returns empty hash for missing definitions' do
@@ -354,10 +374,12 @@ RSpec.describe 'Contract Serialization' do
       expect(json).to have_key(:types)
       expect(json[:types].keys).to include(:shipping_location)
       expect(json[:types][:shipping_location][:type]).to eq(:object)
-      expect(json[:types][:shipping_location][:shape]).to eq({
-                                                               street: { type: :string },
-                                                               city: { type: :string }
-                                                             })
+      expect(json[:types][:shipping_location][:shape]).to eq(
+        {
+          street: { type: :string },
+          city: { type: :string }
+        }
+      )
     end
 
     it 'includes enums defined in the contract' do

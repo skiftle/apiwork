@@ -43,12 +43,14 @@ RSpec.describe 'Input Validation' do
 
     context 'with multiple validation errors' do
       it 'returns all validation errors at once' do
-        post '/api/v1/posts', params: {
-          post: {
-            title: nil,
-            published: 'not-boolean'
-          }
-        }, as: :json
+        post '/api/v1/posts',
+             params: {
+               post: {
+                 title: nil,
+                 published: 'not-boolean'
+               }
+             },
+             as: :json
 
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
@@ -62,13 +64,15 @@ RSpec.describe 'Input Validation' do
 
     context 'with valid data' do
       it 'creates post successfully' do
-        post '/api/v1/posts', params: {
-          post: {
-            title: 'Valid Title',
-            body: 'Valid body content',
-            published: true
-          }
-        }, as: :json
+        post '/api/v1/posts',
+             params: {
+               post: {
+                 title: 'Valid Title',
+                 body: 'Valid body content',
+                 published: true
+               }
+             },
+             as: :json
 
         expect(response).to have_http_status(:created)
         json = JSON.parse(response.body)
@@ -76,12 +80,14 @@ RSpec.describe 'Input Validation' do
       end
 
       it 'coerces boolean strings correctly' do
-        post '/api/v1/posts', params: {
-          post: {
-            title: 'Test',
-            published: 'true'
-          }
-        }, as: :json
+        post '/api/v1/posts',
+             params: {
+               post: {
+                 title: 'Test',
+                 published: 'true'
+               }
+             },
+             as: :json
 
         expect(response).to have_http_status(:created)
         json = JSON.parse(response.body)
@@ -95,9 +101,11 @@ RSpec.describe 'Input Validation' do
 
     context 'with valid partial update' do
       it 'updates only provided fields' do
-        patch "/api/v1/posts/#{post_record.id}", params: {
-          post: { title: 'Updated' }
-        }, as: :json
+        patch "/api/v1/posts/#{post_record.id}",
+              params: {
+                post: { title: 'Updated' }
+              },
+              as: :json
 
         expect(response).to have_http_status(:ok)
         post_record.reload
@@ -107,9 +115,11 @@ RSpec.describe 'Input Validation' do
 
     context 'with wrong data types' do
       it 'returns type_invalid for invalid boolean' do
-        patch "/api/v1/posts/#{post_record.id}", params: {
-          post: { published: 'not-a-boolean' }
-        }, as: :json
+        patch "/api/v1/posts/#{post_record.id}",
+              params: {
+                post: { published: 'not-a-boolean' }
+              },
+              as: :json
 
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
@@ -169,14 +179,16 @@ RSpec.describe 'Input Validation' do
     end
 
     it 'uses JSON pointer format for nested field errors' do
-      post '/api/v1/posts', params: {
-        post: {
-          title: 'Test',
-          comments_attributes: [
-            { content: nil }
-          ]
-        }
-      }, as: :json
+      post '/api/v1/posts',
+           params: {
+             post: {
+               title: 'Test',
+               comments_attributes: [
+                 { content: nil }
+               ]
+             }
+           },
+           as: :json
 
       json = JSON.parse(response.body)
 

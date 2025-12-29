@@ -65,13 +65,15 @@ RSpec.describe Apiwork::Issue do
         meta: { field: :email }
       )
 
-      expect(issue.to_h).to eq({
-                                 code: :required,
-                                 detail: 'Field is required',
-                                 path: %w[user email],
-                                 pointer: '/user/email',
-                                 meta: { field: :email }
-                               })
+      expect(issue.to_h).to eq(
+        {
+          code: :required,
+          detail: 'Field is required',
+          path: %w[user email],
+          pointer: '/user/email',
+          meta: { field: :email }
+        }
+      )
     end
   end
 

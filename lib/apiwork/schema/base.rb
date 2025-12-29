@@ -100,8 +100,9 @@ module Apiwork
         def model(value = nil)
           if value
             unless value.is_a?(Class)
-              raise ArgumentError, "model must be a Class constant, got #{value.class}. " \
-                                   "Use: model Post (not 'Post' or :post)"
+              raise ArgumentError,
+                    "model must be a Class constant, got #{value.class}. " \
+                                                       "Use: model Post (not 'Post' or :post)"
             end
             self._model_class = value
             value

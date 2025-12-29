@@ -246,13 +246,16 @@ module Apiwork
                  deprecated: false,
                  schema_class: nil,
                  &block)
-          type_system.register_type(name, scope: scope,
-                                          description: description,
-                                          example: example,
-                                          format: format,
-                                          deprecated: deprecated,
-                                          schema_class: schema_class,
-                                    &block)
+          type_system.register_type(
+            name,
+            scope: scope,
+            description: description,
+            example: example,
+            format: format,
+            deprecated: deprecated,
+            schema_class: schema_class,
+            &block
+          )
         end
 
         # @api public
@@ -281,11 +284,14 @@ module Apiwork
                  deprecated: false)
           raise ArgumentError, 'Values must be an array' if values && !values.is_a?(Array)
 
-          type_system.register_enum(name, values,
-                                    scope: scope,
-                                    description: description,
-                                    example: example,
-                                    deprecated: deprecated)
+          type_system.register_enum(
+            name,
+            values,
+            scope: scope,
+            description: description,
+            example: example,
+            deprecated: deprecated
+          )
         end
 
         # @api public

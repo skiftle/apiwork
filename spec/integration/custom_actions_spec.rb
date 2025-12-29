@@ -280,9 +280,11 @@ RSpec.describe 'Custom Actions API', type: :request do
 
     context 'archive action' do
       it 'validates boolean parameter types' do
-        patch "/api/v1/posts/#{post_record.id}/archive", params: {
-          notify_users: 'not-a-boolean'
-        }, as: :json
+        patch "/api/v1/posts/#{post_record.id}/archive",
+              params: {
+                notify_users: 'not-a-boolean'
+              },
+              as: :json
 
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
@@ -293,9 +295,11 @@ RSpec.describe 'Custom Actions API', type: :request do
       end
 
       it 'rejects unknown fields' do
-        patch "/api/v1/posts/#{post_record.id}/archive", params: {
-          unknown_field: 'value'
-        }, as: :json
+        patch "/api/v1/posts/#{post_record.id}/archive",
+              params: {
+                unknown_field: 'value'
+              },
+              as: :json
 
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)

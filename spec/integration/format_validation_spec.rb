@@ -5,14 +5,16 @@ require 'rails_helper'
 RSpec.describe 'Format validation', type: :integration do
   describe 'ALLOWED_FORMATS constant' do
     it 'defines allowed formats for each type' do
-      expect(Apiwork::Schema::AttributeDefinition::ALLOWED_FORMATS).to eq({
-                                                                            string: %i[email uuid uri url date date_time ipv4 ipv6 password
-                                                                                       hostname],
-                                                                            integer: %i[int32 int64],
-                                                                            float: %i[float double],
-                                                                            decimal: %i[float double],
-                                                                            number: %i[float double]
-                                                                          })
+      expect(Apiwork::Schema::AttributeDefinition::ALLOWED_FORMATS).to eq(
+        {
+          string: %i[email uuid uri url date date_time ipv4 ipv6 password
+                     hostname],
+          integer: %i[int32 int64],
+          float: %i[float double],
+          decimal: %i[float double],
+          number: %i[float double]
+        }
+      )
     end
   end
 

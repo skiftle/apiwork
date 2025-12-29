@@ -4,10 +4,12 @@ require 'rails_helper'
 
 RSpec.describe Apiwork::Adapter::SchemaSummary do
   let(:structure) do
-    instance_double(Apiwork::API::Structure,
-                    schema_classes: [],
-                    has_resources?: false,
-                    has_index_actions?: false)
+    instance_double(
+      Apiwork::API::Structure,
+      schema_classes: [],
+      has_resources?: false,
+      has_index_actions?: false
+    )
   end
 
   describe '#filterable?' do

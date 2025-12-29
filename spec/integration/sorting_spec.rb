@@ -86,10 +86,11 @@ RSpec.describe 'Sorting API', type: :request do
     end
 
     it 'combines sorting with filtering' do
-      get '/api/v1/posts', params: {
-        filter: { published: { eq: true } },
-        sort: { title: 'desc' }
-      }
+      get '/api/v1/posts',
+          params: {
+            filter: { published: { eq: true } },
+            sort: { title: 'desc' }
+          }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)

@@ -83,10 +83,11 @@ RSpec.describe 'Pagination API', type: :request do
     end
 
     it 'combines pagination with filtering' do
-      get '/api/v1/posts', params: {
-        filter: { published: { eq: true } },
-        page: { number: 1, size: 5 }
-      }
+      get '/api/v1/posts',
+          params: {
+            filter: { published: { eq: true } },
+            page: { number: 1, size: 5 }
+          }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
@@ -99,10 +100,11 @@ RSpec.describe 'Pagination API', type: :request do
     end
 
     it 'combines pagination with sorting' do
-      get '/api/v1/posts', params: {
-        sort: { title: 'desc' },
-        page: { number: 1, size: 5 }
-      }
+      get '/api/v1/posts',
+          params: {
+            sort: { title: 'desc' },
+            page: { number: 1, size: 5 }
+          }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
@@ -114,11 +116,12 @@ RSpec.describe 'Pagination API', type: :request do
     end
 
     it 'combines pagination, filtering, and sorting' do
-      get '/api/v1/posts', params: {
-        filter: { published: { eq: true } },
-        sort: { title: 'asc' },
-        page: { number: 1, size: 3 }
-      }
+      get '/api/v1/posts',
+          params: {
+            filter: { published: { eq: true } },
+            sort: { title: 'asc' },
+            page: { number: 1, size: 3 }
+          }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)

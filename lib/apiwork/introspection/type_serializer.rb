@@ -26,11 +26,13 @@ module Apiwork
                  { type: :object }
                end
 
-        result = base.merge({
-          description: resolve_type_description(qualified_name, metadata),
-          example: resolve_type_example(metadata),
-          format: metadata[:format]
-        }.compact)
+        result = base.merge(
+          {
+            description: resolve_type_description(qualified_name, metadata),
+            example: resolve_type_example(metadata),
+            format: metadata[:format]
+          }.compact
+        )
 
         result[:deprecated] = true if metadata[:deprecated]
 

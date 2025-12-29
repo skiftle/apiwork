@@ -13,12 +13,14 @@ RSpec.describe 'empty workflow', type: :request do
   describe 'POST /api/v1/users' do
     context 'when name is empty string' do
       it 'converts empty string to nil in database' do
-        post '/api/v1/users', params: {
-          user: {
-            email: 'test@example.com',
-            name: ''
-          }
-        }, as: :json
+        post '/api/v1/users',
+             params: {
+               user: {
+                 email: 'test@example.com',
+                 name: ''
+               }
+             },
+             as: :json
 
         expect(response).to have_http_status(:created)
         json = JSON.parse(response.body)
@@ -34,12 +36,14 @@ RSpec.describe 'empty workflow', type: :request do
 
     context 'when name is null' do
       it 'rejects null values' do
-        post '/api/v1/users', params: {
-          user: {
-            email: 'test@example.com',
-            name: nil
-          }
-        }, as: :json
+        post '/api/v1/users',
+             params: {
+               user: {
+                 email: 'test@example.com',
+                 name: nil
+               }
+             },
+             as: :json
 
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
@@ -49,12 +53,14 @@ RSpec.describe 'empty workflow', type: :request do
 
     context 'when name has value' do
       it 'stores and returns the value unchanged' do
-        post '/api/v1/users', params: {
-          user: {
-            email: 'test@example.com',
-            name: 'John Doe'
-          }
-        }, as: :json
+        post '/api/v1/users',
+             params: {
+               user: {
+                 email: 'test@example.com',
+                 name: 'John Doe'
+               }
+             },
+             as: :json
 
         expect(response).to have_http_status(:created)
         json = JSON.parse(response.body)
@@ -73,11 +79,13 @@ RSpec.describe 'empty workflow', type: :request do
 
     context 'when updating name to empty string' do
       it 'converts empty string to nil in database' do
-        patch "/api/v1/users/#{user.id}", params: {
-          user: {
-            name: ''
-          }
-        }, as: :json
+        patch "/api/v1/users/#{user.id}",
+              params: {
+                user: {
+                  name: ''
+                }
+              },
+              as: :json
 
         expect(response).to have_http_status(:ok)
 
@@ -89,11 +97,13 @@ RSpec.describe 'empty workflow', type: :request do
 
     context 'when updating name to null' do
       it 'rejects null values' do
-        patch "/api/v1/users/#{user.id}", params: {
-          user: {
-            name: nil
-          }
-        }, as: :json
+        patch "/api/v1/users/#{user.id}",
+              params: {
+                user: {
+                  name: nil
+                }
+              },
+              as: :json
 
         expect(response).to have_http_status(:bad_request)
         json = JSON.parse(response.body)
@@ -134,12 +144,14 @@ RSpec.describe 'empty workflow', type: :request do
   describe 'round-trip behavior' do
     it 'maintains "" → nil → "" cycle correctly' do
       # 1. POST with empty string
-      post '/api/v1/users', params: {
-        user: {
-          email: 'test@example.com',
-          name: ''
-        }
-      }, as: :json
+      post '/api/v1/users',
+           params: {
+             user: {
+               email: 'test@example.com',
+               name: ''
+             }
+           },
+           as: :json
 
       user_id = JSON.parse(response.body).dig('user', 'id')
 
@@ -153,11 +165,13 @@ RSpec.describe 'empty workflow', type: :request do
       expect(json.dig('user', 'name')).to eq('')
 
       # 4. PATCH with empty string again
-      patch "/api/v1/users/#{user_id}", params: {
-        user: {
-          name: ''
-        }
-      }, as: :json
+      patch "/api/v1/users/#{user_id}",
+            params: {
+              user: {
+                name: ''
+              }
+            },
+            as: :json
 
       # 5. Database still has nil
       user.reload

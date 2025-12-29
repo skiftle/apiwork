@@ -181,3 +181,12 @@ Layout/ParameterAlignment:
 
 Layout/MultilineMethodParameterLineBreaks:
   Enabled: true
+
+# En rad per argument i fler-radiga metodanrop
+Layout/MultilineMethodArgumentLineBreaks:
+  Enabled: true
+  AllowMultilineFinalElement: false
+
+# Tvinga ner första argumentet på ny rad när anropet är fler-radigt
+Layout/FirstMethodArgumentLineBreak:
+  Enabled: true

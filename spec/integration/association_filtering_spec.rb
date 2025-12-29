@@ -47,9 +47,10 @@ RSpec.describe 'Association Filtering API', type: :request do
     end
 
     it 'filters posts by comment created_at' do
-      get '/api/v1/posts', params: {
-        filter: { comments: { created_at: { gt: 1.5.days.ago.iso8601 } } }
-      }
+      get '/api/v1/posts',
+          params: {
+            filter: { comments: { created_at: { gt: 1.5.days.ago.iso8601 } } }
+          }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
@@ -57,12 +58,13 @@ RSpec.describe 'Association Filtering API', type: :request do
     end
 
     it 'combines post filters with comment filters (AND logic)' do
-      get '/api/v1/posts', params: {
-        filter: {
-          published: { eq: true },
-          comments: { author: { eq: 'Alice' } }
-        }
-      }
+      get '/api/v1/posts',
+          params: {
+            filter: {
+              published: { eq: true },
+              comments: { author: { eq: 'Alice' } }
+            }
+          }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
@@ -71,14 +73,15 @@ RSpec.describe 'Association Filtering API', type: :request do
     end
 
     it 'filters posts with multiple comment conditions' do
-      get '/api/v1/posts', params: {
-        filter: {
-          comments: {
-            author: { eq: 'Alice' },
-            content: { contains: 'tutorial' }
+      get '/api/v1/posts',
+          params: {
+            filter: {
+              comments: {
+                author: { eq: 'Alice' },
+                content: { contains: 'tutorial' }
+              }
+            }
           }
-        }
-      }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
@@ -115,9 +118,10 @@ RSpec.describe 'Association Filtering API', type: :request do
     end
 
     it 'filters comments by post created_at' do
-      get '/api/v1/comments', params: {
-        filter: { post: { created_at: { gt: 2.5.days.ago.iso8601 } } }
-      }
+      get '/api/v1/comments',
+          params: {
+            filter: { post: { created_at: { gt: 2.5.days.ago.iso8601 } } }
+          }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
@@ -125,12 +129,13 @@ RSpec.describe 'Association Filtering API', type: :request do
     end
 
     it 'combines comment filters with post filters' do
-      get '/api/v1/comments', params: {
-        filter: {
-          author: { eq: 'Alice' },
-          post: { published: { eq: true } }
-        }
-      }
+      get '/api/v1/comments',
+          params: {
+            filter: {
+              author: { eq: 'Alice' },
+              post: { published: { eq: true } }
+            }
+          }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)

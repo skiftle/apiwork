@@ -108,19 +108,23 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
       # Keys inside JSON objects remain as-is with output_key_format :keep
-      expect(json['post']['metadata']).to eq({
-                                               'tags' => %w[ruby rails],
-                                               'author_notes' => 'Draft version',
-                                               'version' => 1
-                                             })
+      expect(json['post']['metadata']).to eq(
+        {
+          'tags' => %w[ruby rails],
+          'author_notes' => 'Draft version',
+          'version' => 1
+        }
+      )
 
       # Verify database storage (keys stored as-is in database)
       created_post = Post.last
-      expect(created_post.metadata).to eq({
-                                            'tags' => %w[ruby rails],
-                                            'author_notes' => 'Draft version',
-                                            'version' => 1
-                                          })
+      expect(created_post.metadata).to eq(
+        {
+          'tags' => %w[ruby rails],
+          'author_notes' => 'Draft version',
+          'version' => 1
+        }
+      )
     end
 
     it 'returns JSON data when reading records with :json columns' do
@@ -137,10 +141,12 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['post']['metadata']).to eq({
-                                               'tags' => %w[api test],
-                                               'priority' => 'high'
-                                             })
+      expect(json['post']['metadata']).to eq(
+        {
+          'tags' => %w[api test],
+          'priority' => 'high'
+        }
+      )
     end
 
     it 'updates JSON columns with partial data' do
@@ -164,10 +170,12 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json['post']['metadata']).to eq({
-                                               'version' => 2,
-                                               'updated' => true
-                                             })
+      expect(json['post']['metadata']).to eq(
+        {
+          'version' => 2,
+          'updated' => true
+        }
+      )
     end
 
     it 'accepts null for optional JSON columns' do

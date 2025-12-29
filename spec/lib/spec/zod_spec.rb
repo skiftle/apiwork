@@ -448,21 +448,30 @@ RSpec.describe Apiwork::Spec::Zod do
       # Only types actually used by schemas are registered with lazy loading
 
       it 'places datetime_filter_between before datetime_filter' do
-        expect_before(:datetime_filter_between, :datetime_filter,
-                      'DatetimeFilterBetween must be declared before DatetimeFilter uses it')
+        expect_before(
+          :datetime_filter_between,
+          :datetime_filter,
+          'DatetimeFilterBetween must be declared before DatetimeFilter uses it'
+        )
       end
 
       it 'places integer_filter_between before integer_filter' do
-        expect_before(:integer_filter_between, :integer_filter,
-                      'IntegerFilterBetween must be declared before IntegerFilter uses it')
+        expect_before(
+          :integer_filter_between,
+          :integer_filter,
+          'IntegerFilterBetween must be declared before IntegerFilter uses it'
+        )
       end
 
       it 'places all primitive filters before post_filter' do
         primitive_filters = %i[string_filter integer_filter nullable_boolean_filter datetime_filter]
 
         primitive_filters.each do |filter|
-          expect_before(filter, :post_filter,
-                        "#{filter} must be declared before PostFilter references it")
+          expect_before(
+            filter,
+            :post_filter,
+            "#{filter} must be declared before PostFilter references it"
+          )
         end
       end
 

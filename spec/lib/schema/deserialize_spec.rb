@@ -52,10 +52,12 @@ RSpec.describe 'Schema.deserialize' do
     end
 
     it 'handles array input' do
-      result = schema_class.deserialize([
-                                          { email: 'ONE@EXAMPLE.COM' },
-                                          { email: 'TWO@EXAMPLE.COM' }
-                                        ])
+      result = schema_class.deserialize(
+        [
+          { email: 'ONE@EXAMPLE.COM' },
+          { email: 'TWO@EXAMPLE.COM' }
+        ]
+      )
 
       expect(result).to be_an(Array)
       expect(result[0][:email]).to eq('one@example.com')
@@ -77,11 +79,13 @@ RSpec.describe 'Schema.deserialize' do
 
   describe '.deserialize_single' do
     it 'applies all decode transformers' do
-      result = schema_class.deserialize_single({
-                                                 title: 'Test',
-                                                 email: '  UPPER@TEST.COM  ',
-                                                 notes: ''
-                                               })
+      result = schema_class.deserialize_single(
+        {
+          title: 'Test',
+          email: '  UPPER@TEST.COM  ',
+          notes: ''
+        }
+      )
 
       expect(result[:title]).to eq('Test')
       expect(result[:email]).to eq('upper@test.com')

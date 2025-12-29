@@ -36,8 +36,14 @@ RSpec.describe 'API Introspection' do
 
     describe 'resources' do
       it 'includes all top-level resources' do
-        expect(json[:resources].keys).to include(:posts, :comments, :articles, :persons, :restricted_posts,
-                                                 :safe_comments)
+        expect(json[:resources].keys).to include(
+          :posts,
+          :comments,
+          :articles,
+          :persons,
+          :restricted_posts,
+          :safe_comments
+        )
       end
 
       describe 'posts resource' do

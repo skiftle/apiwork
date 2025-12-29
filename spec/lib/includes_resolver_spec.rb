@@ -63,11 +63,13 @@ RSpec.describe Apiwork::Adapter::StandardAdapter::IncludesResolver do
 
       result = described_class.deep_merge_includes(base, override)
 
-      expect(result).to eq({
-                             author: {},
-                             comments: { author: {}, replies: {} },
-                             tags: {}
-                           })
+      expect(result).to eq(
+        {
+          author: {},
+          comments: { author: {}, replies: {} },
+          tags: {}
+        }
+      )
     end
 
     it 'handles symbol and string keys consistently' do

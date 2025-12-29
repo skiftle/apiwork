@@ -97,10 +97,11 @@ RSpec.describe 'Cursor Pagination API', type: :request do
     end
 
     it 'combines cursor pagination with filtering' do
-      get '/api/v1/activities', params: {
-        filter: { read: { eq: true } },
-        page: { size: 5 }
-      }
+      get '/api/v1/activities',
+          params: {
+            filter: { read: { eq: true } },
+            page: { size: 5 }
+          }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)

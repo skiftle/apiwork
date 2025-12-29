@@ -110,8 +110,10 @@ module Apiwork
       def serialize_custom_type_param(options)
         custom_type_name = options[:custom_type]
         if @param_definition.contract_class.resolve_custom_type(custom_type_name)
-          custom_type_name = @name_resolver.qualified_name(custom_type_name,
-                                                           @param_definition)
+          custom_type_name = @name_resolver.qualified_name(
+            custom_type_name,
+            @param_definition
+          )
         end
 
         result = { as: options[:as], type: custom_type_name }.compact
@@ -231,13 +233,15 @@ module Apiwork
       end
 
       def apply_metadata_fields(result, options)
-        result.merge!({
-          description: resolve_attribute_description(options),
-          example: options[:example],
-          format: options[:format],
-          min: options[:min],
-          max: options[:max]
-        }.compact)
+        result.merge!(
+          {
+            description: resolve_attribute_description(options),
+            example: options[:example],
+            format: options[:format],
+            min: options[:min],
+            max: options[:max]
+          }.compact
+        )
 
         result[:deprecated] = true if options[:deprecated]
       end

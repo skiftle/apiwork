@@ -134,11 +134,13 @@ RSpec.describe 'Security and edge case validation' do
         d.param :field3, type: :integer
       end
 
-      result = multi_def.validate({
-                                    field1: 'invalid',
-                                    field2: 'invalid',
-                                    field3: 'invalid'
-                                  })
+      result = multi_def.validate(
+        {
+          field1: 'invalid',
+          field2: 'invalid',
+          field3: 'invalid'
+        }
+      )
 
       expect(result[:issues]).not_to be_empty
       expect(result[:issues].size).to eq(3)

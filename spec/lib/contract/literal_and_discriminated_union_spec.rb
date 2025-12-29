@@ -86,11 +86,13 @@ RSpec.describe 'Literal and Discriminated Union Features' do
     end
 
     it 'validates range variant with correct discriminator' do
-      result = definition.validate({ filter: {
-                                     gte: 10,
-                                     kind: 'range',
-                                     lte: 20
-                                   } })
+      result = definition.validate(
+        { filter: {
+          gte: 10,
+          kind: 'range',
+          lte: 20
+        } }
+      )
       expect(result[:issues]).to be_empty
       expect(result[:params][:filter][:gte]).to eq(10)
       expect(result[:params][:filter][:lte]).to eq(20)

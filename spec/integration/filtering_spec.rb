@@ -79,12 +79,13 @@ RSpec.describe 'Filtering API', type: :request do
     end
 
     it 'combines multiple filters with AND logic' do
-      get '/api/v1/posts', params: {
-        filter: {
-          published: { eq: true },
-          body: { contains: 'Rails' }
-        }
-      }
+      get '/api/v1/posts',
+          params: {
+            filter: {
+              published: { eq: true },
+              body: { contains: 'Rails' }
+            }
+          }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)

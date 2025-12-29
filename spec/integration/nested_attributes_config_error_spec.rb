@@ -33,8 +33,10 @@ RSpec.describe 'Nested Attributes Configuration Errors', type: :request do
           # doesn't have accepts_nested_attributes_for :comments
           has_many :comments, writable: true
         end
-      end.to raise_error(Apiwork::ConfigurationError,
-                         /doesn't accept nested attributes.*accepts_nested_attributes_for :comments/)
+      end.to raise_error(
+        Apiwork::ConfigurationError,
+        /doesn't accept nested attributes.*accepts_nested_attributes_for :comments/
+      )
     end
 
     it 'succeeds when model has accepts_nested_attributes_for configured' do

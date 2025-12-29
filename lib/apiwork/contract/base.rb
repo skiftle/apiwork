@@ -221,8 +221,12 @@ module Apiwork
                  deprecated: false,
                  schema_class: nil,
                  &block)
-          api_class.type(name, scope: self, description:, example:, format:, deprecated:,
-                               schema_class:, &block)
+          api_class.type(
+            name,
+            scope: self, description:, example:, format:, deprecated:,
+            schema_class:,
+            &block
+          )
         end
 
         # @api public
@@ -305,18 +309,21 @@ module Apiwork
         #   end
         def import(contract_class, as:)
           unless contract_class.is_a?(Class)
-            raise ArgumentError, "import must be a Class constant, got #{contract_class.class}. " \
-                                 "Use: import UserContract, as: :user (not 'UserContract' or :user_contract)"
+            raise ArgumentError,
+                  "import must be a Class constant, got #{contract_class.class}. " \
+                                                   "Use: import UserContract, as: :user (not 'UserContract' or :user_contract)"
           end
 
           unless contract_class < Contract::Base
-            raise ArgumentError, 'import must be a Contract class (subclass of Apiwork::Contract::Base), ' \
-                                 "got #{contract_class}"
+            raise ArgumentError,
+                  'import must be a Contract class (subclass of Apiwork::Contract::Base), ' \
+                                                   "got #{contract_class}"
           end
 
           unless as.is_a?(Symbol)
-            raise ArgumentError, "import alias must be a Symbol, got #{as.class}. " \
-                                 'Use: import UserContract, as: :user'
+            raise ArgumentError,
+                  "import alias must be a Symbol, got #{as.class}. " \
+                                                   'Use: import UserContract, as: :user'
           end
 
           imports[as] = contract_class

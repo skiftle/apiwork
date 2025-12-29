@@ -41,11 +41,12 @@ RSpec.describe 'Includes API', type: :request do
       end
 
       it 'works with filtering and sorting' do
-        get '/api/v1/posts', params: {
-          filter: { published: { eq: true } },
-          sort: { title: 'asc' },
-          include: { comments: true }
-        }
+        get '/api/v1/posts',
+            params: {
+              filter: { published: { eq: true } },
+              sort: { title: 'asc' },
+              include: { comments: true }
+            }
 
         expect(response).to have_http_status(:ok)
         json = JSON.parse(response.body)
@@ -85,13 +86,14 @@ RSpec.describe 'Includes API', type: :request do
     end
 
     it 'supports nested includes' do
-      get '/api/v1/posts', params: {
-        include: {
-          comments: {
-            post: true
+      get '/api/v1/posts',
+          params: {
+            include: {
+              comments: {
+                post: true
+              }
+            }
           }
-        }
-      }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
@@ -237,13 +239,15 @@ RSpec.describe 'Includes API', type: :request do
     end
 
     it 'does not include associations when not requested' do
-      post '/api/v1/posts', params: {
-        post: {
-          body: 'More content',
-          published: false,
-          title: 'Another Post'
-        }
-      }, as: :json
+      post '/api/v1/posts',
+           params: {
+             post: {
+               body: 'More content',
+               published: false,
+               title: 'Another Post'
+             }
+           },
+           as: :json
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
@@ -265,9 +269,11 @@ RSpec.describe 'Includes API', type: :request do
     end
 
     it 'does not include associations when not requested' do
-      patch "/api/v1/posts/#{post2.id}", params: {
-        post: { title: 'Updated Second Post' }
-      }, as: :json
+      patch "/api/v1/posts/#{post2.id}",
+            params: {
+              post: { title: 'Updated Second Post' }
+            },
+            as: :json
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)

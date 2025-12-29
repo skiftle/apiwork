@@ -3,9 +3,19 @@
 module Apiwork
   module Schema
     class AttributeDefinition
-      attr_reader :name, :type, :enum, :optional, :empty, :min, :max,
-                  :description, :example, :format, :deprecated,
-                  :inline_shape, :of
+      attr_reader :name,
+                  :type,
+                  :enum,
+                  :optional,
+                  :empty,
+                  :min,
+                  :max,
+                  :description,
+                  :example,
+                  :format,
+                  :deprecated,
+                  :inline_shape,
+                  :of
 
       ALLOWED_FORMATS = {
         string: %i[email uuid uri url date date_time ipv4 ipv6 password hostname],

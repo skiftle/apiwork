@@ -134,11 +134,13 @@ RSpec.describe 'Routing DSL Override with only/except', type: :request do
       expect(response).to have_http_status(:ok)
 
       # Create
-      post '/api/v1/posts', as: :json, params: { post: {
-        body: 'Body',
-        published: true,
-        title: 'New'
-      } }
+      post '/api/v1/posts',
+           as: :json,
+           params: { post: {
+             body: 'Body',
+             published: true,
+             title: 'New'
+           } }
       expect(response).to have_http_status(:created)
 
       # Update
@@ -152,12 +154,13 @@ RSpec.describe 'Routing DSL Override with only/except', type: :request do
 
     it 'unrestricted comments allow all actions including destroy' do
       # Create
-      post '/api/v1/comments', params: { comment: {
-        author: 'Author',
-        content: 'New',
-        post_id: test_post.id
-      } },
-                               as: :json
+      post '/api/v1/comments',
+           params: { comment: {
+             author: 'Author',
+             content: 'New',
+             post_id: test_post.id
+           } },
+           as: :json
       expect(response).to have_http_status(:created)
       created_id = JSON.parse(response.body)['comment']['id']
 

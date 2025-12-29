@@ -427,10 +427,12 @@ module Apiwork
               association_filter_type = if import_alias
                                           :"#{import_alias}_filter"
                                         else
-                                          builder.send(:build_filter_type_for_schema,
-                                                       association_resource.schema_class,
-                                                       visited: visited,
-                                                       depth: depth + 1)
+                                          builder.send(
+                                            :build_filter_type_for_schema,
+                                            association_resource.schema_class,
+                                            visited: visited,
+                                            depth: depth + 1
+                                          )
                                         end
 
               param name, association_definition: association_definition, optional: true, type: association_filter_type if association_filter_type
@@ -483,10 +485,12 @@ module Apiwork
               association_sort_type = if import_alias
                                         :"#{import_alias}_sort"
                                       else
-                                        builder.send(:build_sort_type_for_schema,
-                                                     association_resource.schema_class,
-                                                     visited: visited,
-                                                     depth: depth + 1)
+                                        builder.send(
+                                          :build_sort_type_for_schema,
+                                          association_resource.schema_class,
+                                          visited: visited,
+                                          depth: depth + 1
+                                        )
                                       end
 
               param name, association_definition: association_definition, optional: true, type: association_sort_type if association_sort_type
@@ -566,10 +570,12 @@ module Apiwork
                                              imported_type = :"#{import_alias}_include"
                                              registrar_local.resolve_type(imported_type) ? imported_type : nil
                                            else
-                                             builder.send(:build_include_type_for_schema,
-                                                          association_resource.schema_class,
-                                                          visited: visited,
-                                                          depth: depth + 1)
+                                             builder.send(
+                                               :build_include_type_for_schema,
+                                               association_resource.schema_class,
+                                               visited: visited,
+                                               depth: depth + 1
+                                             )
                                            end
 
                 if association_include_type.nil?
@@ -706,18 +712,32 @@ module Apiwork
 
               if association_type
                 if association_definition.singular?
-                  param name, type: association_type, optional: is_optional, nullable: association_definition.nullable?,
-                              association_definition: association_definition
+                  param name,
+                        type: association_type,
+                        optional: is_optional,
+                        nullable: association_definition.nullable?,
+                        association_definition: association_definition
                 elsif association_definition.collection?
-                  param name, type: :array, of: association_type, optional: is_optional,
-                              nullable: association_definition.nullable?, association_definition: association_definition
+                  param name,
+                        type: :array,
+                        of: association_type,
+                        optional: is_optional,
+                        nullable: association_definition.nullable?,
+                        association_definition: association_definition
                 end
               elsif association_definition.singular?
-                param name, type: :object, optional: is_optional, nullable: association_definition.nullable?,
-                            association_definition: association_definition
+                param name,
+                      type: :object,
+                      optional: is_optional,
+                      nullable: association_definition.nullable?,
+                      association_definition: association_definition
               elsif association_definition.collection?
-                param name, type: :array, of: :object, optional: is_optional, nullable: association_definition.nullable?,
-                            association_definition: association_definition
+                param name,
+                      type: :array,
+                      of: :object,
+                      optional: is_optional,
+                      nullable: association_definition.nullable?,
+                      association_definition: association_definition
               end
             end
           end

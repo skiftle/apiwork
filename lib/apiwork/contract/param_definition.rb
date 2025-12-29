@@ -80,8 +80,13 @@ module Apiwork
                 **options,
                 &block)
         if type.nil? && (existing_param = @params[name])
-          merge_existing_param(name, existing_param, type:, optional:, default:, enum:, of:, as:,
-                                                     discriminator:, value:, options:, &block)
+          merge_existing_param(
+            name,
+            existing_param,
+            type:, optional:, default:, enum:, of:, as:,
+            discriminator:, value:, options:,
+            &block
+          )
           return
         end
 
@@ -96,12 +101,20 @@ module Apiwork
         when :literal
           define_literal_param(name, as: as, default: default, optional: optional || false, options: options, value: value)
         when :union
-          define_union_param(name, discriminator: discriminator, resolved_enum: resolved_enum,
-                                   optional: optional || false, default: default, as: as, options: options, &block)
+          define_union_param(
+            name,
+            discriminator: discriminator, resolved_enum: resolved_enum,
+            optional: optional || false, default: default, as: as, options: options,
+            &block
+          )
         else
-          define_regular_param(name, type: type, resolved_enum: resolved_enum,
-                                     optional: optional || false, default: default, of: of, as: as,
-                                     visited_types: visited_types, options: options, &block)
+          define_regular_param(
+            name,
+            type: type, resolved_enum: resolved_enum,
+            optional: optional || false, default: default, of: of, as: as,
+            visited_types: visited_types, options: options,
+            &block
+          )
         end
       end
 
@@ -204,15 +217,17 @@ module Apiwork
 
         literal_value = value.nil? ? options[:value] : value
 
-        @params[name] = apply_param_defaults({
-                                               name: name,
-                                               type: :literal,
-                                               value: literal_value,
-                                               optional: optional,
-                                               default: default,
-                                               as: as,
-                                               **options.except(:value) # Remove :value from options to avoid duplication
-                                             })
+        @params[name] = apply_param_defaults(
+          {
+            name: name,
+            type: :literal,
+            value: literal_value,
+            optional: optional,
+            default: default,
+            as: as,
+            **options.except(:value) # Remove :value from options to avoid duplication
+          }
+        )
       end
 
       def define_union_param(name, as:, default:, discriminator:, optional:, options:, resolved_enum:, &block)
@@ -221,17 +236,19 @@ module Apiwork
         union_builder = UnionBuilder.new(@contract_class, discriminator: discriminator)
         union_builder.instance_eval(&block)
 
-        @params[name] = apply_param_defaults({
-                                               name: name,
-                                               type: :union,
-                                               optional: optional,
-                                               default: default,
-                                               as: as,
-                                               union: union_builder,
-                                               discriminator: discriminator,
-                                               enum: resolved_enum, # Store resolved enum (values or reference)
-                                               **options
-                                             })
+        @params[name] = apply_param_defaults(
+          {
+            name: name,
+            type: :union,
+            optional: optional,
+            default: default,
+            as: as,
+            union: union_builder,
+            discriminator: discriminator,
+            enum: resolved_enum, # Store resolved enum (values or reference)
+            **options
+          }
+        )
       end
 
       def define_regular_param(name, as:, default:, of:, optional:, options:, resolved_enum:, type:, visited_types:, &block)
@@ -244,13 +261,21 @@ module Apiwork
         end
 
         if custom_type_block
-          define_custom_type_param(name, type: type, custom_type_block: custom_type_block,
-                                         resolved_enum: resolved_enum, optional: optional,
-                                         default: default, of: of, as: as, visited_types: visited_types,
-                                         options: options, &block)
+          define_custom_type_param(
+            name,
+            type: type, custom_type_block: custom_type_block,
+            resolved_enum: resolved_enum, optional: optional,
+            default: default, of: of, as: as, visited_types: visited_types,
+            options: options,
+            &block
+          )
         else
-          define_standard_param(name, type: type, resolved_enum: resolved_enum,
-                                      optional: optional, default: default, of: of, as: as, options: options, &block)
+          define_standard_param(
+            name,
+            type: type, resolved_enum: resolved_enum,
+            optional: optional, default: default, of: of, as: as, options: options,
+            &block
+          )
         end
       end
 
@@ -279,31 +304,35 @@ module Apiwork
 
         shape_param_definition.instance_eval(&block) if block_given?
 
-        @params[name] = apply_param_defaults({
-                                               name: name,
-                                               type: :object, # Custom types are objects internally
-                                               optional: optional,
-                                               default: default,
-                                               enum: resolved_enum, # Store resolved enum (values or reference)
-                                               of: of,
-                                               as: as,
-                                               custom_type: type, # Track original custom type name
-                                               shape: shape_param_definition,
-                                               **options
-                                             })
+        @params[name] = apply_param_defaults(
+          {
+            name: name,
+            type: :object, # Custom types are objects internally
+            optional: optional,
+            default: default,
+            enum: resolved_enum, # Store resolved enum (values or reference)
+            of: of,
+            as: as,
+            custom_type: type, # Track original custom type name
+            shape: shape_param_definition,
+            **options
+          }
+        )
       end
 
       def define_standard_param(name, as:, default:, of:, optional:, options:, resolved_enum:, type:, &block)
-        @params[name] = apply_param_defaults({
-                                               name: name,
-                                               type: type,
-                                               optional: optional,
-                                               default: default,
-                                               enum: resolved_enum, # Store resolved enum (values or reference)
-                                               of: of,
-                                               as: as,
-                                               **options
-                                             })
+        @params[name] = apply_param_defaults(
+          {
+            name: name,
+            type: type,
+            optional: optional,
+            default: default,
+            enum: resolved_enum, # Store resolved enum (values or reference)
+            of: of,
+            as: as,
+            **options
+          }
+        )
 
         return unless block_given?
 
