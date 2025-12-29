@@ -42,15 +42,15 @@ module Apiwork
       #
       # Used in generated specs as the operation summary.
       #
-      # @param text [String] summary text (optional)
+      # @param summary [String] summary text (optional)
       # @return [String, nil] the summary
       #
       # @example
       #   action :create do
       #     summary 'Create a new invoice'
       #   end
-      def summary(text = nil)
-        @summary = text if text
+      def summary(summary = nil)
+        @summary = summary if summary
         @summary
       end
 
@@ -60,15 +60,15 @@ module Apiwork
       # Used in generated specs as the operation description.
       # Supports Markdown formatting.
       #
-      # @param text [String] description text (optional)
+      # @param description [String] description text (optional)
       # @return [String, nil] the description
       #
       # @example
       #   action :create do
       #     description 'Creates a new invoice and sends notification email.'
       #   end
-      def description(text = nil)
-        @description = text if text
+      def description(description = nil)
+        @description = description if description
         @description
       end
 
@@ -77,15 +77,15 @@ module Apiwork
       #
       # Tags help organize actions in generated documentation.
       #
-      # @param tags_list [Array<String,Symbol>] tag names
+      # @param tags [Array<String,Symbol>] tag names
       # @return [Array, nil] the tags
       #
       # @example
       #   action :create do
       #     tags :billing, :invoices
       #   end
-      def tags(*tags_list)
-        @tags = tags_list.flatten if tags_list.any?
+      def tags(*tags)
+        @tags = tags.flatten if tags.any?
         @tags
       end
 
@@ -109,15 +109,15 @@ module Apiwork
       # @api public
       # Sets a custom operation ID.
       #
-      # @param value [String] custom operation ID (optional)
+      # @param operation_id [String] custom operation ID (optional)
       # @return [String, nil] the operation ID
       #
       # @example
       #   action :create do
       #     operation_id 'createNewInvoice'
       #   end
-      def operation_id(value = nil)
-        @operation_id = value if value
+      def operation_id(operation_id = nil)
+        @operation_id = operation_id if operation_id
         @operation_id
       end
 
