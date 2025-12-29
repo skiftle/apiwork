@@ -31,19 +31,6 @@ function getFirstHeaderId() {
   return "";
 }
 
-function getLastHeaderId() {
-  const flat: string[] = [];
-  for (const h of headers.value) {
-    if (h.link) flat.push(h.link.slice(1));
-    if (h.children) {
-      for (const c of h.children) {
-        if (c.link) flat.push(c.link.slice(1));
-      }
-    }
-  }
-  return flat[flat.length - 1] || "";
-}
-
 function getAbsoluteTop(element: HTMLElement): number {
   let top = 0;
   let el: HTMLElement | null = element;
@@ -66,20 +53,11 @@ function onScroll() {
   const scrollTop = window.scrollY;
   const scrollHeight = document.documentElement.scrollHeight;
   const clientHeight = window.innerHeight;
-
-  // Bottom of page: activate last heading
-  if (scrollTop + clientHeight >= scrollHeight - 10) {
-    const lastId = getLastHeaderId();
-    if (lastId) {
-      activeId.value = lastId;
-      return;
-    }
-  }
-
-  // Find heading closest to scroll position + offset
   const positions = headingPositions.value;
+
   if (!positions.length) return;
 
+  // Find heading closest to scroll position + offset
   let currentId = positions[0].id;
   for (const { id, top } of positions) {
     if (top <= scrollTop + HEADER_OFFSET) {
@@ -89,16 +67,38 @@ function onScroll() {
     }
   }
 
+  // At absolute bottom: activate last heading if not already reached naturally
+  const isAtBottom = scrollTop + clientHeight >= scrollHeight - 10;
+  if (isAtBottom) {
+    const lastPosition = positions[positions.length - 1];
+    if (lastPosition && lastPosition.top > scrollTop + HEADER_OFFSET) {
+      currentId = lastPosition.id;
+    }
+  }
+
   activeId.value = currentId;
 }
 
 let scrollTimeout: number | null = null;
+let clickedId: string | null = null;
+
 function throttledScroll() {
   if (scrollTimeout) return;
   scrollTimeout = window.setTimeout(() => {
-    onScroll();
+    // Skip scroll calculation if user just clicked a link
+    if (clickedId) {
+      activeId.value = clickedId;
+      clickedId = null;
+    } else {
+      onScroll();
+    }
     scrollTimeout = null;
   }, 50);
+}
+
+function onLinkClick(id: string) {
+  clickedId = id;
+  activeId.value = id;
 }
 
 function updateIndicator() {
@@ -186,6 +186,7 @@ watch(headers, () => {
                 nested: h.level > 2,
                 active: h.link === '#' + activeId,
               }"
+              @click="onLinkClick(h.link.slice(1))"
             >
               {{ h.title }}
             </a>
@@ -195,6 +196,7 @@ watch(headers, () => {
                   :href="child.link"
                   class="outline-link nested"
                   :class="{ active: child.link === '#' + activeId }"
+                  @click="onLinkClick(child.link.slice(1))"
                 >
                   {{ child.title }}
                 </a>
