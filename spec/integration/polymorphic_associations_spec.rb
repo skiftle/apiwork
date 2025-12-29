@@ -70,8 +70,8 @@ RSpec.describe 'Polymorphic associations', type: :integration do
 
       reflection = double(
         'ActiveRecord::Reflection',
-        name: :commentable,
         foreign_type: 'commentable_type',
+        name: :commentable,
         polymorphic?: true,
       )
 

@@ -21,12 +21,12 @@ RSpec.describe 'Contract Serialization' do
 
       expect(json).to eq(
         {
-          title: { type: :string },
           published: {
             default: false,
             optional: true,
             type: :boolean,
           },
+          title: { type: :string },
         },
       )
     end
@@ -376,8 +376,8 @@ RSpec.describe 'Contract Serialization' do
       expect(json[:types][:shipping_location][:type]).to eq(:object)
       expect(json[:types][:shipping_location][:shape]).to eq(
         {
-          street: { type: :string },
           city: { type: :string },
+          street: { type: :string },
         },
       )
     end

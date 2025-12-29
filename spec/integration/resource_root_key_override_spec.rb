@@ -98,8 +98,8 @@ RSpec.describe 'Resource override and selective serialization', type: :request d
       post_record = Post.create!(body: 'Original body', published: true, title: 'Original')
 
       patch "/api/v1/articles/#{post_record.id}",
-            params: { article: { title: 'Updated Title' } },
-            as: :json
+            as: :json,
+            params: { article: { title: 'Updated Title' } }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)

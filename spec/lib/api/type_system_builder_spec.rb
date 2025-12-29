@@ -15,11 +15,11 @@ RSpec.describe 'API TypeSystem Builder' do
 
     expect(types).to have_key(:error)
     expect(types[:error]).to include(
-      type: :object,
       shape: {
         error: { type: :string },
         code: { type: :integer },
       },
+      type: :object,
     )
   end
 
@@ -135,10 +135,10 @@ RSpec.describe 'API TypeSystem Builder' do
       types = Apiwork::Introspection::TypeSerializer.new(api).serialize_types
 
       expect(types[:full_metadata_type]).to include(
+        deprecated: true,
         description: 'Comprehensive metadata',
         example: { data: 'example' },
         format: 'custom',
-        deprecated: true,
       )
     end
 
@@ -180,10 +180,10 @@ RSpec.describe 'API TypeSystem Builder' do
       enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
 
       expect(enums[:full_metadata_enum]).to eq(
-        values: %w[option1 option2],
+        deprecated: true,
         description: 'Complete enum metadata',
         example: 'option1',
-        deprecated: true,
+        values: %w[option1 option2],
       )
     end
 

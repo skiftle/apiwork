@@ -45,8 +45,8 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
       author = Author.create!(bio: 'Original Bio', name: 'Original Name')
 
       patch "/api/v1/authors/#{author.id}",
-            params: { author: { bio: 'Attempted Update' } },
-            as: :json
+            as: :json,
+            params: { author: { bio: 'Attempted Update' } }
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
@@ -64,8 +64,8 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
       author = Author.create!(bio: 'Original Bio', name: 'Original Name')
 
       patch "/api/v1/authors/#{author.id}",
-            params: { author: { bio: 'Should be rejected', name: 'Updated Name' } },
-            as: :json
+            as: :json,
+            params: { author: { bio: 'Should be rejected', name: 'Updated Name' } }
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
@@ -105,8 +105,8 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
       expect(author.verified).to be_falsey # nil or false
 
       patch "/api/v1/authors/#{author.id}",
-            params: { author: { verified: true } },
-            as: :json
+            as: :json,
+            params: { author: { verified: true } }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
@@ -121,8 +121,8 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
       author = Author.create!(name: 'Original Name', verified: false)
 
       patch "/api/v1/authors/#{author.id}",
-            params: { author: { name: 'Updated Name', verified: true } },
-            as: :json
+            as: :json,
+            params: { author: { name: 'Updated Name', verified: true } }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
@@ -156,8 +156,8 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
       author = Author.create!(name: 'Original Name')
 
       patch "/api/v1/authors/#{author.id}",
-            params: { author: { name: 'Updated Name' } },
-            as: :json
+            as: :json,
+            params: { author: { name: 'Updated Name' } }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
@@ -173,12 +173,12 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
     it 'correctly filters context-specific fields on create vs update' do
       # Create with bio (allowed), verified rejected with field_unknown
       post '/api/v1/authors',
+           as: :json,
            params: { author: {
              bio: 'Initial Bio',
              name: 'Author',
              verified: true,
-           } },
-           as: :json
+           } }
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
@@ -188,8 +188,8 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
 
       # Create without verified field - should succeed
       post '/api/v1/authors',
-           params: { author: { bio: 'Initial Bio', name: 'Author' } },
-           as: :json
+           as: :json,
+           params: { author: { bio: 'Initial Bio', name: 'Author' } }
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
@@ -200,8 +200,8 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
 
       # Update with bio (rejected) and verified (allowed)
       patch "/api/v1/authors/#{author_id}",
-            params: { author: { bio: 'Updated Bio', verified: true } },
-            as: :json
+            as: :json,
+            params: { author: { bio: 'Updated Bio', verified: true } }
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
@@ -211,8 +211,8 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
 
       # Update only verified (allowed on update)
       patch "/api/v1/authors/#{author_id}",
-            params: { author: { verified: true } },
-            as: :json
+            as: :json,
+            params: { author: { verified: true } }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)

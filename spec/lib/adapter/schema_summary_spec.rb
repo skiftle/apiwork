@@ -6,9 +6,9 @@ RSpec.describe Apiwork::Adapter::SchemaSummary do
   let(:structure) do
     instance_double(
       Apiwork::API::Structure,
-      schema_classes: [],
-      has_resources?: false,
       has_index_actions?: false,
+      has_resources?: false,
+      schema_classes: [],
     )
   end
 

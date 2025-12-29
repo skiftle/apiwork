@@ -69,9 +69,9 @@ RSpec.describe Apiwork::Issue do
         {
           code: :required,
           detail: 'Field is required',
+          meta: { field: :email },
           path: %w[user email],
           pointer: '/user/email',
-          meta: { field: :email },
         },
       )
     end

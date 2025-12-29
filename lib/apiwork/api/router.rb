@@ -17,11 +17,11 @@ module Apiwork
               scope path: api_class.path do
                 api_class.specs.each do |spec_name|
                   get api_class.spec_path(spec_name),
-                      to: 'apiwork/specs#show',
                       defaults: {
                         spec_name: spec_name,
                         api_path: api_class.path,
-                      }
+                      },
+                      to: 'apiwork/specs#show'
                 end
               end
             end

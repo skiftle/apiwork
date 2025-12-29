@@ -68,10 +68,10 @@ RSpec.describe 'TypeSystem Metadata' do
     it 'stores and serializes type with all metadata fields' do
       api = Apiwork::API.define '/api/test' do
         type :payment_info,
+             deprecated: true,
              description: 'Payment information structure',
              example: { amount: 100, currency: 'USD' },
-             format: 'payment',
-             deprecated: true do
+             format: 'payment' do
           param :amount, type: :integer
           param :currency, type: :string
         end
@@ -80,10 +80,10 @@ RSpec.describe 'TypeSystem Metadata' do
       types = Apiwork::Introspection::TypeSerializer.new(api).serialize_types
 
       expect(types[:payment_info]).to include(
+        deprecated: true,
         description: 'Payment information structure',
         example: { amount: 100, currency: 'USD' },
         format: 'payment',
-        deprecated: true,
       )
     end
 
@@ -181,10 +181,10 @@ RSpec.describe 'TypeSystem Metadata' do
       enums = Apiwork::Introspection::TypeSerializer.new(api).serialize_enums
 
       expect(enums[:color]).to eq(
-        values: %w[red green blue],
+        deprecated: true,
         description: 'Available color options',
         example: 'red',
-        deprecated: true,
+        values: %w[red green blue],
       )
     end
 

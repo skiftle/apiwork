@@ -77,6 +77,7 @@ RSpec.describe 'Model Validation Errors', type: :request do
     it 'validates nested has_many association with writable key' do
       # Schema has `has_many :comments, writable: true` - uses 'comments' key in input
       post '/api/v1/posts',
+           as: :json,
            params: {
              post: {
                title: 'Valid Title',
@@ -84,8 +85,7 @@ RSpec.describe 'Model Validation Errors', type: :request do
                  { content: '' },
                ],
              },
-           },
-           as: :json
+           }
 
       json = JSON.parse(response.body)
 
@@ -125,13 +125,13 @@ RSpec.describe 'Model Validation Errors', type: :request do
   describe 'Multiple validation errors' do
     it 'returns all validation errors at once' do
       post '/api/v1/posts',
+           as: :json,
            params: {
              post: {
                title: '',
                published: 'not-a-boolean',
              },
-           },
-           as: :json
+           }
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)

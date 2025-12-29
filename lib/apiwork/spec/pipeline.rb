@@ -30,9 +30,9 @@ module Apiwork
             spec_names.each do |name|
               count += generate_file(
                 api_class: api_class,
-                spec_name: name,
-                output: output,
                 options: options,
+                output: output,
+                spec_name: name,
               )
             end
           end

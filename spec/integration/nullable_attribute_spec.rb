@@ -29,8 +29,8 @@ RSpec.describe 'Nullable attribute option', type: :request do
       user = User.create!(email: 'original@example.com', name: 'Test User')
 
       patch "/api/v1/users/#{user.id}",
-            params: { user: { email: nil } },
-            as: :json
+            as: :json,
+            params: { user: { email: nil } }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
@@ -57,8 +57,8 @@ RSpec.describe 'Nullable attribute option', type: :request do
       user = User.create!(email: nil, name: 'Test User')
 
       patch "/api/v1/users/#{user.id}",
-            params: { user: { email: 'new@example.com' } },
-            as: :json
+            as: :json,
+            params: { user: { email: 'new@example.com' } }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
@@ -95,8 +95,8 @@ RSpec.describe 'Nullable attribute option', type: :request do
       user = User.create!(email: 'test@example.com', name: 'Original Name')
 
       patch "/api/v1/users/#{user.id}",
-            params: { user: { name: nil } },
-            as: :json
+            as: :json,
+            params: { user: { name: nil } }
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
@@ -116,8 +116,8 @@ RSpec.describe 'Nullable attribute option', type: :request do
       # nil → rejected (value_null)
 
       post '/api/v1/users',
-           params: { user: { email: 'test@example.com', name: '' } },
-           as: :json
+           as: :json,
+           params: { user: { email: 'test@example.com', name: '' } }
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
@@ -128,8 +128,8 @@ RSpec.describe 'Nullable attribute option', type: :request do
 
       # But explicit nil is rejected
       post '/api/v1/users',
-           params: { user: { email: 'test2@example.com', name: nil } },
-           as: :json
+           as: :json,
+           params: { user: { email: 'test2@example.com', name: nil } }
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)
@@ -152,8 +152,8 @@ RSpec.describe 'Nullable attribute option', type: :request do
 
       # Update with value
       patch "/api/v1/users/#{user.id}",
-            params: { user: { email: 'NEW@EXAMPLE.COM' } },
-            as: :json
+            as: :json,
+            params: { user: { email: 'NEW@EXAMPLE.COM' } }
 
       user.reload
       expect(user.email).to eq('NEW@EXAMPLE.COM') # Deserialize uppercases

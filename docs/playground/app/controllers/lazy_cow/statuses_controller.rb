@@ -15,9 +15,9 @@ module LazyCow
     def stats
       expose(
         {
-          users_count: 1234,
           posts_count: 5678,
           uptime_seconds: 86_400,
+          users_count: 1234,
         },
       )
     end

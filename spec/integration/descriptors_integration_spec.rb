@@ -33,21 +33,21 @@ RSpec.describe 'TypeSystem Integration', type: :request do
 
       expect(introspection[:types]).to have_key(:error_detail)
       expect(introspection[:types][:error_detail]).to include(
-        type: :object,
         shape: {
           code: { type: :string },
           message: { type: :string },
           field: { type: :string },
         },
+        type: :object,
       )
 
       expect(introspection[:types]).to have_key(:pagination_params)
       expect(introspection[:types][:pagination_params]).to include(
-        type: :object,
         shape: {
           page: { type: :integer },
           per_page: { type: :integer },
         },
+        type: :object,
       )
     end
 
@@ -301,11 +301,11 @@ RSpec.describe 'TypeSystem Integration', type: :request do
 
       expect(introspection[:types]).to have_key(:test_scoped_metadata)
       expect(introspection[:types][:test_scoped_metadata]).to include(
-        type: :object,
         shape: {
           author: { type: :string },
           version: { type: :integer },
         },
+        type: :object,
       )
     end
 
@@ -423,9 +423,9 @@ RSpec.describe 'TypeSystem Integration', type: :request do
       introspection = Apiwork::API.introspect('/api/metadata_test')
 
       expect(introspection[:enums][:status_with_metadata]).to eq(
-        values: %w[active inactive],
         description: 'Status values with description',
         example: 'active',
+        values: %w[active inactive],
       )
     end
 

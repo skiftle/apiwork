@@ -225,12 +225,12 @@ RSpec.describe 'Includes API', type: :request do
   describe 'POST /api/v1/posts with include' do
     it 'includes associations on create action' do
       post '/api/v1/posts?include[comments]=true',
+           headers: { 'CONTENT_TYPE' => 'application/json' },
            params: { post: {
              body: 'Content',
              published: true,
              title: 'New Post',
-           } }.to_json,
-           headers: { 'CONTENT_TYPE' => 'application/json' }
+           } }.to_json
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
@@ -240,14 +240,14 @@ RSpec.describe 'Includes API', type: :request do
 
     it 'does not include associations when not requested' do
       post '/api/v1/posts',
+           as: :json,
            params: {
              post: {
                body: 'More content',
                published: false,
                title: 'Another Post',
              },
-           },
-           as: :json
+           }
 
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
@@ -258,8 +258,8 @@ RSpec.describe 'Includes API', type: :request do
   describe 'PATCH /api/v1/posts/:id with include' do
     it 'includes associations on update action' do
       patch "/api/v1/posts/#{post1.id}?include[comments]=true",
-            params: { post: { title: 'Updated Title' } }.to_json,
-            headers: { 'CONTENT_TYPE' => 'application/json' }
+            headers: { 'CONTENT_TYPE' => 'application/json' },
+            params: { post: { title: 'Updated Title' } }.to_json
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
@@ -270,10 +270,10 @@ RSpec.describe 'Includes API', type: :request do
 
     it 'does not include associations when not requested' do
       patch "/api/v1/posts/#{post2.id}",
+            as: :json,
             params: {
               post: { title: 'Updated Second Post' },
-            },
-            as: :json
+            }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)

@@ -713,31 +713,31 @@ module Apiwork
               if association_type
                 if association_definition.singular?
                   param name,
-                        type: association_type,
-                        optional: is_optional,
+                        association_definition: association_definition,
                         nullable: association_definition.nullable?,
-                        association_definition: association_definition
+                        optional: is_optional,
+                        type: association_type
                 elsif association_definition.collection?
                   param name,
-                        type: :array,
+                        association_definition: association_definition,
+                        nullable: association_definition.nullable?,
                         of: association_type,
                         optional: is_optional,
-                        nullable: association_definition.nullable?,
-                        association_definition: association_definition
+                        type: :array
                 end
               elsif association_definition.singular?
                 param name,
-                      type: :object,
-                      optional: is_optional,
+                      association_definition: association_definition,
                       nullable: association_definition.nullable?,
-                      association_definition: association_definition
+                      optional: is_optional,
+                      type: :object
               elsif association_definition.collection?
                 param name,
-                      type: :array,
+                      association_definition: association_definition,
+                      nullable: association_definition.nullable?,
                       of: :object,
                       optional: is_optional,
-                      nullable: association_definition.nullable?,
-                      association_definition: association_definition
+                      type: :array
               end
             end
           end

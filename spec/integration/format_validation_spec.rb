@@ -7,12 +7,12 @@ RSpec.describe 'Format validation', type: :integration do
     it 'defines allowed formats for each type' do
       expect(Apiwork::Schema::AttributeDefinition::ALLOWED_FORMATS).to eq(
         {
+          decimal: %i[float double],
+          float: %i[float double],
+          integer: %i[int32 int64],
+          number: %i[float double],
           string: %i[email uuid uri url date date_time ipv4 ipv6 password
                      hostname],
-          integer: %i[int32 int64],
-          float: %i[float double],
-          decimal: %i[float double],
-          number: %i[float double],
         },
       )
     end

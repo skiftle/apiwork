@@ -109,8 +109,6 @@ module Apiwork
       # @api public
       # Sets a custom operation ID.
       #
-      # By default, operation ID is auto-generated from resource and action name.
-      #
       # @param value [String] custom operation ID (optional)
       # @return [String, nil] the operation ID
       #

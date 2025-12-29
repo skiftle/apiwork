@@ -27,8 +27,8 @@ module Apiwork
             param_options,
             data,
             path,
-            max_depth: max_depth,
             current_depth: current_depth,
+            max_depth: max_depth,
           )
           issues.concat(param_result[:issues])
           params[name] = param_result[:value] if param_result[:value_set]
@@ -177,8 +177,8 @@ module Apiwork
           value,
           param_options[:union],
           field_path,
-          max_depth: max_depth,
           current_depth: current_depth,
+          max_depth: max_depth,
         )
         if union_error
           { issues: [union_error], value_set: false }
@@ -416,8 +416,8 @@ module Apiwork
             value,
             variant_definition,
             path,
-            max_depth: max_depth,
             current_depth: current_depth,
+            max_depth: max_depth,
           )
 
           return [nil, validated_value] if error.nil?
@@ -505,8 +505,8 @@ module Apiwork
           value_without_discriminator,
           matching_variant,
           path,
-          max_depth: max_depth,
           current_depth: current_depth,
+          max_depth: max_depth,
         )
 
         validated_value = validated_value.merge(discriminator => discriminator_value) if validated_value.is_a?(Hash)
@@ -581,10 +581,10 @@ module Apiwork
             array_issues, array_values = validate_array(
               value,
               {
-                param_options: { of: variant_of, shape: variant_shape },
+                current_depth: current_depth,
                 field_path: path,
                 max_depth: max_depth,
-                current_depth: current_depth,
+                param_options: { of: variant_of, shape: variant_shape },
               },
             )
 

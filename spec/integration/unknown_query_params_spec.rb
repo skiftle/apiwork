@@ -25,8 +25,8 @@ RSpec.describe 'Unknown query parameter validation', type: :request do
   describe 'PATCH /api/v1/posts/:id (update)' do
     it 'rejects unknown query parameters' do
       patch "/api/v1/posts/#{post_record.id}",
-            params: { post: { title: 'Updated' }, unknown_param: 'value' },
-            as: :json
+            as: :json,
+            params: { post: { title: 'Updated' }, unknown_param: 'value' }
 
       expect(response).to have_http_status(:bad_request)
       json = JSON.parse(response.body)

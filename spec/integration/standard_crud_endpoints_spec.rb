@@ -110,8 +110,8 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
       # Keys inside JSON objects remain as-is with output_key_format :keep
       expect(json['post']['metadata']).to eq(
         {
-          'tags' => %w[ruby rails],
           'author_notes' => 'Draft version',
+          'tags' => %w[ruby rails],
           'version' => 1,
         },
       )
@@ -120,8 +120,8 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
       created_post = Post.last
       expect(created_post.metadata).to eq(
         {
-          'tags' => %w[ruby rails],
           'author_notes' => 'Draft version',
+          'tags' => %w[ruby rails],
           'version' => 1,
         },
       )
@@ -143,8 +143,8 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
       json = JSON.parse(response.body)
       expect(json['post']['metadata']).to eq(
         {
-          'tags' => %w[api test],
           'priority' => 'high',
+          'tags' => %w[api test],
         },
       )
     end
@@ -158,6 +158,7 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
       )
 
       patch "/api/v1/posts/#{post_record.id}",
+            as: :json,
             params: {
               post: {
                 title: 'Original',
@@ -165,15 +166,14 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
                 published: false,
                 metadata: { 'version' => 2, 'updated' => true },
               },
-            },
-            as: :json
+            }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
       expect(json['post']['metadata']).to eq(
         {
-          'version' => 2,
           'updated' => true,
+          'version' => 2,
         },
       )
     end
@@ -216,8 +216,8 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
       post_record = Post.create!(body: 'Original body', published: false, title: 'Original Title')
 
       patch "/api/v1/posts/#{post_record.id}",
-            params: { post: { published: true, title: 'Updated Title' } },
-            as: :json
+            as: :json,
+            params: { post: { published: true, title: 'Updated Title' } }
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)

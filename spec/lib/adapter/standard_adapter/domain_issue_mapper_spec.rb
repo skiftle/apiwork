@@ -251,8 +251,8 @@ RSpec.describe Apiwork::Adapter::StandardAdapter::DomainIssueMapper do
   describe 'multiple errors' do
     it 'creates issues for all errors' do
       record_class = create_test_record(
-        title: { presence: true },
         age: { numericality: { greater_than: 0 } },
+        title: { presence: true },
       )
       record = record_class.new(age: -1, title: '')
       record.valid?

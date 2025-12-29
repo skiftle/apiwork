@@ -9,23 +9,23 @@ module BraveEagle
     attribute :title, description: 'Short title describing the task', example: 'Implement user authentication', writable: true
 
     attribute :description,
-              writable: true,
               description: 'Detailed description of what needs to be done',
-              example: 'Add OAuth2 login support for Google and GitHub providers'
+              example: 'Add OAuth2 login support for Google and GitHub providers',
+              writable: true
 
     attribute :status,
-              writable: true,
-              filterable: true,
               description: 'Current status of the task',
+              enum: %w[pending in_progress completed archived],
               example: 'pending',
-              enum: %w[pending in_progress completed archived]
+              filterable: true,
+              writable: true
 
     attribute :priority,
-              writable: true,
-              filterable: true,
               description: 'Priority level for task ordering',
+              enum: %w[low medium high critical],
               example: 'high',
-              enum: %w[low medium high critical]
+              filterable: true,
+              writable: true
 
     attribute :due_date, description: 'Target date for task completion', example: '2024-02-01T00:00:00Z', sortable: true, writable: true
 
