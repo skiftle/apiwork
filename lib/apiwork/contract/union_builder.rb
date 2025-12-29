@@ -13,7 +13,12 @@ module Apiwork
         @variants = []
       end
 
-      def variant(type:, of: nil, enum: nil, tag: nil, partial: nil, &block)
+      def variant(type:,
+                  of: nil,
+                  enum: nil,
+                  tag: nil,
+                  partial: nil,
+                  &block)
         raise ArgumentError, 'tag can only be used when union has a discriminator' if tag.present? && @discriminator.blank?
 
         raise ArgumentError, 'tag is required for all variants when union has a discriminator' if @discriminator.present? && tag.blank?

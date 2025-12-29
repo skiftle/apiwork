@@ -11,7 +11,12 @@ module Apiwork
         @key_format = key_format
       end
 
-      def build_interface(type_name, type_shape, action_name: nil, recursive: false, description: nil, example: nil)
+      def build_interface(type_name,
+                          type_shape,
+                          action_name: nil,
+                          recursive: false,
+                          description: nil,
+                          example: nil)
         type_name_pascal = pascal_case(type_name)
 
         fields = type_shape[:shape] || {}

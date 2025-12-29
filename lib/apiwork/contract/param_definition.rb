@@ -67,8 +67,18 @@ module Apiwork
       #     param :product_id, type: :integer
       #     param :quantity, type: :integer, min: 1
       #   end
-      def param(name, type: nil, optional: nil, default: nil, enum: nil, of: nil, as: nil,
-                discriminator: nil, value: nil, visited_types: nil, **options, &block)
+      def param(name,
+                type: nil,
+                optional: nil,
+                default: nil,
+                enum: nil,
+                of: nil,
+                as: nil,
+                discriminator: nil,
+                value: nil,
+                visited_types: nil,
+                **options,
+                &block)
         if type.nil? && (existing_param = @params[name])
           merge_existing_param(name, existing_param, type:, optional:, default:, enum:, of:, as:,
                                                      discriminator:, value:, options:, &block)
@@ -138,8 +148,18 @@ module Apiwork
 
       private
 
-      def merge_existing_param(name, existing_param, type:, optional:, default:, enum:, of:, as:, discriminator:, value:,
-                               options:, &block)
+      def merge_existing_param(name,
+                               existing_param,
+                               type:,
+                               optional:,
+                               default:,
+                               enum:,
+                               of:,
+                               as:,
+                               discriminator:,
+                               value:,
+                               options:,
+                               &block)
         resolved_enum = enum ? resolve_enum_value(enum) : nil
 
         merged_param = existing_param.merge(options.compact)
@@ -234,8 +254,17 @@ module Apiwork
         end
       end
 
-      def define_custom_type_param(name, type:, custom_type_block:, resolved_enum:, optional:, default:, of:, as:,
-                                   visited_types:, options:, &block)
+      def define_custom_type_param(name,
+                                   type:,
+                                   custom_type_block:,
+                                   resolved_enum:,
+                                   optional:,
+                                   default:,
+                                   of:,
+                                   as:,
+                                   visited_types:,
+                                   options:,
+                                   &block)
         expansion_key = [@contract_class.object_id, type]
 
         visited_with_current = visited_types.dup.add(expansion_key)

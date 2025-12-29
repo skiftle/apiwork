@@ -375,6 +375,34 @@ Only when truly dynamic: `define_resource(:invoice, **options)`
 ### Order
 positional → keyword → splat
 
+### Multi-line signatures
+
+When a method has 4+ keyword arguments, use multi-line formatting:
+- Positional arguments on first line
+- Each keyword argument on its own line, aligned
+- Defaults in signature, not separate
+
+```ruby
+# ✅ Good
+def initialize(name, type, schema_class,
+               schema: nil,
+               polymorphic: nil,
+               include: :optional,
+               filterable: false,
+               sortable: false)
+  @name = name
+  @schema = schema
+end
+
+# ❌ Bad - all on one line
+def initialize(name, type, schema_class, schema: nil, polymorphic: nil, include: :optional)
+
+# ❌ Bad - defaults via hash merge
+def initialize(name, type, schema_class, **options)
+  options = { include: :optional, filterable: false }.merge(options)
+end
+```
+
 ---
 
 ## Ruby/Rails Idioms

@@ -12,7 +12,12 @@ module Apiwork
           @variants = []
         end
 
-        def variant(type:, of: nil, enum: nil, tag: nil, partial: nil, &block)
+        def variant(type:,
+                    of: nil,
+                    enum: nil,
+                    tag: nil,
+                    partial: nil,
+                    &block)
           validate_tag!(tag)
 
           variant_data = { type: }

@@ -145,7 +145,11 @@ module Apiwork
     #
     # @example With I18n interpolation
     #   expose_error :not_found, i18n: { resource: 'Invoice' }
-    def expose_error(code_key, detail: nil, path: nil, meta: {}, i18n: {})
+    def expose_error(code_key,
+                     detail: nil,
+                     path: nil,
+                     meta: {},
+                     i18n: {})
       error_code = ErrorCode.fetch(code_key)
       locale_key = api_class.structure.locale_key
 

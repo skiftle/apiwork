@@ -214,8 +214,13 @@ module Apiwork
         #       end
         #     end
         #   end
-        def type(name, description: nil, example: nil, format: nil, deprecated: false,
-                 schema_class: nil, &block)
+        def type(name,
+                 description: nil,
+                 example: nil,
+                 format: nil,
+                 deprecated: false,
+                 schema_class: nil,
+                 &block)
           api_class.type(name, scope: self, description:, example:, format:, deprecated:,
                                schema_class:, &block)
         end
@@ -240,7 +245,11 @@ module Apiwork
         #       request { body { param :status, enum: :status } }
         #     end
         #   end
-        def enum(name, values: nil, description: nil, example: nil, deprecated: false)
+        def enum(name,
+                 values: nil,
+                 description: nil,
+                 example: nil,
+                 deprecated: false)
           api_class.enum(name, values:, scope: self, description:, example:, deprecated:)
         end
 

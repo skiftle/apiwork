@@ -238,7 +238,14 @@ module Apiwork
         #
         # @example Using in a contract
         #   param :shipping_address, type: :address
-        def type(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false, schema_class: nil, &block)
+        def type(name,
+                 scope: nil,
+                 description: nil,
+                 example: nil,
+                 format: nil,
+                 deprecated: false,
+                 schema_class: nil,
+                 &block)
           type_system.register_type(name, scope: scope,
                                           description: description,
                                           example: example,
@@ -266,7 +273,12 @@ module Apiwork
         #
         #   # Later in contract:
         #   param :status, enum: :status
-        def enum(name, values: nil, scope: nil, description: nil, example: nil, deprecated: false)
+        def enum(name,
+                 values: nil,
+                 scope: nil,
+                 description: nil,
+                 example: nil,
+                 deprecated: false)
           raise ArgumentError, 'Values must be an array' if values && !values.is_a?(Array)
 
           type_system.register_enum(name, values,

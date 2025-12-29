@@ -16,7 +16,9 @@ module Apiwork
 
         attr_accessor :contract_class
 
-        def initialize(name:, singular:, contract_class_name:,
+        def initialize(name:,
+                       singular:,
+                       contract_class_name:,
                        controller: nil,
                        parent: nil,
                        path: nil,

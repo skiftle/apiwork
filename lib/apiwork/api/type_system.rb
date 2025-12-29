@@ -11,8 +11,14 @@ module Apiwork
         @enums = Concurrent::Map.new
       end
 
-      def register_type(name, scope: nil, description: nil, example: nil, format: nil, deprecated: false,
-                        schema_class: nil, &block)
+      def register_type(name,
+                        scope: nil,
+                        description: nil,
+                        example: nil,
+                        format: nil,
+                        deprecated: false,
+                        schema_class: nil,
+                        &block)
         key = scoped_name(scope, name)
 
         if @types.key?(key)
@@ -69,7 +75,12 @@ module Apiwork
         :"#{prefix}_#{name}"
       end
 
-      def register_enum(name, values = nil, scope: nil, description: nil, example: nil, deprecated: false)
+      def register_enum(name,
+                        values = nil,
+                        scope: nil,
+                        description: nil,
+                        example: nil,
+                        deprecated: false)
         key = scoped_name(scope, name)
 
         if @enums.key?(key)

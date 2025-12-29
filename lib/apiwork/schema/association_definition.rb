@@ -14,7 +14,9 @@ module Apiwork
                   :polymorphic,
                   :discriminator
 
-      def initialize(name, type, schema_class,
+      def initialize(name,
+                     type,
+                     schema_class,
                      schema: nil,
                      class_name: nil,
                      polymorphic: nil,

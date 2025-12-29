@@ -15,7 +15,8 @@ module Apiwork
         number: %i[float double]
       }.freeze
 
-      def initialize(name, schema_class,
+      def initialize(name,
+                     schema_class,
                      type: nil,
                      optional: nil,
                      nullable: nil,

@@ -155,3 +155,12 @@ Lint/IneffectiveAccessModifier:
 # Allow duplicate method definitions in tests
 Lint/DuplicateMethods:
   Enabled: false
+
+Layout/FirstParameterIndentation:
+  EnforcedStyle: align_parentheses
+
+Layout/ParameterAlignment:
+  EnforcedStyle: with_first_parameter
+
+Layout/MultilineMethodParameterLineBreaks:
+  Enabled: true
