@@ -120,8 +120,16 @@ module Apiwork
         #     schema!  # Links to Api::V1::UserSchema
         #
         #     action :create do
-        #       request { body { param :name } }
-        #       response { body { param :id } }
+        #       request do
+        #         body do
+        #           param :name
+        #         end
+        #       end
+        #       response do
+        #         body do
+        #           param :id
+        #         end
+        #       end
         #     end
         #   end
         def schema!
@@ -252,7 +260,11 @@ module Apiwork
         #     enum :status, values: %w[draft sent paid]
         #
         #     action :update do
-        #       request { body { param :status, enum: :status } }
+        #       request do
+        #         body do
+        #           param :status, enum: :status
+        #         end
+        #       end
         #     end
         #   end
         def enum(
@@ -352,8 +364,16 @@ module Apiwork
         # @example Basic CRUD action
         #   class InvoiceContract < Apiwork::Contract::Base
         #     action :show do
-        #       request { query { param :include, type: :string, optional: true } }
-        #       response { body { param :id } }
+        #       request do
+        #         query do
+        #           param :include, type: :string, optional: true
+        #         end
+        #       end
+        #       response do
+        #         body do
+        #           param :id
+        #         end
+        #       end
         #     end
         #   end
         #

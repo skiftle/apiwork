@@ -189,7 +189,10 @@ module Apiwork
       # @example
       #   action :show do
       #     response do
-      #       body { param :id; param :title }
+      #       body do
+      #         param :id
+      #         param :title
+      #       end
       #     end
       #   end
       #

@@ -249,6 +249,59 @@ attribute :status, filterable: true
 This enables `?filter[status][eq]=published`.
 ```
 
+### Block and Object Formatting
+
+All code examples with nested structures must use multi-line formatting. Never inline nested blocks or objects.
+
+**Ruby:**
+
+```ruby
+# Bad
+request { body { param :name } }
+
+# Good
+request do
+  body do
+    param :name
+  end
+end
+```
+
+**JSON/TypeScript:**
+
+```json
+// Bad
+{ "user": { "name": "John", "email": "john@example.com" } }
+
+// Good
+{
+  "user": {
+    "name": "John",
+    "email": "john@example.com"
+  }
+}
+```
+
+Each key/statement on its own line. Never combine with semicolons or commas on same line:
+
+```ruby
+# Bad
+body { param :id; param :title }
+
+# Good
+body do
+  param :id
+  param :title
+end
+```
+
+Exception: Very simple single-item blocks can stay inline:
+
+```ruby
+# OK — simple single call
+response { no_content! }
+```
+
 ### Tables
 
 Use tables for reference information:
@@ -361,6 +414,7 @@ Before committing documentation:
 
 - [ ] **Verified against actual code** (most important)
 - [ ] Code examples are runnable
+- [ ] Code examples use multi-line blocks (not inline `{ }`)
 - [ ] No superlatives or marketing language
 - [ ] No filler words
 - [ ] No arrow characters

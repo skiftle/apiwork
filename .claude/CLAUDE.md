@@ -631,6 +631,44 @@ Type system examples must show all four formats in this order, each in its own `
 </details>
 ```
 
+### YARD Examples
+
+YARD `@example` blocks must use multi-line `do...end` syntax. Never use inline `{ }` for nested DSL blocks.
+
+```ruby
+# ❌ Bad — inline blocks
+#   @example
+#     request { body { param :name } }
+
+# ✅ Good — multi-line with do...end
+#   @example
+#     request do
+#       body do
+#         param :name
+#       end
+#     end
+```
+
+Each `param` must be on its own line. Never use semicolons to combine statements.
+
+```ruby
+# ❌ Bad — semicolons
+#   body { param :id; param :title }
+
+# ✅ Good — one per line
+#   body do
+#     param :id
+#     param :title
+#   end
+```
+
+Exception: Very simple single-method blocks can stay inline:
+
+```ruby
+# ✅ OK — simple single call
+#   response { no_content! }
+```
+
 ---
 
 ## Code Style
