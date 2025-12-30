@@ -230,8 +230,16 @@ Or capture and build incrementally:
 
 ```ruby
 action = registrar.define_action(:index)
-action.request { query { param :page, type: :integer } }
-action.response { body { param :items, type: :array } }
+action.request do
+  query do
+    param :page, type: :integer
+  end
+end
+action.response do
+  body do
+    param :items, type: :array
+  end
+end
 ```
 
 `ActionDefinition` provides:
