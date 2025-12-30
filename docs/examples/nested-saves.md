@@ -147,11 +147,11 @@ GET /clever_rabbit/orders
     }
   ],
   "pagination": {
+    "items": 2,
+    "total": 1,
     "current": 1,
     "next": null,
-    "prev": null,
-    "total": 1,
-    "items": 2
+    "prev": null
   }
 }
 ```
@@ -351,15 +351,15 @@ Content-Type: application/json
     {
       "code": "field_missing",
       "detail": "Required",
+      "meta": {
+        "field": "order_number",
+        "type": "string"
+      },
       "path": [
         "order",
         "order_number"
       ],
-      "pointer": "/order/order_number",
-      "meta": {
-        "field": "order_number",
-        "type": "string"
-      }
+      "pointer": "/order/order_number"
     }
   ]
 }

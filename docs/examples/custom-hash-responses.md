@@ -64,9 +64,9 @@ GET /lazy_cow/status/stats
 
 ```json
 {
-  "usersCount": 1234,
   "postsCount": 5678,
-  "uptimeSeconds": 86400
+  "uptimeSeconds": 86400,
+  "usersCount": 1234
 }
 ```
 

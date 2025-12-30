@@ -4,7 +4,6 @@
     "path": "/mighty_wolf/vehicles/244334d1-b797-570d-8abf-3244124aa288"
   },
   "response": {
-    "status": 200,
     "body": {
       "vehicle": {
         "type": "car",
@@ -15,6 +14,7 @@
         "color": "red",
         "doors": null
       }
-    }
+    },
+    "status": 200
   }
 }

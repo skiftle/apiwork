@@ -4,7 +4,6 @@
     "path": "/grumpy_panda/activities"
   },
   "response": {
-    "status": 200,
     "body": {
       "activities": [
         {
@@ -30,6 +29,7 @@
         "next": "eyJpZCI6IjRjMzkyNzVmLWVjMTQtNWEzNy04NThkLTg0ZWI2ODk5YjU1ZCJ9",
         "prev": null
       }
-    }
+    },
+    "status": 200
   }
 }

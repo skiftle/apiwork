@@ -4,10 +4,10 @@
     "path": "/eager_lion/invoices/67bdd1df-79bb-5b50-9eaf-b17edac86b61"
   },
   "response": {
-    "status": 500,
     "body": {
       "status": 500,
       "error": "Internal Server Error"
-    }
+    },
+    "status": 500
   }
 }

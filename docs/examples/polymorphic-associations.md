@@ -163,11 +163,11 @@ GET /gentle_owl/comments
     }
   ],
   "pagination": {
+    "items": 2,
+    "total": 1,
     "current": 1,
     "next": null,
-    "prev": null,
-    "total": 1,
-    "items": 2
+    "prev": null
   }
 }
 ```
@@ -226,34 +226,34 @@ Content-Type: application/json
     {
       "code": "field_unknown",
       "detail": "Unknown field",
-      "path": [
-        "comment",
-        "commentable_type"
-      ],
-      "pointer": "/comment/commentable_type",
       "meta": {
         "allowed": [
           "body",
           "author_name"
         ],
         "field": "commentable_type"
-      }
+      },
+      "path": [
+        "comment",
+        "commentable_type"
+      ],
+      "pointer": "/comment/commentable_type"
     },
     {
       "code": "field_unknown",
       "detail": "Unknown field",
-      "path": [
-        "comment",
-        "commentable_id"
-      ],
-      "pointer": "/comment/commentable_id",
       "meta": {
         "allowed": [
           "body",
           "author_name"
         ],
         "field": "commentable_id"
-      }
+      },
+      "path": [
+        "comment",
+        "commentable_id"
+      ],
+      "pointer": "/comment/commentable_id"
     }
   ]
 }
@@ -289,34 +289,34 @@ Content-Type: application/json
     {
       "code": "field_unknown",
       "detail": "Unknown field",
-      "path": [
-        "comment",
-        "commentable_type"
-      ],
-      "pointer": "/comment/commentable_type",
       "meta": {
         "allowed": [
           "body",
           "author_name"
         ],
         "field": "commentable_type"
-      }
+      },
+      "path": [
+        "comment",
+        "commentable_type"
+      ],
+      "pointer": "/comment/commentable_type"
     },
     {
       "code": "field_unknown",
       "detail": "Unknown field",
-      "path": [
-        "comment",
-        "commentable_id"
-      ],
-      "pointer": "/comment/commentable_id",
       "meta": {
         "allowed": [
           "body",
           "author_name"
         ],
         "field": "commentable_id"
-      }
+      },
+      "path": [
+        "comment",
+        "commentable_id"
+      ],
+      "pointer": "/comment/commentable_id"
     }
   ]
 }
@@ -342,10 +342,6 @@ GET /gentle_owl/comments?filter[commentable_type][eq]=GentleOwl::Post
     {
       "code": "field_unknown",
       "detail": "Unknown field",
-      "path": [
-        "filter"
-      ],
-      "pointer": "/filter",
       "meta": {
         "allowed": [
           "sort",
@@ -353,7 +349,11 @@ GET /gentle_owl/comments?filter[commentable_type][eq]=GentleOwl::Post
           "include"
         ],
         "field": "filter"
-      }
+      },
+      "path": [
+        "filter"
+      ],
+      "pointer": "/filter"
     }
   ]
 }

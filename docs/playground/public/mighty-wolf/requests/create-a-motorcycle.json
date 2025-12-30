@@ -13,7 +13,6 @@
     }
   },
   "response": {
-    "status": 201,
     "body": {
       "vehicle": {
         "type": "motorcycle",
@@ -24,6 +23,7 @@
         "color": "black",
         "engineCc": null
       }
-    }
+    },
+    "status": 201
   }
 }

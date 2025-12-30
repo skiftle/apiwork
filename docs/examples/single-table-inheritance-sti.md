@@ -140,11 +140,11 @@ GET /mighty_wolf/vehicles
     }
   ],
   "pagination": {
+    "items": 3,
+    "total": 1,
     "current": 1,
     "next": null,
-    "prev": null,
-    "total": 1,
-    "items": 3
+    "prev": null
   }
 }
 ```

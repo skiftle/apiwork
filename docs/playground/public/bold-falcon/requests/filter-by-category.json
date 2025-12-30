@@ -4,18 +4,12 @@
     "path": "/bold_falcon/articles?filter[category][name][eq]=Technology"
   },
   "response": {
-    "status": 400,
     "body": {
       "layer": "contract",
       "issues": [
         {
           "code": "field_unknown",
           "detail": "Unknown field",
-          "path": [
-            "filter",
-            "category"
-          ],
-          "pointer": "/filter/category",
           "meta": {
             "allowed": [
               "_and",
@@ -28,9 +22,15 @@
               "published_on"
             ],
             "field": "category"
-          }
+          },
+          "path": [
+            "filter",
+            "category"
+          ],
+          "pointer": "/filter/category"
         }
       ]
-    }
+    },
+    "status": 400
   }
 }

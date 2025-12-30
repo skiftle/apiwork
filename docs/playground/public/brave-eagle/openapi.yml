@@ -1,219 +1,7 @@
 ---
-openapi: 3.1.0
-info:
-  title: Task Management API
-  version: 1.0.0
-  description: API for managing tasks and projects
-  contact:
-    name: API Support
-    email: support@example.com
-  license:
-    name: MIT
-    url: https://opensource.org/licenses/MIT
-paths:
-  tasks/:
-    get:
-      operationId: listTasks
-      summary: List all tasks
-      description: Returns a paginated list of tasks with optional filtering by status
-        and priority
-      tags:
-      - Tasks
-      - Core
-      parameters:
-      - in: query
-        name: filter
-        required: false
-        schema:
-          oneOf:
-          - "$ref": "#/components/schemas/taskFilter"
-          - type: array
-            items:
-              "$ref": "#/components/schemas/taskFilter"
-      - in: query
-        name: include
-        required: false
-        schema:
-          "$ref": "#/components/schemas/taskInclude"
-      - in: query
-        name: page
-        required: false
-        schema:
-          "$ref": "#/components/schemas/taskPage"
-      - in: query
-        name: sort
-        required: false
-        schema:
-          oneOf:
-          - "$ref": "#/components/schemas/taskSort"
-          - type: array
-            items:
-              "$ref": "#/components/schemas/taskSort"
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/taskIndexSuccessResponseBody"
-    post:
-      operationId: createTask
-      summary: Create a new task
-      description: Creates a task and returns the created resource
-      tags:
-      - Tasks
-      parameters:
-      - in: query
-        name: include
-        required: false
-        schema:
-          "$ref": "#/components/schemas/taskInclude"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              properties:
-                task:
-                  "$ref": "#/components/schemas/taskCreatePayload"
-              type: object
-              required:
-              - task
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/taskCreateSuccessResponseBody"
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/errorResponseBody"
-  tasks/{id}:
-    get:
-      operationId: getTask
-      summary: Get task details
-      description: Returns a single task by ID
-      tags:
-      - Tasks
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - in: query
-        name: include
-        required: false
-        schema:
-          "$ref": "#/components/schemas/taskInclude"
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/taskShowSuccessResponseBody"
-    patch:
-      operationId: updateTask
-      summary: Update a task
-      description: Updates an existing task
-      tags:
-      - Tasks
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - in: query
-        name: include
-        required: false
-        schema:
-          "$ref": "#/components/schemas/taskInclude"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              properties:
-                task:
-                  "$ref": "#/components/schemas/taskUpdatePayload"
-              type: object
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/taskUpdateSuccessResponseBody"
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/errorResponseBody"
-    delete:
-      operationId: deleteTask
-      summary: Delete a task
-      description: Permanently removes a task
-      tags:
-      - Tasks
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - in: query
-        name: include
-        required: false
-        schema:
-          "$ref": "#/components/schemas/taskInclude"
-      responses:
-        '204':
-          description: No content
-  tasks/{id}/archive:
-    patch:
-      operationId: archiveTask
-      summary: Archive a task
-      description: Marks a task as archived. Archived tasks are hidden from default
-        listings but can still be retrieved.
-      tags:
-      - Tasks
-      - Lifecycle
-      deprecated: true
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - in: query
-        name: include
-        required: false
-        schema:
-          "$ref": "#/components/schemas/taskInclude"
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/taskArchiveSuccessResponseBody"
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/errorResponseBody"
 components:
   schemas:
     comment:
-      type: object
       properties:
         authorName:
           type:
@@ -232,6 +20,7 @@ components:
         id:
           type: string
           description: Unique comment identifier
+      type: object
       description: A comment on a task
       required:
       - authorName
@@ -239,11 +28,10 @@ components:
       - createdAt
       - id
     commentNestedCreatePayload:
-      type: object
       properties:
         _type:
-          type: string
           const: create
+          type: string
         authorName:
           type:
           - string
@@ -254,6 +42,7 @@ components:
           type: string
           description: Comment content
           example: This looks good, ready for review.
+      type: object
       required:
       - _type
       - body
@@ -262,16 +51,15 @@ components:
       - "$ref": "#/components/schemas/commentNestedCreatePayload"
       - "$ref": "#/components/schemas/commentNestedUpdatePayload"
       discriminator:
-        propertyName: _type
         mapping:
           create: "#/components/schemas/commentNestedCreatePayload"
           update: "#/components/schemas/commentNestedUpdatePayload"
+        propertyName: _type
     commentNestedUpdatePayload:
-      type: object
       properties:
         _type:
-          type: string
           const: update
+          type: string
         authorName:
           type:
           - string
@@ -282,41 +70,42 @@ components:
           type: string
           description: Comment content
           example: This looks good, ready for review.
+      type: object
       required:
       - _type
       - body
     errorResponseBody:
-      type: object
       properties:
         issues:
-          type: array
           items:
             "$ref": "#/components/schemas/issue"
+          type: array
         layer:
           enum:
           - http
           - contract
           - domain
           type: string
+      type: object
       required:
       - issues
       - layer
     issue:
-      type: object
       properties:
         code:
           type: string
         detail:
           type: string
         meta:
-          type: object
           properties: {}
+          type: object
         path:
-          type: array
           items:
             type: string
+          type: array
         pointer:
           type: string
+      type: object
       required:
       - code
       - detail
@@ -324,7 +113,6 @@ components:
       - path
       - pointer
     nullableStringFilter:
-      type: object
       properties:
         contains:
           type: string
@@ -333,15 +121,15 @@ components:
         eq:
           type: string
         in:
-          type: array
           items:
             type: string
+          type: array
         'null':
           type: boolean
         startsWith:
           type: string
-    offsetPagination:
       type: object
+    offsetPagination:
       properties:
         current:
           type: integer
@@ -357,12 +145,12 @@ components:
           - 'null'
         total:
           type: integer
+      type: object
       required:
       - current
       - items
       - total
     stringFilter:
-      type: object
       properties:
         contains:
           type: string
@@ -371,13 +159,13 @@ components:
         eq:
           type: string
         in:
-          type: array
           items:
             type: string
+          type: array
         startsWith:
           type: string
-    task:
       type: object
+    task:
       properties:
         archived:
           type:
@@ -390,9 +178,9 @@ components:
           - "$ref": "#/components/schemas/user"
           - type: 'null'
         comments:
-          type: array
           items:
             "$ref": "#/components/schemas/comment"
+          type: array
           description: Discussion comments on this task
         createdAt:
           type: string
@@ -444,6 +232,7 @@ components:
           type: string
           format: date-time
           description: Timestamp of last modification
+      type: object
       description: A task representing work to be completed
       required:
       - archived
@@ -456,17 +245,16 @@ components:
       - title
       - updatedAt
     taskArchiveSuccessResponseBody:
-      type: object
       properties:
         meta:
-          type: object
           properties: {}
+          type: object
         task:
           "$ref": "#/components/schemas/task"
+      type: object
       required:
       - task
     taskCreatePayload:
-      type: object
       properties:
         description:
           type:
@@ -507,61 +295,61 @@ components:
           type: string
           description: Short title describing the task
           example: Implement user authentication
+      type: object
       description: A task representing work to be completed
       required:
       - title
     taskCreateSuccessResponseBody:
-      type: object
       properties:
         meta:
-          type: object
           properties: {}
+          type: object
         task:
           "$ref": "#/components/schemas/task"
+      type: object
       required:
       - task
     taskFilter:
-      type: object
       properties:
         _and:
-          type: array
           items:
             "$ref": "#/components/schemas/taskFilter"
+          type: array
         _not:
           "$ref": "#/components/schemas/taskFilter"
         _or:
-          type: array
           items:
             "$ref": "#/components/schemas/taskFilter"
+          type: array
         priority:
           "$ref": "#/components/schemas/taskPriorityFilter"
         status:
           "$ref": "#/components/schemas/taskStatusFilter"
+      type: object
       description: A task representing work to be completed
     taskInclude:
-      type: object
       properties:
         assignee:
           type: boolean
         comments:
           type: boolean
-    taskIndexSuccessResponseBody:
       type: object
+    taskIndexSuccessResponseBody:
       properties:
         meta:
-          type: object
           properties: {}
+          type: object
         pagination:
           "$ref": "#/components/schemas/offsetPagination"
         tasks:
-          type: array
           items:
             "$ref": "#/components/schemas/task"
+          type: array
+      type: object
       required:
       - pagination
       - tasks
     taskPage:
-      type: object
       properties:
         number:
           type: integer
@@ -570,6 +358,7 @@ components:
           type: integer
           minimum: 1
           maximum: 100
+      type: object
     taskPriorityFilter:
       oneOf:
       - enum:
@@ -578,8 +367,7 @@ components:
         - high
         - critical
         type: string
-      - type: object
-        properties:
+      - properties:
           eq:
             enum:
             - low
@@ -588,21 +376,21 @@ components:
             - critical
             type: string
           in:
-            type: array
             items:
               type:
+            type: array
+        type: object
     taskShowSuccessResponseBody:
-      type: object
       properties:
         meta:
-          type: object
           properties: {}
+          type: object
         task:
           "$ref": "#/components/schemas/task"
+      type: object
       required:
       - task
     taskSort:
-      type: object
       properties:
         createdAt:
           enum:
@@ -614,6 +402,7 @@ components:
           - asc
           - desc
           type: string
+      type: object
       description: A task representing work to be completed
     taskStatusFilter:
       oneOf:
@@ -623,8 +412,7 @@ components:
         - completed
         - archived
         type: string
-      - type: object
-        properties:
+      - properties:
           eq:
             enum:
             - pending
@@ -633,11 +421,11 @@ components:
             - archived
             type: string
           in:
-            type: array
             items:
               type:
+            type: array
+        type: object
     taskUpdatePayload:
-      type: object
       properties:
         description:
           type:
@@ -678,21 +466,21 @@ components:
           type: string
           description: Short title describing the task
           example: Implement user authentication
+      type: object
       description: A task representing work to be completed
       required:
       - title
     taskUpdateSuccessResponseBody:
-      type: object
       properties:
         meta:
-          type: object
           properties: {}
+          type: object
         task:
           "$ref": "#/components/schemas/task"
+      type: object
       required:
       - task
     user:
-      type: object
       properties:
         email:
           type: string
@@ -706,8 +494,220 @@ components:
           type: string
           description: User's display name
           example: Jane Doe
+      type: object
       description: A user who can be assigned to tasks
       required:
       - email
       - id
       - name
+info:
+  contact:
+    email: support@example.com
+    name: API Support
+  description: API for managing tasks and projects
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  title: Task Management API
+  version: 1.0.0
+openapi: 3.1.0
+paths:
+  tasks/:
+    get:
+      description: Returns a paginated list of tasks with optional filtering by status
+        and priority
+      operationId: listTasks
+      summary: List all tasks
+      tags:
+      - Tasks
+      - Core
+      parameters:
+      - in: query
+        name: filter
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/taskFilter"
+          - items:
+              "$ref": "#/components/schemas/taskFilter"
+            type: array
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/taskInclude"
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/taskPage"
+      - in: query
+        name: sort
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/taskSort"
+          - items:
+              "$ref": "#/components/schemas/taskSort"
+            type: array
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/taskIndexSuccessResponseBody"
+          description: Successful response
+    post:
+      description: Creates a task and returns the created resource
+      operationId: createTask
+      summary: Create a new task
+      tags:
+      - Tasks
+      parameters:
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/taskInclude"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                task:
+                  "$ref": "#/components/schemas/taskCreatePayload"
+              type: object
+              required:
+              - task
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/taskCreateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+  tasks/{id}:
+    get:
+      description: Returns a single task by ID
+      operationId: getTask
+      summary: Get task details
+      tags:
+      - Tasks
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/taskInclude"
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/taskShowSuccessResponseBody"
+          description: Successful response
+    patch:
+      description: Updates an existing task
+      operationId: updateTask
+      summary: Update a task
+      tags:
+      - Tasks
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/taskInclude"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                task:
+                  "$ref": "#/components/schemas/taskUpdatePayload"
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/taskUpdateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+    delete:
+      description: Permanently removes a task
+      operationId: deleteTask
+      summary: Delete a task
+      tags:
+      - Tasks
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/taskInclude"
+      responses:
+        '204':
+          description: No content
+  tasks/{id}/archive:
+    patch:
+      deprecated: true
+      description: Marks a task as archived. Archived tasks are hidden from default
+        listings but can still be retrieved.
+      operationId: archiveTask
+      summary: Archive a task
+      tags:
+      - Tasks
+      - Lifecycle
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: include
+        required: false
+        schema:
+          "$ref": "#/components/schemas/taskInclude"
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/taskArchiveSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"

@@ -4,7 +4,6 @@
     "path": "/bold_falcon/articles?sort[published_on]=desc"
   },
   "response": {
-    "status": 200,
     "body": {
       "articles": [
         {
@@ -31,12 +30,13 @@
         }
       ],
       "pagination": {
+        "items": 2,
+        "total": 1,
         "current": 1,
         "next": null,
-        "prev": null,
-        "total": 1,
-        "items": 2
+        "prev": null
       }
-    }
+    },
+    "status": 200
   }
 }

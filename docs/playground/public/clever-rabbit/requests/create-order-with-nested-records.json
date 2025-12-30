@@ -27,7 +27,6 @@
     }
   },
   "response": {
-    "status": 201,
     "body": {
       "order": {
         "id": "3870eeb2-49db-5e22-857a-ca2bcd2e4612",
@@ -58,6 +57,7 @@
           "country": "USA"
         }
       }
-    }
+    },
+    "status": 201
   }
 }

@@ -1,160 +1,38 @@
 ---
-openapi: 3.1.0
-info:
-  title: "/clever_rabbit API"
-  version: 1.0.0
-paths:
-  orders/:
-    get:
-      operationId: ordersIndex
-      parameters:
-      - in: query
-        name: filter
-        required: false
-        schema:
-          oneOf:
-          - "$ref": "#/components/schemas/orderFilter"
-          - type: array
-            items:
-              "$ref": "#/components/schemas/orderFilter"
-      - in: query
-        name: page
-        required: false
-        schema:
-          "$ref": "#/components/schemas/orderPage"
-      - in: query
-        name: sort
-        required: false
-        schema:
-          oneOf:
-          - "$ref": "#/components/schemas/orderSort"
-          - type: array
-            items:
-              "$ref": "#/components/schemas/orderSort"
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/orderIndexSuccessResponseBody"
-    post:
-      operationId: ordersCreate
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              properties:
-                order:
-                  "$ref": "#/components/schemas/orderCreatePayload"
-              type: object
-              required:
-              - order
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/orderCreateSuccessResponseBody"
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/errorResponseBody"
-  orders/{id}:
-    get:
-      operationId: ordersShow
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/orderShowSuccessResponseBody"
-    patch:
-      operationId: ordersUpdate
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              properties:
-                order:
-                  "$ref": "#/components/schemas/orderUpdatePayload"
-              type: object
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/orderUpdateSuccessResponseBody"
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/errorResponseBody"
-    delete:
-      operationId: ordersDestroy
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '204':
-          description: No content
 components:
   schemas:
     errorResponseBody:
-      type: object
       properties:
         issues:
-          type: array
           items:
             "$ref": "#/components/schemas/issue"
+          type: array
         layer:
           enum:
           - http
           - contract
           - domain
           type: string
+      type: object
       required:
       - issues
       - layer
     issue:
-      type: object
       properties:
         code:
           type: string
         detail:
           type: string
         meta:
-          type: object
           properties: {}
+          type: object
         path:
-          type: array
           items:
             type: string
+          type: array
         pointer:
           type: string
+      type: object
       required:
       - code
       - detail
@@ -162,7 +40,6 @@ components:
       - path
       - pointer
     nullableStringFilter:
-      type: object
       properties:
         contains:
           type: string
@@ -171,15 +48,15 @@ components:
         eq:
           type: string
         in:
-          type: array
           items:
             type: string
+          type: array
         'null':
           type: boolean
         startsWith:
           type: string
-    offsetPagination:
       type: object
+    offsetPagination:
       properties:
         current:
           type: integer
@@ -195,12 +72,12 @@ components:
           - 'null'
         total:
           type: integer
+      type: object
       required:
       - current
       - items
       - total
     order:
-      type: object
       properties:
         createdAt:
           type: string
@@ -214,8 +91,8 @@ components:
         orderNumber:
           type: string
         shippingAddress:
-          type: object
           properties: {}
+          type: object
         status:
           type:
           - string
@@ -227,6 +104,7 @@ components:
         updatedAt:
           type: string
           format: date-time
+      type: object
       required:
       - createdAt
       - id
@@ -237,7 +115,6 @@ components:
       - total
       - updatedAt
     orderCreatePayload:
-      type: object
       properties:
         lineItems:
           items:
@@ -246,54 +123,54 @@ components:
         orderNumber:
           type: string
         shippingAddress:
-          type: object
           properties: {}
+          type: object
+      type: object
       required:
       - orderNumber
     orderCreateSuccessResponseBody:
-      type: object
       properties:
         meta:
-          type: object
           properties: {}
+          type: object
         order:
           "$ref": "#/components/schemas/order"
+      type: object
       required:
       - order
     orderFilter:
-      type: object
       properties:
         _and:
-          type: array
           items:
             "$ref": "#/components/schemas/orderFilter"
+          type: array
         _not:
           "$ref": "#/components/schemas/orderFilter"
         _or:
-          type: array
           items:
             "$ref": "#/components/schemas/orderFilter"
+          type: array
         status:
           oneOf:
           - type: string
           - "$ref": "#/components/schemas/nullableStringFilter"
-    orderIndexSuccessResponseBody:
       type: object
+    orderIndexSuccessResponseBody:
       properties:
         meta:
-          type: object
           properties: {}
+          type: object
         orders:
-          type: array
           items:
             "$ref": "#/components/schemas/order"
+          type: array
         pagination:
           "$ref": "#/components/schemas/offsetPagination"
+      type: object
       required:
       - orders
       - pagination
     orderPage:
-      type: object
       properties:
         number:
           type: integer
@@ -302,18 +179,18 @@ components:
           type: integer
           minimum: 1
           maximum: 100
-    orderShowSuccessResponseBody:
       type: object
+    orderShowSuccessResponseBody:
       properties:
         meta:
-          type: object
           properties: {}
+          type: object
         order:
           "$ref": "#/components/schemas/order"
+      type: object
       required:
       - order
     orderSort:
-      type: object
       properties:
         createdAt:
           enum:
@@ -325,8 +202,8 @@ components:
           - asc
           - desc
           type: string
-    orderUpdatePayload:
       type: object
+    orderUpdatePayload:
       properties:
         lineItems:
           items:
@@ -335,22 +212,22 @@ components:
         orderNumber:
           type: string
         shippingAddress:
-          type: object
           properties: {}
+          type: object
+      type: object
       required:
       - orderNumber
     orderUpdateSuccessResponseBody:
-      type: object
       properties:
         meta:
-          type: object
           properties: {}
+          type: object
         order:
           "$ref": "#/components/schemas/order"
+      type: object
       required:
       - order
     stringFilter:
-      type: object
       properties:
         contains:
           type: string
@@ -359,8 +236,131 @@ components:
         eq:
           type: string
         in:
-          type: array
           items:
             type: string
+          type: array
         startsWith:
           type: string
+      type: object
+info:
+  title: "/clever_rabbit API"
+  version: 1.0.0
+openapi: 3.1.0
+paths:
+  orders/:
+    get:
+      operationId: ordersIndex
+      parameters:
+      - in: query
+        name: filter
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/orderFilter"
+          - items:
+              "$ref": "#/components/schemas/orderFilter"
+            type: array
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/orderPage"
+      - in: query
+        name: sort
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/orderSort"
+          - items:
+              "$ref": "#/components/schemas/orderSort"
+            type: array
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/orderIndexSuccessResponseBody"
+          description: Successful response
+    post:
+      operationId: ordersCreate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                order:
+                  "$ref": "#/components/schemas/orderCreatePayload"
+              type: object
+              required:
+              - order
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/orderCreateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+  orders/{id}:
+    get:
+      operationId: ordersShow
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/orderShowSuccessResponseBody"
+          description: Successful response
+    patch:
+      operationId: ordersUpdate
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                order:
+                  "$ref": "#/components/schemas/orderUpdatePayload"
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/orderUpdateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+    delete:
+      operationId: ordersDestroy
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content

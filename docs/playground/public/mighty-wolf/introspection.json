@@ -1,4 +1,162 @@
 {
+  "resources": {
+    "vehicles": {
+      "actions": {
+        "index": {
+          "path": "/",
+          "method": "get",
+          "request": {
+            "query": {
+              "filter": {
+                "type": "union",
+                "variants": [
+                  {
+                    "type": "vehicle_filter"
+                  },
+                  {
+                    "type": "array",
+                    "of": "vehicle_filter"
+                  }
+                ],
+                "optional": true
+              },
+              "page": {
+                "type": "vehicle_page",
+                "optional": true
+              },
+              "sort": {
+                "type": "union",
+                "variants": [
+                  {
+                    "type": "vehicle_sort"
+                  },
+                  {
+                    "type": "array",
+                    "of": "vehicle_sort"
+                  }
+                ],
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "vehicle_index_success_response_body"
+                },
+                {
+                  "type": "error_response_body"
+                }
+              ]
+            }
+          }
+        },
+        "show": {
+          "path": "/:id",
+          "method": "get",
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "vehicle_show_success_response_body"
+                },
+                {
+                  "type": "error_response_body"
+                }
+              ]
+            }
+          }
+        },
+        "create": {
+          "path": "/",
+          "method": "post",
+          "raises": [
+            "unprocessable_entity"
+          ],
+          "request": {
+            "body": {
+              "vehicle": {
+                "type": "vehicle_create_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "vehicle_create_success_response_body"
+                },
+                {
+                  "type": "error_response_body"
+                }
+              ]
+            }
+          }
+        },
+        "update": {
+          "path": "/:id",
+          "method": "patch",
+          "raises": [
+            "unprocessable_entity"
+          ],
+          "request": {
+            "body": {
+              "vehicle": {
+                "type": "vehicle_update_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "vehicle_update_success_response_body"
+                },
+                {
+                  "type": "error_response_body"
+                }
+              ]
+            }
+          }
+        },
+        "destroy": {
+          "path": "/:id",
+          "method": "delete",
+          "response": {
+            "no_content": true
+          }
+        }
+      },
+      "identifier": "vehicles",
+      "path": "vehicles"
+    }
+  },
+  "enums": {
+    "layer": {
+      "values": [
+        "http",
+        "contract",
+        "domain"
+      ]
+    },
+    "sort_direction": {
+      "values": [
+        "asc",
+        "desc"
+      ]
+    }
+  },
+  "error_codes": {
+    "unprocessable_entity": {
+      "description": "Unprocessable Entity",
+      "status": 422
+    }
+  },
   "path": "/mighty_wolf",
   "types": {
     "car": {
@@ -94,8 +252,8 @@
     "error_response_body": {
       "shape": {
         "issues": {
-          "type": "array",
-          "of": "issue"
+          "of": "issue",
+          "type": "array"
         },
         "layer": {
           "type": "layer"
@@ -122,8 +280,8 @@
           "optional": true
         },
         "in": {
-          "type": "array",
           "of": "integer",
+          "type": "array",
           "optional": true
         },
         "lt": {
@@ -162,8 +320,8 @@
           "type": "object"
         },
         "path": {
-          "type": "array",
-          "of": "string"
+          "of": "string",
+          "type": "array"
         },
         "pointer": {
           "type": "string"
@@ -280,8 +438,8 @@
           "optional": true
         },
         "in": {
-          "type": "array",
           "of": "integer",
+          "type": "array",
           "optional": true
         },
         "lt": {
@@ -338,8 +496,8 @@
           "optional": true
         },
         "in": {
-          "type": "array",
           "of": "string",
+          "type": "array",
           "optional": true
         },
         "starts_with": {
@@ -440,6 +598,7 @@
       "type": "object"
     },
     "vehicle": {
+      "discriminator": "type",
       "type": "union",
       "variants": [
         {
@@ -454,10 +613,10 @@
           "type": "truck",
           "tag": "truck"
         }
-      ],
-      "discriminator": "type"
+      ]
     },
     "vehicle_create_payload": {
+      "discriminator": "type",
       "type": "union",
       "variants": [
         {
@@ -472,8 +631,7 @@
           "type": "truck_create_payload",
           "tag": "truck"
         }
-      ],
-      "discriminator": "type"
+      ]
     },
     "vehicle_create_success_response_body": {
       "shape": {
@@ -490,8 +648,8 @@
     "vehicle_filter": {
       "shape": {
         "_and": {
-          "type": "array",
           "of": "vehicle_filter",
+          "type": "array",
           "optional": true
         },
         "_not": {
@@ -499,8 +657,8 @@
           "optional": true
         },
         "_or": {
-          "type": "array",
           "of": "vehicle_filter",
+          "type": "array",
           "optional": true
         },
         "brand": {
@@ -552,8 +710,8 @@
           "type": "offset_pagination"
         },
         "vehicles": {
-          "type": "array",
-          "of": "vehicle"
+          "of": "vehicle",
+          "type": "array"
         }
       },
       "type": "object"
@@ -568,8 +726,8 @@
         "size": {
           "type": "integer",
           "optional": true,
-          "min": 1,
-          "max": 100
+          "max": 100,
+          "min": 1
         }
       },
       "type": "object"
@@ -596,6 +754,7 @@
       "type": "object"
     },
     "vehicle_update_payload": {
+      "discriminator": "type",
       "type": "union",
       "variants": [
         {
@@ -610,8 +769,7 @@
           "type": "truck_update_payload",
           "tag": "truck"
         }
-      ],
-      "discriminator": "type"
+      ]
     },
     "vehicle_update_success_response_body": {
       "shape": {
@@ -624,164 +782,6 @@
         }
       },
       "type": "object"
-    }
-  },
-  "enums": {
-    "layer": {
-      "values": [
-        "http",
-        "contract",
-        "domain"
-      ]
-    },
-    "sort_direction": {
-      "values": [
-        "asc",
-        "desc"
-      ]
-    }
-  },
-  "error_codes": {
-    "unprocessable_entity": {
-      "status": 422,
-      "description": "Unprocessable Entity"
-    }
-  },
-  "resources": {
-    "vehicles": {
-      "identifier": "vehicles",
-      "path": "vehicles",
-      "actions": {
-        "index": {
-          "method": "get",
-          "path": "/",
-          "request": {
-            "query": {
-              "filter": {
-                "type": "union",
-                "variants": [
-                  {
-                    "type": "vehicle_filter"
-                  },
-                  {
-                    "type": "array",
-                    "of": "vehicle_filter"
-                  }
-                ],
-                "optional": true
-              },
-              "page": {
-                "type": "vehicle_page",
-                "optional": true
-              },
-              "sort": {
-                "type": "union",
-                "variants": [
-                  {
-                    "type": "vehicle_sort"
-                  },
-                  {
-                    "type": "array",
-                    "of": "vehicle_sort"
-                  }
-                ],
-                "optional": true
-              }
-            }
-          },
-          "response": {
-            "body": {
-              "type": "union",
-              "variants": [
-                {
-                  "type": "vehicle_index_success_response_body"
-                },
-                {
-                  "type": "error_response_body"
-                }
-              ]
-            }
-          }
-        },
-        "show": {
-          "method": "get",
-          "path": "/:id",
-          "response": {
-            "body": {
-              "type": "union",
-              "variants": [
-                {
-                  "type": "vehicle_show_success_response_body"
-                },
-                {
-                  "type": "error_response_body"
-                }
-              ]
-            }
-          }
-        },
-        "create": {
-          "method": "post",
-          "path": "/",
-          "request": {
-            "body": {
-              "vehicle": {
-                "type": "vehicle_create_payload"
-              }
-            }
-          },
-          "response": {
-            "body": {
-              "type": "union",
-              "variants": [
-                {
-                  "type": "vehicle_create_success_response_body"
-                },
-                {
-                  "type": "error_response_body"
-                }
-              ]
-            }
-          },
-          "raises": [
-            "unprocessable_entity"
-          ]
-        },
-        "update": {
-          "method": "patch",
-          "path": "/:id",
-          "request": {
-            "body": {
-              "vehicle": {
-                "type": "vehicle_update_payload"
-              }
-            }
-          },
-          "response": {
-            "body": {
-              "type": "union",
-              "variants": [
-                {
-                  "type": "vehicle_update_success_response_body"
-                },
-                {
-                  "type": "error_response_body"
-                }
-              ]
-            }
-          },
-          "raises": [
-            "unprocessable_entity"
-          ]
-        },
-        "destroy": {
-          "method": "delete",
-          "path": "/:id",
-          "response": {
-            "no_content": true
-          }
-        }
-      }
     }
   }
 }

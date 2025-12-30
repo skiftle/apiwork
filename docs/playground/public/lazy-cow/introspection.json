@@ -1,11 +1,68 @@
 {
+  "resources": {
+    "status": {
+      "actions": {
+        "health": {
+          "path": "/health",
+          "method": "get",
+          "response": {
+            "body": {
+              "shape": {
+                "status": {
+                  "type": "string"
+                },
+                "timestamp": {
+                  "type": "datetime"
+                },
+                "version": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          }
+        },
+        "stats": {
+          "path": "/stats",
+          "method": "get",
+          "response": {
+            "body": {
+              "shape": {
+                "posts_count": {
+                  "type": "integer"
+                },
+                "uptime_seconds": {
+                  "type": "integer"
+                },
+                "users_count": {
+                  "type": "integer"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "identifier": "status",
+      "path": "status"
+    }
+  },
+  "enums": {
+    "layer": {
+      "values": [
+        "http",
+        "contract",
+        "domain"
+      ]
+    }
+  },
   "path": "/lazy_cow",
   "types": {
     "error_response_body": {
       "shape": {
         "issues": {
-          "type": "array",
-          "of": "issue"
+          "of": "issue",
+          "type": "array"
         },
         "layer": {
           "type": "layer"
@@ -25,71 +82,14 @@
           "type": "object"
         },
         "path": {
-          "type": "array",
-          "of": "string"
+          "of": "string",
+          "type": "array"
         },
         "pointer": {
           "type": "string"
         }
       },
       "type": "object"
-    }
-  },
-  "enums": {
-    "layer": {
-      "values": [
-        "http",
-        "contract",
-        "domain"
-      ]
-    }
-  },
-  "resources": {
-    "status": {
-      "identifier": "status",
-      "path": "status",
-      "actions": {
-        "health": {
-          "method": "get",
-          "path": "/health",
-          "response": {
-            "body": {
-              "shape": {
-                "status": {
-                  "type": "string"
-                },
-                "timestamp": {
-                  "type": "datetime"
-                },
-                "version": {
-                  "type": "string"
-                }
-              },
-              "type": "object"
-            }
-          }
-        },
-        "stats": {
-          "method": "get",
-          "path": "/stats",
-          "response": {
-            "body": {
-              "shape": {
-                "posts_count": {
-                  "type": "integer"
-                },
-                "uptime_seconds": {
-                  "type": "integer"
-                },
-                "users_count": {
-                  "type": "integer"
-                }
-              },
-              "type": "object"
-            }
-          }
-        }
-      }
     }
   }
 }

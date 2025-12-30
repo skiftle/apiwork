@@ -1,112 +1,7 @@
 ---
-openapi: 3.1.0
-info:
-  title: "/grumpy_panda API"
-  version: 1.0.0
-paths:
-  activities/:
-    get:
-      operationId: activitiesIndex
-      parameters:
-      - in: query
-        name: page
-        required: false
-        schema:
-          "$ref": "#/components/schemas/activityPage"
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/activityIndexSuccessResponseBody"
-    post:
-      operationId: activitiesCreate
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              properties:
-                activity:
-                  "$ref": "#/components/schemas/activityCreatePayload"
-              type: object
-              required:
-              - activity
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/activityCreateSuccessResponseBody"
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/errorResponseBody"
-  activities/{id}:
-    get:
-      operationId: activitiesShow
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/activityShowSuccessResponseBody"
-    patch:
-      operationId: activitiesUpdate
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              properties:
-                activity:
-                  "$ref": "#/components/schemas/activityUpdatePayload"
-              type: object
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/activityUpdateSuccessResponseBody"
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/errorResponseBody"
-    delete:
-      operationId: activitiesDestroy
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '204':
-          description: No content
 components:
   schemas:
     activity:
-      type: object
       properties:
         action:
           type: string
@@ -120,13 +15,13 @@ components:
           - string
           - 'null'
           format: date-time
+      type: object
       required:
       - action
       - createdAt
       - id
       - occurredAt
     activityCreatePayload:
-      type: object
       properties:
         action:
           type: string
@@ -135,35 +30,35 @@ components:
           - string
           - 'null'
           format: date-time
+      type: object
       required:
       - action
     activityCreateSuccessResponseBody:
-      type: object
       properties:
         activity:
           "$ref": "#/components/schemas/activity"
         meta:
-          type: object
           properties: {}
+          type: object
+      type: object
       required:
       - activity
     activityIndexSuccessResponseBody:
-      type: object
       properties:
         activities:
-          type: array
           items:
             "$ref": "#/components/schemas/activity"
+          type: array
         meta:
-          type: object
           properties: {}
+          type: object
         pagination:
           "$ref": "#/components/schemas/cursorPagination"
+      type: object
       required:
       - activities
       - pagination
     activityPage:
-      type: object
       properties:
         after:
           type: string
@@ -173,18 +68,18 @@ components:
           type: integer
           minimum: 1
           maximum: 100
-    activityShowSuccessResponseBody:
       type: object
+    activityShowSuccessResponseBody:
       properties:
         activity:
           "$ref": "#/components/schemas/activity"
         meta:
-          type: object
           properties: {}
+          type: object
+      type: object
       required:
       - activity
     activityUpdatePayload:
-      type: object
       properties:
         action:
           type: string
@@ -193,20 +88,20 @@ components:
           - string
           - 'null'
           format: date-time
+      type: object
       required:
       - action
     activityUpdateSuccessResponseBody:
-      type: object
       properties:
         activity:
           "$ref": "#/components/schemas/activity"
         meta:
-          type: object
           properties: {}
+          type: object
+      type: object
       required:
       - activity
     cursorPagination:
-      type: object
       properties:
         next:
           type:
@@ -216,41 +111,146 @@ components:
           type:
           - string
           - 'null'
-    errorResponseBody:
       type: object
+    errorResponseBody:
       properties:
         issues:
-          type: array
           items:
             "$ref": "#/components/schemas/issue"
+          type: array
         layer:
           enum:
           - http
           - contract
           - domain
           type: string
+      type: object
       required:
       - issues
       - layer
     issue:
-      type: object
       properties:
         code:
           type: string
         detail:
           type: string
         meta:
-          type: object
           properties: {}
+          type: object
         path:
-          type: array
           items:
             type: string
+          type: array
         pointer:
           type: string
+      type: object
       required:
       - code
       - detail
       - meta
       - path
       - pointer
+info:
+  title: "/grumpy_panda API"
+  version: 1.0.0
+openapi: 3.1.0
+paths:
+  activities/:
+    get:
+      operationId: activitiesIndex
+      parameters:
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/activityPage"
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/activityIndexSuccessResponseBody"
+          description: Successful response
+    post:
+      operationId: activitiesCreate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                activity:
+                  "$ref": "#/components/schemas/activityCreatePayload"
+              type: object
+              required:
+              - activity
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/activityCreateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+  activities/{id}:
+    get:
+      operationId: activitiesShow
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/activityShowSuccessResponseBody"
+          description: Successful response
+    patch:
+      operationId: activitiesUpdate
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                activity:
+                  "$ref": "#/components/schemas/activityUpdatePayload"
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/activityUpdateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+    delete:
+      operationId: activitiesDestroy
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content

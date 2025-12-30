@@ -1,11 +1,169 @@
 {
+  "resources": {
+    "orders": {
+      "actions": {
+        "index": {
+          "path": "/",
+          "method": "get",
+          "request": {
+            "query": {
+              "filter": {
+                "type": "union",
+                "variants": [
+                  {
+                    "type": "order_filter"
+                  },
+                  {
+                    "type": "array",
+                    "of": "order_filter"
+                  }
+                ],
+                "optional": true
+              },
+              "page": {
+                "type": "order_page",
+                "optional": true
+              },
+              "sort": {
+                "type": "union",
+                "variants": [
+                  {
+                    "type": "order_sort"
+                  },
+                  {
+                    "type": "array",
+                    "of": "order_sort"
+                  }
+                ],
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "order_index_success_response_body"
+                },
+                {
+                  "type": "error_response_body"
+                }
+              ]
+            }
+          }
+        },
+        "show": {
+          "path": "/:id",
+          "method": "get",
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "order_show_success_response_body"
+                },
+                {
+                  "type": "error_response_body"
+                }
+              ]
+            }
+          }
+        },
+        "create": {
+          "path": "/",
+          "method": "post",
+          "raises": [
+            "unprocessable_entity"
+          ],
+          "request": {
+            "body": {
+              "order": {
+                "type": "order_create_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "order_create_success_response_body"
+                },
+                {
+                  "type": "error_response_body"
+                }
+              ]
+            }
+          }
+        },
+        "update": {
+          "path": "/:id",
+          "method": "patch",
+          "raises": [
+            "unprocessable_entity"
+          ],
+          "request": {
+            "body": {
+              "order": {
+                "type": "order_update_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "order_update_success_response_body"
+                },
+                {
+                  "type": "error_response_body"
+                }
+              ]
+            }
+          }
+        },
+        "destroy": {
+          "path": "/:id",
+          "method": "delete",
+          "response": {
+            "no_content": true
+          }
+        }
+      },
+      "identifier": "orders",
+      "path": "orders"
+    }
+  },
+  "enums": {
+    "layer": {
+      "values": [
+        "http",
+        "contract",
+        "domain"
+      ]
+    },
+    "sort_direction": {
+      "values": [
+        "asc",
+        "desc"
+      ]
+    }
+  },
+  "error_codes": {
+    "unprocessable_entity": {
+      "description": "Unprocessable Entity",
+      "status": 422
+    }
+  },
   "path": "/clever_rabbit",
   "types": {
     "error_response_body": {
       "shape": {
         "issues": {
-          "type": "array",
-          "of": "issue"
+          "of": "issue",
+          "type": "array"
         },
         "layer": {
           "type": "layer"
@@ -25,8 +183,8 @@
           "type": "object"
         },
         "path": {
-          "type": "array",
-          "of": "string"
+          "of": "string",
+          "type": "array"
         },
         "pointer": {
           "type": "string"
@@ -49,8 +207,8 @@
           "optional": true
         },
         "in": {
-          "type": "array",
           "of": "string",
+          "type": "array",
           "optional": true
         },
         "null": {
@@ -122,16 +280,16 @@
     "order_create_payload": {
       "shape": {
         "line_items": {
-          "type": "array",
           "as": "line_items_attributes",
+          "type": "array",
           "optional": true
         },
         "order_number": {
           "type": "string"
         },
         "shipping_address": {
-          "type": "object",
           "as": "shipping_address_attributes",
+          "type": "object",
           "optional": true
         }
       },
@@ -152,8 +310,8 @@
     "order_filter": {
       "shape": {
         "_and": {
-          "type": "array",
           "of": "order_filter",
+          "type": "array",
           "optional": true
         },
         "_not": {
@@ -161,8 +319,8 @@
           "optional": true
         },
         "_or": {
-          "type": "array",
           "of": "order_filter",
+          "type": "array",
           "optional": true
         },
         "status": {
@@ -187,8 +345,8 @@
           "optional": true
         },
         "orders": {
-          "type": "array",
-          "of": "order"
+          "of": "order",
+          "type": "array"
         },
         "pagination": {
           "type": "offset_pagination"
@@ -206,8 +364,8 @@
         "size": {
           "type": "integer",
           "optional": true,
-          "min": 1,
-          "max": 100
+          "max": 100,
+          "min": 1
         }
       },
       "type": "object"
@@ -240,16 +398,16 @@
     "order_update_payload": {
       "shape": {
         "line_items": {
-          "type": "array",
           "as": "line_items_attributes",
+          "type": "array",
           "optional": true
         },
         "order_number": {
           "type": "string"
         },
         "shipping_address": {
-          "type": "object",
           "as": "shipping_address_attributes",
+          "type": "object",
           "optional": true
         }
       },
@@ -282,8 +440,8 @@
           "optional": true
         },
         "in": {
-          "type": "array",
           "of": "string",
+          "type": "array",
           "optional": true
         },
         "starts_with": {
@@ -292,164 +450,6 @@
         }
       },
       "type": "object"
-    }
-  },
-  "enums": {
-    "layer": {
-      "values": [
-        "http",
-        "contract",
-        "domain"
-      ]
-    },
-    "sort_direction": {
-      "values": [
-        "asc",
-        "desc"
-      ]
-    }
-  },
-  "error_codes": {
-    "unprocessable_entity": {
-      "status": 422,
-      "description": "Unprocessable Entity"
-    }
-  },
-  "resources": {
-    "orders": {
-      "identifier": "orders",
-      "path": "orders",
-      "actions": {
-        "index": {
-          "method": "get",
-          "path": "/",
-          "request": {
-            "query": {
-              "filter": {
-                "type": "union",
-                "variants": [
-                  {
-                    "type": "order_filter"
-                  },
-                  {
-                    "type": "array",
-                    "of": "order_filter"
-                  }
-                ],
-                "optional": true
-              },
-              "page": {
-                "type": "order_page",
-                "optional": true
-              },
-              "sort": {
-                "type": "union",
-                "variants": [
-                  {
-                    "type": "order_sort"
-                  },
-                  {
-                    "type": "array",
-                    "of": "order_sort"
-                  }
-                ],
-                "optional": true
-              }
-            }
-          },
-          "response": {
-            "body": {
-              "type": "union",
-              "variants": [
-                {
-                  "type": "order_index_success_response_body"
-                },
-                {
-                  "type": "error_response_body"
-                }
-              ]
-            }
-          }
-        },
-        "show": {
-          "method": "get",
-          "path": "/:id",
-          "response": {
-            "body": {
-              "type": "union",
-              "variants": [
-                {
-                  "type": "order_show_success_response_body"
-                },
-                {
-                  "type": "error_response_body"
-                }
-              ]
-            }
-          }
-        },
-        "create": {
-          "method": "post",
-          "path": "/",
-          "request": {
-            "body": {
-              "order": {
-                "type": "order_create_payload"
-              }
-            }
-          },
-          "response": {
-            "body": {
-              "type": "union",
-              "variants": [
-                {
-                  "type": "order_create_success_response_body"
-                },
-                {
-                  "type": "error_response_body"
-                }
-              ]
-            }
-          },
-          "raises": [
-            "unprocessable_entity"
-          ]
-        },
-        "update": {
-          "method": "patch",
-          "path": "/:id",
-          "request": {
-            "body": {
-              "order": {
-                "type": "order_update_payload"
-              }
-            }
-          },
-          "response": {
-            "body": {
-              "type": "union",
-              "variants": [
-                {
-                  "type": "order_update_success_response_body"
-                },
-                {
-                  "type": "error_response_body"
-                }
-              ]
-            }
-          },
-          "raises": [
-            "unprocessable_entity"
-          ]
-        },
-        "destroy": {
-          "method": "delete",
-          "path": "/:id",
-          "response": {
-            "no_content": true
-          }
-        }
-      }
     }
   }
 }
