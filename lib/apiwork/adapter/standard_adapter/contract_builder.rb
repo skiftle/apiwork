@@ -116,12 +116,10 @@ module Apiwork
 
             param_options[:enum] = name if attribute_definition.enum
 
-            source = build_source(target_schema_class, name, :attribute)
-
             if attribute_definition.inline_shape
-              param_definition.param name, **param_options, attribute_definition:, source:, &attribute_definition.inline_shape
+              param_definition.param name, **param_options, &attribute_definition.inline_shape
             else
-              param_definition.param name, **param_options, attribute_definition:, source:
+              param_definition.param name, **param_options
             end
           end
 
@@ -151,7 +149,6 @@ module Apiwork
               optional: true,
             }
 
-            source = build_source(target_schema_class, name, :association)
             internal = {}
             internal[:type_contract_class] = association_contract if association_contract
 
@@ -166,7 +163,7 @@ module Apiwork
               param_options[:type] = association_definition.collection? ? :array : :object
             end
 
-            param_definition.param name, **param_options, association_definition:, internal:, source:
+            param_definition.param name, **param_options, internal:
           end
         end
 
@@ -337,12 +334,10 @@ module Apiwork
                 **of_option,
               }
 
-              source = builder.send(:build_source, schema_class_local, name, :attribute)
-
               if attribute_definition.inline_shape
-                param name, **param_options, source:, &attribute_definition.inline_shape
+                param name, **param_options, &attribute_definition.inline_shape
               else
-                param name, **param_options, source:
+                param name, **param_options
               end
             end
 
@@ -357,15 +352,13 @@ module Apiwork
                 optional: !association_definition.always_included?,
               }
 
-              source = builder.send(:build_source, schema_class_local, name, :association)
-
               if association_definition.singular?
-                param name, association_definition:, source:, type: association_type || :object, **base_options
+                param name, type: association_type || :object, **base_options
               elsif association_definition.collection?
                 if association_type
-                  param name, association_definition:, source:, of: association_type, type: :array, **base_options
+                  param name, of: association_type, type: :array, **base_options
                 else
-                  param name, association_definition:, source:, type: :array, **base_options
+                  param name, type: :array, **base_options
                 end
               end
             end
@@ -408,12 +401,11 @@ module Apiwork
               next if attribute_definition.type == :unknown
 
               filter_type = builder.send(:filter_type_for, attribute_definition)
-              source = builder.send(:build_source, schema_class_local, name, :attribute)
 
               if attribute_definition.enum
-                param name, attribute_definition:, source:, optional: true, type: filter_type
+                param name, optional: true, type: filter_type
               else
-                param name, attribute_definition:, source:, optional: true, type: :union do
+                param name, optional: true, type: :union do
                   variant type: builder.send(:map_type, attribute_definition.type)
                   variant type: filter_type
                 end
@@ -440,10 +432,7 @@ module Apiwork
                                           )
                                         end
 
-              if association_filter_type
-                source = builder.send(:build_source, schema_class_local, name, :association)
-                param name, source:, optional: true, type: association_filter_type
-              end
+              param name, optional: true, type: association_filter_type if association_filter_type
             end
           end
 
@@ -478,8 +467,7 @@ module Apiwork
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
               next unless attribute_definition.sortable?
 
-              source = builder.send(:build_source, schema_class_local, name, :attribute)
-              param name, attribute_definition:, source:, optional: true, type: :sort_direction
+              param name, optional: true, type: :sort_direction
             end
 
             schema_class_local.association_definitions.each do |name, association_definition|
@@ -502,10 +490,7 @@ module Apiwork
                                         )
                                       end
 
-              if association_sort_type
-                source = builder.send(:build_source, schema_class_local, name, :association)
-                param name, source:, optional: true, type: association_sort_type
-              end
+              param name, optional: true, type: association_sort_type if association_sort_type
             end
           end
 
@@ -707,9 +692,7 @@ module Apiwork
 
             schema_class_local.attribute_definitions.each do |name, attribute_definition|
               enum_option = attribute_definition.enum ? { enum: name } : {}
-              source = builder.send(:build_source, schema_class_local, name, :attribute)
               param name,
-                    source:,
                     deprecated: attribute_definition.deprecated,
                     description: attribute_definition.description,
                     example: attribute_definition.example,
@@ -722,31 +705,24 @@ module Apiwork
             schema_class_local.association_definitions.each do |name, association_definition|
               association_type = association_type_map[name]
               is_optional = !association_definition.always_included?
-              source = builder.send(:build_source, schema_class_local, name, :association)
 
               if association_type
                 if association_definition.singular?
                   param name,
-                        association_definition:,
-                        source:,
                         nullable: association_definition.nullable?,
                         optional: is_optional,
                         type: association_type
                 elsif association_definition.collection?
                   param name,
-                        association_definition:,
-                        source:,
                         nullable: association_definition.nullable?,
                         of: association_type,
                         optional: is_optional,
                         type: :array
                 end
               elsif association_definition.singular?
-                param name, association_definition:, source:, nullable: association_definition.nullable?, optional: is_optional, type: :object
+                param name, nullable: association_definition.nullable?, optional: is_optional, type: :object
               elsif association_definition.collection?
                 param name,
-                      association_definition:,
-                      source:,
                       nullable: association_definition.nullable?,
                       of: :object,
                       optional: is_optional,
@@ -842,9 +818,7 @@ module Apiwork
 
                 variant_schema.attribute_definitions.each do |name, attribute_definition|
                   enum_option = attribute_definition.enum ? { enum: name } : {}
-                  source = builder.send(:build_source, variant_schema, name, :attribute)
                   param name,
-                        source:,
                         deprecated: attribute_definition.deprecated,
                         description: attribute_definition.description,
                         example: attribute_definition.example,
@@ -1034,14 +1008,6 @@ module Apiwork
           when :unknown then :unknown
           else :unknown
           end
-        end
-
-        def build_source(schema_class_arg, field_name, field_type)
-          {
-            field: field_name,
-            schema: schema_class_arg.name.demodulize.delete_suffix('Schema').underscore.to_sym,
-            type: field_type,
-          }
         end
       end
     end

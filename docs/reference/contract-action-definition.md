@@ -168,7 +168,7 @@ end
 
 `#response(replace: false, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L200)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/action_definition.rb#L203)
 
 Defines the response structure for this action.
 
@@ -189,7 +189,10 @@ Use the block to define response body or declare no_content.
 ```ruby
 action :show do
   response do
-    body { param :id; param :title }
+    body do
+      param :id
+      param :title
+    end
   end
 end
 ```

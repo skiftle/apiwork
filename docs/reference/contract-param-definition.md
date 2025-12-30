@@ -20,7 +20,7 @@ Use as a declarative builder - do not rely on internal state.
 
 `#meta(optional: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L199)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L191)
 
 Shorthand for `param :meta, type: :object do ... end`.
 
@@ -60,9 +60,9 @@ end
 
 ### #param
 
-`#param(name, as: nil, association_definition: nil, attribute_definition: nil, default: nil, deprecated: nil, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, of: nil, optional: nil, required: nil, source: nil, type: nil, value: nil, &block)`
+`#param(name, as: nil, default: nil, deprecated: nil, description: nil, discriminator: nil, enum: nil, example: nil, format: nil, max: nil, min: nil, nullable: nil, of: nil, optional: nil, required: nil, type: nil, value: nil, &block)`
 
-[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L73)
+[GitHub](https://github.com/skiftle/apiwork/blob/main/lib/apiwork/contract/param_definition.rb#L71)
 
 Defines a parameter/field in a request or response body.
 
@@ -87,7 +87,6 @@ Defines a parameter/field in a request or response body.
 | `min` | `Integer` | minimum value (numeric) or length (string/array) |
 | `nullable` | `Boolean` | whether null is allowed |
 | `required` | `Boolean` | alias for optional: false (for readability) |
-| `source` | `Hash` | schema source for i18n lookup. Keys: :schema (Symbol), :field (Symbol), :type (:attribute or :association) |
 
 **Example: Basic types**
 

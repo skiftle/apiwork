@@ -249,15 +249,28 @@ module Apiwork
       def resolve_attribute_description(options)
         return options[:description] if options[:description]
 
-        if (attribute_definition = options[:attribute_definition])
+        param_name = options[:name]
+        return nil unless param_name
+
+        schema_class = resolve_schema_class
+        return nil unless schema_class
+
+        if (attribute_definition = schema_class.attribute_definitions[param_name])
           description = i18n_attribute_description(attribute_definition)
           return description if description
         end
 
-        if (association_definition = options[:association_definition])
+        if (association_definition = schema_class.association_definitions[param_name])
           description = i18n_association_description(association_definition)
           return description if description
         end
+
+        nil
+      end
+
+      def resolve_schema_class
+        contract_class = @param_definition.contract_class
+        return contract_class.schema_class if contract_class.respond_to?(:schema_class) && contract_class.schema_class
 
         nil
       end
