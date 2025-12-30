@@ -82,8 +82,8 @@ RSpec.describe 'Filtering API', type: :request do
       get '/api/v1/posts',
           params: {
             filter: {
-              published: { eq: true },
               body: { contains: 'Rails' },
+              published: { eq: true },
             },
           }
 

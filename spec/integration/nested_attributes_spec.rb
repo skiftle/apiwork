@@ -13,13 +13,13 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
     it 'creates a post with nested comments' do
       post_params = {
         post: {
-          title: 'Post with Comments',
           body: 'Post body',
-          published: true,
           comments: [
             { author: 'Author 1', content: 'First comment' },
             { author: 'Author 2', content: 'Second comment' },
           ],
+          published: true,
+          title: 'Post with Comments',
         },
       }
 
@@ -40,10 +40,10 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
     it 'creates a post with empty comments array' do
       post_params = {
         post: {
-          title: 'Post without Comments',
           body: 'Post body',
-          published: true,
           comments: [],
+          published: true,
+          title: 'Post without Comments',
         },
       }
 
@@ -59,9 +59,9 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
     it 'creates a post without nested comments key' do
       post_params = {
         post: {
-          title: 'Simple Post',
           body: 'Post body',
           published: true,
+          title: 'Simple Post',
         },
       }
 
@@ -78,9 +78,9 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
   describe 'Updating with nested has_many' do
     let!(:post_record) do
       Post.create!(
-        title: 'Existing Post',
         body: 'Existing body',
         published: true,
+        title: 'Existing Post',
       )
     end
     let!(:comment1) { Comment.create!(author: 'Author 1', content: 'Existing comment 1', post: post_record) }
@@ -89,7 +89,6 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
     it 'adds new comments to existing post' do
       post_params = {
         post: {
-          title: 'Updated Post',
           comments: [
             {
               author: 'Author 1',
@@ -103,6 +102,7 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
             },
             { author: 'Author 3', content: 'New comment 3' },
           ],
+          title: 'Updated Post',
         },
       }
 
@@ -122,7 +122,6 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
     it 'updates existing comments' do
       post_params = {
         post: {
-          title: 'Keep title',
           comments: [
             {
               author: 'Modified Author',
@@ -131,6 +130,7 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
               post_id: post_record.id,
             },
           ],
+          title: 'Keep title',
         },
       }
 
@@ -146,7 +146,6 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
     it 'destroys comments with _destroy flag' do
       post_params = {
         post: {
-          title: 'Keep title',
           comments: [
             { _destroy: true, id: comment1.id },
             {
@@ -156,6 +155,7 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
               post_id: post_record.id,
             },
           ],
+          title: 'Keep title',
         },
       }
 
@@ -172,10 +172,10 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
     it 'handles validation errors in nested comments' do
       post_params = {
         post: {
-          title: 'Updated Post',
           comments: [
             { author: 'Author', content: '' }, # Invalid: content is required
           ],
+          title: 'Updated Post',
         },
       }
 
@@ -190,13 +190,13 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
     it 'validates required fields in nested comments' do
       post_params = {
         post: {
-          title: 'Post',
           body: 'Body',
-          published: true,
           comments: [
             { author: 'Author', content: 'Valid comment' },
             { author: 'Invalid', content: '' }, # Missing required content
           ],
+          published: true,
+          title: 'Post',
         },
       }
 
@@ -212,12 +212,12 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
       # by checking that Rails nested attributes work as expected
       post_params = {
         post: {
-          title: 'Test Transformation',
           body: 'Body',
-          published: true,
           comments: [
             { author: 'Author', content: 'Comment via transformation' },
           ],
+          published: true,
+          title: 'Test Transformation',
         },
       }
 
@@ -234,26 +234,26 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
       it 'creates post with nested comments and replies' do
         post_params = {
           post: {
-            title: 'Post with Deep Nesting',
             body: 'Post body',
-            published: true,
             comments: [
               {
-                content: 'First comment',
                 author: 'Author 1',
+                content: 'First comment',
                 replies: [
                   { author: 'Replier 1', content: 'Reply to first comment' },
                   { author: 'Replier 2', content: 'Another reply to first' },
                 ],
               },
               {
-                content: 'Second comment',
                 author: 'Author 2',
+                content: 'Second comment',
                 replies: [
                   { author: 'Replier 3', content: 'Reply to second comment' },
                 ],
               },
             ],
+            published: true,
+            title: 'Post with Deep Nesting',
           },
         }
 
@@ -284,16 +284,16 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
       it 'creates post with comment but no replies' do
         post_params = {
           post: {
-            title: 'Post',
             body: 'Body',
-            published: true,
             comments: [
               {
-                content: 'Comment without replies',
                 author: 'Author',
+                content: 'Comment without replies',
                 replies: [],
               },
             ],
+            published: true,
+            title: 'Post',
           },
         }
 
@@ -314,12 +314,11 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
       it 'updates existing replies and adds new ones' do
         post_params = {
           post: {
-            title: 'Updated Post',
             comments: [
               {
-                id: comment.id,
-                content: 'Updated comment',
                 author: 'Author',
+                content: 'Updated comment',
+                id: comment.id,
                 replies: [
                   {
                     author: 'Replier',
@@ -330,6 +329,7 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
                 ],
               },
             ],
+            title: 'Updated Post',
           },
         }
 
@@ -354,18 +354,18 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
       it 'destroys replies with _destroy flag' do
         post_params = {
           post: {
-            title: 'Keep title',
             comments: [
               {
-                id: comment.id,
-                content: 'Comment',
                 author: 'Author',
+                content: 'Comment',
+                id: comment.id,
                 post_id: post_record.id,
                 replies: [
                   { _destroy: true, id: reply.id },
                 ],
               },
             ],
+            title: 'Keep title',
           },
         }
 
@@ -382,18 +382,18 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
       it 'validates required fields in nested replies' do
         post_params = {
           post: {
-            title: 'Post',
             body: 'Body',
-            published: true,
             comments: [
               {
-                content: 'Valid comment',
                 author: 'Author',
+                content: 'Valid comment',
                 replies: [
                   { author: 'Replier', content: '' }, # Invalid: content is required
                 ],
               },
             ],
+            published: true,
+            title: 'Post',
           },
         }
 
@@ -408,18 +408,18 @@ RSpec.describe 'Nested Attributes (accepts_nested_attributes_for)', type: :reque
       it 'transforms replies to replies_attributes recursively' do
         post_params = {
           post: {
-            title: 'Test Deep Transformation',
             body: 'Body',
-            published: true,
             comments: [
               {
-                content: 'Comment',
                 author: 'Author',
+                content: 'Comment',
                 replies: [
                   { author: 'Replier', content: 'Reply via transformation' },
                 ],
               },
             ],
+            published: true,
+            title: 'Test Deep Transformation',
           },
         }
 

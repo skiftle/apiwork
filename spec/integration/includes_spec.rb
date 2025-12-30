@@ -44,8 +44,8 @@ RSpec.describe 'Includes API', type: :request do
         get '/api/v1/posts',
             params: {
               filter: { published: { eq: true } },
-              sort: { title: 'asc' },
               include: { comments: true },
+              sort: { title: 'asc' },
             }
 
         expect(response).to have_http_status(:ok)

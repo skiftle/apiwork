@@ -45,8 +45,8 @@ RSpec.describe 'Contract union type unknown field validation' do
     result = action_definition.request_definition.body_param_definition.validate(
       {
         custom: {
-          valid_field: true,
           another_field: 'test',
+          valid_field: true,
         },
       },
     )

@@ -28,9 +28,9 @@ RSpec.describe 'Routing DSL Override with only/except', type: :request do
     it 'restricts create action (404)' do
       post_params = {
         post: {
-          title: 'New Post',
           body: 'Body',
           published: true,
+          title: 'New Post',
         },
       }
 
@@ -84,8 +84,8 @@ RSpec.describe 'Routing DSL Override with only/except', type: :request do
     it 'allows create action' do
       comment_params = {
         comment: {
-          content: 'New Comment',
           author: 'New Author',
+          content: 'New Comment',
           post_id: post_for_comments.id,
         },
       }
@@ -100,8 +100,8 @@ RSpec.describe 'Routing DSL Override with only/except', type: :request do
     it 'allows update action' do
       comment_params = {
         comment: {
-          content: 'Updated Comment',
           author: 'Updated Author',
+          content: 'Updated Comment',
           post_id: post_for_comments.id,
         },
       }

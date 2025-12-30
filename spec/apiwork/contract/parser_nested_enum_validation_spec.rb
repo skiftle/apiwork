@@ -29,10 +29,10 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
       # Valid nested enum values should pass
       valid_output = {
         account: {
+          first_day_of_week: 'monday',
           id: 1,
           name: 'Test Account',
           status: 'active',
-          first_day_of_week: 'monday',
         },
       }
       result = contract_class.parse_response(valid_output, :show)
@@ -41,10 +41,10 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
       # Invalid status enum should fail
       invalid_status = {
         account: {
+          first_day_of_week: 'monday',
           id: 1,
           name: 'Test Account',
-          status: 'deleted', # Not in enum
-          first_day_of_week: 'monday',
+          status: 'deleted',
         },
       }
       result = contract_class.parse_response(invalid_status, :show)
@@ -56,10 +56,10 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
       # Invalid first_day_of_week enum should fail
       invalid_fdow = {
         account: {
+          first_day_of_week: 'hahahahahaha',
           id: 1,
           name: 'Test Account',
           status: 'active',
-          first_day_of_week: 'hahahahahaha', # Not in enum
         },
       }
       result = contract_class.parse_response(invalid_fdow, :show)
@@ -122,11 +122,11 @@ RSpec.describe 'Parser Nested Custom Type Enum Validation' do
       # Invalid enum in deeply nested object
       invalid_output = {
         account: {
-          id: 1,
           address: {
             city: 'Stockholm',
             country_code: 'INVALID', # Not in enum
           },
+          id: 1,
         },
       }
       result = contract_class.parse_response(invalid_output, :show)

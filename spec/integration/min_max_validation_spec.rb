@@ -7,8 +7,8 @@ RSpec.describe 'Min and Max validation on params', type: :request do
     it 'rejects strings shorter than min length' do
       user_params = {
         user: {
-          name: 'A', # Only 1 character, min is 2
           email: 'test@example.com',
+          name: 'A',
         },
       }
 
@@ -26,8 +26,8 @@ RSpec.describe 'Min and Max validation on params', type: :request do
     it 'accepts strings equal to min length' do
       user_params = {
         user: {
-          name: 'AB', # Exactly 2 characters
           email: 'test@example.com',
+          name: 'AB',
         },
       }
 
@@ -40,8 +40,8 @@ RSpec.describe 'Min and Max validation on params', type: :request do
     it 'accepts strings longer than min but within max' do
       user_params = {
         user: {
-          name: 'John Doe', # 8 characters, between min(2) and max(50)
           email: 'test@example.com',
+          name: 'John Doe',
         },
       }
 
@@ -57,8 +57,8 @@ RSpec.describe 'Min and Max validation on params', type: :request do
     it 'rejects strings longer than max length' do
       user_params = {
         user: {
-          name: 'A' * 51, # 51 characters, max is 50
           email: 'test@example.com',
+          name: 'A' * 51,
         },
       }
 
@@ -75,8 +75,8 @@ RSpec.describe 'Min and Max validation on params', type: :request do
     it 'accepts strings equal to max length' do
       user_params = {
         user: {
-          name: 'A' * 50, # Exactly 50 characters
           email: 'test@example.com',
+          name: 'A' * 50,
         },
       }
 
@@ -89,8 +89,8 @@ RSpec.describe 'Min and Max validation on params', type: :request do
     it 'accepts strings shorter than max' do
       user_params = {
         user: {
-          name: 'Short', # 5 characters, well under max(50)
           email: 'test@example.com',
+          name: 'Short',
         },
       }
 

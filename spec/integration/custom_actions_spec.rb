@@ -67,9 +67,9 @@ RSpec.describe 'Custom Actions API', type: :request do
     describe 'GET /api/v1/posts/:id/preview' do
       it 'routes GET requests to custom member actions' do
         post = Post.create!(
-          title: 'Test Post',
           body: 'This is a long post body.',
           published: true,
+          title: 'Test Post',
         )
 
         get "/api/v1/posts/#{post.id}/preview"

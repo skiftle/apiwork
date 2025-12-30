@@ -7,10 +7,10 @@ RSpec.describe 'Cursor Pagination API', type: :request do
     25.times do |i|
       Activity.create!(
         action: "action_#{i + 1}",
-        target_type: 'Post',
-        target_id: i + 1,
-        read: i.even?,
         created_at: (25 - i).days.ago,
+        read: i.even?,
+        target_id: i + 1,
+        target_type: 'Post',
       )
     end
   end

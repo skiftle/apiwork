@@ -7,10 +7,10 @@ RSpec.describe 'Pagination API', type: :request do
     # Create 25 posts for pagination testing
     25.times do |i|
       Post.create!(
-        title: "Post #{i + 1}",
         body: "Body #{i + 1}",
-        published: i.even?,
         created_at: (25 - i).days.ago,
+        published: i.even?,
+        title: "Post #{i + 1}",
       )
     end
   end
@@ -102,8 +102,8 @@ RSpec.describe 'Pagination API', type: :request do
     it 'combines pagination with sorting' do
       get '/api/v1/posts',
           params: {
-            sort: { title: 'desc' },
             page: { number: 1, size: 5 },
+            sort: { title: 'desc' },
           }
 
       expect(response).to have_http_status(:ok)
@@ -119,8 +119,8 @@ RSpec.describe 'Pagination API', type: :request do
       get '/api/v1/posts',
           params: {
             filter: { published: { eq: true } },
-            sort: { title: 'asc' },
             page: { number: 1, size: 3 },
+            sort: { title: 'asc' },
           }
 
       expect(response).to have_http_status(:ok)

@@ -7,34 +7,34 @@ RSpec.describe 'STI (Single Table Inheritance) API', type: :request do
 
   let!(:person_client) do
     PersonClient.create!(
-      name: 'Alice Smith',
-      email: 'alice@example.com',
       birth_date: Date.new(1990, 5, 15),
+      email: 'alice@example.com',
+      name: 'Alice Smith',
     )
   end
 
   let!(:company_client) do
     CompanyClient.create!(
-      name: 'Acme Corp',
       email: 'contact@acme.com',
       industry: 'Technology',
+      name: 'Acme Corp',
       registration_number: 'ABC123',
     )
   end
 
   let!(:service_for_person) do
     Service.create!(
-      name: 'Personal Consulting',
-      description: 'One-on-one consulting service',
       client: person_client,
+      description: 'One-on-one consulting service',
+      name: 'Personal Consulting',
     )
   end
 
   let!(:service_for_company) do
     Service.create!(
-      name: 'Enterprise Support',
-      description: 'Full enterprise support package',
       client: company_client,
+      description: 'Full enterprise support package',
+      name: 'Enterprise Support',
     )
   end
 

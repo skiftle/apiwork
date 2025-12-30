@@ -165,7 +165,7 @@ RSpec.describe Apiwork::Spec::TypeScriptSpec do
 
           kind = Regexp.last_match(1)
           name = Regexp.last_match(2)
-          declarations << { kind: kind, name: name }
+          declarations << { kind:, name: }
         end
 
         # Verify they're in alphabetical order by name

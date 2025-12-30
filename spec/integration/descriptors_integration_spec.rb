@@ -35,8 +35,8 @@ RSpec.describe 'TypeSystem Integration', type: :request do
       expect(introspection[:types][:error_detail]).to include(
         shape: {
           code: { type: :string },
-          message: { type: :string },
           field: { type: :string },
+          message: { type: :string },
         },
         type: :object,
       )

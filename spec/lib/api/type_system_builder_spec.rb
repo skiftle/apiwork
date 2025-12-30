@@ -16,8 +16,8 @@ RSpec.describe 'API TypeSystem Builder' do
     expect(types).to have_key(:error)
     expect(types[:error]).to include(
       shape: {
-        error: { type: :string },
         code: { type: :integer },
+        error: { type: :string },
       },
       type: :object,
     )

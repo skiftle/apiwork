@@ -64,9 +64,9 @@ class ExampleGenerator
       YAML.load_file(yml_path).deep_symbolize_keys
     else
       {
-        title: namespace.humanize.titleize,
         description: 'Complete example with API, models, schemas, contracts, and controllers.',
         order: 999,
+        title: namespace.humanize.titleize,
       }
     end
   end

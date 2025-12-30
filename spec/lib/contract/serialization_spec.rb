@@ -51,11 +51,11 @@ RSpec.describe 'Contract Serialization' do
       expect(json).to eq(
         {
           post: {
-            type: :object,
             shape: {
-              title: { type: :string },
               body: { optional: true, type: :string },
+              title: { type: :string },
             },
+            type: :object,
           },
         },
       )
@@ -214,8 +214,8 @@ RSpec.describe 'Contract Serialization' do
       expect(json).to eq(
         {
           filter: {
-            type: :union,
             optional: true,
+            type: :union,
             variants: [
               { type: :test_union_filter_a },
               { type: :string },
@@ -250,8 +250,8 @@ RSpec.describe 'Contract Serialization' do
       expect(json).to eq(
         {
           filters: {
-            type: :union,
             optional: true,
+            type: :union,
             variants: [
               { type: :test_union_filter_b },
               { of: :test_union_filter_b, type: :array },
@@ -293,11 +293,11 @@ RSpec.describe 'Contract Serialization' do
           },
           response: {
             body: {
-              type: :object,
               shape: {
                 id: { type: :integer },
                 title: { type: :string },
               },
+              type: :object,
             },
           },
         },

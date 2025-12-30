@@ -75,9 +75,9 @@ RSpec.describe 'Root key override with root DSL', type: :request do
     it 'uses singular root key for input validation' do
       person_params = {
         person: {
-          title: 'Jane Doe',
           body: 'Bio text',
           published: true,
+          title: 'Jane Doe',
         },
       }
 

@@ -47,8 +47,8 @@ RSpec.describe 'Input Validation' do
              as: :json,
              params: {
                post: {
-                 title: nil,
                  published: 'not-boolean',
+                 title: nil,
                },
              }
 
@@ -68,9 +68,9 @@ RSpec.describe 'Input Validation' do
              as: :json,
              params: {
                post: {
-                 title: 'Valid Title',
                  body: 'Valid body content',
                  published: true,
+                 title: 'Valid Title',
                },
              }
 
@@ -84,8 +84,8 @@ RSpec.describe 'Input Validation' do
              as: :json,
              params: {
                post: {
-                 title: 'Test',
                  published: 'true',
+                 title: 'Test',
                },
              }
 
@@ -183,10 +183,10 @@ RSpec.describe 'Input Validation' do
            as: :json,
            params: {
              post: {
-               title: 'Test',
                comments_attributes: [
                  { content: nil },
                ],
+               title: 'Test',
              },
            }
 

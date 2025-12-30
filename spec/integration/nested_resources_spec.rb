@@ -73,9 +73,9 @@ RSpec.describe 'Nested Resources Routing', type: :request do
     it 'creates a comment associated with the parent post' do
       comment_params = {
         comment: {
-          content: 'New nested comment',
           author: 'New Author',
-          post_id: post1.id, # Still needed for validation, but route also provides it
+          content: 'New nested comment',
+          post_id: post1.id,
         },
       }
 
@@ -95,8 +95,8 @@ RSpec.describe 'Nested Resources Routing', type: :request do
     it 'validates required fields' do
       comment_params = {
         comment: {
-          content: '', # Required field empty - caught by model validation
           author: 'Author',
+          content: '',
           post_id: post1.id,
         },
       }
@@ -114,8 +114,8 @@ RSpec.describe 'Nested Resources Routing', type: :request do
     it 'updates a comment within the parent post scope' do
       comment_params = {
         comment: {
-          content: 'Updated comment content',
           author: 'Updated Author',
+          content: 'Updated comment content',
           post_id: post1.id,
         },
       }
@@ -132,8 +132,8 @@ RSpec.describe 'Nested Resources Routing', type: :request do
     it 'returns 404 if trying to update comment from different post' do
       comment_params = {
         comment: {
-          content: 'Trying to update',
           author: 'Author',
+          content: 'Trying to update',
           post_id: post2.id,
         },
       }
@@ -196,10 +196,10 @@ RSpec.describe 'Nested Resources Routing', type: :request do
     it 'returns recent comments in descending order' do
       # Create comment with explicit timestamp to ensure it's newest
       new_comment = Comment.create!(
-        post: post1,
-        content: 'Newest comment',
         author: 'Author',
+        content: 'Newest comment',
         created_at: Time.current,
+        post: post1,
       )
 
       get "/api/v1/posts/#{post1.id}/comments/recent"

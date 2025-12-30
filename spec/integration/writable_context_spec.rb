@@ -7,8 +7,8 @@ RSpec.describe 'Writable context filtering (on: [:create] / on: [:update])', typ
     it 'allows setting bio during create' do
       author_params = {
         author: {
-          name: 'Jane Doe',
           bio: 'Software engineer and writer',
+          name: 'Jane Doe',
         },
       }
 

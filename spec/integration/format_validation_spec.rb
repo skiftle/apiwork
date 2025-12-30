@@ -30,7 +30,7 @@ RSpec.describe 'Format validation', type: :integration do
       %i[email uuid uri url date date_time ipv4 ipv6 password hostname].each do |format|
         expect do
           schema.class_eval do
-            attribute :test_field, format: format, type: :string
+            attribute :test_field, format:, type: :string
           end
         end.not_to raise_error
       end
@@ -47,7 +47,7 @@ RSpec.describe 'Format validation', type: :integration do
       %i[int32 int64].each do |format|
         expect do
           schema.class_eval do
-            attribute :test_field, format: format, type: :integer
+            attribute :test_field, format:, type: :integer
           end
         end.not_to raise_error
       end
@@ -64,7 +64,7 @@ RSpec.describe 'Format validation', type: :integration do
       %i[float double].each do |format|
         expect do
           schema.class_eval do
-            attribute :test_field, format: format, type: :float
+            attribute :test_field, format:, type: :float
           end
         end.not_to raise_error
       end

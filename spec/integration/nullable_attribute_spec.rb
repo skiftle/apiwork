@@ -7,8 +7,8 @@ RSpec.describe 'Nullable attribute option', type: :request do
     it 'accepts nil value on create' do
       user_params = {
         user: {
+          email: nil,
           name: 'Test User',
-          email: nil, # email has nullable: true
         },
       }
 
@@ -75,8 +75,8 @@ RSpec.describe 'Nullable attribute option', type: :request do
     it 'rejects nil value on create' do
       user_params = {
         user: {
-          name: nil, # name does NOT have nullable: true
           email: 'test@example.com',
+          name: nil,
         },
       }
 

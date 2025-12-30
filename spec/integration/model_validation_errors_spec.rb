@@ -80,10 +80,10 @@ RSpec.describe 'Model Validation Errors', type: :request do
            as: :json,
            params: {
              post: {
-               title: 'Valid Title',
                comments: [
                  { content: '' },
                ],
+               title: 'Valid Title',
              },
            }
 
@@ -128,8 +128,8 @@ RSpec.describe 'Model Validation Errors', type: :request do
            as: :json,
            params: {
              post: {
-               title: '',
                published: 'not-a-boolean',
+               title: '',
              },
            }
 

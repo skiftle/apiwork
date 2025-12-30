@@ -5,34 +5,34 @@ require 'rails_helper'
 RSpec.describe 'Advanced Filtering API', type: :request do
   let!(:post1) do
     Post.create!(
-      title: 'Advanced Filter Test Ruby Basics',
       body: 'Introduction to Ruby',
-      published: true,
       created_at: 5.days.ago,
+      published: true,
+      title: 'Advanced Filter Test Ruby Basics',
     )
   end
   let!(:post2) do
     Post.create!(
-      title: 'Advanced Filter Test Rails Basics',
       body: 'Introduction to Rails',
-      published: false,
       created_at: 3.days.ago,
+      published: false,
+      title: 'Advanced Filter Test Rails Basics',
     )
   end
   let!(:post3) do
     Post.create!(
-      title: 'Advanced Filter Test Advanced Ruby',
       body: 'Deep dive into Ruby',
-      published: true,
       created_at: 1.day.ago,
+      published: true,
+      title: 'Advanced Filter Test Advanced Ruby',
     )
   end
   let!(:post4) do
     Post.create!(
-      title: 'Advanced Filter Test JavaScript Guide',
       body: 'Learn JavaScript',
-      published: true,
       created_at: 2.days.ago,
+      published: true,
+      title: 'Advanced Filter Test JavaScript Guide',
     )
   end
 
@@ -246,9 +246,9 @@ RSpec.describe 'Advanced Filtering API', type: :request do
       get '/api/v1/posts',
           params: {
             filter: {
-              title: { starts_with: 'Advanced Filter Test Ruby' },
-              published: { eq: true },
               created_at: { gt: 6.days.ago.iso8601 },
+              published: { eq: true },
+              title: { starts_with: 'Advanced Filter Test Ruby' },
             },
           }
 
@@ -264,12 +264,12 @@ RSpec.describe 'Advanced Filtering API', type: :request do
           params: {
             filter: [
               {
-                title: { contains: 'Ruby' },
                 published: { eq: true },
+                title: { contains: 'Ruby' },
               },
               {
-                title: { contains: 'Rails' },
                 published: { eq: true },
+                title: { contains: 'Rails' },
               },
             ],
           }
@@ -309,11 +309,11 @@ RSpec.describe 'Advanced Filtering API', type: :request do
         get '/api/v1/posts',
             params: {
               filter: {
-                published: { eq: true },
                 _or: [
                   { title: { contains: 'Ruby' } },
                   { title: { contains: 'JavaScript' } },
                 ],
+                published: { eq: true },
               },
             }
 
@@ -388,8 +388,8 @@ RSpec.describe 'Advanced Filtering API', type: :request do
         get '/api/v1/posts',
             params: {
               filter: {
-                published: { eq: true },
                 _not: { title: { contains: 'JavaScript' } },
+                published: { eq: true },
               },
             }
 

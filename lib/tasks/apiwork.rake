@@ -51,9 +51,9 @@ namespace :apiwork do
 
       begin
         Apiwork::Spec::Pipeline.write(
-          api_path: api_path,
-          output: output,
-          spec_name: spec_name,
+          api_path:,
+          output:,
+          spec_name:,
           **custom_options,
         )
       rescue ArgumentError => e
@@ -85,7 +85,7 @@ namespace :apiwork do
       end
 
       begin
-        Apiwork::Spec::Pipeline.clean(output: output)
+        Apiwork::Spec::Pipeline.clean(output:)
       rescue ArgumentError => e
         puts "Error: #{e.message}"
         exit 1

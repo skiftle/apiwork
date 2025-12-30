@@ -61,8 +61,8 @@ RSpec.describe 'Association Filtering API', type: :request do
       get '/api/v1/posts',
           params: {
             filter: {
-              published: { eq: true },
               comments: { author: { eq: 'Alice' } },
+              published: { eq: true },
             },
           }
 

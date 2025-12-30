@@ -81,9 +81,9 @@ RSpec.describe 'Schema.deserialize' do
     it 'applies all decode transformers' do
       result = schema_class.deserialize_single(
         {
-          title: 'Test',
           email: '  UPPER@TEST.COM  ',
           notes: '',
+          title: 'Test',
         },
       )
 
@@ -131,12 +131,12 @@ RSpec.describe 'Schema.deserialize' do
 
     it 'deserializes nested has_many associations' do
       input = {
-        number: 'INV-001',
         email: '  USER@EXAMPLE.COM  ',
         lines: [
           { amount: '99.99', description: 'Widget' },
           { amount: '49.99', description: 'Gadget' },
         ],
+        number: 'INV-001',
       }
 
       result = invoice_schema.deserialize(input)
@@ -148,8 +148,8 @@ RSpec.describe 'Schema.deserialize' do
 
     it 'deserializes nested has_one associations' do
       input = {
-        number: 'INV-001',
         customer: { email: '  ACME@EXAMPLE.COM  ', name: 'Acme' },
+        number: 'INV-001',
       }
 
       result = invoice_schema.deserialize(input)

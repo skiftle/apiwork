@@ -136,8 +136,8 @@ class RequestRunner
 
   def build_request_data(method, path, body)
     data = {
-      method: method,
-      path: path,
+      method:,
+      path:,
     }
     data[:body] = body if body
     data
@@ -147,8 +147,8 @@ class RequestRunner
     body = response.body.present? ? JSON.parse(response.body) : nil
 
     {
+      body:,
       status: response.status,
-      body: body,
     }.compact
   end
 

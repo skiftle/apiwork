@@ -163,9 +163,9 @@ RSpec.describe 'Filter Operators' do
           params: {
             filter: {
               created_at: { gte: 10.days.ago.iso8601 },
-              title: { contains: 'Post' },
-              published: { eq: false },
               id: { in: [old_post.id, recent_post.id, new_post.id] },
+              published: { eq: false },
+              title: { contains: 'Post' },
             },
           }
 

@@ -8,9 +8,9 @@ module Apiwork
       spec_class = Spec.find(spec_name)
 
       options = { key_format: api_class.key_format }
-                .merge(api_class.spec_config(spec_name))
-                .merge(spec_class.extract_options(params))
-                .compact
+        .merge(api_class.spec_config(spec_name))
+        .merge(spec_class.extract_options(params))
+        .compact
 
       result = Spec.generate(spec_name, api_class.path, **options)
 

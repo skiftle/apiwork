@@ -51,9 +51,9 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
     it 'parses input contract and returns serialized resource' do
       post_params = {
         post: {
-          title: 'New Post',
           body: 'New body',
           published: true,
+          title: 'New Post',
         },
       }
 
@@ -90,14 +90,14 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
     it 'accepts JSON data for :json columns on create' do
       post_params = {
         post: {
-          title: 'Post with Metadata',
           body: 'Body text',
-          published: false,
           metadata: {
-            tags: %w[ruby rails],
             author_notes: 'Draft version',
+            tags: %w[ruby rails],
             version: 1,
           },
+          published: false,
+          title: 'Post with Metadata',
         },
       }
 
@@ -129,12 +129,12 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
 
     it 'returns JSON data when reading records with :json columns' do
       post_record = Post.create!(
-        title: 'Post with Metadata',
         body: 'Body',
         metadata: {
           'tags' => %w[api test],
           'priority' => 'high',
         },
+        title: 'Post with Metadata',
       )
 
       get "/api/v1/posts/#{post_record.id}"
@@ -151,20 +151,20 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
 
     it 'updates JSON columns with partial data' do
       post_record = Post.create!(
-        title: 'Original',
         body: 'Body',
-        published: false,
         metadata: { 'version' => 1 },
+        published: false,
+        title: 'Original',
       )
 
       patch "/api/v1/posts/#{post_record.id}",
             as: :json,
             params: {
               post: {
-                title: 'Original',
                 body: 'Body',
-                published: false,
                 metadata: { 'version' => 2, 'updated' => true },
+                published: false,
+                title: 'Original',
               },
             }
 
@@ -181,9 +181,9 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
     it 'accepts null for optional JSON columns' do
       post_params = {
         post: {
-          title: 'Post without Metadata',
           body: 'Body',
           metadata: nil,
+          title: 'Post without Metadata',
         },
       }
 
@@ -197,9 +197,9 @@ RSpec.describe 'Standard CRUD endpoints', type: :request do
     it 'handles empty object for JSON columns' do
       post_params = {
         post: {
-          title: 'Post with Empty Metadata',
           body: 'Body',
           metadata: {},
+          title: 'Post with Empty Metadata',
         },
       }
 
