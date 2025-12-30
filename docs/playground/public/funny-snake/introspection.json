@@ -1,11 +1,48 @@
 {
+  "resources": {
+    "invoices": {
+      "actions": {
+        "index": {
+          "path": "/",
+          "method": "get"
+        },
+        "show": {
+          "path": "/:id",
+          "method": "get"
+        },
+        "create": {
+          "path": "/",
+          "method": "post"
+        },
+        "update": {
+          "path": "/:id",
+          "method": "patch"
+        },
+        "destroy": {
+          "path": "/:id",
+          "method": "delete"
+        }
+      },
+      "identifier": "invoices",
+      "path": "invoices"
+    }
+  },
+  "enums": {
+    "layer": {
+      "values": [
+        "http",
+        "contract",
+        "domain"
+      ]
+    }
+  },
   "path": "/funny_snake",
   "types": {
     "error_response_body": {
       "shape": {
         "issues": {
-          "type": "array",
-          "of": "issue"
+          "of": "issue",
+          "type": "array"
         },
         "layer": {
           "type": "layer"
@@ -68,51 +105,14 @@
           "type": "object"
         },
         "path": {
-          "type": "array",
-          "of": "string"
+          "of": "string",
+          "type": "array"
         },
         "pointer": {
           "type": "string"
         }
       },
       "type": "object"
-    }
-  },
-  "enums": {
-    "layer": {
-      "values": [
-        "http",
-        "contract",
-        "domain"
-      ]
-    }
-  },
-  "resources": {
-    "invoices": {
-      "identifier": "invoices",
-      "path": "invoices",
-      "actions": {
-        "index": {
-          "method": "get",
-          "path": "/"
-        },
-        "show": {
-          "method": "get",
-          "path": "/:id"
-        },
-        "create": {
-          "method": "post",
-          "path": "/"
-        },
-        "update": {
-          "method": "patch",
-          "path": "/:id"
-        },
-        "destroy": {
-          "method": "delete",
-          "path": "/:id"
-        }
-      }
     }
   }
 }

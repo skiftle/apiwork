@@ -12,7 +12,6 @@
     }
   },
   "response": {
-    "status": 201,
     "body": {
       "article": {
         "id": "ab2b6c9d-5ec0-5e58-8784-fd8f52b28b17",
@@ -25,6 +24,7 @@
         "createdAt": "2024-01-01T12:00:00.000Z",
         "updatedAt": "2024-01-01T12:00:00.000Z"
       }
-    }
+    },
+    "status": 201
   }
 }

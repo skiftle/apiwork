@@ -123,11 +123,11 @@ GET /bold_falcon/articles
     }
   ],
   "pagination": {
+    "items": 2,
+    "total": 1,
     "current": 1,
     "next": null,
-    "prev": null,
-    "total": 1,
-    "items": 2
+    "prev": null
   }
 }
 ```
@@ -229,11 +229,11 @@ GET /bold_falcon/articles?filter[status][eq]=published
     }
   ],
   "pagination": {
+    "items": 1,
+    "total": 1,
     "current": 1,
     "next": null,
-    "prev": null,
-    "total": 1,
-    "items": 1
+    "prev": null
   }
 }
 ```
@@ -267,11 +267,11 @@ GET /bold_falcon/articles?filter[title][contains]=Rails
     }
   ],
   "pagination": {
+    "items": 1,
+    "total": 1,
     "current": 1,
     "next": null,
-    "prev": null,
-    "total": 1,
-    "items": 1
+    "prev": null
   }
 }
 ```
@@ -316,11 +316,11 @@ GET /bold_falcon/articles?sort[published_on]=desc
     }
   ],
   "pagination": {
+    "items": 2,
+    "total": 1,
     "current": 1,
     "next": null,
-    "prev": null,
-    "total": 1,
-    "items": 2
+    "prev": null
   }
 }
 ```
@@ -376,11 +376,11 @@ GET /bold_falcon/articles?sort[status]=asc&sort[published_on]=desc
     }
   ],
   "pagination": {
+    "items": 3,
+    "total": 1,
     "current": 1,
     "next": null,
-    "prev": null,
-    "total": 1,
-    "items": 3
+    "prev": null
   }
 }
 ```
@@ -414,11 +414,11 @@ GET /bold_falcon/articles?filter[published_on][gte]=2024-01-01&filter[published_
     }
   ],
   "pagination": {
+    "items": 1,
+    "total": 1,
     "current": 1,
     "next": null,
-    "prev": null,
-    "total": 1,
-    "items": 1
+    "prev": null
   }
 }
 ```
@@ -452,11 +452,11 @@ GET /bold_falcon/articles?filter[view_count][gt]=100
     }
   ],
   "pagination": {
+    "items": 1,
+    "total": 1,
     "current": 1,
     "next": null,
-    "prev": null,
-    "total": 1,
-    "items": 1
+    "prev": null
   }
 }
 ```
@@ -501,11 +501,11 @@ GET /bold_falcon/articles?filter[status][eq]=published&sort[view_count]=desc
     }
   ],
   "pagination": {
+    "items": 2,
+    "total": 1,
     "current": 1,
     "next": null,
-    "prev": null,
-    "total": 1,
-    "items": 2
+    "prev": null
   }
 }
 ```
@@ -530,11 +530,6 @@ GET /bold_falcon/articles?filter[category][name][eq]=Technology
     {
       "code": "field_unknown",
       "detail": "Unknown field",
-      "path": [
-        "filter",
-        "category"
-      ],
-      "pointer": "/filter/category",
       "meta": {
         "allowed": [
           "_and",
@@ -547,7 +542,12 @@ GET /bold_falcon/articles?filter[category][name][eq]=Technology
           "published_on"
         ],
         "field": "category"
-      }
+      },
+      "path": [
+        "filter",
+        "category"
+      ],
+      "pointer": "/filter/category"
     }
   ]
 }

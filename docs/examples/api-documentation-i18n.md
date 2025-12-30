@@ -100,11 +100,11 @@ GET /wise_tiger/projects
     }
   ],
   "pagination": {
+    "items": 2,
+    "total": 1,
     "current": 1,
     "next": null,
-    "prev": null,
-    "total": 1,
-    "items": 2
+    "prev": null
   }
 }
 ```

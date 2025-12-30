@@ -14,18 +14,12 @@
     }
   },
   "response": {
-    "status": 400,
     "body": {
       "layer": "contract",
       "issues": [
         {
           "code": "field_unknown",
           "detail": "Unknown field",
-          "path": [
-            "task",
-            "assignee_id"
-          ],
-          "pointer": "/task/assignee_id",
           "meta": {
             "allowed": [
               "title",
@@ -35,9 +29,15 @@
               "due_date"
             ],
             "field": "assignee_id"
-          }
+          },
+          "path": [
+            "task",
+            "assignee_id"
+          ],
+          "pointer": "/task/assignee_id"
         }
       ]
-    }
+    },
+    "status": 400
   }
 }

@@ -10,37 +10,37 @@
     }
   },
   "response": {
-    "status": 400,
     "body": {
       "layer": "contract",
       "issues": [
         {
           "code": "field_missing",
           "detail": "Required",
+          "meta": {
+            "field": "email",
+            "type": "string"
+          },
           "path": [
             "user",
             "email"
           ],
-          "pointer": "/user/email",
-          "meta": {
-            "field": "email",
-            "type": "string"
-          }
+          "pointer": "/user/email"
         },
         {
           "code": "field_missing",
           "detail": "Required",
+          "meta": {
+            "field": "username",
+            "type": "string"
+          },
           "path": [
             "user",
             "username"
           ],
-          "pointer": "/user/username",
-          "meta": {
-            "field": "username",
-            "type": "string"
-          }
+          "pointer": "/user/username"
         }
       ]
-    }
+    },
+    "status": 400
   }
 }

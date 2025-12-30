@@ -10,21 +10,21 @@
     }
   },
   "response": {
-    "status": 422,
     "body": {
       "layer": "domain",
       "issues": [
         {
           "code": "invalid",
           "detail": "Invalid",
+          "meta": {},
           "path": [
             "user",
             "email"
           ],
-          "pointer": "/user/email",
-          "meta": {}
+          "pointer": "/user/email"
         }
       ]
-    }
+    },
+    "status": 422
   }
 }

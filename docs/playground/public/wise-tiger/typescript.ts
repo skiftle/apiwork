@@ -32,21 +32,13 @@ export interface OffsetPagination {
 
 /** A project with tasks and deadlines */
 export interface Project {
-  /** Timestamp when project was created */
   createdAt: string;
-  /** Target completion date */
   deadline: null | string;
-  /** Detailed project description */
   description: null | string;
-  /** Unique project identifier */
   id: string;
-  /** Human-readable project name */
   name: string;
-  /** Project priority for resource allocation */
   priority: ProjectPriority | null;
-  /** Current project lifecycle status */
   status: ProjectStatus | null;
-  /** Timestamp of last modification */
   updatedAt: string;
 }
 

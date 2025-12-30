@@ -149,11 +149,11 @@ GET /brave_eagle/tasks
     }
   ],
   "pagination": {
+    "items": 2,
+    "total": 1,
     "current": 1,
     "next": null,
-    "prev": null,
-    "total": 1,
-    "items": 2
+    "prev": null
   }
 }
 ```
@@ -210,11 +210,6 @@ Content-Type: application/json
     {
       "code": "field_unknown",
       "detail": "Unknown field",
-      "path": [
-        "task",
-        "assignee_id"
-      ],
-      "pointer": "/task/assignee_id",
       "meta": {
         "allowed": [
           "title",
@@ -224,7 +219,12 @@ Content-Type: application/json
           "due_date"
         ],
         "field": "assignee_id"
-      }
+      },
+      "path": [
+        "task",
+        "assignee_id"
+      ],
+      "pointer": "/task/assignee_id"
     }
   ]
 }

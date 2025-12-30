@@ -4,7 +4,6 @@
     "path": "/clever_rabbit/orders/d6afdfea-1e99-5a7c-98e0-f05896dbe62f"
   },
   "response": {
-    "status": 200,
     "body": {
       "order": {
         "id": "d6afdfea-1e99-5a7c-98e0-f05896dbe62f",
@@ -16,6 +15,7 @@
         "lineItems": [],
         "shippingAddress": null
       }
-    }
+    },
+    "status": 200
   }
 }

@@ -11,10 +11,10 @@
     }
   },
   "response": {
-    "status": 500,
     "body": {
       "status": 500,
       "error": "Internal Server Error"
-    }
+    },
+    "status": 500
   }
 }

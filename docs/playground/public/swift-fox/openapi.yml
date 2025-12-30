@@ -1,112 +1,7 @@
 ---
-openapi: 3.1.0
-info:
-  title: "/swift_fox API"
-  version: 1.0.0
-paths:
-  contacts/:
-    get:
-      operationId: contactsIndex
-      parameters:
-      - in: query
-        name: page
-        required: false
-        schema:
-          "$ref": "#/components/schemas/contactPage"
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/contactIndexSuccessResponseBody"
-    post:
-      operationId: contactsCreate
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              properties:
-                contact:
-                  "$ref": "#/components/schemas/contactCreatePayload"
-              type: object
-              required:
-              - contact
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/contactCreateSuccessResponseBody"
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/errorResponseBody"
-  contacts/{id}:
-    get:
-      operationId: contactsShow
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/contactShowSuccessResponseBody"
-    patch:
-      operationId: contactsUpdate
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              properties:
-                contact:
-                  "$ref": "#/components/schemas/contactUpdatePayload"
-              type: object
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/contactUpdateSuccessResponseBody"
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/errorResponseBody"
-    delete:
-      operationId: contactsDestroy
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '204':
-          description: No content
 components:
   schemas:
     contact:
-      type: object
       properties:
         email:
           type:
@@ -120,6 +15,7 @@ components:
           type: string
         phone:
           type: string
+      type: object
       required:
       - email
       - id
@@ -127,7 +23,6 @@ components:
       - notes
       - phone
     contactCreatePayload:
-      type: object
       properties:
         email:
           type:
@@ -139,35 +34,35 @@ components:
           type: string
         phone:
           type: string
+      type: object
       required:
       - name
     contactCreateSuccessResponseBody:
-      type: object
       properties:
         contact:
           "$ref": "#/components/schemas/contact"
         meta:
-          type: object
           properties: {}
+          type: object
+      type: object
       required:
       - contact
     contactIndexSuccessResponseBody:
-      type: object
       properties:
         contacts:
-          type: array
           items:
             "$ref": "#/components/schemas/contact"
+          type: array
         meta:
-          type: object
           properties: {}
+          type: object
         pagination:
           "$ref": "#/components/schemas/offsetPagination"
+      type: object
       required:
       - contacts
       - pagination
     contactPage:
-      type: object
       properties:
         number:
           type: integer
@@ -176,18 +71,18 @@ components:
           type: integer
           minimum: 1
           maximum: 100
-    contactShowSuccessResponseBody:
       type: object
+    contactShowSuccessResponseBody:
       properties:
         contact:
           "$ref": "#/components/schemas/contact"
         meta:
-          type: object
           properties: {}
+          type: object
+      type: object
       required:
       - contact
     contactUpdatePayload:
-      type: object
       properties:
         email:
           type:
@@ -199,50 +94,51 @@ components:
           type: string
         phone:
           type: string
+      type: object
       required:
       - name
     contactUpdateSuccessResponseBody:
-      type: object
       properties:
         contact:
           "$ref": "#/components/schemas/contact"
         meta:
-          type: object
           properties: {}
+          type: object
+      type: object
       required:
       - contact
     errorResponseBody:
-      type: object
       properties:
         issues:
-          type: array
           items:
             "$ref": "#/components/schemas/issue"
+          type: array
         layer:
           enum:
           - http
           - contract
           - domain
           type: string
+      type: object
       required:
       - issues
       - layer
     issue:
-      type: object
       properties:
         code:
           type: string
         detail:
           type: string
         meta:
-          type: object
           properties: {}
+          type: object
         path:
-          type: array
           items:
             type: string
+          type: array
         pointer:
           type: string
+      type: object
       required:
       - code
       - detail
@@ -250,7 +146,6 @@ components:
       - path
       - pointer
     offsetPagination:
-      type: object
       properties:
         current:
           type: integer
@@ -266,7 +161,112 @@ components:
           - 'null'
         total:
           type: integer
+      type: object
       required:
       - current
       - items
       - total
+info:
+  title: "/swift_fox API"
+  version: 1.0.0
+openapi: 3.1.0
+paths:
+  contacts/:
+    get:
+      operationId: contactsIndex
+      parameters:
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/contactPage"
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/contactIndexSuccessResponseBody"
+          description: Successful response
+    post:
+      operationId: contactsCreate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                contact:
+                  "$ref": "#/components/schemas/contactCreatePayload"
+              type: object
+              required:
+              - contact
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/contactCreateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+  contacts/{id}:
+    get:
+      operationId: contactsShow
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/contactShowSuccessResponseBody"
+          description: Successful response
+    patch:
+      operationId: contactsUpdate
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                contact:
+                  "$ref": "#/components/schemas/contactUpdatePayload"
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/contactUpdateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+    delete:
+      operationId: contactsDestroy
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content

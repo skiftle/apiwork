@@ -1,4 +1,181 @@
 {
+  "resources": {
+    "comments": {
+      "actions": {
+        "index": {
+          "path": "/",
+          "method": "get",
+          "request": {
+            "query": {
+              "include": {
+                "type": "comment_include",
+                "optional": true
+              },
+              "page": {
+                "type": "comment_page",
+                "optional": true
+              },
+              "sort": {
+                "type": "union",
+                "variants": [
+                  {
+                    "type": "comment_sort"
+                  },
+                  {
+                    "type": "array",
+                    "of": "comment_sort"
+                  }
+                ],
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "comment_index_success_response_body"
+                },
+                {
+                  "type": "error_response_body"
+                }
+              ]
+            }
+          }
+        },
+        "show": {
+          "path": "/:id",
+          "method": "get",
+          "request": {
+            "query": {
+              "include": {
+                "type": "comment_include",
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "comment_show_success_response_body"
+                },
+                {
+                  "type": "error_response_body"
+                }
+              ]
+            }
+          }
+        },
+        "create": {
+          "path": "/",
+          "method": "post",
+          "raises": [
+            "unprocessable_entity"
+          ],
+          "request": {
+            "body": {
+              "comment": {
+                "type": "comment_create_payload"
+              }
+            },
+            "query": {
+              "include": {
+                "type": "comment_include",
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "comment_create_success_response_body"
+                },
+                {
+                  "type": "error_response_body"
+                }
+              ]
+            }
+          }
+        },
+        "update": {
+          "path": "/:id",
+          "method": "patch",
+          "raises": [
+            "unprocessable_entity"
+          ],
+          "request": {
+            "body": {
+              "comment": {
+                "type": "comment_update_payload"
+              }
+            },
+            "query": {
+              "include": {
+                "type": "comment_include",
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "comment_update_success_response_body"
+                },
+                {
+                  "type": "error_response_body"
+                }
+              ]
+            }
+          }
+        },
+        "destroy": {
+          "path": "/:id",
+          "method": "delete",
+          "request": {
+            "query": {
+              "include": {
+                "type": "comment_include",
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "no_content": true
+          }
+        }
+      },
+      "identifier": "comments",
+      "path": "comments"
+    }
+  },
+  "enums": {
+    "layer": {
+      "values": [
+        "http",
+        "contract",
+        "domain"
+      ]
+    },
+    "sort_direction": {
+      "values": [
+        "asc",
+        "desc"
+      ]
+    }
+  },
+  "error_codes": {
+    "unprocessable_entity": {
+      "description": "Unprocessable Entity",
+      "status": 422
+    }
+  },
   "path": "/gentle_owl",
   "types": {
     "comment": {
@@ -24,6 +201,7 @@
       "type": "object"
     },
     "comment_commentable": {
+      "discriminator": "commentable_type",
       "type": "union",
       "variants": [
         {
@@ -38,8 +216,7 @@
           "type": "image",
           "tag": "image"
         }
-      ],
-      "discriminator": "commentable_type"
+      ]
     },
     "comment_create_payload": {
       "shape": {
@@ -78,8 +255,8 @@
     "comment_index_success_response_body": {
       "shape": {
         "comments": {
-          "type": "array",
-          "of": "comment"
+          "of": "comment",
+          "type": "array"
         },
         "meta": {
           "type": "object",
@@ -101,8 +278,8 @@
         "size": {
           "type": "integer",
           "optional": true,
-          "min": 1,
-          "max": 100
+          "max": 100,
+          "min": 1
         }
       },
       "type": "object"
@@ -156,8 +333,8 @@
     "error_response_body": {
       "shape": {
         "issues": {
-          "type": "array",
-          "of": "issue"
+          "of": "issue",
+          "type": "array"
         },
         "layer": {
           "type": "layer"
@@ -168,8 +345,8 @@
     "image": {
       "shape": {
         "comments": {
-          "type": "array",
           "of": "object",
+          "type": "array",
           "optional": true
         },
         "created_at": {
@@ -198,8 +375,8 @@
     "image_filter": {
       "shape": {
         "_and": {
-          "type": "array",
           "of": "image_filter",
+          "type": "array",
           "optional": true
         },
         "_not": {
@@ -207,8 +384,8 @@
           "optional": true
         },
         "_or": {
-          "type": "array",
           "of": "image_filter",
+          "type": "array",
           "optional": true
         },
         "title": {
@@ -252,6 +429,7 @@
       "type": "object"
     },
     "image_nested_payload": {
+      "discriminator": "_type",
       "type": "union",
       "variants": [
         {
@@ -262,8 +440,7 @@
           "type": "image_nested_update_payload",
           "tag": "update"
         }
-      ],
-      "discriminator": "_type"
+      ]
     },
     "image_nested_update_payload": {
       "shape": {
@@ -311,8 +488,8 @@
           "type": "object"
         },
         "path": {
-          "type": "array",
-          "of": "string"
+          "of": "string",
+          "type": "array"
         },
         "pointer": {
           "type": "string"
@@ -351,8 +528,8 @@
           "nullable": true
         },
         "comments": {
-          "type": "array",
           "of": "object",
+          "type": "array",
           "optional": true
         },
         "created_at": {
@@ -370,8 +547,8 @@
     "post_filter": {
       "shape": {
         "_and": {
-          "type": "array",
           "of": "post_filter",
+          "type": "array",
           "optional": true
         },
         "_not": {
@@ -379,8 +556,8 @@
           "optional": true
         },
         "_or": {
-          "type": "array",
           "of": "post_filter",
+          "type": "array",
           "optional": true
         },
         "title": {
@@ -416,6 +593,7 @@
       "type": "object"
     },
     "post_nested_payload": {
+      "discriminator": "_type",
       "type": "union",
       "variants": [
         {
@@ -426,8 +604,7 @@
           "type": "post_nested_update_payload",
           "tag": "update"
         }
-      ],
-      "discriminator": "_type"
+      ]
     },
     "post_nested_update_payload": {
       "shape": {
@@ -458,8 +635,8 @@
     "video": {
       "shape": {
         "comments": {
-          "type": "array",
           "of": "object",
+          "type": "array",
           "optional": true
         },
         "created_at": {
@@ -484,8 +661,8 @@
     "video_filter": {
       "shape": {
         "_and": {
-          "type": "array",
           "of": "video_filter",
+          "type": "array",
           "optional": true
         },
         "_not": {
@@ -493,8 +670,8 @@
           "optional": true
         },
         "_or": {
-          "type": "array",
           "of": "video_filter",
+          "type": "array",
           "optional": true
         },
         "title": {
@@ -533,6 +710,7 @@
       "type": "object"
     },
     "video_nested_payload": {
+      "discriminator": "_type",
       "type": "union",
       "variants": [
         {
@@ -543,8 +721,7 @@
           "type": "video_nested_update_payload",
           "tag": "update"
         }
-      ],
-      "discriminator": "_type"
+      ]
     },
     "video_nested_update_payload": {
       "shape": {
@@ -574,183 +751,6 @@
         }
       },
       "type": "object"
-    }
-  },
-  "enums": {
-    "layer": {
-      "values": [
-        "http",
-        "contract",
-        "domain"
-      ]
-    },
-    "sort_direction": {
-      "values": [
-        "asc",
-        "desc"
-      ]
-    }
-  },
-  "error_codes": {
-    "unprocessable_entity": {
-      "status": 422,
-      "description": "Unprocessable Entity"
-    }
-  },
-  "resources": {
-    "comments": {
-      "identifier": "comments",
-      "path": "comments",
-      "actions": {
-        "index": {
-          "method": "get",
-          "path": "/",
-          "request": {
-            "query": {
-              "include": {
-                "type": "comment_include",
-                "optional": true
-              },
-              "page": {
-                "type": "comment_page",
-                "optional": true
-              },
-              "sort": {
-                "type": "union",
-                "variants": [
-                  {
-                    "type": "comment_sort"
-                  },
-                  {
-                    "type": "array",
-                    "of": "comment_sort"
-                  }
-                ],
-                "optional": true
-              }
-            }
-          },
-          "response": {
-            "body": {
-              "type": "union",
-              "variants": [
-                {
-                  "type": "comment_index_success_response_body"
-                },
-                {
-                  "type": "error_response_body"
-                }
-              ]
-            }
-          }
-        },
-        "show": {
-          "method": "get",
-          "path": "/:id",
-          "request": {
-            "query": {
-              "include": {
-                "type": "comment_include",
-                "optional": true
-              }
-            }
-          },
-          "response": {
-            "body": {
-              "type": "union",
-              "variants": [
-                {
-                  "type": "comment_show_success_response_body"
-                },
-                {
-                  "type": "error_response_body"
-                }
-              ]
-            }
-          }
-        },
-        "create": {
-          "method": "post",
-          "path": "/",
-          "request": {
-            "query": {
-              "include": {
-                "type": "comment_include",
-                "optional": true
-              }
-            },
-            "body": {
-              "comment": {
-                "type": "comment_create_payload"
-              }
-            }
-          },
-          "response": {
-            "body": {
-              "type": "union",
-              "variants": [
-                {
-                  "type": "comment_create_success_response_body"
-                },
-                {
-                  "type": "error_response_body"
-                }
-              ]
-            }
-          },
-          "raises": [
-            "unprocessable_entity"
-          ]
-        },
-        "update": {
-          "method": "patch",
-          "path": "/:id",
-          "request": {
-            "query": {
-              "include": {
-                "type": "comment_include",
-                "optional": true
-              }
-            },
-            "body": {
-              "comment": {
-                "type": "comment_update_payload"
-              }
-            }
-          },
-          "response": {
-            "body": {
-              "type": "union",
-              "variants": [
-                {
-                  "type": "comment_update_success_response_body"
-                },
-                {
-                  "type": "error_response_body"
-                }
-              ]
-            }
-          },
-          "raises": [
-            "unprocessable_entity"
-          ]
-        },
-        "destroy": {
-          "method": "delete",
-          "path": "/:id",
-          "request": {
-            "query": {
-              "include": {
-                "type": "comment_include",
-                "optional": true
-              }
-            }
-          },
-          "response": {
-            "no_content": true
-          }
-        }
-      }
     }
   }
 }

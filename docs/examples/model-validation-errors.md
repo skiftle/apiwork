@@ -211,12 +211,12 @@ Content-Type: application/json
     {
       "code": "invalid",
       "detail": "Invalid",
+      "meta": {},
       "path": [
         "user",
         "email"
       ],
-      "pointer": "/user/email",
-      "meta": {}
+      "pointer": "/user/email"
     }
   ]
 }
@@ -250,28 +250,28 @@ Content-Type: application/json
     {
       "code": "field_missing",
       "detail": "Required",
+      "meta": {
+        "field": "email",
+        "type": "string"
+      },
       "path": [
         "user",
         "email"
       ],
-      "pointer": "/user/email",
-      "meta": {
-        "field": "email",
-        "type": "string"
-      }
+      "pointer": "/user/email"
     },
     {
       "code": "field_missing",
       "detail": "Required",
+      "meta": {
+        "field": "username",
+        "type": "string"
+      },
       "path": [
         "user",
         "username"
       ],
-      "pointer": "/user/username",
-      "meta": {
-        "field": "username",
-        "type": "string"
-      }
+      "pointer": "/user/username"
     }
   ]
 }
@@ -309,26 +309,26 @@ Content-Type: application/json
     {
       "code": "max",
       "detail": "Too long",
+      "meta": {
+        "max": 500
+      },
       "path": [
         "user",
         "profile",
         "bio"
       ],
-      "pointer": "/user/profile/bio",
-      "meta": {
-        "max": 500
-      }
+      "pointer": "/user/profile/bio"
     },
     {
       "code": "invalid",
       "detail": "Invalid",
+      "meta": {},
       "path": [
         "user",
         "profile",
         "website"
       ],
-      "pointer": "/user/profile/website",
-      "meta": {}
+      "pointer": "/user/profile/website"
     }
   ]
 }
@@ -440,22 +440,9 @@ Content-Type: application/json
     {
       "code": "min",
       "detail": "Too short",
-      "path": [
-        "user",
-        "posts",
-        "0",
-        "comments",
-        "0",
-        "body"
-      ],
-      "pointer": "/user/posts/0/comments/0/body",
       "meta": {
         "min": 1
-      }
-    },
-    {
-      "code": "required",
-      "detail": "Required",
+      },
       "path": [
         "user",
         "posts",
@@ -464,12 +451,26 @@ Content-Type: application/json
         "0",
         "body"
       ],
-      "pointer": "/user/posts/0/comments/0/body",
-      "meta": {}
+      "pointer": "/user/posts/0/comments/0/body"
     },
     {
       "code": "required",
       "detail": "Required",
+      "meta": {},
+      "path": [
+        "user",
+        "posts",
+        "0",
+        "comments",
+        "0",
+        "body"
+      ],
+      "pointer": "/user/posts/0/comments/0/body"
+    },
+    {
+      "code": "required",
+      "detail": "Required",
+      "meta": {},
       "path": [
         "user",
         "posts",
@@ -478,8 +479,7 @@ Content-Type: application/json
         "0",
         "author"
       ],
-      "pointer": "/user/posts/0/comments/0/author",
-      "meta": {}
+      "pointer": "/user/posts/0/comments/0/author"
     }
   ]
 }

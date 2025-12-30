@@ -14,7 +14,6 @@
     }
   },
   "response": {
-    "status": 201,
     "body": {
       "user": {
         "id": "571466c2-02cb-52cb-a9d1-7bd5f8e21034",
@@ -31,6 +30,7 @@
         },
         "posts": []
       }
-    }
+    },
+    "status": 201
   }
 }

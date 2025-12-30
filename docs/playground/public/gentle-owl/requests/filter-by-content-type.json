@@ -4,17 +4,12 @@
     "path": "/gentle_owl/comments?filter[commentable_type][eq]=GentleOwl::Post"
   },
   "response": {
-    "status": 400,
     "body": {
       "layer": "contract",
       "issues": [
         {
           "code": "field_unknown",
           "detail": "Unknown field",
-          "path": [
-            "filter"
-          ],
-          "pointer": "/filter",
           "meta": {
             "allowed": [
               "sort",
@@ -22,9 +17,14 @@
               "include"
             ],
             "field": "filter"
-          }
+          },
+          "path": [
+            "filter"
+          ],
+          "pointer": "/filter"
         }
       ]
-    }
+    },
+    "status": 400
   }
 }

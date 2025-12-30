@@ -13,7 +13,6 @@
     }
   },
   "response": {
-    "status": 201,
     "body": {
       "vehicle": {
         "type": "truck",
@@ -24,6 +23,7 @@
         "color": "blue",
         "payloadCapacity": null
       }
-    }
+    },
+    "status": 201
   }
 }

@@ -1,181 +1,38 @@
 ---
-openapi: 3.1.0
-info:
-  title: Project Management API
-  version: 1.0.0
-  description: API for managing projects with I18n-powered documentation
-paths:
-  projects/:
-    get:
-      operationId: listProjects
-      summary: List all projects
-      description: Returns a paginated list of projects with optional filtering
-      tags:
-      - Projects
-      parameters:
-      - in: query
-        name: filter
-        required: false
-        schema:
-          oneOf:
-          - "$ref": "#/components/schemas/projectFilter"
-          - type: array
-            items:
-              "$ref": "#/components/schemas/projectFilter"
-      - in: query
-        name: page
-        required: false
-        schema:
-          "$ref": "#/components/schemas/projectPage"
-      - in: query
-        name: sort
-        required: false
-        schema:
-          oneOf:
-          - "$ref": "#/components/schemas/projectSort"
-          - type: array
-            items:
-              "$ref": "#/components/schemas/projectSort"
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/projectIndexSuccessResponseBody"
-    post:
-      operationId: createProject
-      summary: Create a new project
-      description: Creates a project and returns the created resource
-      tags:
-      - Projects
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              properties:
-                project:
-                  "$ref": "#/components/schemas/projectCreatePayload"
-              type: object
-              required:
-              - project
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/projectCreateSuccessResponseBody"
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/errorResponseBody"
-  projects/{id}:
-    get:
-      operationId: getProject
-      summary: Get project details
-      description: Returns a single project by ID with all attributes
-      tags:
-      - Projects
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/projectShowSuccessResponseBody"
-    patch:
-      operationId: updateProject
-      summary: Update a project
-      description: Updates an existing project with the provided attributes
-      tags:
-      - Projects
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              properties:
-                project:
-                  "$ref": "#/components/schemas/projectUpdatePayload"
-              type: object
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/projectUpdateSuccessResponseBody"
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/errorResponseBody"
-    delete:
-      operationId: deleteProject
-      summary: Delete a project
-      description: Permanently removes a project
-      tags:
-      - Projects
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '204':
-          description: No content
 components:
   schemas:
     errorResponseBody:
-      type: object
       properties:
         issues:
-          type: array
           items:
             "$ref": "#/components/schemas/issue"
+          type: array
         layer:
           enum:
           - http
           - contract
           - domain
           type: string
+      type: object
       required:
       - issues
       - layer
     issue:
-      type: object
       properties:
         code:
           type: string
         detail:
           type: string
         meta:
-          type: object
           properties: {}
+          type: object
         path:
-          type: array
           items:
             type: string
+          type: array
         pointer:
           type: string
+      type: object
       required:
       - code
       - detail
@@ -183,7 +40,6 @@ components:
       - path
       - pointer
     nullableStringFilter:
-      type: object
       properties:
         contains:
           type: string
@@ -192,15 +48,15 @@ components:
         eq:
           type: string
         in:
-          type: array
           items:
             type: string
+          type: array
         'null':
           type: boolean
         startsWith:
           type: string
-    offsetPagination:
       type: object
+    offsetPagination:
       properties:
         current:
           type: integer
@@ -216,39 +72,33 @@ components:
           - 'null'
         total:
           type: integer
+      type: object
       required:
       - current
       - items
       - total
     project:
-      type: object
       properties:
         createdAt:
           type: string
           format: date-time
-          description: Timestamp when project was created
         deadline:
           type:
           - string
           - 'null'
           format: date
-          description: Target completion date
         description:
           type:
           - string
           - 'null'
-          description: Detailed project description
         id:
           type: string
-          description: Unique project identifier
         name:
           type: string
-          description: Human-readable project name
         priority:
           type:
           - string
           - 'null'
-          description: Project priority for resource allocation
           enum:
           - critical
           - high
@@ -258,7 +108,6 @@ components:
           type:
           - string
           - 'null'
-          description: Current project lifecycle status
           enum:
           - active
           - archived
@@ -267,7 +116,7 @@ components:
         updatedAt:
           type: string
           format: date-time
-          description: Timestamp of last modification
+      type: object
       description: A project with tasks and deadlines
       required:
       - createdAt
@@ -279,7 +128,6 @@ components:
       - status
       - updatedAt
     projectCreatePayload:
-      type: object
       properties:
         deadline:
           type:
@@ -315,54 +163,54 @@ components:
           - archived
           - completed
           - paused
+      type: object
       description: A project with tasks and deadlines
       required:
       - name
     projectCreateSuccessResponseBody:
-      type: object
       properties:
         meta:
-          type: object
           properties: {}
+          type: object
         project:
           "$ref": "#/components/schemas/project"
+      type: object
       required:
       - project
     projectFilter:
-      type: object
       properties:
         _and:
-          type: array
           items:
             "$ref": "#/components/schemas/projectFilter"
+          type: array
         _not:
           "$ref": "#/components/schemas/projectFilter"
         _or:
-          type: array
           items:
             "$ref": "#/components/schemas/projectFilter"
+          type: array
         priority:
           "$ref": "#/components/schemas/projectPriorityFilter"
         status:
           "$ref": "#/components/schemas/projectStatusFilter"
+      type: object
       description: A project with tasks and deadlines
     projectIndexSuccessResponseBody:
-      type: object
       properties:
         meta:
-          type: object
           properties: {}
+          type: object
         pagination:
           "$ref": "#/components/schemas/offsetPagination"
         projects:
-          type: array
           items:
             "$ref": "#/components/schemas/project"
+          type: array
+      type: object
       required:
       - pagination
       - projects
     projectPage:
-      type: object
       properties:
         number:
           type: integer
@@ -371,6 +219,7 @@ components:
           type: integer
           minimum: 1
           maximum: 100
+      type: object
     projectPriorityFilter:
       oneOf:
       - enum:
@@ -379,8 +228,7 @@ components:
         - low
         - medium
         type: string
-      - type: object
-        properties:
+      - properties:
           eq:
             enum:
             - critical
@@ -389,21 +237,21 @@ components:
             - medium
             type: string
           in:
-            type: array
             items:
               type:
+            type: array
+        type: object
     projectShowSuccessResponseBody:
-      type: object
       properties:
         meta:
-          type: object
           properties: {}
+          type: object
         project:
           "$ref": "#/components/schemas/project"
+      type: object
       required:
       - project
     projectSort:
-      type: object
       properties:
         createdAt:
           enum:
@@ -415,6 +263,7 @@ components:
           - asc
           - desc
           type: string
+      type: object
       description: A project with tasks and deadlines
     projectStatusFilter:
       oneOf:
@@ -424,8 +273,7 @@ components:
         - completed
         - paused
         type: string
-      - type: object
-        properties:
+      - properties:
           eq:
             enum:
             - active
@@ -434,11 +282,11 @@ components:
             - paused
             type: string
           in:
-            type: array
             items:
               type:
+            type: array
+        type: object
     projectUpdatePayload:
-      type: object
       properties:
         deadline:
           type:
@@ -474,21 +322,21 @@ components:
           - archived
           - completed
           - paused
+      type: object
       description: A project with tasks and deadlines
       required:
       - name
     projectUpdateSuccessResponseBody:
-      type: object
       properties:
         meta:
-          type: object
           properties: {}
+          type: object
         project:
           "$ref": "#/components/schemas/project"
+      type: object
       required:
       - project
     stringFilter:
-      type: object
       properties:
         contains:
           type: string
@@ -497,8 +345,152 @@ components:
         eq:
           type: string
         in:
-          type: array
           items:
             type: string
+          type: array
         startsWith:
           type: string
+      type: object
+info:
+  description: API for managing projects with I18n-powered documentation
+  title: Project Management API
+  version: 1.0.0
+openapi: 3.1.0
+paths:
+  projects/:
+    get:
+      description: Returns a paginated list of projects with optional filtering
+      operationId: listProjects
+      summary: List all projects
+      tags:
+      - Projects
+      parameters:
+      - in: query
+        name: filter
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/projectFilter"
+          - items:
+              "$ref": "#/components/schemas/projectFilter"
+            type: array
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/projectPage"
+      - in: query
+        name: sort
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/projectSort"
+          - items:
+              "$ref": "#/components/schemas/projectSort"
+            type: array
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/projectIndexSuccessResponseBody"
+          description: Successful response
+    post:
+      description: Creates a project and returns the created resource
+      operationId: createProject
+      summary: Create a new project
+      tags:
+      - Projects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                project:
+                  "$ref": "#/components/schemas/projectCreatePayload"
+              type: object
+              required:
+              - project
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/projectCreateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+  projects/{id}:
+    get:
+      description: Returns a single project by ID with all attributes
+      operationId: getProject
+      summary: Get project details
+      tags:
+      - Projects
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/projectShowSuccessResponseBody"
+          description: Successful response
+    patch:
+      description: Updates an existing project with the provided attributes
+      operationId: updateProject
+      summary: Update a project
+      tags:
+      - Projects
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                project:
+                  "$ref": "#/components/schemas/projectUpdatePayload"
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/projectUpdateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+    delete:
+      description: Permanently removes a project
+      operationId: deleteProject
+      summary: Delete a project
+      tags:
+      - Projects
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content

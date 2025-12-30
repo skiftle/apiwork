@@ -1,130 +1,7 @@
 ---
-openapi: 3.1.0
-info:
-  title: "/mighty_wolf API"
-  version: 1.0.0
-paths:
-  vehicles/:
-    get:
-      operationId: vehiclesIndex
-      parameters:
-      - in: query
-        name: filter
-        required: false
-        schema:
-          oneOf:
-          - "$ref": "#/components/schemas/vehicleFilter"
-          - type: array
-            items:
-              "$ref": "#/components/schemas/vehicleFilter"
-      - in: query
-        name: page
-        required: false
-        schema:
-          "$ref": "#/components/schemas/vehiclePage"
-      - in: query
-        name: sort
-        required: false
-        schema:
-          oneOf:
-          - "$ref": "#/components/schemas/vehicleSort"
-          - type: array
-            items:
-              "$ref": "#/components/schemas/vehicleSort"
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/vehicleIndexSuccessResponseBody"
-    post:
-      operationId: vehiclesCreate
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              properties:
-                vehicle:
-                  "$ref": "#/components/schemas/vehicleCreatePayload"
-              type: object
-              required:
-              - vehicle
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/vehicleCreateSuccessResponseBody"
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/errorResponseBody"
-  vehicles/{id}:
-    get:
-      operationId: vehiclesShow
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/vehicleShowSuccessResponseBody"
-    patch:
-      operationId: vehiclesUpdate
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              properties:
-                vehicle:
-                  "$ref": "#/components/schemas/vehicleUpdatePayload"
-              type: object
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/vehicleUpdateSuccessResponseBody"
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/errorResponseBody"
-    delete:
-      operationId: vehiclesDestroy
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '204':
-          description: No content
 components:
   schemas:
     car:
-      type: object
       properties:
         brand:
           type: string
@@ -141,12 +18,13 @@ components:
         model:
           type: string
         type:
-          type: string
           const: car
+          type: string
         year:
           type:
           - integer
           - 'null'
+      type: object
       required:
       - brand
       - color
@@ -156,7 +34,6 @@ components:
       - type
       - year
     carCreatePayload:
-      type: object
       properties:
         brand:
           type: string
@@ -171,18 +48,18 @@ components:
         model:
           type: string
         type:
-          type: string
           const: car
+          type: string
         year:
           type:
           - integer
           - 'null'
+      type: object
       required:
       - brand
       - model
       - type
     carUpdatePayload:
-      type: object
       properties:
         brand:
           type: string
@@ -197,34 +74,34 @@ components:
         model:
           type: string
         type:
-          type: string
           const: car
+          type: string
         year:
           type:
           - integer
           - 'null'
+      type: object
       required:
       - brand
       - model
       - type
     errorResponseBody:
-      type: object
       properties:
         issues:
-          type: array
           items:
             "$ref": "#/components/schemas/issue"
+          type: array
         layer:
           enum:
           - http
           - contract
           - domain
           type: string
+      type: object
       required:
       - issues
       - layer
     integerFilter:
-      type: object
       properties:
         between:
           "$ref": "#/components/schemas/integerFilterBetween"
@@ -235,36 +112,37 @@ components:
         gte:
           type: integer
         in:
-          type: array
           items:
             type: integer
+          type: array
         lt:
           type: integer
         lte:
           type: integer
-    integerFilterBetween:
       type: object
+    integerFilterBetween:
       properties:
         from:
           type: integer
         to:
           type: integer
-    issue:
       type: object
+    issue:
       properties:
         code:
           type: string
         detail:
           type: string
         meta:
-          type: object
           properties: {}
+          type: object
         path:
-          type: array
           items:
             type: string
+          type: array
         pointer:
           type: string
+      type: object
       required:
       - code
       - detail
@@ -272,7 +150,6 @@ components:
       - path
       - pointer
     motorcycle:
-      type: object
       properties:
         brand:
           type: string
@@ -289,12 +166,13 @@ components:
         model:
           type: string
         type:
-          type: string
           const: motorcycle
+          type: string
         year:
           type:
           - integer
           - 'null'
+      type: object
       required:
       - brand
       - color
@@ -304,7 +182,6 @@ components:
       - type
       - year
     motorcycleCreatePayload:
-      type: object
       properties:
         brand:
           type: string
@@ -319,18 +196,18 @@ components:
         model:
           type: string
         type:
-          type: string
           const: motorcycle
+          type: string
         year:
           type:
           - integer
           - 'null'
+      type: object
       required:
       - brand
       - model
       - type
     motorcycleUpdatePayload:
-      type: object
       properties:
         brand:
           type: string
@@ -345,18 +222,18 @@ components:
         model:
           type: string
         type:
-          type: string
           const: motorcycle
+          type: string
         year:
           type:
           - integer
           - 'null'
+      type: object
       required:
       - brand
       - model
       - type
     nullableIntegerFilter:
-      type: object
       properties:
         between:
           "$ref": "#/components/schemas/integerFilterBetween"
@@ -367,17 +244,17 @@ components:
         gte:
           type: integer
         in:
-          type: array
           items:
             type: integer
+          type: array
         lt:
           type: integer
         lte:
           type: integer
         'null':
           type: boolean
-    offsetPagination:
       type: object
+    offsetPagination:
       properties:
         current:
           type: integer
@@ -393,12 +270,12 @@ components:
           - 'null'
         total:
           type: integer
+      type: object
       required:
       - current
       - items
       - total
     stringFilter:
-      type: object
       properties:
         contains:
           type: string
@@ -407,13 +284,13 @@ components:
         eq:
           type: string
         in:
-          type: array
           items:
             type: string
+          type: array
         startsWith:
           type: string
-    truck:
       type: object
+    truck:
       properties:
         brand:
           type: string
@@ -430,12 +307,13 @@ components:
           - number
           - 'null'
         type:
-          type: string
           const: truck
+          type: string
         year:
           type:
           - integer
           - 'null'
+      type: object
       required:
       - brand
       - color
@@ -445,7 +323,6 @@ components:
       - type
       - year
     truckCreatePayload:
-      type: object
       properties:
         brand:
           type: string
@@ -460,18 +337,18 @@ components:
           - number
           - 'null'
         type:
-          type: string
           const: truck
+          type: string
         year:
           type:
           - integer
           - 'null'
+      type: object
       required:
       - brand
       - model
       - type
     truckUpdatePayload:
-      type: object
       properties:
         brand:
           type: string
@@ -486,12 +363,13 @@ components:
           - number
           - 'null'
         type:
-          type: string
           const: truck
+          type: string
         year:
           type:
           - integer
           - 'null'
+      type: object
       required:
       - brand
       - model
@@ -502,45 +380,44 @@ components:
       - "$ref": "#/components/schemas/motorcycle"
       - "$ref": "#/components/schemas/truck"
       discriminator:
-        propertyName: type
         mapping:
           car: "#/components/schemas/car"
           motorcycle: "#/components/schemas/motorcycle"
           truck: "#/components/schemas/truck"
+        propertyName: type
     vehicleCreatePayload:
       oneOf:
       - "$ref": "#/components/schemas/carCreatePayload"
       - "$ref": "#/components/schemas/motorcycleCreatePayload"
       - "$ref": "#/components/schemas/truckCreatePayload"
       discriminator:
-        propertyName: type
         mapping:
           car: "#/components/schemas/carCreatePayload"
           motorcycle: "#/components/schemas/motorcycleCreatePayload"
           truck: "#/components/schemas/truckCreatePayload"
+        propertyName: type
     vehicleCreateSuccessResponseBody:
-      type: object
       properties:
         meta:
-          type: object
           properties: {}
+          type: object
         vehicle:
           "$ref": "#/components/schemas/vehicle"
+      type: object
       required:
       - vehicle
     vehicleFilter:
-      type: object
       properties:
         _and:
-          type: array
           items:
             "$ref": "#/components/schemas/vehicleFilter"
+          type: array
         _not:
           "$ref": "#/components/schemas/vehicleFilter"
         _or:
-          type: array
           items:
             "$ref": "#/components/schemas/vehicleFilter"
+          type: array
         brand:
           oneOf:
           - type: string
@@ -553,23 +430,23 @@ components:
           oneOf:
           - type: integer
           - "$ref": "#/components/schemas/nullableIntegerFilter"
-    vehicleIndexSuccessResponseBody:
       type: object
+    vehicleIndexSuccessResponseBody:
       properties:
         meta:
-          type: object
           properties: {}
+          type: object
         pagination:
           "$ref": "#/components/schemas/offsetPagination"
         vehicles:
-          type: array
           items:
             "$ref": "#/components/schemas/vehicle"
+          type: array
+      type: object
       required:
       - pagination
       - vehicles
     vehiclePage:
-      type: object
       properties:
         number:
           type: integer
@@ -578,42 +455,165 @@ components:
           type: integer
           minimum: 1
           maximum: 100
-    vehicleShowSuccessResponseBody:
       type: object
+    vehicleShowSuccessResponseBody:
       properties:
         meta:
-          type: object
           properties: {}
+          type: object
         vehicle:
           "$ref": "#/components/schemas/vehicle"
+      type: object
       required:
       - vehicle
     vehicleSort:
-      type: object
       properties:
         year:
           enum:
           - asc
           - desc
           type: string
+      type: object
     vehicleUpdatePayload:
       oneOf:
       - "$ref": "#/components/schemas/carUpdatePayload"
       - "$ref": "#/components/schemas/motorcycleUpdatePayload"
       - "$ref": "#/components/schemas/truckUpdatePayload"
       discriminator:
-        propertyName: type
         mapping:
           car: "#/components/schemas/carUpdatePayload"
           motorcycle: "#/components/schemas/motorcycleUpdatePayload"
           truck: "#/components/schemas/truckUpdatePayload"
+        propertyName: type
     vehicleUpdateSuccessResponseBody:
-      type: object
       properties:
         meta:
-          type: object
           properties: {}
+          type: object
         vehicle:
           "$ref": "#/components/schemas/vehicle"
+      type: object
       required:
       - vehicle
+info:
+  title: "/mighty_wolf API"
+  version: 1.0.0
+openapi: 3.1.0
+paths:
+  vehicles/:
+    get:
+      operationId: vehiclesIndex
+      parameters:
+      - in: query
+        name: filter
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/vehicleFilter"
+          - items:
+              "$ref": "#/components/schemas/vehicleFilter"
+            type: array
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/vehiclePage"
+      - in: query
+        name: sort
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/vehicleSort"
+          - items:
+              "$ref": "#/components/schemas/vehicleSort"
+            type: array
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/vehicleIndexSuccessResponseBody"
+          description: Successful response
+    post:
+      operationId: vehiclesCreate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                vehicle:
+                  "$ref": "#/components/schemas/vehicleCreatePayload"
+              type: object
+              required:
+              - vehicle
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/vehicleCreateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+  vehicles/{id}:
+    get:
+      operationId: vehiclesShow
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/vehicleShowSuccessResponseBody"
+          description: Successful response
+    patch:
+      operationId: vehiclesUpdate
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                vehicle:
+                  "$ref": "#/components/schemas/vehicleUpdatePayload"
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/vehicleUpdateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+    delete:
+      operationId: vehiclesDestroy
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content

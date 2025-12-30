@@ -1,18 +1,291 @@
 {
-  "path": "/brave_eagle",
+  "resources": {
+    "tasks": {
+      "actions": {
+        "index": {
+          "path": "/",
+          "method": "get",
+          "description": "Returns a paginated list of tasks with optional filtering by status and priority",
+          "operation_id": "listTasks",
+          "request": {
+            "query": {
+              "filter": {
+                "type": "union",
+                "variants": [
+                  {
+                    "type": "task_filter"
+                  },
+                  {
+                    "type": "array",
+                    "of": "task_filter"
+                  }
+                ],
+                "optional": true
+              },
+              "include": {
+                "type": "task_include",
+                "optional": true
+              },
+              "page": {
+                "type": "task_page",
+                "optional": true
+              },
+              "sort": {
+                "type": "union",
+                "variants": [
+                  {
+                    "type": "task_sort"
+                  },
+                  {
+                    "type": "array",
+                    "of": "task_sort"
+                  }
+                ],
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "task_index_success_response_body"
+                },
+                {
+                  "type": "error_response_body"
+                }
+              ]
+            }
+          },
+          "summary": "List all tasks",
+          "tags": [
+            "Tasks",
+            "Core"
+          ]
+        },
+        "show": {
+          "path": "/:id",
+          "method": "get",
+          "description": "Returns a single task by ID",
+          "operation_id": "getTask",
+          "request": {
+            "query": {
+              "include": {
+                "type": "task_include",
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "task_show_success_response_body"
+                },
+                {
+                  "type": "error_response_body"
+                }
+              ]
+            }
+          },
+          "summary": "Get task details",
+          "tags": [
+            "Tasks"
+          ]
+        },
+        "create": {
+          "path": "/",
+          "method": "post",
+          "description": "Creates a task and returns the created resource",
+          "operation_id": "createTask",
+          "raises": [
+            "unprocessable_entity"
+          ],
+          "request": {
+            "body": {
+              "task": {
+                "type": "task_create_payload"
+              }
+            },
+            "query": {
+              "include": {
+                "type": "task_include",
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "task_create_success_response_body"
+                },
+                {
+                  "type": "error_response_body"
+                }
+              ]
+            }
+          },
+          "summary": "Create a new task",
+          "tags": [
+            "Tasks"
+          ]
+        },
+        "update": {
+          "path": "/:id",
+          "method": "patch",
+          "description": "Updates an existing task",
+          "operation_id": "updateTask",
+          "raises": [
+            "unprocessable_entity"
+          ],
+          "request": {
+            "body": {
+              "task": {
+                "type": "task_update_payload"
+              }
+            },
+            "query": {
+              "include": {
+                "type": "task_include",
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "task_update_success_response_body"
+                },
+                {
+                  "type": "error_response_body"
+                }
+              ]
+            }
+          },
+          "summary": "Update a task",
+          "tags": [
+            "Tasks"
+          ]
+        },
+        "destroy": {
+          "path": "/:id",
+          "method": "delete",
+          "description": "Permanently removes a task",
+          "operation_id": "deleteTask",
+          "request": {
+            "query": {
+              "include": {
+                "type": "task_include",
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "no_content": true
+          },
+          "summary": "Delete a task",
+          "tags": [
+            "Tasks"
+          ]
+        },
+        "archive": {
+          "path": "/:id/archive",
+          "method": "patch",
+          "description": "Marks a task as archived. Archived tasks are hidden from default listings but can still be retrieved.",
+          "operation_id": "archiveTask",
+          "raises": [
+            "unprocessable_entity"
+          ],
+          "request": {
+            "query": {
+              "include": {
+                "type": "task_include",
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "task_archive_success_response_body"
+                },
+                {
+                  "type": "error_response_body"
+                }
+              ]
+            }
+          },
+          "summary": "Archive a task",
+          "tags": [
+            "Tasks",
+            "Lifecycle"
+          ],
+          "deprecated": true
+        }
+      },
+      "identifier": "tasks",
+      "path": "tasks"
+    }
+  },
+  "enums": {
+    "layer": {
+      "values": [
+        "http",
+        "contract",
+        "domain"
+      ]
+    },
+    "sort_direction": {
+      "values": [
+        "asc",
+        "desc"
+      ]
+    },
+    "task_priority": {
+      "values": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    },
+    "task_status": {
+      "values": [
+        "pending",
+        "in_progress",
+        "completed",
+        "archived"
+      ]
+    }
+  },
+  "error_codes": {
+    "unprocessable_entity": {
+      "description": "Unprocessable Entity",
+      "status": 422
+    }
+  },
   "info": {
-    "title": "Task Management API",
-    "version": "1.0.0",
-    "description": "API for managing tasks and projects",
     "contact": {
       "name": "API Support",
       "email": "support@example.com"
     },
+    "description": "API for managing tasks and projects",
     "license": {
       "name": "MIT",
       "url": "https://opensource.org/licenses/MIT"
-    }
+    },
+    "title": "Task Management API",
+    "version": "1.0.0"
   },
+  "path": "/brave_eagle",
   "types": {
     "comment": {
       "shape": {
@@ -61,6 +334,7 @@
       "type": "object"
     },
     "comment_nested_payload": {
+      "discriminator": "_type",
       "type": "union",
       "variants": [
         {
@@ -71,8 +345,7 @@
           "type": "comment_nested_update_payload",
           "tag": "update"
         }
-      ],
-      "discriminator": "_type"
+      ]
     },
     "comment_nested_update_payload": {
       "shape": {
@@ -98,8 +371,8 @@
     "error_response_body": {
       "shape": {
         "issues": {
-          "type": "array",
-          "of": "issue"
+          "of": "issue",
+          "type": "array"
         },
         "layer": {
           "type": "layer"
@@ -119,8 +392,8 @@
           "type": "object"
         },
         "path": {
-          "type": "array",
-          "of": "string"
+          "of": "string",
+          "type": "array"
         },
         "pointer": {
           "type": "string"
@@ -143,8 +416,8 @@
           "optional": true
         },
         "in": {
-          "type": "array",
           "of": "string",
+          "type": "array",
           "optional": true
         },
         "null": {
@@ -197,8 +470,8 @@
           "optional": true
         },
         "in": {
-          "type": "array",
           "of": "string",
+          "type": "array",
           "optional": true
         },
         "starts_with": {
@@ -223,8 +496,8 @@
           "description": "User responsible for completing this task"
         },
         "comments": {
-          "type": "array",
           "of": "comment",
+          "type": "array",
           "optional": true,
           "description": "Discussion comments on this task"
         },
@@ -249,15 +522,15 @@
           "description": "Unique task identifier"
         },
         "priority": {
-          "type": "string",
           "enum": "task_priority",
+          "type": "string",
           "nullable": true,
           "description": "Priority level for task ordering",
           "example": "high"
         },
         "status": {
-          "type": "string",
           "enum": "task_status",
+          "type": "string",
           "nullable": true,
           "description": "Current status of the task",
           "example": "pending"
@@ -304,16 +577,16 @@
           "example": "2024-02-01T00:00:00Z"
         },
         "priority": {
-          "type": "string",
           "enum": "task_priority",
+          "type": "string",
           "nullable": true,
           "optional": true,
           "description": "Priority level for task ordering",
           "example": "high"
         },
         "status": {
-          "type": "string",
           "enum": "task_status",
+          "type": "string",
           "nullable": true,
           "optional": true,
           "description": "Current status of the task",
@@ -343,8 +616,8 @@
     "task_filter": {
       "shape": {
         "_and": {
-          "type": "array",
           "of": "task_filter",
+          "type": "array",
           "optional": true
         },
         "_not": {
@@ -352,8 +625,8 @@
           "optional": true
         },
         "_or": {
-          "type": "array",
           "of": "task_filter",
+          "type": "array",
           "optional": true
         },
         "priority": {
@@ -391,8 +664,8 @@
           "type": "offset_pagination"
         },
         "tasks": {
-          "type": "array",
-          "of": "task"
+          "of": "task",
+          "type": "array"
         }
       },
       "type": "object"
@@ -407,8 +680,8 @@
         "size": {
           "type": "integer",
           "optional": true,
-          "min": 1,
-          "max": 100
+          "max": 100,
+          "min": 1
         }
       },
       "type": "object"
@@ -428,8 +701,8 @@
               "optional": true
             },
             "in": {
-              "type": "array",
               "of": "task_priority",
+              "type": "array",
               "optional": true
             }
           }
@@ -477,8 +750,8 @@
               "optional": true
             },
             "in": {
-              "type": "array",
               "of": "task_status",
+              "type": "array",
               "optional": true
             }
           }
@@ -502,16 +775,16 @@
           "example": "2024-02-01T00:00:00Z"
         },
         "priority": {
-          "type": "string",
           "enum": "task_priority",
+          "type": "string",
           "nullable": true,
           "optional": true,
           "description": "Priority level for task ordering",
           "example": "high"
         },
         "status": {
-          "type": "string",
           "enum": "task_status",
+          "type": "string",
           "nullable": true,
           "optional": true,
           "description": "Current status of the task",
@@ -558,279 +831,6 @@
       },
       "type": "object",
       "description": "A user who can be assigned to tasks"
-    }
-  },
-  "enums": {
-    "layer": {
-      "values": [
-        "http",
-        "contract",
-        "domain"
-      ]
-    },
-    "sort_direction": {
-      "values": [
-        "asc",
-        "desc"
-      ]
-    },
-    "task_priority": {
-      "values": [
-        "low",
-        "medium",
-        "high",
-        "critical"
-      ]
-    },
-    "task_status": {
-      "values": [
-        "pending",
-        "in_progress",
-        "completed",
-        "archived"
-      ]
-    }
-  },
-  "error_codes": {
-    "unprocessable_entity": {
-      "status": 422,
-      "description": "Unprocessable Entity"
-    }
-  },
-  "resources": {
-    "tasks": {
-      "identifier": "tasks",
-      "path": "tasks",
-      "actions": {
-        "index": {
-          "method": "get",
-          "path": "/",
-          "summary": "List all tasks",
-          "description": "Returns a paginated list of tasks with optional filtering by status and priority",
-          "tags": [
-            "Tasks",
-            "Core"
-          ],
-          "operation_id": "listTasks",
-          "request": {
-            "query": {
-              "filter": {
-                "type": "union",
-                "variants": [
-                  {
-                    "type": "task_filter"
-                  },
-                  {
-                    "type": "array",
-                    "of": "task_filter"
-                  }
-                ],
-                "optional": true
-              },
-              "include": {
-                "type": "task_include",
-                "optional": true
-              },
-              "page": {
-                "type": "task_page",
-                "optional": true
-              },
-              "sort": {
-                "type": "union",
-                "variants": [
-                  {
-                    "type": "task_sort"
-                  },
-                  {
-                    "type": "array",
-                    "of": "task_sort"
-                  }
-                ],
-                "optional": true
-              }
-            }
-          },
-          "response": {
-            "body": {
-              "type": "union",
-              "variants": [
-                {
-                  "type": "task_index_success_response_body"
-                },
-                {
-                  "type": "error_response_body"
-                }
-              ]
-            }
-          }
-        },
-        "show": {
-          "method": "get",
-          "path": "/:id",
-          "summary": "Get task details",
-          "description": "Returns a single task by ID",
-          "tags": [
-            "Tasks"
-          ],
-          "operation_id": "getTask",
-          "request": {
-            "query": {
-              "include": {
-                "type": "task_include",
-                "optional": true
-              }
-            }
-          },
-          "response": {
-            "body": {
-              "type": "union",
-              "variants": [
-                {
-                  "type": "task_show_success_response_body"
-                },
-                {
-                  "type": "error_response_body"
-                }
-              ]
-            }
-          }
-        },
-        "create": {
-          "method": "post",
-          "path": "/",
-          "summary": "Create a new task",
-          "description": "Creates a task and returns the created resource",
-          "tags": [
-            "Tasks"
-          ],
-          "operation_id": "createTask",
-          "request": {
-            "query": {
-              "include": {
-                "type": "task_include",
-                "optional": true
-              }
-            },
-            "body": {
-              "task": {
-                "type": "task_create_payload"
-              }
-            }
-          },
-          "response": {
-            "body": {
-              "type": "union",
-              "variants": [
-                {
-                  "type": "task_create_success_response_body"
-                },
-                {
-                  "type": "error_response_body"
-                }
-              ]
-            }
-          },
-          "raises": [
-            "unprocessable_entity"
-          ]
-        },
-        "update": {
-          "method": "patch",
-          "path": "/:id",
-          "summary": "Update a task",
-          "description": "Updates an existing task",
-          "tags": [
-            "Tasks"
-          ],
-          "operation_id": "updateTask",
-          "request": {
-            "query": {
-              "include": {
-                "type": "task_include",
-                "optional": true
-              }
-            },
-            "body": {
-              "task": {
-                "type": "task_update_payload"
-              }
-            }
-          },
-          "response": {
-            "body": {
-              "type": "union",
-              "variants": [
-                {
-                  "type": "task_update_success_response_body"
-                },
-                {
-                  "type": "error_response_body"
-                }
-              ]
-            }
-          },
-          "raises": [
-            "unprocessable_entity"
-          ]
-        },
-        "destroy": {
-          "method": "delete",
-          "path": "/:id",
-          "summary": "Delete a task",
-          "description": "Permanently removes a task",
-          "tags": [
-            "Tasks"
-          ],
-          "operation_id": "deleteTask",
-          "request": {
-            "query": {
-              "include": {
-                "type": "task_include",
-                "optional": true
-              }
-            }
-          },
-          "response": {
-            "no_content": true
-          }
-        },
-        "archive": {
-          "method": "patch",
-          "path": "/:id/archive",
-          "summary": "Archive a task",
-          "description": "Marks a task as archived. Archived tasks are hidden from default listings but can still be retrieved.",
-          "tags": [
-            "Tasks",
-            "Lifecycle"
-          ],
-          "operation_id": "archiveTask",
-          "request": {
-            "query": {
-              "include": {
-                "type": "task_include",
-                "optional": true
-              }
-            }
-          },
-          "response": {
-            "body": {
-              "type": "union",
-              "variants": [
-                {
-                  "type": "task_archive_success_response_body"
-                },
-                {
-                  "type": "error_response_body"
-                }
-              ]
-            }
-          },
-          "raises": [
-            "unprocessable_entity"
-          ],
-          "deprecated": true
-        }
-      }
     }
   }
 }

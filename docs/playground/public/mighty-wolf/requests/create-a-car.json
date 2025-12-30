@@ -13,7 +13,6 @@
     }
   },
   "response": {
-    "status": 201,
     "body": {
       "vehicle": {
         "type": "car",
@@ -24,6 +23,7 @@
         "color": "red",
         "doors": null
       }
-    }
+    },
+    "status": 201
   }
 }

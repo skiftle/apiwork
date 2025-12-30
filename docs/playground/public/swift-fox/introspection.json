@@ -1,4 +1,130 @@
 {
+  "resources": {
+    "contacts": {
+      "actions": {
+        "index": {
+          "path": "/",
+          "method": "get",
+          "request": {
+            "query": {
+              "page": {
+                "type": "contact_page",
+                "optional": true
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "contact_index_success_response_body"
+                },
+                {
+                  "type": "error_response_body"
+                }
+              ]
+            }
+          }
+        },
+        "show": {
+          "path": "/:id",
+          "method": "get",
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "contact_show_success_response_body"
+                },
+                {
+                  "type": "error_response_body"
+                }
+              ]
+            }
+          }
+        },
+        "create": {
+          "path": "/",
+          "method": "post",
+          "raises": [
+            "unprocessable_entity"
+          ],
+          "request": {
+            "body": {
+              "contact": {
+                "type": "contact_create_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "contact_create_success_response_body"
+                },
+                {
+                  "type": "error_response_body"
+                }
+              ]
+            }
+          }
+        },
+        "update": {
+          "path": "/:id",
+          "method": "patch",
+          "raises": [
+            "unprocessable_entity"
+          ],
+          "request": {
+            "body": {
+              "contact": {
+                "type": "contact_update_payload"
+              }
+            }
+          },
+          "response": {
+            "body": {
+              "type": "union",
+              "variants": [
+                {
+                  "type": "contact_update_success_response_body"
+                },
+                {
+                  "type": "error_response_body"
+                }
+              ]
+            }
+          }
+        },
+        "destroy": {
+          "path": "/:id",
+          "method": "delete",
+          "response": {
+            "no_content": true
+          }
+        }
+      },
+      "identifier": "contacts",
+      "path": "contacts"
+    }
+  },
+  "enums": {
+    "layer": {
+      "values": [
+        "http",
+        "contract",
+        "domain"
+      ]
+    }
+  },
+  "error_codes": {
+    "unprocessable_entity": {
+      "description": "Unprocessable Entity",
+      "status": 422
+    }
+  },
   "path": "/swift_fox",
   "types": {
     "contact": {
@@ -58,8 +184,8 @@
     "contact_index_success_response_body": {
       "shape": {
         "contacts": {
-          "type": "array",
-          "of": "contact"
+          "of": "contact",
+          "type": "array"
         },
         "meta": {
           "type": "object",
@@ -81,8 +207,8 @@
         "size": {
           "type": "integer",
           "optional": true,
-          "min": 1,
-          "max": 100
+          "max": 100,
+          "min": 1
         }
       },
       "type": "object"
@@ -135,8 +261,8 @@
     "error_response_body": {
       "shape": {
         "issues": {
-          "type": "array",
-          "of": "issue"
+          "of": "issue",
+          "type": "array"
         },
         "layer": {
           "type": "layer"
@@ -156,8 +282,8 @@
           "type": "object"
         },
         "path": {
-          "type": "array",
-          "of": "string"
+          "of": "string",
+          "type": "array"
         },
         "pointer": {
           "type": "string"
@@ -188,132 +314,6 @@
         }
       },
       "type": "object"
-    }
-  },
-  "enums": {
-    "layer": {
-      "values": [
-        "http",
-        "contract",
-        "domain"
-      ]
-    }
-  },
-  "error_codes": {
-    "unprocessable_entity": {
-      "status": 422,
-      "description": "Unprocessable Entity"
-    }
-  },
-  "resources": {
-    "contacts": {
-      "identifier": "contacts",
-      "path": "contacts",
-      "actions": {
-        "index": {
-          "method": "get",
-          "path": "/",
-          "request": {
-            "query": {
-              "page": {
-                "type": "contact_page",
-                "optional": true
-              }
-            }
-          },
-          "response": {
-            "body": {
-              "type": "union",
-              "variants": [
-                {
-                  "type": "contact_index_success_response_body"
-                },
-                {
-                  "type": "error_response_body"
-                }
-              ]
-            }
-          }
-        },
-        "show": {
-          "method": "get",
-          "path": "/:id",
-          "response": {
-            "body": {
-              "type": "union",
-              "variants": [
-                {
-                  "type": "contact_show_success_response_body"
-                },
-                {
-                  "type": "error_response_body"
-                }
-              ]
-            }
-          }
-        },
-        "create": {
-          "method": "post",
-          "path": "/",
-          "request": {
-            "body": {
-              "contact": {
-                "type": "contact_create_payload"
-              }
-            }
-          },
-          "response": {
-            "body": {
-              "type": "union",
-              "variants": [
-                {
-                  "type": "contact_create_success_response_body"
-                },
-                {
-                  "type": "error_response_body"
-                }
-              ]
-            }
-          },
-          "raises": [
-            "unprocessable_entity"
-          ]
-        },
-        "update": {
-          "method": "patch",
-          "path": "/:id",
-          "request": {
-            "body": {
-              "contact": {
-                "type": "contact_update_payload"
-              }
-            }
-          },
-          "response": {
-            "body": {
-              "type": "union",
-              "variants": [
-                {
-                  "type": "contact_update_success_response_body"
-                },
-                {
-                  "type": "error_response_body"
-                }
-              ]
-            }
-          },
-          "raises": [
-            "unprocessable_entity"
-          ]
-        },
-        "destroy": {
-          "method": "delete",
-          "path": "/:id",
-          "response": {
-            "no_content": true
-          }
-        }
-      }
     }
   }
 }

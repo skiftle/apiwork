@@ -4,7 +4,6 @@
     "path": "/swift_fox/contacts/922ed695-6857-5688-b114-0b28c0e524be"
   },
   "response": {
-    "status": 200,
     "body": {
       "contact": {
         "id": "922ed695-6857-5688-b114-0b28c0e524be",
@@ -13,6 +12,7 @@
         "phone": "",
         "notes": ""
       }
-    }
+    },
+    "status": 200
   }
 }

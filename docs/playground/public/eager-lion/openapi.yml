@@ -1,8 +1,48 @@
 ---
-openapi: 3.1.0
+components:
+  schemas:
+    errorResponseBody:
+      properties:
+        issues:
+          items:
+            "$ref": "#/components/schemas/issue"
+          type: array
+        layer:
+          enum:
+          - http
+          - contract
+          - domain
+          type: string
+      type: object
+      required:
+      - issues
+      - layer
+    issue:
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+        meta:
+          properties: {}
+          type: object
+        path:
+          items:
+            type: string
+          type: array
+        pointer:
+          type: string
+      type: object
+      required:
+      - code
+      - detail
+      - meta
+      - path
+      - pointer
 info:
   title: "/eager_lion API"
   version: 1.0.0
+openapi: 3.1.0
 paths:
   invoices/:
     get:
@@ -19,8 +59,8 @@ paths:
     get:
       operationId: invoicesShow
       parameters:
-      - name: id
-        in: path
+      - in: path
+        name: id
         required: true
         schema:
           type: string
@@ -30,8 +70,8 @@ paths:
     patch:
       operationId: invoicesUpdate
       parameters:
-      - name: id
-        in: path
+      - in: path
+        name: id
         required: true
         schema:
           type: string
@@ -41,8 +81,8 @@ paths:
     delete:
       operationId: invoicesDestroy
       parameters:
-      - name: id
-        in: path
+      - in: path
+        name: id
         required: true
         schema:
           type: string
@@ -53,51 +93,11 @@ paths:
     patch:
       operationId: invoicesArchive
       parameters:
-      - name: id
-        in: path
+      - in: path
+        name: id
         required: true
         schema:
           type: string
       responses:
         '204':
           description: No content
-components:
-  schemas:
-    errorResponseBody:
-      type: object
-      properties:
-        issues:
-          type: array
-          items:
-            "$ref": "#/components/schemas/issue"
-        layer:
-          enum:
-          - http
-          - contract
-          - domain
-          type: string
-      required:
-      - issues
-      - layer
-    issue:
-      type: object
-      properties:
-        code:
-          type: string
-        detail:
-          type: string
-        meta:
-          type: object
-          properties: {}
-        path:
-          type: array
-          items:
-            type: string
-        pointer:
-          type: string
-      required:
-      - code
-      - detail
-      - meta
-      - path
-      - pointer

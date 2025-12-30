@@ -14,24 +14,24 @@
     }
   },
   "response": {
-    "status": 400,
     "body": {
       "layer": "contract",
       "issues": [
         {
           "code": "field_missing",
           "detail": "Required",
+          "meta": {
+            "field": "order_number",
+            "type": "string"
+          },
           "path": [
             "order",
             "order_number"
           ],
-          "pointer": "/order/order_number",
-          "meta": {
-            "field": "order_number",
-            "type": "string"
-          }
+          "pointer": "/order/order_number"
         }
       ]
-    }
+    },
+    "status": 400
   }
 }

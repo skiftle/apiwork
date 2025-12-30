@@ -4,11 +4,11 @@
     "path": "/lazy_cow/status/stats"
   },
   "response": {
-    "status": 200,
     "body": {
-      "usersCount": 1234,
       "postsCount": 5678,
-      "uptimeSeconds": 86400
-    }
+      "uptimeSeconds": 86400,
+      "usersCount": 1234
+    },
+    "status": 200
   }
 }

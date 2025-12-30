@@ -14,35 +14,35 @@
     }
   },
   "response": {
-    "status": 422,
     "body": {
       "layer": "domain",
       "issues": [
         {
           "code": "max",
           "detail": "Too long",
+          "meta": {
+            "max": 500
+          },
           "path": [
             "user",
             "profile",
             "bio"
           ],
-          "pointer": "/user/profile/bio",
-          "meta": {
-            "max": 500
-          }
+          "pointer": "/user/profile/bio"
         },
         {
           "code": "invalid",
           "detail": "Invalid",
+          "meta": {},
           "path": [
             "user",
             "profile",
             "website"
           ],
-          "pointer": "/user/profile/website",
-          "meta": {}
+          "pointer": "/user/profile/website"
         }
       ]
-    }
+    },
+    "status": 422
   }
 }

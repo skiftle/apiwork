@@ -1,140 +1,17 @@
 ---
-openapi: 3.1.0
-info:
-  title: "/bold_falcon API"
-  version: 1.0.0
-paths:
-  articles/:
-    get:
-      operationId: articlesIndex
-      parameters:
-      - in: query
-        name: filter
-        required: false
-        schema:
-          oneOf:
-          - "$ref": "#/components/schemas/articleFilter"
-          - type: array
-            items:
-              "$ref": "#/components/schemas/articleFilter"
-      - in: query
-        name: page
-        required: false
-        schema:
-          "$ref": "#/components/schemas/articlePage"
-      - in: query
-        name: sort
-        required: false
-        schema:
-          oneOf:
-          - "$ref": "#/components/schemas/articleSort"
-          - type: array
-            items:
-              "$ref": "#/components/schemas/articleSort"
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/articleIndexSuccessResponseBody"
-    post:
-      operationId: articlesCreate
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              properties:
-                article:
-                  "$ref": "#/components/schemas/articleCreatePayload"
-              type: object
-              required:
-              - article
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/articleCreateSuccessResponseBody"
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/errorResponseBody"
-  articles/{id}:
-    get:
-      operationId: articlesShow
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/articleShowSuccessResponseBody"
-    patch:
-      operationId: articlesUpdate
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              properties:
-                article:
-                  "$ref": "#/components/schemas/articleUpdatePayload"
-              type: object
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/articleUpdateSuccessResponseBody"
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/errorResponseBody"
-    delete:
-      operationId: articlesDestroy
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '204':
-          description: No content
 components:
   schemas:
     article:
-      type: object
       properties:
         body:
           type:
           - string
           - 'null'
         category:
+          properties: {}
           type:
           - object
           - 'null'
-          properties: {}
         createdAt:
           type: string
           format: date-time
@@ -166,6 +43,7 @@ components:
           type:
           - integer
           - 'null'
+      type: object
       required:
       - body
       - createdAt
@@ -177,7 +55,6 @@ components:
       - updatedAt
       - viewCount
     articleCreatePayload:
-      type: object
       properties:
         body:
           type:
@@ -198,31 +75,31 @@ components:
           - published
         title:
           type: string
+      type: object
       required:
       - title
     articleCreateSuccessResponseBody:
-      type: object
       properties:
         article:
           "$ref": "#/components/schemas/article"
         meta:
-          type: object
           properties: {}
+          type: object
+      type: object
       required:
       - article
     articleFilter:
-      type: object
       properties:
         _and:
-          type: array
           items:
             "$ref": "#/components/schemas/articleFilter"
+          type: array
         _not:
           "$ref": "#/components/schemas/articleFilter"
         _or:
-          type: array
           items:
             "$ref": "#/components/schemas/articleFilter"
+          type: array
         publishedOn:
           oneOf:
           - type: string
@@ -242,23 +119,23 @@ components:
           oneOf:
           - type: integer
           - "$ref": "#/components/schemas/nullableIntegerFilter"
-    articleIndexSuccessResponseBody:
       type: object
+    articleIndexSuccessResponseBody:
       properties:
         articles:
-          type: array
           items:
             "$ref": "#/components/schemas/article"
+          type: array
         meta:
-          type: object
           properties: {}
+          type: object
         pagination:
           "$ref": "#/components/schemas/offsetPagination"
+      type: object
       required:
       - articles
       - pagination
     articlePage:
-      type: object
       properties:
         number:
           type: integer
@@ -267,18 +144,18 @@ components:
           type: integer
           minimum: 1
           maximum: 100
-    articleShowSuccessResponseBody:
       type: object
+    articleShowSuccessResponseBody:
       properties:
         article:
           "$ref": "#/components/schemas/article"
         meta:
-          type: object
           properties: {}
+          type: object
+      type: object
       required:
       - article
     articleSort:
-      type: object
       properties:
         createdAt:
           enum:
@@ -305,6 +182,7 @@ components:
           - asc
           - desc
           type: string
+      type: object
     articleStatusFilter:
       oneOf:
       - enum:
@@ -312,8 +190,7 @@ components:
         - draft
         - published
         type: string
-      - type: object
-        properties:
+      - properties:
           eq:
             enum:
             - archived
@@ -321,11 +198,11 @@ components:
             - published
             type: string
           in:
-            type: array
             items:
               type:
+            type: array
+        type: object
     articleUpdatePayload:
-      type: object
       properties:
         body:
           type:
@@ -346,20 +223,20 @@ components:
           - published
         title:
           type: string
+      type: object
       required:
       - title
     articleUpdateSuccessResponseBody:
-      type: object
       properties:
         article:
           "$ref": "#/components/schemas/article"
         meta:
-          type: object
           properties: {}
+          type: object
+      type: object
       required:
       - article
     dateFilter:
-      type: object
       properties:
         between:
           "$ref": "#/components/schemas/dateFilterBetween"
@@ -373,17 +250,17 @@ components:
           type: string
           format: date
         in:
-          type: array
           items:
             type: string
+          type: array
         lt:
           type: string
           format: date
         lte:
           type: string
           format: date
-    dateFilterBetween:
       type: object
+    dateFilterBetween:
       properties:
         from:
           type: string
@@ -391,8 +268,8 @@ components:
         to:
           type: string
           format: date
-    decimalFilter:
       type: object
+    decimalFilter:
       properties:
         between:
           "$ref": "#/components/schemas/decimalFilterBetween"
@@ -403,38 +280,38 @@ components:
         gte:
           type: number
         in:
-          type: array
           items:
             type: number
+          type: array
         lt:
           type: number
         lte:
           type: number
-    decimalFilterBetween:
       type: object
+    decimalFilterBetween:
       properties:
         from:
           type: number
         to:
           type: number
-    errorResponseBody:
       type: object
+    errorResponseBody:
       properties:
         issues:
-          type: array
           items:
             "$ref": "#/components/schemas/issue"
+          type: array
         layer:
           enum:
           - http
           - contract
           - domain
           type: string
+      type: object
       required:
       - issues
       - layer
     integerFilter:
-      type: object
       properties:
         between:
           "$ref": "#/components/schemas/integerFilterBetween"
@@ -445,36 +322,37 @@ components:
         gte:
           type: integer
         in:
-          type: array
           items:
             type: integer
+          type: array
         lt:
           type: integer
         lte:
           type: integer
-    integerFilterBetween:
       type: object
+    integerFilterBetween:
       properties:
         from:
           type: integer
         to:
           type: integer
-    issue:
       type: object
+    issue:
       properties:
         code:
           type: string
         detail:
           type: string
         meta:
-          type: object
           properties: {}
+          type: object
         path:
-          type: array
           items:
             type: string
+          type: array
         pointer:
           type: string
+      type: object
       required:
       - code
       - detail
@@ -482,7 +360,6 @@ components:
       - path
       - pointer
     nullableDateFilter:
-      type: object
       properties:
         between:
           "$ref": "#/components/schemas/dateFilterBetween"
@@ -496,9 +373,9 @@ components:
           type: string
           format: date
         in:
-          type: array
           items:
             type: string
+          type: array
         lt:
           type: string
           format: date
@@ -507,8 +384,8 @@ components:
           format: date
         'null':
           type: boolean
-    nullableDecimalFilter:
       type: object
+    nullableDecimalFilter:
       properties:
         between:
           "$ref": "#/components/schemas/decimalFilterBetween"
@@ -519,17 +396,17 @@ components:
         gte:
           type: number
         in:
-          type: array
           items:
             type: number
+          type: array
         lt:
           type: number
         lte:
           type: number
         'null':
           type: boolean
-    nullableIntegerFilter:
       type: object
+    nullableIntegerFilter:
       properties:
         between:
           "$ref": "#/components/schemas/integerFilterBetween"
@@ -540,17 +417,17 @@ components:
         gte:
           type: integer
         in:
-          type: array
           items:
             type: integer
+          type: array
         lt:
           type: integer
         lte:
           type: integer
         'null':
           type: boolean
-    nullableStringFilter:
       type: object
+    nullableStringFilter:
       properties:
         contains:
           type: string
@@ -559,15 +436,15 @@ components:
         eq:
           type: string
         in:
-          type: array
           items:
             type: string
+          type: array
         'null':
           type: boolean
         startsWith:
           type: string
-    offsetPagination:
       type: object
+    offsetPagination:
       properties:
         current:
           type: integer
@@ -583,12 +460,12 @@ components:
           - 'null'
         total:
           type: integer
+      type: object
       required:
       - current
       - items
       - total
     stringFilter:
-      type: object
       properties:
         contains:
           type: string
@@ -597,8 +474,131 @@ components:
         eq:
           type: string
         in:
-          type: array
           items:
             type: string
+          type: array
         startsWith:
           type: string
+      type: object
+info:
+  title: "/bold_falcon API"
+  version: 1.0.0
+openapi: 3.1.0
+paths:
+  articles/:
+    get:
+      operationId: articlesIndex
+      parameters:
+      - in: query
+        name: filter
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/articleFilter"
+          - items:
+              "$ref": "#/components/schemas/articleFilter"
+            type: array
+      - in: query
+        name: page
+        required: false
+        schema:
+          "$ref": "#/components/schemas/articlePage"
+      - in: query
+        name: sort
+        required: false
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/articleSort"
+          - items:
+              "$ref": "#/components/schemas/articleSort"
+            type: array
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/articleIndexSuccessResponseBody"
+          description: Successful response
+    post:
+      operationId: articlesCreate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                article:
+                  "$ref": "#/components/schemas/articleCreatePayload"
+              type: object
+              required:
+              - article
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/articleCreateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+  articles/{id}:
+    get:
+      operationId: articlesShow
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/articleShowSuccessResponseBody"
+          description: Successful response
+    patch:
+      operationId: articlesUpdate
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                article:
+                  "$ref": "#/components/schemas/articleUpdatePayload"
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/articleUpdateSuccessResponseBody"
+          description: Successful response
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errorResponseBody"
+    delete:
+      operationId: articlesDestroy
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content

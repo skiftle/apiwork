@@ -13,7 +13,6 @@
     }
   },
   "response": {
-    "status": 201,
     "body": {
       "project": {
         "id": "3161e556-4c18-54ab-8027-a5ac92b19bcb",
@@ -25,6 +24,7 @@
         "createdAt": "2024-01-01T12:00:00.000Z",
         "updatedAt": "2024-01-01T12:00:00.000Z"
       }
-    }
+    },
+    "status": 201
   }
 }
