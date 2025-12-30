@@ -49,6 +49,7 @@ module Apiwork
             controller: resource.controller,
             except: resource.except,
             only: resource.only,
+            param: resource.param,
           }.compact
 
           path_option = resource.path || api_class.transform_path_segment(resource.name)

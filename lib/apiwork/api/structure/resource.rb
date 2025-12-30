@@ -9,6 +9,7 @@ module Apiwork
                     :except,
                     :name,
                     :only,
+                    :param,
                     :parent,
                     :path,
                     :resources,
@@ -21,19 +22,21 @@ module Apiwork
           singular:,
           contract_class_name:,
           controller: nil,
-          parent: nil,
-          path: nil,
+          except: nil,
           only: nil,
-          except: nil
+          param: nil,
+          parent: nil,
+          path: nil
         )
           @name = name
           @singular = singular
           @contract_class_name = contract_class_name
           @controller = controller
+          @except = except
+          @only = only
+          @param = param
           @parent = parent
           @path = path
-          @only = only
-          @except = except
           @crud_actions = determine_crud_actions(singular, except:, only:)
           @custom_actions = []
           @resources = {}

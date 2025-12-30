@@ -396,6 +396,7 @@ module Apiwork
           controller: nil,
           except: nil,
           only: nil,
+          param: nil,
           path: nil,
           &block
         )
@@ -406,6 +407,7 @@ module Apiwork
             controller:,
             except:,
             only:,
+            param:,
             path:,
             &block
           )
@@ -438,6 +440,7 @@ module Apiwork
           controller: nil,
           except: nil,
           only: nil,
+          param: nil,
           path: nil,
           &block
         )
@@ -448,6 +451,7 @@ module Apiwork
             controller:,
             except:,
             only:,
+            param:,
             path:,
             &block
           )
