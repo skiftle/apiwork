@@ -4,8 +4,10 @@ module Apiwork
   module API
     class Structure
       class Resource
-        attr_reader :contract_class_name,
+        attr_reader :constraints,
+                    :contract_class_name,
                     :controller,
+                    :defaults,
                     :except,
                     :name,
                     :only,
@@ -21,7 +23,9 @@ module Apiwork
           name:,
           singular:,
           contract_class_name:,
+          constraints: nil,
           controller: nil,
+          defaults: nil,
           except: nil,
           only: nil,
           param: nil,
@@ -31,7 +35,9 @@ module Apiwork
           @name = name
           @singular = singular
           @contract_class_name = contract_class_name
+          @constraints = constraints
           @controller = controller
+          @defaults = defaults
           @except = except
           @only = only
           @param = param

@@ -46,7 +46,9 @@ module Apiwork
         resources_hash.each_value do |resource|
           resource_method = resource.singular ? :resource : :resources
           options = {
+            constraints: resource.constraints,
             controller: resource.controller,
+            defaults: resource.defaults,
             except: resource.except,
             only: resource.only,
             param: resource.param,

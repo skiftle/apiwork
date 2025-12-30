@@ -70,8 +70,10 @@ module Apiwork
       def resources(
         name = nil,
         concerns: nil,
+        constraints: nil,
         contract: nil,
         controller: nil,
+        defaults: nil,
         except: nil,
         only: nil,
         param: nil,
@@ -81,8 +83,10 @@ module Apiwork
         return @resources if name.nil?
 
         options = {
+          constraints:,
           contract:,
           controller:,
+          defaults:,
           except:,
           only:,
           param:,
@@ -101,8 +105,10 @@ module Apiwork
       def resource(
         name,
         concerns: nil,
+        constraints: nil,
         contract: nil,
         controller: nil,
+        defaults: nil,
         except: nil,
         only: nil,
         param: nil,
@@ -110,8 +116,10 @@ module Apiwork
         &block
       )
         options = {
+          constraints:,
           contract:,
           controller:,
+          defaults:,
           except:,
           only:,
           param:,

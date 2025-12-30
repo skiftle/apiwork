@@ -372,10 +372,13 @@ module Apiwork
         #
         # @param name [Symbol] resource name (plural)
         # @param concerns [Array<Symbol>] concerns to include
+        # @param constraints [Hash, Proc] route constraints (regex, lambdas)
         # @param contract [String] custom contract path
         # @param controller [String] custom controller path
+        # @param defaults [Hash] default parameters for routes
         # @param except [Array<Symbol>] exclude specific CRUD actions
         # @param only [Array<Symbol>] limit to specific CRUD actions
+        # @param param [Symbol] custom parameter name for ID
         # @param path [String] custom URL path segment
         # @yield block for nested resources and custom actions
         #
@@ -392,8 +395,10 @@ module Apiwork
         def resources(
           name,
           concerns: nil,
+          constraints: nil,
           contract: nil,
           controller: nil,
+          defaults: nil,
           except: nil,
           only: nil,
           param: nil,
@@ -403,8 +408,10 @@ module Apiwork
           @structure.resources(
             name,
             concerns:,
+            constraints:,
             contract:,
             controller:,
+            defaults:,
             except:,
             only:,
             param:,
@@ -421,10 +428,13 @@ module Apiwork
         #
         # @param name [Symbol] resource name (singular)
         # @param concerns [Array<Symbol>] concerns to include
+        # @param constraints [Hash, Proc] route constraints (regex, lambdas)
         # @param contract [String] custom contract path
         # @param controller [String] custom controller path
+        # @param defaults [Hash] default parameters for routes
         # @param except [Array<Symbol>] exclude specific CRUD actions
         # @param only [Array<Symbol>] limit to specific CRUD actions
+        # @param param [Symbol] custom parameter name for ID
         # @param path [String] custom URL path segment
         # @yield block for nested resources and custom actions
         #
@@ -436,8 +446,10 @@ module Apiwork
         def resource(
           name,
           concerns: nil,
+          constraints: nil,
           contract: nil,
           controller: nil,
+          defaults: nil,
           except: nil,
           only: nil,
           param: nil,
@@ -447,8 +459,10 @@ module Apiwork
           @structure.resource(
             name,
             concerns:,
+            constraints:,
             contract:,
             controller:,
+            defaults:,
             except:,
             only:,
             param:,
